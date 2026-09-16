@@ -1,0 +1,419 @@
+{
+  "id": "measuring-volume",
+  "title": "Measure Liquid Volume",
+  "learningGoal": "Measure a fixed liquid volume using a calibrated cylinder.",
+  "requiredEquipment": [
+    "graduated-cylinder",
+    "sample-bottle"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "graduated-cylinder-1",
+        "definitionId": "graduated-cylinder",
+        "label": "Graduated cylinder",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "sample-bottle-1",
+        "definitionId": "sample-bottle",
+        "label": "Sample bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Hard water sample",
+          "volumeMl": 120,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "place-cylinder",
+      "verb": "place",
+      "label": "Place graduated cylinder",
+      "parameters": {
+        "equipmentDefinitionId": "graduated-cylinder",
+        "location": "workbench"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "place updates runtime state through structured equipment contents."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The graduated cylinder is ready on the bench.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.variable-volume-device",
+      "equipmentRoleBindings": {
+        "variable-volume-measuring-device": "graduated-cylinder"
+      }
+    },
+    {
+      "id": "measure-20ml",
+      "verb": "measureVolume",
+      "label": "Measure the configured volume sample",
+      "parameters": {
+        "sourceDefinitionId": "sample-bottle",
+        "targetDefinitionId": "graduated-cylinder",
+        "measurementId": "{{config.volumeMeasurementId}}",
+        "volumeMl": "{{config.targetVolumeMl}}",
+        "tolerance": "{{config.volumeToleranceMl}}"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "measureVolume updates runtime state through structured equipment contents."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The graduated cylinder contains the configured volume of sample.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "measureVolume",
+        "measurement"
+      ],
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "sample-bottle",
+        "targetDefinitionId": "graduated-cylinder",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Pour the configured sample from the source into the graduated cylinder to the configured volume.",
+        "successCue": "The meniscus is at the configured volume in the graduated cylinder.",
+        "invalidCue": "Use the sample bottle as the source and the graduated cylinder as the measuring instrument."
+      },
+      "atomId": "atom.measure.variable-volume",
+      "equipmentRoleBindings": {
+        "variable-volume-measuring-device": "graduated-cylinder",
+        "liquid-source": "sample-bottle"
+      }
+    },
+    {
+      "id": "record-volume",
+      "verb": "record",
+      "label": "Record sample volume",
+      "parameters": {
+        "measurementId": "{{config.volumeMeasurementId}}",
+        "label": "Sample volume",
+        "unit": "mL"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "record updates runtime state through structured equipment contents."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Volume evidence recorded in the notebook.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "record",
+        "notebook"
+      ]
+    }
+  ],
+  "process": {
+    "startNodeId": "place-cylinder-node",
+    "nodes": [
+      {
+        "id": "place-cylinder-node",
+        "type": "action",
+        "title": "Place cylinder",
+        "description": "Place the graduated cylinder on the workbench.",
+        "actionId": "place-cylinder",
+        "config": {},
+        "validation": [
+          {
+            "id": "placed-cylinder",
+            "type": "actionEvidence",
+            "label": "Action place-cylinder was completed.",
+            "actionId": "place-cylinder"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Place cylinder complete.",
+          "retry": "Review Place cylinder and try again."
+        }
+      },
+      {
+        "id": "measure-sample-node",
+        "type": "action",
+        "title": "Measure sample",
+        "description": "Pour water sample from the sample bottle into the graduated cylinder until the meniscus reaches the configured volume.",
+        "actionId": "measure-20ml",
+        "config": {},
+        "validation": [
+          {
+            "id": "measured-sample",
+            "type": "actionEvidence",
+            "label": "Action measure-20ml was completed.",
+            "actionId": "measure-20ml"
+          },
+          {
+            "id": "sample-volume-evidence",
+            "type": "measurementRecorded",
+            "label": "Measurement sample-volume was recorded.",
+            "measurementId": "sample-volume"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Measure sample complete.",
+          "retry": "Review Measure sample and try again."
+        }
+      },
+      {
+        "id": "record-volume-node",
+        "type": "observation",
+        "title": "Record volume",
+        "description": "Record the the configured volume sample volume in the notebook.",
+        "actionId": "record-volume",
+        "config": {},
+        "validation": [
+          {
+            "id": "recorded-volume",
+            "type": "actionEvidence",
+            "label": "Action record-volume was completed.",
+            "actionId": "record-volume"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record volume complete.",
+          "retry": "Review Record volume and try again."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "place-cylinder-node",
+        "to": "measure-sample-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "measure-sample-node",
+        "to": "record-volume-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [
+    {
+      "id": "volume-success",
+      "type": "measurementRecorded",
+      "label": "Measurement sample-volume was recorded.",
+      "measurementId": "sample-volume"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "current node expects a different action",
+      "message": "That action is out of sequence for the current technique step.",
+      "recovery": "Check the process map and perform the highlighted step first."
+    },
+    {
+      "id": "missing-source",
+      "when": "source equipment or contents are missing",
+      "message": "The selected source does not contain the material required for this action.",
+      "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+    },
+    {
+      "id": "overflow",
+      "when": "target capacity would be exceeded",
+      "message": "The target equipment cannot hold the requested volume.",
+      "recovery": "Use a larger container or transfer a smaller measured amount."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.2.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-08-30T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "volume"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry",
+        "kind": "entry",
+        "nodeId": "place-cylinder-node",
+        "label": "Entry"
+      },
+      {
+        "id": "exit",
+        "kind": "exit",
+        "nodeId": "record-volume-node",
+        "label": "Exit"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "variable-volume-measuring-device",
+        "required": true,
+        "allowedDefinitionIds": [
+          "graduated-cylinder"
+        ],
+        "sourceInstanceIds": [
+          "graduated-cylinder-1"
+        ]
+      },
+      {
+        "roleId": "liquid-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "sample-bottle"
+        ],
+        "sourceInstanceIds": [
+          "sample-bottle-1"
+        ]
+      }
+    ],
+    "modelSlots": [],
+    "configurationSlots": [
+      {
+        "id": "targetVolumeMl",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "volumeToleranceMl",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "volumeMeasurementId",
+        "valueType": "string",
+        "required": true
+      }
+    ],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [
+      {
+        "id": "volume-reading",
+        "kind": "measurement",
+        "actionId": "measure-20ml",
+        "referenceId": "{{config.volumeMeasurementId}}"
+      },
+      {
+        "id": "volume-record",
+        "kind": "notebook",
+        "actionId": "record-volume",
+        "referenceId": "{{config.volumeMeasurementId}}"
+      }
+    ],
+    "completion": {
+      "exitPortIds": [
+        "exit"
+      ],
+      "requiredEvidenceOutputIds": [
+        "volume-reading",
+        "volume-record"
+      ],
+      "requiredValidationRuleIds": [
+        "volume-success"
+      ]
+    },
+    "catalogDisposition": "composable",
+    "legacyActionEffects": [
+      {
+        "actionId": "record-volume",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

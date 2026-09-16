@@ -1,0 +1,1254 @@
+{
+  "schema": "lab-studio/realistic-asset-disposition-registry@1",
+  "cycle": "02",
+  "directory": "public/assets/equipment-realistic/v1",
+  "consumedBy": [
+    "scripts/checkContentConsistency.mjs",
+    "src/equipment/registries.ts"
+  ],
+  "policy": "Every .svg and .png file in the realistic asset directory must carry a disposition. An unclassified asset is a lint failure; an intentionally unused asset is not. reachabilityTags are re-derived by the checker and must agree with the declared disposition.",
+  "nonAssetEntries": [
+    {
+      "name": "blender-lab-bench",
+      "kind": "directory",
+      "rationale": "Blender render sources (beaker-250ml.png, erlenmeyer-flask-250ml.png) staged beside the published assets. Not rendered by the app and deliberately not registered; recorded here so a future asset cannot hide inside it unnoticed."
+    }
+  ],
+  "dispositions": {
+    "player-active": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition.",
+    "accessory-active": "Selected by a presentation-only accessory contract in src/equipment/visualCatalog.ts; it creates no equipment definition or runtime visual state.",
+    "state-active": "Selected through stateAssets in src/equipment/visualCatalog.ts. CAL-01 through CAL-12 are registered but no content authors the matching visualState yet.",
+    "composite-active": "Selected by a composite branch. Cycle 05 moves the branch into src/equipment/compositeRegistry.json.",
+    "custom-route-active": "Selected by a custom investigation player under src/investigations, not by the shared player.",
+    "gallery-only": "Referenced only by the equipment art gallery in src/trials/realisticEquipmentAssets.ts. Intentional, not debt.",
+    "intentionally-unused": "Present on disk with no code path and no planned wiring. Intentional, not debt.",
+    "remediation-candidate": "No code path reaches it, and content authors a matching visualState. Wiring is owned by the named cycle."
+  },
+  "counts": {
+    "total": 126,
+    "byDisposition": {
+      "player-active": 74,
+      "accessory-active": 2,
+      "intentionally-unused": 1,
+      "gallery-only": 19,
+      "composite-active": 10,
+      "state-active": 18,
+      "custom-route-active": 2
+    }
+  },
+  "assets": [
+    {
+      "id": "analytical-balance",
+      "file": "public/assets/equipment-realistic/v1/analytical-balance.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "beaker-150ml",
+      "file": "public/assets/equipment-realistic/v1/beaker-150ml.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "beaker-250ml",
+      "file": "public/assets/equipment-realistic/v1/beaker-250ml.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "beral-pipette",
+      "file": "public/assets/equipment-realistic/v1/beral-pipette.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "brass-color-depth-comparison",
+      "file": "public/assets/equipment-realistic/v1/brass-color-depth-comparison.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "visual-catalog"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "brass-fume-hood-digestion",
+      "file": "public/assets/equipment-realistic/v1/brass-fume-hood-digestion.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "visual-catalog"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "buchner-funnel",
+      "file": "public/assets/equipment-realistic/v1/buchner-funnel.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "bunsen-burner",
+      "file": "public/assets/equipment-realistic/v1/bunsen-burner.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "custom-route",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "burette-50ml",
+      "file": "public/assets/equipment-realistic/v1/burette-50ml.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "burette-50ml-enhanced",
+      "file": "public/assets/equipment-realistic/v1/burette-50ml-enhanced.png",
+      "disposition": "intentionally-unused",
+      "reachabilityTags": [],
+      "rationale": "Unreferenced source PNG with no SVG wrapper. The AGENTS.md wrapper rule applies to rendered assets, so this is recorded rather than treated as a broken pair."
+    },
+    {
+      "id": "capillary-spotter",
+      "file": "public/assets/equipment-realistic/v1/capillary-spotter.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "centrifuge-tube",
+      "file": "public/assets/equipment-realistic/v1/centrifuge-tube.svg",
+      "disposition": "gallery-only",
+      "reachabilityTags": [
+        "gallery"
+      ],
+      "rationale": "Referenced only by the equipment art gallery in src/trials/realisticEquipmentAssets.ts. Intentional, not debt."
+    },
+    {
+      "id": "chromatography-chamber",
+      "file": "public/assets/equipment-realistic/v1/chromatography-chamber.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "chromatography-chamber-with-paper",
+      "file": "public/assets/equipment-realistic/v1/chromatography-chamber-with-paper.svg",
+      "disposition": "composite-active",
+      "reachabilityTags": [
+        "composite-branch"
+      ],
+      "rationale": "Selected by a composite branch. Cycle 05 moves the branch into src/equipment/compositeRegistry.json."
+    },
+    {
+      "id": "chromatography-chamber-open",
+      "file": "public/assets/equipment-realistic/v1/chromatography-chamber-open.svg",
+      "disposition": "composite-active",
+      "reachabilityTags": [
+        "composite-branch"
+      ],
+      "rationale": "Selected by the lid-closure asset pass in src/equipment/composites.ts (OPEN_LID_ASSET_BY_SEALED_ASSET) when a chamber instance carries contents.developingChamberClosed === false. Derived from the sealed photograph of the same apparatus on the same canvas, so open and closed register identically."
+    },
+    {
+      "id": "chromatography-chamber-with-paper-open",
+      "file": "public/assets/equipment-realistic/v1/chromatography-chamber-with-paper-open.svg",
+      "disposition": "composite-active",
+      "reachabilityTags": [
+        "composite-branch"
+      ],
+      "rationale": "Selected by the lid-closure asset pass in src/equipment/composites.ts (OPEN_LID_ASSET_BY_SEALED_ASSET) when a chamber instance carries contents.developingChamberClosed === false. Derived from the sealed photograph of the same apparatus on the same canvas, so open and closed register identically. Keeps the suspended strip the sealed composite shows."
+    },
+    {
+      "id": "chromatography-paper",
+      "file": "public/assets/equipment-realistic/v1/chromatography-paper.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "clay-triangle",
+      "file": "public/assets/equipment-realistic/v1/clay-triangle.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "condenser",
+      "file": "public/assets/equipment-realistic/v1/condenser.svg",
+      "disposition": "gallery-only",
+      "reachabilityTags": [
+        "gallery"
+      ],
+      "rationale": "Referenced only by the equipment art gallery in src/trials/realisticEquipmentAssets.ts. Intentional, not debt."
+    },
+    {
+      "id": "conductivity-tester",
+      "file": "public/assets/equipment-realistic/v1/conductivity-tester.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "crucible-tongs",
+      "file": "public/assets/equipment-realistic/v1/crucible-tongs.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "crucible-with-lid",
+      "file": "public/assets/equipment-realistic/v1/crucible-with-lid.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "cuvette",
+      "file": "public/assets/equipment-realistic/v1/cuvette.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "data-collection-interface",
+      "file": "public/assets/equipment-realistic/v1/data-collection-interface.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "desiccator",
+      "file": "public/assets/equipment-realistic/v1/desiccator.svg",
+      "disposition": "gallery-only",
+      "reachabilityTags": [
+        "gallery"
+      ],
+      "rationale": "Referenced only by the equipment art gallery in src/trials/realisticEquipmentAssets.ts. Intentional, not debt."
+    },
+    {
+      "id": "distilled-water-bottle",
+      "file": "public/assets/equipment-realistic/v1/distilled-water-bottle.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "dixie-cup",
+      "file": "public/assets/equipment-realistic/v1/dixie-cup.svg",
+      "disposition": "gallery-only",
+      "reachabilityTags": [
+        "gallery"
+      ],
+      "rationale": "Referenced only by the equipment art gallery in src/trials/realisticEquipmentAssets.ts. Intentional, not debt."
+    },
+    {
+      "id": "dropper-bottle",
+      "file": "public/assets/equipment-realistic/v1/dropper-bottle.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "custom-route",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "drying-oven",
+      "file": "public/assets/equipment-realistic/v1/drying-oven.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "erlenmeyer-flask-250ml",
+      "file": "public/assets/equipment-realistic/v1/erlenmeyer-flask-250ml.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "custom-route",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "evaporating-dish",
+      "file": "public/assets/equipment-realistic/v1/evaporating-dish.svg",
+      "disposition": "gallery-only",
+      "reachabilityTags": [
+        "gallery"
+      ],
+      "rationale": "Referenced only by the equipment art gallery in src/trials/realisticEquipmentAssets.ts. Intentional, not debt."
+    },
+    {
+      "id": "filter-paper",
+      "file": "public/assets/equipment-realistic/v1/filter-paper.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "foam-cup-calorimeter",
+      "file": "public/assets/equipment-realistic/v1/foam-cup-calorimeter.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "forceps",
+      "file": "public/assets/equipment-realistic/v1/forceps.svg",
+      "disposition": "gallery-only",
+      "reachabilityTags": [
+        "gallery"
+      ],
+      "rationale": "Referenced only by the equipment art gallery in src/trials/realisticEquipmentAssets.ts. Intentional, not debt."
+    },
+    {
+      "id": "funnel",
+      "file": "public/assets/equipment-realistic/v1/funnel.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "funnel-filter-paper",
+      "file": "public/assets/equipment-realistic/v1/funnel-filter-paper.svg",
+      "disposition": "gallery-only",
+      "reachabilityTags": [
+        "gallery"
+      ],
+      "rationale": "Referenced only by the equipment art gallery in src/trials/realisticEquipmentAssets.ts. Intentional, not debt."
+    },
+    {
+      "id": "funnel-paper-stand",
+      "file": "public/assets/equipment-realistic/v1/funnel-paper-stand.svg",
+      "disposition": "composite-active",
+      "reachabilityTags": [
+        "composite-branch"
+      ],
+      "rationale": "Selected by a composite branch. Cycle 05 moves the branch into src/equipment/compositeRegistry.json."
+    },
+    {
+      "id": "funnel-stand",
+      "file": "public/assets/equipment-realistic/v1/funnel-stand.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "gas-syringe",
+      "file": "public/assets/equipment-realistic/v1/gas-syringe.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "glass-slide",
+      "file": "public/assets/equipment-realistic/v1/glass-slide.svg",
+      "disposition": "gallery-only",
+      "reachabilityTags": [
+        "gallery"
+      ],
+      "rationale": "Referenced only by the equipment art gallery in src/trials/realisticEquipmentAssets.ts. Intentional, not debt."
+    },
+    {
+      "id": "graduated-cylinder-100ml",
+      "file": "public/assets/equipment-realistic/v1/graduated-cylinder-100ml.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "custom-route",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "graduated-cylinder-25ml",
+      "file": "public/assets/equipment-realistic/v1/graduated-cylinder-25ml.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "graduated-pipette-10ml",
+      "file": "public/assets/equipment-realistic/v1/graduated-pipette-10ml.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "hand-warmer-calorimeter-cal-00",
+      "file": "public/assets/equipment-realistic/v1/hand-warmer-calorimeter-cal-00.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "visual-catalog"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "hand-warmer-calorimeter-cal-01",
+      "file": "public/assets/equipment-realistic/v1/hand-warmer-calorimeter-cal-01.svg",
+      "disposition": "state-active",
+      "reachabilityTags": [
+        "visual-catalog"
+      ],
+      "rationale": "Selected through stateAssets in src/equipment/visualCatalog.ts. CAL-01 through CAL-12 are registered but no content authors the matching visualState yet.",
+      "ownerCycle": "12",
+      "note": "Registered as a state asset; no content authors the matching CAL state today."
+    },
+    {
+      "id": "hand-warmer-calorimeter-cal-02",
+      "file": "public/assets/equipment-realistic/v1/hand-warmer-calorimeter-cal-02.svg",
+      "disposition": "state-active",
+      "reachabilityTags": [
+        "visual-catalog"
+      ],
+      "rationale": "Selected through stateAssets in src/equipment/visualCatalog.ts. CAL-01 through CAL-12 are registered but no content authors the matching visualState yet.",
+      "ownerCycle": "12",
+      "note": "Registered as a state asset; no content authors the matching CAL state today."
+    },
+    {
+      "id": "hand-warmer-calorimeter-cal-03",
+      "file": "public/assets/equipment-realistic/v1/hand-warmer-calorimeter-cal-03.svg",
+      "disposition": "state-active",
+      "reachabilityTags": [
+        "visual-catalog"
+      ],
+      "rationale": "Selected through stateAssets in src/equipment/visualCatalog.ts. CAL-01 through CAL-12 are registered but no content authors the matching visualState yet.",
+      "ownerCycle": "12",
+      "note": "Registered as a state asset; no content authors the matching CAL state today."
+    },
+    {
+      "id": "hand-warmer-calorimeter-cal-04",
+      "file": "public/assets/equipment-realistic/v1/hand-warmer-calorimeter-cal-04.svg",
+      "disposition": "state-active",
+      "reachabilityTags": [
+        "visual-catalog"
+      ],
+      "rationale": "Selected through stateAssets in src/equipment/visualCatalog.ts. CAL-01 through CAL-12 are registered but no content authors the matching visualState yet.",
+      "ownerCycle": "12",
+      "note": "Registered as a state asset; no content authors the matching CAL state today."
+    },
+    {
+      "id": "hand-warmer-calorimeter-cal-05",
+      "file": "public/assets/equipment-realistic/v1/hand-warmer-calorimeter-cal-05.svg",
+      "disposition": "state-active",
+      "reachabilityTags": [
+        "visual-catalog"
+      ],
+      "rationale": "Selected through stateAssets in src/equipment/visualCatalog.ts. CAL-01 through CAL-12 are registered but no content authors the matching visualState yet.",
+      "ownerCycle": "12",
+      "note": "Registered as a state asset; no content authors the matching CAL state today."
+    },
+    {
+      "id": "hand-warmer-calorimeter-cal-06",
+      "file": "public/assets/equipment-realistic/v1/hand-warmer-calorimeter-cal-06.svg",
+      "disposition": "state-active",
+      "reachabilityTags": [
+        "visual-catalog"
+      ],
+      "rationale": "Selected through stateAssets in src/equipment/visualCatalog.ts. CAL-01 through CAL-12 are registered but no content authors the matching visualState yet.",
+      "ownerCycle": "12",
+      "note": "Registered as a state asset; no content authors the matching CAL state today."
+    },
+    {
+      "id": "hand-warmer-calorimeter-cal-07",
+      "file": "public/assets/equipment-realistic/v1/hand-warmer-calorimeter-cal-07.svg",
+      "disposition": "state-active",
+      "reachabilityTags": [
+        "visual-catalog"
+      ],
+      "rationale": "Selected through stateAssets in src/equipment/visualCatalog.ts. CAL-01 through CAL-12 are registered but no content authors the matching visualState yet.",
+      "ownerCycle": "12",
+      "note": "Registered as a state asset; no content authors the matching CAL state today."
+    },
+    {
+      "id": "hand-warmer-calorimeter-cal-08",
+      "file": "public/assets/equipment-realistic/v1/hand-warmer-calorimeter-cal-08.svg",
+      "disposition": "state-active",
+      "reachabilityTags": [
+        "visual-catalog"
+      ],
+      "rationale": "Selected through stateAssets in src/equipment/visualCatalog.ts. CAL-01 through CAL-12 are registered but no content authors the matching visualState yet.",
+      "ownerCycle": "12",
+      "note": "Registered as a state asset; no content authors the matching CAL state today."
+    },
+    {
+      "id": "hand-warmer-calorimeter-cal-09",
+      "file": "public/assets/equipment-realistic/v1/hand-warmer-calorimeter-cal-09.svg",
+      "disposition": "state-active",
+      "reachabilityTags": [
+        "visual-catalog"
+      ],
+      "rationale": "Selected through stateAssets in src/equipment/visualCatalog.ts. CAL-01 through CAL-12 are registered but no content authors the matching visualState yet.",
+      "ownerCycle": "12",
+      "note": "Registered as a state asset; no content authors the matching CAL state today."
+    },
+    {
+      "id": "hand-warmer-calorimeter-cal-10",
+      "file": "public/assets/equipment-realistic/v1/hand-warmer-calorimeter-cal-10.svg",
+      "disposition": "state-active",
+      "reachabilityTags": [
+        "visual-catalog"
+      ],
+      "rationale": "Selected through stateAssets in src/equipment/visualCatalog.ts. CAL-01 through CAL-12 are registered but no content authors the matching visualState yet.",
+      "ownerCycle": "12",
+      "note": "Registered as a state asset; no content authors the matching CAL state today."
+    },
+    {
+      "id": "hand-warmer-calorimeter-cal-11",
+      "file": "public/assets/equipment-realistic/v1/hand-warmer-calorimeter-cal-11.svg",
+      "disposition": "state-active",
+      "reachabilityTags": [
+        "visual-catalog"
+      ],
+      "rationale": "Selected through stateAssets in src/equipment/visualCatalog.ts. CAL-01 through CAL-12 are registered but no content authors the matching visualState yet.",
+      "ownerCycle": "12",
+      "note": "Registered as a state asset; no content authors the matching CAL state today."
+    },
+    {
+      "id": "hand-warmer-calorimeter-cal-12",
+      "file": "public/assets/equipment-realistic/v1/hand-warmer-calorimeter-cal-12.svg",
+      "disposition": "state-active",
+      "reachabilityTags": [
+        "visual-catalog"
+      ],
+      "rationale": "Selected through stateAssets in src/equipment/visualCatalog.ts. CAL-01 through CAL-12 are registered but no content authors the matching visualState yet.",
+      "ownerCycle": "12",
+      "note": "Registered as a state asset; no content authors the matching CAL state today."
+    },
+    {
+      "id": "hot-plate",
+      "file": "public/assets/equipment-realistic/v1/hot-plate.svg",
+      "disposition": "gallery-only",
+      "reachabilityTags": [
+        "gallery"
+      ],
+      "rationale": "Referenced only by the equipment art gallery in src/trials/realisticEquipmentAssets.ts. Intentional, not debt."
+    },
+    {
+      "id": "hot-plate-stirrer",
+      "file": "public/assets/equipment-realistic/v1/hot-plate-stirrer.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "lab-scoop",
+      "file": "public/assets/equipment-realistic/v1/lab-scoop.svg",
+      "disposition": "gallery-only",
+      "reachabilityTags": [
+        "gallery"
+      ],
+      "rationale": "Referenced only by the equipment art gallery in src/trials/realisticEquipmentAssets.ts. Intentional, not debt."
+    },
+    {
+      "id": "locking-nail",
+      "file": "public/assets/equipment-realistic/v1/locking-nail.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "luer-lock-syringe-empty",
+      "file": "public/assets/equipment-realistic/v1/luer-lock-syringe-empty.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "visual-catalog"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition. Also selected through stateAssets in src/equipment/visualCatalog.ts for visualState syringe-empty; wired by Cycle 11.",
+      "matchingVisualState": "syringe-empty"
+    },
+    {
+      "id": "luer-lock-syringe-extended",
+      "file": "public/assets/equipment-realistic/v1/luer-lock-syringe-extended.svg",
+      "disposition": "state-active",
+      "reachabilityTags": [
+        "visual-catalog"
+      ],
+      "rationale": "Selected through stateAssets in src/equipment/visualCatalog.ts for visualState syringe-extended. Content authors the matching visualState, so the asset now renders.",
+      "matchingVisualState": "syringe-extended"
+    },
+    {
+      "id": "luer-lock-syringe-filled",
+      "file": "public/assets/equipment-realistic/v1/luer-lock-syringe-filled.svg",
+      "disposition": "state-active",
+      "reachabilityTags": [
+        "visual-catalog"
+      ],
+      "rationale": "Selected through stateAssets in src/equipment/visualCatalog.ts for visualState syringe-filled. Content authors the matching visualState, so the asset now renders.",
+      "matchingVisualState": "syringe-filled"
+    },
+    {
+      "id": "luer-lock-syringe-gas-expelled",
+      "file": "public/assets/equipment-realistic/v1/luer-lock-syringe-gas-expelled.svg",
+      "disposition": "state-active",
+      "reachabilityTags": [
+        "visual-catalog"
+      ],
+      "rationale": "Selected through stateAssets in src/equipment/visualCatalog.ts for visualState syringe-gas-expelled. Content authors the matching visualState, so the asset now renders.",
+      "matchingVisualState": "syringe-gas-expelled"
+    },
+    {
+      "id": "luer-lock-syringe-inverted",
+      "file": "public/assets/equipment-realistic/v1/luer-lock-syringe-inverted.svg",
+      "disposition": "state-active",
+      "reachabilityTags": [
+        "visual-catalog"
+      ],
+      "rationale": "Selected through stateAssets in src/equipment/visualCatalog.ts for visualState syringe-inverted. Content authors the matching visualState, so the asset now renders.",
+      "matchingVisualState": "syringe-inverted"
+    },
+    {
+      "id": "luer-lock-syringe-locked",
+      "file": "public/assets/equipment-realistic/v1/luer-lock-syringe-locked.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "luer-lock-syringe-nail-locked",
+      "file": "public/assets/equipment-realistic/v1/luer-lock-syringe-nail-locked.svg",
+      "disposition": "state-active",
+      "reachabilityTags": [
+        "visual-catalog"
+      ],
+      "rationale": "Selected through stateAssets in src/equipment/visualCatalog.ts for visualState syringe-nail-locked. Registered and reachable, but no content authors the matching visualState yet; Cycle 12 owns authoring it.",
+      "matchingVisualState": "syringe-nail-locked"
+    },
+    {
+      "id": "luer-lock-syringe-valve-closed",
+      "file": "public/assets/equipment-realistic/v1/luer-lock-syringe-valve-closed.svg",
+      "disposition": "state-active",
+      "reachabilityTags": [
+        "visual-catalog"
+      ],
+      "rationale": "Selected through stateAssets in src/equipment/visualCatalog.ts for visualState syringe-valve-closed. Content authors the matching visualState, so the asset now renders.",
+      "matchingVisualState": "syringe-valve-closed"
+    },
+    {
+      "id": "magnet",
+      "file": "public/assets/equipment-realistic/v1/magnet.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "magnetic-stir-bar",
+      "file": "public/assets/equipment-realistic/v1/magnetic-stir-bar.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "magnetic-stirrer",
+      "file": "public/assets/equipment-realistic/v1/magnetic-stirrer.svg",
+      "disposition": "gallery-only",
+      "reachabilityTags": [
+        "gallery"
+      ],
+      "rationale": "Referenced only by the equipment art gallery in src/trials/realisticEquipmentAssets.ts. Intentional, not debt."
+    },
+    {
+      "id": "marble-chips",
+      "file": "public/assets/equipment-realistic/v1/marble-chips.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "melting-point-apparatus",
+      "file": "public/assets/equipment-realistic/v1/melting-point-apparatus.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "metric-ruler",
+      "file": "public/assets/equipment-realistic/v1/metric-ruler.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "mixture-purification-ring-stand-clay-triangle-crucible-lid-askew",
+      "file": "public/assets/equipment-realistic/v1/mixture-purification-ring-stand-clay-triangle-crucible-lid-askew.svg",
+      "disposition": "custom-route-active",
+      "reachabilityTags": [
+        "custom-route"
+      ],
+      "rationale": "Selected by a custom investigation player under src/investigations, not by the shared player."
+    },
+    {
+      "id": "mortar-pestle",
+      "file": "public/assets/equipment-realistic/v1/mortar-pestle.svg",
+      "disposition": "gallery-only",
+      "reachabilityTags": [
+        "gallery"
+      ],
+      "rationale": "Referenced only by the equipment art gallery in src/trials/realisticEquipmentAssets.ts. Intentional, not debt."
+    },
+    {
+      "id": "pencil",
+      "file": "public/assets/equipment-realistic/v1/pencil.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "permanent-marker",
+      "file": "public/assets/equipment-realistic/v1/permanent-marker.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "petri-dish",
+      "file": "public/assets/equipment-realistic/v1/petri-dish.svg",
+      "disposition": "gallery-only",
+      "reachabilityTags": [
+        "gallery"
+      ],
+      "rationale": "Referenced only by the equipment art gallery in src/trials/realisticEquipmentAssets.ts. Intentional, not debt."
+    },
+    {
+      "id": "ph-meter",
+      "file": "public/assets/equipment-realistic/v1/ph-meter.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "ph-meter-probe",
+      "file": "public/assets/equipment-realistic/v1/ph-meter-probe.svg",
+      "disposition": "accessory-active",
+      "reachabilityTags": [
+        "accessory-presentation"
+      ],
+      "rationale": "Photorealistic physical probe crop selected by the pH meter probePresentation contract."
+    },
+    {
+      "id": "ph-meter-probe-detached-console",
+      "file": "public/assets/equipment-realistic/v1/ph-meter-probe-detached-console.svg",
+      "disposition": "accessory-active",
+      "reachabilityTags": [
+        "accessory-presentation"
+      ],
+      "rationale": "Retouched parked-probe region selected by the pH meter probePresentation contract."
+    },
+    {
+      "id": "ph-paper",
+      "file": "public/assets/equipment-realistic/v1/ph-paper.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "custom-route"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "pipette-bulb",
+      "file": "public/assets/equipment-realistic/v1/pipette-bulb.svg",
+      "disposition": "gallery-only",
+      "reachabilityTags": [
+        "gallery"
+      ],
+      "rationale": "Referenced only by the equipment art gallery in src/trials/realisticEquipmentAssets.ts. Intentional, not debt."
+    },
+    {
+      "id": "pipette-pump",
+      "file": "public/assets/equipment-realistic/v1/pipette-pump.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "polystyrene-cup-8oz",
+      "file": "public/assets/equipment-realistic/v1/polystyrene-cup-8oz.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "probe-thermometer",
+      "file": "public/assets/equipment-realistic/v1/probe-thermometer.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "propanol-bottle",
+      "file": "public/assets/equipment-realistic/v1/propanol-bottle.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "reagent-bottle",
+      "file": "public/assets/equipment-realistic/v1/reagent-bottle.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "reagent-tray",
+      "file": "public/assets/equipment-realistic/v1/reagent-tray.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "ring-stand",
+      "file": "public/assets/equipment-realistic/v1/ring-stand.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "ring-stand-clamp",
+      "file": "public/assets/equipment-realistic/v1/ring-stand-clamp.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "ring-stand-burette",
+      "file": "public/assets/equipment-realistic/v1/ring-stand-burette.svg",
+      "disposition": "composite-active",
+      "reachabilityTags": [
+        "composite-branch"
+      ],
+      "rationale": "Selected by the ring-stand-burette visual composite when a burette is mounted in the clamp."
+    },
+    {
+      "id": "ring-stand-burette-funnel",
+      "file": "public/assets/equipment-realistic/v1/ring-stand-burette-funnel.svg",
+      "disposition": "composite-active",
+      "reachabilityTags": [
+        "composite-branch"
+      ],
+      "rationale": "Selected by the higher-precedence three-part titration composite while the filling funnel is seated in the mounted burette."
+    },
+    {
+      "id": "ring-stand-clay-triangle",
+      "file": "public/assets/equipment-realistic/v1/ring-stand-clay-triangle.svg",
+      "disposition": "composite-active",
+      "reachabilityTags": [
+        "composite-branch"
+      ],
+      "rationale": "Selected by a composite branch. Cycle 05 moves the branch into src/equipment/compositeRegistry.json."
+    },
+    {
+      "id": "ring-stand-clay-triangle-crucible-lid-ajar",
+      "file": "public/assets/equipment-realistic/v1/ring-stand-clay-triangle-crucible-lid-ajar.svg",
+      "disposition": "composite-active",
+      "reachabilityTags": [
+        "composite-branch"
+      ],
+      "rationale": "Selected by a composite branch. Cycle 05 moves the branch into src/equipment/compositeRegistry.json."
+    },
+    {
+      "id": "round-bottom-flask-250ml",
+      "file": "public/assets/equipment-realistic/v1/round-bottom-flask-250ml.svg",
+      "disposition": "gallery-only",
+      "reachabilityTags": [
+        "gallery"
+      ],
+      "rationale": "Referenced only by the equipment art gallery in src/trials/realisticEquipmentAssets.ts. Intentional, not debt."
+    },
+    {
+      "id": "rubber-stopper-delivery-tube",
+      "file": "public/assets/equipment-realistic/v1/rubber-stopper-delivery-tube.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "rubber-stopper-set",
+      "file": "public/assets/equipment-realistic/v1/rubber-stopper-set.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "rubbing-alcohol-bottle",
+      "file": "public/assets/equipment-realistic/v1/rubbing-alcohol-bottle.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "sample-bottle",
+      "file": "public/assets/equipment-realistic/v1/sample-bottle.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "sample-rack",
+      "file": "public/assets/equipment-realistic/v1/sample-rack.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "scoopula",
+      "file": "public/assets/equipment-realistic/v1/scoopula.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "separatory-funnel",
+      "file": "public/assets/equipment-realistic/v1/separatory-funnel.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "side-arm-filter-flask",
+      "file": "public/assets/equipment-realistic/v1/side-arm-filter-flask.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "small-vial",
+      "file": "public/assets/equipment-realistic/v1/small-vial.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "spatula",
+      "file": "public/assets/equipment-realistic/v1/spatula.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "spectrophotometer",
+      "file": "public/assets/equipment-realistic/v1/spectrophotometer.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "spectrophotometer-cuvette-inserted",
+      "file": "public/assets/equipment-realistic/v1/spectrophotometer-cuvette-inserted.svg",
+      "disposition": "composite-active",
+      "reachabilityTags": [
+        "composite-branch"
+      ],
+      "rationale": "Selected by a composite branch. Cycle 05 moves the branch into src/equipment/compositeRegistry.json."
+    },
+    {
+      "id": "stir-bar",
+      "file": "public/assets/equipment-realistic/v1/stir-bar.svg",
+      "disposition": "gallery-only",
+      "reachabilityTags": [
+        "gallery"
+      ],
+      "rationale": "Referenced only by the equipment art gallery in src/trials/realisticEquipmentAssets.ts. Intentional, not debt."
+    },
+    {
+      "id": "stirring-rod",
+      "file": "public/assets/equipment-realistic/v1/stirring-rod.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "stopwatch",
+      "file": "public/assets/equipment-realistic/v1/stopwatch.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "test-tube",
+      "file": "public/assets/equipment-realistic/v1/test-tube.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "test-tube-holder",
+      "file": "public/assets/equipment-realistic/v1/test-tube-holder.svg",
+      "disposition": "gallery-only",
+      "reachabilityTags": [
+        "gallery"
+      ],
+      "rationale": "Referenced only by the equipment art gallery in src/trials/realisticEquipmentAssets.ts. Intentional, not debt."
+    },
+    {
+      "id": "thermometer",
+      "file": "public/assets/equipment-realistic/v1/thermometer.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "titration-curves-rig",
+      "file": "public/assets/equipment-realistic/v1/titration-curves-rig.svg",
+      "disposition": "custom-route-active",
+      "reachabilityTags": [
+        "custom-route"
+      ],
+      "rationale": "Selected by a custom investigation player under src/investigations, not by the shared player."
+    },
+    {
+      "id": "vacuum-source",
+      "file": "public/assets/equipment-realistic/v1/vacuum-source.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "volumetric-flask",
+      "file": "public/assets/equipment-realistic/v1/volumetric-flask.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "volumetric-flask-stoppered",
+      "file": "public/assets/equipment-realistic/v1/volumetric-flask-stoppered.svg",
+      "disposition": "composite-active",
+      "reachabilityTags": [
+        "composite-branch"
+      ],
+      "rationale": "Selected by a composite branch. Cycle 05 moves the branch into src/equipment/compositeRegistry.json."
+    },
+    {
+      "id": "volumetric-pipette-10ml",
+      "file": "public/assets/equipment-realistic/v1/volumetric-pipette-10ml.svg",
+      "disposition": "gallery-only",
+      "reachabilityTags": [
+        "gallery"
+      ],
+      "rationale": "Referenced only by the equipment art gallery in src/trials/realisticEquipmentAssets.ts. Intentional, not debt."
+    },
+    {
+      "id": "wash-bottle",
+      "file": "public/assets/equipment-realistic/v1/wash-bottle.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "watch-glass",
+      "file": "public/assets/equipment-realistic/v1/watch-glass.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "weigh-boat",
+      "file": "public/assets/equipment-realistic/v1/weigh-boat.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "wire-gauze",
+      "file": "public/assets/equipment-realistic/v1/wire-gauze.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base",
+        "gallery"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "wooden-calorimeter-cover",
+      "file": "public/assets/equipment-realistic/v1/wooden-calorimeter-cover.svg",
+      "disposition": "player-active",
+      "reachabilityTags": [
+        "player-base"
+      ],
+      "rationale": "Selected by realisticAssetById in src/equipment/catalog.ts for at least one equipment definition."
+    },
+    {
+      "id": "wooden-calorimeter-lid",
+      "file": "public/assets/equipment-realistic/v1/wooden-calorimeter-lid.svg",
+      "disposition": "gallery-only",
+      "reachabilityTags": [
+        "gallery"
+      ],
+      "rationale": "Referenced only by the equipment art gallery in src/trials/realisticEquipmentAssets.ts. Intentional, not debt."
+    }
+  ]
+}

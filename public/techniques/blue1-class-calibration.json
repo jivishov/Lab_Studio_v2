@@ -1,0 +1,3372 @@
+{
+  "id": "blue1-class-calibration",
+  "title": "Class-Pooled Blue #1 Calibration",
+  "learningGoal": "Preserve source-labeled class rows, convert %T to decimal T, compare every source-listed transformation, and record only the teacher-confirmed relationship.",
+  "requiredEquipment": [],
+  "initialState": {
+    "equipment": []
+  },
+  "actions": [
+    {
+      "id": "i1-r10-0-record-provenance",
+      "verb": "observe",
+      "label": "Record pooled provenance for 10 mL stock / 0 mL water",
+      "parameters": {
+        "inputMode": "text",
+        "inputLabel": "Contributing group and source notes for 10 mL stock / 0 mL water",
+        "tag": "i1-r10-0-pooled-provenance"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record pooled provenance for 10 mL stock / 0 mL water: The pooled row retains its source group and dilution identity."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "The pooled row retains its source group and dilution identity.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "pool",
+        "provenance",
+        "10 mL stock / 0 mL water"
+      ]
+    },
+    {
+      "id": "i1-r10-0-calculate-decimal-t",
+      "verb": "calculate",
+      "label": "Convert 10 mL stock / 0 mL water %T to decimal T",
+      "parameters": {
+        "calculationId": "i1-r10-0-decimal-t",
+        "template": "decimalTransmittance",
+        "percentTransmittanceMeasurementId": "i1-r10-0-percent-t",
+        "unit": "T",
+        "tolerance": 0,
+        "formula": "T=(%T)/100",
+        "sourceQuantity": "percentTransmittance",
+        "resultQuantity": "decimalTransmittance"
+      },
+      "prerequisites": [
+        {
+          "id": "i1-r10-0-decimal-t-needs-reading",
+          "type": "measurementRecorded",
+          "label": "The 10 mL stock / 0 mL water percent transmittance is on record",
+          "measurementId": "i1-r10-0-percent-t"
+        }
+      ],
+      "stateChanges": [
+        "Convert 10 mL stock / 0 mL water %T to decimal T: Percent transmittance is converted to decimal transmittance."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "Percent transmittance is converted to decimal transmittance.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "calculate",
+        "decimal-transmittance",
+        "10 mL stock / 0 mL water"
+      ]
+    },
+    {
+      "id": "i1-r10-0-calculate-absorbance",
+      "verb": "calculate",
+      "label": "Transform 10 mL stock / 0 mL water to -log T",
+      "parameters": {},
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Submit -log T for 10 mL stock / 0 mL water.",
+        "successCue": "The transformed value is stored alongside its decimal transmittance.",
+        "invalidCue": "Convert the percent transmittance to a decimal first; -log10 takes the decimal."
+      },
+      "prerequisites": [
+        {
+          "id": "i1-r10-0-absorbance-needs-decimal-t",
+          "type": "calculationWithinTolerance",
+          "label": "The 10 mL stock / 0 mL water decimal transmittance has been calculated",
+          "calculationId": "i1-r10-0-decimal-t"
+        }
+      ],
+      "stateChanges": [
+        "Transform 10 mL stock / 0 mL water to -log T: the transformed value is stored."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "Transform 10 mL stock / 0 mL water to -log T: the transformed value is stored.",
+        "invalid": "The action was not accepted. Check that a decimal transmittance exists for this row."
+      },
+      "evidence": [
+        "calculate",
+        "transformation",
+        "-log T",
+        "10 mL stock / 0 mL water"
+      ],
+      "analysis": {
+        "type": "unaryEvidenceTransform",
+        "input": {
+          "source": "calculation",
+          "referenceId": "i1-r10-0-decimal-t"
+        },
+        "operation": "negativeLog10",
+        "outputUnit": "absorbance",
+        "outputCalculationId": "i1-r10-0-absorbance"
+      }
+    },
+    {
+      "id": "i1-r8-2-record-provenance",
+      "verb": "observe",
+      "label": "Record pooled provenance for 8 mL stock / 2 mL water",
+      "parameters": {
+        "inputMode": "text",
+        "inputLabel": "Contributing group and source notes for 8 mL stock / 2 mL water",
+        "tag": "i1-r8-2-pooled-provenance"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record pooled provenance for 8 mL stock / 2 mL water: The pooled row retains its source group and dilution identity."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "The pooled row retains its source group and dilution identity.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "pool",
+        "provenance",
+        "8 mL stock / 2 mL water"
+      ]
+    },
+    {
+      "id": "i1-r8-2-calculate-decimal-t",
+      "verb": "calculate",
+      "label": "Convert 8 mL stock / 2 mL water %T to decimal T",
+      "parameters": {
+        "calculationId": "i1-r8-2-decimal-t",
+        "template": "decimalTransmittance",
+        "percentTransmittanceMeasurementId": "i1-r8-2-percent-t",
+        "unit": "T",
+        "tolerance": 0,
+        "formula": "T=(%T)/100",
+        "sourceQuantity": "percentTransmittance",
+        "resultQuantity": "decimalTransmittance"
+      },
+      "prerequisites": [
+        {
+          "id": "i1-r8-2-decimal-t-needs-reading",
+          "type": "measurementRecorded",
+          "label": "The 8 mL stock / 2 mL water percent transmittance is on record",
+          "measurementId": "i1-r8-2-percent-t"
+        }
+      ],
+      "stateChanges": [
+        "Convert 8 mL stock / 2 mL water %T to decimal T: Percent transmittance is converted to decimal transmittance."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "Percent transmittance is converted to decimal transmittance.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "calculate",
+        "decimal-transmittance",
+        "8 mL stock / 2 mL water"
+      ]
+    },
+    {
+      "id": "i1-r8-2-calculate-absorbance",
+      "verb": "calculate",
+      "label": "Transform 8 mL stock / 2 mL water to -log T",
+      "parameters": {},
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Submit -log T for 8 mL stock / 2 mL water.",
+        "successCue": "The transformed value is stored alongside its decimal transmittance.",
+        "invalidCue": "Convert the percent transmittance to a decimal first; -log10 takes the decimal."
+      },
+      "prerequisites": [
+        {
+          "id": "i1-r8-2-absorbance-needs-decimal-t",
+          "type": "calculationWithinTolerance",
+          "label": "The 8 mL stock / 2 mL water decimal transmittance has been calculated",
+          "calculationId": "i1-r8-2-decimal-t"
+        }
+      ],
+      "stateChanges": [
+        "Transform 8 mL stock / 2 mL water to -log T: the transformed value is stored."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "Transform 8 mL stock / 2 mL water to -log T: the transformed value is stored.",
+        "invalid": "The action was not accepted. Check that a decimal transmittance exists for this row."
+      },
+      "evidence": [
+        "calculate",
+        "transformation",
+        "-log T",
+        "8 mL stock / 2 mL water"
+      ],
+      "analysis": {
+        "type": "unaryEvidenceTransform",
+        "input": {
+          "source": "calculation",
+          "referenceId": "i1-r8-2-decimal-t"
+        },
+        "operation": "negativeLog10",
+        "outputUnit": "absorbance",
+        "outputCalculationId": "i1-r8-2-absorbance"
+      }
+    },
+    {
+      "id": "i1-r6-4-record-provenance",
+      "verb": "observe",
+      "label": "Record pooled provenance for 6 mL stock / 4 mL water",
+      "parameters": {
+        "inputMode": "text",
+        "inputLabel": "Contributing group and source notes for 6 mL stock / 4 mL water",
+        "tag": "i1-r6-4-pooled-provenance"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record pooled provenance for 6 mL stock / 4 mL water: The pooled row retains its source group and dilution identity."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "The pooled row retains its source group and dilution identity.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "pool",
+        "provenance",
+        "6 mL stock / 4 mL water"
+      ]
+    },
+    {
+      "id": "i1-r6-4-calculate-decimal-t",
+      "verb": "calculate",
+      "label": "Convert 6 mL stock / 4 mL water %T to decimal T",
+      "parameters": {
+        "calculationId": "i1-r6-4-decimal-t",
+        "template": "decimalTransmittance",
+        "percentTransmittanceMeasurementId": "i1-r6-4-percent-t",
+        "unit": "T",
+        "tolerance": 0,
+        "formula": "T=(%T)/100",
+        "sourceQuantity": "percentTransmittance",
+        "resultQuantity": "decimalTransmittance"
+      },
+      "prerequisites": [
+        {
+          "id": "i1-r6-4-decimal-t-needs-reading",
+          "type": "measurementRecorded",
+          "label": "The 6 mL stock / 4 mL water percent transmittance is on record",
+          "measurementId": "i1-r6-4-percent-t"
+        }
+      ],
+      "stateChanges": [
+        "Convert 6 mL stock / 4 mL water %T to decimal T: Percent transmittance is converted to decimal transmittance."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "Percent transmittance is converted to decimal transmittance.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "calculate",
+        "decimal-transmittance",
+        "6 mL stock / 4 mL water"
+      ]
+    },
+    {
+      "id": "i1-r6-4-calculate-absorbance",
+      "verb": "calculate",
+      "label": "Transform 6 mL stock / 4 mL water to -log T",
+      "parameters": {},
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Submit -log T for 6 mL stock / 4 mL water.",
+        "successCue": "The transformed value is stored alongside its decimal transmittance.",
+        "invalidCue": "Convert the percent transmittance to a decimal first; -log10 takes the decimal."
+      },
+      "prerequisites": [
+        {
+          "id": "i1-r6-4-absorbance-needs-decimal-t",
+          "type": "calculationWithinTolerance",
+          "label": "The 6 mL stock / 4 mL water decimal transmittance has been calculated",
+          "calculationId": "i1-r6-4-decimal-t"
+        }
+      ],
+      "stateChanges": [
+        "Transform 6 mL stock / 4 mL water to -log T: the transformed value is stored."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "Transform 6 mL stock / 4 mL water to -log T: the transformed value is stored.",
+        "invalid": "The action was not accepted. Check that a decimal transmittance exists for this row."
+      },
+      "evidence": [
+        "calculate",
+        "transformation",
+        "-log T",
+        "6 mL stock / 4 mL water"
+      ],
+      "analysis": {
+        "type": "unaryEvidenceTransform",
+        "input": {
+          "source": "calculation",
+          "referenceId": "i1-r6-4-decimal-t"
+        },
+        "operation": "negativeLog10",
+        "outputUnit": "absorbance",
+        "outputCalculationId": "i1-r6-4-absorbance"
+      }
+    },
+    {
+      "id": "i1-r4-6-record-provenance",
+      "verb": "observe",
+      "label": "Record pooled provenance for 4 mL stock / 6 mL water",
+      "parameters": {
+        "inputMode": "text",
+        "inputLabel": "Contributing group and source notes for 4 mL stock / 6 mL water",
+        "tag": "i1-r4-6-pooled-provenance"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record pooled provenance for 4 mL stock / 6 mL water: The pooled row retains its source group and dilution identity."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "The pooled row retains its source group and dilution identity.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "pool",
+        "provenance",
+        "4 mL stock / 6 mL water"
+      ]
+    },
+    {
+      "id": "i1-r4-6-calculate-decimal-t",
+      "verb": "calculate",
+      "label": "Convert 4 mL stock / 6 mL water %T to decimal T",
+      "parameters": {
+        "calculationId": "i1-r4-6-decimal-t",
+        "template": "decimalTransmittance",
+        "percentTransmittanceMeasurementId": "i1-r4-6-percent-t",
+        "unit": "T",
+        "tolerance": 0,
+        "formula": "T=(%T)/100",
+        "sourceQuantity": "percentTransmittance",
+        "resultQuantity": "decimalTransmittance"
+      },
+      "prerequisites": [
+        {
+          "id": "i1-r4-6-decimal-t-needs-reading",
+          "type": "measurementRecorded",
+          "label": "The 4 mL stock / 6 mL water percent transmittance is on record",
+          "measurementId": "i1-r4-6-percent-t"
+        }
+      ],
+      "stateChanges": [
+        "Convert 4 mL stock / 6 mL water %T to decimal T: Percent transmittance is converted to decimal transmittance."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "Percent transmittance is converted to decimal transmittance.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "calculate",
+        "decimal-transmittance",
+        "4 mL stock / 6 mL water"
+      ]
+    },
+    {
+      "id": "i1-r4-6-calculate-absorbance",
+      "verb": "calculate",
+      "label": "Transform 4 mL stock / 6 mL water to -log T",
+      "parameters": {},
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Submit -log T for 4 mL stock / 6 mL water.",
+        "successCue": "The transformed value is stored alongside its decimal transmittance.",
+        "invalidCue": "Convert the percent transmittance to a decimal first; -log10 takes the decimal."
+      },
+      "prerequisites": [
+        {
+          "id": "i1-r4-6-absorbance-needs-decimal-t",
+          "type": "calculationWithinTolerance",
+          "label": "The 4 mL stock / 6 mL water decimal transmittance has been calculated",
+          "calculationId": "i1-r4-6-decimal-t"
+        }
+      ],
+      "stateChanges": [
+        "Transform 4 mL stock / 6 mL water to -log T: the transformed value is stored."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "Transform 4 mL stock / 6 mL water to -log T: the transformed value is stored.",
+        "invalid": "The action was not accepted. Check that a decimal transmittance exists for this row."
+      },
+      "evidence": [
+        "calculate",
+        "transformation",
+        "-log T",
+        "4 mL stock / 6 mL water"
+      ],
+      "analysis": {
+        "type": "unaryEvidenceTransform",
+        "input": {
+          "source": "calculation",
+          "referenceId": "i1-r4-6-decimal-t"
+        },
+        "operation": "negativeLog10",
+        "outputUnit": "absorbance",
+        "outputCalculationId": "i1-r4-6-absorbance"
+      }
+    },
+    {
+      "id": "i1-r3-7-record-provenance",
+      "verb": "observe",
+      "label": "Record pooled provenance for 3 mL stock / 7 mL water",
+      "parameters": {
+        "inputMode": "text",
+        "inputLabel": "Contributing group and source notes for 3 mL stock / 7 mL water",
+        "tag": "i1-r3-7-pooled-provenance"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record pooled provenance for 3 mL stock / 7 mL water: The pooled row retains its source group and dilution identity."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "The pooled row retains its source group and dilution identity.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "pool",
+        "provenance",
+        "3 mL stock / 7 mL water"
+      ]
+    },
+    {
+      "id": "i1-r3-7-calculate-decimal-t",
+      "verb": "calculate",
+      "label": "Convert 3 mL stock / 7 mL water %T to decimal T",
+      "parameters": {
+        "calculationId": "i1-r3-7-decimal-t",
+        "template": "decimalTransmittance",
+        "percentTransmittanceMeasurementId": "i1-r3-7-percent-t",
+        "unit": "T",
+        "tolerance": 0,
+        "formula": "T=(%T)/100",
+        "sourceQuantity": "percentTransmittance",
+        "resultQuantity": "decimalTransmittance"
+      },
+      "prerequisites": [
+        {
+          "id": "i1-r3-7-decimal-t-needs-reading",
+          "type": "measurementRecorded",
+          "label": "The 3 mL stock / 7 mL water percent transmittance is on record",
+          "measurementId": "i1-r3-7-percent-t"
+        }
+      ],
+      "stateChanges": [
+        "Convert 3 mL stock / 7 mL water %T to decimal T: Percent transmittance is converted to decimal transmittance."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "Percent transmittance is converted to decimal transmittance.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "calculate",
+        "decimal-transmittance",
+        "3 mL stock / 7 mL water"
+      ]
+    },
+    {
+      "id": "i1-r3-7-calculate-absorbance",
+      "verb": "calculate",
+      "label": "Transform 3 mL stock / 7 mL water to -log T",
+      "parameters": {},
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Submit -log T for 3 mL stock / 7 mL water.",
+        "successCue": "The transformed value is stored alongside its decimal transmittance.",
+        "invalidCue": "Convert the percent transmittance to a decimal first; -log10 takes the decimal."
+      },
+      "prerequisites": [
+        {
+          "id": "i1-r3-7-absorbance-needs-decimal-t",
+          "type": "calculationWithinTolerance",
+          "label": "The 3 mL stock / 7 mL water decimal transmittance has been calculated",
+          "calculationId": "i1-r3-7-decimal-t"
+        }
+      ],
+      "stateChanges": [
+        "Transform 3 mL stock / 7 mL water to -log T: the transformed value is stored."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "Transform 3 mL stock / 7 mL water to -log T: the transformed value is stored.",
+        "invalid": "The action was not accepted. Check that a decimal transmittance exists for this row."
+      },
+      "evidence": [
+        "calculate",
+        "transformation",
+        "-log T",
+        "3 mL stock / 7 mL water"
+      ],
+      "analysis": {
+        "type": "unaryEvidenceTransform",
+        "input": {
+          "source": "calculation",
+          "referenceId": "i1-r3-7-decimal-t"
+        },
+        "operation": "negativeLog10",
+        "outputUnit": "absorbance",
+        "outputCalculationId": "i1-r3-7-absorbance"
+      }
+    },
+    {
+      "id": "i1-r2-8-record-provenance",
+      "verb": "observe",
+      "label": "Record pooled provenance for 2 mL stock / 8 mL water",
+      "parameters": {
+        "inputMode": "text",
+        "inputLabel": "Contributing group and source notes for 2 mL stock / 8 mL water",
+        "tag": "i1-r2-8-pooled-provenance"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record pooled provenance for 2 mL stock / 8 mL water: The pooled row retains its source group and dilution identity."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "The pooled row retains its source group and dilution identity.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "pool",
+        "provenance",
+        "2 mL stock / 8 mL water"
+      ]
+    },
+    {
+      "id": "i1-r2-8-calculate-decimal-t",
+      "verb": "calculate",
+      "label": "Convert 2 mL stock / 8 mL water %T to decimal T",
+      "parameters": {
+        "calculationId": "i1-r2-8-decimal-t",
+        "template": "decimalTransmittance",
+        "percentTransmittanceMeasurementId": "i1-r2-8-percent-t",
+        "unit": "T",
+        "tolerance": 0,
+        "formula": "T=(%T)/100",
+        "sourceQuantity": "percentTransmittance",
+        "resultQuantity": "decimalTransmittance"
+      },
+      "prerequisites": [
+        {
+          "id": "i1-r2-8-decimal-t-needs-reading",
+          "type": "measurementRecorded",
+          "label": "The 2 mL stock / 8 mL water percent transmittance is on record",
+          "measurementId": "i1-r2-8-percent-t"
+        }
+      ],
+      "stateChanges": [
+        "Convert 2 mL stock / 8 mL water %T to decimal T: Percent transmittance is converted to decimal transmittance."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "Percent transmittance is converted to decimal transmittance.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "calculate",
+        "decimal-transmittance",
+        "2 mL stock / 8 mL water"
+      ]
+    },
+    {
+      "id": "i1-r2-8-calculate-absorbance",
+      "verb": "calculate",
+      "label": "Transform 2 mL stock / 8 mL water to -log T",
+      "parameters": {},
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Submit -log T for 2 mL stock / 8 mL water.",
+        "successCue": "The transformed value is stored alongside its decimal transmittance.",
+        "invalidCue": "Convert the percent transmittance to a decimal first; -log10 takes the decimal."
+      },
+      "prerequisites": [
+        {
+          "id": "i1-r2-8-absorbance-needs-decimal-t",
+          "type": "calculationWithinTolerance",
+          "label": "The 2 mL stock / 8 mL water decimal transmittance has been calculated",
+          "calculationId": "i1-r2-8-decimal-t"
+        }
+      ],
+      "stateChanges": [
+        "Transform 2 mL stock / 8 mL water to -log T: the transformed value is stored."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "Transform 2 mL stock / 8 mL water to -log T: the transformed value is stored.",
+        "invalid": "The action was not accepted. Check that a decimal transmittance exists for this row."
+      },
+      "evidence": [
+        "calculate",
+        "transformation",
+        "-log T",
+        "2 mL stock / 8 mL water"
+      ],
+      "analysis": {
+        "type": "unaryEvidenceTransform",
+        "input": {
+          "source": "calculation",
+          "referenceId": "i1-r2-8-decimal-t"
+        },
+        "operation": "negativeLog10",
+        "outputUnit": "absorbance",
+        "outputCalculationId": "i1-r2-8-absorbance"
+      }
+    },
+    {
+      "id": "i1-r1-9-record-provenance",
+      "verb": "observe",
+      "label": "Record pooled provenance for 1 mL stock / 9 mL water",
+      "parameters": {
+        "inputMode": "text",
+        "inputLabel": "Contributing group and source notes for 1 mL stock / 9 mL water",
+        "tag": "i1-r1-9-pooled-provenance"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record pooled provenance for 1 mL stock / 9 mL water: The pooled row retains its source group and dilution identity."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "The pooled row retains its source group and dilution identity.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "pool",
+        "provenance",
+        "1 mL stock / 9 mL water"
+      ]
+    },
+    {
+      "id": "i1-r1-9-calculate-decimal-t",
+      "verb": "calculate",
+      "label": "Convert 1 mL stock / 9 mL water %T to decimal T",
+      "parameters": {
+        "calculationId": "i1-r1-9-decimal-t",
+        "template": "decimalTransmittance",
+        "percentTransmittanceMeasurementId": "i1-r1-9-percent-t",
+        "unit": "T",
+        "tolerance": 0,
+        "formula": "T=(%T)/100",
+        "sourceQuantity": "percentTransmittance",
+        "resultQuantity": "decimalTransmittance"
+      },
+      "prerequisites": [
+        {
+          "id": "i1-r1-9-decimal-t-needs-reading",
+          "type": "measurementRecorded",
+          "label": "The 1 mL stock / 9 mL water percent transmittance is on record",
+          "measurementId": "i1-r1-9-percent-t"
+        }
+      ],
+      "stateChanges": [
+        "Convert 1 mL stock / 9 mL water %T to decimal T: Percent transmittance is converted to decimal transmittance."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "Percent transmittance is converted to decimal transmittance.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "calculate",
+        "decimal-transmittance",
+        "1 mL stock / 9 mL water"
+      ]
+    },
+    {
+      "id": "i1-r1-9-calculate-absorbance",
+      "verb": "calculate",
+      "label": "Transform 1 mL stock / 9 mL water to -log T",
+      "parameters": {},
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Submit -log T for 1 mL stock / 9 mL water.",
+        "successCue": "The transformed value is stored alongside its decimal transmittance.",
+        "invalidCue": "Convert the percent transmittance to a decimal first; -log10 takes the decimal."
+      },
+      "prerequisites": [
+        {
+          "id": "i1-r1-9-absorbance-needs-decimal-t",
+          "type": "calculationWithinTolerance",
+          "label": "The 1 mL stock / 9 mL water decimal transmittance has been calculated",
+          "calculationId": "i1-r1-9-decimal-t"
+        }
+      ],
+      "stateChanges": [
+        "Transform 1 mL stock / 9 mL water to -log T: the transformed value is stored."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "Transform 1 mL stock / 9 mL water to -log T: the transformed value is stored.",
+        "invalid": "The action was not accepted. Check that a decimal transmittance exists for this row."
+      },
+      "evidence": [
+        "calculate",
+        "transformation",
+        "-log T",
+        "1 mL stock / 9 mL water"
+      ],
+      "analysis": {
+        "type": "unaryEvidenceTransform",
+        "input": {
+          "source": "calculation",
+          "referenceId": "i1-r1-9-decimal-t"
+        },
+        "operation": "negativeLog10",
+        "outputUnit": "absorbance",
+        "outputCalculationId": "i1-r1-9-absorbance"
+      }
+    },
+    {
+      "id": "i1-r0-10-record-provenance",
+      "verb": "observe",
+      "label": "Record pooled provenance for 0 mL stock / 10 mL water",
+      "parameters": {
+        "inputMode": "text",
+        "inputLabel": "Contributing group and source notes for 0 mL stock / 10 mL water",
+        "tag": "i1-r0-10-pooled-provenance"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record pooled provenance for 0 mL stock / 10 mL water: The pooled row retains its source group and dilution identity."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "The pooled row retains its source group and dilution identity.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "pool",
+        "provenance",
+        "0 mL stock / 10 mL water"
+      ]
+    },
+    {
+      "id": "i1-r0-10-calculate-decimal-t",
+      "verb": "calculate",
+      "label": "Convert 0 mL stock / 10 mL water %T to decimal T",
+      "parameters": {
+        "calculationId": "i1-r0-10-decimal-t",
+        "template": "decimalTransmittance",
+        "percentTransmittanceMeasurementId": "i1-r0-10-percent-t",
+        "unit": "T",
+        "tolerance": 0,
+        "formula": "T=(%T)/100",
+        "sourceQuantity": "percentTransmittance",
+        "resultQuantity": "decimalTransmittance"
+      },
+      "prerequisites": [
+        {
+          "id": "i1-r0-10-decimal-t-needs-reading",
+          "type": "measurementRecorded",
+          "label": "The 0 mL stock / 10 mL water percent transmittance is on record",
+          "measurementId": "i1-r0-10-percent-t"
+        }
+      ],
+      "stateChanges": [
+        "Convert 0 mL stock / 10 mL water %T to decimal T: Percent transmittance is converted to decimal transmittance."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "Percent transmittance is converted to decimal transmittance.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "calculate",
+        "decimal-transmittance",
+        "0 mL stock / 10 mL water"
+      ]
+    },
+    {
+      "id": "i1-r0-10-calculate-absorbance",
+      "verb": "calculate",
+      "label": "Transform 0 mL stock / 10 mL water to -log T",
+      "parameters": {},
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Submit -log T for 0 mL stock / 10 mL water.",
+        "successCue": "The transformed value is stored alongside its decimal transmittance.",
+        "invalidCue": "Convert the percent transmittance to a decimal first; -log10 takes the decimal."
+      },
+      "prerequisites": [
+        {
+          "id": "i1-r0-10-absorbance-needs-decimal-t",
+          "type": "calculationWithinTolerance",
+          "label": "The 0 mL stock / 10 mL water decimal transmittance has been calculated",
+          "calculationId": "i1-r0-10-decimal-t"
+        }
+      ],
+      "stateChanges": [
+        "Transform 0 mL stock / 10 mL water to -log T: the transformed value is stored."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "Transform 0 mL stock / 10 mL water to -log T: the transformed value is stored.",
+        "invalid": "The action was not accepted. Check that a decimal transmittance exists for this row."
+      },
+      "evidence": [
+        "calculate",
+        "transformation",
+        "-log T",
+        "0 mL stock / 10 mL water"
+      ],
+      "analysis": {
+        "type": "unaryEvidenceTransform",
+        "input": {
+          "source": "calculation",
+          "referenceId": "i1-r0-10-decimal-t"
+        },
+        "operation": "negativeLog10",
+        "outputUnit": "absorbance",
+        "outputCalculationId": "i1-r0-10-absorbance"
+      }
+    },
+    {
+      "id": "i1-plot-decimal-t",
+      "verb": "observe",
+      "label": "Plot decimal T versus micromolar concentration",
+      "parameters": {
+        "inputMode": "text",
+        "inputLabel": "Base-plot observations, axes, and fit evidence",
+        "tag": "decimal-t-base-plot"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Plot decimal T versus micromolar concentration: The untransformed class-pooled plot is documented."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "The untransformed class-pooled plot is documented.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "plot",
+        "decimal-T",
+        "micromolar-concentration"
+      ]
+    },
+    {
+      "id": "i1-plot-reciprocal-t",
+      "verb": "observe",
+      "label": "Evaluate 1/T transformation",
+      "parameters": {
+        "inputMode": "text",
+        "inputLabel": "1/T plot observations and fit evidence",
+        "tag": "transformation-reciprocal-t"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Evaluate 1/T transformation: Evidence for the 1/T candidate is recorded without declaring it accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "Evidence for the 1/T candidate is recorded without declaring it accepted.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "transform",
+        "plot",
+        "1/T"
+      ]
+    },
+    {
+      "id": "i1-plot-one-times-ten-power-t",
+      "verb": "observe",
+      "label": "Evaluate 1 x 10^T transformation",
+      "parameters": {
+        "inputMode": "text",
+        "inputLabel": "1 x 10^T plot observations and fit evidence",
+        "tag": "transformation-one-times-ten-power-t"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Evaluate 1 x 10^T transformation: Evidence for the 1 x 10^T candidate is recorded without declaring it accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "Evidence for the 1 x 10^T candidate is recorded without declaring it accepted.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "transform",
+        "plot",
+        "1 x 10^T"
+      ]
+    },
+    {
+      "id": "i1-plot-log-t",
+      "verb": "observe",
+      "label": "Evaluate log T transformation",
+      "parameters": {
+        "inputMode": "text",
+        "inputLabel": "log T plot observations and fit evidence",
+        "tag": "transformation-log-t"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Evaluate log T transformation: Evidence for the log T candidate is recorded without declaring it accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "Evidence for the log T candidate is recorded without declaring it accepted.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "transform",
+        "plot",
+        "log T"
+      ]
+    },
+    {
+      "id": "i1-plot-negative-log-t",
+      "verb": "observe",
+      "label": "Evaluate -log T transformation",
+      "parameters": {
+        "inputMode": "text",
+        "inputLabel": "-log T plot observations and fit evidence",
+        "tag": "transformation-negative-log-t"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Evaluate -log T transformation: Evidence for the -log T candidate is recorded without declaring it accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "Evidence for the -log T candidate is recorded without declaring it accepted.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "transform",
+        "plot",
+        "-log T"
+      ]
+    },
+    {
+      "id": "i1-record-source-ambiguity",
+      "verb": "observe",
+      "label": "Address source transformation ambiguity",
+      "parameters": {
+        "inputMode": "choice",
+        "inputLabel": "Teacher clarification of 1 x 10^T and the linearity criterion",
+        "tag": "transformation-ambiguity-confirmation",
+        "unresolvedConfirmationPoint": "Investigation 1 confirmation point 2: the printed transformation `1 x 10^T` is typographically ambiguous (finding 3.4) and the linearity criterion is stated as a positive slope through zero while the standard absorbance relation is A = -log T (finding 3.5). Neither is resolved here.",
+        "candidateTransformations": [
+          "1/T",
+          "1 x 10^T",
+          "log T",
+          "-log T"
+        ],
+        "inputRole": "teacherConfiguration"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Address source transformation ambiguity: The ambiguous source expression and positive-slope-through-zero discussion are explicitly resolved by the teacher."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "The ambiguous source expression and positive-slope-through-zero discussion are explicitly resolved by the teacher.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "source-ambiguity",
+        "teacher-confirmation",
+        "linearity"
+      ],
+      "choiceObservation": {
+        "outputCalculationId": "i1-calibration-transformation-choice",
+        "options": [
+          {
+            "label": "Teacher confirms -log10(decimal T) for this calibration",
+            "tag": "negative-log10-confirmed",
+            "value": 1
+          },
+          {
+            "label": "Teacher requires revision before calibration",
+            "tag": "revision-required",
+            "value": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "i1-record-confirmed-calibration",
+      "verb": "calculate",
+      "label": "Record teacher-confirmed calibration relationship",
+      "parameters": {},
+      "prerequisites": [
+        {
+          "id": "teacher-transform-confirmed",
+          "type": "actionEvidence",
+          "label": "Teacher reviewed the calibration transformation",
+          "actionId": "i1-record-source-ambiguity"
+        }
+      ],
+      "stateChanges": [
+        "Record teacher-confirmed calibration relationship: The class calibration is recorded without a preselected transformation, threshold, or fit."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "The class calibration is recorded without a preselected transformation, threshold, or fit.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "calibration",
+        "teacher-confirmation",
+        "class-pooled"
+      ],
+      "analysis": {
+        "type": "mixedEvidenceRegression",
+        "pairs": [
+          {
+            "x": {
+              "source": "calculation",
+              "referenceId": "{{config.i1-r10-0-concentrationCalculationId}}"
+            },
+            "y": {
+              "source": "calculation",
+              "referenceId": "i1-r10-0-absorbance"
+            }
+          },
+          {
+            "x": {
+              "source": "calculation",
+              "referenceId": "{{config.i1-r8-2-concentrationCalculationId}}"
+            },
+            "y": {
+              "source": "calculation",
+              "referenceId": "i1-r8-2-absorbance"
+            }
+          },
+          {
+            "x": {
+              "source": "calculation",
+              "referenceId": "{{config.i1-r6-4-concentrationCalculationId}}"
+            },
+            "y": {
+              "source": "calculation",
+              "referenceId": "i1-r6-4-absorbance"
+            }
+          },
+          {
+            "x": {
+              "source": "calculation",
+              "referenceId": "{{config.i1-r4-6-concentrationCalculationId}}"
+            },
+            "y": {
+              "source": "calculation",
+              "referenceId": "i1-r4-6-absorbance"
+            }
+          },
+          {
+            "x": {
+              "source": "calculation",
+              "referenceId": "{{config.i1-r3-7-concentrationCalculationId}}"
+            },
+            "y": {
+              "source": "calculation",
+              "referenceId": "i1-r3-7-absorbance"
+            }
+          },
+          {
+            "x": {
+              "source": "calculation",
+              "referenceId": "{{config.i1-r2-8-concentrationCalculationId}}"
+            },
+            "y": {
+              "source": "calculation",
+              "referenceId": "i1-r2-8-absorbance"
+            }
+          },
+          {
+            "x": {
+              "source": "calculation",
+              "referenceId": "{{config.i1-r1-9-concentrationCalculationId}}"
+            },
+            "y": {
+              "source": "calculation",
+              "referenceId": "i1-r1-9-absorbance"
+            }
+          }
+        ],
+        "xUnit": "M",
+        "yUnit": "absorbance",
+        "outputCalculationId": "blue1-percent-transmittance--i1-confirmed-calibration-regression"
+      },
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Record teacher-confirmed calibration relationship"
+      }
+    }
+  ],
+  "process": {
+    "startNodeId": "i1-r10-0-record-provenance-node",
+    "nodes": [
+      {
+        "id": "i1-r10-0-record-provenance-node",
+        "type": "observation",
+        "title": "Pool 10 mL stock / 0 mL water row",
+        "description": "Record the contributing group and source details before using the row in class analysis.",
+        "actionId": "i1-r10-0-record-provenance",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-r10-0-record-provenance-node-done",
+            "type": "actionEvidence",
+            "label": "i1-r10-0-record-provenance was completed.",
+            "actionId": "i1-r10-0-record-provenance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Pool 10 mL stock / 0 mL water row complete.",
+          "retry": "Review pool 10 ml stock / 0 ml water row and try again."
+        }
+      },
+      {
+        "id": "i1-r10-0-calculate-decimal-t-node",
+        "type": "calculation",
+        "title": "Convert 10 mL stock / 0 mL water %T",
+        "description": "Divide the recorded percent transmittance by 100 to obtain decimal T.",
+        "actionId": "i1-r10-0-calculate-decimal-t",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-r10-0-calculate-decimal-t-node-done",
+            "type": "actionEvidence",
+            "label": "i1-r10-0-calculate-decimal-t was completed.",
+            "actionId": "i1-r10-0-calculate-decimal-t"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Convert 10 mL stock / 0 mL water %T complete.",
+          "retry": "Review convert 10 ml stock / 0 ml water %t and try again."
+        }
+      },
+      {
+        "id": "i1-r10-0-calculate-absorbance-node",
+        "type": "calculation",
+        "title": "Transform 10 mL stock / 0 mL water",
+        "description": "Apply -log10 to the decimal transmittance. The percent transmittance is not a decimal transmittance and must be converted first.",
+        "actionId": "i1-r10-0-calculate-absorbance",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-r10-0-calculate-absorbance-node-done",
+            "type": "actionEvidence",
+            "label": "i1-r10-0-calculate-absorbance was completed.",
+            "actionId": "i1-r10-0-calculate-absorbance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "10 mL stock / 0 mL water transform stored.",
+          "retry": "Calculate the decimal transmittance for 10 mL stock / 0 mL water first."
+        }
+      },
+      {
+        "id": "i1-r8-2-record-provenance-node",
+        "type": "observation",
+        "title": "Pool 8 mL stock / 2 mL water row",
+        "description": "Record the contributing group and source details before using the row in class analysis.",
+        "actionId": "i1-r8-2-record-provenance",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-r8-2-record-provenance-node-done",
+            "type": "actionEvidence",
+            "label": "i1-r8-2-record-provenance was completed.",
+            "actionId": "i1-r8-2-record-provenance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Pool 8 mL stock / 2 mL water row complete.",
+          "retry": "Review pool 8 ml stock / 2 ml water row and try again."
+        }
+      },
+      {
+        "id": "i1-r8-2-calculate-decimal-t-node",
+        "type": "calculation",
+        "title": "Convert 8 mL stock / 2 mL water %T",
+        "description": "Divide the recorded percent transmittance by 100 to obtain decimal T.",
+        "actionId": "i1-r8-2-calculate-decimal-t",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-r8-2-calculate-decimal-t-node-done",
+            "type": "actionEvidence",
+            "label": "i1-r8-2-calculate-decimal-t was completed.",
+            "actionId": "i1-r8-2-calculate-decimal-t"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Convert 8 mL stock / 2 mL water %T complete.",
+          "retry": "Review convert 8 ml stock / 2 ml water %t and try again."
+        }
+      },
+      {
+        "id": "i1-r8-2-calculate-absorbance-node",
+        "type": "calculation",
+        "title": "Transform 8 mL stock / 2 mL water",
+        "description": "Apply -log10 to the decimal transmittance. The percent transmittance is not a decimal transmittance and must be converted first.",
+        "actionId": "i1-r8-2-calculate-absorbance",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-r8-2-calculate-absorbance-node-done",
+            "type": "actionEvidence",
+            "label": "i1-r8-2-calculate-absorbance was completed.",
+            "actionId": "i1-r8-2-calculate-absorbance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "8 mL stock / 2 mL water transform stored.",
+          "retry": "Calculate the decimal transmittance for 8 mL stock / 2 mL water first."
+        }
+      },
+      {
+        "id": "i1-r6-4-record-provenance-node",
+        "type": "observation",
+        "title": "Pool 6 mL stock / 4 mL water row",
+        "description": "Record the contributing group and source details before using the row in class analysis.",
+        "actionId": "i1-r6-4-record-provenance",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-r6-4-record-provenance-node-done",
+            "type": "actionEvidence",
+            "label": "i1-r6-4-record-provenance was completed.",
+            "actionId": "i1-r6-4-record-provenance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Pool 6 mL stock / 4 mL water row complete.",
+          "retry": "Review pool 6 ml stock / 4 ml water row and try again."
+        }
+      },
+      {
+        "id": "i1-r6-4-calculate-decimal-t-node",
+        "type": "calculation",
+        "title": "Convert 6 mL stock / 4 mL water %T",
+        "description": "Divide the recorded percent transmittance by 100 to obtain decimal T.",
+        "actionId": "i1-r6-4-calculate-decimal-t",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-r6-4-calculate-decimal-t-node-done",
+            "type": "actionEvidence",
+            "label": "i1-r6-4-calculate-decimal-t was completed.",
+            "actionId": "i1-r6-4-calculate-decimal-t"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Convert 6 mL stock / 4 mL water %T complete.",
+          "retry": "Review convert 6 ml stock / 4 ml water %t and try again."
+        }
+      },
+      {
+        "id": "i1-r6-4-calculate-absorbance-node",
+        "type": "calculation",
+        "title": "Transform 6 mL stock / 4 mL water",
+        "description": "Apply -log10 to the decimal transmittance. The percent transmittance is not a decimal transmittance and must be converted first.",
+        "actionId": "i1-r6-4-calculate-absorbance",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-r6-4-calculate-absorbance-node-done",
+            "type": "actionEvidence",
+            "label": "i1-r6-4-calculate-absorbance was completed.",
+            "actionId": "i1-r6-4-calculate-absorbance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "6 mL stock / 4 mL water transform stored.",
+          "retry": "Calculate the decimal transmittance for 6 mL stock / 4 mL water first."
+        }
+      },
+      {
+        "id": "i1-r4-6-record-provenance-node",
+        "type": "observation",
+        "title": "Pool 4 mL stock / 6 mL water row",
+        "description": "Record the contributing group and source details before using the row in class analysis.",
+        "actionId": "i1-r4-6-record-provenance",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-r4-6-record-provenance-node-done",
+            "type": "actionEvidence",
+            "label": "i1-r4-6-record-provenance was completed.",
+            "actionId": "i1-r4-6-record-provenance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Pool 4 mL stock / 6 mL water row complete.",
+          "retry": "Review pool 4 ml stock / 6 ml water row and try again."
+        }
+      },
+      {
+        "id": "i1-r4-6-calculate-decimal-t-node",
+        "type": "calculation",
+        "title": "Convert 4 mL stock / 6 mL water %T",
+        "description": "Divide the recorded percent transmittance by 100 to obtain decimal T.",
+        "actionId": "i1-r4-6-calculate-decimal-t",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-r4-6-calculate-decimal-t-node-done",
+            "type": "actionEvidence",
+            "label": "i1-r4-6-calculate-decimal-t was completed.",
+            "actionId": "i1-r4-6-calculate-decimal-t"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Convert 4 mL stock / 6 mL water %T complete.",
+          "retry": "Review convert 4 ml stock / 6 ml water %t and try again."
+        }
+      },
+      {
+        "id": "i1-r4-6-calculate-absorbance-node",
+        "type": "calculation",
+        "title": "Transform 4 mL stock / 6 mL water",
+        "description": "Apply -log10 to the decimal transmittance. The percent transmittance is not a decimal transmittance and must be converted first.",
+        "actionId": "i1-r4-6-calculate-absorbance",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-r4-6-calculate-absorbance-node-done",
+            "type": "actionEvidence",
+            "label": "i1-r4-6-calculate-absorbance was completed.",
+            "actionId": "i1-r4-6-calculate-absorbance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "4 mL stock / 6 mL water transform stored.",
+          "retry": "Calculate the decimal transmittance for 4 mL stock / 6 mL water first."
+        }
+      },
+      {
+        "id": "i1-r3-7-record-provenance-node",
+        "type": "observation",
+        "title": "Pool 3 mL stock / 7 mL water row",
+        "description": "Record the contributing group and source details before using the row in class analysis.",
+        "actionId": "i1-r3-7-record-provenance",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-r3-7-record-provenance-node-done",
+            "type": "actionEvidence",
+            "label": "i1-r3-7-record-provenance was completed.",
+            "actionId": "i1-r3-7-record-provenance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Pool 3 mL stock / 7 mL water row complete.",
+          "retry": "Review pool 3 ml stock / 7 ml water row and try again."
+        }
+      },
+      {
+        "id": "i1-r3-7-calculate-decimal-t-node",
+        "type": "calculation",
+        "title": "Convert 3 mL stock / 7 mL water %T",
+        "description": "Divide the recorded percent transmittance by 100 to obtain decimal T.",
+        "actionId": "i1-r3-7-calculate-decimal-t",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-r3-7-calculate-decimal-t-node-done",
+            "type": "actionEvidence",
+            "label": "i1-r3-7-calculate-decimal-t was completed.",
+            "actionId": "i1-r3-7-calculate-decimal-t"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Convert 3 mL stock / 7 mL water %T complete.",
+          "retry": "Review convert 3 ml stock / 7 ml water %t and try again."
+        }
+      },
+      {
+        "id": "i1-r3-7-calculate-absorbance-node",
+        "type": "calculation",
+        "title": "Transform 3 mL stock / 7 mL water",
+        "description": "Apply -log10 to the decimal transmittance. The percent transmittance is not a decimal transmittance and must be converted first.",
+        "actionId": "i1-r3-7-calculate-absorbance",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-r3-7-calculate-absorbance-node-done",
+            "type": "actionEvidence",
+            "label": "i1-r3-7-calculate-absorbance was completed.",
+            "actionId": "i1-r3-7-calculate-absorbance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "3 mL stock / 7 mL water transform stored.",
+          "retry": "Calculate the decimal transmittance for 3 mL stock / 7 mL water first."
+        }
+      },
+      {
+        "id": "i1-r2-8-record-provenance-node",
+        "type": "observation",
+        "title": "Pool 2 mL stock / 8 mL water row",
+        "description": "Record the contributing group and source details before using the row in class analysis.",
+        "actionId": "i1-r2-8-record-provenance",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-r2-8-record-provenance-node-done",
+            "type": "actionEvidence",
+            "label": "i1-r2-8-record-provenance was completed.",
+            "actionId": "i1-r2-8-record-provenance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Pool 2 mL stock / 8 mL water row complete.",
+          "retry": "Review pool 2 ml stock / 8 ml water row and try again."
+        }
+      },
+      {
+        "id": "i1-r2-8-calculate-decimal-t-node",
+        "type": "calculation",
+        "title": "Convert 2 mL stock / 8 mL water %T",
+        "description": "Divide the recorded percent transmittance by 100 to obtain decimal T.",
+        "actionId": "i1-r2-8-calculate-decimal-t",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-r2-8-calculate-decimal-t-node-done",
+            "type": "actionEvidence",
+            "label": "i1-r2-8-calculate-decimal-t was completed.",
+            "actionId": "i1-r2-8-calculate-decimal-t"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Convert 2 mL stock / 8 mL water %T complete.",
+          "retry": "Review convert 2 ml stock / 8 ml water %t and try again."
+        }
+      },
+      {
+        "id": "i1-r2-8-calculate-absorbance-node",
+        "type": "calculation",
+        "title": "Transform 2 mL stock / 8 mL water",
+        "description": "Apply -log10 to the decimal transmittance. The percent transmittance is not a decimal transmittance and must be converted first.",
+        "actionId": "i1-r2-8-calculate-absorbance",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-r2-8-calculate-absorbance-node-done",
+            "type": "actionEvidence",
+            "label": "i1-r2-8-calculate-absorbance was completed.",
+            "actionId": "i1-r2-8-calculate-absorbance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "2 mL stock / 8 mL water transform stored.",
+          "retry": "Calculate the decimal transmittance for 2 mL stock / 8 mL water first."
+        }
+      },
+      {
+        "id": "i1-r1-9-record-provenance-node",
+        "type": "observation",
+        "title": "Pool 1 mL stock / 9 mL water row",
+        "description": "Record the contributing group and source details before using the row in class analysis.",
+        "actionId": "i1-r1-9-record-provenance",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-r1-9-record-provenance-node-done",
+            "type": "actionEvidence",
+            "label": "i1-r1-9-record-provenance was completed.",
+            "actionId": "i1-r1-9-record-provenance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Pool 1 mL stock / 9 mL water row complete.",
+          "retry": "Review pool 1 ml stock / 9 ml water row and try again."
+        }
+      },
+      {
+        "id": "i1-r1-9-calculate-decimal-t-node",
+        "type": "calculation",
+        "title": "Convert 1 mL stock / 9 mL water %T",
+        "description": "Divide the recorded percent transmittance by 100 to obtain decimal T.",
+        "actionId": "i1-r1-9-calculate-decimal-t",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-r1-9-calculate-decimal-t-node-done",
+            "type": "actionEvidence",
+            "label": "i1-r1-9-calculate-decimal-t was completed.",
+            "actionId": "i1-r1-9-calculate-decimal-t"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Convert 1 mL stock / 9 mL water %T complete.",
+          "retry": "Review convert 1 ml stock / 9 ml water %t and try again."
+        }
+      },
+      {
+        "id": "i1-r1-9-calculate-absorbance-node",
+        "type": "calculation",
+        "title": "Transform 1 mL stock / 9 mL water",
+        "description": "Apply -log10 to the decimal transmittance. The percent transmittance is not a decimal transmittance and must be converted first.",
+        "actionId": "i1-r1-9-calculate-absorbance",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-r1-9-calculate-absorbance-node-done",
+            "type": "actionEvidence",
+            "label": "i1-r1-9-calculate-absorbance was completed.",
+            "actionId": "i1-r1-9-calculate-absorbance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "1 mL stock / 9 mL water transform stored.",
+          "retry": "Calculate the decimal transmittance for 1 mL stock / 9 mL water first."
+        }
+      },
+      {
+        "id": "i1-r0-10-record-provenance-node",
+        "type": "observation",
+        "title": "Pool 0 mL stock / 10 mL water row",
+        "description": "Record the contributing group and source details before using the row in class analysis.",
+        "actionId": "i1-r0-10-record-provenance",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-r0-10-record-provenance-node-done",
+            "type": "actionEvidence",
+            "label": "i1-r0-10-record-provenance was completed.",
+            "actionId": "i1-r0-10-record-provenance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Pool 0 mL stock / 10 mL water row complete.",
+          "retry": "Review pool 0 ml stock / 10 ml water row and try again."
+        }
+      },
+      {
+        "id": "i1-r0-10-calculate-decimal-t-node",
+        "type": "calculation",
+        "title": "Convert 0 mL stock / 10 mL water %T",
+        "description": "Divide the recorded percent transmittance by 100 to obtain decimal T.",
+        "actionId": "i1-r0-10-calculate-decimal-t",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-r0-10-calculate-decimal-t-node-done",
+            "type": "actionEvidence",
+            "label": "i1-r0-10-calculate-decimal-t was completed.",
+            "actionId": "i1-r0-10-calculate-decimal-t"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Convert 0 mL stock / 10 mL water %T complete.",
+          "retry": "Review convert 0 ml stock / 10 ml water %t and try again."
+        }
+      },
+      {
+        "id": "i1-r0-10-calculate-absorbance-node",
+        "type": "calculation",
+        "title": "Transform 0 mL stock / 10 mL water",
+        "description": "Apply -log10 to the decimal transmittance. The percent transmittance is not a decimal transmittance and must be converted first.",
+        "actionId": "i1-r0-10-calculate-absorbance",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-r0-10-calculate-absorbance-node-done",
+            "type": "actionEvidence",
+            "label": "i1-r0-10-calculate-absorbance was completed.",
+            "actionId": "i1-r0-10-calculate-absorbance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "0 mL stock / 10 mL water transform stored.",
+          "retry": "Calculate the decimal transmittance for 0 mL stock / 10 mL water first."
+        }
+      },
+      {
+        "id": "i1-plot-decimal-t-node",
+        "type": "observation",
+        "title": "Plot decimal T",
+        "description": "Plot decimal transmittance versus micromolar concentration using all source-labeled class rows.",
+        "actionId": "i1-plot-decimal-t",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-plot-decimal-t-node-done",
+            "type": "actionEvidence",
+            "label": "i1-plot-decimal-t was completed.",
+            "actionId": "i1-plot-decimal-t"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Plot decimal T complete.",
+          "retry": "Review plot decimal t and try again."
+        }
+      },
+      {
+        "id": "i1-plot-reciprocal-t-node",
+        "type": "observation",
+        "title": "Evaluate 1/T",
+        "description": "Generate and evaluate the 1/T candidate plot without assuming it is the accepted relationship.",
+        "actionId": "i1-plot-reciprocal-t",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-plot-reciprocal-t-node-done",
+            "type": "actionEvidence",
+            "label": "i1-plot-reciprocal-t was completed.",
+            "actionId": "i1-plot-reciprocal-t"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Evaluate 1/T complete.",
+          "retry": "Review evaluate 1/t and try again."
+        }
+      },
+      {
+        "id": "i1-plot-one-times-ten-power-t-node",
+        "type": "observation",
+        "title": "Evaluate 1 x 10^T",
+        "description": "Plot the source-listed expression exactly as written and flag it for teacher clarification; do not silently reinterpret it.",
+        "actionId": "i1-plot-one-times-ten-power-t",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-plot-one-times-ten-power-t-node-done",
+            "type": "actionEvidence",
+            "label": "i1-plot-one-times-ten-power-t was completed.",
+            "actionId": "i1-plot-one-times-ten-power-t"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Evaluate 1 x 10^T complete.",
+          "retry": "Review evaluate 1 x 10^t and try again."
+        }
+      },
+      {
+        "id": "i1-plot-log-t-node",
+        "type": "observation",
+        "title": "Evaluate log T",
+        "description": "Generate and evaluate the log T candidate plot without assuming it is the accepted relationship.",
+        "actionId": "i1-plot-log-t",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-plot-log-t-node-done",
+            "type": "actionEvidence",
+            "label": "i1-plot-log-t was completed.",
+            "actionId": "i1-plot-log-t"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Evaluate log T complete.",
+          "retry": "Review evaluate log t and try again."
+        }
+      },
+      {
+        "id": "i1-plot-negative-log-t-node",
+        "type": "observation",
+        "title": "Evaluate -log T",
+        "description": "Generate and evaluate the -log T candidate plot without assuming it is the accepted relationship.",
+        "actionId": "i1-plot-negative-log-t",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-plot-negative-log-t-node-done",
+            "type": "actionEvidence",
+            "label": "i1-plot-negative-log-t was completed.",
+            "actionId": "i1-plot-negative-log-t"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Evaluate -log T complete.",
+          "retry": "Review evaluate -log t and try again."
+        }
+      },
+      {
+        "id": "i1-record-source-ambiguity-node",
+        "type": "teacherNote",
+        "title": "Resolve source ambiguity",
+        "description": "Record the teacher's clarification of 1 x 10^T and how to reconcile the source's positive-slope-through-zero description with the candidate transformations.",
+        "actionId": "i1-record-source-ambiguity",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-record-source-ambiguity-node-done",
+            "type": "actionEvidence",
+            "label": "i1-record-source-ambiguity was completed.",
+            "actionId": "i1-record-source-ambiguity"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Resolve source ambiguity complete.",
+          "retry": "Review resolve source ambiguity and try again."
+        }
+      },
+      {
+        "id": "i1-record-confirmed-calibration-node",
+        "type": "checkpoint",
+        "title": "Confirm calibration relationship",
+        "description": "Record the relationship the teacher approves from the class evidence, including its equation, units, and any teacher-supplied use limits.",
+        "actionId": "i1-record-confirmed-calibration",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-record-confirmed-calibration-node-done",
+            "type": "actionEvidence",
+            "label": "i1-record-confirmed-calibration was completed.",
+            "actionId": "i1-record-confirmed-calibration"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Confirm calibration relationship complete.",
+          "retry": "Review confirm calibration relationship and try again."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "i1-r10-0-record-provenance-node",
+        "to": "i1-r10-0-calculate-decimal-t-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-r10-0-calculate-decimal-t-node",
+        "to": "i1-r10-0-calculate-absorbance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-r10-0-calculate-absorbance-node",
+        "to": "i1-r8-2-record-provenance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-r8-2-record-provenance-node",
+        "to": "i1-r8-2-calculate-decimal-t-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-r8-2-calculate-decimal-t-node",
+        "to": "i1-r8-2-calculate-absorbance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-r8-2-calculate-absorbance-node",
+        "to": "i1-r6-4-record-provenance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-r6-4-record-provenance-node",
+        "to": "i1-r6-4-calculate-decimal-t-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-r6-4-calculate-decimal-t-node",
+        "to": "i1-r6-4-calculate-absorbance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-r6-4-calculate-absorbance-node",
+        "to": "i1-r4-6-record-provenance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-r4-6-record-provenance-node",
+        "to": "i1-r4-6-calculate-decimal-t-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-r4-6-calculate-decimal-t-node",
+        "to": "i1-r4-6-calculate-absorbance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-r4-6-calculate-absorbance-node",
+        "to": "i1-r3-7-record-provenance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-r3-7-record-provenance-node",
+        "to": "i1-r3-7-calculate-decimal-t-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-r3-7-calculate-decimal-t-node",
+        "to": "i1-r3-7-calculate-absorbance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-r3-7-calculate-absorbance-node",
+        "to": "i1-r2-8-record-provenance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-r2-8-record-provenance-node",
+        "to": "i1-r2-8-calculate-decimal-t-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-r2-8-calculate-decimal-t-node",
+        "to": "i1-r2-8-calculate-absorbance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-r2-8-calculate-absorbance-node",
+        "to": "i1-r1-9-record-provenance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-r1-9-record-provenance-node",
+        "to": "i1-r1-9-calculate-decimal-t-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-r1-9-calculate-decimal-t-node",
+        "to": "i1-r1-9-calculate-absorbance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-r1-9-calculate-absorbance-node",
+        "to": "i1-r0-10-record-provenance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-r0-10-record-provenance-node",
+        "to": "i1-r0-10-calculate-decimal-t-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-r0-10-calculate-decimal-t-node",
+        "to": "i1-r0-10-calculate-absorbance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-r0-10-calculate-absorbance-node",
+        "to": "i1-plot-decimal-t-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-plot-decimal-t-node",
+        "to": "i1-plot-reciprocal-t-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-plot-reciprocal-t-node",
+        "to": "i1-plot-one-times-ten-power-t-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-plot-one-times-ten-power-t-node",
+        "to": "i1-plot-log-t-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-plot-log-t-node",
+        "to": "i1-plot-negative-log-t-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-plot-negative-log-t-node",
+        "to": "i1-record-source-ambiguity-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-record-source-ambiguity-node",
+        "to": "i1-record-confirmed-calibration-node",
+        "label": "Next",
+        "condition": {
+          "type": "calculationResult",
+          "calculationId": "i1-calibration-transformation-choice",
+          "min": 1,
+          "max": 1
+        }
+      },
+      {
+        "from": "i1-record-source-ambiguity-node",
+        "to": "i1-record-source-ambiguity-node",
+        "label": "Revise with teacher",
+        "condition": {
+          "type": "retry",
+          "maxAttempts": 2
+        }
+      }
+    ]
+  },
+  "successCriteria": [
+    {
+      "id": "i1-r10-0-record-provenance-node-success",
+      "type": "actionEvidence",
+      "label": "i1-r10-0-record-provenance was completed.",
+      "actionId": "i1-r10-0-record-provenance"
+    },
+    {
+      "id": "i1-r10-0-calculate-decimal-t-node-success",
+      "type": "actionEvidence",
+      "label": "i1-r10-0-calculate-decimal-t was completed.",
+      "actionId": "i1-r10-0-calculate-decimal-t"
+    },
+    {
+      "id": "i1-r8-2-record-provenance-node-success",
+      "type": "actionEvidence",
+      "label": "i1-r8-2-record-provenance was completed.",
+      "actionId": "i1-r8-2-record-provenance"
+    },
+    {
+      "id": "i1-r8-2-calculate-decimal-t-node-success",
+      "type": "actionEvidence",
+      "label": "i1-r8-2-calculate-decimal-t was completed.",
+      "actionId": "i1-r8-2-calculate-decimal-t"
+    },
+    {
+      "id": "i1-r6-4-record-provenance-node-success",
+      "type": "actionEvidence",
+      "label": "i1-r6-4-record-provenance was completed.",
+      "actionId": "i1-r6-4-record-provenance"
+    },
+    {
+      "id": "i1-r6-4-calculate-decimal-t-node-success",
+      "type": "actionEvidence",
+      "label": "i1-r6-4-calculate-decimal-t was completed.",
+      "actionId": "i1-r6-4-calculate-decimal-t"
+    },
+    {
+      "id": "i1-r4-6-record-provenance-node-success",
+      "type": "actionEvidence",
+      "label": "i1-r4-6-record-provenance was completed.",
+      "actionId": "i1-r4-6-record-provenance"
+    },
+    {
+      "id": "i1-r4-6-calculate-decimal-t-node-success",
+      "type": "actionEvidence",
+      "label": "i1-r4-6-calculate-decimal-t was completed.",
+      "actionId": "i1-r4-6-calculate-decimal-t"
+    },
+    {
+      "id": "i1-r3-7-record-provenance-node-success",
+      "type": "actionEvidence",
+      "label": "i1-r3-7-record-provenance was completed.",
+      "actionId": "i1-r3-7-record-provenance"
+    },
+    {
+      "id": "i1-r3-7-calculate-decimal-t-node-success",
+      "type": "actionEvidence",
+      "label": "i1-r3-7-calculate-decimal-t was completed.",
+      "actionId": "i1-r3-7-calculate-decimal-t"
+    },
+    {
+      "id": "i1-r2-8-record-provenance-node-success",
+      "type": "actionEvidence",
+      "label": "i1-r2-8-record-provenance was completed.",
+      "actionId": "i1-r2-8-record-provenance"
+    },
+    {
+      "id": "i1-r2-8-calculate-decimal-t-node-success",
+      "type": "actionEvidence",
+      "label": "i1-r2-8-calculate-decimal-t was completed.",
+      "actionId": "i1-r2-8-calculate-decimal-t"
+    },
+    {
+      "id": "i1-r1-9-record-provenance-node-success",
+      "type": "actionEvidence",
+      "label": "i1-r1-9-record-provenance was completed.",
+      "actionId": "i1-r1-9-record-provenance"
+    },
+    {
+      "id": "i1-r1-9-calculate-decimal-t-node-success",
+      "type": "actionEvidence",
+      "label": "i1-r1-9-calculate-decimal-t was completed.",
+      "actionId": "i1-r1-9-calculate-decimal-t"
+    },
+    {
+      "id": "i1-r0-10-record-provenance-node-success",
+      "type": "actionEvidence",
+      "label": "i1-r0-10-record-provenance was completed.",
+      "actionId": "i1-r0-10-record-provenance"
+    },
+    {
+      "id": "i1-r0-10-calculate-decimal-t-node-success",
+      "type": "actionEvidence",
+      "label": "i1-r0-10-calculate-decimal-t was completed.",
+      "actionId": "i1-r0-10-calculate-decimal-t"
+    },
+    {
+      "id": "i1-plot-decimal-t-node-success",
+      "type": "actionEvidence",
+      "label": "i1-plot-decimal-t was completed.",
+      "actionId": "i1-plot-decimal-t"
+    },
+    {
+      "id": "i1-plot-reciprocal-t-node-success",
+      "type": "actionEvidence",
+      "label": "i1-plot-reciprocal-t was completed.",
+      "actionId": "i1-plot-reciprocal-t"
+    },
+    {
+      "id": "i1-plot-one-times-ten-power-t-node-success",
+      "type": "actionEvidence",
+      "label": "i1-plot-one-times-ten-power-t was completed.",
+      "actionId": "i1-plot-one-times-ten-power-t"
+    },
+    {
+      "id": "i1-plot-log-t-node-success",
+      "type": "actionEvidence",
+      "label": "i1-plot-log-t was completed.",
+      "actionId": "i1-plot-log-t"
+    },
+    {
+      "id": "i1-plot-negative-log-t-node-success",
+      "type": "actionEvidence",
+      "label": "i1-plot-negative-log-t was completed.",
+      "actionId": "i1-plot-negative-log-t"
+    },
+    {
+      "id": "i1-record-source-ambiguity-node-success",
+      "type": "actionEvidence",
+      "label": "i1-record-source-ambiguity was completed.",
+      "actionId": "i1-record-source-ambiguity"
+    },
+    {
+      "id": "i1-record-confirmed-calibration-node-success",
+      "type": "actionEvidence",
+      "label": "i1-record-confirmed-calibration was completed.",
+      "actionId": "i1-record-confirmed-calibration"
+    },
+    {
+      "id": "i1-r10-0-calculate-absorbance-node-success",
+      "type": "actionEvidence",
+      "label": "i1-r10-0-calculate-absorbance was completed.",
+      "actionId": "i1-r10-0-calculate-absorbance"
+    },
+    {
+      "id": "i1-r8-2-calculate-absorbance-node-success",
+      "type": "actionEvidence",
+      "label": "i1-r8-2-calculate-absorbance was completed.",
+      "actionId": "i1-r8-2-calculate-absorbance"
+    },
+    {
+      "id": "i1-r6-4-calculate-absorbance-node-success",
+      "type": "actionEvidence",
+      "label": "i1-r6-4-calculate-absorbance was completed.",
+      "actionId": "i1-r6-4-calculate-absorbance"
+    },
+    {
+      "id": "i1-r4-6-calculate-absorbance-node-success",
+      "type": "actionEvidence",
+      "label": "i1-r4-6-calculate-absorbance was completed.",
+      "actionId": "i1-r4-6-calculate-absorbance"
+    },
+    {
+      "id": "i1-r3-7-calculate-absorbance-node-success",
+      "type": "actionEvidence",
+      "label": "i1-r3-7-calculate-absorbance was completed.",
+      "actionId": "i1-r3-7-calculate-absorbance"
+    },
+    {
+      "id": "i1-r2-8-calculate-absorbance-node-success",
+      "type": "actionEvidence",
+      "label": "i1-r2-8-calculate-absorbance was completed.",
+      "actionId": "i1-r2-8-calculate-absorbance"
+    },
+    {
+      "id": "i1-r1-9-calculate-absorbance-node-success",
+      "type": "actionEvidence",
+      "label": "i1-r1-9-calculate-absorbance was completed.",
+      "actionId": "i1-r1-9-calculate-absorbance"
+    },
+    {
+      "id": "i1-r0-10-calculate-absorbance-node-success",
+      "type": "actionEvidence",
+      "label": "i1-r0-10-calculate-absorbance was completed.",
+      "actionId": "i1-r0-10-calculate-absorbance"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "current node expects a different action",
+      "message": "That action is out of sequence for the current investigation step.",
+      "recovery": "Return to the highlighted step and preserve the sample or row identity."
+    },
+    {
+      "id": "missing-teacher-configuration",
+      "when": "a teacher-supplied value, rule, or approval has not been recorded",
+      "message": "This investigation does not supply that classroom-specific value or rule.",
+      "recovery": "Record the teacher-provided configuration or approval before continuing."
+    },
+    {
+      "id": "lost-provenance",
+      "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+      "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+      "recovery": "Reconnect the value to the labeled standard and contributing group."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.3.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-04T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "chemistry",
+      "blue-1",
+      "class-pooling",
+      "calibration",
+      "transformation-comparison"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry-i1-r10-0-record-provenance-node",
+        "kind": "entry",
+        "nodeId": "i1-r10-0-record-provenance-node",
+        "label": "Entry"
+      },
+      {
+        "id": "exit-i1-record-confirmed-calibration-node",
+        "kind": "exit",
+        "nodeId": "i1-record-confirmed-calibration-node",
+        "label": "Exit"
+      }
+    ],
+    "equipmentRoles": [],
+    "modelSlots": [],
+    "configurationSlots": [
+      {
+        "id": "i1-r10-0-concentrationCalculationId",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "id": "i1-r8-2-concentrationCalculationId",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "id": "i1-r6-4-concentrationCalculationId",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "id": "i1-r4-6-concentrationCalculationId",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "id": "i1-r3-7-concentrationCalculationId",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "id": "i1-r2-8-concentrationCalculationId",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "id": "i1-r1-9-concentrationCalculationId",
+        "valueType": "string",
+        "required": true
+      }
+    ],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [],
+    "completion": {
+      "exitPortIds": [
+        "exit-i1-record-confirmed-calibration-node"
+      ],
+      "requiredEvidenceOutputIds": [],
+      "requiredValidationRuleIds": []
+    },
+    "catalogDisposition": "composable",
+    "legacyActionEffects": [
+      {
+        "actionId": "i1-r10-0-record-provenance",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-r10-0-calculate-decimal-t",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-r10-0-calculate-absorbance",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-r8-2-record-provenance",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-r8-2-calculate-decimal-t",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-r8-2-calculate-absorbance",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-r6-4-record-provenance",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-r6-4-calculate-decimal-t",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-r6-4-calculate-absorbance",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-r4-6-record-provenance",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-r4-6-calculate-decimal-t",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-r4-6-calculate-absorbance",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-r3-7-record-provenance",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-r3-7-calculate-decimal-t",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-r3-7-calculate-absorbance",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-r2-8-record-provenance",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-r2-8-calculate-decimal-t",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-r2-8-calculate-absorbance",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-r1-9-record-provenance",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-r1-9-calculate-decimal-t",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-r1-9-calculate-absorbance",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-r0-10-record-provenance",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-r0-10-calculate-decimal-t",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-r0-10-calculate-absorbance",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-plot-decimal-t",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-plot-reciprocal-t",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-plot-one-times-ten-power-t",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-plot-log-t",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-plot-negative-log-t",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-record-source-ambiguity",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "i1-record-confirmed-calibration",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

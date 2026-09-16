@@ -1,0 +1,783 @@
+{
+  "schema": "lab-studio/content-consistency-baseline@1",
+  "generatedBy": "node scripts/auditContentInventory.mjs --write-baseline",
+  "audit": "docs/step-and-image-consistency-audit.md",
+  "policy": "Later cycles may remove entries. Adding an entry requires updating the audit rationale in the same change.",
+  "counts": {
+    "debt": 99,
+    "byCategory": {
+      "runtime-unreachable-embedded-technique": 7,
+      "action-id-collision": 19,
+      "declared-but-unreferenced-action": 1,
+      "imported-but-unreferenced-action": 2,
+      "authored-visual-state-without-style-or-asset": 32,
+      "state-asset-never-authored": 12,
+      "unclassified-realistic-asset": 6,
+      "physical-action-without-equipment-interaction": 20
+    }
+  },
+  "toleratedDifferences": [
+    {
+      "id": "alias:reagent-bottle",
+      "category": "documented-image-alias",
+      "rationale": "naoh-bottle, reagent-bottle, and unknown-acid-bottle are the same physical bottle. Labels and accessible names stay distinct."
+    },
+    {
+      "id": "alias:dropper-bottle",
+      "category": "documented-image-alias",
+      "rationale": "phenolphthalein-dropper and dropper-bottle are the same physical dropper bottle."
+    },
+    {
+      "id": "alias:beaker-250ml",
+      "category": "documented-image-alias",
+      "rationale": "waste-beaker is a 250 mL beaker designated for waste; the art is correctly shared."
+    },
+    {
+      "id": "custom-route:acid-base-titration-curves",
+      "category": "intentional-custom-route",
+      "rationale": "src/App.tsx routes #/play/acid-base-titration-curves to AcidBaseTitrationCurvesInvestigation. The one-node public definition is a catalog stub, not a played process."
+    },
+    {
+      "id": "custom-route:green-chemistry-mixture-purification",
+      "category": "intentional-custom-route",
+      "rationale": "src/App.tsx replaces the loaded definition with PurifyMixtureGreenChemistryPlayer. The one-node public definition is a catalog stub, not a played process."
+    },
+    {
+      "id": "orphan-file:public/labs/acid-base-titration-curves-config.json",
+      "category": "intentional-non-definition-file",
+      "rationale": "Teacher configuration payload for the custom route; deliberately not a lab definition."
+    },
+    {
+      "id": "gallery-only-assets",
+      "category": "intentional-gallery-asset",
+      "rationale": "Assets referenced only by src/trials/realisticEquipmentAssets.ts are the equipment art gallery. They are intentionally not player-reachable."
+    }
+  ],
+  "debt": [
+    {
+      "id": "action-id-collision:add-indicator",
+      "category": "action-id-collision",
+      "ownerCycle": "02",
+      "evidence": "lab:acid-base-titration | technique:titration-endpoint",
+      "variants": 2
+    },
+    {
+      "id": "action-id-collision:add-solvent",
+      "category": "action-id-collision",
+      "ownerCycle": "02",
+      "evidence": "technique:making-solution | technique:paper-chromatography",
+      "variants": 2
+    },
+    {
+      "id": "action-id-collision:calculate-absorbance",
+      "category": "action-id-collision",
+      "ownerCycle": "02",
+      "evidence": "technique:beers-law-calibration | technique:transmittance-dilution",
+      "variants": 2
+    },
+    {
+      "id": "action-id-collision:calculate-acid-molarity",
+      "category": "action-id-collision",
+      "ownerCycle": "02",
+      "evidence": "lab:acid-base-titration | technique:titration-endpoint",
+      "variants": 2
+    },
+    {
+      "id": "action-id-collision:calculate-hardness",
+      "category": "action-id-collision",
+      "ownerCycle": "02",
+      "evidence": "lab:hard-water-demo | technique:hard-water-calculation | technique:hard-water-gravimetry",
+      "variants": 3
+    },
+    {
+      "id": "action-id-collision:dry-precipitate",
+      "category": "action-id-collision",
+      "ownerCycle": "02",
+      "evidence": "technique:drying | technique:hard-water-gravimetry",
+      "variants": 2
+    },
+    {
+      "id": "action-id-collision:filter-mixture",
+      "category": "action-id-collision",
+      "ownerCycle": "02",
+      "evidence": "lab:hard-water-demo | lab:intro-filtration-demo | technique:filtration",
+      "variants": 3
+    },
+    {
+      "id": "action-id-collision:measure-stock-dye",
+      "category": "action-id-collision",
+      "ownerCycle": "02",
+      "evidence": "technique:beers-law-calibration | technique:transmittance-dilution",
+      "variants": 2
+    },
+    {
+      "id": "action-id-collision:place-filtration-receiver",
+      "category": "action-id-collision",
+      "ownerCycle": "02",
+      "evidence": "lab:hard-water-demo | technique:filtration",
+      "variants": 2
+    },
+    {
+      "id": "action-id-collision:place-ring-stand",
+      "category": "action-id-collision",
+      "ownerCycle": "02",
+      "evidence": "technique:thermal-decomposition-mass-loss | technique:titration-endpoint",
+      "variants": 2
+    },
+    {
+      "id": "action-id-collision:place-spectrophotometer",
+      "category": "action-id-collision",
+      "ownerCycle": "02",
+      "evidence": "technique:beers-law-calibration | technique:transmittance-dilution",
+      "variants": 2
+    },
+    {
+      "id": "action-id-collision:record-final-burette",
+      "category": "action-id-collision",
+      "ownerCycle": "02",
+      "evidence": "lab:acid-base-titration | technique:titration-endpoint",
+      "variants": 2
+    },
+    {
+      "id": "action-id-collision:record-initial-burette",
+      "category": "action-id-collision",
+      "ownerCycle": "02",
+      "evidence": "lab:acid-base-titration | technique:titration-endpoint",
+      "variants": 2
+    },
+    {
+      "id": "action-id-collision:record-percent-transmittance",
+      "category": "action-id-collision",
+      "ownerCycle": "02",
+      "evidence": "technique:beers-law-calibration | technique:transmittance-dilution",
+      "variants": 2
+    },
+    {
+      "id": "action-id-collision:record-teacher-approval",
+      "category": "action-id-collision",
+      "ownerCycle": "02",
+      "evidence": "lab:beverage-acidity | lab:hydrogen-peroxide-redox-titration",
+      "variants": 2
+    },
+    {
+      "id": "action-id-collision:rinse-precipitate",
+      "category": "action-id-collision",
+      "ownerCycle": "02",
+      "evidence": "technique:filtration | technique:hard-water-gravimetry",
+      "variants": 2
+    },
+    {
+      "id": "action-id-collision:transfer-sample",
+      "category": "action-id-collision",
+      "ownerCycle": "02",
+      "evidence": "lab:hard-water-demo | lab:intro-filtration-demo | technique:transfer",
+      "variants": 2
+    },
+    {
+      "id": "action-id-collision:weigh-dry-precipitate",
+      "category": "action-id-collision",
+      "ownerCycle": "02",
+      "evidence": "technique:drying | technique:hard-water-gravimetry",
+      "variants": 2
+    },
+    {
+      "id": "action-id-collision:write-cer-conclusion",
+      "category": "action-id-collision",
+      "ownerCycle": "02",
+      "evidence": "lab:marble-statue-kinetics | lab:paper-chromatography",
+      "variants": 2
+    },
+    {
+      "id": "asset-unclassified:luer-lock-syringe-extended",
+      "category": "unclassified-realistic-asset",
+      "ownerCycle": "05",
+      "evidence": "public/assets/equipment-realistic/v1/luer-lock-syringe-extended.svg"
+    },
+    {
+      "id": "asset-unclassified:luer-lock-syringe-filled",
+      "category": "unclassified-realistic-asset",
+      "ownerCycle": "05",
+      "evidence": "public/assets/equipment-realistic/v1/luer-lock-syringe-filled.svg"
+    },
+    {
+      "id": "asset-unclassified:luer-lock-syringe-gas-expelled",
+      "category": "unclassified-realistic-asset",
+      "ownerCycle": "05",
+      "evidence": "public/assets/equipment-realistic/v1/luer-lock-syringe-gas-expelled.svg"
+    },
+    {
+      "id": "asset-unclassified:luer-lock-syringe-inverted",
+      "category": "unclassified-realistic-asset",
+      "ownerCycle": "05",
+      "evidence": "public/assets/equipment-realistic/v1/luer-lock-syringe-inverted.svg"
+    },
+    {
+      "id": "asset-unclassified:luer-lock-syringe-nail-locked",
+      "category": "unclassified-realistic-asset",
+      "ownerCycle": "05",
+      "evidence": "public/assets/equipment-realistic/v1/luer-lock-syringe-nail-locked.svg"
+    },
+    {
+      "id": "asset-unclassified:luer-lock-syringe-valve-closed",
+      "category": "unclassified-realistic-asset",
+      "ownerCycle": "05",
+      "evidence": "public/assets/equipment-realistic/v1/luer-lock-syringe-valve-closed.svg"
+    },
+    {
+      "id": "embedded-technique:acid-base-titration-curves/titration-curves-custom-experience-entry",
+      "category": "runtime-unreachable-embedded-technique",
+      "ownerCycle": "03-04",
+      "evidence": "public/labs/acid-base-titration-curves.json techniques[titration-curves-custom-experience-entry]",
+      "role": "lab-local-state-carrier",
+      "runtimePayload": [],
+      "shadowedPayload": [],
+      "nodes": 1,
+      "actions": 1,
+      "nodesIdenticalToLabRoot": 1,
+      "standaloneExists": false,
+      "nodesIdenticalToStandalone": null
+    },
+    {
+      "id": "embedded-technique:acid-base-titration/acid-base-titration-state",
+      "category": "runtime-unreachable-embedded-technique",
+      "ownerCycle": "03-04",
+      "evidence": "public/labs/acid-base-titration.json techniques[acid-base-titration-state]",
+      "role": "lab-local-state-carrier",
+      "runtimePayload": [
+        "initialState.equipment"
+      ],
+      "shadowedPayload": [],
+      "nodes": 1,
+      "actions": 1,
+      "nodesIdenticalToLabRoot": 0,
+      "standaloneExists": false,
+      "nodesIdenticalToStandalone": null
+    },
+    {
+      "id": "embedded-technique:beverage-acidity/beverage-acidity-inquiry-context",
+      "category": "runtime-unreachable-embedded-technique",
+      "ownerCycle": "03-04",
+      "evidence": "public/labs/beverage-acidity.json techniques[beverage-acidity-inquiry-context]",
+      "role": "lab-local-state-carrier",
+      "runtimePayload": [],
+      "shadowedPayload": [],
+      "nodes": 1,
+      "actions": 1,
+      "nodesIdenticalToLabRoot": 0,
+      "standaloneExists": false,
+      "nodesIdenticalToStandalone": null
+    },
+    {
+      "id": "embedded-technique:bonding-unknown-solids/unknown-solids-configured-starting-state",
+      "category": "runtime-unreachable-embedded-technique",
+      "ownerCycle": "03-04",
+      "evidence": "public/labs/bonding-unknown-solids.json techniques[unknown-solids-configured-starting-state]",
+      "role": "lab-local-state-carrier",
+      "runtimePayload": [],
+      "shadowedPayload": [],
+      "nodes": 1,
+      "actions": 1,
+      "nodesIdenticalToLabRoot": 0,
+      "standaloneExists": false,
+      "nodesIdenticalToStandalone": null
+    },
+    {
+      "id": "embedded-technique:crystal-violet-rate-law/crystal-violet-hydroxide-order-extension",
+      "category": "runtime-unreachable-embedded-technique",
+      "ownerCycle": "03-04",
+      "evidence": "public/labs/crystal-violet-rate-law.json techniques[crystal-violet-hydroxide-order-extension]",
+      "role": "lab-local-state-carrier",
+      "runtimePayload": [],
+      "shadowedPayload": [],
+      "nodes": 3,
+      "actions": 3,
+      "nodesIdenticalToLabRoot": 0,
+      "standaloneExists": false,
+      "nodesIdenticalToStandalone": null
+    },
+    {
+      "id": "embedded-technique:marble-statue-kinetics/marble-statue-kinetics-state",
+      "category": "runtime-unreachable-embedded-technique",
+      "ownerCycle": "03-04",
+      "evidence": "public/labs/marble-statue-kinetics.json techniques[marble-statue-kinetics-state]",
+      "role": "lab-local-state-carrier",
+      "runtimePayload": [],
+      "shadowedPayload": [],
+      "nodes": 1,
+      "actions": 1,
+      "nodesIdenticalToLabRoot": 0,
+      "standaloneExists": false,
+      "nodesIdenticalToStandalone": null
+    },
+    {
+      "id": "embedded-technique:paper-chromatography/chromatography-inquiry-guardrails",
+      "category": "runtime-unreachable-embedded-technique",
+      "ownerCycle": "03-04",
+      "evidence": "public/labs/paper-chromatography.json techniques[chromatography-inquiry-guardrails]",
+      "role": "lab-local-state-carrier",
+      "runtimePayload": [],
+      "shadowedPayload": [],
+      "nodes": 1,
+      "actions": 1,
+      "nodesIdenticalToLabRoot": 0,
+      "standaloneExists": false,
+      "nodesIdenticalToStandalone": null
+    },
+    {
+      "id": "physical-actions-without-interaction:lab:brass-colorimetry",
+      "category": "physical-action-without-equipment-interaction",
+      "ownerCycle": "06-12",
+      "evidence": "lab:brass-colorimetry",
+      "physicalVerbActions": 25,
+      "physicalWithoutInteraction": 25
+    },
+    {
+      "id": "physical-actions-without-interaction:technique:beers-law-calibration",
+      "category": "physical-action-without-equipment-interaction",
+      "ownerCycle": "06-12",
+      "evidence": "technique:beers-law-calibration",
+      "physicalVerbActions": 5,
+      "physicalWithoutInteraction": 5
+    },
+    {
+      "id": "physical-actions-without-interaction:technique:blue1-percent-transmittance",
+      "category": "physical-action-without-equipment-interaction",
+      "ownerCycle": "06-12",
+      "evidence": "technique:blue1-percent-transmittance",
+      "physicalVerbActions": 9,
+      "physicalWithoutInteraction": 9
+    },
+    {
+      "id": "physical-actions-without-interaction:technique:blue1-standard-dilutions",
+      "category": "physical-action-without-equipment-interaction",
+      "ownerCycle": "06-12",
+      "evidence": "technique:blue1-standard-dilutions",
+      "physicalVerbActions": 28,
+      "physicalWithoutInteraction": 28
+    },
+    {
+      "id": "physical-actions-without-interaction:technique:bonding-solids-tests",
+      "category": "physical-action-without-equipment-interaction",
+      "ownerCycle": "06-12",
+      "evidence": "technique:bonding-solids-tests",
+      "physicalVerbActions": 2,
+      "physicalWithoutInteraction": 2
+    },
+    {
+      "id": "physical-actions-without-interaction:technique:brass-spectrophotometry",
+      "category": "physical-action-without-equipment-interaction",
+      "ownerCycle": "06-12",
+      "evidence": "technique:brass-spectrophotometry",
+      "physicalVerbActions": 4,
+      "physicalWithoutInteraction": 4
+    },
+    {
+      "id": "physical-actions-without-interaction:technique:crystal-violet-kinetics",
+      "category": "physical-action-without-equipment-interaction",
+      "ownerCycle": "06-12",
+      "evidence": "technique:crystal-violet-kinetics",
+      "physicalVerbActions": 3,
+      "physicalWithoutInteraction": 3
+    },
+    {
+      "id": "physical-actions-without-interaction:technique:dilution",
+      "category": "physical-action-without-equipment-interaction",
+      "ownerCycle": "06-12",
+      "evidence": "technique:dilution",
+      "physicalVerbActions": 2,
+      "physicalWithoutInteraction": 2
+    },
+    {
+      "id": "physical-actions-without-interaction:technique:hand-warmer-calorimetry",
+      "category": "physical-action-without-equipment-interaction",
+      "ownerCycle": "06-12",
+      "evidence": "technique:hand-warmer-calorimetry",
+      "physicalVerbActions": 53,
+      "physicalWithoutInteraction": 2
+    },
+    {
+      "id": "physical-actions-without-interaction:technique:hard-water-gravimetry",
+      "category": "physical-action-without-equipment-interaction",
+      "ownerCycle": "06-12",
+      "evidence": "technique:hard-water-gravimetry",
+      "physicalVerbActions": 3,
+      "physicalWithoutInteraction": 3
+    },
+    {
+      "id": "physical-actions-without-interaction:technique:making-solution",
+      "category": "physical-action-without-equipment-interaction",
+      "ownerCycle": "06-12",
+      "evidence": "technique:making-solution",
+      "physicalVerbActions": 2,
+      "physicalWithoutInteraction": 2
+    },
+    {
+      "id": "physical-actions-without-interaction:technique:measuring-volume",
+      "category": "physical-action-without-equipment-interaction",
+      "ownerCycle": "06-12",
+      "evidence": "technique:measuring-volume",
+      "physicalVerbActions": 2,
+      "physicalWithoutInteraction": 1
+    },
+    {
+      "id": "physical-actions-without-interaction:technique:redox-titration",
+      "category": "physical-action-without-equipment-interaction",
+      "ownerCycle": "06-12",
+      "evidence": "technique:redox-titration",
+      "physicalVerbActions": 6,
+      "physicalWithoutInteraction": 6
+    },
+    {
+      "id": "physical-actions-without-interaction:technique:tablet-separation",
+      "category": "physical-action-without-equipment-interaction",
+      "ownerCycle": "06-12",
+      "evidence": "technique:tablet-separation",
+      "physicalVerbActions": 2,
+      "physicalWithoutInteraction": 2
+    },
+    {
+      "id": "physical-actions-without-interaction:technique:thermal-decomposition-mass-loss",
+      "category": "physical-action-without-equipment-interaction",
+      "ownerCycle": "06-12",
+      "evidence": "technique:thermal-decomposition-mass-loss",
+      "physicalVerbActions": 14,
+      "physicalWithoutInteraction": 12
+    },
+    {
+      "id": "physical-actions-without-interaction:technique:titration-curve-analysis",
+      "category": "physical-action-without-equipment-interaction",
+      "ownerCycle": "06-12",
+      "evidence": "technique:titration-curve-analysis",
+      "physicalVerbActions": 4,
+      "physicalWithoutInteraction": 4
+    },
+    {
+      "id": "physical-actions-without-interaction:technique:titration-endpoint",
+      "category": "physical-action-without-equipment-interaction",
+      "ownerCycle": "06-12",
+      "evidence": "technique:titration-endpoint",
+      "physicalVerbActions": 6,
+      "physicalWithoutInteraction": 6
+    },
+    {
+      "id": "physical-actions-without-interaction:technique:transfer",
+      "category": "physical-action-without-equipment-interaction",
+      "ownerCycle": "06-12",
+      "evidence": "technique:transfer",
+      "physicalVerbActions": 2,
+      "physicalWithoutInteraction": 2
+    },
+    {
+      "id": "physical-actions-without-interaction:technique:transmittance-dilution",
+      "category": "physical-action-without-equipment-interaction",
+      "ownerCycle": "06-12",
+      "evidence": "technique:transmittance-dilution",
+      "physicalVerbActions": 11,
+      "physicalWithoutInteraction": 9
+    },
+    {
+      "id": "physical-actions-without-interaction:technique:weighing",
+      "category": "physical-action-without-equipment-interaction",
+      "ownerCycle": "06-12",
+      "evidence": "technique:weighing",
+      "physicalVerbActions": 2,
+      "physicalWithoutInteraction": 2
+    },
+    {
+      "id": "state-asset-unreachable:CAL-01",
+      "category": "state-asset-never-authored",
+      "ownerCycle": "12",
+      "evidence": "src/equipment/visualCatalog.ts handWarmerCalorimeterStateAssets"
+    },
+    {
+      "id": "state-asset-unreachable:CAL-02",
+      "category": "state-asset-never-authored",
+      "ownerCycle": "12",
+      "evidence": "src/equipment/visualCatalog.ts handWarmerCalorimeterStateAssets"
+    },
+    {
+      "id": "state-asset-unreachable:CAL-03",
+      "category": "state-asset-never-authored",
+      "ownerCycle": "12",
+      "evidence": "src/equipment/visualCatalog.ts handWarmerCalorimeterStateAssets"
+    },
+    {
+      "id": "state-asset-unreachable:CAL-04",
+      "category": "state-asset-never-authored",
+      "ownerCycle": "12",
+      "evidence": "src/equipment/visualCatalog.ts handWarmerCalorimeterStateAssets"
+    },
+    {
+      "id": "state-asset-unreachable:CAL-05",
+      "category": "state-asset-never-authored",
+      "ownerCycle": "12",
+      "evidence": "src/equipment/visualCatalog.ts handWarmerCalorimeterStateAssets"
+    },
+    {
+      "id": "state-asset-unreachable:CAL-06",
+      "category": "state-asset-never-authored",
+      "ownerCycle": "12",
+      "evidence": "src/equipment/visualCatalog.ts handWarmerCalorimeterStateAssets"
+    },
+    {
+      "id": "state-asset-unreachable:CAL-07",
+      "category": "state-asset-never-authored",
+      "ownerCycle": "12",
+      "evidence": "src/equipment/visualCatalog.ts handWarmerCalorimeterStateAssets"
+    },
+    {
+      "id": "state-asset-unreachable:CAL-08",
+      "category": "state-asset-never-authored",
+      "ownerCycle": "12",
+      "evidence": "src/equipment/visualCatalog.ts handWarmerCalorimeterStateAssets"
+    },
+    {
+      "id": "state-asset-unreachable:CAL-09",
+      "category": "state-asset-never-authored",
+      "ownerCycle": "12",
+      "evidence": "src/equipment/visualCatalog.ts handWarmerCalorimeterStateAssets"
+    },
+    {
+      "id": "state-asset-unreachable:CAL-10",
+      "category": "state-asset-never-authored",
+      "ownerCycle": "12",
+      "evidence": "src/equipment/visualCatalog.ts handWarmerCalorimeterStateAssets"
+    },
+    {
+      "id": "state-asset-unreachable:CAL-11",
+      "category": "state-asset-never-authored",
+      "ownerCycle": "12",
+      "evidence": "src/equipment/visualCatalog.ts handWarmerCalorimeterStateAssets"
+    },
+    {
+      "id": "state-asset-unreachable:CAL-12",
+      "category": "state-asset-never-authored",
+      "ownerCycle": "12",
+      "evidence": "src/equipment/visualCatalog.ts handWarmerCalorimeterStateAssets"
+    },
+    {
+      "id": "unused-actions:lab:crystal-violet-rate-law",
+      "category": "declared-but-unreferenced-action",
+      "ownerCycle": "02",
+      "evidence": "lab:crystal-violet-rate-law",
+      "actionIds": [
+        "cv11-extension-approval-gate",
+        "cv11-extension-design-hydroxide-series",
+        "cv11-extension-determine-z-and-k"
+      ]
+    },
+    {
+      "id": "unused-imported-actions:lab:hard-water-demo",
+      "category": "imported-but-unreferenced-action",
+      "ownerCycle": "03-04",
+      "evidence": "lab:hard-water-demo",
+      "actionIds": [
+        "place-cylinder"
+      ]
+    },
+    {
+      "id": "unused-imported-actions:lab:intro-filtration-demo",
+      "category": "imported-but-unreferenced-action",
+      "ownerCycle": "03-04",
+      "evidence": "lab:intro-filtration-demo",
+      "actionIds": [
+        "observe-transfer",
+        "place-beaker",
+        "place-cylinder",
+        "record-volume"
+      ]
+    },
+    {
+      "id": "visual-state-unresolved:blue1-0-10",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "technique:blue1-percent-transmittance"
+    },
+    {
+      "id": "visual-state-unresolved:blue1-1-9",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "technique:blue1-percent-transmittance | technique:blue1-standard-dilutions"
+    },
+    {
+      "id": "visual-state-unresolved:blue1-10-0",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "lab:blue1-spectroscopy | technique:blue1-percent-transmittance | technique:blue1-standard-dilutions"
+    },
+    {
+      "id": "visual-state-unresolved:blue1-2-8",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "technique:blue1-percent-transmittance | technique:blue1-standard-dilutions"
+    },
+    {
+      "id": "visual-state-unresolved:blue1-3-7",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "technique:blue1-percent-transmittance | technique:blue1-standard-dilutions"
+    },
+    {
+      "id": "visual-state-unresolved:blue1-4-6",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "technique:blue1-percent-transmittance | technique:blue1-standard-dilutions"
+    },
+    {
+      "id": "visual-state-unresolved:blue1-6-4",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "technique:blue1-percent-transmittance | technique:blue1-standard-dilutions"
+    },
+    {
+      "id": "visual-state-unresolved:blue1-8-2",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "technique:blue1-percent-transmittance | technique:blue1-standard-dilutions"
+    },
+    {
+      "id": "visual-state-unresolved:brass-sample",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "lab:brass-colorimetry"
+    },
+    {
+      "id": "visual-state-unresolved:cloudy-blue-precipitate",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "technique:equilibrium-rainbow-inquiry"
+    },
+    {
+      "id": "visual-state-unresolved:copper-blue-solution",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "lab:brass-colorimetry | technique:brass-spectrophotometry"
+    },
+    {
+      "id": "visual-state-unresolved:copper-blue-solution-at-mark",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "lab:brass-colorimetry"
+    },
+    {
+      "id": "visual-state-unresolved:diluted-solution",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "technique:hand-warmer-calorimetry"
+    },
+    {
+      "id": "visual-state-unresolved:dissolving-solid",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "technique:hand-warmer-calorimetry"
+    },
+    {
+      "id": "visual-state-unresolved:emulsion",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "technique:quick-ache-extraction-recovery"
+    },
+    {
+      "id": "visual-state-unresolved:equilibrium-pale-yellow",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "lab:equilibrium-rainbow-display | technique:equilibrium-rainbow-inquiry"
+    },
+    {
+      "id": "visual-state-unresolved:equilibrium-yellow-orange",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "technique:equilibrium-rainbow-inquiry"
+    },
+    {
+      "id": "visual-state-unresolved:paper-unspotted",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "lab:paper-chromatography | technique:paper-chromatography"
+    },
+    {
+      "id": "visual-state-unresolved:permanganate-faint-pink",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "lab:hydrogen-peroxide-redox-titration"
+    },
+    {
+      "id": "visual-state-unresolved:permanganate-overshoot-purple",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "lab:hydrogen-peroxide-redox-titration"
+    },
+    {
+      "id": "visual-state-unresolved:permanganate-solution",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "lab:hydrogen-peroxide-redox-titration"
+    },
+    {
+      "id": "visual-state-unresolved:purple-solution",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "lab:crystal-violet-rate-law | technique:crystal-violet-kinetics | technique:crystal-violet-micromolar-dilution-series | technique:crystal-violet-spectrophotometer-calibration | technique:crystal-violet-waste-treatment | technique:redox-titration"
+    },
+    {
+      "id": "visual-state-unresolved:redox-colorless-solution",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "lab:hydrogen-peroxide-redox-titration"
+    },
+    {
+      "id": "visual-state-unresolved:syringe-empty",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "lab:equilibrium-rainbow-display | technique:equilibrium-rainbow-inquiry"
+    },
+    {
+      "id": "visual-state-unresolved:syringe-extended",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "technique:equilibrium-rainbow-inquiry"
+    },
+    {
+      "id": "visual-state-unresolved:syringe-filled",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "technique:equilibrium-rainbow-inquiry"
+    },
+    {
+      "id": "visual-state-unresolved:syringe-gas-expelled",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "technique:equilibrium-rainbow-inquiry"
+    },
+    {
+      "id": "visual-state-unresolved:syringe-inverted",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "technique:equilibrium-rainbow-inquiry"
+    },
+    {
+      "id": "visual-state-unresolved:syringe-valve-closed",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "technique:equilibrium-rainbow-inquiry"
+    },
+    {
+      "id": "visual-state-unresolved:teacher-configured-beverage",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "lab:beverage-acidity"
+    },
+    {
+      "id": "visual-state-unresolved:two-layer-extraction",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "technique:quick-ache-extraction-recovery"
+    },
+    {
+      "id": "visual-state-unresolved:white-powder",
+      "category": "authored-visual-state-without-style-or-asset",
+      "ownerCycle": "05",
+      "evidence": "lab:brass-colorimetry"
+    }
+  ]
+}

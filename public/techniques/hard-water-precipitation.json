@@ -1,0 +1,227 @@
+{
+  "id": "hard-water-precipitation",
+  "title": "Hard-Water Calcium Carbonate Precipitation",
+  "learningGoal": "Create a configured CaCO3 precipitate in a hard-water sample without treating simulated mass as measurement evidence.",
+  "requiredEquipment": [
+    "beaker-250ml",
+    "reagent-bottle"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "beaker-250ml-1",
+        "definitionId": "beaker-250ml",
+        "label": "250 mL beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "reagent-bottle-1",
+        "definitionId": "reagent-bottle",
+        "label": "Reagent bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Carbonate reagent",
+          "volumeMl": 20,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "precipitate-caco3",
+      "verb": "precipitate",
+      "label": "Add configured carbonate reagent and form CaCO3 precipitate",
+      "parameters": {
+        "sourceDefinitionId": "reagent-bottle",
+        "targetDefinitionId": "beaker-250ml",
+        "precipitateMassG": "{{config.precipitateMassG}}",
+        "finalVolumeMl": "{{config.finalVolumeMl}}"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "dissolve updates runtime state through structured equipment contents."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for hard-water precipitation.",
+          "recovery": "Return to the highlighted node and complete its prerequisite first."
+        },
+        {
+          "id": "invalid-apparatus-state",
+          "when": "the required source, target, tool, or temperature state is missing",
+          "message": "The apparatus is not ready for hard-water precipitation.",
+          "recovery": "Correct the named apparatus or temperature prerequisite, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Calcium carbonate precipitate is represented structurally.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "dissolve"
+      ],
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "reagent-bottle",
+        "targetDefinitionId": "beaker-250ml",
+        "accessibleLabel": "Pour carbonate reagent from the reagent bottle into the beaker.",
+        "successCue": "Calcium carbonate precipitate is represented structurally.",
+        "invalidCue": "Add reagent to the beaker after measuring the water sample."
+      },
+      "atomId": "atom.precipitate.form-gravimetric-solid",
+      "equipmentRoleBindings": {
+        "precipitation-vessel": "beaker-250ml",
+        "precipitating-reagent-source": "reagent-bottle"
+      }
+    }
+  ],
+  "process": {
+    "startNodeId": "precipitate-sample-node",
+    "nodes": [
+      {
+        "id": "precipitate-sample-node",
+        "type": "action",
+        "title": "Add configured carbonate reagent and form CaCO3 precipitate",
+        "description": "Pour carbonate reagent from the reagent bottle into the beaker.",
+        "actionId": "precipitate-caco3",
+        "config": {},
+        "validation": [
+          {
+            "id": "precipitate-caco3-complete",
+            "type": "actionEvidence",
+            "label": "Add configured carbonate reagent and form CaCO3 precipitate was completed.",
+            "actionId": "precipitate-caco3"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Add configured carbonate reagent and form CaCO3 precipitate complete.",
+          "retry": "Correct the prerequisite and retry add configured carbonate reagent and form caco3 precipitate."
+        }
+      }
+    ],
+    "edges": []
+  },
+  "successCriteria": [
+    {
+      "id": "hard-water-precipitation-success",
+      "type": "actionEvidence",
+      "label": "Configured CaCO3 precipitation was completed.",
+      "actionId": "precipitate-caco3"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "the current process node expects a different action",
+      "message": "That action is out of sequence for hard-water precipitation.",
+      "recovery": "Return to the highlighted node and complete its prerequisite first."
+    },
+    {
+      "id": "invalid-apparatus-state",
+      "when": "the required source, target, tool, or temperature state is missing",
+      "message": "The apparatus is not ready for hard-water precipitation.",
+      "recovery": "Correct the named apparatus or temperature prerequisite, then retry."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.2.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-08-30T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "hard-water",
+      "precipitation",
+      "disclosed-r-c-practice"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry",
+        "kind": "entry",
+        "nodeId": "precipitate-sample-node",
+        "label": "Entry"
+      },
+      {
+        "id": "exit",
+        "kind": "exit",
+        "nodeId": "precipitate-sample-node",
+        "label": "Exit"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "precipitation-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beaker-250ml"
+        ],
+        "sourceInstanceIds": [
+          "beaker-250ml-1"
+        ]
+      },
+      {
+        "roleId": "precipitating-reagent-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "reagent-bottle"
+        ],
+        "sourceInstanceIds": [
+          "reagent-bottle-1"
+        ]
+      }
+    ],
+    "modelSlots": [],
+    "configurationSlots": [
+      {
+        "id": "precipitateMassG",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "finalVolumeMl",
+        "valueType": "number",
+        "required": true
+      }
+    ],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [
+      {
+        "id": "wet-precipitate",
+        "kind": "action-evidence",
+        "actionId": "precipitate-caco3"
+      }
+    ],
+    "completion": {
+      "exitPortIds": [
+        "exit"
+      ],
+      "requiredEvidenceOutputIds": [
+        "wet-precipitate"
+      ],
+      "requiredValidationRuleIds": [
+        "hard-water-precipitation-success"
+      ]
+    },
+    "catalogDisposition": "lab-scoped"
+  }
+}

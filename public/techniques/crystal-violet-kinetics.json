@@ -1,0 +1,1580 @@
+{
+  "id": "crystal-violet-kinetics",
+  "title": "Crystal Violet Timed Kinetics",
+  "learningGoal": "Keep reactants separate until the approved contact-defined time zero, preserve transfer dead time, and acquire fresh paired time/absorbance evidence before any rate-law comparison.",
+  "requiredEquipment": [
+    "sample-bottle",
+    "reagent-bottle",
+    "graduated-pipette-10ml",
+    "test-tube",
+    "beral-pipette",
+    "cuvette",
+    "spectrophotometer",
+    "stopwatch"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "kinetics-cv-stock",
+        "definitionId": "sample-bottle",
+        "label": "Crystal-violet stock",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "Teacher-configured crystal-violet stock",
+          "volumeMl": 40,
+          "solutes": [],
+          "concentration": {
+            "value": 0.000025,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "purple-solution"
+        }
+      },
+      {
+        "id": "kinetics-naoh-stock",
+        "definitionId": "reagent-bottle",
+        "label": "Sodium-hydroxide solution",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "Teacher-configured sodium hydroxide",
+          "volumeMl": 40,
+          "solutes": [],
+          "concentration": {
+            "value": 0.2,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "kinetics-cv-pipette",
+        "definitionId": "graduated-pipette-10ml",
+        "label": "Crystal-violet-only pipette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "kinetics-naoh-pipette",
+        "definitionId": "graduated-pipette-10ml",
+        "label": "Sodium-hydroxide-only pipette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "kinetics-reaction-vessel",
+        "definitionId": "test-tube",
+        "label": "Kinetics reaction vessel",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "kinetics-transfer-pipette",
+        "definitionId": "beral-pipette",
+        "label": "Clean kinetics transfer pipette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "kinetics-reaction-cuvette",
+        "definitionId": "cuvette",
+        "label": "Kinetics reaction cuvette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "kinetics-spectrophotometer",
+        "definitionId": "spectrophotometer",
+        "label": "Spectrophotometer",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "kinetics-stopwatch",
+        "definitionId": "stopwatch",
+        "label": "Reaction stopwatch",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "measure-cv-reaction-portion",
+      "verb": "measureVolume",
+      "label": "Measure the approved crystal-violet portion",
+      "parameters": {
+        "sourceDefinitionId": "sample-bottle",
+        "sourceInstanceId": "kinetics-cv-stock",
+        "targetDefinitionId": "graduated-pipette-10ml",
+        "targetInstanceId": "kinetics-cv-pipette",
+        "volumeMl": "{{config.cvVolumeMl}}",
+        "measurementId": "kinetics-cv-volume",
+        "tolerance": 0.05,
+        "pipetteAssignment": "crystal-violet",
+        "configurationProvenance": "teacher-approved kinetic design"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "sample-bottle",
+        "targetDefinitionId": "graduated-pipette-10ml",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Measure the approved crystal-violet portion with its assigned pipette.",
+        "successCue": "The source-grounded operation is recorded.",
+        "invalidCue": "Check the approved design, assigned equipment, and timed sequence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Measure the approved crystal-violet portion is complete."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That operation is out of sequence for the timed kinetics run.",
+          "recovery": "Return to the highlighted operation and preserve the approved time-zero sequence."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "the kinetic design or scheduled point has not been approved",
+          "message": "This kinetics choice still requires teacher approval.",
+          "recovery": "Record the proposed quantities or timing and obtain approval before continuing."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a liquid is handled with the wrong assigned pipette",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately assigned crystal-violet, sodium-hydroxide, or transfer pipette."
+        }
+      ],
+      "feedback": {
+        "success": "Measure the approved crystal-violet portion is complete.",
+        "invalid": "The operation was not accepted. Review the approved kinetics sequence."
+      },
+      "evidence": [
+        "measureVolume",
+        "kinetic-cv-portion",
+        "separate-pipette"
+      ],
+      "atomId": "atom.measure.variable-volume",
+      "equipmentRoleBindings": {
+        "variable-volume-measuring-device": "graduated-pipette-10ml",
+        "liquid-source": "sample-bottle"
+      }
+    },
+    {
+      "id": "measure-naoh-reaction-portion",
+      "verb": "measureVolume",
+      "label": "Measure the approved sodium-hydroxide portion",
+      "parameters": {
+        "sourceDefinitionId": "reagent-bottle",
+        "sourceInstanceId": "kinetics-naoh-stock",
+        "targetDefinitionId": "graduated-pipette-10ml",
+        "targetInstanceId": "kinetics-naoh-pipette",
+        "volumeMl": "{{config.naohVolumeMl}}",
+        "measurementId": "kinetics-naoh-volume",
+        "tolerance": 0.05,
+        "pipetteAssignment": "sodium-hydroxide",
+        "configurationProvenance": "teacher-approved kinetic design"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "reagent-bottle",
+        "targetDefinitionId": "graduated-pipette-10ml",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Measure the approved sodium-hydroxide portion with its assigned pipette.",
+        "successCue": "The source-grounded operation is recorded.",
+        "invalidCue": "Check the approved design, assigned equipment, and timed sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "kinetics-cv-volume-required",
+          "type": "measurementRecorded",
+          "label": "The crystal-violet portion is measured and remains separate.",
+          "measurementId": "kinetics-cv-volume"
+        }
+      ],
+      "stateChanges": [
+        "Measure the approved sodium-hydroxide portion is complete."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That operation is out of sequence for the timed kinetics run.",
+          "recovery": "Return to the highlighted operation and preserve the approved time-zero sequence."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "the kinetic design or scheduled point has not been approved",
+          "message": "This kinetics choice still requires teacher approval.",
+          "recovery": "Record the proposed quantities or timing and obtain approval before continuing."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a liquid is handled with the wrong assigned pipette",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately assigned crystal-violet, sodium-hydroxide, or transfer pipette."
+        }
+      ],
+      "feedback": {
+        "success": "Measure the approved sodium-hydroxide portion is complete.",
+        "invalid": "The operation was not accepted. Review the approved kinetics sequence."
+      },
+      "evidence": [
+        "measureVolume",
+        "kinetic-naoh-portion",
+        "separate-pipette"
+      ],
+      "atomId": "atom.measure.variable-volume",
+      "equipmentRoleBindings": {
+        "variable-volume-measuring-device": "graduated-pipette-10ml",
+        "liquid-source": "reagent-bottle"
+      }
+    },
+    {
+      "id": "transfer-cv-to-reaction-vessel",
+      "verb": "transfer",
+      "label": "Transfer crystal violet to the reaction vessel",
+      "parameters": {
+        "sourceDefinitionId": "graduated-pipette-10ml",
+        "sourceInstanceId": "kinetics-cv-pipette",
+        "targetDefinitionId": "test-tube",
+        "targetInstanceId": "kinetics-reaction-vessel",
+        "volumeMl": "{{config.cvVolumeMl}}",
+        "pipetteAssignment": "crystal-violet"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "graduated-pipette-10ml",
+        "targetDefinitionId": "test-tube",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Transfer only the measured crystal-violet portion to the reaction vessel.",
+        "successCue": "The source-grounded operation is recorded.",
+        "invalidCue": "Check the approved design, assigned equipment, and timed sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "kinetics-timer-armed-required",
+          "type": "notebookEntry",
+          "label": "The timer and acquisition are armed before reactant contact.",
+          "notebookTag": "timer-armed"
+        }
+      ],
+      "stateChanges": [
+        "Crystal violet is staged in the reaction vessel while sodium hydroxide remains separate."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That operation is out of sequence for the timed kinetics run.",
+          "recovery": "Return to the highlighted operation and preserve the approved time-zero sequence."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "the kinetic design or scheduled point has not been approved",
+          "message": "This kinetics choice still requires teacher approval.",
+          "recovery": "Record the proposed quantities or timing and obtain approval before continuing."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a liquid is handled with the wrong assigned pipette",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately assigned crystal-violet, sodium-hydroxide, or transfer pipette."
+        }
+      ],
+      "feedback": {
+        "success": "Crystal violet is staged in the reaction vessel while sodium hydroxide remains separate.",
+        "invalid": "The operation was not accepted. Review the approved kinetics sequence."
+      },
+      "evidence": [
+        "transfer",
+        "kinetic-cv-portion",
+        "reactants-separated"
+      ],
+      "atomId": "atom.transfer.measured-liquid",
+      "equipmentRoleBindings": {
+        "measured-solvent-source": "graduated-pipette-10ml",
+        "receiving-vessel": "test-tube"
+      }
+    },
+    {
+      "id": "initiate-cv-naoh-reaction",
+      "verb": "transfer",
+      "label": "Add sodium hydroxide to initiate the timed reaction",
+      "parameters": {
+        "sourceDefinitionId": "graduated-pipette-10ml",
+        "sourceInstanceId": "kinetics-naoh-pipette",
+        "targetDefinitionId": "test-tube",
+        "targetInstanceId": "kinetics-reaction-vessel",
+        "volumeMl": "{{config.naohVolumeMl}}",
+        "totalVolumeMl": "{{config.totalVolumeMl}}",
+        "reactionStartTrigger": "first-reactant-contact",
+        "timerStartsAtContact": true,
+        "mixImmediatelyByApprovedMethod": true,
+        "exactTriggerGeometry": "teacher-confirmed; not inferred by the simulator",
+        "visualState": "purple-solution",
+        "pipetteAssignment": "sodium-hydroxide"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "graduated-pipette-10ml",
+        "targetDefinitionId": "test-tube",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Add the measured sodium-hydroxide portion; this contact is the recorded time-zero event.",
+        "successCue": "The source-grounded operation is recorded.",
+        "invalidCue": "Check the approved design, assigned equipment, and timed sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "kinetics-naoh-volume-required",
+          "type": "measurementRecorded",
+          "label": "The sodium-hydroxide portion is measured and remains separate.",
+          "measurementId": "kinetics-naoh-volume"
+        },
+        {
+          "id": "kinetics-cv-staged-required",
+          "type": "actionEvidence",
+          "label": "Crystal violet is staged in the reaction vessel.",
+          "actionId": "transfer-cv-to-reaction-vessel"
+        }
+      ],
+      "stateChanges": [
+        "Reactant contact starts the reaction and the timer at the same defined time-zero event."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That operation is out of sequence for the timed kinetics run.",
+          "recovery": "Return to the highlighted operation and preserve the approved time-zero sequence."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "the kinetic design or scheduled point has not been approved",
+          "message": "This kinetics choice still requires teacher approval.",
+          "recovery": "Record the proposed quantities or timing and obtain approval before continuing."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a liquid is handled with the wrong assigned pipette",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately assigned crystal-violet, sodium-hydroxide, or transfer pipette."
+        }
+      ],
+      "feedback": {
+        "success": "Reactant contact starts the reaction and the timer at the same defined time-zero event.",
+        "invalid": "The operation was not accepted. Review the approved kinetics sequence."
+      },
+      "evidence": [
+        "transfer",
+        "reaction-start",
+        "timer-coupled",
+        "time-zero"
+      ],
+      "atomId": "atom.transfer.initiate-timed-reaction",
+      "equipmentRoleBindings": {
+        "measured-solvent-source": "graduated-pipette-10ml",
+        "reaction-vessel": "test-tube",
+        "timing-instrument": "stopwatch"
+      }
+    },
+    {
+      "id": "record-immediate-mixing",
+      "verb": "observe",
+      "label": "Record immediate mixing and time-zero alignment",
+      "parameters": {
+        "note": "Record that the teacher-approved mixing method followed reactant contact immediately, the timer continued from that contact, and no transfer or insertion delay was erased.",
+        "tag": "timed-mixing",
+        "evidenceBoundary": "This records the approved physical mixing; the notebook handler does not claim to perform it."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record immediate mixing and the unchanged contact-defined time zero.",
+        "successCue": "The source-grounded operation is recorded.",
+        "invalidCue": "Check the approved design, assigned equipment, and timed sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "kinetics-contact-required",
+          "type": "actionEvidence",
+          "label": "Reactant contact fixed the reaction start and time zero.",
+          "actionId": "initiate-cv-naoh-reaction"
+        }
+      ],
+      "stateChanges": [
+        "Record immediate mixing and time-zero alignment is complete."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That operation is out of sequence for the timed kinetics run.",
+          "recovery": "Return to the highlighted operation and preserve the approved time-zero sequence."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "the kinetic design or scheduled point has not been approved",
+          "message": "This kinetics choice still requires teacher approval.",
+          "recovery": "Record the proposed quantities or timing and obtain approval before continuing."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a liquid is handled with the wrong assigned pipette",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately assigned crystal-violet, sodium-hydroxide, or transfer pipette."
+        }
+      ],
+      "feedback": {
+        "success": "Record immediate mixing and time-zero alignment is complete.",
+        "invalid": "The operation was not accepted. Review the approved kinetics sequence."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "timed-mixing",
+        "time-zero"
+      ]
+    },
+    {
+      "id": "measure-reacting-aliquot",
+      "verb": "measureVolume",
+      "label": "Measure a reacting aliquot while timing continues",
+      "parameters": {
+        "sourceDefinitionId": "test-tube",
+        "sourceInstanceId": "kinetics-reaction-vessel",
+        "targetDefinitionId": "beral-pipette",
+        "targetInstanceId": "kinetics-transfer-pipette",
+        "volumeMl": "{{config.aliquotVolumeMl}}",
+        "measurementId": "kinetics-reacting-aliquot-volume",
+        "tolerance": 0.1,
+        "timerContinues": true
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "test-tube",
+        "targetDefinitionId": "beral-pipette",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Withdraw a fresh reacting aliquot without resetting the timer.",
+        "successCue": "The source-grounded operation is recorded.",
+        "invalidCue": "Check the approved design, assigned equipment, and timed sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "kinetics-mixing-record-required",
+          "type": "notebookEntry",
+          "label": "Immediate mixing and time-zero alignment are recorded.",
+          "notebookTag": "timed-mixing"
+        }
+      ],
+      "stateChanges": [
+        "Measure a reacting aliquot while timing continues is complete."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That operation is out of sequence for the timed kinetics run.",
+          "recovery": "Return to the highlighted operation and preserve the approved time-zero sequence."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "the kinetic design or scheduled point has not been approved",
+          "message": "This kinetics choice still requires teacher approval.",
+          "recovery": "Record the proposed quantities or timing and obtain approval before continuing."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a liquid is handled with the wrong assigned pipette",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately assigned crystal-violet, sodium-hydroxide, or transfer pipette."
+        }
+      ],
+      "feedback": {
+        "success": "Measure a reacting aliquot while timing continues is complete.",
+        "invalid": "The operation was not accepted. Review the approved kinetics sequence."
+      },
+      "evidence": [
+        "measureVolume",
+        "reacting-aliquot",
+        "timer-running"
+      ],
+      "atomId": "atom.measure.photometric-aliquot",
+      "equipmentRoleBindings": {
+        "sample-source": "test-tube",
+        "photometric-aliquot-tool": "beral-pipette"
+      }
+    },
+    {
+      "id": "fill-reaction-cuvette",
+      "verb": "transfer",
+      "label": "Fill the reaction cuvette while timing continues",
+      "parameters": {
+        "sourceDefinitionId": "beral-pipette",
+        "sourceInstanceId": "kinetics-transfer-pipette",
+        "targetDefinitionId": "cuvette",
+        "targetInstanceId": "kinetics-reaction-cuvette",
+        "volumeMl": "{{config.aliquotVolumeMl}}",
+        "timerContinues": true
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "beral-pipette",
+        "targetDefinitionId": "cuvette",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Deliver the reacting aliquot to the kinetic cuvette while timing continues.",
+        "successCue": "The source-grounded operation is recorded.",
+        "invalidCue": "Check the approved design, assigned equipment, and timed sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "kinetics-aliquot-required",
+          "type": "measurementRecorded",
+          "label": "A fresh reacting aliquot is measured.",
+          "measurementId": "kinetics-reacting-aliquot-volume"
+        }
+      ],
+      "stateChanges": [
+        "Fill the reaction cuvette while timing continues is complete."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That operation is out of sequence for the timed kinetics run.",
+          "recovery": "Return to the highlighted operation and preserve the approved time-zero sequence."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "the kinetic design or scheduled point has not been approved",
+          "message": "This kinetics choice still requires teacher approval.",
+          "recovery": "Record the proposed quantities or timing and obtain approval before continuing."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a liquid is handled with the wrong assigned pipette",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately assigned crystal-violet, sodium-hydroxide, or transfer pipette."
+        }
+      ],
+      "feedback": {
+        "success": "Fill the reaction cuvette while timing continues is complete.",
+        "invalid": "The operation was not accepted. Review the approved kinetics sequence."
+      },
+      "evidence": [
+        "transfer",
+        "reacting-aliquot",
+        "timer-running"
+      ],
+      "atomId": "atom.transfer.fill-cuvette",
+      "equipmentRoleBindings": {
+        "sample-source": "beral-pipette",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "insert-reaction-cuvette",
+      "verb": "place",
+      "label": "Insert the reaction cuvette while timing continues",
+      "parameters": {
+        "equipmentDefinitionId": "cuvette",
+        "equipmentInstanceId": "kinetics-reaction-cuvette",
+        "sourceDefinitionId": "cuvette",
+        "targetDefinitionId": "spectrophotometer",
+        "targetInstanceId": "kinetics-spectrophotometer",
+        "snapZoneId": "spectrophotometer-cuvette-slot",
+        "timerContinues": true
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "cuvette",
+        "targetDefinitionId": "spectrophotometer",
+        "snapZoneId": "spectrophotometer-cuvette-slot",
+        "accessibleLabel": "Insert the reaction cuvette without stopping or resetting the timer.",
+        "successCue": "The source-grounded operation is recorded.",
+        "invalidCue": "Check the approved design, assigned equipment, and timed sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "kinetics-cuvette-filled-required",
+          "type": "actionEvidence",
+          "label": "The reaction cuvette is filled.",
+          "actionId": "fill-reaction-cuvette"
+        },
+        {
+          "id": "kinetics-instrument-zero-required",
+          "type": "notebookEntry",
+          "label": "The instrument is zeroed with the approved blank.",
+          "notebookTag": "{{config.zeroNotebookTag}}"
+        }
+      ],
+      "stateChanges": [
+        "Insert the reaction cuvette while timing continues is complete."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That operation is out of sequence for the timed kinetics run.",
+          "recovery": "Return to the highlighted operation and preserve the approved time-zero sequence."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "the kinetic design or scheduled point has not been approved",
+          "message": "This kinetics choice still requires teacher approval.",
+          "recovery": "Record the proposed quantities or timing and obtain approval before continuing."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a liquid is handled with the wrong assigned pipette",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately assigned crystal-violet, sodium-hydroxide, or transfer pipette."
+        }
+      ],
+      "feedback": {
+        "success": "Insert the reaction cuvette while timing continues is complete.",
+        "invalid": "The operation was not accepted. Review the approved kinetics sequence."
+      },
+      "evidence": [
+        "place",
+        "timer-running",
+        "dead-time-preserved"
+      ],
+      "atomId": "atom.place.insert-cuvette",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "wait-for-cv-scheduled-time",
+      "verb": "record",
+      "label": "Record the fresh elapsed time for this scheduled point",
+      "parameters": {
+        "measurementId": "kinetics-scheduled-time",
+        "label": "Scheduled kinetic elapsed time",
+        "value": "{{config.scheduledTimeS}}",
+        "unit": "s",
+        "pairId": "{{config.pairId}}",
+        "quantity": "elapsedTime",
+        "timeZeroDefinition": "reactant-contact-event",
+        "evidenceLayer": "raw-timed-observation"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "measurementId",
+        "accessibleLabel": "Record the current elapsed time as a fresh raw time-series coordinate.",
+        "successCue": "The source-grounded operation is recorded.",
+        "invalidCue": "Check the approved design, assigned equipment, and timed sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "kinetics-dead-time-record-required",
+          "type": "measurementRecorded",
+          "label": "Reaction start, mixing, transfer, and insertion dead time are recorded.",
+          "measurementId": "kinetics-reaction-dead-time"
+        }
+      ],
+      "stateChanges": [
+        "Record the fresh elapsed time for this scheduled point is complete."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That operation is out of sequence for the timed kinetics run.",
+          "recovery": "Return to the highlighted operation and preserve the approved time-zero sequence."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "the kinetic design or scheduled point has not been approved",
+          "message": "This kinetics choice still requires teacher approval.",
+          "recovery": "Record the proposed quantities or timing and obtain approval before continuing."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a liquid is handled with the wrong assigned pipette",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately assigned crystal-violet, sodium-hydroxide, or transfer pipette."
+        }
+      ],
+      "feedback": {
+        "success": "Record the fresh elapsed time for this scheduled point is complete.",
+        "invalid": "The operation was not accepted. Review the approved kinetics sequence."
+      },
+      "evidence": [
+        "record",
+        "measurement",
+        "elapsed-time",
+        "raw-series"
+      ]
+    },
+    {
+      "id": "read-cv-scheduled-absorbance",
+      "verb": "observe",
+      "label": "Read fresh absorbance at the scheduled time",
+      "parameters": {
+        "sourceDefinitionId": "cuvette",
+        "sourceInstanceId": "kinetics-reaction-cuvette",
+        "photometerOperation": "read",
+        "photometerDefinitionId": "spectrophotometer",
+        "photometerInstanceId": "kinetics-spectrophotometer",
+        "photometricQuantity": "absorbance",
+        "wavelengthMeasurementId": "{{config.wavelengthMeasurementId}}",
+        "requiresZeroNotebookTag": "{{config.zeroNotebookTag}}",
+        "cuvetteInstanceId": "kinetics-reaction-cuvette",
+        "measurementId": "kinetics-scheduled-absorbance",
+        "label": "{{config.absorbanceLabel}}",
+        "instrumentReadingValue": "{{config.instrumentReadingValue}}",
+        "unit": "absorbance",
+        "readingProvenance": "teacher-configured simulated instrument observation acquired only on execution",
+        "scheduledTimeMeasurementId": "kinetics-scheduled-time",
+        "pairId": "{{config.pairId}}",
+        "evidenceLayer": "raw-instrument-observation",
+        "modelComparisonEligibleOnlyAfterRecord": true
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "cuvette",
+        "stationId": "spectrophotometer",
+        "accessibleLabel": "Read a fresh absorbance from the inserted reacting sample.",
+        "successCue": "The source-grounded operation is recorded.",
+        "invalidCue": "Check the approved design, assigned equipment, and timed sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "kinetics-time-coordinate-required",
+          "type": "measurementRecorded",
+          "label": "The paired elapsed time is freshly recorded.",
+          "measurementId": "kinetics-scheduled-time"
+        }
+      ],
+      "stateChanges": [
+        "Read fresh absorbance at the scheduled time is complete."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That operation is out of sequence for the timed kinetics run.",
+          "recovery": "Return to the highlighted operation and preserve the approved time-zero sequence."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "the kinetic design or scheduled point has not been approved",
+          "message": "This kinetics choice still requires teacher approval.",
+          "recovery": "Record the proposed quantities or timing and obtain approval before continuing."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a liquid is handled with the wrong assigned pipette",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately assigned crystal-violet, sodium-hydroxide, or transfer pipette."
+        }
+      ],
+      "feedback": {
+        "success": "Read fresh absorbance at the scheduled time is complete.",
+        "invalid": "The operation was not accepted. Review the approved kinetics sequence."
+      },
+      "evidence": [
+        "observe",
+        "measurement",
+        "raw-instrument-observation"
+      ],
+      "atomId": "atom.observe.read-photometer",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "record-cv-scheduled-absorbance",
+      "verb": "record",
+      "label": "Record the paired raw absorbance",
+      "parameters": {
+        "measurementId": "kinetics-scheduled-absorbance",
+        "label": "{{config.absorbanceLabel}}",
+        "unit": "absorbance",
+        "pairId": "{{config.pairId}}",
+        "scheduledTimeMeasurementId": "kinetics-scheduled-time",
+        "copyExistingMeasurementOnly": true,
+        "evidenceLayer": "raw-time-series-row",
+        "excludesModelFitOrSelection": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "measurementId",
+        "accessibleLabel": "Copy the fresh instrument observation into its paired raw time-series row.",
+        "successCue": "The source-grounded operation is recorded.",
+        "invalidCue": "Check the approved design, assigned equipment, and timed sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "kinetics-fresh-absorbance-required",
+          "type": "measurementRecorded",
+          "label": "A fresh absorbance was read for this scheduled point.",
+          "measurementId": "kinetics-scheduled-absorbance"
+        }
+      ],
+      "stateChanges": [
+        "Record the paired raw absorbance is complete."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That operation is out of sequence for the timed kinetics run.",
+          "recovery": "Return to the highlighted operation and preserve the approved time-zero sequence."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "the kinetic design or scheduled point has not been approved",
+          "message": "This kinetics choice still requires teacher approval.",
+          "recovery": "Record the proposed quantities or timing and obtain approval before continuing."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a liquid is handled with the wrong assigned pipette",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately assigned crystal-violet, sodium-hydroxide, or transfer pipette."
+        }
+      ],
+      "feedback": {
+        "success": "Record the paired raw absorbance is complete.",
+        "invalid": "The operation was not accepted. Review the approved kinetics sequence."
+      },
+      "evidence": [
+        "record",
+        "measurement",
+        "raw-time-series-row"
+      ],
+      "atomId": "atom.record.photometer-reading",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      }
+    }
+  ],
+  "process": {
+    "startNodeId": "measure-cv-reaction-portion-node",
+    "nodes": [
+      {
+        "id": "measure-cv-reaction-portion-node",
+        "type": "action",
+        "title": "Measure the approved crystal-violet portion",
+        "description": "Measure the approved crystal-violet portion is complete.",
+        "actionId": "measure-cv-reaction-portion",
+        "config": {},
+        "validation": [
+          {
+            "id": "measure-cv-reaction-portion-complete",
+            "type": "actionEvidence",
+            "label": "Measure the approved crystal-violet portion was completed.",
+            "actionId": "measure-cv-reaction-portion"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Measure the approved crystal-violet portion complete.",
+          "retry": "Review measure the approved crystal-violet portion and try again."
+        }
+      },
+      {
+        "id": "measure-naoh-reaction-portion-node",
+        "type": "action",
+        "title": "Measure the approved sodium-hydroxide portion",
+        "description": "Measure the approved sodium-hydroxide portion is complete.",
+        "actionId": "measure-naoh-reaction-portion",
+        "config": {},
+        "validation": [
+          {
+            "id": "measure-naoh-reaction-portion-complete",
+            "type": "actionEvidence",
+            "label": "Measure the approved sodium-hydroxide portion was completed.",
+            "actionId": "measure-naoh-reaction-portion"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Measure the approved sodium-hydroxide portion complete.",
+          "retry": "Review measure the approved sodium-hydroxide portion and try again."
+        }
+      },
+      {
+        "id": "transfer-cv-to-reaction-vessel-node",
+        "type": "action",
+        "title": "Transfer crystal violet to the reaction vessel",
+        "description": "Crystal violet is staged in the reaction vessel while sodium hydroxide remains separate.",
+        "actionId": "transfer-cv-to-reaction-vessel",
+        "config": {},
+        "validation": [
+          {
+            "id": "transfer-cv-to-reaction-vessel-complete",
+            "type": "actionEvidence",
+            "label": "Transfer crystal violet to the reaction vessel was completed.",
+            "actionId": "transfer-cv-to-reaction-vessel"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Transfer crystal violet to the reaction vessel complete.",
+          "retry": "Review transfer crystal violet to the reaction vessel and try again."
+        }
+      },
+      {
+        "id": "initiate-cv-naoh-reaction-node",
+        "type": "action",
+        "title": "Add sodium hydroxide to initiate the timed reaction",
+        "description": "Reactant contact starts the reaction and the timer at the same defined time-zero event.",
+        "actionId": "initiate-cv-naoh-reaction",
+        "config": {},
+        "validation": [
+          {
+            "id": "initiate-cv-naoh-reaction-complete",
+            "type": "actionEvidence",
+            "label": "Add sodium hydroxide to initiate the timed reaction was completed.",
+            "actionId": "initiate-cv-naoh-reaction"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Add sodium hydroxide to initiate the timed reaction complete.",
+          "retry": "Review add sodium hydroxide to initiate the timed reaction and try again."
+        }
+      },
+      {
+        "id": "record-immediate-mixing-node",
+        "type": "observation",
+        "title": "Record immediate mixing and time-zero alignment",
+        "description": "Record immediate mixing and time-zero alignment is complete.",
+        "actionId": "record-immediate-mixing",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-immediate-mixing-complete",
+            "type": "actionEvidence",
+            "label": "Record immediate mixing and time-zero alignment was completed.",
+            "actionId": "record-immediate-mixing"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record immediate mixing and time-zero alignment complete.",
+          "retry": "Review record immediate mixing and time-zero alignment and try again."
+        }
+      },
+      {
+        "id": "measure-reacting-aliquot-node",
+        "type": "action",
+        "title": "Measure a reacting aliquot while timing continues",
+        "description": "Measure a reacting aliquot while timing continues is complete.",
+        "actionId": "measure-reacting-aliquot",
+        "config": {},
+        "validation": [
+          {
+            "id": "measure-reacting-aliquot-complete",
+            "type": "actionEvidence",
+            "label": "Measure a reacting aliquot while timing continues was completed.",
+            "actionId": "measure-reacting-aliquot"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Measure a reacting aliquot while timing continues complete.",
+          "retry": "Review measure a reacting aliquot while timing continues and try again."
+        }
+      },
+      {
+        "id": "fill-reaction-cuvette-node",
+        "type": "action",
+        "title": "Fill the reaction cuvette while timing continues",
+        "description": "Fill the reaction cuvette while timing continues is complete.",
+        "actionId": "fill-reaction-cuvette",
+        "config": {},
+        "validation": [
+          {
+            "id": "fill-reaction-cuvette-complete",
+            "type": "actionEvidence",
+            "label": "Fill the reaction cuvette while timing continues was completed.",
+            "actionId": "fill-reaction-cuvette"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Fill the reaction cuvette while timing continues complete.",
+          "retry": "Review fill the reaction cuvette while timing continues and try again."
+        }
+      },
+      {
+        "id": "insert-reaction-cuvette-node",
+        "type": "action",
+        "title": "Insert the reaction cuvette while timing continues",
+        "description": "Insert the reaction cuvette while timing continues is complete.",
+        "actionId": "insert-reaction-cuvette",
+        "config": {},
+        "validation": [
+          {
+            "id": "insert-reaction-cuvette-complete",
+            "type": "actionEvidence",
+            "label": "Insert the reaction cuvette while timing continues was completed.",
+            "actionId": "insert-reaction-cuvette"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Insert the reaction cuvette while timing continues complete.",
+          "retry": "Review insert the reaction cuvette while timing continues and try again."
+        }
+      },
+      {
+        "id": "wait-for-cv-scheduled-time-node",
+        "type": "observation",
+        "title": "Record the fresh elapsed time for this scheduled point",
+        "description": "Record the fresh elapsed time for this scheduled point is complete.",
+        "actionId": "wait-for-cv-scheduled-time",
+        "config": {},
+        "validation": [
+          {
+            "id": "wait-for-cv-scheduled-time-complete",
+            "type": "actionEvidence",
+            "label": "Record the fresh elapsed time for this scheduled point was completed.",
+            "actionId": "wait-for-cv-scheduled-time"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record the fresh elapsed time for this scheduled point complete.",
+          "retry": "Review record the fresh elapsed time for this scheduled point and try again."
+        }
+      },
+      {
+        "id": "read-cv-scheduled-absorbance-node",
+        "type": "observation",
+        "title": "Read fresh absorbance at the scheduled time",
+        "description": "Read fresh absorbance at the scheduled time is complete.",
+        "actionId": "read-cv-scheduled-absorbance",
+        "config": {},
+        "validation": [
+          {
+            "id": "read-cv-scheduled-absorbance-complete",
+            "type": "actionEvidence",
+            "label": "Read fresh absorbance at the scheduled time was completed.",
+            "actionId": "read-cv-scheduled-absorbance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read fresh absorbance at the scheduled time complete.",
+          "retry": "Review read fresh absorbance at the scheduled time and try again."
+        }
+      },
+      {
+        "id": "record-cv-scheduled-absorbance-node",
+        "type": "observation",
+        "title": "Record the paired raw absorbance",
+        "description": "Record the paired raw absorbance is complete.",
+        "actionId": "record-cv-scheduled-absorbance",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-cv-scheduled-absorbance-complete",
+            "type": "actionEvidence",
+            "label": "Record the paired raw absorbance was completed.",
+            "actionId": "record-cv-scheduled-absorbance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record the paired raw absorbance complete.",
+          "retry": "Review record the paired raw absorbance and try again."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "measure-cv-reaction-portion-node",
+        "to": "measure-naoh-reaction-portion-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "measure-naoh-reaction-portion-node",
+        "to": "transfer-cv-to-reaction-vessel-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "transfer-cv-to-reaction-vessel-node",
+        "to": "initiate-cv-naoh-reaction-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "initiate-cv-naoh-reaction-node",
+        "to": "record-immediate-mixing-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-immediate-mixing-node",
+        "to": "measure-reacting-aliquot-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "measure-reacting-aliquot-node",
+        "to": "fill-reaction-cuvette-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "fill-reaction-cuvette-node",
+        "to": "insert-reaction-cuvette-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "insert-reaction-cuvette-node",
+        "to": "wait-for-cv-scheduled-time-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "wait-for-cv-scheduled-time-node",
+        "to": "read-cv-scheduled-absorbance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "read-cv-scheduled-absorbance-node",
+        "to": "record-cv-scheduled-absorbance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "the current node expects a different action",
+      "message": "That operation is out of sequence for the timed kinetics run.",
+      "recovery": "Return to the highlighted operation and preserve the approved time-zero sequence."
+    },
+    {
+      "id": "unapproved-configuration",
+      "when": "the kinetic design or scheduled point has not been approved",
+      "message": "This kinetics choice still requires teacher approval.",
+      "recovery": "Record the proposed quantities or timing and obtain approval before continuing."
+    },
+    {
+      "id": "cross-contamination",
+      "when": "a liquid is handled with the wrong assigned pipette",
+      "message": "That pipette is assigned to a different solution.",
+      "recovery": "Use the separately assigned crystal-violet, sodium-hydroxide, or transfer pipette."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.2.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-06T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "kinetics",
+      "crystal-violet",
+      "timed-acquisition",
+      "composition"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry",
+        "kind": "entry",
+        "nodeId": "measure-cv-reaction-portion-node"
+      },
+      {
+        "id": "exit",
+        "kind": "exit",
+        "nodeId": "record-cv-scheduled-absorbance-node"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "variable-volume-measuring-device",
+        "required": true,
+        "allowedDefinitionIds": [
+          "graduated-pipette-10ml"
+        ],
+        "sourceInstanceIds": [
+          "kinetics-cv-pipette",
+          "kinetics-naoh-pipette"
+        ]
+      },
+      {
+        "roleId": "liquid-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "sample-bottle",
+          "reagent-bottle"
+        ],
+        "sourceInstanceIds": [
+          "kinetics-cv-stock",
+          "kinetics-naoh-stock"
+        ]
+      },
+      {
+        "roleId": "measured-solvent-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "graduated-pipette-10ml"
+        ],
+        "sourceInstanceIds": [
+          "kinetics-cv-pipette",
+          "kinetics-naoh-pipette"
+        ]
+      },
+      {
+        "roleId": "receiving-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "test-tube"
+        ],
+        "sourceInstanceIds": [
+          "kinetics-reaction-vessel"
+        ]
+      },
+      {
+        "roleId": "reaction-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "test-tube"
+        ],
+        "sourceInstanceIds": [
+          "kinetics-reaction-vessel"
+        ]
+      },
+      {
+        "roleId": "timing-instrument",
+        "required": true,
+        "allowedDefinitionIds": [
+          "stopwatch"
+        ],
+        "sourceInstanceIds": [
+          "kinetics-stopwatch"
+        ]
+      },
+      {
+        "roleId": "sample-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "test-tube",
+          "beral-pipette"
+        ],
+        "sourceInstanceIds": [
+          "kinetics-reaction-vessel",
+          "kinetics-transfer-pipette"
+        ]
+      },
+      {
+        "roleId": "photometric-aliquot-tool",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beral-pipette"
+        ],
+        "sourceInstanceIds": [
+          "kinetics-transfer-pipette"
+        ]
+      },
+      {
+        "roleId": "photometer-sample-holder",
+        "required": true,
+        "allowedDefinitionIds": [
+          "cuvette"
+        ],
+        "sourceInstanceIds": [
+          "kinetics-reaction-cuvette"
+        ]
+      },
+      {
+        "roleId": "photometer-instrument",
+        "required": true,
+        "allowedDefinitionIds": [
+          "spectrophotometer"
+        ],
+        "sourceInstanceIds": [
+          "kinetics-spectrophotometer"
+        ]
+      }
+    ],
+    "modelSlots": [],
+    "configurationSlots": [
+      {
+        "id": "selectedProcedure",
+        "valueType": "string",
+        "required": true,
+        "allowedValues": [
+          "reaction-initiation",
+          "scheduled-reading"
+        ]
+      },
+      {
+        "id": "cvVolumeMl",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "naohVolumeMl",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "totalVolumeMl",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "aliquotVolumeMl",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "scheduledTimeS",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "instrumentReadingValue",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "pairId",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "id": "absorbanceLabel",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "id": "wavelengthMeasurementId",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "id": "zeroNotebookTag",
+        "valueType": "string",
+        "required": true
+      }
+    ],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [
+      {
+        "id": "evidence-measure-cv-reaction-portion",
+        "kind": "action-evidence",
+        "actionId": "measure-cv-reaction-portion"
+      },
+      {
+        "id": "evidence-measure-naoh-reaction-portion",
+        "kind": "action-evidence",
+        "actionId": "measure-naoh-reaction-portion"
+      },
+      {
+        "id": "evidence-transfer-cv-to-reaction-vessel",
+        "kind": "action-evidence",
+        "actionId": "transfer-cv-to-reaction-vessel"
+      },
+      {
+        "id": "evidence-initiate-cv-naoh-reaction",
+        "kind": "action-evidence",
+        "actionId": "initiate-cv-naoh-reaction"
+      },
+      {
+        "id": "evidence-record-immediate-mixing",
+        "kind": "action-evidence",
+        "actionId": "record-immediate-mixing"
+      },
+      {
+        "id": "evidence-measure-reacting-aliquot",
+        "kind": "action-evidence",
+        "actionId": "measure-reacting-aliquot"
+      },
+      {
+        "id": "evidence-fill-reaction-cuvette",
+        "kind": "action-evidence",
+        "actionId": "fill-reaction-cuvette"
+      },
+      {
+        "id": "evidence-insert-reaction-cuvette",
+        "kind": "action-evidence",
+        "actionId": "insert-reaction-cuvette"
+      },
+      {
+        "id": "evidence-wait-for-cv-scheduled-time",
+        "kind": "notebook",
+        "actionId": "wait-for-cv-scheduled-time"
+      },
+      {
+        "id": "evidence-read-cv-scheduled-absorbance",
+        "kind": "measurement",
+        "actionId": "read-cv-scheduled-absorbance"
+      },
+      {
+        "id": "evidence-record-cv-scheduled-absorbance",
+        "kind": "notebook",
+        "actionId": "record-cv-scheduled-absorbance"
+      }
+    ],
+    "completion": {
+      "exitPortIds": [
+        "exit"
+      ],
+      "requiredEvidenceOutputIds": [],
+      "requiredValidationRuleIds": []
+    },
+    "catalogDisposition": "lab-scoped",
+    "legacyActionEffects": [
+      {
+        "actionId": "record-immediate-mixing",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "wait-for-cv-scheduled-time",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ],
+    "orderedProcedure": {
+      "configurationSlotId": "selectedProcedure",
+      "startActionIds": [],
+      "endActionIds": [],
+      "minimumTests": 1,
+      "resources": [],
+      "groups": [
+        {
+          "id": "reaction-initiation",
+          "actionIds": [
+            "measure-cv-reaction-portion",
+            "measure-naoh-reaction-portion",
+            "transfer-cv-to-reaction-vessel",
+            "initiate-cv-naoh-reaction",
+            "record-immediate-mixing",
+            "measure-reacting-aliquot",
+            "fill-reaction-cuvette",
+            "insert-reaction-cuvette"
+          ],
+          "testCount": 1,
+          "evidenceKind": "procedure"
+        },
+        {
+          "id": "scheduled-reading",
+          "actionIds": [
+            "wait-for-cv-scheduled-time",
+            "read-cv-scheduled-absorbance",
+            "record-cv-scheduled-absorbance"
+          ],
+          "testCount": 1,
+          "evidenceKind": "quantitative"
+        }
+      ]
+    }
+  }
+}

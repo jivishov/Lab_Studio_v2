@@ -1,0 +1,4012 @@
+{
+  "id": "paper-chromatography",
+  "title": "Sticky Question: Paper Chromatography",
+  "description": "An inquiry-centered Chemistry Paper Chromatography workflow that preserves five source-listed solvent choices while running one configured water/2-propanol comparison with traceable sample provenance, the sample origin/baseline above the solvent liquid level and the lower paper edge in solvent, measured Rf evidence, a teacher-approved post-development drying gate, solvent-specific disposal, and explicit interpretation limits.",
+  "audience": "Chemistry students",
+  "learningGoals": [
+    "Design a repeatable paper chromatography comparison using an intermolecular-force hypothesis and at least two source-listed mobile phases.",
+    "Prepare, spot, dry the initial spot, seal, develop, mark, observe, and measure a paper chromatogram with the sample origin/baseline above the solvent liquid level and the lower paper edge in solvent; use the teacher-configuration gate for any post-development drying method.",
+    "Calculate Rf from recorded band and solvent-front distances with appropriate significant figures.",
+    "Compare solvent-dependent separation and green-chemistry evidence without treating Rf as proof of molecular identity."
+  ],
+  "safetyNotes": [
+    "Wear splash-proof goggles before handling any solution or solvent.",
+    "Wash solution contact from skin with copious water and follow teacher-configured handling restrictions.",
+    "Keep ignition sources disabled when flammable organic solvents are present.",
+    "Keep the chromatography chamber closed during development to limit evaporation.",
+    "Route distilled-water/food-dye waste to the teacher-approved sink stream; collect acetone, ethanol, 2-propanol, and chromatography solvent as organic waste."
+  ],
+  "equipment": [
+    "chromatography-chamber",
+    "chromatography-paper",
+    "capillary-spotter",
+    "metric-ruler",
+    "distilled-water-bottle",
+    "propanol-bottle",
+    "reagent-bottle",
+    "sample-bottle",
+    "pencil",
+    "waste-beaker"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "water-chamber",
+        "definitionId": "chromatography-chamber",
+        "label": "distilled water chromatography chamber",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty",
+          "developingChamberClosed": false
+        }
+      },
+      {
+        "id": "water-paper",
+        "definitionId": "chromatography-paper",
+        "label": "distilled water trial chromatography paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "paper-unspotted"
+        }
+      },
+      {
+        "id": "propanol-chamber",
+        "definitionId": "chromatography-chamber",
+        "label": "2-propanol chromatography chamber",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty",
+          "developingChamberClosed": false
+        }
+      },
+      {
+        "id": "propanol-paper",
+        "definitionId": "chromatography-paper",
+        "label": "2-propanol trial chromatography paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "paper-unspotted"
+        }
+      },
+      {
+        "id": "water-solvent-bottle",
+        "definitionId": "distilled-water-bottle",
+        "label": "Distilled water mobile phase",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Distilled water",
+          "volumeMl": 30,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "propanol-solvent-bottle",
+        "definitionId": "propanol-bottle",
+        "label": "2-propanol mobile phase",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "2-propanol",
+          "volumeMl": 30,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "acetone-solvent-bottle",
+        "definitionId": "reagent-bottle",
+        "label": "Acetone candidate solvent",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Acetone",
+          "volumeMl": 30,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "ethanol-solvent-bottle",
+        "definitionId": "reagent-bottle",
+        "label": "Ethanol candidate solvent",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Ethanol",
+          "volumeMl": 30,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "chromatography-solvent-bottle",
+        "definitionId": "reagent-bottle",
+        "label": "Chromatography solvent candidate (petroleum ether/acetone)",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Chromatography solvent (petroleum ether/acetone)",
+          "volumeMl": 30,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "food-dye-sample",
+        "definitionId": "sample-bottle",
+        "label": "Teacher-provided food dye mixture",
+        "location": "shelf",
+        "contents": {
+          "kind": "mixture",
+          "label": "Teacher-provided food dye mixture",
+          "volumeMl": 1,
+          "solutes": [
+            {
+              "id": "teacher-food-dye-mixture",
+              "label": "Teacher-provided food dye mixture",
+              "amount": 1,
+              "unit": "mg"
+            }
+          ],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "blue-dye-solution"
+        }
+      },
+      {
+        "id": "dye-spotter",
+        "definitionId": "capillary-spotter",
+        "label": "Capillary spotter (inferred tool)",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "pencil-1",
+        "definitionId": "pencil",
+        "label": "Graphite pencil",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "metric-ruler-1",
+        "definitionId": "metric-ruler",
+        "label": "Metric ruler with millimeter divisions",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "sink-disposal-receiver",
+        "definitionId": "waste-beaker",
+        "label": "Sink-disposal receiver: water and food dye only",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "organic-waste-receiver",
+        "definitionId": "waste-beaker",
+        "label": "Organic-solvent waste receiver",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "choice-water-1-chamber",
+        "definitionId": "chromatography-chamber",
+        "label": "water trial 1-region chamber",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty",
+          "developingChamberClosed": false
+        }
+      },
+      {
+        "id": "choice-water-1-paper",
+        "definitionId": "chromatography-paper",
+        "label": "water trial 1-region paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "paper-unspotted"
+        }
+      },
+      {
+        "id": "choice-water-1-solvent-bottle",
+        "definitionId": "reagent-bottle",
+        "label": "water trial 1-region solvent bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "water",
+          "volumeMl": 30,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "choice-water-2-chamber",
+        "definitionId": "chromatography-chamber",
+        "label": "water trial 2-region chamber",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty",
+          "developingChamberClosed": false
+        }
+      },
+      {
+        "id": "choice-water-2-paper",
+        "definitionId": "chromatography-paper",
+        "label": "water trial 2-region paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "paper-unspotted"
+        }
+      },
+      {
+        "id": "choice-water-2-solvent-bottle",
+        "definitionId": "reagent-bottle",
+        "label": "water trial 2-region solvent bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "water",
+          "volumeMl": 30,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "choice-water-3-chamber",
+        "definitionId": "chromatography-chamber",
+        "label": "water trial 3-region chamber",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty",
+          "developingChamberClosed": false
+        }
+      },
+      {
+        "id": "choice-water-3-paper",
+        "definitionId": "chromatography-paper",
+        "label": "water trial 3-region paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "paper-unspotted"
+        }
+      },
+      {
+        "id": "choice-water-3-solvent-bottle",
+        "definitionId": "reagent-bottle",
+        "label": "water trial 3-region solvent bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "water",
+          "volumeMl": 30,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "choice-propanol-1-chamber",
+        "definitionId": "chromatography-chamber",
+        "label": "propanol trial 1-region chamber",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty",
+          "developingChamberClosed": false
+        }
+      },
+      {
+        "id": "choice-propanol-1-paper",
+        "definitionId": "chromatography-paper",
+        "label": "propanol trial 1-region paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "paper-unspotted"
+        }
+      },
+      {
+        "id": "choice-propanol-1-solvent-bottle",
+        "definitionId": "reagent-bottle",
+        "label": "propanol trial 1-region solvent bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "propanol",
+          "volumeMl": 30,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "choice-propanol-2-chamber",
+        "definitionId": "chromatography-chamber",
+        "label": "propanol trial 2-region chamber",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty",
+          "developingChamberClosed": false
+        }
+      },
+      {
+        "id": "choice-propanol-2-paper",
+        "definitionId": "chromatography-paper",
+        "label": "propanol trial 2-region paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "paper-unspotted"
+        }
+      },
+      {
+        "id": "choice-propanol-2-solvent-bottle",
+        "definitionId": "reagent-bottle",
+        "label": "propanol trial 2-region solvent bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "propanol",
+          "volumeMl": 30,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "choice-propanol-3-chamber",
+        "definitionId": "chromatography-chamber",
+        "label": "propanol trial 3-region chamber",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty",
+          "developingChamberClosed": false
+        }
+      },
+      {
+        "id": "choice-propanol-3-paper",
+        "definitionId": "chromatography-paper",
+        "label": "propanol trial 3-region paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "paper-unspotted"
+        }
+      },
+      {
+        "id": "choice-propanol-3-solvent-bottle",
+        "definitionId": "reagent-bottle",
+        "label": "propanol trial 3-region solvent bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "propanol",
+          "volumeMl": 30,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "choice-ethanol-1-chamber",
+        "definitionId": "chromatography-chamber",
+        "label": "ethanol trial 1-region chamber",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty",
+          "developingChamberClosed": false
+        }
+      },
+      {
+        "id": "choice-ethanol-1-paper",
+        "definitionId": "chromatography-paper",
+        "label": "ethanol trial 1-region paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "paper-unspotted"
+        }
+      },
+      {
+        "id": "choice-ethanol-1-solvent-bottle",
+        "definitionId": "reagent-bottle",
+        "label": "ethanol trial 1-region solvent bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "ethanol",
+          "volumeMl": 30,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "choice-ethanol-2-chamber",
+        "definitionId": "chromatography-chamber",
+        "label": "ethanol trial 2-region chamber",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty",
+          "developingChamberClosed": false
+        }
+      },
+      {
+        "id": "choice-ethanol-2-paper",
+        "definitionId": "chromatography-paper",
+        "label": "ethanol trial 2-region paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "paper-unspotted"
+        }
+      },
+      {
+        "id": "choice-ethanol-2-solvent-bottle",
+        "definitionId": "reagent-bottle",
+        "label": "ethanol trial 2-region solvent bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "ethanol",
+          "volumeMl": 30,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "choice-ethanol-3-chamber",
+        "definitionId": "chromatography-chamber",
+        "label": "ethanol trial 3-region chamber",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty",
+          "developingChamberClosed": false
+        }
+      },
+      {
+        "id": "choice-ethanol-3-paper",
+        "definitionId": "chromatography-paper",
+        "label": "ethanol trial 3-region paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "paper-unspotted"
+        }
+      },
+      {
+        "id": "choice-ethanol-3-solvent-bottle",
+        "definitionId": "reagent-bottle",
+        "label": "ethanol trial 3-region solvent bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "ethanol",
+          "volumeMl": 30,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "choice-acetone-1-chamber",
+        "definitionId": "chromatography-chamber",
+        "label": "acetone trial 1-region chamber",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty",
+          "developingChamberClosed": false
+        }
+      },
+      {
+        "id": "choice-acetone-1-paper",
+        "definitionId": "chromatography-paper",
+        "label": "acetone trial 1-region paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "paper-unspotted"
+        }
+      },
+      {
+        "id": "choice-acetone-1-solvent-bottle",
+        "definitionId": "reagent-bottle",
+        "label": "acetone trial 1-region solvent bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "acetone",
+          "volumeMl": 30,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "choice-acetone-2-chamber",
+        "definitionId": "chromatography-chamber",
+        "label": "acetone trial 2-region chamber",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty",
+          "developingChamberClosed": false
+        }
+      },
+      {
+        "id": "choice-acetone-2-paper",
+        "definitionId": "chromatography-paper",
+        "label": "acetone trial 2-region paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "paper-unspotted"
+        }
+      },
+      {
+        "id": "choice-acetone-2-solvent-bottle",
+        "definitionId": "reagent-bottle",
+        "label": "acetone trial 2-region solvent bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "acetone",
+          "volumeMl": 30,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "choice-acetone-3-chamber",
+        "definitionId": "chromatography-chamber",
+        "label": "acetone trial 3-region chamber",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty",
+          "developingChamberClosed": false
+        }
+      },
+      {
+        "id": "choice-acetone-3-paper",
+        "definitionId": "chromatography-paper",
+        "label": "acetone trial 3-region paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "paper-unspotted"
+        }
+      },
+      {
+        "id": "choice-acetone-3-solvent-bottle",
+        "definitionId": "reagent-bottle",
+        "label": "acetone trial 3-region solvent bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "acetone",
+          "volumeMl": 30,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "choice-chromatography-solvent-1-chamber",
+        "definitionId": "chromatography-chamber",
+        "label": "chromatography-solvent trial 1-region chamber",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty",
+          "developingChamberClosed": false
+        }
+      },
+      {
+        "id": "choice-chromatography-solvent-1-paper",
+        "definitionId": "chromatography-paper",
+        "label": "chromatography-solvent trial 1-region paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "paper-unspotted"
+        }
+      },
+      {
+        "id": "choice-chromatography-solvent-1-solvent-bottle",
+        "definitionId": "reagent-bottle",
+        "label": "chromatography-solvent trial 1-region solvent bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "chromatography-solvent",
+          "volumeMl": 30,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "choice-chromatography-solvent-2-chamber",
+        "definitionId": "chromatography-chamber",
+        "label": "chromatography-solvent trial 2-region chamber",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty",
+          "developingChamberClosed": false
+        }
+      },
+      {
+        "id": "choice-chromatography-solvent-2-paper",
+        "definitionId": "chromatography-paper",
+        "label": "chromatography-solvent trial 2-region paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "paper-unspotted"
+        }
+      },
+      {
+        "id": "choice-chromatography-solvent-2-solvent-bottle",
+        "definitionId": "reagent-bottle",
+        "label": "chromatography-solvent trial 2-region solvent bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "chromatography-solvent",
+          "volumeMl": 30,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "choice-chromatography-solvent-3-chamber",
+        "definitionId": "chromatography-chamber",
+        "label": "chromatography-solvent trial 3-region chamber",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty",
+          "developingChamberClosed": false
+        }
+      },
+      {
+        "id": "choice-chromatography-solvent-3-paper",
+        "definitionId": "chromatography-paper",
+        "label": "chromatography-solvent trial 3-region paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "paper-unspotted"
+        }
+      },
+      {
+        "id": "choice-chromatography-solvent-3-solvent-bottle",
+        "definitionId": "reagent-bottle",
+        "label": "chromatography-solvent trial 3-region solvent bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "chromatography-solvent",
+          "volumeMl": 30,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      }
+    ]
+  },
+  "chromatographyModels": [
+    {
+      "id": "water-food-dyes-paper",
+      "solventFrontMm": 80,
+      "bands": [
+        {
+          "id": "purple-overlap",
+          "label": "Purple unresolved overlap",
+          "color": "#7e22ce",
+          "distanceMm": 59,
+          "expectedRf": 0.7375
+        },
+        {
+          "id": "yellow",
+          "label": "Yellow",
+          "color": "#facc15",
+          "distanceMm": 66,
+          "expectedRf": 0.825
+        }
+      ]
+    },
+    {
+      "id": "propanol-food-dyes-paper",
+      "solventFrontMm": 80,
+      "bands": [
+        {
+          "id": "blue",
+          "label": "Blue",
+          "color": "#2563eb",
+          "distanceMm": 28,
+          "expectedRf": 0.35
+        },
+        {
+          "id": "red",
+          "label": "Red",
+          "color": "#dc2626",
+          "distanceMm": 49,
+          "expectedRf": 0.6125
+        },
+        {
+          "id": "yellow",
+          "label": "Yellow",
+          "color": "#facc15",
+          "distanceMm": 68,
+          "expectedRf": 0.85
+        }
+      ]
+    },
+    {
+      "id": "choice-water-1-food-dyes-paper",
+      "solventFrontMm": 80,
+      "requiresClassroomDataset": true,
+      "bands": [
+        {
+          "id": "region-1",
+          "label": "region-1",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        }
+      ]
+    },
+    {
+      "id": "choice-water-2-food-dyes-paper",
+      "solventFrontMm": 80,
+      "requiresClassroomDataset": true,
+      "bands": [
+        {
+          "id": "region-1",
+          "label": "region-1",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        },
+        {
+          "id": "region-2",
+          "label": "region-2",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        }
+      ]
+    },
+    {
+      "id": "choice-water-3-food-dyes-paper",
+      "solventFrontMm": 80,
+      "requiresClassroomDataset": true,
+      "bands": [
+        {
+          "id": "region-1",
+          "label": "region-1",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        },
+        {
+          "id": "region-2",
+          "label": "region-2",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        },
+        {
+          "id": "region-3",
+          "label": "region-3",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        }
+      ]
+    },
+    {
+      "id": "choice-propanol-1-food-dyes-paper",
+      "solventFrontMm": 80,
+      "requiresClassroomDataset": true,
+      "bands": [
+        {
+          "id": "region-1",
+          "label": "region-1",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        }
+      ]
+    },
+    {
+      "id": "choice-propanol-2-food-dyes-paper",
+      "solventFrontMm": 80,
+      "requiresClassroomDataset": true,
+      "bands": [
+        {
+          "id": "region-1",
+          "label": "region-1",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        },
+        {
+          "id": "region-2",
+          "label": "region-2",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        }
+      ]
+    },
+    {
+      "id": "choice-propanol-3-food-dyes-paper",
+      "solventFrontMm": 80,
+      "requiresClassroomDataset": true,
+      "bands": [
+        {
+          "id": "region-1",
+          "label": "region-1",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        },
+        {
+          "id": "region-2",
+          "label": "region-2",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        },
+        {
+          "id": "region-3",
+          "label": "region-3",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        }
+      ]
+    },
+    {
+      "id": "choice-ethanol-1-food-dyes-paper",
+      "solventFrontMm": 80,
+      "requiresClassroomDataset": true,
+      "bands": [
+        {
+          "id": "region-1",
+          "label": "region-1",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        }
+      ]
+    },
+    {
+      "id": "choice-ethanol-2-food-dyes-paper",
+      "solventFrontMm": 80,
+      "requiresClassroomDataset": true,
+      "bands": [
+        {
+          "id": "region-1",
+          "label": "region-1",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        },
+        {
+          "id": "region-2",
+          "label": "region-2",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        }
+      ]
+    },
+    {
+      "id": "choice-ethanol-3-food-dyes-paper",
+      "solventFrontMm": 80,
+      "requiresClassroomDataset": true,
+      "bands": [
+        {
+          "id": "region-1",
+          "label": "region-1",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        },
+        {
+          "id": "region-2",
+          "label": "region-2",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        },
+        {
+          "id": "region-3",
+          "label": "region-3",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        }
+      ]
+    },
+    {
+      "id": "choice-acetone-1-food-dyes-paper",
+      "solventFrontMm": 80,
+      "requiresClassroomDataset": true,
+      "bands": [
+        {
+          "id": "region-1",
+          "label": "region-1",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        }
+      ]
+    },
+    {
+      "id": "choice-acetone-2-food-dyes-paper",
+      "solventFrontMm": 80,
+      "requiresClassroomDataset": true,
+      "bands": [
+        {
+          "id": "region-1",
+          "label": "region-1",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        },
+        {
+          "id": "region-2",
+          "label": "region-2",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        }
+      ]
+    },
+    {
+      "id": "choice-acetone-3-food-dyes-paper",
+      "solventFrontMm": 80,
+      "requiresClassroomDataset": true,
+      "bands": [
+        {
+          "id": "region-1",
+          "label": "region-1",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        },
+        {
+          "id": "region-2",
+          "label": "region-2",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        },
+        {
+          "id": "region-3",
+          "label": "region-3",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        }
+      ]
+    },
+    {
+      "id": "choice-chromatography-solvent-1-food-dyes-paper",
+      "solventFrontMm": 80,
+      "requiresClassroomDataset": true,
+      "bands": [
+        {
+          "id": "region-1",
+          "label": "region-1",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        }
+      ]
+    },
+    {
+      "id": "choice-chromatography-solvent-2-food-dyes-paper",
+      "solventFrontMm": 80,
+      "requiresClassroomDataset": true,
+      "bands": [
+        {
+          "id": "region-1",
+          "label": "region-1",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        },
+        {
+          "id": "region-2",
+          "label": "region-2",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        }
+      ]
+    },
+    {
+      "id": "choice-chromatography-solvent-3-food-dyes-paper",
+      "solventFrontMm": 80,
+      "requiresClassroomDataset": true,
+      "bands": [
+        {
+          "id": "region-1",
+          "label": "region-1",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        },
+        {
+          "id": "region-2",
+          "label": "region-2",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        },
+        {
+          "id": "region-3",
+          "label": "region-3",
+          "color": "#666666",
+          "distanceMm": 0,
+          "expectedRf": 0
+        }
+      ]
+    }
+  ],
+  "techniques": [
+    {
+      "id": "chromatography-inquiry-guardrails",
+      "title": "Chromatography Inquiry Guardrails",
+      "learningGoal": "Preserve solvent choice, sample provenance, geometry, disposal, and interpretation limits when authoring paper chromatography trials.",
+      "requiredEquipment": [],
+      "initialState": {
+        "equipment": []
+      },
+      "actions": [
+        {
+          "id": "review-chromatography-guardrails",
+          "verb": "observe",
+          "label": "Review chromatography inquiry guardrails",
+          "parameters": {
+            "note": "Require at least two source-listed solvent choices, keep the origin above the solvent, keep the chamber closed during development, mark the front promptly, measure every visible band, branch disposal by solvent class, and avoid treating Rf as identity proof.",
+            "tag": "chromatography-guardrails"
+          },
+          "interaction": {
+            "type": "recordNotebook",
+            "stationId": "notebook",
+            "accessibleLabel": "Review chromatography inquiry guardrails",
+            "successCue": "Review chromatography inquiry guardrails recorded.",
+            "invalidCue": "Complete and record the requested evidence before continuing."
+          },
+          "prerequisites": [],
+          "stateChanges": [
+            "Review chromatography inquiry guardrails recorded."
+          ],
+          "invalidCases": [
+            {
+              "id": "wrong-order",
+              "when": "current node expects a different action",
+              "message": "That action is out of sequence for the current investigation step.",
+              "recovery": "Return to the highlighted process step and preserve the current trial identity."
+            },
+            {
+              "id": "wrong-trial",
+              "when": "equipment belongs to a different solvent trial",
+              "message": "The selected paper, chamber, or solvent does not match this trial.",
+              "recovery": "Use the labeled equipment assigned to the current solvent so provenance is preserved."
+            }
+          ],
+          "feedback": {
+            "success": "Review chromatography inquiry guardrails recorded.",
+            "invalid": "Review the current chromatography step and try again."
+          },
+          "evidence": [
+            "observe",
+            "notebook",
+            "chromatography-guardrails"
+          ]
+        }
+      ],
+      "process": {
+        "startNodeId": "review-chromatography-guardrails-node",
+        "nodes": [
+          {
+            "id": "review-chromatography-guardrails-node",
+            "type": "teacherNote",
+            "title": "Review inquiry guardrails",
+            "description": "Confirm the required scientific and safety constraints before authoring or running a trial.",
+            "actionId": "review-chromatography-guardrails",
+            "config": {},
+            "validation": [
+              {
+                "id": "chromatography-guardrails-recorded",
+                "type": "notebookEntry",
+                "label": "Chromatography guardrails were recorded.",
+                "notebookTag": "chromatography-guardrails"
+              }
+            ],
+            "hints": [],
+            "feedback": {
+              "success": "Chromatography guardrails reviewed.",
+              "retry": "Review and record the chromatography guardrails."
+            }
+          }
+        ],
+        "edges": []
+      },
+      "successCriteria": [
+        {
+          "id": "chromatography-guardrails-success",
+          "type": "notebookEntry",
+          "label": "Chromatography guardrails were recorded.",
+          "notebookTag": "chromatography-guardrails"
+        }
+      ],
+      "commonMistakes": [
+        {
+          "id": "rf-identity-proof",
+          "when": "a matching Rf is treated as definitive identity evidence",
+          "message": "Rf is conditional on the chromatography system and does not prove identity by itself.",
+          "recovery": "Use matching conditions and corroborating evidence, and state the interpretation limit."
+        }
+      ],
+      "resetBehavior": "resetTechnique",
+      "metadata": {
+        "version": "2.0.0",
+        "author": "Lab Studio",
+        "updatedAt": "2026-07-27T00:00:00.000Z",
+        "tags": [
+          "technique",
+          "chromatography",
+          "inquiry",
+          "guardrails"
+        ]
+      }
+    }
+  ],
+  "actions": [
+    {
+      "id": "review-challenge-safety",
+      "verb": "observe",
+      "label": "Review investigation, candidate solvents, and safety",
+      "parameters": {
+        "note": "Wear splash-proof goggles. Five source-listed mobile phases are available: chromatography solvent (petroleum ether/acetone), acetone, ethanol, 2-propanol, and distilled water. Keep ignition sources disabled for flammable organics. Wash skin contact with copious water. Water/food dye uses the sink stream; acetone, ethanol, 2-propanol, and chromatography solvent use organic waste.",
+        "tag": "chromatography-safety",
+        "candidateSolvents": [
+          "chromatography solvent (petroleum ether/acetone)",
+          "acetone",
+          "ethanol",
+          "2-propanol",
+          "distilled water"
+        ],
+        "organicWasteSolvents": [
+          "chromatography solvent (petroleum ether/acetone)",
+          "acetone",
+          "ethanol",
+          "2-propanol"
+        ]
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "stationId": "notebook",
+        "accessibleLabel": "Review investigation, candidate solvents, and safety",
+        "successCue": "Review investigation, candidate solvents, and safety recorded.",
+        "invalidCue": "Complete and record the requested evidence before continuing."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Review investigation, candidate solvents, and safety recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the current trial identity."
+        },
+        {
+          "id": "wrong-trial",
+          "when": "equipment belongs to a different solvent trial",
+          "message": "The selected paper, chamber, or solvent does not match this trial.",
+          "recovery": "Use the labeled equipment assigned to the current solvent so provenance is preserved."
+        }
+      ],
+      "feedback": {
+        "success": "Review investigation, candidate solvents, and safety recorded.",
+        "invalid": "Review the current chromatography step and try again."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "chromatography-safety"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "review-molecular-structures",
+      "verb": "observe",
+      "label": "Review dye and solvent structures",
+      "parameters": {
+        "note": "Review the supplied dye and solvent structures and identify hydrogen bonding, dipole-dipole attractions, dispersion forces, charge, and the polar cellulose stationary phase. Structure review is evidence for a prediction, not a revealed separation result.",
+        "tag": "structure-evidence"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "stationId": "notebook",
+        "accessibleLabel": "Review dye and solvent structures",
+        "successCue": "Review dye and solvent structures recorded.",
+        "invalidCue": "Complete and record the requested evidence before continuing."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Review dye and solvent structures recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the current trial identity."
+        },
+        {
+          "id": "wrong-trial",
+          "when": "equipment belongs to a different solvent trial",
+          "message": "The selected paper, chamber, or solvent does not match this trial.",
+          "recovery": "Use the labeled equipment assigned to the current solvent so provenance is preserved."
+        }
+      ],
+      "feedback": {
+        "success": "Review dye and solvent structures recorded.",
+        "invalid": "Review the current chromatography step and try again."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "structure-evidence"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "record-imf-hypothesis",
+      "verb": "observe",
+      "label": "Record an IMF-based separation hypothesis",
+      "parameters": {
+        "tag": "imf-hypothesis",
+        "prompt": "State which mobile phases you predict will change dye migration and separation. Connect the prediction to attractions among each dye, cellulose paper, and the chosen solvent before viewing trial outcomes.",
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputKey": "record-imf-hypothesis-student-response",
+        "inputLabel": "State which mobile phases you predict will change dye migration and separation. Connect the prediction to attractions among each dye, cellulose paper, and the chosen solvent before viewing trial outcomes.",
+        "inputRequired": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "stationId": "notebook",
+        "accessibleLabel": "Record an IMF-based separation hypothesis",
+        "successCue": "Record an IMF-based separation hypothesis recorded.",
+        "invalidCue": "Complete and record the requested evidence before continuing.",
+        "valueParameter": "inputKey"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record an IMF-based separation hypothesis recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the current trial identity."
+        },
+        {
+          "id": "wrong-trial",
+          "when": "equipment belongs to a different solvent trial",
+          "message": "The selected paper, chamber, or solvent does not match this trial.",
+          "recovery": "Use the labeled equipment assigned to the current solvent so provenance is preserved."
+        }
+      ],
+      "feedback": {
+        "success": "Record an IMF-based separation hypothesis recorded.",
+        "invalid": "Review the current chromatography step and try again."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "imf-hypothesis"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "select-solvents",
+      "verb": "observe",
+      "label": "Select at least two solvents and justify each",
+      "parameters": {
+        "note": "Use the solvents and trial order selected in classroom setup. Record a pre-result rationale for each selected source-listed solvent; at least two distinct solvents are required.",
+        "tag": "solvent-selection",
+        "candidateSolvents": [
+          "chromatography solvent (petroleum ether/acetone)",
+          "acetone",
+          "ethanol",
+          "2-propanol",
+          "distilled water"
+        ],
+        "minimumSelections": 2,
+        "outcomeConcealedUntilDevelopment": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "stationId": "notebook",
+        "accessibleLabel": "Use the solvents and trial order selected in classroom setup. Record a pre-result rationale for each selected source-listed solvent; at least two distinct solvents are required.",
+        "successCue": "Select at least two solvents and justify each recorded.",
+        "invalidCue": "Complete and record the requested evidence before continuing."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Select at least two solvents and justify each recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the current trial identity."
+        },
+        {
+          "id": "wrong-trial",
+          "when": "equipment belongs to a different solvent trial",
+          "message": "The selected paper, chamber, or solvent does not match this trial.",
+          "recovery": "Use the labeled equipment assigned to the current solvent so provenance is preserved."
+        }
+      ],
+      "feedback": {
+        "success": "Select at least two solvents and justify each recorded.",
+        "invalid": "Review the current chromatography step and try again."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "solvent-selection"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "configure-repeatable-procedure",
+      "verb": "observe",
+      "label": "Configure a repeatable chromatography procedure",
+      "parameters": {
+        "tag": "procedure-design",
+        "rulerPrecisionMm": 1,
+        "replicateGuidance": "Repeat trials are recommended; no source-mandated replicate count is imposed.",
+        "prompt": "Document the approved paper dimensions, pencil sample origin/baseline, solvent depth and volume, loaded sample and spot volume, and solvent-front stop distance from classroom setup. Keep the sample origin/baseline above the solvent liquid level and the lower paper edge in solvent; dry the initial spot, close the chamber, measure to the nearest millimetre, use fresh labeled paper and solvent for each selected trial, and record any post-development drying method only when teacher-approved.",
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputKey": "configure-repeatable-procedure-student-response",
+        "inputLabel": "Document the approved paper dimensions, pencil sample origin/baseline, solvent depth and volume, loaded sample and spot volume, and solvent-front stop distance from classroom setup. Keep the sample origin/baseline above the solvent liquid level and the lower paper edge in solvent; dry the initial spot, close the chamber, measure to the nearest millimetre, use fresh labeled paper and solvent for each selected trial, and record any post-development drying method only when teacher-approved.",
+        "inputRequired": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "stationId": "notebook",
+        "accessibleLabel": "Document the approved paper dimensions, pencil sample origin/baseline, solvent depth and volume, loaded sample and spot volume, and solvent-front stop distance from classroom setup. Keep the sample origin/baseline above the solvent liquid level and the lower paper edge in solvent; dry the initial spot, close the chamber, measure to the nearest millimetre, use fresh labeled paper and solvent for each selected trial, and record any post-development drying method only when teacher-approved.",
+        "successCue": "Configure a repeatable chromatography procedure recorded.",
+        "invalidCue": "Complete and record the requested evidence before continuing.",
+        "valueParameter": "inputKey"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Configure a repeatable chromatography procedure recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the current trial identity."
+        },
+        {
+          "id": "wrong-trial",
+          "when": "equipment belongs to a different solvent trial",
+          "message": "The selected paper, chamber, or solvent does not match this trial.",
+          "recovery": "Use the labeled equipment assigned to the current solvent so provenance is preserved."
+        }
+      ],
+      "feedback": {
+        "success": "Configure a repeatable chromatography procedure recorded.",
+        "invalid": "Review the current chromatography step and try again."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "procedure-design"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "design-data-table",
+      "verb": "observe",
+      "label": "Design the trial data table",
+      "parameters": {
+        "tag": "data-table-design",
+        "prompt": "Create columns for solvent identity and rationale, paper/baseline/solvent settings, solvent-front distance in mm, each visible band description and center distance in mm, Rf, resolution, overlap, streaking, disposal stream, and notes.",
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputKey": "design-data-table-student-response",
+        "inputLabel": "Create columns for solvent identity and rationale, paper/baseline/solvent settings, solvent-front distance in mm, each visible band description and center distance in mm, Rf, resolution, overlap, streaking, disposal stream, and notes.",
+        "inputRequired": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "stationId": "notebook",
+        "accessibleLabel": "Design the trial data table",
+        "successCue": "Design the trial data table recorded.",
+        "invalidCue": "Complete and record the requested evidence before continuing.",
+        "valueParameter": "inputKey"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Design the trial data table recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the current trial identity."
+        },
+        {
+          "id": "wrong-trial",
+          "when": "equipment belongs to a different solvent trial",
+          "message": "The selected paper, chamber, or solvent does not match this trial.",
+          "recovery": "Use the labeled equipment assigned to the current solvent so provenance is preserved."
+        }
+      ],
+      "feedback": {
+        "success": "Design the trial data table recorded.",
+        "invalid": "Review the current chromatography step and try again."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "data-table-design"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "submit-procedure-approval",
+      "verb": "observe",
+      "label": "Submit the procedure for approval",
+      "parameters": {
+        "note": "Confirm that another student could repeat the solvent choice, labeling, spotting, chamber geometry, stop condition, measurement method, Rf calculation, and disposal branch without inventing missing steps.",
+        "tag": "procedure-approved"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "stationId": "notebook",
+        "accessibleLabel": "Submit the procedure for approval",
+        "successCue": "Submit the procedure for approval recorded.",
+        "invalidCue": "Complete and record the requested evidence before continuing."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Submit the procedure for approval recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the current trial identity."
+        },
+        {
+          "id": "wrong-trial",
+          "when": "equipment belongs to a different solvent trial",
+          "message": "The selected paper, chamber, or solvent does not match this trial.",
+          "recovery": "Use the labeled equipment assigned to the current solvent so provenance is preserved."
+        }
+      ],
+      "feedback": {
+        "success": "Submit the procedure for approval recorded.",
+        "invalid": "Review the current chromatography step and try again."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "procedure-approved"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "compare-separation",
+      "verb": "observe",
+      "label": "Compare separation across solvent systems",
+      "parameters": {
+        "note": "Compare only collected evidence: visible band count, overlap, spacing, streaking, and two-significant-figure Rf values. Rf values are conditional on the same stationary phase, solvent system, temperature, and procedure.",
+        "tag": "separation-comparison"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "stationId": "notebook",
+        "accessibleLabel": "Compare separation across solvent systems",
+        "successCue": "Compare separation across solvent systems recorded.",
+        "invalidCue": "Complete and record the requested evidence before continuing."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Compare separation across solvent systems recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the current trial identity."
+        },
+        {
+          "id": "wrong-trial",
+          "when": "equipment belongs to a different solvent trial",
+          "message": "The selected paper, chamber, or solvent does not match this trial.",
+          "recovery": "Use the labeled equipment assigned to the current solvent so provenance is preserved."
+        }
+      ],
+      "feedback": {
+        "success": "Compare separation across solvent systems recorded.",
+        "invalid": "Review the current chromatography step and try again."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "separation-comparison"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "evaluate-hypothesis",
+      "verb": "observe",
+      "label": "Evaluate the original hypothesis",
+      "parameters": {
+        "tag": "hypothesis-evaluation",
+        "prompt": "State whether the collected evidence for your selected solvents supports, partly supports, or refutes the pre-result IMF hypothesis. Distinguish an unexpected result from an invalid trial.",
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputKey": "evaluate-hypothesis-student-response",
+        "inputLabel": "State whether the collected evidence for your selected solvents supports, partly supports, or refutes the pre-result IMF hypothesis. Distinguish an unexpected result from an invalid trial.",
+        "inputRequired": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "stationId": "notebook",
+        "accessibleLabel": "State whether the collected evidence for your selected solvents supports, partly supports, or refutes the pre-result IMF hypothesis. Distinguish an unexpected result from an invalid trial.",
+        "successCue": "Evaluate the original hypothesis recorded.",
+        "invalidCue": "Complete and record the requested evidence before continuing.",
+        "valueParameter": "inputKey"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Evaluate the original hypothesis recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the current trial identity."
+        },
+        {
+          "id": "wrong-trial",
+          "when": "equipment belongs to a different solvent trial",
+          "message": "The selected paper, chamber, or solvent does not match this trial.",
+          "recovery": "Use the labeled equipment assigned to the current solvent so provenance is preserved."
+        }
+      ],
+      "feedback": {
+        "success": "Evaluate the original hypothesis recorded.",
+        "invalid": "Review the current chromatography step and try again."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "hypothesis-evaluation"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "explain-phase-interactions",
+      "verb": "observe",
+      "label": "Explain mobile- and stationary-phase interactions",
+      "parameters": {
+        "note": "Explain how dye structure and attractions to cellulose versus the selected mobile phase affect time in the stationary phase and migration. Identify the least-mobile observed band as spending the most relative time with the stationary phase for that solvent system.",
+        "tag": "phase-interactions"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "stationId": "notebook",
+        "accessibleLabel": "Explain mobile- and stationary-phase interactions",
+        "successCue": "Explain mobile- and stationary-phase interactions recorded.",
+        "invalidCue": "Complete and record the requested evidence before continuing."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Explain mobile- and stationary-phase interactions recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the current trial identity."
+        },
+        {
+          "id": "wrong-trial",
+          "when": "equipment belongs to a different solvent trial",
+          "message": "The selected paper, chamber, or solvent does not match this trial.",
+          "recovery": "Use the labeled equipment assigned to the current solvent so provenance is preserved."
+        }
+      ],
+      "feedback": {
+        "success": "Explain mobile- and stationary-phase interactions recorded.",
+        "invalid": "Review the current chromatography step and try again."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "phase-interactions"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "draw-process-model",
+      "verb": "observe",
+      "label": "Record an annotated chromatography model",
+      "parameters": {
+        "note": "Draw and annotate the pencil origin, shallow mobile phase below the origin, capillary rise, stationary cellulose phase, solvent front, separated or overlapping bands, and the band/front distances used in Rf.",
+        "tag": "chromatography-model"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "stationId": "notebook",
+        "accessibleLabel": "Record an annotated chromatography model",
+        "successCue": "Record an annotated chromatography model recorded.",
+        "invalidCue": "Complete and record the requested evidence before continuing."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record an annotated chromatography model recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the current trial identity."
+        },
+        {
+          "id": "wrong-trial",
+          "when": "equipment belongs to a different solvent trial",
+          "message": "The selected paper, chamber, or solvent does not match this trial.",
+          "recovery": "Use the labeled equipment assigned to the current solvent so provenance is preserved."
+        }
+      ],
+      "feedback": {
+        "success": "Record an annotated chromatography model recorded.",
+        "invalid": "Review the current chromatography step and try again."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "chromatography-model"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "evaluate-green-chemistry",
+      "verb": "observe",
+      "label": "Evaluate solvent greenness with supplied evidence",
+      "parameters": {
+        "note": "Use only teacher-supplied historical 2011 GSK guide evidence to compare the configured solvents. Do not present a remembered ranking as current guidance or claim live guide access.",
+        "tag": "green-chemistry-evidence"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "stationId": "notebook",
+        "accessibleLabel": "Evaluate solvent greenness with supplied evidence",
+        "successCue": "Evaluate solvent greenness with supplied evidence recorded.",
+        "invalidCue": "Complete and record the requested evidence before continuing."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Evaluate solvent greenness with supplied evidence recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the current trial identity."
+        },
+        {
+          "id": "wrong-trial",
+          "when": "equipment belongs to a different solvent trial",
+          "message": "The selected paper, chamber, or solvent does not match this trial.",
+          "recovery": "Use the labeled equipment assigned to the current solvent so provenance is preserved."
+        }
+      ],
+      "feedback": {
+        "success": "Evaluate solvent greenness with supplied evidence recorded.",
+        "invalid": "Review the current chromatography step and try again."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "green-chemistry-evidence"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "write-cer-conclusion",
+      "verb": "observe",
+      "label": "Write the IMF/structure/solvent CER",
+      "parameters": {
+        "tag": "cer-claim",
+        "prompt": "Make a claim about the better separation in this configured comparison; cite band count, overlap/spacing, measured distances, and Rf evidence; reason from dye, cellulose, and solvent intermolecular attractions. Do not claim that Rf alone proves molecular identity.",
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputKey": "write-cer-conclusion-student-response",
+        "inputLabel": "Make a claim about the better separation in this configured comparison; cite band count, overlap/spacing, measured distances, and Rf evidence; reason from dye, cellulose, and solvent intermolecular attractions. Do not claim that Rf alone proves molecular identity.",
+        "inputRequired": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "stationId": "notebook",
+        "accessibleLabel": "Write the IMF/structure/solvent CER",
+        "successCue": "Write the IMF/structure/solvent CER recorded.",
+        "invalidCue": "Complete and record the requested evidence before continuing.",
+        "valueParameter": "inputKey"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Write the IMF/structure/solvent CER recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the current trial identity."
+        },
+        {
+          "id": "wrong-trial",
+          "when": "equipment belongs to a different solvent trial",
+          "message": "The selected paper, chamber, or solvent does not match this trial.",
+          "recovery": "Use the labeled equipment assigned to the current solvent so provenance is preserved."
+        }
+      ],
+      "feedback": {
+        "success": "Write the IMF/structure/solvent CER recorded.",
+        "invalid": "Review the current chromatography step and try again."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "cer-claim"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "record-interpretation-limits",
+      "verb": "observe",
+      "label": "Record uncertainty and interpretation limits",
+      "parameters": {
+        "note": "Discuss baseline and front-mark placement, band-center judgment, nearest-millimeter ruler precision, spot size, chamber sealing, paper-wall contact, evaporation, solvent composition, and repeatability. State that Rf is solvent-system dependent and corroborating evidence is required for identity.",
+        "tag": "interpretation-limits"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "stationId": "notebook",
+        "accessibleLabel": "Record uncertainty and interpretation limits",
+        "successCue": "Record uncertainty and interpretation limits recorded.",
+        "invalidCue": "Complete and record the requested evidence before continuing."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record uncertainty and interpretation limits recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the current trial identity."
+        },
+        {
+          "id": "wrong-trial",
+          "when": "equipment belongs to a different solvent trial",
+          "message": "The selected paper, chamber, or solvent does not match this trial.",
+          "recovery": "Use the labeled equipment assigned to the current solvent so provenance is preserved."
+        }
+      ],
+      "feedback": {
+        "success": "Record uncertainty and interpretation limits recorded.",
+        "invalid": "Review the current chromatography step and try again."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "interpretation-limits"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "complete-postlab-solubility",
+      "verb": "observe",
+      "label": "Complete postlab molecular reasoning",
+      "parameters": {
+        "note": "Use structure and intermolecular-force reasoning to compare pyridine and benzene solubility in water and relate that reasoning to chromatography without treating solubility alone as proof of chromatographic identity.",
+        "tag": "postlab-solubility"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "stationId": "notebook",
+        "accessibleLabel": "Complete postlab molecular reasoning",
+        "successCue": "Complete postlab molecular reasoning recorded.",
+        "invalidCue": "Complete and record the requested evidence before continuing."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Complete postlab molecular reasoning recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the current trial identity."
+        },
+        {
+          "id": "wrong-trial",
+          "when": "equipment belongs to a different solvent trial",
+          "message": "The selected paper, chamber, or solvent does not match this trial.",
+          "recovery": "Use the labeled equipment assigned to the current solvent so provenance is preserved."
+        }
+      ],
+      "feedback": {
+        "success": "Complete postlab molecular reasoning recorded.",
+        "invalid": "Review the current chromatography step and try again."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "postlab-solubility"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    }
+  ],
+  "process": {
+    "startNodeId": "review-challenge-safety-node",
+    "nodes": [
+      {
+        "id": "review-challenge-safety-node",
+        "type": "observation",
+        "title": "Review investigation, candidate solvents, and safety",
+        "description": "Wear splash-proof goggles. Five source-listed mobile phases are available: chromatography solvent (petroleum ether/acetone), acetone, ethanol, 2-propanol, and distilled water. Keep ignition sources disabled for flammable organics. Wash skin contact with copious water. Water/food dye uses the sink stream; acetone, ethanol, 2-propanol, and chromatography solvent use organic waste.",
+        "actionId": "review-challenge-safety",
+        "config": {},
+        "validation": [
+          {
+            "id": "chromatography-safety-recorded",
+            "type": "notebookEntry",
+            "label": "Review investigation, candidate solvents, and safety notebook evidence was recorded.",
+            "notebookTag": "chromatography-safety"
+          }
+        ],
+        "hints": [
+          "Review the current chromatography step and try again."
+        ],
+        "feedback": {
+          "success": "Review investigation, candidate solvents, and safety complete.",
+          "retry": "Review the current chromatography step and try again."
+        }
+      },
+      {
+        "id": "review-molecular-structures-node",
+        "type": "observation",
+        "title": "Review dye and solvent structures",
+        "description": "Review the supplied dye and solvent structures and identify hydrogen bonding, dipole-dipole attractions, dispersion forces, charge, and the polar cellulose stationary phase. Structure review is evidence for a prediction, not a revealed separation result.",
+        "actionId": "review-molecular-structures",
+        "config": {},
+        "validation": [
+          {
+            "id": "structure-evidence-recorded",
+            "type": "notebookEntry",
+            "label": "Review dye and solvent structures notebook evidence was recorded.",
+            "notebookTag": "structure-evidence"
+          }
+        ],
+        "hints": [
+          "Review the current chromatography step and try again."
+        ],
+        "feedback": {
+          "success": "Review dye and solvent structures complete.",
+          "retry": "Review the current chromatography step and try again."
+        }
+      },
+      {
+        "id": "record-imf-hypothesis-node",
+        "type": "observation",
+        "title": "Record an IMF-based separation hypothesis",
+        "description": "State which mobile phases you predict will change dye migration and separation. Connect the prediction to attractions among each dye, cellulose paper, and the chosen solvent before viewing trial outcomes.",
+        "actionId": "record-imf-hypothesis",
+        "config": {},
+        "validation": [
+          {
+            "id": "imf-hypothesis-recorded",
+            "type": "notebookEntry",
+            "label": "Record an IMF-based separation hypothesis notebook evidence was recorded.",
+            "notebookTag": "imf-hypothesis"
+          }
+        ],
+        "hints": [
+          "Review the current chromatography step and try again."
+        ],
+        "feedback": {
+          "success": "Record an IMF-based separation hypothesis complete.",
+          "retry": "Review the current chromatography step and try again."
+        }
+      },
+      {
+        "id": "select-solvents-node",
+        "type": "observation",
+        "title": "Select at least two solvents and justify each",
+        "description": "Use the solvents and trial order selected in classroom setup. Record a pre-result rationale for each selected source-listed solvent; at least two distinct solvents are required.",
+        "actionId": "select-solvents",
+        "config": {},
+        "validation": [
+          {
+            "id": "solvent-selection-recorded",
+            "type": "notebookEntry",
+            "label": "Select at least two solvents and justify each notebook evidence was recorded.",
+            "notebookTag": "solvent-selection"
+          }
+        ],
+        "hints": [
+          "Review the current chromatography step and try again."
+        ],
+        "feedback": {
+          "success": "Select at least two solvents and justify each complete.",
+          "retry": "Review the current chromatography step and try again."
+        }
+      },
+      {
+        "id": "configure-repeatable-procedure-node",
+        "type": "observation",
+        "title": "Configure a repeatable chromatography procedure",
+        "description": "Document the approved paper dimensions, pencil origin, solvent depth and volume, loaded sample and spot volume, and solvent-front stop distance from classroom setup. Keep the origin above solvent, dry the spot, close the chamber, measure to the nearest millimetre, and use fresh labeled paper and solvent for each selected trial.",
+        "actionId": "configure-repeatable-procedure",
+        "config": {},
+        "validation": [
+          {
+            "id": "procedure-design-recorded",
+            "type": "notebookEntry",
+            "label": "Configure a repeatable chromatography procedure notebook evidence was recorded.",
+            "notebookTag": "procedure-design"
+          }
+        ],
+        "hints": [
+          "Review the current chromatography step and try again."
+        ],
+        "feedback": {
+          "success": "Configure a repeatable chromatography procedure complete.",
+          "retry": "Review the current chromatography step and try again."
+        }
+      },
+      {
+        "id": "design-data-table-node",
+        "type": "observation",
+        "title": "Design the trial data table",
+        "description": "Create columns for solvent identity and rationale, paper/baseline/solvent settings, solvent-front distance in mm, each visible band description and center distance in mm, Rf, resolution, overlap, streaking, disposal stream, and notes.",
+        "actionId": "design-data-table",
+        "config": {},
+        "validation": [
+          {
+            "id": "data-table-design-recorded",
+            "type": "notebookEntry",
+            "label": "Design the trial data table notebook evidence was recorded.",
+            "notebookTag": "data-table-design"
+          }
+        ],
+        "hints": [
+          "Review the current chromatography step and try again."
+        ],
+        "feedback": {
+          "success": "Design the trial data table complete.",
+          "retry": "Review the current chromatography step and try again."
+        }
+      },
+      {
+        "id": "submit-procedure-approval-node",
+        "type": "observation",
+        "title": "Submit the procedure for approval",
+        "description": "Confirm that another student could repeat the solvent choice, labeling, spotting, chamber geometry, stop condition, measurement method, Rf calculation, and disposal branch without inventing missing steps.",
+        "actionId": "submit-procedure-approval",
+        "config": {},
+        "validation": [
+          {
+            "id": "procedure-approved-recorded",
+            "type": "notebookEntry",
+            "label": "Submit the procedure for approval notebook evidence was recorded.",
+            "notebookTag": "procedure-approved"
+          }
+        ],
+        "hints": [
+          "Review the current chromatography step and try again."
+        ],
+        "feedback": {
+          "success": "Submit the procedure for approval complete.",
+          "retry": "Review the current chromatography step and try again."
+        }
+      },
+      {
+        "id": "compare-separation-node",
+        "type": "observation",
+        "title": "Compare separation across solvent systems",
+        "description": "Compare only collected evidence: visible band count, overlap, spacing, streaking, and two-significant-figure Rf values. Rf values are conditional on the same stationary phase, solvent system, temperature, and procedure.",
+        "actionId": "compare-separation",
+        "config": {},
+        "validation": [
+          {
+            "id": "separation-comparison-recorded",
+            "type": "notebookEntry",
+            "label": "Compare separation across solvent systems notebook evidence was recorded.",
+            "notebookTag": "separation-comparison"
+          }
+        ],
+        "hints": [
+          "Review the current chromatography step and try again."
+        ],
+        "feedback": {
+          "success": "Compare separation across solvent systems complete.",
+          "retry": "Review the current chromatography step and try again."
+        }
+      },
+      {
+        "id": "evaluate-hypothesis-node",
+        "type": "observation",
+        "title": "Evaluate the original hypothesis",
+        "description": "State whether the collected evidence for your selected solvents supports, partly supports, or refutes the pre-result IMF hypothesis. Distinguish an unexpected result from an invalid trial.",
+        "actionId": "evaluate-hypothesis",
+        "config": {},
+        "validation": [
+          {
+            "id": "hypothesis-evaluation-recorded",
+            "type": "notebookEntry",
+            "label": "Evaluate the original hypothesis notebook evidence was recorded.",
+            "notebookTag": "hypothesis-evaluation"
+          }
+        ],
+        "hints": [
+          "Review the current chromatography step and try again."
+        ],
+        "feedback": {
+          "success": "Evaluate the original hypothesis complete.",
+          "retry": "Review the current chromatography step and try again."
+        }
+      },
+      {
+        "id": "explain-phase-interactions-node",
+        "type": "observation",
+        "title": "Explain mobile- and stationary-phase interactions",
+        "description": "Explain how dye structure and attractions to cellulose versus the selected mobile phase affect time in the stationary phase and migration. Identify the least-mobile observed band as spending the most relative time with the stationary phase for that solvent system.",
+        "actionId": "explain-phase-interactions",
+        "config": {},
+        "validation": [
+          {
+            "id": "phase-interactions-recorded",
+            "type": "notebookEntry",
+            "label": "Explain mobile- and stationary-phase interactions notebook evidence was recorded.",
+            "notebookTag": "phase-interactions"
+          }
+        ],
+        "hints": [
+          "Review the current chromatography step and try again."
+        ],
+        "feedback": {
+          "success": "Explain mobile- and stationary-phase interactions complete.",
+          "retry": "Review the current chromatography step and try again."
+        }
+      },
+      {
+        "id": "draw-process-model-node",
+        "type": "observation",
+        "title": "Record an annotated chromatography model",
+        "description": "Draw and annotate the pencil origin, shallow mobile phase below the origin, capillary rise, stationary cellulose phase, solvent front, separated or overlapping bands, and the band/front distances used in Rf.",
+        "actionId": "draw-process-model",
+        "config": {},
+        "validation": [
+          {
+            "id": "chromatography-model-recorded",
+            "type": "notebookEntry",
+            "label": "Record an annotated chromatography model notebook evidence was recorded.",
+            "notebookTag": "chromatography-model"
+          }
+        ],
+        "hints": [
+          "Review the current chromatography step and try again."
+        ],
+        "feedback": {
+          "success": "Record an annotated chromatography model complete.",
+          "retry": "Review the current chromatography step and try again."
+        }
+      },
+      {
+        "id": "evaluate-green-chemistry-node",
+        "type": "observation",
+        "title": "Evaluate solvent greenness with supplied evidence",
+        "description": "Use only teacher-supplied historical 2011 GSK guide evidence to compare the configured solvents. Do not present a remembered ranking as current guidance or claim live guide access.",
+        "actionId": "evaluate-green-chemistry",
+        "config": {},
+        "validation": [
+          {
+            "id": "green-chemistry-evidence-recorded",
+            "type": "notebookEntry",
+            "label": "Evaluate solvent greenness with supplied evidence notebook evidence was recorded.",
+            "notebookTag": "green-chemistry-evidence"
+          }
+        ],
+        "hints": [
+          "Review the current chromatography step and try again."
+        ],
+        "feedback": {
+          "success": "Evaluate solvent greenness with supplied evidence complete.",
+          "retry": "Review the current chromatography step and try again."
+        }
+      },
+      {
+        "id": "write-cer-conclusion-node",
+        "type": "observation",
+        "title": "Write the IMF/structure/solvent CER",
+        "description": "Make a claim about the better separation in this configured comparison; cite band count, overlap/spacing, measured distances, and Rf evidence; reason from dye, cellulose, and solvent intermolecular attractions. Do not claim that Rf alone proves molecular identity.",
+        "actionId": "write-cer-conclusion",
+        "config": {},
+        "validation": [
+          {
+            "id": "cer-claim-recorded",
+            "type": "notebookEntry",
+            "label": "Write the IMF/structure/solvent CER notebook evidence was recorded.",
+            "notebookTag": "cer-claim"
+          }
+        ],
+        "hints": [
+          "Review the current chromatography step and try again."
+        ],
+        "feedback": {
+          "success": "Write the IMF/structure/solvent CER complete.",
+          "retry": "Review the current chromatography step and try again."
+        }
+      },
+      {
+        "id": "record-interpretation-limits-node",
+        "type": "observation",
+        "title": "Record uncertainty and interpretation limits",
+        "description": "Discuss baseline and front-mark placement, band-center judgment, nearest-millimeter ruler precision, spot size, chamber sealing, paper-wall contact, evaporation, solvent composition, and repeatability. State that Rf is solvent-system dependent and corroborating evidence is required for identity.",
+        "actionId": "record-interpretation-limits",
+        "config": {},
+        "validation": [
+          {
+            "id": "interpretation-limits-recorded",
+            "type": "notebookEntry",
+            "label": "Record uncertainty and interpretation limits notebook evidence was recorded.",
+            "notebookTag": "interpretation-limits"
+          }
+        ],
+        "hints": [
+          "Review the current chromatography step and try again."
+        ],
+        "feedback": {
+          "success": "Record uncertainty and interpretation limits complete.",
+          "retry": "Review the current chromatography step and try again."
+        }
+      },
+      {
+        "id": "complete-postlab-solubility-node",
+        "type": "observation",
+        "title": "Complete postlab molecular reasoning",
+        "description": "Use structure and intermolecular-force reasoning to compare pyridine and benzene solubility in water and relate that reasoning to chromatography without treating solubility alone as proof of chromatographic identity.",
+        "actionId": "complete-postlab-solubility",
+        "config": {},
+        "validation": [
+          {
+            "id": "postlab-solubility-recorded",
+            "type": "notebookEntry",
+            "label": "Complete postlab molecular reasoning notebook evidence was recorded.",
+            "notebookTag": "postlab-solubility"
+          }
+        ],
+        "hints": [
+          "Review the current chromatography step and try again."
+        ],
+        "feedback": {
+          "success": "Complete postlab molecular reasoning complete.",
+          "retry": "Review the current chromatography step and try again."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "review-challenge-safety-node",
+        "to": "review-molecular-structures-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "review-molecular-structures-node",
+        "to": "record-imf-hypothesis-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-imf-hypothesis-node",
+        "to": "select-solvents-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "select-solvents-node",
+        "to": "configure-repeatable-procedure-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "configure-repeatable-procedure-node",
+        "to": "design-data-table-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "design-data-table-node",
+        "to": "submit-procedure-approval-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "compare-separation-node",
+        "to": "evaluate-hypothesis-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "evaluate-hypothesis-node",
+        "to": "explain-phase-interactions-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "explain-phase-interactions-node",
+        "to": "draw-process-model-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "draw-process-model-node",
+        "to": "evaluate-green-chemistry-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "evaluate-green-chemistry-node",
+        "to": "write-cer-conclusion-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "write-cer-conclusion-node",
+        "to": "record-interpretation-limits-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-interpretation-limits-node",
+        "to": "complete-postlab-solubility-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "assessments": [
+    {
+      "id": "procedure-approved-assessment",
+      "type": "notebookEntry",
+      "label": "A repeatable procedure was approved before outcomes were viewed.",
+      "notebookTag": "procedure-approved"
+    },
+    {
+      "id": "water-purple-overlap-rf-assessment",
+      "type": "calculationWithinTolerance",
+      "label": "distilled water Purple unresolved overlap Rf is within tolerance.",
+      "calculationId": "water-rf-purple-overlap",
+      "tolerance": 0.005
+    },
+    {
+      "id": "water-yellow-rf-assessment",
+      "type": "calculationWithinTolerance",
+      "label": "distilled water Yellow Rf is within tolerance.",
+      "calculationId": "water-rf-yellow",
+      "tolerance": 0.005
+    },
+    {
+      "id": "propanol-blue-rf-assessment",
+      "type": "calculationWithinTolerance",
+      "label": "2-propanol Blue Rf is within tolerance.",
+      "calculationId": "propanol-rf-blue",
+      "tolerance": 0.005
+    },
+    {
+      "id": "propanol-red-rf-assessment",
+      "type": "calculationWithinTolerance",
+      "label": "2-propanol Red Rf is within tolerance.",
+      "calculationId": "propanol-rf-red",
+      "tolerance": 0.005
+    },
+    {
+      "id": "propanol-yellow-rf-assessment",
+      "type": "calculationWithinTolerance",
+      "label": "2-propanol Yellow Rf is within tolerance.",
+      "calculationId": "propanol-rf-yellow",
+      "tolerance": 0.005
+    },
+    {
+      "id": "comparison-assessment",
+      "type": "notebookEntry",
+      "label": "Separation was compared using observed evidence.",
+      "notebookTag": "separation-comparison"
+    },
+    {
+      "id": "cer-assessment",
+      "type": "notebookEntry",
+      "label": "An IMF/structure/solvent CER was recorded.",
+      "notebookTag": "cer-claim"
+    },
+    {
+      "id": "limits-assessment",
+      "type": "notebookEntry",
+      "label": "Uncertainty and Rf interpretation limits were recorded.",
+      "notebookTag": "interpretation-limits"
+    }
+  ],
+  "metadata": {
+    "version": "1.2.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-04T00:00:00.000Z",
+    "tags": [
+      "lab",
+      "chemistry",
+      "paper-chromatography",
+      "chromatography",
+      "rf",
+      "inquiry",
+      "green-chemistry"
+    ]
+  },
+  "techniqueInstances": [
+    {
+      "instanceId": "chromatography-trials",
+      "techniqueId": "paper-chromatography",
+      "version": "1.2.1",
+      "bindings": {
+        "equipment": {
+          "developing-chamber": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "water-chamber",
+                "definitionId": "chromatography-chamber",
+                "instanceId": "water-chamber"
+              },
+              {
+                "sourceInstanceId": "propanol-chamber",
+                "definitionId": "chromatography-chamber",
+                "instanceId": "propanol-chamber"
+              },
+              {
+                "sourceInstanceId": "choice-water-1-chamber",
+                "definitionId": "chromatography-chamber",
+                "instanceId": "choice-water-1-chamber"
+              },
+              {
+                "sourceInstanceId": "choice-water-2-chamber",
+                "definitionId": "chromatography-chamber",
+                "instanceId": "choice-water-2-chamber"
+              },
+              {
+                "sourceInstanceId": "choice-water-3-chamber",
+                "definitionId": "chromatography-chamber",
+                "instanceId": "choice-water-3-chamber"
+              },
+              {
+                "sourceInstanceId": "choice-propanol-1-chamber",
+                "definitionId": "chromatography-chamber",
+                "instanceId": "choice-propanol-1-chamber"
+              },
+              {
+                "sourceInstanceId": "choice-propanol-2-chamber",
+                "definitionId": "chromatography-chamber",
+                "instanceId": "choice-propanol-2-chamber"
+              },
+              {
+                "sourceInstanceId": "choice-propanol-3-chamber",
+                "definitionId": "chromatography-chamber",
+                "instanceId": "choice-propanol-3-chamber"
+              },
+              {
+                "sourceInstanceId": "choice-ethanol-1-chamber",
+                "definitionId": "chromatography-chamber",
+                "instanceId": "choice-ethanol-1-chamber"
+              },
+              {
+                "sourceInstanceId": "choice-ethanol-2-chamber",
+                "definitionId": "chromatography-chamber",
+                "instanceId": "choice-ethanol-2-chamber"
+              },
+              {
+                "sourceInstanceId": "choice-ethanol-3-chamber",
+                "definitionId": "chromatography-chamber",
+                "instanceId": "choice-ethanol-3-chamber"
+              },
+              {
+                "sourceInstanceId": "choice-acetone-1-chamber",
+                "definitionId": "chromatography-chamber",
+                "instanceId": "choice-acetone-1-chamber"
+              },
+              {
+                "sourceInstanceId": "choice-acetone-2-chamber",
+                "definitionId": "chromatography-chamber",
+                "instanceId": "choice-acetone-2-chamber"
+              },
+              {
+                "sourceInstanceId": "choice-acetone-3-chamber",
+                "definitionId": "chromatography-chamber",
+                "instanceId": "choice-acetone-3-chamber"
+              },
+              {
+                "sourceInstanceId": "choice-chromatography-solvent-1-chamber",
+                "definitionId": "chromatography-chamber",
+                "instanceId": "choice-chromatography-solvent-1-chamber"
+              },
+              {
+                "sourceInstanceId": "choice-chromatography-solvent-2-chamber",
+                "definitionId": "chromatography-chamber",
+                "instanceId": "choice-chromatography-solvent-2-chamber"
+              },
+              {
+                "sourceInstanceId": "choice-chromatography-solvent-3-chamber",
+                "definitionId": "chromatography-chamber",
+                "instanceId": "choice-chromatography-solvent-3-chamber"
+              }
+            ]
+          },
+          "liquid-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "water-solvent-bottle",
+                "definitionId": "distilled-water-bottle",
+                "instanceId": "water-solvent-bottle"
+              },
+              {
+                "sourceInstanceId": "propanol-solvent-bottle",
+                "definitionId": "propanol-bottle",
+                "instanceId": "propanol-solvent-bottle"
+              },
+              {
+                "sourceInstanceId": "choice-water-1-solvent-bottle",
+                "definitionId": "reagent-bottle",
+                "instanceId": "choice-water-1-solvent-bottle"
+              },
+              {
+                "sourceInstanceId": "choice-water-2-solvent-bottle",
+                "definitionId": "reagent-bottle",
+                "instanceId": "choice-water-2-solvent-bottle"
+              },
+              {
+                "sourceInstanceId": "choice-water-3-solvent-bottle",
+                "definitionId": "reagent-bottle",
+                "instanceId": "choice-water-3-solvent-bottle"
+              },
+              {
+                "sourceInstanceId": "choice-propanol-1-solvent-bottle",
+                "definitionId": "reagent-bottle",
+                "instanceId": "choice-propanol-1-solvent-bottle"
+              },
+              {
+                "sourceInstanceId": "choice-propanol-2-solvent-bottle",
+                "definitionId": "reagent-bottle",
+                "instanceId": "choice-propanol-2-solvent-bottle"
+              },
+              {
+                "sourceInstanceId": "choice-propanol-3-solvent-bottle",
+                "definitionId": "reagent-bottle",
+                "instanceId": "choice-propanol-3-solvent-bottle"
+              },
+              {
+                "sourceInstanceId": "choice-ethanol-1-solvent-bottle",
+                "definitionId": "reagent-bottle",
+                "instanceId": "choice-ethanol-1-solvent-bottle"
+              },
+              {
+                "sourceInstanceId": "choice-ethanol-2-solvent-bottle",
+                "definitionId": "reagent-bottle",
+                "instanceId": "choice-ethanol-2-solvent-bottle"
+              },
+              {
+                "sourceInstanceId": "choice-ethanol-3-solvent-bottle",
+                "definitionId": "reagent-bottle",
+                "instanceId": "choice-ethanol-3-solvent-bottle"
+              },
+              {
+                "sourceInstanceId": "choice-acetone-1-solvent-bottle",
+                "definitionId": "reagent-bottle",
+                "instanceId": "choice-acetone-1-solvent-bottle"
+              },
+              {
+                "sourceInstanceId": "choice-acetone-2-solvent-bottle",
+                "definitionId": "reagent-bottle",
+                "instanceId": "choice-acetone-2-solvent-bottle"
+              },
+              {
+                "sourceInstanceId": "choice-acetone-3-solvent-bottle",
+                "definitionId": "reagent-bottle",
+                "instanceId": "choice-acetone-3-solvent-bottle"
+              },
+              {
+                "sourceInstanceId": "choice-chromatography-solvent-1-solvent-bottle",
+                "definitionId": "reagent-bottle",
+                "instanceId": "choice-chromatography-solvent-1-solvent-bottle"
+              },
+              {
+                "sourceInstanceId": "choice-chromatography-solvent-2-solvent-bottle",
+                "definitionId": "reagent-bottle",
+                "instanceId": "choice-chromatography-solvent-2-solvent-bottle"
+              },
+              {
+                "sourceInstanceId": "choice-chromatography-solvent-3-solvent-bottle",
+                "definitionId": "reagent-bottle",
+                "instanceId": "choice-chromatography-solvent-3-solvent-bottle"
+              }
+            ]
+          },
+          "stationary-phase": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "water-paper",
+                "definitionId": "chromatography-paper",
+                "instanceId": "water-paper"
+              },
+              {
+                "sourceInstanceId": "propanol-paper",
+                "definitionId": "chromatography-paper",
+                "instanceId": "propanol-paper"
+              },
+              {
+                "sourceInstanceId": "choice-water-1-paper",
+                "definitionId": "chromatography-paper",
+                "instanceId": "choice-water-1-paper"
+              },
+              {
+                "sourceInstanceId": "choice-water-2-paper",
+                "definitionId": "chromatography-paper",
+                "instanceId": "choice-water-2-paper"
+              },
+              {
+                "sourceInstanceId": "choice-water-3-paper",
+                "definitionId": "chromatography-paper",
+                "instanceId": "choice-water-3-paper"
+              },
+              {
+                "sourceInstanceId": "choice-propanol-1-paper",
+                "definitionId": "chromatography-paper",
+                "instanceId": "choice-propanol-1-paper"
+              },
+              {
+                "sourceInstanceId": "choice-propanol-2-paper",
+                "definitionId": "chromatography-paper",
+                "instanceId": "choice-propanol-2-paper"
+              },
+              {
+                "sourceInstanceId": "choice-propanol-3-paper",
+                "definitionId": "chromatography-paper",
+                "instanceId": "choice-propanol-3-paper"
+              },
+              {
+                "sourceInstanceId": "choice-ethanol-1-paper",
+                "definitionId": "chromatography-paper",
+                "instanceId": "choice-ethanol-1-paper"
+              },
+              {
+                "sourceInstanceId": "choice-ethanol-2-paper",
+                "definitionId": "chromatography-paper",
+                "instanceId": "choice-ethanol-2-paper"
+              },
+              {
+                "sourceInstanceId": "choice-ethanol-3-paper",
+                "definitionId": "chromatography-paper",
+                "instanceId": "choice-ethanol-3-paper"
+              },
+              {
+                "sourceInstanceId": "choice-acetone-1-paper",
+                "definitionId": "chromatography-paper",
+                "instanceId": "choice-acetone-1-paper"
+              },
+              {
+                "sourceInstanceId": "choice-acetone-2-paper",
+                "definitionId": "chromatography-paper",
+                "instanceId": "choice-acetone-2-paper"
+              },
+              {
+                "sourceInstanceId": "choice-acetone-3-paper",
+                "definitionId": "chromatography-paper",
+                "instanceId": "choice-acetone-3-paper"
+              },
+              {
+                "sourceInstanceId": "choice-chromatography-solvent-1-paper",
+                "definitionId": "chromatography-paper",
+                "instanceId": "choice-chromatography-solvent-1-paper"
+              },
+              {
+                "sourceInstanceId": "choice-chromatography-solvent-2-paper",
+                "definitionId": "chromatography-paper",
+                "instanceId": "choice-chromatography-solvent-2-paper"
+              },
+              {
+                "sourceInstanceId": "choice-chromatography-solvent-3-paper",
+                "definitionId": "chromatography-paper",
+                "instanceId": "choice-chromatography-solvent-3-paper"
+              }
+            ]
+          },
+          "sample-source": {
+            "definitionId": "sample-bottle",
+            "instanceId": "food-dye-sample"
+          },
+          "spotting-tool": {
+            "definitionId": "capillary-spotter",
+            "instanceId": "dye-spotter"
+          },
+          "waste-receiver": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "sink-disposal-receiver",
+                "definitionId": "waste-beaker",
+                "instanceId": "sink-disposal-receiver"
+              },
+              {
+                "sourceInstanceId": "organic-waste-receiver",
+                "definitionId": "waste-beaker",
+                "instanceId": "organic-waste-receiver"
+              }
+            ]
+          },
+          "distance-measuring-instrument": {
+            "definitionId": "metric-ruler",
+            "instanceId": "metric-ruler-1"
+          }
+        },
+        "models": {
+          "chromatography-water-food-dyes-paper": "water-food-dyes-paper",
+          "chromatography-propanol-food-dyes-paper": "propanol-food-dyes-paper",
+          "chromatography-choice-water-1-food-dyes-paper": "choice-water-1-food-dyes-paper",
+          "chromatography-choice-water-2-food-dyes-paper": "choice-water-2-food-dyes-paper",
+          "chromatography-choice-water-3-food-dyes-paper": "choice-water-3-food-dyes-paper",
+          "chromatography-choice-propanol-1-food-dyes-paper": "choice-propanol-1-food-dyes-paper",
+          "chromatography-choice-propanol-2-food-dyes-paper": "choice-propanol-2-food-dyes-paper",
+          "chromatography-choice-propanol-3-food-dyes-paper": "choice-propanol-3-food-dyes-paper",
+          "chromatography-choice-ethanol-1-food-dyes-paper": "choice-ethanol-1-food-dyes-paper",
+          "chromatography-choice-ethanol-2-food-dyes-paper": "choice-ethanol-2-food-dyes-paper",
+          "chromatography-choice-ethanol-3-food-dyes-paper": "choice-ethanol-3-food-dyes-paper",
+          "chromatography-choice-acetone-1-food-dyes-paper": "choice-acetone-1-food-dyes-paper",
+          "chromatography-choice-acetone-2-food-dyes-paper": "choice-acetone-2-food-dyes-paper",
+          "chromatography-choice-acetone-3-food-dyes-paper": "choice-acetone-3-food-dyes-paper",
+          "chromatography-choice-chromatography-solvent-1-food-dyes-paper": "choice-chromatography-solvent-1-food-dyes-paper",
+          "chromatography-choice-chromatography-solvent-2-food-dyes-paper": "choice-chromatography-solvent-2-food-dyes-paper",
+          "chromatography-choice-chromatography-solvent-3-food-dyes-paper": "choice-chromatography-solvent-3-food-dyes-paper"
+        },
+        "configuration": {}
+      },
+      "preserveIds": {
+        "actions": {
+          "label-water-trial": "label-water-trial",
+          "place-water-chamber": "place-water-chamber",
+          "add-water-solvent": "add-water-solvent",
+          "place-water-paper": "place-water-paper",
+          "draw-water-baseline": "draw-water-baseline",
+          "load-water-capillary": "load-water-capillary",
+          "spot-water-sample": "spot-water-sample",
+          "dry-water-spot": "dry-water-spot",
+          "insert-water-paper": "insert-water-paper",
+          "close-water-chamber": "close-water-chamber",
+          "develop-water-paper": "develop-water-paper",
+          "open-water-chamber": "open-water-chamber",
+          "remove-water-paper": "remove-water-paper",
+          "mark-water-front": "mark-water-front",
+          "dry-water-chromatogram": "dry-water-chromatogram",
+          "identify-water-bands": "identify-water-bands",
+          "record-water-solvent-front": "record-water-solvent-front",
+          "record-water-purple-overlap": "record-water-purple-overlap",
+          "record-water-yellow": "record-water-yellow",
+          "calculate-water-rf": "calculate-water-rf",
+          "record-water-quality": "record-water-quality",
+          "dispose-water-solvent": "dispose-water-solvent",
+          "label-propanol-trial": "label-propanol-trial",
+          "place-propanol-chamber": "place-propanol-chamber",
+          "add-propanol-solvent": "add-propanol-solvent",
+          "place-propanol-paper": "place-propanol-paper",
+          "draw-propanol-baseline": "draw-propanol-baseline",
+          "load-propanol-capillary": "load-propanol-capillary",
+          "spot-propanol-sample": "spot-propanol-sample",
+          "dry-propanol-spot": "dry-propanol-spot",
+          "insert-propanol-paper": "insert-propanol-paper",
+          "close-propanol-chamber": "close-propanol-chamber",
+          "develop-propanol-paper": "develop-propanol-paper",
+          "open-propanol-chamber": "open-propanol-chamber",
+          "remove-propanol-paper": "remove-propanol-paper",
+          "mark-propanol-front": "mark-propanol-front",
+          "dry-propanol-chromatogram": "dry-propanol-chromatogram",
+          "identify-propanol-bands": "identify-propanol-bands",
+          "record-propanol-solvent-front": "record-propanol-solvent-front",
+          "record-propanol-blue": "record-propanol-blue",
+          "record-propanol-red": "record-propanol-red",
+          "record-propanol-yellow": "record-propanol-yellow",
+          "calculate-propanol-rf": "calculate-propanol-rf",
+          "record-propanol-quality": "record-propanol-quality",
+          "dispose-propanol-solvent": "dispose-propanol-solvent",
+          "place-metric-ruler": "place-metric-ruler",
+          "measure-water-solvent-front": "measure-water-solvent-front",
+          "measure-water-purple-overlap": "measure-water-purple-overlap",
+          "measure-water-yellow": "measure-water-yellow",
+          "measure-propanol-solvent-front": "measure-propanol-solvent-front",
+          "measure-propanol-blue": "measure-propanol-blue",
+          "measure-propanol-red": "measure-propanol-red",
+          "measure-propanol-yellow": "measure-propanol-yellow",
+          "label-choice-water-1-trial": "label-choice-water-1-trial",
+          "place-choice-water-1-chamber": "place-choice-water-1-chamber",
+          "add-choice-water-1-solvent": "add-choice-water-1-solvent",
+          "place-choice-water-1-paper": "place-choice-water-1-paper",
+          "draw-choice-water-1-baseline": "draw-choice-water-1-baseline",
+          "load-choice-water-1-capillary": "load-choice-water-1-capillary",
+          "spot-choice-water-1-sample": "spot-choice-water-1-sample",
+          "dry-choice-water-1-spot": "dry-choice-water-1-spot",
+          "insert-choice-water-1-paper": "insert-choice-water-1-paper",
+          "close-choice-water-1-chamber": "close-choice-water-1-chamber",
+          "develop-choice-water-1-paper": "develop-choice-water-1-paper",
+          "open-choice-water-1-chamber": "open-choice-water-1-chamber",
+          "remove-choice-water-1-paper": "remove-choice-water-1-paper",
+          "mark-choice-water-1-front": "mark-choice-water-1-front",
+          "dry-choice-water-1-chromatogram": "dry-choice-water-1-chromatogram",
+          "identify-choice-water-1-bands": "identify-choice-water-1-bands",
+          "measure-choice-water-1-solvent-front": "measure-choice-water-1-solvent-front",
+          "record-choice-water-1-solvent-front": "record-choice-water-1-solvent-front",
+          "measure-choice-water-1-region-1": "measure-choice-water-1-region-1",
+          "record-choice-water-1-region-1": "record-choice-water-1-region-1",
+          "calculate-choice-water-1-rf": "calculate-choice-water-1-rf",
+          "record-choice-water-1-quality": "record-choice-water-1-quality",
+          "dispose-choice-water-1-solvent": "dispose-choice-water-1-solvent",
+          "label-choice-water-2-trial": "label-choice-water-2-trial",
+          "place-choice-water-2-chamber": "place-choice-water-2-chamber",
+          "add-choice-water-2-solvent": "add-choice-water-2-solvent",
+          "place-choice-water-2-paper": "place-choice-water-2-paper",
+          "draw-choice-water-2-baseline": "draw-choice-water-2-baseline",
+          "load-choice-water-2-capillary": "load-choice-water-2-capillary",
+          "spot-choice-water-2-sample": "spot-choice-water-2-sample",
+          "dry-choice-water-2-spot": "dry-choice-water-2-spot",
+          "insert-choice-water-2-paper": "insert-choice-water-2-paper",
+          "close-choice-water-2-chamber": "close-choice-water-2-chamber",
+          "develop-choice-water-2-paper": "develop-choice-water-2-paper",
+          "open-choice-water-2-chamber": "open-choice-water-2-chamber",
+          "remove-choice-water-2-paper": "remove-choice-water-2-paper",
+          "mark-choice-water-2-front": "mark-choice-water-2-front",
+          "dry-choice-water-2-chromatogram": "dry-choice-water-2-chromatogram",
+          "identify-choice-water-2-bands": "identify-choice-water-2-bands",
+          "measure-choice-water-2-solvent-front": "measure-choice-water-2-solvent-front",
+          "record-choice-water-2-solvent-front": "record-choice-water-2-solvent-front",
+          "measure-choice-water-2-region-1": "measure-choice-water-2-region-1",
+          "record-choice-water-2-region-1": "record-choice-water-2-region-1",
+          "measure-choice-water-2-region-2": "measure-choice-water-2-region-2",
+          "record-choice-water-2-region-2": "record-choice-water-2-region-2",
+          "calculate-choice-water-2-rf": "calculate-choice-water-2-rf",
+          "record-choice-water-2-quality": "record-choice-water-2-quality",
+          "dispose-choice-water-2-solvent": "dispose-choice-water-2-solvent",
+          "label-choice-water-3-trial": "label-choice-water-3-trial",
+          "place-choice-water-3-chamber": "place-choice-water-3-chamber",
+          "add-choice-water-3-solvent": "add-choice-water-3-solvent",
+          "place-choice-water-3-paper": "place-choice-water-3-paper",
+          "draw-choice-water-3-baseline": "draw-choice-water-3-baseline",
+          "load-choice-water-3-capillary": "load-choice-water-3-capillary",
+          "spot-choice-water-3-sample": "spot-choice-water-3-sample",
+          "dry-choice-water-3-spot": "dry-choice-water-3-spot",
+          "insert-choice-water-3-paper": "insert-choice-water-3-paper",
+          "close-choice-water-3-chamber": "close-choice-water-3-chamber",
+          "develop-choice-water-3-paper": "develop-choice-water-3-paper",
+          "open-choice-water-3-chamber": "open-choice-water-3-chamber",
+          "remove-choice-water-3-paper": "remove-choice-water-3-paper",
+          "mark-choice-water-3-front": "mark-choice-water-3-front",
+          "dry-choice-water-3-chromatogram": "dry-choice-water-3-chromatogram",
+          "identify-choice-water-3-bands": "identify-choice-water-3-bands",
+          "measure-choice-water-3-solvent-front": "measure-choice-water-3-solvent-front",
+          "record-choice-water-3-solvent-front": "record-choice-water-3-solvent-front",
+          "measure-choice-water-3-region-1": "measure-choice-water-3-region-1",
+          "record-choice-water-3-region-1": "record-choice-water-3-region-1",
+          "measure-choice-water-3-region-2": "measure-choice-water-3-region-2",
+          "record-choice-water-3-region-2": "record-choice-water-3-region-2",
+          "measure-choice-water-3-region-3": "measure-choice-water-3-region-3",
+          "record-choice-water-3-region-3": "record-choice-water-3-region-3",
+          "calculate-choice-water-3-rf": "calculate-choice-water-3-rf",
+          "record-choice-water-3-quality": "record-choice-water-3-quality",
+          "dispose-choice-water-3-solvent": "dispose-choice-water-3-solvent",
+          "label-choice-propanol-1-trial": "label-choice-propanol-1-trial",
+          "place-choice-propanol-1-chamber": "place-choice-propanol-1-chamber",
+          "add-choice-propanol-1-solvent": "add-choice-propanol-1-solvent",
+          "place-choice-propanol-1-paper": "place-choice-propanol-1-paper",
+          "draw-choice-propanol-1-baseline": "draw-choice-propanol-1-baseline",
+          "load-choice-propanol-1-capillary": "load-choice-propanol-1-capillary",
+          "spot-choice-propanol-1-sample": "spot-choice-propanol-1-sample",
+          "dry-choice-propanol-1-spot": "dry-choice-propanol-1-spot",
+          "insert-choice-propanol-1-paper": "insert-choice-propanol-1-paper",
+          "close-choice-propanol-1-chamber": "close-choice-propanol-1-chamber",
+          "develop-choice-propanol-1-paper": "develop-choice-propanol-1-paper",
+          "open-choice-propanol-1-chamber": "open-choice-propanol-1-chamber",
+          "remove-choice-propanol-1-paper": "remove-choice-propanol-1-paper",
+          "mark-choice-propanol-1-front": "mark-choice-propanol-1-front",
+          "dry-choice-propanol-1-chromatogram": "dry-choice-propanol-1-chromatogram",
+          "identify-choice-propanol-1-bands": "identify-choice-propanol-1-bands",
+          "measure-choice-propanol-1-solvent-front": "measure-choice-propanol-1-solvent-front",
+          "record-choice-propanol-1-solvent-front": "record-choice-propanol-1-solvent-front",
+          "measure-choice-propanol-1-region-1": "measure-choice-propanol-1-region-1",
+          "record-choice-propanol-1-region-1": "record-choice-propanol-1-region-1",
+          "calculate-choice-propanol-1-rf": "calculate-choice-propanol-1-rf",
+          "record-choice-propanol-1-quality": "record-choice-propanol-1-quality",
+          "dispose-choice-propanol-1-solvent": "dispose-choice-propanol-1-solvent",
+          "label-choice-propanol-2-trial": "label-choice-propanol-2-trial",
+          "place-choice-propanol-2-chamber": "place-choice-propanol-2-chamber",
+          "add-choice-propanol-2-solvent": "add-choice-propanol-2-solvent",
+          "place-choice-propanol-2-paper": "place-choice-propanol-2-paper",
+          "draw-choice-propanol-2-baseline": "draw-choice-propanol-2-baseline",
+          "load-choice-propanol-2-capillary": "load-choice-propanol-2-capillary",
+          "spot-choice-propanol-2-sample": "spot-choice-propanol-2-sample",
+          "dry-choice-propanol-2-spot": "dry-choice-propanol-2-spot",
+          "insert-choice-propanol-2-paper": "insert-choice-propanol-2-paper",
+          "close-choice-propanol-2-chamber": "close-choice-propanol-2-chamber",
+          "develop-choice-propanol-2-paper": "develop-choice-propanol-2-paper",
+          "open-choice-propanol-2-chamber": "open-choice-propanol-2-chamber",
+          "remove-choice-propanol-2-paper": "remove-choice-propanol-2-paper",
+          "mark-choice-propanol-2-front": "mark-choice-propanol-2-front",
+          "dry-choice-propanol-2-chromatogram": "dry-choice-propanol-2-chromatogram",
+          "identify-choice-propanol-2-bands": "identify-choice-propanol-2-bands",
+          "measure-choice-propanol-2-solvent-front": "measure-choice-propanol-2-solvent-front",
+          "record-choice-propanol-2-solvent-front": "record-choice-propanol-2-solvent-front",
+          "measure-choice-propanol-2-region-1": "measure-choice-propanol-2-region-1",
+          "record-choice-propanol-2-region-1": "record-choice-propanol-2-region-1",
+          "measure-choice-propanol-2-region-2": "measure-choice-propanol-2-region-2",
+          "record-choice-propanol-2-region-2": "record-choice-propanol-2-region-2",
+          "calculate-choice-propanol-2-rf": "calculate-choice-propanol-2-rf",
+          "record-choice-propanol-2-quality": "record-choice-propanol-2-quality",
+          "dispose-choice-propanol-2-solvent": "dispose-choice-propanol-2-solvent",
+          "label-choice-propanol-3-trial": "label-choice-propanol-3-trial",
+          "place-choice-propanol-3-chamber": "place-choice-propanol-3-chamber",
+          "add-choice-propanol-3-solvent": "add-choice-propanol-3-solvent",
+          "place-choice-propanol-3-paper": "place-choice-propanol-3-paper",
+          "draw-choice-propanol-3-baseline": "draw-choice-propanol-3-baseline",
+          "load-choice-propanol-3-capillary": "load-choice-propanol-3-capillary",
+          "spot-choice-propanol-3-sample": "spot-choice-propanol-3-sample",
+          "dry-choice-propanol-3-spot": "dry-choice-propanol-3-spot",
+          "insert-choice-propanol-3-paper": "insert-choice-propanol-3-paper",
+          "close-choice-propanol-3-chamber": "close-choice-propanol-3-chamber",
+          "develop-choice-propanol-3-paper": "develop-choice-propanol-3-paper",
+          "open-choice-propanol-3-chamber": "open-choice-propanol-3-chamber",
+          "remove-choice-propanol-3-paper": "remove-choice-propanol-3-paper",
+          "mark-choice-propanol-3-front": "mark-choice-propanol-3-front",
+          "dry-choice-propanol-3-chromatogram": "dry-choice-propanol-3-chromatogram",
+          "identify-choice-propanol-3-bands": "identify-choice-propanol-3-bands",
+          "measure-choice-propanol-3-solvent-front": "measure-choice-propanol-3-solvent-front",
+          "record-choice-propanol-3-solvent-front": "record-choice-propanol-3-solvent-front",
+          "measure-choice-propanol-3-region-1": "measure-choice-propanol-3-region-1",
+          "record-choice-propanol-3-region-1": "record-choice-propanol-3-region-1",
+          "measure-choice-propanol-3-region-2": "measure-choice-propanol-3-region-2",
+          "record-choice-propanol-3-region-2": "record-choice-propanol-3-region-2",
+          "measure-choice-propanol-3-region-3": "measure-choice-propanol-3-region-3",
+          "record-choice-propanol-3-region-3": "record-choice-propanol-3-region-3",
+          "calculate-choice-propanol-3-rf": "calculate-choice-propanol-3-rf",
+          "record-choice-propanol-3-quality": "record-choice-propanol-3-quality",
+          "dispose-choice-propanol-3-solvent": "dispose-choice-propanol-3-solvent",
+          "label-choice-ethanol-1-trial": "label-choice-ethanol-1-trial",
+          "place-choice-ethanol-1-chamber": "place-choice-ethanol-1-chamber",
+          "add-choice-ethanol-1-solvent": "add-choice-ethanol-1-solvent",
+          "place-choice-ethanol-1-paper": "place-choice-ethanol-1-paper",
+          "draw-choice-ethanol-1-baseline": "draw-choice-ethanol-1-baseline",
+          "load-choice-ethanol-1-capillary": "load-choice-ethanol-1-capillary",
+          "spot-choice-ethanol-1-sample": "spot-choice-ethanol-1-sample",
+          "dry-choice-ethanol-1-spot": "dry-choice-ethanol-1-spot",
+          "insert-choice-ethanol-1-paper": "insert-choice-ethanol-1-paper",
+          "close-choice-ethanol-1-chamber": "close-choice-ethanol-1-chamber",
+          "develop-choice-ethanol-1-paper": "develop-choice-ethanol-1-paper",
+          "open-choice-ethanol-1-chamber": "open-choice-ethanol-1-chamber",
+          "remove-choice-ethanol-1-paper": "remove-choice-ethanol-1-paper",
+          "mark-choice-ethanol-1-front": "mark-choice-ethanol-1-front",
+          "dry-choice-ethanol-1-chromatogram": "dry-choice-ethanol-1-chromatogram",
+          "identify-choice-ethanol-1-bands": "identify-choice-ethanol-1-bands",
+          "measure-choice-ethanol-1-solvent-front": "measure-choice-ethanol-1-solvent-front",
+          "record-choice-ethanol-1-solvent-front": "record-choice-ethanol-1-solvent-front",
+          "measure-choice-ethanol-1-region-1": "measure-choice-ethanol-1-region-1",
+          "record-choice-ethanol-1-region-1": "record-choice-ethanol-1-region-1",
+          "calculate-choice-ethanol-1-rf": "calculate-choice-ethanol-1-rf",
+          "record-choice-ethanol-1-quality": "record-choice-ethanol-1-quality",
+          "dispose-choice-ethanol-1-solvent": "dispose-choice-ethanol-1-solvent",
+          "label-choice-ethanol-2-trial": "label-choice-ethanol-2-trial",
+          "place-choice-ethanol-2-chamber": "place-choice-ethanol-2-chamber",
+          "add-choice-ethanol-2-solvent": "add-choice-ethanol-2-solvent",
+          "place-choice-ethanol-2-paper": "place-choice-ethanol-2-paper",
+          "draw-choice-ethanol-2-baseline": "draw-choice-ethanol-2-baseline",
+          "load-choice-ethanol-2-capillary": "load-choice-ethanol-2-capillary",
+          "spot-choice-ethanol-2-sample": "spot-choice-ethanol-2-sample",
+          "dry-choice-ethanol-2-spot": "dry-choice-ethanol-2-spot",
+          "insert-choice-ethanol-2-paper": "insert-choice-ethanol-2-paper",
+          "close-choice-ethanol-2-chamber": "close-choice-ethanol-2-chamber",
+          "develop-choice-ethanol-2-paper": "develop-choice-ethanol-2-paper",
+          "open-choice-ethanol-2-chamber": "open-choice-ethanol-2-chamber",
+          "remove-choice-ethanol-2-paper": "remove-choice-ethanol-2-paper",
+          "mark-choice-ethanol-2-front": "mark-choice-ethanol-2-front",
+          "dry-choice-ethanol-2-chromatogram": "dry-choice-ethanol-2-chromatogram",
+          "identify-choice-ethanol-2-bands": "identify-choice-ethanol-2-bands",
+          "measure-choice-ethanol-2-solvent-front": "measure-choice-ethanol-2-solvent-front",
+          "record-choice-ethanol-2-solvent-front": "record-choice-ethanol-2-solvent-front",
+          "measure-choice-ethanol-2-region-1": "measure-choice-ethanol-2-region-1",
+          "record-choice-ethanol-2-region-1": "record-choice-ethanol-2-region-1",
+          "measure-choice-ethanol-2-region-2": "measure-choice-ethanol-2-region-2",
+          "record-choice-ethanol-2-region-2": "record-choice-ethanol-2-region-2",
+          "calculate-choice-ethanol-2-rf": "calculate-choice-ethanol-2-rf",
+          "record-choice-ethanol-2-quality": "record-choice-ethanol-2-quality",
+          "dispose-choice-ethanol-2-solvent": "dispose-choice-ethanol-2-solvent",
+          "label-choice-ethanol-3-trial": "label-choice-ethanol-3-trial",
+          "place-choice-ethanol-3-chamber": "place-choice-ethanol-3-chamber",
+          "add-choice-ethanol-3-solvent": "add-choice-ethanol-3-solvent",
+          "place-choice-ethanol-3-paper": "place-choice-ethanol-3-paper",
+          "draw-choice-ethanol-3-baseline": "draw-choice-ethanol-3-baseline",
+          "load-choice-ethanol-3-capillary": "load-choice-ethanol-3-capillary",
+          "spot-choice-ethanol-3-sample": "spot-choice-ethanol-3-sample",
+          "dry-choice-ethanol-3-spot": "dry-choice-ethanol-3-spot",
+          "insert-choice-ethanol-3-paper": "insert-choice-ethanol-3-paper",
+          "close-choice-ethanol-3-chamber": "close-choice-ethanol-3-chamber",
+          "develop-choice-ethanol-3-paper": "develop-choice-ethanol-3-paper",
+          "open-choice-ethanol-3-chamber": "open-choice-ethanol-3-chamber",
+          "remove-choice-ethanol-3-paper": "remove-choice-ethanol-3-paper",
+          "mark-choice-ethanol-3-front": "mark-choice-ethanol-3-front",
+          "dry-choice-ethanol-3-chromatogram": "dry-choice-ethanol-3-chromatogram",
+          "identify-choice-ethanol-3-bands": "identify-choice-ethanol-3-bands",
+          "measure-choice-ethanol-3-solvent-front": "measure-choice-ethanol-3-solvent-front",
+          "record-choice-ethanol-3-solvent-front": "record-choice-ethanol-3-solvent-front",
+          "measure-choice-ethanol-3-region-1": "measure-choice-ethanol-3-region-1",
+          "record-choice-ethanol-3-region-1": "record-choice-ethanol-3-region-1",
+          "measure-choice-ethanol-3-region-2": "measure-choice-ethanol-3-region-2",
+          "record-choice-ethanol-3-region-2": "record-choice-ethanol-3-region-2",
+          "measure-choice-ethanol-3-region-3": "measure-choice-ethanol-3-region-3",
+          "record-choice-ethanol-3-region-3": "record-choice-ethanol-3-region-3",
+          "calculate-choice-ethanol-3-rf": "calculate-choice-ethanol-3-rf",
+          "record-choice-ethanol-3-quality": "record-choice-ethanol-3-quality",
+          "dispose-choice-ethanol-3-solvent": "dispose-choice-ethanol-3-solvent",
+          "label-choice-acetone-1-trial": "label-choice-acetone-1-trial",
+          "place-choice-acetone-1-chamber": "place-choice-acetone-1-chamber",
+          "add-choice-acetone-1-solvent": "add-choice-acetone-1-solvent",
+          "place-choice-acetone-1-paper": "place-choice-acetone-1-paper",
+          "draw-choice-acetone-1-baseline": "draw-choice-acetone-1-baseline",
+          "load-choice-acetone-1-capillary": "load-choice-acetone-1-capillary",
+          "spot-choice-acetone-1-sample": "spot-choice-acetone-1-sample",
+          "dry-choice-acetone-1-spot": "dry-choice-acetone-1-spot",
+          "insert-choice-acetone-1-paper": "insert-choice-acetone-1-paper",
+          "close-choice-acetone-1-chamber": "close-choice-acetone-1-chamber",
+          "develop-choice-acetone-1-paper": "develop-choice-acetone-1-paper",
+          "open-choice-acetone-1-chamber": "open-choice-acetone-1-chamber",
+          "remove-choice-acetone-1-paper": "remove-choice-acetone-1-paper",
+          "mark-choice-acetone-1-front": "mark-choice-acetone-1-front",
+          "dry-choice-acetone-1-chromatogram": "dry-choice-acetone-1-chromatogram",
+          "identify-choice-acetone-1-bands": "identify-choice-acetone-1-bands",
+          "measure-choice-acetone-1-solvent-front": "measure-choice-acetone-1-solvent-front",
+          "record-choice-acetone-1-solvent-front": "record-choice-acetone-1-solvent-front",
+          "measure-choice-acetone-1-region-1": "measure-choice-acetone-1-region-1",
+          "record-choice-acetone-1-region-1": "record-choice-acetone-1-region-1",
+          "calculate-choice-acetone-1-rf": "calculate-choice-acetone-1-rf",
+          "record-choice-acetone-1-quality": "record-choice-acetone-1-quality",
+          "dispose-choice-acetone-1-solvent": "dispose-choice-acetone-1-solvent",
+          "label-choice-acetone-2-trial": "label-choice-acetone-2-trial",
+          "place-choice-acetone-2-chamber": "place-choice-acetone-2-chamber",
+          "add-choice-acetone-2-solvent": "add-choice-acetone-2-solvent",
+          "place-choice-acetone-2-paper": "place-choice-acetone-2-paper",
+          "draw-choice-acetone-2-baseline": "draw-choice-acetone-2-baseline",
+          "load-choice-acetone-2-capillary": "load-choice-acetone-2-capillary",
+          "spot-choice-acetone-2-sample": "spot-choice-acetone-2-sample",
+          "dry-choice-acetone-2-spot": "dry-choice-acetone-2-spot",
+          "insert-choice-acetone-2-paper": "insert-choice-acetone-2-paper",
+          "close-choice-acetone-2-chamber": "close-choice-acetone-2-chamber",
+          "develop-choice-acetone-2-paper": "develop-choice-acetone-2-paper",
+          "open-choice-acetone-2-chamber": "open-choice-acetone-2-chamber",
+          "remove-choice-acetone-2-paper": "remove-choice-acetone-2-paper",
+          "mark-choice-acetone-2-front": "mark-choice-acetone-2-front",
+          "dry-choice-acetone-2-chromatogram": "dry-choice-acetone-2-chromatogram",
+          "identify-choice-acetone-2-bands": "identify-choice-acetone-2-bands",
+          "measure-choice-acetone-2-solvent-front": "measure-choice-acetone-2-solvent-front",
+          "record-choice-acetone-2-solvent-front": "record-choice-acetone-2-solvent-front",
+          "measure-choice-acetone-2-region-1": "measure-choice-acetone-2-region-1",
+          "record-choice-acetone-2-region-1": "record-choice-acetone-2-region-1",
+          "measure-choice-acetone-2-region-2": "measure-choice-acetone-2-region-2",
+          "record-choice-acetone-2-region-2": "record-choice-acetone-2-region-2",
+          "calculate-choice-acetone-2-rf": "calculate-choice-acetone-2-rf",
+          "record-choice-acetone-2-quality": "record-choice-acetone-2-quality",
+          "dispose-choice-acetone-2-solvent": "dispose-choice-acetone-2-solvent",
+          "label-choice-acetone-3-trial": "label-choice-acetone-3-trial",
+          "place-choice-acetone-3-chamber": "place-choice-acetone-3-chamber",
+          "add-choice-acetone-3-solvent": "add-choice-acetone-3-solvent",
+          "place-choice-acetone-3-paper": "place-choice-acetone-3-paper",
+          "draw-choice-acetone-3-baseline": "draw-choice-acetone-3-baseline",
+          "load-choice-acetone-3-capillary": "load-choice-acetone-3-capillary",
+          "spot-choice-acetone-3-sample": "spot-choice-acetone-3-sample",
+          "dry-choice-acetone-3-spot": "dry-choice-acetone-3-spot",
+          "insert-choice-acetone-3-paper": "insert-choice-acetone-3-paper",
+          "close-choice-acetone-3-chamber": "close-choice-acetone-3-chamber",
+          "develop-choice-acetone-3-paper": "develop-choice-acetone-3-paper",
+          "open-choice-acetone-3-chamber": "open-choice-acetone-3-chamber",
+          "remove-choice-acetone-3-paper": "remove-choice-acetone-3-paper",
+          "mark-choice-acetone-3-front": "mark-choice-acetone-3-front",
+          "dry-choice-acetone-3-chromatogram": "dry-choice-acetone-3-chromatogram",
+          "identify-choice-acetone-3-bands": "identify-choice-acetone-3-bands",
+          "measure-choice-acetone-3-solvent-front": "measure-choice-acetone-3-solvent-front",
+          "record-choice-acetone-3-solvent-front": "record-choice-acetone-3-solvent-front",
+          "measure-choice-acetone-3-region-1": "measure-choice-acetone-3-region-1",
+          "record-choice-acetone-3-region-1": "record-choice-acetone-3-region-1",
+          "measure-choice-acetone-3-region-2": "measure-choice-acetone-3-region-2",
+          "record-choice-acetone-3-region-2": "record-choice-acetone-3-region-2",
+          "measure-choice-acetone-3-region-3": "measure-choice-acetone-3-region-3",
+          "record-choice-acetone-3-region-3": "record-choice-acetone-3-region-3",
+          "calculate-choice-acetone-3-rf": "calculate-choice-acetone-3-rf",
+          "record-choice-acetone-3-quality": "record-choice-acetone-3-quality",
+          "dispose-choice-acetone-3-solvent": "dispose-choice-acetone-3-solvent",
+          "label-choice-chromatography-solvent-1-trial": "label-choice-chromatography-solvent-1-trial",
+          "place-choice-chromatography-solvent-1-chamber": "place-choice-chromatography-solvent-1-chamber",
+          "add-choice-chromatography-solvent-1-solvent": "add-choice-chromatography-solvent-1-solvent",
+          "place-choice-chromatography-solvent-1-paper": "place-choice-chromatography-solvent-1-paper",
+          "draw-choice-chromatography-solvent-1-baseline": "draw-choice-chromatography-solvent-1-baseline",
+          "load-choice-chromatography-solvent-1-capillary": "load-choice-chromatography-solvent-1-capillary",
+          "spot-choice-chromatography-solvent-1-sample": "spot-choice-chromatography-solvent-1-sample",
+          "dry-choice-chromatography-solvent-1-spot": "dry-choice-chromatography-solvent-1-spot",
+          "insert-choice-chromatography-solvent-1-paper": "insert-choice-chromatography-solvent-1-paper",
+          "close-choice-chromatography-solvent-1-chamber": "close-choice-chromatography-solvent-1-chamber",
+          "develop-choice-chromatography-solvent-1-paper": "develop-choice-chromatography-solvent-1-paper",
+          "open-choice-chromatography-solvent-1-chamber": "open-choice-chromatography-solvent-1-chamber",
+          "remove-choice-chromatography-solvent-1-paper": "remove-choice-chromatography-solvent-1-paper",
+          "mark-choice-chromatography-solvent-1-front": "mark-choice-chromatography-solvent-1-front",
+          "dry-choice-chromatography-solvent-1-chromatogram": "dry-choice-chromatography-solvent-1-chromatogram",
+          "identify-choice-chromatography-solvent-1-bands": "identify-choice-chromatography-solvent-1-bands",
+          "measure-choice-chromatography-solvent-1-solvent-front": "measure-choice-chromatography-solvent-1-solvent-front",
+          "record-choice-chromatography-solvent-1-solvent-front": "record-choice-chromatography-solvent-1-solvent-front",
+          "measure-choice-chromatography-solvent-1-region-1": "measure-choice-chromatography-solvent-1-region-1",
+          "record-choice-chromatography-solvent-1-region-1": "record-choice-chromatography-solvent-1-region-1",
+          "calculate-choice-chromatography-solvent-1-rf": "calculate-choice-chromatography-solvent-1-rf",
+          "record-choice-chromatography-solvent-1-quality": "record-choice-chromatography-solvent-1-quality",
+          "dispose-choice-chromatography-solvent-1-solvent": "dispose-choice-chromatography-solvent-1-solvent",
+          "label-choice-chromatography-solvent-2-trial": "label-choice-chromatography-solvent-2-trial",
+          "place-choice-chromatography-solvent-2-chamber": "place-choice-chromatography-solvent-2-chamber",
+          "add-choice-chromatography-solvent-2-solvent": "add-choice-chromatography-solvent-2-solvent",
+          "place-choice-chromatography-solvent-2-paper": "place-choice-chromatography-solvent-2-paper",
+          "draw-choice-chromatography-solvent-2-baseline": "draw-choice-chromatography-solvent-2-baseline",
+          "load-choice-chromatography-solvent-2-capillary": "load-choice-chromatography-solvent-2-capillary",
+          "spot-choice-chromatography-solvent-2-sample": "spot-choice-chromatography-solvent-2-sample",
+          "dry-choice-chromatography-solvent-2-spot": "dry-choice-chromatography-solvent-2-spot",
+          "insert-choice-chromatography-solvent-2-paper": "insert-choice-chromatography-solvent-2-paper",
+          "close-choice-chromatography-solvent-2-chamber": "close-choice-chromatography-solvent-2-chamber",
+          "develop-choice-chromatography-solvent-2-paper": "develop-choice-chromatography-solvent-2-paper",
+          "open-choice-chromatography-solvent-2-chamber": "open-choice-chromatography-solvent-2-chamber",
+          "remove-choice-chromatography-solvent-2-paper": "remove-choice-chromatography-solvent-2-paper",
+          "mark-choice-chromatography-solvent-2-front": "mark-choice-chromatography-solvent-2-front",
+          "dry-choice-chromatography-solvent-2-chromatogram": "dry-choice-chromatography-solvent-2-chromatogram",
+          "identify-choice-chromatography-solvent-2-bands": "identify-choice-chromatography-solvent-2-bands",
+          "measure-choice-chromatography-solvent-2-solvent-front": "measure-choice-chromatography-solvent-2-solvent-front",
+          "record-choice-chromatography-solvent-2-solvent-front": "record-choice-chromatography-solvent-2-solvent-front",
+          "measure-choice-chromatography-solvent-2-region-1": "measure-choice-chromatography-solvent-2-region-1",
+          "record-choice-chromatography-solvent-2-region-1": "record-choice-chromatography-solvent-2-region-1",
+          "measure-choice-chromatography-solvent-2-region-2": "measure-choice-chromatography-solvent-2-region-2",
+          "record-choice-chromatography-solvent-2-region-2": "record-choice-chromatography-solvent-2-region-2",
+          "calculate-choice-chromatography-solvent-2-rf": "calculate-choice-chromatography-solvent-2-rf",
+          "record-choice-chromatography-solvent-2-quality": "record-choice-chromatography-solvent-2-quality",
+          "dispose-choice-chromatography-solvent-2-solvent": "dispose-choice-chromatography-solvent-2-solvent",
+          "label-choice-chromatography-solvent-3-trial": "label-choice-chromatography-solvent-3-trial",
+          "place-choice-chromatography-solvent-3-chamber": "place-choice-chromatography-solvent-3-chamber",
+          "add-choice-chromatography-solvent-3-solvent": "add-choice-chromatography-solvent-3-solvent",
+          "place-choice-chromatography-solvent-3-paper": "place-choice-chromatography-solvent-3-paper",
+          "draw-choice-chromatography-solvent-3-baseline": "draw-choice-chromatography-solvent-3-baseline",
+          "load-choice-chromatography-solvent-3-capillary": "load-choice-chromatography-solvent-3-capillary",
+          "spot-choice-chromatography-solvent-3-sample": "spot-choice-chromatography-solvent-3-sample",
+          "dry-choice-chromatography-solvent-3-spot": "dry-choice-chromatography-solvent-3-spot",
+          "insert-choice-chromatography-solvent-3-paper": "insert-choice-chromatography-solvent-3-paper",
+          "close-choice-chromatography-solvent-3-chamber": "close-choice-chromatography-solvent-3-chamber",
+          "develop-choice-chromatography-solvent-3-paper": "develop-choice-chromatography-solvent-3-paper",
+          "open-choice-chromatography-solvent-3-chamber": "open-choice-chromatography-solvent-3-chamber",
+          "remove-choice-chromatography-solvent-3-paper": "remove-choice-chromatography-solvent-3-paper",
+          "mark-choice-chromatography-solvent-3-front": "mark-choice-chromatography-solvent-3-front",
+          "dry-choice-chromatography-solvent-3-chromatogram": "dry-choice-chromatography-solvent-3-chromatogram",
+          "identify-choice-chromatography-solvent-3-bands": "identify-choice-chromatography-solvent-3-bands",
+          "measure-choice-chromatography-solvent-3-solvent-front": "measure-choice-chromatography-solvent-3-solvent-front",
+          "record-choice-chromatography-solvent-3-solvent-front": "record-choice-chromatography-solvent-3-solvent-front",
+          "measure-choice-chromatography-solvent-3-region-1": "measure-choice-chromatography-solvent-3-region-1",
+          "record-choice-chromatography-solvent-3-region-1": "record-choice-chromatography-solvent-3-region-1",
+          "measure-choice-chromatography-solvent-3-region-2": "measure-choice-chromatography-solvent-3-region-2",
+          "record-choice-chromatography-solvent-3-region-2": "record-choice-chromatography-solvent-3-region-2",
+          "measure-choice-chromatography-solvent-3-region-3": "measure-choice-chromatography-solvent-3-region-3",
+          "record-choice-chromatography-solvent-3-region-3": "record-choice-chromatography-solvent-3-region-3",
+          "calculate-choice-chromatography-solvent-3-rf": "calculate-choice-chromatography-solvent-3-rf",
+          "record-choice-chromatography-solvent-3-quality": "record-choice-chromatography-solvent-3-quality",
+          "dispose-choice-chromatography-solvent-3-solvent": "dispose-choice-chromatography-solvent-3-solvent"
+        },
+        "nodes": {
+          "label-water-trial-node": "label-water-trial-node",
+          "place-water-chamber-node": "place-water-chamber-node",
+          "add-water-solvent-node": "add-water-solvent-node",
+          "place-water-paper-node": "place-water-paper-node",
+          "draw-water-baseline-node": "draw-water-baseline-node",
+          "load-water-capillary-node": "load-water-capillary-node",
+          "spot-water-sample-node": "spot-water-sample-node",
+          "dry-water-spot-node": "dry-water-spot-node",
+          "insert-water-paper-node": "insert-water-paper-node",
+          "close-water-chamber-node": "close-water-chamber-node",
+          "develop-water-paper-node": "develop-water-paper-node",
+          "open-water-chamber-node": "open-water-chamber-node",
+          "remove-water-paper-node": "remove-water-paper-node",
+          "mark-water-front-node": "mark-water-front-node",
+          "dry-water-chromatogram-node": "dry-water-chromatogram-node",
+          "identify-water-bands-node": "identify-water-bands-node",
+          "place-metric-ruler-node": "place-metric-ruler-node",
+          "measure-water-solvent-front-node": "measure-water-solvent-front-node",
+          "record-water-solvent-front-node": "record-water-solvent-front-node",
+          "measure-water-purple-overlap-node": "measure-water-purple-overlap-node",
+          "record-water-purple-overlap-node": "record-water-purple-overlap-node",
+          "measure-water-yellow-node": "measure-water-yellow-node",
+          "record-water-yellow-node": "record-water-yellow-node",
+          "calculate-water-rf-node": "calculate-water-rf-node",
+          "record-water-quality-node": "record-water-quality-node",
+          "dispose-water-solvent-node": "dispose-water-solvent-node",
+          "label-propanol-trial-node": "label-propanol-trial-node",
+          "place-propanol-chamber-node": "place-propanol-chamber-node",
+          "add-propanol-solvent-node": "add-propanol-solvent-node",
+          "place-propanol-paper-node": "place-propanol-paper-node",
+          "draw-propanol-baseline-node": "draw-propanol-baseline-node",
+          "load-propanol-capillary-node": "load-propanol-capillary-node",
+          "spot-propanol-sample-node": "spot-propanol-sample-node",
+          "dry-propanol-spot-node": "dry-propanol-spot-node",
+          "insert-propanol-paper-node": "insert-propanol-paper-node",
+          "close-propanol-chamber-node": "close-propanol-chamber-node",
+          "develop-propanol-paper-node": "develop-propanol-paper-node",
+          "open-propanol-chamber-node": "open-propanol-chamber-node",
+          "remove-propanol-paper-node": "remove-propanol-paper-node",
+          "mark-propanol-front-node": "mark-propanol-front-node",
+          "dry-propanol-chromatogram-node": "dry-propanol-chromatogram-node",
+          "identify-propanol-bands-node": "identify-propanol-bands-node",
+          "measure-propanol-solvent-front-node": "measure-propanol-solvent-front-node",
+          "record-propanol-solvent-front-node": "record-propanol-solvent-front-node",
+          "measure-propanol-blue-node": "measure-propanol-blue-node",
+          "record-propanol-blue-node": "record-propanol-blue-node",
+          "measure-propanol-red-node": "measure-propanol-red-node",
+          "record-propanol-red-node": "record-propanol-red-node",
+          "measure-propanol-yellow-node": "measure-propanol-yellow-node",
+          "record-propanol-yellow-node": "record-propanol-yellow-node",
+          "calculate-propanol-rf-node": "calculate-propanol-rf-node",
+          "record-propanol-quality-node": "record-propanol-quality-node",
+          "dispose-propanol-solvent-node": "dispose-propanol-solvent-node",
+          "label-choice-water-1-trial-node": "label-choice-water-1-trial-node",
+          "place-choice-water-1-chamber-node": "place-choice-water-1-chamber-node",
+          "add-choice-water-1-solvent-node": "add-choice-water-1-solvent-node",
+          "place-choice-water-1-paper-node": "place-choice-water-1-paper-node",
+          "draw-choice-water-1-baseline-node": "draw-choice-water-1-baseline-node",
+          "load-choice-water-1-capillary-node": "load-choice-water-1-capillary-node",
+          "spot-choice-water-1-sample-node": "spot-choice-water-1-sample-node",
+          "dry-choice-water-1-spot-node": "dry-choice-water-1-spot-node",
+          "insert-choice-water-1-paper-node": "insert-choice-water-1-paper-node",
+          "close-choice-water-1-chamber-node": "close-choice-water-1-chamber-node",
+          "develop-choice-water-1-paper-node": "develop-choice-water-1-paper-node",
+          "open-choice-water-1-chamber-node": "open-choice-water-1-chamber-node",
+          "remove-choice-water-1-paper-node": "remove-choice-water-1-paper-node",
+          "mark-choice-water-1-front-node": "mark-choice-water-1-front-node",
+          "dry-choice-water-1-chromatogram-node": "dry-choice-water-1-chromatogram-node",
+          "identify-choice-water-1-bands-node": "identify-choice-water-1-bands-node",
+          "measure-choice-water-1-solvent-front-node": "measure-choice-water-1-solvent-front-node",
+          "record-choice-water-1-solvent-front-node": "record-choice-water-1-solvent-front-node",
+          "measure-choice-water-1-region-1-node": "measure-choice-water-1-region-1-node",
+          "record-choice-water-1-region-1-node": "record-choice-water-1-region-1-node",
+          "calculate-choice-water-1-rf-node": "calculate-choice-water-1-rf-node",
+          "record-choice-water-1-quality-node": "record-choice-water-1-quality-node",
+          "dispose-choice-water-1-solvent-node": "dispose-choice-water-1-solvent-node",
+          "label-choice-water-2-trial-node": "label-choice-water-2-trial-node",
+          "place-choice-water-2-chamber-node": "place-choice-water-2-chamber-node",
+          "add-choice-water-2-solvent-node": "add-choice-water-2-solvent-node",
+          "place-choice-water-2-paper-node": "place-choice-water-2-paper-node",
+          "draw-choice-water-2-baseline-node": "draw-choice-water-2-baseline-node",
+          "load-choice-water-2-capillary-node": "load-choice-water-2-capillary-node",
+          "spot-choice-water-2-sample-node": "spot-choice-water-2-sample-node",
+          "dry-choice-water-2-spot-node": "dry-choice-water-2-spot-node",
+          "insert-choice-water-2-paper-node": "insert-choice-water-2-paper-node",
+          "close-choice-water-2-chamber-node": "close-choice-water-2-chamber-node",
+          "develop-choice-water-2-paper-node": "develop-choice-water-2-paper-node",
+          "open-choice-water-2-chamber-node": "open-choice-water-2-chamber-node",
+          "remove-choice-water-2-paper-node": "remove-choice-water-2-paper-node",
+          "mark-choice-water-2-front-node": "mark-choice-water-2-front-node",
+          "dry-choice-water-2-chromatogram-node": "dry-choice-water-2-chromatogram-node",
+          "identify-choice-water-2-bands-node": "identify-choice-water-2-bands-node",
+          "measure-choice-water-2-solvent-front-node": "measure-choice-water-2-solvent-front-node",
+          "record-choice-water-2-solvent-front-node": "record-choice-water-2-solvent-front-node",
+          "measure-choice-water-2-region-1-node": "measure-choice-water-2-region-1-node",
+          "record-choice-water-2-region-1-node": "record-choice-water-2-region-1-node",
+          "measure-choice-water-2-region-2-node": "measure-choice-water-2-region-2-node",
+          "record-choice-water-2-region-2-node": "record-choice-water-2-region-2-node",
+          "calculate-choice-water-2-rf-node": "calculate-choice-water-2-rf-node",
+          "record-choice-water-2-quality-node": "record-choice-water-2-quality-node",
+          "dispose-choice-water-2-solvent-node": "dispose-choice-water-2-solvent-node",
+          "label-choice-water-3-trial-node": "label-choice-water-3-trial-node",
+          "place-choice-water-3-chamber-node": "place-choice-water-3-chamber-node",
+          "add-choice-water-3-solvent-node": "add-choice-water-3-solvent-node",
+          "place-choice-water-3-paper-node": "place-choice-water-3-paper-node",
+          "draw-choice-water-3-baseline-node": "draw-choice-water-3-baseline-node",
+          "load-choice-water-3-capillary-node": "load-choice-water-3-capillary-node",
+          "spot-choice-water-3-sample-node": "spot-choice-water-3-sample-node",
+          "dry-choice-water-3-spot-node": "dry-choice-water-3-spot-node",
+          "insert-choice-water-3-paper-node": "insert-choice-water-3-paper-node",
+          "close-choice-water-3-chamber-node": "close-choice-water-3-chamber-node",
+          "develop-choice-water-3-paper-node": "develop-choice-water-3-paper-node",
+          "open-choice-water-3-chamber-node": "open-choice-water-3-chamber-node",
+          "remove-choice-water-3-paper-node": "remove-choice-water-3-paper-node",
+          "mark-choice-water-3-front-node": "mark-choice-water-3-front-node",
+          "dry-choice-water-3-chromatogram-node": "dry-choice-water-3-chromatogram-node",
+          "identify-choice-water-3-bands-node": "identify-choice-water-3-bands-node",
+          "measure-choice-water-3-solvent-front-node": "measure-choice-water-3-solvent-front-node",
+          "record-choice-water-3-solvent-front-node": "record-choice-water-3-solvent-front-node",
+          "measure-choice-water-3-region-1-node": "measure-choice-water-3-region-1-node",
+          "record-choice-water-3-region-1-node": "record-choice-water-3-region-1-node",
+          "measure-choice-water-3-region-2-node": "measure-choice-water-3-region-2-node",
+          "record-choice-water-3-region-2-node": "record-choice-water-3-region-2-node",
+          "measure-choice-water-3-region-3-node": "measure-choice-water-3-region-3-node",
+          "record-choice-water-3-region-3-node": "record-choice-water-3-region-3-node",
+          "calculate-choice-water-3-rf-node": "calculate-choice-water-3-rf-node",
+          "record-choice-water-3-quality-node": "record-choice-water-3-quality-node",
+          "dispose-choice-water-3-solvent-node": "dispose-choice-water-3-solvent-node",
+          "label-choice-propanol-1-trial-node": "label-choice-propanol-1-trial-node",
+          "place-choice-propanol-1-chamber-node": "place-choice-propanol-1-chamber-node",
+          "add-choice-propanol-1-solvent-node": "add-choice-propanol-1-solvent-node",
+          "place-choice-propanol-1-paper-node": "place-choice-propanol-1-paper-node",
+          "draw-choice-propanol-1-baseline-node": "draw-choice-propanol-1-baseline-node",
+          "load-choice-propanol-1-capillary-node": "load-choice-propanol-1-capillary-node",
+          "spot-choice-propanol-1-sample-node": "spot-choice-propanol-1-sample-node",
+          "dry-choice-propanol-1-spot-node": "dry-choice-propanol-1-spot-node",
+          "insert-choice-propanol-1-paper-node": "insert-choice-propanol-1-paper-node",
+          "close-choice-propanol-1-chamber-node": "close-choice-propanol-1-chamber-node",
+          "develop-choice-propanol-1-paper-node": "develop-choice-propanol-1-paper-node",
+          "open-choice-propanol-1-chamber-node": "open-choice-propanol-1-chamber-node",
+          "remove-choice-propanol-1-paper-node": "remove-choice-propanol-1-paper-node",
+          "mark-choice-propanol-1-front-node": "mark-choice-propanol-1-front-node",
+          "dry-choice-propanol-1-chromatogram-node": "dry-choice-propanol-1-chromatogram-node",
+          "identify-choice-propanol-1-bands-node": "identify-choice-propanol-1-bands-node",
+          "measure-choice-propanol-1-solvent-front-node": "measure-choice-propanol-1-solvent-front-node",
+          "record-choice-propanol-1-solvent-front-node": "record-choice-propanol-1-solvent-front-node",
+          "measure-choice-propanol-1-region-1-node": "measure-choice-propanol-1-region-1-node",
+          "record-choice-propanol-1-region-1-node": "record-choice-propanol-1-region-1-node",
+          "calculate-choice-propanol-1-rf-node": "calculate-choice-propanol-1-rf-node",
+          "record-choice-propanol-1-quality-node": "record-choice-propanol-1-quality-node",
+          "dispose-choice-propanol-1-solvent-node": "dispose-choice-propanol-1-solvent-node",
+          "label-choice-propanol-2-trial-node": "label-choice-propanol-2-trial-node",
+          "place-choice-propanol-2-chamber-node": "place-choice-propanol-2-chamber-node",
+          "add-choice-propanol-2-solvent-node": "add-choice-propanol-2-solvent-node",
+          "place-choice-propanol-2-paper-node": "place-choice-propanol-2-paper-node",
+          "draw-choice-propanol-2-baseline-node": "draw-choice-propanol-2-baseline-node",
+          "load-choice-propanol-2-capillary-node": "load-choice-propanol-2-capillary-node",
+          "spot-choice-propanol-2-sample-node": "spot-choice-propanol-2-sample-node",
+          "dry-choice-propanol-2-spot-node": "dry-choice-propanol-2-spot-node",
+          "insert-choice-propanol-2-paper-node": "insert-choice-propanol-2-paper-node",
+          "close-choice-propanol-2-chamber-node": "close-choice-propanol-2-chamber-node",
+          "develop-choice-propanol-2-paper-node": "develop-choice-propanol-2-paper-node",
+          "open-choice-propanol-2-chamber-node": "open-choice-propanol-2-chamber-node",
+          "remove-choice-propanol-2-paper-node": "remove-choice-propanol-2-paper-node",
+          "mark-choice-propanol-2-front-node": "mark-choice-propanol-2-front-node",
+          "dry-choice-propanol-2-chromatogram-node": "dry-choice-propanol-2-chromatogram-node",
+          "identify-choice-propanol-2-bands-node": "identify-choice-propanol-2-bands-node",
+          "measure-choice-propanol-2-solvent-front-node": "measure-choice-propanol-2-solvent-front-node",
+          "record-choice-propanol-2-solvent-front-node": "record-choice-propanol-2-solvent-front-node",
+          "measure-choice-propanol-2-region-1-node": "measure-choice-propanol-2-region-1-node",
+          "record-choice-propanol-2-region-1-node": "record-choice-propanol-2-region-1-node",
+          "measure-choice-propanol-2-region-2-node": "measure-choice-propanol-2-region-2-node",
+          "record-choice-propanol-2-region-2-node": "record-choice-propanol-2-region-2-node",
+          "calculate-choice-propanol-2-rf-node": "calculate-choice-propanol-2-rf-node",
+          "record-choice-propanol-2-quality-node": "record-choice-propanol-2-quality-node",
+          "dispose-choice-propanol-2-solvent-node": "dispose-choice-propanol-2-solvent-node",
+          "label-choice-propanol-3-trial-node": "label-choice-propanol-3-trial-node",
+          "place-choice-propanol-3-chamber-node": "place-choice-propanol-3-chamber-node",
+          "add-choice-propanol-3-solvent-node": "add-choice-propanol-3-solvent-node",
+          "place-choice-propanol-3-paper-node": "place-choice-propanol-3-paper-node",
+          "draw-choice-propanol-3-baseline-node": "draw-choice-propanol-3-baseline-node",
+          "load-choice-propanol-3-capillary-node": "load-choice-propanol-3-capillary-node",
+          "spot-choice-propanol-3-sample-node": "spot-choice-propanol-3-sample-node",
+          "dry-choice-propanol-3-spot-node": "dry-choice-propanol-3-spot-node",
+          "insert-choice-propanol-3-paper-node": "insert-choice-propanol-3-paper-node",
+          "close-choice-propanol-3-chamber-node": "close-choice-propanol-3-chamber-node",
+          "develop-choice-propanol-3-paper-node": "develop-choice-propanol-3-paper-node",
+          "open-choice-propanol-3-chamber-node": "open-choice-propanol-3-chamber-node",
+          "remove-choice-propanol-3-paper-node": "remove-choice-propanol-3-paper-node",
+          "mark-choice-propanol-3-front-node": "mark-choice-propanol-3-front-node",
+          "dry-choice-propanol-3-chromatogram-node": "dry-choice-propanol-3-chromatogram-node",
+          "identify-choice-propanol-3-bands-node": "identify-choice-propanol-3-bands-node",
+          "measure-choice-propanol-3-solvent-front-node": "measure-choice-propanol-3-solvent-front-node",
+          "record-choice-propanol-3-solvent-front-node": "record-choice-propanol-3-solvent-front-node",
+          "measure-choice-propanol-3-region-1-node": "measure-choice-propanol-3-region-1-node",
+          "record-choice-propanol-3-region-1-node": "record-choice-propanol-3-region-1-node",
+          "measure-choice-propanol-3-region-2-node": "measure-choice-propanol-3-region-2-node",
+          "record-choice-propanol-3-region-2-node": "record-choice-propanol-3-region-2-node",
+          "measure-choice-propanol-3-region-3-node": "measure-choice-propanol-3-region-3-node",
+          "record-choice-propanol-3-region-3-node": "record-choice-propanol-3-region-3-node",
+          "calculate-choice-propanol-3-rf-node": "calculate-choice-propanol-3-rf-node",
+          "record-choice-propanol-3-quality-node": "record-choice-propanol-3-quality-node",
+          "dispose-choice-propanol-3-solvent-node": "dispose-choice-propanol-3-solvent-node",
+          "label-choice-ethanol-1-trial-node": "label-choice-ethanol-1-trial-node",
+          "place-choice-ethanol-1-chamber-node": "place-choice-ethanol-1-chamber-node",
+          "add-choice-ethanol-1-solvent-node": "add-choice-ethanol-1-solvent-node",
+          "place-choice-ethanol-1-paper-node": "place-choice-ethanol-1-paper-node",
+          "draw-choice-ethanol-1-baseline-node": "draw-choice-ethanol-1-baseline-node",
+          "load-choice-ethanol-1-capillary-node": "load-choice-ethanol-1-capillary-node",
+          "spot-choice-ethanol-1-sample-node": "spot-choice-ethanol-1-sample-node",
+          "dry-choice-ethanol-1-spot-node": "dry-choice-ethanol-1-spot-node",
+          "insert-choice-ethanol-1-paper-node": "insert-choice-ethanol-1-paper-node",
+          "close-choice-ethanol-1-chamber-node": "close-choice-ethanol-1-chamber-node",
+          "develop-choice-ethanol-1-paper-node": "develop-choice-ethanol-1-paper-node",
+          "open-choice-ethanol-1-chamber-node": "open-choice-ethanol-1-chamber-node",
+          "remove-choice-ethanol-1-paper-node": "remove-choice-ethanol-1-paper-node",
+          "mark-choice-ethanol-1-front-node": "mark-choice-ethanol-1-front-node",
+          "dry-choice-ethanol-1-chromatogram-node": "dry-choice-ethanol-1-chromatogram-node",
+          "identify-choice-ethanol-1-bands-node": "identify-choice-ethanol-1-bands-node",
+          "measure-choice-ethanol-1-solvent-front-node": "measure-choice-ethanol-1-solvent-front-node",
+          "record-choice-ethanol-1-solvent-front-node": "record-choice-ethanol-1-solvent-front-node",
+          "measure-choice-ethanol-1-region-1-node": "measure-choice-ethanol-1-region-1-node",
+          "record-choice-ethanol-1-region-1-node": "record-choice-ethanol-1-region-1-node",
+          "calculate-choice-ethanol-1-rf-node": "calculate-choice-ethanol-1-rf-node",
+          "record-choice-ethanol-1-quality-node": "record-choice-ethanol-1-quality-node",
+          "dispose-choice-ethanol-1-solvent-node": "dispose-choice-ethanol-1-solvent-node",
+          "label-choice-ethanol-2-trial-node": "label-choice-ethanol-2-trial-node",
+          "place-choice-ethanol-2-chamber-node": "place-choice-ethanol-2-chamber-node",
+          "add-choice-ethanol-2-solvent-node": "add-choice-ethanol-2-solvent-node",
+          "place-choice-ethanol-2-paper-node": "place-choice-ethanol-2-paper-node",
+          "draw-choice-ethanol-2-baseline-node": "draw-choice-ethanol-2-baseline-node",
+          "load-choice-ethanol-2-capillary-node": "load-choice-ethanol-2-capillary-node",
+          "spot-choice-ethanol-2-sample-node": "spot-choice-ethanol-2-sample-node",
+          "dry-choice-ethanol-2-spot-node": "dry-choice-ethanol-2-spot-node",
+          "insert-choice-ethanol-2-paper-node": "insert-choice-ethanol-2-paper-node",
+          "close-choice-ethanol-2-chamber-node": "close-choice-ethanol-2-chamber-node",
+          "develop-choice-ethanol-2-paper-node": "develop-choice-ethanol-2-paper-node",
+          "open-choice-ethanol-2-chamber-node": "open-choice-ethanol-2-chamber-node",
+          "remove-choice-ethanol-2-paper-node": "remove-choice-ethanol-2-paper-node",
+          "mark-choice-ethanol-2-front-node": "mark-choice-ethanol-2-front-node",
+          "dry-choice-ethanol-2-chromatogram-node": "dry-choice-ethanol-2-chromatogram-node",
+          "identify-choice-ethanol-2-bands-node": "identify-choice-ethanol-2-bands-node",
+          "measure-choice-ethanol-2-solvent-front-node": "measure-choice-ethanol-2-solvent-front-node",
+          "record-choice-ethanol-2-solvent-front-node": "record-choice-ethanol-2-solvent-front-node",
+          "measure-choice-ethanol-2-region-1-node": "measure-choice-ethanol-2-region-1-node",
+          "record-choice-ethanol-2-region-1-node": "record-choice-ethanol-2-region-1-node",
+          "measure-choice-ethanol-2-region-2-node": "measure-choice-ethanol-2-region-2-node",
+          "record-choice-ethanol-2-region-2-node": "record-choice-ethanol-2-region-2-node",
+          "calculate-choice-ethanol-2-rf-node": "calculate-choice-ethanol-2-rf-node",
+          "record-choice-ethanol-2-quality-node": "record-choice-ethanol-2-quality-node",
+          "dispose-choice-ethanol-2-solvent-node": "dispose-choice-ethanol-2-solvent-node",
+          "label-choice-ethanol-3-trial-node": "label-choice-ethanol-3-trial-node",
+          "place-choice-ethanol-3-chamber-node": "place-choice-ethanol-3-chamber-node",
+          "add-choice-ethanol-3-solvent-node": "add-choice-ethanol-3-solvent-node",
+          "place-choice-ethanol-3-paper-node": "place-choice-ethanol-3-paper-node",
+          "draw-choice-ethanol-3-baseline-node": "draw-choice-ethanol-3-baseline-node",
+          "load-choice-ethanol-3-capillary-node": "load-choice-ethanol-3-capillary-node",
+          "spot-choice-ethanol-3-sample-node": "spot-choice-ethanol-3-sample-node",
+          "dry-choice-ethanol-3-spot-node": "dry-choice-ethanol-3-spot-node",
+          "insert-choice-ethanol-3-paper-node": "insert-choice-ethanol-3-paper-node",
+          "close-choice-ethanol-3-chamber-node": "close-choice-ethanol-3-chamber-node",
+          "develop-choice-ethanol-3-paper-node": "develop-choice-ethanol-3-paper-node",
+          "open-choice-ethanol-3-chamber-node": "open-choice-ethanol-3-chamber-node",
+          "remove-choice-ethanol-3-paper-node": "remove-choice-ethanol-3-paper-node",
+          "mark-choice-ethanol-3-front-node": "mark-choice-ethanol-3-front-node",
+          "dry-choice-ethanol-3-chromatogram-node": "dry-choice-ethanol-3-chromatogram-node",
+          "identify-choice-ethanol-3-bands-node": "identify-choice-ethanol-3-bands-node",
+          "measure-choice-ethanol-3-solvent-front-node": "measure-choice-ethanol-3-solvent-front-node",
+          "record-choice-ethanol-3-solvent-front-node": "record-choice-ethanol-3-solvent-front-node",
+          "measure-choice-ethanol-3-region-1-node": "measure-choice-ethanol-3-region-1-node",
+          "record-choice-ethanol-3-region-1-node": "record-choice-ethanol-3-region-1-node",
+          "measure-choice-ethanol-3-region-2-node": "measure-choice-ethanol-3-region-2-node",
+          "record-choice-ethanol-3-region-2-node": "record-choice-ethanol-3-region-2-node",
+          "measure-choice-ethanol-3-region-3-node": "measure-choice-ethanol-3-region-3-node",
+          "record-choice-ethanol-3-region-3-node": "record-choice-ethanol-3-region-3-node",
+          "calculate-choice-ethanol-3-rf-node": "calculate-choice-ethanol-3-rf-node",
+          "record-choice-ethanol-3-quality-node": "record-choice-ethanol-3-quality-node",
+          "dispose-choice-ethanol-3-solvent-node": "dispose-choice-ethanol-3-solvent-node",
+          "label-choice-acetone-1-trial-node": "label-choice-acetone-1-trial-node",
+          "place-choice-acetone-1-chamber-node": "place-choice-acetone-1-chamber-node",
+          "add-choice-acetone-1-solvent-node": "add-choice-acetone-1-solvent-node",
+          "place-choice-acetone-1-paper-node": "place-choice-acetone-1-paper-node",
+          "draw-choice-acetone-1-baseline-node": "draw-choice-acetone-1-baseline-node",
+          "load-choice-acetone-1-capillary-node": "load-choice-acetone-1-capillary-node",
+          "spot-choice-acetone-1-sample-node": "spot-choice-acetone-1-sample-node",
+          "dry-choice-acetone-1-spot-node": "dry-choice-acetone-1-spot-node",
+          "insert-choice-acetone-1-paper-node": "insert-choice-acetone-1-paper-node",
+          "close-choice-acetone-1-chamber-node": "close-choice-acetone-1-chamber-node",
+          "develop-choice-acetone-1-paper-node": "develop-choice-acetone-1-paper-node",
+          "open-choice-acetone-1-chamber-node": "open-choice-acetone-1-chamber-node",
+          "remove-choice-acetone-1-paper-node": "remove-choice-acetone-1-paper-node",
+          "mark-choice-acetone-1-front-node": "mark-choice-acetone-1-front-node",
+          "dry-choice-acetone-1-chromatogram-node": "dry-choice-acetone-1-chromatogram-node",
+          "identify-choice-acetone-1-bands-node": "identify-choice-acetone-1-bands-node",
+          "measure-choice-acetone-1-solvent-front-node": "measure-choice-acetone-1-solvent-front-node",
+          "record-choice-acetone-1-solvent-front-node": "record-choice-acetone-1-solvent-front-node",
+          "measure-choice-acetone-1-region-1-node": "measure-choice-acetone-1-region-1-node",
+          "record-choice-acetone-1-region-1-node": "record-choice-acetone-1-region-1-node",
+          "calculate-choice-acetone-1-rf-node": "calculate-choice-acetone-1-rf-node",
+          "record-choice-acetone-1-quality-node": "record-choice-acetone-1-quality-node",
+          "dispose-choice-acetone-1-solvent-node": "dispose-choice-acetone-1-solvent-node",
+          "label-choice-acetone-2-trial-node": "label-choice-acetone-2-trial-node",
+          "place-choice-acetone-2-chamber-node": "place-choice-acetone-2-chamber-node",
+          "add-choice-acetone-2-solvent-node": "add-choice-acetone-2-solvent-node",
+          "place-choice-acetone-2-paper-node": "place-choice-acetone-2-paper-node",
+          "draw-choice-acetone-2-baseline-node": "draw-choice-acetone-2-baseline-node",
+          "load-choice-acetone-2-capillary-node": "load-choice-acetone-2-capillary-node",
+          "spot-choice-acetone-2-sample-node": "spot-choice-acetone-2-sample-node",
+          "dry-choice-acetone-2-spot-node": "dry-choice-acetone-2-spot-node",
+          "insert-choice-acetone-2-paper-node": "insert-choice-acetone-2-paper-node",
+          "close-choice-acetone-2-chamber-node": "close-choice-acetone-2-chamber-node",
+          "develop-choice-acetone-2-paper-node": "develop-choice-acetone-2-paper-node",
+          "open-choice-acetone-2-chamber-node": "open-choice-acetone-2-chamber-node",
+          "remove-choice-acetone-2-paper-node": "remove-choice-acetone-2-paper-node",
+          "mark-choice-acetone-2-front-node": "mark-choice-acetone-2-front-node",
+          "dry-choice-acetone-2-chromatogram-node": "dry-choice-acetone-2-chromatogram-node",
+          "identify-choice-acetone-2-bands-node": "identify-choice-acetone-2-bands-node",
+          "measure-choice-acetone-2-solvent-front-node": "measure-choice-acetone-2-solvent-front-node",
+          "record-choice-acetone-2-solvent-front-node": "record-choice-acetone-2-solvent-front-node",
+          "measure-choice-acetone-2-region-1-node": "measure-choice-acetone-2-region-1-node",
+          "record-choice-acetone-2-region-1-node": "record-choice-acetone-2-region-1-node",
+          "measure-choice-acetone-2-region-2-node": "measure-choice-acetone-2-region-2-node",
+          "record-choice-acetone-2-region-2-node": "record-choice-acetone-2-region-2-node",
+          "calculate-choice-acetone-2-rf-node": "calculate-choice-acetone-2-rf-node",
+          "record-choice-acetone-2-quality-node": "record-choice-acetone-2-quality-node",
+          "dispose-choice-acetone-2-solvent-node": "dispose-choice-acetone-2-solvent-node",
+          "label-choice-acetone-3-trial-node": "label-choice-acetone-3-trial-node",
+          "place-choice-acetone-3-chamber-node": "place-choice-acetone-3-chamber-node",
+          "add-choice-acetone-3-solvent-node": "add-choice-acetone-3-solvent-node",
+          "place-choice-acetone-3-paper-node": "place-choice-acetone-3-paper-node",
+          "draw-choice-acetone-3-baseline-node": "draw-choice-acetone-3-baseline-node",
+          "load-choice-acetone-3-capillary-node": "load-choice-acetone-3-capillary-node",
+          "spot-choice-acetone-3-sample-node": "spot-choice-acetone-3-sample-node",
+          "dry-choice-acetone-3-spot-node": "dry-choice-acetone-3-spot-node",
+          "insert-choice-acetone-3-paper-node": "insert-choice-acetone-3-paper-node",
+          "close-choice-acetone-3-chamber-node": "close-choice-acetone-3-chamber-node",
+          "develop-choice-acetone-3-paper-node": "develop-choice-acetone-3-paper-node",
+          "open-choice-acetone-3-chamber-node": "open-choice-acetone-3-chamber-node",
+          "remove-choice-acetone-3-paper-node": "remove-choice-acetone-3-paper-node",
+          "mark-choice-acetone-3-front-node": "mark-choice-acetone-3-front-node",
+          "dry-choice-acetone-3-chromatogram-node": "dry-choice-acetone-3-chromatogram-node",
+          "identify-choice-acetone-3-bands-node": "identify-choice-acetone-3-bands-node",
+          "measure-choice-acetone-3-solvent-front-node": "measure-choice-acetone-3-solvent-front-node",
+          "record-choice-acetone-3-solvent-front-node": "record-choice-acetone-3-solvent-front-node",
+          "measure-choice-acetone-3-region-1-node": "measure-choice-acetone-3-region-1-node",
+          "record-choice-acetone-3-region-1-node": "record-choice-acetone-3-region-1-node",
+          "measure-choice-acetone-3-region-2-node": "measure-choice-acetone-3-region-2-node",
+          "record-choice-acetone-3-region-2-node": "record-choice-acetone-3-region-2-node",
+          "measure-choice-acetone-3-region-3-node": "measure-choice-acetone-3-region-3-node",
+          "record-choice-acetone-3-region-3-node": "record-choice-acetone-3-region-3-node",
+          "calculate-choice-acetone-3-rf-node": "calculate-choice-acetone-3-rf-node",
+          "record-choice-acetone-3-quality-node": "record-choice-acetone-3-quality-node",
+          "dispose-choice-acetone-3-solvent-node": "dispose-choice-acetone-3-solvent-node",
+          "label-choice-chromatography-solvent-1-trial-node": "label-choice-chromatography-solvent-1-trial-node",
+          "place-choice-chromatography-solvent-1-chamber-node": "place-choice-chromatography-solvent-1-chamber-node",
+          "add-choice-chromatography-solvent-1-solvent-node": "add-choice-chromatography-solvent-1-solvent-node",
+          "place-choice-chromatography-solvent-1-paper-node": "place-choice-chromatography-solvent-1-paper-node",
+          "draw-choice-chromatography-solvent-1-baseline-node": "draw-choice-chromatography-solvent-1-baseline-node",
+          "load-choice-chromatography-solvent-1-capillary-node": "load-choice-chromatography-solvent-1-capillary-node",
+          "spot-choice-chromatography-solvent-1-sample-node": "spot-choice-chromatography-solvent-1-sample-node",
+          "dry-choice-chromatography-solvent-1-spot-node": "dry-choice-chromatography-solvent-1-spot-node",
+          "insert-choice-chromatography-solvent-1-paper-node": "insert-choice-chromatography-solvent-1-paper-node",
+          "close-choice-chromatography-solvent-1-chamber-node": "close-choice-chromatography-solvent-1-chamber-node",
+          "develop-choice-chromatography-solvent-1-paper-node": "develop-choice-chromatography-solvent-1-paper-node",
+          "open-choice-chromatography-solvent-1-chamber-node": "open-choice-chromatography-solvent-1-chamber-node",
+          "remove-choice-chromatography-solvent-1-paper-node": "remove-choice-chromatography-solvent-1-paper-node",
+          "mark-choice-chromatography-solvent-1-front-node": "mark-choice-chromatography-solvent-1-front-node",
+          "dry-choice-chromatography-solvent-1-chromatogram-node": "dry-choice-chromatography-solvent-1-chromatogram-node",
+          "identify-choice-chromatography-solvent-1-bands-node": "identify-choice-chromatography-solvent-1-bands-node",
+          "measure-choice-chromatography-solvent-1-solvent-front-node": "measure-choice-chromatography-solvent-1-solvent-front-node",
+          "record-choice-chromatography-solvent-1-solvent-front-node": "record-choice-chromatography-solvent-1-solvent-front-node",
+          "measure-choice-chromatography-solvent-1-region-1-node": "measure-choice-chromatography-solvent-1-region-1-node",
+          "record-choice-chromatography-solvent-1-region-1-node": "record-choice-chromatography-solvent-1-region-1-node",
+          "calculate-choice-chromatography-solvent-1-rf-node": "calculate-choice-chromatography-solvent-1-rf-node",
+          "record-choice-chromatography-solvent-1-quality-node": "record-choice-chromatography-solvent-1-quality-node",
+          "dispose-choice-chromatography-solvent-1-solvent-node": "dispose-choice-chromatography-solvent-1-solvent-node",
+          "label-choice-chromatography-solvent-2-trial-node": "label-choice-chromatography-solvent-2-trial-node",
+          "place-choice-chromatography-solvent-2-chamber-node": "place-choice-chromatography-solvent-2-chamber-node",
+          "add-choice-chromatography-solvent-2-solvent-node": "add-choice-chromatography-solvent-2-solvent-node",
+          "place-choice-chromatography-solvent-2-paper-node": "place-choice-chromatography-solvent-2-paper-node",
+          "draw-choice-chromatography-solvent-2-baseline-node": "draw-choice-chromatography-solvent-2-baseline-node",
+          "load-choice-chromatography-solvent-2-capillary-node": "load-choice-chromatography-solvent-2-capillary-node",
+          "spot-choice-chromatography-solvent-2-sample-node": "spot-choice-chromatography-solvent-2-sample-node",
+          "dry-choice-chromatography-solvent-2-spot-node": "dry-choice-chromatography-solvent-2-spot-node",
+          "insert-choice-chromatography-solvent-2-paper-node": "insert-choice-chromatography-solvent-2-paper-node",
+          "close-choice-chromatography-solvent-2-chamber-node": "close-choice-chromatography-solvent-2-chamber-node",
+          "develop-choice-chromatography-solvent-2-paper-node": "develop-choice-chromatography-solvent-2-paper-node",
+          "open-choice-chromatography-solvent-2-chamber-node": "open-choice-chromatography-solvent-2-chamber-node",
+          "remove-choice-chromatography-solvent-2-paper-node": "remove-choice-chromatography-solvent-2-paper-node",
+          "mark-choice-chromatography-solvent-2-front-node": "mark-choice-chromatography-solvent-2-front-node",
+          "dry-choice-chromatography-solvent-2-chromatogram-node": "dry-choice-chromatography-solvent-2-chromatogram-node",
+          "identify-choice-chromatography-solvent-2-bands-node": "identify-choice-chromatography-solvent-2-bands-node",
+          "measure-choice-chromatography-solvent-2-solvent-front-node": "measure-choice-chromatography-solvent-2-solvent-front-node",
+          "record-choice-chromatography-solvent-2-solvent-front-node": "record-choice-chromatography-solvent-2-solvent-front-node",
+          "measure-choice-chromatography-solvent-2-region-1-node": "measure-choice-chromatography-solvent-2-region-1-node",
+          "record-choice-chromatography-solvent-2-region-1-node": "record-choice-chromatography-solvent-2-region-1-node",
+          "measure-choice-chromatography-solvent-2-region-2-node": "measure-choice-chromatography-solvent-2-region-2-node",
+          "record-choice-chromatography-solvent-2-region-2-node": "record-choice-chromatography-solvent-2-region-2-node",
+          "calculate-choice-chromatography-solvent-2-rf-node": "calculate-choice-chromatography-solvent-2-rf-node",
+          "record-choice-chromatography-solvent-2-quality-node": "record-choice-chromatography-solvent-2-quality-node",
+          "dispose-choice-chromatography-solvent-2-solvent-node": "dispose-choice-chromatography-solvent-2-solvent-node",
+          "label-choice-chromatography-solvent-3-trial-node": "label-choice-chromatography-solvent-3-trial-node",
+          "place-choice-chromatography-solvent-3-chamber-node": "place-choice-chromatography-solvent-3-chamber-node",
+          "add-choice-chromatography-solvent-3-solvent-node": "add-choice-chromatography-solvent-3-solvent-node",
+          "place-choice-chromatography-solvent-3-paper-node": "place-choice-chromatography-solvent-3-paper-node",
+          "draw-choice-chromatography-solvent-3-baseline-node": "draw-choice-chromatography-solvent-3-baseline-node",
+          "load-choice-chromatography-solvent-3-capillary-node": "load-choice-chromatography-solvent-3-capillary-node",
+          "spot-choice-chromatography-solvent-3-sample-node": "spot-choice-chromatography-solvent-3-sample-node",
+          "dry-choice-chromatography-solvent-3-spot-node": "dry-choice-chromatography-solvent-3-spot-node",
+          "insert-choice-chromatography-solvent-3-paper-node": "insert-choice-chromatography-solvent-3-paper-node",
+          "close-choice-chromatography-solvent-3-chamber-node": "close-choice-chromatography-solvent-3-chamber-node",
+          "develop-choice-chromatography-solvent-3-paper-node": "develop-choice-chromatography-solvent-3-paper-node",
+          "open-choice-chromatography-solvent-3-chamber-node": "open-choice-chromatography-solvent-3-chamber-node",
+          "remove-choice-chromatography-solvent-3-paper-node": "remove-choice-chromatography-solvent-3-paper-node",
+          "mark-choice-chromatography-solvent-3-front-node": "mark-choice-chromatography-solvent-3-front-node",
+          "dry-choice-chromatography-solvent-3-chromatogram-node": "dry-choice-chromatography-solvent-3-chromatogram-node",
+          "identify-choice-chromatography-solvent-3-bands-node": "identify-choice-chromatography-solvent-3-bands-node",
+          "measure-choice-chromatography-solvent-3-solvent-front-node": "measure-choice-chromatography-solvent-3-solvent-front-node",
+          "record-choice-chromatography-solvent-3-solvent-front-node": "record-choice-chromatography-solvent-3-solvent-front-node",
+          "measure-choice-chromatography-solvent-3-region-1-node": "measure-choice-chromatography-solvent-3-region-1-node",
+          "record-choice-chromatography-solvent-3-region-1-node": "record-choice-chromatography-solvent-3-region-1-node",
+          "measure-choice-chromatography-solvent-3-region-2-node": "measure-choice-chromatography-solvent-3-region-2-node",
+          "record-choice-chromatography-solvent-3-region-2-node": "record-choice-chromatography-solvent-3-region-2-node",
+          "measure-choice-chromatography-solvent-3-region-3-node": "measure-choice-chromatography-solvent-3-region-3-node",
+          "record-choice-chromatography-solvent-3-region-3-node": "record-choice-chromatography-solvent-3-region-3-node",
+          "calculate-choice-chromatography-solvent-3-rf-node": "calculate-choice-chromatography-solvent-3-rf-node",
+          "record-choice-chromatography-solvent-3-quality-node": "record-choice-chromatography-solvent-3-quality-node",
+          "dispose-choice-chromatography-solvent-3-solvent-node": "dispose-choice-chromatography-solvent-3-solvent-node"
+        },
+        "validationRules": {},
+        "references": {
+          "procedure-approved": "procedure-approved"
+        }
+      }
+    }
+  ],
+  "compositionStart": {
+    "kind": "lab-node",
+    "nodeId": "review-challenge-safety-node"
+  },
+  "compositionConnections": [
+    {
+      "id": "paper-chromatography-cross-7",
+      "from": {
+        "kind": "lab-node",
+        "nodeId": "submit-procedure-approval-node"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "chromatography-trials",
+        "portId": "entry-label-water-trial-node"
+      },
+      "label": "Next",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "paper-chromatography-cross-54",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "chromatography-trials",
+        "portId": "exit-dispose-propanol-solvent-node"
+      },
+      "to": {
+        "kind": "lab-node",
+        "nodeId": "compare-separation-node"
+      },
+      "label": "Next",
+      "condition": {
+        "type": "validationPassed"
+      }
+    }
+  ],
+  "reachabilityWitnesses": [
+    {
+      "id": "default",
+      "configuration": {},
+      "approvalGates": {}
+    }
+  ]
+}

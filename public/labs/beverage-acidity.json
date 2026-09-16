@@ -1,0 +1,1390 @@
+{
+  "id": "beverage-acidity",
+  "title": "How Much Acid Is in Fruit Juice and Soft Drinks?",
+  "description": "An Chemistry inquiry investigation that separates drop-count practice from teacher-approved quantitative beverage titrations, preserving pH-volume curves, indicator-color evidence, stoichiometric acid calculations, class-data provenance, and postlab reasoning. Quantitative examples initially use a disclosed acetic-acid proxy model; the instructor supplies the actual supported monoprotic acid configuration before starting. Mixed/polyprotic beverages require an appropriate representative model and qualified interpretation.",
+  "audience": "Chemistry students",
+  "learningGoals": [
+    "Compare strong-acid and weak-acid indicator behavior using separate uncalibrated drop-count practice trials.",
+    "Design and obtain approval for a beverage-acidity investigation with a research question, hypothesis, equipment plan, safety precautions, indicator justification, and balanced acid-base model.",
+    "Collect beverage-specific quantitative titration evidence as cumulative NaOH volume, pH, and indicator color, then distinguish endpoint from equivalence.",
+    "Calculate model-dependent beverage acid concentration and compare source-labeled replicate and class results without overstating the evidence."
+  ],
+  "safetyNotes": [
+    "Review the relevant teacher-provided SDS or MSDS information for every selected chemical before beginning.",
+    "Record at least three specific precautions supported by the reviewed safety information.",
+    "Wear instructor-required PPE and follow the instructor-approved handling protocol.",
+    "Treat sodium hydroxide as corrosive and avoid skin and eye contact according to the approved SDS.",
+    "Use only the instructor-provided disposal protocol for titrated beverage and sodium hydroxide mixtures."
+  ],
+  "equipment": [
+    "reagent-bottle",
+    "naoh-bottle",
+    "test-tube",
+    "sample-rack",
+    "phenolphthalein-dropper",
+    "dropper-bottle",
+    "sample-bottle",
+    "graduated-pipette-10ml",
+    "pipette-pump",
+    "erlenmeyer-flask-250ml",
+    "burette-50ml",
+    "ring-stand-clamp",
+    "ph-meter",
+    "ph-paper",
+    "stirring-rod",
+    "wash-bottle",
+    "waste-beaker",
+    "funnel"
+  ],
+  "teacherConfiguration": {
+    "confirmationRequired": true,
+    "approvalEvidence": "Instructor confirmation is required; a student click is not itself approval.",
+    "beverages": "Assign beverage identities and preserve each identity in run and class-data provenance.",
+    "primaryAcidModels": "Provide accepted acid identities or mixture models and accepted balanced equations.",
+    "stoichiometry": "Provide the accepted analyte-to-NaOH ratio for each acid model.",
+    "carbonatedSamples": "Specify whether degassing is required, the approved method, and the completion criterion.",
+    "quantitativeAliquotsMl": "Provide the aliquot for each beverage; do not inherit the 5.0 mL practice volume.",
+    "naohMolarityChoicesM": [
+      0.1,
+      0.25
+    ],
+    "titrationIncrementsMl": "Provide the increment strategy and any smaller increments near equivalence.",
+    "replicateMinimum": "Provide the minimum independent fresh-aliquot trials per beverage.",
+    "endpointPersistence": "Provide the indicator-specific persistence rule and handling for an overshot endpoint.",
+    "indicatorApproval": "Approve an indicator for each sample and address beverage-color interference.",
+    "phMeterProtocol": "Provide calibration, rinse, stability, and precision requirements.",
+    "buretteProtocol": "Provide conditioning, filling, tip-clearing, reading, and precision requirements.",
+    "calculationTolerance": "Provide accepted significant figures and numeric tolerance after the acid model is known.",
+    "classDataMinimum": "Provide the required number of peer groups or instructor datasets; the manual calls for comparison with three groups or the instructor.",
+    "disposal": "Provide the actual disposal route for all mixtures."
+  },
+  "practiceContract": {
+    "hclTrial": {
+      "acid": "5.0 mL 0.10 M HCl",
+      "indicator": "A few drops of phenolphthalein",
+      "titrant": "0.10 M NaOH added dropwise",
+      "evidence": "Count drops and record the first color change.",
+      "volumeRule": "Drop count is not a calibrated delivered volume unless the teacher separately provides a drop-volume calibration."
+    },
+    "aceticAcidTrial": {
+      "acid": "Fresh 5.0 mL 0.10 M acetic acid",
+      "indicator": "Student-selected and justified",
+      "titrant": "0.10 M NaOH added dropwise",
+      "evidence": "Count drops and record the color change in a separate fresh trial.",
+      "volumeRule": "Do not merge this drop count with the HCl trial or quantitative beverage volumes."
+    }
+  },
+  "quantitativeEvidenceSchema": {
+    "runIdentity": [
+      "beverage",
+      "sample state",
+      "replicate",
+      "student group",
+      "date or run identifier"
+    ],
+    "method": [
+      "aliquot mL",
+      "NaOH molarity M",
+      "indicator and transition range",
+      "degassing method or not applicable",
+      "increment strategy",
+      "burette and pH-meter precision"
+    ],
+    "seriesColumns": [
+      "cumulative NaOH volume mL",
+      "pH",
+      "observed indicator color"
+    ],
+    "analysis": [
+      "initial and final burette readings",
+      "indicator color-change volume and pH",
+      "curve-derived equivalence volume",
+      "balanced equation",
+      "stoichiometric ratio",
+      "acid concentration mol/L",
+      "significant figures",
+      "model limitations"
+    ]
+  },
+  "classDataProtocol": {
+    "appendOnly": true,
+    "requiredProvenance": [
+      "source group or instructor",
+      "beverage identity",
+      "sample state",
+      "replicate",
+      "NaOH molarity",
+      "aliquot",
+      "indicator",
+      "acid model",
+      "calculation basis"
+    ],
+    "comparisonRule": "Compare trends and variation without overwriting the team's own results or treating incompatible methods as directly interchangeable."
+  },
+  "postlabPrompts": [
+    "Why is a preparation step such as teacher-approved degassing needed before locating an endpoint for a carbonated cola, and what criterion shows that preparation is complete?",
+    "How did the strong-acid and weak-acid practice trials differ, and why is drop count evidence not automatically a quantitative volume?",
+    "Why was the selected indicator appropriate for the expected equivalence region, and how could beverage color interfere with the endpoint?",
+    "How do the indicator endpoint and the curve-derived equivalence region compare?",
+    "Show how the balanced equation and stoichiometric ratio enter the acid-concentration calculation.",
+    "How consistent were fresh-aliquot replicates, and what experimental uncertainty or procedural error explains differences?",
+    "How do source-labeled class results compare, and which method differences limit direct comparison?",
+    "What specific procedural improvement would most strengthen the evidence?",
+    "What can the investigation support about acid concentration, and what health or product claims are not supported by these data?"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "practice-hcl-bottle",
+        "definitionId": "reagent-bottle",
+        "label": "0.10 M HCl practice solution",
+        "contents": {
+          "kind": "solution",
+          "label": "0.10 M HCl",
+          "volumeMl": 50,
+          "concentration": {
+            "value": 0.1,
+            "unit": "M"
+          },
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "practice-acetic-acid-bottle",
+        "definitionId": "reagent-bottle",
+        "label": "0.10 M acetic acid practice solution",
+        "contents": {
+          "kind": "solution",
+          "label": "0.10 M acetic acid",
+          "volumeMl": 50,
+          "concentration": {
+            "value": 0.1,
+            "unit": "M"
+          },
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "practice-naoh-bottle",
+        "definitionId": "naoh-bottle",
+        "label": "0.10 M NaOH for drop-count practice",
+        "contents": {
+          "kind": "solution",
+          "label": "0.10 M NaOH",
+          "volumeMl": 100,
+          "concentration": {
+            "value": 0.1,
+            "unit": "M"
+          },
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "practice-hcl-tube",
+        "definitionId": "test-tube",
+        "label": "Fresh HCl practice test tube",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "practice-acetic-tube",
+        "definitionId": "test-tube",
+        "label": "Fresh acetic acid practice test tube",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "practice-sample-rack",
+        "definitionId": "sample-rack",
+        "label": "Practice test-tube rack",
+        "contents": {
+          "kind": "empty",
+          "label": "empty rack for separate HCl and acetic-acid trials",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "phenolphthalein-practice-dropper",
+        "definitionId": "phenolphthalein-dropper",
+        "label": "Phenolphthalein indicator",
+        "contents": {
+          "kind": "solution",
+          "label": "Phenolphthalein indicator",
+          "volumeMl": 10,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "indicator-solution"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "student-selected-indicator-dropper",
+        "definitionId": "dropper-bottle",
+        "label": "Teacher-approved student-selected indicator",
+        "contents": {
+          "kind": "solution",
+          "label": "Teacher-approved indicator",
+          "volumeMl": 10,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "indicator-solution"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "beverage-a-sample",
+        "definitionId": "sample-bottle",
+        "label": "Teacher-assigned beverage A",
+        "contents": {
+          "kind": "solution",
+          "label": "Teacher-assigned beverage A; identity and state required",
+          "volumeMl": 100,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "teacher-configured-beverage"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "beverage-b-sample",
+        "definitionId": "sample-bottle",
+        "label": "Teacher-assigned beverage B",
+        "contents": {
+          "kind": "solution",
+          "label": "Teacher-assigned beverage B; identity and state required",
+          "volumeMl": 100,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "teacher-configured-beverage"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "quantitative-naoh-010",
+        "definitionId": "naoh-bottle",
+        "label": "Standardized 0.10 M NaOH option",
+        "contents": {
+          "kind": "solution",
+          "label": "0.10 M NaOH",
+          "volumeMl": 250,
+          "concentration": {
+            "value": 0.1,
+            "unit": "M"
+          },
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "quantitative-naoh-025",
+        "definitionId": "naoh-bottle",
+        "label": "Standardized 0.25 M NaOH option",
+        "contents": {
+          "kind": "solution",
+          "label": "0.25 M NaOH",
+          "volumeMl": 250,
+          "concentration": {
+            "value": 0.25,
+            "unit": "M"
+          },
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "quantitative-pipette",
+        "definitionId": "graduated-pipette-10ml",
+        "label": "10 mL graduated quantitative pipette",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "pipette-pump",
+        "definitionId": "pipette-pump",
+        "label": "Pipette pump",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "beverage-flask",
+        "definitionId": "erlenmeyer-flask-250ml",
+        "label": "Beverage titration flask",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "beverage-burette",
+        "definitionId": "burette-50ml",
+        "label": "Quantitative NaOH burette",
+        "contents": {
+          "kind": "empty",
+          "label": "empty until conditioned and filled with selected NaOH",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "beverage-ring-stand",
+        "definitionId": "ring-stand-clamp",
+        "label": "Ring stand and burette clamp",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "beverage-ph-meter",
+        "definitionId": "ph-meter",
+        "label": "pH meter and probe",
+        "contents": {
+          "kind": "empty",
+          "label": "requires teacher-specified calibration and rinse protocol",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "beverage-ph-paper",
+        "definitionId": "ph-paper",
+        "label": "pH paper for qualitative screening when approved",
+        "contents": {
+          "kind": "empty",
+          "label": "qualitative pH paper; not a substitute for the quantitative pH-volume series",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "beverage-stirring-rod",
+        "definitionId": "stirring-rod",
+        "label": "Stirring rod",
+        "contents": {
+          "kind": "empty",
+          "label": "clean stirring rod",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "rinse-wash-bottle",
+        "definitionId": "wash-bottle",
+        "label": "Deionized-water wash bottle",
+        "contents": {
+          "kind": "liquid",
+          "label": "deionized water",
+          "volumeMl": 500,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "teacher-directed-waste",
+        "definitionId": "waste-beaker",
+        "label": "Teacher-directed titration waste receiver",
+        "contents": {
+          "kind": "empty",
+          "label": "use only under the teacher-provided disposal protocol",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "funnel-1",
+        "definitionId": "funnel",
+        "label": "Burette filling funnel",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "techniques": [],
+  "actions": [],
+  "process": {
+    "startNodeId": "beverage-source-boundary-node",
+    "nodes": [],
+    "edges": []
+  },
+  "assessments": [],
+  "metadata": {
+    "version": "3.0.1",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-05T00:00:00.000Z",
+    "tags": [
+      "lab",
+      "chemistry",
+      "beverage-acidity",
+      "acid-base",
+      "beverage",
+      "titration",
+      "ph-curve",
+      "inquiry"
+    ]
+  },
+  "titrationModels": [
+    {
+      "id": "beverage-a-sample",
+      "type": "acidBase",
+      "analyte": {
+        "formula": "CH3COOH",
+        "role": "acid",
+        "strength": "weak",
+        "equilibriumConstant": 0.00001753,
+        "equilibriumConstantSource": "https://nvlpubs.nist.gov/nistpubs/jres/100/5/j15wu.pdf"
+      },
+      "titrant": {
+        "formula": "NaOH",
+        "role": "base",
+        "strength": "strong"
+      },
+      "analyteMolarityM": 0.0992,
+      "analyteVolumeMl": 10,
+      "titrantMolarityM": 0.1,
+      "stoichiometricRatio": {
+        "analyte": 1,
+        "titrant": 1
+      },
+      "dropVolumeMl": 0.05,
+      "endpointOffsetDrops": 0,
+      "maxExtraDrops": 5,
+      "temperatureC": 25,
+      "waterIonProduct": 1e-14,
+      "phPrecision": 2
+    },
+    {
+      "id": "beverage-b-sample",
+      "type": "acidBase",
+      "analyte": {
+        "formula": "CH3COOH",
+        "role": "acid",
+        "strength": "weak",
+        "equilibriumConstant": 0.00001753,
+        "equilibriumConstantSource": "https://nvlpubs.nist.gov/nistpubs/jres/100/5/j15wu.pdf"
+      },
+      "titrant": {
+        "formula": "NaOH",
+        "role": "base",
+        "strength": "strong"
+      },
+      "analyteMolarityM": 0.0992,
+      "analyteVolumeMl": 10,
+      "titrantMolarityM": 0.1,
+      "stoichiometricRatio": {
+        "analyte": 1,
+        "titrant": 1
+      },
+      "dropVolumeMl": 0.05,
+      "endpointOffsetDrops": 0,
+      "maxExtraDrops": 5,
+      "temperatureC": 25,
+      "waterIonProduct": 1e-14,
+      "phPrecision": 2
+    },
+    {
+      "id": "practice-hcl",
+      "type": "acidBase",
+      "analyte": {
+        "formula": "HCl",
+        "role": "acid",
+        "strength": "strong"
+      },
+      "titrant": {
+        "formula": "NaOH",
+        "role": "base",
+        "strength": "strong"
+      },
+      "analyteMolarityM": 0.1,
+      "analyteVolumeMl": 5,
+      "titrantMolarityM": 0.1,
+      "stoichiometricRatio": {
+        "analyte": 1,
+        "titrant": 1
+      },
+      "dropVolumeMl": 0.05,
+      "endpointOffsetDrops": 0,
+      "maxExtraDrops": 5,
+      "temperatureC": 25,
+      "waterIonProduct": 1e-14,
+      "phPrecision": 2
+    },
+    {
+      "id": "practice-acetic",
+      "type": "acidBase",
+      "analyte": {
+        "formula": "CH3COOH",
+        "role": "acid",
+        "strength": "weak",
+        "equilibriumConstant": 0.00001753,
+        "equilibriumConstantSource": "https://nvlpubs.nist.gov/nistpubs/jres/100/5/j15wu.pdf"
+      },
+      "titrant": {
+        "formula": "NaOH",
+        "role": "base",
+        "strength": "strong"
+      },
+      "analyteMolarityM": 0.1,
+      "analyteVolumeMl": 5,
+      "titrantMolarityM": 0.1,
+      "stoichiometricRatio": {
+        "analyte": 1,
+        "titrant": 1
+      },
+      "dropVolumeMl": 0.05,
+      "endpointOffsetDrops": 0,
+      "maxExtraDrops": 5,
+      "temperatureC": 25,
+      "waterIonProduct": 1e-14,
+      "phPrecision": 2
+    }
+  ],
+  "techniqueInstances": [
+    {
+      "instanceId": "investigation",
+      "techniqueId": "beverage-ph-volume-titration",
+      "version": "3.0.1",
+      "bindings": {
+        "equipment": {
+          "variable-volume-measuring-device": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "quantitative-pipette",
+                "definitionId": "graduated-pipette-10ml",
+                "instanceId": "quantitative-pipette"
+              }
+            ]
+          },
+          "liquid-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "practice-hcl-bottle",
+                "definitionId": "reagent-bottle",
+                "instanceId": "practice-hcl-bottle"
+              },
+              {
+                "sourceInstanceId": "practice-acetic-acid-bottle",
+                "definitionId": "reagent-bottle",
+                "instanceId": "practice-acetic-acid-bottle"
+              },
+              {
+                "sourceInstanceId": "practice-naoh-bottle",
+                "definitionId": "naoh-bottle",
+                "instanceId": "practice-naoh-bottle"
+              },
+              {
+                "sourceInstanceId": "beverage-a-sample",
+                "definitionId": "sample-bottle",
+                "instanceId": "beverage-a-sample"
+              },
+              {
+                "sourceInstanceId": "beverage-b-sample",
+                "definitionId": "sample-bottle",
+                "instanceId": "beverage-b-sample"
+              },
+              {
+                "sourceInstanceId": "quantitative-naoh-010",
+                "definitionId": "naoh-bottle",
+                "instanceId": "quantitative-naoh-010"
+              },
+              {
+                "sourceInstanceId": "quantitative-naoh-025",
+                "definitionId": "naoh-bottle",
+                "instanceId": "quantitative-naoh-025"
+              }
+            ]
+          },
+          "measured-solvent-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "quantitative-pipette",
+                "definitionId": "graduated-pipette-10ml",
+                "instanceId": "quantitative-pipette"
+              }
+            ]
+          },
+          "receiving-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "practice-hcl-tube",
+                "definitionId": "test-tube",
+                "instanceId": "practice-hcl-tube"
+              },
+              {
+                "sourceInstanceId": "practice-acetic-tube",
+                "definitionId": "test-tube",
+                "instanceId": "practice-acetic-tube"
+              },
+              {
+                "sourceInstanceId": "beverage-flask",
+                "definitionId": "erlenmeyer-flask-250ml",
+                "instanceId": "beverage-flask"
+              }
+            ]
+          },
+          "indicator-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "phenolphthalein-practice-dropper",
+                "definitionId": "phenolphthalein-dropper",
+                "instanceId": "phenolphthalein-practice-dropper"
+              }
+            ]
+          },
+          "reaction-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "practice-hcl-tube",
+                "definitionId": "test-tube",
+                "instanceId": "practice-hcl-tube"
+              },
+              {
+                "sourceInstanceId": "practice-acetic-tube",
+                "definitionId": "test-tube",
+                "instanceId": "practice-acetic-tube"
+              }
+            ]
+          },
+          "waste-receiver": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "teacher-directed-waste",
+                "definitionId": "waste-beaker",
+                "instanceId": "teacher-directed-waste"
+              }
+            ]
+          },
+          "rinse-water-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "rinse-wash-bottle",
+                "definitionId": "wash-bottle",
+                "instanceId": "rinse-wash-bottle"
+              }
+            ]
+          },
+          "rinsed-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "practice-hcl-tube",
+                "definitionId": "test-tube",
+                "instanceId": "practice-hcl-tube"
+              },
+              {
+                "sourceInstanceId": "practice-acetic-tube",
+                "definitionId": "test-tube",
+                "instanceId": "practice-acetic-tube"
+              },
+              {
+                "sourceInstanceId": "beverage-flask",
+                "definitionId": "erlenmeyer-flask-250ml",
+                "instanceId": "beverage-flask"
+              }
+            ]
+          },
+          "burette-support": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "beverage-ring-stand",
+                "definitionId": "ring-stand-clamp",
+                "instanceId": "beverage-ring-stand"
+              }
+            ]
+          },
+          "titrant-delivery-device": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "beverage-burette",
+                "definitionId": "burette-50ml",
+                "instanceId": "beverage-burette"
+              }
+            ]
+          },
+          "titrant-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "practice-naoh-bottle",
+                "definitionId": "naoh-bottle",
+                "instanceId": "practice-naoh-bottle"
+              },
+              {
+                "sourceInstanceId": "quantitative-naoh-010",
+                "definitionId": "naoh-bottle",
+                "instanceId": "quantitative-naoh-010"
+              },
+              {
+                "sourceInstanceId": "quantitative-naoh-025",
+                "definitionId": "naoh-bottle",
+                "instanceId": "quantitative-naoh-025"
+              }
+            ]
+          },
+          "burette-filling-funnel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "funnel-1",
+                "definitionId": "funnel",
+                "instanceId": "funnel-1"
+              }
+            ]
+          },
+          "analyte-receiver": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "beverage-flask",
+                "definitionId": "erlenmeyer-flask-250ml",
+                "instanceId": "beverage-flask"
+              }
+            ]
+          },
+          "immersed-probe-instrument": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "beverage-ph-meter",
+                "definitionId": "ph-meter",
+                "instanceId": "beverage-ph-meter"
+              }
+            ]
+          },
+          "immersed-probe-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "beverage-flask",
+                "definitionId": "erlenmeyer-flask-250ml",
+                "instanceId": "beverage-flask"
+              }
+            ]
+          }
+        },
+        "models": {
+          "beverage-a-sample": "beverage-a-sample",
+          "beverage-b-sample": "beverage-b-sample",
+          "practice-hcl": "practice-hcl",
+          "practice-acetic": "practice-acetic"
+        },
+        "configuration": {
+          "endpointWindowMl": 0.05,
+          "persistenceSeconds": 5,
+          "maximumIncrementMl": 1,
+          "indicatorVolumeMl": 0.1,
+          "wasteProtocol": "Instructor-defined waste route required before running",
+          "preparationProtocol": "Instructor-defined sample/indicator/probe protocol required before running",
+          "beverageAliquotMl": 10,
+          "conditioningVolumeMl": 1,
+          "tipPurgeMl": 0.2,
+          "rinseVolumeMl": 2,
+          "indicatorStartPh": 8.2,
+          "indicatorStrongPh": 10
+        }
+      },
+      "preserveIds": {
+        "actions": {
+          "beverage-source-boundary": "beverage-source-boundary",
+          "practice-hcl-measure": "practice-hcl-measure",
+          "practice-hcl-transfer": "practice-hcl-transfer",
+          "practice-hcl-indicator-choice": "practice-hcl-indicator-choice",
+          "practice-hcl-indicator": "practice-hcl-indicator",
+          "practice-hcl-read-initial": "practice-hcl-read-initial",
+          "practice-hcl-deliver": "practice-hcl-deliver",
+          "practice-hcl-mix": "practice-hcl-mix",
+          "practice-hcl-observe": "practice-hcl-observe",
+          "practice-hcl-record-point": "practice-hcl-record-point",
+          "practice-hcl-decide": "practice-hcl-decide",
+          "practice-hcl-dispose": "practice-hcl-dispose",
+          "practice-hcl-dispose-rinse": "practice-hcl-dispose-rinse",
+          "practice-hcl-dispose-discard-rinse": "practice-hcl-dispose-discard-rinse",
+          "practice-acetic-measure": "practice-acetic-measure",
+          "practice-acetic-transfer": "practice-acetic-transfer",
+          "practice-acetic-indicator-choice": "practice-acetic-indicator-choice",
+          "practice-acetic-indicator": "practice-acetic-indicator",
+          "practice-acetic-read-initial": "practice-acetic-read-initial",
+          "practice-acetic-deliver": "practice-acetic-deliver",
+          "practice-acetic-mix": "practice-acetic-mix",
+          "practice-acetic-observe": "practice-acetic-observe",
+          "practice-acetic-record-point": "practice-acetic-record-point",
+          "practice-acetic-decide": "practice-acetic-decide",
+          "practice-acetic-dispose": "practice-acetic-dispose",
+          "practice-acetic-dispose-rinse": "practice-acetic-dispose-rinse",
+          "practice-acetic-dispose-discard-rinse": "practice-acetic-dispose-discard-rinse",
+          "submit-research-question-hypothesis": "submit-research-question-hypothesis",
+          "submit-variables-equipment-plan": "submit-variables-equipment-plan",
+          "record-three-safety-precautions": "record-three-safety-precautions",
+          "submit-acid-models-indicator-justification": "submit-acid-models-indicator-justification",
+          "record-teacher-approval": "record-teacher-approval",
+          "beverage-a-sample-trial-1-place-ring-stand": "beverage-a-sample-trial-1-place-ring-stand",
+          "beverage-a-sample-trial-1-mount-burette": "beverage-a-sample-trial-1-mount-burette",
+          "beverage-a-sample-trial-1-condition-burette-drain-residual": "beverage-a-sample-trial-1-condition-burette-drain-residual",
+          "beverage-a-sample-trial-1-condition-burette": "beverage-a-sample-trial-1-condition-burette",
+          "beverage-a-sample-trial-1-condition-burette-discard-rinsate": "beverage-a-sample-trial-1-condition-burette-discard-rinsate",
+          "beverage-a-sample-trial-1-seat-burette-funnel": "beverage-a-sample-trial-1-seat-burette-funnel",
+          "beverage-a-sample-trial-1-fill-burette": "beverage-a-sample-trial-1-fill-burette",
+          "beverage-a-sample-trial-1-fill-burette-purge-tip": "beverage-a-sample-trial-1-fill-burette-purge-tip",
+          "beverage-a-sample-trial-1-fill-burette-check-tip": "beverage-a-sample-trial-1-fill-burette-check-tip",
+          "beverage-a-sample-trial-1-remove-burette-funnel": "beverage-a-sample-trial-1-remove-burette-funnel",
+          "beverage-a-sample-trial-1-read-initial-burette": "beverage-a-sample-trial-1-read-initial-burette",
+          "beverage-a-sample-trial-1-record-initial-burette": "beverage-a-sample-trial-1-record-initial-burette",
+          "beverage-a-sample-trial-1-measure-acid": "beverage-a-sample-trial-1-measure-acid",
+          "beverage-a-sample-trial-1-transfer-acid-flask": "beverage-a-sample-trial-1-transfer-acid-flask",
+          "beverage-a-sample-trial-1-add-indicator": "beverage-a-sample-trial-1-add-indicator",
+          "beverage-a-sample-trial-1-position-flask-under-burette": "beverage-a-sample-trial-1-position-flask-under-burette",
+          "beverage-a-sample-trial-1-probe-ready": "beverage-a-sample-trial-1-probe-ready",
+          "beverage-a-sample-trial-1-place-ph-meter-on-workbench": "beverage-a-sample-trial-1-place-ph-meter-on-workbench",
+          "beverage-a-sample-trial-1-immerse-endpoint-ph-probe": "beverage-a-sample-trial-1-immerse-endpoint-ph-probe",
+          "beverage-a-sample-trial-1-initial-color": "beverage-a-sample-trial-1-initial-color",
+          "beverage-a-sample-trial-1-initial-ph": "beverage-a-sample-trial-1-initial-ph",
+          "beverage-a-sample-trial-1-initial-row": "beverage-a-sample-trial-1-initial-row",
+          "beverage-a-sample-trial-1-deliver-titrant": "beverage-a-sample-trial-1-deliver-titrant",
+          "beverage-a-sample-trial-1-deliver-titrant-mix": "beverage-a-sample-trial-1-deliver-titrant-mix",
+          "beverage-a-sample-trial-1-deliver-titrant-observe": "beverage-a-sample-trial-1-deliver-titrant-observe",
+          "beverage-a-sample-trial-1-deliver-titrant-read-ph": "beverage-a-sample-trial-1-deliver-titrant-read-ph",
+          "beverage-a-sample-trial-1-deliver-titrant-record-point": "beverage-a-sample-trial-1-deliver-titrant-record-point",
+          "beverage-a-sample-trial-1-deliver-titrant-decide": "beverage-a-sample-trial-1-deliver-titrant-decide",
+          "beverage-a-sample-trial-1-deliver-titrant-read-final": "beverage-a-sample-trial-1-deliver-titrant-read-final",
+          "beverage-a-sample-trial-1-record-final-burette": "beverage-a-sample-trial-1-record-final-burette",
+          "beverage-a-sample-trial-1-deliver-titrant-post": "beverage-a-sample-trial-1-deliver-titrant-post",
+          "beverage-a-sample-trial-1-deliver-titrant-mix-post": "beverage-a-sample-trial-1-deliver-titrant-mix-post",
+          "beverage-a-sample-trial-1-deliver-titrant-observe-post": "beverage-a-sample-trial-1-deliver-titrant-observe-post",
+          "beverage-a-sample-trial-1-deliver-titrant-read-ph-post": "beverage-a-sample-trial-1-deliver-titrant-read-ph-post",
+          "beverage-a-sample-trial-1-deliver-titrant-record-point-post": "beverage-a-sample-trial-1-deliver-titrant-record-point-post",
+          "beverage-a-sample-trial-1-finish-curve": "beverage-a-sample-trial-1-finish-curve",
+          "beverage-a-sample-trial-1-concentration-select-equivalence": "beverage-a-sample-trial-1-concentration-select-equivalence",
+          "beverage-a-sample-trial-1-concentration-justify-equivalence": "beverage-a-sample-trial-1-concentration-justify-equivalence",
+          "beverage-a-sample-trial-1-concentration-approve-equivalence": "beverage-a-sample-trial-1-concentration-approve-equivalence",
+          "beverage-a-sample-trial-1-concentration": "beverage-a-sample-trial-1-concentration",
+          "beverage-a-sample-trial-1-equivalence-analysis": "beverage-a-sample-trial-1-equivalence-analysis",
+          "beverage-a-sample-trial-1-dispose": "beverage-a-sample-trial-1-dispose",
+          "beverage-a-sample-trial-1-dispose-rinse": "beverage-a-sample-trial-1-dispose-rinse",
+          "beverage-a-sample-trial-1-dispose-discard-rinse": "beverage-a-sample-trial-1-dispose-discard-rinse",
+          "beverage-a-sample-trial-2-place-ring-stand": "beverage-a-sample-trial-2-place-ring-stand",
+          "beverage-a-sample-trial-2-mount-burette": "beverage-a-sample-trial-2-mount-burette",
+          "beverage-a-sample-trial-2-condition-burette-drain-residual": "beverage-a-sample-trial-2-condition-burette-drain-residual",
+          "beverage-a-sample-trial-2-condition-burette": "beverage-a-sample-trial-2-condition-burette",
+          "beverage-a-sample-trial-2-condition-burette-discard-rinsate": "beverage-a-sample-trial-2-condition-burette-discard-rinsate",
+          "beverage-a-sample-trial-2-seat-burette-funnel": "beverage-a-sample-trial-2-seat-burette-funnel",
+          "beverage-a-sample-trial-2-fill-burette": "beverage-a-sample-trial-2-fill-burette",
+          "beverage-a-sample-trial-2-fill-burette-purge-tip": "beverage-a-sample-trial-2-fill-burette-purge-tip",
+          "beverage-a-sample-trial-2-fill-burette-check-tip": "beverage-a-sample-trial-2-fill-burette-check-tip",
+          "beverage-a-sample-trial-2-remove-burette-funnel": "beverage-a-sample-trial-2-remove-burette-funnel",
+          "beverage-a-sample-trial-2-read-initial-burette": "beverage-a-sample-trial-2-read-initial-burette",
+          "beverage-a-sample-trial-2-record-initial-burette": "beverage-a-sample-trial-2-record-initial-burette",
+          "beverage-a-sample-trial-2-measure-acid": "beverage-a-sample-trial-2-measure-acid",
+          "beverage-a-sample-trial-2-transfer-acid-flask": "beverage-a-sample-trial-2-transfer-acid-flask",
+          "beverage-a-sample-trial-2-add-indicator": "beverage-a-sample-trial-2-add-indicator",
+          "beverage-a-sample-trial-2-position-flask-under-burette": "beverage-a-sample-trial-2-position-flask-under-burette",
+          "beverage-a-sample-trial-2-probe-ready": "beverage-a-sample-trial-2-probe-ready",
+          "beverage-a-sample-trial-2-place-ph-meter-on-workbench": "beverage-a-sample-trial-2-place-ph-meter-on-workbench",
+          "beverage-a-sample-trial-2-immerse-endpoint-ph-probe": "beverage-a-sample-trial-2-immerse-endpoint-ph-probe",
+          "beverage-a-sample-trial-2-initial-color": "beverage-a-sample-trial-2-initial-color",
+          "beverage-a-sample-trial-2-initial-ph": "beverage-a-sample-trial-2-initial-ph",
+          "beverage-a-sample-trial-2-initial-row": "beverage-a-sample-trial-2-initial-row",
+          "beverage-a-sample-trial-2-deliver-titrant": "beverage-a-sample-trial-2-deliver-titrant",
+          "beverage-a-sample-trial-2-deliver-titrant-mix": "beverage-a-sample-trial-2-deliver-titrant-mix",
+          "beverage-a-sample-trial-2-deliver-titrant-observe": "beverage-a-sample-trial-2-deliver-titrant-observe",
+          "beverage-a-sample-trial-2-deliver-titrant-read-ph": "beverage-a-sample-trial-2-deliver-titrant-read-ph",
+          "beverage-a-sample-trial-2-deliver-titrant-record-point": "beverage-a-sample-trial-2-deliver-titrant-record-point",
+          "beverage-a-sample-trial-2-deliver-titrant-decide": "beverage-a-sample-trial-2-deliver-titrant-decide",
+          "beverage-a-sample-trial-2-deliver-titrant-read-final": "beverage-a-sample-trial-2-deliver-titrant-read-final",
+          "beverage-a-sample-trial-2-record-final-burette": "beverage-a-sample-trial-2-record-final-burette",
+          "beverage-a-sample-trial-2-deliver-titrant-post": "beverage-a-sample-trial-2-deliver-titrant-post",
+          "beverage-a-sample-trial-2-deliver-titrant-mix-post": "beverage-a-sample-trial-2-deliver-titrant-mix-post",
+          "beverage-a-sample-trial-2-deliver-titrant-observe-post": "beverage-a-sample-trial-2-deliver-titrant-observe-post",
+          "beverage-a-sample-trial-2-deliver-titrant-read-ph-post": "beverage-a-sample-trial-2-deliver-titrant-read-ph-post",
+          "beverage-a-sample-trial-2-deliver-titrant-record-point-post": "beverage-a-sample-trial-2-deliver-titrant-record-point-post",
+          "beverage-a-sample-trial-2-finish-curve": "beverage-a-sample-trial-2-finish-curve",
+          "beverage-a-sample-trial-2-concentration-select-equivalence": "beverage-a-sample-trial-2-concentration-select-equivalence",
+          "beverage-a-sample-trial-2-concentration-justify-equivalence": "beverage-a-sample-trial-2-concentration-justify-equivalence",
+          "beverage-a-sample-trial-2-concentration-approve-equivalence": "beverage-a-sample-trial-2-concentration-approve-equivalence",
+          "beverage-a-sample-trial-2-concentration": "beverage-a-sample-trial-2-concentration",
+          "beverage-a-sample-trial-2-equivalence-analysis": "beverage-a-sample-trial-2-equivalence-analysis",
+          "beverage-a-sample-trial-2-dispose": "beverage-a-sample-trial-2-dispose",
+          "beverage-a-sample-trial-2-dispose-rinse": "beverage-a-sample-trial-2-dispose-rinse",
+          "beverage-a-sample-trial-2-dispose-discard-rinse": "beverage-a-sample-trial-2-dispose-discard-rinse",
+          "beverage-b-sample-trial-1-place-ring-stand": "beverage-b-sample-trial-1-place-ring-stand",
+          "beverage-b-sample-trial-1-mount-burette": "beverage-b-sample-trial-1-mount-burette",
+          "beverage-b-sample-trial-1-condition-burette-drain-residual": "beverage-b-sample-trial-1-condition-burette-drain-residual",
+          "beverage-b-sample-trial-1-condition-burette": "beverage-b-sample-trial-1-condition-burette",
+          "beverage-b-sample-trial-1-condition-burette-discard-rinsate": "beverage-b-sample-trial-1-condition-burette-discard-rinsate",
+          "beverage-b-sample-trial-1-seat-burette-funnel": "beverage-b-sample-trial-1-seat-burette-funnel",
+          "beverage-b-sample-trial-1-fill-burette": "beverage-b-sample-trial-1-fill-burette",
+          "beverage-b-sample-trial-1-fill-burette-purge-tip": "beverage-b-sample-trial-1-fill-burette-purge-tip",
+          "beverage-b-sample-trial-1-fill-burette-check-tip": "beverage-b-sample-trial-1-fill-burette-check-tip",
+          "beverage-b-sample-trial-1-remove-burette-funnel": "beverage-b-sample-trial-1-remove-burette-funnel",
+          "beverage-b-sample-trial-1-read-initial-burette": "beverage-b-sample-trial-1-read-initial-burette",
+          "beverage-b-sample-trial-1-record-initial-burette": "beverage-b-sample-trial-1-record-initial-burette",
+          "beverage-b-sample-trial-1-measure-acid": "beverage-b-sample-trial-1-measure-acid",
+          "beverage-b-sample-trial-1-transfer-acid-flask": "beverage-b-sample-trial-1-transfer-acid-flask",
+          "beverage-b-sample-trial-1-add-indicator": "beverage-b-sample-trial-1-add-indicator",
+          "beverage-b-sample-trial-1-position-flask-under-burette": "beverage-b-sample-trial-1-position-flask-under-burette",
+          "beverage-b-sample-trial-1-probe-ready": "beverage-b-sample-trial-1-probe-ready",
+          "beverage-b-sample-trial-1-place-ph-meter-on-workbench": "beverage-b-sample-trial-1-place-ph-meter-on-workbench",
+          "beverage-b-sample-trial-1-immerse-endpoint-ph-probe": "beverage-b-sample-trial-1-immerse-endpoint-ph-probe",
+          "beverage-b-sample-trial-1-initial-color": "beverage-b-sample-trial-1-initial-color",
+          "beverage-b-sample-trial-1-initial-ph": "beverage-b-sample-trial-1-initial-ph",
+          "beverage-b-sample-trial-1-initial-row": "beverage-b-sample-trial-1-initial-row",
+          "beverage-b-sample-trial-1-deliver-titrant": "beverage-b-sample-trial-1-deliver-titrant",
+          "beverage-b-sample-trial-1-deliver-titrant-mix": "beverage-b-sample-trial-1-deliver-titrant-mix",
+          "beverage-b-sample-trial-1-deliver-titrant-observe": "beverage-b-sample-trial-1-deliver-titrant-observe",
+          "beverage-b-sample-trial-1-deliver-titrant-read-ph": "beverage-b-sample-trial-1-deliver-titrant-read-ph",
+          "beverage-b-sample-trial-1-deliver-titrant-record-point": "beverage-b-sample-trial-1-deliver-titrant-record-point",
+          "beverage-b-sample-trial-1-deliver-titrant-decide": "beverage-b-sample-trial-1-deliver-titrant-decide",
+          "beverage-b-sample-trial-1-deliver-titrant-read-final": "beverage-b-sample-trial-1-deliver-titrant-read-final",
+          "beverage-b-sample-trial-1-record-final-burette": "beverage-b-sample-trial-1-record-final-burette",
+          "beverage-b-sample-trial-1-deliver-titrant-post": "beverage-b-sample-trial-1-deliver-titrant-post",
+          "beverage-b-sample-trial-1-deliver-titrant-mix-post": "beverage-b-sample-trial-1-deliver-titrant-mix-post",
+          "beverage-b-sample-trial-1-deliver-titrant-observe-post": "beverage-b-sample-trial-1-deliver-titrant-observe-post",
+          "beverage-b-sample-trial-1-deliver-titrant-read-ph-post": "beverage-b-sample-trial-1-deliver-titrant-read-ph-post",
+          "beverage-b-sample-trial-1-deliver-titrant-record-point-post": "beverage-b-sample-trial-1-deliver-titrant-record-point-post",
+          "beverage-b-sample-trial-1-finish-curve": "beverage-b-sample-trial-1-finish-curve",
+          "beverage-b-sample-trial-1-concentration-select-equivalence": "beverage-b-sample-trial-1-concentration-select-equivalence",
+          "beverage-b-sample-trial-1-concentration-justify-equivalence": "beverage-b-sample-trial-1-concentration-justify-equivalence",
+          "beverage-b-sample-trial-1-concentration-approve-equivalence": "beverage-b-sample-trial-1-concentration-approve-equivalence",
+          "beverage-b-sample-trial-1-concentration": "beverage-b-sample-trial-1-concentration",
+          "beverage-b-sample-trial-1-equivalence-analysis": "beverage-b-sample-trial-1-equivalence-analysis",
+          "beverage-b-sample-trial-1-dispose": "beverage-b-sample-trial-1-dispose",
+          "beverage-b-sample-trial-1-dispose-rinse": "beverage-b-sample-trial-1-dispose-rinse",
+          "beverage-b-sample-trial-1-dispose-discard-rinse": "beverage-b-sample-trial-1-dispose-discard-rinse",
+          "beverage-b-sample-trial-2-place-ring-stand": "beverage-b-sample-trial-2-place-ring-stand",
+          "beverage-b-sample-trial-2-mount-burette": "beverage-b-sample-trial-2-mount-burette",
+          "beverage-b-sample-trial-2-condition-burette-drain-residual": "beverage-b-sample-trial-2-condition-burette-drain-residual",
+          "beverage-b-sample-trial-2-condition-burette": "beverage-b-sample-trial-2-condition-burette",
+          "beverage-b-sample-trial-2-condition-burette-discard-rinsate": "beverage-b-sample-trial-2-condition-burette-discard-rinsate",
+          "beverage-b-sample-trial-2-seat-burette-funnel": "beverage-b-sample-trial-2-seat-burette-funnel",
+          "beverage-b-sample-trial-2-fill-burette": "beverage-b-sample-trial-2-fill-burette",
+          "beverage-b-sample-trial-2-fill-burette-purge-tip": "beverage-b-sample-trial-2-fill-burette-purge-tip",
+          "beverage-b-sample-trial-2-fill-burette-check-tip": "beverage-b-sample-trial-2-fill-burette-check-tip",
+          "beverage-b-sample-trial-2-remove-burette-funnel": "beverage-b-sample-trial-2-remove-burette-funnel",
+          "beverage-b-sample-trial-2-read-initial-burette": "beverage-b-sample-trial-2-read-initial-burette",
+          "beverage-b-sample-trial-2-record-initial-burette": "beverage-b-sample-trial-2-record-initial-burette",
+          "beverage-b-sample-trial-2-measure-acid": "beverage-b-sample-trial-2-measure-acid",
+          "beverage-b-sample-trial-2-transfer-acid-flask": "beverage-b-sample-trial-2-transfer-acid-flask",
+          "beverage-b-sample-trial-2-add-indicator": "beverage-b-sample-trial-2-add-indicator",
+          "beverage-b-sample-trial-2-position-flask-under-burette": "beverage-b-sample-trial-2-position-flask-under-burette",
+          "beverage-b-sample-trial-2-probe-ready": "beverage-b-sample-trial-2-probe-ready",
+          "beverage-b-sample-trial-2-place-ph-meter-on-workbench": "beverage-b-sample-trial-2-place-ph-meter-on-workbench",
+          "beverage-b-sample-trial-2-immerse-endpoint-ph-probe": "beverage-b-sample-trial-2-immerse-endpoint-ph-probe",
+          "beverage-b-sample-trial-2-initial-color": "beverage-b-sample-trial-2-initial-color",
+          "beverage-b-sample-trial-2-initial-ph": "beverage-b-sample-trial-2-initial-ph",
+          "beverage-b-sample-trial-2-initial-row": "beverage-b-sample-trial-2-initial-row",
+          "beverage-b-sample-trial-2-deliver-titrant": "beverage-b-sample-trial-2-deliver-titrant",
+          "beverage-b-sample-trial-2-deliver-titrant-mix": "beverage-b-sample-trial-2-deliver-titrant-mix",
+          "beverage-b-sample-trial-2-deliver-titrant-observe": "beverage-b-sample-trial-2-deliver-titrant-observe",
+          "beverage-b-sample-trial-2-deliver-titrant-read-ph": "beverage-b-sample-trial-2-deliver-titrant-read-ph",
+          "beverage-b-sample-trial-2-deliver-titrant-record-point": "beverage-b-sample-trial-2-deliver-titrant-record-point",
+          "beverage-b-sample-trial-2-deliver-titrant-decide": "beverage-b-sample-trial-2-deliver-titrant-decide",
+          "beverage-b-sample-trial-2-deliver-titrant-read-final": "beverage-b-sample-trial-2-deliver-titrant-read-final",
+          "beverage-b-sample-trial-2-record-final-burette": "beverage-b-sample-trial-2-record-final-burette",
+          "beverage-b-sample-trial-2-deliver-titrant-post": "beverage-b-sample-trial-2-deliver-titrant-post",
+          "beverage-b-sample-trial-2-deliver-titrant-mix-post": "beverage-b-sample-trial-2-deliver-titrant-mix-post",
+          "beverage-b-sample-trial-2-deliver-titrant-observe-post": "beverage-b-sample-trial-2-deliver-titrant-observe-post",
+          "beverage-b-sample-trial-2-deliver-titrant-read-ph-post": "beverage-b-sample-trial-2-deliver-titrant-read-ph-post",
+          "beverage-b-sample-trial-2-deliver-titrant-record-point-post": "beverage-b-sample-trial-2-deliver-titrant-record-point-post",
+          "beverage-b-sample-trial-2-finish-curve": "beverage-b-sample-trial-2-finish-curve",
+          "beverage-b-sample-trial-2-concentration-select-equivalence": "beverage-b-sample-trial-2-concentration-select-equivalence",
+          "beverage-b-sample-trial-2-concentration-justify-equivalence": "beverage-b-sample-trial-2-concentration-justify-equivalence",
+          "beverage-b-sample-trial-2-concentration-approve-equivalence": "beverage-b-sample-trial-2-concentration-approve-equivalence",
+          "beverage-b-sample-trial-2-concentration": "beverage-b-sample-trial-2-concentration",
+          "beverage-b-sample-trial-2-equivalence-analysis": "beverage-b-sample-trial-2-equivalence-analysis",
+          "beverage-b-sample-trial-2-dispose": "beverage-b-sample-trial-2-dispose",
+          "beverage-b-sample-trial-2-dispose-rinse": "beverage-b-sample-trial-2-dispose-rinse",
+          "beverage-b-sample-trial-2-dispose-discard-rinse": "beverage-b-sample-trial-2-dispose-discard-rinse",
+          "compare-class-data-with-provenance": "compare-class-data-with-provenance",
+          "submit-postlab-reasoning": "submit-postlab-reasoning",
+          "practice-hcl-retry-dispose": "practice-hcl-retry-dispose",
+          "practice-hcl-retry-dispose-rinse": "practice-hcl-retry-dispose-rinse",
+          "practice-hcl-retry-dispose-discard-rinse": "practice-hcl-retry-dispose-discard-rinse",
+          "practice-hcl-archive-retry": "practice-hcl-archive-retry",
+          "practice-acetic-retry-dispose": "practice-acetic-retry-dispose",
+          "practice-acetic-retry-dispose-rinse": "practice-acetic-retry-dispose-rinse",
+          "practice-acetic-retry-dispose-discard-rinse": "practice-acetic-retry-dispose-discard-rinse",
+          "practice-acetic-archive-retry": "practice-acetic-archive-retry",
+          "beverage-a-sample-trial-1-deliver-titrant-retry-dispose": "beverage-a-sample-trial-1-deliver-titrant-retry-dispose",
+          "beverage-a-sample-trial-1-deliver-titrant-retry-dispose-rinse": "beverage-a-sample-trial-1-deliver-titrant-retry-dispose-rinse",
+          "beverage-a-sample-trial-1-deliver-titrant-retry-dispose-discard-rinse": "beverage-a-sample-trial-1-deliver-titrant-retry-dispose-discard-rinse",
+          "beverage-a-sample-trial-1-deliver-titrant-retry-reset": "beverage-a-sample-trial-1-deliver-titrant-retry-reset",
+          "beverage-a-sample-trial-2-deliver-titrant-retry-dispose": "beverage-a-sample-trial-2-deliver-titrant-retry-dispose",
+          "beverage-a-sample-trial-2-deliver-titrant-retry-dispose-rinse": "beverage-a-sample-trial-2-deliver-titrant-retry-dispose-rinse",
+          "beverage-a-sample-trial-2-deliver-titrant-retry-dispose-discard-rinse": "beverage-a-sample-trial-2-deliver-titrant-retry-dispose-discard-rinse",
+          "beverage-a-sample-trial-2-deliver-titrant-retry-reset": "beverage-a-sample-trial-2-deliver-titrant-retry-reset",
+          "beverage-b-sample-trial-1-deliver-titrant-retry-dispose": "beverage-b-sample-trial-1-deliver-titrant-retry-dispose",
+          "beverage-b-sample-trial-1-deliver-titrant-retry-dispose-rinse": "beverage-b-sample-trial-1-deliver-titrant-retry-dispose-rinse",
+          "beverage-b-sample-trial-1-deliver-titrant-retry-dispose-discard-rinse": "beverage-b-sample-trial-1-deliver-titrant-retry-dispose-discard-rinse",
+          "beverage-b-sample-trial-1-deliver-titrant-retry-reset": "beverage-b-sample-trial-1-deliver-titrant-retry-reset",
+          "beverage-b-sample-trial-2-deliver-titrant-retry-dispose": "beverage-b-sample-trial-2-deliver-titrant-retry-dispose",
+          "beverage-b-sample-trial-2-deliver-titrant-retry-dispose-rinse": "beverage-b-sample-trial-2-deliver-titrant-retry-dispose-rinse",
+          "beverage-b-sample-trial-2-deliver-titrant-retry-dispose-discard-rinse": "beverage-b-sample-trial-2-deliver-titrant-retry-dispose-discard-rinse",
+          "beverage-b-sample-trial-2-deliver-titrant-retry-reset": "beverage-b-sample-trial-2-deliver-titrant-retry-reset"
+        },
+        "nodes": {
+          "beverage-source-boundary-node": "beverage-source-boundary-node",
+          "practice-hcl-measure-node": "practice-hcl-measure-node",
+          "practice-hcl-transfer-node": "practice-hcl-transfer-node",
+          "practice-hcl-indicator-choice-node": "practice-hcl-indicator-choice-node",
+          "practice-hcl-indicator-node": "practice-hcl-indicator-node",
+          "practice-hcl-read-initial-node": "practice-hcl-read-initial-node",
+          "practice-hcl-deliver-node": "practice-hcl-deliver-node",
+          "practice-hcl-mix-node": "practice-hcl-mix-node",
+          "practice-hcl-observe-node": "practice-hcl-observe-node",
+          "practice-hcl-record-point-node": "practice-hcl-record-point-node",
+          "practice-hcl-decide-node": "practice-hcl-decide-node",
+          "practice-hcl-dispose-node": "practice-hcl-dispose-node",
+          "practice-hcl-dispose-rinse-node": "practice-hcl-dispose-rinse-node",
+          "practice-hcl-dispose-discard-rinse-node": "practice-hcl-dispose-discard-rinse-node",
+          "practice-acetic-measure-node": "practice-acetic-measure-node",
+          "practice-acetic-transfer-node": "practice-acetic-transfer-node",
+          "practice-acetic-indicator-choice-node": "practice-acetic-indicator-choice-node",
+          "practice-acetic-indicator-node": "practice-acetic-indicator-node",
+          "practice-acetic-read-initial-node": "practice-acetic-read-initial-node",
+          "practice-acetic-deliver-node": "practice-acetic-deliver-node",
+          "practice-acetic-mix-node": "practice-acetic-mix-node",
+          "practice-acetic-observe-node": "practice-acetic-observe-node",
+          "practice-acetic-record-point-node": "practice-acetic-record-point-node",
+          "practice-acetic-decide-node": "practice-acetic-decide-node",
+          "practice-acetic-dispose-node": "practice-acetic-dispose-node",
+          "practice-acetic-dispose-rinse-node": "practice-acetic-dispose-rinse-node",
+          "practice-acetic-dispose-discard-rinse-node": "practice-acetic-dispose-discard-rinse-node",
+          "submit-research-question-hypothesis-node": "submit-research-question-hypothesis-node",
+          "submit-variables-equipment-plan-node": "submit-variables-equipment-plan-node",
+          "record-three-safety-precautions-node": "record-three-safety-precautions-node",
+          "submit-acid-models-indicator-justification-node": "submit-acid-models-indicator-justification-node",
+          "record-teacher-approval-node": "record-teacher-approval-node",
+          "beverage-a-sample-trial-1-place-ring-stand-node": "beverage-a-sample-trial-1-place-ring-stand-node",
+          "beverage-a-sample-trial-1-mount-burette-node": "beverage-a-sample-trial-1-mount-burette-node",
+          "beverage-a-sample-trial-1-condition-burette-drain-residual-node": "beverage-a-sample-trial-1-condition-burette-drain-residual-node",
+          "beverage-a-sample-trial-1-condition-burette-node": "beverage-a-sample-trial-1-condition-burette-node",
+          "beverage-a-sample-trial-1-condition-burette-discard-rinsate-node": "beverage-a-sample-trial-1-condition-burette-discard-rinsate-node",
+          "beverage-a-sample-trial-1-seat-burette-funnel-node": "beverage-a-sample-trial-1-seat-burette-funnel-node",
+          "beverage-a-sample-trial-1-fill-burette-node": "beverage-a-sample-trial-1-fill-burette-node",
+          "beverage-a-sample-trial-1-fill-burette-purge-tip-node": "beverage-a-sample-trial-1-fill-burette-purge-tip-node",
+          "beverage-a-sample-trial-1-fill-burette-check-tip-node": "beverage-a-sample-trial-1-fill-burette-check-tip-node",
+          "beverage-a-sample-trial-1-remove-burette-funnel-node": "beverage-a-sample-trial-1-remove-burette-funnel-node",
+          "beverage-a-sample-trial-1-read-initial-burette-node": "beverage-a-sample-trial-1-read-initial-burette-node",
+          "beverage-a-sample-trial-1-record-initial-burette-node": "beverage-a-sample-trial-1-record-initial-burette-node",
+          "beverage-a-sample-trial-1-measure-acid-node": "beverage-a-sample-trial-1-measure-acid-node",
+          "beverage-a-sample-trial-1-transfer-acid-flask-node": "beverage-a-sample-trial-1-transfer-acid-flask-node",
+          "beverage-a-sample-trial-1-add-indicator-node": "beverage-a-sample-trial-1-add-indicator-node",
+          "beverage-a-sample-trial-1-position-flask-under-burette-node": "beverage-a-sample-trial-1-position-flask-under-burette-node",
+          "beverage-a-sample-trial-1-probe-ready-node": "beverage-a-sample-trial-1-probe-ready-node",
+          "beverage-a-sample-trial-1-place-ph-meter-on-workbench-node": "beverage-a-sample-trial-1-place-ph-meter-on-workbench-node",
+          "beverage-a-sample-trial-1-immerse-endpoint-ph-probe-node": "beverage-a-sample-trial-1-immerse-endpoint-ph-probe-node",
+          "beverage-a-sample-trial-1-initial-color-node": "beverage-a-sample-trial-1-initial-color-node",
+          "beverage-a-sample-trial-1-initial-ph-node": "beverage-a-sample-trial-1-initial-ph-node",
+          "beverage-a-sample-trial-1-initial-row-node": "beverage-a-sample-trial-1-initial-row-node",
+          "beverage-a-sample-trial-1-deliver-titrant-node": "beverage-a-sample-trial-1-deliver-titrant-node",
+          "beverage-a-sample-trial-1-deliver-titrant-mix-node": "beverage-a-sample-trial-1-deliver-titrant-mix-node",
+          "beverage-a-sample-trial-1-deliver-titrant-observe-node": "beverage-a-sample-trial-1-deliver-titrant-observe-node",
+          "beverage-a-sample-trial-1-deliver-titrant-read-ph-node": "beverage-a-sample-trial-1-deliver-titrant-read-ph-node",
+          "beverage-a-sample-trial-1-deliver-titrant-record-point-node": "beverage-a-sample-trial-1-deliver-titrant-record-point-node",
+          "beverage-a-sample-trial-1-deliver-titrant-decide-node": "beverage-a-sample-trial-1-deliver-titrant-decide-node",
+          "beverage-a-sample-trial-1-deliver-titrant-read-final-node": "beverage-a-sample-trial-1-deliver-titrant-read-final-node",
+          "beverage-a-sample-trial-1-record-final-burette-node": "beverage-a-sample-trial-1-record-final-burette-node",
+          "beverage-a-sample-trial-1-deliver-titrant-post-node": "beverage-a-sample-trial-1-deliver-titrant-post-node",
+          "beverage-a-sample-trial-1-deliver-titrant-mix-post-node": "beverage-a-sample-trial-1-deliver-titrant-mix-post-node",
+          "beverage-a-sample-trial-1-deliver-titrant-observe-post-node": "beverage-a-sample-trial-1-deliver-titrant-observe-post-node",
+          "beverage-a-sample-trial-1-deliver-titrant-read-ph-post-node": "beverage-a-sample-trial-1-deliver-titrant-read-ph-post-node",
+          "beverage-a-sample-trial-1-deliver-titrant-record-point-post-node": "beverage-a-sample-trial-1-deliver-titrant-record-point-post-node",
+          "beverage-a-sample-trial-1-finish-curve-node": "beverage-a-sample-trial-1-finish-curve-node",
+          "beverage-a-sample-trial-1-concentration-select-equivalence-node": "beverage-a-sample-trial-1-concentration-select-equivalence-node",
+          "beverage-a-sample-trial-1-concentration-justify-equivalence-node": "beverage-a-sample-trial-1-concentration-justify-equivalence-node",
+          "beverage-a-sample-trial-1-concentration-approve-equivalence-node": "beverage-a-sample-trial-1-concentration-approve-equivalence-node",
+          "beverage-a-sample-trial-1-concentration-node": "beverage-a-sample-trial-1-concentration-node",
+          "beverage-a-sample-trial-1-equivalence-analysis-node": "beverage-a-sample-trial-1-equivalence-analysis-node",
+          "beverage-a-sample-trial-1-dispose-node": "beverage-a-sample-trial-1-dispose-node",
+          "beverage-a-sample-trial-1-dispose-rinse-node": "beverage-a-sample-trial-1-dispose-rinse-node",
+          "beverage-a-sample-trial-1-dispose-discard-rinse-node": "beverage-a-sample-trial-1-dispose-discard-rinse-node",
+          "beverage-a-sample-trial-2-place-ring-stand-node": "beverage-a-sample-trial-2-place-ring-stand-node",
+          "beverage-a-sample-trial-2-mount-burette-node": "beverage-a-sample-trial-2-mount-burette-node",
+          "beverage-a-sample-trial-2-condition-burette-drain-residual-node": "beverage-a-sample-trial-2-condition-burette-drain-residual-node",
+          "beverage-a-sample-trial-2-condition-burette-node": "beverage-a-sample-trial-2-condition-burette-node",
+          "beverage-a-sample-trial-2-condition-burette-discard-rinsate-node": "beverage-a-sample-trial-2-condition-burette-discard-rinsate-node",
+          "beverage-a-sample-trial-2-seat-burette-funnel-node": "beverage-a-sample-trial-2-seat-burette-funnel-node",
+          "beverage-a-sample-trial-2-fill-burette-node": "beverage-a-sample-trial-2-fill-burette-node",
+          "beverage-a-sample-trial-2-fill-burette-purge-tip-node": "beverage-a-sample-trial-2-fill-burette-purge-tip-node",
+          "beverage-a-sample-trial-2-fill-burette-check-tip-node": "beverage-a-sample-trial-2-fill-burette-check-tip-node",
+          "beverage-a-sample-trial-2-remove-burette-funnel-node": "beverage-a-sample-trial-2-remove-burette-funnel-node",
+          "beverage-a-sample-trial-2-read-initial-burette-node": "beverage-a-sample-trial-2-read-initial-burette-node",
+          "beverage-a-sample-trial-2-record-initial-burette-node": "beverage-a-sample-trial-2-record-initial-burette-node",
+          "beverage-a-sample-trial-2-measure-acid-node": "beverage-a-sample-trial-2-measure-acid-node",
+          "beverage-a-sample-trial-2-transfer-acid-flask-node": "beverage-a-sample-trial-2-transfer-acid-flask-node",
+          "beverage-a-sample-trial-2-add-indicator-node": "beverage-a-sample-trial-2-add-indicator-node",
+          "beverage-a-sample-trial-2-position-flask-under-burette-node": "beverage-a-sample-trial-2-position-flask-under-burette-node",
+          "beverage-a-sample-trial-2-probe-ready-node": "beverage-a-sample-trial-2-probe-ready-node",
+          "beverage-a-sample-trial-2-place-ph-meter-on-workbench-node": "beverage-a-sample-trial-2-place-ph-meter-on-workbench-node",
+          "beverage-a-sample-trial-2-immerse-endpoint-ph-probe-node": "beverage-a-sample-trial-2-immerse-endpoint-ph-probe-node",
+          "beverage-a-sample-trial-2-initial-color-node": "beverage-a-sample-trial-2-initial-color-node",
+          "beverage-a-sample-trial-2-initial-ph-node": "beverage-a-sample-trial-2-initial-ph-node",
+          "beverage-a-sample-trial-2-initial-row-node": "beverage-a-sample-trial-2-initial-row-node",
+          "beverage-a-sample-trial-2-deliver-titrant-node": "beverage-a-sample-trial-2-deliver-titrant-node",
+          "beverage-a-sample-trial-2-deliver-titrant-mix-node": "beverage-a-sample-trial-2-deliver-titrant-mix-node",
+          "beverage-a-sample-trial-2-deliver-titrant-observe-node": "beverage-a-sample-trial-2-deliver-titrant-observe-node",
+          "beverage-a-sample-trial-2-deliver-titrant-read-ph-node": "beverage-a-sample-trial-2-deliver-titrant-read-ph-node",
+          "beverage-a-sample-trial-2-deliver-titrant-record-point-node": "beverage-a-sample-trial-2-deliver-titrant-record-point-node",
+          "beverage-a-sample-trial-2-deliver-titrant-decide-node": "beverage-a-sample-trial-2-deliver-titrant-decide-node",
+          "beverage-a-sample-trial-2-deliver-titrant-read-final-node": "beverage-a-sample-trial-2-deliver-titrant-read-final-node",
+          "beverage-a-sample-trial-2-record-final-burette-node": "beverage-a-sample-trial-2-record-final-burette-node",
+          "beverage-a-sample-trial-2-deliver-titrant-post-node": "beverage-a-sample-trial-2-deliver-titrant-post-node",
+          "beverage-a-sample-trial-2-deliver-titrant-mix-post-node": "beverage-a-sample-trial-2-deliver-titrant-mix-post-node",
+          "beverage-a-sample-trial-2-deliver-titrant-observe-post-node": "beverage-a-sample-trial-2-deliver-titrant-observe-post-node",
+          "beverage-a-sample-trial-2-deliver-titrant-read-ph-post-node": "beverage-a-sample-trial-2-deliver-titrant-read-ph-post-node",
+          "beverage-a-sample-trial-2-deliver-titrant-record-point-post-node": "beverage-a-sample-trial-2-deliver-titrant-record-point-post-node",
+          "beverage-a-sample-trial-2-finish-curve-node": "beverage-a-sample-trial-2-finish-curve-node",
+          "beverage-a-sample-trial-2-concentration-select-equivalence-node": "beverage-a-sample-trial-2-concentration-select-equivalence-node",
+          "beverage-a-sample-trial-2-concentration-justify-equivalence-node": "beverage-a-sample-trial-2-concentration-justify-equivalence-node",
+          "beverage-a-sample-trial-2-concentration-approve-equivalence-node": "beverage-a-sample-trial-2-concentration-approve-equivalence-node",
+          "beverage-a-sample-trial-2-concentration-node": "beverage-a-sample-trial-2-concentration-node",
+          "beverage-a-sample-trial-2-equivalence-analysis-node": "beverage-a-sample-trial-2-equivalence-analysis-node",
+          "beverage-a-sample-trial-2-dispose-node": "beverage-a-sample-trial-2-dispose-node",
+          "beverage-a-sample-trial-2-dispose-rinse-node": "beverage-a-sample-trial-2-dispose-rinse-node",
+          "beverage-a-sample-trial-2-dispose-discard-rinse-node": "beverage-a-sample-trial-2-dispose-discard-rinse-node",
+          "beverage-b-sample-trial-1-place-ring-stand-node": "beverage-b-sample-trial-1-place-ring-stand-node",
+          "beverage-b-sample-trial-1-mount-burette-node": "beverage-b-sample-trial-1-mount-burette-node",
+          "beverage-b-sample-trial-1-condition-burette-drain-residual-node": "beverage-b-sample-trial-1-condition-burette-drain-residual-node",
+          "beverage-b-sample-trial-1-condition-burette-node": "beverage-b-sample-trial-1-condition-burette-node",
+          "beverage-b-sample-trial-1-condition-burette-discard-rinsate-node": "beverage-b-sample-trial-1-condition-burette-discard-rinsate-node",
+          "beverage-b-sample-trial-1-seat-burette-funnel-node": "beverage-b-sample-trial-1-seat-burette-funnel-node",
+          "beverage-b-sample-trial-1-fill-burette-node": "beverage-b-sample-trial-1-fill-burette-node",
+          "beverage-b-sample-trial-1-fill-burette-purge-tip-node": "beverage-b-sample-trial-1-fill-burette-purge-tip-node",
+          "beverage-b-sample-trial-1-fill-burette-check-tip-node": "beverage-b-sample-trial-1-fill-burette-check-tip-node",
+          "beverage-b-sample-trial-1-remove-burette-funnel-node": "beverage-b-sample-trial-1-remove-burette-funnel-node",
+          "beverage-b-sample-trial-1-read-initial-burette-node": "beverage-b-sample-trial-1-read-initial-burette-node",
+          "beverage-b-sample-trial-1-record-initial-burette-node": "beverage-b-sample-trial-1-record-initial-burette-node",
+          "beverage-b-sample-trial-1-measure-acid-node": "beverage-b-sample-trial-1-measure-acid-node",
+          "beverage-b-sample-trial-1-transfer-acid-flask-node": "beverage-b-sample-trial-1-transfer-acid-flask-node",
+          "beverage-b-sample-trial-1-add-indicator-node": "beverage-b-sample-trial-1-add-indicator-node",
+          "beverage-b-sample-trial-1-position-flask-under-burette-node": "beverage-b-sample-trial-1-position-flask-under-burette-node",
+          "beverage-b-sample-trial-1-probe-ready-node": "beverage-b-sample-trial-1-probe-ready-node",
+          "beverage-b-sample-trial-1-place-ph-meter-on-workbench-node": "beverage-b-sample-trial-1-place-ph-meter-on-workbench-node",
+          "beverage-b-sample-trial-1-immerse-endpoint-ph-probe-node": "beverage-b-sample-trial-1-immerse-endpoint-ph-probe-node",
+          "beverage-b-sample-trial-1-initial-color-node": "beverage-b-sample-trial-1-initial-color-node",
+          "beverage-b-sample-trial-1-initial-ph-node": "beverage-b-sample-trial-1-initial-ph-node",
+          "beverage-b-sample-trial-1-initial-row-node": "beverage-b-sample-trial-1-initial-row-node",
+          "beverage-b-sample-trial-1-deliver-titrant-node": "beverage-b-sample-trial-1-deliver-titrant-node",
+          "beverage-b-sample-trial-1-deliver-titrant-mix-node": "beverage-b-sample-trial-1-deliver-titrant-mix-node",
+          "beverage-b-sample-trial-1-deliver-titrant-observe-node": "beverage-b-sample-trial-1-deliver-titrant-observe-node",
+          "beverage-b-sample-trial-1-deliver-titrant-read-ph-node": "beverage-b-sample-trial-1-deliver-titrant-read-ph-node",
+          "beverage-b-sample-trial-1-deliver-titrant-record-point-node": "beverage-b-sample-trial-1-deliver-titrant-record-point-node",
+          "beverage-b-sample-trial-1-deliver-titrant-decide-node": "beverage-b-sample-trial-1-deliver-titrant-decide-node",
+          "beverage-b-sample-trial-1-deliver-titrant-read-final-node": "beverage-b-sample-trial-1-deliver-titrant-read-final-node",
+          "beverage-b-sample-trial-1-record-final-burette-node": "beverage-b-sample-trial-1-record-final-burette-node",
+          "beverage-b-sample-trial-1-deliver-titrant-post-node": "beverage-b-sample-trial-1-deliver-titrant-post-node",
+          "beverage-b-sample-trial-1-deliver-titrant-mix-post-node": "beverage-b-sample-trial-1-deliver-titrant-mix-post-node",
+          "beverage-b-sample-trial-1-deliver-titrant-observe-post-node": "beverage-b-sample-trial-1-deliver-titrant-observe-post-node",
+          "beverage-b-sample-trial-1-deliver-titrant-read-ph-post-node": "beverage-b-sample-trial-1-deliver-titrant-read-ph-post-node",
+          "beverage-b-sample-trial-1-deliver-titrant-record-point-post-node": "beverage-b-sample-trial-1-deliver-titrant-record-point-post-node",
+          "beverage-b-sample-trial-1-finish-curve-node": "beverage-b-sample-trial-1-finish-curve-node",
+          "beverage-b-sample-trial-1-concentration-select-equivalence-node": "beverage-b-sample-trial-1-concentration-select-equivalence-node",
+          "beverage-b-sample-trial-1-concentration-justify-equivalence-node": "beverage-b-sample-trial-1-concentration-justify-equivalence-node",
+          "beverage-b-sample-trial-1-concentration-approve-equivalence-node": "beverage-b-sample-trial-1-concentration-approve-equivalence-node",
+          "beverage-b-sample-trial-1-concentration-node": "beverage-b-sample-trial-1-concentration-node",
+          "beverage-b-sample-trial-1-equivalence-analysis-node": "beverage-b-sample-trial-1-equivalence-analysis-node",
+          "beverage-b-sample-trial-1-dispose-node": "beverage-b-sample-trial-1-dispose-node",
+          "beverage-b-sample-trial-1-dispose-rinse-node": "beverage-b-sample-trial-1-dispose-rinse-node",
+          "beverage-b-sample-trial-1-dispose-discard-rinse-node": "beverage-b-sample-trial-1-dispose-discard-rinse-node",
+          "beverage-b-sample-trial-2-place-ring-stand-node": "beverage-b-sample-trial-2-place-ring-stand-node",
+          "beverage-b-sample-trial-2-mount-burette-node": "beverage-b-sample-trial-2-mount-burette-node",
+          "beverage-b-sample-trial-2-condition-burette-drain-residual-node": "beverage-b-sample-trial-2-condition-burette-drain-residual-node",
+          "beverage-b-sample-trial-2-condition-burette-node": "beverage-b-sample-trial-2-condition-burette-node",
+          "beverage-b-sample-trial-2-condition-burette-discard-rinsate-node": "beverage-b-sample-trial-2-condition-burette-discard-rinsate-node",
+          "beverage-b-sample-trial-2-seat-burette-funnel-node": "beverage-b-sample-trial-2-seat-burette-funnel-node",
+          "beverage-b-sample-trial-2-fill-burette-node": "beverage-b-sample-trial-2-fill-burette-node",
+          "beverage-b-sample-trial-2-fill-burette-purge-tip-node": "beverage-b-sample-trial-2-fill-burette-purge-tip-node",
+          "beverage-b-sample-trial-2-fill-burette-check-tip-node": "beverage-b-sample-trial-2-fill-burette-check-tip-node",
+          "beverage-b-sample-trial-2-remove-burette-funnel-node": "beverage-b-sample-trial-2-remove-burette-funnel-node",
+          "beverage-b-sample-trial-2-read-initial-burette-node": "beverage-b-sample-trial-2-read-initial-burette-node",
+          "beverage-b-sample-trial-2-record-initial-burette-node": "beverage-b-sample-trial-2-record-initial-burette-node",
+          "beverage-b-sample-trial-2-measure-acid-node": "beverage-b-sample-trial-2-measure-acid-node",
+          "beverage-b-sample-trial-2-transfer-acid-flask-node": "beverage-b-sample-trial-2-transfer-acid-flask-node",
+          "beverage-b-sample-trial-2-add-indicator-node": "beverage-b-sample-trial-2-add-indicator-node",
+          "beverage-b-sample-trial-2-position-flask-under-burette-node": "beverage-b-sample-trial-2-position-flask-under-burette-node",
+          "beverage-b-sample-trial-2-probe-ready-node": "beverage-b-sample-trial-2-probe-ready-node",
+          "beverage-b-sample-trial-2-place-ph-meter-on-workbench-node": "beverage-b-sample-trial-2-place-ph-meter-on-workbench-node",
+          "beverage-b-sample-trial-2-immerse-endpoint-ph-probe-node": "beverage-b-sample-trial-2-immerse-endpoint-ph-probe-node",
+          "beverage-b-sample-trial-2-initial-color-node": "beverage-b-sample-trial-2-initial-color-node",
+          "beverage-b-sample-trial-2-initial-ph-node": "beverage-b-sample-trial-2-initial-ph-node",
+          "beverage-b-sample-trial-2-initial-row-node": "beverage-b-sample-trial-2-initial-row-node",
+          "beverage-b-sample-trial-2-deliver-titrant-node": "beverage-b-sample-trial-2-deliver-titrant-node",
+          "beverage-b-sample-trial-2-deliver-titrant-mix-node": "beverage-b-sample-trial-2-deliver-titrant-mix-node",
+          "beverage-b-sample-trial-2-deliver-titrant-observe-node": "beverage-b-sample-trial-2-deliver-titrant-observe-node",
+          "beverage-b-sample-trial-2-deliver-titrant-read-ph-node": "beverage-b-sample-trial-2-deliver-titrant-read-ph-node",
+          "beverage-b-sample-trial-2-deliver-titrant-record-point-node": "beverage-b-sample-trial-2-deliver-titrant-record-point-node",
+          "beverage-b-sample-trial-2-deliver-titrant-decide-node": "beverage-b-sample-trial-2-deliver-titrant-decide-node",
+          "beverage-b-sample-trial-2-deliver-titrant-read-final-node": "beverage-b-sample-trial-2-deliver-titrant-read-final-node",
+          "beverage-b-sample-trial-2-record-final-burette-node": "beverage-b-sample-trial-2-record-final-burette-node",
+          "beverage-b-sample-trial-2-deliver-titrant-post-node": "beverage-b-sample-trial-2-deliver-titrant-post-node",
+          "beverage-b-sample-trial-2-deliver-titrant-mix-post-node": "beverage-b-sample-trial-2-deliver-titrant-mix-post-node",
+          "beverage-b-sample-trial-2-deliver-titrant-observe-post-node": "beverage-b-sample-trial-2-deliver-titrant-observe-post-node",
+          "beverage-b-sample-trial-2-deliver-titrant-read-ph-post-node": "beverage-b-sample-trial-2-deliver-titrant-read-ph-post-node",
+          "beverage-b-sample-trial-2-deliver-titrant-record-point-post-node": "beverage-b-sample-trial-2-deliver-titrant-record-point-post-node",
+          "beverage-b-sample-trial-2-finish-curve-node": "beverage-b-sample-trial-2-finish-curve-node",
+          "beverage-b-sample-trial-2-concentration-select-equivalence-node": "beverage-b-sample-trial-2-concentration-select-equivalence-node",
+          "beverage-b-sample-trial-2-concentration-justify-equivalence-node": "beverage-b-sample-trial-2-concentration-justify-equivalence-node",
+          "beverage-b-sample-trial-2-concentration-approve-equivalence-node": "beverage-b-sample-trial-2-concentration-approve-equivalence-node",
+          "beverage-b-sample-trial-2-concentration-node": "beverage-b-sample-trial-2-concentration-node",
+          "beverage-b-sample-trial-2-equivalence-analysis-node": "beverage-b-sample-trial-2-equivalence-analysis-node",
+          "beverage-b-sample-trial-2-dispose-node": "beverage-b-sample-trial-2-dispose-node",
+          "beverage-b-sample-trial-2-dispose-rinse-node": "beverage-b-sample-trial-2-dispose-rinse-node",
+          "beverage-b-sample-trial-2-dispose-discard-rinse-node": "beverage-b-sample-trial-2-dispose-discard-rinse-node",
+          "compare-class-data-with-provenance-node": "compare-class-data-with-provenance-node",
+          "submit-postlab-reasoning-node": "submit-postlab-reasoning-node",
+          "practice-hcl-retry-dispose-node": "practice-hcl-retry-dispose-node",
+          "practice-hcl-retry-dispose-rinse-node": "practice-hcl-retry-dispose-rinse-node",
+          "practice-hcl-retry-dispose-discard-rinse-node": "practice-hcl-retry-dispose-discard-rinse-node",
+          "practice-hcl-archive-retry-node": "practice-hcl-archive-retry-node",
+          "practice-acetic-retry-dispose-node": "practice-acetic-retry-dispose-node",
+          "practice-acetic-retry-dispose-rinse-node": "practice-acetic-retry-dispose-rinse-node",
+          "practice-acetic-retry-dispose-discard-rinse-node": "practice-acetic-retry-dispose-discard-rinse-node",
+          "practice-acetic-archive-retry-node": "practice-acetic-archive-retry-node",
+          "beverage-a-sample-trial-1-deliver-titrant-retry-dispose-node": "beverage-a-sample-trial-1-deliver-titrant-retry-dispose-node",
+          "beverage-a-sample-trial-1-deliver-titrant-retry-dispose-rinse-node": "beverage-a-sample-trial-1-deliver-titrant-retry-dispose-rinse-node",
+          "beverage-a-sample-trial-1-deliver-titrant-retry-dispose-discard-rinse-node": "beverage-a-sample-trial-1-deliver-titrant-retry-dispose-discard-rinse-node",
+          "beverage-a-sample-trial-1-deliver-titrant-retry-reset-node": "beverage-a-sample-trial-1-deliver-titrant-retry-reset-node",
+          "beverage-a-sample-trial-2-deliver-titrant-retry-dispose-node": "beverage-a-sample-trial-2-deliver-titrant-retry-dispose-node",
+          "beverage-a-sample-trial-2-deliver-titrant-retry-dispose-rinse-node": "beverage-a-sample-trial-2-deliver-titrant-retry-dispose-rinse-node",
+          "beverage-a-sample-trial-2-deliver-titrant-retry-dispose-discard-rinse-node": "beverage-a-sample-trial-2-deliver-titrant-retry-dispose-discard-rinse-node",
+          "beverage-a-sample-trial-2-deliver-titrant-retry-reset-node": "beverage-a-sample-trial-2-deliver-titrant-retry-reset-node",
+          "beverage-b-sample-trial-1-deliver-titrant-retry-dispose-node": "beverage-b-sample-trial-1-deliver-titrant-retry-dispose-node",
+          "beverage-b-sample-trial-1-deliver-titrant-retry-dispose-rinse-node": "beverage-b-sample-trial-1-deliver-titrant-retry-dispose-rinse-node",
+          "beverage-b-sample-trial-1-deliver-titrant-retry-dispose-discard-rinse-node": "beverage-b-sample-trial-1-deliver-titrant-retry-dispose-discard-rinse-node",
+          "beverage-b-sample-trial-1-deliver-titrant-retry-reset-node": "beverage-b-sample-trial-1-deliver-titrant-retry-reset-node",
+          "beverage-b-sample-trial-2-deliver-titrant-retry-dispose-node": "beverage-b-sample-trial-2-deliver-titrant-retry-dispose-node",
+          "beverage-b-sample-trial-2-deliver-titrant-retry-dispose-rinse-node": "beverage-b-sample-trial-2-deliver-titrant-retry-dispose-rinse-node",
+          "beverage-b-sample-trial-2-deliver-titrant-retry-dispose-discard-rinse-node": "beverage-b-sample-trial-2-deliver-titrant-retry-dispose-discard-rinse-node",
+          "beverage-b-sample-trial-2-deliver-titrant-retry-reset-node": "beverage-b-sample-trial-2-deliver-titrant-retry-reset-node"
+        },
+        "references": {
+          "practice-hcl-aliquot": "practice-hcl-aliquot",
+          "practice-hcl": "practice-hcl",
+          "practice-hcl-initial": "practice-hcl-initial",
+          "practice-acetic-aliquot": "practice-acetic-aliquot",
+          "practice-acetic": "practice-acetic",
+          "practice-acetic-initial": "practice-acetic-initial",
+          "beverage-a-sample-trial-1-deliver-titrant": "beverage-a-sample-trial-1-deliver-titrant",
+          "beverage-a-sample-trial-1-acid-aliquot-volume": "beverage-a-sample-trial-1-acid-aliquot-volume",
+          "beverage-a-sample-trial-1-burette-initial-volume": "beverage-a-sample-trial-1-burette-initial-volume",
+          "beverage-a-sample-trial-1-burette-final-volume": "beverage-a-sample-trial-1-burette-final-volume",
+          "ph-meter-ready": "ph-meter-ready",
+          "beverage-a-sample-trial-1-deliver-titrant-ph": "beverage-a-sample-trial-1-deliver-titrant-ph",
+          "beverage-a-sample-trial-1-concentration": "beverage-a-sample-trial-1-concentration",
+          "beverage-a-sample-trial-2-deliver-titrant": "beverage-a-sample-trial-2-deliver-titrant",
+          "beverage-a-sample-trial-2-acid-aliquot-volume": "beverage-a-sample-trial-2-acid-aliquot-volume",
+          "beverage-a-sample-trial-2-burette-initial-volume": "beverage-a-sample-trial-2-burette-initial-volume",
+          "beverage-a-sample-trial-2-burette-final-volume": "beverage-a-sample-trial-2-burette-final-volume",
+          "beverage-a-sample-trial-2-deliver-titrant-ph": "beverage-a-sample-trial-2-deliver-titrant-ph",
+          "beverage-a-sample-trial-2-concentration": "beverage-a-sample-trial-2-concentration",
+          "beverage-b-sample-trial-1-deliver-titrant": "beverage-b-sample-trial-1-deliver-titrant",
+          "beverage-b-sample-trial-1-acid-aliquot-volume": "beverage-b-sample-trial-1-acid-aliquot-volume",
+          "beverage-b-sample-trial-1-burette-initial-volume": "beverage-b-sample-trial-1-burette-initial-volume",
+          "beverage-b-sample-trial-1-burette-final-volume": "beverage-b-sample-trial-1-burette-final-volume",
+          "beverage-b-sample-trial-1-deliver-titrant-ph": "beverage-b-sample-trial-1-deliver-titrant-ph",
+          "beverage-b-sample-trial-1-concentration": "beverage-b-sample-trial-1-concentration",
+          "beverage-b-sample-trial-2-deliver-titrant": "beverage-b-sample-trial-2-deliver-titrant",
+          "beverage-b-sample-trial-2-acid-aliquot-volume": "beverage-b-sample-trial-2-acid-aliquot-volume",
+          "beverage-b-sample-trial-2-burette-initial-volume": "beverage-b-sample-trial-2-burette-initial-volume",
+          "beverage-b-sample-trial-2-burette-final-volume": "beverage-b-sample-trial-2-burette-final-volume",
+          "beverage-b-sample-trial-2-deliver-titrant-ph": "beverage-b-sample-trial-2-deliver-titrant-ph",
+          "beverage-b-sample-trial-2-concentration": "beverage-b-sample-trial-2-concentration"
+        }
+      }
+    }
+  ],
+  "compositionStart": {
+    "kind": "technique-port",
+    "instanceId": "investigation",
+    "portId": "entry"
+  },
+  "compositionConnections": [],
+  "reachabilityWitnesses": [
+    {
+      "id": "default",
+      "configuration": {},
+      "approvalGates": {}
+    }
+  ]
+}

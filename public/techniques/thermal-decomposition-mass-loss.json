@@ -1,0 +1,3670 @@
+{
+  "id": "thermal-decomposition-mass-loss",
+  "title": "Approved Thermal Decomposition and Constant-Mass Evidence",
+  "learningGoal": "Execute a teacher-approved carbonate-mixture plan with a configured sample mass, tare convention, heating/cooling limits, and replicate decision; acquire and separately record same-balance mass evidence, establish constant mass, derive composition, and preserve recovery provenance.",
+  "requiredEquipment": [
+    "analytical-balance",
+    "crucible-with-lid",
+    "sample-bottle",
+    "small-vial",
+    "ring-stand",
+    "clay-triangle",
+    "bunsen-burner",
+    "crucible-tongs",
+    "beaker-250ml"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "analytical-balance-a",
+        "definitionId": "analytical-balance",
+        "label": "Analytical balance A",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "analytical-balance-b",
+        "definitionId": "analytical-balance",
+        "label": "Analytical balance B",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "crucible-with-lid-1",
+        "definitionId": "crucible-with-lid",
+        "label": "Clean, dry crucible with lid",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "sample-bottle-1",
+        "definitionId": "sample-bottle",
+        "label": "Teacher-supplied NaHCO3 / Na2CO3 mixture",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "working-sample-portion-1",
+        "definitionId": "small-vial",
+        "label": "Working portion for this replicate",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "ring-stand-1",
+        "definitionId": "ring-stand",
+        "label": "Ring stand",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "clay-triangle-1",
+        "definitionId": "clay-triangle",
+        "label": "Clay triangle",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "bunsen-burner-1",
+        "definitionId": "bunsen-burner",
+        "label": "Bunsen burner",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "crucible-tongs-1",
+        "definitionId": "crucible-tongs",
+        "label": "Crucible tongs",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "unused-sample-recovery-1",
+        "definitionId": "beaker-250ml",
+        "label": "Unused Sample — unheated",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "heated-product-recovery-1",
+        "definitionId": "beaker-250ml",
+        "label": "Product Made from Heating Samples",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "approve-thermal-decomposition-plan",
+      "verb": "record",
+      "label": "Approve the thermal-decomposition plan",
+      "parameters": {
+        "tag": "thermal-decomposition-plan-approved",
+        "inputMode": "choice",
+        "inputRole": "teacherConfiguration",
+        "inputRequired": true,
+        "inputOptions": [
+          "Teacher approved"
+        ],
+        "tareConvention": "{{config.tareConvention}}",
+        "note": "Approval binds the learner plan, PPE, heating, cooling, balance, constant-mass, replicate, recovery, and report choices for this run."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "accessibleLabel": "Approve the thermal-decomposition plan",
+        "successCue": "Approve the thermal-decomposition plan complete.",
+        "invalidCue": "Review the approved sequence before approve the thermal-decomposition plan."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Approve the thermal-decomposition plan: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Approve the thermal-decomposition plan complete.",
+        "invalid": "Review the approved sequence before approve the thermal-decomposition plan."
+      },
+      "evidence": [
+        "approval",
+        "notebook"
+      ]
+    },
+    {
+      "id": "configure-unheated-stock",
+      "verb": "observe",
+      "label": "Configure the available unheated mixture stock",
+      "atomId": "atom.observe.configure-solid-stock-inventory",
+      "equipmentRoleBindings": {
+        "solid-reagent-source": "sample-bottle"
+      },
+      "sourceInventory": {
+        "quantityKind": "solid-mass",
+        "sourceInstanceId": "sample-bottle-1",
+        "sourceDefinitionId": "sample-bottle",
+        "outputMeasurementId": "unheated-stock-configured-g",
+        "materialSoluteId": "carbonate-mixture-undisclosed",
+        "materialLabel": "NaHCO3 and Na2CO3 mixture; composition not disclosed"
+      },
+      "parameters": {
+        "sourceInstanceId": "sample-bottle-1",
+        "sourceDefinitionId": "sample-bottle",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputRequired": true,
+        "unit": "g",
+        "note": "The total prepared mixture the class may draw on. Each replicate is issued a working portion from it, and whatever is left is returned to Unused Sample when the run closes."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "sourceDefinitionId": "sample-bottle",
+        "accessibleLabel": "Configure the available unheated mixture stock",
+        "successCue": "Configure the available unheated mixture stock complete.",
+        "invalidCue": "Review the approved sequence before configure the available unheated mixture stock."
+      },
+      "prerequisites": [
+        {
+          "id": "configure-unheated-stock-prerequisite",
+          "type": "actionEvidence",
+          "label": "Approve the thermal-decomposition plan is complete.",
+          "actionId": "approve-thermal-decomposition-plan"
+        }
+      ],
+      "stateChanges": [
+        "Configure the available unheated mixture stock: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Configure the available unheated mixture stock complete.",
+        "invalid": "Review the approved sequence before configure the available unheated mixture stock."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "setup"
+      ]
+    },
+    {
+      "id": "place-balance",
+      "verb": "place",
+      "label": "Place and lock one analytical balance",
+      "equipmentRoleBindings": {
+        "balance-instrument": "analytical-balance"
+      },
+      "parameters": {
+        "equipmentDefinitionId": "analytical-balance",
+        "location": "workbench",
+        "balanceChoiceFromRoute": true
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "analytical-balance",
+        "stationId": "workbench",
+        "accessibleLabel": "Place and lock one analytical balance",
+        "successCue": "Place and lock one analytical balance complete.",
+        "invalidCue": "Review the approved sequence before place and lock one analytical balance."
+      },
+      "prerequisites": [
+        {
+          "id": "place-balance-prerequisite",
+          "type": "actionEvidence",
+          "label": "Configure the available unheated mixture stock is complete.",
+          "actionId": "configure-unheated-stock"
+        }
+      ],
+      "stateChanges": [
+        "Place and lock one analytical balance: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Place and lock one analytical balance complete.",
+        "invalid": "Review the approved sequence before place and lock one analytical balance."
+      },
+      "evidence": [
+        "place",
+        "source-bound-apparatus-operation"
+      ],
+      "atomId": "atom.place.balance-instrument"
+    },
+    {
+      "id": "place-empty-crucible",
+      "verb": "place",
+      "label": "Place the cool empty crucible and lid",
+      "equipmentRoleBindings": {
+        "weighed-vessel": "crucible-with-lid"
+      },
+      "parameters": {
+        "equipmentDefinitionId": "crucible-with-lid",
+        "location": "workbench",
+        "requireCoolDryAssembly": true
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "crucible-with-lid",
+        "stationId": "workbench",
+        "accessibleLabel": "Place the cool empty crucible and lid",
+        "successCue": "Place the cool empty crucible and lid complete.",
+        "invalidCue": "Review the approved sequence before place the cool empty crucible and lid."
+      },
+      "prerequisites": [
+        {
+          "id": "place-empty-crucible-prerequisite",
+          "type": "actionEvidence",
+          "label": "Place and lock one analytical balance is complete.",
+          "actionId": "place-balance"
+        }
+      ],
+      "stateChanges": [
+        "Place the cool empty crucible and lid: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Place the cool empty crucible and lid complete.",
+        "invalid": "Review the approved sequence before place the cool empty crucible and lid."
+      },
+      "evidence": [
+        "place",
+        "source-bound-apparatus-operation"
+      ],
+      "atomId": "atom.place.weighed-vessel"
+    },
+    {
+      "id": "read-empty-crucible",
+      "verb": "weigh",
+      "label": "Read the empty crucible and lid mass",
+      "atomId": "atom.weigh.vessel-supported-balance-display",
+      "equipmentRoleBindings": {
+        "balance-instrument": "analytical-balance",
+        "weighed-vessel": "crucible-with-lid"
+      },
+      "mass": {
+        "source": "action-input",
+        "outputMeasurementId": "empty-crucible-mass",
+        "continuity": {
+          "version": 1,
+          "quantityKind": "balance-display",
+          "measuredSupportInstanceId": "crucible-with-lid-1"
+        }
+      },
+      "parameters": {
+        "sourceDefinitionId": "crucible-with-lid",
+        "instrumentDefinitionId": "analytical-balance",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputRequired": true,
+        "unit": "g",
+        "maxSafeTemperatureC": "{{config.coolingEndpointC}}",
+        "sameBalanceRequired": true
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "crucible-with-lid",
+        "targetDefinitionId": "analytical-balance",
+        "stationId": "balance",
+        "accessibleLabel": "Read the empty crucible and lid mass",
+        "successCue": "Read the empty crucible and lid mass complete.",
+        "invalidCue": "Review the approved sequence before read the empty crucible and lid mass."
+      },
+      "prerequisites": [
+        {
+          "id": "read-empty-crucible-prerequisite",
+          "type": "actionEvidence",
+          "label": "Place the cool empty crucible and lid is complete.",
+          "actionId": "place-empty-crucible"
+        }
+      ],
+      "stateChanges": [
+        "Read the empty crucible and lid mass: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Read the empty crucible and lid mass complete.",
+        "invalid": "Review the approved sequence before read the empty crucible and lid mass."
+      },
+      "evidence": [
+        "weigh",
+        "measurement",
+        "student-entered-reading"
+      ]
+    },
+    {
+      "id": "record-empty-crucible",
+      "verb": "record",
+      "label": "Record the empty crucible and lid mass",
+      "parameters": {
+        "measurementId": "empty-crucible-mass",
+        "unit": "g",
+        "requirePriorInstrumentReading": true,
+        "tareConvention": "{{config.tareConvention}}",
+        "copyExistingMeasurementOnly": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "accessibleLabel": "Record the empty crucible and lid mass",
+        "successCue": "Record the empty crucible and lid mass complete.",
+        "invalidCue": "Review the approved sequence before record the empty crucible and lid mass."
+      },
+      "prerequisites": [
+        {
+          "id": "record-empty-crucible-prerequisite",
+          "type": "actionEvidence",
+          "label": "Read the empty crucible and lid mass is complete.",
+          "actionId": "read-empty-crucible"
+        }
+      ],
+      "stateChanges": [
+        "Record the empty crucible and lid mass: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Record the empty crucible and lid mass complete.",
+        "invalid": "Review the approved sequence before record the empty crucible and lid mass."
+      },
+      "evidence": [
+        "record",
+        "notebook"
+      ]
+    },
+    {
+      "id": "add-carbonate-sample",
+      "verb": "transfer",
+      "label": "Transfer the approved carbonate-mixture portion",
+      "equipmentRoleBindings": {
+        "solid-reagent-source": "small-vial",
+        "receiving-vessel": "crucible-with-lid"
+      },
+      "solidTransfer": {
+        "mode": "measured-portion",
+        "destinationRepresentation": "physical"
+      },
+      "parameters": {
+        "sourceInstanceId": "working-sample-portion-1",
+        "sourceDefinitionId": "small-vial",
+        "targetInstanceId": "crucible-with-lid-1",
+        "targetDefinitionId": "crucible-with-lid",
+        "massG": "{{config.sampleMassG}}",
+        "massIsPlanTargetNotMeasurement": true,
+        "targetLabel": "Crucible containing the carbonate mixture",
+        "visualState": "powder"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "small-vial",
+        "targetDefinitionId": "crucible-with-lid",
+        "accessibleLabel": "Transfer the approved carbonate-mixture portion",
+        "successCue": "Transfer the approved carbonate-mixture portion complete.",
+        "invalidCue": "Review the approved sequence before transfer the approved carbonate-mixture portion."
+      },
+      "prerequisites": [
+        {
+          "id": "add-carbonate-sample-prerequisite",
+          "type": "actionEvidence",
+          "label": "Record the empty crucible and lid mass is complete.",
+          "actionId": "record-empty-crucible"
+        }
+      ],
+      "stateChanges": [
+        "Transfer the approved carbonate-mixture portion: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Transfer the approved carbonate-mixture portion complete.",
+        "invalid": "Review the approved sequence before transfer the approved carbonate-mixture portion."
+      },
+      "evidence": [
+        "transfer",
+        "source-bound-apparatus-operation"
+      ],
+      "atomId": "atom.transfer.solid-portion"
+    },
+    {
+      "id": "weigh-initial-crucible",
+      "verb": "weigh",
+      "label": "Read the loaded crucible and lid mass",
+      "atomId": "atom.weigh.vessel-supported-balance-display",
+      "equipmentRoleBindings": {
+        "balance-instrument": "analytical-balance",
+        "weighed-vessel": "crucible-with-lid"
+      },
+      "mass": {
+        "source": "action-input",
+        "outputMeasurementId": "loaded-crucible-mass",
+        "continuity": {
+          "version": 1,
+          "quantityKind": "balance-display",
+          "measuredSupportInstanceId": "crucible-with-lid-1"
+        }
+      },
+      "parameters": {
+        "sourceDefinitionId": "crucible-with-lid",
+        "instrumentDefinitionId": "analytical-balance",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputRequired": true,
+        "unit": "g",
+        "maxSafeTemperatureC": "{{config.coolingEndpointC}}",
+        "sameBalanceRequired": true
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "crucible-with-lid",
+        "targetDefinitionId": "analytical-balance",
+        "stationId": "balance",
+        "accessibleLabel": "Read the loaded crucible and lid mass",
+        "successCue": "Read the loaded crucible and lid mass complete.",
+        "invalidCue": "Review the approved sequence before read the loaded crucible and lid mass."
+      },
+      "prerequisites": [
+        {
+          "id": "weigh-initial-crucible-prerequisite",
+          "type": "actionEvidence",
+          "label": "Transfer the approved carbonate-mixture portion is complete.",
+          "actionId": "add-carbonate-sample"
+        }
+      ],
+      "stateChanges": [
+        "Read the loaded crucible and lid mass: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Read the loaded crucible and lid mass complete.",
+        "invalid": "Review the approved sequence before read the loaded crucible and lid mass."
+      },
+      "evidence": [
+        "weigh",
+        "measurement",
+        "student-entered-reading"
+      ]
+    },
+    {
+      "id": "record-initial-crucible-mass",
+      "verb": "record",
+      "label": "Record the loaded crucible and lid mass",
+      "parameters": {
+        "measurementId": "loaded-crucible-mass",
+        "unit": "g",
+        "requirePriorInstrumentReading": true,
+        "copyExistingMeasurementOnly": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "accessibleLabel": "Record the loaded crucible and lid mass",
+        "successCue": "Record the loaded crucible and lid mass complete.",
+        "invalidCue": "Review the approved sequence before record the loaded crucible and lid mass."
+      },
+      "prerequisites": [
+        {
+          "id": "record-initial-crucible-mass-prerequisite",
+          "type": "actionEvidence",
+          "label": "Read the loaded crucible and lid mass is complete.",
+          "actionId": "weigh-initial-crucible"
+        }
+      ],
+      "stateChanges": [
+        "Record the loaded crucible and lid mass: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Record the loaded crucible and lid mass complete.",
+        "invalid": "Review the approved sequence before record the loaded crucible and lid mass."
+      },
+      "evidence": [
+        "record",
+        "notebook"
+      ]
+    },
+    {
+      "id": "recover-unused-sample",
+      "verb": "transfer",
+      "label": "Recover unused unheated mixture",
+      "atomId": "atom.transfer.unheated-mixture-to-labeled-recovery",
+      "equipmentRoleBindings": {
+        "solid-reagent-source": "small-vial",
+        "recovery-vessel": "beaker-250ml"
+      },
+      "solidTransfer": {
+        "mode": "whole-remaining",
+        "destinationRepresentation": "physical",
+        "requireNonEmptySource": false
+      },
+      "parameters": {
+        "sourceInstanceId": "working-sample-portion-1",
+        "sourceDefinitionId": "small-vial",
+        "targetInstanceId": "unused-sample-recovery-1",
+        "targetDefinitionId": "beaker-250ml",
+        "targetLabel": "Unused Sample — unheated"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "small-vial",
+        "targetDefinitionId": "beaker-250ml",
+        "accessibleLabel": "Recover unused unheated mixture",
+        "successCue": "Recover unused unheated mixture complete.",
+        "invalidCue": "Review the approved sequence before recover unused unheated mixture."
+      },
+      "prerequisites": [
+        {
+          "id": "recover-unused-sample-prerequisite",
+          "type": "actionEvidence",
+          "label": "Record the loaded crucible and lid mass is complete.",
+          "actionId": "record-initial-crucible-mass"
+        }
+      ],
+      "stateChanges": [
+        "Recover unused unheated mixture: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Recover unused unheated mixture complete.",
+        "invalid": "Review the approved sequence before recover unused unheated mixture."
+      },
+      "evidence": [
+        "transfer",
+        "recovery",
+        "provenance"
+      ]
+    },
+    {
+      "id": "place-ring-stand",
+      "verb": "place",
+      "label": "Place the ring stand",
+      "parameters": {
+        "equipmentDefinitionId": "ring-stand",
+        "location": "workbench"
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "ring-stand",
+        "stationId": "workbench",
+        "accessibleLabel": "Place the ring stand",
+        "successCue": "Place the ring stand complete.",
+        "invalidCue": "Review the approved sequence before place the ring stand."
+      },
+      "prerequisites": [
+        {
+          "id": "place-ring-stand-prerequisite",
+          "type": "actionEvidence",
+          "label": "Recover unused unheated mixture is complete.",
+          "actionId": "recover-unused-sample"
+        }
+      ],
+      "stateChanges": [
+        "Place the ring stand: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Place the ring stand complete.",
+        "invalid": "Review the approved sequence before place the ring stand."
+      },
+      "evidence": [
+        "place",
+        "source-bound-apparatus-operation"
+      ],
+      "atomId": "atom.place.thermal-support",
+      "equipmentRoleBindings": {
+        "thermal-support": "ring-stand"
+      }
+    },
+    {
+      "id": "add-clay-triangle",
+      "verb": "place",
+      "label": "Seat the clay triangle",
+      "parameters": {
+        "equipmentDefinitionId": "clay-triangle",
+        "snapZoneId": "ring-stand-clay-triangle-seat"
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "clay-triangle",
+        "targetDefinitionId": "ring-stand",
+        "accessibleLabel": "Seat the clay triangle",
+        "successCue": "Seat the clay triangle complete.",
+        "invalidCue": "Review the approved sequence before seat the clay triangle."
+      },
+      "prerequisites": [
+        {
+          "id": "add-clay-triangle-prerequisite",
+          "type": "actionEvidence",
+          "label": "Place the ring stand is complete.",
+          "actionId": "place-ring-stand"
+        }
+      ],
+      "stateChanges": [
+        "Seat the clay triangle: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Seat the clay triangle complete.",
+        "invalid": "Review the approved sequence before seat the clay triangle."
+      },
+      "evidence": [
+        "place",
+        "source-bound-apparatus-operation"
+      ],
+      "atomId": "atom.place.thermal-support",
+      "equipmentRoleBindings": {
+        "thermal-support": "clay-triangle"
+      }
+    },
+    {
+      "id": "place-bunsen-burner",
+      "verb": "place",
+      "label": "Place the Bunsen burner beneath the support",
+      "parameters": {
+        "equipmentDefinitionId": "bunsen-burner",
+        "location": "workbench"
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "bunsen-burner",
+        "stationId": "workbench",
+        "accessibleLabel": "Place the Bunsen burner beneath the support",
+        "successCue": "Place the Bunsen burner beneath the support complete.",
+        "invalidCue": "Review the approved sequence before place the bunsen burner beneath the support."
+      },
+      "prerequisites": [
+        {
+          "id": "place-bunsen-burner-prerequisite",
+          "type": "actionEvidence",
+          "label": "Seat the clay triangle is complete.",
+          "actionId": "add-clay-triangle"
+        }
+      ],
+      "stateChanges": [
+        "Place the Bunsen burner beneath the support: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Place the Bunsen burner beneath the support complete.",
+        "invalid": "Review the approved sequence before place the bunsen burner beneath the support."
+      },
+      "evidence": [
+        "place",
+        "source-bound-apparatus-operation"
+      ],
+      "atomId": "atom.place.thermal-heating-instrument",
+      "equipmentRoleBindings": {
+        "thermal-heating-instrument": "bunsen-burner"
+      }
+    },
+    {
+      "id": "place-crucible-on-support",
+      "verb": "place",
+      "label": "Place the crucible on the clay triangle",
+      "equipmentRoleBindings": {
+        "weighed-vessel": "crucible-with-lid",
+        "thermal-support": "ring-stand"
+      },
+      "parameters": {
+        "equipmentDefinitionId": "crucible-with-lid",
+        "targetDefinitionId": "ring-stand",
+        "snapZoneId": "ring-stand-crucible-seat"
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "crucible-with-lid",
+        "targetDefinitionId": "ring-stand",
+        "accessibleLabel": "Place the crucible on the clay triangle",
+        "successCue": "Place the crucible on the clay triangle complete.",
+        "invalidCue": "Review the approved sequence before place the crucible on the clay triangle."
+      },
+      "prerequisites": [
+        {
+          "id": "place-crucible-on-support-prerequisite",
+          "type": "actionEvidence",
+          "label": "Place the Bunsen burner beneath the support is complete.",
+          "actionId": "place-bunsen-burner"
+        }
+      ],
+      "stateChanges": [
+        "Place the crucible on the clay triangle: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Place the crucible on the clay triangle complete.",
+        "invalid": "Review the approved sequence before place the crucible on the clay triangle."
+      },
+      "evidence": [
+        "place",
+        "source-bound-apparatus-operation"
+      ],
+      "atomId": "atom.place.thermal-crucible-assembly"
+    },
+    {
+      "id": "set-crucible-lid",
+      "verb": "place",
+      "label": "Set and inspect the crucible lid position",
+      "equipmentRoleBindings": {
+        "weighed-vessel": "crucible-with-lid"
+      },
+      "parameters": {
+        "sourceInstanceId": "crucible-with-lid-1",
+        "positionFromRoute": true,
+        "requiredHeatingPosition": "askew",
+        "closedLidBlocksHeating": true
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "crucible-with-lid",
+        "stationId": "workbench",
+        "accessibleLabel": "Set and inspect the crucible lid position",
+        "successCue": "Set and inspect the crucible lid position complete.",
+        "invalidCue": "Review the approved sequence before set and inspect the crucible lid position."
+      },
+      "prerequisites": [
+        {
+          "id": "set-crucible-lid-prerequisite",
+          "type": "actionEvidence",
+          "label": "Place the crucible on the clay triangle is complete.",
+          "actionId": "place-crucible-on-support"
+        }
+      ],
+      "stateChanges": [
+        "Set and inspect the crucible lid position: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Set and inspect the crucible lid position complete.",
+        "invalid": "Review the approved sequence before set and inspect the crucible lid position."
+      },
+      "evidence": [
+        "place",
+        "safety-state",
+        "source-bound-apparatus-operation"
+      ],
+      "atomId": "atom.place.thermal-crucible-assembly"
+    },
+    {
+      "id": "warm-gently",
+      "verb": "dry",
+      "label": "Warm the covered mixture gently",
+      "equipmentRoleBindings": {
+        "thermal-heating-instrument": "bunsen-burner",
+        "weighed-vessel": "crucible-with-lid"
+      },
+      "parameters": {
+        "sourceDefinitionId": "crucible-with-lid",
+        "targetDefinitionId": "bunsen-burner",
+        "durationMin": "{{config.warmDurationMin}}",
+        "intensity": "gentle",
+        "lidPositionRequired": "askew",
+        "durationIsTeacherConfigured": true
+      },
+      "interaction": {
+        "type": "placeInInstrument",
+        "sourceDefinitionId": "crucible-with-lid",
+        "targetDefinitionId": "bunsen-burner",
+        "stationId": "heating",
+        "accessibleLabel": "Warm the covered mixture gently",
+        "successCue": "Warm the covered mixture gently complete.",
+        "invalidCue": "Review the approved sequence before warm the covered mixture gently."
+      },
+      "prerequisites": [
+        {
+          "id": "warm-gently-prerequisite",
+          "type": "actionEvidence",
+          "label": "Set and inspect the crucible lid position is complete.",
+          "actionId": "set-crucible-lid"
+        }
+      ],
+      "stateChanges": [
+        "Warm the covered mixture gently: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Warm the covered mixture gently complete.",
+        "invalid": "Review the approved sequence before warm the covered mixture gently."
+      },
+      "evidence": [
+        "heat",
+        "safety-state",
+        "source-bound-apparatus-operation"
+      ],
+      "atomId": "atom.heat.thermal-decomposition-stage"
+    },
+    {
+      "id": "heat-carbonate-mixture",
+      "verb": "dry",
+      "label": "Heat the carbonate mixture using the approved plan",
+      "equipmentRoleBindings": {
+        "thermal-heating-instrument": "bunsen-burner",
+        "weighed-vessel": "crucible-with-lid"
+      },
+      "parameters": {
+        "sourceDefinitionId": "crucible-with-lid",
+        "targetDefinitionId": "bunsen-burner",
+        "durationMin": "{{config.heatingDurationMin}}",
+        "intensity": "{{config.heatingIntensity}}",
+        "lidPositionRequired": "askew",
+        "noAuthoredProductMass": true
+      },
+      "interaction": {
+        "type": "placeInInstrument",
+        "sourceDefinitionId": "crucible-with-lid",
+        "targetDefinitionId": "bunsen-burner",
+        "stationId": "heating",
+        "accessibleLabel": "Heat the carbonate mixture using the approved plan",
+        "successCue": "Heat the carbonate mixture using the approved plan complete.",
+        "invalidCue": "Review the approved sequence before heat the carbonate mixture using the approved plan."
+      },
+      "prerequisites": [
+        {
+          "id": "heat-carbonate-mixture-prerequisite",
+          "type": "actionEvidence",
+          "label": "Warm the covered mixture gently is complete.",
+          "actionId": "warm-gently"
+        }
+      ],
+      "stateChanges": [
+        "Heat the carbonate mixture using the approved plan: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Heat the carbonate mixture using the approved plan complete.",
+        "invalid": "Review the approved sequence before heat the carbonate mixture using the approved plan."
+      },
+      "evidence": [
+        "heat",
+        "source-bound-apparatus-operation"
+      ],
+      "atomId": "atom.heat.thermal-decomposition-stage"
+    },
+    {
+      "id": "turn-off-burner",
+      "verb": "reset",
+      "label": "Turn off the burner before moving the crucible",
+      "parameters": {
+        "sourceDefinitionId": "bunsen-burner",
+        "operation": "extinguish",
+        "requireBeforeCooling": true
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "bunsen-burner",
+        "stationId": "workbench",
+        "accessibleLabel": "Turn off the burner before moving the crucible",
+        "successCue": "Turn off the burner before moving the crucible complete.",
+        "invalidCue": "Review the approved sequence before turn off the burner before moving the crucible."
+      },
+      "prerequisites": [
+        {
+          "id": "turn-off-burner-prerequisite",
+          "type": "actionEvidence",
+          "label": "Heat the carbonate mixture using the approved plan is complete.",
+          "actionId": "heat-carbonate-mixture"
+        }
+      ],
+      "stateChanges": [
+        "Turn off the burner before moving the crucible: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Turn off the burner before moving the crucible complete.",
+        "invalid": "Review the approved sequence before turn off the burner before moving the crucible."
+      },
+      "evidence": [
+        "apparatus-state",
+        "safety-state",
+        "source-bound-apparatus-operation"
+      ],
+      "atomId": "atom.control.thermal-burner",
+      "equipmentRoleBindings": {
+        "thermal-heating-instrument": "bunsen-burner"
+      }
+    },
+    {
+      "id": "cool-crucible",
+      "verb": "cool",
+      "label": "Move with tongs and cool after the first heat",
+      "equipmentRoleBindings": {
+        "dried-assembly": "crucible-with-lid",
+        "cooling-tool": "crucible-tongs"
+      },
+      "parameters": {
+        "sourceDefinitionId": "crucible-with-lid",
+        "coolingToolInstanceId": "crucible-tongs-1",
+        "coolingEndpointC": "{{config.coolingEndpointC}}",
+        "coolingSurface": "{{config.coolingSurface}}",
+        "requireBurnerOff": true
+      },
+      "interaction": {
+        "type": "placeInInstrument",
+        "sourceDefinitionId": "crucible-with-lid",
+        "targetDefinitionId": "crucible-tongs",
+        "stationId": "heating",
+        "accessibleLabel": "Move with tongs and cool after the first heat",
+        "successCue": "Move with tongs and cool after the first heat complete.",
+        "invalidCue": "Review the approved sequence before move with tongs and cool after the first heat."
+      },
+      "prerequisites": [
+        {
+          "id": "cool-crucible-prerequisite",
+          "type": "actionEvidence",
+          "label": "Turn off the burner before moving the crucible is complete.",
+          "actionId": "turn-off-burner"
+        }
+      ],
+      "stateChanges": [
+        "Move with tongs and cool after the first heat: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Move with tongs and cool after the first heat complete.",
+        "invalid": "Review the approved sequence before move with tongs and cool after the first heat."
+      },
+      "evidence": [
+        "cool",
+        "safety-state",
+        "source-bound-apparatus-operation"
+      ],
+      "atomId": "atom.cool.before-weighing"
+    },
+    {
+      "id": "weigh-preliminary-final-mass",
+      "verb": "weigh",
+      "label": "Read the first cooled-cycle mass",
+      "atomId": "atom.weigh.vessel-supported-balance-display",
+      "equipmentRoleBindings": {
+        "balance-instrument": "analytical-balance",
+        "weighed-vessel": "crucible-with-lid"
+      },
+      "mass": {
+        "source": "action-input",
+        "outputMeasurementId": "cooled-cycle-mass",
+        "continuity": {
+          "version": 1,
+          "quantityKind": "balance-display",
+          "measuredSupportInstanceId": "crucible-with-lid-1"
+        }
+      },
+      "parameters": {
+        "sourceDefinitionId": "crucible-with-lid",
+        "instrumentDefinitionId": "analytical-balance",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputRequired": true,
+        "unit": "g",
+        "maxSafeTemperatureC": "{{config.coolingEndpointC}}",
+        "sameBalanceRequired": true,
+        "noAuthoredExpectedMass": true
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "crucible-with-lid",
+        "targetDefinitionId": "analytical-balance",
+        "stationId": "balance",
+        "accessibleLabel": "Read the first cooled-cycle mass",
+        "successCue": "Read the first cooled-cycle mass complete.",
+        "invalidCue": "Review the approved sequence before read the first cooled-cycle mass."
+      },
+      "prerequisites": [
+        {
+          "id": "weigh-preliminary-final-mass-prerequisite",
+          "type": "actionEvidence",
+          "label": "Move with tongs and cool after the first heat is complete.",
+          "actionId": "cool-crucible"
+        }
+      ],
+      "stateChanges": [
+        "Read the first cooled-cycle mass: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Read the first cooled-cycle mass complete.",
+        "invalid": "Review the approved sequence before read the first cooled-cycle mass."
+      },
+      "evidence": [
+        "weigh",
+        "measurement",
+        "student-entered-reading"
+      ]
+    },
+    {
+      "id": "record-cycle-mass",
+      "verb": "record",
+      "label": "Record and compare the cooled-cycle mass",
+      "parameters": {
+        "measurementId": "cooled-cycle-mass",
+        "unit": "g",
+        "constantMassToleranceG": "{{config.constantMassToleranceG}}",
+        "requirePriorInstrumentReading": true,
+        "comparisonUsesConsecutiveRecordedReadings": true,
+        "copyExistingMeasurementOnly": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "accessibleLabel": "Record and compare the cooled-cycle mass",
+        "successCue": "Record and compare the cooled-cycle mass complete.",
+        "invalidCue": "Review the approved sequence before record and compare the cooled-cycle mass."
+      },
+      "prerequisites": [
+        {
+          "id": "record-cycle-mass-prerequisite",
+          "type": "actionEvidence",
+          "label": "Read the first cooled-cycle mass is complete.",
+          "actionId": "weigh-preliminary-final-mass"
+        }
+      ],
+      "stateChanges": [
+        "Record and compare the cooled-cycle mass: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Record and compare the cooled-cycle mass complete.",
+        "invalid": "Review the approved sequence before record and compare the cooled-cycle mass."
+      },
+      "evidence": [
+        "record",
+        "notebook",
+        "constant-mass-comparison"
+      ]
+    },
+    {
+      "id": "repeat-heat-to-constant-mass",
+      "verb": "dry",
+      "label": "Repeat the approved heat stage",
+      "equipmentRoleBindings": {
+        "thermal-heating-instrument": "bunsen-burner",
+        "weighed-vessel": "crucible-with-lid"
+      },
+      "parameters": {
+        "sourceDefinitionId": "crucible-with-lid",
+        "targetDefinitionId": "bunsen-burner",
+        "durationMin": "{{config.heatingDurationMin}}",
+        "intensity": "{{config.heatingIntensity}}",
+        "maximumHeatCycles": "{{config.maximumHeatCycles}}",
+        "lidPositionRequired": "askew",
+        "stopWhenConstantMassReached": true,
+        "noAuthoredProductMass": true
+      },
+      "interaction": {
+        "type": "placeInInstrument",
+        "sourceDefinitionId": "crucible-with-lid",
+        "targetDefinitionId": "bunsen-burner",
+        "stationId": "heating",
+        "accessibleLabel": "Repeat the approved heat stage",
+        "successCue": "Repeat the approved heat stage complete.",
+        "invalidCue": "Review the approved sequence before repeat the approved heat stage."
+      },
+      "prerequisites": [
+        {
+          "id": "repeat-heat-to-constant-mass-prerequisite",
+          "type": "actionEvidence",
+          "label": "Record and compare the cooled-cycle mass is complete.",
+          "actionId": "record-cycle-mass"
+        }
+      ],
+      "stateChanges": [
+        "Repeat the approved heat stage: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Repeat the approved heat stage complete.",
+        "invalid": "Review the approved sequence before repeat the approved heat stage."
+      },
+      "evidence": [
+        "heat",
+        "bounded-repeat",
+        "source-bound-apparatus-operation"
+      ],
+      "atomId": "atom.heat.thermal-decomposition-stage"
+    },
+    {
+      "id": "cool-constant-mass-crucible",
+      "verb": "cool",
+      "label": "Move with tongs and cool after repeat heating",
+      "equipmentRoleBindings": {
+        "dried-assembly": "crucible-with-lid",
+        "cooling-tool": "crucible-tongs"
+      },
+      "parameters": {
+        "sourceDefinitionId": "crucible-with-lid",
+        "coolingToolInstanceId": "crucible-tongs-1",
+        "coolingEndpointC": "{{config.coolingEndpointC}}",
+        "coolingSurface": "{{config.coolingSurface}}",
+        "requireBurnerOff": true
+      },
+      "interaction": {
+        "type": "placeInInstrument",
+        "sourceDefinitionId": "crucible-with-lid",
+        "targetDefinitionId": "crucible-tongs",
+        "stationId": "heating",
+        "accessibleLabel": "Move with tongs and cool after repeat heating",
+        "successCue": "Move with tongs and cool after repeat heating complete.",
+        "invalidCue": "Review the approved sequence before move with tongs and cool after repeat heating."
+      },
+      "prerequisites": [
+        {
+          "id": "cool-constant-mass-crucible-prerequisite",
+          "type": "actionEvidence",
+          "label": "Repeat the approved heat stage is complete.",
+          "actionId": "repeat-heat-to-constant-mass"
+        }
+      ],
+      "stateChanges": [
+        "Move with tongs and cool after repeat heating: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Move with tongs and cool after repeat heating complete.",
+        "invalid": "Review the approved sequence before move with tongs and cool after repeat heating."
+      },
+      "evidence": [
+        "cool",
+        "safety-state",
+        "source-bound-apparatus-operation"
+      ],
+      "atomId": "atom.cool.before-weighing"
+    },
+    {
+      "id": "weigh-final-crucible",
+      "verb": "weigh",
+      "label": "Read a subsequent cooled-cycle mass",
+      "atomId": "atom.weigh.vessel-supported-balance-display",
+      "equipmentRoleBindings": {
+        "balance-instrument": "analytical-balance",
+        "weighed-vessel": "crucible-with-lid"
+      },
+      "mass": {
+        "source": "action-input",
+        "outputMeasurementId": "final-cooled-crucible-mass",
+        "continuity": {
+          "version": 1,
+          "quantityKind": "balance-display",
+          "measuredSupportInstanceId": "crucible-with-lid-1"
+        }
+      },
+      "parameters": {
+        "sourceDefinitionId": "crucible-with-lid",
+        "instrumentDefinitionId": "analytical-balance",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputRequired": true,
+        "unit": "g",
+        "maxSafeTemperatureC": "{{config.coolingEndpointC}}",
+        "sameBalanceRequired": true,
+        "noAuthoredExpectedMass": true
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "crucible-with-lid",
+        "targetDefinitionId": "analytical-balance",
+        "stationId": "balance",
+        "accessibleLabel": "Read a subsequent cooled-cycle mass",
+        "successCue": "Read a subsequent cooled-cycle mass complete.",
+        "invalidCue": "Review the approved sequence before read a subsequent cooled-cycle mass."
+      },
+      "prerequisites": [
+        {
+          "id": "weigh-final-crucible-prerequisite",
+          "type": "actionEvidence",
+          "label": "Move with tongs and cool after repeat heating is complete.",
+          "actionId": "cool-constant-mass-crucible"
+        }
+      ],
+      "stateChanges": [
+        "Read a subsequent cooled-cycle mass: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Read a subsequent cooled-cycle mass complete.",
+        "invalid": "Review the approved sequence before read a subsequent cooled-cycle mass."
+      },
+      "evidence": [
+        "weigh",
+        "measurement",
+        "student-entered-reading"
+      ]
+    },
+    {
+      "id": "record-final-crucible-mass",
+      "verb": "record",
+      "label": "Record the constant final mass",
+      "parameters": {
+        "measurementId": "final-cooled-crucible-mass",
+        "unit": "g",
+        "requireConstantMassComparison": true,
+        "constantMassToleranceG": "{{config.constantMassToleranceG}}",
+        "copyExistingMeasurementOnly": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "accessibleLabel": "Record the constant final mass",
+        "successCue": "Record the constant final mass complete.",
+        "invalidCue": "Review the approved sequence before record the constant final mass."
+      },
+      "prerequisites": [
+        {
+          "id": "record-final-crucible-mass-prerequisite",
+          "type": "actionEvidence",
+          "label": "Read a subsequent cooled-cycle mass is complete.",
+          "actionId": "weigh-final-crucible"
+        }
+      ],
+      "stateChanges": [
+        "Record the constant final mass: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Record the constant final mass complete.",
+        "invalid": "Review the approved sequence before record the constant final mass."
+      },
+      "evidence": [
+        "record",
+        "notebook",
+        "constant-mass"
+      ]
+    },
+    {
+      "id": "recover-replicate-product",
+      "verb": "transfer",
+      "label": "Recover the cooled replicate product into its labeled vessel",
+      "atomId": "atom.transfer.heated-product-to-labeled-recovery",
+      "equipmentRoleBindings": {
+        "weighed-vessel": "crucible-with-lid",
+        "recovery-vessel": "beaker-250ml"
+      },
+      "solidTransfer": {
+        "mode": "whole-remaining",
+        "destinationRepresentation": "qualitative-unknown",
+        "requireNonEmptySource": true
+      },
+      "parameters": {
+        "sourceInstanceId": "crucible-with-lid-1",
+        "sourceDefinitionId": "crucible-with-lid",
+        "targetInstanceId": "heated-product-recovery-1",
+        "targetDefinitionId": "beaker-250ml",
+        "targetLabel": "Product Made from Heating Samples",
+        "requireCoolConstantMass": true
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "crucible-with-lid",
+        "targetDefinitionId": "beaker-250ml",
+        "accessibleLabel": "Recover the cooled replicate product into its labeled vessel",
+        "successCue": "Recover the cooled replicate product into its labeled vessel complete.",
+        "invalidCue": "Review the approved sequence before recover the cooled replicate product into its labeled vessel."
+      },
+      "prerequisites": [
+        {
+          "id": "recover-replicate-product-prerequisite",
+          "type": "actionEvidence",
+          "label": "Record the constant final mass is complete.",
+          "actionId": "record-final-crucible-mass"
+        }
+      ],
+      "stateChanges": [
+        "Recover the cooled replicate product into its labeled vessel: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Recover the cooled replicate product into its labeled vessel complete.",
+        "invalid": "Review the approved sequence before recover the cooled replicate product into its labeled vessel."
+      },
+      "evidence": [
+        "transfer",
+        "recovery",
+        "provenance"
+      ]
+    },
+    {
+      "id": "complete-replicate",
+      "verb": "record",
+      "label": "Complete and isolate the replicate evidence",
+      "parameters": {
+        "tag": "replicate-complete",
+        "minimumReplicates": "{{config.minimumReplicates}}",
+        "preserveEvidenceByReplicate": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "accessibleLabel": "Complete and isolate the replicate evidence",
+        "successCue": "Complete and isolate the replicate evidence complete.",
+        "invalidCue": "Review the approved sequence before complete and isolate the replicate evidence."
+      },
+      "prerequisites": [
+        {
+          "id": "complete-replicate-prerequisite",
+          "type": "actionEvidence",
+          "label": "Recover the cooled replicate product into its labeled vessel is complete.",
+          "actionId": "recover-replicate-product"
+        }
+      ],
+      "stateChanges": [
+        "Complete and isolate the replicate evidence: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Complete and isolate the replicate evidence complete.",
+        "invalid": "Review the approved sequence before complete and isolate the replicate evidence."
+      },
+      "evidence": [
+        "record",
+        "notebook",
+        "replicate"
+      ]
+    },
+    {
+      "id": "finalize-unused-master-stock",
+      "verb": "transfer",
+      "label": "Return the remaining master stock to Unused Sample",
+      "atomId": "atom.transfer.unheated-mixture-to-labeled-recovery",
+      "equipmentRoleBindings": {
+        "solid-reagent-source": "sample-bottle",
+        "recovery-vessel": "beaker-250ml"
+      },
+      "solidTransfer": {
+        "mode": "whole-remaining",
+        "destinationRepresentation": "physical",
+        "requireNonEmptySource": false
+      },
+      "parameters": {
+        "sourceInstanceId": "sample-bottle-1",
+        "sourceDefinitionId": "sample-bottle",
+        "targetInstanceId": "unused-sample-recovery-1",
+        "targetDefinitionId": "beaker-250ml",
+        "targetLabel": "Unused Sample — unheated",
+        "minimumReplicates": "{{config.minimumReplicates}}"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "sample-bottle",
+        "targetDefinitionId": "beaker-250ml",
+        "accessibleLabel": "Return the remaining master stock to Unused Sample",
+        "successCue": "Return the remaining master stock to Unused Sample complete.",
+        "invalidCue": "Review the approved sequence before return the remaining master stock to unused sample."
+      },
+      "prerequisites": [
+        {
+          "id": "finalize-unused-master-stock-prerequisite",
+          "type": "actionEvidence",
+          "label": "Complete and isolate the replicate evidence is complete.",
+          "actionId": "complete-replicate"
+        }
+      ],
+      "stateChanges": [
+        "Return the remaining master stock to Unused Sample: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Return the remaining master stock to Unused Sample complete.",
+        "invalid": "Review the approved sequence before return the remaining master stock to unused sample."
+      },
+      "evidence": [
+        "transfer",
+        "recovery",
+        "provenance"
+      ]
+    },
+    {
+      "id": "calculate-carbonate-composition",
+      "verb": "calculate",
+      "label": "Calculate composition from recorded mass loss",
+      "parameters": {
+        "calculationId": "composition-analysis",
+        "template": "carbonateMassLossComposition",
+        "emptyMassMeasurementId": "empty-crucible-mass",
+        "initialMassMeasurementId": "loaded-crucible-mass",
+        "finalMassMeasurementId": "final-cooled-crucible-mass",
+        "tareConvention": "{{config.tareConvention}}",
+        "requireStudentValue": true,
+        "noAuthoredExpectedResult": true,
+        "reactionEquation": "2 NaHCO3(s) -> Na2CO3(s) + CO2(g) + H2O(g)"
+      },
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Calculate composition from recorded mass loss",
+        "successCue": "Calculate composition from recorded mass loss complete.",
+        "invalidCue": "Review the approved sequence before calculate composition from recorded mass loss."
+      },
+      "prerequisites": [
+        {
+          "id": "calculate-carbonate-composition-prerequisite",
+          "type": "actionEvidence",
+          "label": "Return the remaining master stock to Unused Sample is complete.",
+          "actionId": "finalize-unused-master-stock"
+        }
+      ],
+      "stateChanges": [
+        "Calculate composition from recorded mass loss: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Calculate composition from recorded mass loss complete.",
+        "invalid": "Review the approved sequence before calculate composition from recorded mass loss."
+      },
+      "evidence": [
+        "calculate",
+        "measurement-derived"
+      ]
+    },
+    {
+      "id": "record-composition-uncertainty",
+      "verb": "record",
+      "label": "Record composition uncertainty and limitations",
+      "parameters": {
+        "tag": "composition-uncertainty",
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputRequired": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "accessibleLabel": "Record composition uncertainty and limitations",
+        "successCue": "Record composition uncertainty and limitations complete.",
+        "invalidCue": "Review the approved sequence before record composition uncertainty and limitations."
+      },
+      "prerequisites": [
+        {
+          "id": "record-composition-uncertainty-prerequisite",
+          "type": "actionEvidence",
+          "label": "Calculate composition from recorded mass loss is complete.",
+          "actionId": "calculate-carbonate-composition"
+        }
+      ],
+      "stateChanges": [
+        "Record composition uncertainty and limitations: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Record composition uncertainty and limitations complete.",
+        "invalid": "Review the approved sequence before record composition uncertainty and limitations."
+      },
+      "evidence": [
+        "record",
+        "notebook",
+        "uncertainty"
+      ]
+    },
+    {
+      "id": "recover-final-product",
+      "verb": "record",
+      "label": "Confirm every recovery is accounted for",
+      "parameters": {
+        "tag": "all-recoveries-confirmed",
+        "inputKey": "recover-final-product-done",
+        "inputMode": "choice",
+        "inputRole": "studentResponse",
+        "inputRequired": true,
+        "inputOptions": [
+          "completed"
+        ]
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Confirm every recovery is accounted for",
+        "successCue": "Confirm every recovery is accounted for complete.",
+        "invalidCue": "Review the approved sequence before confirm every recovery is accounted for."
+      },
+      "prerequisites": [
+        {
+          "id": "recover-final-product-prerequisite",
+          "type": "actionEvidence",
+          "label": "Record composition uncertainty and limitations is complete.",
+          "actionId": "record-composition-uncertainty"
+        }
+      ],
+      "stateChanges": [
+        "Confirm every recovery is accounted for: route state and evidence advance only after validation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the route requests this operation before its compiled prerequisite",
+          "message": "That operation is out of sequence for the approved method.",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "id": "teacher-approval-required",
+          "when": "physical execution is requested before the inquiry plan is approved",
+          "message": "Physical execution is locked until the teacher approves the plan and safety controls.",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "id": "same-balance-required",
+          "when": "a mass is requested from a different balance than the baseline balance",
+          "message": "Every mass in the run must use the same balance.",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "feedback": {
+        "success": "Confirm every recovery is accounted for complete.",
+        "invalid": "Review the approved sequence before confirm every recovery is accounted for."
+      },
+      "evidence": [
+        "record",
+        "notebook",
+        "recovery"
+      ]
+    }
+  ],
+  "process": {
+    "startNodeId": "approve-thermal-decomposition-plan-node",
+    "nodes": [
+      {
+        "id": "approve-thermal-decomposition-plan-node",
+        "type": "observation",
+        "title": "Approve the thermal-decomposition plan",
+        "description": "Approve the thermal-decomposition plan",
+        "actionId": "approve-thermal-decomposition-plan",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 1
+        },
+        "validation": [
+          {
+            "id": "approve-thermal-decomposition-plan-complete",
+            "type": "actionEvidence",
+            "label": "Approve the thermal-decomposition plan is complete.",
+            "actionId": "approve-thermal-decomposition-plan"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Approve the thermal-decomposition plan complete.",
+          "retry": "Complete approve the thermal-decomposition plan using the approved plan."
+        }
+      },
+      {
+        "id": "configure-unheated-stock-node",
+        "type": "observation",
+        "title": "Configure the available unheated mixture stock",
+        "description": "Configure the available unheated mixture stock",
+        "actionId": "configure-unheated-stock",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 2
+        },
+        "validation": [
+          {
+            "id": "configure-unheated-stock-complete",
+            "type": "actionEvidence",
+            "label": "Configure the available unheated mixture stock is complete.",
+            "actionId": "configure-unheated-stock"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Configure the available unheated mixture stock complete.",
+          "retry": "Complete configure the available unheated mixture stock using the approved plan."
+        }
+      },
+      {
+        "id": "place-balance-node",
+        "type": "action",
+        "title": "Place and lock one analytical balance",
+        "description": "Place and lock one analytical balance",
+        "actionId": "place-balance",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 3
+        },
+        "validation": [
+          {
+            "id": "place-balance-complete",
+            "type": "actionEvidence",
+            "label": "Place and lock one analytical balance is complete.",
+            "actionId": "place-balance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Place and lock one analytical balance complete.",
+          "retry": "Complete place and lock one analytical balance using the approved plan."
+        }
+      },
+      {
+        "id": "place-empty-crucible-node",
+        "type": "action",
+        "title": "Place the cool empty crucible and lid",
+        "description": "Place the cool empty crucible and lid",
+        "actionId": "place-empty-crucible",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 4
+        },
+        "validation": [
+          {
+            "id": "place-empty-crucible-complete",
+            "type": "actionEvidence",
+            "label": "Place the cool empty crucible and lid is complete.",
+            "actionId": "place-empty-crucible"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Place the cool empty crucible and lid complete.",
+          "retry": "Complete place the cool empty crucible and lid using the approved plan."
+        }
+      },
+      {
+        "id": "read-empty-crucible-node",
+        "type": "action",
+        "title": "Read the empty crucible and lid mass",
+        "description": "Read the empty crucible and lid mass",
+        "actionId": "read-empty-crucible",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 5
+        },
+        "validation": [
+          {
+            "id": "read-empty-crucible-complete",
+            "type": "actionEvidence",
+            "label": "Read the empty crucible and lid mass is complete.",
+            "actionId": "read-empty-crucible"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read the empty crucible and lid mass complete.",
+          "retry": "Complete read the empty crucible and lid mass using the approved plan."
+        }
+      },
+      {
+        "id": "record-empty-crucible-node",
+        "type": "observation",
+        "title": "Record the empty crucible and lid mass",
+        "description": "Record the empty crucible and lid mass",
+        "actionId": "record-empty-crucible",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 6
+        },
+        "validation": [
+          {
+            "id": "record-empty-crucible-complete",
+            "type": "actionEvidence",
+            "label": "Record the empty crucible and lid mass is complete.",
+            "actionId": "record-empty-crucible"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record the empty crucible and lid mass complete.",
+          "retry": "Complete record the empty crucible and lid mass using the approved plan."
+        }
+      },
+      {
+        "id": "add-carbonate-sample-node",
+        "type": "action",
+        "title": "Transfer the approved carbonate-mixture portion",
+        "description": "Transfer the approved carbonate-mixture portion",
+        "actionId": "add-carbonate-sample",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 7
+        },
+        "validation": [
+          {
+            "id": "add-carbonate-sample-complete",
+            "type": "actionEvidence",
+            "label": "Transfer the approved carbonate-mixture portion is complete.",
+            "actionId": "add-carbonate-sample"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Transfer the approved carbonate-mixture portion complete.",
+          "retry": "Complete transfer the approved carbonate-mixture portion using the approved plan."
+        }
+      },
+      {
+        "id": "weigh-initial-crucible-node",
+        "type": "action",
+        "title": "Read the loaded crucible and lid mass",
+        "description": "Read the loaded crucible and lid mass",
+        "actionId": "weigh-initial-crucible",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 8
+        },
+        "validation": [
+          {
+            "id": "weigh-initial-crucible-complete",
+            "type": "actionEvidence",
+            "label": "Read the loaded crucible and lid mass is complete.",
+            "actionId": "weigh-initial-crucible"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read the loaded crucible and lid mass complete.",
+          "retry": "Complete read the loaded crucible and lid mass using the approved plan."
+        }
+      },
+      {
+        "id": "record-initial-crucible-mass-node",
+        "type": "observation",
+        "title": "Record the loaded crucible and lid mass",
+        "description": "Record the loaded crucible and lid mass",
+        "actionId": "record-initial-crucible-mass",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 9
+        },
+        "validation": [
+          {
+            "id": "record-initial-crucible-mass-complete",
+            "type": "actionEvidence",
+            "label": "Record the loaded crucible and lid mass is complete.",
+            "actionId": "record-initial-crucible-mass"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record the loaded crucible and lid mass complete.",
+          "retry": "Complete record the loaded crucible and lid mass using the approved plan."
+        }
+      },
+      {
+        "id": "recover-unused-sample-node",
+        "type": "action",
+        "title": "Recover unused unheated mixture",
+        "description": "Recover unused unheated mixture",
+        "actionId": "recover-unused-sample",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 10
+        },
+        "validation": [
+          {
+            "id": "recover-unused-sample-complete",
+            "type": "actionEvidence",
+            "label": "Recover unused unheated mixture is complete.",
+            "actionId": "recover-unused-sample"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Recover unused unheated mixture complete.",
+          "retry": "Complete recover unused unheated mixture using the approved plan."
+        }
+      },
+      {
+        "id": "place-ring-stand-node",
+        "type": "action",
+        "title": "Place the ring stand",
+        "description": "Place the ring stand",
+        "actionId": "place-ring-stand",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 11
+        },
+        "validation": [
+          {
+            "id": "place-ring-stand-complete",
+            "type": "actionEvidence",
+            "label": "Place the ring stand is complete.",
+            "actionId": "place-ring-stand"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Place the ring stand complete.",
+          "retry": "Complete place the ring stand using the approved plan."
+        }
+      },
+      {
+        "id": "add-clay-triangle-node",
+        "type": "action",
+        "title": "Seat the clay triangle",
+        "description": "Seat the clay triangle",
+        "actionId": "add-clay-triangle",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 12
+        },
+        "validation": [
+          {
+            "id": "add-clay-triangle-complete",
+            "type": "actionEvidence",
+            "label": "Seat the clay triangle is complete.",
+            "actionId": "add-clay-triangle"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Seat the clay triangle complete.",
+          "retry": "Complete seat the clay triangle using the approved plan."
+        }
+      },
+      {
+        "id": "place-bunsen-burner-node",
+        "type": "action",
+        "title": "Place the Bunsen burner beneath the support",
+        "description": "Place the Bunsen burner beneath the support",
+        "actionId": "place-bunsen-burner",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 13
+        },
+        "validation": [
+          {
+            "id": "place-bunsen-burner-complete",
+            "type": "actionEvidence",
+            "label": "Place the Bunsen burner beneath the support is complete.",
+            "actionId": "place-bunsen-burner"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Place the Bunsen burner beneath the support complete.",
+          "retry": "Complete place the bunsen burner beneath the support using the approved plan."
+        }
+      },
+      {
+        "id": "place-crucible-on-support-node",
+        "type": "action",
+        "title": "Place the crucible on the clay triangle",
+        "description": "Place the crucible on the clay triangle",
+        "actionId": "place-crucible-on-support",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 14
+        },
+        "validation": [
+          {
+            "id": "place-crucible-on-support-complete",
+            "type": "actionEvidence",
+            "label": "Place the crucible on the clay triangle is complete.",
+            "actionId": "place-crucible-on-support"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Place the crucible on the clay triangle complete.",
+          "retry": "Complete place the crucible on the clay triangle using the approved plan."
+        }
+      },
+      {
+        "id": "set-crucible-lid-node",
+        "type": "action",
+        "title": "Set and inspect the crucible lid position",
+        "description": "Set and inspect the crucible lid position",
+        "actionId": "set-crucible-lid",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 15
+        },
+        "validation": [
+          {
+            "id": "set-crucible-lid-complete",
+            "type": "actionEvidence",
+            "label": "Set and inspect the crucible lid position is complete.",
+            "actionId": "set-crucible-lid"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Set and inspect the crucible lid position complete.",
+          "retry": "Complete set and inspect the crucible lid position using the approved plan."
+        }
+      },
+      {
+        "id": "warm-gently-node",
+        "type": "action",
+        "title": "Warm the covered mixture gently",
+        "description": "Warm the covered mixture gently",
+        "actionId": "warm-gently",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 16
+        },
+        "validation": [
+          {
+            "id": "warm-gently-complete",
+            "type": "actionEvidence",
+            "label": "Warm the covered mixture gently is complete.",
+            "actionId": "warm-gently"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Warm the covered mixture gently complete.",
+          "retry": "Complete warm the covered mixture gently using the approved plan."
+        }
+      },
+      {
+        "id": "heat-carbonate-mixture-node",
+        "type": "action",
+        "title": "Heat the carbonate mixture using the approved plan",
+        "description": "Heat the carbonate mixture using the approved plan",
+        "actionId": "heat-carbonate-mixture",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 17
+        },
+        "validation": [
+          {
+            "id": "heat-carbonate-mixture-complete",
+            "type": "actionEvidence",
+            "label": "Heat the carbonate mixture using the approved plan is complete.",
+            "actionId": "heat-carbonate-mixture"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Heat the carbonate mixture using the approved plan complete.",
+          "retry": "Complete heat the carbonate mixture using the approved plan using the approved plan."
+        }
+      },
+      {
+        "id": "turn-off-burner-node",
+        "type": "action",
+        "title": "Turn off the burner before moving the crucible",
+        "description": "Turn off the burner before moving the crucible",
+        "actionId": "turn-off-burner",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 18
+        },
+        "validation": [
+          {
+            "id": "turn-off-burner-complete",
+            "type": "actionEvidence",
+            "label": "Turn off the burner before moving the crucible is complete.",
+            "actionId": "turn-off-burner"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Turn off the burner before moving the crucible complete.",
+          "retry": "Complete turn off the burner before moving the crucible using the approved plan."
+        }
+      },
+      {
+        "id": "cool-crucible-node",
+        "type": "action",
+        "title": "Move with tongs and cool after the first heat",
+        "description": "Move with tongs and cool after the first heat",
+        "actionId": "cool-crucible",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 19
+        },
+        "validation": [
+          {
+            "id": "cool-crucible-complete",
+            "type": "actionEvidence",
+            "label": "Move with tongs and cool after the first heat is complete.",
+            "actionId": "cool-crucible"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Move with tongs and cool after the first heat complete.",
+          "retry": "Complete move with tongs and cool after the first heat using the approved plan."
+        }
+      },
+      {
+        "id": "weigh-preliminary-final-mass-node",
+        "type": "action",
+        "title": "Read the first cooled-cycle mass",
+        "description": "Read the first cooled-cycle mass",
+        "actionId": "weigh-preliminary-final-mass",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 20
+        },
+        "validation": [
+          {
+            "id": "weigh-preliminary-final-mass-complete",
+            "type": "actionEvidence",
+            "label": "Read the first cooled-cycle mass is complete.",
+            "actionId": "weigh-preliminary-final-mass"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read the first cooled-cycle mass complete.",
+          "retry": "Complete read the first cooled-cycle mass using the approved plan."
+        }
+      },
+      {
+        "id": "record-cycle-mass-node",
+        "type": "observation",
+        "title": "Record and compare the cooled-cycle mass",
+        "description": "Record and compare the cooled-cycle mass",
+        "actionId": "record-cycle-mass",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 21
+        },
+        "validation": [
+          {
+            "id": "record-cycle-mass-complete",
+            "type": "actionEvidence",
+            "label": "Record and compare the cooled-cycle mass is complete.",
+            "actionId": "record-cycle-mass"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record and compare the cooled-cycle mass complete.",
+          "retry": "Complete record and compare the cooled-cycle mass using the approved plan."
+        }
+      },
+      {
+        "id": "repeat-heat-to-constant-mass-node",
+        "type": "action",
+        "title": "Repeat the approved heat stage",
+        "description": "Repeat the approved heat stage",
+        "actionId": "repeat-heat-to-constant-mass",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 22
+        },
+        "validation": [
+          {
+            "id": "repeat-heat-to-constant-mass-complete",
+            "type": "actionEvidence",
+            "label": "Repeat the approved heat stage is complete.",
+            "actionId": "repeat-heat-to-constant-mass"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Repeat the approved heat stage complete.",
+          "retry": "Complete repeat the approved heat stage using the approved plan."
+        }
+      },
+      {
+        "id": "cool-constant-mass-crucible-node",
+        "type": "action",
+        "title": "Move with tongs and cool after repeat heating",
+        "description": "Move with tongs and cool after repeat heating",
+        "actionId": "cool-constant-mass-crucible",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 23
+        },
+        "validation": [
+          {
+            "id": "cool-constant-mass-crucible-complete",
+            "type": "actionEvidence",
+            "label": "Move with tongs and cool after repeat heating is complete.",
+            "actionId": "cool-constant-mass-crucible"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Move with tongs and cool after repeat heating complete.",
+          "retry": "Complete move with tongs and cool after repeat heating using the approved plan."
+        }
+      },
+      {
+        "id": "weigh-final-crucible-node",
+        "type": "action",
+        "title": "Read a subsequent cooled-cycle mass",
+        "description": "Read a subsequent cooled-cycle mass",
+        "actionId": "weigh-final-crucible",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 24
+        },
+        "validation": [
+          {
+            "id": "weigh-final-crucible-complete",
+            "type": "actionEvidence",
+            "label": "Read a subsequent cooled-cycle mass is complete.",
+            "actionId": "weigh-final-crucible"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read a subsequent cooled-cycle mass complete.",
+          "retry": "Complete read a subsequent cooled-cycle mass using the approved plan."
+        }
+      },
+      {
+        "id": "record-final-crucible-mass-node",
+        "type": "observation",
+        "title": "Record the constant final mass",
+        "description": "Record the constant final mass",
+        "actionId": "record-final-crucible-mass",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 25
+        },
+        "validation": [
+          {
+            "id": "record-final-crucible-mass-complete",
+            "type": "actionEvidence",
+            "label": "Record the constant final mass is complete.",
+            "actionId": "record-final-crucible-mass"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record the constant final mass complete.",
+          "retry": "Complete record the constant final mass using the approved plan."
+        }
+      },
+      {
+        "id": "recover-replicate-product-node",
+        "type": "action",
+        "title": "Recover the cooled replicate product into its labeled vessel",
+        "description": "Recover the cooled replicate product into its labeled vessel",
+        "actionId": "recover-replicate-product",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 26
+        },
+        "validation": [
+          {
+            "id": "recover-replicate-product-complete",
+            "type": "actionEvidence",
+            "label": "Recover the cooled replicate product into its labeled vessel is complete.",
+            "actionId": "recover-replicate-product"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Recover the cooled replicate product into its labeled vessel complete.",
+          "retry": "Complete recover the cooled replicate product into its labeled vessel using the approved plan."
+        }
+      },
+      {
+        "id": "complete-replicate-node",
+        "type": "observation",
+        "title": "Complete and isolate the replicate evidence",
+        "description": "Complete and isolate the replicate evidence",
+        "actionId": "complete-replicate",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 27
+        },
+        "validation": [
+          {
+            "id": "complete-replicate-complete",
+            "type": "actionEvidence",
+            "label": "Complete and isolate the replicate evidence is complete.",
+            "actionId": "complete-replicate"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Complete and isolate the replicate evidence complete.",
+          "retry": "Complete complete and isolate the replicate evidence using the approved plan."
+        }
+      },
+      {
+        "id": "finalize-unused-master-stock-node",
+        "type": "action",
+        "title": "Return the remaining master stock to Unused Sample",
+        "description": "Return the remaining master stock to Unused Sample",
+        "actionId": "finalize-unused-master-stock",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 28
+        },
+        "validation": [
+          {
+            "id": "finalize-unused-master-stock-complete",
+            "type": "actionEvidence",
+            "label": "Return the remaining master stock to Unused Sample is complete.",
+            "actionId": "finalize-unused-master-stock"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Return the remaining master stock to Unused Sample complete.",
+          "retry": "Complete return the remaining master stock to unused sample using the approved plan."
+        }
+      },
+      {
+        "id": "calculate-carbonate-composition-node",
+        "type": "calculation",
+        "title": "Calculate composition from recorded mass loss",
+        "description": "Calculate composition from recorded mass loss",
+        "actionId": "calculate-carbonate-composition",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 29
+        },
+        "validation": [
+          {
+            "id": "calculate-carbonate-composition-complete",
+            "type": "actionEvidence",
+            "label": "Calculate composition from recorded mass loss is complete.",
+            "actionId": "calculate-carbonate-composition"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Calculate composition from recorded mass loss complete.",
+          "retry": "Complete calculate composition from recorded mass loss using the approved plan."
+        }
+      },
+      {
+        "id": "record-composition-uncertainty-node",
+        "type": "observation",
+        "title": "Record composition uncertainty and limitations",
+        "description": "Record composition uncertainty and limitations",
+        "actionId": "record-composition-uncertainty",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 30
+        },
+        "validation": [
+          {
+            "id": "record-composition-uncertainty-complete",
+            "type": "actionEvidence",
+            "label": "Record composition uncertainty and limitations is complete.",
+            "actionId": "record-composition-uncertainty"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record composition uncertainty and limitations complete.",
+          "retry": "Complete record composition uncertainty and limitations using the approved plan."
+        }
+      },
+      {
+        "id": "recover-final-product-node",
+        "type": "observation",
+        "title": "Confirm every recovery is accounted for",
+        "description": "Confirm every recovery is accounted for",
+        "actionId": "recover-final-product",
+        "config": {
+          "sourceBoundary": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "operationIndex": 31
+        },
+        "validation": [
+          {
+            "id": "recover-final-product-complete",
+            "type": "actionEvidence",
+            "label": "Confirm every recovery is accounted for is complete.",
+            "actionId": "recover-final-product"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Confirm every recovery is accounted for complete.",
+          "retry": "Complete confirm every recovery is accounted for using the approved plan."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "approve-thermal-decomposition-plan-node",
+        "to": "configure-unheated-stock-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "configure-unheated-stock-node",
+        "to": "place-balance-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "place-balance-node",
+        "to": "place-empty-crucible-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "place-empty-crucible-node",
+        "to": "read-empty-crucible-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "read-empty-crucible-node",
+        "to": "record-empty-crucible-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-empty-crucible-node",
+        "to": "add-carbonate-sample-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "add-carbonate-sample-node",
+        "to": "weigh-initial-crucible-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "weigh-initial-crucible-node",
+        "to": "record-initial-crucible-mass-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-initial-crucible-mass-node",
+        "to": "recover-unused-sample-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "recover-unused-sample-node",
+        "to": "place-ring-stand-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "place-ring-stand-node",
+        "to": "add-clay-triangle-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "add-clay-triangle-node",
+        "to": "place-bunsen-burner-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "place-bunsen-burner-node",
+        "to": "place-crucible-on-support-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "place-crucible-on-support-node",
+        "to": "set-crucible-lid-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "set-crucible-lid-node",
+        "to": "warm-gently-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "warm-gently-node",
+        "to": "heat-carbonate-mixture-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "heat-carbonate-mixture-node",
+        "to": "turn-off-burner-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "turn-off-burner-node",
+        "to": "cool-crucible-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cool-crucible-node",
+        "to": "weigh-preliminary-final-mass-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "weigh-preliminary-final-mass-node",
+        "to": "record-cycle-mass-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-cycle-mass-node",
+        "to": "repeat-heat-to-constant-mass-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "repeat-heat-to-constant-mass-node",
+        "to": "cool-constant-mass-crucible-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cool-constant-mass-crucible-node",
+        "to": "weigh-final-crucible-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "weigh-final-crucible-node",
+        "to": "record-final-crucible-mass-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-final-crucible-mass-node",
+        "to": "recover-replicate-product-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "recover-replicate-product-node",
+        "to": "complete-replicate-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "complete-replicate-node",
+        "to": "finalize-unused-master-stock-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "finalize-unused-master-stock-node",
+        "to": "calculate-carbonate-composition-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "calculate-carbonate-composition-node",
+        "to": "record-composition-uncertainty-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-composition-uncertainty-node",
+        "to": "recover-final-product-node",
+        "label": "Next approved operation",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [
+    {
+      "id": "constant-final-mass-recorded",
+      "type": "actionEvidence",
+      "label": "A constant final mass is recorded.",
+      "actionId": "record-final-crucible-mass"
+    },
+    {
+      "id": "composition-derived-from-measurements",
+      "type": "actionEvidence",
+      "label": "Composition is derived from recorded mass evidence.",
+      "actionId": "calculate-carbonate-composition"
+    },
+    {
+      "id": "final-product-recovered-separately",
+      "type": "actionEvidence",
+      "label": "Every replicate product is recovered separately and all recoveries are confirmed.",
+      "actionId": "recover-final-product"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "id": "closed-lid-heating",
+      "when": "heating is attempted with the lid fully seated",
+      "message": "A fully seated lid can trap evolved gas and be ejected.",
+      "recovery": "Turn off the burner and leave a visible vent gap before heating."
+    },
+    {
+      "id": "hot-weighing",
+      "when": "the crucible is placed on the balance before cooling",
+      "message": "Hot apparatus can damage the balance and produce biased readings.",
+      "recovery": "Use tongs, cool at the approved location, then read the locked balance."
+    },
+    {
+      "id": "single-reading-claim",
+      "when": "constant mass is claimed from one cooled reading",
+      "message": "Constant mass requires two consecutive cooled readings within the approved tolerance.",
+      "recovery": "Repeat the full heat, extinguish, cool, read, and record sequence."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "2.0.1",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-12T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "thermal-decomposition",
+      "constant-mass",
+      "inquiry",
+      "measurement-evidence",
+      "green-chemistry"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry",
+        "kind": "entry",
+        "nodeId": "approve-thermal-decomposition-plan-node",
+        "label": "Approved inquiry entry"
+      },
+      {
+        "id": "exit",
+        "kind": "exit",
+        "nodeId": "recover-final-product-node",
+        "label": "Final product recovery complete"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "balance-instrument",
+        "required": true,
+        "allowedDefinitionIds": [
+          "analytical-balance"
+        ],
+        "sourceInstanceIds": [
+          "analytical-balance-a",
+          "analytical-balance-b"
+        ]
+      },
+      {
+        "roleId": "weighed-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "crucible-with-lid"
+        ],
+        "sourceInstanceIds": [
+          "crucible-with-lid-1"
+        ]
+      },
+      {
+        "roleId": "solid-reagent-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "sample-bottle",
+          "small-vial"
+        ],
+        "sourceInstanceIds": [
+          "sample-bottle-1",
+          "working-sample-portion-1"
+        ]
+      },
+      {
+        "roleId": "receiving-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "crucible-with-lid"
+        ],
+        "sourceInstanceIds": [
+          "crucible-with-lid-1"
+        ]
+      },
+      {
+        "roleId": "thermal-support",
+        "required": true,
+        "allowedDefinitionIds": [
+          "ring-stand",
+          "clay-triangle"
+        ],
+        "sourceInstanceIds": [
+          "ring-stand-1",
+          "clay-triangle-1"
+        ]
+      },
+      {
+        "roleId": "thermal-heating-instrument",
+        "required": true,
+        "allowedDefinitionIds": [
+          "bunsen-burner"
+        ],
+        "sourceInstanceIds": [
+          "bunsen-burner-1"
+        ]
+      },
+      {
+        "roleId": "cooling-tool",
+        "required": true,
+        "allowedDefinitionIds": [
+          "crucible-tongs"
+        ],
+        "sourceInstanceIds": [
+          "crucible-tongs-1"
+        ]
+      },
+      {
+        "roleId": "dried-assembly",
+        "required": true,
+        "allowedDefinitionIds": [
+          "crucible-with-lid"
+        ],
+        "sourceInstanceIds": [
+          "crucible-with-lid-1"
+        ]
+      },
+      {
+        "roleId": "recovery-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beaker-250ml"
+        ],
+        "sourceInstanceIds": [
+          "unused-sample-recovery-1",
+          "heated-product-recovery-1"
+        ]
+      }
+    ],
+    "modelSlots": [],
+    "configurationSlots": [
+      {
+        "id": "sampleMassG",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "warmDurationMin",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "heatingDurationMin",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "heatingIntensity",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "id": "constantMassToleranceG",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "maximumHeatCycles",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "coolingEndpointC",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "coolingSurface",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "id": "tareConvention",
+        "valueType": "string",
+        "required": true,
+        "allowedValues": [
+          "record-crucible-plus-lid",
+          "tare-balance-with-crucible-plus-lid"
+        ]
+      },
+      {
+        "id": "minimumReplicates",
+        "valueType": "number",
+        "required": true
+      }
+    ],
+    "approvalGates": [
+      {
+        "id": "teacher-approved-plan",
+        "label": "Teacher approved the inquiry plan and safety configuration"
+      }
+    ],
+    "variants": [],
+    "evidenceOutputs": [
+      {
+        "id": "approval",
+        "kind": "action-evidence",
+        "actionId": "approve-thermal-decomposition-plan",
+        "referenceId": "thermal-decomposition-plan-approved"
+      },
+      {
+        "id": "unheated-stock-configured",
+        "kind": "measurement",
+        "actionId": "configure-unheated-stock",
+        "referenceId": "unheated-stock-configured-g"
+      },
+      {
+        "id": "empty-mass",
+        "kind": "measurement",
+        "actionId": "read-empty-crucible",
+        "referenceId": "empty-crucible-mass"
+      },
+      {
+        "id": "empty-mass-record",
+        "kind": "notebook",
+        "actionId": "record-empty-crucible",
+        "referenceId": "empty-crucible-mass"
+      },
+      {
+        "id": "loaded-mass",
+        "kind": "measurement",
+        "actionId": "weigh-initial-crucible",
+        "referenceId": "loaded-crucible-mass"
+      },
+      {
+        "id": "loaded-mass-record",
+        "kind": "notebook",
+        "actionId": "record-initial-crucible-mass",
+        "referenceId": "loaded-crucible-mass"
+      },
+      {
+        "id": "unused-sample-recovery",
+        "kind": "action-evidence",
+        "actionId": "recover-unused-sample",
+        "referenceId": "unused-sample-recovery"
+      },
+      {
+        "id": "cycle-mass",
+        "kind": "measurement",
+        "actionId": "weigh-preliminary-final-mass",
+        "referenceId": "cooled-cycle-mass"
+      },
+      {
+        "id": "cycle-mass-record",
+        "kind": "notebook",
+        "actionId": "record-cycle-mass",
+        "referenceId": "cooled-cycle-mass"
+      },
+      {
+        "id": "final-mass",
+        "kind": "measurement",
+        "actionId": "weigh-final-crucible",
+        "referenceId": "final-cooled-crucible-mass"
+      },
+      {
+        "id": "final-mass-record",
+        "kind": "notebook",
+        "actionId": "record-final-crucible-mass",
+        "referenceId": "final-cooled-crucible-mass"
+      },
+      {
+        "id": "replicate-recovery",
+        "kind": "action-evidence",
+        "actionId": "recover-replicate-product",
+        "referenceId": "replicate-product-recovery"
+      },
+      {
+        "id": "replicate-completion",
+        "kind": "notebook",
+        "actionId": "complete-replicate",
+        "referenceId": "replicate-complete"
+      },
+      {
+        "id": "unused-master-stock-finalized",
+        "kind": "action-evidence",
+        "actionId": "finalize-unused-master-stock",
+        "referenceId": "unused-master-stock-finalized"
+      },
+      {
+        "id": "composition-calculation",
+        "kind": "calculation",
+        "actionId": "calculate-carbonate-composition",
+        "referenceId": "composition-analysis"
+      },
+      {
+        "id": "uncertainty-record",
+        "kind": "notebook",
+        "actionId": "record-composition-uncertainty",
+        "referenceId": "composition-uncertainty"
+      },
+      {
+        "id": "final-product-recovery",
+        "kind": "action-evidence",
+        "actionId": "recover-final-product",
+        "referenceId": "final-product-recovery"
+      }
+    ],
+    "completion": {
+      "exitPortIds": [
+        "exit"
+      ],
+      "requiredEvidenceOutputIds": [
+        "approval",
+        "unheated-stock-configured",
+        "empty-mass",
+        "empty-mass-record",
+        "loaded-mass",
+        "loaded-mass-record",
+        "unused-sample-recovery",
+        "cycle-mass",
+        "cycle-mass-record",
+        "final-mass",
+        "final-mass-record",
+        "replicate-recovery",
+        "replicate-completion",
+        "unused-master-stock-finalized",
+        "composition-calculation",
+        "uncertainty-record",
+        "final-product-recovery"
+      ],
+      "requiredValidationRuleIds": [
+        "constant-final-mass-recorded",
+        "composition-derived-from-measurements",
+        "final-product-recovered-separately"
+      ]
+    },
+    "catalogDisposition": "lab-scoped",
+    "legacyActionEffects": [
+      {
+        "actionId": "approve-thermal-decomposition-plan",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-empty-crucible",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-initial-crucible-mass",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-cycle-mass",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-final-crucible-mass",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "complete-replicate",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "calculate-carbonate-composition",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-composition-uncertainty",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "recover-final-product",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

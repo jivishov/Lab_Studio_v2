@@ -1,0 +1,1594 @@
+{
+  "id": "acid-base-titration",
+  "title": "Acid-Base Titration",
+  "description": "A focused endpoint-and-molarity exercise using acetic acid and NaOH. Students accept qualitative indicator evidence, immerse a prepared pH probe, record the simulator-predicted accepted-endpoint pH, and calculate analyte molarity. The dedicated Acid-Base Titration Curves route remains the complete Investigation 14 workflow.",
+  "audience": "General chemistry students",
+  "learningGoals": [
+    "Assemble a burette, use a filling funnel for conditioning and filling, then remove it to the workbench before reading its level.",
+    "Take burette readings off the instrument and record them as separate steps.",
+    "Calculate acid molarity from the volume delivered between two recorded readings.",
+    "Distinguish the ideal equivalence prediction from the pH predicted at the actually accepted endpoint."
+  ],
+  "safetyNotes": [
+    "Wear goggles and gloves when handling acid, base, and indicator.",
+    "Keep the burette clamped upright and clean spills immediately.",
+    "Neutralize and dispose of titration waste according to local guidance."
+  ],
+  "equipment": [
+    "unknown-acid-bottle",
+    "graduated-cylinder",
+    "erlenmeyer-flask-250ml",
+    "phenolphthalein-dropper",
+    "naoh-bottle",
+    "burette-50ml",
+    "ring-stand-clamp",
+    "funnel",
+    "ph-meter",
+    "waste-beaker"
+  ],
+  "titrationModels": [
+    {
+      "id": "unknown-acid-naoh",
+      "type": "acidBase",
+      "analyte": {
+        "formula": "CH3COOH",
+        "role": "acid",
+        "strength": "weak",
+        "equilibriumConstant": 1.753e-5,
+        "equilibriumConstantSource": "https://nvlpubs.nist.gov/nistpubs/jres/100/5/j15wu.pdf"
+      },
+      "titrant": {
+        "formula": "NaOH",
+        "role": "base",
+        "strength": "strong"
+      },
+      "analyteMolarityM": 0.0992,
+      "analyteVolumeMl": 25,
+      "titrantMolarityM": 0.1,
+      "stoichiometricRatio": {
+        "analyte": 1,
+        "titrant": 1
+      },
+      "dropVolumeMl": 0.05,
+      "endpointOffsetDrops": 0,
+      "maxExtraDrops": 5,
+      "temperatureC": 25,
+      "waterIonProduct": 1e-14,
+      "phPrecision": 2
+    }
+  ],
+  "techniqueRefs": [
+    {
+      "techniqueId": "titration-endpoint",
+      "version": "2.1.2",
+      "actionIds": "all"
+    }
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "unknown-acid-bottle-1",
+        "definitionId": "unknown-acid-bottle",
+        "label": "Unknown acid",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "Acetic acid of unknown learner-facing concentration",
+          "volumeMl": 120,
+          "solutes": [
+            {
+              "id": "acetic-acid",
+              "label": "Acetic acid",
+              "amount": 0.0992,
+              "unit": "mol"
+            }
+          ],
+          "concentration": {
+            "value": 0.0992,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-solution"
+        }
+      },
+      {
+        "id": "graduated-cylinder-1",
+        "definitionId": "graduated-cylinder",
+        "label": "Graduated cylinder",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "erlenmeyer-flask-250ml-1",
+        "definitionId": "erlenmeyer-flask-250ml",
+        "label": "Erlenmeyer flask",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "phenolphthalein-dropper-1",
+        "definitionId": "phenolphthalein-dropper",
+        "label": "Phenolphthalein",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "Phenolphthalein indicator",
+          "volumeMl": 30,
+          "solutes": [
+            {
+              "id": "phenolphthalein",
+              "label": "Phenolphthalein",
+              "amount": 0.03,
+              "unit": "g"
+            }
+          ],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "indicator-solution"
+        }
+      },
+      {
+        "id": "naoh-bottle-1",
+        "definitionId": "naoh-bottle",
+        "label": "0.100 M NaOH",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "0.100 M NaOH",
+          "volumeMl": 120,
+          "solutes": [
+            {
+              "id": "sodium-hydroxide",
+              "label": "Sodium hydroxide",
+              "amount": 0.1,
+              "unit": "mol"
+            }
+          ],
+          "concentration": {
+            "value": 0.1,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-solution"
+        }
+      },
+      {
+        "id": "burette-50ml-1",
+        "definitionId": "burette-50ml",
+        "label": "Titration burette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "ring-stand-clamp-1",
+        "definitionId": "ring-stand-clamp",
+        "label": "Ring stand and clamp",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "funnel-1",
+        "definitionId": "funnel",
+        "label": "Burette filling funnel",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "ph-meter-1",
+        "definitionId": "ph-meter",
+        "label": "pH meter",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "waste-beaker-1",
+        "definitionId": "waste-beaker",
+        "label": "Waste beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "techniques": [
+    {
+      "id": "acid-base-titration-state",
+      "title": "Acid-base titration starting state",
+      "learningGoal": "Provide structured initial equipment and contents for the acid-base titration lab.",
+      "requiredEquipment": [
+        "unknown-acid-bottle",
+        "graduated-cylinder",
+        "erlenmeyer-flask-250ml",
+        "phenolphthalein-dropper",
+        "naoh-bottle",
+        "burette-50ml",
+        "ring-stand-clamp",
+        "funnel",
+        "ph-meter",
+        "waste-beaker"
+      ],
+      "initialState": {
+        "equipment": [
+          {
+            "id": "unknown-acid-bottle-1",
+            "definitionId": "unknown-acid-bottle",
+            "label": "Unknown acid",
+            "location": "shelf",
+            "contents": {
+              "kind": "solution",
+              "label": "Acetic acid of unknown learner-facing concentration",
+              "volumeMl": 120,
+              "solutes": [
+                {
+                  "id": "acetic-acid",
+                  "label": "Acetic acid",
+                  "amount": 0.0992,
+                  "unit": "mol"
+                }
+              ],
+              "concentration": {
+                "value": 0.0992,
+                "unit": "M"
+              },
+              "contamination": [],
+              "wetState": "wet",
+              "visualState": "clear-solution"
+            }
+          },
+          {
+            "id": "graduated-cylinder-1",
+            "definitionId": "graduated-cylinder",
+            "label": "Graduated cylinder",
+            "location": "shelf",
+            "contents": {
+              "kind": "empty",
+              "label": "empty",
+              "solutes": [],
+              "contamination": [],
+              "wetState": "dry",
+              "visualState": "empty"
+            }
+          },
+          {
+            "id": "erlenmeyer-flask-250ml-1",
+            "definitionId": "erlenmeyer-flask-250ml",
+            "label": "Erlenmeyer flask",
+            "location": "shelf",
+            "contents": {
+              "kind": "empty",
+              "label": "empty",
+              "solutes": [],
+              "contamination": [],
+              "wetState": "dry",
+              "visualState": "empty"
+            }
+          },
+          {
+            "id": "phenolphthalein-dropper-1",
+            "definitionId": "phenolphthalein-dropper",
+            "label": "Phenolphthalein",
+            "location": "shelf",
+            "contents": {
+              "kind": "solution",
+              "label": "Phenolphthalein indicator",
+              "volumeMl": 30,
+              "solutes": [
+                {
+                  "id": "phenolphthalein",
+                  "label": "Phenolphthalein",
+                  "amount": 0.03,
+                  "unit": "g"
+                }
+              ],
+              "contamination": [],
+              "wetState": "wet",
+              "visualState": "indicator-solution"
+            }
+          },
+          {
+            "id": "naoh-bottle-1",
+            "definitionId": "naoh-bottle",
+            "label": "0.100 M NaOH",
+            "location": "shelf",
+            "contents": {
+              "kind": "solution",
+              "label": "0.100 M NaOH",
+              "volumeMl": 120,
+              "solutes": [
+                {
+                  "id": "sodium-hydroxide",
+                  "label": "Sodium hydroxide",
+                  "amount": 0.1,
+                  "unit": "mol"
+                }
+              ],
+              "concentration": {
+                "value": 0.1,
+                "unit": "M"
+              },
+              "contamination": [],
+              "wetState": "wet",
+              "visualState": "clear-solution"
+            }
+          },
+          {
+            "id": "burette-50ml-1",
+            "definitionId": "burette-50ml",
+            "label": "NaOH burette",
+            "location": "shelf",
+            "contents": {
+              "kind": "solution",
+              "label": "0.1000 M NaOH",
+              "volumeMl": 50,
+              "solutes": [
+                {
+                  "id": "sodium-hydroxide",
+                  "label": "Sodium hydroxide",
+                  "amount": 0.1,
+                  "unit": "mol"
+                }
+              ],
+              "concentration": {
+                "value": 0.1,
+                "unit": "M"
+              },
+              "contamination": [],
+              "wetState": "wet",
+              "visualState": "clear-solution"
+            }
+          },
+          {
+            "id": "ring-stand-clamp-1",
+            "definitionId": "ring-stand-clamp",
+            "label": "Ring stand and clamp",
+            "location": "shelf",
+            "contents": {
+              "kind": "empty",
+              "label": "empty",
+              "solutes": [],
+              "contamination": [],
+              "wetState": "dry",
+              "visualState": "empty"
+            }
+          },
+          {
+            "id": "funnel-1",
+            "definitionId": "funnel",
+            "label": "Burette filling funnel",
+            "location": "shelf",
+            "contents": {
+              "kind": "empty",
+              "label": "empty",
+              "solutes": [],
+              "contamination": [],
+              "wetState": "dry",
+              "visualState": "empty"
+            }
+          },
+          {
+            "id": "ph-meter-1",
+            "definitionId": "ph-meter",
+            "label": "pH meter",
+            "location": "shelf",
+            "contents": {
+              "kind": "empty",
+              "label": "empty",
+              "solutes": [],
+              "contamination": [],
+              "wetState": "dry",
+              "visualState": "empty"
+            }
+          },
+          {
+            "id": "waste-beaker-1",
+            "definitionId": "waste-beaker",
+            "label": "Waste beaker",
+            "location": "shelf",
+            "contents": {
+              "kind": "empty",
+              "label": "empty",
+              "solutes": [],
+              "contamination": [],
+              "wetState": "dry",
+              "visualState": "empty"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "id": "review-titration-setup",
+          "verb": "observe",
+          "label": "Review titration setup",
+          "parameters": {
+            "note": "Acid, indicator, burette, pH meter, and waste equipment are available.",
+            "tag": "setup"
+          },
+          "prerequisites": [],
+          "stateChanges": [
+            "Record setup context."
+          ],
+          "invalidCases": [],
+          "feedback": {
+            "success": "Setup reviewed.",
+            "invalid": "Review the available titration equipment."
+          },
+          "evidence": [
+            "observe"
+          ]
+        }
+      ],
+      "process": {
+        "startNodeId": "review-titration-setup-node",
+        "nodes": [
+          {
+            "id": "review-titration-setup-node",
+            "type": "teacherNote",
+            "title": "Review setup",
+            "description": "Starting state for the schema-backed titration lab.",
+            "actionId": "review-titration-setup",
+            "layout": {
+              "x": 40,
+              "y": 40,
+              "lane": "context",
+              "display": "compact"
+            },
+            "config": {},
+            "validation": [],
+            "hints": [
+              "Use the lab process for the student workflow."
+            ],
+            "feedback": {
+              "success": "Setup ready.",
+              "retry": "Review setup."
+            }
+          }
+        ],
+        "edges": []
+      },
+      "successCriteria": [],
+      "commonMistakes": [],
+      "resetBehavior": "resetTechnique",
+      "metadata": {
+        "version": "1.2.0",
+        "author": "Lab Studio",
+        "updatedAt": "2026-05-13T00:00:00.000Z",
+        "tags": [
+          "technique",
+          "titration",
+          "starting-state"
+        ]
+      }
+    }
+  ],
+  "actions": [
+    {
+      "id": "confirm-endpoint",
+      "verb": "observe",
+      "label": "Confirm indicator endpoint",
+      "parameters": {
+        "note": "A persistent pale pink color is accepted as qualitative indicator endpoint evidence. This color is not the numeric pH source.",
+        "tag": "endpoint",
+        "overshootNote": "the solution is darker pink, indicating excess NaOH and an alkaline titration mixture"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "successCue": "Indicator endpoint confirmed.",
+        "invalidCue": "Accept the titration endpoint before confirming its indicator state.",
+        "accessibleLabel": "Confirm the persistent pale pink indicator endpoint without treating color as a pH reading."
+      },
+      "prerequisites": [
+        {
+          "id": "dispense-required",
+          "type": "actionEvidence",
+          "label": "Titrant has been delivered to the endpoint.",
+          "actionId": "deliver-titrant"
+        }
+      ],
+      "stateChanges": [
+        "Record endpoint evidence in the notebook."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "Qualitative indicator endpoint confirmed.",
+        "invalid": "Dispense titrant before checking endpoint evidence."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ]
+    },
+    {
+      "id": "place-ph-meter-on-workbench",
+      "verb": "place",
+      "label": "Place the pH meter on the workbench",
+      "atomId": "atom.place.probe-instrument",
+      "equipmentRoleBindings": {
+        "immersed-probe-instrument": "ph-meter"
+      },
+      "parameters": {
+        "equipmentDefinitionId": "ph-meter",
+        "equipmentInstanceId": "ph-meter-1",
+        "location": "workbench",
+        "x": 36,
+        "y": 338,
+        "zIndex": 2
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "ph-meter",
+        "stationId": "workbench",
+        "successCue": "The pH meter is stable on the workbench.",
+        "invalidCue": "Place the meter body on the workbench before handling its probe.",
+        "accessibleLabel": "Place the pH meter on the workbench."
+      },
+      "prerequisites": [
+        {
+          "id": "indicator-endpoint-required-for-meter",
+          "type": "notebookEntry",
+          "label": "The indicator endpoint has been confirmed.",
+          "notebookTag": "endpoint"
+        }
+      ],
+      "stateChanges": [
+        "Move the pH meter from the equipment shelf to a stable workbench position."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "The pH meter is ready on the workbench.",
+        "invalid": "Place the pH meter on the workbench before preparing or immersing its probe."
+      },
+      "evidence": [
+        "place"
+      ]
+    },
+    {
+      "id": "confirm-ph-meter-ready",
+      "verb": "observe",
+      "label": "Confirm pH meter readiness",
+      "parameters": {
+        "note": "Teacher-approved pH meter readiness was confirmed. Calibration buffers, probe rinsing, and stability criteria remain classroom configuration choices and are not supplied by this exercise.",
+        "tag": "ph-meter-ready",
+        "meterReadinessIsTeacherConfirmed": true,
+        "probeCalibrationIsTeacherConfigured": true,
+        "probeRinsingIsTeacherConfigured": true,
+        "phStabilityCriterionIsTeacherConfigured": true,
+        "configurationRequired": true,
+        "unlocked": false,
+        "inputRole": "teacherConfiguration",
+        "inputMode": "choice",
+        "inputRequired": true,
+        "inputLabel": "Teacher pH-meter readiness decision",
+        "inputOptions": [
+          "Teacher confirms the pH meter is ready"
+        ],
+        "inputKey": "endpoint-ph-meter-readiness"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "successCue": "Meter readiness confirmed.",
+        "invalidCue": "Confirm the classroom pH-meter rules before using the probe.",
+        "accessibleLabel": "Confirm that the teacher has approved the pH meter readiness, calibration, rinsing, and stability rules."
+      },
+      "prerequisites": [
+        {
+          "id": "indicator-endpoint-required",
+          "type": "notebookEntry",
+          "label": "The indicator endpoint has been confirmed.",
+          "notebookTag": "endpoint"
+        },
+        {
+          "id": "meter-placement-required",
+          "type": "actionEvidence",
+          "label": "The pH meter has been placed on the workbench.",
+          "actionId": "place-ph-meter-on-workbench"
+        }
+      ],
+      "stateChanges": [
+        "Record teacher-confirmed meter readiness without inventing calibration, rinsing, or stability criteria."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "Teacher-approved pH meter readiness confirmed.",
+        "invalid": "Confirm the classroom meter-readiness rules before proceeding."
+      },
+      "evidence": [
+        "observe",
+        "configuration"
+      ]
+    },
+    {
+      "id": "immerse-endpoint-ph-probe",
+      "verb": "place",
+      "label": "Immerse probe",
+      "atomId": "atom.place.immersed-ph-probe",
+      "equipmentRoleBindings": {
+        "immersed-probe-instrument": "ph-meter",
+        "immersed-probe-vessel": "erlenmeyer-flask-250ml"
+      },
+      "parameters": {
+        "equipmentDefinitionId": "ph-meter",
+        "sourceDefinitionId": "ph-meter",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "snapZoneId": "erlenmeyer-ph-probe-zone",
+        "phProbeOperation": "immerse",
+        "dispenseActionId": "deliver-titrant",
+        "meterReadinessNotebookTag": "ph-meter-ready"
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "ph-meter",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "snapZoneId": "erlenmeyer-ph-probe-zone",
+        "successCue": "Probe immersed while the meter remains on the bench.",
+        "invalidCue": "Use the probe handle and the flask probe zone; do not move the meter body over the flask.",
+        "accessibleLabel": "Select the pH meter, select the titration flask, then confirm Immerse probe."
+      },
+      "prerequisites": [
+        {
+          "id": "accepted-endpoint-required-for-probe",
+          "type": "statePath",
+          "label": "The indicator endpoint has been accepted.",
+          "path": "dropDispenses.deliver-titrant.accepted",
+          "equals": true
+        },
+        {
+          "id": "meter-ready-required-for-probe",
+          "type": "notebookEntry",
+          "label": "Meter readiness has been confirmed.",
+          "notebookTag": "ph-meter-ready"
+        }
+      ],
+      "stateChanges": [
+        "Immerse only the probe in the endpoint mixture; leave the meter body on the workbench."
+      ],
+      "invalidCases": [
+        {
+          "id": "empty-probe-vessel",
+          "when": "the selected flask is empty",
+          "message": "The probe bulb is not immersed in a titration mixture.",
+          "recovery": "Use the flask containing the accepted endpoint mixture."
+        }
+      ],
+      "feedback": {
+        "success": "The probe is immersed in the endpoint mixture.",
+        "invalid": "Immerse the probe in the accepted endpoint mixture."
+      },
+      "evidence": [
+        "place",
+        "probe"
+      ]
+    },
+    {
+      "id": "read-endpoint-ph",
+      "verb": "observe",
+      "label": "Read accepted-endpoint pH",
+      "atomId": "atom.observe.read-titration-ph",
+      "equipmentRoleBindings": {
+        "immersed-probe-instrument": "ph-meter",
+        "immersed-probe-vessel": "erlenmeyer-flask-250ml"
+      },
+      "parameters": {
+        "sourceDefinitionId": "ph-meter",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "measurementId": "endpoint-ph",
+        "label": "Accepted-endpoint pH",
+        "phReadingMode": "acceptedEndpoint",
+        "titrationModelId": "unknown-acid-naoh",
+        "dispenseActionId": "deliver-titrant",
+        "meterReadinessNotebookTag": "ph-meter-ready",
+        "provenance": "ideal simulator-generated prediction",
+        "actualLabVariationNote": "Actual laboratory readings may vary with temperature, activities, calibration, and ionic strength."
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "ph-meter",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "stationId": "ph-meter",
+        "successCue": "Accepted-endpoint pH displayed.",
+        "invalidCue": "Accept the endpoint, confirm meter readiness, and immerse the probe before reading.",
+        "accessibleLabel": "Read the pH predicted from the accepted delivered NaOH volume with the probe immersed."
+      },
+      "prerequisites": [
+        {
+          "id": "probe-immersion-required",
+          "type": "actionEvidence",
+          "label": "The pH probe is immersed.",
+          "actionId": "immerse-endpoint-ph-probe"
+        }
+      ],
+      "stateChanges": [
+        "Calculate the ideal-solution pH from the actual accepted delivered titrant volume and display it on the meter."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "The accepted-endpoint simulator prediction is displayed.",
+        "invalid": "Prepare and immerse the probe before reading."
+      },
+      "evidence": [
+        "observe",
+        "measurement",
+        "simulator-generated"
+      ]
+    },
+    {
+      "id": "record-endpoint-ph",
+      "verb": "record",
+      "label": "Record accepted-endpoint pH",
+      "parameters": {
+        "measurementId": "endpoint-ph",
+        "label": "Accepted-endpoint pH",
+        "unit": "pH",
+        "copyExistingMeasurementOnly": true,
+        "titrationModelId": "unknown-acid-naoh",
+        "phReadingMode": "acceptedEndpoint"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "measurementId",
+        "successCue": "Displayed pH copied to the notebook.",
+        "invalidCue": "Read the meter before recording the endpoint pH.",
+        "accessibleLabel": "Copy the displayed accepted-endpoint pH exactly into the notebook."
+      },
+      "prerequisites": [
+        {
+          "id": "endpoint-ph-reading-required",
+          "type": "measurementRecorded",
+          "label": "The accepted-endpoint pH has been read.",
+          "measurementId": "endpoint-ph"
+        }
+      ],
+      "stateChanges": [
+        "Copy the exact displayed endpoint-ph measurement into the notebook."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "The displayed pH was recorded without replacement.",
+        "invalid": "Read the pH meter first, then copy its displayed value."
+      },
+      "evidence": [
+        "record",
+        "measurement"
+      ]
+    }
+  ],
+  "process": {
+    "startNodeId": "place-ring-stand-node",
+    "nodes": [
+      {
+        "id": "place-ring-stand-node",
+        "type": "action",
+        "title": "Set up the stand",
+        "description": "Place the ring stand and burette clamp on the workbench.",
+        "actionId": "place-ring-stand",
+        "layout": {
+          "x": 40,
+          "y": 60,
+          "lane": "setup",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "stand-placed",
+            "type": "actionEvidence",
+            "label": "Burette support placed.",
+            "actionId": "place-ring-stand"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Set up the stand checkpoint passed.",
+          "retry": "Place the ring stand and burette clamp on the workbench."
+        }
+      },
+      {
+        "id": "mount-burette-node",
+        "type": "action",
+        "title": "Mount the burette",
+        "description": "Seat the burette in the ring-stand clamp.",
+        "actionId": "mount-burette",
+        "layout": {
+          "x": 340,
+          "y": 60,
+          "lane": "setup",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "burette-mounted",
+            "type": "actionEvidence",
+            "label": "Burette mounted on the ring stand.",
+            "actionId": "mount-burette"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Prefilled burette mount checkpoint passed.",
+          "retry": "Attach the prefilled NaOH burette to the ring stand clamp."
+        }
+      },
+      {
+        "id": "seat-burette-funnel-node",
+        "type": "action",
+        "title": "Seat the filling funnel",
+        "description": "Place the glass filling funnel upright in the top of the mounted burette before conditioning.",
+        "actionId": "seat-burette-funnel",
+        "layout": {
+          "x": 640,
+          "y": 60,
+          "lane": "setup",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "burette-funnel-seated",
+            "type": "actionEvidence",
+            "label": "Filling funnel seated in the burette.",
+            "actionId": "seat-burette-funnel"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Filling funnel placement checkpoint passed.",
+          "retry": "Snap the glass funnel into the highlighted opening at the top of the burette."
+        }
+      },
+      {
+        "id": "condition-burette-node",
+        "type": "action",
+        "title": "Condition the burette",
+        "description": "Rinse the burette through the seated funnel with small portions of the NaOH titrant and discard them to the waste beaker.",
+        "actionId": "condition-burette",
+        "layout": {
+          "x": 940,
+          "y": 60,
+          "lane": "setup",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "burette-conditioned",
+            "type": "actionEvidence",
+            "label": "Burette conditioned with titrant through the seated funnel.",
+            "actionId": "condition-burette"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Condition the burette checkpoint passed.",
+          "retry": "Keep the funnel seated while rinsing the burette with small portions of the NaOH titrant and discarding them to waste."
+        }
+      },
+      {
+        "id": "fill-burette-node",
+        "type": "action",
+        "title": "Fill the burette",
+        "description": "Pour 0.100 M NaOH through the seated funnel into the conditioned burette.",
+        "actionId": "fill-burette",
+        "layout": {
+          "x": 40,
+          "y": 260,
+          "lane": "setup",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "burette-filled",
+            "type": "actionEvidence",
+            "label": "Burette filled with titrant.",
+            "actionId": "fill-burette"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Fill the burette checkpoint passed.",
+          "retry": "Seat the filling funnel, then pour 0.100 M NaOH through it into the burette."
+        }
+      },
+      {
+        "id": "remove-burette-funnel-node",
+        "type": "action",
+        "title": "Remove the filling funnel",
+        "description": "Remove the filling funnel and place it on the workbench before reading the burette.",
+        "actionId": "remove-burette-funnel",
+        "layout": {
+          "x": 340,
+          "y": 260,
+          "lane": "setup",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "burette-funnel-removed",
+            "type": "actionEvidence",
+            "label": "Filling funnel removed and placed on the workbench.",
+            "actionId": "remove-burette-funnel"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Filling funnel removal checkpoint passed.",
+          "retry": "Remove the funnel from the burette and place it on the workbench."
+        }
+      },
+      {
+        "id": "read-initial-burette-node",
+        "type": "observation",
+        "title": "Read the initial level",
+        "description": "Read the meniscus on the filled burette. Reading and recording are separate steps.",
+        "actionId": "read-initial-burette",
+        "layout": {
+          "x": 640,
+          "y": 260,
+          "lane": "check",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "initial-burette-read",
+            "type": "measurementRecorded",
+            "label": "Initial burette level read from the instrument.",
+            "measurementId": "burette-initial-volume"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read the initial level checkpoint passed.",
+          "retry": "Read the meniscus on the filled burette. Reading and recording are separate steps."
+        }
+      },
+      {
+        "id": "record-initial-burette-node",
+        "type": "observation",
+        "title": "Record the initial reading",
+        "description": "Record the value you read from the burette scale.",
+        "actionId": "record-initial-burette",
+        "layout": {
+          "x": 940,
+          "y": 260,
+          "lane": "check",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "initial-burette-notebook",
+            "type": "notebookEntry",
+            "label": "Initial burette reading entered in notebook.",
+            "notebookTag": "burette-initial-volume"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Initial reading checkpoint passed.",
+          "retry": "Record the initial burette reading."
+        }
+      },
+      {
+        "id": "measure-acid-node",
+        "type": "action",
+        "title": "Measure acid aliquot",
+        "description": "Pour about 25.0 mL of unknown acid into the graduated cylinder.",
+        "actionId": "measure-acid",
+        "layout": {
+          "x": 40,
+          "y": 460,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {
+          "sourceDefinitionId": "unknown-acid-bottle",
+          "targetDefinitionId": "graduated-cylinder"
+        },
+        "validation": [
+          {
+            "id": "acid-aliquot-recorded",
+            "type": "measurementRecorded",
+            "label": "Acid aliquot volume recorded.",
+            "measurementId": "acid-aliquot-volume"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Acid aliquot checkpoint passed.",
+          "retry": "Measure the configured acid aliquot before proceeding."
+        }
+      },
+      {
+        "id": "transfer-acid-flask-node",
+        "type": "action",
+        "title": "Transfer acid to flask",
+        "description": "Pour the measured acid from the graduated cylinder into the Erlenmeyer flask.",
+        "actionId": "transfer-acid-flask",
+        "layout": {
+          "x": 340,
+          "y": 460,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "acid-transfer-complete",
+            "type": "actionEvidence",
+            "label": "Acid transfer completed.",
+            "actionId": "transfer-acid-flask"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Acid transfer checkpoint passed.",
+          "retry": "Transfer the acid aliquot into the Erlenmeyer flask."
+        }
+      },
+      {
+        "id": "add-indicator-node",
+        "type": "action",
+        "title": "Add indicator",
+        "description": "Add 1-2 drops of phenolphthalein indicator to the acid in the Erlenmeyer flask.",
+        "actionId": "add-indicator",
+        "layout": {
+          "x": 640,
+          "y": 460,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "indicator-added",
+            "type": "actionEvidence",
+            "label": "Indicator added.",
+            "actionId": "add-indicator"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Indicator checkpoint passed.",
+          "retry": "Add indicator to the flask before continuing."
+        }
+      },
+      {
+        "id": "position-flask-under-burette-node",
+        "type": "action",
+        "title": "Position the flask",
+        "description": "Place the Erlenmeyer flask beneath the mounted burette tip before opening the stopcock.",
+        "actionId": "position-flask-under-burette",
+        "layout": {
+          "x": 940,
+          "y": 460,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "titration-flask-positioned",
+            "type": "actionEvidence",
+            "label": "The titration flask is beneath the burette tip.",
+            "actionId": "position-flask-under-burette"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Flask-position checkpoint passed.",
+          "retry": "Seat the flask in the receiving position beneath the burette."
+        }
+      },
+      {
+        "id": "deliver-titrant-node",
+        "type": "action",
+        "title": "Dispense titrant",
+        "description": "Open the stopcock one drop at a time, using smaller additions as the pink begins to persist, then accept the endpoint. The number of drops depends on your own aliquot and your own initial reading.",
+        "actionId": "deliver-titrant",
+        "layout": {
+          "x": 40,
+          "y": 660,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "titrant-dispensed",
+            "type": "statePath",
+            "label": "Endpoint accepted.",
+            "path": "dropDispenses.deliver-titrant.accepted",
+            "equals": true
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Titrant delivery checkpoint passed.",
+          "retry": "Click the stopcock one drop at a time until the solution turns pale pink, then accept the endpoint."
+        }
+      },
+      {
+        "id": "confirm-endpoint-node",
+        "type": "checkpoint",
+        "title": "Confirm endpoint",
+        "description": "Confirm the persistent pale pink indicator state as qualitative endpoint evidence; do not infer a numeric pH from the color.",
+        "actionId": "confirm-endpoint",
+        "layout": {
+          "x": 340,
+          "y": 660,
+          "lane": "check",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "endpoint-notebook",
+            "type": "notebookEntry",
+            "label": "Endpoint observation recorded.",
+            "notebookTag": "endpoint"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Endpoint checkpoint passed.",
+          "retry": "Confirm and record endpoint evidence."
+        }
+      },
+      {
+        "id": "place-ph-meter-on-workbench-node",
+        "type": "action",
+        "title": "Place the pH meter",
+        "description": "Move the pH meter from the equipment shelf to a stable position on the workbench before handling its probe.",
+        "actionId": "place-ph-meter-on-workbench",
+        "layout": {
+          "x": 640,
+          "y": 660,
+          "lane": "check",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "ph-meter-placed",
+            "type": "actionEvidence",
+            "label": "The pH meter is on the workbench.",
+            "actionId": "place-ph-meter-on-workbench"
+          }
+        ],
+        "hints": [
+          "Drag the meter body to the workbench; the probe is immersed in a later step."
+        ],
+        "feedback": {
+          "success": "pH-meter placement checkpoint passed.",
+          "retry": "Place the pH meter on the workbench."
+        }
+      },
+      {
+        "id": "confirm-ph-meter-ready-node",
+        "type": "teacherNote",
+        "title": "Confirm meter readiness",
+        "description": "Confirm that the teacher-approved calibration, rinsing, readiness, and stability rules have been satisfied. This exercise supplies none of those procedural values.",
+        "actionId": "confirm-ph-meter-ready",
+        "layout": {
+          "x": 940,
+          "y": 660,
+          "lane": "check",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "ph-meter-ready-notebook",
+            "type": "notebookEntry",
+            "label": "Teacher-approved meter readiness recorded.",
+            "notebookTag": "ph-meter-ready"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Meter-readiness checkpoint passed.",
+          "retry": "Confirm the teacher-approved meter rules before using the probe."
+        }
+      },
+      {
+        "id": "immerse-endpoint-ph-probe-node",
+        "type": "action",
+        "title": "Immerse the probe",
+        "description": "Manipulate the probe handle into the flask probe zone while leaving the pH meter body on the workbench.",
+        "actionId": "immerse-endpoint-ph-probe",
+        "layout": {
+          "x": 40,
+          "y": 860,
+          "lane": "check",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "endpoint-probe-immersed",
+            "type": "actionEvidence",
+            "label": "The pH probe is immersed in the endpoint mixture.",
+            "actionId": "immerse-endpoint-ph-probe"
+          }
+        ],
+        "hints": [
+          "Keyboard/touch: select the pH meter, select the flask, then choose Immerse probe."
+        ],
+        "feedback": {
+          "success": "Probe-immersion checkpoint passed.",
+          "retry": "Immerse only the probe in the flask probe zone."
+        }
+      },
+      {
+        "id": "read-endpoint-ph-node",
+        "type": "observation",
+        "title": "Read endpoint pH",
+        "description": "Read the ideal simulator-generated pH prediction calculated from the accepted delivered titrant volume.",
+        "actionId": "read-endpoint-ph",
+        "layout": {
+          "x": 340,
+          "y": 860,
+          "lane": "check",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "endpoint-ph-measured",
+            "type": "measurementRecorded",
+            "label": "Accepted-endpoint pH read from the meter.",
+            "measurementId": "endpoint-ph"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Endpoint-pH reading checkpoint passed.",
+          "retry": "Confirm readiness and probe immersion before reading."
+        }
+      },
+      {
+        "id": "record-endpoint-ph-node",
+        "type": "observation",
+        "title": "Record endpoint pH",
+        "description": "Copy the exact displayed endpoint-ph value into the notebook; do not replace it with the expected equivalence value.",
+        "actionId": "record-endpoint-ph",
+        "layout": {
+          "x": 640,
+          "y": 860,
+          "lane": "check",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "endpoint-ph-notebook",
+            "type": "notebookEntry",
+            "label": "Accepted-endpoint pH copied to the notebook.",
+            "notebookTag": "endpoint-ph"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Endpoint-pH record checkpoint passed.",
+          "retry": "Copy the displayed endpoint pH before proceeding."
+        }
+      },
+      {
+        "id": "record-final-burette-node",
+        "type": "observation",
+        "title": "Record final burette",
+        "description": "Record the final burette reading produced by the accepted endpoint.",
+        "actionId": "record-final-burette",
+        "layout": {
+          "x": 940,
+          "y": 860,
+          "lane": "check",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "final-burette-recorded",
+            "type": "measurementRecorded",
+            "label": "Final burette reading recorded.",
+            "measurementId": "burette-final-volume"
+          },
+          {
+            "id": "final-burette-notebook",
+            "type": "notebookEntry",
+            "label": "Final burette reading entered in notebook.",
+            "notebookTag": "burette-final-volume"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Final reading checkpoint passed.",
+          "retry": "Record the final burette reading."
+        }
+      },
+      {
+        "id": "calculate-acid-molarity-node",
+        "type": "calculation",
+        "title": "Calculate acid molarity",
+        "description": "Calculate the acid molarity from the measured acid volume and the NaOH volume delivered between your two burette readings.",
+        "actionId": "calculate-acid-molarity",
+        "layout": {
+          "x": 40,
+          "y": 1060,
+          "lane": "analysis",
+          "display": "expanded"
+        },
+        "config": {
+          "formula": "M_acid = M_base * (V_final - V_initial) / V_acid"
+        },
+        "validation": [
+          {
+            "id": "acid-molarity-valid",
+            "type": "calculationWithinTolerance",
+            "label": "Acid molarity is within tolerance.",
+            "calculationId": "acid-molarity",
+            "tolerance": 0.0005
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Molarity calculation checkpoint passed.",
+          "retry": "Check aliquot volume and burette readings before recalculating."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "place-ring-stand-node",
+        "to": "mount-burette-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "mount-burette-node",
+        "to": "seat-burette-funnel-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+    {
+      "from": "seat-burette-funnel-node",
+      "to": "condition-burette-node",
+      "label": "Next",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "from": "condition-burette-node",
+      "to": "fill-burette-node",
+      "label": "Next",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "from": "fill-burette-node",
+      "to": "remove-burette-funnel-node",
+      "label": "Next",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "from": "remove-burette-funnel-node",
+      "to": "read-initial-burette-node",
+      "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "read-initial-burette-node",
+        "to": "record-initial-burette-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-initial-burette-node",
+        "to": "measure-acid-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "measure-acid-node",
+        "to": "transfer-acid-flask-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "transfer-acid-flask-node",
+        "to": "add-indicator-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "add-indicator-node",
+        "to": "position-flask-under-burette-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "position-flask-under-burette-node",
+        "to": "deliver-titrant-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "deliver-titrant-node",
+        "to": "confirm-endpoint-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "confirm-endpoint-node",
+        "to": "place-ph-meter-on-workbench-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "place-ph-meter-on-workbench-node",
+        "to": "confirm-ph-meter-ready-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "confirm-ph-meter-ready-node",
+        "to": "immerse-endpoint-ph-probe-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "immerse-endpoint-ph-probe-node",
+        "to": "read-endpoint-ph-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "read-endpoint-ph-node",
+        "to": "record-endpoint-ph-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-endpoint-ph-node",
+        "to": "record-final-burette-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-final-burette-node",
+        "to": "calculate-acid-molarity-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "confirm-endpoint-node",
+        "to": "deliver-titrant-node",
+        "label": "Adjust titration",
+        "condition": {
+          "type": "retry"
+        }
+      },
+      {
+        "from": "calculate-acid-molarity-node",
+        "to": "calculate-acid-molarity-node",
+        "label": "Retry calculation",
+        "condition": {
+          "type": "retry"
+        }
+      }
+    ]
+  },
+  "assessments": [
+    {
+      "id": "acid-molarity-assessment",
+      "type": "calculationWithinTolerance",
+      "label": "Acid molarity has been calculated within tolerance.",
+      "calculationId": "acid-molarity",
+      "tolerance": 0.0005
+    }
+  ],
+  "metadata": {
+    "version": "2.2.1",
+    "author": "Lab Studio",
+    "updatedAt": "2026-08-08T00:00:00.000Z",
+    "tags": [
+      "lab",
+      "diagram-authored",
+      "titration",
+      "technique-ref",
+      "filling-funnel",
+      "instrument-read"
+    ]
+  }
+}

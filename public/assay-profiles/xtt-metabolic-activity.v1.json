@@ -1,0 +1,117 @@
+{
+  "schema": "assay-studio.protocol-profile",
+  "schemaVersion": "1.0",
+  "id": "assay.profile.xtt-metabolic-activity",
+  "version": "1.0.0",
+  "title": "XTT metabolic-activity normalization",
+  "workflow": "xtt-metabolic-activity",
+  "useBoundary": "education",
+  "sourceReferences": [
+    {
+      "id": "nih-agm-cell-viability",
+      "title": "Assay Guidance Manual: Cell Viability Assays",
+      "organization": "NCBI Bookshelf / Assay Guidance Manual",
+      "url": "https://www.ncbi.nlm.nih.gov/books/NBK144065/",
+      "versionOrAccessDate": "accessed 2026-07-26",
+      "supports": [
+        "Tetrazolium-reduction assays report metabolic activity associated with viable cells.",
+        "Assay conditions, controls, signal range, and interference must be protocol-specific."
+      ]
+    }
+  ],
+  "requiredControls": [
+    { "role": "blank", "minimumCount": 1, "expectedSignal": "low" },
+    { "role": "positiveControl", "minimumCount": 1, "expectedSignal": "high" }
+  ],
+  "readouts": [
+    {
+      "id": "xtt-signal",
+      "label": "Protocol-supplied XTT signal",
+      "kind": "continuous-signal",
+      "allowedUnits": ["AU", "absorbance", "image-intensity"],
+      "allowedSourceTypes": ["instrument-export", "image-derived", "manual", "synthetic"],
+      "channelRequirement": "required",
+      "interpretation": "A protocol-dependent signal associated with metabolic activity; it is not a direct cell count."
+    }
+  ],
+  "blankControlRole": "blank",
+  "referenceControlRole": "positiveControl",
+  "metricRules": [
+    {
+      "id": "percent-metabolic-activity",
+      "label": "Percent metabolic activity",
+      "unit": "%",
+      "expression": {
+        "type": "multiply",
+        "left": {
+          "type": "divide",
+          "left": {
+            "type": "subtract",
+            "left": { "type": "input", "input": "observed" },
+            "right": { "type": "input", "input": "blankMean" }
+          },
+          "right": {
+            "type": "subtract",
+            "left": { "type": "input", "input": "referenceMean" },
+            "right": { "type": "input", "input": "blankMean" }
+          }
+        },
+        "right": { "type": "constant", "value": "100" }
+      },
+      "interpretation": "Blank-corrected signal relative to the profile-selected reference control."
+    },
+    {
+      "id": "percent-metabolic-inhibition",
+      "label": "Percent metabolic inhibition",
+      "unit": "%",
+      "expression": {
+        "type": "subtract",
+        "left": { "type": "constant", "value": "100" },
+        "right": {
+          "type": "multiply",
+          "left": {
+            "type": "divide",
+            "left": {
+              "type": "subtract",
+              "left": { "type": "input", "input": "observed" },
+              "right": { "type": "input", "input": "blankMean" }
+            },
+            "right": {
+              "type": "subtract",
+              "left": { "type": "input", "input": "referenceMean" },
+              "right": { "type": "input", "input": "blankMean" }
+            }
+          },
+          "right": { "type": "constant", "value": "100" }
+        }
+      },
+      "interpretation": "One hundred minus protocol-normalized metabolic activity."
+    }
+  ],
+  "endpointRules": [],
+  "roundingPolicy": { "mode": "round", "decimalPlaces": 4, "tieBreaking": "half-even" },
+  "validityRange": [
+    "Only reviewed observations from one explicitly selected channel and unit.",
+    "The supplying protocol must declare wavelength or image channel, incubation, reagent conditions, control design, and usable signal range."
+  ],
+  "materialDefaults": [
+    {
+      "resourceClass": "reagent",
+      "label": "XTT reagent system",
+      "quantityStatus": "protocol-supplied-required",
+      "note": "No reagent amount or incubation default is bundled."
+    },
+    {
+      "resourceClass": "instrument",
+      "label": "Compatible readout instrument or reviewed image method",
+      "quantityStatus": "protocol-supplied-required",
+      "note": "The active protocol must supply readout settings."
+    }
+  ],
+  "limitations": [
+    "XTT output is a protocol-dependent metabolic-activity proxy, not a direct cell count.",
+    "No universal wavelength, incubation time, signal threshold, linear range, or acceptance criterion is bundled.",
+    "Image-derived intensity remains distinguishable from instrument-exported signal and is not automatically equivalent to absorbance.",
+    "The profile is educational and non-clinical; it supplies no diagnosis or treatment advice."
+  ]
+}

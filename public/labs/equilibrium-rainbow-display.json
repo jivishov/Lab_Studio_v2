@@ -1,0 +1,2919 @@
+{
+  "id": "equilibrium-rainbow-display",
+  "title": "Equilibrium Rainbow Display",
+  "description": "Investigate six reversible chemical systems one tray at a time, prepare source-faithful stocks, predict and apply teacher-approved stresses, record equilibrium evidence and uncertainty, and design an evidence-backed six-color display.",
+  "audience": "Advanced high-school chemistry learners studying dynamic equilibrium, equilibrium expressions, and Le Châtelier responses.",
+  "learningGoals": [
+    "Predict and explain qualitative equilibrium shifts caused by concentration, removal, temperature, and pressure-volume changes.",
+    "Prepare the six source-stated stock systems with correct stated quantities, sequence, safety constraints, and approximation language.",
+    "Distinguish observation from explanation and use color only as qualitative evidence for relative species changes.",
+    "Design and defend a six-color display that uses red, orange, yellow, green, blue, and violet while maximizing distinct approved stress types."
+  ],
+  "safetyNotes": [
+    "Splash-proof goggles are mandatory; glove use is optional in the source procedure.",
+    "Some solutions can cause skin burns and eye damage. Wash skin contact with copious water.",
+    "Turn off all flames before handling 95% ethanol.",
+    "Concentrated ammonia and 12 M HCl require teacher approval and small, dropwise additions while stirring.",
+    "Direct the syringe away from people and toward a wall or floor before changing pressure.",
+    "Only instructor-configured disposal procedures are represented; no drain-disposal rule is assumed."
+  ],
+  "equipment": [
+    "sample-rack",
+    "analytical-balance",
+    "graduated-cylinder-25ml",
+    "thermometer",
+    "stirring-rod",
+    "distilled-water-bottle",
+    "reagent-tray",
+    "beaker-250ml",
+    "test-tube",
+    "dropper-bottle",
+    "reagent-bottle",
+    "small-vial",
+    "luer-lock-syringe",
+    "locking-nail"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "rack-working",
+        "definitionId": "sample-rack",
+        "label": "Working tube rack",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "rack-display",
+        "definitionId": "sample-rack",
+        "label": "Final rainbow display rack",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "balance",
+        "definitionId": "analytical-balance",
+        "label": "Analytical balance",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "cylinder-25ml",
+        "definitionId": "graduated-cylinder-25ml",
+        "label": "25 mL graduated cylinder",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "thermometer",
+        "definitionId": "thermometer",
+        "label": "Bath thermometer",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "stirring-rod",
+        "definitionId": "stirring-rod",
+        "label": "Stirring rod",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "distilled-water",
+        "definitionId": "distilled-water-bottle",
+        "label": "Distilled water",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "distilled water",
+          "volumeMl": 500,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "tray-btb",
+        "definitionId": "reagent-tray",
+        "label": "Bromothymol blue tray",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "tray-iron",
+        "definitionId": "reagent-tray",
+        "label": "Iron-thiocyanate tray",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "tray-copper-ammonia",
+        "definitionId": "reagent-tray",
+        "label": "Copper-ammonia tray",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "tray-copper-chloride",
+        "definitionId": "reagent-tray",
+        "label": "Copper-chloride tray",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "tray-cobalt",
+        "definitionId": "reagent-tray",
+        "label": "Cobalt-chloride tray",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "tray-soda",
+        "definitionId": "reagent-tray",
+        "label": "Soda-water pressure tray",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "beaker-btb-stock",
+        "definitionId": "beaker-250ml",
+        "label": "Bromothymol blue stock beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "beaker-iron-stock",
+        "definitionId": "beaker-250ml",
+        "label": "Iron-thiocyanate stock beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "beaker-copper-ammonia-stock",
+        "definitionId": "beaker-250ml",
+        "label": "Copper-ammonia stock beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "beaker-copper-chloride-stock",
+        "definitionId": "beaker-250ml",
+        "label": "Copper-chloride stock beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "beaker-cobalt-stock",
+        "definitionId": "beaker-250ml",
+        "label": "Cobalt-chloride stock beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "beaker-soda-stock",
+        "definitionId": "beaker-250ml",
+        "label": "Soda-water mixing beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "tube-btb-acid",
+        "definitionId": "test-tube",
+        "label": "Bromothymol blue acid trial",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "tube-btb-base",
+        "definitionId": "test-tube",
+        "label": "Bromothymol blue base trial",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "tube-btb-control",
+        "definitionId": "test-tube",
+        "label": "Bromothymol blue sodium chloride comparison",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "tube-iron-reactant",
+        "definitionId": "test-tube",
+        "label": "Iron-thiocyanate reactant-addition trial",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "tube-iron-removal",
+        "definitionId": "test-tube",
+        "label": "Iron-thiocyanate phosphate-removal trial",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "tube-copper-ammonia-ligand",
+        "definitionId": "test-tube",
+        "label": "Copper-ammonia additional-ligand trial",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "tube-copper-ammonia-acid",
+        "definitionId": "test-tube",
+        "label": "Copper-ammonia acid trial",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "tube-copper-chloride-hcl",
+        "definitionId": "test-tube",
+        "label": "Copper-chloride concentrated-HCl trial",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "tube-copper-chloride-water",
+        "definitionId": "test-tube",
+        "label": "Copper-chloride water trial",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "tube-cobalt-hot",
+        "definitionId": "test-tube",
+        "label": "Cobalt-chloride hot-bath trial",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "tube-cobalt-water",
+        "definitionId": "test-tube",
+        "label": "Cobalt-chloride water trial",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "tube-cobalt-chloride",
+        "definitionId": "test-tube",
+        "label": "Cobalt-chloride NaCl trial",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "tube-soda-pressure",
+        "definitionId": "test-tube",
+        "label": "Soda-water pressure display candidate",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "btb-dropper",
+        "definitionId": "dropper-bottle",
+        "label": "Bromothymol blue indicator",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "bromothymol blue indicator",
+          "volumeMl": 30,
+          "solutes": [
+            {
+              "id": "btb",
+              "label": "Bromothymol blue",
+              "amount": 0,
+              "unit": "mol"
+            }
+          ],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "equilibrium-green"
+        }
+      },
+      {
+        "id": "btb-hcl",
+        "definitionId": "dropper-bottle",
+        "label": "0.10 M HCl",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "0.10 M HCl",
+          "volumeMl": 15,
+          "solutes": [
+            {
+              "id": "hcl",
+              "label": "Hydrochloric acid",
+              "amount": 0.0015,
+              "unit": "mol"
+            }
+          ],
+          "concentration": {
+            "value": 0.1,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-solution"
+        }
+      },
+      {
+        "id": "btb-naoh",
+        "definitionId": "dropper-bottle",
+        "label": "0.10 M NaOH",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "0.10 M NaOH",
+          "volumeMl": 15,
+          "solutes": [
+            {
+              "id": "naoh",
+              "label": "Sodium hydroxide",
+              "amount": 0.0015,
+              "unit": "mol"
+            }
+          ],
+          "concentration": {
+            "value": 0.1,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-solution"
+        }
+      },
+      {
+        "id": "btb-nacl",
+        "definitionId": "dropper-bottle",
+        "label": "0.10 M NaCl",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "0.10 M NaCl",
+          "volumeMl": 15,
+          "solutes": [
+            {
+              "id": "nacl",
+              "label": "Sodium chloride",
+              "amount": 0.0015,
+              "unit": "mol"
+            }
+          ],
+          "concentration": {
+            "value": 0.1,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-solution"
+        }
+      },
+      {
+        "id": "kscn-solution",
+        "definitionId": "reagent-bottle",
+        "label": "0.10 M KSCN",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "0.10 M KSCN",
+          "volumeMl": 250,
+          "solutes": [
+            {
+              "id": "kscn",
+              "label": "Potassium thiocyanate",
+              "amount": 0.025,
+              "unit": "mol"
+            }
+          ],
+          "concentration": {
+            "value": 0.1,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-solution"
+        }
+      },
+      {
+        "id": "iron-nitrate",
+        "definitionId": "dropper-bottle",
+        "label": "0.20 M Fe(NO3)3",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "0.20 M Fe(NO3)3",
+          "volumeMl": 15,
+          "solutes": [
+            {
+              "id": "fe-no3",
+              "label": "Iron(III) nitrate",
+              "amount": 0.003,
+              "unit": "mol"
+            }
+          ],
+          "concentration": {
+            "value": 0.2,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "equilibrium-pale-yellow"
+        }
+      },
+      {
+        "id": "iron-kno3",
+        "definitionId": "dropper-bottle",
+        "label": "0.10 M KNO3",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "0.10 M KNO3",
+          "volumeMl": 15,
+          "solutes": [
+            {
+              "id": "kno3",
+              "label": "Potassium nitrate",
+              "amount": 0.0015,
+              "unit": "mol"
+            }
+          ],
+          "concentration": {
+            "value": 0.1,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-solution"
+        }
+      },
+      {
+        "id": "iron-kscn-solid",
+        "definitionId": "small-vial",
+        "label": "Solid KSCN",
+        "location": "shelf",
+        "contents": {
+          "kind": "solid",
+          "label": "solid KSCN",
+          "massG": 10,
+          "solutes": [
+            {
+              "id": "kscn-solid",
+              "label": "Potassium thiocyanate",
+              "amount": 10,
+              "unit": "g"
+            }
+          ],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "dry-solid"
+        }
+      },
+      {
+        "id": "iron-chloride-solid",
+        "definitionId": "small-vial",
+        "label": "Solid FeCl3",
+        "location": "shelf",
+        "contents": {
+          "kind": "solid",
+          "label": "solid FeCl3",
+          "massG": 10,
+          "solutes": [
+            {
+              "id": "fecl3",
+              "label": "Iron(III) chloride",
+              "amount": 10,
+              "unit": "g"
+            }
+          ],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "dry-solid"
+        }
+      },
+      {
+        "id": "sodium-phosphate",
+        "definitionId": "small-vial",
+        "label": "Teacher-selected sodium phosphate",
+        "location": "shelf",
+        "contents": {
+          "kind": "solid",
+          "label": "teacher-selected sodium phosphate",
+          "massG": 10,
+          "solutes": [
+            {
+              "id": "sodium-phosphate",
+              "label": "teacher-selected sodium phosphate",
+              "amount": 10,
+              "unit": "g"
+            }
+          ],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "dry-solid"
+        }
+      },
+      {
+        "id": "cuso4-solution",
+        "definitionId": "reagent-bottle",
+        "label": "0.25 M CuSO4",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "0.25 M CuSO4",
+          "volumeMl": 250,
+          "solutes": [
+            {
+              "id": "cuso4",
+              "label": "Copper(II) sulfate",
+              "amount": 0.0625,
+              "unit": "mol"
+            }
+          ],
+          "concentration": {
+            "value": 0.25,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "equilibrium-pale-blue"
+        }
+      },
+      {
+        "id": "concentrated-ammonia",
+        "definitionId": "dropper-bottle",
+        "label": "Concentrated NH3",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "concentrated NH3; concentration not specified by source",
+          "volumeMl": 15,
+          "solutes": [
+            {
+              "id": "nh3",
+              "label": "Ammonia",
+              "amount": 0,
+              "unit": "mol"
+            }
+          ],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-solution"
+        }
+      },
+      {
+        "id": "copper-ammonia-hcl",
+        "definitionId": "dropper-bottle",
+        "label": "1.0 M HCl",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "1.0 M HCl",
+          "volumeMl": 15,
+          "solutes": [
+            {
+              "id": "hcl-1m",
+              "label": "Hydrochloric acid",
+              "amount": 0.015,
+              "unit": "mol"
+            }
+          ],
+          "concentration": {
+            "value": 1,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-solution"
+        }
+      },
+      {
+        "id": "cucl2-solid",
+        "definitionId": "small-vial",
+        "label": "Solid CuCl2·2H2O",
+        "location": "shelf",
+        "contents": {
+          "kind": "solid",
+          "label": "solid CuCl2·2H2O",
+          "massG": 10,
+          "solutes": [
+            {
+              "id": "cucl2",
+              "label": "Copper(II) chloride dihydrate",
+              "amount": 10,
+              "unit": "g"
+            }
+          ],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "dry-solid"
+        }
+      },
+      {
+        "id": "concentrated-hcl",
+        "definitionId": "dropper-bottle",
+        "label": "12 M HCl",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "12 M HCl",
+          "volumeMl": 15,
+          "solutes": [
+            {
+              "id": "hcl-12m",
+              "label": "Hydrochloric acid",
+              "amount": 0.18,
+              "unit": "mol"
+            }
+          ],
+          "concentration": {
+            "value": 12,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-solution"
+        }
+      },
+      {
+        "id": "cocl2-solid",
+        "definitionId": "small-vial",
+        "label": "Solid CoCl2·6H2O",
+        "location": "shelf",
+        "contents": {
+          "kind": "solid",
+          "label": "solid CoCl2·6H2O",
+          "massG": 10,
+          "solutes": [
+            {
+              "id": "cocl2",
+              "label": "Cobalt(II) chloride hexahydrate",
+              "amount": 10,
+              "unit": "g"
+            }
+          ],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "dry-solid"
+        }
+      },
+      {
+        "id": "ethanol-95",
+        "definitionId": "reagent-bottle",
+        "label": "95% ethanol",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "95% ethanol",
+          "volumeMl": 250,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "cobalt-nacl",
+        "definitionId": "small-vial",
+        "label": "Solid NaCl",
+        "location": "shelf",
+        "contents": {
+          "kind": "solid",
+          "label": "solid NaCl",
+          "massG": 10,
+          "solutes": [
+            {
+              "id": "nacl-solid",
+              "label": "Sodium chloride",
+              "amount": 10,
+              "unit": "g"
+            }
+          ],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "dry-solid"
+        }
+      },
+      {
+        "id": "cobalt-acetone",
+        "definitionId": "dropper-bottle",
+        "label": "Acetone",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "acetone",
+          "volumeMl": 30,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "cobalt-agno3",
+        "definitionId": "dropper-bottle",
+        "label": "0.10 M AgNO3",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "0.10 M AgNO3",
+          "volumeMl": 15,
+          "solutes": [
+            {
+              "id": "agno3",
+              "label": "Silver nitrate",
+              "amount": 0.0015,
+              "unit": "mol"
+            }
+          ],
+          "concentration": {
+            "value": 0.1,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-solution"
+        }
+      },
+      {
+        "id": "hot-water-bath",
+        "definitionId": "beaker-250ml",
+        "label": "Teacher-configured hot-water bath",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "hot-water bath; temperature recorded by student",
+          "volumeMl": 180,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "ice-water-bath",
+        "definitionId": "beaker-250ml",
+        "label": "Ice-water bath",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "ice-water bath; temperature recorded by student",
+          "volumeMl": 180,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "soda-water",
+        "definitionId": "reagent-bottle",
+        "label": "Cold fresh soda water",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "cold fresh soda water",
+          "volumeMl": 120,
+          "solutes": [
+            {
+              "id": "dissolved-co2",
+              "label": "Dissolved carbon dioxide",
+              "amount": 0,
+              "unit": "mol"
+            }
+          ],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-solution"
+        }
+      },
+      {
+        "id": "methyl-red",
+        "definitionId": "dropper-bottle",
+        "label": "Methyl red indicator",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "methyl red indicator",
+          "volumeMl": 15,
+          "solutes": [
+            {
+              "id": "methyl-red",
+              "label": "Methyl red",
+              "amount": 0,
+              "unit": "mol"
+            }
+          ],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "equilibrium-red"
+        }
+      },
+      {
+        "id": "soda-syringe",
+        "definitionId": "luer-lock-syringe",
+        "label": "Modified Luer Lock syringe",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "syringe-empty"
+        }
+      },
+      {
+        "id": "locking-nail",
+        "definitionId": "locking-nail",
+        "label": "Syringe locking nail",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "techniques": [],
+  "actions": [],
+  "process": {
+    "startNodeId": "place-working-rack-node",
+    "nodes": [],
+    "edges": []
+  },
+  "assessments": [],
+  "metadata": {
+    "version": "2.3.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-08-05T00:00:00.000Z",
+    "tags": [
+      "chemistry",
+      "equilibrium",
+      "inquiry",
+      "le-chatelier",
+      "rainbow-display",
+      "student-evidence",
+      "session-configuration",
+      "cycle-09",
+      "evidence-driven-inquiry"
+    ]
+  },
+  "techniqueInstances": [
+    {
+      "instanceId": "equilibrium",
+      "techniqueId": "equilibrium-rainbow-inquiry",
+      "version": "2.3.0",
+      "bindings": {
+        "equipment": {
+          "equilibrium-rack": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "rack-working",
+                "definitionId": "sample-rack",
+                "instanceId": "rack-working"
+              },
+              {
+                "sourceInstanceId": "rack-display",
+                "definitionId": "sample-rack",
+                "instanceId": "rack-display"
+              }
+            ]
+          },
+          "equilibrium-reagent-tray": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "tray-btb",
+                "definitionId": "reagent-tray",
+                "instanceId": "tray-btb"
+              },
+              {
+                "sourceInstanceId": "tray-iron",
+                "definitionId": "reagent-tray",
+                "instanceId": "tray-iron"
+              },
+              {
+                "sourceInstanceId": "tray-copper-ammonia",
+                "definitionId": "reagent-tray",
+                "instanceId": "tray-copper-ammonia"
+              },
+              {
+                "sourceInstanceId": "tray-copper-chloride",
+                "definitionId": "reagent-tray",
+                "instanceId": "tray-copper-chloride"
+              },
+              {
+                "sourceInstanceId": "tray-cobalt",
+                "definitionId": "reagent-tray",
+                "instanceId": "tray-cobalt"
+              },
+              {
+                "sourceInstanceId": "tray-soda",
+                "definitionId": "reagent-tray",
+                "instanceId": "tray-soda"
+              }
+            ]
+          },
+          "equilibrium-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "beaker-btb-stock",
+                "definitionId": "beaker-250ml",
+                "instanceId": "beaker-btb-stock"
+              },
+              {
+                "sourceInstanceId": "tube-btb-acid",
+                "definitionId": "test-tube",
+                "instanceId": "tube-btb-acid"
+              },
+              {
+                "sourceInstanceId": "tube-btb-base",
+                "definitionId": "test-tube",
+                "instanceId": "tube-btb-base"
+              },
+              {
+                "sourceInstanceId": "tube-btb-control",
+                "definitionId": "test-tube",
+                "instanceId": "tube-btb-control"
+              },
+              {
+                "sourceInstanceId": "beaker-iron-stock",
+                "definitionId": "beaker-250ml",
+                "instanceId": "beaker-iron-stock"
+              },
+              {
+                "sourceInstanceId": "tube-iron-reactant",
+                "definitionId": "test-tube",
+                "instanceId": "tube-iron-reactant"
+              },
+              {
+                "sourceInstanceId": "tube-iron-removal",
+                "definitionId": "test-tube",
+                "instanceId": "tube-iron-removal"
+              },
+              {
+                "sourceInstanceId": "beaker-copper-ammonia-stock",
+                "definitionId": "beaker-250ml",
+                "instanceId": "beaker-copper-ammonia-stock"
+              },
+              {
+                "sourceInstanceId": "tube-copper-ammonia-ligand",
+                "definitionId": "test-tube",
+                "instanceId": "tube-copper-ammonia-ligand"
+              },
+              {
+                "sourceInstanceId": "tube-copper-ammonia-acid",
+                "definitionId": "test-tube",
+                "instanceId": "tube-copper-ammonia-acid"
+              },
+              {
+                "sourceInstanceId": "beaker-copper-chloride-stock",
+                "definitionId": "beaker-250ml",
+                "instanceId": "beaker-copper-chloride-stock"
+              },
+              {
+                "sourceInstanceId": "tube-copper-chloride-hcl",
+                "definitionId": "test-tube",
+                "instanceId": "tube-copper-chloride-hcl"
+              },
+              {
+                "sourceInstanceId": "tube-copper-chloride-water",
+                "definitionId": "test-tube",
+                "instanceId": "tube-copper-chloride-water"
+              },
+              {
+                "sourceInstanceId": "beaker-cobalt-stock",
+                "definitionId": "beaker-250ml",
+                "instanceId": "beaker-cobalt-stock"
+              },
+              {
+                "sourceInstanceId": "tube-cobalt-hot",
+                "definitionId": "test-tube",
+                "instanceId": "tube-cobalt-hot"
+              },
+              {
+                "sourceInstanceId": "tube-cobalt-water",
+                "definitionId": "test-tube",
+                "instanceId": "tube-cobalt-water"
+              },
+              {
+                "sourceInstanceId": "tube-cobalt-chloride",
+                "definitionId": "test-tube",
+                "instanceId": "tube-cobalt-chloride"
+              },
+              {
+                "sourceInstanceId": "beaker-soda-stock",
+                "definitionId": "beaker-250ml",
+                "instanceId": "beaker-soda-stock"
+              },
+              {
+                "sourceInstanceId": "soda-syringe",
+                "definitionId": "luer-lock-syringe",
+                "instanceId": "soda-syringe"
+              },
+              {
+                "sourceInstanceId": "tube-soda-pressure",
+                "definitionId": "test-tube",
+                "instanceId": "tube-soda-pressure"
+              }
+            ]
+          },
+          "variable-volume-measuring-device": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "cylinder-25ml",
+                "definitionId": "graduated-cylinder-25ml",
+                "instanceId": "cylinder-25ml"
+              }
+            ]
+          },
+          "liquid-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "distilled-water",
+                "definitionId": "distilled-water-bottle",
+                "instanceId": "distilled-water"
+              },
+              {
+                "sourceInstanceId": "btb-dropper",
+                "definitionId": "dropper-bottle",
+                "instanceId": "btb-dropper"
+              },
+              {
+                "sourceInstanceId": "kscn-solution",
+                "definitionId": "reagent-bottle",
+                "instanceId": "kscn-solution"
+              },
+              {
+                "sourceInstanceId": "cuso4-solution",
+                "definitionId": "reagent-bottle",
+                "instanceId": "cuso4-solution"
+              },
+              {
+                "sourceInstanceId": "ethanol-95",
+                "definitionId": "reagent-bottle",
+                "instanceId": "ethanol-95"
+              },
+              {
+                "sourceInstanceId": "soda-water",
+                "definitionId": "reagent-bottle",
+                "instanceId": "soda-water"
+              },
+              {
+                "sourceInstanceId": "methyl-red",
+                "definitionId": "dropper-bottle",
+                "instanceId": "methyl-red"
+              }
+            ]
+          },
+          "stress-reagent-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "btb-hcl",
+                "definitionId": "dropper-bottle",
+                "instanceId": "btb-hcl"
+              },
+              {
+                "sourceInstanceId": "btb-naoh",
+                "definitionId": "dropper-bottle",
+                "instanceId": "btb-naoh"
+              },
+              {
+                "sourceInstanceId": "btb-nacl",
+                "definitionId": "dropper-bottle",
+                "instanceId": "btb-nacl"
+              },
+              {
+                "sourceInstanceId": "iron-nitrate",
+                "definitionId": "dropper-bottle",
+                "instanceId": "iron-nitrate"
+              },
+              {
+                "sourceInstanceId": "iron-chloride-solid",
+                "definitionId": "small-vial",
+                "instanceId": "iron-chloride-solid"
+              },
+              {
+                "sourceInstanceId": "sodium-phosphate",
+                "definitionId": "small-vial",
+                "instanceId": "sodium-phosphate"
+              },
+              {
+                "sourceInstanceId": "concentrated-ammonia",
+                "definitionId": "dropper-bottle",
+                "instanceId": "concentrated-ammonia"
+              },
+              {
+                "sourceInstanceId": "copper-ammonia-hcl",
+                "definitionId": "dropper-bottle",
+                "instanceId": "copper-ammonia-hcl"
+              },
+              {
+                "sourceInstanceId": "concentrated-hcl",
+                "definitionId": "dropper-bottle",
+                "instanceId": "concentrated-hcl"
+              },
+              {
+                "sourceInstanceId": "cobalt-nacl",
+                "definitionId": "small-vial",
+                "instanceId": "cobalt-nacl"
+              }
+            ]
+          },
+          "balance-instrument": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "balance",
+                "definitionId": "analytical-balance",
+                "instanceId": "balance"
+              }
+            ]
+          },
+          "solid-reagent-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "cucl2-solid",
+                "definitionId": "small-vial",
+                "instanceId": "cucl2-solid"
+              },
+              {
+                "sourceInstanceId": "cocl2-solid",
+                "definitionId": "small-vial",
+                "instanceId": "cocl2-solid"
+              }
+            ]
+          },
+          "thermal-bath": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "hot-water-bath",
+                "definitionId": "beaker-250ml",
+                "instanceId": "hot-water-bath"
+              },
+              {
+                "sourceInstanceId": "ice-water-bath",
+                "definitionId": "beaker-250ml",
+                "instanceId": "ice-water-bath"
+              }
+            ]
+          },
+          "thermal-bath-instrument": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "thermometer",
+                "definitionId": "thermometer",
+                "instanceId": "thermometer"
+              }
+            ]
+          },
+          "locking-pin": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "locking-nail",
+                "definitionId": "locking-nail",
+                "instanceId": "locking-nail"
+              }
+            ]
+          }
+        },
+        "models": {},
+        "configuration": {}
+      },
+      "preserveIds": {
+        "actions": {
+          "place-working-rack": "place-working-rack",
+          "place-display-rack": "place-display-rack",
+          "confirm-required-safety": "confirm-required-safety",
+          "choose-gloves": "choose-gloves",
+          "select-btb-tray": "select-btb-tray",
+          "inspect-btb-tray": "inspect-btb-tray",
+          "predict-btb-stresses": "predict-btb-stresses",
+          "approve-btb-stresses": "approve-btb-stresses",
+          "place-btb-stock-beaker": "place-btb-stock-beaker",
+          "btb-measure-water": "btb-measure-water",
+          "btb-transfer-water": "btb-transfer-water",
+          "btb-measure-indicator": "btb-measure-indicator",
+          "btb-add-indicator": "btb-add-indicator",
+          "btb-mix-stock": "btb-mix-stock",
+          "place-tube-btb-acid": "place-tube-btb-acid",
+          "aliquot-tube-btb-acid": "aliquot-tube-btb-acid",
+          "place-tube-btb-base": "place-tube-btb-base",
+          "aliquot-tube-btb-base": "aliquot-tube-btb-base",
+          "place-tube-btb-control": "place-tube-btb-control",
+          "aliquot-tube-btb-control": "aliquot-tube-btb-control",
+          "stress-btb-acid": "stress-btb-acid",
+          "stress-btb-base": "stress-btb-base",
+          "stress-btb-control": "stress-btb-control",
+          "btb-record-equation-species": "btb-record-equation-species",
+          "btb-record-stress-observation": "btb-record-stress-observation",
+          "btb-record-explanation-order": "btb-record-explanation-order",
+          "btb-record-method-uncertainty": "btb-record-method-uncertainty",
+          "return-btb-tray": "return-btb-tray",
+          "select-iron-tray": "select-iron-tray",
+          "inspect-iron-tray": "inspect-iron-tray",
+          "predict-iron-stresses": "predict-iron-stresses",
+          "approve-iron-stresses": "approve-iron-stresses",
+          "place-iron-stock-beaker": "place-iron-stock-beaker",
+          "iron-measure-kscn": "iron-measure-kscn",
+          "iron-transfer-kscn": "iron-transfer-kscn",
+          "iron-measure-water": "iron-measure-water",
+          "iron-add-water": "iron-add-water",
+          "iron-add-five-drops": "iron-add-five-drops",
+          "place-tube-iron-reactant": "place-tube-iron-reactant",
+          "aliquot-tube-iron-reactant": "aliquot-tube-iron-reactant",
+          "place-tube-iron-removal": "place-tube-iron-removal",
+          "aliquot-tube-iron-removal": "aliquot-tube-iron-removal",
+          "stress-iron-reactant": "stress-iron-reactant",
+          "stress-iron-removal": "stress-iron-removal",
+          "iron-record-equation-species": "iron-record-equation-species",
+          "iron-record-stress-observation": "iron-record-stress-observation",
+          "iron-record-explanation-order": "iron-record-explanation-order",
+          "iron-record-method-uncertainty": "iron-record-method-uncertainty",
+          "return-iron-tray": "return-iron-tray",
+          "select-copper-ammonia-tray": "select-copper-ammonia-tray",
+          "inspect-copper-ammonia-tray": "inspect-copper-ammonia-tray",
+          "predict-copper-ammonia-stresses": "predict-copper-ammonia-stresses",
+          "approve-copper-ammonia-stresses": "approve-copper-ammonia-stresses",
+          "place-copper-ammonia-stock-beaker": "place-copper-ammonia-stock-beaker",
+          "copper-ammonia-measure-cuso4": "copper-ammonia-measure-cuso4",
+          "copper-ammonia-transfer-cuso4": "copper-ammonia-transfer-cuso4",
+          "copper-ammonia-form-precipitate": "copper-ammonia-form-precipitate",
+          "copper-ammonia-dissolve-precipitate": "copper-ammonia-dissolve-precipitate",
+          "place-tube-copper-ammonia-ligand": "place-tube-copper-ammonia-ligand",
+          "aliquot-tube-copper-ammonia-ligand": "aliquot-tube-copper-ammonia-ligand",
+          "place-tube-copper-ammonia-acid": "place-tube-copper-ammonia-acid",
+          "aliquot-tube-copper-ammonia-acid": "aliquot-tube-copper-ammonia-acid",
+          "stress-copper-ammonia-ligand": "stress-copper-ammonia-ligand",
+          "stress-copper-ammonia-acid": "stress-copper-ammonia-acid",
+          "copper-ammonia-record-equation-species": "copper-ammonia-record-equation-species",
+          "copper-ammonia-record-stress-observation": "copper-ammonia-record-stress-observation",
+          "copper-ammonia-record-explanation-order": "copper-ammonia-record-explanation-order",
+          "copper-ammonia-record-method-uncertainty": "copper-ammonia-record-method-uncertainty",
+          "return-copper-ammonia-tray": "return-copper-ammonia-tray",
+          "select-copper-chloride-tray": "select-copper-chloride-tray",
+          "inspect-copper-chloride-tray": "inspect-copper-chloride-tray",
+          "predict-copper-chloride-stresses": "predict-copper-chloride-stresses",
+          "approve-copper-chloride-stresses": "approve-copper-chloride-stresses",
+          "place-copper-chloride-stock-beaker": "place-copper-chloride-stock-beaker",
+          "copper-chloride-weigh-solid": "copper-chloride-weigh-solid",
+          "copper-chloride-measure-water": "copper-chloride-measure-water",
+          "copper-chloride-transfer-water": "copper-chloride-transfer-water",
+          "copper-chloride-add-solid": "copper-chloride-add-solid",
+          "copper-chloride-mix-stock": "copper-chloride-mix-stock",
+          "place-tube-copper-chloride-hcl": "place-tube-copper-chloride-hcl",
+          "aliquot-tube-copper-chloride-hcl": "aliquot-tube-copper-chloride-hcl",
+          "place-tube-copper-chloride-water": "place-tube-copper-chloride-water",
+          "aliquot-tube-copper-chloride-water": "aliquot-tube-copper-chloride-water",
+          "stress-copper-chloride-hcl": "stress-copper-chloride-hcl",
+          "stress-copper-chloride-water": "stress-copper-chloride-water",
+          "copper-chloride-record-equation-species": "copper-chloride-record-equation-species",
+          "copper-chloride-record-stress-observation": "copper-chloride-record-stress-observation",
+          "copper-chloride-record-explanation-order": "copper-chloride-record-explanation-order",
+          "copper-chloride-record-method-uncertainty": "copper-chloride-record-method-uncertainty",
+          "return-copper-chloride-tray": "return-copper-chloride-tray",
+          "select-cobalt-tray": "select-cobalt-tray",
+          "inspect-cobalt-tray": "inspect-cobalt-tray",
+          "predict-cobalt-stresses": "predict-cobalt-stresses",
+          "approve-cobalt-stresses": "approve-cobalt-stresses",
+          "place-cobalt-stock-beaker": "place-cobalt-stock-beaker",
+          "cobalt-weigh-solid": "cobalt-weigh-solid",
+          "cobalt-measure-ethanol": "cobalt-measure-ethanol",
+          "cobalt-transfer-ethanol": "cobalt-transfer-ethanol",
+          "cobalt-add-solid": "cobalt-add-solid",
+          "cobalt-mix-stock": "cobalt-mix-stock",
+          "place-tube-cobalt-hot": "place-tube-cobalt-hot",
+          "aliquot-tube-cobalt-hot": "aliquot-tube-cobalt-hot",
+          "place-tube-cobalt-water": "place-tube-cobalt-water",
+          "aliquot-tube-cobalt-water": "aliquot-tube-cobalt-water",
+          "place-tube-cobalt-chloride": "place-tube-cobalt-chloride",
+          "aliquot-tube-cobalt-chloride": "aliquot-tube-cobalt-chloride",
+          "place-hot-bath": "place-hot-bath",
+          "place-ice-bath": "place-ice-bath",
+          "place-thermometer": "place-thermometer",
+          "check-bath-conditions": "check-bath-conditions",
+          "stress-cobalt-hot": "stress-cobalt-hot",
+          "stress-cobalt-water": "stress-cobalt-water",
+          "stress-cobalt-chloride": "stress-cobalt-chloride",
+          "cobalt-record-equation-species": "cobalt-record-equation-species",
+          "cobalt-record-stress-observation": "cobalt-record-stress-observation",
+          "cobalt-record-explanation-order": "cobalt-record-explanation-order",
+          "cobalt-record-method-uncertainty": "cobalt-record-method-uncertainty",
+          "return-cobalt-tray": "return-cobalt-tray",
+          "select-soda-tray": "select-soda-tray",
+          "inspect-soda-tray": "inspect-soda-tray",
+          "predict-soda-pressure": "predict-soda-pressure",
+          "approve-soda-pressure": "approve-soda-pressure",
+          "place-soda-beaker": "place-soda-beaker",
+          "soda-measure-water": "soda-measure-water",
+          "soda-transfer-water": "soda-transfer-water",
+          "soda-measure-methyl-red": "soda-measure-methyl-red",
+          "soda-add-methyl-red": "soda-add-methyl-red",
+          "soda-mix-stock": "soda-mix-stock",
+          "place-empty-syringe": "place-empty-syringe",
+          "soda-draw-syringe": "soda-draw-syringe",
+          "soda-invert-syringe": "soda-invert-syringe",
+          "soda-expel-gas": "soda-expel-gas",
+          "soda-close-valve": "soda-close-valve",
+          "soda-point-away": "soda-point-away",
+          "soda-pull-plunger": "soda-pull-plunger",
+          "soda-insert-locking-nail": "soda-insert-locking-nail",
+          "soda-observe-before-shake": "soda-observe-before-shake",
+          "soda-shake-if-needed": "soda-shake-if-needed",
+          "place-soda-display-tube": "place-soda-display-tube",
+          "soda-transfer-display-sample": "soda-transfer-display-sample",
+          "soda-record-equation-species": "soda-record-equation-species",
+          "soda-record-stress-observation": "soda-record-stress-observation",
+          "soda-record-explanation-order": "soda-record-explanation-order",
+          "soda-record-method-uncertainty": "soda-record-method-uncertainty",
+          "return-soda-tray": "return-soda-tray",
+          "review-all-evidence": "review-all-evidence",
+          "select-red-candidate": "select-red-candidate",
+          "select-orange-candidate": "select-orange-candidate",
+          "select-yellow-candidate": "select-yellow-candidate",
+          "select-green-candidate": "select-green-candidate",
+          "select-blue-candidate": "select-blue-candidate",
+          "select-violet-candidate": "select-violet-candidate",
+          "check-stress-diversity": "check-stress-diversity",
+          "record-display-rationale": "record-display-rationale",
+          "display-red-candidate": "display-red-candidate",
+          "display-orange-candidate": "display-orange-candidate",
+          "display-yellow-candidate": "display-yellow-candidate",
+          "display-green-candidate": "display-green-candidate",
+          "display-blue-candidate": "display-blue-candidate",
+          "display-violet-candidate": "display-violet-candidate",
+          "submit-final-display": "submit-final-display",
+          "confirm-final-display-review": "confirm-final-display-review"
+        },
+        "nodes": {
+          "place-working-rack-node": "place-working-rack-node",
+          "place-display-rack-node": "place-display-rack-node",
+          "confirm-required-safety-node": "confirm-required-safety-node",
+          "choose-gloves-node": "choose-gloves-node",
+          "select-btb-tray-node": "select-btb-tray-node",
+          "inspect-btb-tray-node": "inspect-btb-tray-node",
+          "predict-btb-stresses-node": "predict-btb-stresses-node",
+          "approve-btb-stresses-node": "approve-btb-stresses-node",
+          "place-btb-stock-beaker-node": "place-btb-stock-beaker-node",
+          "btb-measure-water-node": "btb-measure-water-node",
+          "btb-transfer-water-node": "btb-transfer-water-node",
+          "btb-measure-indicator-node": "btb-measure-indicator-node",
+          "btb-add-indicator-node": "btb-add-indicator-node",
+          "btb-mix-stock-node": "btb-mix-stock-node",
+          "place-tube-btb-acid-node": "place-tube-btb-acid-node",
+          "aliquot-tube-btb-acid-node": "aliquot-tube-btb-acid-node",
+          "place-tube-btb-base-node": "place-tube-btb-base-node",
+          "aliquot-tube-btb-base-node": "aliquot-tube-btb-base-node",
+          "place-tube-btb-control-node": "place-tube-btb-control-node",
+          "aliquot-tube-btb-control-node": "aliquot-tube-btb-control-node",
+          "stress-btb-acid-node": "stress-btb-acid-node",
+          "stress-btb-base-node": "stress-btb-base-node",
+          "stress-btb-control-node": "stress-btb-control-node",
+          "btb-record-equation-species-node": "btb-record-equation-species-node",
+          "btb-record-stress-observation-node": "btb-record-stress-observation-node",
+          "btb-record-explanation-order-node": "btb-record-explanation-order-node",
+          "btb-record-method-uncertainty-node": "btb-record-method-uncertainty-node",
+          "return-btb-tray-node": "return-btb-tray-node",
+          "select-iron-tray-node": "select-iron-tray-node",
+          "inspect-iron-tray-node": "inspect-iron-tray-node",
+          "predict-iron-stresses-node": "predict-iron-stresses-node",
+          "approve-iron-stresses-node": "approve-iron-stresses-node",
+          "place-iron-stock-beaker-node": "place-iron-stock-beaker-node",
+          "iron-measure-kscn-node": "iron-measure-kscn-node",
+          "iron-transfer-kscn-node": "iron-transfer-kscn-node",
+          "iron-measure-water-node": "iron-measure-water-node",
+          "iron-add-water-node": "iron-add-water-node",
+          "iron-add-five-drops-node": "iron-add-five-drops-node",
+          "place-tube-iron-reactant-node": "place-tube-iron-reactant-node",
+          "aliquot-tube-iron-reactant-node": "aliquot-tube-iron-reactant-node",
+          "place-tube-iron-removal-node": "place-tube-iron-removal-node",
+          "aliquot-tube-iron-removal-node": "aliquot-tube-iron-removal-node",
+          "stress-iron-reactant-node": "stress-iron-reactant-node",
+          "stress-iron-removal-node": "stress-iron-removal-node",
+          "iron-record-equation-species-node": "iron-record-equation-species-node",
+          "iron-record-stress-observation-node": "iron-record-stress-observation-node",
+          "iron-record-explanation-order-node": "iron-record-explanation-order-node",
+          "iron-record-method-uncertainty-node": "iron-record-method-uncertainty-node",
+          "return-iron-tray-node": "return-iron-tray-node",
+          "select-copper-ammonia-tray-node": "select-copper-ammonia-tray-node",
+          "inspect-copper-ammonia-tray-node": "inspect-copper-ammonia-tray-node",
+          "predict-copper-ammonia-stresses-node": "predict-copper-ammonia-stresses-node",
+          "approve-copper-ammonia-stresses-node": "approve-copper-ammonia-stresses-node",
+          "place-copper-ammonia-stock-beaker-node": "place-copper-ammonia-stock-beaker-node",
+          "copper-ammonia-measure-cuso4-node": "copper-ammonia-measure-cuso4-node",
+          "copper-ammonia-transfer-cuso4-node": "copper-ammonia-transfer-cuso4-node",
+          "copper-ammonia-form-precipitate-node": "copper-ammonia-form-precipitate-node",
+          "copper-ammonia-dissolve-precipitate-node": "copper-ammonia-dissolve-precipitate-node",
+          "place-tube-copper-ammonia-ligand-node": "place-tube-copper-ammonia-ligand-node",
+          "aliquot-tube-copper-ammonia-ligand-node": "aliquot-tube-copper-ammonia-ligand-node",
+          "place-tube-copper-ammonia-acid-node": "place-tube-copper-ammonia-acid-node",
+          "aliquot-tube-copper-ammonia-acid-node": "aliquot-tube-copper-ammonia-acid-node",
+          "stress-copper-ammonia-ligand-node": "stress-copper-ammonia-ligand-node",
+          "stress-copper-ammonia-acid-node": "stress-copper-ammonia-acid-node",
+          "copper-ammonia-record-equation-species-node": "copper-ammonia-record-equation-species-node",
+          "copper-ammonia-record-stress-observation-node": "copper-ammonia-record-stress-observation-node",
+          "copper-ammonia-record-explanation-order-node": "copper-ammonia-record-explanation-order-node",
+          "copper-ammonia-record-method-uncertainty-node": "copper-ammonia-record-method-uncertainty-node",
+          "return-copper-ammonia-tray-node": "return-copper-ammonia-tray-node",
+          "select-copper-chloride-tray-node": "select-copper-chloride-tray-node",
+          "inspect-copper-chloride-tray-node": "inspect-copper-chloride-tray-node",
+          "predict-copper-chloride-stresses-node": "predict-copper-chloride-stresses-node",
+          "approve-copper-chloride-stresses-node": "approve-copper-chloride-stresses-node",
+          "place-copper-chloride-stock-beaker-node": "place-copper-chloride-stock-beaker-node",
+          "copper-chloride-weigh-solid-node": "copper-chloride-weigh-solid-node",
+          "copper-chloride-measure-water-node": "copper-chloride-measure-water-node",
+          "copper-chloride-transfer-water-node": "copper-chloride-transfer-water-node",
+          "copper-chloride-add-solid-node": "copper-chloride-add-solid-node",
+          "copper-chloride-mix-stock-node": "copper-chloride-mix-stock-node",
+          "place-tube-copper-chloride-hcl-node": "place-tube-copper-chloride-hcl-node",
+          "aliquot-tube-copper-chloride-hcl-node": "aliquot-tube-copper-chloride-hcl-node",
+          "place-tube-copper-chloride-water-node": "place-tube-copper-chloride-water-node",
+          "aliquot-tube-copper-chloride-water-node": "aliquot-tube-copper-chloride-water-node",
+          "stress-copper-chloride-hcl-node": "stress-copper-chloride-hcl-node",
+          "stress-copper-chloride-water-node": "stress-copper-chloride-water-node",
+          "copper-chloride-record-equation-species-node": "copper-chloride-record-equation-species-node",
+          "copper-chloride-record-stress-observation-node": "copper-chloride-record-stress-observation-node",
+          "copper-chloride-record-explanation-order-node": "copper-chloride-record-explanation-order-node",
+          "copper-chloride-record-method-uncertainty-node": "copper-chloride-record-method-uncertainty-node",
+          "return-copper-chloride-tray-node": "return-copper-chloride-tray-node",
+          "select-cobalt-tray-node": "select-cobalt-tray-node",
+          "inspect-cobalt-tray-node": "inspect-cobalt-tray-node",
+          "predict-cobalt-stresses-node": "predict-cobalt-stresses-node",
+          "approve-cobalt-stresses-node": "approve-cobalt-stresses-node",
+          "place-cobalt-stock-beaker-node": "place-cobalt-stock-beaker-node",
+          "cobalt-weigh-solid-node": "cobalt-weigh-solid-node",
+          "cobalt-measure-ethanol-node": "cobalt-measure-ethanol-node",
+          "cobalt-transfer-ethanol-node": "cobalt-transfer-ethanol-node",
+          "cobalt-add-solid-node": "cobalt-add-solid-node",
+          "cobalt-mix-stock-node": "cobalt-mix-stock-node",
+          "place-tube-cobalt-hot-node": "place-tube-cobalt-hot-node",
+          "aliquot-tube-cobalt-hot-node": "aliquot-tube-cobalt-hot-node",
+          "place-tube-cobalt-water-node": "place-tube-cobalt-water-node",
+          "aliquot-tube-cobalt-water-node": "aliquot-tube-cobalt-water-node",
+          "place-tube-cobalt-chloride-node": "place-tube-cobalt-chloride-node",
+          "aliquot-tube-cobalt-chloride-node": "aliquot-tube-cobalt-chloride-node",
+          "place-hot-bath-node": "place-hot-bath-node",
+          "place-ice-bath-node": "place-ice-bath-node",
+          "place-thermometer-node": "place-thermometer-node",
+          "check-bath-conditions-node": "check-bath-conditions-node",
+          "stress-cobalt-hot-node": "stress-cobalt-hot-node",
+          "stress-cobalt-water-node": "stress-cobalt-water-node",
+          "stress-cobalt-chloride-node": "stress-cobalt-chloride-node",
+          "cobalt-record-equation-species-node": "cobalt-record-equation-species-node",
+          "cobalt-record-stress-observation-node": "cobalt-record-stress-observation-node",
+          "cobalt-record-explanation-order-node": "cobalt-record-explanation-order-node",
+          "cobalt-record-method-uncertainty-node": "cobalt-record-method-uncertainty-node",
+          "return-cobalt-tray-node": "return-cobalt-tray-node",
+          "select-soda-tray-node": "select-soda-tray-node",
+          "inspect-soda-tray-node": "inspect-soda-tray-node",
+          "predict-soda-pressure-node": "predict-soda-pressure-node",
+          "approve-soda-pressure-node": "approve-soda-pressure-node",
+          "place-soda-beaker-node": "place-soda-beaker-node",
+          "soda-measure-water-node": "soda-measure-water-node",
+          "soda-transfer-water-node": "soda-transfer-water-node",
+          "soda-measure-methyl-red-node": "soda-measure-methyl-red-node",
+          "soda-add-methyl-red-node": "soda-add-methyl-red-node",
+          "soda-mix-stock-node": "soda-mix-stock-node",
+          "place-empty-syringe-node": "place-empty-syringe-node",
+          "soda-draw-syringe-node": "soda-draw-syringe-node",
+          "soda-invert-syringe-node": "soda-invert-syringe-node",
+          "soda-expel-gas-node": "soda-expel-gas-node",
+          "soda-close-valve-node": "soda-close-valve-node",
+          "soda-point-away-node": "soda-point-away-node",
+          "soda-pull-plunger-node": "soda-pull-plunger-node",
+          "soda-insert-locking-nail-node": "soda-insert-locking-nail-node",
+          "soda-observe-before-shake-node": "soda-observe-before-shake-node",
+          "soda-shake-if-needed-node": "soda-shake-if-needed-node",
+          "place-soda-display-tube-node": "place-soda-display-tube-node",
+          "soda-transfer-display-sample-node": "soda-transfer-display-sample-node",
+          "soda-record-equation-species-node": "soda-record-equation-species-node",
+          "soda-record-stress-observation-node": "soda-record-stress-observation-node",
+          "soda-record-explanation-order-node": "soda-record-explanation-order-node",
+          "soda-record-method-uncertainty-node": "soda-record-method-uncertainty-node",
+          "return-soda-tray-node": "return-soda-tray-node",
+          "review-all-evidence-node": "review-all-evidence-node",
+          "select-red-candidate-node": "select-red-candidate-node",
+          "select-orange-candidate-node": "select-orange-candidate-node",
+          "select-yellow-candidate-node": "select-yellow-candidate-node",
+          "select-green-candidate-node": "select-green-candidate-node",
+          "select-blue-candidate-node": "select-blue-candidate-node",
+          "select-violet-candidate-node": "select-violet-candidate-node",
+          "check-stress-diversity-node": "check-stress-diversity-node",
+          "record-display-rationale-node": "record-display-rationale-node",
+          "display-red-candidate-node": "display-red-candidate-node",
+          "display-orange-candidate-node": "display-orange-candidate-node",
+          "display-yellow-candidate-node": "display-yellow-candidate-node",
+          "display-green-candidate-node": "display-green-candidate-node",
+          "display-blue-candidate-node": "display-blue-candidate-node",
+          "display-violet-candidate-node": "display-violet-candidate-node",
+          "submit-final-display-node": "submit-final-display-node",
+          "confirm-final-display-review-node": "confirm-final-display-review-node"
+        },
+        "validationRules": {
+          "place-display-rack-requires-place-working-rack": "place-display-rack-requires-place-working-rack",
+          "confirm-required-safety-requires-place-display-rack": "confirm-required-safety-requires-place-display-rack",
+          "choose-gloves-requires-confirm-required-safety": "choose-gloves-requires-confirm-required-safety",
+          "select-btb-tray-requires-choose-gloves": "select-btb-tray-requires-choose-gloves",
+          "inspect-btb-tray-requires-select-btb-tray": "inspect-btb-tray-requires-select-btb-tray",
+          "predict-btb-stresses-requires-inspect-btb-tray": "predict-btb-stresses-requires-inspect-btb-tray",
+          "approve-btb-stresses-requires-predict-btb-stresses": "approve-btb-stresses-requires-predict-btb-stresses",
+          "place-btb-stock-beaker-requires-approve-btb-stresses": "place-btb-stock-beaker-requires-approve-btb-stresses",
+          "btb-measure-water-requires-place-btb-stock-beaker": "btb-measure-water-requires-place-btb-stock-beaker",
+          "btb-transfer-water-requires-btb-measure-water": "btb-transfer-water-requires-btb-measure-water",
+          "btb-measure-indicator-requires-btb-transfer-water": "btb-measure-indicator-requires-btb-transfer-water",
+          "btb-add-indicator-requires-btb-measure-indicator": "btb-add-indicator-requires-btb-measure-indicator",
+          "btb-mix-stock-requires-btb-add-indicator": "btb-mix-stock-requires-btb-add-indicator",
+          "place-tube-btb-acid-requires-btb-mix-stock": "place-tube-btb-acid-requires-btb-mix-stock",
+          "aliquot-tube-btb-acid-requires-place-tube-btb-acid": "aliquot-tube-btb-acid-requires-place-tube-btb-acid",
+          "place-tube-btb-base-requires-aliquot-tube-btb-acid": "place-tube-btb-base-requires-aliquot-tube-btb-acid",
+          "aliquot-tube-btb-base-requires-place-tube-btb-base": "aliquot-tube-btb-base-requires-place-tube-btb-base",
+          "place-tube-btb-control-requires-aliquot-tube-btb-base": "place-tube-btb-control-requires-aliquot-tube-btb-base",
+          "aliquot-tube-btb-control-requires-place-tube-btb-control": "aliquot-tube-btb-control-requires-place-tube-btb-control",
+          "stress-btb-acid-requires-aliquot-tube-btb-control": "stress-btb-acid-requires-aliquot-tube-btb-control",
+          "stress-btb-base-requires-stress-btb-acid": "stress-btb-base-requires-stress-btb-acid",
+          "stress-btb-control-requires-stress-btb-base": "stress-btb-control-requires-stress-btb-base",
+          "btb-record-equation-species-requires-stress-btb-control": "btb-record-equation-species-requires-stress-btb-control",
+          "btb-record-stress-observation-requires-btb-record-equation-species": "btb-record-stress-observation-requires-btb-record-equation-species",
+          "btb-record-explanation-order-requires-btb-record-stress-observation": "btb-record-explanation-order-requires-btb-record-stress-observation",
+          "btb-record-method-uncertainty-requires-btb-record-explanation-order": "btb-record-method-uncertainty-requires-btb-record-explanation-order",
+          "return-btb-tray-requires-btb-record-method-uncertainty": "return-btb-tray-requires-btb-record-method-uncertainty",
+          "select-iron-tray-requires-return-btb-tray": "select-iron-tray-requires-return-btb-tray",
+          "inspect-iron-tray-requires-select-iron-tray": "inspect-iron-tray-requires-select-iron-tray",
+          "predict-iron-stresses-requires-inspect-iron-tray": "predict-iron-stresses-requires-inspect-iron-tray",
+          "approve-iron-stresses-requires-predict-iron-stresses": "approve-iron-stresses-requires-predict-iron-stresses",
+          "place-iron-stock-beaker-requires-approve-iron-stresses": "place-iron-stock-beaker-requires-approve-iron-stresses",
+          "iron-measure-kscn-requires-place-iron-stock-beaker": "iron-measure-kscn-requires-place-iron-stock-beaker",
+          "iron-transfer-kscn-requires-iron-measure-kscn": "iron-transfer-kscn-requires-iron-measure-kscn",
+          "iron-measure-water-requires-iron-transfer-kscn": "iron-measure-water-requires-iron-transfer-kscn",
+          "iron-add-water-requires-iron-measure-water": "iron-add-water-requires-iron-measure-water",
+          "iron-add-five-drops-requires-iron-add-water": "iron-add-five-drops-requires-iron-add-water",
+          "place-tube-iron-reactant-requires-iron-add-five-drops": "place-tube-iron-reactant-requires-iron-add-five-drops",
+          "aliquot-tube-iron-reactant-requires-place-tube-iron-reactant": "aliquot-tube-iron-reactant-requires-place-tube-iron-reactant",
+          "place-tube-iron-removal-requires-aliquot-tube-iron-reactant": "place-tube-iron-removal-requires-aliquot-tube-iron-reactant",
+          "aliquot-tube-iron-removal-requires-place-tube-iron-removal": "aliquot-tube-iron-removal-requires-place-tube-iron-removal",
+          "stress-iron-reactant-requires-aliquot-tube-iron-removal": "stress-iron-reactant-requires-aliquot-tube-iron-removal",
+          "stress-iron-removal-requires-stress-iron-reactant": "stress-iron-removal-requires-stress-iron-reactant",
+          "iron-record-equation-species-requires-stress-iron-removal": "iron-record-equation-species-requires-stress-iron-removal",
+          "iron-record-stress-observation-requires-iron-record-equation-species": "iron-record-stress-observation-requires-iron-record-equation-species",
+          "iron-record-explanation-order-requires-iron-record-stress-observation": "iron-record-explanation-order-requires-iron-record-stress-observation",
+          "iron-record-method-uncertainty-requires-iron-record-explanation-order": "iron-record-method-uncertainty-requires-iron-record-explanation-order",
+          "return-iron-tray-requires-iron-record-method-uncertainty": "return-iron-tray-requires-iron-record-method-uncertainty",
+          "select-copper-ammonia-tray-requires-return-iron-tray": "select-copper-ammonia-tray-requires-return-iron-tray",
+          "inspect-copper-ammonia-tray-requires-select-copper-ammonia-tray": "inspect-copper-ammonia-tray-requires-select-copper-ammonia-tray",
+          "predict-copper-ammonia-stresses-requires-inspect-copper-ammonia-tray": "predict-copper-ammonia-stresses-requires-inspect-copper-ammonia-tray",
+          "approve-copper-ammonia-stresses-requires-predict-copper-ammonia-stresses": "approve-copper-ammonia-stresses-requires-predict-copper-ammonia-stresses",
+          "place-copper-ammonia-stock-beaker-requires-approve-copper-ammonia-stresses": "place-copper-ammonia-stock-beaker-requires-approve-copper-ammonia-stresses",
+          "copper-ammonia-measure-cuso4-requires-place-copper-ammonia-stock-beaker": "copper-ammonia-measure-cuso4-requires-place-copper-ammonia-stock-beaker",
+          "copper-ammonia-transfer-cuso4-requires-copper-ammonia-measure-cuso4": "copper-ammonia-transfer-cuso4-requires-copper-ammonia-measure-cuso4",
+          "copper-ammonia-form-precipitate-requires-copper-ammonia-transfer-cuso4": "copper-ammonia-form-precipitate-requires-copper-ammonia-transfer-cuso4",
+          "copper-ammonia-dissolve-precipitate-requires-copper-ammonia-form-precipitate": "copper-ammonia-dissolve-precipitate-requires-copper-ammonia-form-precipitate",
+          "place-tube-copper-ammonia-ligand-requires-copper-ammonia-dissolve-precipitate": "place-tube-copper-ammonia-ligand-requires-copper-ammonia-dissolve-precipitate",
+          "aliquot-tube-copper-ammonia-ligand-requires-place-tube-copper-ammonia-ligand": "aliquot-tube-copper-ammonia-ligand-requires-place-tube-copper-ammonia-ligand",
+          "place-tube-copper-ammonia-acid-requires-aliquot-tube-copper-ammonia-ligand": "place-tube-copper-ammonia-acid-requires-aliquot-tube-copper-ammonia-ligand",
+          "aliquot-tube-copper-ammonia-acid-requires-place-tube-copper-ammonia-acid": "aliquot-tube-copper-ammonia-acid-requires-place-tube-copper-ammonia-acid",
+          "stress-copper-ammonia-ligand-requires-aliquot-tube-copper-ammonia-acid": "stress-copper-ammonia-ligand-requires-aliquot-tube-copper-ammonia-acid",
+          "stress-copper-ammonia-acid-requires-stress-copper-ammonia-ligand": "stress-copper-ammonia-acid-requires-stress-copper-ammonia-ligand",
+          "copper-ammonia-record-equation-species-requires-stress-copper-ammonia-acid": "copper-ammonia-record-equation-species-requires-stress-copper-ammonia-acid",
+          "copper-ammonia-record-stress-observation-requires-copper-ammonia-record-equation-species": "copper-ammonia-record-stress-observation-requires-copper-ammonia-record-equation-species",
+          "copper-ammonia-record-explanation-order-requires-copper-ammonia-record-stress-observation": "copper-ammonia-record-explanation-order-requires-copper-ammonia-record-stress-observation",
+          "copper-ammonia-record-method-uncertainty-requires-copper-ammonia-record-explanation-order": "copper-ammonia-record-method-uncertainty-requires-copper-ammonia-record-explanation-order",
+          "return-copper-ammonia-tray-requires-copper-ammonia-record-method-uncertainty": "return-copper-ammonia-tray-requires-copper-ammonia-record-method-uncertainty",
+          "select-copper-chloride-tray-requires-return-copper-ammonia-tray": "select-copper-chloride-tray-requires-return-copper-ammonia-tray",
+          "inspect-copper-chloride-tray-requires-select-copper-chloride-tray": "inspect-copper-chloride-tray-requires-select-copper-chloride-tray",
+          "predict-copper-chloride-stresses-requires-inspect-copper-chloride-tray": "predict-copper-chloride-stresses-requires-inspect-copper-chloride-tray",
+          "approve-copper-chloride-stresses-requires-predict-copper-chloride-stresses": "approve-copper-chloride-stresses-requires-predict-copper-chloride-stresses",
+          "place-copper-chloride-stock-beaker-requires-approve-copper-chloride-stresses": "place-copper-chloride-stock-beaker-requires-approve-copper-chloride-stresses",
+          "copper-chloride-weigh-solid-requires-place-copper-chloride-stock-beaker": "copper-chloride-weigh-solid-requires-place-copper-chloride-stock-beaker",
+          "copper-chloride-measure-water-requires-copper-chloride-weigh-solid": "copper-chloride-measure-water-requires-copper-chloride-weigh-solid",
+          "copper-chloride-transfer-water-requires-copper-chloride-measure-water": "copper-chloride-transfer-water-requires-copper-chloride-measure-water",
+          "copper-chloride-add-solid-requires-copper-chloride-transfer-water": "copper-chloride-add-solid-requires-copper-chloride-transfer-water",
+          "copper-chloride-mix-stock-requires-copper-chloride-add-solid": "copper-chloride-mix-stock-requires-copper-chloride-add-solid",
+          "place-tube-copper-chloride-hcl-requires-copper-chloride-mix-stock": "place-tube-copper-chloride-hcl-requires-copper-chloride-mix-stock",
+          "aliquot-tube-copper-chloride-hcl-requires-place-tube-copper-chloride-hcl": "aliquot-tube-copper-chloride-hcl-requires-place-tube-copper-chloride-hcl",
+          "place-tube-copper-chloride-water-requires-aliquot-tube-copper-chloride-hcl": "place-tube-copper-chloride-water-requires-aliquot-tube-copper-chloride-hcl",
+          "aliquot-tube-copper-chloride-water-requires-place-tube-copper-chloride-water": "aliquot-tube-copper-chloride-water-requires-place-tube-copper-chloride-water",
+          "stress-copper-chloride-hcl-requires-aliquot-tube-copper-chloride-water": "stress-copper-chloride-hcl-requires-aliquot-tube-copper-chloride-water",
+          "stress-copper-chloride-water-requires-stress-copper-chloride-hcl": "stress-copper-chloride-water-requires-stress-copper-chloride-hcl",
+          "copper-chloride-record-equation-species-requires-stress-copper-chloride-water": "copper-chloride-record-equation-species-requires-stress-copper-chloride-water",
+          "copper-chloride-record-stress-observation-requires-copper-chloride-record-equation-species": "copper-chloride-record-stress-observation-requires-copper-chloride-record-equation-species",
+          "copper-chloride-record-explanation-order-requires-copper-chloride-record-stress-observation": "copper-chloride-record-explanation-order-requires-copper-chloride-record-stress-observation",
+          "copper-chloride-record-method-uncertainty-requires-copper-chloride-record-explanation-order": "copper-chloride-record-method-uncertainty-requires-copper-chloride-record-explanation-order",
+          "return-copper-chloride-tray-requires-copper-chloride-record-method-uncertainty": "return-copper-chloride-tray-requires-copper-chloride-record-method-uncertainty",
+          "select-cobalt-tray-requires-return-copper-chloride-tray": "select-cobalt-tray-requires-return-copper-chloride-tray",
+          "inspect-cobalt-tray-requires-select-cobalt-tray": "inspect-cobalt-tray-requires-select-cobalt-tray",
+          "predict-cobalt-stresses-requires-inspect-cobalt-tray": "predict-cobalt-stresses-requires-inspect-cobalt-tray",
+          "approve-cobalt-stresses-requires-predict-cobalt-stresses": "approve-cobalt-stresses-requires-predict-cobalt-stresses",
+          "place-cobalt-stock-beaker-requires-approve-cobalt-stresses": "place-cobalt-stock-beaker-requires-approve-cobalt-stresses",
+          "cobalt-weigh-solid-requires-place-cobalt-stock-beaker": "cobalt-weigh-solid-requires-place-cobalt-stock-beaker",
+          "cobalt-measure-ethanol-requires-cobalt-weigh-solid": "cobalt-measure-ethanol-requires-cobalt-weigh-solid",
+          "cobalt-transfer-ethanol-requires-cobalt-measure-ethanol": "cobalt-transfer-ethanol-requires-cobalt-measure-ethanol",
+          "cobalt-add-solid-requires-cobalt-transfer-ethanol": "cobalt-add-solid-requires-cobalt-transfer-ethanol",
+          "cobalt-mix-stock-requires-cobalt-add-solid": "cobalt-mix-stock-requires-cobalt-add-solid",
+          "place-tube-cobalt-hot-requires-cobalt-mix-stock": "place-tube-cobalt-hot-requires-cobalt-mix-stock",
+          "aliquot-tube-cobalt-hot-requires-place-tube-cobalt-hot": "aliquot-tube-cobalt-hot-requires-place-tube-cobalt-hot",
+          "place-tube-cobalt-water-requires-aliquot-tube-cobalt-hot": "place-tube-cobalt-water-requires-aliquot-tube-cobalt-hot",
+          "aliquot-tube-cobalt-water-requires-place-tube-cobalt-water": "aliquot-tube-cobalt-water-requires-place-tube-cobalt-water",
+          "place-tube-cobalt-chloride-requires-aliquot-tube-cobalt-water": "place-tube-cobalt-chloride-requires-aliquot-tube-cobalt-water",
+          "aliquot-tube-cobalt-chloride-requires-place-tube-cobalt-chloride": "aliquot-tube-cobalt-chloride-requires-place-tube-cobalt-chloride",
+          "place-hot-bath-requires-aliquot-tube-cobalt-chloride": "place-hot-bath-requires-aliquot-tube-cobalt-chloride",
+          "place-ice-bath-requires-place-hot-bath": "place-ice-bath-requires-place-hot-bath",
+          "place-thermometer-requires-place-ice-bath": "place-thermometer-requires-place-ice-bath",
+          "check-bath-conditions-requires-place-thermometer": "check-bath-conditions-requires-place-thermometer",
+          "stress-cobalt-hot-requires-check-bath-conditions": "stress-cobalt-hot-requires-check-bath-conditions",
+          "stress-cobalt-water-requires-stress-cobalt-hot": "stress-cobalt-water-requires-stress-cobalt-hot",
+          "stress-cobalt-chloride-requires-stress-cobalt-water": "stress-cobalt-chloride-requires-stress-cobalt-water",
+          "cobalt-record-equation-species-requires-stress-cobalt-chloride": "cobalt-record-equation-species-requires-stress-cobalt-chloride",
+          "cobalt-record-stress-observation-requires-cobalt-record-equation-species": "cobalt-record-stress-observation-requires-cobalt-record-equation-species",
+          "cobalt-record-explanation-order-requires-cobalt-record-stress-observation": "cobalt-record-explanation-order-requires-cobalt-record-stress-observation",
+          "cobalt-record-method-uncertainty-requires-cobalt-record-explanation-order": "cobalt-record-method-uncertainty-requires-cobalt-record-explanation-order",
+          "return-cobalt-tray-requires-cobalt-record-method-uncertainty": "return-cobalt-tray-requires-cobalt-record-method-uncertainty",
+          "select-soda-tray-requires-return-cobalt-tray": "select-soda-tray-requires-return-cobalt-tray",
+          "inspect-soda-tray-requires-select-soda-tray": "inspect-soda-tray-requires-select-soda-tray",
+          "predict-soda-pressure-requires-inspect-soda-tray": "predict-soda-pressure-requires-inspect-soda-tray",
+          "approve-soda-pressure-requires-predict-soda-pressure": "approve-soda-pressure-requires-predict-soda-pressure",
+          "place-soda-beaker-requires-approve-soda-pressure": "place-soda-beaker-requires-approve-soda-pressure",
+          "soda-measure-water-requires-place-soda-beaker": "soda-measure-water-requires-place-soda-beaker",
+          "soda-transfer-water-requires-soda-measure-water": "soda-transfer-water-requires-soda-measure-water",
+          "soda-measure-methyl-red-requires-soda-transfer-water": "soda-measure-methyl-red-requires-soda-transfer-water",
+          "soda-add-methyl-red-requires-soda-measure-methyl-red": "soda-add-methyl-red-requires-soda-measure-methyl-red",
+          "soda-mix-stock-requires-soda-add-methyl-red": "soda-mix-stock-requires-soda-add-methyl-red",
+          "place-empty-syringe-requires-soda-mix-stock": "place-empty-syringe-requires-soda-mix-stock",
+          "soda-draw-syringe-requires-place-empty-syringe": "soda-draw-syringe-requires-place-empty-syringe",
+          "soda-invert-syringe-requires-soda-draw-syringe": "soda-invert-syringe-requires-soda-draw-syringe",
+          "soda-expel-gas-requires-soda-invert-syringe": "soda-expel-gas-requires-soda-invert-syringe",
+          "soda-close-valve-requires-soda-expel-gas": "soda-close-valve-requires-soda-expel-gas",
+          "soda-point-away-requires-soda-close-valve": "soda-point-away-requires-soda-close-valve",
+          "soda-pull-plunger-requires-soda-point-away": "soda-pull-plunger-requires-soda-point-away",
+          "soda-insert-locking-nail-requires-soda-pull-plunger": "soda-insert-locking-nail-requires-soda-pull-plunger",
+          "soda-observe-before-shake-requires-soda-insert-locking-nail": "soda-observe-before-shake-requires-soda-insert-locking-nail",
+          "soda-shake-if-needed-requires-soda-observe-before-shake": "soda-shake-if-needed-requires-soda-observe-before-shake",
+          "place-soda-display-tube-requires-soda-shake-if-needed": "place-soda-display-tube-requires-soda-shake-if-needed",
+          "soda-transfer-display-sample-requires-place-soda-display-tube": "soda-transfer-display-sample-requires-place-soda-display-tube",
+          "soda-record-equation-species-requires-soda-transfer-display-sample": "soda-record-equation-species-requires-soda-transfer-display-sample",
+          "soda-record-stress-observation-requires-soda-record-equation-species": "soda-record-stress-observation-requires-soda-record-equation-species",
+          "soda-record-explanation-order-requires-soda-record-stress-observation": "soda-record-explanation-order-requires-soda-record-stress-observation",
+          "soda-record-method-uncertainty-requires-soda-record-explanation-order": "soda-record-method-uncertainty-requires-soda-record-explanation-order",
+          "return-soda-tray-requires-soda-record-method-uncertainty": "return-soda-tray-requires-soda-record-method-uncertainty",
+          "review-all-evidence-requires-return-soda-tray": "review-all-evidence-requires-return-soda-tray",
+          "select-red-candidate-requires-review-all-evidence": "select-red-candidate-requires-review-all-evidence",
+          "select-orange-candidate-requires-select-red-candidate": "select-orange-candidate-requires-select-red-candidate",
+          "select-yellow-candidate-requires-select-orange-candidate": "select-yellow-candidate-requires-select-orange-candidate",
+          "select-green-candidate-requires-select-yellow-candidate": "select-green-candidate-requires-select-yellow-candidate",
+          "select-blue-candidate-requires-select-green-candidate": "select-blue-candidate-requires-select-green-candidate",
+          "select-violet-candidate-requires-select-blue-candidate": "select-violet-candidate-requires-select-blue-candidate",
+          "check-stress-diversity-requires-select-violet-candidate": "check-stress-diversity-requires-select-violet-candidate",
+          "record-display-rationale-requires-check-stress-diversity": "record-display-rationale-requires-check-stress-diversity",
+          "display-red-candidate-requires-record-display-rationale": "display-red-candidate-requires-record-display-rationale",
+          "display-orange-candidate-requires-display-red-candidate": "display-orange-candidate-requires-display-red-candidate",
+          "display-yellow-candidate-requires-display-orange-candidate": "display-yellow-candidate-requires-display-orange-candidate",
+          "display-green-candidate-requires-display-yellow-candidate": "display-green-candidate-requires-display-yellow-candidate",
+          "display-blue-candidate-requires-display-green-candidate": "display-blue-candidate-requires-display-green-candidate",
+          "display-violet-candidate-requires-display-blue-candidate": "display-violet-candidate-requires-display-blue-candidate",
+          "submit-final-display-requires-display-violet-candidate": "submit-final-display-requires-display-violet-candidate",
+          "confirm-final-display-review-requires-submit-final-display": "confirm-final-display-review-requires-submit-final-display",
+          "place-working-rack-node-evidence": "place-working-rack-node-evidence",
+          "place-display-rack-node-evidence": "place-display-rack-node-evidence",
+          "confirm-required-safety-node-evidence": "confirm-required-safety-node-evidence",
+          "choose-gloves-node-evidence": "choose-gloves-node-evidence",
+          "select-btb-tray-node-evidence": "select-btb-tray-node-evidence",
+          "inspect-btb-tray-node-evidence": "inspect-btb-tray-node-evidence",
+          "predict-btb-stresses-node-evidence": "predict-btb-stresses-node-evidence",
+          "approve-btb-stresses-node-evidence": "approve-btb-stresses-node-evidence",
+          "place-btb-stock-beaker-node-evidence": "place-btb-stock-beaker-node-evidence",
+          "btb-measure-water-node-evidence": "btb-measure-water-node-evidence",
+          "btb-transfer-water-node-evidence": "btb-transfer-water-node-evidence",
+          "btb-measure-indicator-node-evidence": "btb-measure-indicator-node-evidence",
+          "btb-add-indicator-node-evidence": "btb-add-indicator-node-evidence",
+          "btb-mix-stock-node-evidence": "btb-mix-stock-node-evidence",
+          "place-tube-btb-acid-node-evidence": "place-tube-btb-acid-node-evidence",
+          "aliquot-tube-btb-acid-node-evidence": "aliquot-tube-btb-acid-node-evidence",
+          "place-tube-btb-base-node-evidence": "place-tube-btb-base-node-evidence",
+          "aliquot-tube-btb-base-node-evidence": "aliquot-tube-btb-base-node-evidence",
+          "place-tube-btb-control-node-evidence": "place-tube-btb-control-node-evidence",
+          "aliquot-tube-btb-control-node-evidence": "aliquot-tube-btb-control-node-evidence",
+          "stress-btb-acid-node-evidence": "stress-btb-acid-node-evidence",
+          "stress-btb-base-node-evidence": "stress-btb-base-node-evidence",
+          "stress-btb-control-node-evidence": "stress-btb-control-node-evidence",
+          "btb-record-equation-species-node-evidence": "btb-record-equation-species-node-evidence",
+          "btb-record-stress-observation-node-evidence": "btb-record-stress-observation-node-evidence",
+          "btb-record-explanation-order-node-evidence": "btb-record-explanation-order-node-evidence",
+          "btb-record-method-uncertainty-node-evidence": "btb-record-method-uncertainty-node-evidence",
+          "return-btb-tray-node-evidence": "return-btb-tray-node-evidence",
+          "select-iron-tray-node-evidence": "select-iron-tray-node-evidence",
+          "inspect-iron-tray-node-evidence": "inspect-iron-tray-node-evidence",
+          "predict-iron-stresses-node-evidence": "predict-iron-stresses-node-evidence",
+          "approve-iron-stresses-node-evidence": "approve-iron-stresses-node-evidence",
+          "place-iron-stock-beaker-node-evidence": "place-iron-stock-beaker-node-evidence",
+          "iron-measure-kscn-node-evidence": "iron-measure-kscn-node-evidence",
+          "iron-transfer-kscn-node-evidence": "iron-transfer-kscn-node-evidence",
+          "iron-measure-water-node-evidence": "iron-measure-water-node-evidence",
+          "iron-add-water-node-evidence": "iron-add-water-node-evidence",
+          "iron-add-five-drops-node-evidence": "iron-add-five-drops-node-evidence",
+          "place-tube-iron-reactant-node-evidence": "place-tube-iron-reactant-node-evidence",
+          "aliquot-tube-iron-reactant-node-evidence": "aliquot-tube-iron-reactant-node-evidence",
+          "place-tube-iron-removal-node-evidence": "place-tube-iron-removal-node-evidence",
+          "aliquot-tube-iron-removal-node-evidence": "aliquot-tube-iron-removal-node-evidence",
+          "stress-iron-reactant-node-evidence": "stress-iron-reactant-node-evidence",
+          "stress-iron-removal-node-evidence": "stress-iron-removal-node-evidence",
+          "iron-record-equation-species-node-evidence": "iron-record-equation-species-node-evidence",
+          "iron-record-stress-observation-node-evidence": "iron-record-stress-observation-node-evidence",
+          "iron-record-explanation-order-node-evidence": "iron-record-explanation-order-node-evidence",
+          "iron-record-method-uncertainty-node-evidence": "iron-record-method-uncertainty-node-evidence",
+          "return-iron-tray-node-evidence": "return-iron-tray-node-evidence",
+          "select-copper-ammonia-tray-node-evidence": "select-copper-ammonia-tray-node-evidence",
+          "inspect-copper-ammonia-tray-node-evidence": "inspect-copper-ammonia-tray-node-evidence",
+          "predict-copper-ammonia-stresses-node-evidence": "predict-copper-ammonia-stresses-node-evidence",
+          "approve-copper-ammonia-stresses-node-evidence": "approve-copper-ammonia-stresses-node-evidence",
+          "place-copper-ammonia-stock-beaker-node-evidence": "place-copper-ammonia-stock-beaker-node-evidence",
+          "copper-ammonia-measure-cuso4-node-evidence": "copper-ammonia-measure-cuso4-node-evidence",
+          "copper-ammonia-transfer-cuso4-node-evidence": "copper-ammonia-transfer-cuso4-node-evidence",
+          "copper-ammonia-form-precipitate-node-evidence": "copper-ammonia-form-precipitate-node-evidence",
+          "copper-ammonia-dissolve-precipitate-node-evidence": "copper-ammonia-dissolve-precipitate-node-evidence",
+          "place-tube-copper-ammonia-ligand-node-evidence": "place-tube-copper-ammonia-ligand-node-evidence",
+          "aliquot-tube-copper-ammonia-ligand-node-evidence": "aliquot-tube-copper-ammonia-ligand-node-evidence",
+          "place-tube-copper-ammonia-acid-node-evidence": "place-tube-copper-ammonia-acid-node-evidence",
+          "aliquot-tube-copper-ammonia-acid-node-evidence": "aliquot-tube-copper-ammonia-acid-node-evidence",
+          "stress-copper-ammonia-ligand-node-evidence": "stress-copper-ammonia-ligand-node-evidence",
+          "stress-copper-ammonia-acid-node-evidence": "stress-copper-ammonia-acid-node-evidence",
+          "copper-ammonia-record-equation-species-node-evidence": "copper-ammonia-record-equation-species-node-evidence",
+          "copper-ammonia-record-stress-observation-node-evidence": "copper-ammonia-record-stress-observation-node-evidence",
+          "copper-ammonia-record-explanation-order-node-evidence": "copper-ammonia-record-explanation-order-node-evidence",
+          "copper-ammonia-record-method-uncertainty-node-evidence": "copper-ammonia-record-method-uncertainty-node-evidence",
+          "return-copper-ammonia-tray-node-evidence": "return-copper-ammonia-tray-node-evidence",
+          "select-copper-chloride-tray-node-evidence": "select-copper-chloride-tray-node-evidence",
+          "inspect-copper-chloride-tray-node-evidence": "inspect-copper-chloride-tray-node-evidence",
+          "predict-copper-chloride-stresses-node-evidence": "predict-copper-chloride-stresses-node-evidence",
+          "approve-copper-chloride-stresses-node-evidence": "approve-copper-chloride-stresses-node-evidence",
+          "place-copper-chloride-stock-beaker-node-evidence": "place-copper-chloride-stock-beaker-node-evidence",
+          "copper-chloride-weigh-solid-node-evidence": "copper-chloride-weigh-solid-node-evidence",
+          "copper-chloride-measure-water-node-evidence": "copper-chloride-measure-water-node-evidence",
+          "copper-chloride-transfer-water-node-evidence": "copper-chloride-transfer-water-node-evidence",
+          "copper-chloride-add-solid-node-evidence": "copper-chloride-add-solid-node-evidence",
+          "copper-chloride-mix-stock-node-evidence": "copper-chloride-mix-stock-node-evidence",
+          "place-tube-copper-chloride-hcl-node-evidence": "place-tube-copper-chloride-hcl-node-evidence",
+          "aliquot-tube-copper-chloride-hcl-node-evidence": "aliquot-tube-copper-chloride-hcl-node-evidence",
+          "place-tube-copper-chloride-water-node-evidence": "place-tube-copper-chloride-water-node-evidence",
+          "aliquot-tube-copper-chloride-water-node-evidence": "aliquot-tube-copper-chloride-water-node-evidence",
+          "stress-copper-chloride-hcl-node-evidence": "stress-copper-chloride-hcl-node-evidence",
+          "stress-copper-chloride-water-node-evidence": "stress-copper-chloride-water-node-evidence",
+          "copper-chloride-record-equation-species-node-evidence": "copper-chloride-record-equation-species-node-evidence",
+          "copper-chloride-record-stress-observation-node-evidence": "copper-chloride-record-stress-observation-node-evidence",
+          "copper-chloride-record-explanation-order-node-evidence": "copper-chloride-record-explanation-order-node-evidence",
+          "copper-chloride-record-method-uncertainty-node-evidence": "copper-chloride-record-method-uncertainty-node-evidence",
+          "return-copper-chloride-tray-node-evidence": "return-copper-chloride-tray-node-evidence",
+          "select-cobalt-tray-node-evidence": "select-cobalt-tray-node-evidence",
+          "inspect-cobalt-tray-node-evidence": "inspect-cobalt-tray-node-evidence",
+          "predict-cobalt-stresses-node-evidence": "predict-cobalt-stresses-node-evidence",
+          "approve-cobalt-stresses-node-evidence": "approve-cobalt-stresses-node-evidence",
+          "place-cobalt-stock-beaker-node-evidence": "place-cobalt-stock-beaker-node-evidence",
+          "cobalt-weigh-solid-node-evidence": "cobalt-weigh-solid-node-evidence",
+          "cobalt-measure-ethanol-node-evidence": "cobalt-measure-ethanol-node-evidence",
+          "cobalt-transfer-ethanol-node-evidence": "cobalt-transfer-ethanol-node-evidence",
+          "cobalt-add-solid-node-evidence": "cobalt-add-solid-node-evidence",
+          "cobalt-mix-stock-node-evidence": "cobalt-mix-stock-node-evidence",
+          "place-tube-cobalt-hot-node-evidence": "place-tube-cobalt-hot-node-evidence",
+          "aliquot-tube-cobalt-hot-node-evidence": "aliquot-tube-cobalt-hot-node-evidence",
+          "place-tube-cobalt-water-node-evidence": "place-tube-cobalt-water-node-evidence",
+          "aliquot-tube-cobalt-water-node-evidence": "aliquot-tube-cobalt-water-node-evidence",
+          "place-tube-cobalt-chloride-node-evidence": "place-tube-cobalt-chloride-node-evidence",
+          "aliquot-tube-cobalt-chloride-node-evidence": "aliquot-tube-cobalt-chloride-node-evidence",
+          "place-hot-bath-node-evidence": "place-hot-bath-node-evidence",
+          "place-ice-bath-node-evidence": "place-ice-bath-node-evidence",
+          "place-thermometer-node-evidence": "place-thermometer-node-evidence",
+          "check-bath-conditions-node-evidence": "check-bath-conditions-node-evidence",
+          "stress-cobalt-hot-node-evidence": "stress-cobalt-hot-node-evidence",
+          "stress-cobalt-water-node-evidence": "stress-cobalt-water-node-evidence",
+          "stress-cobalt-chloride-node-evidence": "stress-cobalt-chloride-node-evidence",
+          "cobalt-record-equation-species-node-evidence": "cobalt-record-equation-species-node-evidence",
+          "cobalt-record-stress-observation-node-evidence": "cobalt-record-stress-observation-node-evidence",
+          "cobalt-record-explanation-order-node-evidence": "cobalt-record-explanation-order-node-evidence",
+          "cobalt-record-method-uncertainty-node-evidence": "cobalt-record-method-uncertainty-node-evidence",
+          "return-cobalt-tray-node-evidence": "return-cobalt-tray-node-evidence",
+          "select-soda-tray-node-evidence": "select-soda-tray-node-evidence",
+          "inspect-soda-tray-node-evidence": "inspect-soda-tray-node-evidence",
+          "predict-soda-pressure-node-evidence": "predict-soda-pressure-node-evidence",
+          "approve-soda-pressure-node-evidence": "approve-soda-pressure-node-evidence",
+          "place-soda-beaker-node-evidence": "place-soda-beaker-node-evidence",
+          "soda-measure-water-node-evidence": "soda-measure-water-node-evidence",
+          "soda-transfer-water-node-evidence": "soda-transfer-water-node-evidence",
+          "soda-measure-methyl-red-node-evidence": "soda-measure-methyl-red-node-evidence",
+          "soda-add-methyl-red-node-evidence": "soda-add-methyl-red-node-evidence",
+          "soda-mix-stock-node-evidence": "soda-mix-stock-node-evidence",
+          "place-empty-syringe-node-evidence": "place-empty-syringe-node-evidence",
+          "soda-draw-syringe-node-evidence": "soda-draw-syringe-node-evidence",
+          "soda-invert-syringe-node-evidence": "soda-invert-syringe-node-evidence",
+          "soda-expel-gas-node-evidence": "soda-expel-gas-node-evidence",
+          "soda-close-valve-node-evidence": "soda-close-valve-node-evidence",
+          "soda-point-away-node-evidence": "soda-point-away-node-evidence",
+          "soda-pull-plunger-node-evidence": "soda-pull-plunger-node-evidence",
+          "soda-insert-locking-nail-node-evidence": "soda-insert-locking-nail-node-evidence",
+          "soda-observe-before-shake-node-evidence": "soda-observe-before-shake-node-evidence",
+          "soda-shake-if-needed-node-evidence": "soda-shake-if-needed-node-evidence",
+          "place-soda-display-tube-node-evidence": "place-soda-display-tube-node-evidence",
+          "soda-transfer-display-sample-node-evidence": "soda-transfer-display-sample-node-evidence",
+          "soda-record-equation-species-node-evidence": "soda-record-equation-species-node-evidence",
+          "soda-record-stress-observation-node-evidence": "soda-record-stress-observation-node-evidence",
+          "soda-record-explanation-order-node-evidence": "soda-record-explanation-order-node-evidence",
+          "soda-record-method-uncertainty-node-evidence": "soda-record-method-uncertainty-node-evidence",
+          "return-soda-tray-node-evidence": "return-soda-tray-node-evidence",
+          "review-all-evidence-node-evidence": "review-all-evidence-node-evidence",
+          "select-red-candidate-node-evidence": "select-red-candidate-node-evidence",
+          "select-orange-candidate-node-evidence": "select-orange-candidate-node-evidence",
+          "select-yellow-candidate-node-evidence": "select-yellow-candidate-node-evidence",
+          "select-green-candidate-node-evidence": "select-green-candidate-node-evidence",
+          "select-blue-candidate-node-evidence": "select-blue-candidate-node-evidence",
+          "select-violet-candidate-node-evidence": "select-violet-candidate-node-evidence",
+          "check-stress-diversity-node-evidence": "check-stress-diversity-node-evidence",
+          "record-display-rationale-node-evidence": "record-display-rationale-node-evidence",
+          "display-red-candidate-node-evidence": "display-red-candidate-node-evidence",
+          "display-orange-candidate-node-evidence": "display-orange-candidate-node-evidence",
+          "display-yellow-candidate-node-evidence": "display-yellow-candidate-node-evidence",
+          "display-green-candidate-node-evidence": "display-green-candidate-node-evidence",
+          "display-blue-candidate-node-evidence": "display-blue-candidate-node-evidence",
+          "display-violet-candidate-node-evidence": "display-violet-candidate-node-evidence",
+          "submit-final-display-node-evidence": "submit-final-display-node-evidence",
+          "confirm-final-display-review-node-evidence": "confirm-final-display-review-node-evidence",
+          "all-systems-reviewed-assessment": "all-systems-reviewed-assessment",
+          "display-rationale-assessment": "display-rationale-assessment",
+          "teacher-display-assessment": "teacher-display-assessment"
+        },
+        "references": {
+          "btb-measure-water-measurement": "btb-measure-water-measurement",
+          "btb-measure-indicator-measurement": "btb-measure-indicator-measurement",
+          "bromothymol-blue": "bromothymol-blue",
+          "iron-measure-kscn-measurement": "iron-measure-kscn-measurement",
+          "iron-measure-water-measurement": "iron-measure-water-measurement",
+          "iron-thiocyanate": "iron-thiocyanate",
+          "copper-ammonia-measure-cuso4-measurement": "copper-ammonia-measure-cuso4-measurement",
+          "copper-ammonia": "copper-ammonia",
+          "copper-chloride-weigh-solid-measurement": "copper-chloride-weigh-solid-measurement",
+          "copper-chloride-measure-water-measurement": "copper-chloride-measure-water-measurement",
+          "copper-chloride": "copper-chloride",
+          "cobalt-weigh-solid-measurement": "cobalt-weigh-solid-measurement",
+          "cobalt-measure-ethanol-measurement": "cobalt-measure-ethanol-measurement",
+          "cobalt-chloride": "cobalt-chloride",
+          "soda-measure-water-measurement": "soda-measure-water-measurement",
+          "soda-measure-methyl-red-measurement": "soda-measure-methyl-red-measurement",
+          "soda-water": "soda-water",
+          "all-systems-reviewed": "all-systems-reviewed",
+          "display-rationale": "display-rationale"
+        }
+      }
+    }
+  ],
+  "compositionStart": {
+    "kind": "technique-port",
+    "instanceId": "equilibrium",
+    "portId": "entry"
+  },
+  "compositionConnections": [],
+  "compositionEdgeOrder": [
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 0
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 1
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 2
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 3
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 4
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 5
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 6
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 7
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 8
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 9
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 10
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 11
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 12
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 13
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 14
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 15
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 16
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 17
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 18
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 19
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 20
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 21
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 22
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 23
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 24
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 25
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 26
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 27
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 28
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 29
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 30
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 31
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 32
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 33
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 34
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 35
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 36
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 37
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 38
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 39
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 40
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 41
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 42
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 43
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 44
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 45
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 46
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 47
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 48
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 49
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 50
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 51
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 52
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 53
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 54
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 55
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 56
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 57
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 58
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 59
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 60
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 61
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 62
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 63
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 64
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 65
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 66
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 67
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 68
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 69
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 70
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 71
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 72
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 73
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 74
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 75
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 76
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 77
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 78
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 79
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 80
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 81
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 82
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 83
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 84
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 85
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 86
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 87
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 88
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 89
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 90
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 91
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 92
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 93
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 94
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 95
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 96
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 97
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 98
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 99
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 100
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 101
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 102
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 103
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 104
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 105
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 106
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 107
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 108
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 109
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 110
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 111
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 112
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 113
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 114
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 115
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 116
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 117
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 118
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 119
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 120
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 121
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 122
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 123
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 124
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 125
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 126
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 127
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 128
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 129
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 130
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 131
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 132
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 133
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 134
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 135
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 136
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 137
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 138
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 139
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 140
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 141
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 142
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 143
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 144
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 145
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 146
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 147
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 148
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 149
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 150
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 151
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 152
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 153
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 154
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 155
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 156
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 157
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 158
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 159
+    },
+    {
+      "kind": "technique-edge",
+      "instanceId": "equilibrium",
+      "edgeIndex": 160
+    }
+  ],
+  "compositionAssessmentOrder": [
+    {
+      "kind": "technique-success-criterion",
+      "instanceId": "equilibrium",
+      "ruleId": "all-systems-reviewed-assessment"
+    },
+    {
+      "kind": "technique-success-criterion",
+      "instanceId": "equilibrium",
+      "ruleId": "display-rationale-assessment"
+    },
+    {
+      "kind": "technique-success-criterion",
+      "instanceId": "equilibrium",
+      "ruleId": "teacher-display-assessment"
+    }
+  ],
+  "reachabilityWitnesses": [
+    {
+      "id": "default",
+      "configuration": {},
+      "approvalGates": {}
+    }
+  ]
+}

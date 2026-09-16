@@ -1,0 +1,652 @@
+{
+  "id": "green-chemistry-mixture-purification",
+  "title": "Purifying a Mixture with Green Chemistry",
+  "description": "Design and obtain approval for a selective thermal-decomposition method with no fixed source recipe, using configured sample mass, tare convention, heating/cooling limits, and replicate count; acquire same-balance constant-mass evidence, calculate composition from recorded measurements, recover unheated mixture and heated product separately, and review one teacher-assigned report.",
+  "audience": "Chemistry students preparing for or reflecting on Mixture Purification",
+  "learningGoals": [
+    "Design and justify a teacher-approved gravimetric method; the source does not prescribe a fixed recipe, so sample mass, tare convention, heating/cooling limits, and replicate count remain configured.",
+    "Use lid-askew heating, tongs, cooling, and one balance to establish constant mass safely.",
+    "Determine mixture composition from the balanced decomposition stoichiometry and recorded mass loss.",
+    "Evaluate scientific quality, reporting quality, atom economy, and another green-chemistry principle in a teacher-provided report."
+  ],
+  "safetyNotes": [
+    "Execution remains locked until a teacher approves the proposed method and safety precautions.",
+    "Never ignite a burner under a fully covered crucible; keep the lid askew with a visible vent gap.",
+    "Move a hot or warm crucible with crucible tongs and cool it at the teacher-configured heat-safe location.",
+    "Never place a hot crucible on a balance; heat can damage the instrument and convection can bias the reading.",
+    "Use the same balance for the empty, loaded, and every cooled-cycle mass.",
+    "Follow teacher-configured baseline PPE and local safety rules.",
+    "Keep unheated mixture and heated product in separately labeled recovery containers."
+  ],
+  "equipment": [
+    "analytical-balance",
+    "crucible-with-lid",
+    "sample-bottle",
+    "small-vial",
+    "ring-stand",
+    "clay-triangle",
+    "bunsen-burner",
+    "crucible-tongs",
+    "beaker-250ml"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "analytical-balance-a",
+        "definitionId": "analytical-balance",
+        "label": "Analytical balance A",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "analytical-balance-b",
+        "definitionId": "analytical-balance",
+        "label": "Analytical balance B",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "crucible-with-lid-1",
+        "definitionId": "crucible-with-lid",
+        "label": "Clean, dry crucible with lid",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "sample-bottle-1",
+        "definitionId": "sample-bottle",
+        "label": "Teacher-supplied NaHCO3 / Na2CO3 mixture",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "working-sample-portion-1",
+        "definitionId": "small-vial",
+        "label": "Working portion for this replicate",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "ring-stand-1",
+        "definitionId": "ring-stand",
+        "label": "Ring stand",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "clay-triangle-1",
+        "definitionId": "clay-triangle",
+        "label": "Clay triangle",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "bunsen-burner-1",
+        "definitionId": "bunsen-burner",
+        "label": "Bunsen burner",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "crucible-tongs-1",
+        "definitionId": "crucible-tongs",
+        "label": "Crucible tongs",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "unused-sample-recovery-1",
+        "definitionId": "beaker-250ml",
+        "label": "Unused Sample — unheated",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "heated-product-recovery-1",
+        "definitionId": "beaker-250ml",
+        "label": "Product Made from Heating Samples",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "techniques": [],
+  "actions": [
+    {
+      "id": "review-assigned-green-chemistry-report",
+      "verb": "record",
+      "label": "Review only the teacher-assigned report",
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      },
+      "parameters": {
+        "tag": "assigned-report-review",
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputRequired": true,
+        "teacherProvidedArtifactRequired": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "accessibleLabel": "Record an evidence-based review of only the teacher-assigned report."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "The assigned report's investigation and communication quality are reviewed."
+      ],
+      "invalidCases": [
+        {
+          "id": "report-not-provided",
+          "when": "no teacher-assigned report is available",
+          "message": "Lab Studio does not generate or substitute a report.",
+          "recovery": "Ask the teacher to provide and assign one of the three report artifacts."
+        }
+      ],
+      "feedback": {
+        "success": "Assigned report review recorded.",
+        "invalid": "Use evidence from the assigned report only."
+      },
+      "evidence": [
+        "record",
+        "peer-review"
+      ]
+    },
+    {
+      "id": "calculate-assigned-report-atom-economy",
+      "verb": "calculate",
+      "label": "Calculate atom economy using the teacher-provided convention",
+      "effect": {
+        "classes": [
+          "calculation-analysis"
+        ],
+        "targets": [
+          {
+            "domain": "analysis"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      },
+      "parameters": {
+        "calculationId": "assigned-report-atom-economy",
+        "template": "atomEconomy",
+        "requireStudentValue": true,
+        "teacherProvidedStoichiometricContributions": true
+      },
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Submit atom economy calculated with the teacher-provided desired-product convention."
+      },
+      "prerequisites": [
+        {
+          "id": "assigned-report-review-required",
+          "type": "actionEvidence",
+          "label": "The assigned report is reviewed.",
+          "actionId": "review-assigned-green-chemistry-report"
+        }
+      ],
+      "stateChanges": [
+        "Atom economy is calculated from the teacher-provided reaction convention."
+      ],
+      "invalidCases": [
+        {
+          "id": "missing-convention",
+          "when": "the teacher has not supplied the desired-product and total-reactant contributions",
+          "message": "The source does not choose an atom-economy convention for the report.",
+          "recovery": "Use the teacher-provided convention and stoichiometric contributions."
+        }
+      ],
+      "feedback": {
+        "success": "Assigned-report atom economy recorded.",
+        "invalid": "Recalculate with the supplied stoichiometric contributions."
+      },
+      "evidence": [
+        "calculate",
+        "atom-economy"
+      ]
+    },
+    {
+      "id": "complete-green-chemistry-peer-review",
+      "verb": "record",
+      "label": "Complete the green-chemistry peer review",
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      },
+      "parameters": {
+        "tag": "green-chemistry-peer-review-complete",
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputRequired": true,
+        "requiresAdditionalGreenPrinciple": true,
+        "requiresRecommendations": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "accessibleLabel": "Record the additional green principle and concise recommendations."
+      },
+      "prerequisites": [
+        {
+          "id": "assigned-report-atom-economy-required",
+          "type": "actionEvidence",
+          "label": "Assigned-report atom economy is calculated.",
+          "actionId": "calculate-assigned-report-atom-economy"
+        }
+      ],
+      "stateChanges": [
+        "The assigned report review is complete."
+      ],
+      "invalidCases": [
+        {
+          "id": "incomplete-review",
+          "when": "the review omits evidence, a green principle, or recommendations",
+          "message": "The peer review is incomplete.",
+          "recovery": "Complete every review section using evidence from the assigned report."
+        }
+      ],
+      "feedback": {
+        "success": "Green-chemistry peer review complete.",
+        "invalid": "Complete every assigned review section."
+      },
+      "evidence": [
+        "record",
+        "reflection"
+      ]
+    }
+  ],
+  "process": {
+    "startNodeId": "review-assigned-green-chemistry-report-node",
+    "nodes": [
+      {
+        "id": "review-assigned-green-chemistry-report-node",
+        "type": "observation",
+        "title": "Review the assigned report",
+        "description": "Evaluate the investigation and communication using only the teacher-provided artifact.",
+        "actionId": "review-assigned-green-chemistry-report",
+        "config": {
+          "teacherProvidedArtifactRequired": true
+        },
+        "validation": [
+          {
+            "id": "assigned-report-review-complete",
+            "type": "actionEvidence",
+            "label": "Assigned report review is recorded.",
+            "actionId": "review-assigned-green-chemistry-report"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Assigned report review recorded.",
+          "retry": "Use evidence from the assigned report only."
+        }
+      },
+      {
+        "id": "calculate-assigned-report-atom-economy-node",
+        "type": "calculation",
+        "title": "Calculate atom economy",
+        "description": "Use the teacher-provided desired-product convention and stoichiometric contributions.",
+        "actionId": "calculate-assigned-report-atom-economy",
+        "config": {
+          "teacherProvidedConvention": true
+        },
+        "validation": [
+          {
+            "id": "assigned-report-atom-economy-complete",
+            "type": "actionEvidence",
+            "label": "Assigned-report atom economy is recorded.",
+            "actionId": "calculate-assigned-report-atom-economy"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Atom economy recorded.",
+          "retry": "Use the supplied convention and reaction contributions."
+        }
+      },
+      {
+        "id": "complete-green-chemistry-peer-review-node",
+        "type": "checkpoint",
+        "title": "Complete the peer review",
+        "description": "Record one additional green-chemistry principle and concise recommendations.",
+        "actionId": "complete-green-chemistry-peer-review",
+        "config": {
+          "requiresEvidenceBasedRecommendations": true
+        },
+        "validation": [
+          {
+            "id": "green-chemistry-peer-review-complete",
+            "type": "actionEvidence",
+            "label": "Green-chemistry peer review is complete.",
+            "actionId": "complete-green-chemistry-peer-review"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Peer review complete.",
+          "retry": "Complete each assigned review section."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "review-assigned-green-chemistry-report-node",
+        "to": "calculate-assigned-report-atom-economy-node",
+        "label": "Report reviewed",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "calculate-assigned-report-atom-economy-node",
+        "to": "complete-green-chemistry-peer-review-node",
+        "label": "Atom economy recorded",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "assessments": [
+    {
+      "id": "green-chemistry-route-complete",
+      "type": "actionEvidence",
+      "label": "The assigned green-chemistry peer review is complete.",
+      "actionId": "complete-green-chemistry-peer-review"
+    }
+  ],
+  "metadata": {
+    "version": "1.3.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-07T00:00:00Z",
+    "tags": [
+      "lab",
+      "chemistry",
+      "mixture-purification",
+      "inquiry",
+      "thermal-decomposition",
+      "constant-mass",
+      "green-chemistry",
+      "teacher-assigned-report",
+      "technique-composition"
+    ]
+  },
+  "techniqueInstances": [
+    {
+      "instanceId": "thermal-decomposition",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "version": "2.0.1",
+      "bindings": {
+        "equipment": {
+          "balance-instrument": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "analytical-balance-a",
+                "definitionId": "analytical-balance",
+                "instanceId": "analytical-balance-a"
+              },
+              {
+                "sourceInstanceId": "analytical-balance-b",
+                "definitionId": "analytical-balance",
+                "instanceId": "analytical-balance-b"
+              }
+            ]
+          },
+          "weighed-vessel": {
+            "definitionId": "crucible-with-lid",
+            "instanceId": "crucible-with-lid-1"
+          },
+          "solid-reagent-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "sample-bottle-1",
+                "definitionId": "sample-bottle",
+                "instanceId": "sample-bottle-1"
+              },
+              {
+                "sourceInstanceId": "working-sample-portion-1",
+                "definitionId": "small-vial",
+                "instanceId": "working-sample-portion-1"
+              }
+            ]
+          },
+          "receiving-vessel": {
+            "definitionId": "crucible-with-lid",
+            "instanceId": "crucible-with-lid-1"
+          },
+          "thermal-support": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "ring-stand-1",
+                "definitionId": "ring-stand",
+                "instanceId": "ring-stand-1"
+              },
+              {
+                "sourceInstanceId": "clay-triangle-1",
+                "definitionId": "clay-triangle",
+                "instanceId": "clay-triangle-1"
+              }
+            ]
+          },
+          "thermal-heating-instrument": {
+            "definitionId": "bunsen-burner",
+            "instanceId": "bunsen-burner-1"
+          },
+          "cooling-tool": {
+            "definitionId": "crucible-tongs",
+            "instanceId": "crucible-tongs-1"
+          },
+          "dried-assembly": {
+            "definitionId": "crucible-with-lid",
+            "instanceId": "crucible-with-lid-1"
+          },
+          "recovery-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "unused-sample-recovery-1",
+                "definitionId": "beaker-250ml",
+                "instanceId": "unused-sample-recovery-1"
+              },
+              {
+                "sourceInstanceId": "heated-product-recovery-1",
+                "definitionId": "beaker-250ml",
+                "instanceId": "heated-product-recovery-1"
+              }
+            ]
+          }
+        },
+        "models": {},
+        "configuration": {
+          "sampleMassG": 0,
+          "warmDurationMin": 0,
+          "heatingDurationMin": 0,
+          "heatingIntensity": "unconfigured-teacher-choice",
+          "constantMassToleranceG": 0,
+          "maximumHeatCycles": 0,
+          "coolingEndpointC": 0,
+          "coolingSurface": "unconfigured-teacher-choice",
+          "tareConvention": "unconfigured-teacher-choice",
+          "minimumReplicates": 0
+        }
+      },
+      "preserveIds": {
+        "actions": {
+          "approve-thermal-decomposition-plan": "approve-thermal-decomposition-plan",
+          "configure-unheated-stock": "configure-unheated-stock",
+          "place-balance": "place-balance",
+          "place-empty-crucible": "place-empty-crucible",
+          "read-empty-crucible": "read-empty-crucible",
+          "record-empty-crucible": "record-empty-crucible",
+          "add-carbonate-sample": "add-carbonate-sample",
+          "weigh-initial-crucible": "weigh-initial-crucible",
+          "record-initial-crucible-mass": "record-initial-crucible-mass",
+          "recover-unused-sample": "recover-unused-sample",
+          "place-ring-stand": "place-ring-stand",
+          "add-clay-triangle": "add-clay-triangle",
+          "place-bunsen-burner": "place-bunsen-burner",
+          "place-crucible-on-support": "place-crucible-on-support",
+          "set-crucible-lid": "set-crucible-lid",
+          "warm-gently": "warm-gently",
+          "heat-carbonate-mixture": "heat-carbonate-mixture",
+          "turn-off-burner": "turn-off-burner",
+          "cool-crucible": "cool-crucible",
+          "weigh-preliminary-final-mass": "weigh-preliminary-final-mass",
+          "record-cycle-mass": "record-cycle-mass",
+          "repeat-heat-to-constant-mass": "repeat-heat-to-constant-mass",
+          "cool-constant-mass-crucible": "cool-constant-mass-crucible",
+          "weigh-final-crucible": "weigh-final-crucible",
+          "record-final-crucible-mass": "record-final-crucible-mass",
+          "recover-replicate-product": "recover-replicate-product",
+          "complete-replicate": "complete-replicate",
+          "finalize-unused-master-stock": "finalize-unused-master-stock",
+          "calculate-carbonate-composition": "calculate-carbonate-composition",
+          "record-composition-uncertainty": "record-composition-uncertainty",
+          "recover-final-product": "recover-final-product"
+        }
+      }
+    }
+  ],
+  "compositionStart": {
+    "kind": "technique-port",
+    "instanceId": "thermal-decomposition",
+    "portId": "entry"
+  },
+  "compositionConnections": [
+    {
+      "id": "thermal-decomposition-to-assigned-report",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "thermal-decomposition",
+        "portId": "exit"
+      },
+      "to": {
+        "kind": "lab-node",
+        "nodeId": "review-assigned-green-chemistry-report-node"
+      },
+      "label": "Recovered product and composition evidence ready for assigned-report review",
+      "condition": {
+        "type": "validationPassed"
+      }
+    }
+  ],
+  "reachabilityWitnesses": [
+    {
+      "id": "teacher-approved-route",
+      "configuration": {
+        "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
+      },
+      "approvalGates": {
+        "thermal-decomposition.teacher-approved-plan": true
+      }
+    },
+    {
+      "id": "teacher-approved-tared-balance-route",
+      "configuration": {
+        "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
+      },
+      "approvalGates": {
+        "thermal-decomposition.teacher-approved-plan": true
+      }
+    },
+    {
+      "id": "approval-locked-static-witness",
+      "configuration": {
+        "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
+      },
+      "approvalGates": {
+        "thermal-decomposition.teacher-approved-plan": false
+      }
+    }
+  ]
+}

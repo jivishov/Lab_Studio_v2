@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://lab-studio.local/schemas/studio.evidence-registry/1.0",
+  "title": "Studio Evidence Registry v1",
+  "oneOf": [
+    { "$ref": "#/definitions/registry" },
+    { "$ref": "#/definitions/fragment" }
+  ],
+  "definitions": {
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "id": { "type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$" },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$" },
+    "stringSet": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/definitions/nonEmptyString" } },
+    "redaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policyId", "strategy", "excludedDataCategories"],
+      "properties": {
+        "policyId": { "$ref": "#/definitions/id" },
+        "strategy": { "enum": ["allowlist", "project-derived-values", "remove-after-projection"] },
+        "excludedDataCategories": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/definitions/nonEmptyString" } }
+      }
+    },
+    "descriptor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "version", "domainPackId", "title", "jsonSchema", "producerIds", "consumerIds", "accessibleRepresentation", "retentionClass", "sensitivity", "redaction"],
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "version": { "$ref": "#/definitions/version" },
+        "domainPackId": { "enum": ["core", "chemistry", "assay", "causalyst"] },
+        "title": { "$ref": "#/definitions/nonEmptyString" },
+        "jsonSchema": { "type": "object", "minProperties": 1 },
+        "producerIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/definitions/id" } },
+        "consumerIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/definitions/id" } },
+        "accessibleRepresentation": { "enum": ["text", "table", "chart+table", "image+alt", "artifact"] },
+        "retentionClass": { "enum": ["ephemeral", "submission", "audit"] },
+        "sensitivity": { "enum": ["none", "educational-record", "user-authored"] },
+        "redaction": { "$ref": "#/definitions/redaction" }
+      }
+    },
+    "fragment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "schemaVersion", "domainPackId", "version", "entries"],
+      "properties": {
+        "schema": { "const": "studio.evidence-registry-fragment" },
+        "schemaVersion": { "const": "1.0" },
+        "domainPackId": { "enum": ["core", "chemistry", "assay", "causalyst"] },
+        "version": { "$ref": "#/definitions/version" },
+        "entries": { "type": "array", "items": { "$ref": "#/definitions/descriptor" } }
+      }
+    },
+    "registry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "schemaVersion", "version", "entries"],
+      "properties": {
+        "schema": { "const": "studio.evidence-registry" },
+        "schemaVersion": { "const": "1.0" },
+        "version": { "$ref": "#/definitions/version" },
+        "entries": { "type": "array", "items": { "$ref": "#/definitions/descriptor" } }
+      }
+    }
+  }
+}

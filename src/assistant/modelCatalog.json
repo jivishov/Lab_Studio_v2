@@ -1,0 +1,27 @@
+[
+  {
+    "id": "gpt-5.4-mini",
+    "label": "GPT-5.4 mini",
+    "description": "Quick, lower-cost Studio edits and validation passes.",
+    "defaultReasoningEffort": "low",
+    "reasoningEfforts": ["none", "low", "medium", "high"],
+    "background": false
+  },
+  {
+    "id": "gpt-5.5",
+    "label": "GPT-5.5",
+    "description": "Default model for tool-heavy workflow authoring.",
+    "defaultReasoningEffort": "medium",
+    "reasoningEfforts": ["low", "medium", "high", "xhigh"],
+    "background": false,
+    "default": true
+  },
+  {
+    "id": "gpt-5.5-pro",
+    "label": "GPT-5.5 pro",
+    "description": "Deep refinement path for difficult workflow design.",
+    "defaultReasoningEffort": "high",
+    "reasoningEfforts": ["medium", "high", "xhigh"],
+    "background": true
+  }
+]

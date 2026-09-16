@@ -1,0 +1,20 @@
+{
+  "schema": "assay-studio.example-index",
+  "schemaVersion": "1.0",
+  "examples": [
+    {
+      "id": "assay-cycle11-xtt-golden",
+      "sourceModule": "src/domain-packs/assay/profiles/__fixtures__/cycle11ProtocolFixtures.ts",
+      "profileRef": { "id": "assay.profile.xtt-metabolic-activity", "version": "1.0.0" },
+      "dataBoundary": "source-controlled synthetic AU observations",
+      "claim": "protocol-dependent metabolic-activity proxy; not direct cell count"
+    },
+    {
+      "id": "assay-cycle11-broth-microdilution-golden",
+      "sourceModule": "src/domain-packs/assay/profiles/__fixtures__/cycle11ProtocolFixtures.ts",
+      "profileRef": { "id": "assay.profile.educational-broth-microdilution", "version": "1.0.0" },
+      "dataBoundary": "source-controlled synthetic binary growth observations",
+      "claim": "profile-bound educational endpoint; no clinical categories or advice"
+    }
+  ]
+}

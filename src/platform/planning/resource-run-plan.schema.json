@@ -1,0 +1,181 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://lab-studio.local/schemas/studio.resource-run-plan/1.0",
+  "title": "Studio Resource Run Plan v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "schemaVersion", "requestId", "status", "contextSummary", "requirements",
+    "preparationBatches", "capacitySchedule", "stationWaves", "shortages", "cleanupTasks",
+    "substitutionCandidates", "diagnostics", "assumptions", "limitations"
+  ],
+  "properties": {
+    "schema": { "const": "studio.resource-run-plan" },
+    "schemaVersion": { "const": "1.0" },
+    "requestId": { "$ref": "#/definitions/nonEmptyString" },
+    "status": { "enum": ["complete", "incomplete"] },
+    "contextSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["participants", "groupCount", "sectionCount", "repeats", "technicalReplicates", "stationCount"],
+      "properties": {
+        "participants": { "type": "integer", "minimum": 0 },
+        "groupCount": { "type": "integer", "minimum": 0 },
+        "sectionCount": { "type": "integer", "minimum": 0 },
+        "repeats": { "type": "integer", "minimum": 0 },
+        "technicalReplicates": { "type": "integer", "minimum": 0 },
+        "stationCount": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "requirements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["resourceId", "label", "resourceClass", "required", "normalizedTotal", "formulaTrace"],
+        "properties": {
+          "resourceId": { "$ref": "#/definitions/nonEmptyString" },
+          "label": { "$ref": "#/definitions/nonEmptyString" },
+          "resourceClass": { "$ref": "#/definitions/resourceClass" },
+          "required": { "$ref": "#/definitions/quantity" },
+          "normalizedTotal": { "$ref": "#/definitions/quantity" },
+          "formulaTrace": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["label", "expression", "result"],
+              "properties": {
+                "label": { "$ref": "#/definitions/nonEmptyString" },
+                "expression": { "$ref": "#/definitions/nonEmptyString" },
+                "result": { "$ref": "#/definitions/quantity" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "preparationBatches": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["resourceId", "batchNumber", "task"],
+        "properties": {
+          "resourceId": { "$ref": "#/definitions/nonEmptyString" },
+          "batchNumber": { "type": "integer", "minimum": 1 },
+          "task": { "$ref": "#/definitions/nonEmptyString" },
+          "targetQuantity": { "$ref": "#/definitions/quantity" },
+          "leadTime": { "$ref": "#/definitions/quantity" }
+        }
+      }
+    },
+    "capacitySchedule": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["resourceId", "unitsAvailable", "groupsPerWave", "waves"],
+        "properties": {
+          "resourceId": { "$ref": "#/definitions/nonEmptyString" },
+          "stationId": { "$ref": "#/definitions/nonEmptyString" },
+          "unitsAvailable": { "type": "integer", "minimum": 1 },
+          "groupsPerWave": { "type": "integer", "minimum": 1 },
+          "waves": { "type": "integer", "minimum": 1 },
+          "waveDuration": { "$ref": "#/definitions/quantity" },
+          "totalDuration": { "$ref": "#/definitions/quantity" }
+        }
+      }
+    },
+    "stationWaves": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["stationId", "resourceId", "wave", "groupIds"],
+        "properties": {
+          "stationId": { "$ref": "#/definitions/nonEmptyString" },
+          "resourceId": { "$ref": "#/definitions/nonEmptyString" },
+          "wave": { "type": "integer", "minimum": 1 },
+          "groupIds": { "type": "array", "items": { "$ref": "#/definitions/nonEmptyString" } }
+        }
+      }
+    },
+    "shortages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["resourceId", "required", "available", "shortage"],
+        "properties": {
+          "resourceId": { "$ref": "#/definitions/nonEmptyString" },
+          "required": { "$ref": "#/definitions/quantity" },
+          "available": { "$ref": "#/definitions/quantity" },
+          "shortage": { "$ref": "#/definitions/quantity" }
+        }
+      }
+    },
+    "cleanupTasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["resourceId", "task", "resetRequired"],
+        "properties": {
+          "resourceId": { "$ref": "#/definitions/nonEmptyString" },
+          "task": { "$ref": "#/definitions/nonEmptyString" },
+          "duration": { "$ref": "#/definitions/quantity" },
+          "resetRequired": { "type": "boolean" }
+        }
+      }
+    },
+    "substitutionCandidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["resourceId", "candidateResourceId", "label", "reason", "reviewRequired"],
+        "properties": {
+          "resourceId": { "$ref": "#/definitions/nonEmptyString" },
+          "candidateResourceId": { "$ref": "#/definitions/nonEmptyString" },
+          "label": { "$ref": "#/definitions/nonEmptyString" },
+          "reason": { "$ref": "#/definitions/nonEmptyString" },
+          "reviewRequired": { "const": true }
+        }
+      }
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "path", "message", "severity"],
+        "properties": {
+          "code": { "$ref": "#/definitions/nonEmptyString" },
+          "path": { "type": "string" },
+          "message": { "$ref": "#/definitions/nonEmptyString" },
+          "severity": { "enum": ["warning", "error"] },
+          "resourceId": { "$ref": "#/definitions/nonEmptyString" }
+        }
+      }
+    },
+    "assumptions": { "type": "array", "items": { "type": "string" } },
+    "limitations": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+  },
+  "definitions": {
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "decimalString": { "type": "string", "pattern": "^[+-]?(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?$" },
+    "controlledUnit": { "enum": ["1", "%", "s", "min", "h", "uL", "mL", "L", "ug", "mg", "g", "kg", "umol", "mmol", "mol", "uM", "mM", "M", "degC", "K", "rpm", "nm", "AU", "OD", "pH"] },
+    "quantity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "unit"],
+      "properties": {
+        "value": { "$ref": "#/definitions/decimalString" },
+        "unit": { "$ref": "#/definitions/controlledUnit" }
+      }
+    },
+    "resourceClass": { "enum": ["consumable", "durable", "instrument", "reagent", "sample", "service"] }
+  }
+}

@@ -1,0 +1,940 @@
+.goblin-animation-trial {
+  --goblin-trial-ink: #142428;
+  --goblin-trial-muted: #607275;
+  --goblin-trial-line: #d5e0dd;
+  --goblin-trial-soft: #edf4f0;
+  --goblin-trial-green: #235f48;
+  --goblin-trial-copper: #b76d2b;
+  display: grid;
+  gap: 1rem;
+  padding: 1.1rem;
+}
+
+.goblin-animation-trial__workspace {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(520px, 1fr) minmax(280px, 360px);
+}
+
+.goblin-animation-trial__stage-shell,
+.goblin-animation-trial__controls {
+  background: #fbfdfc;
+  border: 1px solid var(--goblin-trial-line);
+  border-radius: 8px;
+  box-shadow: 0 12px 28px rgb(31 48 55 / 10%);
+}
+
+.goblin-animation-trial__stage-shell {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.goblin-animation-trial__toolbar {
+  align-items: center;
+  border-bottom: 1px solid var(--goblin-trial-line);
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  padding: 0.75rem 0.85rem;
+}
+
+.goblin-animation-trial__toolbar > div {
+  display: grid;
+  gap: 0.12rem;
+  min-width: 0;
+}
+
+.goblin-animation-trial__toolbar strong {
+  color: var(--goblin-trial-ink);
+  font-size: 0.98rem;
+}
+
+.goblin-animation-trial__toolbar span,
+.goblin-animation-trial__controls p {
+  color: var(--goblin-trial-muted);
+  font-size: 0.86rem;
+}
+
+.goblin-animation-trial__controls {
+  align-content: start;
+  display: grid;
+  gap: 0.8rem;
+  padding: 0.85rem;
+}
+
+.goblin-animation-trial__preset-grid {
+  display: grid;
+  gap: 0.45rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.goblin-animation-trial__preset-grid button {
+  justify-content: flex-start;
+}
+
+.goblin-animation-trial__preset-grid button[aria-pressed="true"] {
+  background: #e6f2ea;
+  border-color: #8fbca6;
+  color: #173f31;
+}
+
+.goblin-animation-trial__mode-grid {
+  display: grid;
+  gap: 0.45rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.goblin-animation-trial__mode-grid button {
+  justify-content: flex-start;
+}
+
+.goblin-animation-trial__mode-grid button[aria-pressed="true"] {
+  background: #e6f2ea;
+  border-color: #8fbca6;
+  color: #173f31;
+}
+
+.goblin-animation-trial__field {
+  color: var(--goblin-trial-muted);
+  display: grid;
+  font-size: 0.82rem;
+  font-weight: 750;
+  gap: 0.34rem;
+}
+
+.goblin-animation-trial__field.is-inline {
+  align-items: center;
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+.goblin-animation-trial__field select,
+.goblin-animation-trial__field input[type="range"] {
+  accent-color: var(--goblin-trial-green);
+  background: #fff;
+  border: 1px solid #c9d7d3;
+  border-radius: 8px;
+  color: var(--goblin-trial-ink);
+  min-height: 38px;
+  padding: 0.42rem 0.52rem;
+}
+
+.goblin-animation-trial__field input[type="range"] {
+  padding: 0;
+}
+
+.goblin-animation-trial__frame-stepper {
+  align-items: center;
+  display: grid;
+  gap: 0.45rem;
+  grid-template-columns: 38px minmax(0, 1fr) 38px;
+}
+
+.goblin-animation-trial__frame-stepper button {
+  justify-content: center;
+  min-height: 38px;
+  padding: 0;
+}
+
+.goblin-animation-trial__details {
+  background: var(--goblin-trial-soft);
+  border: 1px solid #d9e5df;
+  border-radius: 8px;
+  display: grid;
+  gap: 0.34rem;
+  padding: 0.75rem;
+}
+
+.goblin-animation-trial__details strong {
+  color: var(--goblin-trial-ink);
+}
+
+.goblin-animation-stage {
+  aspect-ratio: 16 / 9;
+  background:
+    linear-gradient(180deg, rgb(246 249 247 / 96%), rgb(229 237 233 / 94%)),
+    #eef4f1;
+  contain: layout paint;
+  min-height: 360px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.goblin-animation-stage__grid {
+  background-image:
+    linear-gradient(rgb(57 86 82 / 8%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(57 86 82 / 8%) 1px, transparent 1px);
+  background-size: 34px 34px;
+  inset: 0;
+  mask-image: linear-gradient(180deg, rgb(0 0 0 / 80%), transparent 72%);
+  position: absolute;
+}
+
+.goblin-animation-stage__bench {
+  background:
+    linear-gradient(180deg, #c9a66d, #9d7540 54%, #6d4a27),
+    #9d7540;
+  border-top: 1px solid rgb(255 255 255 / 48%);
+  bottom: 0;
+  box-shadow: 0 -16px 34px rgb(49 67 65 / 12%);
+  height: 27%;
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+
+.goblin-animation-stage__bench::after {
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 16%), transparent);
+  content: "";
+  height: 1px;
+  left: 8%;
+  position: absolute;
+  right: 8%;
+  top: 26%;
+}
+
+.goblin-animation-stage__equipment {
+  filter:
+    drop-shadow(0 1px 0 rgb(255 255 255 / 80%))
+    drop-shadow(0 14px 12px rgb(27 45 50 / 20%));
+  object-fit: contain;
+  pointer-events: none;
+  position: absolute;
+  transform: translate(-50%, -100%);
+  z-index: 16;
+}
+
+.goblin-animation-stage__equipment.is-stand {
+  height: 49%;
+  left: 58%;
+  top: 72%;
+}
+
+.goblin-animation-stage__equipment.is-beaker {
+  height: 30%;
+  left: 76%;
+  top: 78%;
+}
+
+.goblin-animation-stage__equipment.is-wash {
+  height: 24%;
+  left: 28%;
+  top: 77%;
+}
+
+.goblin-animation-stage__effect {
+  animation: goblin-stage-effect-pulse 1450ms cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  animation-delay: var(--goblin-effect-delay);
+  left: var(--goblin-effect-x);
+  pointer-events: none;
+  position: absolute;
+  top: var(--goblin-effect-y);
+  transform: translate(-50%, -50%) rotate(var(--goblin-effect-rotation));
+  transform-origin: left center;
+  width: var(--goblin-effect-width);
+  z-index: 24;
+}
+
+.goblin-animation-stage__effect.is-target {
+  border: 2px dashed rgb(183 109 43 / 68%);
+  border-radius: 999px;
+  height: 18%;
+}
+
+.goblin-animation-stage__effect.is-work-spark {
+  background:
+    radial-gradient(circle, rgb(255 241 174 / 92%) 0 18%, transparent 20%),
+    radial-gradient(circle at 72% 30%, rgb(234 161 67 / 76%) 0 12%, transparent 14%),
+    radial-gradient(circle at 28% 74%, rgb(91 142 101 / 72%) 0 10%, transparent 12%);
+  height: 14%;
+}
+
+.goblin-animation-stage__effect.is-rinse-stream,
+.goblin-animation-stage__effect.is-pour-stream {
+  background: linear-gradient(90deg, rgb(76 166 194 / 0%), rgb(76 166 194 / 82%), rgb(76 166 194 / 0%));
+  border-radius: 999px;
+  height: 5px;
+}
+
+.goblin-animation-stage__effect.is-pour-stream {
+  background: linear-gradient(90deg, rgb(62 139 157 / 0%), rgb(62 139 157 / 88%), rgb(62 139 157 / 0%));
+  height: 6px;
+}
+
+.goblin-sprite-stage .goblin-animation-stage__effect.is-pour-stream {
+  animation-duration: 1200ms;
+  animation-iteration-count: infinite;
+  animation-name: goblin-sprite-pour-stream;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  background: linear-gradient(90deg, rgb(50 136 168 / 0%), rgb(50 136 168 / 94%), rgb(50 136 168 / 0%));
+  box-shadow: 0 0 12px rgb(62 139 157 / 34%);
+  height: 7px;
+  z-index: 39;
+}
+
+.goblin-actor {
+  animation-delay: var(--goblin-actor-delay);
+  display: block;
+  height: 126px;
+  left: var(--goblin-actor-x);
+  pointer-events: none;
+  position: absolute;
+  top: var(--goblin-actor-y);
+  transform:
+    translate(-50%, -100%)
+    scale(var(--goblin-actor-scale))
+    scaleX(var(--goblin-actor-facing));
+  transform-origin: 50% 100%;
+  width: 126px;
+  z-index: 36;
+}
+
+.goblin-actor.is-notebook-helper {
+  height: 108px;
+  width: 108px;
+  z-index: 34;
+}
+
+.goblin-actor__shadow {
+  background: radial-gradient(ellipse, rgb(30 47 45 / 26%) 0 52%, transparent 68%);
+  bottom: -3px;
+  height: 20px;
+  left: 16%;
+  position: absolute;
+  right: 16%;
+  transform: scaleX(calc(1 / var(--goblin-actor-facing)));
+}
+
+.goblin-actor__rig {
+  animation: goblin-body-idle var(--goblin-actor-duration) cubic-bezier(0.25, 1, 0.5, 1) infinite;
+  animation-delay: var(--goblin-actor-delay);
+  display: block;
+  height: 100%;
+  position: relative;
+  transform-origin: 50% 100%;
+  width: 100%;
+  will-change: transform;
+}
+
+.goblin-actor__body {
+  display: block;
+  filter:
+    drop-shadow(0 1px 0 rgb(255 255 255 / 74%))
+    drop-shadow(0 13px 12px rgb(27 45 50 / 24%));
+  height: 100%;
+  object-fit: contain;
+  position: relative;
+  width: 100%;
+  z-index: 2;
+}
+
+.goblin-actor__limb {
+  background: linear-gradient(180deg, #637737, #2f512d);
+  border: 2px solid rgb(22 52 32 / 36%);
+  border-radius: 999px;
+  display: block;
+  position: absolute;
+  transform-origin: 50% 12%;
+  will-change: transform;
+}
+
+.goblin-actor__limb--arm {
+  height: 45%;
+  top: 34%;
+  width: 13%;
+  z-index: 3;
+}
+
+.goblin-actor__limb--leg {
+  height: 40%;
+  top: 61%;
+  width: 14%;
+  z-index: 1;
+}
+
+.goblin-actor__limb--back {
+  left: 24%;
+  opacity: 0.92;
+}
+
+.goblin-actor__limb--front {
+  right: 21%;
+}
+
+.goblin-actor__limb--leg.goblin-actor__limb--back {
+  left: 35%;
+}
+
+.goblin-actor__limb--leg.goblin-actor__limb--front {
+  right: 30%;
+}
+
+.goblin-actor__effect {
+  display: block;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 4;
+}
+
+.goblin-actor.is-idle .goblin-actor__limb--arm {
+  animation: goblin-arm-idle var(--goblin-actor-duration) cubic-bezier(0.25, 1, 0.5, 1) infinite;
+  animation-delay: var(--goblin-actor-delay);
+}
+
+.goblin-actor.is-idle .goblin-actor__limb--leg {
+  animation: goblin-leg-idle var(--goblin-actor-duration) cubic-bezier(0.25, 1, 0.5, 1) infinite;
+  animation-delay: var(--goblin-actor-delay);
+}
+
+.goblin-actor.is-carry .goblin-actor__rig {
+  animation-name: goblin-body-carry;
+}
+
+.goblin-actor.is-carry .goblin-actor__limb--arm,
+.goblin-actor.is-carry .goblin-actor__limb--leg {
+  animation: goblin-limb-scamper 320ms steps(2, end) infinite;
+  animation-delay: var(--goblin-actor-delay);
+}
+
+.goblin-actor.is-work .goblin-actor__rig {
+  animation-name: goblin-body-work;
+}
+
+.goblin-actor.is-work .goblin-actor__limb--arm {
+  animation: goblin-arm-work var(--goblin-actor-duration) cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  animation-delay: var(--goblin-actor-delay);
+}
+
+.goblin-actor.is-work .goblin-actor__limb--leg {
+  animation: goblin-leg-brace var(--goblin-actor-duration) cubic-bezier(0.25, 1, 0.5, 1) infinite;
+  animation-delay: var(--goblin-actor-delay);
+}
+
+.goblin-actor.is-rinse .goblin-actor__rig,
+.goblin-actor.is-pour .goblin-actor__rig {
+  animation-name: goblin-body-task;
+}
+
+.goblin-actor.is-rinse .goblin-actor__limb--arm {
+  animation: goblin-arm-rinse var(--goblin-actor-duration) cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  animation-delay: var(--goblin-actor-delay);
+}
+
+.goblin-actor.is-pour .goblin-actor__limb--arm {
+  animation: goblin-arm-pour var(--goblin-actor-duration) cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  animation-delay: var(--goblin-actor-delay);
+}
+
+.goblin-actor.is-rinse .goblin-actor__limb--leg,
+.goblin-actor.is-pour .goblin-actor__limb--leg {
+  animation: goblin-leg-brace var(--goblin-actor-duration) cubic-bezier(0.25, 1, 0.5, 1) infinite;
+  animation-delay: var(--goblin-actor-delay);
+}
+
+.goblin-actor.has-spark-effect .goblin-actor__effect,
+.goblin-actor.has-note-effect .goblin-actor__effect {
+  animation: goblin-small-effect var(--goblin-actor-duration) cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  animation-delay: var(--goblin-actor-delay);
+  height: 18px;
+  left: 68%;
+  top: 26%;
+  width: 18px;
+}
+
+.goblin-actor.has-spark-effect .goblin-actor__effect {
+  background:
+    radial-gradient(circle, #ffe88a 0 28%, transparent 30%),
+    radial-gradient(circle at 70% 36%, #d47a25 0 16%, transparent 18%),
+    radial-gradient(circle at 32% 74%, #2e8054 0 14%, transparent 16%);
+}
+
+.goblin-actor.has-note-effect .goblin-actor__effect {
+  border-color: #224449;
+  border-style: solid;
+  border-width: 0 2px 2px 0;
+  height: 20px;
+  transform: rotate(-9deg);
+  width: 13px;
+}
+
+.goblin-actor.has-water-effect .goblin-actor__effect,
+.goblin-actor.has-pour-effect .goblin-actor__effect {
+  animation: goblin-tool-effect var(--goblin-actor-duration) cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  animation-delay: var(--goblin-actor-delay);
+  background: #d9f1ed;
+  border: 2px solid #5ea3aa;
+  border-radius: 4px 10px 10px 4px;
+  height: 18px;
+  left: 62%;
+  top: 40%;
+  transform-origin: 10% 50%;
+  width: 32px;
+}
+
+.goblin-actor.has-pour-effect .goblin-actor__effect {
+  background: #e7eef1;
+  border-color: #7c8d90;
+}
+
+.goblin-sprite-stage .goblin-animation-stage__equipment.is-stand {
+  left: 61%;
+}
+
+.goblin-sprite-stage .goblin-animation-stage__equipment.is-beaker {
+  left: 76%;
+}
+
+.goblin-sprite-stage__empty {
+  background: rgb(255 255 255 / 76%);
+  border: 1px solid #cfdbd7;
+  border-radius: 8px;
+  color: var(--goblin-trial-muted);
+  font-weight: 750;
+  left: 50%;
+  padding: 0.72rem 0.86rem;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 40;
+}
+
+.goblin-sprite-actor {
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  background-size: var(--goblin-sprite-sheet-width) var(--goblin-sprite-height);
+  bottom: auto;
+  display: block;
+  filter:
+    drop-shadow(0 1px 0 rgb(255 255 255 / 74%))
+    drop-shadow(0 14px 13px rgb(27 45 50 / 24%));
+  height: var(--goblin-sprite-height);
+  left: var(--goblin-sprite-x);
+  pointer-events: none;
+  position: absolute;
+  top: var(--goblin-sprite-y);
+  transform:
+    translate(-50%, -100%)
+    translate3d(0, 0, 0)
+    scale(var(--goblin-sprite-scale))
+    scaleX(var(--goblin-sprite-facing));
+  transform-origin: 50% 100%;
+  will-change: background-position, transform;
+  width: var(--goblin-sprite-width);
+  z-index: 38;
+}
+
+.goblin-sprite-actor::after {
+  background: radial-gradient(ellipse, rgb(30 47 45 / 26%) 0 52%, transparent 68%);
+  bottom: -3px;
+  content: "";
+  height: 20px;
+  left: 14%;
+  position: absolute;
+  right: 14%;
+  transform: scaleX(calc(1 / var(--goblin-sprite-facing)));
+  z-index: -1;
+}
+
+.goblin-sprite-actor[data-playing="false"] {
+  animation: none;
+  background-position: var(--goblin-sprite-static-position) 0;
+}
+
+.goblin-sprite-actor[data-playing="true"] {
+  animation-duration: var(--goblin-sprite-duration);
+  animation-iteration-count: infinite;
+  animation-name: goblin-sprite-play;
+  animation-timing-function: var(--goblin-sprite-frame-steps);
+}
+
+.goblin-sprite-actor[data-motion-kind="pour"][data-playing="true"] {
+  animation-duration: var(--goblin-sprite-duration), var(--goblin-sprite-duration);
+  animation-iteration-count: infinite, infinite;
+  animation-name: goblin-sprite-play, goblin-sprite-pour-path;
+  animation-timing-function: var(--goblin-sprite-frame-steps), cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes goblin-body-idle {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-1deg);
+  }
+
+  50% {
+    transform: translate3d(0, -4px, 0) rotate(1deg);
+  }
+}
+
+@keyframes goblin-body-carry {
+  0%,
+  100% {
+    transform: translate3d(-10px, 0, 0) rotate(-3deg);
+  }
+
+  45% {
+    transform: translate3d(14px, -7px, 0) rotate(2deg);
+  }
+
+  72% {
+    transform: translate3d(20px, -2px, 0) rotate(0deg);
+  }
+}
+
+@keyframes goblin-body-work {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-1deg);
+  }
+
+  45% {
+    transform: translate3d(8px, -3px, 0) rotate(4deg);
+  }
+
+  72% {
+    transform: translate3d(-3px, -2px, 0) rotate(-2deg);
+  }
+}
+
+@keyframes goblin-body-task {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-2deg);
+  }
+
+  52% {
+    transform: translate3d(7px, -4px, 0) rotate(5deg);
+  }
+
+  78% {
+    transform: translate3d(4px, -2px, 0) rotate(3deg);
+  }
+}
+
+@keyframes goblin-arm-idle {
+  0%,
+  100% {
+    transform: rotate(18deg);
+  }
+
+  50% {
+    transform: rotate(-12deg);
+  }
+}
+
+@keyframes goblin-leg-idle {
+  0%,
+  100% {
+    transform: rotate(5deg);
+  }
+
+  50% {
+    transform: rotate(-4deg);
+  }
+}
+
+@keyframes goblin-limb-scamper {
+  0% {
+    transform: rotate(-34deg);
+  }
+
+  100% {
+    transform: rotate(28deg);
+  }
+}
+
+@keyframes goblin-arm-work {
+  0%,
+  100% {
+    transform: rotate(12deg) translateY(0);
+  }
+
+  45% {
+    transform: rotate(-58deg) translateY(4px);
+  }
+
+  72% {
+    transform: rotate(-28deg) translateY(-2px);
+  }
+}
+
+@keyframes goblin-arm-rinse {
+  0%,
+  100% {
+    transform: rotate(26deg);
+  }
+
+  48%,
+  74% {
+    transform: rotate(-72deg) translateY(2px);
+  }
+}
+
+@keyframes goblin-arm-pour {
+  0%,
+  100% {
+    transform: rotate(34deg);
+  }
+
+  46%,
+  78% {
+    transform: rotate(-86deg) translateY(3px);
+  }
+}
+
+@keyframes goblin-leg-brace {
+  0%,
+  100% {
+    transform: rotate(14deg);
+  }
+
+  50% {
+    transform: rotate(-10deg);
+  }
+}
+
+@keyframes goblin-small-effect {
+  0%,
+  32% {
+    opacity: 0;
+    transform: translate3d(0, 5px, 0) scale(0.65);
+  }
+
+  54%,
+  78% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(0, -8px, 0) scale(0.82);
+  }
+}
+
+@keyframes goblin-tool-effect {
+  0%,
+  34% {
+    opacity: 0;
+    transform: rotate(0deg);
+  }
+
+  52%,
+  80% {
+    opacity: 1;
+    transform: rotate(-24deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: rotate(-10deg);
+  }
+}
+
+@keyframes goblin-stage-effect-pulse {
+  0%,
+  36% {
+    opacity: 0;
+    transform:
+      translate(-50%, -50%)
+      rotate(var(--goblin-effect-rotation))
+      scaleX(0.18)
+      scale(0.92);
+  }
+
+  56%,
+  76% {
+    opacity: 1;
+    transform:
+      translate(-50%, -50%)
+      rotate(var(--goblin-effect-rotation))
+      scaleX(1)
+      scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform:
+      translate(-50%, -50%)
+      rotate(var(--goblin-effect-rotation))
+      scaleX(0.42)
+      scale(1.06);
+  }
+}
+
+@keyframes goblin-sprite-play {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: var(--goblin-sprite-end-position) 0;
+  }
+}
+
+@keyframes goblin-sprite-pour-path {
+  0% {
+    transform:
+      translate(-50%, -100%)
+      translate3d(-18px, 3px, 0)
+      rotate(0deg)
+      scale(var(--goblin-sprite-scale))
+      scaleX(var(--goblin-sprite-facing));
+  }
+
+  15% {
+    transform:
+      translate(-50%, -100%)
+      translate3d(-8px, 1px, 0)
+      rotate(-1deg)
+      scale(var(--goblin-sprite-scale))
+      scaleX(var(--goblin-sprite-facing));
+  }
+
+  34% {
+    transform:
+      translate(-50%, -100%)
+      translate3d(7px, -4px, 0)
+      rotate(-3deg)
+      scale(var(--goblin-sprite-scale))
+      scaleX(var(--goblin-sprite-facing));
+  }
+
+  48%,
+  66% {
+    transform:
+      translate(-50%, -100%)
+      translate3d(20px, -7px, 0)
+      rotate(-4deg)
+      scale(var(--goblin-sprite-scale))
+      scaleX(var(--goblin-sprite-facing));
+  }
+
+  82% {
+    transform:
+      translate(-50%, -100%)
+      translate3d(2px, -2px, 0)
+      rotate(-2deg)
+      scale(var(--goblin-sprite-scale))
+      scaleX(var(--goblin-sprite-facing));
+  }
+
+  100% {
+    transform:
+      translate(-50%, -100%)
+      translate3d(-18px, 3px, 0)
+      rotate(0deg)
+      scale(var(--goblin-sprite-scale))
+      scaleX(var(--goblin-sprite-facing));
+  }
+}
+
+@keyframes goblin-sprite-pour-stream {
+  0%,
+  16% {
+    opacity: 0;
+    transform:
+      translate(-50%, -50%)
+      rotate(var(--goblin-effect-rotation))
+      scaleX(0.18);
+  }
+
+  30% {
+    opacity: 0.82;
+    transform:
+      translate(-50%, -50%)
+      rotate(var(--goblin-effect-rotation))
+      scaleX(0.86);
+  }
+
+  44%,
+  70% {
+    opacity: 0.92;
+    transform:
+      translate(-50%, -50%)
+      rotate(var(--goblin-effect-rotation))
+      scaleX(1);
+  }
+
+  88% {
+    opacity: 0.24;
+    transform:
+      translate(-50%, -50%)
+      rotate(var(--goblin-effect-rotation))
+      scaleX(0.48);
+  }
+
+  100% {
+    opacity: 0;
+    transform:
+      translate(-50%, -50%)
+      rotate(var(--goblin-effect-rotation))
+      scaleX(0.18);
+  }
+}
+
+@media (max-width: 980px) {
+  .goblin-animation-trial__workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .goblin-animation-stage {
+    min-height: 320px;
+  }
+}
+
+@media (max-width: 680px) {
+  .goblin-animation-trial {
+    padding: 0.75rem;
+  }
+
+  .goblin-animation-trial__toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .goblin-animation-trial__preset-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .goblin-animation-trial__mode-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .goblin-animation-stage {
+    min-height: 280px;
+  }
+
+  .goblin-actor {
+    height: 106px;
+    width: 106px;
+  }
+
+  .goblin-actor.is-notebook-helper {
+    height: 92px;
+    width: 92px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .goblin-animation-stage__effect,
+  .goblin-actor__rig,
+  .goblin-actor__limb,
+  .goblin-actor__effect,
+  .goblin-sprite-actor {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .goblin-sprite-actor {
+    background-position: var(--goblin-sprite-static-position) 0 !important;
+  }
+
+  .goblin-animation-stage__effect {
+    opacity: 0.55;
+  }
+
+  .goblin-actor__effect {
+    opacity: 0.85;
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "schema": "assay-studio.protocol-profile",
+  "schemaVersion": "1.0",
+  "id": "assay.profile.educational-broth-microdilution",
+  "version": "1.0.0",
+  "title": "Educational broth-microdilution endpoint",
+  "workflow": "broth-microdilution",
+  "useBoundary": "education",
+  "sourceReferences": [
+    {
+      "id": "eucast-mic-methodology",
+      "title": "EUCAST reading guide for broth microdilution",
+      "organization": "EUCAST",
+      "url": "https://www.eucast.org/fileadmin/eucast/pdf/MIC/Reading_guide_BMD_v_5.0_2024.pdf",
+      "versionOrAccessDate": "version 5.0, January 2024; accessed 2026-07-26",
+      "supports": [
+        "Broth microdilution validity requires a satisfactory positive growth control.",
+        "The standard endpoint is the lowest tested concentration that completely inhibits visible growth, with method-specific exceptions."
+      ]
+    }
+  ],
+  "requiredControls": [
+    { "role": "growthControl", "minimumCount": 1, "expectedSignal": "growth" },
+    { "role": "sterilityControl", "minimumCount": 1, "expectedSignal": "no-growth" }
+  ],
+  "readouts": [
+    {
+      "id": "binary-growth-readout",
+      "label": "Reviewed binary growth observation",
+      "kind": "binary-growth",
+      "allowedUnits": ["binary-growth"],
+      "allowedSourceTypes": ["instrument-export", "image-derived", "manual", "synthetic"],
+      "channelRequirement": "optional",
+      "interpretation": "Profile-coded 1 means growth and 0 means no growth after explicit review."
+    }
+  ],
+  "metricRules": [],
+  "endpointRules": [
+    {
+      "id": "lowest-reviewed-no-growth",
+      "type": "lowest-no-growth-concentration",
+      "concentrationComponentRef": "test-compound",
+      "growthValue": "1",
+      "noGrowthValue": "0",
+      "terminology": "profile-bound educational MIC endpoint (non-clinical)",
+      "requireMonotonic": true
+    }
+  ],
+  "roundingPolicy": { "mode": "round", "decimalPlaces": 6, "tieBreaking": "half-even" },
+  "validityRange": [
+    "Only the explicitly authored concentration component and reviewed binary-growth readout are interpreted.",
+    "The supplying protocol must define organism/sample, medium, inoculum, incubation, concentration series, and endpoint reading conditions."
+  ],
+  "materialDefaults": [
+    {
+      "resourceClass": "reagent",
+      "label": "Protocol-defined broth, compound, and sample inputs",
+      "quantityStatus": "protocol-supplied-required",
+      "note": "No organism, drug, medium, inoculum, or amount is selected automatically."
+    },
+    {
+      "resourceClass": "consumable",
+      "label": "Broth-microdilution plate and consumables",
+      "quantityStatus": "protocol-supplied-required",
+      "note": "Planning requires explicit quantities and dead-volume policy."
+    }
+  ],
+  "limitations": [
+    "This profile does not claim ISO, CLSI, or EUCAST conformity; the citation supports the bounded endpoint concept only.",
+    "No clinical breakpoint, susceptibility category, species/drug selection, treatment advice, or safety certification is included.",
+    "Invalid controls, conflicting replicates, missing concentrations, or non-monotonic outcomes make the endpoint indeterminate.",
+    "Image-derived observations require explicit review and remain labeled by source."
+  ]
+}

@@ -1,0 +1,1543 @@
+{
+  "id": "beers-law-calibration",
+  "title": "Beer's Law Calibration",
+  "learningGoal": "Prepare a dye standard, measure transmittance, and convert it to absorbance evidence.",
+  "requiredEquipment": [
+    "sample-bottle",
+    "graduated-cylinder",
+    "test-tube",
+    "wash-bottle",
+    "cuvette",
+    "spectrophotometer",
+    "data-collection-interface",
+    "sample-bottle-1l"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "sample-bottle-1",
+        "definitionId": "sample-bottle-1l",
+        "label": "Sample bottle (1 L stock)",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "Blue dye stock",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "blue-dye-solution",
+          "volumeMl": 1000
+        }
+      },
+      {
+        "id": "graduated-cylinder-1",
+        "definitionId": "graduated-cylinder",
+        "label": "Graduated cylinder",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "prepared-receiver-1",
+        "definitionId": "test-tube",
+        "label": "Clean labelled prepared-sample receiver",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "wash-bottle-1",
+        "definitionId": "wash-bottle",
+        "label": "Wash bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "cuvette-1",
+        "definitionId": "cuvette",
+        "label": "Cuvette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "spectrophotometer-1",
+        "definitionId": "spectrophotometer",
+        "label": "Spectrophotometer",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "data-collection-interface-1",
+        "definitionId": "data-collection-interface",
+        "label": "Data collection interface",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "blank-source-1",
+        "definitionId": "sample-bottle-1l",
+        "label": "Teacher-approved blank source (1 L stock)",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "configured blank",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid",
+          "volumeMl": 1000
+        }
+      },
+      {
+        "id": "blank-cuvette-1",
+        "definitionId": "cuvette",
+        "label": "Blank cuvette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "beers-law-calibration-place-spectrophotometer",
+      "verb": "place",
+      "label": "Place the photometer",
+      "parameters": {
+        "equipmentInstanceId": "spectrophotometer-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Place the photometer: completed with the named sample and configuration provenance preserved."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the required predecessor evidence or named equipment is unavailable",
+          "message": "This operation is not ready or the selected sample does not match the authored provenance.",
+          "recovery": "Restore the named sample and equipment state, then complete the immediately preceding operation."
+        }
+      ],
+      "feedback": {
+        "success": "Place the photometer complete.",
+        "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
+      },
+      "evidence": [],
+      "atomId": "atom.place.photometer",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer"
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "spectrophotometer",
+        "stationId": "workbench",
+        "accessibleLabel": "Place the photometer"
+      }
+    },
+    {
+      "id": "beers-law-calibration-measure-stock-dye",
+      "verb": "measureVolume",
+      "label": "Measure the configured stock aliquot",
+      "parameters": {
+        "sourceInstanceId": "sample-bottle-1",
+        "targetInstanceId": "graduated-cylinder-1",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputLabel": "Measure the configured stock aliquot (mL)",
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "mL"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Measure the configured stock aliquot: completed with the named sample and configuration provenance preserved."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the required predecessor evidence or named equipment is unavailable",
+          "message": "This operation is not ready or the selected sample does not match the authored provenance.",
+          "recovery": "Restore the named sample and equipment state, then complete the immediately preceding operation."
+        }
+      ],
+      "feedback": {
+        "success": "Measure the configured stock aliquot complete.",
+        "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
+      },
+      "evidence": [],
+      "atomId": "atom.measure.variable-volume",
+      "equipmentRoleBindings": {
+        "variable-volume-measuring-device": "graduated-cylinder",
+        "liquid-source": "sample-bottle-1l"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "sample-bottle-1l",
+        "targetDefinitionId": "graduated-cylinder",
+        "accessibleLabel": "Measure the configured stock aliquot"
+      },
+      "volume": {
+        "source": "action-input",
+        "outputMeasurementId": "{{config.stockVolumeMeasurementId}}"
+      }
+    },
+    {
+      "id": "beers-law-calibration-transfer-stock-dye",
+      "verb": "transfer",
+      "label": "Transfer the measured stock aliquot",
+      "parameters": {
+        "sourceInstanceId": "graduated-cylinder-1",
+        "targetInstanceId": "prepared-receiver-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Transfer the measured stock aliquot: completed with the named sample and configuration provenance preserved."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the required predecessor evidence or named equipment is unavailable",
+          "message": "This operation is not ready or the selected sample does not match the authored provenance.",
+          "recovery": "Restore the named sample and equipment state, then complete the immediately preceding operation."
+        }
+      ],
+      "feedback": {
+        "success": "Transfer the measured stock aliquot complete.",
+        "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
+      },
+      "evidence": [],
+      "atomId": "atom.transfer.measured-liquid",
+      "equipmentRoleBindings": {
+        "measured-solvent-source": "graduated-cylinder",
+        "receiving-vessel": "test-tube"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "graduated-cylinder",
+        "targetDefinitionId": "test-tube",
+        "accessibleLabel": "Transfer the measured stock aliquot"
+      },
+      "volume": {
+        "source": "measurement",
+        "referenceId": "{{config.stockVolumeMeasurementId}}"
+      }
+    },
+    {
+      "id": "beers-law-calibration-measure-water-volume",
+      "verb": "measureVolume",
+      "label": "Measure the configured dilution water volume",
+      "parameters": {
+        "sourceInstanceId": "wash-bottle-1",
+        "targetInstanceId": "graduated-cylinder-1",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputLabel": "Measure the configured dilution water volume (mL)",
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "mL"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Measure the configured dilution water volume: completed with the named sample and configuration provenance preserved."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the required predecessor evidence or named equipment is unavailable",
+          "message": "This operation is not ready or the selected sample does not match the authored provenance.",
+          "recovery": "Restore the named sample and equipment state, then complete the immediately preceding operation."
+        }
+      ],
+      "feedback": {
+        "success": "Measure the configured dilution water volume complete.",
+        "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
+      },
+      "evidence": [],
+      "atomId": "atom.measure.variable-volume",
+      "equipmentRoleBindings": {
+        "variable-volume-measuring-device": "graduated-cylinder",
+        "liquid-source": "wash-bottle"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "graduated-cylinder",
+        "accessibleLabel": "Measure the configured dilution water volume"
+      },
+      "volume": {
+        "source": "action-input",
+        "outputMeasurementId": "{{config.finalVolumeMeasurementId}}"
+      }
+    },
+    {
+      "id": "beers-law-calibration-dilute-standard",
+      "verb": "dilute",
+      "label": "Dilute and mix the standard to its configured final volume",
+      "parameters": {
+        "sourceInstanceId": "graduated-cylinder-1",
+        "targetInstanceId": "prepared-receiver-1",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputLabel": "Dilute and mix the standard to its configured final volume: final volume (mL)",
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "mL"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Dilute and mix the standard to its configured final volume: completed with the named sample and configuration provenance preserved."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the required predecessor evidence or named equipment is unavailable",
+          "message": "This operation is not ready or the selected sample does not match the authored provenance.",
+          "recovery": "Restore the named sample and equipment state, then complete the immediately preceding operation."
+        }
+      ],
+      "feedback": {
+        "success": "Dilute and mix the standard to its configured final volume complete.",
+        "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
+      },
+      "evidence": [],
+      "atomId": "atom.dilute.to-final-volume",
+      "equipmentRoleBindings": {
+        "measured-solvent-source": "graduated-cylinder",
+        "receiving-vessel": "test-tube"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "graduated-cylinder",
+        "targetDefinitionId": "test-tube",
+        "accessibleLabel": "Dilute and mix the standard to its configured final volume"
+      },
+      "volume": {
+        "source": "action-input"
+      }
+    },
+    {
+      "id": "beers-law-calibration-configure-photometer",
+      "verb": "observe",
+      "label": "Apply the configured wavelength and measurement mode",
+      "parameters": {
+        "photometerInstanceId": "spectrophotometer-1",
+        "measurementId": "{{config.wavelengthMeasurementId}}",
+        "configurationQuantity": "measurement wavelength",
+        "unit": "nm",
+        "photometricMode": "percentTransmittance",
+        "tag": "generic-photometer-configured"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Apply the configured wavelength and measurement mode: completed with the named sample and configuration provenance preserved."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the required predecessor evidence or named equipment is unavailable",
+          "message": "This operation is not ready or the selected sample does not match the authored provenance.",
+          "recovery": "Restore the named sample and equipment state, then complete the immediately preceding operation."
+        }
+      ],
+      "feedback": {
+        "success": "Apply the configured wavelength and measurement mode complete.",
+        "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
+      },
+      "evidence": [],
+      "atomId": "atom.observe.configure-photometer",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer"
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "spectrophotometer",
+        "stationId": "spectrophotometer",
+        "accessibleLabel": "Apply the configured wavelength and measurement mode"
+      }
+    },
+    {
+      "id": "beers-law-calibration-fill-calibration-blank",
+      "verb": "transfer",
+      "label": "Fill the configured calibration blank",
+      "parameters": {
+        "sourceInstanceId": "blank-source-1",
+        "targetInstanceId": "blank-cuvette-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Fill the configured calibration blank: completed with the named sample and configuration provenance preserved."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the required predecessor evidence or named equipment is unavailable",
+          "message": "This operation is not ready or the selected sample does not match the authored provenance.",
+          "recovery": "Restore the named sample and equipment state, then complete the immediately preceding operation."
+        }
+      ],
+      "feedback": {
+        "success": "Fill the configured calibration blank complete.",
+        "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
+      },
+      "evidence": [],
+      "atomId": "atom.transfer.fill-cuvette",
+      "equipmentRoleBindings": {
+        "sample-source": "sample-bottle-1l",
+        "photometer-sample-holder": "cuvette"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "sample-bottle-1l",
+        "targetDefinitionId": "cuvette",
+        "accessibleLabel": "Fill the configured calibration blank"
+      },
+      "volume": {
+        "source": "target-fill-fraction",
+        "fraction": 0.75
+      }
+    },
+    {
+      "id": "beers-law-calibration-prepare-calibration-blank-optical-faces",
+      "verb": "observe",
+      "label": "Record the configured blank optical-face rule",
+      "parameters": {
+        "cuvetteInstanceId": "blank-cuvette-1",
+        "tag": "{{config.blankRuleNotebookTag}}"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record the configured blank optical-face rule: completed with the named sample and configuration provenance preserved."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the required predecessor evidence or named equipment is unavailable",
+          "message": "This operation is not ready or the selected sample does not match the authored provenance.",
+          "recovery": "Restore the named sample and equipment state, then complete the immediately preceding operation."
+        }
+      ],
+      "feedback": {
+        "success": "Record the configured blank optical-face rule complete.",
+        "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
+      },
+      "evidence": [],
+      "atomId": "atom.observe.prepare-cuvette-optical-faces",
+      "equipmentRoleBindings": {
+        "photometer-sample-holder": "cuvette"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "tag",
+        "accessibleLabel": "Record the configured blank optical-face rule"
+      }
+    },
+    {
+      "id": "beers-law-calibration-insert-calibration-blank",
+      "verb": "place",
+      "label": "Insert the calibration blank",
+      "parameters": {
+        "equipmentInstanceId": "blank-cuvette-1",
+        "targetInstanceId": "spectrophotometer-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Insert the calibration blank: completed with the named sample and configuration provenance preserved."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the required predecessor evidence or named equipment is unavailable",
+          "message": "This operation is not ready or the selected sample does not match the authored provenance.",
+          "recovery": "Restore the named sample and equipment state, then complete the immediately preceding operation."
+        }
+      ],
+      "feedback": {
+        "success": "Insert the calibration blank complete.",
+        "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
+      },
+      "evidence": [],
+      "atomId": "atom.place.insert-cuvette",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "cuvette",
+        "targetDefinitionId": "spectrophotometer",
+        "accessibleLabel": "Insert the calibration blank"
+      }
+    },
+    {
+      "id": "beers-law-calibration-blank-photometer",
+      "verb": "observe",
+      "label": "Blank the photometer",
+      "parameters": {
+        "photometerInstanceId": "spectrophotometer-1",
+        "cuvetteInstanceId": "blank-cuvette-1",
+        "wavelengthMeasurementId": "{{config.wavelengthMeasurementId}}",
+        "photometerOperation": "zero",
+        "tag": "generic-photometer-blanked"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Blank the photometer: completed with the named sample and configuration provenance preserved."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the required predecessor evidence or named equipment is unavailable",
+          "message": "This operation is not ready or the selected sample does not match the authored provenance.",
+          "recovery": "Restore the named sample and equipment state, then complete the immediately preceding operation."
+        }
+      ],
+      "feedback": {
+        "success": "Blank the photometer complete.",
+        "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
+      },
+      "evidence": [],
+      "atomId": "atom.observe.blank-photometer",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "spectrophotometer",
+        "stationId": "spectrophotometer",
+        "accessibleLabel": "Blank the photometer"
+      }
+    },
+    {
+      "id": "beers-law-calibration-remove-calibration-blank",
+      "verb": "place",
+      "label": "Remove the calibration blank",
+      "parameters": {
+        "equipmentInstanceId": "blank-cuvette-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Remove the calibration blank: completed with the named sample and configuration provenance preserved."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the required predecessor evidence or named equipment is unavailable",
+          "message": "This operation is not ready or the selected sample does not match the authored provenance.",
+          "recovery": "Restore the named sample and equipment state, then complete the immediately preceding operation."
+        }
+      ],
+      "feedback": {
+        "success": "Remove the calibration blank complete.",
+        "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
+      },
+      "evidence": [],
+      "atomId": "atom.place.remove-cuvette",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "spectrophotometer",
+        "stationId": "workbench",
+        "accessibleLabel": "Remove the calibration blank"
+      }
+    },
+    {
+      "id": "beers-law-calibration-transfer-standard-cuvette",
+      "verb": "transfer",
+      "label": "Fill the cuvette from the prepared standard receiver",
+      "parameters": {
+        "sourceInstanceId": "prepared-receiver-1",
+        "targetInstanceId": "cuvette-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Fill the cuvette from the prepared standard receiver: completed with the named sample and configuration provenance preserved."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the required predecessor evidence or named equipment is unavailable",
+          "message": "This operation is not ready or the selected sample does not match the authored provenance.",
+          "recovery": "Restore the named sample and equipment state, then complete the immediately preceding operation."
+        }
+      ],
+      "feedback": {
+        "success": "Fill the cuvette from the prepared standard receiver complete.",
+        "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
+      },
+      "evidence": [],
+      "atomId": "atom.transfer.fill-cuvette",
+      "equipmentRoleBindings": {
+        "sample-source": "test-tube",
+        "photometer-sample-holder": "cuvette"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "test-tube",
+        "targetDefinitionId": "cuvette",
+        "accessibleLabel": "Fill the cuvette from the prepared standard receiver"
+      },
+      "volume": {
+        "source": "target-fill-fraction",
+        "fraction": 0.75
+      }
+    },
+    {
+      "id": "beers-law-calibration-prepare-standard-optical-faces",
+      "verb": "observe",
+      "label": "Record the configured sample optical-face rule",
+      "parameters": {
+        "cuvetteInstanceId": "cuvette-1",
+        "tag": "{{config.blankRuleNotebookTag}}"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record the configured sample optical-face rule: completed with the named sample and configuration provenance preserved."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the required predecessor evidence or named equipment is unavailable",
+          "message": "This operation is not ready or the selected sample does not match the authored provenance.",
+          "recovery": "Restore the named sample and equipment state, then complete the immediately preceding operation."
+        }
+      ],
+      "feedback": {
+        "success": "Record the configured sample optical-face rule complete.",
+        "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
+      },
+      "evidence": [],
+      "atomId": "atom.observe.prepare-cuvette-optical-faces",
+      "equipmentRoleBindings": {
+        "photometer-sample-holder": "cuvette"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "tag",
+        "accessibleLabel": "Record the configured sample optical-face rule"
+      }
+    },
+    {
+      "id": "beers-law-calibration-insert-standard-cuvette",
+      "verb": "place",
+      "label": "Insert the standard cuvette",
+      "parameters": {
+        "equipmentInstanceId": "cuvette-1",
+        "targetInstanceId": "spectrophotometer-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Insert the standard cuvette: completed with the named sample and configuration provenance preserved."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the required predecessor evidence or named equipment is unavailable",
+          "message": "This operation is not ready or the selected sample does not match the authored provenance.",
+          "recovery": "Restore the named sample and equipment state, then complete the immediately preceding operation."
+        }
+      ],
+      "feedback": {
+        "success": "Insert the standard cuvette complete.",
+        "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
+      },
+      "evidence": [],
+      "atomId": "atom.place.insert-cuvette",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "cuvette",
+        "targetDefinitionId": "spectrophotometer",
+        "accessibleLabel": "Insert the standard cuvette"
+      }
+    },
+    {
+      "id": "beers-law-calibration-read-percent-transmittance",
+      "verb": "observe",
+      "label": "Read the standard percent transmittance",
+      "parameters": {
+        "photometerInstanceId": "spectrophotometer-1",
+        "cuvetteInstanceId": "cuvette-1",
+        "wavelengthMeasurementId": "{{config.wavelengthMeasurementId}}",
+        "requiresZeroNotebookTag": "generic-photometer-blanked",
+        "photometerOperation": "read",
+        "measurementId": "percent-transmittance",
+        "photometricQuantity": "percentTransmittance",
+        "unit": "%T"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Read the standard percent transmittance: completed with the named sample and configuration provenance preserved."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the required predecessor evidence or named equipment is unavailable",
+          "message": "This operation is not ready or the selected sample does not match the authored provenance.",
+          "recovery": "Restore the named sample and equipment state, then complete the immediately preceding operation."
+        }
+      ],
+      "feedback": {
+        "success": "Read the standard percent transmittance complete.",
+        "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
+      },
+      "evidence": [],
+      "atomId": "atom.observe.read-photometer",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "spectrophotometer",
+        "stationId": "spectrophotometer",
+        "accessibleLabel": "Read the standard percent transmittance"
+      }
+    },
+    {
+      "id": "beers-law-calibration-record-percent-transmittance",
+      "verb": "record",
+      "label": "Record the standard percent transmittance",
+      "parameters": {
+        "measurementId": "percent-transmittance",
+        "unit": "%T"
+      },
+      "prerequisites": [
+        {
+          "id": "standard-reading-required",
+          "type": "measurementRecorded",
+          "label": "The standard was read",
+          "measurementId": "percent-transmittance"
+        }
+      ],
+      "stateChanges": [
+        "Record the standard percent transmittance: completed with the named sample and configuration provenance preserved."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the required predecessor evidence or named equipment is unavailable",
+          "message": "This operation is not ready or the selected sample does not match the authored provenance.",
+          "recovery": "Restore the named sample and equipment state, then complete the immediately preceding operation."
+        }
+      ],
+      "feedback": {
+        "success": "Record the standard percent transmittance complete.",
+        "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
+      },
+      "evidence": [],
+      "atomId": "atom.record.photometer-reading",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "measurementId",
+        "accessibleLabel": "Record the standard percent transmittance"
+      }
+    },
+    {
+      "id": "beers-law-calibration-remove-standard-cuvette",
+      "verb": "place",
+      "label": "Remove the standard cuvette",
+      "parameters": {
+        "equipmentInstanceId": "cuvette-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Remove the standard cuvette: completed with the named sample and configuration provenance preserved."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the required predecessor evidence or named equipment is unavailable",
+          "message": "This operation is not ready or the selected sample does not match the authored provenance.",
+          "recovery": "Restore the named sample and equipment state, then complete the immediately preceding operation."
+        }
+      ],
+      "feedback": {
+        "success": "Remove the standard cuvette complete.",
+        "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
+      },
+      "evidence": [],
+      "atomId": "atom.place.remove-cuvette",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "spectrophotometer",
+        "stationId": "workbench",
+        "accessibleLabel": "Remove the standard cuvette"
+      }
+    },
+    {
+      "id": "beers-law-calibration-calculate-absorbance",
+      "verb": "calculate",
+      "label": "Calculate absorbance from the recorded transmittance",
+      "parameters": {
+        "calculationId": "absorbance",
+        "sourceMeasurementId": "percent-transmittance"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Calculate absorbance from the recorded transmittance: completed with the named sample and configuration provenance preserved."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the required predecessor evidence or named equipment is unavailable",
+          "message": "This operation is not ready or the selected sample does not match the authored provenance.",
+          "recovery": "Restore the named sample and equipment state, then complete the immediately preceding operation."
+        }
+      ],
+      "feedback": {
+        "success": "Calculate absorbance from the recorded transmittance complete.",
+        "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
+      },
+      "evidence": [],
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Calculate absorbance from the recorded transmittance"
+      }
+    }
+  ],
+  "process": {
+    "startNodeId": "beers-law-calibration-place-spectrophotometer-node",
+    "nodes": [
+      {
+        "id": "beers-law-calibration-place-spectrophotometer-node",
+        "type": "action",
+        "title": "Place the photometer",
+        "description": "Place the photometer",
+        "actionId": "beers-law-calibration-place-spectrophotometer",
+        "config": {},
+        "validation": [
+          {
+            "id": "beers-law-calibration-place-spectrophotometer-node-done",
+            "type": "actionEvidence",
+            "label": "Place the photometer was completed.",
+            "actionId": "beers-law-calibration-place-spectrophotometer"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Place the photometer complete.",
+          "retry": "Review Place the photometer and try again."
+        }
+      },
+      {
+        "id": "beers-law-calibration-measure-stock-dye-node",
+        "type": "action",
+        "title": "Measure the configured stock aliquot",
+        "description": "Measure the configured stock aliquot",
+        "actionId": "beers-law-calibration-measure-stock-dye",
+        "config": {},
+        "validation": [
+          {
+            "id": "beers-law-calibration-measure-stock-dye-node-done",
+            "type": "actionEvidence",
+            "label": "Measure the configured stock aliquot was completed.",
+            "actionId": "beers-law-calibration-measure-stock-dye"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Measure the configured stock aliquot complete.",
+          "retry": "Review Measure the configured stock aliquot and try again."
+        }
+      },
+      {
+        "id": "beers-law-calibration-transfer-stock-dye-node",
+        "type": "action",
+        "title": "Transfer the measured stock aliquot",
+        "description": "Transfer the measured stock aliquot",
+        "actionId": "beers-law-calibration-transfer-stock-dye",
+        "config": {},
+        "validation": [
+          {
+            "id": "beers-law-calibration-transfer-stock-dye-node-done",
+            "type": "actionEvidence",
+            "label": "Transfer the measured stock aliquot was completed.",
+            "actionId": "beers-law-calibration-transfer-stock-dye"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Transfer the measured stock aliquot complete.",
+          "retry": "Review Transfer the measured stock aliquot and try again."
+        }
+      },
+      {
+        "id": "beers-law-calibration-measure-water-volume-node",
+        "type": "action",
+        "title": "Measure the configured dilution water volume",
+        "description": "Measure the configured dilution water volume",
+        "actionId": "beers-law-calibration-measure-water-volume",
+        "config": {},
+        "validation": [
+          {
+            "id": "beers-law-calibration-measure-water-volume-node-done",
+            "type": "actionEvidence",
+            "label": "Measure the configured dilution water volume was completed.",
+            "actionId": "beers-law-calibration-measure-water-volume"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Measure the configured dilution water volume complete.",
+          "retry": "Review Measure the configured dilution water volume and try again."
+        }
+      },
+      {
+        "id": "beers-law-calibration-dilute-standard-node",
+        "type": "action",
+        "title": "Dilute and mix the standard to its configured final volume",
+        "description": "Dilute and mix the standard to its configured final volume",
+        "actionId": "beers-law-calibration-dilute-standard",
+        "config": {},
+        "validation": [
+          {
+            "id": "beers-law-calibration-dilute-standard-node-done",
+            "type": "actionEvidence",
+            "label": "Dilute and mix the standard to its configured final volume was completed.",
+            "actionId": "beers-law-calibration-dilute-standard"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Dilute and mix the standard to its configured final volume complete.",
+          "retry": "Review Dilute and mix the standard to its configured final volume and try again."
+        }
+      },
+      {
+        "id": "beers-law-calibration-configure-photometer-node",
+        "type": "action",
+        "title": "Apply the configured wavelength and measurement mode",
+        "description": "Apply the configured wavelength and measurement mode",
+        "actionId": "beers-law-calibration-configure-photometer",
+        "config": {},
+        "validation": [
+          {
+            "id": "beers-law-calibration-configure-photometer-node-done",
+            "type": "actionEvidence",
+            "label": "Apply the configured wavelength and measurement mode was completed.",
+            "actionId": "beers-law-calibration-configure-photometer"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Apply the configured wavelength and measurement mode complete.",
+          "retry": "Review Apply the configured wavelength and measurement mode and try again."
+        }
+      },
+      {
+        "id": "beers-law-calibration-fill-calibration-blank-node",
+        "type": "action",
+        "title": "Fill the configured calibration blank",
+        "description": "Fill the configured calibration blank",
+        "actionId": "beers-law-calibration-fill-calibration-blank",
+        "config": {},
+        "validation": [
+          {
+            "id": "beers-law-calibration-fill-calibration-blank-node-done",
+            "type": "actionEvidence",
+            "label": "Fill the configured calibration blank was completed.",
+            "actionId": "beers-law-calibration-fill-calibration-blank"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Fill the configured calibration blank complete.",
+          "retry": "Review Fill the configured calibration blank and try again."
+        }
+      },
+      {
+        "id": "beers-law-calibration-prepare-calibration-blank-optical-faces-node",
+        "type": "action",
+        "title": "Record the configured blank optical-face rule",
+        "description": "Record the configured blank optical-face rule",
+        "actionId": "beers-law-calibration-prepare-calibration-blank-optical-faces",
+        "config": {},
+        "validation": [
+          {
+            "id": "beers-law-calibration-prepare-calibration-blank-optical-faces-node-done",
+            "type": "actionEvidence",
+            "label": "Record the configured blank optical-face rule was completed.",
+            "actionId": "beers-law-calibration-prepare-calibration-blank-optical-faces"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record the configured blank optical-face rule complete.",
+          "retry": "Review Record the configured blank optical-face rule and try again."
+        }
+      },
+      {
+        "id": "beers-law-calibration-insert-calibration-blank-node",
+        "type": "action",
+        "title": "Insert the calibration blank",
+        "description": "Insert the calibration blank",
+        "actionId": "beers-law-calibration-insert-calibration-blank",
+        "config": {},
+        "validation": [
+          {
+            "id": "beers-law-calibration-insert-calibration-blank-node-done",
+            "type": "actionEvidence",
+            "label": "Insert the calibration blank was completed.",
+            "actionId": "beers-law-calibration-insert-calibration-blank"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Insert the calibration blank complete.",
+          "retry": "Review Insert the calibration blank and try again."
+        }
+      },
+      {
+        "id": "beers-law-calibration-blank-photometer-node",
+        "type": "action",
+        "title": "Blank the photometer",
+        "description": "Blank the photometer",
+        "actionId": "beers-law-calibration-blank-photometer",
+        "config": {},
+        "validation": [
+          {
+            "id": "beers-law-calibration-blank-photometer-node-done",
+            "type": "actionEvidence",
+            "label": "Blank the photometer was completed.",
+            "actionId": "beers-law-calibration-blank-photometer"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Blank the photometer complete.",
+          "retry": "Review Blank the photometer and try again."
+        }
+      },
+      {
+        "id": "beers-law-calibration-remove-calibration-blank-node",
+        "type": "action",
+        "title": "Remove the calibration blank",
+        "description": "Remove the calibration blank",
+        "actionId": "beers-law-calibration-remove-calibration-blank",
+        "config": {},
+        "validation": [
+          {
+            "id": "beers-law-calibration-remove-calibration-blank-node-done",
+            "type": "actionEvidence",
+            "label": "Remove the calibration blank was completed.",
+            "actionId": "beers-law-calibration-remove-calibration-blank"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Remove the calibration blank complete.",
+          "retry": "Review Remove the calibration blank and try again."
+        }
+      },
+      {
+        "id": "beers-law-calibration-transfer-standard-cuvette-node",
+        "type": "action",
+        "title": "Fill the cuvette from the prepared standard receiver",
+        "description": "Fill the cuvette from the prepared standard receiver",
+        "actionId": "beers-law-calibration-transfer-standard-cuvette",
+        "config": {},
+        "validation": [
+          {
+            "id": "beers-law-calibration-transfer-standard-cuvette-node-done",
+            "type": "actionEvidence",
+            "label": "Fill the cuvette from the prepared standard receiver was completed.",
+            "actionId": "beers-law-calibration-transfer-standard-cuvette"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Fill the cuvette from the prepared standard receiver complete.",
+          "retry": "Review Fill the cuvette from the prepared standard receiver and try again."
+        }
+      },
+      {
+        "id": "beers-law-calibration-prepare-standard-optical-faces-node",
+        "type": "action",
+        "title": "Record the configured sample optical-face rule",
+        "description": "Record the configured sample optical-face rule",
+        "actionId": "beers-law-calibration-prepare-standard-optical-faces",
+        "config": {},
+        "validation": [
+          {
+            "id": "beers-law-calibration-prepare-standard-optical-faces-node-done",
+            "type": "actionEvidence",
+            "label": "Record the configured sample optical-face rule was completed.",
+            "actionId": "beers-law-calibration-prepare-standard-optical-faces"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record the configured sample optical-face rule complete.",
+          "retry": "Review Record the configured sample optical-face rule and try again."
+        }
+      },
+      {
+        "id": "beers-law-calibration-insert-standard-cuvette-node",
+        "type": "action",
+        "title": "Insert the standard cuvette",
+        "description": "Insert the standard cuvette",
+        "actionId": "beers-law-calibration-insert-standard-cuvette",
+        "config": {},
+        "validation": [
+          {
+            "id": "beers-law-calibration-insert-standard-cuvette-node-done",
+            "type": "actionEvidence",
+            "label": "Insert the standard cuvette was completed.",
+            "actionId": "beers-law-calibration-insert-standard-cuvette"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Insert the standard cuvette complete.",
+          "retry": "Review Insert the standard cuvette and try again."
+        }
+      },
+      {
+        "id": "beers-law-calibration-read-percent-transmittance-node",
+        "type": "action",
+        "title": "Read the standard percent transmittance",
+        "description": "Read the standard percent transmittance",
+        "actionId": "beers-law-calibration-read-percent-transmittance",
+        "config": {},
+        "validation": [
+          {
+            "id": "beers-law-calibration-read-percent-transmittance-node-done",
+            "type": "actionEvidence",
+            "label": "Read the standard percent transmittance was completed.",
+            "actionId": "beers-law-calibration-read-percent-transmittance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read the standard percent transmittance complete.",
+          "retry": "Review Read the standard percent transmittance and try again."
+        }
+      },
+      {
+        "id": "beers-law-calibration-record-percent-transmittance-node",
+        "type": "calculation",
+        "title": "Record the standard percent transmittance",
+        "description": "Record the standard percent transmittance",
+        "actionId": "beers-law-calibration-record-percent-transmittance",
+        "config": {},
+        "validation": [
+          {
+            "id": "beers-law-calibration-record-percent-transmittance-node-done",
+            "type": "actionEvidence",
+            "label": "Record the standard percent transmittance was completed.",
+            "actionId": "beers-law-calibration-record-percent-transmittance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record the standard percent transmittance complete.",
+          "retry": "Review Record the standard percent transmittance and try again."
+        }
+      },
+      {
+        "id": "beers-law-calibration-remove-standard-cuvette-node",
+        "type": "action",
+        "title": "Remove the standard cuvette",
+        "description": "Remove the standard cuvette",
+        "actionId": "beers-law-calibration-remove-standard-cuvette",
+        "config": {},
+        "validation": [
+          {
+            "id": "beers-law-calibration-remove-standard-cuvette-node-done",
+            "type": "actionEvidence",
+            "label": "Remove the standard cuvette was completed.",
+            "actionId": "beers-law-calibration-remove-standard-cuvette"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Remove the standard cuvette complete.",
+          "retry": "Review Remove the standard cuvette and try again."
+        }
+      },
+      {
+        "id": "beers-law-calibration-calculate-absorbance-node",
+        "type": "calculation",
+        "title": "Calculate absorbance from the recorded transmittance",
+        "description": "Calculate absorbance from the recorded transmittance",
+        "actionId": "beers-law-calibration-calculate-absorbance",
+        "config": {},
+        "validation": [
+          {
+            "id": "beers-law-calibration-calculate-absorbance-node-done",
+            "type": "actionEvidence",
+            "label": "Calculate absorbance from the recorded transmittance was completed.",
+            "actionId": "beers-law-calibration-calculate-absorbance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Calculate absorbance from the recorded transmittance complete.",
+          "retry": "Review Calculate absorbance from the recorded transmittance and try again."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "beers-law-calibration-place-spectrophotometer-node",
+        "to": "beers-law-calibration-measure-stock-dye-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "beers-law-calibration-measure-stock-dye-node",
+        "to": "beers-law-calibration-transfer-stock-dye-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "beers-law-calibration-transfer-stock-dye-node",
+        "to": "beers-law-calibration-measure-water-volume-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "beers-law-calibration-measure-water-volume-node",
+        "to": "beers-law-calibration-dilute-standard-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "beers-law-calibration-dilute-standard-node",
+        "to": "beers-law-calibration-configure-photometer-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "beers-law-calibration-configure-photometer-node",
+        "to": "beers-law-calibration-fill-calibration-blank-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "beers-law-calibration-fill-calibration-blank-node",
+        "to": "beers-law-calibration-prepare-calibration-blank-optical-faces-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "beers-law-calibration-prepare-calibration-blank-optical-faces-node",
+        "to": "beers-law-calibration-insert-calibration-blank-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "beers-law-calibration-insert-calibration-blank-node",
+        "to": "beers-law-calibration-blank-photometer-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "beers-law-calibration-blank-photometer-node",
+        "to": "beers-law-calibration-remove-calibration-blank-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "beers-law-calibration-remove-calibration-blank-node",
+        "to": "beers-law-calibration-transfer-standard-cuvette-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "beers-law-calibration-transfer-standard-cuvette-node",
+        "to": "beers-law-calibration-prepare-standard-optical-faces-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "beers-law-calibration-prepare-standard-optical-faces-node",
+        "to": "beers-law-calibration-insert-standard-cuvette-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "beers-law-calibration-insert-standard-cuvette-node",
+        "to": "beers-law-calibration-read-percent-transmittance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "beers-law-calibration-read-percent-transmittance-node",
+        "to": "beers-law-calibration-record-percent-transmittance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "beers-law-calibration-record-percent-transmittance-node",
+        "to": "beers-law-calibration-remove-standard-cuvette-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "beers-law-calibration-remove-standard-cuvette-node",
+        "to": "beers-law-calibration-calculate-absorbance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "current node expects a different action",
+      "message": "That action is out of sequence for the current technique step.",
+      "recovery": "Check the process map and perform the highlighted step first."
+    },
+    {
+      "id": "missing-source",
+      "when": "source equipment or contents are missing",
+      "message": "The selected source does not contain the material required for this action.",
+      "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+    },
+    {
+      "id": "overflow",
+      "when": "target capacity would be exceeded",
+      "message": "The target equipment cannot hold the requested volume.",
+      "recovery": "Use a larger container or transfer a smaller measured amount."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.3.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-04T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "chemistry",
+      "spectroscopy",
+      "beers-law"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry-beers-law-calibration-place-spectrophotometer-node",
+        "kind": "entry",
+        "nodeId": "beers-law-calibration-place-spectrophotometer-node",
+        "label": "Entry"
+      },
+      {
+        "id": "exit-beers-law-calibration-calculate-absorbance-node",
+        "kind": "exit",
+        "nodeId": "beers-law-calibration-calculate-absorbance-node",
+        "label": "Exit"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "photometer-instrument",
+        "required": true,
+        "allowedDefinitionIds": [
+          "spectrophotometer"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "variable-volume-measuring-device",
+        "required": true,
+        "allowedDefinitionIds": [
+          "graduated-cylinder"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "liquid-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "sample-bottle",
+          "wash-bottle"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "measured-solvent-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "graduated-cylinder"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "receiving-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "test-tube"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "sample-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "sample-bottle",
+          "test-tube"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "photometer-sample-holder",
+        "required": true,
+        "allowedDefinitionIds": [
+          "cuvette"
+        ],
+        "sourceInstanceIds": []
+      }
+    ],
+    "modelSlots": [],
+    "configurationSlots": [
+      {
+        "id": "stockVolumeMeasurementId",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "id": "finalVolumeMeasurementId",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "id": "wavelengthMeasurementId",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "id": "blankRuleNotebookTag",
+        "valueType": "string",
+        "required": true
+      }
+    ],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [],
+    "completion": {
+      "exitPortIds": [
+        "exit-beers-law-calibration-calculate-absorbance-node"
+      ],
+      "requiredEvidenceOutputIds": [],
+      "requiredValidationRuleIds": []
+    },
+    "catalogDisposition": "composable",
+    "legacyActionEffects": [
+      {
+        "actionId": "beers-law-calibration-calculate-absorbance",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

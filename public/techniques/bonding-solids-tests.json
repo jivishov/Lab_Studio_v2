@@ -1,0 +1,4124 @@
+{
+  "id": "bonding-solids-tests",
+  "title": "Bonding Solids Tests",
+  "learningGoal": "Collect a configured, fresh-microsample property panel for one known or blind solid without revealing blind identity.",
+  "requiredEquipment": [
+    "small-vial",
+    "test-tube",
+    "distilled-water-bottle",
+    "reagent-bottle",
+    "naoh-bottle",
+    "spatula",
+    "conductivity-tester",
+    "ph-paper",
+    "magnet",
+    "melting-point-apparatus",
+    "waste-beaker"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "sample-vial",
+        "definitionId": "small-vial",
+        "label": "Configured sample",
+        "location": "shelf",
+        "contents": {
+          "kind": "solid",
+          "label": "Configured unidentified solid",
+          "massG": 1,
+          "solutes": [
+            {
+              "id": "configured-solid",
+              "label": "Configured unidentified solid",
+              "amount": 1,
+              "unit": "g"
+            }
+          ],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "granular-solid"
+        }
+      },
+      {
+        "id": "water-test-line",
+        "definitionId": "test-tube",
+        "label": "Labeled test tube 1",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "ethanol-test-line",
+        "definitionId": "test-tube",
+        "label": "Labeled test tube 2",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "hexanes-test-line",
+        "definitionId": "test-tube",
+        "label": "Labeled test tube 3",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "dry-test-line",
+        "definitionId": "test-tube",
+        "label": "Labeled test tube 4",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "hcl-test-line",
+        "definitionId": "test-tube",
+        "label": "Labeled test tube 5",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "naoh-test-line",
+        "definitionId": "test-tube",
+        "label": "Labeled test tube 6",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "water-source",
+        "definitionId": "distilled-water-bottle",
+        "label": "Distilled water",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Distilled water",
+          "volumeMl": 500,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "ethanol-source",
+        "definitionId": "reagent-bottle",
+        "label": "Ethanol test solvent",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Ethanol",
+          "volumeMl": 250,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "hexanes-source",
+        "definitionId": "reagent-bottle",
+        "label": "Hexanes test solvent - hood only",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Hexanes",
+          "volumeMl": 250,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "hcl-source",
+        "definitionId": "reagent-bottle",
+        "label": "0.1 M hydrochloric acid",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "0.1 M hydrochloric acid",
+          "volumeMl": 250,
+          "solutes": [
+            {
+              "id": "0-1-m-hydrochloric-acid",
+              "label": "0.1 M hydrochloric acid",
+              "amount": 0.1,
+              "unit": "mol"
+            }
+          ],
+          "concentration": {
+            "value": 0.1,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "naoh-source",
+        "definitionId": "naoh-bottle",
+        "label": "0.1 M sodium hydroxide",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "0.1 M sodium hydroxide",
+          "volumeMl": 250,
+          "solutes": [
+            {
+              "id": "0-1-m-sodium-hydroxide",
+              "label": "0.1 M sodium hydroxide",
+              "amount": 0.1,
+              "unit": "mol"
+            }
+          ],
+          "concentration": {
+            "value": 0.1,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "transfer-tool",
+        "definitionId": "spatula",
+        "label": "Clean spatula",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "conductivity-instrument",
+        "definitionId": "conductivity-tester",
+        "label": "Conductivity tester",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "ph-medium",
+        "definitionId": "ph-paper",
+        "label": "pH paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "magnetic-tool",
+        "definitionId": "magnet",
+        "label": "Magnet",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "melting-instrument",
+        "definitionId": "melting-point-apparatus",
+        "label": "Melting-point apparatus",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "water-waste",
+        "definitionId": "waste-beaker",
+        "label": "Teacher-labeled aqueous waste",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "ethanol-waste",
+        "definitionId": "waste-beaker",
+        "label": "Teacher-labeled organic waste",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "hexanes-waste",
+        "definitionId": "waste-beaker",
+        "label": "Teacher-labeled organic waste",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "hcl-waste",
+        "definitionId": "waste-beaker",
+        "label": "Teacher-labeled aqueous waste",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "naoh-waste",
+        "definitionId": "waste-beaker",
+        "label": "Teacher-labeled aqueous waste",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "dry-waste",
+        "definitionId": "waste-beaker",
+        "label": "Teacher-labeled aqueous waste",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "label-test-locations",
+      "verb": "observe",
+      "label": "label test locations",
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "sampleIdentity": "{{config.sampleIdentity}}",
+        "sampleMode": "{{config.sampleMode}}",
+        "selectedTestPanel": "{{config.selectedTestPanel}}"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "evidenceScopeSlotId",
+        "accessibleLabel": "Complete label test locations for the configured sample."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "label test locations is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "label test locations complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "label-test-locations"
+      ]
+    },
+    {
+      "id": "inspect-solid-appearance",
+      "verb": "observe",
+      "label": "inspect solid appearance",
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "inputMode": "choice",
+        "inputRole": "studentResponse",
+        "inputKey": "inspect-solid-appearance-choice",
+        "inputLabel": "inspect solid appearance",
+        "inputRequired": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Record the direct inspect solid appearance observation."
+      },
+      "prerequisites": [
+        {
+          "id": "inspect-solid-appearance--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "label-test-locations"
+        }
+      ],
+      "stateChanges": [
+        "inspect solid appearance is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "inspect solid appearance complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "inspect-solid-appearance"
+      ],
+      "choiceObservation": {
+        "outputCalculationId": "inspect-solid-appearance-choice",
+        "options": [
+          {
+            "label": "Observed",
+            "tag": "observed",
+            "value": 1
+          },
+          {
+            "label": "Not observed",
+            "tag": "not-observed",
+            "value": 0
+          },
+          {
+            "label": "Ambiguous",
+            "tag": "ambiguous",
+            "value": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "record-solid-appearance",
+      "verb": "record",
+      "label": "record solid appearance",
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "evidenceScopeSlotId",
+        "accessibleLabel": "Complete record solid appearance for the configured sample."
+      },
+      "prerequisites": [
+        {
+          "id": "record-solid-appearance--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "inspect-solid-appearance"
+        }
+      ],
+      "stateChanges": [
+        "record solid appearance is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "record solid appearance complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "record-solid-appearance"
+      ]
+    },
+    {
+      "id": "dispense-water-microsample",
+      "verb": "transfer",
+      "label": "dispense water microsample",
+      "atomId": "atom.transfer.microsample-portion",
+      "equipmentRoleBindings": {
+        "sample-source": "small-vial",
+        "bonding-test-vessel": "test-tube",
+        "solid-transfer-tool": "spatula"
+      },
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "sourceDefinitionId": "small-vial",
+        "sourceInstanceId": "sample-vial",
+        "targetDefinitionId": "test-tube",
+        "targetInstanceId": "water-test-line",
+        "microsampleAmount": "{{config.microsampleAmount}}",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputKey": "dispense-water-microsample-mass-g",
+        "inputLabel": "Instructor-approved microsample transfer mass (g)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "g",
+        "evidenceProvenance": "C: configured transfer quantity; not an acquired balance measurement"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "small-vial",
+        "targetDefinitionId": "test-tube",
+        "accessibleLabel": "Transfer the configured fresh microsample to the water test line.",
+        "valueParameter": "inputKey"
+      },
+      "prerequisites": [
+        {
+          "id": "dispense-water-microsample--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "record-solid-appearance"
+        }
+      ],
+      "stateChanges": [
+        "dispense water microsample is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "dispense water microsample complete.",
+        "invalid": "Enter a positive approved transfer mass within the source inventory."
+      },
+      "evidence": [
+        "sample-scoped",
+        "dispense-water-microsample"
+      ],
+      "mass": {
+        "source": "configured-input"
+      }
+    },
+    {
+      "id": "apply-water-solvent",
+      "verb": "transfer",
+      "label": "apply water solvent",
+      "atomId": "atom.transfer.apply-test-solvent",
+      "equipmentRoleBindings": {
+        "bonding-test-solvent-source": "distilled-water-bottle",
+        "bonding-test-vessel": "test-tube"
+      },
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "sourceDefinitionId": "distilled-water-bottle",
+        "sourceInstanceId": "water-source",
+        "targetDefinitionId": "test-tube",
+        "targetInstanceId": "water-test-line",
+        "reagentAmount": "{{config.waterAmount}}",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputKey": "apply-water-solvent-volume",
+        "inputLabel": "Approved reagent volume (mL)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "mL"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "distilled-water-bottle",
+        "targetDefinitionId": "test-tube",
+        "accessibleLabel": "Apply the configured water reagent under the approved controls.",
+        "valueParameter": "inputKey"
+      },
+      "prerequisites": [
+        {
+          "id": "apply-water-solvent--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "dispense-water-microsample"
+        }
+      ],
+      "stateChanges": [
+        "apply water solvent is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "apply water solvent complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "apply-water-solvent"
+      ],
+      "volume": {
+        "source": "action-input"
+      }
+    },
+    {
+      "id": "inspect-water-solubility",
+      "verb": "observe",
+      "label": "inspect water solubility",
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "inputMode": "choice",
+        "inputRole": "studentResponse",
+        "inputKey": "inspect-water-solubility-choice",
+        "inputLabel": "inspect water solubility",
+        "inputRequired": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Record the direct inspect water solubility observation."
+      },
+      "prerequisites": [
+        {
+          "id": "inspect-water-solubility--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "apply-water-solvent"
+        }
+      ],
+      "stateChanges": [
+        "inspect water solubility is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "inspect water solubility complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "inspect-water-solubility"
+      ],
+      "choiceObservation": {
+        "outputCalculationId": "inspect-water-solubility-choice",
+        "options": [
+          {
+            "label": "Observed",
+            "tag": "observed",
+            "value": 1
+          },
+          {
+            "label": "Not observed",
+            "tag": "not-observed",
+            "value": 0
+          },
+          {
+            "label": "Ambiguous",
+            "tag": "ambiguous",
+            "value": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "record-water-solubility",
+      "verb": "record",
+      "label": "record water solubility",
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "evidenceScopeSlotId",
+        "accessibleLabel": "Complete record water solubility for the configured sample."
+      },
+      "prerequisites": [
+        {
+          "id": "record-water-solubility--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "inspect-water-solubility"
+        }
+      ],
+      "stateChanges": [
+        "record water solubility is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "record water solubility complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "record-water-solubility"
+      ]
+    },
+    {
+      "id": "read-aqueous-conductivity",
+      "verb": "observe",
+      "label": "read aqueous conductivity",
+      "atomId": "atom.observe.read-aqueous-conductivity",
+      "equipmentRoleBindings": {
+        "immersed-probe-instrument": "conductivity-tester",
+        "bonding-test-vessel": "test-tube"
+      },
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "sourceInstanceId": "water-test-line",
+        "instrumentInstanceId": "conductivity-instrument",
+        "conductivityThresholds": "{{config.conductivityThresholds}}",
+        "measurementId": "aqueous-conductivity",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputKey": "read-aqueous-conductivity-reading",
+        "inputLabel": "Externally acquired classroom instrument reading",
+        "inputRequired": true,
+        "instrumentEvidence": "read-aqueous-conductivity",
+        "unit": "uS/cm"
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "test-tube",
+        "stationId": "conductivity-tester",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Read aqueous conductivity for this sample."
+      },
+      "prerequisites": [
+        {
+          "id": "read-aqueous-conductivity--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "record-water-solubility"
+        }
+      ],
+      "stateChanges": [
+        "read aqueous conductivity is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "read aqueous conductivity complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "read-aqueous-conductivity"
+      ]
+    },
+    {
+      "id": "record-aqueous-conductivity",
+      "verb": "record",
+      "label": "record aqueous conductivity",
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "measurementId": "aqueous-conductivity",
+        "copyExistingMeasurementOnly": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "evidenceScopeSlotId",
+        "accessibleLabel": "Complete record aqueous conductivity for the configured sample."
+      },
+      "prerequisites": [
+        {
+          "id": "record-aqueous-conductivity--measurement-required",
+          "type": "measurementRecorded",
+          "label": "Instrument evidence was acquired.",
+          "measurementId": "aqueous-conductivity"
+        }
+      ],
+      "stateChanges": [
+        "record aqueous conductivity is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "record aqueous conductivity complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "record-aqueous-conductivity"
+      ]
+    },
+    {
+      "id": "read-ph-indicator",
+      "verb": "observe",
+      "label": "read ph indicator",
+      "atomId": "atom.observe.read-ph-indicator",
+      "equipmentRoleBindings": {
+        "ph-indicator-medium": "ph-paper",
+        "bonding-test-vessel": "test-tube"
+      },
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "sourceInstanceId": "water-test-line",
+        "instrumentInstanceId": "ph-medium",
+        "phThresholds": "{{config.phThresholds}}",
+        "measurementId": "ph-indicator",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputKey": "read-ph-indicator-reading",
+        "inputLabel": "Externally acquired classroom instrument reading",
+        "inputRequired": true,
+        "instrumentEvidence": "read-ph-indicator",
+        "unit": "pH"
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "test-tube",
+        "stationId": "ph-paper",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Read pH evidence for this sample."
+      },
+      "prerequisites": [
+        {
+          "id": "read-ph-indicator--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "record-aqueous-conductivity"
+        }
+      ],
+      "stateChanges": [
+        "read ph indicator is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "read ph indicator complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "read-ph-indicator"
+      ]
+    },
+    {
+      "id": "record-ph",
+      "verb": "record",
+      "label": "record ph",
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "measurementId": "ph-indicator",
+        "copyExistingMeasurementOnly": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "evidenceScopeSlotId",
+        "accessibleLabel": "Complete record ph for the configured sample."
+      },
+      "prerequisites": [
+        {
+          "id": "record-ph--measurement-required",
+          "type": "measurementRecorded",
+          "label": "Instrument evidence was acquired.",
+          "measurementId": "ph-indicator"
+        }
+      ],
+      "stateChanges": [
+        "record ph is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "record ph complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "record-ph"
+      ]
+    },
+    {
+      "id": "dispose-water-test-line",
+      "verb": "transfer",
+      "label": "dispose water test line",
+      "atomId": "atom.transfer.dispose-to-waste-stream",
+      "equipmentRoleBindings": {
+        "bonding-test-vessel": "test-tube",
+        "waste-receiver": "waste-beaker"
+      },
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "sourceDefinitionId": "test-tube",
+        "sourceInstanceId": "water-test-line",
+        "targetDefinitionId": "waste-beaker",
+        "targetInstanceId": "water-waste",
+        "wasteDestination": "{{config.waterWasteDestination}}"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "test-tube",
+        "targetDefinitionId": "waste-beaker",
+        "accessibleLabel": "Dispose the water test line to its configured waste destination."
+      },
+      "prerequisites": [
+        {
+          "id": "dispose-water-test-line--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "record-ph"
+        }
+      ],
+      "stateChanges": [
+        "dispose water test line is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "dispose water test line complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "dispose-water-test-line"
+      ]
+    },
+    {
+      "id": "dispense-ethanol-microsample",
+      "verb": "transfer",
+      "label": "dispense ethanol microsample",
+      "atomId": "atom.transfer.microsample-portion",
+      "equipmentRoleBindings": {
+        "sample-source": "small-vial",
+        "bonding-test-vessel": "test-tube",
+        "solid-transfer-tool": "spatula"
+      },
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "sourceDefinitionId": "small-vial",
+        "sourceInstanceId": "sample-vial",
+        "targetDefinitionId": "test-tube",
+        "targetInstanceId": "ethanol-test-line",
+        "microsampleAmount": "{{config.microsampleAmount}}",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputKey": "dispense-ethanol-microsample-mass-g",
+        "inputLabel": "Instructor-approved microsample transfer mass (g)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "g",
+        "evidenceProvenance": "C: configured transfer quantity; not an acquired balance measurement"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "small-vial",
+        "targetDefinitionId": "test-tube",
+        "accessibleLabel": "Transfer the configured fresh microsample to the ethanol test line.",
+        "valueParameter": "inputKey"
+      },
+      "prerequisites": [
+        {
+          "id": "dispense-ethanol-microsample--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "dispose-water-test-line"
+        }
+      ],
+      "stateChanges": [
+        "dispense ethanol microsample is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "dispense ethanol microsample complete.",
+        "invalid": "Enter a positive approved transfer mass within the source inventory."
+      },
+      "evidence": [
+        "sample-scoped",
+        "dispense-ethanol-microsample"
+      ],
+      "mass": {
+        "source": "configured-input"
+      }
+    },
+    {
+      "id": "apply-ethanol-solvent",
+      "verb": "transfer",
+      "label": "apply ethanol solvent",
+      "atomId": "atom.transfer.apply-test-solvent",
+      "equipmentRoleBindings": {
+        "bonding-test-solvent-source": "reagent-bottle",
+        "bonding-test-vessel": "test-tube"
+      },
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "sourceDefinitionId": "reagent-bottle",
+        "sourceInstanceId": "ethanol-source",
+        "targetDefinitionId": "test-tube",
+        "targetInstanceId": "ethanol-test-line",
+        "reagentAmount": "{{config.ethanolAmount}}",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputKey": "apply-ethanol-solvent-volume",
+        "inputLabel": "Approved reagent volume (mL)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "mL"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "reagent-bottle",
+        "targetDefinitionId": "test-tube",
+        "accessibleLabel": "Apply the configured ethanol reagent under the approved controls.",
+        "valueParameter": "inputKey"
+      },
+      "prerequisites": [
+        {
+          "id": "apply-ethanol-solvent--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "dispense-ethanol-microsample"
+        }
+      ],
+      "stateChanges": [
+        "apply ethanol solvent is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "apply ethanol solvent complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "apply-ethanol-solvent"
+      ],
+      "volume": {
+        "source": "action-input"
+      }
+    },
+    {
+      "id": "inspect-ethanol-solubility",
+      "verb": "observe",
+      "label": "inspect ethanol solubility",
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "inputMode": "choice",
+        "inputRole": "studentResponse",
+        "inputKey": "inspect-ethanol-solubility-choice",
+        "inputLabel": "inspect ethanol solubility",
+        "inputRequired": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Record the direct inspect ethanol solubility observation."
+      },
+      "prerequisites": [
+        {
+          "id": "inspect-ethanol-solubility--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "apply-ethanol-solvent"
+        }
+      ],
+      "stateChanges": [
+        "inspect ethanol solubility is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "inspect ethanol solubility complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "inspect-ethanol-solubility"
+      ],
+      "choiceObservation": {
+        "outputCalculationId": "inspect-ethanol-solubility-choice",
+        "options": [
+          {
+            "label": "Observed",
+            "tag": "observed",
+            "value": 1
+          },
+          {
+            "label": "Not observed",
+            "tag": "not-observed",
+            "value": 0
+          },
+          {
+            "label": "Ambiguous",
+            "tag": "ambiguous",
+            "value": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "record-ethanol-solubility",
+      "verb": "record",
+      "label": "record ethanol solubility",
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "evidenceScopeSlotId",
+        "accessibleLabel": "Complete record ethanol solubility for the configured sample."
+      },
+      "prerequisites": [
+        {
+          "id": "record-ethanol-solubility--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "inspect-ethanol-solubility"
+        }
+      ],
+      "stateChanges": [
+        "record ethanol solubility is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "record ethanol solubility complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "record-ethanol-solubility"
+      ]
+    },
+    {
+      "id": "dispose-ethanol-test-line",
+      "verb": "transfer",
+      "label": "dispose ethanol test line",
+      "atomId": "atom.transfer.dispose-to-waste-stream",
+      "equipmentRoleBindings": {
+        "bonding-test-vessel": "test-tube",
+        "waste-receiver": "waste-beaker"
+      },
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "sourceDefinitionId": "test-tube",
+        "sourceInstanceId": "ethanol-test-line",
+        "targetDefinitionId": "waste-beaker",
+        "targetInstanceId": "ethanol-waste",
+        "wasteDestination": "{{config.ethanolWasteDestination}}"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "test-tube",
+        "targetDefinitionId": "waste-beaker",
+        "accessibleLabel": "Dispose the ethanol test line to its configured waste destination."
+      },
+      "prerequisites": [
+        {
+          "id": "dispose-ethanol-test-line--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "record-ethanol-solubility"
+        }
+      ],
+      "stateChanges": [
+        "dispose ethanol test line is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "dispose ethanol test line complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "dispose-ethanol-test-line"
+      ]
+    },
+    {
+      "id": "dispense-hexanes-microsample",
+      "verb": "transfer",
+      "label": "dispense hexanes microsample",
+      "atomId": "atom.transfer.microsample-portion",
+      "equipmentRoleBindings": {
+        "sample-source": "small-vial",
+        "bonding-test-vessel": "test-tube",
+        "solid-transfer-tool": "spatula"
+      },
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "sourceDefinitionId": "small-vial",
+        "sourceInstanceId": "sample-vial",
+        "targetDefinitionId": "test-tube",
+        "targetInstanceId": "hexanes-test-line",
+        "microsampleAmount": "{{config.microsampleAmount}}",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputKey": "dispense-hexanes-microsample-mass-g",
+        "inputLabel": "Instructor-approved microsample transfer mass (g)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "g",
+        "evidenceProvenance": "C: configured transfer quantity; not an acquired balance measurement"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "small-vial",
+        "targetDefinitionId": "test-tube",
+        "accessibleLabel": "Transfer the configured fresh microsample to the hexanes test line.",
+        "valueParameter": "inputKey"
+      },
+      "prerequisites": [
+        {
+          "id": "dispense-hexanes-microsample--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "dispose-ethanol-test-line"
+        }
+      ],
+      "stateChanges": [
+        "dispense hexanes microsample is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "dispense hexanes microsample complete.",
+        "invalid": "Enter a positive approved transfer mass within the source inventory."
+      },
+      "evidence": [
+        "sample-scoped",
+        "dispense-hexanes-microsample"
+      ],
+      "mass": {
+        "source": "configured-input"
+      }
+    },
+    {
+      "id": "apply-hexanes-solvent",
+      "verb": "transfer",
+      "label": "apply hexanes solvent",
+      "atomId": "atom.transfer.apply-test-solvent",
+      "equipmentRoleBindings": {
+        "bonding-test-solvent-source": "reagent-bottle",
+        "bonding-test-vessel": "test-tube"
+      },
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "sourceDefinitionId": "reagent-bottle",
+        "sourceInstanceId": "hexanes-source",
+        "targetDefinitionId": "test-tube",
+        "targetInstanceId": "hexanes-test-line",
+        "reagentAmount": "{{config.hexanesAmount}}",
+        "hoodControl": "{{config.hoodControl}}",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputKey": "apply-hexanes-solvent-volume",
+        "inputLabel": "Approved reagent volume (mL)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "mL"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "reagent-bottle",
+        "targetDefinitionId": "test-tube",
+        "accessibleLabel": "Apply the configured hexanes reagent under the approved controls.",
+        "valueParameter": "inputKey"
+      },
+      "prerequisites": [
+        {
+          "id": "apply-hexanes-solvent--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "dispense-hexanes-microsample"
+        }
+      ],
+      "stateChanges": [
+        "apply hexanes solvent is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "apply hexanes solvent complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "apply-hexanes-solvent"
+      ],
+      "volume": {
+        "source": "action-input"
+      }
+    },
+    {
+      "id": "inspect-hexanes-solubility",
+      "verb": "observe",
+      "label": "inspect hexanes solubility",
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "inputMode": "choice",
+        "inputRole": "studentResponse",
+        "inputKey": "inspect-hexanes-solubility-choice",
+        "inputLabel": "inspect hexanes solubility",
+        "inputRequired": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Record the direct inspect hexanes solubility observation."
+      },
+      "prerequisites": [
+        {
+          "id": "inspect-hexanes-solubility--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "apply-hexanes-solvent"
+        }
+      ],
+      "stateChanges": [
+        "inspect hexanes solubility is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "inspect hexanes solubility complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "inspect-hexanes-solubility"
+      ],
+      "choiceObservation": {
+        "outputCalculationId": "inspect-hexanes-solubility-choice",
+        "options": [
+          {
+            "label": "Observed",
+            "tag": "observed",
+            "value": 1
+          },
+          {
+            "label": "Not observed",
+            "tag": "not-observed",
+            "value": 0
+          },
+          {
+            "label": "Ambiguous",
+            "tag": "ambiguous",
+            "value": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "record-hexanes-solubility",
+      "verb": "record",
+      "label": "record hexanes solubility",
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "evidenceScopeSlotId",
+        "accessibleLabel": "Complete record hexanes solubility for the configured sample."
+      },
+      "prerequisites": [
+        {
+          "id": "record-hexanes-solubility--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "inspect-hexanes-solubility"
+        }
+      ],
+      "stateChanges": [
+        "record hexanes solubility is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "record hexanes solubility complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "record-hexanes-solubility"
+      ]
+    },
+    {
+      "id": "dispose-hexanes-test-line",
+      "verb": "transfer",
+      "label": "dispose hexanes test line",
+      "atomId": "atom.transfer.dispose-to-waste-stream",
+      "equipmentRoleBindings": {
+        "bonding-test-vessel": "test-tube",
+        "waste-receiver": "waste-beaker"
+      },
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "sourceDefinitionId": "test-tube",
+        "sourceInstanceId": "hexanes-test-line",
+        "targetDefinitionId": "waste-beaker",
+        "targetInstanceId": "hexanes-waste",
+        "wasteDestination": "{{config.hexanesWasteDestination}}"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "test-tube",
+        "targetDefinitionId": "waste-beaker",
+        "accessibleLabel": "Dispose the hexanes test line to its configured waste destination."
+      },
+      "prerequisites": [
+        {
+          "id": "dispose-hexanes-test-line--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "record-hexanes-solubility"
+        }
+      ],
+      "stateChanges": [
+        "dispose hexanes test line is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "dispose hexanes test line complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "dispose-hexanes-test-line"
+      ]
+    },
+    {
+      "id": "dispense-dry-microsample",
+      "verb": "transfer",
+      "label": "dispense dry microsample",
+      "atomId": "atom.transfer.microsample-portion",
+      "equipmentRoleBindings": {
+        "sample-source": "small-vial",
+        "bonding-test-vessel": "test-tube",
+        "solid-transfer-tool": "spatula"
+      },
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "sourceDefinitionId": "small-vial",
+        "sourceInstanceId": "sample-vial",
+        "targetDefinitionId": "test-tube",
+        "targetInstanceId": "dry-test-line",
+        "microsampleAmount": "{{config.microsampleAmount}}",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputKey": "dispense-dry-microsample-mass-g",
+        "inputLabel": "Instructor-approved microsample transfer mass (g)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "g",
+        "evidenceProvenance": "C: configured transfer quantity; not an acquired balance measurement"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "small-vial",
+        "targetDefinitionId": "test-tube",
+        "accessibleLabel": "Transfer the configured fresh microsample to the dry test line.",
+        "valueParameter": "inputKey"
+      },
+      "prerequisites": [
+        {
+          "id": "dispense-dry-microsample--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "dispose-hexanes-test-line"
+        }
+      ],
+      "stateChanges": [
+        "dispense dry microsample is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "dispense dry microsample complete.",
+        "invalid": "Enter a positive approved transfer mass within the source inventory."
+      },
+      "evidence": [
+        "sample-scoped",
+        "dispense-dry-microsample"
+      ],
+      "mass": {
+        "source": "configured-input"
+      }
+    },
+    {
+      "id": "test-magnetic-response",
+      "verb": "observe",
+      "label": "test magnetic response",
+      "atomId": "atom.observe.test-magnetic-response",
+      "equipmentRoleBindings": {
+        "bonding-test-vessel": "test-tube",
+        "magnetic-response-tool": "magnet"
+      },
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "sourceInstanceId": "dry-test-line",
+        "instrumentInstanceId": "magnetic-tool",
+        "measurementId": "magnetic-response",
+        "instrumentEvidence": "test-magnetic-response",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputKey": "magnetic-observation",
+        "inputLabel": "Observed attraction: 1 = attracted, 0 = no attraction",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMax": 1,
+        "unit": "flag"
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "test-tube",
+        "stationId": "magnet",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Test and read magnetic response for this sample."
+      },
+      "prerequisites": [
+        {
+          "id": "test-magnetic-response--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "dispense-dry-microsample"
+        }
+      ],
+      "stateChanges": [
+        "test magnetic response is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "test magnetic response complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "test-magnetic-response"
+      ]
+    },
+    {
+      "id": "record-magnetic-response",
+      "verb": "record",
+      "label": "record magnetic response",
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "measurementId": "magnetic-response",
+        "copyExistingMeasurementOnly": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "evidenceScopeSlotId",
+        "accessibleLabel": "Complete record magnetic response for the configured sample."
+      },
+      "prerequisites": [
+        {
+          "id": "record-magnetic-response--measurement-required",
+          "type": "measurementRecorded",
+          "label": "Instrument evidence was acquired.",
+          "measurementId": "magnetic-response"
+        }
+      ],
+      "stateChanges": [
+        "record magnetic response is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "record magnetic response complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "record-magnetic-response"
+      ]
+    },
+    {
+      "id": "stage-melting-sample",
+      "verb": "place",
+      "label": "stage melting sample",
+      "atomId": "atom.place.melting-point-sample",
+      "equipmentRoleBindings": {
+        "bonding-test-vessel": "test-tube",
+        "melting-point-instrument": "melting-point-apparatus"
+      },
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "sourceInstanceId": "dry-test-line",
+        "instrumentInstanceId": "melting-instrument",
+        "meltingApparatusLimits": "{{config.meltingApparatusLimits}}"
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "test-tube",
+        "stationId": "melting-point-apparatus",
+        "accessibleLabel": "Stage the sample at the configured melting apparatus."
+      },
+      "prerequisites": [
+        {
+          "id": "stage-melting-sample--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "record-magnetic-response"
+        }
+      ],
+      "stateChanges": [
+        "stage melting sample is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "stage melting sample complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "stage-melting-sample"
+      ]
+    },
+    {
+      "id": "read-melting-behavior",
+      "verb": "observe",
+      "label": "read melting behavior",
+      "atomId": "atom.observe.read-melting-behavior",
+      "equipmentRoleBindings": {
+        "melting-point-instrument": "melting-point-apparatus",
+        "bonding-test-vessel": "test-tube"
+      },
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "sourceInstanceId": "dry-test-line",
+        "instrumentInstanceId": "melting-instrument",
+        "meltingApparatusLimits": "{{config.meltingApparatusLimits}}",
+        "measurementId": "melting-behavior",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputKey": "read-melting-behavior-reading",
+        "inputLabel": "Externally acquired classroom instrument reading",
+        "inputRequired": true,
+        "instrumentEvidence": "read-melting-behavior",
+        "unit": "C"
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "test-tube",
+        "stationId": "melting-point-apparatus",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Read melting behavior within configured apparatus limits."
+      },
+      "prerequisites": [
+        {
+          "id": "read-melting-behavior--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "stage-melting-sample"
+        }
+      ],
+      "stateChanges": [
+        "read melting behavior is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "read melting behavior complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "read-melting-behavior"
+      ]
+    },
+    {
+      "id": "record-melting-behavior",
+      "verb": "record",
+      "label": "record melting behavior",
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "measurementId": "melting-behavior",
+        "copyExistingMeasurementOnly": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "evidenceScopeSlotId",
+        "accessibleLabel": "Complete record melting behavior for the configured sample."
+      },
+      "prerequisites": [
+        {
+          "id": "record-melting-behavior--measurement-required",
+          "type": "measurementRecorded",
+          "label": "Instrument evidence was acquired.",
+          "measurementId": "melting-behavior"
+        }
+      ],
+      "stateChanges": [
+        "record melting behavior is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "record melting behavior complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "record-melting-behavior"
+      ]
+    },
+    {
+      "id": "dispose-dry-test-line",
+      "verb": "transfer",
+      "label": "dispose dry test line",
+      "atomId": "atom.transfer.dispose-to-waste-stream",
+      "equipmentRoleBindings": {
+        "bonding-test-vessel": "test-tube",
+        "waste-receiver": "waste-beaker"
+      },
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "sourceDefinitionId": "test-tube",
+        "sourceInstanceId": "dry-test-line",
+        "targetDefinitionId": "waste-beaker",
+        "targetInstanceId": "dry-waste",
+        "wasteDestination": "{{config.dryWasteDestination}}"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "test-tube",
+        "targetDefinitionId": "waste-beaker",
+        "accessibleLabel": "Dispose the dry test line to its configured waste destination."
+      },
+      "prerequisites": [
+        {
+          "id": "dispose-dry-test-line--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "record-melting-behavior"
+        }
+      ],
+      "stateChanges": [
+        "dispose dry test line is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "dispose dry test line complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "dispose-dry-test-line"
+      ]
+    },
+    {
+      "id": "dispense-hcl-microsample",
+      "verb": "transfer",
+      "label": "dispense hcl microsample",
+      "atomId": "atom.transfer.microsample-portion",
+      "equipmentRoleBindings": {
+        "sample-source": "small-vial",
+        "bonding-test-vessel": "test-tube",
+        "solid-transfer-tool": "spatula"
+      },
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "sourceDefinitionId": "small-vial",
+        "sourceInstanceId": "sample-vial",
+        "targetDefinitionId": "test-tube",
+        "targetInstanceId": "hcl-test-line",
+        "microsampleAmount": "{{config.microsampleAmount}}",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputKey": "dispense-hcl-microsample-mass-g",
+        "inputLabel": "Instructor-approved microsample transfer mass (g)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "g",
+        "evidenceProvenance": "C: configured transfer quantity; not an acquired balance measurement"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "small-vial",
+        "targetDefinitionId": "test-tube",
+        "accessibleLabel": "Transfer the configured fresh microsample to the hcl test line.",
+        "valueParameter": "inputKey"
+      },
+      "prerequisites": [
+        {
+          "id": "dispense-hcl-microsample--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "dispose-dry-test-line"
+        }
+      ],
+      "stateChanges": [
+        "dispense hcl microsample is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "dispense hcl microsample complete.",
+        "invalid": "Enter a positive approved transfer mass within the source inventory."
+      },
+      "evidence": [
+        "sample-scoped",
+        "dispense-hcl-microsample"
+      ],
+      "mass": {
+        "source": "configured-input"
+      }
+    },
+    {
+      "id": "apply-hcl-reagent",
+      "verb": "transfer",
+      "label": "apply hcl reagent",
+      "atomId": "atom.transfer.apply-test-solvent",
+      "equipmentRoleBindings": {
+        "bonding-test-solvent-source": "reagent-bottle",
+        "bonding-test-vessel": "test-tube"
+      },
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "sourceDefinitionId": "reagent-bottle",
+        "sourceInstanceId": "hcl-source",
+        "targetDefinitionId": "test-tube",
+        "targetInstanceId": "hcl-test-line",
+        "reagentAmount": "{{config.hclAmount}}",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputKey": "apply-hcl-reagent-volume",
+        "inputLabel": "Approved reagent volume (mL)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "mL"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "reagent-bottle",
+        "targetDefinitionId": "test-tube",
+        "accessibleLabel": "Apply the configured hcl reagent under the approved controls.",
+        "valueParameter": "inputKey"
+      },
+      "prerequisites": [
+        {
+          "id": "apply-hcl-reagent--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "dispense-hcl-microsample"
+        }
+      ],
+      "stateChanges": [
+        "apply hcl reagent is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "apply hcl reagent complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "apply-hcl-reagent"
+      ],
+      "volume": {
+        "source": "action-input"
+      }
+    },
+    {
+      "id": "inspect-hcl-response",
+      "verb": "observe",
+      "label": "inspect hcl response",
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "inputMode": "choice",
+        "inputRole": "studentResponse",
+        "inputKey": "inspect-hcl-response-choice",
+        "inputLabel": "inspect hcl response",
+        "inputRequired": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Record the direct inspect hcl response observation."
+      },
+      "prerequisites": [
+        {
+          "id": "inspect-hcl-response--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "apply-hcl-reagent"
+        }
+      ],
+      "stateChanges": [
+        "inspect hcl response is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "inspect hcl response complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "inspect-hcl-response"
+      ],
+      "choiceObservation": {
+        "outputCalculationId": "inspect-hcl-response-choice",
+        "options": [
+          {
+            "label": "Observed",
+            "tag": "observed",
+            "value": 1
+          },
+          {
+            "label": "Not observed",
+            "tag": "not-observed",
+            "value": 0
+          },
+          {
+            "label": "Ambiguous",
+            "tag": "ambiguous",
+            "value": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "record-hcl-response",
+      "verb": "record",
+      "label": "record hcl response",
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "evidenceScopeSlotId",
+        "accessibleLabel": "Complete record hcl response for the configured sample."
+      },
+      "prerequisites": [
+        {
+          "id": "record-hcl-response--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "inspect-hcl-response"
+        }
+      ],
+      "stateChanges": [
+        "record hcl response is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "record hcl response complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "record-hcl-response"
+      ]
+    },
+    {
+      "id": "dispose-hcl-test-line",
+      "verb": "transfer",
+      "label": "dispose hcl test line",
+      "atomId": "atom.transfer.dispose-to-waste-stream",
+      "equipmentRoleBindings": {
+        "bonding-test-vessel": "test-tube",
+        "waste-receiver": "waste-beaker"
+      },
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "sourceDefinitionId": "test-tube",
+        "sourceInstanceId": "hcl-test-line",
+        "targetDefinitionId": "waste-beaker",
+        "targetInstanceId": "hcl-waste",
+        "wasteDestination": "{{config.hclWasteDestination}}"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "test-tube",
+        "targetDefinitionId": "waste-beaker",
+        "accessibleLabel": "Dispose the hcl test line to its configured waste destination."
+      },
+      "prerequisites": [
+        {
+          "id": "dispose-hcl-test-line--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "record-hcl-response"
+        }
+      ],
+      "stateChanges": [
+        "dispose hcl test line is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "dispose hcl test line complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "dispose-hcl-test-line"
+      ]
+    },
+    {
+      "id": "dispense-naoh-microsample",
+      "verb": "transfer",
+      "label": "dispense naoh microsample",
+      "atomId": "atom.transfer.microsample-portion",
+      "equipmentRoleBindings": {
+        "sample-source": "small-vial",
+        "bonding-test-vessel": "test-tube",
+        "solid-transfer-tool": "spatula"
+      },
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "sourceDefinitionId": "small-vial",
+        "sourceInstanceId": "sample-vial",
+        "targetDefinitionId": "test-tube",
+        "targetInstanceId": "naoh-test-line",
+        "microsampleAmount": "{{config.microsampleAmount}}",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputKey": "dispense-naoh-microsample-mass-g",
+        "inputLabel": "Instructor-approved microsample transfer mass (g)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "g",
+        "evidenceProvenance": "C: configured transfer quantity; not an acquired balance measurement"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "small-vial",
+        "targetDefinitionId": "test-tube",
+        "accessibleLabel": "Transfer the configured fresh microsample to the naoh test line.",
+        "valueParameter": "inputKey"
+      },
+      "prerequisites": [
+        {
+          "id": "dispense-naoh-microsample--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "dispose-hcl-test-line"
+        }
+      ],
+      "stateChanges": [
+        "dispense naoh microsample is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "dispense naoh microsample complete.",
+        "invalid": "Enter a positive approved transfer mass within the source inventory."
+      },
+      "evidence": [
+        "sample-scoped",
+        "dispense-naoh-microsample"
+      ],
+      "mass": {
+        "source": "configured-input"
+      }
+    },
+    {
+      "id": "apply-naoh-reagent",
+      "verb": "transfer",
+      "label": "apply naoh reagent",
+      "atomId": "atom.transfer.apply-test-solvent",
+      "equipmentRoleBindings": {
+        "bonding-test-solvent-source": "naoh-bottle",
+        "bonding-test-vessel": "test-tube"
+      },
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "sourceDefinitionId": "naoh-bottle",
+        "sourceInstanceId": "naoh-source",
+        "targetDefinitionId": "test-tube",
+        "targetInstanceId": "naoh-test-line",
+        "reagentAmount": "{{config.naohAmount}}",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputKey": "apply-naoh-reagent-volume",
+        "inputLabel": "Approved reagent volume (mL)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "mL"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "naoh-bottle",
+        "targetDefinitionId": "test-tube",
+        "accessibleLabel": "Apply the configured naoh reagent under the approved controls.",
+        "valueParameter": "inputKey"
+      },
+      "prerequisites": [
+        {
+          "id": "apply-naoh-reagent--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "dispense-naoh-microsample"
+        }
+      ],
+      "stateChanges": [
+        "apply naoh reagent is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "apply naoh reagent complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "apply-naoh-reagent"
+      ],
+      "volume": {
+        "source": "action-input"
+      }
+    },
+    {
+      "id": "inspect-naoh-response",
+      "verb": "observe",
+      "label": "inspect naoh response",
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "inputMode": "choice",
+        "inputRole": "studentResponse",
+        "inputKey": "inspect-naoh-response-choice",
+        "inputLabel": "inspect naoh response",
+        "inputRequired": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Record the direct inspect naoh response observation."
+      },
+      "prerequisites": [
+        {
+          "id": "inspect-naoh-response--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "apply-naoh-reagent"
+        }
+      ],
+      "stateChanges": [
+        "inspect naoh response is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "inspect naoh response complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "inspect-naoh-response"
+      ],
+      "choiceObservation": {
+        "outputCalculationId": "inspect-naoh-response-choice",
+        "options": [
+          {
+            "label": "Observed",
+            "tag": "observed",
+            "value": 1
+          },
+          {
+            "label": "Not observed",
+            "tag": "not-observed",
+            "value": 0
+          },
+          {
+            "label": "Ambiguous",
+            "tag": "ambiguous",
+            "value": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "record-naoh-response",
+      "verb": "record",
+      "label": "record naoh response",
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "evidenceScopeSlotId",
+        "accessibleLabel": "Complete record naoh response for the configured sample."
+      },
+      "prerequisites": [
+        {
+          "id": "record-naoh-response--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "inspect-naoh-response"
+        }
+      ],
+      "stateChanges": [
+        "record naoh response is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "record naoh response complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "record-naoh-response"
+      ]
+    },
+    {
+      "id": "dispose-naoh-test-line",
+      "verb": "transfer",
+      "label": "dispose naoh test line",
+      "atomId": "atom.transfer.dispose-to-waste-stream",
+      "equipmentRoleBindings": {
+        "bonding-test-vessel": "test-tube",
+        "waste-receiver": "waste-beaker"
+      },
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "sourceDefinitionId": "test-tube",
+        "sourceInstanceId": "naoh-test-line",
+        "targetDefinitionId": "waste-beaker",
+        "targetInstanceId": "naoh-waste",
+        "wasteDestination": "{{config.naohWasteDestination}}"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "test-tube",
+        "targetDefinitionId": "waste-beaker",
+        "accessibleLabel": "Dispose the naoh test line to its configured waste destination."
+      },
+      "prerequisites": [
+        {
+          "id": "dispose-naoh-test-line--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "record-naoh-response"
+        }
+      ],
+      "stateChanges": [
+        "dispose naoh test line is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "dispose naoh test line complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "dispose-naoh-test-line"
+      ]
+    },
+    {
+      "id": "complete-sample-matrix",
+      "verb": "observe",
+      "label": "complete sample matrix",
+      "parameters": {
+        "evidenceScopeSlotId": "{{config.evidenceScopeId}}",
+        "selectedTestPanel": "{{config.selectedTestPanel}}"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "evidenceScopeSlotId",
+        "accessibleLabel": "Complete complete sample matrix for the configured sample."
+      },
+      "prerequisites": [
+        {
+          "id": "complete-sample-matrix--previous-action",
+          "type": "actionEvidence",
+          "label": "Previous sample operation is complete.",
+          "actionId": "dispose-naoh-test-line"
+        }
+      ],
+      "stateChanges": [
+        "complete sample matrix is completed for only the configured sample evidence scope."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "complete sample matrix complete.",
+        "invalid": "Use the configured sample, fresh test line, and approved panel."
+      },
+      "evidence": [
+        "sample-scoped",
+        "complete-sample-matrix"
+      ]
+    }
+  ],
+  "process": {
+    "startNodeId": "label-test-locations-node",
+    "nodes": [
+      {
+        "id": "label-test-locations-node",
+        "type": "action",
+        "title": "label test locations",
+        "description": "label test locations",
+        "actionId": "label-test-locations",
+        "config": {},
+        "validation": [
+          {
+            "id": "label-test-locations-node--label-test-locations-complete",
+            "type": "actionEvidence",
+            "label": "label test locations is complete.",
+            "actionId": "label-test-locations"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "label test locations complete.",
+          "retry": "Complete label test locations with the named sample evidence."
+        }
+      },
+      {
+        "id": "inspect-solid-appearance-node",
+        "type": "action",
+        "title": "inspect solid appearance",
+        "description": "inspect solid appearance",
+        "actionId": "inspect-solid-appearance",
+        "config": {},
+        "validation": [
+          {
+            "id": "inspect-solid-appearance-node--inspect-solid-appearance-complete",
+            "type": "actionEvidence",
+            "label": "inspect solid appearance is complete.",
+            "actionId": "inspect-solid-appearance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "inspect solid appearance complete.",
+          "retry": "Complete inspect solid appearance with the named sample evidence."
+        }
+      },
+      {
+        "id": "record-solid-appearance-node",
+        "type": "action",
+        "title": "record solid appearance",
+        "description": "record solid appearance",
+        "actionId": "record-solid-appearance",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-solid-appearance-node--record-solid-appearance-complete",
+            "type": "actionEvidence",
+            "label": "record solid appearance is complete.",
+            "actionId": "record-solid-appearance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "record solid appearance complete.",
+          "retry": "Complete record solid appearance with the named sample evidence."
+        }
+      },
+      {
+        "id": "dispense-water-microsample-node",
+        "type": "action",
+        "title": "dispense water microsample",
+        "description": "dispense water microsample",
+        "actionId": "dispense-water-microsample",
+        "config": {},
+        "validation": [
+          {
+            "id": "dispense-water-microsample-node--dispense-water-microsample-complete",
+            "type": "actionEvidence",
+            "label": "dispense water microsample is complete.",
+            "actionId": "dispense-water-microsample"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "dispense water microsample complete.",
+          "retry": "Complete dispense water microsample with the named sample evidence."
+        }
+      },
+      {
+        "id": "apply-water-solvent-node",
+        "type": "action",
+        "title": "apply water solvent",
+        "description": "apply water solvent",
+        "actionId": "apply-water-solvent",
+        "config": {},
+        "validation": [
+          {
+            "id": "apply-water-solvent-node--apply-water-solvent-complete",
+            "type": "actionEvidence",
+            "label": "apply water solvent is complete.",
+            "actionId": "apply-water-solvent"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "apply water solvent complete.",
+          "retry": "Complete apply water solvent with the named sample evidence."
+        }
+      },
+      {
+        "id": "inspect-water-solubility-node",
+        "type": "action",
+        "title": "inspect water solubility",
+        "description": "inspect water solubility",
+        "actionId": "inspect-water-solubility",
+        "config": {},
+        "validation": [
+          {
+            "id": "inspect-water-solubility-node--inspect-water-solubility-complete",
+            "type": "actionEvidence",
+            "label": "inspect water solubility is complete.",
+            "actionId": "inspect-water-solubility"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "inspect water solubility complete.",
+          "retry": "Complete inspect water solubility with the named sample evidence."
+        }
+      },
+      {
+        "id": "record-water-solubility-node",
+        "type": "action",
+        "title": "record water solubility",
+        "description": "record water solubility",
+        "actionId": "record-water-solubility",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-water-solubility-node--record-water-solubility-complete",
+            "type": "actionEvidence",
+            "label": "record water solubility is complete.",
+            "actionId": "record-water-solubility"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "record water solubility complete.",
+          "retry": "Complete record water solubility with the named sample evidence."
+        }
+      },
+      {
+        "id": "read-aqueous-conductivity-node",
+        "type": "action",
+        "title": "read aqueous conductivity",
+        "description": "read aqueous conductivity",
+        "actionId": "read-aqueous-conductivity",
+        "config": {},
+        "validation": [
+          {
+            "id": "read-aqueous-conductivity-node--read-aqueous-conductivity-complete",
+            "type": "actionEvidence",
+            "label": "read aqueous conductivity is complete.",
+            "actionId": "read-aqueous-conductivity"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "read aqueous conductivity complete.",
+          "retry": "Complete read aqueous conductivity with the named sample evidence."
+        }
+      },
+      {
+        "id": "record-aqueous-conductivity-node",
+        "type": "action",
+        "title": "record aqueous conductivity",
+        "description": "record aqueous conductivity",
+        "actionId": "record-aqueous-conductivity",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-aqueous-conductivity-node--record-aqueous-conductivity-complete",
+            "type": "actionEvidence",
+            "label": "record aqueous conductivity is complete.",
+            "actionId": "record-aqueous-conductivity"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "record aqueous conductivity complete.",
+          "retry": "Complete record aqueous conductivity with the named sample evidence."
+        }
+      },
+      {
+        "id": "read-ph-indicator-node",
+        "type": "action",
+        "title": "read ph indicator",
+        "description": "read ph indicator",
+        "actionId": "read-ph-indicator",
+        "config": {},
+        "validation": [
+          {
+            "id": "read-ph-indicator-node--read-ph-indicator-complete",
+            "type": "actionEvidence",
+            "label": "read ph indicator is complete.",
+            "actionId": "read-ph-indicator"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "read ph indicator complete.",
+          "retry": "Complete read ph indicator with the named sample evidence."
+        }
+      },
+      {
+        "id": "record-ph-node",
+        "type": "action",
+        "title": "record ph",
+        "description": "record ph",
+        "actionId": "record-ph",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-ph-node--record-ph-complete",
+            "type": "actionEvidence",
+            "label": "record ph is complete.",
+            "actionId": "record-ph"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "record ph complete.",
+          "retry": "Complete record ph with the named sample evidence."
+        }
+      },
+      {
+        "id": "dispose-water-test-line-node",
+        "type": "action",
+        "title": "dispose water test line",
+        "description": "dispose water test line",
+        "actionId": "dispose-water-test-line",
+        "config": {},
+        "validation": [
+          {
+            "id": "dispose-water-test-line-node--dispose-water-test-line-complete",
+            "type": "actionEvidence",
+            "label": "dispose water test line is complete.",
+            "actionId": "dispose-water-test-line"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "dispose water test line complete.",
+          "retry": "Complete dispose water test line with the named sample evidence."
+        }
+      },
+      {
+        "id": "dispense-ethanol-microsample-node",
+        "type": "action",
+        "title": "dispense ethanol microsample",
+        "description": "dispense ethanol microsample",
+        "actionId": "dispense-ethanol-microsample",
+        "config": {},
+        "validation": [
+          {
+            "id": "dispense-ethanol-microsample-node--dispense-ethanol-microsample-complete",
+            "type": "actionEvidence",
+            "label": "dispense ethanol microsample is complete.",
+            "actionId": "dispense-ethanol-microsample"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "dispense ethanol microsample complete.",
+          "retry": "Complete dispense ethanol microsample with the named sample evidence."
+        }
+      },
+      {
+        "id": "apply-ethanol-solvent-node",
+        "type": "action",
+        "title": "apply ethanol solvent",
+        "description": "apply ethanol solvent",
+        "actionId": "apply-ethanol-solvent",
+        "config": {},
+        "validation": [
+          {
+            "id": "apply-ethanol-solvent-node--apply-ethanol-solvent-complete",
+            "type": "actionEvidence",
+            "label": "apply ethanol solvent is complete.",
+            "actionId": "apply-ethanol-solvent"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "apply ethanol solvent complete.",
+          "retry": "Complete apply ethanol solvent with the named sample evidence."
+        }
+      },
+      {
+        "id": "inspect-ethanol-solubility-node",
+        "type": "action",
+        "title": "inspect ethanol solubility",
+        "description": "inspect ethanol solubility",
+        "actionId": "inspect-ethanol-solubility",
+        "config": {},
+        "validation": [
+          {
+            "id": "inspect-ethanol-solubility-node--inspect-ethanol-solubility-complete",
+            "type": "actionEvidence",
+            "label": "inspect ethanol solubility is complete.",
+            "actionId": "inspect-ethanol-solubility"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "inspect ethanol solubility complete.",
+          "retry": "Complete inspect ethanol solubility with the named sample evidence."
+        }
+      },
+      {
+        "id": "record-ethanol-solubility-node",
+        "type": "action",
+        "title": "record ethanol solubility",
+        "description": "record ethanol solubility",
+        "actionId": "record-ethanol-solubility",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-ethanol-solubility-node--record-ethanol-solubility-complete",
+            "type": "actionEvidence",
+            "label": "record ethanol solubility is complete.",
+            "actionId": "record-ethanol-solubility"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "record ethanol solubility complete.",
+          "retry": "Complete record ethanol solubility with the named sample evidence."
+        }
+      },
+      {
+        "id": "dispose-ethanol-test-line-node",
+        "type": "action",
+        "title": "dispose ethanol test line",
+        "description": "dispose ethanol test line",
+        "actionId": "dispose-ethanol-test-line",
+        "config": {},
+        "validation": [
+          {
+            "id": "dispose-ethanol-test-line-node--dispose-ethanol-test-line-complete",
+            "type": "actionEvidence",
+            "label": "dispose ethanol test line is complete.",
+            "actionId": "dispose-ethanol-test-line"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "dispose ethanol test line complete.",
+          "retry": "Complete dispose ethanol test line with the named sample evidence."
+        }
+      },
+      {
+        "id": "dispense-hexanes-microsample-node",
+        "type": "action",
+        "title": "dispense hexanes microsample",
+        "description": "dispense hexanes microsample",
+        "actionId": "dispense-hexanes-microsample",
+        "config": {},
+        "validation": [
+          {
+            "id": "dispense-hexanes-microsample-node--dispense-hexanes-microsample-complete",
+            "type": "actionEvidence",
+            "label": "dispense hexanes microsample is complete.",
+            "actionId": "dispense-hexanes-microsample"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "dispense hexanes microsample complete.",
+          "retry": "Complete dispense hexanes microsample with the named sample evidence."
+        }
+      },
+      {
+        "id": "apply-hexanes-solvent-node",
+        "type": "action",
+        "title": "apply hexanes solvent",
+        "description": "apply hexanes solvent",
+        "actionId": "apply-hexanes-solvent",
+        "config": {},
+        "validation": [
+          {
+            "id": "apply-hexanes-solvent-node--apply-hexanes-solvent-complete",
+            "type": "actionEvidence",
+            "label": "apply hexanes solvent is complete.",
+            "actionId": "apply-hexanes-solvent"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "apply hexanes solvent complete.",
+          "retry": "Complete apply hexanes solvent with the named sample evidence."
+        }
+      },
+      {
+        "id": "inspect-hexanes-solubility-node",
+        "type": "action",
+        "title": "inspect hexanes solubility",
+        "description": "inspect hexanes solubility",
+        "actionId": "inspect-hexanes-solubility",
+        "config": {},
+        "validation": [
+          {
+            "id": "inspect-hexanes-solubility-node--inspect-hexanes-solubility-complete",
+            "type": "actionEvidence",
+            "label": "inspect hexanes solubility is complete.",
+            "actionId": "inspect-hexanes-solubility"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "inspect hexanes solubility complete.",
+          "retry": "Complete inspect hexanes solubility with the named sample evidence."
+        }
+      },
+      {
+        "id": "record-hexanes-solubility-node",
+        "type": "action",
+        "title": "record hexanes solubility",
+        "description": "record hexanes solubility",
+        "actionId": "record-hexanes-solubility",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-hexanes-solubility-node--record-hexanes-solubility-complete",
+            "type": "actionEvidence",
+            "label": "record hexanes solubility is complete.",
+            "actionId": "record-hexanes-solubility"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "record hexanes solubility complete.",
+          "retry": "Complete record hexanes solubility with the named sample evidence."
+        }
+      },
+      {
+        "id": "dispose-hexanes-test-line-node",
+        "type": "action",
+        "title": "dispose hexanes test line",
+        "description": "dispose hexanes test line",
+        "actionId": "dispose-hexanes-test-line",
+        "config": {},
+        "validation": [
+          {
+            "id": "dispose-hexanes-test-line-node--dispose-hexanes-test-line-complete",
+            "type": "actionEvidence",
+            "label": "dispose hexanes test line is complete.",
+            "actionId": "dispose-hexanes-test-line"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "dispose hexanes test line complete.",
+          "retry": "Complete dispose hexanes test line with the named sample evidence."
+        }
+      },
+      {
+        "id": "dispense-dry-microsample-node",
+        "type": "action",
+        "title": "dispense dry microsample",
+        "description": "dispense dry microsample",
+        "actionId": "dispense-dry-microsample",
+        "config": {},
+        "validation": [
+          {
+            "id": "dispense-dry-microsample-node--dispense-dry-microsample-complete",
+            "type": "actionEvidence",
+            "label": "dispense dry microsample is complete.",
+            "actionId": "dispense-dry-microsample"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "dispense dry microsample complete.",
+          "retry": "Complete dispense dry microsample with the named sample evidence."
+        }
+      },
+      {
+        "id": "test-magnetic-response-node",
+        "type": "action",
+        "title": "test magnetic response",
+        "description": "test magnetic response",
+        "actionId": "test-magnetic-response",
+        "config": {},
+        "validation": [
+          {
+            "id": "test-magnetic-response-node--test-magnetic-response-complete",
+            "type": "actionEvidence",
+            "label": "test magnetic response is complete.",
+            "actionId": "test-magnetic-response"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "test magnetic response complete.",
+          "retry": "Complete test magnetic response with the named sample evidence."
+        }
+      },
+      {
+        "id": "record-magnetic-response-node",
+        "type": "action",
+        "title": "record magnetic response",
+        "description": "record magnetic response",
+        "actionId": "record-magnetic-response",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-magnetic-response-node--record-magnetic-response-complete",
+            "type": "actionEvidence",
+            "label": "record magnetic response is complete.",
+            "actionId": "record-magnetic-response"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "record magnetic response complete.",
+          "retry": "Complete record magnetic response with the named sample evidence."
+        }
+      },
+      {
+        "id": "stage-melting-sample-node",
+        "type": "action",
+        "title": "stage melting sample",
+        "description": "stage melting sample",
+        "actionId": "stage-melting-sample",
+        "config": {},
+        "validation": [
+          {
+            "id": "stage-melting-sample-node--stage-melting-sample-complete",
+            "type": "actionEvidence",
+            "label": "stage melting sample is complete.",
+            "actionId": "stage-melting-sample"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "stage melting sample complete.",
+          "retry": "Complete stage melting sample with the named sample evidence."
+        }
+      },
+      {
+        "id": "read-melting-behavior-node",
+        "type": "action",
+        "title": "read melting behavior",
+        "description": "read melting behavior",
+        "actionId": "read-melting-behavior",
+        "config": {},
+        "validation": [
+          {
+            "id": "read-melting-behavior-node--read-melting-behavior-complete",
+            "type": "actionEvidence",
+            "label": "read melting behavior is complete.",
+            "actionId": "read-melting-behavior"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "read melting behavior complete.",
+          "retry": "Complete read melting behavior with the named sample evidence."
+        }
+      },
+      {
+        "id": "record-melting-behavior-node",
+        "type": "action",
+        "title": "record melting behavior",
+        "description": "record melting behavior",
+        "actionId": "record-melting-behavior",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-melting-behavior-node--record-melting-behavior-complete",
+            "type": "actionEvidence",
+            "label": "record melting behavior is complete.",
+            "actionId": "record-melting-behavior"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "record melting behavior complete.",
+          "retry": "Complete record melting behavior with the named sample evidence."
+        }
+      },
+      {
+        "id": "dispose-dry-test-line-node",
+        "type": "action",
+        "title": "dispose dry test line",
+        "description": "dispose dry test line",
+        "actionId": "dispose-dry-test-line",
+        "config": {},
+        "validation": [
+          {
+            "id": "dispose-dry-test-line-node--dispose-dry-test-line-complete",
+            "type": "actionEvidence",
+            "label": "dispose dry test line is complete.",
+            "actionId": "dispose-dry-test-line"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "dispose dry test line complete.",
+          "retry": "Complete dispose dry test line with the named sample evidence."
+        }
+      },
+      {
+        "id": "dispense-hcl-microsample-node",
+        "type": "action",
+        "title": "dispense hcl microsample",
+        "description": "dispense hcl microsample",
+        "actionId": "dispense-hcl-microsample",
+        "config": {},
+        "validation": [
+          {
+            "id": "dispense-hcl-microsample-node--dispense-hcl-microsample-complete",
+            "type": "actionEvidence",
+            "label": "dispense hcl microsample is complete.",
+            "actionId": "dispense-hcl-microsample"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "dispense hcl microsample complete.",
+          "retry": "Complete dispense hcl microsample with the named sample evidence."
+        }
+      },
+      {
+        "id": "apply-hcl-reagent-node",
+        "type": "action",
+        "title": "apply hcl reagent",
+        "description": "apply hcl reagent",
+        "actionId": "apply-hcl-reagent",
+        "config": {},
+        "validation": [
+          {
+            "id": "apply-hcl-reagent-node--apply-hcl-reagent-complete",
+            "type": "actionEvidence",
+            "label": "apply hcl reagent is complete.",
+            "actionId": "apply-hcl-reagent"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "apply hcl reagent complete.",
+          "retry": "Complete apply hcl reagent with the named sample evidence."
+        }
+      },
+      {
+        "id": "inspect-hcl-response-node",
+        "type": "action",
+        "title": "inspect hcl response",
+        "description": "inspect hcl response",
+        "actionId": "inspect-hcl-response",
+        "config": {},
+        "validation": [
+          {
+            "id": "inspect-hcl-response-node--inspect-hcl-response-complete",
+            "type": "actionEvidence",
+            "label": "inspect hcl response is complete.",
+            "actionId": "inspect-hcl-response"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "inspect hcl response complete.",
+          "retry": "Complete inspect hcl response with the named sample evidence."
+        }
+      },
+      {
+        "id": "record-hcl-response-node",
+        "type": "action",
+        "title": "record hcl response",
+        "description": "record hcl response",
+        "actionId": "record-hcl-response",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-hcl-response-node--record-hcl-response-complete",
+            "type": "actionEvidence",
+            "label": "record hcl response is complete.",
+            "actionId": "record-hcl-response"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "record hcl response complete.",
+          "retry": "Complete record hcl response with the named sample evidence."
+        }
+      },
+      {
+        "id": "dispose-hcl-test-line-node",
+        "type": "action",
+        "title": "dispose hcl test line",
+        "description": "dispose hcl test line",
+        "actionId": "dispose-hcl-test-line",
+        "config": {},
+        "validation": [
+          {
+            "id": "dispose-hcl-test-line-node--dispose-hcl-test-line-complete",
+            "type": "actionEvidence",
+            "label": "dispose hcl test line is complete.",
+            "actionId": "dispose-hcl-test-line"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "dispose hcl test line complete.",
+          "retry": "Complete dispose hcl test line with the named sample evidence."
+        }
+      },
+      {
+        "id": "dispense-naoh-microsample-node",
+        "type": "action",
+        "title": "dispense naoh microsample",
+        "description": "dispense naoh microsample",
+        "actionId": "dispense-naoh-microsample",
+        "config": {},
+        "validation": [
+          {
+            "id": "dispense-naoh-microsample-node--dispense-naoh-microsample-complete",
+            "type": "actionEvidence",
+            "label": "dispense naoh microsample is complete.",
+            "actionId": "dispense-naoh-microsample"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "dispense naoh microsample complete.",
+          "retry": "Complete dispense naoh microsample with the named sample evidence."
+        }
+      },
+      {
+        "id": "apply-naoh-reagent-node",
+        "type": "action",
+        "title": "apply naoh reagent",
+        "description": "apply naoh reagent",
+        "actionId": "apply-naoh-reagent",
+        "config": {},
+        "validation": [
+          {
+            "id": "apply-naoh-reagent-node--apply-naoh-reagent-complete",
+            "type": "actionEvidence",
+            "label": "apply naoh reagent is complete.",
+            "actionId": "apply-naoh-reagent"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "apply naoh reagent complete.",
+          "retry": "Complete apply naoh reagent with the named sample evidence."
+        }
+      },
+      {
+        "id": "inspect-naoh-response-node",
+        "type": "action",
+        "title": "inspect naoh response",
+        "description": "inspect naoh response",
+        "actionId": "inspect-naoh-response",
+        "config": {},
+        "validation": [
+          {
+            "id": "inspect-naoh-response-node--inspect-naoh-response-complete",
+            "type": "actionEvidence",
+            "label": "inspect naoh response is complete.",
+            "actionId": "inspect-naoh-response"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "inspect naoh response complete.",
+          "retry": "Complete inspect naoh response with the named sample evidence."
+        }
+      },
+      {
+        "id": "record-naoh-response-node",
+        "type": "action",
+        "title": "record naoh response",
+        "description": "record naoh response",
+        "actionId": "record-naoh-response",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-naoh-response-node--record-naoh-response-complete",
+            "type": "actionEvidence",
+            "label": "record naoh response is complete.",
+            "actionId": "record-naoh-response"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "record naoh response complete.",
+          "retry": "Complete record naoh response with the named sample evidence."
+        }
+      },
+      {
+        "id": "dispose-naoh-test-line-node",
+        "type": "action",
+        "title": "dispose naoh test line",
+        "description": "dispose naoh test line",
+        "actionId": "dispose-naoh-test-line",
+        "config": {},
+        "validation": [
+          {
+            "id": "dispose-naoh-test-line-node--dispose-naoh-test-line-complete",
+            "type": "actionEvidence",
+            "label": "dispose naoh test line is complete.",
+            "actionId": "dispose-naoh-test-line"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "dispose naoh test line complete.",
+          "retry": "Complete dispose naoh test line with the named sample evidence."
+        }
+      },
+      {
+        "id": "complete-sample-matrix-node",
+        "type": "action",
+        "title": "complete sample matrix",
+        "description": "complete sample matrix",
+        "actionId": "complete-sample-matrix",
+        "config": {},
+        "validation": [
+          {
+            "id": "complete-sample-matrix-node--complete-sample-matrix-complete",
+            "type": "actionEvidence",
+            "label": "complete sample matrix is complete.",
+            "actionId": "complete-sample-matrix"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "complete sample matrix complete.",
+          "retry": "Complete complete sample matrix with the named sample evidence."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "label-test-locations-node",
+        "to": "inspect-solid-appearance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "inspect-solid-appearance-node",
+        "to": "record-solid-appearance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-solid-appearance-node",
+        "to": "dispense-water-microsample-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "dispense-water-microsample-node",
+        "to": "apply-water-solvent-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "apply-water-solvent-node",
+        "to": "inspect-water-solubility-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "inspect-water-solubility-node",
+        "to": "record-water-solubility-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-water-solubility-node",
+        "to": "read-aqueous-conductivity-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "read-aqueous-conductivity-node",
+        "to": "record-aqueous-conductivity-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-aqueous-conductivity-node",
+        "to": "read-ph-indicator-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "read-ph-indicator-node",
+        "to": "record-ph-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-ph-node",
+        "to": "dispose-water-test-line-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "dispose-water-test-line-node",
+        "to": "dispense-ethanol-microsample-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "dispense-ethanol-microsample-node",
+        "to": "apply-ethanol-solvent-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "apply-ethanol-solvent-node",
+        "to": "inspect-ethanol-solubility-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "inspect-ethanol-solubility-node",
+        "to": "record-ethanol-solubility-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-ethanol-solubility-node",
+        "to": "dispose-ethanol-test-line-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "dispose-ethanol-test-line-node",
+        "to": "dispense-hexanes-microsample-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "dispense-hexanes-microsample-node",
+        "to": "apply-hexanes-solvent-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "apply-hexanes-solvent-node",
+        "to": "inspect-hexanes-solubility-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "inspect-hexanes-solubility-node",
+        "to": "record-hexanes-solubility-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-hexanes-solubility-node",
+        "to": "dispose-hexanes-test-line-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "dispose-hexanes-test-line-node",
+        "to": "dispense-dry-microsample-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "dispense-dry-microsample-node",
+        "to": "test-magnetic-response-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "test-magnetic-response-node",
+        "to": "record-magnetic-response-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-magnetic-response-node",
+        "to": "stage-melting-sample-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "stage-melting-sample-node",
+        "to": "read-melting-behavior-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "read-melting-behavior-node",
+        "to": "record-melting-behavior-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-melting-behavior-node",
+        "to": "dispose-dry-test-line-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "dispose-dry-test-line-node",
+        "to": "dispense-hcl-microsample-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "dispense-hcl-microsample-node",
+        "to": "apply-hcl-reagent-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "apply-hcl-reagent-node",
+        "to": "inspect-hcl-response-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "inspect-hcl-response-node",
+        "to": "record-hcl-response-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-hcl-response-node",
+        "to": "dispose-hcl-test-line-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "dispose-hcl-test-line-node",
+        "to": "dispense-naoh-microsample-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "dispense-naoh-microsample-node",
+        "to": "apply-naoh-reagent-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "apply-naoh-reagent-node",
+        "to": "inspect-naoh-response-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "inspect-naoh-response-node",
+        "to": "record-naoh-response-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-naoh-response-node",
+        "to": "dispose-naoh-test-line-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "dispose-naoh-test-line-node",
+        "to": "complete-sample-matrix-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "current node expects a different action",
+      "message": "That action is out of sequence for the current technique step.",
+      "recovery": "Check the process map and perform the highlighted step first."
+    },
+    {
+      "id": "missing-source",
+      "when": "source equipment or contents are missing",
+      "message": "The selected source does not contain the material required for this action.",
+      "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+    },
+    {
+      "id": "overflow",
+      "when": "target capacity would be exceeded",
+      "message": "The target equipment cannot hold the requested volume.",
+      "recovery": "Use a larger container or transfer a smaller measured amount."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.2.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-04T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "chemistry",
+      "bonding",
+      "qualitative-analysis"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry-label-test-locations-node",
+        "kind": "entry",
+        "nodeId": "label-test-locations-node",
+        "label": "Entry"
+      },
+      {
+        "id": "exit-complete-sample-matrix-node",
+        "kind": "exit",
+        "nodeId": "complete-sample-matrix-node",
+        "label": "Exit"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "sample-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "small-vial"
+        ],
+        "sourceInstanceIds": [
+          "sample-vial"
+        ]
+      },
+      {
+        "roleId": "bonding-test-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "test-tube"
+        ],
+        "sourceInstanceIds": [
+          "water-test-line",
+          "ethanol-test-line",
+          "hexanes-test-line",
+          "dry-test-line",
+          "hcl-test-line",
+          "naoh-test-line"
+        ]
+      },
+      {
+        "roleId": "solid-transfer-tool",
+        "required": true,
+        "allowedDefinitionIds": [
+          "spatula"
+        ],
+        "sourceInstanceIds": [
+          "transfer-tool"
+        ]
+      },
+      {
+        "roleId": "bonding-test-solvent-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "distilled-water-bottle",
+          "reagent-bottle",
+          "naoh-bottle"
+        ],
+        "sourceInstanceIds": [
+          "water-source",
+          "ethanol-source",
+          "hexanes-source",
+          "hcl-source",
+          "naoh-source"
+        ]
+      },
+      {
+        "roleId": "immersed-probe-instrument",
+        "required": true,
+        "allowedDefinitionIds": [
+          "conductivity-tester"
+        ],
+        "sourceInstanceIds": [
+          "conductivity-instrument"
+        ]
+      },
+      {
+        "roleId": "ph-indicator-medium",
+        "required": true,
+        "allowedDefinitionIds": [
+          "ph-paper"
+        ],
+        "sourceInstanceIds": [
+          "ph-medium"
+        ]
+      },
+      {
+        "roleId": "waste-receiver",
+        "required": true,
+        "allowedDefinitionIds": [
+          "waste-beaker"
+        ],
+        "sourceInstanceIds": [
+          "water-waste",
+          "ethanol-waste",
+          "hexanes-waste",
+          "hcl-waste",
+          "naoh-waste",
+          "dry-waste"
+        ]
+      },
+      {
+        "roleId": "magnetic-response-tool",
+        "required": true,
+        "allowedDefinitionIds": [
+          "magnet"
+        ],
+        "sourceInstanceIds": [
+          "magnetic-tool"
+        ]
+      },
+      {
+        "roleId": "melting-point-instrument",
+        "required": true,
+        "allowedDefinitionIds": [
+          "melting-point-apparatus"
+        ],
+        "sourceInstanceIds": [
+          "melting-instrument"
+        ]
+      }
+    ],
+    "modelSlots": [],
+    "configurationSlots": [
+      {
+        "id": "sampleIdentity",
+        "required": true,
+        "valueType": "string",
+        "redactWhenBlind": true
+      },
+      {
+        "id": "sampleMode",
+        "required": true,
+        "valueType": "string",
+        "allowedValues": [
+          "known",
+          "blind"
+        ]
+      },
+      {
+        "id": "evidenceScopeId",
+        "required": true,
+        "valueType": "string"
+      },
+      {
+        "id": "selectedTestPanel",
+        "required": true,
+        "valueType": "string"
+      },
+      {
+        "id": "microsampleAmount",
+        "required": true,
+        "valueType": "string"
+      },
+      {
+        "id": "waterAmount",
+        "required": true,
+        "valueType": "string"
+      },
+      {
+        "id": "ethanolAmount",
+        "required": true,
+        "valueType": "string"
+      },
+      {
+        "id": "hexanesAmount",
+        "required": true,
+        "valueType": "string"
+      },
+      {
+        "id": "hclAmount",
+        "required": true,
+        "valueType": "string"
+      },
+      {
+        "id": "naohAmount",
+        "required": true,
+        "valueType": "string"
+      },
+      {
+        "id": "conductivityThresholds",
+        "required": true,
+        "valueType": "number"
+      },
+      {
+        "id": "phThresholds",
+        "required": true,
+        "valueType": "number"
+      },
+      {
+        "id": "meltingApparatusLimits",
+        "required": true,
+        "valueType": "number"
+      },
+      {
+        "id": "hoodControl",
+        "required": true,
+        "valueType": "string"
+      },
+      {
+        "id": "waterWasteDestination",
+        "required": true,
+        "valueType": "string"
+      },
+      {
+        "id": "ethanolWasteDestination",
+        "required": true,
+        "valueType": "string"
+      },
+      {
+        "id": "hexanesWasteDestination",
+        "required": true,
+        "valueType": "string"
+      },
+      {
+        "id": "hclWasteDestination",
+        "required": true,
+        "valueType": "string"
+      },
+      {
+        "id": "naohWasteDestination",
+        "required": true,
+        "valueType": "string"
+      },
+      {
+        "id": "dryWasteDestination",
+        "required": true,
+        "valueType": "string"
+      },
+      {
+        "id": "selectedProcedure",
+        "required": true,
+        "valueType": "string"
+      }
+    ],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [],
+    "completion": {
+      "exitPortIds": [
+        "exit-complete-sample-matrix-node"
+      ],
+      "requiredEvidenceOutputIds": [],
+      "requiredValidationRuleIds": []
+    },
+    "catalogDisposition": "composable",
+    "legacyActionEffects": [
+      {
+        "actionId": "label-test-locations",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "inspect-solid-appearance",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-solid-appearance",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "inspect-water-solubility",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-water-solubility",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-aqueous-conductivity",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-ph",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "inspect-ethanol-solubility",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-ethanol-solubility",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "inspect-hexanes-solubility",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-hexanes-solubility",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-magnetic-response",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-melting-behavior",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "inspect-hcl-response",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-hcl-response",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "inspect-naoh-response",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-naoh-response",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "complete-sample-matrix",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ],
+    "orderedProcedure": {
+      "configurationSlotId": "selectedProcedure",
+      "startActionIds": [
+        "label-test-locations"
+      ],
+      "endActionIds": [
+        "complete-sample-matrix"
+      ],
+      "minimumTests": 4,
+      "requireMixedEvidence": true,
+      "resources": [
+        {
+          "id": "water",
+          "prepareActionIds": [
+            "dispense-water-microsample",
+            "apply-water-solvent"
+          ],
+          "cleanupActionIds": [
+            "dispose-water-test-line"
+          ]
+        },
+        {
+          "id": "ethanol",
+          "prepareActionIds": [
+            "dispense-ethanol-microsample",
+            "apply-ethanol-solvent"
+          ],
+          "cleanupActionIds": [
+            "dispose-ethanol-test-line"
+          ]
+        },
+        {
+          "id": "hexanes",
+          "prepareActionIds": [
+            "dispense-hexanes-microsample",
+            "apply-hexanes-solvent"
+          ],
+          "cleanupActionIds": [
+            "dispose-hexanes-test-line"
+          ]
+        },
+        {
+          "id": "dry",
+          "prepareActionIds": [
+            "dispense-dry-microsample"
+          ],
+          "cleanupActionIds": [
+            "dispose-dry-test-line"
+          ]
+        },
+        {
+          "id": "hcl",
+          "prepareActionIds": [
+            "dispense-hcl-microsample",
+            "apply-hcl-reagent"
+          ],
+          "cleanupActionIds": [
+            "dispose-hcl-test-line"
+          ]
+        },
+        {
+          "id": "naoh",
+          "prepareActionIds": [
+            "dispense-naoh-microsample",
+            "apply-naoh-reagent"
+          ],
+          "cleanupActionIds": [
+            "dispose-naoh-test-line"
+          ]
+        }
+      ],
+      "groups": [
+        {
+          "id": "appearance",
+          "actionIds": [
+            "inspect-solid-appearance",
+            "record-solid-appearance"
+          ],
+          "evidenceKind": "qualitative",
+          "testCount": 1
+        },
+        {
+          "id": "water",
+          "actionIds": [
+            "inspect-water-solubility",
+            "record-water-solubility"
+          ],
+          "evidenceKind": "qualitative",
+          "resourceId": "water",
+          "testCount": 1
+        },
+        {
+          "id": "conductivity",
+          "actionIds": [
+            "read-aqueous-conductivity",
+            "record-aqueous-conductivity"
+          ],
+          "evidenceKind": "quantitative",
+          "resourceId": "water",
+          "testCount": 1
+        },
+        {
+          "id": "ph",
+          "actionIds": [
+            "read-ph-indicator",
+            "record-ph"
+          ],
+          "evidenceKind": "quantitative",
+          "resourceId": "water",
+          "testCount": 1
+        },
+        {
+          "id": "ethanol",
+          "actionIds": [
+            "inspect-ethanol-solubility",
+            "record-ethanol-solubility"
+          ],
+          "evidenceKind": "qualitative",
+          "resourceId": "ethanol",
+          "testCount": 1
+        },
+        {
+          "id": "hexanes",
+          "actionIds": [
+            "inspect-hexanes-solubility",
+            "record-hexanes-solubility"
+          ],
+          "evidenceKind": "qualitative",
+          "resourceId": "hexanes",
+          "testCount": 1
+        },
+        {
+          "id": "magnet",
+          "actionIds": [
+            "test-magnetic-response",
+            "record-magnetic-response"
+          ],
+          "evidenceKind": "qualitative",
+          "resourceId": "dry",
+          "testCount": 1
+        },
+        {
+          "id": "melting",
+          "actionIds": [
+            "stage-melting-sample",
+            "read-melting-behavior",
+            "record-melting-behavior"
+          ],
+          "evidenceKind": "quantitative",
+          "resourceId": "dry",
+          "testCount": 1,
+          "requiresEarlier": [
+            "magnet"
+          ]
+        },
+        {
+          "id": "hcl",
+          "actionIds": [
+            "inspect-hcl-response",
+            "record-hcl-response"
+          ],
+          "evidenceKind": "qualitative",
+          "resourceId": "hcl",
+          "testCount": 1
+        },
+        {
+          "id": "naoh",
+          "actionIds": [
+            "inspect-naoh-response",
+            "record-naoh-response"
+          ],
+          "evidenceKind": "qualitative",
+          "resourceId": "naoh",
+          "testCount": 1
+        }
+      ]
+    }
+  }
+}

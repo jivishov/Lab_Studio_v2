@@ -1,0 +1,58 @@
+{
+  "schema": "lab-studio/image-alias-registry@1",
+  "cycle": "02",
+  "consumedBy": [
+    "scripts/checkContentConsistency.mjs",
+    "src/equipment/registries.ts"
+  ],
+  "policy": "A documented alias is two or more equipment definitions that share one realistic asset because they are the same physical object. It is permitted only while every aliased definition keeps a distinct label and accessible name, so the visible and screen-reader semantics stay separate. An undocumented shared asset is a lint failure; a documented alias must not be \"fixed\" by generating distinct art. Ungraduated stock-size variants may reuse a bottle-family silhouette as an illustrative icon when their distinct capacity and accessible label are explicit; this is not a claim that the two capacities have identical physical dimensions.",
+  "aliases": [
+    {
+      "asset": "beaker-250ml",
+      "equipmentIds": [
+        "beaker-250ml",
+        "waste-beaker"
+      ],
+      "rationale": "A waste beaker is a 250 mL beaker designated for waste. The designation is procedural, not physical, so the art is correctly shared.",
+      "labelsMustStayDistinct": true
+    },
+    {
+      "asset": "dropper-bottle",
+      "equipmentIds": [
+        "dropper-bottle",
+        "phenolphthalein-dropper"
+      ],
+      "rationale": "The phenolphthalein dropper is the same physical dropper bottle carrying a named reagent.",
+      "labelsMustStayDistinct": true
+    },
+    {
+      "asset": "reagent-bottle",
+      "equipmentIds": [
+        "naoh-bottle",
+        "reagent-bottle",
+        "unknown-acid-bottle",
+        "reagent-bottle-1l"
+      ],
+      "rationale": "One reagent-bottle body serves the generic bottle, the 0.100 M NaOH stock, and the unknown acid. The contents differ; the glassware does not. The 1 L stock variant uses this ungraduated family silhouette with an explicit 1 L label and independent capacity.",
+      "labelsMustStayDistinct": true
+    },
+    {
+      "asset": "sample-bottle",
+      "equipmentIds": [
+        "sample-bottle",
+        "sample-bottle-1l"
+      ],
+      "rationale": "Ungraded bottle-family silhouette; volume is computed from the distinct equipment capacity, not inferred from the icon dimensions. The 1 L stock variant uses this ungraduated family silhouette with an explicit 1 L label and independent capacity.",
+      "labelsMustStayDistinct": true
+    },
+    {
+      "asset": "distilled-water-bottle",
+      "equipmentIds": [
+        "distilled-water-bottle",
+        "distilled-water-bottle-1l"
+      ],
+      "rationale": "Ungraded bottle-family silhouette; volume is computed from the distinct equipment capacity, not inferred from the icon dimensions. The 1 L stock variant uses this ungraduated family silhouette with an explicit 1 L label and independent capacity.",
+      "labelsMustStayDistinct": true
+    }
+  ]
+}

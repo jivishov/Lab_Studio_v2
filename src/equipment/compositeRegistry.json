@@ -1,0 +1,497 @@
+{
+  "schema": "lab-studio/composite-registry@2",
+  "cycle": "05",
+  "consumedBy": [
+    "scripts/checkContentConsistency.mjs",
+    "src/equipment/composites.ts"
+  ],
+  "policy": "This is the single source for composite assembly recognition, duplicate-child suppression, and assembled-instance swaps. Cycle 02 recorded the six hard-coded renderer branches verbatim. Cycle 05 replaced them: src/equipment/composites.ts evaluates this file, src/player/EquipmentView.tsx asks that module for an asset override, a suppression decision, and an overlay, and src/runtime/reducer.ts asks it to resolve an instance swap. Neither file names an apparatus.",
+  "invariants": [
+    "A composite parent must not also declare state assets. A state asset wins the asset override but does not suppress child rendering, so the parent would render its state art while the child stays hidden — an assembly missing a part. No composite parent has state assets today; the checker keeps it that way and src/equipment/composites.ts makes the precedence explicit instead of accidental.",
+    "Every composite must name its participants with a role, the snap zone each non-parent participant must occupy, its result asset, the participants it suppresses, and its detach, recovery, and reset behaviour.",
+    "A nested participant names attachmentParentRole so its snap zone is validated against the participant that actually owns it rather than against the composite root.",
+    "Suppression may name only declared participants, so a composite can never hide equipment that is not part of it.",
+    "A visual composite is recognised passively and re-derived from live attachments on every render, so detaching a participant restores both the parent's base art and the participant's own art with no extra bookkeeping.",
+    "An instance-swap composite is the only kind that mutates runtime state. It must declare the learner-facing message and recovery used when the swap cannot proceed, because that text is no longer allowed to live in the reducer."
+  ],
+  "kinds": {
+    "visual": "The participants stay separate runtime instances. The parent layer renders resultAsset and every suppressed participant stops drawing its own art. Nothing in runtime state changes.",
+    "instance-swap": "The participants leave the bench and one assembled instance takes their place. The reducer owns the swap; the renderer only ever sees the assembled definition."
+  },
+  "participantRoleKinds": [
+    "instrument",
+    "vessel",
+    "delivery",
+    "consumable",
+    "tool",
+    "support"
+  ],
+  "rendererPrecedence": [
+    "visualCatalog.stateAssets[instance.contents.visualState]",
+    "funnel-stand-with-filter-paper",
+    "chromatography-chamber-with-paper",
+    "volumetric-flask-stoppered",
+    "spectrophotometer-cuvette-inserted",
+    "ring-stand-burette-funnel",
+    "ring-stand-burette",
+    "ring-stand-clay-triangle-crucible-lid-ajar",
+    "ring-stand-clay-triangle",
+    "equipmentDefinition.asset"
+  ],
+  "composites": [
+    {
+      "id": "funnel-stand-with-filter-paper",
+      "kind": "visual",
+      "parentDefinitionId": "funnel-stand",
+      "participants": [
+        {
+          "role": "filter-support",
+          "roleKind": "vessel",
+          "equipmentRoleId": "filtration-funnel",
+          "definitionId": "funnel-stand",
+          "snapZoneId": null,
+          "parent": true,
+          "suppressed": false
+        },
+        {
+          "role": "filter-medium",
+          "roleKind": "consumable",
+          "equipmentRoleId": "filter-medium",
+          "definitionId": "filter-paper",
+          "snapZoneId": "funnel-stand-paper-seat",
+          "parent": false,
+          "suppressed": true
+        }
+      ],
+      "requiredContentsVisualState": null,
+      "resultAsset": "funnel-paper-stand",
+      "resultInstanceDefinitionId": null,
+      "extraOverlay": "funnel-filter-cake",
+      "invalidFeedback": null,
+      "detach": {
+        "mechanism": "generic-attachment-detach",
+        "evidence": "src/runtime/attachments.ts detachChild; src/equipment/composites.ts re-derives recognition from live attachments on every render",
+        "compositeAware": true
+      },
+      "recovery": {
+        "mechanism": "detach-and-replace",
+        "evidence": "src/runtime/attachments.ts detachChild followed by the normal place path; no composite bookkeeping survives the detach",
+        "compositeAware": true
+      },
+      "reset": {
+        "mechanism": "runtime-reset-dissolves-composite",
+        "evidence": "src/runtime/reducer.ts:2952-2982 physical reset returns a fresh state; the scoped reset at :905-940 drops the attachments of every reset instance",
+        "compositeAware": true
+      },
+      "deviations": [],
+      "ownerCycle": "05",
+      "note": "Cycle 02 recorded this branch firing on the presence of any filter-paper layer even though funnel-stand-paper-seat exists. Cycle 05 closed that deviation deliberately: the participant now names the snap zone, exactly like the other five."
+    },
+    {
+      "id": "chromatography-chamber-with-paper",
+      "kind": "visual",
+      "parentDefinitionId": "chromatography-chamber",
+      "participants": [
+        {
+          "role": "developing-chamber",
+          "roleKind": "vessel",
+          "equipmentRoleId": "developing-chamber",
+          "definitionId": "chromatography-chamber",
+          "snapZoneId": null,
+          "parent": true,
+          "suppressed": false
+        },
+        {
+          "role": "stationary-phase",
+          "roleKind": "consumable",
+          "equipmentRoleId": "stationary-phase",
+          "definitionId": "chromatography-paper",
+          "snapZoneId": "chromatography-chamber-paper-slot",
+          "parent": false,
+          "suppressed": true
+        }
+      ],
+      "requiredContentsVisualState": null,
+      "resultAsset": "chromatography-chamber-with-paper",
+      "resultInstanceDefinitionId": null,
+      "extraOverlay": null,
+      "invalidFeedback": null,
+      "detach": {
+        "mechanism": "generic-attachment-detach",
+        "evidence": "src/runtime/attachments.ts detachChild; src/equipment/composites.ts re-derives recognition from live attachments on every render",
+        "compositeAware": true
+      },
+      "recovery": {
+        "mechanism": "detach-and-replace",
+        "evidence": "src/runtime/attachments.ts detachChild followed by the normal place path; no composite bookkeeping survives the detach",
+        "compositeAware": true
+      },
+      "reset": {
+        "mechanism": "runtime-reset-dissolves-composite",
+        "evidence": "src/runtime/reducer.ts:2952-2982 physical reset returns a fresh state; the scoped reset at :905-940 drops the attachments of every reset instance",
+        "compositeAware": true
+      },
+      "deviations": [],
+      "ownerCycle": "05",
+      "note": "The chromatogram overlay stays on the paper layer rather than becoming a composite overlay: it is the paper's own evidence, and suppressing the paper's asset does not suppress its bands."
+    },
+    {
+      "id": "volumetric-flask-stoppered",
+      "kind": "visual",
+      "parentDefinitionId": "volumetric-flask",
+      "participants": [
+        {
+          "role": "diluted-volume-vessel",
+          "roleKind": "delivery",
+          "equipmentRoleId": "fixed-volume-delivery-device",
+          "definitionId": "volumetric-flask",
+          "snapZoneId": null,
+          "parent": true,
+          "suppressed": false
+        },
+        {
+          "role": "closure",
+          "roleKind": "tool",
+          "equipmentRoleId": null,
+          "definitionId": "rubber-stopper-set",
+          "snapZoneId": "volumetric-flask-stopper-seat",
+          "parent": false,
+          "suppressed": true
+        }
+      ],
+      "requiredContentsVisualState": null,
+      "resultAsset": "volumetric-flask-stoppered",
+      "resultInstanceDefinitionId": null,
+      "extraOverlay": null,
+      "invalidFeedback": null,
+      "detach": {
+        "mechanism": "generic-attachment-detach",
+        "evidence": "src/runtime/attachments.ts detachChild; src/equipment/composites.ts re-derives recognition from live attachments on every render",
+        "compositeAware": true
+      },
+      "recovery": {
+        "mechanism": "detach-and-replace",
+        "evidence": "src/runtime/attachments.ts detachChild followed by the normal place path; no composite bookkeeping survives the detach",
+        "compositeAware": true
+      },
+      "reset": {
+        "mechanism": "runtime-reset-dissolves-composite",
+        "evidence": "src/runtime/reducer.ts:2952-2982 physical reset returns a fresh state; the scoped reset at :905-940 drops the attachments of every reset instance",
+        "compositeAware": true
+      },
+      "deviations": ["no-equipment-role-for-closure"],
+      "ownerCycle": "05",
+      "note": "rubber-stopper-set matches no role in src/domain/equipmentRoleRegistry.json, so equipmentRoleId is null rather than bound to a role that does not describe it. Recorded as a deviation so a later cycle can add the role instead of the binding drifting."
+    },
+    {
+      "id": "spectrophotometer-cuvette-inserted",
+      "kind": "visual",
+      "parentDefinitionId": "spectrophotometer",
+      "participants": [
+        {
+          "role": "photometer",
+          "roleKind": "instrument",
+          "equipmentRoleId": "photometer-instrument",
+          "definitionId": "spectrophotometer",
+          "snapZoneId": null,
+          "parent": true,
+          "suppressed": false
+        },
+        {
+          "role": "sample-holder",
+          "roleKind": "vessel",
+          "equipmentRoleId": "photometer-sample-holder",
+          "definitionId": "cuvette",
+          "snapZoneId": "spectrophotometer-cuvette-slot",
+          "parent": false,
+          "suppressed": true
+        }
+      ],
+      "requiredContentsVisualState": null,
+      "resultAsset": "spectrophotometer-cuvette-inserted",
+      "resultInstanceDefinitionId": null,
+      "extraOverlay": null,
+      "invalidFeedback": null,
+      "detach": {
+        "mechanism": "generic-attachment-detach",
+        "evidence": "src/runtime/attachments.ts detachChild; src/equipment/composites.ts re-derives recognition from live attachments on every render",
+        "compositeAware": true
+      },
+      "recovery": {
+        "mechanism": "detach-and-replace",
+        "evidence": "src/runtime/attachments.ts detachChild followed by the normal place path; no composite bookkeeping survives the detach",
+        "compositeAware": true
+      },
+      "reset": {
+        "mechanism": "runtime-reset-dissolves-composite",
+        "evidence": "src/runtime/reducer.ts:2952-2982 physical reset returns a fresh state; the scoped reset at :905-940 drops the attachments of every reset instance",
+        "compositeAware": true
+      },
+      "deviations": [],
+      "ownerCycle": "05",
+      "note": "The cuvette's own contents keep rendering: only its asset is suppressed, so a coloured sample stays visible in the inserted-cuvette art."
+    },
+    {
+      "id": "ring-stand-burette-funnel",
+      "kind": "visual",
+      "parentDefinitionId": "ring-stand-clamp",
+      "participants": [
+        {
+          "role": "burette-support",
+          "roleKind": "support",
+          "equipmentRoleId": "burette-support",
+          "definitionId": "ring-stand-clamp",
+          "snapZoneId": null,
+          "parent": true,
+          "suppressed": false
+        },
+        {
+          "role": "titrant-delivery-device",
+          "roleKind": "delivery",
+          "equipmentRoleId": "titrant-delivery-device",
+          "definitionId": "burette-50ml",
+          "snapZoneId": "ring-stand-burette-clamp",
+          "parent": false,
+          "suppressed": true
+        },
+        {
+          "role": "burette-filling-funnel",
+          "roleKind": "vessel",
+          "equipmentRoleId": "burette-filling-funnel",
+          "definitionId": "funnel",
+          "snapZoneId": "burette-funnel-seat",
+          "attachmentParentRole": "titrant-delivery-device",
+          "parent": false,
+          "suppressed": true
+        }
+      ],
+      "requiredContentsVisualState": null,
+      "resultAsset": "ring-stand-burette-funnel",
+      "resultInstanceDefinitionId": null,
+      "extraOverlay": null,
+      "invalidFeedback": null,
+      "detach": {
+        "mechanism": "generic-attachment-detach",
+        "evidence": "Detaching the funnel removes the nested burette-funnel-seat relation; renderer precedence then falls back to ring-stand-burette.",
+        "compositeAware": true
+      },
+      "recovery": {
+        "mechanism": "detach-and-replace",
+        "evidence": "Nested attachment recognition is re-derived from live relations on every render.",
+        "compositeAware": true
+      },
+      "reset": {
+        "mechanism": "runtime-reset-dissolves-composite",
+        "evidence": "Physical reset removes both mounted relations and returns the participants to their authored locations.",
+        "compositeAware": true
+      },
+      "deviations": [],
+      "ownerCycle": "titration-funnel-update",
+      "note": "This three-part entry precedes ring-stand-burette so the most complete live assembly wins without duplicating child art. The burette layer remains present for liquid, hit-target, outlet, and stopcock overlays."
+    },
+    {
+      "id": "ring-stand-burette",
+      "kind": "visual",
+      "parentDefinitionId": "ring-stand-clamp",
+      "participants": [
+        {
+          "role": "burette-support",
+          "roleKind": "support",
+          "equipmentRoleId": "burette-support",
+          "definitionId": "ring-stand-clamp",
+          "snapZoneId": null,
+          "parent": true,
+          "suppressed": false
+        },
+        {
+          "role": "titrant-delivery-device",
+          "roleKind": "delivery",
+          "equipmentRoleId": "titrant-delivery-device",
+          "definitionId": "burette-50ml",
+          "snapZoneId": "ring-stand-burette-clamp",
+          "parent": false,
+          "suppressed": true
+        }
+      ],
+      "requiredContentsVisualState": null,
+      "resultAsset": "ring-stand-burette",
+      "resultInstanceDefinitionId": null,
+      "extraOverlay": null,
+      "invalidFeedback": null,
+      "detach": {
+        "mechanism": "generic-attachment-detach",
+        "evidence": "Detaching the burette removes the mounted relation and restores the stand base asset.",
+        "compositeAware": true
+      },
+      "recovery": {
+        "mechanism": "detach-and-replace",
+        "evidence": "Attachment recognition is re-derived from live relations on every render.",
+        "compositeAware": true
+      },
+      "reset": {
+        "mechanism": "runtime-reset-dissolves-composite",
+        "evidence": "Physical reset removes the mounted relation and returns both participants to their authored locations.",
+        "compositeAware": true
+      },
+      "deviations": [],
+      "ownerCycle": "titration-funnel-update",
+      "note": "Uses the corrected 64 by 250 mounted burette geometry and remains the fallback composite after the filling funnel is removed."
+    },
+    {
+      "id": "ring-stand-clay-triangle",
+      "kind": "visual",
+      "parentDefinitionId": "ring-stand",
+      "participants": [
+        {
+          "role": "heating-support",
+          "roleKind": "support",
+          "equipmentRoleId": null,
+          "definitionId": "ring-stand",
+          "snapZoneId": null,
+          "parent": true,
+          "suppressed": false
+        },
+        {
+          "role": "crucible-cradle",
+          "roleKind": "support",
+          "equipmentRoleId": null,
+          "definitionId": "clay-triangle",
+          "snapZoneId": "ring-stand-clay-triangle-seat",
+          "parent": false,
+          "suppressed": true
+        }
+      ],
+      "requiredContentsVisualState": null,
+      "resultAsset": "ring-stand-clay-triangle",
+      "resultInstanceDefinitionId": null,
+      "extraOverlay": null,
+      "invalidFeedback": null,
+      "detach": {
+        "mechanism": "generic-attachment-detach",
+        "evidence": "src/runtime/attachments.ts detachChild; src/equipment/composites.ts re-derives recognition from live attachments on every render",
+        "compositeAware": true
+      },
+      "recovery": {
+        "mechanism": "detach-and-replace",
+        "evidence": "src/runtime/attachments.ts detachChild followed by the normal place path; no composite bookkeeping survives the detach",
+        "compositeAware": true
+      },
+      "reset": {
+        "mechanism": "runtime-reset-dissolves-composite",
+        "evidence": "src/runtime/reducer.ts:2952-2982 physical reset returns a fresh state; the scoped reset at :905-940 drops the attachments of every reset instance",
+        "compositeAware": true
+      },
+      "deviations": ["no-equipment-role-for-heating-support"],
+      "ownerCycle": "05",
+      "note": "src/domain/equipmentRoleRegistry.json has filtration-support for ring-stand but no heating support, and no role at all for clay-triangle. Both bindings are null rather than borrowed from filtration."
+    },
+    {
+      "id": "ring-stand-clay-triangle-crucible-lid-ajar",
+      "kind": "visual",
+      "parentDefinitionId": "ring-stand",
+      "participants": [
+        {
+          "role": "heating-support",
+          "roleKind": "support",
+          "equipmentRoleId": null,
+          "definitionId": "ring-stand",
+          "snapZoneId": null,
+          "parent": true,
+          "suppressed": false
+        },
+        {
+          "role": "crucible-cradle",
+          "roleKind": "support",
+          "equipmentRoleId": null,
+          "definitionId": "clay-triangle",
+          "snapZoneId": "ring-stand-clay-triangle-seat",
+          "parent": false,
+          "suppressed": true
+        },
+        {
+          "role": "heated-vessel",
+          "roleKind": "vessel",
+          "equipmentRoleId": "dried-assembly",
+          "definitionId": "crucible-with-lid",
+          "snapZoneId": "ring-stand-crucible-seat",
+          "parent": false,
+          "suppressed": true
+        }
+      ],
+      "requiredContentsVisualState": null,
+      "resultAsset": "ring-stand-clay-triangle-crucible-lid-ajar",
+      "resultInstanceDefinitionId": null,
+      "extraOverlay": null,
+      "invalidFeedback": null,
+      "detach": {
+        "mechanism": "generic-attachment-detach",
+        "evidence": "src/runtime/attachments.ts detachChild; src/equipment/composites.ts re-derives recognition from live attachments on every render",
+        "compositeAware": true
+      },
+      "recovery": {
+        "mechanism": "detach-and-replace",
+        "evidence": "src/runtime/attachments.ts detachChild followed by the normal place path; detaching the crucible falls back to ring-stand-clay-triangle rather than to the bare stand",
+        "compositeAware": true
+      },
+      "reset": {
+        "mechanism": "runtime-reset-dissolves-composite",
+        "evidence": "src/runtime/reducer.ts:2952-2982 physical reset returns a fresh state; the scoped reset at :905-940 drops the attachments of every reset instance",
+        "compositeAware": true
+      },
+      "deviations": ["no-equipment-role-for-heating-support"],
+      "ownerCycle": "05",
+      "note": "Declares the clay triangle as a participant, so it precedes ring-stand-clay-triangle in rendererPrecedence and the more complete assembly wins. Recovery is graceful because precedence, not a branch order, decides."
+    },
+    {
+      "id": "funnel-stand-assembly",
+      "kind": "instance-swap",
+      "parentDefinitionId": "ring-stand",
+      "participants": [
+        {
+          "role": "filtration-support",
+          "roleKind": "support",
+          "equipmentRoleId": "filtration-support",
+          "definitionId": "ring-stand",
+          "snapZoneId": null,
+          "parent": true,
+          "suppressed": false
+        },
+        {
+          "role": "filtration-funnel",
+          "roleKind": "vessel",
+          "equipmentRoleId": "filtration-funnel",
+          "definitionId": "funnel",
+          "snapZoneId": "ring-stand-funnel-seat",
+          "parent": false,
+          "suppressed": false
+        }
+      ],
+      "requiredContentsVisualState": null,
+      "resultAsset": "funnel-stand",
+      "resultInstanceDefinitionId": "funnel-stand",
+      "extraOverlay": null,
+      "invalidFeedback": {
+        "message": "The apparatus pieces do not fit that support zone.",
+        "recovery": "Seat the funnel in the circular support ring on the stand."
+      },
+      "detach": {
+        "mechanism": "instance-swap-not-detachable",
+        "evidence": "src/runtime/reducer.ts place: the assembled funnel-stand instance carries no attachments, and the two participants are parked in storage with interactionStatus locked, so there is nothing to detach",
+        "compositeAware": true
+      },
+      "recovery": {
+        "mechanism": "reset-restores-participants",
+        "evidence": "src/runtime/reducer.ts:2952-2982 physical reset, or a scoped reset naming the funnel, the ring stand, and the assembled funnel-stand; a scoped reset that names only some of the three leaves the bench inconsistent",
+        "compositeAware": true
+      },
+      "reset": {
+        "mechanism": "runtime-reset-restores-participants",
+        "evidence": "src/runtime/reducer.ts:2952-2982 physical reset returns a fresh state, which parks the assembled instance back in storage and returns both participants to their authored starting location",
+        "compositeAware": true
+      },
+      "deviations": ["one-way-assembly"],
+      "ownerCycle": "05",
+      "note": "Cycle 02 did not record this composite at all: it lived only in the reducer's compositeDefinitionId branch, with a funnel-specific recovery string. public/techniques/filtration.json assemble-funnel-stand is its only consumer. The swap stays one-way, which is now a declared deviation instead of an undocumented gap."
+    }
+  ]
+}

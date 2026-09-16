@@ -1,0 +1,789 @@
+{
+  "id": "filtration",
+  "title": "Filter a Precipitate",
+  "learningGoal": "Collect a precipitate with filter paper, rinse it, and preserve evidence.",
+  "requiredEquipment": [
+    "beaker-250ml",
+    "ring-stand",
+    "funnel",
+    "filter-paper",
+    "funnel-stand",
+    "wash-bottle",
+    "erlenmeyer-flask-250ml"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "beaker-250ml-1",
+        "definitionId": "beaker-250ml",
+        "label": "250 mL beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "mixture",
+          "label": "Calcium carbonate mixture",
+          "volumeMl": 40,
+          "solutes": [
+            {
+              "id": "calcium-carbonate",
+              "label": "Calcium carbonate",
+              "amount": 0.0075,
+              "unit": "g"
+            }
+          ],
+          "precipitate": {
+            "substance": "Calcium carbonate",
+            "massG": 0.0075,
+            "rinsed": false,
+            "dryness": "wet"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "cloudy-precipitate"
+        }
+      },
+      {
+        "id": "ring-stand-1",
+        "definitionId": "ring-stand",
+        "label": "Ring stand",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "funnel-1",
+        "definitionId": "funnel",
+        "label": "Glass funnel",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "filter-paper-1",
+        "definitionId": "filter-paper",
+        "label": "Filter paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "funnel-stand-1",
+        "definitionId": "funnel-stand",
+        "label": "Funnel and stand",
+        "location": "storage",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "wash-bottle-1",
+        "definitionId": "wash-bottle",
+        "label": "Wash bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Deionized water",
+          "volumeMl": 500,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "erlenmeyer-flask-250ml-1",
+        "definitionId": "erlenmeyer-flask-250ml",
+        "label": "Receiving flask",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "assemble-funnel-stand",
+      "verb": "place",
+      "label": "Assemble funnel stand",
+      "parameters": {
+        "equipmentDefinitionId": "funnel",
+        "targetDefinitionId": "ring-stand",
+        "snapZoneId": "ring-stand-funnel-seat",
+        "compositeDefinitionId": "funnel-stand"
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "funnel",
+        "targetDefinitionId": "ring-stand",
+        "snapZoneId": "ring-stand-funnel-seat",
+        "accessibleLabel": "Seat the glass funnel in the circular support ring on the stand.",
+        "successCue": "The funnel is centered in the circular support ring.",
+        "invalidCue": "Use the circular support ring on the stand so the funnel cone rests evenly."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "place updates runtime state through structured equipment contents."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The funnel is seated in the circular support ring.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.filtration-funnel",
+      "equipmentRoleBindings": {
+        "filtration-funnel": "funnel",
+        "filtration-support": "ring-stand"
+      }
+    },
+    {
+      "id": "place-filter-paper",
+      "verb": "place",
+      "label": "Place filter paper",
+      "parameters": {
+        "equipmentDefinitionId": "filter-paper",
+        "targetDefinitionId": "funnel-stand"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "place updates runtime state through structured equipment contents."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Filter paper is seated in the funnel.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "filter-paper",
+        "targetDefinitionId": "funnel-stand",
+        "snapZoneId": "funnel-stand-paper-seat",
+        "accessibleLabel": "Seat the filter paper in the funnel.",
+        "successCue": "Filter paper is seated in the funnel.",
+        "invalidCue": "Align the paper with the funnel cone before releasing it."
+      },
+      "atomId": "atom.place.filter-medium",
+      "equipmentRoleBindings": {
+        "filter-medium": "filter-paper",
+        "filtration-funnel": "funnel-stand"
+      }
+    },
+    {
+      "id": "wet-filter-paper",
+      "verb": "rinse",
+      "label": "Wet filter paper",
+      "parameters": {
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "filter-paper",
+        "rinseType": "pre-wet"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "rinse updates runtime state through structured equipment contents."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Filter paper is wetted and sealed.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "rinse",
+        "notebook"
+      ],
+      "interaction": {
+        "type": "rinseTarget",
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "filter-paper",
+        "accessibleLabel": "Wet the seated filter paper with the wash bottle.",
+        "successCue": "Filter paper is wetted and sealed.",
+        "invalidCue": "Seat the filter paper in the funnel before wetting it."
+      },
+      "atomId": "atom.rinse.wet-filter-medium",
+      "equipmentRoleBindings": {
+        "rinse-water-source": "wash-bottle",
+        "filter-medium": "filter-paper"
+      }
+    },
+    {
+      "id": "place-filtration-receiver",
+      "verb": "place",
+      "label": "Place receiving flask",
+      "parameters": {
+        "equipmentDefinitionId": "erlenmeyer-flask-250ml",
+        "targetDefinitionId": "funnel-stand",
+        "snapZoneId": "funnel-receiving-vessel-zone"
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "erlenmeyer-flask-250ml",
+        "targetDefinitionId": "funnel-stand",
+        "snapZoneId": "funnel-receiving-vessel-zone",
+        "accessibleLabel": "Place the receiving flask under the funnel.",
+        "successCue": "Receiving flask is under the funnel.",
+        "invalidCue": "Use a beaker or Erlenmeyer flask under the funnel stem."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Place the receiving vessel below the prepared funnel."
+      ],
+      "invalidCases": [
+        {
+          "id": "receiver-missing-or-misaligned",
+          "when": "no compatible receiving vessel is centered below the prepared funnel stem",
+          "message": "Filtration cannot begin without a compatible receiver below the funnel.",
+          "recovery": "Place the configured beaker or Erlenmeyer receiver in the funnel receiving zone, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Receiving flask is under the funnel.",
+        "invalid": "Place a receiving vessel below the funnel before filtering."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.filtration-receiver",
+      "equipmentRoleBindings": {
+        "filtration-receiver": "erlenmeyer-flask-250ml"
+      }
+    },
+    {
+      "id": "filter-mixture",
+      "verb": "filter",
+      "label": "Filter mixture",
+      "parameters": {
+        "sourceDefinitionId": "beaker-250ml",
+        "targetDefinitionId": "funnel-stand",
+        "filtrationMode": "{{config.filtrationMode}}"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "filter updates runtime state through structured equipment contents."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Precipitate remains on the filter paper.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "filter"
+      ],
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "beaker-250ml",
+        "targetDefinitionId": "funnel-stand",
+        "accessibleLabel": "Pour the beaker mixture through the prepared funnel with seated, wetted filter paper.",
+        "successCue": "Precipitate remains on the filter paper.",
+        "invalidCue": "The funnel must contain seated, wetted paper before filtering."
+      },
+      "atomId": "atom.filter.pour-through-medium",
+      "equipmentRoleBindings": {
+        "mixture-source": "beaker-250ml",
+        "filtration-funnel": "funnel-stand",
+        "filtration-receiver": "erlenmeyer-flask-250ml"
+      }
+    },
+    {
+      "id": "rinse-precipitate",
+      "verb": "rinse",
+      "label": "Rinse precipitate",
+      "parameters": {
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "filter-paper",
+        "rinseType": "precipitate",
+        "volumeMl": "{{config.rinseVolumeMl}}"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "rinse updates runtime state through structured equipment contents."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Precipitate rinse evidence recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "rinse",
+        "notebook"
+      ],
+      "interaction": {
+        "type": "rinseTarget",
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "filter-paper",
+        "accessibleLabel": "Rinse the collected filter cake on the filter paper with the wash bottle.",
+        "successCue": "Precipitate rinse evidence recorded.",
+        "invalidCue": "Collect precipitate in the funnel before rinsing it."
+      },
+      "atomId": "atom.rinse.wash-precipitate",
+      "equipmentRoleBindings": {
+        "rinse-water-source": "wash-bottle",
+        "filter-medium": "filter-paper"
+      }
+    }
+  ],
+  "process": {
+    "startNodeId": "assemble-funnel-stand-node",
+    "nodes": [
+      {
+        "id": "assemble-funnel-stand-node",
+        "title": "Assemble funnel stand",
+        "description": "Seat the glass funnel in the circular support ring on the stand.",
+        "actionId": "assemble-funnel-stand",
+        "type": "action",
+        "config": {},
+        "validation": [
+          {
+            "id": "assembled-funnel-stand",
+            "type": "actionEvidence",
+            "label": "Action assemble-funnel-stand was completed.",
+            "actionId": "assemble-funnel-stand"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Assemble funnel stand complete.",
+          "retry": "Review Assemble funnel stand and try again."
+        }
+      },
+      {
+        "id": "place-filter-node",
+        "type": "action",
+        "title": "Place filter paper",
+        "description": "Seat the filter paper in the funnel.",
+        "actionId": "place-filter-paper",
+        "config": {},
+        "validation": [
+          {
+            "id": "placed-filter-paper",
+            "type": "actionEvidence",
+            "label": "Action place-filter-paper was completed.",
+            "actionId": "place-filter-paper"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Place filter paper complete.",
+          "retry": "Review Place filter paper and try again."
+        }
+      },
+      {
+        "id": "wet-filter-node",
+        "type": "action",
+        "title": "Wet filter paper",
+        "description": "Wet the seated filter paper with the wash bottle.",
+        "actionId": "wet-filter-paper",
+        "config": {},
+        "validation": [
+          {
+            "id": "wetted-filter-paper",
+            "type": "actionEvidence",
+            "label": "Action wet-filter-paper was completed.",
+            "actionId": "wet-filter-paper"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Wet filter paper complete.",
+          "retry": "Review Wet filter paper and try again."
+        }
+      },
+      {
+        "id": "place-receiver-node",
+        "type": "action",
+        "title": "Place receiver",
+        "description": "Place the receiving flask under the funnel.",
+        "actionId": "place-filtration-receiver",
+        "config": {},
+        "validation": [
+          {
+            "id": "placed-filtration-receiver",
+            "type": "actionEvidence",
+            "label": "Receiving flask has been placed.",
+            "actionId": "place-filtration-receiver"
+          }
+        ],
+        "hints": [
+          "Place the receiving flask in the receiving vessel zone below the funnel."
+        ],
+        "feedback": {
+          "success": "Receiver placement checkpoint passed.",
+          "retry": "Place a receiving vessel below the funnel before filtering."
+        }
+      },
+      {
+        "id": "filter-mixture-node",
+        "type": "action",
+        "title": "Filter mixture",
+        "description": "Pour the beaker mixture through the prepared funnel with seated, wetted filter paper.",
+        "actionId": "filter-mixture",
+        "config": {},
+        "validation": [
+          {
+            "id": "filtered-mixture",
+            "type": "actionEvidence",
+            "label": "Action filter-mixture was completed.",
+            "actionId": "filter-mixture"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Filter mixture complete.",
+          "retry": "Review Filter mixture and try again."
+        }
+      },
+      {
+        "id": "rinse-precipitate-node",
+        "type": "checkpoint",
+        "title": "Rinse precipitate",
+        "description": "Rinse the collected filter cake on the filter paper with the wash bottle.",
+        "actionId": "rinse-precipitate",
+        "config": {},
+        "validation": [
+          {
+            "id": "rinsed-precipitate",
+            "type": "actionEvidence",
+            "label": "Action rinse-precipitate was completed.",
+            "actionId": "rinse-precipitate"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Rinse precipitate complete.",
+          "retry": "Review Rinse precipitate and try again."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "assemble-funnel-stand-node",
+        "to": "place-filter-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "place-filter-node",
+        "to": "wet-filter-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "wet-filter-node",
+        "to": "place-receiver-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "place-receiver-node",
+        "to": "filter-mixture-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "filter-mixture-node",
+        "to": "rinse-precipitate-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [
+    {
+      "id": "filtration-success",
+      "type": "actionEvidence",
+      "label": "Action filter-mixture was completed.",
+      "actionId": "filter-mixture"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "current node expects a different action",
+      "message": "That action is out of sequence for the current technique step.",
+      "recovery": "Check the process map and perform the highlighted step first."
+    },
+    {
+      "id": "missing-source",
+      "when": "source equipment or contents are missing",
+      "message": "The selected source does not contain the material required for this action.",
+      "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+    },
+    {
+      "id": "overflow",
+      "when": "target capacity would be exceeded",
+      "message": "The target equipment cannot hold the requested volume.",
+      "recovery": "Use a larger container or transfer a smaller measured amount."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.2.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-08-30T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "filtration"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry",
+        "kind": "entry",
+        "nodeId": "assemble-funnel-stand-node",
+        "label": "Entry"
+      },
+      {
+        "id": "exit",
+        "kind": "exit",
+        "nodeId": "rinse-precipitate-node",
+        "label": "Exit"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "filtration-support",
+        "required": true,
+        "allowedDefinitionIds": [
+          "ring-stand"
+        ],
+        "sourceInstanceIds": [
+          "ring-stand-1"
+        ]
+      },
+      {
+        "roleId": "filtration-funnel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "funnel",
+          "funnel-stand"
+        ],
+        "sourceInstanceIds": [
+          "funnel-1",
+          "funnel-stand-1"
+        ]
+      },
+      {
+        "roleId": "filter-medium",
+        "required": true,
+        "allowedDefinitionIds": [
+          "filter-paper"
+        ],
+        "sourceInstanceIds": [
+          "filter-paper-1"
+        ]
+      },
+      {
+        "roleId": "rinse-water-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "wash-bottle"
+        ],
+        "sourceInstanceIds": [
+          "wash-bottle-1"
+        ]
+      },
+      {
+        "roleId": "filtration-receiver",
+        "required": true,
+        "allowedDefinitionIds": [
+          "erlenmeyer-flask-250ml"
+        ],
+        "sourceInstanceIds": [
+          "erlenmeyer-flask-250ml-1"
+        ]
+      },
+      {
+        "roleId": "mixture-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beaker-250ml"
+        ],
+        "sourceInstanceIds": [
+          "beaker-250ml-1"
+        ]
+      }
+    ],
+    "modelSlots": [],
+    "configurationSlots": [
+      {
+        "id": "filtrationMode",
+        "valueType": "string",
+        "required": true,
+        "allowedValues": [
+          "gravity",
+          "vacuum"
+        ]
+      },
+      {
+        "id": "rinseVolumeMl",
+        "valueType": "number",
+        "required": true
+      }
+    ],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [
+      {
+        "id": "filtration-complete",
+        "kind": "action-evidence",
+        "actionId": "filter-mixture"
+      },
+      {
+        "id": "rinse-complete",
+        "kind": "action-evidence",
+        "actionId": "rinse-precipitate"
+      }
+    ],
+    "completion": {
+      "exitPortIds": [
+        "exit"
+      ],
+      "requiredEvidenceOutputIds": [
+        "filtration-complete",
+        "rinse-complete"
+      ],
+      "requiredValidationRuleIds": [
+        "filtration-success"
+      ]
+    },
+    "catalogDisposition": "composable"
+  }
+}

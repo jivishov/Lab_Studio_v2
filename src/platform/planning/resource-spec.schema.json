@@ -1,0 +1,150 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://lab-studio.local/schemas/studio.resource-spec/1.0",
+  "title": "Studio Resource Spec v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "domainPackId", "label", "resourceClass", "quantity", "reviewFlags"],
+  "properties": {
+    "id": { "$ref": "#/definitions/nonEmptyString" },
+    "domainPackId": { "enum": ["chemistry", "assay"] },
+    "label": { "$ref": "#/definitions/nonEmptyString" },
+    "resourceClass": { "enum": ["consumable", "durable", "instrument", "reagent", "sample", "service"] },
+    "quantity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["amount", "basis"],
+      "properties": {
+        "amount": { "$ref": "#/definitions/quantity" },
+        "basis": { "enum": ["fixed", "participant", "group", "section", "repeat", "station"] },
+        "multiplyByRepeats": { "type": "boolean" },
+        "multiplyByTechnicalReplicates": { "type": "boolean" },
+        "includesOverage": { "type": "boolean" },
+        "includesDeadVolume": { "type": "boolean" }
+      }
+    },
+    "capacity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["groupsPerUnitPerWave"],
+      "properties": {
+        "groupsPerUnitPerWave": { "type": "integer", "minimum": 1 },
+        "defaultUnitsAvailable": { "type": "integer", "minimum": 1 },
+        "stationId": { "$ref": "#/definitions/nonEmptyString" },
+        "waveDuration": { "$ref": "#/definitions/quantity" },
+        "resetDuration": { "$ref": "#/definitions/quantity" }
+      }
+    },
+    "overage": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "percent"],
+          "properties": {
+            "kind": { "const": "percent" },
+            "percent": { "$ref": "#/definitions/decimalString" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "quantity"],
+          "properties": {
+            "kind": { "const": "fixed" },
+            "quantity": { "$ref": "#/definitions/quantity" }
+          }
+        }
+      ]
+    },
+    "deadVolume": { "$ref": "#/definitions/quantity" },
+    "reuse": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mode"],
+          "properties": { "mode": { "enum": ["single-use", "reuse-across-repeats", "reuse-across-sections", "reuse-across-waves"] } }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mode", "maximumUses"],
+          "properties": {
+            "mode": { "const": "maximum-uses" },
+            "maximumUses": { "type": "integer", "minimum": 1 }
+          }
+        }
+      ]
+    },
+    "preparation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["task"],
+      "properties": {
+        "task": { "$ref": "#/definitions/nonEmptyString" },
+        "batchCount": { "type": "integer", "minimum": 1 },
+        "batchCapacity": { "$ref": "#/definitions/quantity" },
+        "leadTime": { "$ref": "#/definitions/quantity" }
+      }
+    },
+    "cleanup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["task", "resetRequired"],
+      "properties": {
+        "task": { "$ref": "#/definitions/nonEmptyString" },
+        "duration": { "$ref": "#/definitions/quantity" },
+        "resetRequired": { "type": "boolean" }
+      }
+    },
+    "substitutionPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "candidates"],
+      "properties": {
+        "mode": { "enum": ["none", "review-only"] },
+        "candidates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["resourceId", "label", "reason"],
+            "properties": {
+              "resourceId": { "$ref": "#/definitions/nonEmptyString" },
+              "label": { "$ref": "#/definitions/nonEmptyString" },
+              "reason": { "$ref": "#/definitions/nonEmptyString" }
+            }
+          }
+        }
+      }
+    },
+    "reviewFlags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "severity", "message"],
+        "properties": {
+          "code": { "$ref": "#/definitions/nonEmptyString" },
+          "severity": { "enum": ["info", "warning", "blocking"] },
+          "message": { "$ref": "#/definitions/nonEmptyString" }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "decimalString": { "type": "string", "pattern": "^[+-]?(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?$" },
+    "controlledUnit": { "enum": ["1", "%", "s", "min", "h", "uL", "mL", "L", "ug", "mg", "g", "kg", "umol", "mmol", "mol", "uM", "mM", "M", "degC", "K", "rpm", "nm", "AU", "OD", "pH"] },
+    "quantity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "unit"],
+      "properties": {
+        "value": { "$ref": "#/definitions/decimalString" },
+        "unit": { "$ref": "#/definitions/controlledUnit" }
+      }
+    }
+  }
+}

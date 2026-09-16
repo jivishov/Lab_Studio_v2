@@ -1,0 +1,3070 @@
+{
+  "id": "hard-water-gravimetry",
+  "title": "Hard Water Gravimetry",
+  "learningGoal": "Precipitate, filter, dry, and weigh calcium carbonate to calculate water hardness.",
+  "requiredEquipment": [
+    "sample-bottle",
+    "graduated-cylinder",
+    "beaker-250ml",
+    "reagent-bottle",
+    "stirring-rod",
+    "buchner-funnel",
+    "side-arm-filter-flask",
+    "vacuum-source",
+    "filter-paper",
+    "wash-bottle",
+    "drying-oven",
+    "watch-glass",
+    "analytical-balance",
+    "crucible-tongs",
+    "permanent-marker"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "sample-bottle-1",
+        "definitionId": "sample-bottle",
+        "label": "Sample bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Teacher-configured 20 mL hard-water sample",
+          "volumeMl": 20,
+          "solutes": [
+            {
+              "id": "hard-water-calcium-carbonate-equivalent",
+              "label": "Calcium carbonate equivalent",
+              "amount": 0.0075,
+              "unit": "g"
+            }
+          ],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "reagent-bottle-1",
+        "definitionId": "reagent-bottle",
+        "label": "Reagent bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "Sodium carbonate reagent",
+          "volumeMl": 50,
+          "solutes": [],
+          "concentration": {
+            "value": 0.5,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "graduated-cylinder-1",
+        "definitionId": "graduated-cylinder",
+        "label": "Graduated cylinder",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "beaker-250ml-1",
+        "definitionId": "beaker-250ml",
+        "label": "250 mL beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "stirring-rod-1",
+        "definitionId": "stirring-rod",
+        "label": "Stirring rod",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "buchner-funnel-1",
+        "definitionId": "buchner-funnel",
+        "label": "Buchner funnel",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "side-arm-filter-flask-1",
+        "definitionId": "side-arm-filter-flask",
+        "label": "Side-arm filter flask",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "vacuum-source-1",
+        "definitionId": "vacuum-source",
+        "label": "Vacuum source",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "filter-paper-1",
+        "definitionId": "filter-paper",
+        "label": "Filter paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "wash-bottle-1",
+        "definitionId": "wash-bottle",
+        "label": "Wash bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "drying-oven-1",
+        "definitionId": "drying-oven",
+        "label": "Drying oven",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "watch-glass-1",
+        "definitionId": "watch-glass",
+        "label": "Watch glass",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "analytical-balance-1",
+        "definitionId": "analytical-balance",
+        "label": "Analytical balance",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "crucible-tongs-1",
+        "definitionId": "crucible-tongs",
+        "label": "Crucible tongs",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "permanent-marker-1",
+        "definitionId": "permanent-marker",
+        "label": "Permanent marker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "measure-water-sample",
+      "verb": "measureVolume",
+      "label": "Measure water sample",
+      "parameters": {
+        "sourceDefinitionId": "sample-bottle",
+        "targetDefinitionId": "graduated-cylinder",
+        "measurementId": "sample-volume",
+        "volumeMl": 20,
+        "tolerance": 0.2
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Measure water sample: A 20 mL water sample is measured."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "A 20 mL water sample is measured.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "measureVolume",
+        "measurement"
+      ],
+      "atomId": "atom.measure.variable-volume",
+      "equipmentRoleBindings": {
+        "variable-volume-measuring-device": "graduated-cylinder",
+        "liquid-source": "sample-bottle"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "sample-bottle",
+        "targetDefinitionId": "graduated-cylinder",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Measure the 20 mL hard-water aliquot in the graduated cylinder."
+      }
+    },
+    {
+      "id": "transfer-water-sample",
+      "verb": "transfer",
+      "label": "Transfer water sample",
+      "parameters": {
+        "sourceDefinitionId": "graduated-cylinder",
+        "targetDefinitionId": "beaker-250ml",
+        "volumeMl": 20
+      },
+      "prerequisites": [
+        {
+          "id": "transfer-water-sample--sample-volume-required",
+          "type": "measurementRecorded",
+          "label": "The 20 mL sample aliquot is measured.",
+          "measurementId": "sample-volume"
+        }
+      ],
+      "stateChanges": [
+        "Transfer water sample: The water sample is in the reaction beaker."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The water sample is in the reaction beaker.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "transfer"
+      ],
+      "atomId": "atom.transfer.measured-liquid",
+      "equipmentRoleBindings": {
+        "measured-solvent-source": "graduated-cylinder",
+        "receiving-vessel": "beaker-250ml"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "graduated-cylinder",
+        "targetDefinitionId": "beaker-250ml",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Transfer the measured aliquot to the reaction beaker."
+      }
+    },
+    {
+      "id": "add-carbonate-reagent",
+      "verb": "transfer",
+      "label": "Add carbonate reagent",
+      "parameters": {
+        "sourceDefinitionId": "reagent-bottle",
+        "targetDefinitionId": "beaker-250ml",
+        "volumeMl": 15,
+        "visualState": "cloudy-precipitate",
+        "configurationProvenance": "teacher-approved aliquot for complete precipitation"
+      },
+      "prerequisites": [
+        {
+          "id": "add-carbonate-reagent--transfer-water-sample-required",
+          "type": "actionEvidence",
+          "label": "The measured sample is in the reaction beaker.",
+          "actionId": "transfer-water-sample"
+        }
+      ],
+      "stateChanges": [
+        "Add carbonate reagent: Carbonate reagent is mixed into the water sample."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Carbonate reagent is mixed into the water sample.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "transfer"
+      ],
+      "atomId": "atom.transfer.precipitating-reagent",
+      "equipmentRoleBindings": {
+        "precipitating-reagent-source": "reagent-bottle",
+        "precipitation-vessel": "beaker-250ml",
+        "stirring-device": "stirring-rod"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "reagent-bottle",
+        "targetDefinitionId": "beaker-250ml",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Add the teacher-approved carbonate portion while stirring."
+      }
+    },
+    {
+      "id": "establish-hard-water-precipitate",
+      "verb": "precipitate",
+      "label": "Establish wet precipitate state",
+      "parameters": {
+        "sourceDefinitionId": "reagent-bottle",
+        "targetDefinitionId": "beaker-250ml",
+        "finalVolumeMl": 35,
+        "precipitateSoluteSourceId": "hard-water-calcium-carbonate-equivalent",
+        "precipitateSubstance": "Calcium carbonate",
+        "precipitateSoluteId": "calcium-carbonate",
+        "evidenceProvenance": "mass derives from the teacher-configured simulated sample profile; not student measurement evidence"
+      },
+      "prerequisites": [
+        {
+          "id": "establish-hard-water-precipitate--add-carbonate-reagent-required",
+          "type": "actionEvidence",
+          "label": "The approved carbonate portion has been added.",
+          "actionId": "add-carbonate-reagent"
+        }
+      ],
+      "stateChanges": [
+        "Establish wet precipitate state: A wet calcium carbonate suspension is available for filtration."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "A wet calcium carbonate suspension is available for filtration.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "precipitate",
+        "simulated-state"
+      ],
+      "atomId": "atom.precipitate.form-gravimetric-solid",
+      "equipmentRoleBindings": {
+        "precipitation-vessel": "beaker-250ml",
+        "precipitating-reagent-source": "reagent-bottle"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "reagent-bottle",
+        "targetDefinitionId": "beaker-250ml",
+        "accessibleLabel": "Represent the wet precipitate suspension after the approved carbonate addition."
+      }
+    },
+    {
+      "id": "observe-precipitate",
+      "verb": "observe",
+      "label": "Record precipitate observation",
+      "parameters": {
+        "tag": "hard-water-precipitate",
+        "note": "Describe the observed suspension; do not claim precipitation is complete from appearance alone.",
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputLabel": "Observed precipitate and uncertainty",
+        "inputRequired": true
+      },
+      "prerequisites": [
+        {
+          "id": "observe-precipitate--establish-hard-water-precipitate-required",
+          "type": "actionEvidence",
+          "label": "The wet precipitate suspension is present.",
+          "actionId": "establish-hard-water-precipitate"
+        }
+      ],
+      "stateChanges": [
+        "Record precipitate observation: Precipitate formation is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Precipitate formation is recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "student-observation"
+      ],
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record the precipitate observation and any uncertainty."
+      }
+    },
+    {
+      "id": "weigh-hard-water-filter-paper-tare",
+      "verb": "weigh",
+      "label": "Weigh dry filter paper",
+      "parameters": {
+        "sourceDefinitionId": "filter-paper",
+        "targetDefinitionId": "analytical-balance",
+        "instrumentDefinitionId": "analytical-balance",
+        "tolerance": 0.001,
+        "evidenceProvenance": "learner-entered reading from the configured simulated balance; no expected mass is embedded",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputKey": "hard-water-filter-paper-mass-input",
+        "inputLabel": "Weigh dry filter paper from the configured simulated balance (g)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "g"
+      },
+      "prerequisites": [
+        {
+          "id": "weigh-hard-water-filter-paper-tare--observe-precipitate-required",
+          "type": "actionEvidence",
+          "label": "The precipitation observation is recorded.",
+          "actionId": "observe-precipitate"
+        }
+      ],
+      "stateChanges": [
+        "Weigh dry filter paper: The dry filter-paper tare is available."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The dry filter-paper tare is available.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "weigh"
+      ],
+      "atomId": "atom.weigh.filter-medium-tare",
+      "equipmentRoleBindings": {
+        "balance-instrument": "analytical-balance",
+        "filter-medium": "filter-paper"
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "filter-paper",
+        "targetDefinitionId": "analytical-balance",
+        "stationId": "analytical-balance",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Read the mass of the dry filter paper before seating it."
+      },
+      "mass": {
+        "source": "action-input",
+        "outputMeasurementId": "hard-water-filter-paper-mass"
+      }
+    },
+    {
+      "id": "record-hard-water-filter-paper-tare",
+      "verb": "record",
+      "label": "Record filter-paper tare",
+      "parameters": {
+        "measurementId": "hard-water-filter-paper-mass",
+        "label": "Dry filter-paper tare",
+        "unit": "g",
+        "copyExistingMeasurementOnly": true
+      },
+      "prerequisites": [
+        {
+          "id": "record-hard-water-filter-paper-tare--hard-water-filter-paper-mass-required",
+          "type": "measurementRecorded",
+          "label": "The filter-paper mass has been read.",
+          "measurementId": "hard-water-filter-paper-mass"
+        }
+      ],
+      "stateChanges": [
+        "Record filter-paper tare: The filter-paper tare is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The filter-paper tare is recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "record",
+        "measurement"
+      ],
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "measurementId",
+        "accessibleLabel": "Copy the dry filter-paper tare into the notebook."
+      }
+    },
+    {
+      "id": "place-hard-water-buchner",
+      "verb": "place",
+      "label": "Place Buchner funnel",
+      "parameters": {
+        "equipmentDefinitionId": "buchner-funnel",
+        "location": "workbench"
+      },
+      "prerequisites": [
+        {
+          "id": "place-hard-water-buchner--hard-water-filter-paper-mass-required",
+          "type": "measurementRecorded",
+          "label": "The dry filter-paper tare is recorded.",
+          "measurementId": "hard-water-filter-paper-mass"
+        }
+      ],
+      "stateChanges": [
+        "Place Buchner funnel: The Buchner funnel is on the workbench."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The Buchner funnel is on the workbench.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.filtration-funnel",
+      "equipmentRoleBindings": {
+        "filtration-funnel": "buchner-funnel"
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "buchner-funnel",
+        "stationId": "workbench",
+        "accessibleLabel": "Place the Buchner funnel on the workbench."
+      }
+    },
+    {
+      "id": "seat-hard-water-filter-paper",
+      "verb": "place",
+      "label": "Seat filter paper",
+      "parameters": {
+        "equipmentDefinitionId": "filter-paper",
+        "targetDefinitionId": "buchner-funnel",
+        "snapZoneId": "buchner-funnel-paper-seat"
+      },
+      "prerequisites": [
+        {
+          "id": "seat-hard-water-filter-paper--place-hard-water-buchner-required",
+          "type": "actionEvidence",
+          "label": "The Buchner funnel is placed.",
+          "actionId": "place-hard-water-buchner"
+        }
+      ],
+      "stateChanges": [
+        "Seat filter paper: The filter paper is seated flat in the funnel."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The filter paper is seated flat in the funnel.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.filter-medium",
+      "equipmentRoleBindings": {
+        "filtration-funnel": "buchner-funnel",
+        "filter-medium": "filter-paper"
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "filter-paper",
+        "targetDefinitionId": "buchner-funnel",
+        "snapZoneId": "buchner-funnel-paper-seat",
+        "accessibleLabel": "Seat the filter paper flat on the Buchner funnel plate."
+      }
+    },
+    {
+      "id": "attach-hard-water-filter-flask",
+      "verb": "place",
+      "label": "Attach side-arm receiver",
+      "parameters": {
+        "equipmentDefinitionId": "side-arm-filter-flask",
+        "targetDefinitionId": "buchner-funnel",
+        "snapZoneId": "buchner-funnel-receiver-neck"
+      },
+      "prerequisites": [
+        {
+          "id": "attach-hard-water-filter-flask--place-hard-water-buchner-required",
+          "type": "actionEvidence",
+          "label": "The Buchner funnel is placed.",
+          "actionId": "place-hard-water-buchner"
+        }
+      ],
+      "stateChanges": [
+        "Attach side-arm receiver: The side-arm flask is aligned beneath the funnel."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The side-arm flask is aligned beneath the funnel.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.filtration-receiver",
+      "equipmentRoleBindings": {
+        "filtration-receiver": "side-arm-filter-flask"
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "side-arm-filter-flask",
+        "targetDefinitionId": "buchner-funnel",
+        "snapZoneId": "buchner-funnel-receiver-neck",
+        "accessibleLabel": "Attach the side-arm flask beneath the Buchner funnel."
+      }
+    },
+    {
+      "id": "place-hard-water-vacuum",
+      "verb": "place",
+      "label": "Place vacuum source",
+      "parameters": {
+        "equipmentDefinitionId": "vacuum-source",
+        "location": "workbench"
+      },
+      "prerequisites": [
+        {
+          "id": "place-hard-water-vacuum--attach-hard-water-filter-flask-required",
+          "type": "actionEvidence",
+          "label": "The side-arm receiver is attached.",
+          "actionId": "attach-hard-water-filter-flask"
+        }
+      ],
+      "stateChanges": [
+        "Place vacuum source: The vacuum source is beside the side-arm flask."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The vacuum source is beside the side-arm flask.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.filtration-vacuum-source",
+      "equipmentRoleBindings": {
+        "filtration-vacuum-source": "vacuum-source",
+        "filtration-receiver": "side-arm-filter-flask"
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "vacuum-source",
+        "stationId": "workbench",
+        "accessibleLabel": "Place the vacuum source beside the side-arm filter flask."
+      }
+    },
+    {
+      "id": "wet-hard-water-filter-paper",
+      "verb": "rinse",
+      "label": "Wet and seal filter paper",
+      "parameters": {
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "filter-paper",
+        "rinseType": "pre-wet",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputKey": "wet-hard-water-filter-paper-rinse-volume",
+        "inputLabel": "Approved rinse portion (mL)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true
+      },
+      "prerequisites": [
+        {
+          "id": "wet-hard-water-filter-paper--seat-hard-water-filter-paper-required",
+          "type": "actionEvidence",
+          "label": "The paper is seated.",
+          "actionId": "seat-hard-water-filter-paper"
+        },
+        {
+          "id": "wet-hard-water-filter-paper--attach-hard-water-filter-flask-required",
+          "type": "actionEvidence",
+          "label": "The receiver is attached.",
+          "actionId": "attach-hard-water-filter-flask"
+        }
+      ],
+      "stateChanges": [
+        "Wet and seal filter paper: The filter paper is wetted and sealed."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The filter paper is wetted and sealed.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "rinse"
+      ],
+      "atomId": "atom.rinse.wet-filter-medium",
+      "equipmentRoleBindings": {
+        "rinse-water-source": "wash-bottle",
+        "filter-medium": "filter-paper"
+      },
+      "interaction": {
+        "type": "rinseTarget",
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "filter-paper",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Wet the seated filter paper with deionized water."
+      }
+    },
+    {
+      "id": "filter-hard-water-mixture",
+      "verb": "filter",
+      "label": "Filter hard-water suspension",
+      "parameters": {
+        "sourceDefinitionId": "beaker-250ml",
+        "targetDefinitionId": "buchner-funnel",
+        "retainedVisualState": "filter-cake",
+        "filtrateVisualState": "clear-filtrate"
+      },
+      "prerequisites": [
+        {
+          "id": "filter-hard-water-mixture--wet-hard-water-filter-paper-required",
+          "type": "actionEvidence",
+          "label": "The paper is wetted and sealed.",
+          "actionId": "wet-hard-water-filter-paper"
+        },
+        {
+          "id": "filter-hard-water-mixture--place-hard-water-vacuum-required",
+          "type": "actionEvidence",
+          "label": "The vacuum source is placed.",
+          "actionId": "place-hard-water-vacuum"
+        }
+      ],
+      "stateChanges": [
+        "Filter hard-water suspension: The precipitate is retained on the filter paper."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The precipitate is retained on the filter paper.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "filter"
+      ],
+      "atomId": "atom.filter.pour-through-medium",
+      "equipmentRoleBindings": {
+        "mixture-source": "beaker-250ml",
+        "filtration-funnel": "buchner-funnel"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "beaker-250ml",
+        "targetDefinitionId": "buchner-funnel",
+        "accessibleLabel": "Pour the suspension slowly through the prepared Buchner funnel."
+      }
+    },
+    {
+      "id": "rinse-precipitate",
+      "verb": "rinse",
+      "label": "Wash collected precipitate",
+      "parameters": {
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "buchner-funnel",
+        "rinseType": "precipitate",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputKey": "rinse-precipitate-rinse-volume",
+        "inputLabel": "Approved rinse portion (mL)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true
+      },
+      "prerequisites": [
+        {
+          "id": "rinse-precipitate--filter-hard-water-mixture-required",
+          "type": "actionEvidence",
+          "label": "The suspension has been filtered.",
+          "actionId": "filter-hard-water-mixture"
+        }
+      ],
+      "stateChanges": [
+        "Wash collected precipitate: The collected precipitate is washed."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The collected precipitate is washed.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "rinse"
+      ],
+      "atomId": "atom.rinse.wash-precipitate",
+      "equipmentRoleBindings": {
+        "rinse-water-source": "wash-bottle",
+        "filter-medium": "filter-paper"
+      },
+      "interaction": {
+        "type": "rinseTarget",
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "buchner-funnel",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Wash the collected precipitate with a small amount of deionized water."
+      }
+    },
+    {
+      "id": "weigh-hard-water-watch-glass-tare",
+      "verb": "weigh",
+      "label": "Weigh dry watch glass",
+      "parameters": {
+        "sourceDefinitionId": "watch-glass",
+        "targetDefinitionId": "analytical-balance",
+        "instrumentDefinitionId": "analytical-balance",
+        "tolerance": 0.001,
+        "evidenceProvenance": "learner-entered reading from the configured simulated balance; no expected mass is embedded",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputKey": "hard-water-watch-glass-mass-input",
+        "inputLabel": "Weigh dry watch glass from the configured simulated balance (g)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "g"
+      },
+      "prerequisites": [
+        {
+          "id": "weigh-hard-water-watch-glass-tare--rinse-precipitate-required",
+          "type": "actionEvidence",
+          "label": "The precipitate has been washed.",
+          "actionId": "rinse-precipitate"
+        }
+      ],
+      "stateChanges": [
+        "Weigh dry watch glass: The dry watch-glass tare is available."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The dry watch-glass tare is available.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "weigh"
+      ],
+      "atomId": "atom.weigh.tare-vessel",
+      "equipmentRoleBindings": {
+        "balance-instrument": "analytical-balance",
+        "weighed-vessel": "watch-glass"
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "watch-glass",
+        "targetDefinitionId": "analytical-balance",
+        "stationId": "analytical-balance",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Read the mass of the clean, dry watch glass."
+      },
+      "mass": {
+        "source": "action-input",
+        "outputMeasurementId": "hard-water-watch-glass-mass"
+      }
+    },
+    {
+      "id": "record-hard-water-watch-glass-tare",
+      "verb": "record",
+      "label": "Record watch-glass tare",
+      "parameters": {
+        "measurementId": "hard-water-watch-glass-mass",
+        "label": "Dry watch-glass tare",
+        "unit": "g",
+        "copyExistingMeasurementOnly": true
+      },
+      "prerequisites": [
+        {
+          "id": "record-hard-water-watch-glass-tare--hard-water-watch-glass-mass-required",
+          "type": "measurementRecorded",
+          "label": "The watch-glass mass has been read.",
+          "measurementId": "hard-water-watch-glass-mass"
+        }
+      ],
+      "stateChanges": [
+        "Record watch-glass tare: The watch-glass tare is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The watch-glass tare is recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "record",
+        "measurement"
+      ],
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "measurementId",
+        "accessibleLabel": "Copy the dry watch-glass tare into the notebook."
+      }
+    },
+    {
+      "id": "transfer-hard-water-paper-to-watch",
+      "verb": "place",
+      "label": "Transfer paper and precipitate",
+      "parameters": {
+        "equipmentDefinitionId": "filter-paper",
+        "targetDefinitionId": "watch-glass",
+        "snapZoneId": "watch-glass-paper-seat",
+        "detachBeforeAttach": true
+      },
+      "prerequisites": [
+        {
+          "id": "transfer-hard-water-paper-to-watch--hard-water-watch-glass-mass-required",
+          "type": "measurementRecorded",
+          "label": "The watch-glass tare is recorded.",
+          "measurementId": "hard-water-watch-glass-mass"
+        }
+      ],
+      "stateChanges": [
+        "Transfer paper and precipitate: The paper and precipitate are on the tared watch glass."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The paper and precipitate are on the tared watch glass.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.transfer-medium-to-drying-vessel",
+      "equipmentRoleBindings": {
+        "filter-medium": "filter-paper",
+        "dried-assembly": "watch-glass"
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "filter-paper",
+        "targetDefinitionId": "watch-glass",
+        "snapZoneId": "watch-glass-paper-seat",
+        "accessibleLabel": "Transfer the filter paper and precipitate to the tared watch glass."
+      }
+    },
+    {
+      "id": "first-hard-water-drying",
+      "verb": "dry",
+      "label": "Complete first drying stage",
+      "parameters": {
+        "sourceDefinitionId": "watch-glass",
+        "targetDefinitionId": "watch-glass",
+        "ovenDefinitionId": "drying-oven",
+        "precipitateSourceInstanceId": "filter-paper-1",
+        "drynessResult": "damp",
+        "temperatureC": "{{config.ovenTemperatureC}}",
+        "durationMinutes": "{{config.firstDurationMinutes}}",
+        "visualState": "partially-dry-precipitate",
+        "temperatureProvenance": "teacher-configured within 110-120 C",
+        "durationProvenance": "teacher-configured within 10-15 minutes",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputKey": "first-hard-water-drying-elapsed-minutes",
+        "inputLabel": "Observed elapsed drying time (minutes)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "requireElapsedDryingTime": true,
+        "instruction": "Carry out this separate drying stage at the configured oven temperature; record actual elapsed minutes before removing the same assembly."
+      },
+      "prerequisites": [
+        {
+          "id": "first-hard-water-drying--transfer-hard-water-paper-to-watch-required",
+          "type": "actionEvidence",
+          "label": "The paper and solid are on the watch glass.",
+          "actionId": "transfer-hard-water-paper-to-watch"
+        }
+      ],
+      "stateChanges": [
+        "Complete first drying stage: The first drying stage is complete."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The first drying stage is complete.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "dry"
+      ],
+      "atomId": "atom.dry.oven-stage",
+      "equipmentRoleBindings": {
+        "drying-instrument": "drying-oven",
+        "dried-assembly": "watch-glass"
+      },
+      "interaction": {
+        "type": "placeInInstrument",
+        "sourceDefinitionId": "watch-glass",
+        "targetDefinitionId": "drying-oven",
+        "stationId": "drying-oven",
+        "accessibleLabel": "Place the watch-glass assembly in the teacher-configured oven for the first drying stage.",
+        "valueParameter": "inputKey"
+      }
+    },
+    {
+      "id": "break-hard-water-precipitate",
+      "verb": "observe",
+      "label": "Break precipitate into small pieces",
+      "parameters": {
+        "tag": "hard-water-breakup",
+        "note": "Break the partly dried precipitate into small pieces with the approved metal scoop before returning it to the oven.",
+        "inputMode": "choice",
+        "inputRole": "studentResponse",
+        "inputLabel": "Precipitate breakup",
+        "inputOptions": [
+          "Broken into small pieces"
+        ]
+      },
+      "prerequisites": [
+        {
+          "id": "break-hard-water-precipitate--first-hard-water-drying-required",
+          "type": "actionEvidence",
+          "label": "The first drying stage is complete.",
+          "actionId": "first-hard-water-drying"
+        }
+      ],
+      "stateChanges": [
+        "Break precipitate into small pieces: The precipitate breakup is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The precipitate breakup is recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "manipulation"
+      ],
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Confirm the precipitate was broken into small pieces."
+      }
+    },
+    {
+      "id": "second-hard-water-drying",
+      "verb": "dry",
+      "label": "Complete second drying stage",
+      "parameters": {
+        "sourceDefinitionId": "watch-glass",
+        "targetDefinitionId": "watch-glass",
+        "ovenDefinitionId": "drying-oven",
+        "precipitateSourceInstanceId": "filter-paper-1",
+        "drynessResult": "dry",
+        "temperatureC": "{{config.ovenTemperatureC}}",
+        "durationMinutes": 5,
+        "visualState": "broken-dry-precipitate",
+        "temperatureProvenance": "teacher-configured within 110-120 C",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputKey": "second-hard-water-drying-elapsed-minutes",
+        "inputLabel": "Observed elapsed drying time (minutes)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "requireElapsedDryingTime": true,
+        "instruction": "Carry out this separate drying stage at the configured oven temperature; record actual elapsed minutes before removing the same assembly."
+      },
+      "prerequisites": [
+        {
+          "id": "second-hard-water-drying--hard-water-breakup-required",
+          "type": "notebookEntry",
+          "label": "The precipitate was broken into small pieces.",
+          "notebookTag": "hard-water-breakup"
+        }
+      ],
+      "stateChanges": [
+        "Complete second drying stage: The second drying stage is complete."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The second drying stage is complete.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "dry"
+      ],
+      "atomId": "atom.dry.oven-stage",
+      "equipmentRoleBindings": {
+        "drying-instrument": "drying-oven",
+        "dried-assembly": "watch-glass"
+      },
+      "interaction": {
+        "type": "placeInInstrument",
+        "sourceDefinitionId": "watch-glass",
+        "targetDefinitionId": "drying-oven",
+        "stationId": "drying-oven",
+        "accessibleLabel": "Return the broken precipitate assembly to the oven for five minutes.",
+        "valueParameter": "inputKey"
+      }
+    },
+    {
+      "id": "cool-hard-water-assembly",
+      "verb": "cool",
+      "label": "Cool dried assembly",
+      "parameters": {
+        "sourceDefinitionId": "watch-glass",
+        "targetDefinitionId": "crucible-tongs",
+        "cooledTemperatureC": "{{config.coolingTemperatureC}}",
+        "cooledObjectLabel": "watch-glass, paper, and precipitate assembly",
+        "visualState": "cooled-dry-precipitate"
+      },
+      "prerequisites": [
+        {
+          "id": "cool-hard-water-assembly--second-hard-water-drying-required",
+          "type": "actionEvidence",
+          "label": "The second drying stage is complete.",
+          "actionId": "second-hard-water-drying"
+        }
+      ],
+      "stateChanges": [
+        "Cool dried assembly: The dried assembly has cooled before weighing."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The dried assembly has cooled before weighing.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "cool"
+      ],
+      "atomId": "atom.cool.before-weighing",
+      "equipmentRoleBindings": {
+        "dried-assembly": "watch-glass",
+        "cooling-tool": "crucible-tongs"
+      },
+      "interaction": {
+        "type": "placeInInstrument",
+        "sourceDefinitionId": "watch-glass",
+        "targetDefinitionId": "crucible-tongs",
+        "stationId": "crucible-tongs",
+        "accessibleLabel": "Use heat-safe handling and set the dried assembly aside to cool."
+      }
+    },
+    {
+      "id": "weigh-hard-water-combined",
+      "verb": "weigh",
+      "label": "Read cooled combined mass",
+      "parameters": {
+        "sourceDefinitionId": "watch-glass",
+        "targetDefinitionId": "analytical-balance",
+        "instrumentDefinitionId": "analytical-balance",
+        "requiresDryPrecipitate": true,
+        "maxSafeTemperatureC": "{{config.coolingTemperatureC}}",
+        "tolerance": 0.001,
+        "evidenceProvenance": "learner-entered reading from the configured simulated balance; no expected mass is embedded",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputKey": "hard-water-combined-mass-input",
+        "inputLabel": "Read cooled combined mass from the configured simulated balance (g)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "g"
+      },
+      "prerequisites": [
+        {
+          "id": "weigh-hard-water-combined--cool-hard-water-assembly-required",
+          "type": "actionEvidence",
+          "label": "The assembly has cooled.",
+          "actionId": "cool-hard-water-assembly"
+        },
+        {
+          "id": "weigh-hard-water-combined--hard-water-watch-glass-mass-required",
+          "type": "measurementRecorded",
+          "label": "The watch-glass tare is recorded.",
+          "measurementId": "hard-water-watch-glass-mass"
+        },
+        {
+          "id": "weigh-hard-water-combined--hard-water-filter-paper-mass-required",
+          "type": "measurementRecorded",
+          "label": "The filter-paper tare is recorded.",
+          "measurementId": "hard-water-filter-paper-mass"
+        }
+      ],
+      "stateChanges": [
+        "Read cooled combined mass: The cooled combined mass is available."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The cooled combined mass is available.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "weigh"
+      ],
+      "atomId": "atom.weigh.dry-assembly",
+      "equipmentRoleBindings": {
+        "balance-instrument": "analytical-balance",
+        "dried-assembly": "watch-glass"
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "watch-glass",
+        "targetDefinitionId": "analytical-balance",
+        "stationId": "analytical-balance",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Read the cooled combined mass on the analytical balance."
+      },
+      "mass": {
+        "source": "action-input",
+        "outputMeasurementId": "hard-water-combined-mass"
+      }
+    },
+    {
+      "id": "record-hard-water-combined",
+      "verb": "record",
+      "label": "Record cooled combined mass",
+      "parameters": {
+        "measurementId": "hard-water-combined-mass",
+        "label": "Cooled watch glass, filter paper, and precipitate mass",
+        "unit": "g",
+        "copyExistingMeasurementOnly": true
+      },
+      "prerequisites": [
+        {
+          "id": "record-hard-water-combined--hard-water-combined-mass-required",
+          "type": "measurementRecorded",
+          "label": "The combined mass has been read.",
+          "measurementId": "hard-water-combined-mass"
+        }
+      ],
+      "stateChanges": [
+        "Record cooled combined mass: The cooled combined mass is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The cooled combined mass is recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "record",
+        "measurement"
+      ],
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "measurementId",
+        "accessibleLabel": "Copy the cooled combined mass into the notebook."
+      }
+    },
+    {
+      "id": "calculate-hard-water-precipitate-mass",
+      "verb": "calculate",
+      "label": "Calculate collected precipitate mass",
+      "parameters": {
+        "calculationId": "hard-water-precipitate-mass",
+        "template": "gravimetricPrecipitateMass",
+        "combinedMassMeasurementId": "hard-water-combined-mass",
+        "watchGlassMassMeasurementId": "hard-water-watch-glass-mass",
+        "filterPaperMassMeasurementId": "hard-water-filter-paper-mass",
+        "tolerance": 0.001,
+        "requireStudentValue": true,
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Collected precipitate mass",
+        "inputMin": 0,
+        "inputStep": 0.0001,
+        "unit": "g"
+      },
+      "prerequisites": [
+        {
+          "id": "calculate-hard-water-precipitate-mass--hard-water-watch-glass-mass-required",
+          "type": "measurementRecorded",
+          "label": "The watch-glass tare is recorded.",
+          "measurementId": "hard-water-watch-glass-mass"
+        },
+        {
+          "id": "calculate-hard-water-precipitate-mass--hard-water-filter-paper-mass-required",
+          "type": "measurementRecorded",
+          "label": "The filter-paper tare is recorded.",
+          "measurementId": "hard-water-filter-paper-mass"
+        },
+        {
+          "id": "calculate-hard-water-precipitate-mass--hard-water-combined-mass-required",
+          "type": "measurementRecorded",
+          "label": "The cooled combined mass is recorded.",
+          "measurementId": "hard-water-combined-mass"
+        }
+      ],
+      "stateChanges": [
+        "Calculate collected precipitate mass: Collected precipitate mass is calculated."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Collected precipitate mass is calculated.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "calculate",
+        "measurement-derived"
+      ],
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Subtract both the watch-glass and filter-paper tares from the cooled combined mass."
+      }
+    },
+    {
+      "id": "calculate-hardness",
+      "verb": "calculate",
+      "label": "Calculate water hardness",
+      "parameters": {
+        "calculationId": "hardness-mg-l",
+        "template": "hardnessMgLAsCaCO3",
+        "sampleVolumeMeasurementId": "sample-volume",
+        "precipitateMassCalculationId": "hard-water-precipitate-mass",
+        "requireStudentValue": true,
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Hardness as CaCO3",
+        "inputMin": 0,
+        "inputStep": 1,
+        "unit": "mg/L as CaCO3",
+        "tolerance": 5
+      },
+      "prerequisites": [
+        {
+          "id": "calculate-hardness--sample-volume-required",
+          "type": "measurementRecorded",
+          "label": "The sample volume is recorded.",
+          "measurementId": "sample-volume"
+        }
+      ],
+      "stateChanges": [
+        "Calculate water hardness: Water hardness is calculated from measured evidence."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Water hardness is calculated from measured evidence.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "calculate",
+        "measurement-derived"
+      ],
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Calculate hardness from the measured sample volume and calculated precipitate mass."
+      }
+    }
+  ],
+  "process": {
+    "startNodeId": "measure-water-sample-node",
+    "nodes": [
+      {
+        "id": "measure-water-sample-node",
+        "type": "action",
+        "title": "Measure water sample",
+        "description": "Pour 20 mL of water sample into the graduated cylinder.",
+        "actionId": "measure-water-sample",
+        "config": {},
+        "validation": [
+          {
+            "id": "measure-water-sample-node--measure-water-sample-node-done",
+            "type": "actionEvidence",
+            "label": "Action measure-water-sample was completed.",
+            "actionId": "measure-water-sample"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Measure water sample complete.",
+          "retry": "Review Measure water sample and try again."
+        }
+      },
+      {
+        "id": "transfer-water-sample-node",
+        "type": "action",
+        "title": "Transfer water sample",
+        "description": "Pour the water sample into the reaction beaker.",
+        "actionId": "transfer-water-sample",
+        "config": {},
+        "validation": [
+          {
+            "id": "transfer-water-sample-node--transfer-water-sample-node-done",
+            "type": "actionEvidence",
+            "label": "Action transfer-water-sample was completed.",
+            "actionId": "transfer-water-sample"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Transfer water sample complete.",
+          "retry": "Review Transfer water sample and try again."
+        }
+      },
+      {
+        "id": "add-carbonate-reagent-node",
+        "type": "action",
+        "title": "Add carbonate reagent",
+        "description": "Pour carbonate reagent into the water sample while stirring.",
+        "actionId": "add-carbonate-reagent",
+        "config": {},
+        "validation": [
+          {
+            "id": "add-carbonate-reagent-node--add-carbonate-reagent-node-done",
+            "type": "actionEvidence",
+            "label": "Action add-carbonate-reagent was completed.",
+            "actionId": "add-carbonate-reagent"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Add carbonate reagent complete.",
+          "retry": "Review Add carbonate reagent and try again."
+        }
+      },
+      {
+        "id": "establish-hard-water-precipitate-node",
+        "type": "action",
+        "title": "Establish wet precipitate",
+        "description": "Represent the wet calcium carbonate suspension for filtration.",
+        "actionId": "establish-hard-water-precipitate",
+        "config": {},
+        "validation": [
+          {
+            "id": "establish-hard-water-precipitate-node--establish-hard-water-precipitate-node-done",
+            "type": "actionEvidence",
+            "label": "Action establish-hard-water-precipitate was completed.",
+            "actionId": "establish-hard-water-precipitate"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Establish wet precipitate complete.",
+          "retry": "Review Establish wet precipitate and try again."
+        }
+      },
+      {
+        "id": "observe-precipitate-node",
+        "type": "observation",
+        "title": "Observe precipitate",
+        "description": "Record the precipitate formed in the hard water sample.",
+        "actionId": "observe-precipitate",
+        "config": {},
+        "validation": [
+          {
+            "id": "observe-precipitate-node--observe-precipitate-node-done",
+            "type": "actionEvidence",
+            "label": "Action observe-precipitate was completed.",
+            "actionId": "observe-precipitate"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Observe precipitate complete.",
+          "retry": "Review Observe precipitate and try again."
+        }
+      },
+      {
+        "id": "weigh-hard-water-filter-paper-tare-node",
+        "type": "action",
+        "title": "Read filter-paper tare",
+        "description": "Read the dry filter-paper mass before seating it.",
+        "actionId": "weigh-hard-water-filter-paper-tare",
+        "config": {},
+        "validation": [
+          {
+            "id": "weigh-hard-water-filter-paper-tare-node--weigh-hard-water-filter-paper-tare-node-done",
+            "type": "actionEvidence",
+            "label": "Action weigh-hard-water-filter-paper-tare was completed.",
+            "actionId": "weigh-hard-water-filter-paper-tare"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read filter-paper tare complete.",
+          "retry": "Review Read filter-paper tare and try again."
+        }
+      },
+      {
+        "id": "record-hard-water-filter-paper-tare-node",
+        "type": "observation",
+        "title": "Record filter-paper tare",
+        "description": "Copy the dry filter-paper tare into the notebook.",
+        "actionId": "record-hard-water-filter-paper-tare",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-hard-water-filter-paper-tare-node--record-hard-water-filter-paper-tare-node-done",
+            "type": "actionEvidence",
+            "label": "Action record-hard-water-filter-paper-tare was completed.",
+            "actionId": "record-hard-water-filter-paper-tare"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record filter-paper tare complete.",
+          "retry": "Review Record filter-paper tare and try again."
+        }
+      },
+      {
+        "id": "place-hard-water-buchner-node",
+        "type": "action",
+        "title": "Place funnel",
+        "description": "Place the Buchner funnel on the workbench.",
+        "actionId": "place-hard-water-buchner",
+        "config": {},
+        "validation": [
+          {
+            "id": "place-hard-water-buchner-node--place-hard-water-buchner-node-done",
+            "type": "actionEvidence",
+            "label": "Action place-hard-water-buchner was completed.",
+            "actionId": "place-hard-water-buchner"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Place funnel complete.",
+          "retry": "Review Place funnel and try again."
+        }
+      },
+      {
+        "id": "seat-hard-water-filter-paper-node",
+        "type": "action",
+        "title": "Seat filter paper",
+        "description": "Seat the filter paper flat in the funnel.",
+        "actionId": "seat-hard-water-filter-paper",
+        "config": {},
+        "validation": [
+          {
+            "id": "seat-hard-water-filter-paper-node--seat-hard-water-filter-paper-node-done",
+            "type": "actionEvidence",
+            "label": "Action seat-hard-water-filter-paper was completed.",
+            "actionId": "seat-hard-water-filter-paper"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Seat filter paper complete.",
+          "retry": "Review Seat filter paper and try again."
+        }
+      },
+      {
+        "id": "attach-hard-water-filter-flask-node",
+        "type": "action",
+        "title": "Attach receiver",
+        "description": "Attach the side-arm receiver beneath the funnel.",
+        "actionId": "attach-hard-water-filter-flask",
+        "config": {},
+        "validation": [
+          {
+            "id": "attach-hard-water-filter-flask-node--attach-hard-water-filter-flask-node-done",
+            "type": "actionEvidence",
+            "label": "Action attach-hard-water-filter-flask was completed.",
+            "actionId": "attach-hard-water-filter-flask"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Attach receiver complete.",
+          "retry": "Review Attach receiver and try again."
+        }
+      },
+      {
+        "id": "place-hard-water-vacuum-node",
+        "type": "action",
+        "title": "Place vacuum source",
+        "description": "Place the vacuum source beside the filter flask.",
+        "actionId": "place-hard-water-vacuum",
+        "config": {},
+        "validation": [
+          {
+            "id": "place-hard-water-vacuum-node--place-hard-water-vacuum-node-done",
+            "type": "actionEvidence",
+            "label": "Action place-hard-water-vacuum was completed.",
+            "actionId": "place-hard-water-vacuum"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Place vacuum source complete.",
+          "retry": "Review Place vacuum source and try again."
+        }
+      },
+      {
+        "id": "wet-hard-water-filter-paper-node",
+        "type": "action",
+        "title": "Wet filter paper",
+        "description": "Wet and seal the seated filter paper.",
+        "actionId": "wet-hard-water-filter-paper",
+        "config": {},
+        "validation": [
+          {
+            "id": "wet-hard-water-filter-paper-node--wet-hard-water-filter-paper-node-done",
+            "type": "actionEvidence",
+            "label": "Action wet-hard-water-filter-paper was completed.",
+            "actionId": "wet-hard-water-filter-paper"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Wet filter paper complete.",
+          "retry": "Review Wet filter paper and try again."
+        }
+      },
+      {
+        "id": "filter-hard-water-mixture-node",
+        "type": "action",
+        "title": "Filter suspension",
+        "description": "Pour the suspension through the prepared apparatus.",
+        "actionId": "filter-hard-water-mixture",
+        "config": {},
+        "validation": [
+          {
+            "id": "filter-hard-water-mixture-node--filter-hard-water-mixture-node-done",
+            "type": "actionEvidence",
+            "label": "Action filter-hard-water-mixture was completed.",
+            "actionId": "filter-hard-water-mixture"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Filter suspension complete.",
+          "retry": "Review Filter suspension and try again."
+        }
+      },
+      {
+        "id": "rinse-precipitate-node",
+        "type": "action",
+        "title": "Wash precipitate",
+        "description": "Wash the collected precipitate with a small water portion.",
+        "actionId": "rinse-precipitate",
+        "config": {},
+        "validation": [
+          {
+            "id": "rinse-precipitate-node--rinse-precipitate-node-done",
+            "type": "actionEvidence",
+            "label": "Action rinse-precipitate was completed.",
+            "actionId": "rinse-precipitate"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Wash precipitate complete.",
+          "retry": "Review Wash precipitate and try again."
+        }
+      },
+      {
+        "id": "weigh-hard-water-watch-glass-tare-node",
+        "type": "action",
+        "title": "Read watch-glass tare",
+        "description": "Read the clean, dry watch-glass mass.",
+        "actionId": "weigh-hard-water-watch-glass-tare",
+        "config": {},
+        "validation": [
+          {
+            "id": "weigh-hard-water-watch-glass-tare-node--weigh-hard-water-watch-glass-tare-node-done",
+            "type": "actionEvidence",
+            "label": "Action weigh-hard-water-watch-glass-tare was completed.",
+            "actionId": "weigh-hard-water-watch-glass-tare"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read watch-glass tare complete.",
+          "retry": "Review Read watch-glass tare and try again."
+        }
+      },
+      {
+        "id": "record-hard-water-watch-glass-tare-node",
+        "type": "observation",
+        "title": "Record watch-glass tare",
+        "description": "Copy the watch-glass mass into the notebook.",
+        "actionId": "record-hard-water-watch-glass-tare",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-hard-water-watch-glass-tare-node--record-hard-water-watch-glass-tare-node-done",
+            "type": "actionEvidence",
+            "label": "Action record-hard-water-watch-glass-tare was completed.",
+            "actionId": "record-hard-water-watch-glass-tare"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record watch-glass tare complete.",
+          "retry": "Review Record watch-glass tare and try again."
+        }
+      },
+      {
+        "id": "transfer-hard-water-paper-to-watch-node",
+        "type": "action",
+        "title": "Transfer collected solid",
+        "description": "Move the filter paper and precipitate to the tared watch glass.",
+        "actionId": "transfer-hard-water-paper-to-watch",
+        "config": {},
+        "validation": [
+          {
+            "id": "transfer-hard-water-paper-to-watch-node--transfer-hard-water-paper-to-watch-node-done",
+            "type": "actionEvidence",
+            "label": "Action transfer-hard-water-paper-to-watch was completed.",
+            "actionId": "transfer-hard-water-paper-to-watch"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Transfer collected solid complete.",
+          "retry": "Review Transfer collected solid and try again."
+        }
+      },
+      {
+        "id": "first-hard-water-drying-node",
+        "type": "action",
+        "title": "First drying stage",
+        "description": "Dry the assembly for the teacher-configured 10-15 minute stage.",
+        "actionId": "first-hard-water-drying",
+        "config": {},
+        "validation": [
+          {
+            "id": "first-hard-water-drying-node--first-hard-water-drying-node-done",
+            "type": "actionEvidence",
+            "label": "Action first-hard-water-drying was completed.",
+            "actionId": "first-hard-water-drying"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "First drying stage complete.",
+          "retry": "Review First drying stage and try again."
+        }
+      },
+      {
+        "id": "break-hard-water-precipitate-node",
+        "type": "checkpoint",
+        "title": "Break precipitate",
+        "description": "Break the partly dried precipitate into small pieces.",
+        "actionId": "break-hard-water-precipitate",
+        "config": {},
+        "validation": [
+          {
+            "id": "break-hard-water-precipitate-node--break-hard-water-precipitate-node-done",
+            "type": "actionEvidence",
+            "label": "Action break-hard-water-precipitate was completed.",
+            "actionId": "break-hard-water-precipitate"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Break precipitate complete.",
+          "retry": "Review Break precipitate and try again."
+        }
+      },
+      {
+        "id": "second-hard-water-drying-node",
+        "type": "action",
+        "title": "Second drying stage",
+        "description": "Return the assembly to the oven for five minutes.",
+        "actionId": "second-hard-water-drying",
+        "config": {},
+        "validation": [
+          {
+            "id": "second-hard-water-drying-node--second-hard-water-drying-node-done",
+            "type": "actionEvidence",
+            "label": "Action second-hard-water-drying was completed.",
+            "actionId": "second-hard-water-drying"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Second drying stage complete.",
+          "retry": "Review Second drying stage and try again."
+        }
+      },
+      {
+        "id": "cool-hard-water-assembly-node",
+        "type": "action",
+        "title": "Cool assembly",
+        "description": "Set the dried assembly aside until safe to weigh.",
+        "actionId": "cool-hard-water-assembly",
+        "config": {},
+        "validation": [
+          {
+            "id": "cool-hard-water-assembly-node--cool-hard-water-assembly-node-done",
+            "type": "actionEvidence",
+            "label": "Action cool-hard-water-assembly was completed.",
+            "actionId": "cool-hard-water-assembly"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Cool assembly complete.",
+          "retry": "Review Cool assembly and try again."
+        }
+      },
+      {
+        "id": "weigh-hard-water-combined-node",
+        "type": "action",
+        "title": "Read combined mass",
+        "description": "Read the cooled watch-glass, paper, and precipitate mass.",
+        "actionId": "weigh-hard-water-combined",
+        "config": {},
+        "validation": [
+          {
+            "id": "weigh-hard-water-combined-node--weigh-hard-water-combined-node-done",
+            "type": "actionEvidence",
+            "label": "Action weigh-hard-water-combined was completed.",
+            "actionId": "weigh-hard-water-combined"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read combined mass complete.",
+          "retry": "Review Read combined mass and try again."
+        }
+      },
+      {
+        "id": "record-hard-water-combined-node",
+        "type": "observation",
+        "title": "Record combined mass",
+        "description": "Copy the cooled combined mass into the notebook.",
+        "actionId": "record-hard-water-combined",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-hard-water-combined-node--record-hard-water-combined-node-done",
+            "type": "actionEvidence",
+            "label": "Action record-hard-water-combined was completed.",
+            "actionId": "record-hard-water-combined"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record combined mass complete.",
+          "retry": "Review Record combined mass and try again."
+        }
+      },
+      {
+        "id": "calculate-hard-water-precipitate-mass-node",
+        "type": "calculation",
+        "title": "Calculate precipitate mass",
+        "description": "Calculate collected precipitate mass by difference.",
+        "actionId": "calculate-hard-water-precipitate-mass",
+        "config": {},
+        "validation": [
+          {
+            "id": "calculate-hard-water-precipitate-mass-node--calculate-hard-water-precipitate-mass-node-done",
+            "type": "actionEvidence",
+            "label": "Action calculate-hard-water-precipitate-mass was completed.",
+            "actionId": "calculate-hard-water-precipitate-mass"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Calculate precipitate mass complete.",
+          "retry": "Review Calculate precipitate mass and try again."
+        }
+      },
+      {
+        "id": "calculate-hardness-node",
+        "type": "calculation",
+        "title": "Calculate hardness",
+        "description": "Calculate hardness in mg/L as CaCO3 from sample volume and precipitate mass.",
+        "actionId": "calculate-hardness",
+        "config": {},
+        "validation": [
+          {
+            "id": "calculate-hardness-node--calculate-hardness-node-done",
+            "type": "actionEvidence",
+            "label": "Action calculate-hardness was completed.",
+            "actionId": "calculate-hardness"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Calculate hardness complete.",
+          "retry": "Review Calculate hardness and try again."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "measure-water-sample-node",
+        "to": "transfer-water-sample-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "transfer-water-sample-node",
+        "to": "add-carbonate-reagent-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "add-carbonate-reagent-node",
+        "to": "establish-hard-water-precipitate-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "establish-hard-water-precipitate-node",
+        "to": "observe-precipitate-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "observe-precipitate-node",
+        "to": "weigh-hard-water-filter-paper-tare-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "weigh-hard-water-filter-paper-tare-node",
+        "to": "record-hard-water-filter-paper-tare-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-hard-water-filter-paper-tare-node",
+        "to": "place-hard-water-buchner-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "place-hard-water-buchner-node",
+        "to": "seat-hard-water-filter-paper-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "seat-hard-water-filter-paper-node",
+        "to": "attach-hard-water-filter-flask-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "attach-hard-water-filter-flask-node",
+        "to": "place-hard-water-vacuum-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "place-hard-water-vacuum-node",
+        "to": "wet-hard-water-filter-paper-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "wet-hard-water-filter-paper-node",
+        "to": "filter-hard-water-mixture-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "filter-hard-water-mixture-node",
+        "to": "rinse-precipitate-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "rinse-precipitate-node",
+        "to": "weigh-hard-water-watch-glass-tare-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "weigh-hard-water-watch-glass-tare-node",
+        "to": "record-hard-water-watch-glass-tare-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-hard-water-watch-glass-tare-node",
+        "to": "transfer-hard-water-paper-to-watch-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "transfer-hard-water-paper-to-watch-node",
+        "to": "first-hard-water-drying-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "first-hard-water-drying-node",
+        "to": "break-hard-water-precipitate-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "break-hard-water-precipitate-node",
+        "to": "second-hard-water-drying-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "second-hard-water-drying-node",
+        "to": "cool-hard-water-assembly-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cool-hard-water-assembly-node",
+        "to": "weigh-hard-water-combined-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "weigh-hard-water-combined-node",
+        "to": "record-hard-water-combined-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-hard-water-combined-node",
+        "to": "calculate-hard-water-precipitate-mass-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "calculate-hard-water-precipitate-mass-node",
+        "to": "calculate-hardness-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [
+    {
+      "id": "measure-water-sample-node-success",
+      "type": "actionEvidence",
+      "label": "Action measure-water-sample was completed.",
+      "actionId": "measure-water-sample"
+    },
+    {
+      "id": "transfer-water-sample-node-success",
+      "type": "actionEvidence",
+      "label": "Action transfer-water-sample was completed.",
+      "actionId": "transfer-water-sample"
+    },
+    {
+      "id": "add-carbonate-reagent-node-success",
+      "type": "actionEvidence",
+      "label": "Action add-carbonate-reagent was completed.",
+      "actionId": "add-carbonate-reagent"
+    },
+    {
+      "id": "establish-hard-water-precipitate-node-success",
+      "type": "actionEvidence",
+      "label": "Action establish-hard-water-precipitate was completed.",
+      "actionId": "establish-hard-water-precipitate"
+    },
+    {
+      "id": "observe-precipitate-node-success",
+      "type": "actionEvidence",
+      "label": "Action observe-precipitate was completed.",
+      "actionId": "observe-precipitate"
+    },
+    {
+      "id": "weigh-hard-water-filter-paper-tare-node-success",
+      "type": "actionEvidence",
+      "label": "Action weigh-hard-water-filter-paper-tare was completed.",
+      "actionId": "weigh-hard-water-filter-paper-tare"
+    },
+    {
+      "id": "record-hard-water-filter-paper-tare-node-success",
+      "type": "actionEvidence",
+      "label": "Action record-hard-water-filter-paper-tare was completed.",
+      "actionId": "record-hard-water-filter-paper-tare"
+    },
+    {
+      "id": "place-hard-water-buchner-node-success",
+      "type": "actionEvidence",
+      "label": "Action place-hard-water-buchner was completed.",
+      "actionId": "place-hard-water-buchner"
+    },
+    {
+      "id": "seat-hard-water-filter-paper-node-success",
+      "type": "actionEvidence",
+      "label": "Action seat-hard-water-filter-paper was completed.",
+      "actionId": "seat-hard-water-filter-paper"
+    },
+    {
+      "id": "attach-hard-water-filter-flask-node-success",
+      "type": "actionEvidence",
+      "label": "Action attach-hard-water-filter-flask was completed.",
+      "actionId": "attach-hard-water-filter-flask"
+    },
+    {
+      "id": "place-hard-water-vacuum-node-success",
+      "type": "actionEvidence",
+      "label": "Action place-hard-water-vacuum was completed.",
+      "actionId": "place-hard-water-vacuum"
+    },
+    {
+      "id": "wet-hard-water-filter-paper-node-success",
+      "type": "actionEvidence",
+      "label": "Action wet-hard-water-filter-paper was completed.",
+      "actionId": "wet-hard-water-filter-paper"
+    },
+    {
+      "id": "filter-hard-water-mixture-node-success",
+      "type": "actionEvidence",
+      "label": "Action filter-hard-water-mixture was completed.",
+      "actionId": "filter-hard-water-mixture"
+    },
+    {
+      "id": "rinse-precipitate-node-success",
+      "type": "actionEvidence",
+      "label": "Action rinse-precipitate was completed.",
+      "actionId": "rinse-precipitate"
+    },
+    {
+      "id": "weigh-hard-water-watch-glass-tare-node-success",
+      "type": "actionEvidence",
+      "label": "Action weigh-hard-water-watch-glass-tare was completed.",
+      "actionId": "weigh-hard-water-watch-glass-tare"
+    },
+    {
+      "id": "record-hard-water-watch-glass-tare-node-success",
+      "type": "actionEvidence",
+      "label": "Action record-hard-water-watch-glass-tare was completed.",
+      "actionId": "record-hard-water-watch-glass-tare"
+    },
+    {
+      "id": "transfer-hard-water-paper-to-watch-node-success",
+      "type": "actionEvidence",
+      "label": "Action transfer-hard-water-paper-to-watch was completed.",
+      "actionId": "transfer-hard-water-paper-to-watch"
+    },
+    {
+      "id": "first-hard-water-drying-node-success",
+      "type": "actionEvidence",
+      "label": "Action first-hard-water-drying was completed.",
+      "actionId": "first-hard-water-drying"
+    },
+    {
+      "id": "break-hard-water-precipitate-node-success",
+      "type": "actionEvidence",
+      "label": "Action break-hard-water-precipitate was completed.",
+      "actionId": "break-hard-water-precipitate"
+    },
+    {
+      "id": "second-hard-water-drying-node-success",
+      "type": "actionEvidence",
+      "label": "Action second-hard-water-drying was completed.",
+      "actionId": "second-hard-water-drying"
+    },
+    {
+      "id": "cool-hard-water-assembly-node-success",
+      "type": "actionEvidence",
+      "label": "Action cool-hard-water-assembly was completed.",
+      "actionId": "cool-hard-water-assembly"
+    },
+    {
+      "id": "weigh-hard-water-combined-node-success",
+      "type": "actionEvidence",
+      "label": "Action weigh-hard-water-combined was completed.",
+      "actionId": "weigh-hard-water-combined"
+    },
+    {
+      "id": "record-hard-water-combined-node-success",
+      "type": "actionEvidence",
+      "label": "Action record-hard-water-combined was completed.",
+      "actionId": "record-hard-water-combined"
+    },
+    {
+      "id": "calculate-hard-water-precipitate-mass-node-success",
+      "type": "actionEvidence",
+      "label": "Action calculate-hard-water-precipitate-mass was completed.",
+      "actionId": "calculate-hard-water-precipitate-mass"
+    },
+    {
+      "id": "calculate-hardness-node-success",
+      "type": "actionEvidence",
+      "label": "Action calculate-hardness was completed.",
+      "actionId": "calculate-hardness"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "current node expects a different action",
+      "message": "That action is out of sequence for the current technique step.",
+      "recovery": "Check the process map and perform the highlighted step first."
+    },
+    {
+      "id": "missing-source",
+      "when": "source equipment or contents are missing",
+      "message": "The selected source does not contain the material required for this action.",
+      "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+    },
+    {
+      "id": "overflow",
+      "when": "target capacity would be exceeded",
+      "message": "The target equipment cannot hold the requested volume.",
+      "recovery": "Use a larger container or transfer a smaller measured amount."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.1.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-04T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "chemistry",
+      "gravimetry",
+      "hard-water"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry-measure-water-sample-node",
+        "kind": "entry",
+        "nodeId": "measure-water-sample-node",
+        "label": "Entry"
+      },
+      {
+        "id": "exit-calculate-hardness-node",
+        "kind": "exit",
+        "nodeId": "calculate-hardness-node",
+        "label": "Exit"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "variable-volume-measuring-device",
+        "required": true,
+        "allowedDefinitionIds": [
+          "graduated-cylinder"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "liquid-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "sample-bottle"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "measured-solvent-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "graduated-cylinder"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "receiving-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beaker-250ml"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "precipitating-reagent-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "reagent-bottle"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "precipitation-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beaker-250ml"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "stirring-device",
+        "required": true,
+        "allowedDefinitionIds": [
+          "stirring-rod"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "balance-instrument",
+        "required": true,
+        "allowedDefinitionIds": [
+          "analytical-balance"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "filter-medium",
+        "required": true,
+        "allowedDefinitionIds": [
+          "filter-paper"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "filtration-funnel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "buchner-funnel"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "filtration-receiver",
+        "required": true,
+        "allowedDefinitionIds": [
+          "side-arm-filter-flask"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "filtration-vacuum-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "vacuum-source"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "rinse-water-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "wash-bottle"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "mixture-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beaker-250ml"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "weighed-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "watch-glass"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "dried-assembly",
+        "required": true,
+        "allowedDefinitionIds": [
+          "watch-glass"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "drying-instrument",
+        "required": true,
+        "allowedDefinitionIds": [
+          "drying-oven"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "cooling-tool",
+        "required": true,
+        "allowedDefinitionIds": [
+          "crucible-tongs"
+        ],
+        "sourceInstanceIds": []
+      }
+    ],
+    "modelSlots": [],
+    "configurationSlots": [
+      {
+        "id": "ovenTemperatureC",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "firstDurationMinutes",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "coolingTemperatureC",
+        "valueType": "number",
+        "required": true
+      }
+    ],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [],
+    "completion": {
+      "exitPortIds": [
+        "exit-calculate-hardness-node"
+      ],
+      "requiredEvidenceOutputIds": [],
+      "requiredValidationRuleIds": []
+    },
+    "catalogDisposition": "composable",
+    "legacyActionEffects": [
+      {
+        "actionId": "observe-precipitate",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-hard-water-filter-paper-tare",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-hard-water-watch-glass-tare",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "break-hard-water-precipitate",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-hard-water-combined",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "calculate-hard-water-precipitate-mass",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "calculate-hardness",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

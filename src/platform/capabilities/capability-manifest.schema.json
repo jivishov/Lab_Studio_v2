@@ -1,0 +1,249 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://lab-studio.local/schemas/studio.capability-manifest/2.0",
+  "title": "Studio Capability Manifest v2",
+  "oneOf": [
+    { "$ref": "#/definitions/manifest" },
+    { "$ref": "#/definitions/fragment" }
+  ],
+  "definitions": {
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "id": { "type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$" },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$" },
+    "fidelity": { "enum": ["F0", "F1", "F2", "F3", "F4"] },
+    "domainPackId": { "enum": ["chemistry", "assay"] },
+    "capabilityKind": { "enum": ["object", "operation", "interaction", "model", "evidence", "planning", "export"] },
+    "proofKind": { "enum": ["runtime-handler", "interaction-implementation", "deterministic-model", "validator", "evidence-producer", "accessible-path", "representative-content-fixture", "regression-test", "protocol-profile", "limitation-document"] },
+    "stringSet": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/definitions/nonEmptyString" }
+    },
+    "capabilityRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["domainPackId", "kind", "id", "version"],
+      "properties": {
+        "domainPackId": { "$ref": "#/definitions/domainPackId" },
+        "kind": { "$ref": "#/definitions/capabilityKind" },
+        "id": { "$ref": "#/definitions/id" },
+        "version": { "$ref": "#/definitions/version" }
+      }
+    },
+    "implementationRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source"],
+      "properties": {
+        "source": { "type": "string", "pattern": "^(?:src|public|docs)/[^\\\\]+$" },
+        "exportName": { "$ref": "#/definitions/nonEmptyString" }
+      }
+    },
+    "modelProof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["deterministic", "formula", "validityLimits"],
+      "properties": {
+        "deterministic": { "const": true },
+        "formula": { "$ref": "#/definitions/nonEmptyString" },
+        "validityLimits": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/definitions/nonEmptyString" } }
+      }
+    },
+    "referenceProof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["referenceId", "title", "version", "referenceKind", "validityLimits"],
+      "properties": {
+        "referenceId": { "$ref": "#/definitions/id" },
+        "title": { "$ref": "#/definitions/nonEmptyString" },
+        "version": { "$ref": "#/definitions/nonEmptyString" },
+        "referenceKind": { "enum": ["dataset", "method", "protocol", "profile"] },
+        "validityLimits": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/definitions/nonEmptyString" } }
+      }
+    },
+    "proof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "title", "dependsOnProofRefs", "evidenceTypeIds", "accessiblePathIds", "limitations"],
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "kind": { "$ref": "#/definitions/proofKind" },
+        "title": { "$ref": "#/definitions/nonEmptyString" },
+        "implementation": { "$ref": "#/definitions/implementationRef" },
+        "model": { "$ref": "#/definitions/modelProof" },
+        "reference": { "$ref": "#/definitions/referenceProof" },
+        "dependsOnProofRefs": { "$ref": "#/definitions/stringSet" },
+        "evidenceTypeIds": { "$ref": "#/definitions/stringSet" },
+        "accessiblePathIds": { "$ref": "#/definitions/stringSet" },
+        "limitations": { "$ref": "#/definitions/stringSet" }
+      }
+    },
+    "proofRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["proofId", "kind"],
+      "properties": {
+        "proofId": { "$ref": "#/definitions/id" },
+        "kind": { "$ref": "#/definitions/proofKind" }
+      }
+    },
+    "unitRef": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "id"],
+          "properties": {
+            "kind": { "const": "known" },
+            "id": { "enum": ["1", "%", "s", "min", "h", "uL", "mL", "L", "ug", "mg", "g", "kg", "umol", "mmol", "mol", "uM", "mM", "M", "degC", "K", "rpm", "nm", "AU", "OD", "pH"] }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "raw", "reason"],
+          "properties": {
+            "kind": { "const": "unknown" },
+            "raw": { "$ref": "#/definitions/nonEmptyString" },
+            "reason": { "$ref": "#/definitions/nonEmptyString" }
+          }
+        }
+      ]
+    },
+    "quantity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "unit"],
+      "properties": {
+        "value": { "type": "string", "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?$" },
+        "unit": { "$ref": "#/definitions/unitRef" },
+        "uncertainty": { "type": "string", "pattern": "^(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?$" }
+      }
+    },
+    "scalarOrQuantity": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "boolean" },
+        { "$ref": "#/definitions/quantity" }
+      ]
+    },
+    "validityValue": {
+      "oneOf": [
+        { "$ref": "#/definitions/scalarOrQuantity" },
+        { "type": "array", "minItems": 1, "items": { "$ref": "#/definitions/scalarOrQuantity" } }
+      ]
+    },
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "outcome", "maximumFidelity", "proofRefs", "requiredEvidenceTypeIds", "requiredAccessiblePathIds"],
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "outcome": { "$ref": "#/definitions/nonEmptyString" },
+        "maximumFidelity": { "$ref": "#/definitions/fidelity" },
+        "validityRange": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": { "$ref": "#/definitions/validityValue" }
+        },
+        "proofRefs": { "type": "array", "minItems": 1, "items": { "$ref": "#/definitions/proofRef" } },
+        "requiredEvidenceTypeIds": { "$ref": "#/definitions/stringSet" },
+        "requiredAccessiblePathIds": { "$ref": "#/definitions/stringSet" }
+      }
+    },
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ref", "title", "summary", "tags", "claims", "dependencies", "accessiblePathIds", "exampleIds", "limitations"],
+      "properties": {
+        "ref": { "$ref": "#/definitions/capabilityRef" },
+        "title": { "$ref": "#/definitions/nonEmptyString" },
+        "summary": { "$ref": "#/definitions/nonEmptyString" },
+        "tags": { "$ref": "#/definitions/stringSet" },
+        "claims": { "type": "array", "minItems": 1, "items": { "$ref": "#/definitions/claim" } },
+        "dependencies": { "type": "array", "items": { "$ref": "#/definitions/capabilityRef" } },
+        "accessiblePathIds": { "$ref": "#/definitions/stringSet" },
+        "exampleIds": { "$ref": "#/definitions/stringSet" },
+        "limitations": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/definitions/nonEmptyString" } }
+      }
+    },
+    "domainPack": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "version", "title", "limitations"],
+      "properties": {
+        "id": { "$ref": "#/definitions/domainPackId" },
+        "version": { "$ref": "#/definitions/version" },
+        "title": { "$ref": "#/definitions/nonEmptyString" },
+        "limitations": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/definitions/nonEmptyString" } }
+      }
+    },
+    "accessiblePath": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "modes", "implementation", "limitations"],
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "title": { "$ref": "#/definitions/nonEmptyString" },
+        "modes": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["keyboard", "pointer", "screen-reader", "accessible-process"] } },
+        "implementation": { "$ref": "#/definitions/implementationRef" },
+        "limitations": { "$ref": "#/definitions/stringSet" }
+      }
+    },
+    "edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from", "to", "relationship"],
+      "properties": {
+        "from": { "$ref": "#/definitions/capabilityRef" },
+        "to": { "$ref": "#/definitions/capabilityRef" },
+        "relationship": { "enum": ["requires", "works-with", "alternative-to"] }
+      }
+    },
+    "example": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "artifactRef", "capabilityRefs", "limitations"],
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "title": { "$ref": "#/definitions/nonEmptyString" },
+        "artifactRef": { "type": "string", "pattern": "^public/(?:labs|techniques)/[^\\\\]+\\.json$" },
+        "capabilityRefs": { "type": "array", "minItems": 1, "items": { "$ref": "#/definitions/capabilityRef" } },
+        "limitations": { "$ref": "#/definitions/stringSet" }
+      }
+    },
+    "fragment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "schemaVersion", "studioCoreVersion", "domainPack", "entries", "proofs", "accessiblePaths", "compatibilityEdges", "examples"],
+      "properties": {
+        "schema": { "const": "studio.capability-manifest-fragment" },
+        "schemaVersion": { "const": "2.0" },
+        "studioCoreVersion": { "$ref": "#/definitions/version" },
+        "domainPack": { "$ref": "#/definitions/domainPack" },
+        "entries": { "type": "array", "items": { "$ref": "#/definitions/entry" } },
+        "proofs": { "type": "array", "items": { "$ref": "#/definitions/proof" } },
+        "accessiblePaths": { "type": "array", "items": { "$ref": "#/definitions/accessiblePath" } },
+        "compatibilityEdges": { "type": "array", "items": { "$ref": "#/definitions/edge" } },
+        "examples": { "type": "array", "items": { "$ref": "#/definitions/example" } }
+      }
+    },
+    "manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "schemaVersion", "studioCoreVersion", "generatedAt", "domainPacks", "entries", "proofs", "accessiblePaths", "compatibilityEdges", "exampleIndex"],
+      "properties": {
+        "schema": { "const": "studio.capability-manifest" },
+        "schemaVersion": { "const": "2.0" },
+        "studioCoreVersion": { "$ref": "#/definitions/version" },
+        "generatedAt": { "type": "string", "minLength": 20 },
+        "domainPacks": { "type": "array", "minItems": 1, "items": { "$ref": "#/definitions/domainPack" } },
+        "entries": { "type": "array", "items": { "$ref": "#/definitions/entry" } },
+        "proofs": { "type": "array", "items": { "$ref": "#/definitions/proof" } },
+        "accessiblePaths": { "type": "array", "items": { "$ref": "#/definitions/accessiblePath" } },
+        "compatibilityEdges": { "type": "array", "items": { "$ref": "#/definitions/edge" } },
+        "exampleIndex": { "type": "array", "items": { "$ref": "#/definitions/example" } }
+      }
+    }
+  }
+}

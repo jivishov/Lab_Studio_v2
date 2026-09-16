@@ -1,0 +1,41 @@
+{
+  "issuer": "https://learning.example.edu",
+  "clientId": "causalyst-tool-client-id",
+  "launchUrl": "https://learning.example.edu/lti/launch",
+  "deepLinkLaunchUrl": "https://learning.example.edu/lti/deep-link/launch",
+  "appBaseUrl": "https://studio.example.edu/",
+  "keyId": "causalyst-2026-01",
+  "privateKeyPem": "SET_IN_A_RESTRICTED_RUNTIME_CONFIG_FILE",
+  "publicJwk": {
+    "kty": "RSA",
+    "kid": "causalyst-2026-01",
+    "n": "REPLACE_WITH_PUBLIC_MODULUS",
+    "e": "AQAB"
+  },
+  "retiringPublicJwks": [],
+  "pseudonymSecret": "SET_A_RANDOM_SECRET_WITH_AT_LEAST_32_CHARACTERS",
+  "causalystLtiV1": false,
+  "causalystAgsV1": false,
+  "sessionTtlSeconds": 900,
+  "loginStateTtlSeconds": 300,
+  "launchCodeTtlSeconds": 60,
+  "jwksCacheSeconds": 300,
+  "maxRequestBytes": 1048576,
+  "maxAssessmentBytes": 2097152,
+  "maxSubmissionBytes": 8388608,
+  "maxExplanationBytes": 65536,
+  "retentionDays": 365,
+  "registrations": [
+    {
+      "id": "example-platform",
+      "issuer": "https://lms.example.edu",
+      "clientId": "platform-issued-client-id",
+      "deploymentIds": ["example-deployment"],
+      "authorizationEndpoint": "https://lms.example.edu/oidc/auth",
+      "tokenEndpoint": "https://lms.example.edu/oauth2/token",
+      "jwksUrl": "https://lms.example.edu/.well-known/jwks.json",
+      "enabled": false,
+      "allowedServices": ["deep-linking"]
+    }
+  ]
+}

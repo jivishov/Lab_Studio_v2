@@ -1,0 +1,539 @@
+{
+  "id": "acid-base-titration",
+  "title": "Acid-Base Titration",
+  "description": "A focused endpoint-and-molarity exercise using acetic acid and NaOH. Students accept qualitative indicator evidence, immerse a prepared pH probe, record the simulator-predicted accepted-endpoint pH, and calculate analyte molarity. The dedicated Acid-Base Titration Curves route remains the complete Investigation 14 workflow.",
+  "audience": "General chemistry students",
+  "learningGoals": [
+    "Assemble a burette, use a filling funnel for conditioning and filling, then remove it to the workbench before reading its level.",
+    "Take burette readings off the instrument and record them as separate steps.",
+    "Calculate acid molarity from the volume delivered between two recorded readings.",
+    "Distinguish the ideal equivalence prediction from the pH predicted at the actually accepted endpoint."
+  ],
+  "safetyNotes": [
+    "Wear goggles and gloves when handling acid, base, and indicator.",
+    "Keep the burette clamped upright and clean spills immediately.",
+    "Neutralize and dispose of titration waste according to local guidance."
+  ],
+  "equipment": [
+    "unknown-acid-bottle",
+    "naoh-bottle",
+    "phenolphthalein-dropper",
+    "graduated-cylinder",
+    "erlenmeyer-flask-250ml",
+    "burette-50ml",
+    "ring-stand-clamp",
+    "funnel",
+    "waste-beaker",
+    "ph-meter",
+    "wash-bottle"
+  ],
+  "titrationModels": [
+    {
+      "id": "unknown-acid-naoh",
+      "type": "acidBase",
+      "analyte": {
+        "formula": "CH3COOH",
+        "role": "acid",
+        "strength": "weak",
+        "equilibriumConstant": 0.00001753,
+        "equilibriumConstantSource": "https://nvlpubs.nist.gov/nistpubs/jres/100/5/j15wu.pdf"
+      },
+      "titrant": {
+        "formula": "NaOH",
+        "role": "base",
+        "strength": "strong"
+      },
+      "analyteMolarityM": 0.0992,
+      "analyteVolumeMl": 25,
+      "titrantMolarityM": 0.1,
+      "stoichiometricRatio": {
+        "analyte": 1,
+        "titrant": 1
+      },
+      "dropVolumeMl": 0.05,
+      "endpointOffsetDrops": 0,
+      "maxExtraDrops": 5,
+      "temperatureC": 25,
+      "waterIonProduct": 1e-14,
+      "phPrecision": 2
+    }
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "unknown-acid-bottle-1",
+        "definitionId": "unknown-acid-bottle",
+        "label": "Unknown acid",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "Acetic acid of unknown learner-facing concentration",
+          "volumeMl": 120,
+          "solutes": [
+            {
+              "id": "acetic-acid",
+              "label": "Acetic acid",
+              "amount": 0.011904,
+              "unit": "mol"
+            }
+          ],
+          "concentration": {
+            "value": 0.0992,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-solution"
+        }
+      },
+      {
+        "id": "naoh-bottle-1",
+        "definitionId": "naoh-bottle",
+        "label": "0.100 M NaOH",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "0.100 M NaOH",
+          "volumeMl": 120,
+          "solutes": [
+            {
+              "id": "sodium-hydroxide",
+              "label": "Sodium hydroxide",
+              "amount": 0.012,
+              "unit": "mol"
+            }
+          ],
+          "concentration": {
+            "value": 0.1,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-solution"
+        }
+      },
+      {
+        "id": "phenolphthalein-dropper-1",
+        "definitionId": "phenolphthalein-dropper",
+        "label": "Phenolphthalein",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "Phenolphthalein indicator",
+          "volumeMl": 30,
+          "solutes": [
+            {
+              "id": "phenolphthalein",
+              "label": "Phenolphthalein",
+              "amount": 0.03,
+              "unit": "g"
+            }
+          ],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "indicator-solution"
+        }
+      },
+      {
+        "id": "graduated-cylinder-1",
+        "definitionId": "graduated-cylinder",
+        "label": "Graduated cylinder",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "erlenmeyer-flask-250ml-1",
+        "definitionId": "erlenmeyer-flask-250ml",
+        "label": "Erlenmeyer flask",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "burette-50ml-1",
+        "definitionId": "burette-50ml",
+        "label": "Titration burette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "ring-stand-clamp-1",
+        "definitionId": "ring-stand-clamp",
+        "label": "Ring stand and clamp",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "funnel-1",
+        "definitionId": "funnel",
+        "label": "Burette filling funnel",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "waste-beaker-1",
+        "definitionId": "waste-beaker",
+        "label": "Waste beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "ph-meter-1",
+        "definitionId": "ph-meter",
+        "label": "pH meter",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "titration-rinse-water",
+        "definitionId": "wash-bottle",
+        "label": "Approved rinse water",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Rinse water",
+          "volumeMl": 500,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      }
+    ]
+  },
+  "techniques": [],
+  "actions": [],
+  "process": {
+    "startNodeId": "approve-reference-configuration-node",
+    "nodes": [],
+    "edges": []
+  },
+  "assessments": [],
+  "metadata": {
+    "version": "3.0.1",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-05T00:00:00.000Z",
+    "tags": [
+      "lab",
+      "diagram-authored",
+      "titration",
+      "technique-ref",
+      "filling-funnel",
+      "instrument-read"
+    ]
+  },
+  "techniqueInstances": [
+    {
+      "instanceId": "investigation",
+      "techniqueId": "titration-endpoint",
+      "version": "3.0.1",
+      "bindings": {
+        "equipment": {
+          "burette-support": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "ring-stand-clamp-1",
+                "definitionId": "ring-stand-clamp",
+                "instanceId": "ring-stand-clamp-1"
+              }
+            ]
+          },
+          "titrant-delivery-device": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "burette-50ml-1",
+                "definitionId": "burette-50ml",
+                "instanceId": "burette-50ml-1"
+              }
+            ]
+          },
+          "titrant-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "naoh-bottle-1",
+                "definitionId": "naoh-bottle",
+                "instanceId": "naoh-bottle-1"
+              }
+            ]
+          },
+          "burette-filling-funnel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "funnel-1",
+                "definitionId": "funnel",
+                "instanceId": "funnel-1"
+              }
+            ]
+          },
+          "waste-receiver": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "waste-beaker-1",
+                "definitionId": "waste-beaker",
+                "instanceId": "waste-beaker-1"
+              }
+            ]
+          },
+          "analyte-receiver": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "erlenmeyer-flask-250ml-1",
+                "definitionId": "erlenmeyer-flask-250ml",
+                "instanceId": "erlenmeyer-flask-250ml-1"
+              }
+            ]
+          },
+          "variable-volume-measuring-device": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "graduated-cylinder-1",
+                "definitionId": "graduated-cylinder",
+                "instanceId": "graduated-cylinder-1"
+              }
+            ]
+          },
+          "liquid-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "unknown-acid-bottle-1",
+                "definitionId": "unknown-acid-bottle",
+                "instanceId": "unknown-acid-bottle-1"
+              }
+            ]
+          },
+          "measured-solvent-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "graduated-cylinder-1",
+                "definitionId": "graduated-cylinder",
+                "instanceId": "graduated-cylinder-1"
+              }
+            ]
+          },
+          "receiving-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "erlenmeyer-flask-250ml-1",
+                "definitionId": "erlenmeyer-flask-250ml",
+                "instanceId": "erlenmeyer-flask-250ml-1"
+              }
+            ]
+          },
+          "indicator-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "phenolphthalein-dropper-1",
+                "definitionId": "phenolphthalein-dropper",
+                "instanceId": "phenolphthalein-dropper-1"
+              }
+            ]
+          },
+          "immersed-probe-instrument": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "ph-meter-1",
+                "definitionId": "ph-meter",
+                "instanceId": "ph-meter-1"
+              }
+            ]
+          },
+          "immersed-probe-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "erlenmeyer-flask-250ml-1",
+                "definitionId": "erlenmeyer-flask-250ml",
+                "instanceId": "erlenmeyer-flask-250ml-1"
+              }
+            ]
+          },
+          "rinse-water-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "titration-rinse-water",
+                "definitionId": "wash-bottle",
+                "instanceId": "titration-rinse-water"
+              }
+            ]
+          },
+          "rinsed-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "erlenmeyer-flask-250ml-1",
+                "definitionId": "erlenmeyer-flask-250ml",
+                "instanceId": "erlenmeyer-flask-250ml-1"
+              }
+            ]
+          }
+        },
+        "models": {
+          "unknown-acid-naoh": "unknown-acid-naoh"
+        },
+        "configuration": {
+          "endpointWindowMl": 0.05,
+          "persistenceSeconds": 5,
+          "maximumIncrementMl": 1,
+          "indicatorVolumeMl": 0.1,
+          "wasteProtocol": "Instructor-defined waste route required before running",
+          "preparationProtocol": "Instructor-defined sample/indicator/probe protocol required before running",
+          "conditioningVolumeMl": 1,
+          "tipPurgeMl": 0.2,
+          "rinseVolumeMl": 2,
+          "indicatorStartPh": 8.2,
+          "indicatorStrongPh": 10
+        }
+      },
+      "preserveIds": {
+        "actions": {
+          "approve-reference-configuration": "approve-reference-configuration",
+          "place-ring-stand": "place-ring-stand",
+          "mount-burette": "mount-burette",
+          "condition-burette-drain-residual": "condition-burette-drain-residual",
+          "condition-burette": "condition-burette",
+          "condition-burette-discard-rinsate": "condition-burette-discard-rinsate",
+          "seat-burette-funnel": "seat-burette-funnel",
+          "fill-burette": "fill-burette",
+          "fill-burette-purge-tip": "fill-burette-purge-tip",
+          "fill-burette-check-tip": "fill-burette-check-tip",
+          "remove-burette-funnel": "remove-burette-funnel",
+          "read-initial-burette": "read-initial-burette",
+          "record-initial-burette": "record-initial-burette",
+          "measure-acid": "measure-acid",
+          "transfer-acid-flask": "transfer-acid-flask",
+          "add-indicator": "add-indicator",
+          "position-flask-under-burette": "position-flask-under-burette",
+          "deliver-titrant": "deliver-titrant",
+          "deliver-titrant-mix": "deliver-titrant-mix",
+          "deliver-titrant-observe": "deliver-titrant-observe",
+          "deliver-titrant-record-point": "deliver-titrant-record-point",
+          "deliver-titrant-decide": "deliver-titrant-decide",
+          "deliver-titrant-read-final": "deliver-titrant-read-final",
+          "confirm-endpoint": "confirm-endpoint",
+          "place-ph-meter-on-workbench": "place-ph-meter-on-workbench",
+          "confirm-ph-meter-ready": "confirm-ph-meter-ready",
+          "immerse-endpoint-ph-probe": "immerse-endpoint-ph-probe",
+          "read-endpoint-ph": "read-endpoint-ph",
+          "record-endpoint-ph": "record-endpoint-ph",
+          "record-final-burette": "record-final-burette",
+          "calculate-acid-molarity": "calculate-acid-molarity",
+          "dispose-reference-mixture": "dispose-reference-mixture",
+          "dispose-reference-mixture-rinse": "dispose-reference-mixture-rinse",
+          "dispose-reference-mixture-discard-rinse": "dispose-reference-mixture-discard-rinse",
+          "deliver-titrant-retry-dispose": "deliver-titrant-retry-dispose",
+          "deliver-titrant-retry-dispose-rinse": "deliver-titrant-retry-dispose-rinse",
+          "deliver-titrant-retry-dispose-discard-rinse": "deliver-titrant-retry-dispose-discard-rinse",
+          "deliver-titrant-retry-reset": "deliver-titrant-retry-reset"
+        },
+        "nodes": {
+          "approve-reference-configuration-node": "approve-reference-configuration-node",
+          "place-ring-stand-node": "place-ring-stand-node",
+          "mount-burette-node": "mount-burette-node",
+          "condition-burette-drain-residual-node": "condition-burette-drain-residual-node",
+          "condition-burette-node": "condition-burette-node",
+          "condition-burette-discard-rinsate-node": "condition-burette-discard-rinsate-node",
+          "seat-burette-funnel-node": "seat-burette-funnel-node",
+          "fill-burette-node": "fill-burette-node",
+          "fill-burette-purge-tip-node": "fill-burette-purge-tip-node",
+          "fill-burette-check-tip-node": "fill-burette-check-tip-node",
+          "remove-burette-funnel-node": "remove-burette-funnel-node",
+          "read-initial-burette-node": "read-initial-burette-node",
+          "record-initial-burette-node": "record-initial-burette-node",
+          "measure-acid-node": "measure-acid-node",
+          "transfer-acid-flask-node": "transfer-acid-flask-node",
+          "add-indicator-node": "add-indicator-node",
+          "position-flask-under-burette-node": "position-flask-under-burette-node",
+          "deliver-titrant-node": "deliver-titrant-node",
+          "deliver-titrant-mix-node": "deliver-titrant-mix-node",
+          "deliver-titrant-observe-node": "deliver-titrant-observe-node",
+          "deliver-titrant-record-point-node": "deliver-titrant-record-point-node",
+          "deliver-titrant-decide-node": "deliver-titrant-decide-node",
+          "deliver-titrant-read-final-node": "deliver-titrant-read-final-node",
+          "confirm-endpoint-node": "confirm-endpoint-node",
+          "place-ph-meter-on-workbench-node": "place-ph-meter-on-workbench-node",
+          "confirm-ph-meter-ready-node": "confirm-ph-meter-ready-node",
+          "immerse-endpoint-ph-probe-node": "immerse-endpoint-ph-probe-node",
+          "read-endpoint-ph-node": "read-endpoint-ph-node",
+          "record-endpoint-ph-node": "record-endpoint-ph-node",
+          "record-final-burette-node": "record-final-burette-node",
+          "calculate-acid-molarity-node": "calculate-acid-molarity-node",
+          "dispose-reference-mixture-node": "dispose-reference-mixture-node",
+          "dispose-reference-mixture-rinse-node": "dispose-reference-mixture-rinse-node",
+          "dispose-reference-mixture-discard-rinse-node": "dispose-reference-mixture-discard-rinse-node",
+          "deliver-titrant-retry-dispose-node": "deliver-titrant-retry-dispose-node",
+          "deliver-titrant-retry-dispose-rinse-node": "deliver-titrant-retry-dispose-rinse-node",
+          "deliver-titrant-retry-dispose-discard-rinse-node": "deliver-titrant-retry-dispose-discard-rinse-node",
+          "deliver-titrant-retry-reset-node": "deliver-titrant-retry-reset-node"
+        },
+        "references": {
+          "deliver-titrant": "deliver-titrant",
+          "acid-aliquot-volume": "acid-aliquot-volume",
+          "burette-initial-volume": "burette-initial-volume",
+          "burette-final-volume": "burette-final-volume",
+          "ph-meter-ready": "ph-meter-ready",
+          "endpoint-ph": "endpoint-ph",
+          "acid-molarity": "acid-molarity"
+        }
+      }
+    }
+  ],
+  "compositionStart": {
+    "kind": "technique-port",
+    "instanceId": "investigation",
+    "portId": "entry"
+  },
+  "compositionConnections": [],
+  "reachabilityWitnesses": [
+    {
+      "id": "default",
+      "configuration": {},
+      "approvalGates": {}
+    }
+  ]
+}

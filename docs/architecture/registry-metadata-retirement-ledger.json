@@ -1,0 +1,1722 @@
+{
+  "schema": "lab-studio/registry-metadata-retirement-ledger@1",
+  "scope": "verification-20260913/repair-registry-metadata",
+  "policy": [
+    "This is a historical metadata archive. It is not an active content registry and cannot establish a current action, source mapping, runtime behavior, scientific claim, or rendering state.",
+    "Retired rows are preserved exactly from the frozen candidate input. Reactivation requires current source-owner evidence; an ID or label resemblance alone is insufficient.",
+    "Composition-preserved rows remain active in the source trace registry because their explicit preserveIds mappings and compiler witness evidence establish current composed identities even though the raw-only checker cannot resolve them."
+  ],
+  "inputHashes": {
+    "src/equipment/visualStateRegistry.json": "00aba94d43bb47ece6d8f6c51bd41041893d13aebde1a842c7672a39c9125317",
+    "src/domain/atomRegistry.json": "cb50922d1a36e0db234353494cce354e11400f58572d610ea833bd338bdd5a85",
+    "docs/architecture/source-trace-registry.json": "125284e754a1cacf66205f21bad3dac90f3ab7a635361e7f51e45c1497ffa312"
+  },
+  "retiredAtomContentExamples": [
+    {
+      "atomId": "atom.transfer.charge-developing-chamber",
+      "contentExample": {
+        "owner": "technique:paper-chromatography",
+        "actionId": "charge-chromatography-chamber"
+      },
+      "disposition": "retired-stale-raw-owner",
+      "reason": "The raw owner/action is absent from the current catalog. No replacement action was chosen without exact current source-owner authority."
+    },
+    {
+      "atomId": "atom.spotSample.apply-baseline-spot",
+      "contentExample": {
+        "owner": "technique:paper-chromatography",
+        "actionId": "spot-sample"
+      },
+      "disposition": "retired-stale-raw-owner",
+      "reason": "The raw owner/action is absent from the current catalog. No replacement action was chosen without exact current source-owner authority."
+    },
+    {
+      "atomId": "atom.developChromatogram.develop-strip",
+      "contentExample": {
+        "owner": "technique:paper-chromatography",
+        "actionId": "develop-paper"
+      },
+      "disposition": "retired-stale-raw-owner",
+      "reason": "The raw owner/action is absent from the current catalog. No replacement action was chosen without exact current source-owner authority."
+    },
+    {
+      "atomId": "atom.transfer.microsample-portion",
+      "contentExample": {
+        "owner": "lab:bonding-unknown-solids",
+        "actionId": "inv6-known-dispense-aqueous-microsample"
+      },
+      "disposition": "retired-stale-raw-owner",
+      "reason": "The raw owner/action is absent from the current catalog. No replacement action was chosen without exact current source-owner authority."
+    },
+    {
+      "atomId": "atom.transfer.microsample-portion",
+      "contentExample": {
+        "owner": "lab:bonding-unknown-solids",
+        "actionId": "inv6-unknown-dispense-aqueous-microsample"
+      },
+      "disposition": "retired-stale-raw-owner",
+      "reason": "The raw owner/action is absent from the current catalog. No replacement action was chosen without exact current source-owner authority."
+    },
+    {
+      "atomId": "atom.transfer.apply-test-solvent",
+      "contentExample": {
+        "owner": "lab:bonding-unknown-solids",
+        "actionId": "inv6-known-add-water-solvent"
+      },
+      "disposition": "retired-stale-raw-owner",
+      "reason": "The raw owner/action is absent from the current catalog. No replacement action was chosen without exact current source-owner authority."
+    },
+    {
+      "atomId": "atom.transfer.apply-test-solvent",
+      "contentExample": {
+        "owner": "lab:bonding-unknown-solids",
+        "actionId": "inv6-known-add-ethanol-solvent"
+      },
+      "disposition": "retired-stale-raw-owner",
+      "reason": "The raw owner/action is absent from the current catalog. No replacement action was chosen without exact current source-owner authority."
+    },
+    {
+      "atomId": "atom.observe.read-aqueous-conductivity",
+      "contentExample": {
+        "owner": "lab:bonding-unknown-solids",
+        "actionId": "inv6-known-read-aqueous-conductivity"
+      },
+      "disposition": "retired-stale-raw-owner",
+      "reason": "The raw owner/action is absent from the current catalog. No replacement action was chosen without exact current source-owner authority."
+    },
+    {
+      "atomId": "atom.observe.read-ph-indicator",
+      "contentExample": {
+        "owner": "lab:bonding-unknown-solids",
+        "actionId": "inv6-known-read-ph-indicator"
+      },
+      "disposition": "retired-stale-raw-owner",
+      "reason": "The raw owner/action is absent from the current catalog. No replacement action was chosen without exact current source-owner authority."
+    },
+    {
+      "atomId": "atom.place.melting-point-sample",
+      "contentExample": {
+        "owner": "lab:bonding-unknown-solids",
+        "actionId": "inv6-known-stage-melting-sample"
+      },
+      "disposition": "retired-stale-raw-owner",
+      "reason": "The raw owner/action is absent from the current catalog. No replacement action was chosen without exact current source-owner authority."
+    },
+    {
+      "atomId": "atom.observe.read-melting-behavior",
+      "contentExample": {
+        "owner": "lab:bonding-unknown-solids",
+        "actionId": "inv6-known-read-melting-behavior"
+      },
+      "disposition": "retired-stale-raw-owner",
+      "reason": "The raw owner/action is absent from the current catalog. No replacement action was chosen without exact current source-owner authority."
+    },
+    {
+      "atomId": "atom.observe.test-magnetic-response",
+      "contentExample": {
+        "owner": "lab:bonding-unknown-solids",
+        "actionId": "inv6-known-test-magnetic-response"
+      },
+      "disposition": "retired-stale-raw-owner",
+      "reason": "The raw owner/action is absent from the current catalog. No replacement action was chosen without exact current source-owner authority."
+    },
+    {
+      "atomId": "atom.transfer.dispose-to-waste-stream",
+      "contentExample": {
+        "owner": "lab:bonding-unknown-solids",
+        "actionId": "inv6-known-dispose-aqueous-stream"
+      },
+      "disposition": "retired-stale-raw-owner",
+      "reason": "The raw owner/action is absent from the current catalog. No replacement action was chosen without exact current source-owner authority."
+    },
+    {
+      "atomId": "atom.transfer.dispose-to-waste-stream",
+      "contentExample": {
+        "owner": "lab:bonding-unknown-solids",
+        "actionId": "inv6-known-dispose-organic-stream"
+      },
+      "disposition": "retired-stale-raw-owner",
+      "reason": "The raw owner/action is absent from the current catalog. No replacement action was chosen without exact current source-owner authority."
+    },
+    {
+      "atomId": "atom.place.developing-chamber",
+      "contentExample": {
+        "owner": "technique:paper-chromatography",
+        "actionId": "place-chamber"
+      },
+      "disposition": "retired-stale-raw-owner",
+      "reason": "The raw owner/action is absent from the current catalog. No replacement action was chosen without exact current source-owner authority."
+    },
+    {
+      "atomId": "atom.place.stationary-phase",
+      "contentExample": {
+        "owner": "technique:paper-chromatography",
+        "actionId": "place-paper-flat"
+      },
+      "disposition": "retired-stale-raw-owner",
+      "reason": "The raw owner/action is absent from the current catalog. No replacement action was chosen without exact current source-owner authority."
+    },
+    {
+      "atomId": "atom.transfer.load-spotting-tool",
+      "contentExample": {
+        "owner": "technique:paper-chromatography",
+        "actionId": "load-capillary"
+      },
+      "disposition": "retired-stale-raw-owner",
+      "reason": "The raw owner/action is absent from the current catalog. No replacement action was chosen without exact current source-owner authority."
+    }
+  ],
+  "quickAcheAtomCorrections": [
+    {
+      "contentExample": {
+        "owner": "technique:quick-ache-extraction-recovery",
+        "actionId": "qar-precipitate-recovered-component"
+      },
+      "fromAtomId": "atom.precipitate.form-gravimetric-solid",
+      "toAtomId": "atom.observe.fraction-observe-residue",
+      "actionAtomId": "atom.observe.fraction-observe-residue",
+      "actionVerb": "observe",
+      "fromAtomVerb": "precipitate",
+      "toAtomVerb": "observe",
+      "disposition": "moved-to-current-action-atom",
+      "reason": "The active action declares the destination atomId and its verb matches the destination atom."
+    },
+    {
+      "contentExample": {
+        "owner": "technique:quick-ache-extraction-recovery",
+        "actionId": "qar-recover-organic-component"
+      },
+      "fromAtomId": "atom.precipitate.form-gravimetric-solid",
+      "toAtomId": "atom.dry.fraction-remove-solvent",
+      "actionAtomId": "atom.dry.fraction-remove-solvent",
+      "actionVerb": "dry",
+      "fromAtomVerb": "precipitate",
+      "toAtomVerb": "dry",
+      "disposition": "moved-to-current-action-atom",
+      "reason": "The active action declares the destination atomId and its verb matches the destination atom."
+    },
+    {
+      "contentExample": {
+        "owner": "technique:quick-ache-extraction-recovery",
+        "actionId": "qar-recover-aqueous-component"
+      },
+      "fromAtomId": "atom.precipitate.form-gravimetric-solid",
+      "toAtomId": "atom.dry.fraction-remove-solvent",
+      "actionAtomId": "atom.dry.fraction-remove-solvent",
+      "actionVerb": "dry",
+      "fromAtomVerb": "precipitate",
+      "toAtomVerb": "dry",
+      "disposition": "moved-to-current-action-atom",
+      "reason": "The active action declares the destination atomId and its verb matches the destination atom."
+    },
+    {
+      "contentExample": {
+        "owner": "technique:quick-ache-extraction-recovery",
+        "actionId": "qar-wash-organic-solid"
+      },
+      "fromAtomId": "atom.rinse.wash-recovered-fraction",
+      "toAtomId": "atom.observe.fraction-observe-residue",
+      "actionAtomId": "atom.observe.fraction-observe-residue",
+      "actionVerb": "observe",
+      "fromAtomVerb": "rinse",
+      "toAtomVerb": "observe",
+      "disposition": "moved-to-current-action-atom",
+      "reason": "The active action declares the destination atomId and its verb matches the destination atom."
+    },
+    {
+      "contentExample": {
+        "owner": "technique:quick-ache-extraction-recovery",
+        "actionId": "qar-wash-aqueous-solid"
+      },
+      "fromAtomId": "atom.rinse.wash-recovered-fraction",
+      "toAtomId": "atom.observe.fraction-observe-residue",
+      "actionAtomId": "atom.observe.fraction-observe-residue",
+      "actionVerb": "observe",
+      "fromAtomVerb": "rinse",
+      "toAtomVerb": "observe",
+      "disposition": "moved-to-current-action-atom",
+      "reason": "The active action declares the destination atomId and its verb matches the destination atom."
+    }
+  ],
+  "retiredSourceTraces": [
+    {
+      "trace": {
+        "ownerType": "technique",
+        "ownerId": "paper-chromatography",
+        "actionId": "place-chamber",
+        "atomId": "atom.place.developing-chamber",
+        "sourceFile": "sticky-question-paper-chromatography_2026-07-27.md",
+        "sourceTable": "apparatus",
+        "step": "CHR-00",
+        "basis": "F"
+      },
+      "disposition": "retired-ambiguous-current-variants",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "paper-chromatography",
+          "actionId": "place-water-chamber"
+        },
+        {
+          "ownerType": "technique",
+          "ownerId": "paper-chromatography",
+          "actionId": "place-propanol-chamber"
+        }
+      ],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    },
+    {
+      "trace": {
+        "ownerType": "technique",
+        "ownerId": "paper-chromatography",
+        "actionId": "place-paper-flat",
+        "atomId": "atom.place.stationary-phase",
+        "sourceFile": "sticky-question-paper-chromatography_2026-07-27.md",
+        "sourceTable": "apparatus",
+        "step": "CHR-02",
+        "basis": "F"
+      },
+      "disposition": "retired-ambiguous-current-variants",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "paper-chromatography",
+          "actionId": "place-water-paper"
+        },
+        {
+          "ownerType": "technique",
+          "ownerId": "paper-chromatography",
+          "actionId": "place-propanol-paper"
+        }
+      ],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    },
+    {
+      "trace": {
+        "ownerType": "technique",
+        "ownerId": "paper-chromatography",
+        "actionId": "load-capillary",
+        "atomId": "atom.transfer.load-spotting-tool",
+        "sourceFile": "sticky-question-paper-chromatography_2026-07-27.md",
+        "sourceTable": "apparatus",
+        "step": "CHR-03",
+        "basis": "F/R/C"
+      },
+      "disposition": "retired-ambiguous-current-variants",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "paper-chromatography",
+          "actionId": "load-water-capillary"
+        },
+        {
+          "ownerType": "technique",
+          "ownerId": "paper-chromatography",
+          "actionId": "load-propanol-capillary"
+        }
+      ],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    },
+    {
+      "trace": {
+        "ownerType": "technique",
+        "ownerId": "paper-chromatography",
+        "actionId": "spot-sample",
+        "atomId": "atom.spotSample.apply-baseline-spot",
+        "sourceFile": "sticky-question-paper-chromatography_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "TR-04",
+        "basis": "M/R"
+      },
+      "disposition": "retired-ambiguous-current-variants",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "paper-chromatography",
+          "actionId": "spot-water-sample"
+        },
+        {
+          "ownerType": "technique",
+          "ownerId": "paper-chromatography",
+          "actionId": "spot-propanol-sample"
+        }
+      ],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    },
+    {
+      "trace": {
+        "ownerType": "technique",
+        "ownerId": "paper-chromatography",
+        "actionId": "develop-paper",
+        "atomId": "atom.developChromatogram.develop-strip",
+        "sourceFile": "sticky-question-paper-chromatography_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "TR-06",
+        "basis": "M/R"
+      },
+      "disposition": "retired-ambiguous-current-variants",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "paper-chromatography",
+          "actionId": "develop-water-paper"
+        },
+        {
+          "ownerType": "technique",
+          "ownerId": "paper-chromatography",
+          "actionId": "develop-propanol-paper"
+        }
+      ],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    },
+    {
+      "trace": {
+        "ownerType": "technique",
+        "ownerId": "paper-chromatography",
+        "actionId": "charge-chromatography-chamber",
+        "atomId": "atom.transfer.charge-developing-chamber",
+        "sourceFile": "sticky-question-paper-chromatography_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "TR-02",
+        "basis": "M/C"
+      },
+      "disposition": "retired-ambiguous-current-variants",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "paper-chromatography",
+          "actionId": "add-water-solvent"
+        },
+        {
+          "ownerType": "technique",
+          "ownerId": "paper-chromatography",
+          "actionId": "add-propanol-solvent"
+        }
+      ],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    },
+    {
+      "trace": {
+        "ownerType": "technique",
+        "ownerId": "paper-chromatography",
+        "actionId": "remove-developed-paper",
+        "atomId": "atom.place.remove-developed-strip",
+        "sourceFile": "sticky-question-paper-chromatography_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "TR-09",
+        "basis": "R"
+      },
+      "disposition": "retired-ambiguous-current-variants",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "paper-chromatography",
+          "actionId": "remove-water-paper"
+        },
+        {
+          "ownerType": "technique",
+          "ownerId": "paper-chromatography",
+          "actionId": "remove-propanol-paper"
+        }
+      ],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    },
+    {
+      "trace": {
+        "ownerType": "technique",
+        "ownerId": "paper-chromatography",
+        "actionId": "place-measuring-ruler",
+        "atomId": "atom.place.measuring-ruler",
+        "sourceFile": "sticky-question-paper-chromatography_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "TR-12",
+        "basis": "M"
+      },
+      "disposition": "retired-existing-current-canonical-trace",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "paper-chromatography",
+          "actionId": "place-metric-ruler"
+        }
+      ],
+      "authorityNeeded": null
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "bonding-unknown-solids",
+        "actionId": "inv6-known-dispense-aqueous-microsample",
+        "atomId": "atom.transfer.microsample-portion",
+        "sourceFile": "bonding-in-unknown-solids_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-02",
+        "basis": "R/C"
+      },
+      "disposition": "retired-existing-current-canonical-trace",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "bonding-solids-tests",
+          "actionId": "dispense-dry-microsample"
+        }
+      ],
+      "authorityNeeded": null
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "bonding-unknown-solids",
+        "actionId": "inv6-known-dispense-organic-microsample",
+        "atomId": "atom.transfer.microsample-portion",
+        "sourceFile": "bonding-in-unknown-solids_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-02",
+        "basis": "R/C"
+      },
+      "disposition": "retired-existing-current-canonical-trace",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "bonding-solids-tests",
+          "actionId": "dispense-dry-microsample"
+        }
+      ],
+      "authorityNeeded": null
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "bonding-unknown-solids",
+        "actionId": "inv6-known-dispense-dry-microsample",
+        "atomId": "atom.transfer.microsample-portion",
+        "sourceFile": "bonding-in-unknown-solids_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-02",
+        "basis": "R/C"
+      },
+      "disposition": "retired-existing-current-canonical-trace",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "bonding-solids-tests",
+          "actionId": "dispense-dry-microsample"
+        }
+      ],
+      "authorityNeeded": null
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "bonding-unknown-solids",
+        "actionId": "inv6-known-add-water-solvent",
+        "atomId": "atom.transfer.apply-test-solvent",
+        "sourceFile": "bonding-in-unknown-solids_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-03",
+        "basis": "M/C"
+      },
+      "disposition": "retired-no-current-canonical-trace",
+      "currentCanonicalCandidates": [],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "bonding-unknown-solids",
+        "actionId": "inv6-known-add-ethanol-solvent",
+        "atomId": "atom.transfer.apply-test-solvent",
+        "sourceFile": "bonding-in-unknown-solids_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-03",
+        "basis": "M/C"
+      },
+      "disposition": "retired-no-current-canonical-trace",
+      "currentCanonicalCandidates": [],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "bonding-unknown-solids",
+        "actionId": "inv6-known-stage-melting-sample",
+        "atomId": "atom.place.melting-point-sample",
+        "sourceFile": "bonding-in-unknown-solids_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-03",
+        "basis": "M/C"
+      },
+      "disposition": "retired-existing-current-canonical-trace",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "bonding-solids-tests",
+          "actionId": "stage-melting-sample"
+        }
+      ],
+      "authorityNeeded": null
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "bonding-unknown-solids",
+        "actionId": "inv6-known-read-aqueous-conductivity",
+        "atomId": "atom.observe.read-aqueous-conductivity",
+        "sourceFile": "bonding-in-unknown-solids_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-04",
+        "basis": "M"
+      },
+      "disposition": "retired-existing-current-canonical-trace",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "bonding-solids-tests",
+          "actionId": "read-aqueous-conductivity"
+        }
+      ],
+      "authorityNeeded": null
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "bonding-unknown-solids",
+        "actionId": "inv6-known-read-ph-indicator",
+        "atomId": "atom.observe.read-ph-indicator",
+        "sourceFile": "bonding-in-unknown-solids_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-04",
+        "basis": "M"
+      },
+      "disposition": "retired-no-current-canonical-trace",
+      "currentCanonicalCandidates": [],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "bonding-unknown-solids",
+        "actionId": "inv6-known-read-melting-behavior",
+        "atomId": "atom.observe.read-melting-behavior",
+        "sourceFile": "bonding-in-unknown-solids_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-04",
+        "basis": "M"
+      },
+      "disposition": "retired-existing-current-canonical-trace",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "bonding-solids-tests",
+          "actionId": "read-melting-behavior"
+        }
+      ],
+      "authorityNeeded": null
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "bonding-unknown-solids",
+        "actionId": "inv6-known-test-magnetic-response",
+        "atomId": "atom.observe.test-magnetic-response",
+        "sourceFile": "bonding-in-unknown-solids_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-04",
+        "basis": "M"
+      },
+      "disposition": "retired-existing-current-canonical-trace",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "bonding-solids-tests",
+          "actionId": "test-magnetic-response"
+        }
+      ],
+      "authorityNeeded": null
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "bonding-unknown-solids",
+        "actionId": "inv6-known-dispose-aqueous-stream",
+        "atomId": "atom.transfer.dispose-to-waste-stream",
+        "sourceFile": "bonding-in-unknown-solids_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-06",
+        "basis": "M/C"
+      },
+      "disposition": "retired-no-current-canonical-trace",
+      "currentCanonicalCandidates": [],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "bonding-unknown-solids",
+        "actionId": "inv6-known-dispose-organic-stream",
+        "atomId": "atom.transfer.dispose-to-waste-stream",
+        "sourceFile": "bonding-in-unknown-solids_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-06",
+        "basis": "M/C"
+      },
+      "disposition": "retired-no-current-canonical-trace",
+      "currentCanonicalCandidates": [],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "bonding-unknown-solids",
+        "actionId": "inv6-unknown-dispense-aqueous-microsample",
+        "atomId": "atom.transfer.microsample-portion",
+        "sourceFile": "bonding-in-unknown-solids_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-02",
+        "basis": "R/C"
+      },
+      "disposition": "retired-existing-current-canonical-trace",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "bonding-solids-tests",
+          "actionId": "dispense-dry-microsample"
+        }
+      ],
+      "authorityNeeded": null
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "bonding-unknown-solids",
+        "actionId": "inv6-unknown-dispense-organic-microsample",
+        "atomId": "atom.transfer.microsample-portion",
+        "sourceFile": "bonding-in-unknown-solids_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-02",
+        "basis": "R/C"
+      },
+      "disposition": "retired-existing-current-canonical-trace",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "bonding-solids-tests",
+          "actionId": "dispense-dry-microsample"
+        }
+      ],
+      "authorityNeeded": null
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "bonding-unknown-solids",
+        "actionId": "inv6-unknown-dispense-dry-microsample",
+        "atomId": "atom.transfer.microsample-portion",
+        "sourceFile": "bonding-in-unknown-solids_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-02",
+        "basis": "R/C"
+      },
+      "disposition": "retired-existing-current-canonical-trace",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "bonding-solids-tests",
+          "actionId": "dispense-dry-microsample"
+        }
+      ],
+      "authorityNeeded": null
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "bonding-unknown-solids",
+        "actionId": "inv6-unknown-add-water-solvent",
+        "atomId": "atom.transfer.apply-test-solvent",
+        "sourceFile": "bonding-in-unknown-solids_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-03",
+        "basis": "M/C"
+      },
+      "disposition": "retired-no-current-canonical-trace",
+      "currentCanonicalCandidates": [],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "bonding-unknown-solids",
+        "actionId": "inv6-unknown-add-ethanol-solvent",
+        "atomId": "atom.transfer.apply-test-solvent",
+        "sourceFile": "bonding-in-unknown-solids_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-03",
+        "basis": "M/C"
+      },
+      "disposition": "retired-no-current-canonical-trace",
+      "currentCanonicalCandidates": [],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "bonding-unknown-solids",
+        "actionId": "inv6-unknown-stage-melting-sample",
+        "atomId": "atom.place.melting-point-sample",
+        "sourceFile": "bonding-in-unknown-solids_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-03",
+        "basis": "M/C"
+      },
+      "disposition": "retired-existing-current-canonical-trace",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "bonding-solids-tests",
+          "actionId": "stage-melting-sample"
+        }
+      ],
+      "authorityNeeded": null
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "bonding-unknown-solids",
+        "actionId": "inv6-unknown-read-aqueous-conductivity",
+        "atomId": "atom.observe.read-aqueous-conductivity",
+        "sourceFile": "bonding-in-unknown-solids_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-04",
+        "basis": "M"
+      },
+      "disposition": "retired-existing-current-canonical-trace",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "bonding-solids-tests",
+          "actionId": "read-aqueous-conductivity"
+        }
+      ],
+      "authorityNeeded": null
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "bonding-unknown-solids",
+        "actionId": "inv6-unknown-read-ph-indicator",
+        "atomId": "atom.observe.read-ph-indicator",
+        "sourceFile": "bonding-in-unknown-solids_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-04",
+        "basis": "M"
+      },
+      "disposition": "retired-no-current-canonical-trace",
+      "currentCanonicalCandidates": [],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "bonding-unknown-solids",
+        "actionId": "inv6-unknown-read-melting-behavior",
+        "atomId": "atom.observe.read-melting-behavior",
+        "sourceFile": "bonding-in-unknown-solids_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-04",
+        "basis": "M"
+      },
+      "disposition": "retired-existing-current-canonical-trace",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "bonding-solids-tests",
+          "actionId": "read-melting-behavior"
+        }
+      ],
+      "authorityNeeded": null
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "bonding-unknown-solids",
+        "actionId": "inv6-unknown-test-magnetic-response",
+        "atomId": "atom.observe.test-magnetic-response",
+        "sourceFile": "bonding-in-unknown-solids_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-04",
+        "basis": "M"
+      },
+      "disposition": "retired-existing-current-canonical-trace",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "bonding-solids-tests",
+          "actionId": "test-magnetic-response"
+        }
+      ],
+      "authorityNeeded": null
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "bonding-unknown-solids",
+        "actionId": "inv6-unknown-dispose-aqueous-stream",
+        "atomId": "atom.transfer.dispose-to-waste-stream",
+        "sourceFile": "bonding-in-unknown-solids_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-06",
+        "basis": "M/C"
+      },
+      "disposition": "retired-no-current-canonical-trace",
+      "currentCanonicalCandidates": [],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "bonding-unknown-solids",
+        "actionId": "inv6-unknown-dispose-organic-stream",
+        "atomId": "atom.transfer.dispose-to-waste-stream",
+        "sourceFile": "bonding-in-unknown-solids_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-06",
+        "basis": "M/C"
+      },
+      "disposition": "retired-no-current-canonical-trace",
+      "currentCanonicalCandidates": [],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    },
+    {
+      "trace": {
+        "ownerType": "technique",
+        "ownerId": "redox-titration",
+        "actionId": "place-redox-flask",
+        "atomId": "atom.place.titration-receiver",
+        "sourceFile": "hydrogen-peroxide-redox-titration_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "ST-01",
+        "basis": "R/C"
+      },
+      "disposition": "retired-no-current-canonical-trace",
+      "currentCanonicalCandidates": [],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    },
+    {
+      "trace": {
+        "ownerType": "technique",
+        "ownerId": "redox-titration",
+        "actionId": "measure-analyte",
+        "atomId": "atom.measure.variable-volume",
+        "sourceFile": "hydrogen-peroxide-redox-titration_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "ST-02",
+        "basis": "M/C"
+      },
+      "disposition": "retired-ambiguous-current-variants",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "redox-titration",
+          "actionId": "measure-standardization-1-aliquot"
+        },
+        {
+          "ownerType": "technique",
+          "ownerId": "redox-titration",
+          "actionId": "measure-standardization-2-aliquot"
+        },
+        {
+          "ownerType": "technique",
+          "ownerId": "redox-titration",
+          "actionId": "measure-standardization-3-aliquot"
+        }
+      ],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    },
+    {
+      "trace": {
+        "ownerType": "technique",
+        "ownerId": "redox-titration",
+        "actionId": "transfer-analyte",
+        "atomId": "atom.transfer.measured-liquid",
+        "sourceFile": "hydrogen-peroxide-redox-titration_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "ST-02",
+        "basis": "M/C"
+      },
+      "disposition": "retired-ambiguous-current-variants",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "redox-titration",
+          "actionId": "transfer-standardization-1-aliquot"
+        },
+        {
+          "ownerType": "technique",
+          "ownerId": "redox-titration",
+          "actionId": "transfer-standardization-2-aliquot"
+        },
+        {
+          "ownerType": "technique",
+          "ownerId": "redox-titration",
+          "actionId": "transfer-standardization-3-aliquot"
+        }
+      ],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    },
+    {
+      "trace": {
+        "ownerType": "technique",
+        "ownerId": "redox-titration",
+        "actionId": "acidify-analyte",
+        "atomId": "atom.transfer.acidify-analyte",
+        "sourceFile": "hydrogen-peroxide-redox-titration_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "PA-03",
+        "basis": "M"
+      },
+      "disposition": "retired-ambiguous-current-variants",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "redox-titration",
+          "actionId": "acidify-practice-analyte"
+        },
+        {
+          "ownerType": "technique",
+          "ownerId": "redox-titration",
+          "actionId": "acidify-standardization-1-analyte"
+        },
+        {
+          "ownerType": "technique",
+          "ownerId": "redox-titration",
+          "actionId": "acidify-standardization-2-analyte"
+        },
+        {
+          "ownerType": "technique",
+          "ownerId": "redox-titration",
+          "actionId": "acidify-standardization-3-analyte"
+        }
+      ],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    },
+    {
+      "trace": {
+        "ownerType": "technique",
+        "ownerId": "redox-titration",
+        "actionId": "fill-permanganate-burette",
+        "atomId": "atom.transfer.fill-burette",
+        "sourceFile": "hydrogen-peroxide-redox-titration_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "ST-01",
+        "basis": "R/C"
+      },
+      "disposition": "retired-ambiguous-current-variants",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "redox-titration",
+          "actionId": "fill-practice-burette"
+        },
+        {
+          "ownerType": "technique",
+          "ownerId": "redox-titration",
+          "actionId": "fill-sample-a-1-burette"
+        },
+        {
+          "ownerType": "technique",
+          "ownerId": "redox-titration",
+          "actionId": "fill-sample-b-1-burette"
+        },
+        {
+          "ownerType": "technique",
+          "ownerId": "redox-titration",
+          "actionId": "fill-sample-b-2-burette"
+        }
+      ],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    },
+    {
+      "trace": {
+        "ownerType": "technique",
+        "ownerId": "redox-titration",
+        "actionId": "read-redox-initial-burette",
+        "atomId": "atom.measure.read-burette",
+        "sourceFile": "hydrogen-peroxide-redox-titration_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "ST-01",
+        "basis": "R/C"
+      },
+      "disposition": "retired-ambiguous-current-variants",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "redox-titration",
+          "actionId": "read-practice-initial-burette"
+        },
+        {
+          "ownerType": "technique",
+          "ownerId": "redox-titration",
+          "actionId": "read-standardization-1-initial-burette"
+        },
+        {
+          "ownerType": "technique",
+          "ownerId": "redox-titration",
+          "actionId": "read-standardization-2-initial-burette"
+        },
+        {
+          "ownerType": "technique",
+          "ownerId": "redox-titration",
+          "actionId": "read-standardization-3-initial-burette"
+        },
+        {
+          "ownerType": "technique",
+          "ownerId": "redox-titration",
+          "actionId": "read-sample-a-1-initial-burette"
+        },
+        {
+          "ownerType": "technique",
+          "ownerId": "redox-titration",
+          "actionId": "read-sample-a-2-initial-burette"
+        },
+        {
+          "ownerType": "technique",
+          "ownerId": "redox-titration",
+          "actionId": "read-sample-b-1-initial-burette"
+        },
+        {
+          "ownerType": "technique",
+          "ownerId": "redox-titration",
+          "actionId": "read-sample-b-2-initial-burette"
+        }
+      ],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    },
+    {
+      "trace": {
+        "ownerType": "technique",
+        "ownerId": "redox-titration",
+        "actionId": "deliver-permanganate",
+        "atomId": "atom.transfer.deliver-titrant",
+        "sourceFile": "hydrogen-peroxide-redox-titration_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "ST-03",
+        "basis": "M"
+      },
+      "disposition": "retired-ambiguous-current-variants",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "redox-titration",
+          "actionId": "dispense-standardization-1-permanganate"
+        },
+        {
+          "ownerType": "technique",
+          "ownerId": "redox-titration",
+          "actionId": "dispense-standardization-2-permanganate"
+        },
+        {
+          "ownerType": "technique",
+          "ownerId": "redox-titration",
+          "actionId": "dispense-standardization-3-permanganate"
+        }
+      ],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    },
+    {
+      "trace": {
+        "ownerType": "technique",
+        "ownerId": "beverage-ph-volume-titration",
+        "actionId": "assemble-burette-setup",
+        "atomId": "atom.place.mount-burette",
+        "sourceFile": "acid-in-fruit-juice-and-soft-drinks_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "IQ-04",
+        "basis": "M"
+      },
+      "disposition": "retired-no-current-canonical-trace",
+      "currentCanonicalCandidates": [],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    },
+    {
+      "trace": {
+        "ownerType": "technique",
+        "ownerId": "beverage-ph-volume-titration",
+        "actionId": "add-approved-indicator-and-probe",
+        "atomId": "atom.place.immersed-ph-probe",
+        "sourceFile": "acid-in-fruit-juice-and-soft-drinks_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "T-04",
+        "basis": "M"
+      },
+      "disposition": "retired-no-current-canonical-trace",
+      "currentCanonicalCandidates": [],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "beverage-acidity",
+        "actionId": "mount-quantitative-burette",
+        "atomId": "atom.place.mount-burette",
+        "sourceFile": "acid-in-fruit-juice-and-soft-drinks_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "IQ-04",
+        "basis": "M"
+      },
+      "disposition": "retired-no-current-canonical-trace",
+      "currentCanonicalCandidates": [],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "beverage-acidity",
+        "actionId": "place-beverage-ph-probe",
+        "atomId": "atom.place.immersed-ph-probe",
+        "sourceFile": "acid-in-fruit-juice-and-soft-drinks_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "T-04",
+        "basis": "M"
+      },
+      "disposition": "retired-no-current-canonical-trace",
+      "currentCanonicalCandidates": [],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    },
+    {
+      "trace": {
+        "ownerType": "technique",
+        "ownerId": "redox-titration",
+        "actionId": "mount-permanganate-burette",
+        "atomId": "atom.place.mount-burette",
+        "sourceFile": "hydrogen-peroxide-redox-titration_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "ST-01",
+        "basis": "R/C"
+      },
+      "disposition": "retired-existing-current-canonical-trace",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "redox-titration",
+          "actionId": "mount-redox-burette"
+        }
+      ],
+      "authorityNeeded": null
+    },
+    {
+      "trace": {
+        "ownerType": "technique",
+        "ownerId": "bonding-solids-tests",
+        "actionId": "dispense-aqueous-microsample",
+        "atomId": "atom.transfer.microsample-portion",
+        "sourceFile": "bonding-in-unknown-solids_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-02",
+        "basis": "R/C"
+      },
+      "disposition": "retired-existing-current-canonical-trace",
+      "currentCanonicalCandidates": [
+        {
+          "ownerType": "technique",
+          "ownerId": "bonding-solids-tests",
+          "actionId": "dispense-dry-microsample"
+        }
+      ],
+      "authorityNeeded": null
+    },
+    {
+      "trace": {
+        "ownerType": "technique",
+        "ownerId": "bonding-solids-tests",
+        "actionId": "test-water-solubility",
+        "atomId": "atom.transfer.apply-test-solvent",
+        "sourceFile": "bonding-in-unknown-solids_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-03",
+        "basis": "M/C"
+      },
+      "disposition": "retired-no-current-canonical-trace",
+      "currentCanonicalCandidates": [],
+      "authorityNeeded": "A source-owner decision is required before any replacement action is selected."
+    }
+  ],
+  "retainedCompositionTraceExclusions": [
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "marble-statue-kinetics",
+        "actionId": "assemble-gas-apparatus",
+        "atomId": "atom.place.gas-collection-apparatus",
+        "sourceFile": "how-long-will-that-marble-statue-last_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "T-02",
+        "basis": "M"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "marble-statue-kinetics",
+        "actionId": "connect-gas-syringe",
+        "atomId": "atom.place.gas-delivery-train",
+        "sourceFile": "how-long-will-that-marble-statue-last_2026-07-27.md",
+        "sourceTable": "apparatus",
+        "step": "GAS-02",
+        "basis": "F"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "marble-statue-kinetics",
+        "actionId": "record-acid-2m-run",
+        "atomId": "atom.record.timed-gas-volume",
+        "sourceFile": "how-long-will-that-marble-statue-last_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "T-15",
+        "basis": "M"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "marble-statue-kinetics",
+        "actionId": "transfer-practice-acid",
+        "atomId": "atom.transfer.measured-liquid",
+        "sourceFile": "how-long-will-that-marble-statue-last_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "T-05",
+        "basis": "M"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "marble-statue-kinetics",
+        "actionId": "zero-gas-syringe",
+        "atomId": "atom.observe.zero-gas-collection-instrument",
+        "sourceFile": "how-long-will-that-marble-statue-last_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "T-10",
+        "basis": "R"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "marble-statue-kinetics",
+        "actionId": "measure-practice-acid",
+        "atomId": "atom.measure.variable-volume",
+        "sourceFile": "how-long-will-that-marble-statue-last_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "T-03",
+        "basis": "M/C"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "marble-statue-kinetics",
+        "actionId": "weigh-practice-marble",
+        "atomId": "atom.weigh.solid-reactant-portion",
+        "sourceFile": "how-long-will-that-marble-statue-last_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "T-07",
+        "basis": "M"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "marble-statue-kinetics",
+        "actionId": "transfer-practice-marble",
+        "atomId": "atom.transfer.initiate-solid-reactant-contact",
+        "sourceFile": "how-long-will-that-marble-statue-last_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "T-11",
+        "basis": "M/R"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "marble-statue-kinetics",
+        "actionId": "record-practice-run",
+        "atomId": "atom.record.timed-gas-volume",
+        "sourceFile": "how-long-will-that-marble-statue-last_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "T-15",
+        "basis": "M"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "marble-statue-kinetics",
+        "actionId": "record-acid-4m-run",
+        "atomId": "atom.record.timed-gas-volume",
+        "sourceFile": "how-long-will-that-marble-statue-last_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "T-15",
+        "basis": "M"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "marble-statue-kinetics",
+        "actionId": "record-acid-6m-run",
+        "atomId": "atom.record.timed-gas-volume",
+        "sourceFile": "how-long-will-that-marble-statue-last_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "T-15",
+        "basis": "M"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "crystal-violet-rate-law",
+        "actionId": "cv11-measure-kinetic-cv",
+        "atomId": "atom.measure.variable-volume",
+        "sourceFile": "crystal-violet-rate-law_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-01",
+        "basis": "M/R"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "crystal-violet-rate-law",
+        "actionId": "cv11-measure-kinetic-naoh",
+        "atomId": "atom.measure.variable-volume",
+        "sourceFile": "crystal-violet-rate-law_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-01",
+        "basis": "M/R"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "crystal-violet-rate-law",
+        "actionId": "cv11-transfer-cv-to-reaction-vessel",
+        "atomId": "atom.transfer.measured-liquid",
+        "sourceFile": "crystal-violet-rate-law_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-01",
+        "basis": "M/R"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "crystal-violet-rate-law",
+        "actionId": "cv11-start-reaction-with-naoh",
+        "atomId": "atom.transfer.initiate-timed-reaction",
+        "sourceFile": "crystal-violet-rate-law_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-03",
+        "basis": "M"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "crystal-violet-rate-law",
+        "actionId": "cv11-measure-reacting-aliquot",
+        "atomId": "atom.measure.photometric-aliquot",
+        "sourceFile": "crystal-violet-rate-law_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-04",
+        "basis": "R/C"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "crystal-violet-rate-law",
+        "actionId": "cv11-fill-kinetic-cuvette",
+        "atomId": "atom.transfer.fill-cuvette",
+        "sourceFile": "crystal-violet-rate-law_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-04",
+        "basis": "R/C"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "crystal-violet-rate-law",
+        "actionId": "cv11-insert-kinetic-cuvette",
+        "atomId": "atom.place.insert-cuvette",
+        "sourceFile": "crystal-violet-rate-law_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-04",
+        "basis": "R/C"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "crystal-violet-rate-law",
+        "actionId": "cv11-read-kinetic-absorbance-1",
+        "atomId": "atom.observe.read-photometer",
+        "sourceFile": "crystal-violet-rate-law_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-05",
+        "basis": "M"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "crystal-violet-rate-law",
+        "actionId": "cv11-record-kinetic-absorbance-1",
+        "atomId": "atom.record.photometer-reading",
+        "sourceFile": "crystal-violet-rate-law_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-06",
+        "basis": "M"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "crystal-violet-rate-law",
+        "actionId": "cv11-read-kinetic-absorbance-2",
+        "atomId": "atom.observe.read-photometer",
+        "sourceFile": "crystal-violet-rate-law_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-05",
+        "basis": "M"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "crystal-violet-rate-law",
+        "actionId": "cv11-record-kinetic-absorbance-2",
+        "atomId": "atom.record.photometer-reading",
+        "sourceFile": "crystal-violet-rate-law_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-06",
+        "basis": "M"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "crystal-violet-rate-law",
+        "actionId": "cv11-read-kinetic-absorbance-3",
+        "atomId": "atom.observe.read-photometer",
+        "sourceFile": "crystal-violet-rate-law_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-05",
+        "basis": "M"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "crystal-violet-rate-law",
+        "actionId": "cv11-record-kinetic-absorbance-3",
+        "atomId": "atom.record.photometer-reading",
+        "sourceFile": "crystal-violet-rate-law_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-06",
+        "basis": "M"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "crystal-violet-rate-law",
+        "actionId": "cv11-read-kinetic-absorbance-4",
+        "atomId": "atom.observe.read-photometer",
+        "sourceFile": "crystal-violet-rate-law_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-05",
+        "basis": "M"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "crystal-violet-rate-law",
+        "actionId": "cv11-record-kinetic-absorbance-4",
+        "atomId": "atom.record.photometer-reading",
+        "sourceFile": "crystal-violet-rate-law_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-06",
+        "basis": "M"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "crystal-violet-rate-law",
+        "actionId": "cv11-read-kinetic-absorbance-5",
+        "atomId": "atom.observe.read-photometer",
+        "sourceFile": "crystal-violet-rate-law_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-05",
+        "basis": "M"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "crystal-violet-rate-law",
+        "actionId": "cv11-record-kinetic-absorbance-5",
+        "atomId": "atom.record.photometer-reading",
+        "sourceFile": "crystal-violet-rate-law_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-06",
+        "basis": "M"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "crystal-violet-rate-law",
+        "actionId": "cv11-read-kinetic-absorbance-6",
+        "atomId": "atom.observe.read-photometer",
+        "sourceFile": "crystal-violet-rate-law_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-05",
+        "basis": "M"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "crystal-violet-rate-law",
+        "actionId": "cv11-record-kinetic-absorbance-6",
+        "atomId": "atom.record.photometer-reading",
+        "sourceFile": "crystal-violet-rate-law_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-06",
+        "basis": "M"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "crystal-violet-rate-law",
+        "actionId": "cv11-read-kinetic-absorbance-7",
+        "atomId": "atom.observe.read-photometer",
+        "sourceFile": "crystal-violet-rate-law_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-05",
+        "basis": "M"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "crystal-violet-rate-law",
+        "actionId": "cv11-record-kinetic-absorbance-7",
+        "atomId": "atom.record.photometer-reading",
+        "sourceFile": "crystal-violet-rate-law_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-06",
+        "basis": "M"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "crystal-violet-rate-law",
+        "actionId": "cv11-read-kinetic-absorbance-8",
+        "atomId": "atom.observe.read-photometer",
+        "sourceFile": "crystal-violet-rate-law_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-05",
+        "basis": "M"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    },
+    {
+      "trace": {
+        "ownerType": "lab",
+        "ownerId": "crystal-violet-rate-law",
+        "actionId": "cv11-record-kinetic-absorbance-8",
+        "atomId": "atom.record.photometer-reading",
+        "sourceFile": "crystal-violet-rate-law_2026-07-27.md",
+        "sourceTable": "phase",
+        "step": "K-06",
+        "basis": "M"
+      },
+      "disposition": "retained-current-composition-preserve-id",
+      "reason": "The action ID is an explicit preserveIds value in current lab composition; lane-12 compiler witness evidence was reviewed before this repair."
+    }
+  ]
+}
+

@@ -1,0 +1,1766 @@
+{
+  "id": "marble-gas-syringe-kinetics",
+  "title": "Gas-Syringe Kinetics with Marble Chips",
+  "learningGoal": "Assemble a safe expanding gas-collection path, use teacher-approved acid volume/concentration and marble-mass settings, collect a synchronized carbon-dioxide time series, distinguish simulator-generated series from student measurements, calculate an initial rate, and identify limits on the evidence.",
+  "requiredEquipment": [
+    "reagent-bottle",
+    "graduated-cylinder",
+    "erlenmeyer-flask-250ml",
+    "rubber-stopper-delivery-tube",
+    "gas-syringe",
+    "marble-chips",
+    "analytical-balance",
+    "watch-glass",
+    "stopwatch"
+  ],
+  "kineticsModels": [
+    {
+      "id": "marble-gas-syringe-model",
+      "type": "gasSyringe",
+      "timepointsS": [
+        0,
+        5,
+        10,
+        15,
+        20,
+        25,
+        30,
+        35,
+        40,
+        45
+      ],
+      "baseMaxVolumeMl": 70,
+      "baseRateConstant": 0.055,
+      "defaultVariable": "acidConcentration",
+      "controlled": {
+        "acidVolumeMl": 50,
+        "marbleMassG": 1.3,
+        "acidConcentrationM": 4,
+        "chipSize": "medium",
+        "temperatureC": 25
+      },
+      "conditions": [
+        {
+          "id": "guided-configuration",
+          "label": "Guided simulator configuration",
+          "variable": "acidConcentration",
+          "acidConcentrationM": 4,
+          "chipSize": "medium",
+          "temperatureC": 25,
+          "rateFactor": 1
+        }
+      ]
+    }
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "technique-hcl-bottle",
+        "definitionId": "reagent-bottle",
+        "label": "Guided HCl solution",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "Hydrochloric acid",
+          "volumeMl": 250,
+          "solutes": [
+            {
+              "id": "hydrochloric-acid",
+              "label": "Hydrochloric acid",
+              "amount": 1,
+              "unit": "mol"
+            }
+          ],
+          "concentration": {
+            "value": 4,
+            "unit": "M"
+          },
+          "contamination": [],
+          "temperatureC": 25,
+          "wetState": "wet",
+          "visualState": "clear-solution"
+        }
+      },
+      {
+        "id": "technique-graduated-cylinder",
+        "definitionId": "graduated-cylinder",
+        "label": "Graduated cylinder",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "technique-reaction-flask",
+        "definitionId": "erlenmeyer-flask-250ml",
+        "label": "Gas reaction flask",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "technique-delivery-stopper",
+        "definitionId": "rubber-stopper-delivery-tube",
+        "label": "Stopper and delivery tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "technique-gas-syringe",
+        "definitionId": "gas-syringe",
+        "label": "Gas syringe",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "technique-marble-chips",
+        "definitionId": "marble-chips",
+        "label": "Marble chips",
+        "location": "shelf",
+        "contents": {
+          "kind": "solid",
+          "label": "Calcium carbonate marble chips",
+          "massG": 10,
+          "solutes": [
+            {
+              "id": "calcium-carbonate",
+              "label": "Calcium carbonate",
+              "amount": 10,
+              "unit": "g"
+            }
+          ],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "solid"
+        }
+      },
+      {
+        "id": "technique-balance",
+        "definitionId": "analytical-balance",
+        "label": "Analytical balance",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "technique-watch-glass",
+        "definitionId": "watch-glass",
+        "label": "Tared watch glass",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "technique-stopwatch",
+        "definitionId": "stopwatch",
+        "label": "Stopwatch",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "gas-technique-connect-syringe",
+      "verb": "place",
+      "label": "Connect the gas syringe to the delivery tube",
+      "parameters": {
+        "equipmentDefinitionId": "gas-syringe",
+        "targetDefinitionId": "rubber-stopper-delivery-tube",
+        "snapZoneId": "delivery-tube-gas-syringe-port",
+        "beginEvidenceScopeId": "{{config.evidenceScopeId}}"
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "gas-syringe",
+        "targetDefinitionId": "rubber-stopper-delivery-tube",
+        "snapZoneId": "delivery-tube-gas-syringe-port",
+        "successCue": "The gas syringe is connected to the delivery tube.",
+        "invalidCue": "Connect the gas syringe to the seated delivery tube.",
+        "accessibleLabel": "Connect the gas syringe to the delivery tube."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Attach the gas syringe to the delivery tube so the train can be zeroed and leak-checked before it reaches the flask."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "Gas syringe connected; the train is not yet on the flask.",
+        "invalid": "Connect the gas syringe to the delivery tube."
+      },
+      "evidence": [
+        "apparatus",
+        "gas-syringe"
+      ],
+      "atomId": "atom.place.gas-delivery-train",
+      "equipmentRoleBindings": {
+        "gas-delivery-connector": "rubber-stopper-delivery-tube",
+        "gas-collection-instrument": "gas-syringe"
+      }
+    },
+    {
+      "id": "gas-technique-zero-syringe",
+      "verb": "observe",
+      "label": "Read the gas-syringe baseline and instrument scale",
+      "atomId": "atom.observe.zero-gas-collection-instrument",
+      "equipmentRoleBindings": {
+        "gas-collection-instrument": "gas-syringe"
+      },
+      "parameters": {
+        "note": "Read the syringe barrel and record the starting volume, the barrel capacity, and the smallest graduation you can resolve. The baseline is a student read; nothing assumes the plunger starts at 0.0 mL.",
+        "tag": "{{config.zeroNotebookTag}}",
+        "sourceDefinitionId": "gas-syringe",
+        "instrumentCapacityMl": "{{config.instrumentCapacityMl}}",
+        "instrumentGraduationMl": "{{config.instrumentGraduationMl}}",
+        "measurementId": "gas-technique-syringe-baseline",
+        "label": "Gas-syringe starting volume",
+        "unit": "mL",
+        "readingProvenance": "student instrument read",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Gas-syringe starting volume read from the barrel",
+        "inputMin": 0,
+        "inputMax": "{{config.instrumentCapacityMl}}",
+        "inputStep": "{{config.instrumentGraduationMl}}"
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "gas-syringe",
+        "stationId": "gas-syringe",
+        "successCue": "Gas syringe baseline recorded.",
+        "invalidCue": "Read the connected gas syringe before recording its baseline.",
+        "accessibleLabel": "Read the gas syringe barrel and record its baseline volume."
+      },
+      "prerequisites": [
+        {
+          "id": "technique-connected-train-required",
+          "type": "actionEvidence",
+          "label": "The gas syringe is connected to the delivery tube.",
+          "actionId": "gas-technique-connect-syringe"
+        }
+      ],
+      "stateChanges": [
+        "A fresh syringe starting-volume observation is available; it is not yet a notebook baseline."
+      ],
+      "invalidCases": [
+        {
+          "id": "assumed-zero",
+          "when": "The baseline is assumed rather than read from the barrel.",
+          "message": "An assumed zero is not a measurement.",
+          "recovery": "Read the barrel against its graduations and record the value you can resolve."
+        }
+      ],
+      "feedback": {
+        "success": "Gas syringe baseline recorded.",
+        "invalid": "Connect the gas syringe before reading its baseline."
+      },
+      "evidence": [
+        "zero",
+        "instrument-capacity",
+        "raw-precision"
+      ]
+    },
+    {
+      "id": "gas-technique-record-zero-baseline",
+      "verb": "record",
+      "label": "Record the gas-syringe baseline and readable scale",
+      "parameters": {
+        "measurementId": "gas-technique-syringe-baseline",
+        "label": "Gas-syringe starting volume",
+        "unit": "mL",
+        "copyExistingMeasurementOnly": true,
+        "instrumentCapacityMl": "{{config.instrumentCapacityMl}}",
+        "instrumentGraduationMl": "{{config.instrumentGraduationMl}}"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "measurementId",
+        "accessibleLabel": "Copy the observed syringe baseline and record its readable scale.",
+        "successCue": "The baseline is recorded separately from the instrument read.",
+        "invalidCue": "Read the syringe before recording its baseline."
+      },
+      "prerequisites": [
+        {
+          "id": "gas-technique-baseline-read-required",
+          "type": "measurementRecorded",
+          "label": "The gas-syringe starting volume was read.",
+          "measurementId": "gas-technique-syringe-baseline"
+        }
+      ],
+      "stateChanges": [
+        "The observed start, capacity, and graduation are recorded as the run baseline."
+      ],
+      "invalidCases": [
+        {
+          "id": "assumed-zero",
+          "when": "The baseline is assumed rather than read from the barrel.",
+          "message": "An assumed zero is not a measurement.",
+          "recovery": "Read the barrel against its graduations and record the value you can resolve."
+        }
+      ],
+      "feedback": {
+        "success": "The gas-syringe baseline is recorded.",
+        "invalid": "Read the syringe and its scale before recording the baseline."
+      },
+      "evidence": [
+        "record",
+        "measurement",
+        "gas-syringe-baseline"
+      ]
+    },
+    {
+      "id": "gas-technique-check-path",
+      "verb": "observe",
+      "label": "Verify the nonblocked expanding gas path",
+      "parameters": {
+        "note": "Before reactant contact, verify every connection is present, tubing is not kinked, the recorded baseline still stands, and the syringe plunger can expand freely. Reject a missing connection separately from a blocked pressure hazard; exact locking geometry remains teacher-confirmed.",
+        "tag": "{{config.pathCheckNotebookTag}}",
+        "safetyState": "nonblocked-expanding-path-verified-before-contact"
+      },
+      "prerequisites": [
+        {
+          "id": "technique-zero-required",
+          "type": "actionEvidence",
+          "label": "The gas syringe baseline is recorded.",
+          "actionId": "gas-technique-record-zero-baseline"
+        }
+      ],
+      "stateChanges": [
+        "Record the leak check, zero check, and expanding pressure-relief path."
+      ],
+      "invalidCases": [
+        {
+          "id": "incomplete-path",
+          "when": "A stopper, tube, or syringe connection is missing or leaking.",
+          "message": "The apparatus cannot provide valid carbon-dioxide volume evidence.",
+          "recovery": "Reconnect the missing component and repeat the leak check."
+        },
+        {
+          "id": "blocked-path",
+          "when": "The tubing is kinked or the syringe plunger cannot move.",
+          "message": "The apparatus could build pressure instead of expanding safely.",
+          "recovery": "Stop and restore the approved expanding or vented path before adding reactants."
+        },
+        {
+          "id": "blocked-gas-path",
+          "when": "the tubing is kinked, the plunger cannot expand, or a rigid closed volume would trap generated gas",
+          "message": "Do not initiate gas generation against a blocked or non-expanding path.",
+          "recovery": "Keep reactants separated, open or reconfigure the collection path, then repeat the path and baseline checks."
+        }
+      ],
+      "feedback": {
+        "success": "Gas path, plunger travel, and zero are checked.",
+        "invalid": "Record the gas syringe baseline before leak-checking the train."
+      },
+      "evidence": [
+        "leak-check",
+        "zero",
+        "expansion-path"
+      ],
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "successCue": "Gas path and baseline check recorded.",
+        "invalidCue": "Record the connection, baseline, plunger-travel and pressure-relief checks.",
+        "accessibleLabel": "Record the leak, baseline and pressure-relief checks for the collection train."
+      }
+    },
+    {
+      "id": "gas-technique-measure-acid",
+      "verb": "measureVolume",
+      "label": "Measure the guided acid volume",
+      "parameters": {
+        "sourceDefinitionId": "reagent-bottle",
+        "targetDefinitionId": "graduated-cylinder",
+        "measurementId": "gas-technique-acid-volume",
+        "volumeMl": "{{config.acidVolumeMl}}",
+        "tolerance": "{{config.acidVolumeToleranceMl}}"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "reagent-bottle",
+        "targetDefinitionId": "graduated-cylinder",
+        "valueParameter": "volumeMl",
+        "successCue": "The guided acid volume is measured.",
+        "invalidCue": "Use the graduated cylinder to measure the configured acid volume.",
+        "accessibleLabel": "Pour the guided hydrochloric acid volume into the graduated cylinder."
+      },
+      "prerequisites": [
+        {
+          "id": "technique-path-check-required",
+          "type": "notebookEntry",
+          "label": "The gas path and baseline are checked.",
+          "notebookTag": "{{config.pathCheckNotebookTag}}"
+        }
+      ],
+      "stateChanges": [
+        "Measure 50.0 mL for this guided simulator configuration."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "Guided acid volume measured.",
+        "invalid": "Check and zero the gas path before measuring reactants."
+      },
+      "evidence": [
+        "measureVolume",
+        "controlled-volume"
+      ],
+      "atomId": "atom.measure.variable-volume",
+      "equipmentRoleBindings": {
+        "variable-volume-measuring-device": "graduated-cylinder",
+        "liquid-source": "reagent-bottle"
+      }
+    },
+    {
+      "id": "gas-technique-transfer-acid",
+      "verb": "transfer",
+      "label": "Transfer acid to the reaction flask",
+      "parameters": {
+        "sourceDefinitionId": "graduated-cylinder",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "volumeMl": "{{config.acidVolumeMl}}"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "graduated-cylinder",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "valueParameter": "volumeMl",
+        "successCue": "The measured acid is transferred to the flask.",
+        "invalidCue": "Transfer the measured acid into the reaction flask.",
+        "accessibleLabel": "Pour the measured hydrochloric acid into the Erlenmeyer flask."
+      },
+      "prerequisites": [
+        {
+          "id": "technique-volume-required",
+          "type": "measurementRecorded",
+          "label": "The guided acid volume is measured.",
+          "measurementId": "gas-technique-acid-volume"
+        }
+      ],
+      "stateChanges": [
+        "Move the measured acid into the reaction flask."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "Acid transferred to the reaction flask.",
+        "invalid": "Measure the configured volume before transferring it."
+      },
+      "evidence": [
+        "transfer",
+        "reaction-mixture"
+      ],
+      "atomId": "atom.transfer.measured-liquid",
+      "equipmentRoleBindings": {
+        "measured-solvent-source": "graduated-cylinder",
+        "receiving-vessel": "erlenmeyer-flask-250ml"
+      }
+    },
+    {
+      "id": "gas-technique-weigh-marble",
+      "verb": "weigh",
+      "label": "Weigh the guided marble sample",
+      "parameters": {
+        "sourceDefinitionId": "watch-glass",
+        "instrumentDefinitionId": "analytical-balance",
+        "tolerance": "{{config.marbleMassToleranceG}}",
+        "inputMode": "numeric",
+        "inputLabel": "Marble-chip mass shown on the tared watch glass",
+        "inputMin": 0.001,
+        "inputStep": 0.001,
+        "unit": "g",
+        "inputRequired": true,
+        "inputRole": "studentResponse"
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "watch-glass",
+        "targetDefinitionId": "analytical-balance",
+        "stationId": "analytical-balance",
+        "successCue": "The marble-chip mass is recorded.",
+        "invalidCue": "Use the tared watch glass and analytical balance to weigh the marble chips.",
+        "accessibleLabel": "Read the analytical balance for the marble-chip sample on the tared watch glass."
+      },
+      "prerequisites": [
+        {
+          "id": "technique-acid-transfer-required",
+          "type": "actionEvidence",
+          "label": "The acid has been transferred to the flask.",
+          "actionId": "gas-technique-transfer-acid"
+        }
+      ],
+      "stateChanges": [
+        "Record the displayed {{presentation.marbleTarget}} marble-chip portion on the tared watch glass; the chip stock is not depleted until the portion is transferred."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "Guided marble mass recorded.",
+        "invalid": "Transfer the acid, tare the weighing support, and then record the marble mass."
+      },
+      "evidence": [
+        "weigh",
+        "controlled-mass"
+      ],
+      "atomId": "atom.weigh.solid-reactant-portion",
+      "equipmentRoleBindings": {
+        "balance-instrument": "analytical-balance",
+        "reactant-solid-source": "marble-chips",
+        "weighed-vessel": "watch-glass"
+      },
+      "mass": {
+        "source": "action-input",
+        "outputMeasurementId": "gas-technique-marble-mass",
+        "continuity": {
+          "version": 1,
+          "quantityKind": "material-portion",
+          "measuredSupportInstanceId": "technique-watch-glass",
+          "materialSourceInstanceId": "technique-marble-chips"
+        }
+      }
+    },
+    {
+      "id": "gas-technique-synchronize-start",
+      "verb": "observe",
+      "label": "Arm the timer and define first contact as time zero",
+      "parameters": {
+        "note": "Arm the timer before the reactants meet. The first physical contact of the weighed marble with acid is the reaction-start and timer-start event; the first series row is the configured time-zero evidence. Exact trigger or locking geometry remains teacher-confirmed.",
+        "tag": "{{config.reactionStartNotebookTag}}",
+        "exactTriggerGeometry": "teacher-confirmed; not inferred"
+      },
+      "prerequisites": [
+        {
+          "id": "technique-timer-arm-needs-marble-mass",
+          "type": "measurementRecorded",
+          "label": "The marble mass is recorded while reactants remain separate.",
+          "measurementId": "gas-technique-marble-mass",
+          "measurementContinuity": {
+            "version": 1,
+            "quantityKind": "material-portion",
+            "producerActionId": "gas-technique-weigh-marble",
+            "measuredSupportInstanceId": "technique-watch-glass",
+            "materialSourceInstanceId": "technique-marble-chips"
+          }
+        },
+        {
+          "id": "technique-timer-arm-needs-safe-path",
+          "type": "notebookEntry",
+          "label": "The nonblocked expanding gas path is verified.",
+          "notebookTag": "{{config.pathCheckNotebookTag}}"
+        }
+      ],
+      "stateChanges": [
+        "The timer is armed and the approved first-contact time-zero rule is recorded while reactants remain separate."
+      ],
+      "invalidCases": [
+        {
+          "id": "late-time-zero",
+          "when": "Timing begins after the defined reactant-contact event.",
+          "message": "A delayed time zero biases the early-rate evidence.",
+          "recovery": "Use fresh configured reactants and repeat the run with timing synchronized to the approved contact event."
+        }
+      ],
+      "feedback": {
+        "success": "Reaction contact, gas collection, and time zero synchronized.",
+        "invalid": "Record all controlled quantities before initiating the reaction."
+      },
+      "evidence": [
+        "reaction-start",
+        "time-zero",
+        "gas-path"
+      ],
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record the approved contact-defined time-zero rule before initiating the reaction.",
+        "successCue": "The timer is armed before contact.",
+        "invalidCue": "Define and arm the time-zero rule before allowing reactant contact."
+      }
+    },
+    {
+      "id": "gas-technique-transfer-marble",
+      "verb": "transfer",
+      "label": "Initiate the reaction by adding the weighed marble to acid",
+      "atomId": "atom.transfer.initiate-solid-reactant-contact",
+      "equipmentRoleBindings": {
+        "reactant-solid-source": "marble-chips",
+        "reaction-vessel": "erlenmeyer-flask-250ml"
+      },
+      "parameters": {
+        "sourceDefinitionId": "marble-chips",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "note": "Transfer the exact {{presentation.marbleTarget}} balance reading into {{presentation.acidAmount}} of acid. This depletes the marble-chip stock only at transfer; it does not use a configured runtime mass fallback.",
+        "massMeasurementId": "gas-technique-marble-mass",
+        "reactionStartTrigger": "first-reactant-contact",
+        "timerStartsAtContact": true,
+        "timeZeroEvidence": "first row of guided-marble-gas-series",
+        "exactTriggerGeometry": "teacher-confirmed; not inferred"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "marble-chips",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "successCue": "The marble chips are in the acid; the reaction has started.",
+        "invalidCue": "Tip the weighed marble chips into the open reaction flask.",
+        "accessibleLabel": "Add the weighed marble chips to the acid in the reaction flask."
+      },
+      "prerequisites": [
+        {
+          "id": "technique-marble-mass-required",
+          "type": "measurementRecorded",
+          "label": "The marble-chip mass is measured.",
+          "measurementId": "gas-technique-marble-mass",
+          "measurementContinuity": {
+            "version": 1,
+            "quantityKind": "material-portion",
+            "producerActionId": "gas-technique-weigh-marble",
+            "measuredSupportInstanceId": "technique-watch-glass",
+            "materialSourceInstanceId": "technique-marble-chips"
+          }
+        },
+        {
+          "id": "technique-path-check-before-contact-required",
+          "type": "notebookEntry",
+          "label": "The gas path and baseline are checked.",
+          "notebookTag": "{{config.pathCheckNotebookTag}}"
+        },
+        {
+          "id": "technique-timer-armed-before-contact-required",
+          "type": "notebookEntry",
+          "label": "The timer is armed and first contact is defined as time zero.",
+          "notebookTag": "{{config.reactionStartNotebookTag}}"
+        }
+      ],
+      "stateChanges": [
+        "The first marble-acid contact starts the reaction and timer at the same defined time-zero event."
+      ],
+      "invalidCases": [
+        {
+          "id": "contact-before-path-check",
+          "when": "Reactants meet before the train is connected, zeroed and leak-checked.",
+          "message": "Carbon dioxide produced before the path is verified is lost.",
+          "recovery": "Keep the failed-run record and repeat with fresh reactants after verifying the train."
+        },
+        {
+          "id": "contact-into-sealed-flask",
+          "when": "The flask is already stoppered.",
+          "message": "Solid cannot be added through a seated delivery stopper.",
+          "recovery": "Add the chips to the open flask, then seal through the approved path."
+        }
+      ],
+      "feedback": {
+        "success": "Marble chips added to the acid; seal the flask and start the timer now.",
+        "invalid": "Measure the marble-chip mass before initiating the reaction."
+      },
+      "evidence": [
+        "transfer",
+        "reaction-start",
+        "fresh-reactant"
+      ],
+      "mass": {
+        "source": "measurement",
+        "referenceId": "gas-technique-marble-mass",
+        "continuity": {
+          "version": 1,
+          "quantityKind": "material-portion",
+          "producerActionId": "gas-technique-weigh-marble",
+          "measuredSupportInstanceId": "technique-watch-glass",
+          "materialSourceInstanceId": "technique-marble-chips"
+        }
+      }
+    },
+    {
+      "id": "gas-technique-seat-stopper",
+      "verb": "place",
+      "label": "Seal the charged flask through the verified path",
+      "parameters": {
+        "equipmentDefinitionId": "rubber-stopper-delivery-tube",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "snapZoneId": "erlenmeyer-stopper-neck",
+        "safetyPath": "previously verified nonblocked expanding path",
+        "exactLockingGeometry": "teacher-confirmed; not inferred"
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "rubber-stopper-delivery-tube",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "snapZoneId": "erlenmeyer-stopper-neck",
+        "successCue": "The stopper and delivery tube are seated in the flask.",
+        "invalidCue": "Seat the delivery stopper in the reaction flask.",
+        "accessibleLabel": "Seat the rubber stopper and delivery tube in the Erlenmeyer flask."
+      },
+      "prerequisites": [
+        {
+          "id": "technique-reactant-contact-required",
+          "type": "actionEvidence",
+          "label": "The weighed marble chips are in the acid.",
+          "actionId": "gas-technique-transfer-marble"
+        }
+      ],
+      "stateChanges": [
+        "Seat the already connected, zeroed and leak-checked delivery stopper in the charged flask, keeping the path to the freely moving syringe open."
+      ],
+      "invalidCases": [
+        {
+          "id": "rigid-closed-system",
+          "when": "The stoppered reaction vessel has no freely expanding or vented gas path.",
+          "message": "Do not generate carbon dioxide in a rigid closed system.",
+          "recovery": "Connect the gas syringe, verify that its plunger moves freely, and leak-check the complete path before sealing the flask."
+        },
+        {
+          "id": "seal-before-reactants",
+          "when": "The flask is sealed before the acid and the marble chips are in it.",
+          "message": "A sealed flask cannot be charged, and sealing early loses the start of the run.",
+          "recovery": "Charge the open flask first, then seal through the verified path."
+        }
+      ],
+      "feedback": {
+        "success": "The charged flask is sealed through the verified expanding path.",
+        "invalid": "Add the acid and the weighed chips to the open flask before sealing it."
+      },
+      "evidence": [
+        "apparatus",
+        "seal"
+      ],
+      "atomId": "atom.place.gas-collection-apparatus",
+      "equipmentRoleBindings": {
+        "reaction-vessel": "erlenmeyer-flask-250ml",
+        "gas-delivery-connector": "rubber-stopper-delivery-tube",
+        "gas-collection-instrument": "gas-syringe"
+      }
+    },
+    {
+      "id": "gas-technique-record-series",
+      "verb": "record",
+      "label": "Record the guided gas-volume series",
+      "parameters": {
+        "kineticsModelId": "marble-gas-syringe-model",
+        "conditionId": "guided-configuration",
+        "dataSeriesId": "guided-marble-gas-series",
+        "label": "{{config.seriesLabel}}",
+        "xUnit": "s",
+        "yUnit": "mL CO2",
+        "valueProvenance": "simulator-generated",
+        "instrumentGraduationMl": "{{config.instrumentGraduationMl}}",
+        "modelDisplayDecimals": 1,
+        "samplingIntervalS": "{{config.samplingIntervalS}}",
+        "firstRecordedTimeS": 0,
+        "timeZeroProvenance": "first-reactant-contact",
+        "evidenceLayer": "raw-simulator-generated-time-series",
+        "rateIntervalS": "{{config.rateIntervalS}}",
+        "note": "Record gas volume every {{presentation.samplingInterval}} and calculate the initial rate over {{presentation.rateWindow}}."
+      },
+      "prerequisites": [
+        {
+          "id": "technique-start-required",
+          "type": "notebookEntry",
+          "label": "Reaction contact and time zero are synchronized.",
+          "notebookTag": "{{config.reactionStartNotebookTag}}"
+        }
+      ],
+      "stateChanges": [
+        "Generate the deterministic simulator gas-syringe readings at 5 s intervals from 0 s to 45 s."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "Guided gas-volume series recorded.",
+        "invalid": "Synchronize reaction contact and time zero before recording the series."
+      },
+      "evidence": [
+        "time-series",
+        "simulator-generated"
+      ],
+      "atomId": "atom.record.timed-gas-volume",
+      "equipmentRoleBindings": {
+        "gas-collection-instrument": "gas-syringe",
+        "timing-instrument": "stopwatch"
+      },
+      "interaction": {
+        "type": "recordTimeSeries",
+        "sourceDefinitionId": "gas-syringe",
+        "stationId": "gas-syringe",
+        "valueParameter": "dataSeriesId",
+        "successCue": "Timed carbon-dioxide volumes recorded against the syringe graduations.",
+        "invalidCue": "Read the gas syringe at each configured sampling time and record the paired value.",
+        "accessibleLabel": "Record the timed gas syringe volumes for the guided series."
+      },
+      "mass": {
+        "source": "measurement",
+        "referenceId": "gas-technique-marble-mass",
+        "continuity": {
+          "version": 1,
+          "quantityKind": "material-portion",
+          "producerActionId": "gas-technique-weigh-marble",
+          "measuredSupportInstanceId": "technique-watch-glass",
+          "materialSourceInstanceId": "technique-marble-chips"
+        }
+      }
+    },
+    {
+      "id": "gas-technique-calculate-rate",
+      "verb": "calculate",
+      "label": "Calculate the guided initial rate",
+      "parameters": {
+        "calculationId": "guided-marble-initial-rate",
+        "template": "initialRateMlPerS",
+        "dataSeriesId": "guided-marble-gas-series",
+        "tolerance": 0.01,
+        "unit": "mL/s",
+        "intervalS": "{{config.rateIntervalS}}",
+        "intervalProvenance": "teacher-configured",
+        "note": "The rate is derived from the recorded series over the configured secant interval. No expected value is stored: the gate is that the timed evidence exists, because a stored answer would be a fabricated measurement rather than a derivation."
+      },
+      "prerequisites": [
+        {
+          "id": "technique-series-required",
+          "type": "dataSeriesRecorded",
+          "label": "The guided gas-volume series is recorded.",
+          "dataSeriesId": "guided-marble-gas-series"
+        }
+      ],
+      "stateChanges": [
+        "Calculate the secant slope from 0 s to 15 s and report it in mL CO2/s."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "Guided initial rate calculated.",
+        "invalid": "Record the guided time series before calculating its early slope."
+      },
+      "evidence": [
+        "calculation",
+        "initial-rate"
+      ],
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Calculate a rate from the separately recorded raw series.",
+        "successCue": "The rate is derived from the selected evidence interval.",
+        "invalidCue": "Record the raw series before calculating a rate."
+      }
+    },
+    {
+      "id": "gas-technique-review-limits",
+      "verb": "observe",
+      "label": "Review evidence limits and repeatability",
+      "parameters": {
+        "note": "The displayed series is deterministic simulator output for the stated guided configuration, not a student measurement or a replicate distribution. Physical runs require approved acid settings, fresh reactants, repeated trials, documented syringe resolution, and review of leaks, plunger friction, start-time synchronization, chip-size heterogeneity, marble composition, temperature drift, and mixing. Do not infer a universal rate law or real monument lifetime from this single classroom model.",
+        "tag": "{{config.evidenceLimitsNotebookTag}}"
+      },
+      "prerequisites": [
+        {
+          "id": "technique-rate-calculation-required",
+          "type": "actionEvidence",
+          "label": "The derived rate calculation is recorded.",
+          "actionId": "gas-technique-calculate-rate"
+        }
+      ],
+      "stateChanges": [
+        "Record the simulator provenance, repeatability needs, assumptions, and excluded effects."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "Evidence limits and repeatability needs recorded.",
+        "invalid": "Calculate the guided initial rate before interpreting its limits."
+      },
+      "evidence": [
+        "uncertainty",
+        "replicates",
+        "evidence-limits"
+      ],
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record limits of the simulator series and derived rate.",
+        "successCue": "Evidence and model limits are recorded.",
+        "invalidCue": "Separate raw series evidence from the rate calculation and model assumptions."
+      }
+    }
+  ],
+  "process": {
+    "startNodeId": "gas-technique-connect-syringe-node",
+    "nodes": [
+      {
+        "id": "gas-technique-connect-syringe-node",
+        "type": "action",
+        "title": "Connect the gas syringe to the delivery tube",
+        "description": "Attach the gas syringe to the delivery tube so the train can be zeroed and leak-checked before it reaches the flask.",
+        "actionId": "gas-technique-connect-syringe",
+        "config": {},
+        "validation": [
+          {
+            "id": "connect-syringe-done",
+            "type": "actionEvidence",
+            "label": "Gas syringe connected.",
+            "actionId": "gas-technique-connect-syringe"
+          }
+        ],
+        "hints": [
+          "Use the delivery-tube port, not the flask body."
+        ],
+        "feedback": {
+          "success": "Gas syringe connected.",
+          "retry": "Connect the syringe to the delivery tube."
+        }
+      },
+      {
+        "id": "gas-technique-zero-syringe-node",
+        "type": "action",
+        "title": "Read the gas-syringe baseline and instrument scale",
+        "description": "A fresh syringe starting-volume observation is available; it is not yet a notebook baseline.",
+        "actionId": "gas-technique-zero-syringe",
+        "config": {},
+        "validation": [
+          {
+            "id": "gas-technique-zero-recorded",
+            "type": "notebookEntry",
+            "label": "The gas-syringe starting volume is read.",
+            "notebookTag": "{{config.zeroNotebookTag}}"
+          }
+        ],
+        "hints": [
+          "Record the capacity and the smallest graduation you can read, not just the value."
+        ],
+        "feedback": {
+          "success": "Baseline recorded.",
+          "retry": "Read and record the gas syringe baseline."
+        }
+      },
+      {
+        "id": "gas-technique-record-zero-baseline-node",
+        "type": "observation",
+        "config": {},
+        "hints": [],
+        "title": "Record the gas-syringe baseline and readable scale",
+        "description": "The observed start, capacity, and graduation are recorded as the run baseline.",
+        "actionId": "gas-technique-record-zero-baseline",
+        "validation": [
+          {
+            "id": "gas-technique-record-zero-baseline-complete",
+            "type": "actionEvidence",
+            "label": "Record the gas-syringe baseline and readable scale was completed.",
+            "actionId": "gas-technique-record-zero-baseline"
+          }
+        ],
+        "feedback": {
+          "success": "Record the gas-syringe baseline and readable scale complete.",
+          "retry": "Review record the gas-syringe baseline and readable scale and try again."
+        }
+      },
+      {
+        "id": "gas-technique-check-path-node",
+        "type": "observation",
+        "title": "Verify the nonblocked expanding gas path",
+        "description": "Record the leak check, zero check, and expanding pressure-relief path.",
+        "actionId": "gas-technique-check-path",
+        "config": {},
+        "validation": [
+          {
+            "id": "check-path-done",
+            "type": "notebookEntry",
+            "label": "Gas path check recorded.",
+            "notebookTag": "{{config.pathCheckNotebookTag}}"
+          }
+        ],
+        "hints": [
+          "The syringe plunger must be able to move freely."
+        ],
+        "feedback": {
+          "success": "Safe expanding path verified.",
+          "retry": "Check connections, plunger travel, and the starting zero."
+        }
+      },
+      {
+        "id": "gas-technique-measure-acid-node",
+        "type": "action",
+        "title": "Measure the guided acid volume",
+        "description": "Measure 50.0 mL for this guided simulator configuration.",
+        "actionId": "gas-technique-measure-acid",
+        "config": {},
+        "validation": [
+          {
+            "id": "measure-acid-done",
+            "type": "measurementRecorded",
+            "label": "Guided acid volume recorded.",
+            "measurementId": "gas-technique-acid-volume"
+          }
+        ],
+        "hints": [
+          "Read the graduated cylinder at eye level in a physical run."
+        ],
+        "feedback": {
+          "success": "Guided volume measured.",
+          "retry": "Measure the configured volume in the graduated cylinder."
+        }
+      },
+      {
+        "id": "gas-technique-transfer-acid-node",
+        "type": "action",
+        "title": "Transfer acid to the reaction flask",
+        "description": "Move the measured acid into the reaction flask.",
+        "actionId": "gas-technique-transfer-acid",
+        "config": {},
+        "validation": [
+          {
+            "id": "transfer-acid-done",
+            "type": "actionEvidence",
+            "label": "Acid transferred.",
+            "actionId": "gas-technique-transfer-acid"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Acid transferred.",
+          "retry": "Transfer the measured acid to the reaction flask."
+        }
+      },
+      {
+        "id": "gas-technique-weigh-marble-node",
+        "type": "action",
+        "title": "Weigh the guided marble sample",
+        "description": "Record the displayed {{presentation.marbleTarget}} marble-chip portion on the tared watch glass; the chip stock is not depleted until the portion is transferred.",
+        "actionId": "gas-technique-weigh-marble",
+        "config": {},
+        "validation": [
+          {
+            "id": "weigh-marble-done",
+            "type": "measurementRecorded",
+            "label": "Guided marble mass recorded.",
+            "measurementId": "gas-technique-marble-mass"
+          }
+        ],
+        "hints": [
+          "Confirm the balance is tared with the empty watch glass in a physical run."
+        ],
+        "feedback": {
+          "success": "Guided marble mass recorded.",
+          "retry": "Record the marble mass using the analytical balance."
+        }
+      },
+      {
+        "id": "gas-technique-synchronize-start-node",
+        "type": "observation",
+        "title": "Arm the timer and define first contact as time zero",
+        "description": "The timer is armed and the approved first-contact time-zero rule is recorded while reactants remain separate.",
+        "actionId": "gas-technique-synchronize-start",
+        "config": {},
+        "validation": [
+          {
+            "id": "synchronize-start-done",
+            "type": "notebookEntry",
+            "label": "Synchronized start recorded.",
+            "notebookTag": "{{config.reactionStartNotebookTag}}"
+          }
+        ],
+        "hints": [
+          "Early-rate evidence is sensitive to a late time zero."
+        ],
+        "feedback": {
+          "success": "Reaction start synchronized.",
+          "retry": "Record the approved contact event and time zero."
+        }
+      },
+      {
+        "id": "gas-technique-transfer-marble-node",
+        "type": "action",
+        "title": "Initiate the reaction by adding the weighed marble to acid",
+        "description": "The first marble-acid contact starts the reaction and timer at the same defined time-zero event.",
+        "actionId": "gas-technique-transfer-marble",
+        "config": {},
+        "validation": [
+          {
+            "id": "gas-technique-marble-in-acid",
+            "type": "actionEvidence",
+            "label": "The weighed marble chips are in the acid.",
+            "actionId": "gas-technique-transfer-marble"
+          }
+        ],
+        "hints": [
+          "Seal the flask through the verified path immediately after contact."
+        ],
+        "feedback": {
+          "success": "Reactants in contact.",
+          "retry": "Add the weighed marble chips to the acid in the open flask."
+        }
+      },
+      {
+        "id": "gas-technique-seat-stopper-node",
+        "type": "action",
+        "title": "Seal the charged flask through the verified path",
+        "description": "Seat the already connected, zeroed and leak-checked delivery stopper in the charged flask, keeping the path to the freely moving syringe open.",
+        "actionId": "gas-technique-seat-stopper",
+        "config": {},
+        "validation": [
+          {
+            "id": "seat-stopper-done",
+            "type": "actionEvidence",
+            "label": "Delivery stopper seated.",
+            "actionId": "gas-technique-seat-stopper"
+          }
+        ],
+        "hints": [
+          "The flask neck is the stopper snap target."
+        ],
+        "feedback": {
+          "success": "Delivery stopper seated.",
+          "retry": "Seat the stopper in the flask neck."
+        }
+      },
+      {
+        "id": "gas-technique-record-series-node",
+        "type": "observation",
+        "title": "Record the guided gas-volume series",
+        "description": "Generate the deterministic simulator gas-syringe readings at 5 s intervals from 0 s to 45 s.",
+        "actionId": "gas-technique-record-series",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-series-done",
+            "type": "dataSeriesRecorded",
+            "label": "Guided gas-volume series recorded.",
+            "dataSeriesId": "guided-marble-gas-series"
+          }
+        ],
+        "hints": [
+          "Keep time in seconds and gas volume in mL CO2."
+        ],
+        "feedback": {
+          "success": "Gas-volume series recorded.",
+          "retry": "Record the complete time series."
+        }
+      },
+      {
+        "id": "gas-technique-calculate-rate-node",
+        "type": "calculation",
+        "title": "Calculate the guided initial rate",
+        "description": "Calculate the secant slope from 0 s to 15 s and report it in mL CO2/s.",
+        "actionId": "gas-technique-calculate-rate",
+        "config": {},
+        "validation": [
+          {
+            "id": "calculate-rate-done",
+            "type": "calculationWithinTolerance",
+            "label": "Guided initial rate accepted.",
+            "calculationId": "guided-marble-initial-rate",
+            "tolerance": 0.01
+          }
+        ],
+        "hints": [
+          "Rate = change in gas volume divided by change in time."
+        ],
+        "feedback": {
+          "success": "Initial rate accepted.",
+          "retry": "Use the early change in volume divided by 15 s."
+        }
+      },
+      {
+        "id": "gas-technique-review-limits-node",
+        "type": "observation",
+        "title": "Review evidence limits and repeatability",
+        "description": "Record the simulator provenance, repeatability needs, assumptions, and excluded effects.",
+        "actionId": "gas-technique-review-limits",
+        "config": {},
+        "validation": [
+          {
+            "id": "review-limits-done",
+            "type": "notebookEntry",
+            "label": "Evidence limits recorded.",
+            "notebookTag": "{{config.evidenceLimitsNotebookTag}}"
+          }
+        ],
+        "hints": [
+          "A deterministic curve contains no replicate scatter."
+        ],
+        "feedback": {
+          "success": "Evidence limits recorded.",
+          "retry": "Record provenance, repeatability needs, assumptions, and excluded effects."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "gas-technique-connect-syringe-node",
+        "to": "gas-technique-zero-syringe-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "gas-technique-zero-syringe-node",
+        "to": "gas-technique-record-zero-baseline-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "gas-technique-record-zero-baseline-node",
+        "to": "gas-technique-check-path-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "gas-technique-check-path-node",
+        "to": "gas-technique-measure-acid-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "gas-technique-measure-acid-node",
+        "to": "gas-technique-transfer-acid-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "gas-technique-transfer-acid-node",
+        "to": "gas-technique-weigh-marble-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "gas-technique-weigh-marble-node",
+        "to": "gas-technique-synchronize-start-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "gas-technique-synchronize-start-node",
+        "to": "gas-technique-transfer-marble-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "gas-technique-transfer-marble-node",
+        "to": "gas-technique-seat-stopper-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "gas-technique-seat-stopper-node",
+        "to": "gas-technique-record-series-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "gas-technique-record-series-node",
+        "to": "gas-technique-calculate-rate-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "gas-technique-calculate-rate-node",
+        "to": "gas-technique-review-limits-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [],
+  "commonMistakes": [
+    {
+      "id": "gas-technique-closed-system-mistake",
+      "when": "The reaction is initiated with a blocked or rigidly closed collection path.",
+      "message": "Gas generation in a rigid closed system can build unsafe pressure.",
+      "recovery": "Stop and restore the teacher-approved freely expanding or vented path."
+    },
+    {
+      "id": "gas-technique-timing-mistake",
+      "when": "The timer is started after the defined reactant-contact event.",
+      "message": "Late timing biases the initial-rate calculation.",
+      "recovery": "Repeat with fresh configured reactants and synchronize timing to the defined contact event."
+    },
+    {
+      "id": "gas-technique-provenance-mistake",
+      "when": "The deterministic simulator series is described as student-measured replicate data.",
+      "message": "The guided series has no experimental scatter and cannot establish repeatability.",
+      "recovery": "Label simulator-generated data explicitly and use approved physical repeats for experimental variability."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "2.1.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-06T00:00:00.000Z",
+    "tags": [
+      "chemistry",
+      "kinetics",
+      "gas-syringe",
+      "marble",
+      "calcium-carbonate",
+      "composition",
+      "cycle-08"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry",
+        "kind": "entry",
+        "nodeId": "gas-technique-connect-syringe-node"
+      },
+      {
+        "id": "exit",
+        "kind": "exit",
+        "nodeId": "gas-technique-review-limits-node"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "gas-delivery-connector",
+        "required": true,
+        "allowedDefinitionIds": [
+          "rubber-stopper-delivery-tube"
+        ],
+        "sourceInstanceIds": [
+          "technique-delivery-stopper"
+        ]
+      },
+      {
+        "roleId": "gas-collection-instrument",
+        "required": true,
+        "allowedDefinitionIds": [
+          "gas-syringe"
+        ],
+        "sourceInstanceIds": [
+          "technique-gas-syringe"
+        ]
+      },
+      {
+        "roleId": "variable-volume-measuring-device",
+        "required": true,
+        "allowedDefinitionIds": [
+          "graduated-cylinder"
+        ],
+        "sourceInstanceIds": [
+          "technique-graduated-cylinder"
+        ]
+      },
+      {
+        "roleId": "liquid-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "reagent-bottle"
+        ],
+        "sourceInstanceIds": [
+          "technique-hcl-bottle"
+        ]
+      },
+      {
+        "roleId": "measured-solvent-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "graduated-cylinder"
+        ],
+        "sourceInstanceIds": [
+          "technique-graduated-cylinder"
+        ]
+      },
+      {
+        "roleId": "receiving-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "erlenmeyer-flask-250ml"
+        ],
+        "sourceInstanceIds": [
+          "technique-reaction-flask"
+        ]
+      },
+      {
+        "roleId": "balance-instrument",
+        "required": true,
+        "allowedDefinitionIds": [
+          "analytical-balance"
+        ],
+        "sourceInstanceIds": [
+          "technique-balance"
+        ]
+      },
+      {
+        "roleId": "reactant-solid-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "marble-chips"
+        ],
+        "sourceInstanceIds": [
+          "technique-marble-chips"
+        ]
+      },
+      {
+        "roleId": "weighed-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "watch-glass"
+        ],
+        "sourceInstanceIds": [
+          "technique-watch-glass"
+        ]
+      },
+      {
+        "roleId": "reaction-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "erlenmeyer-flask-250ml"
+        ],
+        "sourceInstanceIds": [
+          "technique-reaction-flask"
+        ]
+      },
+      {
+        "roleId": "timing-instrument",
+        "required": true,
+        "allowedDefinitionIds": [
+          "stopwatch"
+        ],
+        "sourceInstanceIds": [
+          "technique-stopwatch"
+        ]
+      }
+    ],
+    "modelSlots": [
+      {
+        "id": "kinetics-marble-gas-syringe-model",
+        "kind": "kinetics",
+        "sourceModelId": "marble-gas-syringe-model",
+        "required": true
+      }
+    ],
+    "configurationSlots": [
+      {
+        "id": "selectedProcedure",
+        "valueType": "string",
+        "required": true,
+        "allowedValues": [
+          "trial-acquisition",
+          "rate-analysis"
+        ]
+      },
+      {
+        "id": "acidVolumeMl",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "acidVolumeToleranceMl",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "marbleMassG",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "marbleMassToleranceG",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "seriesLabel",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "id": "instrumentCapacityMl",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "instrumentGraduationMl",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "samplingIntervalS",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "rateIntervalS",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "evidenceScopeId",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "id": "zeroNotebookTag",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "id": "pathCheckNotebookTag",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "id": "reactionStartNotebookTag",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "id": "evidenceLimitsNotebookTag",
+        "valueType": "string",
+        "required": true
+      }
+    ],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [
+      {
+        "id": "evidence-gas-technique-connect-syringe",
+        "kind": "action-evidence",
+        "actionId": "gas-technique-connect-syringe"
+      },
+      {
+        "id": "evidence-gas-technique-zero-syringe",
+        "kind": "measurement",
+        "actionId": "gas-technique-zero-syringe",
+        "referenceId": "gas-technique-syringe-baseline"
+      },
+      {
+        "id": "evidence-gas-technique-record-zero-baseline",
+        "kind": "notebook",
+        "actionId": "gas-technique-record-zero-baseline",
+        "referenceId": "gas-technique-syringe-baseline"
+      },
+      {
+        "id": "evidence-gas-technique-check-path",
+        "kind": "notebook",
+        "actionId": "gas-technique-check-path"
+      },
+      {
+        "id": "evidence-gas-technique-measure-acid",
+        "kind": "action-evidence",
+        "actionId": "gas-technique-measure-acid",
+        "referenceId": "gas-technique-acid-volume"
+      },
+      {
+        "id": "evidence-gas-technique-transfer-acid",
+        "kind": "action-evidence",
+        "actionId": "gas-technique-transfer-acid"
+      },
+      {
+        "id": "evidence-gas-technique-weigh-marble",
+        "kind": "measurement",
+        "actionId": "gas-technique-weigh-marble"
+      },
+      {
+        "id": "evidence-gas-technique-synchronize-start",
+        "kind": "notebook",
+        "actionId": "gas-technique-synchronize-start"
+      },
+      {
+        "id": "evidence-gas-technique-transfer-marble",
+        "kind": "action-evidence",
+        "actionId": "gas-technique-transfer-marble"
+      },
+      {
+        "id": "evidence-gas-technique-seat-stopper",
+        "kind": "action-evidence",
+        "actionId": "gas-technique-seat-stopper"
+      },
+      {
+        "id": "evidence-gas-technique-record-series",
+        "kind": "data-series",
+        "actionId": "gas-technique-record-series",
+        "referenceId": "guided-marble-gas-series"
+      },
+      {
+        "id": "evidence-gas-technique-calculate-rate",
+        "kind": "calculation",
+        "actionId": "gas-technique-calculate-rate",
+        "referenceId": "guided-marble-gas-series"
+      },
+      {
+        "id": "evidence-gas-technique-review-limits",
+        "kind": "notebook",
+        "actionId": "gas-technique-review-limits"
+      }
+    ],
+    "completion": {
+      "exitPortIds": [
+        "exit"
+      ],
+      "requiredEvidenceOutputIds": [],
+      "requiredValidationRuleIds": []
+    },
+    "catalogDisposition": "lab-scoped",
+    "legacyActionEffects": [
+      {
+        "actionId": "gas-technique-record-zero-baseline",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "gas-technique-check-path",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "gas-technique-synchronize-start",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "gas-technique-calculate-rate",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "gas-technique-review-limits",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ],
+    "orderedProcedure": {
+      "configurationSlotId": "selectedProcedure",
+      "startActionIds": [],
+      "endActionIds": [],
+      "minimumTests": 1,
+      "resources": [],
+      "groups": [
+        {
+          "id": "trial-acquisition",
+          "actionIds": [
+            "gas-technique-connect-syringe",
+            "gas-technique-zero-syringe",
+            "gas-technique-record-zero-baseline",
+            "gas-technique-check-path",
+            "gas-technique-measure-acid",
+            "gas-technique-transfer-acid",
+            "gas-technique-weigh-marble",
+            "gas-technique-synchronize-start",
+            "gas-technique-transfer-marble",
+            "gas-technique-seat-stopper",
+            "gas-technique-record-series"
+          ],
+          "testCount": 1,
+          "evidenceKind": "quantitative"
+        },
+        {
+          "id": "rate-analysis",
+          "actionIds": [
+            "gas-technique-calculate-rate",
+            "gas-technique-review-limits"
+          ],
+          "testCount": 1,
+          "evidenceKind": "procedure"
+        }
+      ]
+    },
+    "presentationPaths": [
+      "label",
+      "description",
+      "parameters.note",
+      "stateChanges.*"
+    ]
+  }
+}

@@ -1,0 +1,410 @@
+[
+  {
+    "name": "validate_draft",
+    "description": "Validate the current Lab Design Studio draft and report schema errors or interaction warnings.",
+    "pageId": "studio",
+    "safety": "auto",
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "studio_get_snapshot",
+    "description": "Return the current Studio snapshot, exact revision, artifact kind, readiness, selected node, and structured draft fields.",
+    "pageId": "studio",
+    "safety": "auto",
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "studio_query_catalog",
+    "description": "Query supported equipment, step blueprints, validation types, and compatibility rules for transaction planning.",
+    "pageId": "studio",
+    "safety": "auto",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": ["string", "null"],
+          "enum": ["equipment", "blueprints", "validation", null]
+        },
+        "query": { "type": ["string", "null"] }
+      },
+      "required": ["kind", "query"],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "studio_plan_transaction",
+    "description": "Plan a structured Studio transaction against an exact base revision without mutating the draft.",
+    "pageId": "studio",
+    "safety": "auto",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "baseRevision": { "type": "string", "minLength": 1 },
+        "idempotencyKey": { "type": "string", "minLength": 1 },
+        "label": { "type": "string", "minLength": 1 },
+        "operations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": { "type": "string", "minLength": 1 },
+              "draft": { "type": ["object", "null"], "additionalProperties": true },
+              "patch": { "type": ["object", "null"], "additionalProperties": true },
+              "node": { "type": ["object", "null"], "additionalProperties": true },
+              "action": { "type": ["object", "null"], "additionalProperties": true },
+              "edge": { "type": ["object", "null"], "additionalProperties": true },
+              "index": { "type": ["number", "null"] },
+              "nodeId": { "type": ["string", "null"] },
+              "templateId": { "type": ["string", "null"] },
+              "options": { "type": ["object", "null"], "additionalProperties": true },
+              "technique": { "type": ["object", "null"], "additionalProperties": true },
+              "equipment": { "type": ["array", "null"], "items": { "type": "string" } },
+              "definitionId": { "type": ["string", "null"] },
+              "instance": { "type": ["object", "null"], "additionalProperties": true },
+              "instanceId": { "type": ["string", "null"] },
+              "from": { "type": ["string", "null"] },
+              "to": { "type": ["string", "null"] },
+              "validation": { "type": ["array", "null"], "items": { "type": "object", "additionalProperties": true } }
+            },
+            "required": ["type"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["baseRevision", "idempotencyKey", "label", "operations"],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "studio_commit_transaction",
+    "description": "Atomically commit a structured Studio transaction with stale-revision detection and diagnostics.",
+    "pageId": "studio",
+    "safety": "auto",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "baseRevision": { "type": "string", "minLength": 1 },
+        "idempotencyKey": { "type": "string", "minLength": 1 },
+        "label": { "type": "string", "minLength": 1 },
+        "operations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": { "type": "string", "minLength": 1 },
+              "draft": { "type": ["object", "null"], "additionalProperties": true },
+              "patch": { "type": ["object", "null"], "additionalProperties": true },
+              "node": { "type": ["object", "null"], "additionalProperties": true },
+              "action": { "type": ["object", "null"], "additionalProperties": true },
+              "edge": { "type": ["object", "null"], "additionalProperties": true },
+              "index": { "type": ["number", "null"] },
+              "nodeId": { "type": ["string", "null"] },
+              "templateId": { "type": ["string", "null"] },
+              "options": { "type": ["object", "null"], "additionalProperties": true },
+              "technique": { "type": ["object", "null"], "additionalProperties": true },
+              "equipment": { "type": ["array", "null"], "items": { "type": "string" } },
+              "definitionId": { "type": ["string", "null"] },
+              "instance": { "type": ["object", "null"], "additionalProperties": true },
+              "instanceId": { "type": ["string", "null"] },
+              "from": { "type": ["string", "null"] },
+              "to": { "type": ["string", "null"] },
+              "validation": { "type": ["array", "null"], "items": { "type": "object", "additionalProperties": true } }
+            },
+            "required": ["type"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["baseRevision", "idempotencyKey", "label", "operations"],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "studio_validate",
+    "description": "Validate the current Studio draft with schema, readiness, interaction warnings, diagnostics, and suggested focus target.",
+    "pageId": "studio",
+    "safety": "auto",
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "studio_run_preview_check",
+    "description": "Check whether the current draft can run through the StudentPlayer preview readiness path.",
+    "pageId": "studio",
+    "safety": "auto",
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "studio_undo",
+    "description": "Undo the last Studio change, including the last assistant transaction as one grouped history item.",
+    "pageId": "studio",
+    "safety": "auto",
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "select_node",
+    "description": "Select a process node in the Studio map by node id.",
+    "pageId": "studio",
+    "safety": "auto",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "nodeId": { "type": "string", "minLength": 1 }
+      },
+      "required": ["nodeId"],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "add_template_node",
+    "description": "Append one Studio node or reusable workflow template to the current draft. Use load_full_lab_template for templates that replace the whole lab.",
+    "pageId": "studio",
+    "safety": "auto",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "templateId": { "type": "string", "minLength": 1 }
+      },
+      "required": ["templateId"],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "update_lab_settings",
+    "description": "Update top-level lab draft settings using structured fields.",
+    "pageId": "studio",
+    "safety": "auto",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "title": { "type": ["string", "null"] },
+        "description": { "type": ["string", "null"] },
+        "audience": { "type": ["string", "null"] },
+        "learningGoals": {
+          "type": ["array", "null"],
+          "items": { "type": "string" }
+        },
+        "safetyNotes": {
+          "type": ["array", "null"],
+          "items": { "type": "string" }
+        },
+        "equipment": {
+          "type": ["array", "null"],
+          "items": { "type": "string" }
+        },
+        "tags": {
+          "type": ["array", "null"],
+          "items": { "type": "string" }
+        }
+      },
+      "required": ["title", "description", "audience", "learningGoals", "safetyNotes", "equipment", "tags"],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "update_selected_node",
+    "description": "Update the currently selected process node title, description, type, hint, or feedback copy.",
+    "pageId": "studio",
+    "safety": "auto",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "title": { "type": ["string", "null"] },
+        "description": { "type": ["string", "null"] },
+        "type": {
+          "type": ["string", "null"],
+          "enum": ["technique", "action", "checkpoint", "decision", "calculation", "observation", "teacherNote", null]
+        },
+        "hint": { "type": ["string", "null"] },
+        "successFeedback": { "type": ["string", "null"] },
+        "retryFeedback": { "type": ["string", "null"] }
+      },
+      "required": ["title", "description", "type", "hint", "successFeedback", "retryFeedback"],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "update_action_fields",
+    "description": "Update the selected node action label, parameters, feedback, evidence, or state changes.",
+    "pageId": "studio",
+    "safety": "auto",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "actionId": { "type": ["string", "null"] },
+        "label": { "type": ["string", "null"] },
+        "parameters": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "object",
+            "properties": {
+              "key": { "type": "string", "minLength": 1 },
+              "valueType": {
+                "type": "string",
+                "enum": ["string", "number", "boolean", "stringArray", "unset"]
+              },
+              "stringValue": { "type": ["string", "null"] },
+              "numberValue": { "type": ["number", "null"] },
+              "booleanValue": { "type": ["boolean", "null"] },
+              "stringArrayValue": {
+                "type": ["array", "null"],
+                "items": { "type": "string" }
+              }
+            },
+            "required": ["key", "valueType", "stringValue", "numberValue", "booleanValue", "stringArrayValue"],
+            "additionalProperties": false
+          }
+        },
+        "successFeedback": { "type": ["string", "null"] },
+        "invalidFeedback": { "type": ["string", "null"] },
+        "stateChanges": {
+          "type": ["array", "null"],
+          "items": { "type": "string" }
+        },
+        "evidence": {
+          "type": ["array", "null"],
+          "items": { "type": "string" }
+        }
+      },
+      "required": ["actionId", "label", "parameters", "successFeedback", "invalidFeedback", "stateChanges", "evidence"],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "update_interaction_fields",
+    "description": "Update the selected action's structured interaction spec.",
+    "pageId": "studio",
+    "safety": "auto",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "actionId": { "type": ["string", "null"] },
+        "type": {
+          "type": ["string", "null"],
+          "enum": ["dragToZone", "snapIntoTarget", "pourInto", "dispenseDrops", "rinseTarget", "placeInInstrument", "readInstrument", "recordNotebook", "recordTimeSeries", "submitCalculation", "spotOnto", null]
+        },
+        "sourceDefinitionId": { "type": ["string", "null"] },
+        "targetDefinitionId": { "type": ["string", "null"] },
+        "stationId": { "type": ["string", "null"] },
+        "snapZoneId": { "type": ["string", "null"] },
+        "valueParameter": { "type": ["string", "null"] },
+        "accessibleLabel": { "type": ["string", "null"] },
+        "successCue": { "type": ["string", "null"] },
+        "invalidCue": { "type": ["string", "null"] }
+      },
+      "required": ["actionId", "type", "sourceDefinitionId", "targetDefinitionId", "stationId", "snapZoneId", "valueParameter", "accessibleLabel", "successCue", "invalidCue"],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "add_retry_edge",
+    "description": "Add a retry edge for the selected process node or a specified node.",
+    "pageId": "studio",
+    "safety": "auto",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "nodeId": { "type": ["string", "null"] }
+      },
+      "required": ["nodeId"],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "auto_layout_process",
+    "description": "Recompute deterministic layout metadata for the process map.",
+    "pageId": "studio",
+    "safety": "auto",
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "load_full_lab_template",
+    "description": "Replace the current draft with a full bundled lab template. This is guarded because it overwrites the current draft.",
+    "pageId": "studio",
+    "safety": "guarded",
+    "confirmationLabel": "Load full lab template",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "templateId": { "type": "string", "minLength": 1 }
+      },
+      "required": ["templateId"],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "save_local_draft",
+    "description": "Save the current draft to browser localStorage. This is guarded because it writes durable local state.",
+    "pageId": "studio",
+    "safety": "guarded",
+    "confirmationLabel": "Save local draft",
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "export_lab_json",
+    "description": "Download the current lab draft as JSON. This is guarded because it starts a browser file export.",
+    "pageId": "studio",
+    "safety": "guarded",
+    "confirmationLabel": "Export lab JSON",
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "generate_and_save_image_asset",
+    "description": "Generate an image asset for the current lab or template and save it through the local assistant server. This is guarded because it calls the image model and writes a file.",
+    "pageId": "studio",
+    "safety": "guarded",
+    "confirmationLabel": "Generate and save image",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "prompt": { "type": "string", "minLength": 8 },
+        "filename": { "type": ["string", "null"] },
+        "kind": {
+          "type": "string",
+          "enum": ["workflow", "equipment", "template", "experiment", "reference"]
+        }
+      },
+      "required": ["prompt", "filename", "kind"],
+      "additionalProperties": false
+    }
+  }
+]

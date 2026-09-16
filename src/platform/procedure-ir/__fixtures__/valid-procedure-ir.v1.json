@@ -1,0 +1,285 @@
+{
+  "schema": "studio.procedure-ir",
+  "schemaVersion": "1.0",
+  "id": "procedure-demo",
+  "title": "Prepare and inspect a sample",
+  "purpose": "Normalize a structured procedure without executing it.",
+  "audience": "Secondary chemistry learners",
+  "learningObjectives": [
+    "Measure a declared volume",
+    "Record an observation"
+  ],
+  "domainHint": "chemistry",
+  "sources": [
+    {
+      "id": "source-1",
+      "kind": "document",
+      "title": "Reviewed procedure",
+      "reference": "doi:10.0000/example",
+      "version": "1",
+      "language": "en"
+    }
+  ],
+  "roles": [
+    {
+      "id": "learner",
+      "title": "Learner",
+      "description": "Performs the structured steps.",
+      "responsibilities": ["Measure", "Observe"],
+      "sourceLocators": [
+        {
+          "sourceRef": "source-1",
+          "kind": "section",
+          "pointer": "roles/learner",
+          "quote": "Learner role"
+        }
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "id": "sample",
+      "label": "Water sample",
+      "kind": "sample",
+      "quantity": {
+        "value": "10.00",
+        "unit": { "kind": "known", "id": "mL" }
+      },
+      "knownResourceRef": "chemistry.sample.water",
+      "sourceLocators": [
+        {
+          "sourceRef": "source-1",
+          "kind": "structured-step",
+          "pointer": "steps/1/resources/0",
+          "start": { "line": 12, "column": 4 },
+          "end": { "line": 12, "column": 20 },
+          "quote": "10 mL water sample"
+        }
+      ],
+      "reviewFlags": []
+    },
+    {
+      "id": "transfer-tool",
+      "label": "One small transfer tool",
+      "kind": "unknown",
+      "unknownResource": {
+        "raw": "small transfer tool",
+        "reason": "The structured source does not identify a catalog object."
+      },
+      "sourceLocators": [
+        {
+          "sourceRef": "source-1",
+          "kind": "structured-step",
+          "pointer": "steps/1/resources/1",
+          "quote": "small transfer tool"
+        }
+      ],
+      "reviewFlags": [
+        {
+          "id": "review-transfer-tool",
+          "code": "resource.unknown",
+          "severity": "blocking",
+          "message": "Select a supported transfer tool before compilation.",
+          "sourceLocators": [
+            {
+              "sourceRef": "source-1",
+              "kind": "structured-step",
+              "pointer": "steps/1/resources/1",
+              "quote": "small transfer tool"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variables": [
+    {
+      "id": "sample-volume",
+      "label": "Sample volume",
+      "kind": "controlled",
+      "value": {
+        "value": "10.00",
+        "unit": { "kind": "known", "id": "mL" }
+      },
+      "unit": { "kind": "known", "id": "mL" },
+      "sourceLocators": [
+        {
+          "sourceRef": "source-1",
+          "kind": "structured-step",
+          "pointer": "steps/1/volume",
+          "quote": "10 mL"
+        }
+      ],
+      "reviewFlags": []
+    },
+    {
+      "id": "drop-unit",
+      "label": "Source unit wording",
+      "kind": "unknown",
+      "value": {
+        "value": "3",
+        "unit": {
+          "kind": "unknown",
+          "raw": "drops",
+          "reason": "Drop volume is not defined by the source."
+        }
+      },
+      "unit": {
+        "kind": "unknown",
+        "raw": "drops",
+        "reason": "Drop volume is not defined by the source."
+      },
+      "sourceLocators": [
+        {
+          "sourceRef": "source-1",
+          "kind": "paragraph",
+          "pointer": "notes/2",
+          "quote": "three drops"
+        }
+      ],
+      "reviewFlags": []
+    }
+  ],
+  "steps": [
+    {
+      "id": "measure-sample",
+      "ordinal": 1,
+      "title": "Measure sample",
+      "instruction": "Measure 10 mL of the water sample.",
+      "sourceLocators": [
+        {
+          "sourceRef": "source-1",
+          "kind": "structured-step",
+          "pointer": "steps/1",
+          "start": { "line": 12, "column": 1 },
+          "end": { "line": 12, "column": 42 },
+          "quote": "Measure 10 mL of the water sample."
+        }
+      ],
+      "normalizedOperation": {
+        "family": "transfer",
+        "actionKey": "measure-volume",
+        "actorRefs": ["learner"],
+        "inputRefs": ["sample", "transfer-tool"],
+        "outputRefs": ["sample-volume"],
+        "parameters": {
+          "volume": {
+            "value": "10.00",
+            "unit": { "kind": "known", "id": "mL" }
+          }
+        }
+      },
+      "preconditions": [],
+      "effects": [
+        {
+          "subjectRef": "sample-volume",
+          "operation": "set",
+          "value": {
+            "value": "10.00",
+            "unit": { "kind": "known", "id": "mL" }
+          },
+          "description": "The planned sample volume is recorded."
+        }
+      ],
+      "dependencies": [],
+      "timing": {
+        "duration": {
+          "value": "1.0",
+          "unit": { "kind": "known", "id": "min" }
+        }
+      },
+      "requestedFidelity": "F2",
+      "evidenceRequirements": [
+        {
+          "id": "volume-evidence",
+          "typeId": "measurement.scalar",
+          "description": "Record the measured volume.",
+          "required": true,
+          "sourceLocators": [
+            {
+              "sourceRef": "source-1",
+              "kind": "structured-step",
+              "pointer": "steps/1",
+              "quote": "Measure 10 mL"
+            }
+          ]
+        }
+      ],
+      "accessibilityRequirements": ["keyboard"],
+      "ambiguity": [
+        {
+          "id": "transfer-tool-ambiguity",
+          "category": "unknown-resource",
+          "message": "The transfer tool is not identified.",
+          "sourceLocators": [
+            {
+              "sourceRef": "source-1",
+              "kind": "structured-step",
+              "pointer": "steps/1/resources/1",
+              "quote": "small transfer tool"
+            }
+          ],
+          "options": ["graduated-cylinder", "pipette"],
+          "resolutionStatus": "open"
+        }
+      ],
+      "reviewFlags": []
+    },
+    {
+      "id": "observe-sample",
+      "ordinal": 2,
+      "title": "Observe sample",
+      "instruction": "Record the appearance of the sample.",
+      "sourceLocators": [
+        {
+          "sourceRef": "source-1",
+          "kind": "structured-step",
+          "pointer": "steps/2",
+          "start": { "line": 13, "column": 1 },
+          "quote": "Record the appearance of the sample."
+        }
+      ],
+      "preconditions": [
+        {
+          "subjectRef": "sample-volume",
+          "relation": "exists",
+          "description": "A sample volume has been measured."
+        }
+      ],
+      "effects": [],
+      "dependencies": ["measure-sample"],
+      "requestedFidelity": "F1",
+      "evidenceRequirements": [
+        {
+          "id": "observation-evidence",
+          "typeId": "observation.text",
+          "description": "Record a text observation.",
+          "required": true,
+          "sourceLocators": [
+            {
+              "sourceRef": "source-1",
+              "kind": "structured-step",
+              "pointer": "steps/2",
+              "quote": "Record the appearance"
+            }
+          ]
+        }
+      ],
+      "accessibilityRequirements": ["keyboard", "text-alternative"],
+      "ambiguity": [],
+      "reviewFlags": []
+    }
+  ],
+  "controlFlow": {
+    "mode": "ordered",
+    "entryStepIds": ["measure-sample"],
+    "completionStepIds": ["observe-sample"],
+    "allowParallel": false
+  },
+  "reviewFlags": [],
+  "metadata": {
+    "createdAt": "2026-07-18T00:00:00.000Z",
+    "createdBy": "host-model",
+    "language": "en"
+  }
+}

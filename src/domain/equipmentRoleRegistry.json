@@ -1,0 +1,1251 @@
+{
+  "schema": "lab-studio/equipment-role-registry@1",
+  "cycle": "01 seed; extended in Cycles 03, 05, 06, 07, 08, 09, 10, 11, and 12",
+  "consumedBy": [
+    "scripts/checkContentConsistency.mjs",
+    "src/domain/atomRegistry.ts"
+  ],
+  "policy": "A role is a constraint, not a synonym for one apparatus id. Capacity, tolerance, fixed-versus-variable delivery, the source instruction, safety, and learning intent decide which equipment may fill it. Widening allowedEquipmentIds requires a source justification recorded in the entry's rationale.",
+  "kindCategoryConstraints": {
+    "instrument": [
+      "measurement",
+      "heating"
+    ],
+    "vessel": [
+      "container",
+      "chromatography",
+      "filtration",
+      "sample",
+      "measurement"
+    ],
+    "delivery": [
+      "measurement",
+      "reagent",
+      "container",
+      "tool",
+      "sample"
+    ],
+    "consumable": [
+      "filtration",
+      "chromatography",
+      "sample",
+      "reagent"
+    ],
+    "tool": [
+      "tool",
+      "measurement",
+      "heating"
+    ],
+    "support": [
+      "filtration",
+      "tool",
+      "heating"
+    ]
+  },
+  "roles": [
+    {
+      "id": "balance-instrument",
+      "label": "Analytical balance",
+      "kind": "instrument",
+      "constraints": {
+        "readsQuantity": "mass",
+        "precisionIsTeacherConfigured": true
+      },
+      "allowedEquipmentIds": [
+        "analytical-balance"
+      ],
+      "rationale": "Investigation 3 lists the balance as +/-0.001 or +/-0.0001 g and leaves the choice to the teacher, so the role fixes the apparatus but never the displayed precision."
+    },
+    {
+      "id": "weighed-vessel",
+      "label": "Vessel placed on the balance",
+      "kind": "vessel",
+      "constraints": {
+        "mustBeDryBeforeTare": true,
+        "mustBeCooledBeforeWeighing": true
+      },
+      "allowedEquipmentIds": [
+        "beaker-150ml",
+        "beaker-250ml",
+        "crucible-with-lid",
+        "erlenmeyer-flask-250ml",
+        "test-tube",
+        "watch-glass",
+        "weigh-boat"
+      ],
+      "rationale": "Any clean, dry container the procedure weighs directly. A warm vessel is a procedure error, not a different role."
+    },
+    {
+      "id": "solid-transfer-tool",
+      "label": "Solid transfer tool",
+      "kind": "tool",
+      "constraints": {
+        "deliveryMode": "unmeasured"
+      },
+      "allowedEquipmentIds": [
+        "scoopula",
+        "spatula"
+      ],
+      "rationale": "Investigation 3 names a metal scoop; a spatula is the same manipulation at microscale. Neither delivers a measured quantity."
+    },
+    {
+      "id": "variable-volume-measuring-device",
+      "label": "Variable-volume measuring device",
+      "kind": "delivery",
+      "constraints": {
+        "deliveryMode": "measured",
+        "volumeDelivery": "variable",
+        "readsQuantity": "volume"
+      },
+      "allowedEquipmentIds": [
+        "beaker-150ml",
+        "burette-50ml",
+        "graduated-cylinder",
+        "graduated-cylinder-25ml",
+        "graduated-pipette-10ml",
+        "luer-lock-syringe"
+      ],
+      "prohibitedEquipmentIds": [
+        "volumetric-flask",
+        "wash-bottle",
+        "beral-pipette"
+      ],
+      "rationale": "Graduated apparatus can deliver any volume within its range and is read by the student. A volumetric flask holds one calibrated volume and cannot serve here; a wash bottle and a Beral pipette are not calibrated at all."
+    },
+    {
+      "id": "fixed-volume-delivery-device",
+      "label": "Fixed-volume calibrated device",
+      "kind": "delivery",
+      "constraints": {
+        "deliveryMode": "measured",
+        "volumeDelivery": "fixed",
+        "readsQuantity": "none"
+      },
+      "allowedEquipmentIds": [
+        "volumetric-flask"
+      ],
+      "prohibitedEquipmentIds": [
+        "graduated-cylinder",
+        "graduated-cylinder-25ml",
+        "burette-50ml"
+      ],
+      "rationale": "A single calibration mark defines the volume, so the student fills to the mark instead of reading a scale. Substituting a graduated device changes the measurement claim the source makes."
+    },
+    {
+      "id": "measured-solvent-source",
+      "label": "Measured solvent delivery",
+      "kind": "delivery",
+      "constraints": {
+        "deliveryMode": "measured",
+        "readsQuantity": "volume"
+      },
+      "allowedEquipmentIds": [
+        "beaker-150ml",
+        "burette-50ml",
+        "graduated-cylinder",
+        "graduated-cylinder-25ml",
+        "graduated-pipette-10ml",
+        "volumetric-flask"
+      ],
+      "prohibitedEquipmentIds": [
+        "wash-bottle",
+        "distilled-water-bottle"
+      ],
+      "rationale": "Investigation 5 states an approved solvent amount for the developing chamber and Investigation 3 states about 20 mL of distilled water. Investigation 12 CA-07 transfers the already measured 100.0 mL hot-water sample from its 150 mL beaker into the calorimeter, so that beaker may carry measured-volume provenance forward. Delivering any of these from a wash bottle would present an unmeasured stream as a stated volume."
+    },
+    {
+      "id": "rinse-water-source",
+      "label": "Rinse-water delivery",
+      "kind": "delivery",
+      "constraints": {
+        "deliveryMode": "unmeasured",
+        "readsQuantity": "none"
+      },
+      "allowedEquipmentIds": [
+        "distilled-water-bottle",
+        "wash-bottle"
+      ],
+      "prohibitedEquipmentIds": [
+        "burette-50ml",
+        "graduated-cylinder",
+        "graduated-cylinder-25ml",
+        "volumetric-flask"
+      ],
+      "rationale": "The manual rinses with small quantities of water and never assigns the rinse a volume. Using a calibrated device here would invent a quantity the source does not state.",
+      "distinguishedFrom": [
+        "measured-solvent-source"
+      ]
+    },
+    {
+      "id": "liquid-source",
+      "label": "Bulk liquid source",
+      "kind": "delivery",
+      "constraints": {
+        "deliveryMode": "unmeasured"
+      },
+      "allowedEquipmentIds": [
+        "distilled-water-bottle",
+        "dropper-bottle",
+        "naoh-bottle",
+        "propanol-bottle",
+        "reagent-bottle",
+        "rubbing-alcohol-bottle",
+        "sample-bottle",
+        "unknown-acid-bottle",
+        "wash-bottle",
+        "sample-bottle-1l"
+      ],
+      "rationale": "Stock containers and droppers from which a graduated device measures a stated volume. They originate the liquid but do not establish the measurement precision. The user-configured 1 L stock variant retains the permitted bottle delivery mode; only its stock capacity changes, not measurement precision."
+    },
+    {
+      "id": "solid-reagent-source",
+      "label": "Solid reagent source",
+      "kind": "delivery",
+      "constraints": {
+        "deliveryMode": "unmeasured"
+      },
+      "allowedEquipmentIds": [
+        "reagent-bottle",
+        "sample-bottle",
+        "small-vial"
+      ],
+      "rationale": "Named solids may be supplied in a small vial or stock bottle. The source delivers the approximate portion; the balance produces the recorded mass.",
+      "distinguishedFrom": [
+        "liquid-source"
+      ]
+    },
+    {
+      "id": "precipitating-reagent-source",
+      "label": "Precipitating-reagent source",
+      "kind": "delivery",
+      "constraints": {
+        "deliveryMode": "unmeasured",
+        "excessIsTeacherConfigured": true
+      },
+      "allowedEquipmentIds": [
+        "beaker-150ml",
+        "beaker-250ml",
+        "burette-50ml",
+        "graduated-cylinder",
+        "graduated-cylinder-25ml",
+        "reagent-bottle"
+      ],
+      "rationale": "The two Investigation 3 phases deliver carbonate from different vessels: PR-11 pours prepared Na2CO3 solution out of the practice beaker, INQ-02 draws 0.50 M Na2CO3 from a reagent container. Finding 12 (R/C) leaves the excess to the student within teacher-approved constraints, so the role admits both and fixes neither the vessel nor the amount."
+    },
+    {
+      "id": "precipitation-vessel",
+      "label": "Precipitation vessel",
+      "kind": "vessel",
+      "constraints": {
+        "retainsPrecipitateUntilFiltered": true
+      },
+      "allowedEquipmentIds": [
+        "beaker-150ml",
+        "beaker-250ml",
+        "erlenmeyer-flask-250ml"
+      ],
+      "rationale": "PR-11 through PR-15 and INQ-06/INQ-07 form and age CaCO3 in the vessel that later feeds FD-06. It is distinct from reaction-vessel, whose gas-collection sealing constraint belongs to Investigation 10.",
+      "distinguishedFrom": [
+        "reaction-vessel"
+      ]
+    },
+    {
+      "id": "receiving-vessel",
+      "label": "Receiving vessel",
+      "kind": "vessel",
+      "constraints": {},
+      "allowedEquipmentIds": [
+        "beaker-150ml",
+        "beaker-250ml",
+        "crucible-with-lid",
+        "erlenmeyer-flask-250ml",
+        "hand-warmer-calorimeter",
+        "polystyrene-cup-8oz",
+        "side-arm-filter-flask",
+        "test-tube",
+        "volumetric-flask",
+        "watch-glass"
+      ],
+      "rationale": "General destination for a transfer where the source does not constrain the vessel further. Investigation 12 PR-08 and CA-07 receive weighed solid or measured hot water in the inner nested cup; the hand-warmer-calorimeter definition is the runtime identity of that assembled vessel so its visible state, contents, and hit target remain one object."
+    },
+    {
+      "id": "analyte-receiver",
+      "label": "Analyte receiver",
+      "kind": "vessel",
+      "constraints": {
+        "swirlable": true,
+        "openMouthForTitrantAddition": true
+      },
+      "allowedEquipmentIds": [
+        "beaker-150ml",
+        "beaker-250ml",
+        "erlenmeyer-flask-250ml"
+      ],
+      "prohibitedEquipmentIds": [
+        "foam-cup-calorimeter",
+        "polystyrene-cup-8oz",
+        "hand-warmer-calorimeter"
+      ],
+      "rationale": "Holds the measured aliquot being titrated and must be swirlable under a burette tip. An insulated calorimeter cup is a thermal vessel, not a titration receiver.",
+      "receiverSelection": {
+        "default": "erlenmeyer-flask-250ml",
+        "documentedException": [
+          "beaker-150ml",
+          "beaker-250ml"
+        ],
+        "reason": "The two vessel families are not interchangeable and neither is a defect. An Erlenmeyer is the receiver whenever the endpoint is read from an indicator colour change while swirling: the narrow neck is what makes vigorous swirling safe under a burette tip, and that is the operation Investigation 4 PR-03/T-07 and Investigation 8 ST-03 describe. A beaker is admissible only where an immersed pH probe is the measuring instrument - Investigation 14 TIT-03 says 'flask/beaker below tip' and TIT-04 then requires the bulb immersed and clear of the stir bar, a geometry the Erlenmeyer neck fights. Cycle 09 records the exception here rather than flattening the vessels onto one id, because collapsing them would silently decide Investigation 14 confirmation point 5, whether an indicator is used in formal trials at all.",
+        "constraint": "A run whose endpoint evidence is an indicator colour change uses the Erlenmeyer. A run whose endpoint evidence is a pH curve may use either, and a beaker chosen for probe clearance must also satisfy immersed-probe-vessel.",
+        "sourceRows": [
+          "acid-base-titration-curves_2026-07-27.md apparatus TIT-03",
+          "acid-base-titration-curves_2026-07-27.md apparatus TIT-04",
+          "acid-in-fruit-juice-and-soft-drinks_2026-07-27.md phase T-04"
+        ],
+        "recordedBy": "09"
+      },
+      "distinguishedFrom": [
+        "immersed-probe-vessel"
+      ]
+    },
+    {
+      "id": "acidifying-reagent-source",
+      "label": "Acidifying reagent source",
+      "kind": "delivery",
+      "constraints": {
+        "deliveryMode": "measured",
+        "volumeIsTeacherConfigured": true,
+        "mustNotContactSolidOxidiser": true
+      },
+      "allowedEquipmentIds": [
+        "graduated-cylinder",
+        "graduated-cylinder-25ml",
+        "graduated-pipette-10ml",
+        "reagent-bottle"
+      ],
+      "prohibitedEquipmentIds": [
+        "wash-bottle",
+        "distilled-water-bottle",
+        "beral-pipette"
+      ],
+      "rationale": "Investigation 8 PA-03 adds no more than 10 mL of 6 M H2SO4 to acidify the standard, and HP-02 acidifies each peroxide aliquot with the approved volume. The volume is bounded but never fixed, so the role requires a device that reads a volume and refuses uncalibrated streams. mustNotContactSolidOxidiser records S-05: the acid is delivered to the analyte, never to solid KMnO4.",
+      "distinguishedFrom": [
+        "titrant-source",
+        "rinse-water-source"
+      ]
+    },
+    {
+      "id": "waste-receiver",
+      "label": "Designated waste receiver",
+      "kind": "vessel",
+      "constraints": {
+        "disposalStreamIsTeacherConfigured": true
+      },
+      "allowedEquipmentIds": [
+        "waste-beaker"
+      ],
+      "rationale": "Every dated plan routes waste through a named destination. The destination itself stays a configuration point."
+    },
+    {
+      "id": "filtration-support",
+      "label": "Filtration support",
+      "kind": "support",
+      "constraints": {
+        "mustBeStableBeforeLoading": true
+      },
+      "allowedEquipmentIds": [
+        "funnel-stand",
+        "ring-stand"
+      ],
+      "rationale": "GRAV-00 in Investigation 3 places the support before any funnel or paper."
+    },
+    {
+      "id": "filtration-funnel",
+      "label": "Filtration funnel",
+      "kind": "vessel",
+      "constraints": {
+        "gravityOrVacuumIsTeacherConfigured": true
+      },
+      "allowedEquipmentIds": [
+        "buchner-funnel",
+        "funnel",
+        "funnel-stand"
+      ],
+      "rationale": "Investigation 3 confirmation point S-04 leaves gravity versus vacuum filtration unresolved, so the role admits both apparatus families and the choice stays configured."
+    },
+    {
+      "id": "filter-medium",
+      "label": "Filter medium",
+      "kind": "consumable",
+      "constraints": {
+        "preWeighedWhenGravimetric": true
+      },
+      "allowedEquipmentIds": [
+        "filter-paper"
+      ],
+      "rationale": "FD-01 weighs the dry paper before it is seated or wetted."
+    },
+    {
+      "id": "filtration-receiver",
+      "label": "Filtrate receiver",
+      "kind": "vessel",
+      "constraints": {
+        "mustBeAlignedUnderOutlet": true
+      },
+      "allowedEquipmentIds": [
+        "beaker-150ml",
+        "beaker-250ml",
+        "erlenmeyer-flask-250ml",
+        "side-arm-filter-flask"
+      ],
+      "rationale": "GRAV-04 aligns the receiver under the outlet before any pour. A side-arm flask is required only in the vacuum configuration."
+    },
+    {
+      "id": "filtration-vacuum-source",
+      "label": "Filtration vacuum source",
+      "kind": "tool",
+      "constraints": {
+        "gravityOrVacuumIsTeacherConfigured": true,
+        "requiredOnlyInVacuumConfiguration": true
+      },
+      "allowedEquipmentIds": [
+        "vacuum-source"
+      ],
+      "rationale": "Investigation 3 lists a vacuum filtration apparatus but never illustrates or enumerates it (finding 3, M/C), and confirmation point 1 leaves gravity versus vacuum open. The role exists so the vacuum configuration can be assembled explicitly rather than implied, and it is unfilled in the gravity configuration.",
+      "distinguishedFrom": [
+        "filtration-support"
+      ]
+    },
+    {
+      "id": "mixture-source",
+      "label": "Mixture being filtered",
+      "kind": "delivery",
+      "constraints": {
+        "deliveryMode": "unmeasured",
+        "pourRateIsValidated": true
+      },
+      "allowedEquipmentIds": [
+        "beaker-150ml",
+        "beaker-250ml",
+        "erlenmeyer-flask-250ml"
+      ],
+      "rationale": "FD-06 requires a slow pour without overflow, so the source vessel is part of the validated behaviour."
+    },
+    {
+      "id": "rinsed-vessel",
+      "label": "Vessel or medium being rinsed",
+      "kind": "vessel",
+      "constraints": {},
+      "allowedEquipmentIds": [
+        "beaker-150ml",
+        "beaker-250ml",
+        "erlenmeyer-flask-250ml",
+        "funnel",
+        "test-tube"
+      ],
+      "rationale": "FD-07 rinses the beaker for quantitative transfer; the same role covers conditioning rinses elsewhere."
+    },
+    {
+      "id": "drying-instrument",
+      "label": "Drying oven",
+      "kind": "instrument",
+      "constraints": {
+        "temperatureIsTeacherConfigured": true,
+        "sourceTemperatureRangeC": "110-120"
+      },
+      "allowedEquipmentIds": [
+        "drying-oven"
+      ],
+      "rationale": "FD-13 states 110-120 C. The range is source-stated; the exact setpoint stays configurable."
+    },
+    {
+      "id": "dried-assembly",
+      "label": "Assembly placed in the oven",
+      "kind": "vessel",
+      "constraints": {
+        "carriesRecordedTareMass": true
+      },
+      "allowedEquipmentIds": [
+        "crucible-with-lid",
+        "watch-glass",
+        "weigh-boat"
+      ],
+      "rationale": "DRY-00 and DRY-01 put the pre-weighed, labelled watch glass under the paper and precipitate."
+    },
+    {
+      "id": "cooling-tool",
+      "label": "Heat-safe handling tool",
+      "kind": "tool",
+      "constraints": {
+        "requiredBeforeWeighingWarmAssembly": true
+      },
+      "allowedEquipmentIds": [
+        "crucible-tongs"
+      ],
+      "rationale": "S-05 and S-06 require heat-safe handling and full cooling before the assembly is weighed."
+    },
+    {
+      "id": "photometer-instrument",
+      "label": "Spectrophotometer or colorimeter",
+      "kind": "instrument",
+      "constraints": {
+        "wavelengthIsTeacherConfigured": true,
+        "mustBeBlankedBeforeSampleRead": true
+      },
+      "allowedEquipmentIds": [
+        "spectrophotometer"
+      ],
+      "rationale": "Investigations 1, 2, and 11 all leave the wavelength a confirmation point, and all three blank the instrument before the first sample read."
+    },
+    {
+      "id": "photometer-sample-holder",
+      "label": "Cuvette",
+      "kind": "vessel",
+      "constraints": {
+        "opticalFacesMustStayClean": true
+      },
+      "allowedEquipmentIds": [
+        "cuvette"
+      ],
+      "rationale": "SPEC-01 and SPEC-02 distinguish the blank cuvette from the sample cuvette; both are the same role filled at different times."
+    },
+    {
+      "id": "sample-source",
+      "label": "Sample source",
+      "kind": "delivery",
+      "constraints": {},
+      "allowedEquipmentIds": [
+        "beral-pipette",
+        "distilled-water-bottle",
+        "graduated-pipette-10ml",
+        "reagent-bottle",
+        "sample-bottle",
+        "small-vial",
+        "test-tube",
+        "sample-bottle-1l",
+        "distilled-water-bottle-1l"
+      ],
+      "rationale": "The container or pipette a measured sample is drawn from when the source step does not constrain the delivery precision. A distilled-water bottle is included when the approved water volume is the measured source liquid. The user-configured 1 L stock variant retains the permitted bottle delivery mode; only its stock capacity changes, not measurement precision."
+    },
+    {
+      "id": "burette-filling-funnel",
+      "label": "Burette filling funnel",
+      "kind": "vessel",
+      "constraints": {
+        "use": "temporary filling aid",
+        "mustBeRemovedBeforeInitialReading": true,
+        "distinctFromFiltration": true
+      },
+      "allowedEquipmentIds": [
+        "funnel"
+      ],
+      "rationale": "ST-01 identifies a funnel among the titration filling apparatus (R/C). This role is limited to temporarily filling a burette and cannot satisfy the separate filtration-funnel role."
+    },
+    {
+      "id": "titrant-delivery-device",
+      "label": "Burette",
+      "kind": "delivery",
+      "constraints": {
+        "deliveryMode": "measured",
+        "volumeDelivery": "variable",
+        "readsQuantity": "volume",
+        "requiresConditioningRinse": true
+      },
+      "allowedEquipmentIds": [
+        "burette-50ml"
+      ],
+      "rationale": "ST-01 conditions and fills the burette and records an initial reading before any titrant is delivered."
+    },
+    {
+      "id": "burette-support",
+      "label": "Burette support",
+      "kind": "support",
+      "constraints": {},
+      "allowedEquipmentIds": [
+        "ring-stand",
+        "ring-stand-clamp"
+      ],
+      "rationale": "IQ-04 sketches the burette clamped over the flask; the stand and clamp are the same support role."
+    },
+    {
+      "id": "titrant-source",
+      "label": "Titrant stock",
+      "kind": "delivery",
+      "constraints": {
+        "concentrationIsTeacherConfigured": true
+      },
+      "allowedEquipmentIds": [
+        "naoh-bottle",
+        "reagent-bottle"
+      ],
+      "rationale": "Investigation 4 leaves the NaOH concentration to the student's approved plan, so the stock label is configuration, not a fixed value."
+    },
+    {
+      "id": "indicator-source",
+      "label": "Indicator dropper",
+      "kind": "delivery",
+      "constraints": {
+        "deliveryMode": "unmeasured",
+        "indicatorChoiceIsTeacherConfigured": true
+      },
+      "allowedEquipmentIds": [
+        "dropper-bottle",
+        "phenolphthalein-dropper"
+      ],
+      "rationale": "PR-02 adds a few drops; PR-04 lets the student select the indicator. Neither states a volume."
+    },
+    {
+      "id": "developing-chamber",
+      "label": "Developing chamber",
+      "kind": "vessel",
+      "constraints": {
+        "solventDepthIsTeacherConfigured": true,
+        "mustBeSealedDuringDevelopment": true
+      },
+      "allowedEquipmentIds": [
+        "chromatography-chamber"
+      ],
+      "rationale": "CHR-01 and CHR-05 fix a configured depth and a closed lid before the front is allowed to rise."
+    },
+    {
+      "id": "stationary-phase",
+      "label": "Chromatography paper",
+      "kind": "consumable",
+      "constraints": {
+        "baselineMustBeAboveSolventLevel": true
+      },
+      "allowedEquipmentIds": [
+        "chromatography-paper"
+      ],
+      "rationale": "TR-06 requires the lower edge in solvent and the spot above it; the geometry is part of the role."
+    },
+    {
+      "id": "spotting-tool",
+      "label": "Spotting tool",
+      "kind": "tool",
+      "constraints": {
+        "deliveryMode": "unmeasured",
+        "toolChoiceIsTeacherConfigured": true
+      },
+      "allowedEquipmentIds": [
+        "capillary-spotter"
+      ],
+      "rationale": "CHR-03 marks the capillary spotter R/C: real-life implicit and still a configuration choice."
+    },
+    {
+      "id": "reaction-vessel",
+      "label": "Reaction vessel",
+      "kind": "vessel",
+      "constraints": {
+        "mustBeSealedForGasCollection": true
+      },
+      "allowedEquipmentIds": [
+        "beaker-250ml",
+        "erlenmeyer-flask-250ml",
+        "test-tube"
+      ],
+      "rationale": "GAS-00 places the reaction flask before the delivery stopper is inserted."
+    },
+    {
+      "id": "gas-delivery-connector",
+      "label": "Gas delivery connector",
+      "kind": "tool",
+      "constraints": {
+        "mustBeLeakCheckedBeforeUse": true
+      },
+      "allowedEquipmentIds": [
+        "rubber-stopper-delivery-tube"
+      ],
+      "rationale": "GAS-01 through GAS-04 insert, connect, and leak-check the delivery path before any timed reading."
+    },
+    {
+      "id": "gas-collection-instrument",
+      "label": "Gas syringe",
+      "kind": "instrument",
+      "constraints": {
+        "mustBeZeroedBeforeCollection": true,
+        "readsQuantity": "volume"
+      },
+      "allowedEquipmentIds": [
+        "gas-syringe"
+      ],
+      "rationale": "GAS-03 connects a zeroed gas syringe; a non-zero start invalidates the collected series."
+    },
+    {
+      "id": "timing-instrument",
+      "label": "Timing instrument",
+      "kind": "instrument",
+      "constraints": {
+        "readsQuantity": "time",
+        "intervalIsTeacherConfigured": true
+      },
+      "allowedEquipmentIds": [
+        "data-collection-interface",
+        "stopwatch"
+      ],
+      "rationale": "K-02 arms the timer or data collection before mixing; the sampling interval is part of the approved plan."
+    },
+    {
+      "id": "stress-reagent-source",
+      "label": "Equilibrium stress reagent",
+      "kind": "delivery",
+      "constraints": {
+        "deliveryMode": "unmeasured",
+        "stressIdentityIsTeacherConfigured": true
+      },
+      "allowedEquipmentIds": [
+        "distilled-water-bottle",
+        "dropper-bottle",
+        "naoh-bottle",
+        "reagent-bottle",
+        "small-vial",
+        "unknown-acid-bottle"
+      ],
+      "rationale": "Investigation 13 applies approved concentration stresses from labelled droppers, reagent containers, small vials, and distilled water; the reagent identity and amount remain source- or teacher-configured."
+    },
+    {
+      "id": "equilibrium-vessel",
+      "label": "Equilibrium vessel",
+      "kind": "vessel",
+      "constraints": {
+        "pressureStateIsTracked": true
+      },
+      "allowedEquipmentIds": [
+        "beaker-250ml",
+        "luer-lock-syringe",
+        "luer-lock-syringe-locked",
+        "test-tube"
+      ],
+      "rationale": "Investigation 13 prepares stock equilibria in 250 mL beakers, trials in test tubes, and the pressure demonstration in a Luer-lock syringe; the active vessel carries the mixture or pressure state without implying a quantitative concentration."
+    },
+    {
+      "id": "thermal-bath",
+      "label": "Temperature bath",
+      "kind": "vessel",
+      "constraints": {
+        "bathTemperatureIsTeacherConfigured": true
+      },
+      "allowedEquipmentIds": [
+        "beaker-250ml"
+      ],
+      "rationale": "BATH-01 through BATH-03 place the bath beaker, add hot or ice water, and insert a thermometer."
+    },
+    {
+      "id": "calorimeter-vessel",
+      "label": "Calorimeter vessel",
+      "kind": "vessel",
+      "constraints": {
+        "insulated": true
+      },
+      "allowedEquipmentIds": [
+        "foam-cup-calorimeter",
+        "hand-warmer-calorimeter",
+        "polystyrene-cup-8oz"
+      ],
+      "rationale": "CAL-01 nests the cup calorimeter on the stirrer; the nested cups are the insulating boundary."
+    },
+    {
+      "id": "calorimeter-cover",
+      "label": "Calorimeter cover",
+      "kind": "tool",
+      "constraints": {
+        "holesMustAlignWithProbe": true
+      },
+      "allowedEquipmentIds": [
+        "wooden-calorimeter-cover"
+      ],
+      "rationale": "CAL-04 places the wooden lid with holes aligned before CAL-05 inserts the thermometer."
+    },
+    {
+      "id": "immersed-probe-instrument",
+      "label": "Immersed probe",
+      "kind": "instrument",
+      "constraints": {
+        "contact": "immersed",
+        "mustNotTouchVesselWall": true
+      },
+      "allowedEquipmentIds": [
+        "conductivity-tester",
+        "ph-meter",
+        "probe-thermometer",
+        "thermometer"
+      ],
+      "rationale": "CAL-03 and CAL-05 require the bulb immersed in the liquid and clear of the cup bottom and sides."
+    },
+    {
+      "id": "immersed-probe-vessel",
+      "label": "Vessel a probe is immersed in",
+      "kind": "vessel",
+      "constraints": {
+        "contact": "immersed",
+        "mustHoldEnoughLiquidToCoverProbe": true
+      },
+      "allowedEquipmentIds": [
+        "beaker-150ml",
+        "beaker-250ml",
+        "erlenmeyer-flask-250ml",
+        "foam-cup-calorimeter",
+        "hand-warmer-calorimeter",
+        "polystyrene-cup-8oz",
+        "test-tube"
+      ],
+      "rationale": "Distinct from analyte-receiver: the constraint is liquid depth over the probe, not swirlability under a burette tip. Cycle 09 added beaker-150ml and erlenmeyer-flask-250ml on the strength of two source rows rather than convenience: Investigation 14 TIT-03 places a 'flask/beaker' under the tip and TIT-04 then immerses the probe in whichever was chosen, and Investigation 4 T-02/T-04 measures the beverage aliquot into a flask and inserts the probe there. A vessel that is both an analyte-receiver and an immersed-probe-vessel must satisfy both roles; see analyte-receiver.receiverSelection for which is correct for a given endpoint.",
+      "distinguishedFrom": [
+        "analyte-receiver"
+      ]
+    },
+    {
+      "id": "stirring-device",
+      "label": "Stirring device",
+      "kind": "tool",
+      "constraints": {
+        "stirRateIsTeacherConfigured": true
+      },
+      "allowedEquipmentIds": [
+        "hot-plate-stirrer",
+        "magnetic-stir-bar",
+        "stirring-rod"
+      ],
+      "rationale": "Investigation 3 says stir but does not name a tool (an R classification); Investigation 12 uses a magnetic stirrer. Both fill one role."
+    },
+    {
+      "id": "reactant-solid-source",
+      "label": "Solid reactant source",
+      "kind": "delivery",
+      "constraints": {
+        "massIsStudentWeighed": true,
+        "surfaceAreaClassIsTeacherConfigured": true
+      },
+      "allowedEquipmentIds": [
+        "marble-chips",
+        "reagent-bottle",
+        "sample-bottle",
+        "small-vial"
+      ],
+      "rationale": "T-06 and T-07 select a chip-size class and weigh CaCO3 within an approved range, and T-11 adds it to the acid. The role fixes where the solid comes from and leaves both the mass and the surface-area class to the student and the teacher, because Investigation 10 confirmation point 2 keeps the treatment ranges open. Distinct from solid-reagent-source, whose rationale is Investigation 3's bottled powders."
+    },
+    {
+      "id": "bonding-test-vessel",
+      "label": "Bonding test vessel",
+      "kind": "vessel",
+      "constraints": {
+        "microscaleAmountIsTeacherApproved": true,
+        "freshMicrosamplePerTestLine": true,
+        "nonDestructiveTestsPrecedeDestructive": true
+      },
+      "allowedEquipmentIds": [
+        "test-tube",
+        "watch-glass"
+      ],
+      "rationale": "K-01 labels one test location per sample and test line, and Investigation 6 section 9 consumes a fresh microsample for each line unless the teacher approves otherwise, so the vessel identity is part of the evidence. Two tests may share one line's portion only when the non-destructive one runs first: magnetism before a melting stage, never after it. Not reaction-vessel, which carries Investigation 10's mustBeSealedForGasCollection constraint and misdescribes an open test tube."
+    },
+    {
+      "id": "bonding-test-solvent-source",
+      "label": "Bonding test solvent or reagent source",
+      "kind": "delivery",
+      "constraints": {
+        "solventIdentityIsTeacherApproved": true,
+        "microscaleAmountIsTeacherApproved": true,
+        "hoodControlledSolventsRequireTeacherControl": true
+      },
+      "allowedEquipmentIds": [
+        "distilled-water-bottle",
+        "naoh-bottle",
+        "reagent-bottle",
+        "reagent-bottle-1l"
+      ],
+      "rationale": "K-03 applies the selected solvent or reagent. Investigation 6 finding 3 lists water, ethanol, hexanes, 0.1 M HCl and 0.1 M NaOH as candidates and finding 5 keeps hexanes and iodine in the hood under teacher control, so the role names the container and leaves both the identity and the amount to the approved panel. The user-configured 1 L stock variant retains the permitted bottle delivery mode; only its stock capacity changes, not measurement precision."
+    },
+    {
+      "id": "melting-point-instrument",
+      "label": "Melting-point apparatus",
+      "kind": "instrument",
+      "constraints": {
+        "readsQuantity": "temperature",
+        "temperatureLimitIsTeacherConfigured": true,
+        "methodIsTeacherConfigured": true
+      },
+      "allowedEquipmentIds": [
+        "melting-point-apparatus"
+      ],
+      "rationale": "Investigation 6 confirmation point 3 leaves the melting-point apparatus, method and temperature limits to the teacher, so the role fixes the apparatus and asserts no heating programme. The simulator stages a sample at the instrument and never produces a melting temperature."
+    },
+    {
+      "id": "ph-indicator-medium",
+      "label": "pH indicator medium",
+      "kind": "tool",
+      "constraints": {
+        "readsQuantity": "pH",
+        "requiresAqueousSample": true
+      },
+      "allowedEquipmentIds": [
+        "ph-paper"
+      ],
+      "rationale": "K-04 reads the pH screen. Investigation 6 section 9 branches to pH only when an aqueous test solution exists, so the role records that the medium is meaningless without one. Separate from immersed-probe-instrument, which describes a probe immersed in a liquid rather than paper touched to it."
+    },
+    {
+      "id": "magnetic-response-tool",
+      "label": "Magnet",
+      "kind": "tool",
+      "constraints": {
+        "contact": "contactless",
+        "mustNotMixSamples": true
+      },
+      "allowedEquipmentIds": [
+        "magnet"
+      ],
+      "rationale": "K-04 brings the magnet near a contained fresh microsample and records attraction, no attraction, or an ambiguous response. The constraint is the one the source states: the sample stays contained and samples are not mixed."
+    },
+    {
+      "id": "distance-measuring-instrument",
+      "label": "Distance-measuring instrument",
+      "kind": "instrument",
+      "constraints": {
+        "readsQuantity": "length",
+        "divisionIsTeacherConfigured": true
+      },
+      "allowedEquipmentIds": [
+        "metric-ruler"
+      ],
+      "rationale": "Investigation 5 lists a metric ruler and states every distance to the nearest millimetre (TR-12, TR-14). The apparatus is fixed; the useful division follows the configured strip length (confirmation point 3), so the role names the instrument and never the precision."
+    },
+    {
+      "id": "extraction-funnel",
+      "label": "Liquid-liquid extraction funnel",
+      "kind": "vessel",
+      "constraints": {
+        "mustBeStoppedBeforeInversion": true,
+        "ventingIsTeacherConfigured": true,
+        "phaseVolumesAreTeacherConfigured": true
+      },
+      "allowedEquipmentIds": [
+        "separatory-funnel"
+      ],
+      "rationale": "Investigation 9 supplies a separatory funnel for liquid-liquid and acid-base extraction. Finding 3.5 marks venting, layer labelling, and emulsion recovery R/C, so the role records that they are required and configured rather than fixing an interval."
+    },
+    {
+      "id": "extraction-phase-source",
+      "label": "Vessel an extraction phase is loaded from",
+      "kind": "delivery",
+      "constraints": {
+        "deliveryMode": "unmeasured",
+        "phaseIdentityMustBeLabelled": true
+      },
+      "allowedEquipmentIds": [
+        "beaker-250ml",
+        "erlenmeyer-flask-250ml",
+        "graduated-cylinder",
+        "graduated-cylinder-25ml",
+        "reagent-bottle"
+      ],
+      "rationale": "E-03 and E-08 load approved phases and fresh washes into the funnel, and the source names no vessel for either: students choose the sequence and volumes (§10). The role admits any vessel the approved plan could have prepared the phase in and requires the phase to carry a label, which is what finding 3.5 asks for.",
+      "distinguishedFrom": [
+        "measured-solvent-source"
+      ]
+    },
+    {
+      "id": "phase-receiver",
+      "label": "Labelled receiver for a separated phase",
+      "kind": "vessel",
+      "constraints": {
+        "mustCarryFractionProvenance": true
+      },
+      "allowedEquipmentIds": [
+        "beaker-250ml",
+        "erlenmeyer-flask-250ml",
+        "side-arm-filter-flask",
+        "test-tube"
+      ],
+      "rationale": "E-07 drains one layer into its labelled vessel and retains the other. §9 requires each fraction to keep identity and provenance, so the constraint is the label rather than the glassware.",
+      "distinguishedFrom": [
+        "receiving-vessel"
+      ]
+    },
+    {
+      "id": "weighed-sample-source",
+      "label": "Vessel a pre-weighed sample portion is transferred out of",
+      "kind": "delivery",
+      "constraints": {
+        "deliveryMode": "unmeasured",
+        "carriesRecordedStartingMass": true
+      },
+      "allowedEquipmentIds": [
+        "reagent-bottle",
+        "sample-bottle",
+        "small-vial",
+        "watch-glass",
+        "weigh-boat"
+      ],
+      "rationale": "E-01 records the starting Quick Ache Relief mass before E-02 begins, so the container the portion leaves is the one the balance already read. It is distinct from solid-reagent-source, which delivers an approximate portion from bulk stock with no recorded mass of its own.",
+      "distinguishedFrom": [
+        "solid-reagent-source"
+      ]
+    },
+    {
+      "id": "drying-agent-source",
+      "label": "Drying-agent source",
+      "kind": "delivery",
+      "constraints": {
+        "deliveryMode": "unmeasured",
+        "endpointIsTeacherConfigured": true
+      },
+      "allowedEquipmentIds": [
+        "reagent-bottle",
+        "small-vial"
+      ],
+      "rationale": "Investigation 9 supplies MgSO4 with no amount and no endpoint (finding 3.3, 3.5). The role exists so drying the organic phase is a real transfer, and leaves both the quantity and the visual endpoint configured."
+    },
+    {
+      "id": "photometric-aliquot-tool",
+      "label": "Photometric aliquot tool",
+      "kind": "delivery",
+      "constraints": {
+        "deliveryMode": "unmeasured",
+        "readsQuantity": "none",
+        "carriesTimeCoupledSample": true
+      },
+      "allowedEquipmentIds": [
+        "beral-pipette",
+        "graduated-pipette-10ml"
+      ],
+      "prohibitedEquipmentIds": [
+        "wash-bottle"
+      ],
+      "rationale": "K-04 fills and inserts the cuvette 'as approved without delaying unrecorded time', so the tool that moves a reacting sample into the cuvette is chosen by the approved plan rather than by a stated volume. It is distinct from variable-volume-measuring-device because the source assigns this step no measurement; the quantity that matters is the elapsed time, not the aliquot.",
+      "distinguishedFrom": [
+        "variable-volume-measuring-device",
+        "sample-source"
+      ]
+    },
+    {
+      "id": "locking-pin",
+      "label": "Syringe plunger locking pin",
+      "kind": "tool",
+      "constraints": {
+        "requiresExtendedPlunger": true,
+        "requiresClosedValve": true
+      },
+      "allowedEquipmentIds": [
+        "locking-nail"
+      ],
+      "rationale": "Investigation 13 apparatus state SYR-06 inserts the nail through the extended plunger hole only after the syringe valve is closed. The role identifies that physical lock without treating the nail as a delivery or measurement device."
+    },
+    {
+      "id": "heating-instrument",
+      "label": "Bench heating instrument",
+      "kind": "instrument",
+      "constraints": {
+        "heatMustBeOffBeforePlacement": true,
+        "targetRangeIsSourceOrTeacherConfigured": true
+      },
+      "allowedEquipmentIds": [
+        "hot-plate-stirrer"
+      ],
+      "rationale": "Investigation 12 CA-02 heats a water-filled beaker on the hot plate to approximately 50 degrees C. The role identifies the heater while leaving the accepted range and recovery rule teacher-configured."
+    },
+    {
+      "id": "heated-liquid-vessel",
+      "label": "Vessel holding a liquid sample for heating",
+      "kind": "vessel",
+      "constraints": {
+        "heatSafe": true,
+        "contentsMustBeIdentified": true
+      },
+      "allowedEquipmentIds": [
+        "beaker-150ml",
+        "beaker-250ml"
+      ],
+      "rationale": "Investigation 12 CA-01 through CA-03 uses a clean, dry 150 mL beaker for the 100.0 mL hot-water sample. The broader beaker family remains valid for the reusable operation, but no role fixes a temperature."
+    },
+    {
+      "id": "final-volume-vessel",
+      "label": "Vessel with an approved final-volume endpoint",
+      "kind": "vessel",
+      "constraints": {
+        "finalVolumeAndToleranceAreTeacherConfigured": true
+      },
+      "allowedEquipmentIds": [
+        "test-tube",
+        "volumetric-flask"
+      ],
+      "rationale": "Investigation 2 B-11 uses the 100.0 mL flask mark and D-03 uses the instructor-approved standard volume in the stated test-tube series. The role records the endpoint vessel without resolving the 10.00 mL versus 10.0 mL confirmation point."
+    },
+    {
+      "id": "color-depth-comparison-apparatus",
+      "label": "Paired qualitative color-depth comparison",
+      "kind": "instrument",
+      "constraints": {
+        "readsQuantity": "length",
+        "comparisonIsQualitative": true
+      },
+      "allowedEquipmentIds": [
+        "brass-color-depth-comparison"
+      ],
+      "rationale": "Investigation 2 V-01 through V-03 compares the unknown beside the 0.400 M standard over a white field and records both depths. The apparatus supports that qualitative method and does not produce a concentration reading."
+    },
+    {
+      "id": "equilibrium-rack",
+      "label": "Equilibrium tube rack",
+      "kind": "vessel",
+      "constraints": {
+        "preservesTubeOrder": true
+      },
+      "allowedEquipmentIds": [
+        "sample-rack"
+      ],
+      "rationale": "C-07 and R-06 use racks to keep trial tubes organized and to present the final six-color evidence sequence."
+    },
+    {
+      "id": "equilibrium-reagent-tray",
+      "label": "Equilibrium reagent tray",
+      "kind": "support",
+      "constraints": {
+        "systemSpecificContents": true
+      },
+      "allowedEquipmentIds": [
+        "reagent-tray"
+      ],
+      "rationale": "C-02 and C-13 select and return one system-specific reagent tray at a time so reagents are not mixed across equilibrium systems."
+    },
+    {
+      "id": "equilibrium-mixture-source",
+      "label": "Prepared equilibrium mixture source",
+      "kind": "delivery",
+      "constraints": {
+        "qualitativePortionAllowed": true
+      },
+      "allowedEquipmentIds": [
+        "beaker-250ml",
+        "luer-lock-syringe"
+      ],
+      "rationale": "C-07 and P-10 transfer a prepared equilibrium mixture from its stock beaker or syringe without inventing an unsupported aliquot volume."
+    },
+    {
+      "id": "equilibrium-mixture-receiver",
+      "label": "Equilibrium mixture receiver",
+      "kind": "vessel",
+      "constraints": {
+        "preservesMixtureIdentity": true
+      },
+      "allowedEquipmentIds": [
+        "luer-lock-syringe",
+        "test-tube"
+      ],
+      "rationale": "C-07 receives trial aliquots in test tubes and P-01 receives the soda-indicator mixture in the sealed syringe apparatus."
+    },
+    {
+      "id": "thermal-bath-instrument",
+      "label": "Thermal bath thermometer",
+      "kind": "instrument",
+      "constraints": {
+        "readsQuantity": "temperature",
+        "mustBeImmersed": true
+      },
+      "allowedEquipmentIds": [
+        "thermometer"
+      ],
+      "rationale": "BATH-03 requires a thermometer to verify the teacher-approved bath condition rather than assuming a temperature."
+    },
+    {
+      "id": "provenance-matched-sample-receiver",
+      "label": "Original labelled sample receiver",
+      "kind": "vessel",
+      "constraints": {
+        "mustMatchSourceProvenance": true,
+        "crossSampleReturnForbidden": true
+      },
+      "allowedEquipmentIds": [
+        "test-tube"
+      ],
+      "rationale": "Investigation 2 S-09 returns each cuvette portion to the original standard or unknown test tube. The role requires the receiver identity to match the sample provenance instead of accepting any chemically compatible vessel.",
+      "distinguishedFrom": [
+        "receiving-vessel",
+        "phase-receiver"
+      ]
+    },
+    {
+      "id": "recovery-vessel",
+      "label": "Named fraction or cleanup vessel",
+      "kind": "vessel",
+      "constraints": {
+        "retainsProvenance": true
+      },
+      "allowedEquipmentIds": [
+        "watch-glass",
+        "filter-paper",
+        "erlenmeyer-flask-250ml",
+        "beaker-250ml",
+        "side-arm-filter-flask",
+        "waste-beaker"
+      ],
+      "rationale": "Physical handling retains the named fraction without inferring identity or yield."
+    },
+    {
+      "id": "measured-liquid-source",
+      "label": "Measured liquid source",
+      "kind": "delivery",
+      "constraints": {
+        "deliveryMode": "measured",
+        "readsQuantity": "volume",
+        "preservesMeasuredProvenance": true
+      },
+      "allowedEquipmentIds": [
+        "beaker-150ml",
+        "beaker-250ml",
+        "graduated-cylinder",
+        "graduated-cylinder-25ml",
+        "graduated-pipette-10ml",
+        "sample-bottle",
+        "volumetric-flask"
+      ],
+      "rationale": "A measured aliquot may be carried forward from a graduated source without calling it a solvent. The role preserves the authored volume provenance while leaving the liquid identity to the source vessel.",
+      "distinguishedFrom": [
+        "measured-solvent-source",
+        "liquid-source"
+      ]
+    },
+    {
+      "id": "thermal-support",
+      "label": "Thermal decomposition support",
+      "kind": "support",
+      "constraints": {
+        "mustBeStableBeforeHeating": true,
+        "supportsCrucibleAssembly": true
+      },
+      "allowedEquipmentIds": [
+        "ring-stand",
+        "clay-triangle"
+      ],
+      "rationale": "The thermal route needs the ring stand and clay triangle as a stable support assembly before the crucible is heated. This role does not substitute for the burner or the weighed vessel."
+    },
+    {
+      "id": "thermal-heating-instrument",
+      "label": "Thermal decomposition heating instrument",
+      "kind": "instrument",
+      "constraints": {
+        "heatIntensityIsTeacherConfigured": true,
+        "mustBeExtinguishedBeforeCooling": true
+      },
+      "allowedEquipmentIds": [
+        "bunsen-burner"
+      ],
+      "rationale": "The approved thermal decomposition route uses a Bunsen burner for gentle warming and repeated heating. The exact intensity and duration remain configuration values."
+    },
+    {
+      "id": "color-depth-comparison-vessel",
+      "label": "Paired color-depth comparison tube",
+      "kind": "vessel",
+      "constraints": {
+        "mustMatchComparisonArm": true,
+        "readsQuantity": "length"
+      },
+      "allowedEquipmentIds": [
+        "test-tube"
+      ],
+      "rationale": "Investigation 2 V-01 fills a dedicated comparison tube for each arm of the paired visual method, and V-02 then removes solution from the standard arm only. The receiving tube is a material endpoint distinct from the comparison apparatus that holds the pair over the white field, and distinct from the original labelled tube a measured cuvette portion is returned to at S-09.",
+      "distinguishedFrom": [
+        "receiving-vessel",
+        "provenance-matched-sample-receiver",
+        "color-depth-comparison-apparatus"
+      ]
+    }
+  ]
+}

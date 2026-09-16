@@ -1,0 +1,382 @@
+{
+  "id": "quick-ache-design-approval",
+  "title": "Quick Ache Separation Design and Approval",
+  "learningGoal": "Design and obtain approval for a safe evidence-based separation without receiving a hidden recipe.",
+  "requiredEquipment": [],
+  "initialState": {
+    "equipment": []
+  },
+  "actions": [
+    {
+      "id": "qar-draft-separation-flowchart",
+      "verb": "observe",
+      "label": "Draft the separation flowchart",
+      "parameters": {
+        "prompt": "For every proposed physical stage, name the material, sequence, amount, time, precision, concentration, chemical rationale, retained fraction, and evidence to collect.",
+        "studentResponseRequired": true,
+        "tag": "separation-flowchart",
+        "requiredChoices": [
+          "liquid-liquid or acid-base extraction sequence",
+          "phase volumes and repeat count",
+          "layer-density evidence",
+          "pH endpoints",
+          "filtration and drying route",
+          "replicate and uncertainty rule"
+        ],
+        "note": "Stage-by-stage separation flowchart recorded, pairing each physical step with its chemical rationale, amounts, times, and precision."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Draft the separation flowchart."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Draft the separation flowchart evidence is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the approved investigation.",
+          "recovery": "Return to the highlighted step and preserve the fraction or evidence already collected."
+        },
+        {
+          "id": "unapproved-procedure",
+          "when": "execution is attempted before instructor approval",
+          "message": "The separation plan has not been approved.",
+          "recovery": "Submit the property evidence, chemical rationale, quantities, endpoints, and disposal plan for instructor approval."
+        },
+        {
+          "id": "unlabeled-fraction",
+          "when": "a layer or recovered fraction lacks identity and provenance",
+          "message": "The fraction cannot be interpreted safely without a label.",
+          "recovery": "Label the vessel with source stage, observed layer, retained material, and uncertainty before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Draft the separation flowchart complete.",
+        "invalid": "Record the required evidence and use the teacher-approved configuration before continuing."
+      },
+      "evidence": [
+        "notebook"
+      ]
+    },
+    {
+      "id": "qar-audit-separation-safety",
+      "verb": "observe",
+      "label": "Audit safety and recovery branches",
+      "parameters": {
+        "prompt": "Address ethyl acetate ignition control, acid/base exposure, separatory-funnel venting away from people, emulsion recovery, wrong-layer recovery, heating limits, and teacher-designated waste.",
+        "studentResponseRequired": true,
+        "tag": "separation-safety-audit",
+        "teacherConfigKey": "disposalAndHeatingRestrictions",
+        "configurationRequired": true,
+        "note": "Safety audit recorded for the proposed plan: goggles, acid and base burn hazards, ethyl acetate ignition sources, heating limits, and waste destinations."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Audit safety and recovery branches."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Audit safety and recovery branches evidence is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the approved investigation.",
+          "recovery": "Return to the highlighted step and preserve the fraction or evidence already collected."
+        },
+        {
+          "id": "unapproved-procedure",
+          "when": "execution is attempted before instructor approval",
+          "message": "The separation plan has not been approved.",
+          "recovery": "Submit the property evidence, chemical rationale, quantities, endpoints, and disposal plan for instructor approval."
+        },
+        {
+          "id": "unlabeled-fraction",
+          "when": "a layer or recovered fraction lacks identity and provenance",
+          "message": "The fraction cannot be interpreted safely without a label.",
+          "recovery": "Label the vessel with source stage, observed layer, retained material, and uncertainty before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Audit safety and recovery branches complete.",
+        "invalid": "Record the required evidence and use the teacher-approved configuration before continuing."
+      },
+      "evidence": [
+        "notebook"
+      ]
+    },
+    {
+      "id": "qar-record-teacher-approval",
+      "verb": "observe",
+      "label": "Record instructor approval",
+      "parameters": {
+        "prompt": "The instructor records approval only after the plan can safely isolate every required component. Approval does not reveal a fixed solvent sequence, identity outcome, or recovery target.",
+        "studentResponseRequired": false,
+        "tag": "teacher-approval",
+        "teacherApprovalRequired": true,
+        "approvalRecorded": false,
+        "note": "Instructor approval recorded for the student-authored separation plan."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Record instructor approval."
+      },
+      "prerequisites": [
+        {
+          "id": "qar-record-teacher-approval--qar-property-matrix-required",
+          "type": "notebookEntry",
+          "label": "Pure-component property matrix is required.",
+          "notebookTag": "property-matrix"
+        },
+        {
+          "id": "qar-record-teacher-approval--qar-flowchart-required",
+          "type": "notebookEntry",
+          "label": "Separation flowchart is required.",
+          "notebookTag": "separation-flowchart"
+        }
+      ],
+      "stateChanges": [
+        "Record instructor approval evidence is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the approved investigation.",
+          "recovery": "Return to the highlighted step and preserve the fraction or evidence already collected."
+        },
+        {
+          "id": "unapproved-procedure",
+          "when": "execution is attempted before instructor approval",
+          "message": "The separation plan has not been approved.",
+          "recovery": "Submit the property evidence, chemical rationale, quantities, endpoints, and disposal plan for instructor approval."
+        },
+        {
+          "id": "unlabeled-fraction",
+          "when": "a layer or recovered fraction lacks identity and provenance",
+          "message": "The fraction cannot be interpreted safely without a label.",
+          "recovery": "Label the vessel with source stage, observed layer, retained material, and uncertainty before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Record instructor approval complete.",
+        "invalid": "Record the required evidence and use the teacher-approved configuration before continuing."
+      },
+      "evidence": [
+        "notebook"
+      ]
+    }
+  ],
+  "process": {
+    "startNodeId": "qar-draft-flowchart-node",
+    "nodes": [
+      {
+        "id": "qar-draft-flowchart-node",
+        "type": "decision",
+        "title": "Draft separation flowchart",
+        "description": "Pair every physical operation with its chemical rationale and fraction provenance.",
+        "actionId": "qar-draft-separation-flowchart",
+        "config": {
+          "teacherConfigurable": true,
+          "requiredConfiguration": "amounts, sequence, times, precision, concentrations, endpoints, repeats"
+        },
+        "validation": [
+          {
+            "id": "qar-draft-flowchart-node--qar-draft-flowchart-node-complete",
+            "type": "actionEvidence",
+            "label": "Draft separation flowchart was completed.",
+            "actionId": "qar-draft-separation-flowchart"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Draft separation flowchart complete.",
+          "retry": "Complete draft separation flowchart with the required evidence."
+        }
+      },
+      {
+        "id": "qar-safety-audit-node",
+        "type": "checkpoint",
+        "title": "Audit safety and recovery",
+        "description": "Plan safe venting, heat control, disposal, and recoverable responses to layer or emulsion problems.",
+        "actionId": "qar-audit-separation-safety",
+        "config": {},
+        "validation": [
+          {
+            "id": "qar-safety-audit-node--qar-safety-audit-node-complete",
+            "type": "actionEvidence",
+            "label": "Audit safety and recovery was completed.",
+            "actionId": "qar-audit-separation-safety"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Audit safety and recovery complete.",
+          "retry": "Complete audit safety and recovery with the required evidence."
+        }
+      },
+      {
+        "id": "qar-teacher-approval-node",
+        "type": "teacherNote",
+        "title": "Instructor approval gate",
+        "description": "Execution remains locked until the instructor approves the student-authored plan.",
+        "actionId": "qar-record-teacher-approval",
+        "config": {
+          "approvalRequired": true,
+          "approvalRecorded": false,
+          "revealFixedRecipe": false
+        },
+        "validation": [
+          {
+            "id": "qar-teacher-approval-node--qar-teacher-approval-node-complete",
+            "type": "actionEvidence",
+            "label": "Instructor approval gate was completed.",
+            "actionId": "qar-record-teacher-approval"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Instructor approval gate complete.",
+          "retry": "Complete instructor approval gate with the required evidence."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "qar-draft-flowchart-node",
+        "to": "qar-safety-audit-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "qar-safety-audit-node",
+        "to": "qar-teacher-approval-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [
+    {
+      "id": "quick-ache-design-approval-complete",
+      "type": "actionEvidence",
+      "label": "Quick Ache Separation Design and Approval final evidence was recorded.",
+      "actionId": "qar-record-teacher-approval"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "current node expects a different action",
+      "message": "That action is out of sequence for the approved investigation.",
+      "recovery": "Return to the highlighted step and preserve the fraction or evidence already collected."
+    },
+    {
+      "id": "unapproved-procedure",
+      "when": "execution is attempted before instructor approval",
+      "message": "The separation plan has not been approved.",
+      "recovery": "Submit the property evidence, chemical rationale, quantities, endpoints, and disposal plan for instructor approval."
+    },
+    {
+      "id": "unlabeled-fraction",
+      "when": "a layer or recovered fraction lacks identity and provenance",
+      "message": "The fraction cannot be interpreted safely without a label.",
+      "recovery": "Label the vessel with source stage, observed layer, retained material, and uncertainty before continuing."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.2.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-04T00:00:00.000Z",
+    "tags": [
+      "chemistry",
+      "quick-ache-relief",
+      "inquiry",
+      "teacher-approval"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry-qar-draft-flowchart-node",
+        "kind": "entry",
+        "nodeId": "qar-draft-flowchart-node",
+        "label": "Entry"
+      },
+      {
+        "id": "exit-qar-teacher-approval-node",
+        "kind": "exit",
+        "nodeId": "qar-teacher-approval-node",
+        "label": "Exit"
+      }
+    ],
+    "equipmentRoles": [],
+    "modelSlots": [],
+    "configurationSlots": [],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [],
+    "completion": {
+      "exitPortIds": [
+        "exit-qar-teacher-approval-node"
+      ],
+      "requiredEvidenceOutputIds": [],
+      "requiredValidationRuleIds": []
+    },
+    "catalogDisposition": "composable",
+    "legacyActionEffects": [
+      {
+        "actionId": "qar-draft-separation-flowchart",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "qar-audit-separation-safety",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "qar-record-teacher-approval",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

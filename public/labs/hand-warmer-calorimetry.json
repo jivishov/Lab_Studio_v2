@@ -1,0 +1,904 @@
+{
+  "id": "hand-warmer-calorimetry",
+  "title": "Designing an Effective Hand Warmer",
+  "description": "A calorimetry investigation with practice trials, calorimeter calibration, student-designed comparison, analysis, and CER.",
+  "audience": "Chemistry",
+  "learningGoals": [
+    "Use a nested-cup calorimeter safely and accurately.",
+    "Determine and apply a calorimeter constant.",
+    "Use experimental, cost, safety, and environmental evidence to design a hand warmer."
+  ],
+  "safetyNotes": [
+    "Wear splash-proof goggles and protective gloves.",
+    "Calcium chloride can cause skin burns.",
+    "Keep ammonium nitrate away from heat and ignition sources.",
+    "Use the teacher-designated disposal method."
+  ],
+  "equipment": [
+    "hand-warmer-calorimeter",
+    "ring-stand",
+    "hot-plate-stirrer",
+    "polystyrene-cup-8oz",
+    "wooden-calorimeter-cover",
+    "probe-thermometer",
+    "magnetic-stir-bar",
+    "beaker-150ml",
+    "graduated-cylinder",
+    "analytical-balance",
+    "weigh-boat",
+    "stirring-rod",
+    "spatula",
+    "wash-bottle",
+    "waste-beaker",
+    "distilled-water-bottle",
+    "reagent-bottle",
+    "stopwatch"
+  ],
+  "techniques": [],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "hand-warmer-calorimeter-1",
+        "definitionId": "hand-warmer-calorimeter",
+        "label": "Hand-warmer calorimeter",
+        "location": "workbench",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "CAL-00"
+        }
+      },
+      {
+        "id": "ring-stand-1",
+        "definitionId": "ring-stand",
+        "label": "Ring stand with support ring",
+        "location": "storage",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "hot-plate-stirrer-1",
+        "definitionId": "hot-plate-stirrer",
+        "label": "Hot plate and magnetic stirrer",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "outer-cup-1",
+        "definitionId": "polystyrene-cup-8oz",
+        "label": "Outer 8 ounce polystyrene cup",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "inner-cup-1",
+        "definitionId": "polystyrene-cup-8oz",
+        "label": "Inner 8 ounce polystyrene cup",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "wooden-cover-1",
+        "definitionId": "wooden-calorimeter-cover",
+        "label": "Wooden calorimeter cover",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "probe-thermometer-1",
+        "definitionId": "probe-thermometer",
+        "label": "Probe thermometer",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "magnetic-stir-bar-1",
+        "definitionId": "magnetic-stir-bar",
+        "label": "Magnetic stir bar",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "beaker-150ml-1",
+        "definitionId": "beaker-150ml",
+        "label": "150 mL beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "graduated-cylinder-1",
+        "definitionId": "graduated-cylinder",
+        "label": "100 mL graduated cylinder",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "analytical-balance-1",
+        "definitionId": "analytical-balance",
+        "label": "Analytical balance",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "weigh-boat-1",
+        "definitionId": "weigh-boat",
+        "label": "Weighing boat",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "stirring-rod-1",
+        "definitionId": "stirring-rod",
+        "label": "Stirring rod",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "spatula-1",
+        "definitionId": "spatula",
+        "label": "Spatula",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "wash-bottle-1",
+        "definitionId": "wash-bottle",
+        "label": "Wash bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Water",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid",
+          "volumeMl": 500,
+          "temperatureC": 20
+        }
+      },
+      {
+        "id": "waste-beaker-1",
+        "definitionId": "waste-beaker",
+        "label": "Teacher-designated waste beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "distilled-water-bottle-1",
+        "definitionId": "distilled-water-bottle",
+        "label": "Distilled water",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Distilled water",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid",
+          "volumeMl": 2000,
+          "temperatureC": 20
+        }
+      },
+      {
+        "id": "magnesium-sulfate-1",
+        "definitionId": "reagent-bottle",
+        "label": "Anhydrous magnesium sulfate",
+        "location": "shelf",
+        "contents": {
+          "kind": "solid",
+          "label": "Anhydrous magnesium sulfate",
+          "solutes": [
+            {
+              "id": "magnesium-sulfate",
+              "label": "Anhydrous magnesium sulfate",
+              "amount": 50,
+              "unit": "g"
+            }
+          ],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "powder",
+          "massG": 50
+        }
+      },
+      {
+        "id": "calcium-chloride-1",
+        "definitionId": "reagent-bottle",
+        "label": "Calcium chloride",
+        "location": "shelf",
+        "contents": {
+          "kind": "solid",
+          "label": "Calcium chloride",
+          "solutes": [
+            {
+              "id": "calcium-chloride",
+              "label": "Calcium chloride",
+              "amount": 30,
+              "unit": "g"
+            }
+          ],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "powder",
+          "massG": 30
+        }
+      },
+      {
+        "id": "ammonium-nitrate-1",
+        "definitionId": "reagent-bottle",
+        "label": "Ammonium nitrate",
+        "location": "shelf",
+        "contents": {
+          "kind": "solid",
+          "label": "Ammonium nitrate",
+          "solutes": [
+            {
+              "id": "ammonium-nitrate",
+              "label": "Ammonium nitrate",
+              "amount": 30,
+              "unit": "g"
+            }
+          ],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "powder",
+          "massG": 30
+        }
+      },
+      {
+        "id": "sodium-acetate-1",
+        "definitionId": "reagent-bottle",
+        "label": "Sodium acetate",
+        "location": "shelf",
+        "contents": {
+          "kind": "solid",
+          "label": "Sodium acetate",
+          "solutes": [
+            {
+              "id": "sodium-acetate",
+              "label": "Sodium acetate",
+              "amount": 30,
+              "unit": "g"
+            }
+          ],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "powder",
+          "massG": 30
+        }
+      },
+      {
+        "id": "calibration-timer",
+        "definitionId": "stopwatch",
+        "label": "Calibration stopwatch",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "HW-PLAN-01",
+      "verb": "observe",
+      "label": "Record the teacher-approved design question and candidate selection",
+      "parameters": {
+        "note": "Record the open design question, supported candidate solids, and the teacher-approved configuration.",
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputLabel": "Record the teacher-approved design question and candidate selection",
+        "inputRequired": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record the teacher-approved design question and candidate selection",
+        "successCue": "Record the teacher-approved design question and candidate selection recorded.",
+        "invalidCue": "Record the requested inquiry evidence before continuing."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record the open design question, supported candidate solids, and the teacher-approved configuration."
+      ],
+      "invalidCases": [
+        {
+          "id": "missing-response",
+          "when": "the learner has not recorded the inquiry response",
+          "message": "The inquiry response is still required.",
+          "recovery": "Record a response for this non-physical orchestration step."
+        }
+      ],
+      "feedback": {
+        "success": "Record the teacher-approved design question and candidate selection recorded.",
+        "invalid": "Record the requested inquiry evidence."
+      },
+      "evidence": [
+        "notebook"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "HW-PLAN-02",
+      "verb": "observe",
+      "label": "Record the trial comparison and uncertainty plan",
+      "parameters": {
+        "note": "Record how repeated trials, uncertainty, cost, safety, and environmental evidence will be compared.",
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputLabel": "Record the trial comparison and uncertainty plan",
+        "inputRequired": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record the trial comparison and uncertainty plan",
+        "successCue": "Record the trial comparison and uncertainty plan recorded.",
+        "invalidCue": "Record the requested inquiry evidence before continuing."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record how repeated trials, uncertainty, cost, safety, and environmental evidence will be compared."
+      ],
+      "invalidCases": [
+        {
+          "id": "missing-response",
+          "when": "the learner has not recorded the inquiry response",
+          "message": "The inquiry response is still required.",
+          "recovery": "Record a response for this non-physical orchestration step."
+        }
+      ],
+      "feedback": {
+        "success": "Record the trial comparison and uncertainty plan recorded.",
+        "invalid": "Record the requested inquiry evidence."
+      },
+      "evidence": [
+        "notebook"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "HW-CER-01",
+      "verb": "observe",
+      "label": "Record the evidence-backed hand-warmer design decision",
+      "parameters": {
+        "note": "Record the chosen chemical and amount only after reviewing measured temperature, heat/enthalpy calculations, and uncertainty.",
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputLabel": "Record the evidence-backed hand-warmer design decision",
+        "inputRequired": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record the evidence-backed hand-warmer design decision",
+        "successCue": "Record the evidence-backed hand-warmer design decision recorded.",
+        "invalidCue": "Record the requested inquiry evidence before continuing."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record the chosen chemical and amount only after reviewing measured temperature, heat/enthalpy calculations, and uncertainty."
+      ],
+      "invalidCases": [
+        {
+          "id": "missing-response",
+          "when": "the learner has not recorded the inquiry response",
+          "message": "The inquiry response is still required.",
+          "recovery": "Record a response for this non-physical orchestration step."
+        }
+      ],
+      "feedback": {
+        "success": "Record the evidence-backed hand-warmer design decision recorded.",
+        "invalid": "Record the requested inquiry evidence."
+      },
+      "evidence": [
+        "notebook"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    }
+  ],
+  "process": {
+    "startNodeId": "HW-PLAN-01-node",
+    "nodes": [
+      {
+        "id": "HW-PLAN-01-node",
+        "type": "teacherNote",
+        "title": "Record the teacher-approved design question and candidate selection",
+        "description": "Record the open design question, supported candidate solids, and the teacher-approved configuration.",
+        "actionId": "HW-PLAN-01",
+        "config": {},
+        "validation": [
+          {
+            "id": "HW-PLAN-01-complete",
+            "type": "actionEvidence",
+            "label": "Record the teacher-approved design question and candidate selection is recorded.",
+            "actionId": "HW-PLAN-01"
+          }
+        ],
+        "hints": [
+          "This is a non-physical inquiry/orchestration step; physical state and measurements remain owned by the hand-warmer technique instance."
+        ],
+        "feedback": {
+          "success": "Record the teacher-approved design question and candidate selection recorded.",
+          "retry": "Record the requested inquiry evidence."
+        }
+      },
+      {
+        "id": "HW-PLAN-02-node",
+        "type": "teacherNote",
+        "title": "Record the trial comparison and uncertainty plan",
+        "description": "Record how repeated trials, uncertainty, cost, safety, and environmental evidence will be compared.",
+        "actionId": "HW-PLAN-02",
+        "config": {},
+        "validation": [
+          {
+            "id": "HW-PLAN-02-complete",
+            "type": "actionEvidence",
+            "label": "Record the trial comparison and uncertainty plan is recorded.",
+            "actionId": "HW-PLAN-02"
+          }
+        ],
+        "hints": [
+          "This is a non-physical inquiry/orchestration step; physical state and measurements remain owned by the hand-warmer technique instance."
+        ],
+        "feedback": {
+          "success": "Record the trial comparison and uncertainty plan recorded.",
+          "retry": "Record the requested inquiry evidence."
+        }
+      },
+      {
+        "id": "HW-CER-01-node",
+        "type": "teacherNote",
+        "title": "Record the evidence-backed hand-warmer design decision",
+        "description": "Record the chosen chemical and amount only after reviewing measured temperature, heat/enthalpy calculations, and uncertainty.",
+        "actionId": "HW-CER-01",
+        "config": {},
+        "validation": [
+          {
+            "id": "HW-CER-01-complete",
+            "type": "actionEvidence",
+            "label": "Record the evidence-backed hand-warmer design decision is recorded.",
+            "actionId": "HW-CER-01"
+          }
+        ],
+        "hints": [
+          "This is a non-physical inquiry/orchestration step; physical state and measurements remain owned by the hand-warmer technique instance."
+        ],
+        "feedback": {
+          "success": "Record the evidence-backed hand-warmer design decision recorded.",
+          "retry": "Record the requested inquiry evidence."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "HW-PLAN-01-node",
+        "to": "HW-PLAN-02-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "assessments": [],
+  "metadata": {
+    "version": "2.5.1",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-06T00:00:00.000Z",
+    "tags": [
+      "lab",
+      "calorimetry",
+      "hand-warmer",
+      "143-action-traceability",
+      "two-part1-trials-runtime",
+      "three-calibration-determinations-default",
+      "three-calibration-determinations-runtime",
+      "teacher-reviewed-calculations",
+      "teacher-configurable-cleanup-stirring-notation",
+      "session-configured-thermal-profiles",
+      "student-entered-evidence",
+      "composition",
+      "cycle-09",
+      "open-inquiry",
+      "trial-scoped-evidence"
+    ]
+  },
+  "techniqueInstances": [
+    {
+      "instanceId": "hand-warmer",
+      "techniqueId": "hand-warmer-calorimetry",
+      "version": "2.5.1",
+      "bindings": {
+        "equipment": {
+          "calorimeter-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "hand-warmer-calorimeter-1",
+                "definitionId": "hand-warmer-calorimeter",
+                "instanceId": "hand-warmer-calorimeter-1"
+              },
+              {
+                "sourceInstanceId": "outer-cup-1",
+                "definitionId": "polystyrene-cup-8oz",
+                "instanceId": "outer-cup-1"
+              },
+              {
+                "sourceInstanceId": "inner-cup-1",
+                "definitionId": "polystyrene-cup-8oz",
+                "instanceId": "inner-cup-1"
+              }
+            ]
+          },
+          "stirring-device": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "hot-plate-stirrer-1",
+                "definitionId": "hot-plate-stirrer",
+                "instanceId": "hot-plate-stirrer-1"
+              },
+              {
+                "sourceInstanceId": "magnetic-stir-bar-1",
+                "definitionId": "magnetic-stir-bar",
+                "instanceId": "magnetic-stir-bar-1"
+              }
+            ]
+          },
+          "calorimeter-cover": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "wooden-cover-1",
+                "definitionId": "wooden-calorimeter-cover",
+                "instanceId": "wooden-cover-1"
+              }
+            ]
+          },
+          "immersed-probe-instrument": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "probe-thermometer-1",
+                "definitionId": "probe-thermometer",
+                "instanceId": "probe-thermometer-1"
+              }
+            ]
+          },
+          "immersed-probe-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "hand-warmer-calorimeter-1",
+                "definitionId": "hand-warmer-calorimeter",
+                "instanceId": "hand-warmer-calorimeter-1"
+              },
+              {
+                "sourceInstanceId": "beaker-150ml-1",
+                "definitionId": "beaker-150ml",
+                "instanceId": "beaker-150ml-1"
+              }
+            ]
+          },
+          "variable-volume-measuring-device": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "graduated-cylinder-1",
+                "definitionId": "graduated-cylinder",
+                "instanceId": "graduated-cylinder-1"
+              }
+            ]
+          },
+          "liquid-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "wash-bottle-1",
+                "definitionId": "wash-bottle",
+                "instanceId": "wash-bottle-1"
+              },
+              {
+                "sourceInstanceId": "distilled-water-bottle-1",
+                "definitionId": "distilled-water-bottle",
+                "instanceId": "distilled-water-bottle-1"
+              }
+            ]
+          },
+          "measured-solvent-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "beaker-150ml-1",
+                "definitionId": "beaker-150ml",
+                "instanceId": "beaker-150ml-1"
+              },
+              {
+                "sourceInstanceId": "graduated-cylinder-1",
+                "definitionId": "graduated-cylinder",
+                "instanceId": "graduated-cylinder-1"
+              }
+            ]
+          },
+          "receiving-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "hand-warmer-calorimeter-1",
+                "definitionId": "hand-warmer-calorimeter",
+                "instanceId": "hand-warmer-calorimeter-1"
+              },
+              {
+                "sourceInstanceId": "beaker-150ml-1",
+                "definitionId": "beaker-150ml",
+                "instanceId": "beaker-150ml-1"
+              }
+            ]
+          },
+          "balance-instrument": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "analytical-balance-1",
+                "definitionId": "analytical-balance",
+                "instanceId": "analytical-balance-1"
+              }
+            ]
+          },
+          "weighed-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "weigh-boat-1",
+                "definitionId": "weigh-boat",
+                "instanceId": "weigh-boat-1"
+              }
+            ]
+          },
+          "solid-reagent-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "magnesium-sulfate-1",
+                "definitionId": "reagent-bottle",
+                "instanceId": "magnesium-sulfate-1"
+              },
+              {
+                "sourceInstanceId": "calcium-chloride-1",
+                "definitionId": "reagent-bottle",
+                "instanceId": "calcium-chloride-1"
+              },
+              {
+                "sourceInstanceId": "ammonium-nitrate-1",
+                "definitionId": "reagent-bottle",
+                "instanceId": "ammonium-nitrate-1"
+              },
+              {
+                "sourceInstanceId": "sodium-acetate-1",
+                "definitionId": "reagent-bottle",
+                "instanceId": "sodium-acetate-1"
+              }
+            ]
+          },
+          "weighed-sample-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "weigh-boat-1",
+                "definitionId": "weigh-boat",
+                "instanceId": "weigh-boat-1"
+              }
+            ]
+          },
+          "waste-receiver": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "waste-beaker-1",
+                "definitionId": "waste-beaker",
+                "instanceId": "waste-beaker-1"
+              }
+            ]
+          },
+          "heated-liquid-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "beaker-150ml-1",
+                "definitionId": "beaker-150ml",
+                "instanceId": "beaker-150ml-1"
+              }
+            ]
+          },
+          "heating-instrument": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "hot-plate-stirrer-1",
+                "definitionId": "hot-plate-stirrer",
+                "instanceId": "hot-plate-stirrer-1"
+              }
+            ]
+          },
+          "timing-instrument": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "calibration-timer",
+                "definitionId": "stopwatch",
+                "instanceId": "calibration-timer"
+              }
+            ]
+          }
+        },
+        "models": {},
+        "configuration": {
+          "wasteRoute": "teacher-configured"
+        }
+      }
+    }
+  ],
+  "compositionStart": {
+    "kind": "lab-node",
+    "nodeId": "HW-PLAN-01-node"
+  },
+  "compositionConnections": [
+    {
+      "id": "hand-warmer-plan-to-technique",
+      "from": {
+        "kind": "lab-node",
+        "nodeId": "HW-PLAN-02-node"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "hand-warmer",
+        "portId": "entry"
+      },
+      "label": "Start configured physical trials",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "hand-warmer-technique-to-cer",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "hand-warmer",
+        "portId": "exit"
+      },
+      "to": {
+        "kind": "lab-node",
+        "nodeId": "HW-CER-01-node"
+      },
+      "label": "Review measured evidence",
+      "condition": {
+        "type": "validationPassed"
+      }
+    }
+  ],
+  "reachabilityWitnesses": [
+    {
+      "id": "teacher-approved-open-inquiry",
+      "configuration": {
+        "hand-warmer.wasteRoute": "teacher-configured"
+      },
+      "approvalGates": {}
+    }
+  ]
+}

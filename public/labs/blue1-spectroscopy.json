@@ -1,0 +1,1993 @@
+{
+  "id": "blue1-spectroscopy",
+  "title": "Spectroscopy of Blue #1 Dye in a Sports Drink",
+  "description": "Chemistry Blue #1 Spectroscopy: prepare assigned 10 mL Blue #1 standards, measure and pool %T evidence, discover a teacher-confirmed calibration relationship, then design and justify an analysis of a blue sports drink containing only Blue #1.",
+  "audience": "Chemistry students",
+  "learningGoals": [
+    "Physically prepare the assigned 10 mL stock/water standards and calculate molarity with M1V1=M2V2.",
+    "Read percent transmittance at a teacher-set wavelength, record it separately, convert it to decimal T, and preserve class-row provenance.",
+    "Compare every source-listed transformation and use only the teacher-confirmed class calibration relationship.",
+    "Design, obtain approval for, execute, and justify a sports-drink Blue #1 analysis including dilution correction and mass in 500 mL."
+  ],
+  "safetyNotes": [
+    "Treat food dye and sports drink as laboratory samples; do not consume them.",
+    "The source permits food dye and sports drink to be flushed with plenty of water, but the instructor must record any differing local cleanup or disposal rule.",
+    "Follow instructor-provided baseline PPE, instrument, cuvette, and cleanup directions."
+  ],
+  "equipment": [
+    "sample-bottle",
+    "distilled-water-bottle",
+    "graduated-pipette-10ml",
+    "pipette-pump",
+    "test-tube",
+    "sample-rack",
+    "permanent-marker",
+    "cuvette",
+    "spectrophotometer",
+    "sample-bottle-1l",
+    "distilled-water-bottle-1l"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "i1-blue1-stock",
+        "definitionId": "sample-bottle",
+        "label": "Teacher-supplied Blue #1 stock",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "Teacher-supplied Blue #1 stock; concentration not authored",
+          "volumeMl": 34,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "blue1-10-0"
+        }
+      },
+      {
+        "id": "i1-class-water",
+        "definitionId": "distilled-water-bottle",
+        "label": "Distilled water for the listed class standards",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Distilled water allocated to the listed ratios",
+          "volumeMl": 46,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "i1-graduated-pipette",
+        "definitionId": "graduated-pipette-10ml",
+        "label": "10 mL graduated pipette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "i1-pipette-pump",
+        "definitionId": "pipette-pump",
+        "label": "Pipette pump",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "i1-sample-rack",
+        "definitionId": "sample-rack",
+        "label": "Labeled standard rack",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "i1-marker",
+        "definitionId": "permanent-marker",
+        "label": "Permanent marker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "i1-r10-0-tube",
+        "definitionId": "test-tube",
+        "label": "10 mL stock / 0 mL water standard tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "i1-r8-2-tube",
+        "definitionId": "test-tube",
+        "label": "8 mL stock / 2 mL water standard tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "i1-r6-4-tube",
+        "definitionId": "test-tube",
+        "label": "6 mL stock / 4 mL water standard tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "i1-r4-6-tube",
+        "definitionId": "test-tube",
+        "label": "4 mL stock / 6 mL water standard tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "i1-r3-7-tube",
+        "definitionId": "test-tube",
+        "label": "3 mL stock / 7 mL water standard tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "i1-r2-8-tube",
+        "definitionId": "test-tube",
+        "label": "2 mL stock / 8 mL water standard tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "i1-r1-9-tube",
+        "definitionId": "test-tube",
+        "label": "1 mL stock / 9 mL water standard tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "i1-r0-10-tube",
+        "definitionId": "test-tube",
+        "label": "0 mL stock / 10 mL water standard tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "i1-blank-cuvette",
+        "definitionId": "cuvette",
+        "label": "Teacher-prepared blank cuvette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "i1-spectrophotometer",
+        "definitionId": "spectrophotometer",
+        "label": "Spectrophotometer",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "i1-r10-0-cuvette",
+        "definitionId": "cuvette",
+        "label": "10 mL stock / 0 mL water cuvette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "i1-r8-2-cuvette",
+        "definitionId": "cuvette",
+        "label": "8 mL stock / 2 mL water cuvette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "i1-r6-4-cuvette",
+        "definitionId": "cuvette",
+        "label": "6 mL stock / 4 mL water cuvette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "i1-r4-6-cuvette",
+        "definitionId": "cuvette",
+        "label": "4 mL stock / 6 mL water cuvette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "i1-r3-7-cuvette",
+        "definitionId": "cuvette",
+        "label": "3 mL stock / 7 mL water cuvette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "i1-r2-8-cuvette",
+        "definitionId": "cuvette",
+        "label": "2 mL stock / 8 mL water cuvette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "i1-r1-9-cuvette",
+        "definitionId": "cuvette",
+        "label": "1 mL stock / 9 mL water cuvette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "i1-r0-10-cuvette",
+        "definitionId": "cuvette",
+        "label": "0 mL stock / 10 mL water cuvette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "i1-unknown-sample",
+        "definitionId": "sample-bottle-1l",
+        "label": "Student-selected blue sports drink; Blue #1 only (1 L stock)",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "Student-selected Blue #1 sports-drink sample; identity student-recorded",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "blue-dye-solution",
+          "volumeMl": 1000
+        }
+      },
+      {
+        "id": "i1-unknown-cuvette",
+        "definitionId": "cuvette",
+        "label": "Approved sports-drink preparation",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "i1-unknown-measuring-device",
+        "definitionId": "graduated-pipette-10ml",
+        "label": "Approved unknown aliquot pipette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "i1-diluted-unknown-tube",
+        "definitionId": "test-tube",
+        "label": "Approved diluted unknown",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "i1-prepared-unknown-tube",
+        "definitionId": "test-tube",
+        "label": "Prepared unknown receiver",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "i1-unknown-dilution-water",
+        "definitionId": "distilled-water-bottle-1l",
+        "label": "Teacher-approved unknown dilution water (1 L stock)",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "distilled water",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid",
+          "volumeMl": 1000
+        }
+      }
+    ]
+  },
+  "techniques": [],
+  "actions": [
+    {
+      "id": "i1-record-safety-local-rule",
+      "verb": "observe",
+      "label": "Record local safety and disposal rule",
+      "parameters": {
+        "inputMode": "text",
+        "inputLabel": "Instructor PPE, no-consumption, cleanup, and local disposal directions",
+        "tag": "local-safety-disposal-rule"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record local safety and disposal rule: Local safety and disposal directions are recorded without replacing the source guidance."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "Local safety and disposal directions are recorded without replacing the source guidance.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "safety",
+        "teacher-configuration",
+        "disposal"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "i1-identify-unknown-sample",
+      "verb": "observe",
+      "label": "Identify eligible blue sports-drink sample",
+      "parameters": {
+        "inputMode": "text",
+        "inputLabel": "Sample identifier and evidence that Blue #1 is the only blue dye",
+        "tag": "unknown-sample-provenance"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Identify eligible blue sports-drink sample: The student-selected sample retains its identity and eligibility evidence; no brand is supplied by the lab."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "The student-selected sample retains its identity and eligibility evidence; no brand is supplied by the lab.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "inquiry",
+        "sample-provenance",
+        "Blue-1-only"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "i1-submit-inquiry-plan",
+      "verb": "observe",
+      "label": "Submit sports-drink analysis plan",
+      "parameters": {
+        "inputMode": "text",
+        "inputLabel": "Student-designed sample handling, dilution, replicate, measurement, and analysis plan",
+        "tag": "inquiry-plan"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Submit sports-drink analysis plan: The student-designed procedure is recorded without a fixed recipe."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "The student-designed procedure is recorded without a fixed recipe.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "inquiry",
+        "procedure-design",
+        "replicates",
+        "dilution"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "i1-record-inquiry-approval",
+      "verb": "observe",
+      "label": "Record teacher inquiry approval",
+      "parameters": {
+        "inputMode": "choice",
+        "inputLabel": "Teacher approval after all required revisions are incorporated",
+        "inputOptions": [
+          "Teacher approved for execution"
+        ],
+        "tag": "inquiry-approval"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record teacher inquiry approval: Explicit teacher approval is recorded as a separate execution gate."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "Explicit teacher approval is recorded as a separate execution gate.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "teacher-gate",
+        "approval",
+        "inquiry"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "i1-record-unknown-reading-set",
+      "verb": "observe",
+      "label": "Record unknown reading set and provenance",
+      "parameters": {
+        "inputMode": "text",
+        "inputLabel": "Raw/diluted readings, replicate identities, and sample provenance",
+        "tag": "unknown-reading-set"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record unknown reading set and provenance: All approved readings and replicate identities are preserved separately from the selected analysis value."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "All approved readings and replicate identities are preserved separately from the selected analysis value.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "record",
+        "replicates",
+        "provenance",
+        "unknown"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "i1-justify-method",
+      "verb": "observe",
+      "label": "Justify procedure, instrument, and data choices",
+      "parameters": {
+        "inputMode": "text",
+        "inputLabel": "Evidence-based method and data justification",
+        "tag": "method-justification"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Justify procedure, instrument, and data choices: The student justifies the approved procedure, instrument setup, calibration choice, and data use."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "The student justifies the approved procedure, instrument setup, calibration choice, and data use.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "written-response",
+        "justification",
+        "evidence"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "i1-postlab-dilution-reasoning",
+      "verb": "observe",
+      "label": "Explain dilution correction",
+      "parameters": {
+        "inputMode": "text",
+        "inputLabel": "Postlab explanation of why a diluted reading must be corrected to the original sample",
+        "tag": "postlab-dilution-reasoning"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Explain dilution correction: Postlab dilution reasoning is recorded separately from the numeric result."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "Postlab dilution reasoning is recorded separately from the numeric result.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "postlab",
+        "dilution-correction",
+        "reasoning"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "i1-postlab-transformation-reasoning",
+      "verb": "observe",
+      "label": "Defend the calibration transformation",
+      "parameters": {
+        "inputMode": "text",
+        "inputLabel": "Postlab comparison of transformations and support for the teacher-confirmed relationship",
+        "tag": "postlab-transformation-reasoning"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Defend the calibration transformation: Postlab transformation reasoning is recorded separately from the calibration entry."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "Postlab transformation reasoning is recorded separately from the calibration entry.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "postlab",
+        "transformation",
+        "reasoning"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "i1-postlab-uncertainty",
+      "verb": "observe",
+      "label": "Evaluate uncertainty and limitations",
+      "parameters": {
+        "inputMode": "text",
+        "inputLabel": "Postlab uncertainty, procedural limitations, and improvement reasoning",
+        "tag": "postlab-uncertainty"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Evaluate uncertainty and limitations: Uncertainty and limitations are recorded without invented acceptance thresholds."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted step and preserve the sample or row identity."
+        },
+        {
+          "id": "missing-teacher-configuration",
+          "when": "a teacher-supplied value, rule, or approval has not been recorded",
+          "message": "This investigation does not supply that classroom-specific value or rule.",
+          "recovery": "Record the teacher-provided configuration or approval before continuing."
+        },
+        {
+          "id": "lost-provenance",
+          "when": "a dilution, reading, or pooled row is missing its ratio or group source",
+          "message": "The evidence cannot be interpreted without its dilution and group provenance.",
+          "recovery": "Reconnect the value to the labeled standard and contributing group."
+        }
+      ],
+      "feedback": {
+        "success": "Uncertainty and limitations are recorded without invented acceptance thresholds.",
+        "invalid": "The simulator could not complete that step. Check the configuration, sample identity, and sequence."
+      },
+      "evidence": [
+        "postlab",
+        "uncertainty",
+        "limitations"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    }
+  ],
+  "process": {
+    "startNodeId": "i1-record-safety-local-rule-node",
+    "nodes": [
+      {
+        "id": "i1-record-safety-local-rule-node",
+        "type": "teacherNote",
+        "title": "Record safety and disposal directions",
+        "description": "Record instructor PPE and instrument rules, the no-consumption rule, and whether local disposal differs from the source sink-with-plenty-of-water guidance.",
+        "actionId": "i1-record-safety-local-rule",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-record-safety-local-rule-node-done",
+            "type": "actionEvidence",
+            "label": "i1-record-safety-local-rule was completed.",
+            "actionId": "i1-record-safety-local-rule"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record safety and disposal directions complete.",
+          "retry": "Review record safety and disposal directions and try again."
+        }
+      },
+      {
+        "id": "i1-identify-unknown-sample-node",
+        "type": "observation",
+        "title": "Identify blue sports-drink sample",
+        "description": "Choose and identify a blue sports drink for which Blue #1 is the only blue dye. The lab supplies no brand.",
+        "actionId": "i1-identify-unknown-sample",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-identify-unknown-sample-node-done",
+            "type": "actionEvidence",
+            "label": "i1-identify-unknown-sample was completed.",
+            "actionId": "i1-identify-unknown-sample"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Identify blue sports-drink sample complete.",
+          "retry": "Review identify blue sports-drink sample and try again."
+        }
+      },
+      {
+        "id": "i1-submit-inquiry-plan-node",
+        "type": "observation",
+        "title": "Design unknown-analysis procedure",
+        "description": "Design sample handling, any dilution, replicate strategy, measurement sequence, and analysis using the teacher-set wavelength and class-derived relationship.",
+        "actionId": "i1-submit-inquiry-plan",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-submit-inquiry-plan-node-done",
+            "type": "actionEvidence",
+            "label": "i1-submit-inquiry-plan was completed.",
+            "actionId": "i1-submit-inquiry-plan"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Design unknown-analysis procedure complete.",
+          "retry": "Review design unknown-analysis procedure and try again."
+        }
+      },
+      {
+        "id": "i1-record-inquiry-approval-node",
+        "type": "checkpoint",
+        "title": "Obtain teacher approval",
+        "description": "Incorporate any requested revisions, then select the explicit teacher-approval confirmation before executing the student-designed procedure.",
+        "actionId": "i1-record-inquiry-approval",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-record-inquiry-approval-node-done",
+            "type": "actionEvidence",
+            "label": "i1-record-inquiry-approval was completed.",
+            "actionId": "i1-record-inquiry-approval"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Obtain teacher approval complete.",
+          "retry": "Review obtain teacher approval and try again."
+        }
+      },
+      {
+        "id": "i1-record-unknown-reading-set-node",
+        "type": "observation",
+        "title": "Record unknown readings",
+        "description": "Record all raw or diluted readings, replicate identities, and sample provenance before selecting the analysis value.",
+        "actionId": "i1-record-unknown-reading-set",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-record-unknown-reading-set-node-done",
+            "type": "actionEvidence",
+            "label": "i1-record-unknown-reading-set was completed.",
+            "actionId": "i1-record-unknown-reading-set"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record unknown readings complete.",
+          "retry": "Review record unknown readings and try again."
+        }
+      },
+      {
+        "id": "i1-justify-method-node",
+        "type": "observation",
+        "title": "Justify the analysis",
+        "description": "Justify the procedure, instrument choices, calibration relationship, reading selection, and dilution treatment with evidence.",
+        "actionId": "i1-justify-method",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-justify-method-node-done",
+            "type": "actionEvidence",
+            "label": "i1-justify-method was completed.",
+            "actionId": "i1-justify-method"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Justify the analysis complete.",
+          "retry": "Review justify the analysis and try again."
+        }
+      },
+      {
+        "id": "i1-postlab-dilution-reasoning-node",
+        "type": "observation",
+        "title": "Postlab: dilution correction",
+        "description": "Explain why an over-range diluted sample must be corrected back to the original sports drink.",
+        "actionId": "i1-postlab-dilution-reasoning",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-postlab-dilution-reasoning-node-done",
+            "type": "actionEvidence",
+            "label": "i1-postlab-dilution-reasoning was completed.",
+            "actionId": "i1-postlab-dilution-reasoning"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Postlab: dilution correction complete.",
+          "retry": "Review postlab: dilution correction and try again."
+        }
+      },
+      {
+        "id": "i1-postlab-transformation-reasoning-node",
+        "type": "observation",
+        "title": "Postlab: transformation",
+        "description": "Compare the candidate transformations and defend the teacher-confirmed relationship from class evidence.",
+        "actionId": "i1-postlab-transformation-reasoning",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-postlab-transformation-reasoning-node-done",
+            "type": "actionEvidence",
+            "label": "i1-postlab-transformation-reasoning was completed.",
+            "actionId": "i1-postlab-transformation-reasoning"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Postlab: transformation complete.",
+          "retry": "Review postlab: transformation and try again."
+        }
+      },
+      {
+        "id": "i1-postlab-uncertainty-node",
+        "type": "observation",
+        "title": "Postlab: uncertainty",
+        "description": "Evaluate uncertainty, limitations, and improvements without applying an unauthored quality threshold.",
+        "actionId": "i1-postlab-uncertainty",
+        "config": {},
+        "validation": [
+          {
+            "id": "i1-postlab-uncertainty-node-done",
+            "type": "actionEvidence",
+            "label": "i1-postlab-uncertainty was completed.",
+            "actionId": "i1-postlab-uncertainty"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Postlab: uncertainty complete.",
+          "retry": "Review postlab: uncertainty and try again."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "i1-identify-unknown-sample-node",
+        "to": "i1-submit-inquiry-plan-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-submit-inquiry-plan-node",
+        "to": "i1-record-inquiry-approval-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-record-unknown-reading-set-node",
+        "to": "i1-justify-method-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-justify-method-node",
+        "to": "i1-postlab-dilution-reasoning-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-postlab-dilution-reasoning-node",
+        "to": "i1-postlab-transformation-reasoning-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "i1-postlab-transformation-reasoning-node",
+        "to": "i1-postlab-uncertainty-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "assessments": [
+    {
+      "id": "i1-assess-eight-ratios",
+      "type": "actionEvidence",
+      "label": "All eight listed ratio workflows culminate in M1V1=M2V2 concentration evidence.",
+      "actionId": "i1-r0-10-calculate-concentration"
+    },
+    {
+      "id": "i1-assess-class-calibration",
+      "type": "actionEvidence",
+      "label": "The class-pooled relationship is teacher-confirmed.",
+      "actionId": "i1-record-confirmed-calibration"
+    },
+    {
+      "id": "i1-assess-inquiry-approval",
+      "type": "actionEvidence",
+      "label": "The student-designed analysis has teacher approval evidence.",
+      "actionId": "i1-record-inquiry-approval"
+    },
+    {
+      "id": "i1-assess-original-molarity",
+      "type": "processCompleted",
+      "label": "Original-sample Blue #1 molarity is submitted."
+    },
+    {
+      "id": "i1-assess-mass-500ml",
+      "type": "processCompleted",
+      "label": "Blue #1 mass in 500 mL is submitted."
+    },
+    {
+      "id": "i1-assess-postlab",
+      "type": "actionEvidence",
+      "label": "Postlab reasoning is complete.",
+      "actionId": "i1-postlab-uncertainty"
+    }
+  ],
+  "metadata": {
+    "version": "1.3.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-04T00:00:00.000Z",
+    "tags": [
+      "lab",
+      "chemistry",
+      "blue1-spectroscopy",
+      "spectroscopy",
+      "blue-1",
+      "inquiry"
+    ]
+  },
+  "techniqueInstances": [
+    {
+      "instanceId": "blue1-standard-dilutions",
+      "techniqueId": "blue1-standard-dilutions",
+      "version": "1.3.0",
+      "bindings": {
+        "equipment": {
+          "variable-volume-measuring-device": {
+            "definitionId": "graduated-pipette-10ml",
+            "instanceId": "i1-graduated-pipette"
+          },
+          "liquid-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "i1-blue1-stock",
+                "definitionId": "sample-bottle",
+                "instanceId": "i1-blue1-stock"
+              },
+              {
+                "sourceInstanceId": "i1-class-water",
+                "definitionId": "distilled-water-bottle",
+                "instanceId": "i1-class-water"
+              }
+            ]
+          },
+          "measured-solvent-source": {
+            "definitionId": "graduated-pipette-10ml",
+            "instanceId": "i1-graduated-pipette"
+          },
+          "receiving-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "i1-r10-0-tube",
+                "definitionId": "test-tube",
+                "instanceId": "i1-r10-0-tube"
+              },
+              {
+                "sourceInstanceId": "i1-r8-2-tube",
+                "definitionId": "test-tube",
+                "instanceId": "i1-r8-2-tube"
+              },
+              {
+                "sourceInstanceId": "i1-r6-4-tube",
+                "definitionId": "test-tube",
+                "instanceId": "i1-r6-4-tube"
+              },
+              {
+                "sourceInstanceId": "i1-r4-6-tube",
+                "definitionId": "test-tube",
+                "instanceId": "i1-r4-6-tube"
+              },
+              {
+                "sourceInstanceId": "i1-r3-7-tube",
+                "definitionId": "test-tube",
+                "instanceId": "i1-r3-7-tube"
+              },
+              {
+                "sourceInstanceId": "i1-r2-8-tube",
+                "definitionId": "test-tube",
+                "instanceId": "i1-r2-8-tube"
+              },
+              {
+                "sourceInstanceId": "i1-r1-9-tube",
+                "definitionId": "test-tube",
+                "instanceId": "i1-r1-9-tube"
+              },
+              {
+                "sourceInstanceId": "i1-r0-10-tube",
+                "definitionId": "test-tube",
+                "instanceId": "i1-r0-10-tube"
+              }
+            ]
+          }
+        },
+        "models": {},
+        "configuration": {}
+      },
+      "preserveIds": {
+        "actions": {
+          "i1-record-stock-concentration": "i1-record-stock-concentration",
+          "i1-record-dilution-assignments": "i1-record-dilution-assignments",
+          "i1-r10-0-label": "i1-r10-0-label",
+          "i1-r10-0-measure-stock": "i1-r10-0-measure-stock",
+          "i1-r10-0-transfer-stock": "i1-r10-0-transfer-stock",
+          "i1-r10-0-confirm-zero-water": "i1-r10-0-confirm-zero-water",
+          "i1-r10-0-calculate-concentration": "i1-r10-0-calculate-concentration",
+          "i1-r8-2-label": "i1-r8-2-label",
+          "i1-r8-2-measure-stock": "i1-r8-2-measure-stock",
+          "i1-r8-2-transfer-stock": "i1-r8-2-transfer-stock",
+          "i1-r8-2-measure-water": "i1-r8-2-measure-water",
+          "i1-r8-2-transfer-water": "i1-r8-2-transfer-water",
+          "i1-r8-2-calculate-concentration": "i1-r8-2-calculate-concentration",
+          "i1-r6-4-label": "i1-r6-4-label",
+          "i1-r6-4-measure-stock": "i1-r6-4-measure-stock",
+          "i1-r6-4-transfer-stock": "i1-r6-4-transfer-stock",
+          "i1-r6-4-measure-water": "i1-r6-4-measure-water",
+          "i1-r6-4-transfer-water": "i1-r6-4-transfer-water",
+          "i1-r6-4-calculate-concentration": "i1-r6-4-calculate-concentration",
+          "i1-r4-6-label": "i1-r4-6-label",
+          "i1-r4-6-measure-stock": "i1-r4-6-measure-stock",
+          "i1-r4-6-transfer-stock": "i1-r4-6-transfer-stock",
+          "i1-r4-6-measure-water": "i1-r4-6-measure-water",
+          "i1-r4-6-transfer-water": "i1-r4-6-transfer-water",
+          "i1-r4-6-calculate-concentration": "i1-r4-6-calculate-concentration",
+          "i1-r3-7-label": "i1-r3-7-label",
+          "i1-r3-7-measure-stock": "i1-r3-7-measure-stock",
+          "i1-r3-7-transfer-stock": "i1-r3-7-transfer-stock",
+          "i1-r3-7-measure-water": "i1-r3-7-measure-water",
+          "i1-r3-7-transfer-water": "i1-r3-7-transfer-water",
+          "i1-r3-7-calculate-concentration": "i1-r3-7-calculate-concentration",
+          "i1-r2-8-label": "i1-r2-8-label",
+          "i1-r2-8-measure-stock": "i1-r2-8-measure-stock",
+          "i1-r2-8-transfer-stock": "i1-r2-8-transfer-stock",
+          "i1-r2-8-measure-water": "i1-r2-8-measure-water",
+          "i1-r2-8-transfer-water": "i1-r2-8-transfer-water",
+          "i1-r2-8-calculate-concentration": "i1-r2-8-calculate-concentration",
+          "i1-r1-9-label": "i1-r1-9-label",
+          "i1-r1-9-measure-stock": "i1-r1-9-measure-stock",
+          "i1-r1-9-transfer-stock": "i1-r1-9-transfer-stock",
+          "i1-r1-9-measure-water": "i1-r1-9-measure-water",
+          "i1-r1-9-transfer-water": "i1-r1-9-transfer-water",
+          "i1-r1-9-calculate-concentration": "i1-r1-9-calculate-concentration",
+          "i1-r0-10-label": "i1-r0-10-label",
+          "i1-r0-10-confirm-zero-stock": "i1-r0-10-confirm-zero-stock",
+          "i1-r0-10-measure-water": "i1-r0-10-measure-water",
+          "i1-r0-10-transfer-water": "i1-r0-10-transfer-water",
+          "i1-r0-10-calculate-concentration": "i1-r0-10-calculate-concentration"
+        },
+        "nodes": {
+          "i1-record-stock-concentration-node": "i1-record-stock-concentration-node",
+          "i1-record-dilution-assignments-node": "i1-record-dilution-assignments-node",
+          "i1-r10-0-label-node": "i1-r10-0-label-node",
+          "i1-r10-0-measure-stock-node": "i1-r10-0-measure-stock-node",
+          "i1-r10-0-transfer-stock-node": "i1-r10-0-transfer-stock-node",
+          "i1-r10-0-confirm-zero-water-node": "i1-r10-0-confirm-zero-water-node",
+          "i1-r10-0-calculate-concentration-node": "i1-r10-0-calculate-concentration-node",
+          "i1-r8-2-label-node": "i1-r8-2-label-node",
+          "i1-r8-2-measure-stock-node": "i1-r8-2-measure-stock-node",
+          "i1-r8-2-transfer-stock-node": "i1-r8-2-transfer-stock-node",
+          "i1-r8-2-measure-water-node": "i1-r8-2-measure-water-node",
+          "i1-r8-2-transfer-water-node": "i1-r8-2-transfer-water-node",
+          "i1-r8-2-calculate-concentration-node": "i1-r8-2-calculate-concentration-node",
+          "i1-r6-4-label-node": "i1-r6-4-label-node",
+          "i1-r6-4-measure-stock-node": "i1-r6-4-measure-stock-node",
+          "i1-r6-4-transfer-stock-node": "i1-r6-4-transfer-stock-node",
+          "i1-r6-4-measure-water-node": "i1-r6-4-measure-water-node",
+          "i1-r6-4-transfer-water-node": "i1-r6-4-transfer-water-node",
+          "i1-r6-4-calculate-concentration-node": "i1-r6-4-calculate-concentration-node",
+          "i1-r4-6-label-node": "i1-r4-6-label-node",
+          "i1-r4-6-measure-stock-node": "i1-r4-6-measure-stock-node",
+          "i1-r4-6-transfer-stock-node": "i1-r4-6-transfer-stock-node",
+          "i1-r4-6-measure-water-node": "i1-r4-6-measure-water-node",
+          "i1-r4-6-transfer-water-node": "i1-r4-6-transfer-water-node",
+          "i1-r4-6-calculate-concentration-node": "i1-r4-6-calculate-concentration-node",
+          "i1-r3-7-label-node": "i1-r3-7-label-node",
+          "i1-r3-7-measure-stock-node": "i1-r3-7-measure-stock-node",
+          "i1-r3-7-transfer-stock-node": "i1-r3-7-transfer-stock-node",
+          "i1-r3-7-measure-water-node": "i1-r3-7-measure-water-node",
+          "i1-r3-7-transfer-water-node": "i1-r3-7-transfer-water-node",
+          "i1-r3-7-calculate-concentration-node": "i1-r3-7-calculate-concentration-node",
+          "i1-r2-8-label-node": "i1-r2-8-label-node",
+          "i1-r2-8-measure-stock-node": "i1-r2-8-measure-stock-node",
+          "i1-r2-8-transfer-stock-node": "i1-r2-8-transfer-stock-node",
+          "i1-r2-8-measure-water-node": "i1-r2-8-measure-water-node",
+          "i1-r2-8-transfer-water-node": "i1-r2-8-transfer-water-node",
+          "i1-r2-8-calculate-concentration-node": "i1-r2-8-calculate-concentration-node",
+          "i1-r1-9-label-node": "i1-r1-9-label-node",
+          "i1-r1-9-measure-stock-node": "i1-r1-9-measure-stock-node",
+          "i1-r1-9-transfer-stock-node": "i1-r1-9-transfer-stock-node",
+          "i1-r1-9-measure-water-node": "i1-r1-9-measure-water-node",
+          "i1-r1-9-transfer-water-node": "i1-r1-9-transfer-water-node",
+          "i1-r1-9-calculate-concentration-node": "i1-r1-9-calculate-concentration-node",
+          "i1-r0-10-label-node": "i1-r0-10-label-node",
+          "i1-r0-10-confirm-zero-stock-node": "i1-r0-10-confirm-zero-stock-node",
+          "i1-r0-10-measure-water-node": "i1-r0-10-measure-water-node",
+          "i1-r0-10-transfer-water-node": "i1-r0-10-transfer-water-node",
+          "i1-r0-10-calculate-concentration-node": "i1-r0-10-calculate-concentration-node"
+        },
+        "validationRules": {},
+        "references": {
+          "blue1-class-calibration--i1-r10-0-concentration": "blue1-class-calibration--i1-r10-0-concentration",
+          "blue1-class-calibration--i1-r8-2-concentration": "blue1-class-calibration--i1-r8-2-concentration",
+          "blue1-class-calibration--i1-r6-4-concentration": "blue1-class-calibration--i1-r6-4-concentration",
+          "blue1-class-calibration--i1-r4-6-concentration": "blue1-class-calibration--i1-r4-6-concentration",
+          "blue1-class-calibration--i1-r3-7-concentration": "blue1-class-calibration--i1-r3-7-concentration",
+          "blue1-class-calibration--i1-r2-8-concentration": "blue1-class-calibration--i1-r2-8-concentration",
+          "blue1-class-calibration--i1-r1-9-concentration": "blue1-class-calibration--i1-r1-9-concentration"
+        }
+      }
+    },
+    {
+      "instanceId": "blue1-class-calibration",
+      "techniqueId": "blue1-class-calibration",
+      "version": "1.3.0",
+      "bindings": {
+        "equipment": {},
+        "models": {},
+        "configuration": {
+          "i1-r10-0-concentrationCalculationId": "blue1-class-calibration--i1-r10-0-concentration",
+          "i1-r8-2-concentrationCalculationId": "blue1-class-calibration--i1-r8-2-concentration",
+          "i1-r6-4-concentrationCalculationId": "blue1-class-calibration--i1-r6-4-concentration",
+          "i1-r4-6-concentrationCalculationId": "blue1-class-calibration--i1-r4-6-concentration",
+          "i1-r3-7-concentrationCalculationId": "blue1-class-calibration--i1-r3-7-concentration",
+          "i1-r2-8-concentrationCalculationId": "blue1-class-calibration--i1-r2-8-concentration",
+          "i1-r1-9-concentrationCalculationId": "blue1-class-calibration--i1-r1-9-concentration"
+        }
+      },
+      "preserveIds": {
+        "actions": {
+          "i1-r10-0-record-provenance": "i1-r10-0-record-provenance",
+          "i1-r10-0-calculate-decimal-t": "i1-r10-0-calculate-decimal-t",
+          "i1-r10-0-calculate-absorbance": "i1-r10-0-calculate-absorbance",
+          "i1-r8-2-record-provenance": "i1-r8-2-record-provenance",
+          "i1-r8-2-calculate-decimal-t": "i1-r8-2-calculate-decimal-t",
+          "i1-r8-2-calculate-absorbance": "i1-r8-2-calculate-absorbance",
+          "i1-r6-4-record-provenance": "i1-r6-4-record-provenance",
+          "i1-r6-4-calculate-decimal-t": "i1-r6-4-calculate-decimal-t",
+          "i1-r6-4-calculate-absorbance": "i1-r6-4-calculate-absorbance",
+          "i1-r4-6-record-provenance": "i1-r4-6-record-provenance",
+          "i1-r4-6-calculate-decimal-t": "i1-r4-6-calculate-decimal-t",
+          "i1-r4-6-calculate-absorbance": "i1-r4-6-calculate-absorbance",
+          "i1-r3-7-record-provenance": "i1-r3-7-record-provenance",
+          "i1-r3-7-calculate-decimal-t": "i1-r3-7-calculate-decimal-t",
+          "i1-r3-7-calculate-absorbance": "i1-r3-7-calculate-absorbance",
+          "i1-r2-8-record-provenance": "i1-r2-8-record-provenance",
+          "i1-r2-8-calculate-decimal-t": "i1-r2-8-calculate-decimal-t",
+          "i1-r2-8-calculate-absorbance": "i1-r2-8-calculate-absorbance",
+          "i1-r1-9-record-provenance": "i1-r1-9-record-provenance",
+          "i1-r1-9-calculate-decimal-t": "i1-r1-9-calculate-decimal-t",
+          "i1-r1-9-calculate-absorbance": "i1-r1-9-calculate-absorbance",
+          "i1-r0-10-record-provenance": "i1-r0-10-record-provenance",
+          "i1-r0-10-calculate-decimal-t": "i1-r0-10-calculate-decimal-t",
+          "i1-r0-10-calculate-absorbance": "i1-r0-10-calculate-absorbance",
+          "i1-plot-decimal-t": "i1-plot-decimal-t",
+          "i1-plot-reciprocal-t": "i1-plot-reciprocal-t",
+          "i1-plot-one-times-ten-power-t": "i1-plot-one-times-ten-power-t",
+          "i1-plot-log-t": "i1-plot-log-t",
+          "i1-plot-negative-log-t": "i1-plot-negative-log-t",
+          "i1-record-source-ambiguity": "i1-record-source-ambiguity",
+          "i1-record-confirmed-calibration": "i1-record-confirmed-calibration"
+        },
+        "nodes": {
+          "i1-r10-0-record-provenance-node": "i1-r10-0-record-provenance-node",
+          "i1-r10-0-calculate-decimal-t-node": "i1-r10-0-calculate-decimal-t-node",
+          "i1-r10-0-calculate-absorbance-node": "i1-r10-0-calculate-absorbance-node",
+          "i1-r8-2-record-provenance-node": "i1-r8-2-record-provenance-node",
+          "i1-r8-2-calculate-decimal-t-node": "i1-r8-2-calculate-decimal-t-node",
+          "i1-r8-2-calculate-absorbance-node": "i1-r8-2-calculate-absorbance-node",
+          "i1-r6-4-record-provenance-node": "i1-r6-4-record-provenance-node",
+          "i1-r6-4-calculate-decimal-t-node": "i1-r6-4-calculate-decimal-t-node",
+          "i1-r6-4-calculate-absorbance-node": "i1-r6-4-calculate-absorbance-node",
+          "i1-r4-6-record-provenance-node": "i1-r4-6-record-provenance-node",
+          "i1-r4-6-calculate-decimal-t-node": "i1-r4-6-calculate-decimal-t-node",
+          "i1-r4-6-calculate-absorbance-node": "i1-r4-6-calculate-absorbance-node",
+          "i1-r3-7-record-provenance-node": "i1-r3-7-record-provenance-node",
+          "i1-r3-7-calculate-decimal-t-node": "i1-r3-7-calculate-decimal-t-node",
+          "i1-r3-7-calculate-absorbance-node": "i1-r3-7-calculate-absorbance-node",
+          "i1-r2-8-record-provenance-node": "i1-r2-8-record-provenance-node",
+          "i1-r2-8-calculate-decimal-t-node": "i1-r2-8-calculate-decimal-t-node",
+          "i1-r2-8-calculate-absorbance-node": "i1-r2-8-calculate-absorbance-node",
+          "i1-r1-9-record-provenance-node": "i1-r1-9-record-provenance-node",
+          "i1-r1-9-calculate-decimal-t-node": "i1-r1-9-calculate-decimal-t-node",
+          "i1-r1-9-calculate-absorbance-node": "i1-r1-9-calculate-absorbance-node",
+          "i1-r0-10-record-provenance-node": "i1-r0-10-record-provenance-node",
+          "i1-r0-10-calculate-decimal-t-node": "i1-r0-10-calculate-decimal-t-node",
+          "i1-r0-10-calculate-absorbance-node": "i1-r0-10-calculate-absorbance-node",
+          "i1-plot-decimal-t-node": "i1-plot-decimal-t-node",
+          "i1-plot-reciprocal-t-node": "i1-plot-reciprocal-t-node",
+          "i1-plot-one-times-ten-power-t-node": "i1-plot-one-times-ten-power-t-node",
+          "i1-plot-log-t-node": "i1-plot-log-t-node",
+          "i1-plot-negative-log-t-node": "i1-plot-negative-log-t-node",
+          "i1-record-source-ambiguity-node": "i1-record-source-ambiguity-node",
+          "i1-record-confirmed-calibration-node": "i1-record-confirmed-calibration-node"
+        },
+        "validationRules": {},
+        "references": {
+          "blue1-percent-transmittance--i1-confirmed-calibration-regression": "blue1-percent-transmittance--i1-confirmed-calibration-regression"
+        }
+      }
+    },
+    {
+      "instanceId": "blue1-percent-transmittance",
+      "techniqueId": "blue1-percent-transmittance",
+      "version": "2.0.0",
+      "bindings": {
+        "equipment": {
+          "photometer-instrument": {
+            "definitionId": "spectrophotometer",
+            "instanceId": "i1-spectrophotometer"
+          },
+          "photometer-sample-holder": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "i1-blank-cuvette",
+                "definitionId": "cuvette",
+                "instanceId": "i1-blank-cuvette"
+              },
+              {
+                "sourceInstanceId": "i1-r10-0-cuvette",
+                "definitionId": "cuvette",
+                "instanceId": "i1-r10-0-cuvette"
+              },
+              {
+                "sourceInstanceId": "i1-r8-2-cuvette",
+                "definitionId": "cuvette",
+                "instanceId": "i1-r8-2-cuvette"
+              },
+              {
+                "sourceInstanceId": "i1-r6-4-cuvette",
+                "definitionId": "cuvette",
+                "instanceId": "i1-r6-4-cuvette"
+              },
+              {
+                "sourceInstanceId": "i1-r4-6-cuvette",
+                "definitionId": "cuvette",
+                "instanceId": "i1-r4-6-cuvette"
+              },
+              {
+                "sourceInstanceId": "i1-r3-7-cuvette",
+                "definitionId": "cuvette",
+                "instanceId": "i1-r3-7-cuvette"
+              },
+              {
+                "sourceInstanceId": "i1-r2-8-cuvette",
+                "definitionId": "cuvette",
+                "instanceId": "i1-r2-8-cuvette"
+              },
+              {
+                "sourceInstanceId": "i1-r1-9-cuvette",
+                "definitionId": "cuvette",
+                "instanceId": "i1-r1-9-cuvette"
+              },
+              {
+                "sourceInstanceId": "i1-r0-10-cuvette",
+                "definitionId": "cuvette",
+                "instanceId": "i1-r0-10-cuvette"
+              },
+              {
+                "sourceInstanceId": "i1-unknown-cuvette",
+                "definitionId": "cuvette",
+                "instanceId": "i1-unknown-cuvette"
+              }
+            ]
+          },
+          "sample-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "i1-r10-0-tube",
+                "definitionId": "test-tube",
+                "instanceId": "i1-r10-0-tube"
+              },
+              {
+                "sourceInstanceId": "i1-r8-2-tube",
+                "definitionId": "test-tube",
+                "instanceId": "i1-r8-2-tube"
+              },
+              {
+                "sourceInstanceId": "i1-r6-4-tube",
+                "definitionId": "test-tube",
+                "instanceId": "i1-r6-4-tube"
+              },
+              {
+                "sourceInstanceId": "i1-r4-6-tube",
+                "definitionId": "test-tube",
+                "instanceId": "i1-r4-6-tube"
+              },
+              {
+                "sourceInstanceId": "i1-r3-7-tube",
+                "definitionId": "test-tube",
+                "instanceId": "i1-r3-7-tube"
+              },
+              {
+                "sourceInstanceId": "i1-r2-8-tube",
+                "definitionId": "test-tube",
+                "instanceId": "i1-r2-8-tube"
+              },
+              {
+                "sourceInstanceId": "i1-r1-9-tube",
+                "definitionId": "test-tube",
+                "instanceId": "i1-r1-9-tube"
+              },
+              {
+                "sourceInstanceId": "i1-r0-10-tube",
+                "definitionId": "test-tube",
+                "instanceId": "i1-r0-10-tube"
+              },
+              {
+                "sourceInstanceId": "i1-prepared-unknown-tube",
+                "definitionId": "test-tube",
+                "instanceId": "i1-prepared-unknown-tube"
+              },
+              {
+                "sourceInstanceId": "i1-diluted-unknown-tube",
+                "definitionId": "test-tube",
+                "instanceId": "i1-diluted-unknown-tube"
+              },
+              {
+                "sourceInstanceId": "i1-unknown-sample",
+                "definitionId": "sample-bottle-1l",
+                "instanceId": "i1-unknown-sample"
+              },
+              {
+                "sourceInstanceId": "i1-unknown-dilution-water",
+                "definitionId": "distilled-water-bottle-1l",
+                "instanceId": "i1-unknown-dilution-water"
+              }
+            ]
+          },
+          "variable-volume-measuring-device": {
+            "definitionId": "graduated-pipette-10ml",
+            "instanceId": "i1-unknown-measuring-device"
+          },
+          "liquid-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "i1-unknown-sample",
+                "definitionId": "sample-bottle-1l",
+                "instanceId": "i1-unknown-sample"
+              }
+            ]
+          },
+          "measured-solvent-source": {
+            "definitionId": "graduated-pipette-10ml",
+            "instanceId": "i1-unknown-measuring-device"
+          },
+          "receiving-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "i1-prepared-unknown-tube",
+                "definitionId": "test-tube",
+                "instanceId": "i1-prepared-unknown-tube"
+              },
+              {
+                "sourceInstanceId": "i1-diluted-unknown-tube",
+                "definitionId": "test-tube",
+                "instanceId": "i1-diluted-unknown-tube"
+              }
+            ]
+          }
+        },
+        "models": {},
+        "configuration": {
+          "calibrationRegressionCalculationId": "blue1-percent-transmittance--i1-confirmed-calibration-regression"
+        }
+      },
+      "preserveIds": {
+        "actions": {
+          "i1-record-wavelength": "i1-record-wavelength",
+          "i1-record-blank-cuvette-rule": "i1-record-blank-cuvette-rule",
+          "i1-place-spectrophotometer": "i1-place-spectrophotometer",
+          "i1-insert-blank-cuvette": "i1-insert-blank-cuvette",
+          "i1-zero-instrument": "i1-zero-instrument",
+          "i1-remove-blank-cuvette": "i1-remove-blank-cuvette",
+          "i1-r10-0-fill-cuvette": "i1-r10-0-fill-cuvette",
+          "i1-r10-0-condition-orient-cuvette": "i1-r10-0-condition-orient-cuvette",
+          "i1-r10-0-insert-cuvette": "i1-r10-0-insert-cuvette",
+          "i1-r10-0-read-percent-t": "i1-r10-0-read-percent-t",
+          "i1-r10-0-record-percent-t": "i1-r10-0-record-percent-t",
+          "i1-r10-0-remove-cuvette": "i1-r10-0-remove-cuvette",
+          "i1-r8-2-fill-cuvette": "i1-r8-2-fill-cuvette",
+          "i1-r8-2-condition-orient-cuvette": "i1-r8-2-condition-orient-cuvette",
+          "i1-r8-2-insert-cuvette": "i1-r8-2-insert-cuvette",
+          "i1-r8-2-read-percent-t": "i1-r8-2-read-percent-t",
+          "i1-r8-2-record-percent-t": "i1-r8-2-record-percent-t",
+          "i1-r8-2-remove-cuvette": "i1-r8-2-remove-cuvette",
+          "i1-r6-4-fill-cuvette": "i1-r6-4-fill-cuvette",
+          "i1-r6-4-condition-orient-cuvette": "i1-r6-4-condition-orient-cuvette",
+          "i1-r6-4-insert-cuvette": "i1-r6-4-insert-cuvette",
+          "i1-r6-4-read-percent-t": "i1-r6-4-read-percent-t",
+          "i1-r6-4-record-percent-t": "i1-r6-4-record-percent-t",
+          "i1-r6-4-remove-cuvette": "i1-r6-4-remove-cuvette",
+          "i1-r4-6-fill-cuvette": "i1-r4-6-fill-cuvette",
+          "i1-r4-6-condition-orient-cuvette": "i1-r4-6-condition-orient-cuvette",
+          "i1-r4-6-insert-cuvette": "i1-r4-6-insert-cuvette",
+          "i1-r4-6-read-percent-t": "i1-r4-6-read-percent-t",
+          "i1-r4-6-record-percent-t": "i1-r4-6-record-percent-t",
+          "i1-r4-6-remove-cuvette": "i1-r4-6-remove-cuvette",
+          "i1-r3-7-fill-cuvette": "i1-r3-7-fill-cuvette",
+          "i1-r3-7-condition-orient-cuvette": "i1-r3-7-condition-orient-cuvette",
+          "i1-r3-7-insert-cuvette": "i1-r3-7-insert-cuvette",
+          "i1-r3-7-read-percent-t": "i1-r3-7-read-percent-t",
+          "i1-r3-7-record-percent-t": "i1-r3-7-record-percent-t",
+          "i1-r3-7-remove-cuvette": "i1-r3-7-remove-cuvette",
+          "i1-r2-8-fill-cuvette": "i1-r2-8-fill-cuvette",
+          "i1-r2-8-condition-orient-cuvette": "i1-r2-8-condition-orient-cuvette",
+          "i1-r2-8-insert-cuvette": "i1-r2-8-insert-cuvette",
+          "i1-r2-8-read-percent-t": "i1-r2-8-read-percent-t",
+          "i1-r2-8-record-percent-t": "i1-r2-8-record-percent-t",
+          "i1-r2-8-remove-cuvette": "i1-r2-8-remove-cuvette",
+          "i1-r1-9-fill-cuvette": "i1-r1-9-fill-cuvette",
+          "i1-r1-9-condition-orient-cuvette": "i1-r1-9-condition-orient-cuvette",
+          "i1-r1-9-insert-cuvette": "i1-r1-9-insert-cuvette",
+          "i1-r1-9-read-percent-t": "i1-r1-9-read-percent-t",
+          "i1-r1-9-record-percent-t": "i1-r1-9-record-percent-t",
+          "i1-r1-9-remove-cuvette": "i1-r1-9-remove-cuvette",
+          "i1-r0-10-fill-cuvette": "i1-r0-10-fill-cuvette",
+          "i1-r0-10-condition-orient-cuvette": "i1-r0-10-condition-orient-cuvette",
+          "i1-r0-10-insert-cuvette": "i1-r0-10-insert-cuvette",
+          "i1-r0-10-read-percent-t": "i1-r0-10-read-percent-t",
+          "i1-r0-10-record-percent-t": "i1-r0-10-record-percent-t",
+          "i1-r0-10-remove-cuvette": "i1-r0-10-remove-cuvette",
+          "i1-prepare-unknown-under-approved-plan": "i1-prepare-unknown-under-approved-plan",
+          "i1-transfer-approved-unknown-aliquot": "i1-transfer-approved-unknown-aliquot",
+          "i1-fill-unknown-cuvette": "i1-fill-unknown-cuvette",
+          "i1-prepare-unknown-optical-faces": "i1-prepare-unknown-optical-faces",
+          "i1-insert-unknown-cuvette": "i1-insert-unknown-cuvette",
+          "i1-record-approved-unknown-replicate-count": "i1-record-approved-unknown-replicate-count",
+          "i1-read-unknown-percent-t": "i1-read-unknown-percent-t",
+          "i1-record-unknown-percent-t": "i1-record-unknown-percent-t",
+          "i1-remove-unknown-cuvette": "i1-remove-unknown-cuvette",
+          "i1-measure-over-range-unknown-aliquot": "i1-measure-over-range-unknown-aliquot",
+          "i1-record-over-range-response": "i1-record-over-range-response",
+          "i1-fill-diluted-unknown-cuvette": "i1-fill-diluted-unknown-cuvette",
+          "i1-prepare-diluted-unknown-optical-faces": "i1-prepare-diluted-unknown-optical-faces",
+          "i1-insert-diluted-unknown-cuvette": "i1-insert-diluted-unknown-cuvette",
+          "i1-read-diluted-unknown-percent-t": "i1-read-diluted-unknown-percent-t",
+          "i1-record-diluted-unknown-percent-t": "i1-record-diluted-unknown-percent-t",
+          "i1-remove-diluted-unknown-cuvette": "i1-remove-diluted-unknown-cuvette",
+          "i1-record-minimum-usable-percent-t": "i1-record-minimum-usable-percent-t",
+          "i1-classify-unknown-range": "i1-classify-unknown-range",
+          "i1-configure-unknown-operational-inventory": "i1-configure-unknown-operational-inventory",
+          "i1-configure-unknown-dilution-water": "i1-configure-unknown-dilution-water",
+          "i1-fill-blank-cuvette": "i1-fill-blank-cuvette",
+          "i1-transfer-over-range-unknown-aliquot": "i1-transfer-over-range-unknown-aliquot",
+          "i1-calculate-raw-unknown-absorbance": "i1-calculate-raw-unknown-absorbance",
+          "i1-derive-direct-original-concentration": "i1-derive-direct-original-concentration",
+          "i1-calculate-diluted-unknown-absorbance": "i1-calculate-diluted-unknown-absorbance",
+          "i1-derive-diluted-concentration": "i1-derive-diluted-concentration",
+          "i1-back-calculate-original-concentration": "i1-back-calculate-original-concentration",
+          "i1-record-molar-mass-reference": "i1-record-molar-mass-reference",
+          "i1-record-final-solution-volume": "i1-record-final-solution-volume",
+          "i1-calculate-direct-mass-500ml": "i1-calculate-direct-mass-500ml",
+          "i1-calculate-diluted-mass-500ml": "i1-calculate-diluted-mass-500ml"
+        },
+        "nodes": {
+          "i1-record-wavelength-node": "i1-record-wavelength-node",
+          "i1-record-blank-cuvette-rule-node": "i1-record-blank-cuvette-rule-node",
+          "i1-place-spectrophotometer-node": "i1-place-spectrophotometer-node",
+          "i1-insert-blank-cuvette-node": "i1-insert-blank-cuvette-node",
+          "i1-zero-instrument-node": "i1-zero-instrument-node",
+          "i1-remove-blank-cuvette-node": "i1-remove-blank-cuvette-node",
+          "i1-r10-0-fill-cuvette-node": "i1-r10-0-fill-cuvette-node",
+          "i1-r10-0-condition-orient-cuvette-node": "i1-r10-0-condition-orient-cuvette-node",
+          "i1-r10-0-insert-cuvette-node": "i1-r10-0-insert-cuvette-node",
+          "i1-r10-0-read-percent-t-node": "i1-r10-0-read-percent-t-node",
+          "i1-r10-0-record-percent-t-node": "i1-r10-0-record-percent-t-node",
+          "i1-r10-0-remove-cuvette-node": "i1-r10-0-remove-cuvette-node",
+          "i1-r8-2-fill-cuvette-node": "i1-r8-2-fill-cuvette-node",
+          "i1-r8-2-condition-orient-cuvette-node": "i1-r8-2-condition-orient-cuvette-node",
+          "i1-r8-2-insert-cuvette-node": "i1-r8-2-insert-cuvette-node",
+          "i1-r8-2-read-percent-t-node": "i1-r8-2-read-percent-t-node",
+          "i1-r8-2-record-percent-t-node": "i1-r8-2-record-percent-t-node",
+          "i1-r8-2-remove-cuvette-node": "i1-r8-2-remove-cuvette-node",
+          "i1-r6-4-fill-cuvette-node": "i1-r6-4-fill-cuvette-node",
+          "i1-r6-4-condition-orient-cuvette-node": "i1-r6-4-condition-orient-cuvette-node",
+          "i1-r6-4-insert-cuvette-node": "i1-r6-4-insert-cuvette-node",
+          "i1-r6-4-read-percent-t-node": "i1-r6-4-read-percent-t-node",
+          "i1-r6-4-record-percent-t-node": "i1-r6-4-record-percent-t-node",
+          "i1-r6-4-remove-cuvette-node": "i1-r6-4-remove-cuvette-node",
+          "i1-r4-6-fill-cuvette-node": "i1-r4-6-fill-cuvette-node",
+          "i1-r4-6-condition-orient-cuvette-node": "i1-r4-6-condition-orient-cuvette-node",
+          "i1-r4-6-insert-cuvette-node": "i1-r4-6-insert-cuvette-node",
+          "i1-r4-6-read-percent-t-node": "i1-r4-6-read-percent-t-node",
+          "i1-r4-6-record-percent-t-node": "i1-r4-6-record-percent-t-node",
+          "i1-r4-6-remove-cuvette-node": "i1-r4-6-remove-cuvette-node",
+          "i1-r3-7-fill-cuvette-node": "i1-r3-7-fill-cuvette-node",
+          "i1-r3-7-condition-orient-cuvette-node": "i1-r3-7-condition-orient-cuvette-node",
+          "i1-r3-7-insert-cuvette-node": "i1-r3-7-insert-cuvette-node",
+          "i1-r3-7-read-percent-t-node": "i1-r3-7-read-percent-t-node",
+          "i1-r3-7-record-percent-t-node": "i1-r3-7-record-percent-t-node",
+          "i1-r3-7-remove-cuvette-node": "i1-r3-7-remove-cuvette-node",
+          "i1-r2-8-fill-cuvette-node": "i1-r2-8-fill-cuvette-node",
+          "i1-r2-8-condition-orient-cuvette-node": "i1-r2-8-condition-orient-cuvette-node",
+          "i1-r2-8-insert-cuvette-node": "i1-r2-8-insert-cuvette-node",
+          "i1-r2-8-read-percent-t-node": "i1-r2-8-read-percent-t-node",
+          "i1-r2-8-record-percent-t-node": "i1-r2-8-record-percent-t-node",
+          "i1-r2-8-remove-cuvette-node": "i1-r2-8-remove-cuvette-node",
+          "i1-r1-9-fill-cuvette-node": "i1-r1-9-fill-cuvette-node",
+          "i1-r1-9-condition-orient-cuvette-node": "i1-r1-9-condition-orient-cuvette-node",
+          "i1-r1-9-insert-cuvette-node": "i1-r1-9-insert-cuvette-node",
+          "i1-r1-9-read-percent-t-node": "i1-r1-9-read-percent-t-node",
+          "i1-r1-9-record-percent-t-node": "i1-r1-9-record-percent-t-node",
+          "i1-r1-9-remove-cuvette-node": "i1-r1-9-remove-cuvette-node",
+          "i1-r0-10-fill-cuvette-node": "i1-r0-10-fill-cuvette-node",
+          "i1-r0-10-condition-orient-cuvette-node": "i1-r0-10-condition-orient-cuvette-node",
+          "i1-r0-10-insert-cuvette-node": "i1-r0-10-insert-cuvette-node",
+          "i1-r0-10-read-percent-t-node": "i1-r0-10-read-percent-t-node",
+          "i1-r0-10-record-percent-t-node": "i1-r0-10-record-percent-t-node",
+          "i1-r0-10-remove-cuvette-node": "i1-r0-10-remove-cuvette-node",
+          "i1-prepare-unknown-under-approved-plan-node": "i1-prepare-unknown-under-approved-plan-node",
+          "i1-transfer-approved-unknown-aliquot-node": "i1-transfer-approved-unknown-aliquot-node",
+          "i1-fill-unknown-cuvette-node": "i1-fill-unknown-cuvette-node",
+          "i1-prepare-unknown-optical-faces-node": "i1-prepare-unknown-optical-faces-node",
+          "i1-insert-unknown-cuvette-node": "i1-insert-unknown-cuvette-node",
+          "i1-read-unknown-percent-t-node": "i1-read-unknown-percent-t-node",
+          "i1-record-unknown-percent-t-node": "i1-record-unknown-percent-t-node",
+          "i1-remove-unknown-cuvette-node": "i1-remove-unknown-cuvette-node",
+          "i1-measure-over-range-unknown-aliquot-node": "i1-measure-over-range-unknown-aliquot-node",
+          "i1-record-over-range-response-node": "i1-record-over-range-response-node",
+          "i1-fill-diluted-unknown-cuvette-node": "i1-fill-diluted-unknown-cuvette-node",
+          "i1-prepare-diluted-unknown-optical-faces-node": "i1-prepare-diluted-unknown-optical-faces-node",
+          "i1-insert-diluted-unknown-cuvette-node": "i1-insert-diluted-unknown-cuvette-node",
+          "i1-read-diluted-unknown-percent-t-node": "i1-read-diluted-unknown-percent-t-node",
+          "i1-record-diluted-unknown-percent-t-node": "i1-record-diluted-unknown-percent-t-node",
+          "i1-remove-diluted-unknown-cuvette-node": "i1-remove-diluted-unknown-cuvette-node",
+          "i1-classify-unknown-range-node": "i1-classify-unknown-range-node",
+          "i1-record-minimum-usable-percent-t-node": "i1-record-minimum-usable-percent-t-node",
+          "i1-configure-unknown-operational-inventory-node": "i1-configure-unknown-operational-inventory-node",
+          "i1-configure-unknown-dilution-water-node": "i1-configure-unknown-dilution-water-node",
+          "i1-fill-blank-cuvette-node": "i1-fill-blank-cuvette-node",
+          "i1-transfer-over-range-unknown-aliquot-node": "i1-transfer-over-range-unknown-aliquot-node",
+          "i1-calculate-raw-unknown-absorbance-node": "i1-calculate-raw-unknown-absorbance-node",
+          "i1-derive-direct-original-concentration-node": "i1-derive-direct-original-concentration-node",
+          "i1-calculate-diluted-unknown-absorbance-node": "i1-calculate-diluted-unknown-absorbance-node",
+          "i1-derive-diluted-concentration-node": "i1-derive-diluted-concentration-node",
+          "i1-back-calculate-original-concentration-node": "i1-back-calculate-original-concentration-node",
+          "i1-record-molar-mass-reference-node": "i1-record-molar-mass-reference-node",
+          "i1-record-final-solution-volume-node": "i1-record-final-solution-volume-node",
+          "i1-calculate-direct-mass-500ml-node": "i1-calculate-direct-mass-500ml-node",
+          "i1-calculate-diluted-mass-500ml-node": "i1-calculate-diluted-mass-500ml-node",
+          "i1-record-approved-unknown-replicate-count-node": "i1-record-approved-unknown-replicate-count-node"
+        },
+        "validationRules": {},
+        "references": {
+          "i1-approved-unknown-aliquot": "i1-approved-unknown-aliquot",
+          "i1-approved-instrument-range": "i1-approved-instrument-range"
+        }
+      }
+    }
+  ],
+  "compositionStart": {
+    "kind": "lab-node",
+    "nodeId": "i1-record-safety-local-rule-node"
+  },
+  "compositionConnections": [
+    {
+      "id": "blue1-cross-1",
+      "from": {
+        "kind": "lab-node",
+        "nodeId": "i1-record-safety-local-rule-node"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "blue1-standard-dilutions",
+        "portId": "entry-i1-record-stock-concentration-node"
+      },
+      "label": "Next",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "blue1-cross-2",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "blue1-standard-dilutions",
+        "portId": "exit-i1-r0-10-calculate-concentration-node"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "blue1-percent-transmittance",
+        "portId": "entry-i1-record-wavelength-node"
+      },
+      "label": "Next",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "blue1-cross-3",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "blue1-percent-transmittance",
+        "portId": "exit-i1-r0-10-remove-cuvette-node"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "blue1-class-calibration",
+        "portId": "entry-i1-r10-0-record-provenance-node"
+      },
+      "label": "Next",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "blue1-cross-4",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "blue1-class-calibration",
+        "portId": "exit-i1-record-confirmed-calibration-node"
+      },
+      "to": {
+        "kind": "lab-node",
+        "nodeId": "i1-identify-unknown-sample-node"
+      },
+      "label": "Next",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "blue1-cross-unknown-entry",
+      "from": {
+        "kind": "lab-node",
+        "nodeId": "i1-record-inquiry-approval-node"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "blue1-percent-transmittance",
+        "portId": "entry-i1-record-approved-unknown-replicate-count-node"
+      },
+      "label": "Execute approved plan",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "blue1-cross-unknown-exit-in-range",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "blue1-percent-transmittance",
+        "portId": "exit-i1-calculate-direct-mass-500ml-node"
+      },
+      "to": {
+        "kind": "lab-node",
+        "nodeId": "i1-record-unknown-reading-set-node"
+      },
+      "label": "Analyze the usable unknown evidence",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "blue1-cross-unknown-exit-diluted",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "blue1-percent-transmittance",
+        "portId": "exit-i1-calculate-diluted-mass-500ml-node"
+      },
+      "to": {
+        "kind": "lab-node",
+        "nodeId": "i1-record-unknown-reading-set-node"
+      },
+      "label": "Analyze the usable unknown evidence",
+      "condition": {
+        "type": "validationPassed"
+      }
+    }
+  ],
+  "reachabilityWitnesses": [
+    {
+      "id": "default",
+      "configuration": {},
+      "approvalGates": {}
+    }
+  ]
+}

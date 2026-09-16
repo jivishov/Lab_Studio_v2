@@ -1,0 +1,4059 @@
+{
+  "id": "ph-volume-formal-titration-trial",
+  "title": "Indicator-free formal pH-volume titration trial",
+  "learningGoal": "Acquire an indicator-free pH-volume curve for one configured acid/base orientation, preserve the recorded stability evidence, and clean up without selecting or disclosing an equivalence answer.",
+  "requiredEquipment": [
+    "sample-bottle",
+    "reagent-bottle",
+    "graduated-cylinder-25ml",
+    "erlenmeyer-flask-250ml",
+    "burette-50ml",
+    "ring-stand-clamp",
+    "ph-meter",
+    "wash-bottle",
+    "waste-beaker",
+    "funnel"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "formal-analyte-stock",
+        "definitionId": "sample-bottle",
+        "label": "Configured formal-trial analyte",
+        "contents": {
+          "kind": "solution",
+          "label": "Configured formal-trial analyte; identity is supplied by the selected context model",
+          "volumeMl": 125,
+          "concentration": {
+            "value": 0.1,
+            "unit": "M"
+          },
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-solution"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "formal-titrant-stock",
+        "definitionId": "reagent-bottle",
+        "label": "Configured formal-trial titrant",
+        "contents": {
+          "kind": "solution",
+          "label": "Configured formal-trial titrant; identity is supplied by the selected context model",
+          "volumeMl": 250,
+          "concentration": {
+            "value": 0.1,
+            "unit": "M"
+          },
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-solution"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "formal-aliquot-cylinder",
+        "definitionId": "graduated-cylinder-25ml",
+        "label": "25 mL graduated cylinder for the configured 10-25 mL aliquot",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "formal-receiver",
+        "definitionId": "erlenmeyer-flask-250ml",
+        "label": "Indicator-free formal titration receiver",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "formal-burette",
+        "definitionId": "burette-50ml",
+        "label": "Formal-trial titrant burette",
+        "contents": {
+          "kind": "empty",
+          "label": "empty until conditioned and filled with selected configured titrant",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "formal-ring-stand",
+        "definitionId": "ring-stand-clamp",
+        "label": "Ring stand and burette clamp",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "formal-ph-meter",
+        "definitionId": "ph-meter",
+        "label": "pH meter and probe",
+        "contents": {
+          "kind": "empty",
+          "label": "requires teacher-specified calibration and rinse protocol",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "formal-rinse-water",
+        "definitionId": "wash-bottle",
+        "label": "Deionized-water wash bottle",
+        "contents": {
+          "kind": "liquid",
+          "label": "deionized water",
+          "volumeMl": 500,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "formal-waste",
+        "definitionId": "waste-beaker",
+        "label": "Teacher-directed titration waste receiver",
+        "contents": {
+          "kind": "empty",
+          "label": "use only under the teacher-provided disposal protocol",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "formal-funnel",
+        "definitionId": "funnel",
+        "label": "Burette filling funnel",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "formal-trial-place-ring-stand",
+      "verb": "place",
+      "label": "Set up the burette stand and clamp",
+      "atomId": "atom.place.burette-support",
+      "equipmentRoleBindings": {
+        "burette-support": "ring-stand-clamp"
+      },
+      "parameters": {
+        "equipmentDefinitionId": "ring-stand-clamp",
+        "sourceDefinitionId": "ring-stand-clamp",
+        "location": "workbench",
+        "sourceInstanceId": "formal-ring-stand",
+        "equipmentInstanceId": "formal-ring-stand",
+        "enforceInstanceIdentity": true
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "ring-stand-clamp",
+        "stationId": "workbench",
+        "successCue": "The stand is upright with the clamp positioned.",
+        "invalidCue": "Drag the ring stand and clamp onto the workbench before mounting the burette.",
+        "accessibleLabel": "Place the ring stand and burette clamp on the workbench."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Place the ring stand and clamp on the workbench."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        }
+      ],
+      "feedback": {
+        "success": "The stand is upright with the clamp positioned.",
+        "invalid": "Place the ring stand and clamp before mounting the burette."
+      },
+      "evidence": [
+        "place",
+        "titration-setup"
+      ]
+    },
+    {
+      "id": "formal-trial-mount-burette",
+      "verb": "place",
+      "label": "Mount the burette in the clamp",
+      "atomId": "atom.place.mount-burette",
+      "equipmentRoleBindings": {
+        "titrant-delivery-device": "burette-50ml",
+        "burette-support": "ring-stand-clamp"
+      },
+      "parameters": {
+        "equipmentDefinitionId": "burette-50ml",
+        "sourceDefinitionId": "burette-50ml",
+        "targetDefinitionId": "ring-stand-clamp",
+        "snapZoneId": "ring-stand-burette-clamp",
+        "sourceInstanceId": "formal-burette",
+        "targetInstanceId": "formal-ring-stand",
+        "equipmentInstanceId": "formal-burette",
+        "enforceInstanceIdentity": true
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "burette-50ml",
+        "targetDefinitionId": "ring-stand-clamp",
+        "snapZoneId": "ring-stand-burette-clamp",
+        "successCue": "The burette is clamped vertically with the stopcock reachable.",
+        "invalidCue": "Seat the burette in the ring-stand clamp before conditioning it.",
+        "accessibleLabel": "Mount the 50 mL burette in the ring stand clamp."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Clamp the burette to the ring stand."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "no-support",
+          "when": "no ring stand and clamp are on the workbench",
+          "message": "There is nothing to clamp the burette to.",
+          "recovery": "Place the ring stand and clamp first, then seat the burette in it."
+        }
+      ],
+      "feedback": {
+        "success": "The burette is clamped vertically with the stopcock reachable.",
+        "invalid": "Place the ring stand and clamp before mounting the burette."
+      },
+      "evidence": [
+        "place",
+        "titration-setup"
+      ]
+    },
+    {
+      "id": "formal-trial-condition-burette-drain-residual",
+      "verb": "transfer",
+      "label": "Drain any residual titrant to the approved waste receiver",
+      "atomId": "atom.transfer.burette-rinsate-to-waste",
+      "equipmentRoleBindings": {
+        "titrant-delivery-device": "burette-50ml",
+        "waste-receiver": "waste-beaker"
+      },
+      "parameters": {
+        "sourceInstanceId": "formal-burette",
+        "sourceDefinitionId": "burette-50ml",
+        "targetInstanceId": "formal-waste",
+        "targetDefinitionId": "waste-beaker",
+        "note": "Use only the approved waste route entered before this run.",
+        "allowEmptySource": true,
+        "enforceInstanceIdentity": true
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "burette-50ml",
+        "targetDefinitionId": "waste-beaker",
+        "successCue": "The flask is empty and ready for a fresh trial.",
+        "invalidCue": "Record this trial's evidence before discarding the mixture.",
+        "accessibleLabel": "Pour the titrated mixture into the designated waste container."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Empty the receiver into the designated waste container."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this trial.",
+          "recovery": "Follow the process map; every trial repeats the same ordered sequence."
+        },
+        {
+          "id": "premature-disposal",
+          "when": "the trial's evidence has not been recorded",
+          "message": "Discarding the mixture destroys evidence this trial still needs.",
+          "recovery": "Record the readings and the pH-volume evidence first."
+        }
+      ],
+      "feedback": {
+        "success": "The flask is empty and ready for a fresh trial.",
+        "invalid": "Record this trial's evidence before discarding the mixture."
+      },
+      "evidence": [
+        "transfer",
+        "disposal"
+      ]
+    },
+    {
+      "id": "formal-trial-condition-burette",
+      "verb": "rinse",
+      "label": "Condition the burette with titrant",
+      "atomId": "atom.rinse.condition-burette",
+      "equipmentRoleBindings": {
+        "titrant-source": "reagent-bottle",
+        "titrant-delivery-device": "burette-50ml",
+        "burette-filling-funnel": "funnel",
+        "waste-receiver": "waste-beaker"
+      },
+      "parameters": {
+        "sourceDefinitionId": "reagent-bottle",
+        "targetDefinitionId": "burette-50ml",
+        "rinseType": "condition",
+        "wasteDefinitionId": "waste-beaker",
+        "note": "Condition the empty burette directly through its open mouth with the approved titrant portion. Filling through the funnel is a later operation.",
+        "sourceInstanceId": "formal-titrant-stock",
+        "targetInstanceId": "formal-burette",
+        "volumeMl": "{{config.conditioningVolumeMl}}",
+        "collectRinseVolume": true,
+        "enforceInstanceIdentity": true
+      },
+      "interaction": {
+        "type": "rinseTarget",
+        "sourceDefinitionId": "reagent-bottle",
+        "targetDefinitionId": "burette-50ml",
+        "successCue": "The burette is conditioned with titrant and drained to waste.",
+        "invalidCue": "Seat the filling funnel, then rinse the mounted burette with titrant before filling it.",
+        "accessibleLabel": "Rinse the burette through the seated funnel with small portions of the configured titrant and discard them to the waste beaker."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Condition the burette through the seated funnel with titrant and drain the rinsings to waste."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "water-rinse",
+          "when": "the burette is rinsed with water instead of titrant",
+          "message": "Water left in the burette dilutes the titrant.",
+          "recovery": "Condition with the titrant itself; a water rinse is not a conditioning rinse."
+        },
+        {
+          "id": "missing-conditioning-funnel",
+          "when": "the funnel is not attached to burette-funnel-seat",
+          "message": "The filling funnel is not seated for the conditioning rinse.",
+          "recovery": "Seat the glass funnel in the mounted burette, then pass the conditioning portions through it."
+        }
+      ],
+      "feedback": {
+        "success": "The burette is conditioned with titrant and drained to waste.",
+        "invalid": "Mount the burette and seat the filling funnel before conditioning it."
+      },
+      "evidence": [
+        "rinse",
+        "titration-setup"
+      ]
+    },
+    {
+      "id": "formal-trial-condition-burette-discard-rinsate",
+      "verb": "transfer",
+      "label": "Transfer rinsate to the instructor-designated waste",
+      "atomId": "atom.transfer.burette-rinsate-to-waste",
+      "equipmentRoleBindings": {
+        "titrant-delivery-device": "burette-50ml",
+        "waste-receiver": "waste-beaker"
+      },
+      "parameters": {
+        "sourceInstanceId": "formal-burette",
+        "sourceDefinitionId": "burette-50ml",
+        "targetInstanceId": "formal-waste",
+        "targetDefinitionId": "waste-beaker",
+        "note": "Use only the approved waste route entered before this run.",
+        "enforceInstanceIdentity": true
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "burette-50ml",
+        "targetDefinitionId": "waste-beaker",
+        "successCue": "The flask is empty and ready for a fresh trial.",
+        "invalidCue": "Record this trial's evidence before discarding the mixture.",
+        "accessibleLabel": "Pour the titrated mixture into the designated waste container."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Empty the receiver into the designated waste container."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this trial.",
+          "recovery": "Follow the process map; every trial repeats the same ordered sequence."
+        },
+        {
+          "id": "premature-disposal",
+          "when": "the trial's evidence has not been recorded",
+          "message": "Discarding the mixture destroys evidence this trial still needs.",
+          "recovery": "Record the readings and the pH-volume evidence first."
+        }
+      ],
+      "feedback": {
+        "success": "The flask is empty and ready for a fresh trial.",
+        "invalid": "Record this trial's evidence before discarding the mixture."
+      },
+      "evidence": [
+        "transfer",
+        "disposal"
+      ]
+    },
+    {
+      "id": "formal-trial-seat-burette-funnel",
+      "verb": "place",
+      "label": "Seat the filling funnel in the burette",
+      "atomId": "atom.place.burette-filling-funnel",
+      "equipmentRoleBindings": {
+        "titrant-delivery-device": "burette-50ml",
+        "burette-filling-funnel": "funnel"
+      },
+      "parameters": {
+        "equipmentDefinitionId": "funnel",
+        "sourceDefinitionId": "funnel",
+        "targetDefinitionId": "burette-50ml",
+        "snapZoneId": "burette-funnel-seat",
+        "sourceInstanceId": "formal-funnel",
+        "targetInstanceId": "formal-burette",
+        "equipmentInstanceId": "formal-funnel",
+        "enforceInstanceIdentity": true
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "funnel",
+        "targetDefinitionId": "burette-50ml",
+        "snapZoneId": "burette-funnel-seat",
+        "successCue": "The filling funnel is seated upright in the burette opening.",
+        "invalidCue": "Seat the glass funnel in the top of the mounted burette before conditioning it.",
+        "accessibleLabel": "Place the glass filling funnel in the top of the mounted burette."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Seat the dry filling funnel upright in the burette opening."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Mount the burette, then place the funnel in its top opening before conditioning."
+        },
+        {
+          "id": "wrong-seat",
+          "when": "the funnel is not attached to burette-funnel-seat",
+          "message": "The funnel is not seated in the burette opening.",
+          "recovery": "Detach it from any other support and snap it into the highlighted burette opening."
+        }
+      ],
+      "feedback": {
+        "success": "The filling funnel is seated upright in the burette opening.",
+        "invalid": "Seat the filling funnel on the mounted burette before conditioning."
+      },
+      "evidence": [
+        "place",
+        "titration-setup"
+      ]
+    },
+    {
+      "id": "formal-trial-fill-burette",
+      "verb": "transfer",
+      "label": "Fill the conditioned burette",
+      "atomId": "atom.transfer.fill-burette",
+      "equipmentRoleBindings": {
+        "titrant-source": "reagent-bottle",
+        "titrant-delivery-device": "burette-50ml",
+        "burette-filling-funnel": "funnel"
+      },
+      "parameters": {
+        "sourceDefinitionId": "reagent-bottle",
+        "targetDefinitionId": "burette-50ml",
+        "requiredAttachmentState": "attached",
+        "attachmentParentDefinitionId": "burette-50ml",
+        "attachmentChildDefinitionId": "funnel",
+        "attachmentSnapZoneId": "burette-funnel-seat",
+        "tipAirRemovalIsTeacherConfigured": true,
+        "sourceInstanceId": "formal-titrant-stock",
+        "targetInstanceId": "formal-burette",
+        "enforceInstanceIdentity": true
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "reagent-bottle",
+        "targetDefinitionId": "burette-50ml",
+        "valueParameter": "volumeMl",
+        "successCue": "Fill the burette with the approved titrant: completed.",
+        "invalidCue": "Seat the filling funnel on the conditioned burette before pouring the configured titrant.",
+        "accessibleLabel": "Pour the configured titrant through the seated funnel into the conditioned burette."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Titrant transferred into the burette; tip purge and inspection remain separate."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "fill-before-conditioning",
+          "when": "the burette has not been conditioned",
+          "message": "The burette still holds rinse water.",
+          "recovery": "Condition the burette with the titrant first, then fill it."
+        },
+        {
+          "id": "missing-filling-funnel",
+          "when": "the funnel is not attached to burette-funnel-seat",
+          "message": "The configured titrant cannot be poured into the narrow burette opening without the filling funnel.",
+          "recovery": "Seat the glass funnel in the top of the mounted burette, then pour the configured titrant through it."
+        }
+      ],
+      "feedback": {
+        "success": "Fill the burette with the approved titrant: completed.",
+        "invalid": "Follow the approved method and resolve missing evidence before continuing."
+      },
+      "evidence": [
+        "transfer",
+        "titration-setup"
+      ],
+      "volume": {
+        "source": "target-remaining-capacity"
+      }
+    },
+    {
+      "id": "formal-trial-fill-burette-purge-tip",
+      "verb": "transfer",
+      "label": "Clear the burette tip to the approved waste receiver",
+      "atomId": "atom.transfer.burette-rinsate-to-waste",
+      "equipmentRoleBindings": {
+        "titrant-delivery-device": "burette-50ml",
+        "waste-receiver": "waste-beaker"
+      },
+      "parameters": {
+        "sourceInstanceId": "formal-burette",
+        "sourceDefinitionId": "burette-50ml",
+        "targetInstanceId": "formal-waste",
+        "targetDefinitionId": "waste-beaker",
+        "volumeMl": "{{config.tipPurgeMl}}",
+        "note": "Use only the approved waste route entered before this run.",
+        "enforceInstanceIdentity": true
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "burette-50ml",
+        "targetDefinitionId": "waste-beaker",
+        "successCue": "The flask is empty and ready for a fresh trial.",
+        "invalidCue": "Record this trial's evidence before discarding the mixture.",
+        "accessibleLabel": "Pour the titrated mixture into the designated waste container."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Empty the receiver into the designated waste container."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this trial.",
+          "recovery": "Follow the process map; every trial repeats the same ordered sequence."
+        },
+        {
+          "id": "premature-disposal",
+          "when": "the trial's evidence has not been recorded",
+          "message": "Discarding the mixture destroys evidence this trial still needs.",
+          "recovery": "Record the readings and the pH-volume evidence first."
+        }
+      ],
+      "feedback": {
+        "success": "The flask is empty and ready for a fresh trial.",
+        "invalid": "Record this trial's evidence before discarding the mixture."
+      },
+      "evidence": [
+        "transfer",
+        "disposal"
+      ]
+    },
+    {
+      "id": "formal-trial-fill-burette-check-tip",
+      "verb": "observe",
+      "label": "Inspect the burette tip for air bubbles",
+      "parameters": {
+        "note": "Inspect the liquid-filled tip after the separate purge. If bubbles remain, do not proceed; repeat the approved purge preparation. This observation is independent of filling.",
+        "tag": "formal-trial-fill-burette-check-tip",
+        "inputMode": "choice",
+        "inputRole": "studentResponse",
+        "inputRequired": true,
+        "inputLabel": "Inspect the burette tip for air bubbles",
+        "inputOptions": [
+          "No visible air bubbles",
+          "Bubbles remain: purge again"
+        ],
+        "enforceInstanceIdentity": true,
+        "sourceDefinitionId": "burette-50ml",
+        "sourceInstanceId": "formal-burette",
+        "repeatPurgeNodeId": "formal-trial-fill-burette-purge-tip-node",
+        "tipInspectionOperation": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "successCue": "Inspect the burette tip for air bubbles",
+        "invalidCue": "Resolve this operation before continuing.",
+        "accessibleLabel": "Inspect the burette tip for air bubbles"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Inspect the burette tip for air bubbles"
+      ],
+      "invalidCases": [
+        {
+          "id": "formal-trial-fill-burette-check-tip-invalid",
+          "when": "Missing current equipment, approval, or evidence",
+          "message": "This operation is not ready.",
+          "recovery": "Complete the approved prerequisite operation."
+        }
+      ],
+      "feedback": {
+        "success": "Inspect the burette tip for air bubbles: completed.",
+        "invalid": "Follow the approved method and resolve missing evidence before continuing."
+      },
+      "evidence": [
+        "formal-trial-fill-burette-check-tip"
+      ],
+      "atomId": "atom.observe.burette-tip-inspection",
+      "equipmentRoleBindings": {
+        "titrant-delivery-device": "burette-50ml"
+      }
+    },
+    {
+      "id": "formal-trial-remove-burette-funnel",
+      "verb": "place",
+      "label": "Remove the filling funnel",
+      "atomId": "atom.place.remove-burette-filling-funnel",
+      "equipmentRoleBindings": {
+        "titrant-delivery-device": "burette-50ml",
+        "burette-filling-funnel": "funnel"
+      },
+      "parameters": {
+        "equipmentDefinitionId": "funnel",
+        "sourceDefinitionId": "funnel",
+        "location": "workbench",
+        "requiredAttachmentState": "attached",
+        "attachmentParentDefinitionId": "burette-50ml",
+        "attachmentChildDefinitionId": "funnel",
+        "attachmentSnapZoneId": "burette-funnel-seat",
+        "sourceInstanceId": "formal-funnel",
+        "equipmentInstanceId": "formal-funnel",
+        "enforceInstanceIdentity": true
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "funnel",
+        "stationId": "workbench",
+        "successCue": "The filling funnel is removed and placed on the workbench.",
+        "invalidCue": "Remove the funnel from the burette and place it on the workbench before reading the meniscus.",
+        "accessibleLabel": "Remove the filling funnel from the burette and place it on the workbench."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Detach the filling funnel from the burette and place it on the workbench."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Fill the burette through the funnel before removing it."
+        },
+        {
+          "id": "funnel-not-seated",
+          "when": "the funnel is not attached to the burette",
+          "message": "The filling funnel is not on the burette.",
+          "recovery": "Return to the funnel-placement step if the burette has not yet been filled."
+        }
+      ],
+      "feedback": {
+        "success": "The filling funnel is removed and placed on the workbench.",
+        "invalid": "Remove the filling funnel only after the burette has been filled."
+      },
+      "evidence": [
+        "place",
+        "titration-setup"
+      ]
+    },
+    {
+      "id": "formal-trial-read-initial-burette",
+      "verb": "observe",
+      "label": "Read the initial burette level",
+      "atomId": "atom.observe.titration-read-initial",
+      "equipmentRoleBindings": {
+        "titrant-delivery-device": "burette-50ml",
+        "analyte-receiver": "erlenmeyer-flask-250ml"
+      },
+      "parameters": {
+        "sourceDefinitionId": "burette-50ml",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "trialReferenceId": "formal-trial-deliver-titrant",
+        "buretteInstanceId": "formal-burette",
+        "receiverInstanceId": "formal-receiver",
+        "titrationModelId": "formal-strong-acid-strong-base-model",
+        "aliquotMeasurementId": "formal-trial-analyte-aliquot-volume",
+        "initialMeasurementId": "formal-trial-burette-initial-volume",
+        "finalMeasurementId": "formal-trial-burette-final-volume",
+        "maximumIncrementMl": "{{config.maximumIncrementMl}}",
+        "maximumDeliveryMl": "{{config.maximumDeliveryMl}}",
+        "requirePh": true,
+        "meterInstanceId": "formal-ph-meter",
+        "readinessNotebookTag": "ph-meter-ready",
+        "titrationOperation": "read-initial",
+        "measurementId": "formal-trial-burette-initial-volume",
+        "wasteProtocol": "{{config.wasteProtocol}}",
+        "enforceInstanceIdentity": true,
+        "sourceInstanceId": "formal-burette",
+        "targetInstanceId": "formal-receiver",
+        "endpointEvidenceMode": "recorded-ph-curve-stability",
+        "formalContextId": "{{config.contextId}}",
+        "formalContextModelId": "{{config.formalContextModelId}}",
+        "indicatorPolicy": "{{config.indicatorPolicy}}",
+        "minimumAliquotMl": 10,
+        "maximumAliquotMl": 25,
+        "minimumIncrementMl": 0.1,
+        "stabilityDeltaPh": "{{config.stabilityDeltaPh}}",
+        "stabilityConsecutiveReadings": "{{config.stabilityConsecutiveReadings}}",
+        "minimumPostSteepRegionMl": "{{config.minimumPostSteepRegionMl}}"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "successCue": "Read the initial burette level",
+        "invalidCue": "Resolve this operation before continuing.",
+        "accessibleLabel": "Read the initial burette level"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Read the initial burette level"
+      ],
+      "invalidCases": [
+        {
+          "id": "formal-trial-read-initial-burette-invalid",
+          "when": "Missing current equipment, approval, or evidence",
+          "message": "This operation is not ready.",
+          "recovery": "Complete the approved prerequisite operation."
+        }
+      ],
+      "feedback": {
+        "success": "Read the initial burette level: completed.",
+        "invalid": "Follow the approved method and resolve missing evidence before continuing."
+      },
+      "evidence": [
+        "formal-trial-read-initial-burette"
+      ]
+    },
+    {
+      "id": "formal-trial-record-initial-burette",
+      "verb": "record",
+      "label": "Record the initial burette reading",
+      "parameters": {
+        "sourceDefinitionId": "burette-50ml",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "trialReferenceId": "formal-trial-deliver-titrant",
+        "buretteInstanceId": "formal-burette",
+        "receiverInstanceId": "formal-receiver",
+        "titrationModelId": "formal-strong-acid-strong-base-model",
+        "aliquotMeasurementId": "formal-trial-analyte-aliquot-volume",
+        "initialMeasurementId": "formal-trial-burette-initial-volume",
+        "finalMeasurementId": "formal-trial-burette-final-volume",
+        "maximumIncrementMl": "{{config.maximumIncrementMl}}",
+        "maximumDeliveryMl": "{{config.maximumDeliveryMl}}",
+        "requirePh": true,
+        "meterInstanceId": "formal-ph-meter",
+        "readinessNotebookTag": "ph-meter-ready",
+        "titrationOperation": "record-initial",
+        "measurementId": "formal-trial-burette-initial-volume",
+        "wasteProtocol": "{{config.wasteProtocol}}",
+        "enforceInstanceIdentity": true,
+        "sourceInstanceId": "formal-burette",
+        "targetInstanceId": "formal-receiver",
+        "endpointEvidenceMode": "recorded-ph-curve-stability",
+        "formalContextId": "{{config.contextId}}",
+        "formalContextModelId": "{{config.formalContextModelId}}",
+        "indicatorPolicy": "{{config.indicatorPolicy}}",
+        "minimumAliquotMl": 10,
+        "maximumAliquotMl": 25,
+        "minimumIncrementMl": 0.1,
+        "stabilityDeltaPh": "{{config.stabilityDeltaPh}}",
+        "stabilityConsecutiveReadings": "{{config.stabilityConsecutiveReadings}}",
+        "minimumPostSteepRegionMl": "{{config.minimumPostSteepRegionMl}}"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "successCue": "Record the initial burette reading",
+        "invalidCue": "Resolve this operation before continuing.",
+        "accessibleLabel": "Record the initial burette reading"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record the initial burette reading"
+      ],
+      "invalidCases": [
+        {
+          "id": "formal-trial-record-initial-burette-invalid",
+          "when": "Missing current equipment, approval, or evidence",
+          "message": "This operation is not ready.",
+          "recovery": "Complete the approved prerequisite operation."
+        }
+      ],
+      "feedback": {
+        "success": "Record the initial burette reading: completed.",
+        "invalid": "Follow the approved method and resolve missing evidence before continuing."
+      },
+      "evidence": [
+        "formal-trial-record-initial-burette"
+      ],
+      "atomId": "atom.record.titration-record-initial",
+      "equipmentRoleBindings": {
+        "titrant-delivery-device": "burette-50ml",
+        "analyte-receiver": "erlenmeyer-flask-250ml"
+      }
+    },
+    {
+      "id": "formal-trial-measure-analyte",
+      "verb": "measureVolume",
+      "label": "Measure the configured formal-trial analyte aliquot",
+      "atomId": "atom.measure.variable-volume",
+      "equipmentRoleBindings": {
+        "liquid-source": "sample-bottle",
+        "variable-volume-measuring-device": "graduated-cylinder-25ml"
+      },
+      "parameters": {
+        "sourceDefinitionId": "sample-bottle",
+        "targetDefinitionId": "graduated-cylinder-25ml",
+        "measurementId": "formal-trial-analyte-aliquot-volume",
+        "volumeMl": "{{config.aliquotMl}}",
+        "tolerance": 0.2,
+        "sourceInstanceId": "formal-analyte-stock",
+        "targetInstanceId": "formal-aliquot-cylinder",
+        "enforceInstanceIdentity": true
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "sample-bottle",
+        "targetDefinitionId": "graduated-cylinder-25ml",
+        "valueParameter": "volumeMl",
+        "successCue": "Analyte aliquot measured.",
+        "invalidCue": "Pour the configured analyte into the graduated cylinder for this step.",
+        "accessibleLabel": "Measure the analyte aliquot into the graduated cylinder and read the graduation."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Measure the analyte aliquot into the graduated cylinder."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the configured analyte this step measures.",
+          "recovery": "Select the configured-analyte bottle as the source."
+        }
+      ],
+      "feedback": {
+        "success": "Analyte aliquot measured.",
+        "invalid": "Measure the analyte aliquot before continuing."
+      },
+      "evidence": [
+        "measureVolume",
+        "measurement"
+      ]
+    },
+    {
+      "id": "formal-trial-transfer-analyte-to-receiver",
+      "verb": "transfer",
+      "label": "Transfer the measured analyte aliquot to the trial receiver",
+      "atomId": "atom.transfer.measured-liquid",
+      "equipmentRoleBindings": {
+        "measured-solvent-source": "graduated-cylinder-25ml",
+        "receiving-vessel": "erlenmeyer-flask-250ml"
+      },
+      "parameters": {
+        "sourceDefinitionId": "graduated-cylinder-25ml",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "volumeMl": "{{config.aliquotMl}}",
+        "sourceInstanceId": "formal-aliquot-cylinder",
+        "targetInstanceId": "formal-receiver",
+        "enforceInstanceIdentity": true
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "graduated-cylinder-25ml",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "valueParameter": "volumeMl",
+        "successCue": "The measured analyte is in the Erlenmeyer flask.",
+        "invalidCue": "Transfer the measured analyte aliquot into the Erlenmeyer flask.",
+        "accessibleLabel": "Pour the measured analyte from the graduated cylinder into the Erlenmeyer flask."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Move the measured analyte into the receiving flask."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The receiving flask cannot hold that volume.",
+          "recovery": "Use a larger receiver or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The measured analyte is in the Erlenmeyer flask.",
+        "invalid": "Measure the analyte aliquot before transferring it."
+      },
+      "evidence": [
+        "transfer"
+      ]
+    },
+    {
+      "id": "formal-trial-position-flask-under-burette",
+      "verb": "place",
+      "label": "Place the receiving flask under the burette",
+      "atomId": "atom.place.titration-receiver",
+      "equipmentRoleBindings": {
+        "analyte-receiver": "erlenmeyer-flask-250ml",
+        "burette-support": "ring-stand-clamp"
+      },
+      "parameters": {
+        "equipmentDefinitionId": "erlenmeyer-flask-250ml",
+        "sourceDefinitionId": "erlenmeyer-flask-250ml",
+        "targetDefinitionId": "ring-stand-clamp",
+        "snapZoneId": "ring-stand-burette-receiver",
+        "sourceInstanceId": "formal-receiver",
+        "targetInstanceId": "formal-ring-stand",
+        "equipmentInstanceId": "formal-receiver",
+        "enforceInstanceIdentity": true
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "erlenmeyer-flask-250ml",
+        "targetDefinitionId": "ring-stand-clamp",
+        "snapZoneId": "ring-stand-burette-receiver",
+        "successCue": "The flask is positioned beneath the burette tip.",
+        "invalidCue": "Place the receiving flask under the burette tip before titrating.",
+        "accessibleLabel": "Place the Erlenmeyer flask beneath the mounted burette tip."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Seat the flask beneath the burette tip so each titrant increment enters the analyte."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Position the prepared indicator-free receiver beneath the burette."
+        },
+        {
+          "id": "wrong-target",
+          "when": "the flask is not aligned with the mounted-burette receiver position",
+          "message": "The flask must sit beneath the mounted burette tip.",
+          "recovery": "Snap the Erlenmeyer flask into the highlighted receiving position on the ring stand."
+        }
+      ],
+      "feedback": {
+        "success": "The flask is positioned beneath the burette tip.",
+        "invalid": "Place the receiving flask under the burette tip before titrating."
+      },
+      "evidence": [
+        "place",
+        "titration-receiver"
+      ]
+    },
+    {
+      "id": "formal-trial-probe-ready",
+      "verb": "observe",
+      "label": "Confirm pH meter readiness",
+      "parameters": {
+        "note": "Confirm the configured probe calibration, rinse, immersion, and reading-stability rules before the indicator-free formal trial.",
+        "tag": "ph-meter-ready",
+        "inputMode": "choice",
+        "inputRole": "teacherConfiguration",
+        "inputRequired": true,
+        "inputLabel": "Confirm indicator-free formal-trial pH meter readiness",
+        "inputOptions": [
+          "Teacher approved"
+        ],
+        "configurationRequired": true,
+        "unlocked": false,
+        "enforceInstanceIdentity": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "successCue": "Confirm pH meter readiness",
+        "invalidCue": "Resolve this operation before continuing.",
+        "accessibleLabel": "Confirm pH meter readiness"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Confirm pH meter readiness"
+      ],
+      "invalidCases": [
+        {
+          "id": "formal-trial-probe-ready-invalid",
+          "when": "Missing current equipment, approval, or evidence",
+          "message": "This operation is not ready.",
+          "recovery": "Complete the approved prerequisite operation."
+        }
+      ],
+      "feedback": {
+        "success": "Confirm pH meter readiness: completed.",
+        "invalid": "Follow the approved method and resolve missing evidence before continuing."
+      },
+      "evidence": [
+        "formal-trial-probe-ready"
+      ]
+    },
+    {
+      "id": "formal-trial-place-ph-meter-on-workbench",
+      "verb": "place",
+      "label": "Place the pH meter on the workbench",
+      "atomId": "atom.place.probe-instrument",
+      "equipmentRoleBindings": {
+        "immersed-probe-instrument": "ph-meter"
+      },
+      "parameters": {
+        "equipmentDefinitionId": "ph-meter",
+        "equipmentInstanceId": "formal-ph-meter",
+        "location": "workbench",
+        "x": 36,
+        "y": 338,
+        "zIndex": 2,
+        "sourceInstanceId": "formal-ph-meter",
+        "trialReferenceId": "formal-trial-deliver-titrant",
+        "enforceInstanceIdentity": true
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "ph-meter",
+        "stationId": "workbench",
+        "successCue": "The pH meter is stable on the workbench.",
+        "invalidCue": "Place the meter body on the workbench before handling its probe.",
+        "accessibleLabel": "Place the pH meter on the workbench."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Move the pH meter from the equipment shelf to a stable workbench position."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "The pH meter is ready on the workbench.",
+        "invalid": "Place the pH meter on the workbench before preparing or immersing its probe."
+      },
+      "evidence": [
+        "place"
+      ]
+    },
+    {
+      "id": "formal-trial-immerse-endpoint-ph-probe",
+      "verb": "place",
+      "label": "Immerse probe",
+      "atomId": "atom.place.immersed-ph-probe",
+      "equipmentRoleBindings": {
+        "immersed-probe-instrument": "ph-meter",
+        "immersed-probe-vessel": "erlenmeyer-flask-250ml"
+      },
+      "parameters": {
+        "equipmentDefinitionId": "ph-meter",
+        "sourceDefinitionId": "ph-meter",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "snapZoneId": "erlenmeyer-ph-probe-zone",
+        "phProbeOperation": "immerse",
+        "meterReadinessNotebookTag": "ph-meter-ready",
+        "equipmentInstanceId": "formal-ph-meter",
+        "sourceInstanceId": "formal-ph-meter",
+        "targetInstanceId": "formal-receiver",
+        "trialReferenceId": "formal-trial-deliver-titrant",
+        "enforceInstanceIdentity": true
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "ph-meter",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "snapZoneId": "erlenmeyer-ph-probe-zone",
+        "successCue": "Probe immersed while the meter remains on the bench.",
+        "invalidCue": "Use the probe handle and the flask probe zone; do not move the meter body over the flask.",
+        "accessibleLabel": "Select the pH meter, select the titration flask, then confirm Immerse probe."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Immerse only the probe in the endpoint mixture; leave the meter body on the workbench."
+      ],
+      "invalidCases": [
+        {
+          "id": "empty-probe-vessel",
+          "when": "the selected flask is empty",
+          "message": "The probe bulb is not immersed in a titration mixture.",
+          "recovery": "Use the flask containing the accepted endpoint mixture."
+        }
+      ],
+      "feedback": {
+        "success": "The probe is immersed in the endpoint mixture.",
+        "invalid": "Immerse the probe in the accepted endpoint mixture."
+      },
+      "evidence": [
+        "place",
+        "probe"
+      ]
+    },
+    {
+      "id": "formal-trial-inspect-prepared-analyte",
+      "verb": "observe",
+      "label": "Observe the prepared analyte without indicator",
+      "parameters": {
+        "sourceDefinitionId": "erlenmeyer-flask-250ml",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "trialReferenceId": "formal-trial-deliver-titrant",
+        "buretteInstanceId": "formal-burette",
+        "receiverInstanceId": "formal-receiver",
+        "titrationModelId": "formal-strong-acid-strong-base-model",
+        "aliquotMeasurementId": "formal-trial-analyte-aliquot-volume",
+        "initialMeasurementId": "formal-trial-burette-initial-volume",
+        "finalMeasurementId": "formal-trial-burette-final-volume",
+        "maximumIncrementMl": "{{config.maximumIncrementMl}}",
+        "maximumDeliveryMl": "{{config.maximumDeliveryMl}}",
+        "requirePh": true,
+        "meterInstanceId": "formal-ph-meter",
+        "readinessNotebookTag": "ph-meter-ready",
+        "titrationOperation": "observe",
+        "wasteProtocol": "{{config.wasteProtocol}}",
+        "enforceInstanceIdentity": true,
+        "sourceInstanceId": "formal-receiver",
+        "targetInstanceId": "formal-receiver",
+        "endpointEvidenceMode": "recorded-ph-curve-stability",
+        "formalContextId": "{{config.contextId}}",
+        "formalContextModelId": "{{config.formalContextModelId}}",
+        "indicatorPolicy": "{{config.indicatorPolicy}}",
+        "minimumAliquotMl": 10,
+        "maximumAliquotMl": 25,
+        "minimumIncrementMl": 0.1,
+        "stabilityDeltaPh": "{{config.stabilityDeltaPh}}",
+        "stabilityConsecutiveReadings": "{{config.stabilityConsecutiveReadings}}",
+        "minimumPostSteepRegionMl": "{{config.minimumPostSteepRegionMl}}"
+      },
+      "atomId": "atom.observe.titration-observe",
+      "equipmentRoleBindings": {
+        "analyte-receiver": "erlenmeyer-flask-250ml"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "successCue": "Observe the mixed solution",
+        "invalidCue": "Resolve this operation before continuing.",
+        "accessibleLabel": "Observe the mixed solution"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Observe the mixed solution"
+      ],
+      "invalidCases": [
+        {
+          "id": "formal-trial-deliver-titrant-observe-invalid",
+          "when": "Missing current equipment, approval, or evidence",
+          "message": "This operation is not ready.",
+          "recovery": "Complete the approved prerequisite operation."
+        }
+      ],
+      "feedback": {
+        "success": "Observe the mixed solution: completed.",
+        "invalid": "Follow the approved method and resolve missing evidence before continuing."
+      },
+      "evidence": [
+        "formal-trial-deliver-titrant-observe"
+      ]
+    },
+    {
+      "id": "formal-trial-initial-ph",
+      "verb": "observe",
+      "label": "Read initial pH at zero titrant addition",
+      "parameters": {
+        "sourceDefinitionId": "ph-meter",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "trialReferenceId": "formal-trial-deliver-titrant",
+        "buretteInstanceId": "formal-burette",
+        "receiverInstanceId": "formal-receiver",
+        "titrationModelId": "formal-strong-acid-strong-base-model",
+        "aliquotMeasurementId": "formal-trial-analyte-aliquot-volume",
+        "initialMeasurementId": "formal-trial-burette-initial-volume",
+        "finalMeasurementId": "formal-trial-burette-final-volume",
+        "maximumIncrementMl": "{{config.maximumIncrementMl}}",
+        "maximumDeliveryMl": "{{config.maximumDeliveryMl}}",
+        "requirePh": true,
+        "meterInstanceId": "formal-ph-meter",
+        "readinessNotebookTag": "ph-meter-ready",
+        "titrationOperation": "read-ph",
+        "measurementId": "formal-trial-deliver-titrant-ph",
+        "wasteProtocol": "{{config.wasteProtocol}}",
+        "enforceInstanceIdentity": true,
+        "sourceInstanceId": "formal-ph-meter",
+        "targetInstanceId": "formal-receiver",
+        "endpointEvidenceMode": "recorded-ph-curve-stability",
+        "formalContextId": "{{config.contextId}}",
+        "formalContextModelId": "{{config.formalContextModelId}}",
+        "indicatorPolicy": "{{config.indicatorPolicy}}",
+        "minimumAliquotMl": 10,
+        "maximumAliquotMl": 25,
+        "minimumIncrementMl": 0.1,
+        "stabilityDeltaPh": "{{config.stabilityDeltaPh}}",
+        "stabilityConsecutiveReadings": "{{config.stabilityConsecutiveReadings}}",
+        "minimumPostSteepRegionMl": "{{config.minimumPostSteepRegionMl}}"
+      },
+      "atomId": "atom.observe.titration-read-ph",
+      "equipmentRoleBindings": {
+        "immersed-probe-instrument": "ph-meter",
+        "immersed-probe-vessel": "erlenmeyer-flask-250ml"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "successCue": "Read the pH of this mixed addition",
+        "invalidCue": "Resolve this operation before continuing.",
+        "accessibleLabel": "Read the pH of this mixed addition"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Read the pH of this mixed addition"
+      ],
+      "invalidCases": [
+        {
+          "id": "formal-trial-deliver-titrant-read-ph-invalid",
+          "when": "Missing current equipment, approval, or evidence",
+          "message": "This operation is not ready.",
+          "recovery": "Complete the approved prerequisite operation."
+        }
+      ],
+      "feedback": {
+        "success": "Read the pH of this mixed addition: completed.",
+        "invalid": "Follow the approved method and resolve missing evidence before continuing."
+      },
+      "evidence": [
+        "formal-trial-deliver-titrant-read-ph"
+      ]
+    },
+    {
+      "id": "formal-trial-initial-row",
+      "verb": "record",
+      "label": "Record the initial pH-volume row",
+      "parameters": {
+        "sourceDefinitionId": "burette-50ml",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "trialReferenceId": "formal-trial-deliver-titrant",
+        "buretteInstanceId": "formal-burette",
+        "receiverInstanceId": "formal-receiver",
+        "titrationModelId": "formal-strong-acid-strong-base-model",
+        "aliquotMeasurementId": "formal-trial-analyte-aliquot-volume",
+        "initialMeasurementId": "formal-trial-burette-initial-volume",
+        "finalMeasurementId": "formal-trial-burette-final-volume",
+        "maximumIncrementMl": "{{config.maximumIncrementMl}}",
+        "maximumDeliveryMl": "{{config.maximumDeliveryMl}}",
+        "requirePh": true,
+        "meterInstanceId": "formal-ph-meter",
+        "readinessNotebookTag": "ph-meter-ready",
+        "titrationOperation": "record-point",
+        "wasteProtocol": "{{config.wasteProtocol}}",
+        "enforceInstanceIdentity": true,
+        "sourceInstanceId": "formal-burette",
+        "targetInstanceId": "formal-receiver",
+        "endpointEvidenceMode": "recorded-ph-curve-stability",
+        "formalContextId": "{{config.contextId}}",
+        "formalContextModelId": "{{config.formalContextModelId}}",
+        "indicatorPolicy": "{{config.indicatorPolicy}}",
+        "minimumAliquotMl": 10,
+        "maximumAliquotMl": 25,
+        "minimumIncrementMl": 0.1,
+        "stabilityDeltaPh": "{{config.stabilityDeltaPh}}",
+        "stabilityConsecutiveReadings": "{{config.stabilityConsecutiveReadings}}",
+        "minimumPostSteepRegionMl": "{{config.minimumPostSteepRegionMl}}"
+      },
+      "atomId": "atom.record.titration-record-point",
+      "equipmentRoleBindings": {
+        "titrant-delivery-device": "burette-50ml",
+        "analyte-receiver": "erlenmeyer-flask-250ml"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "successCue": "Record this addition and observation",
+        "invalidCue": "Resolve this operation before continuing.",
+        "accessibleLabel": "Record this addition and observation"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record this addition and observation"
+      ],
+      "invalidCases": [
+        {
+          "id": "formal-trial-deliver-titrant-record-point-invalid",
+          "when": "Missing current equipment, approval, or evidence",
+          "message": "This operation is not ready.",
+          "recovery": "Complete the approved prerequisite operation."
+        }
+      ],
+      "feedback": {
+        "success": "Record this addition and observation: completed.",
+        "invalid": "Follow the approved method and resolve missing evidence before continuing."
+      },
+      "evidence": [
+        "formal-trial-deliver-titrant-record-point"
+      ]
+    },
+    {
+      "id": "formal-trial-deliver-titrant",
+      "verb": "transfer",
+      "label": "Deliver one student-selected titrant increment",
+      "parameters": {
+        "sourceDefinitionId": "burette-50ml",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "trialReferenceId": "formal-trial-deliver-titrant",
+        "buretteInstanceId": "formal-burette",
+        "receiverInstanceId": "formal-receiver",
+        "titrationModelId": "formal-strong-acid-strong-base-model",
+        "aliquotMeasurementId": "formal-trial-analyte-aliquot-volume",
+        "initialMeasurementId": "formal-trial-burette-initial-volume",
+        "finalMeasurementId": "formal-trial-burette-final-volume",
+        "maximumIncrementMl": "{{config.maximumIncrementMl}}",
+        "maximumDeliveryMl": "{{config.maximumDeliveryMl}}",
+        "requirePh": true,
+        "meterInstanceId": "formal-ph-meter",
+        "readinessNotebookTag": "ph-meter-ready",
+        "titrationOperation": "deliver",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "inputMax": "{{config.maximumIncrementMl}}",
+        "inputStep": 0.01,
+        "inputLabel": "Addition in mL (smaller drops near endpoint)",
+        "wasteProtocol": "{{config.wasteProtocol}}",
+        "enforceInstanceIdentity": true,
+        "sourceInstanceId": "formal-burette",
+        "targetInstanceId": "formal-receiver",
+        "endpointEvidenceMode": "recorded-ph-curve-stability",
+        "formalContextId": "{{config.contextId}}",
+        "formalContextModelId": "{{config.formalContextModelId}}",
+        "indicatorPolicy": "{{config.indicatorPolicy}}",
+        "minimumAliquotMl": 10,
+        "maximumAliquotMl": 25,
+        "minimumIncrementMl": 0.1,
+        "stabilityDeltaPh": "{{config.stabilityDeltaPh}}",
+        "stabilityConsecutiveReadings": "{{config.stabilityConsecutiveReadings}}",
+        "minimumPostSteepRegionMl": "{{config.minimumPostSteepRegionMl}}"
+      },
+      "atomId": "atom.transfer.titration-deliver",
+      "equipmentRoleBindings": {
+        "titrant-delivery-device": "burette-50ml",
+        "analyte-receiver": "erlenmeyer-flask-250ml"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "successCue": "Deliver one student-selected titrant increment",
+        "invalidCue": "Resolve this operation before continuing.",
+        "accessibleLabel": "Deliver one student-selected titrant increment"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Deliver one student-selected titrant increment"
+      ],
+      "invalidCases": [
+        {
+          "id": "formal-trial-deliver-titrant-invalid",
+          "when": "Missing current equipment, approval, or evidence",
+          "message": "This operation is not ready.",
+          "recovery": "Complete the approved prerequisite operation."
+        }
+      ],
+      "feedback": {
+        "success": "Deliver one student-selected titrant increment: completed.",
+        "invalid": "Follow the approved method and resolve missing evidence before continuing."
+      },
+      "evidence": [
+        "formal-trial-deliver-titrant"
+      ]
+    },
+    {
+      "id": "formal-trial-deliver-titrant-mix",
+      "verb": "mix",
+      "label": "Swirl the receiving vessel to mix the current addition",
+      "parameters": {
+        "sourceDefinitionId": "erlenmeyer-flask-250ml",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "trialReferenceId": "formal-trial-deliver-titrant",
+        "buretteInstanceId": "formal-burette",
+        "receiverInstanceId": "formal-receiver",
+        "titrationModelId": "formal-strong-acid-strong-base-model",
+        "aliquotMeasurementId": "formal-trial-analyte-aliquot-volume",
+        "initialMeasurementId": "formal-trial-burette-initial-volume",
+        "finalMeasurementId": "formal-trial-burette-final-volume",
+        "maximumIncrementMl": "{{config.maximumIncrementMl}}",
+        "maximumDeliveryMl": "{{config.maximumDeliveryMl}}",
+        "requirePh": true,
+        "meterInstanceId": "formal-ph-meter",
+        "readinessNotebookTag": "ph-meter-ready",
+        "titrationOperation": "mix",
+        "wasteProtocol": "{{config.wasteProtocol}}",
+        "enforceInstanceIdentity": true,
+        "sourceInstanceId": "formal-receiver",
+        "targetInstanceId": "formal-receiver",
+        "endpointEvidenceMode": "recorded-ph-curve-stability",
+        "formalContextId": "{{config.contextId}}",
+        "formalContextModelId": "{{config.formalContextModelId}}",
+        "indicatorPolicy": "{{config.indicatorPolicy}}",
+        "minimumAliquotMl": 10,
+        "maximumAliquotMl": 25,
+        "minimumIncrementMl": 0.1,
+        "stabilityDeltaPh": "{{config.stabilityDeltaPh}}",
+        "stabilityConsecutiveReadings": "{{config.stabilityConsecutiveReadings}}",
+        "minimumPostSteepRegionMl": "{{config.minimumPostSteepRegionMl}}"
+      },
+      "atomId": "atom.mix.titration-mix",
+      "equipmentRoleBindings": {
+        "analyte-receiver": "erlenmeyer-flask-250ml"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "successCue": "Mix the current addition",
+        "invalidCue": "Resolve this operation before continuing.",
+        "accessibleLabel": "Mix the current addition"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Mix the current addition"
+      ],
+      "invalidCases": [
+        {
+          "id": "formal-trial-deliver-titrant-mix-invalid",
+          "when": "Missing current equipment, approval, or evidence",
+          "message": "This operation is not ready.",
+          "recovery": "Complete the approved prerequisite operation."
+        }
+      ],
+      "feedback": {
+        "success": "Mix the current addition: completed.",
+        "invalid": "Follow the approved method and resolve missing evidence before continuing."
+      },
+      "evidence": [
+        "formal-trial-deliver-titrant-mix"
+      ]
+    },
+    {
+      "id": "formal-trial-deliver-titrant-observe",
+      "verb": "observe",
+      "label": "Observe the mixed solution without indicator",
+      "parameters": {
+        "sourceDefinitionId": "erlenmeyer-flask-250ml",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "trialReferenceId": "formal-trial-deliver-titrant",
+        "buretteInstanceId": "formal-burette",
+        "receiverInstanceId": "formal-receiver",
+        "titrationModelId": "formal-strong-acid-strong-base-model",
+        "aliquotMeasurementId": "formal-trial-analyte-aliquot-volume",
+        "initialMeasurementId": "formal-trial-burette-initial-volume",
+        "finalMeasurementId": "formal-trial-burette-final-volume",
+        "maximumIncrementMl": "{{config.maximumIncrementMl}}",
+        "maximumDeliveryMl": "{{config.maximumDeliveryMl}}",
+        "requirePh": true,
+        "meterInstanceId": "formal-ph-meter",
+        "readinessNotebookTag": "ph-meter-ready",
+        "titrationOperation": "observe",
+        "wasteProtocol": "{{config.wasteProtocol}}",
+        "enforceInstanceIdentity": true,
+        "sourceInstanceId": "formal-receiver",
+        "targetInstanceId": "formal-receiver",
+        "endpointEvidenceMode": "recorded-ph-curve-stability",
+        "formalContextId": "{{config.contextId}}",
+        "formalContextModelId": "{{config.formalContextModelId}}",
+        "indicatorPolicy": "{{config.indicatorPolicy}}",
+        "minimumAliquotMl": 10,
+        "maximumAliquotMl": 25,
+        "minimumIncrementMl": 0.1,
+        "stabilityDeltaPh": "{{config.stabilityDeltaPh}}",
+        "stabilityConsecutiveReadings": "{{config.stabilityConsecutiveReadings}}",
+        "minimumPostSteepRegionMl": "{{config.minimumPostSteepRegionMl}}"
+      },
+      "atomId": "atom.observe.titration-observe",
+      "equipmentRoleBindings": {
+        "analyte-receiver": "erlenmeyer-flask-250ml"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "successCue": "Observe the mixed solution",
+        "invalidCue": "Resolve this operation before continuing.",
+        "accessibleLabel": "Observe the mixed solution"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Observe the mixed solution"
+      ],
+      "invalidCases": [
+        {
+          "id": "formal-trial-deliver-titrant-observe-invalid",
+          "when": "Missing current equipment, approval, or evidence",
+          "message": "This operation is not ready.",
+          "recovery": "Complete the approved prerequisite operation."
+        }
+      ],
+      "feedback": {
+        "success": "Observe the mixed solution: completed.",
+        "invalid": "Follow the approved method and resolve missing evidence before continuing."
+      },
+      "evidence": [
+        "formal-trial-deliver-titrant-observe"
+      ]
+    },
+    {
+      "id": "formal-trial-deliver-titrant-read-ph",
+      "verb": "observe",
+      "label": "Read the pH of this mixed addition",
+      "parameters": {
+        "sourceDefinitionId": "ph-meter",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "trialReferenceId": "formal-trial-deliver-titrant",
+        "buretteInstanceId": "formal-burette",
+        "receiverInstanceId": "formal-receiver",
+        "titrationModelId": "formal-strong-acid-strong-base-model",
+        "aliquotMeasurementId": "formal-trial-analyte-aliquot-volume",
+        "initialMeasurementId": "formal-trial-burette-initial-volume",
+        "finalMeasurementId": "formal-trial-burette-final-volume",
+        "maximumIncrementMl": "{{config.maximumIncrementMl}}",
+        "maximumDeliveryMl": "{{config.maximumDeliveryMl}}",
+        "requirePh": true,
+        "meterInstanceId": "formal-ph-meter",
+        "readinessNotebookTag": "ph-meter-ready",
+        "titrationOperation": "read-ph",
+        "measurementId": "formal-trial-deliver-titrant-ph",
+        "wasteProtocol": "{{config.wasteProtocol}}",
+        "enforceInstanceIdentity": true,
+        "sourceInstanceId": "formal-ph-meter",
+        "targetInstanceId": "formal-receiver",
+        "endpointEvidenceMode": "recorded-ph-curve-stability",
+        "formalContextId": "{{config.contextId}}",
+        "formalContextModelId": "{{config.formalContextModelId}}",
+        "indicatorPolicy": "{{config.indicatorPolicy}}",
+        "minimumAliquotMl": 10,
+        "maximumAliquotMl": 25,
+        "minimumIncrementMl": 0.1,
+        "stabilityDeltaPh": "{{config.stabilityDeltaPh}}",
+        "stabilityConsecutiveReadings": "{{config.stabilityConsecutiveReadings}}",
+        "minimumPostSteepRegionMl": "{{config.minimumPostSteepRegionMl}}"
+      },
+      "atomId": "atom.observe.titration-read-ph",
+      "equipmentRoleBindings": {
+        "immersed-probe-instrument": "ph-meter",
+        "immersed-probe-vessel": "erlenmeyer-flask-250ml"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "successCue": "Read the pH of this mixed addition",
+        "invalidCue": "Resolve this operation before continuing.",
+        "accessibleLabel": "Read the pH of this mixed addition"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Read the pH of this mixed addition"
+      ],
+      "invalidCases": [
+        {
+          "id": "formal-trial-deliver-titrant-read-ph-invalid",
+          "when": "Missing current equipment, approval, or evidence",
+          "message": "This operation is not ready.",
+          "recovery": "Complete the approved prerequisite operation."
+        }
+      ],
+      "feedback": {
+        "success": "Read the pH of this mixed addition: completed.",
+        "invalid": "Follow the approved method and resolve missing evidence before continuing."
+      },
+      "evidence": [
+        "formal-trial-deliver-titrant-read-ph"
+      ]
+    },
+    {
+      "id": "formal-trial-deliver-titrant-record-point",
+      "verb": "record",
+      "label": "Record this titrant-volume and pH point",
+      "parameters": {
+        "sourceDefinitionId": "burette-50ml",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "trialReferenceId": "formal-trial-deliver-titrant",
+        "buretteInstanceId": "formal-burette",
+        "receiverInstanceId": "formal-receiver",
+        "titrationModelId": "formal-strong-acid-strong-base-model",
+        "aliquotMeasurementId": "formal-trial-analyte-aliquot-volume",
+        "initialMeasurementId": "formal-trial-burette-initial-volume",
+        "finalMeasurementId": "formal-trial-burette-final-volume",
+        "maximumIncrementMl": "{{config.maximumIncrementMl}}",
+        "maximumDeliveryMl": "{{config.maximumDeliveryMl}}",
+        "requirePh": true,
+        "meterInstanceId": "formal-ph-meter",
+        "readinessNotebookTag": "ph-meter-ready",
+        "titrationOperation": "record-point",
+        "wasteProtocol": "{{config.wasteProtocol}}",
+        "enforceInstanceIdentity": true,
+        "sourceInstanceId": "formal-burette",
+        "targetInstanceId": "formal-receiver",
+        "endpointEvidenceMode": "recorded-ph-curve-stability",
+        "formalContextId": "{{config.contextId}}",
+        "formalContextModelId": "{{config.formalContextModelId}}",
+        "indicatorPolicy": "{{config.indicatorPolicy}}",
+        "minimumAliquotMl": 10,
+        "maximumAliquotMl": 25,
+        "minimumIncrementMl": 0.1,
+        "stabilityDeltaPh": "{{config.stabilityDeltaPh}}",
+        "stabilityConsecutiveReadings": "{{config.stabilityConsecutiveReadings}}",
+        "minimumPostSteepRegionMl": "{{config.minimumPostSteepRegionMl}}"
+      },
+      "atomId": "atom.record.titration-record-point",
+      "equipmentRoleBindings": {
+        "titrant-delivery-device": "burette-50ml",
+        "analyte-receiver": "erlenmeyer-flask-250ml"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "successCue": "Record this addition and observation",
+        "invalidCue": "Resolve this operation before continuing.",
+        "accessibleLabel": "Record this addition and observation"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record this addition and observation"
+      ],
+      "invalidCases": [
+        {
+          "id": "formal-trial-deliver-titrant-record-point-invalid",
+          "when": "Missing current equipment, approval, or evidence",
+          "message": "This operation is not ready.",
+          "recovery": "Complete the approved prerequisite operation."
+        }
+      ],
+      "feedback": {
+        "success": "Record this addition and observation: completed.",
+        "invalid": "Follow the approved method and resolve missing evidence before continuing."
+      },
+      "evidence": [
+        "formal-trial-deliver-titrant-record-point"
+      ]
+    },
+    {
+      "id": "formal-trial-deliver-titrant-decide",
+      "verb": "observe",
+      "label": "Continue, finish after curve-stability review, or restart",
+      "parameters": {
+        "sourceDefinitionId": "burette-50ml",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "trialReferenceId": "formal-trial-deliver-titrant",
+        "buretteInstanceId": "formal-burette",
+        "receiverInstanceId": "formal-receiver",
+        "titrationModelId": "formal-strong-acid-strong-base-model",
+        "aliquotMeasurementId": "formal-trial-analyte-aliquot-volume",
+        "initialMeasurementId": "formal-trial-burette-initial-volume",
+        "finalMeasurementId": "formal-trial-burette-final-volume",
+        "maximumIncrementMl": "{{config.maximumIncrementMl}}",
+        "maximumDeliveryMl": "{{config.maximumDeliveryMl}}",
+        "requirePh": true,
+        "meterInstanceId": "formal-ph-meter",
+        "readinessNotebookTag": "ph-meter-ready",
+        "titrationOperation": "decide-curve",
+        "inputMode": "choice",
+        "inputRole": "teacherConfiguration",
+        "inputRequired": true,
+        "inputLabel": "Formal curve decision from recorded pH-volume evidence",
+        "inputOptions": [
+          "Continue delivery",
+          "Finish after stability review",
+          "Dispose and restart trial"
+        ],
+        "continueNodeId": "formal-trial-deliver-titrant-node",
+        "retryNodeId": "formal-trial-deliver-titrant-retry-dispose-node",
+        "loopNodeIds": [
+          "formal-trial-deliver-titrant-node",
+          "formal-trial-deliver-titrant-mix-node",
+          "formal-trial-deliver-titrant-observe-node",
+          "formal-trial-deliver-titrant-read-ph-node",
+          "formal-trial-deliver-titrant-record-point-node",
+          "formal-trial-deliver-titrant-decide-node"
+        ],
+        "wasteProtocol": "{{config.wasteProtocol}}",
+        "enforceInstanceIdentity": true,
+        "sourceInstanceId": "formal-burette",
+        "targetInstanceId": "formal-receiver",
+        "endpointEvidenceMode": "recorded-ph-curve-stability",
+        "formalContextId": "{{config.contextId}}",
+        "formalContextModelId": "{{config.formalContextModelId}}",
+        "indicatorPolicy": "{{config.indicatorPolicy}}",
+        "minimumAliquotMl": 10,
+        "maximumAliquotMl": 25,
+        "minimumIncrementMl": 0.1,
+        "stabilityDeltaPh": "{{config.stabilityDeltaPh}}",
+        "stabilityConsecutiveReadings": "{{config.stabilityConsecutiveReadings}}",
+        "minimumPostSteepRegionMl": "{{config.minimumPostSteepRegionMl}}"
+      },
+      "atomId": "atom.observe.titration-decide-curve",
+      "equipmentRoleBindings": {
+        "titrant-delivery-device": "burette-50ml",
+        "analyte-receiver": "erlenmeyer-flask-250ml"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "successCue": "Decide whether to continue, accept, or restart",
+        "invalidCue": "Resolve this operation before continuing.",
+        "accessibleLabel": "Decide whether to continue, accept, or restart"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Decide whether to continue, accept, or restart"
+      ],
+      "invalidCases": [
+        {
+          "id": "formal-trial-deliver-titrant-decide-invalid",
+          "when": "Missing current equipment, approval, or evidence",
+          "message": "This operation is not ready.",
+          "recovery": "Complete the approved prerequisite operation."
+        }
+      ],
+      "feedback": {
+        "success": "Decide whether to continue, accept, or restart: completed.",
+        "invalid": "Follow the approved method and resolve missing evidence before continuing."
+      },
+      "evidence": [
+        "formal-trial-deliver-titrant-decide"
+      ]
+    },
+    {
+      "id": "formal-trial-deliver-titrant-read-final",
+      "verb": "observe",
+      "label": "Read the final burette level",
+      "parameters": {
+        "sourceDefinitionId": "burette-50ml",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "trialReferenceId": "formal-trial-deliver-titrant",
+        "buretteInstanceId": "formal-burette",
+        "receiverInstanceId": "formal-receiver",
+        "titrationModelId": "formal-strong-acid-strong-base-model",
+        "aliquotMeasurementId": "formal-trial-analyte-aliquot-volume",
+        "initialMeasurementId": "formal-trial-burette-initial-volume",
+        "finalMeasurementId": "formal-trial-burette-final-volume",
+        "maximumIncrementMl": "{{config.maximumIncrementMl}}",
+        "maximumDeliveryMl": "{{config.maximumDeliveryMl}}",
+        "requirePh": true,
+        "meterInstanceId": "formal-ph-meter",
+        "readinessNotebookTag": "ph-meter-ready",
+        "titrationOperation": "read-final",
+        "measurementId": "formal-trial-burette-final-volume",
+        "wasteProtocol": "{{config.wasteProtocol}}",
+        "enforceInstanceIdentity": true,
+        "sourceInstanceId": "formal-burette",
+        "targetInstanceId": "formal-receiver",
+        "endpointEvidenceMode": "recorded-ph-curve-stability",
+        "formalContextId": "{{config.contextId}}",
+        "formalContextModelId": "{{config.formalContextModelId}}",
+        "indicatorPolicy": "{{config.indicatorPolicy}}",
+        "minimumAliquotMl": 10,
+        "maximumAliquotMl": 25,
+        "minimumIncrementMl": 0.1,
+        "stabilityDeltaPh": "{{config.stabilityDeltaPh}}",
+        "stabilityConsecutiveReadings": "{{config.stabilityConsecutiveReadings}}",
+        "minimumPostSteepRegionMl": "{{config.minimumPostSteepRegionMl}}"
+      },
+      "atomId": "atom.observe.titration-read-final",
+      "equipmentRoleBindings": {
+        "titrant-delivery-device": "burette-50ml",
+        "analyte-receiver": "erlenmeyer-flask-250ml"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "successCue": "Read the final burette level",
+        "invalidCue": "Resolve this operation before continuing.",
+        "accessibleLabel": "Read the final burette level"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Read the final burette level"
+      ],
+      "invalidCases": [
+        {
+          "id": "formal-trial-deliver-titrant-read-final-invalid",
+          "when": "Missing current equipment, approval, or evidence",
+          "message": "This operation is not ready.",
+          "recovery": "Complete the approved prerequisite operation."
+        }
+      ],
+      "feedback": {
+        "success": "Read the final burette level: completed.",
+        "invalid": "Follow the approved method and resolve missing evidence before continuing."
+      },
+      "evidence": [
+        "formal-trial-deliver-titrant-read-final"
+      ]
+    },
+    {
+      "id": "formal-trial-record-final-burette",
+      "verb": "record",
+      "label": "Record the final burette reading",
+      "parameters": {
+        "sourceDefinitionId": "burette-50ml",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "trialReferenceId": "formal-trial-deliver-titrant",
+        "buretteInstanceId": "formal-burette",
+        "receiverInstanceId": "formal-receiver",
+        "titrationModelId": "formal-strong-acid-strong-base-model",
+        "aliquotMeasurementId": "formal-trial-analyte-aliquot-volume",
+        "initialMeasurementId": "formal-trial-burette-initial-volume",
+        "finalMeasurementId": "formal-trial-burette-final-volume",
+        "maximumIncrementMl": "{{config.maximumIncrementMl}}",
+        "maximumDeliveryMl": "{{config.maximumDeliveryMl}}",
+        "requirePh": true,
+        "meterInstanceId": "formal-ph-meter",
+        "readinessNotebookTag": "ph-meter-ready",
+        "titrationOperation": "record-final",
+        "measurementId": "formal-trial-burette-final-volume",
+        "wasteProtocol": "{{config.wasteProtocol}}",
+        "enforceInstanceIdentity": true,
+        "sourceInstanceId": "formal-burette",
+        "targetInstanceId": "formal-receiver",
+        "endpointEvidenceMode": "recorded-ph-curve-stability",
+        "formalContextId": "{{config.contextId}}",
+        "formalContextModelId": "{{config.formalContextModelId}}",
+        "indicatorPolicy": "{{config.indicatorPolicy}}",
+        "minimumAliquotMl": 10,
+        "maximumAliquotMl": 25,
+        "minimumIncrementMl": 0.1,
+        "stabilityDeltaPh": "{{config.stabilityDeltaPh}}",
+        "stabilityConsecutiveReadings": "{{config.stabilityConsecutiveReadings}}",
+        "minimumPostSteepRegionMl": "{{config.minimumPostSteepRegionMl}}"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "successCue": "Record the final burette reading",
+        "invalidCue": "Resolve this operation before continuing.",
+        "accessibleLabel": "Record the final burette reading"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record the final burette reading"
+      ],
+      "invalidCases": [
+        {
+          "id": "formal-trial-record-final-burette-invalid",
+          "when": "Missing current equipment, approval, or evidence",
+          "message": "This operation is not ready.",
+          "recovery": "Complete the approved prerequisite operation."
+        }
+      ],
+      "feedback": {
+        "success": "Record the final burette reading: completed.",
+        "invalid": "Follow the approved method and resolve missing evidence before continuing."
+      },
+      "evidence": [
+        "formal-trial-record-final-burette"
+      ],
+      "atomId": "atom.record.titration-record-final",
+      "equipmentRoleBindings": {
+        "titrant-delivery-device": "burette-50ml",
+        "analyte-receiver": "erlenmeyer-flask-250ml"
+      }
+    },
+    {
+      "id": "formal-trial-dispose",
+      "verb": "transfer",
+      "label": "Dispose of the completed formal trial by the configured route",
+      "atomId": "atom.transfer.discard-titrated-mixture",
+      "equipmentRoleBindings": {
+        "analyte-receiver": "erlenmeyer-flask-250ml",
+        "waste-receiver": "waste-beaker"
+      },
+      "parameters": {
+        "sourceDefinitionId": "erlenmeyer-flask-250ml",
+        "targetDefinitionId": "waste-beaker",
+        "disposalStreamIsTeacherConfigured": true,
+        "note": "Use only the configured acid-base waste route for the selected formal context.",
+        "sourceInstanceId": "formal-receiver",
+        "targetInstanceId": "formal-waste",
+        "enforceInstanceIdentity": true
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "erlenmeyer-flask-250ml",
+        "targetDefinitionId": "waste-beaker",
+        "successCue": "The flask is empty and ready for a fresh trial.",
+        "invalidCue": "Record this trial's evidence before discarding the mixture.",
+        "accessibleLabel": "Pour the titrated mixture into the designated waste container."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Empty the receiver into the designated waste container."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this trial.",
+          "recovery": "Follow the process map; every trial repeats the same ordered sequence."
+        },
+        {
+          "id": "premature-disposal",
+          "when": "the trial's evidence has not been recorded",
+          "message": "Discarding the mixture destroys evidence this trial still needs.",
+          "recovery": "Record the readings and the pH-volume evidence first."
+        }
+      ],
+      "feedback": {
+        "success": "The flask is empty and ready for a fresh trial.",
+        "invalid": "Record this trial's evidence before discarding the mixture."
+      },
+      "evidence": [
+        "transfer",
+        "disposal"
+      ]
+    },
+    {
+      "id": "formal-trial-dispose-rinse",
+      "verb": "rinse",
+      "label": "Rinse the emptied trial receiver",
+      "parameters": {
+        "sourceDefinitionId": "wash-bottle",
+        "sourceInstanceId": "formal-rinse-water",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "targetInstanceId": "formal-receiver",
+        "volumeMl": "{{config.rinseVolumeMl}}",
+        "rinseType": "rinse",
+        "collectRinseVolume": true,
+        "enforceInstanceIdentity": true
+      },
+      "atomId": "atom.rinse.clean-titration-receiver",
+      "equipmentRoleBindings": {
+        "rinse-water-source": "wash-bottle",
+        "rinsed-vessel": "erlenmeyer-flask-250ml"
+      },
+      "interaction": {
+        "type": "rinseTarget",
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "successCue": "Rinse the emptied trial receiver",
+        "invalidCue": "Empty the receiver first.",
+        "accessibleLabel": "Rinse the emptied trial receiver"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Rinse the emptied trial receiver"
+      ],
+      "invalidCases": [
+        {
+          "id": "formal-trial-dispose-rinse-invalid",
+          "when": "Missing current equipment, approval, or evidence",
+          "message": "This operation is not ready.",
+          "recovery": "Complete the approved prerequisite operation."
+        }
+      ],
+      "feedback": {
+        "success": "Rinse the emptied trial receiver: completed.",
+        "invalid": "Follow the approved method and resolve missing evidence before continuing."
+      },
+      "evidence": [
+        "formal-trial-dispose-rinse"
+      ]
+    },
+    {
+      "id": "formal-trial-dispose-discard-rinse",
+      "verb": "transfer",
+      "label": "Transfer formal-trial rinsate to the configured waste receiver",
+      "atomId": "atom.transfer.discard-titrated-mixture",
+      "equipmentRoleBindings": {
+        "analyte-receiver": "erlenmeyer-flask-250ml",
+        "waste-receiver": "waste-beaker"
+      },
+      "parameters": {
+        "sourceInstanceId": "formal-receiver",
+        "sourceDefinitionId": "erlenmeyer-flask-250ml",
+        "targetInstanceId": "formal-waste",
+        "targetDefinitionId": "waste-beaker",
+        "note": "Use only the configured acid-base waste route for the selected formal context.",
+        "enforceInstanceIdentity": true
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "erlenmeyer-flask-250ml",
+        "targetDefinitionId": "waste-beaker",
+        "successCue": "The flask is empty and ready for a fresh trial.",
+        "invalidCue": "Record this trial's evidence before discarding the mixture.",
+        "accessibleLabel": "Pour the titrated mixture into the designated waste container."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Empty the receiver into the designated waste container."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this trial.",
+          "recovery": "Follow the process map; every trial repeats the same ordered sequence."
+        },
+        {
+          "id": "premature-disposal",
+          "when": "the trial's evidence has not been recorded",
+          "message": "Discarding the mixture destroys evidence this trial still needs.",
+          "recovery": "Record the readings and the pH-volume evidence first."
+        }
+      ],
+      "feedback": {
+        "success": "The flask is empty and ready for a fresh trial.",
+        "invalid": "Record this trial's evidence before discarding the mixture."
+      },
+      "evidence": [
+        "transfer",
+        "disposal"
+      ]
+    },
+    {
+      "id": "formal-trial-deliver-titrant-retry-dispose",
+      "verb": "transfer",
+      "label": "Dispose of the rejected formal trial by the configured route",
+      "atomId": "atom.transfer.discard-titrated-mixture",
+      "equipmentRoleBindings": {
+        "analyte-receiver": "erlenmeyer-flask-250ml",
+        "waste-receiver": "waste-beaker"
+      },
+      "parameters": {
+        "sourceDefinitionId": "erlenmeyer-flask-250ml",
+        "targetDefinitionId": "waste-beaker",
+        "disposalStreamIsTeacherConfigured": true,
+        "note": "Use only the configured acid-base waste route for the selected formal context.",
+        "sourceInstanceId": "formal-receiver",
+        "targetInstanceId": "formal-waste",
+        "enforceInstanceIdentity": true
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "erlenmeyer-flask-250ml",
+        "targetDefinitionId": "waste-beaker",
+        "successCue": "The flask is empty and ready for a fresh trial.",
+        "invalidCue": "Record this trial's evidence before discarding the mixture.",
+        "accessibleLabel": "Pour the titrated mixture into the designated waste container."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Empty the receiver into the designated waste container."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this trial.",
+          "recovery": "Follow the process map; every trial repeats the same ordered sequence."
+        },
+        {
+          "id": "premature-disposal",
+          "when": "the trial's evidence has not been recorded",
+          "message": "Discarding the mixture destroys evidence this trial still needs.",
+          "recovery": "Record the readings and the pH-volume evidence first."
+        }
+      ],
+      "feedback": {
+        "success": "The flask is empty and ready for a fresh trial.",
+        "invalid": "Record this trial's evidence before discarding the mixture."
+      },
+      "evidence": [
+        "transfer",
+        "disposal"
+      ]
+    },
+    {
+      "id": "formal-trial-deliver-titrant-retry-dispose-rinse",
+      "verb": "rinse",
+      "label": "Rinse the emptied trial receiver",
+      "parameters": {
+        "sourceDefinitionId": "wash-bottle",
+        "sourceInstanceId": "formal-rinse-water",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "targetInstanceId": "formal-receiver",
+        "volumeMl": "{{config.rinseVolumeMl}}",
+        "rinseType": "rinse",
+        "collectRinseVolume": true,
+        "enforceInstanceIdentity": true
+      },
+      "atomId": "atom.rinse.clean-titration-receiver",
+      "equipmentRoleBindings": {
+        "rinse-water-source": "wash-bottle",
+        "rinsed-vessel": "erlenmeyer-flask-250ml"
+      },
+      "interaction": {
+        "type": "rinseTarget",
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "successCue": "Rinse the emptied trial receiver",
+        "invalidCue": "Empty the receiver first.",
+        "accessibleLabel": "Rinse the emptied trial receiver"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Rinse the emptied trial receiver"
+      ],
+      "invalidCases": [
+        {
+          "id": "formal-trial-deliver-titrant-retry-dispose-rinse-invalid",
+          "when": "Missing current equipment, approval, or evidence",
+          "message": "This operation is not ready.",
+          "recovery": "Complete the approved prerequisite operation."
+        }
+      ],
+      "feedback": {
+        "success": "Rinse the emptied trial receiver: completed.",
+        "invalid": "Follow the approved method and resolve missing evidence before continuing."
+      },
+      "evidence": [
+        "formal-trial-deliver-titrant-retry-dispose-rinse"
+      ]
+    },
+    {
+      "id": "formal-trial-deliver-titrant-retry-dispose-discard-rinse",
+      "verb": "transfer",
+      "label": "Dispose of the rejected formal trial by the configured route",
+      "atomId": "atom.transfer.discard-titrated-mixture",
+      "equipmentRoleBindings": {
+        "analyte-receiver": "erlenmeyer-flask-250ml",
+        "waste-receiver": "waste-beaker"
+      },
+      "parameters": {
+        "sourceInstanceId": "formal-receiver",
+        "sourceDefinitionId": "erlenmeyer-flask-250ml",
+        "targetInstanceId": "formal-waste",
+        "targetDefinitionId": "waste-beaker",
+        "note": "Use only the configured acid-base waste route for the selected formal context.",
+        "enforceInstanceIdentity": true
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "erlenmeyer-flask-250ml",
+        "targetDefinitionId": "waste-beaker",
+        "successCue": "The flask is empty and ready for a fresh trial.",
+        "invalidCue": "Record this trial's evidence before discarding the mixture.",
+        "accessibleLabel": "Pour the titrated mixture into the designated waste container."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Empty the receiver into the designated waste container."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this trial.",
+          "recovery": "Follow the process map; every trial repeats the same ordered sequence."
+        },
+        {
+          "id": "premature-disposal",
+          "when": "the trial's evidence has not been recorded",
+          "message": "Discarding the mixture destroys evidence this trial still needs.",
+          "recovery": "Record the readings and the pH-volume evidence first."
+        }
+      ],
+      "feedback": {
+        "success": "The flask is empty and ready for a fresh trial.",
+        "invalid": "Record this trial's evidence before discarding the mixture."
+      },
+      "evidence": [
+        "transfer",
+        "disposal"
+      ]
+    },
+    {
+      "id": "formal-trial-deliver-titrant-retry-reset",
+      "verb": "observe",
+      "label": "Reset only the rejected trial evidence",
+      "parameters": {
+        "sourceDefinitionId": "burette-50ml",
+        "targetDefinitionId": "erlenmeyer-flask-250ml",
+        "trialReferenceId": "formal-trial-deliver-titrant",
+        "buretteInstanceId": "formal-burette",
+        "receiverInstanceId": "formal-receiver",
+        "titrationModelId": "formal-strong-acid-strong-base-model",
+        "aliquotMeasurementId": "formal-trial-analyte-aliquot-volume",
+        "initialMeasurementId": "formal-trial-burette-initial-volume",
+        "finalMeasurementId": "formal-trial-burette-final-volume",
+        "maximumIncrementMl": "{{config.maximumIncrementMl}}",
+        "maximumDeliveryMl": "{{config.maximumDeliveryMl}}",
+        "requirePh": true,
+        "meterInstanceId": "formal-ph-meter",
+        "readinessNotebookTag": "ph-meter-ready",
+        "titrationOperation": "archive-retry",
+        "restartNodeId": "formal-trial-seat-burette-funnel-node",
+        "trialNodeIds": [
+          "formal-trial-seat-burette-funnel-node",
+          "formal-trial-fill-burette-node",
+          "formal-trial-fill-burette-purge-tip-node",
+          "formal-trial-fill-burette-check-tip-node",
+          "formal-trial-remove-burette-funnel-node",
+          "formal-trial-read-initial-burette-node",
+          "formal-trial-record-initial-burette-node",
+          "formal-trial-measure-analyte-node",
+          "formal-trial-transfer-analyte-to-receiver-node",
+          "formal-trial-position-flask-under-burette-node",
+          "formal-trial-probe-ready-node",
+          "formal-trial-place-ph-meter-on-workbench-node",
+          "formal-trial-immerse-endpoint-ph-probe-node",
+          "formal-trial-inspect-prepared-analyte-node",
+          "formal-trial-initial-ph-node",
+          "formal-trial-initial-row-node",
+          "formal-trial-deliver-titrant-node",
+          "formal-trial-deliver-titrant-mix-node",
+          "formal-trial-deliver-titrant-observe-node",
+          "formal-trial-deliver-titrant-read-ph-node",
+          "formal-trial-deliver-titrant-record-point-node",
+          "formal-trial-deliver-titrant-decide-node",
+          "formal-trial-deliver-titrant-retry-dispose-node",
+          "formal-trial-deliver-titrant-retry-dispose-rinse-node",
+          "formal-trial-deliver-titrant-retry-dispose-discard-rinse-node",
+          "formal-trial-deliver-titrant-retry-reset-node"
+        ],
+        "wasteProtocol": "{{config.wasteProtocol}}",
+        "enforceInstanceIdentity": true,
+        "sourceInstanceId": "formal-burette",
+        "targetInstanceId": "formal-receiver",
+        "endpointEvidenceMode": "recorded-ph-curve-stability",
+        "formalContextId": "{{config.contextId}}",
+        "formalContextModelId": "{{config.formalContextModelId}}",
+        "indicatorPolicy": "{{config.indicatorPolicy}}",
+        "minimumAliquotMl": 10,
+        "maximumAliquotMl": 25,
+        "minimumIncrementMl": 0.1,
+        "stabilityDeltaPh": "{{config.stabilityDeltaPh}}",
+        "stabilityConsecutiveReadings": "{{config.stabilityConsecutiveReadings}}",
+        "minimumPostSteepRegionMl": "{{config.minimumPostSteepRegionMl}}"
+      },
+      "atomId": "atom.observe.titration-archive-retry",
+      "equipmentRoleBindings": {
+        "titrant-delivery-device": "burette-50ml",
+        "analyte-receiver": "erlenmeyer-flask-250ml"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "successCue": "Reset only the rejected trial evidence",
+        "invalidCue": "Resolve this operation before continuing.",
+        "accessibleLabel": "Reset only the rejected trial evidence"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Reset only the rejected trial evidence"
+      ],
+      "invalidCases": [
+        {
+          "id": "formal-trial-deliver-titrant-retry-reset-invalid",
+          "when": "Missing current equipment, approval, or evidence",
+          "message": "This operation is not ready.",
+          "recovery": "Complete the approved prerequisite operation."
+        }
+      ],
+      "feedback": {
+        "success": "Reset only the rejected trial evidence: completed.",
+        "invalid": "Follow the approved method and resolve missing evidence before continuing."
+      },
+      "evidence": [
+        "formal-trial-deliver-titrant-retry-reset"
+      ]
+    }
+  ],
+  "process": {
+    "startNodeId": "formal-trial-place-ring-stand-node",
+    "nodes": [
+      {
+        "id": "formal-trial-place-ring-stand-node",
+        "type": "action",
+        "title": "Set up the burette stand and clamp",
+        "description": "Set up the burette stand and clamp",
+        "actionId": "formal-trial-place-ring-stand",
+        "layout": {
+          "x": 40,
+          "y": 60,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-place-ring-stand-complete",
+            "type": "actionEvidence",
+            "label": "Set up the burette stand and clamp completed",
+            "actionId": "formal-trial-place-ring-stand"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "The stand is upright with the clamp positioned.",
+          "retry": "Place the ring stand and clamp before mounting the burette."
+        }
+      },
+      {
+        "id": "formal-trial-mount-burette-node",
+        "type": "action",
+        "title": "Mount the burette in the clamp",
+        "description": "Mount the burette in the clamp",
+        "actionId": "formal-trial-mount-burette",
+        "layout": {
+          "x": 40,
+          "y": 160,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-mount-burette-complete",
+            "type": "actionEvidence",
+            "label": "Mount the burette in the clamp completed",
+            "actionId": "formal-trial-mount-burette"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "The burette is clamped vertically with the stopcock reachable.",
+          "retry": "Place the ring stand and clamp before mounting the burette."
+        }
+      },
+      {
+        "id": "formal-trial-condition-burette-drain-residual-node",
+        "type": "action",
+        "title": "Drain any residual titrant to the approved waste receiver",
+        "description": "Use only the approved waste route entered before this run.",
+        "actionId": "formal-trial-condition-burette-drain-residual",
+        "layout": {
+          "x": 40,
+          "y": 260,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-condition-burette-drain-residual-complete",
+            "type": "actionEvidence",
+            "label": "Drain any residual titrant to the approved waste receiver completed",
+            "actionId": "formal-trial-condition-burette-drain-residual"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "The flask is empty and ready for a fresh trial.",
+          "retry": "Record this trial's evidence before discarding the mixture."
+        }
+      },
+      {
+        "id": "formal-trial-condition-burette-node",
+        "type": "action",
+        "title": "Condition the burette with titrant",
+        "description": "Condition the empty burette directly through its open mouth with the approved titrant portion. Filling through the funnel is a later operation.",
+        "actionId": "formal-trial-condition-burette",
+        "layout": {
+          "x": 40,
+          "y": 360,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-condition-burette-complete",
+            "type": "actionEvidence",
+            "label": "Condition the burette with titrant completed",
+            "actionId": "formal-trial-condition-burette"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "The burette is conditioned with titrant and drained to waste.",
+          "retry": "Mount the burette and seat the filling funnel before conditioning it."
+        }
+      },
+      {
+        "id": "formal-trial-condition-burette-discard-rinsate-node",
+        "type": "action",
+        "title": "Transfer rinsate to the instructor-designated waste",
+        "description": "Use only the approved waste route entered before this run.",
+        "actionId": "formal-trial-condition-burette-discard-rinsate",
+        "layout": {
+          "x": 40,
+          "y": 460,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-condition-burette-discard-rinsate-complete",
+            "type": "actionEvidence",
+            "label": "Transfer rinsate to the instructor-designated waste completed",
+            "actionId": "formal-trial-condition-burette-discard-rinsate"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "The flask is empty and ready for a fresh trial.",
+          "retry": "Record this trial's evidence before discarding the mixture."
+        }
+      },
+      {
+        "id": "formal-trial-seat-burette-funnel-node",
+        "type": "action",
+        "title": "Seat the filling funnel in the burette",
+        "description": "Seat the filling funnel in the burette",
+        "actionId": "formal-trial-seat-burette-funnel",
+        "layout": {
+          "x": 40,
+          "y": 560,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-seat-burette-funnel-complete",
+            "type": "actionEvidence",
+            "label": "Seat the filling funnel in the burette completed",
+            "actionId": "formal-trial-seat-burette-funnel"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "The filling funnel is seated upright in the burette opening.",
+          "retry": "Seat the filling funnel on the mounted burette before conditioning."
+        }
+      },
+      {
+        "id": "formal-trial-fill-burette-node",
+        "type": "action",
+        "title": "Fill the conditioned burette",
+        "description": "Fill the conditioned burette",
+        "actionId": "formal-trial-fill-burette",
+        "layout": {
+          "x": 40,
+          "y": 660,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-fill-burette-complete",
+            "type": "actionEvidence",
+            "label": "Fill the conditioned burette completed",
+            "actionId": "formal-trial-fill-burette"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Fill the burette with the approved titrant: completed.",
+          "retry": "Follow the approved method and resolve missing evidence before continuing."
+        }
+      },
+      {
+        "id": "formal-trial-fill-burette-purge-tip-node",
+        "type": "action",
+        "title": "Clear the burette tip to the approved waste receiver",
+        "description": "Use only the approved waste route entered before this run.",
+        "actionId": "formal-trial-fill-burette-purge-tip",
+        "layout": {
+          "x": 40,
+          "y": 760,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-fill-burette-purge-tip-complete",
+            "type": "actionEvidence",
+            "label": "Clear the burette tip to the approved waste receiver completed",
+            "actionId": "formal-trial-fill-burette-purge-tip"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "The flask is empty and ready for a fresh trial.",
+          "retry": "Record this trial's evidence before discarding the mixture."
+        }
+      },
+      {
+        "id": "formal-trial-fill-burette-check-tip-node",
+        "type": "action",
+        "title": "Inspect the burette tip for air bubbles",
+        "description": "Inspect the liquid-filled tip after the separate purge. If bubbles remain, do not proceed; repeat the approved purge preparation. This observation is independent of filling.",
+        "actionId": "formal-trial-fill-burette-check-tip",
+        "layout": {
+          "x": 40,
+          "y": 860,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-fill-burette-check-tip-complete",
+            "type": "actionEvidence",
+            "label": "Inspect the burette tip for air bubbles completed",
+            "actionId": "formal-trial-fill-burette-check-tip"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Inspect the burette tip for air bubbles: completed.",
+          "retry": "Follow the approved method and resolve missing evidence before continuing."
+        }
+      },
+      {
+        "id": "formal-trial-remove-burette-funnel-node",
+        "type": "action",
+        "title": "Remove the filling funnel",
+        "description": "Remove the filling funnel",
+        "actionId": "formal-trial-remove-burette-funnel",
+        "layout": {
+          "x": 40,
+          "y": 960,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-remove-burette-funnel-complete",
+            "type": "actionEvidence",
+            "label": "Remove the filling funnel completed",
+            "actionId": "formal-trial-remove-burette-funnel"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "The filling funnel is removed and placed on the workbench.",
+          "retry": "Remove the filling funnel only after the burette has been filled."
+        }
+      },
+      {
+        "id": "formal-trial-read-initial-burette-node",
+        "type": "action",
+        "title": "Read the initial burette level",
+        "description": "Read the initial burette level",
+        "actionId": "formal-trial-read-initial-burette",
+        "layout": {
+          "x": 40,
+          "y": 1060,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-read-initial-burette-complete",
+            "type": "actionEvidence",
+            "label": "Read the initial burette level completed",
+            "actionId": "formal-trial-read-initial-burette"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read the initial burette level: completed.",
+          "retry": "Follow the approved method and resolve missing evidence before continuing."
+        }
+      },
+      {
+        "id": "formal-trial-record-initial-burette-node",
+        "type": "action",
+        "title": "Record the initial burette reading",
+        "description": "Record the initial burette reading",
+        "actionId": "formal-trial-record-initial-burette",
+        "layout": {
+          "x": 40,
+          "y": 1160,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-record-initial-burette-complete",
+            "type": "actionEvidence",
+            "label": "Record the initial burette reading completed",
+            "actionId": "formal-trial-record-initial-burette"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record the initial burette reading: completed.",
+          "retry": "Follow the approved method and resolve missing evidence before continuing."
+        }
+      },
+      {
+        "id": "formal-trial-measure-analyte-node",
+        "type": "action",
+        "title": "Measure the configured formal-trial analyte aliquot",
+        "description": "Measure the configured formal-trial analyte aliquot",
+        "actionId": "formal-trial-measure-analyte",
+        "layout": {
+          "x": 40,
+          "y": 1260,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-measure-analyte-complete",
+            "type": "actionEvidence",
+            "label": "Measure the configured formal-trial analyte aliquot completed",
+            "actionId": "formal-trial-measure-analyte"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Analyte aliquot measured.",
+          "retry": "Measure the analyte aliquot before continuing."
+        }
+      },
+      {
+        "id": "formal-trial-transfer-analyte-to-receiver-node",
+        "type": "action",
+        "title": "Transfer the measured analyte aliquot to the trial receiver",
+        "description": "Transfer the measured analyte aliquot to the trial receiver",
+        "actionId": "formal-trial-transfer-analyte-to-receiver",
+        "layout": {
+          "x": 40,
+          "y": 1360,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-transfer-analyte-to-receiver-complete",
+            "type": "actionEvidence",
+            "label": "Transfer the measured analyte aliquot to the trial receiver completed",
+            "actionId": "formal-trial-transfer-analyte-to-receiver"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "The measured analyte is in the Erlenmeyer flask.",
+          "retry": "Measure the analyte aliquot before transferring it."
+        }
+      },
+      {
+        "id": "formal-trial-position-flask-under-burette-node",
+        "type": "action",
+        "title": "Place the receiving flask under the burette",
+        "description": "Place the receiving flask under the burette",
+        "actionId": "formal-trial-position-flask-under-burette",
+        "layout": {
+          "x": 40,
+          "y": 1460,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-position-flask-under-burette-complete",
+            "type": "actionEvidence",
+            "label": "Place the receiving flask under the burette completed",
+            "actionId": "formal-trial-position-flask-under-burette"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "The flask is positioned beneath the burette tip.",
+          "retry": "Place the receiving flask under the burette tip before titrating."
+        }
+      },
+      {
+        "id": "formal-trial-probe-ready-node",
+        "type": "action",
+        "title": "Confirm pH meter readiness",
+        "description": "Confirm the configured probe calibration, rinse, immersion, and reading-stability rules before the indicator-free formal trial.",
+        "actionId": "formal-trial-probe-ready",
+        "layout": {
+          "x": 40,
+          "y": 1560,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-probe-ready-complete",
+            "type": "actionEvidence",
+            "label": "Confirm pH meter readiness completed",
+            "actionId": "formal-trial-probe-ready"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Confirm pH meter readiness: completed.",
+          "retry": "Follow the approved method and resolve missing evidence before continuing."
+        }
+      },
+      {
+        "id": "formal-trial-place-ph-meter-on-workbench-node",
+        "type": "action",
+        "title": "Place the pH meter on the workbench",
+        "description": "Place the pH meter on the workbench",
+        "actionId": "formal-trial-place-ph-meter-on-workbench",
+        "layout": {
+          "x": 40,
+          "y": 1660,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-place-ph-meter-on-workbench-complete",
+            "type": "actionEvidence",
+            "label": "Place the pH meter on the workbench completed",
+            "actionId": "formal-trial-place-ph-meter-on-workbench"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "The pH meter is ready on the workbench.",
+          "retry": "Place the pH meter on the workbench before preparing or immersing its probe."
+        }
+      },
+      {
+        "id": "formal-trial-immerse-endpoint-ph-probe-node",
+        "type": "action",
+        "title": "Immerse probe",
+        "description": "Immerse probe",
+        "actionId": "formal-trial-immerse-endpoint-ph-probe",
+        "layout": {
+          "x": 40,
+          "y": 1760,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-immerse-endpoint-ph-probe-complete",
+            "type": "actionEvidence",
+            "label": "Immerse probe completed",
+            "actionId": "formal-trial-immerse-endpoint-ph-probe"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "The probe is immersed in the endpoint mixture.",
+          "retry": "Immerse the probe in the accepted endpoint mixture."
+        }
+      },
+      {
+        "id": "formal-trial-inspect-prepared-analyte-node",
+        "type": "action",
+        "title": "Observe the prepared analyte without indicator",
+        "description": "Observe the prepared analyte without indicator",
+        "actionId": "formal-trial-inspect-prepared-analyte",
+        "layout": {
+          "x": 40,
+          "y": 1860,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-inspect-prepared-analyte-complete",
+            "type": "actionEvidence",
+            "label": "Observe the prepared analyte without indicator completed",
+            "actionId": "formal-trial-inspect-prepared-analyte"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Observe the mixed solution: completed.",
+          "retry": "Follow the approved method and resolve missing evidence before continuing."
+        }
+      },
+      {
+        "id": "formal-trial-initial-ph-node",
+        "type": "action",
+        "title": "Read initial pH at zero titrant addition",
+        "description": "Read initial pH at zero titrant addition",
+        "actionId": "formal-trial-initial-ph",
+        "layout": {
+          "x": 40,
+          "y": 1960,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-initial-ph-complete",
+            "type": "actionEvidence",
+            "label": "Read initial pH at zero titrant addition completed",
+            "actionId": "formal-trial-initial-ph"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read the pH of this mixed addition: completed.",
+          "retry": "Follow the approved method and resolve missing evidence before continuing."
+        }
+      },
+      {
+        "id": "formal-trial-initial-row-node",
+        "type": "action",
+        "title": "Record the initial pH-volume row",
+        "description": "Record the initial pH-volume row",
+        "actionId": "formal-trial-initial-row",
+        "layout": {
+          "x": 40,
+          "y": 2060,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-initial-row-complete",
+            "type": "actionEvidence",
+            "label": "Record the initial pH-volume row completed",
+            "actionId": "formal-trial-initial-row"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record this addition and observation: completed.",
+          "retry": "Follow the approved method and resolve missing evidence before continuing."
+        }
+      },
+      {
+        "id": "formal-trial-deliver-titrant-node",
+        "type": "action",
+        "title": "Deliver one student-selected titrant increment",
+        "description": "Deliver one student-selected titrant increment",
+        "actionId": "formal-trial-deliver-titrant",
+        "layout": {
+          "x": 40,
+          "y": 2160,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-deliver-titrant-complete",
+            "type": "actionEvidence",
+            "label": "Deliver one student-selected titrant increment completed",
+            "actionId": "formal-trial-deliver-titrant"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Deliver one student-selected titrant increment: completed.",
+          "retry": "Follow the approved method and resolve missing evidence before continuing."
+        }
+      },
+      {
+        "id": "formal-trial-deliver-titrant-mix-node",
+        "type": "action",
+        "title": "Swirl the receiving vessel to mix the current addition",
+        "description": "Swirl the receiving vessel to mix the current addition",
+        "actionId": "formal-trial-deliver-titrant-mix",
+        "layout": {
+          "x": 40,
+          "y": 2260,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-deliver-titrant-mix-complete",
+            "type": "actionEvidence",
+            "label": "Swirl the receiving vessel to mix the current addition completed",
+            "actionId": "formal-trial-deliver-titrant-mix"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Mix the current addition: completed.",
+          "retry": "Follow the approved method and resolve missing evidence before continuing."
+        }
+      },
+      {
+        "id": "formal-trial-deliver-titrant-observe-node",
+        "type": "action",
+        "title": "Observe the mixed solution without indicator",
+        "description": "Observe the mixed solution without indicator",
+        "actionId": "formal-trial-deliver-titrant-observe",
+        "layout": {
+          "x": 40,
+          "y": 2360,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-deliver-titrant-observe-complete",
+            "type": "actionEvidence",
+            "label": "Observe the mixed solution without indicator completed",
+            "actionId": "formal-trial-deliver-titrant-observe"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Observe the mixed solution: completed.",
+          "retry": "Follow the approved method and resolve missing evidence before continuing."
+        }
+      },
+      {
+        "id": "formal-trial-deliver-titrant-read-ph-node",
+        "type": "action",
+        "title": "Read the pH of this mixed addition",
+        "description": "Read the pH of this mixed addition",
+        "actionId": "formal-trial-deliver-titrant-read-ph",
+        "layout": {
+          "x": 40,
+          "y": 2460,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-deliver-titrant-read-ph-complete",
+            "type": "actionEvidence",
+            "label": "Read the pH of this mixed addition completed",
+            "actionId": "formal-trial-deliver-titrant-read-ph"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read the pH of this mixed addition: completed.",
+          "retry": "Follow the approved method and resolve missing evidence before continuing."
+        }
+      },
+      {
+        "id": "formal-trial-deliver-titrant-record-point-node",
+        "type": "action",
+        "title": "Record this titrant-volume and pH point",
+        "description": "Record this titrant-volume and pH point",
+        "actionId": "formal-trial-deliver-titrant-record-point",
+        "layout": {
+          "x": 40,
+          "y": 2560,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-deliver-titrant-record-point-complete",
+            "type": "actionEvidence",
+            "label": "Record this titrant-volume and pH point completed",
+            "actionId": "formal-trial-deliver-titrant-record-point"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record this addition and observation: completed.",
+          "retry": "Follow the approved method and resolve missing evidence before continuing."
+        }
+      },
+      {
+        "id": "formal-trial-deliver-titrant-decide-node",
+        "type": "action",
+        "title": "Continue, finish after curve-stability review, or restart",
+        "description": "Continue, finish after curve-stability review, or restart",
+        "actionId": "formal-trial-deliver-titrant-decide",
+        "layout": {
+          "x": 40,
+          "y": 2660,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-deliver-titrant-decide-complete",
+            "type": "actionEvidence",
+            "label": "Continue, finish after curve-stability review, or restart completed",
+            "actionId": "formal-trial-deliver-titrant-decide"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Decide whether to continue, accept, or restart: completed.",
+          "retry": "Follow the approved method and resolve missing evidence before continuing."
+        }
+      },
+      {
+        "id": "formal-trial-deliver-titrant-read-final-node",
+        "type": "action",
+        "title": "Read the final burette level",
+        "description": "Read the final burette level",
+        "actionId": "formal-trial-deliver-titrant-read-final",
+        "layout": {
+          "x": 40,
+          "y": 2760,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-deliver-titrant-read-final-complete",
+            "type": "actionEvidence",
+            "label": "Read the final burette level completed",
+            "actionId": "formal-trial-deliver-titrant-read-final"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read the final burette level: completed.",
+          "retry": "Follow the approved method and resolve missing evidence before continuing."
+        }
+      },
+      {
+        "id": "formal-trial-record-final-burette-node",
+        "type": "action",
+        "title": "Record the final burette reading",
+        "description": "Record the final burette reading",
+        "actionId": "formal-trial-record-final-burette",
+        "layout": {
+          "x": 40,
+          "y": 2860,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-record-final-burette-complete",
+            "type": "actionEvidence",
+            "label": "Record the final burette reading completed",
+            "actionId": "formal-trial-record-final-burette"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record the final burette reading: completed.",
+          "retry": "Follow the approved method and resolve missing evidence before continuing."
+        }
+      },
+      {
+        "id": "formal-trial-dispose-node",
+        "type": "action",
+        "title": "Dispose of the completed formal trial by the configured route",
+        "description": "Use only the configured acid-base waste route for the selected formal context.",
+        "actionId": "formal-trial-dispose",
+        "layout": {
+          "x": 40,
+          "y": 2960,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-dispose-complete",
+            "type": "actionEvidence",
+            "label": "Dispose of the completed formal trial by the configured route completed",
+            "actionId": "formal-trial-dispose"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "The flask is empty and ready for a fresh trial.",
+          "retry": "Record this trial's evidence before discarding the mixture."
+        }
+      },
+      {
+        "id": "formal-trial-dispose-rinse-node",
+        "type": "action",
+        "title": "Rinse the emptied trial receiver",
+        "description": "Rinse the emptied trial receiver",
+        "actionId": "formal-trial-dispose-rinse",
+        "layout": {
+          "x": 40,
+          "y": 3060,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-dispose-rinse-complete",
+            "type": "actionEvidence",
+            "label": "Rinse the emptied trial receiver completed",
+            "actionId": "formal-trial-dispose-rinse"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Rinse the emptied trial receiver: completed.",
+          "retry": "Follow the approved method and resolve missing evidence before continuing."
+        }
+      },
+      {
+        "id": "formal-trial-dispose-discard-rinse-node",
+        "type": "action",
+        "title": "Transfer formal-trial rinsate to the configured waste receiver",
+        "description": "Use only the configured acid-base waste route for the selected formal context.",
+        "actionId": "formal-trial-dispose-discard-rinse",
+        "layout": {
+          "x": 40,
+          "y": 3160,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-dispose-discard-rinse-complete",
+            "type": "actionEvidence",
+            "label": "Transfer formal-trial rinsate to the configured waste receiver completed",
+            "actionId": "formal-trial-dispose-discard-rinse"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "The flask is empty and ready for a fresh trial.",
+          "retry": "Record this trial's evidence before discarding the mixture."
+        }
+      },
+      {
+        "id": "formal-trial-deliver-titrant-retry-dispose-node",
+        "type": "action",
+        "title": "Dispose of the rejected formal trial by the configured route",
+        "description": "Use only the configured acid-base waste route for the selected formal context.",
+        "actionId": "formal-trial-deliver-titrant-retry-dispose",
+        "layout": {
+          "x": 40,
+          "y": 3260,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-deliver-titrant-retry-dispose-complete",
+            "type": "actionEvidence",
+            "label": "Dispose of the rejected formal trial by the configured route completed",
+            "actionId": "formal-trial-deliver-titrant-retry-dispose"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "The flask is empty and ready for a fresh trial.",
+          "retry": "Record this trial's evidence before discarding the mixture."
+        }
+      },
+      {
+        "id": "formal-trial-deliver-titrant-retry-dispose-rinse-node",
+        "type": "action",
+        "title": "Rinse the emptied trial receiver",
+        "description": "Rinse the emptied trial receiver",
+        "actionId": "formal-trial-deliver-titrant-retry-dispose-rinse",
+        "layout": {
+          "x": 40,
+          "y": 3360,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-deliver-titrant-retry-dispose-rinse-complete",
+            "type": "actionEvidence",
+            "label": "Rinse the emptied trial receiver completed",
+            "actionId": "formal-trial-deliver-titrant-retry-dispose-rinse"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Rinse the emptied trial receiver: completed.",
+          "retry": "Follow the approved method and resolve missing evidence before continuing."
+        }
+      },
+      {
+        "id": "formal-trial-deliver-titrant-retry-dispose-discard-rinse-node",
+        "type": "action",
+        "title": "Dispose of the rejected formal trial by the configured route",
+        "description": "Use only the configured acid-base waste route for the selected formal context.",
+        "actionId": "formal-trial-deliver-titrant-retry-dispose-discard-rinse",
+        "layout": {
+          "x": 40,
+          "y": 3460,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-deliver-titrant-retry-dispose-discard-rinse-complete",
+            "type": "actionEvidence",
+            "label": "Dispose of the rejected formal trial by the configured route completed",
+            "actionId": "formal-trial-deliver-titrant-retry-dispose-discard-rinse"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "The flask is empty and ready for a fresh trial.",
+          "retry": "Record this trial's evidence before discarding the mixture."
+        }
+      },
+      {
+        "id": "formal-trial-deliver-titrant-retry-reset-node",
+        "type": "action",
+        "title": "Reset only the rejected trial evidence",
+        "description": "Reset only the rejected trial evidence",
+        "actionId": "formal-trial-deliver-titrant-retry-reset",
+        "layout": {
+          "x": 40,
+          "y": 3560,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "formal-trial-deliver-titrant-retry-reset-complete",
+            "type": "actionEvidence",
+            "label": "Reset only the rejected trial evidence completed",
+            "actionId": "formal-trial-deliver-titrant-retry-reset"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Reset only the rejected trial evidence: completed.",
+          "retry": "Follow the approved method and resolve missing evidence before continuing."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "formal-trial-place-ring-stand-node",
+        "to": "formal-trial-mount-burette-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-mount-burette-node",
+        "to": "formal-trial-condition-burette-drain-residual-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-condition-burette-discard-rinsate-node",
+        "to": "formal-trial-seat-burette-funnel-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-seat-burette-funnel-node",
+        "to": "formal-trial-fill-burette-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-fill-burette-check-tip-node",
+        "to": "formal-trial-remove-burette-funnel-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-remove-burette-funnel-node",
+        "to": "formal-trial-read-initial-burette-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-read-initial-burette-node",
+        "to": "formal-trial-record-initial-burette-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-record-initial-burette-node",
+        "to": "formal-trial-measure-analyte-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-measure-analyte-node",
+        "to": "formal-trial-transfer-analyte-to-receiver-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-position-flask-under-burette-node",
+        "to": "formal-trial-probe-ready-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-probe-ready-node",
+        "to": "formal-trial-place-ph-meter-on-workbench-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-place-ph-meter-on-workbench-node",
+        "to": "formal-trial-immerse-endpoint-ph-probe-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-immerse-endpoint-ph-probe-node",
+        "to": "formal-trial-inspect-prepared-analyte-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-inspect-prepared-analyte-node",
+        "to": "formal-trial-initial-ph-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-initial-ph-node",
+        "to": "formal-trial-initial-row-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-initial-row-node",
+        "to": "formal-trial-deliver-titrant-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-deliver-titrant-node",
+        "to": "formal-trial-deliver-titrant-mix-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-deliver-titrant-mix-node",
+        "to": "formal-trial-deliver-titrant-observe-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-deliver-titrant-observe-node",
+        "to": "formal-trial-deliver-titrant-read-ph-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-deliver-titrant-read-ph-node",
+        "to": "formal-trial-deliver-titrant-record-point-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-deliver-titrant-record-point-node",
+        "to": "formal-trial-deliver-titrant-decide-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-deliver-titrant-decide-node",
+        "to": "formal-trial-deliver-titrant-read-final-node",
+        "label": "Finish after stability review",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-deliver-titrant-read-final-node",
+        "to": "formal-trial-record-final-burette-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-deliver-titrant-decide-node",
+        "to": "formal-trial-deliver-titrant-node",
+        "label": "Continue",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-deliver-titrant-decide-node",
+        "to": "formal-trial-deliver-titrant-retry-dispose-node",
+        "label": "Reject and prepare fresh trial",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-deliver-titrant-retry-dispose-discard-rinse-node",
+        "to": "formal-trial-deliver-titrant-retry-reset-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-deliver-titrant-retry-reset-node",
+        "to": "formal-trial-seat-burette-funnel-node",
+        "label": "Fresh trial",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-condition-burette-node",
+        "to": "formal-trial-condition-burette-discard-rinsate-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-fill-burette-node",
+        "to": "formal-trial-fill-burette-purge-tip-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-fill-burette-purge-tip-node",
+        "to": "formal-trial-fill-burette-check-tip-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-dispose-node",
+        "to": "formal-trial-dispose-rinse-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-dispose-rinse-node",
+        "to": "formal-trial-dispose-discard-rinse-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-deliver-titrant-retry-dispose-node",
+        "to": "formal-trial-deliver-titrant-retry-dispose-rinse-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-deliver-titrant-retry-dispose-rinse-node",
+        "to": "formal-trial-deliver-titrant-retry-dispose-discard-rinse-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-fill-burette-check-tip-node",
+        "to": "formal-trial-fill-burette-purge-tip-node",
+        "label": "Purge again after observing bubbles",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-condition-burette-drain-residual-node",
+        "to": "formal-trial-condition-burette-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-transfer-analyte-to-receiver-node",
+        "to": "formal-trial-position-flask-under-burette-node",
+        "label": "Position the indicator-free receiver beneath the burette",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "formal-trial-record-final-burette-node",
+        "to": "formal-trial-dispose-node",
+        "label": "Dispose only after preserving the completed curve evidence",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [],
+  "commonMistakes": [],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.0.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-06T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "titration",
+      "composition",
+      "indicator-free",
+      "formal-trial"
+    ]
+  },
+  "titrationModels": [
+    {
+      "id": "formal-strong-acid-strong-base-model",
+      "type": "acidBase",
+      "analyte": {
+        "formula": "HCl",
+        "role": "acid",
+        "strength": "strong"
+      },
+      "titrant": {
+        "formula": "NaOH",
+        "role": "base",
+        "strength": "strong"
+      },
+      "analyteMolarityM": 0.1,
+      "analyteVolumeMl": 25,
+      "titrantMolarityM": 0.1,
+      "stoichiometricRatio": {
+        "analyte": 1,
+        "titrant": 1
+      },
+      "dropVolumeMl": 0.05,
+      "endpointOffsetDrops": 0,
+      "maxExtraDrops": 0,
+      "temperatureC": 25,
+      "waterIonProduct": 1e-14,
+      "phPrecision": 2
+    },
+    {
+      "id": "formal-weak-acid-strong-base-model",
+      "type": "acidBase",
+      "analyte": {
+        "formula": "CH3COOH",
+        "role": "acid",
+        "strength": "weak",
+        "equilibriumConstant": 0.000018
+      },
+      "titrant": {
+        "formula": "NaOH",
+        "role": "base",
+        "strength": "strong"
+      },
+      "analyteMolarityM": 0.08,
+      "analyteVolumeMl": 25,
+      "titrantMolarityM": 0.1,
+      "stoichiometricRatio": {
+        "analyte": 1,
+        "titrant": 1
+      },
+      "dropVolumeMl": 0.05,
+      "endpointOffsetDrops": 0,
+      "maxExtraDrops": 0,
+      "temperatureC": 25,
+      "waterIonProduct": 1e-14,
+      "phPrecision": 2
+    },
+    {
+      "id": "formal-weak-base-strong-acid-model",
+      "type": "acidBase",
+      "analyte": {
+        "formula": "NH3",
+        "role": "base",
+        "strength": "weak",
+        "equilibriumConstant": 0.000018
+      },
+      "titrant": {
+        "formula": "HCl",
+        "role": "acid",
+        "strength": "strong"
+      },
+      "analyteMolarityM": 0.075,
+      "analyteVolumeMl": 25,
+      "titrantMolarityM": 0.1,
+      "stoichiometricRatio": {
+        "analyte": 1,
+        "titrant": 1
+      },
+      "dropVolumeMl": 0.05,
+      "endpointOffsetDrops": 0,
+      "maxExtraDrops": 0,
+      "temperatureC": 25,
+      "waterIonProduct": 1e-14,
+      "phPrecision": 2
+    }
+  ],
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry",
+        "kind": "entry",
+        "nodeId": "formal-trial-place-ring-stand-node",
+        "label": "Prepare one configured indicator-free formal trial"
+      },
+      {
+        "id": "exit",
+        "kind": "exit",
+        "nodeId": "formal-trial-dispose-discard-rinse-node",
+        "label": "Recorded curve and configured cleanup complete"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "burette-support",
+        "required": true,
+        "allowedDefinitionIds": [
+          "ring-stand-clamp"
+        ],
+        "sourceInstanceIds": [
+          "formal-ring-stand"
+        ]
+      },
+      {
+        "roleId": "titrant-delivery-device",
+        "required": true,
+        "allowedDefinitionIds": [
+          "burette-50ml"
+        ],
+        "sourceInstanceIds": [
+          "formal-burette"
+        ]
+      },
+      {
+        "roleId": "waste-receiver",
+        "required": true,
+        "allowedDefinitionIds": [
+          "waste-beaker"
+        ],
+        "sourceInstanceIds": [
+          "formal-waste"
+        ]
+      },
+      {
+        "roleId": "titrant-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "reagent-bottle"
+        ],
+        "sourceInstanceIds": [
+          "formal-titrant-stock"
+        ]
+      },
+      {
+        "roleId": "burette-filling-funnel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "funnel"
+        ],
+        "sourceInstanceIds": [
+          "formal-funnel"
+        ]
+      },
+      {
+        "roleId": "analyte-receiver",
+        "required": true,
+        "allowedDefinitionIds": [
+          "erlenmeyer-flask-250ml"
+        ],
+        "sourceInstanceIds": [
+          "formal-receiver"
+        ]
+      },
+      {
+        "roleId": "liquid-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "sample-bottle"
+        ],
+        "sourceInstanceIds": [
+          "formal-analyte-stock"
+        ]
+      },
+      {
+        "roleId": "variable-volume-measuring-device",
+        "required": true,
+        "allowedDefinitionIds": [
+          "graduated-cylinder-25ml"
+        ],
+        "sourceInstanceIds": [
+          "formal-aliquot-cylinder"
+        ]
+      },
+      {
+        "roleId": "measured-solvent-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "graduated-cylinder-25ml"
+        ],
+        "sourceInstanceIds": [
+          "formal-aliquot-cylinder"
+        ]
+      },
+      {
+        "roleId": "receiving-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "erlenmeyer-flask-250ml"
+        ],
+        "sourceInstanceIds": [
+          "formal-receiver"
+        ]
+      },
+      {
+        "roleId": "immersed-probe-instrument",
+        "required": true,
+        "allowedDefinitionIds": [
+          "ph-meter"
+        ],
+        "sourceInstanceIds": [
+          "formal-ph-meter"
+        ]
+      },
+      {
+        "roleId": "immersed-probe-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "erlenmeyer-flask-250ml"
+        ],
+        "sourceInstanceIds": [
+          "formal-receiver"
+        ]
+      },
+      {
+        "roleId": "rinse-water-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "wash-bottle"
+        ],
+        "sourceInstanceIds": [
+          "formal-rinse-water"
+        ]
+      },
+      {
+        "roleId": "rinsed-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "erlenmeyer-flask-250ml"
+        ],
+        "sourceInstanceIds": [
+          "formal-receiver"
+        ]
+      }
+    ],
+    "modelSlots": [
+      {
+        "id": "formal-strong-acid-strong-base-model",
+        "kind": "titration",
+        "sourceModelId": "formal-strong-acid-strong-base-model",
+        "required": true
+      },
+      {
+        "id": "formal-weak-acid-strong-base-model",
+        "kind": "titration",
+        "sourceModelId": "formal-weak-acid-strong-base-model",
+        "required": true
+      },
+      {
+        "id": "formal-weak-base-strong-acid-model",
+        "kind": "titration",
+        "sourceModelId": "formal-weak-base-strong-acid-model",
+        "required": true
+      }
+    ],
+    "configurationSlots": [
+      {
+        "id": "contextId",
+        "required": true,
+        "valueType": "string",
+        "allowedValues": [
+          "strong-acid-strong-base",
+          "weak-acid-strong-base",
+          "weak-base-strong-acid"
+        ],
+        "defaultValue": "strong-acid-strong-base"
+      },
+      {
+        "id": "formalContextModelId",
+        "required": true,
+        "valueType": "string",
+        "allowedValues": [
+          "formal-strong-acid-strong-base-model",
+          "formal-weak-acid-strong-base-model",
+          "formal-weak-base-strong-acid-model"
+        ],
+        "defaultValue": "formal-strong-acid-strong-base-model"
+      },
+      {
+        "id": "aliquotMl",
+        "required": true,
+        "valueType": "number",
+        "defaultValue": 25
+      },
+      {
+        "id": "maximumIncrementMl",
+        "required": true,
+        "valueType": "number",
+        "defaultValue": 5
+      },
+      {
+        "id": "maximumDeliveryMl",
+        "required": true,
+        "valueType": "number",
+        "defaultValue": 50
+      },
+      {
+        "id": "stabilityDeltaPh",
+        "required": true,
+        "valueType": "number",
+        "defaultValue": 0.12
+      },
+      {
+        "id": "stabilityConsecutiveReadings",
+        "required": true,
+        "valueType": "number",
+        "defaultValue": 2
+      },
+      {
+        "id": "minimumPostSteepRegionMl",
+        "required": true,
+        "valueType": "number",
+        "defaultValue": 6
+      },
+      {
+        "id": "conditioningVolumeMl",
+        "required": true,
+        "valueType": "number",
+        "defaultValue": 1
+      },
+      {
+        "id": "tipPurgeMl",
+        "required": true,
+        "valueType": "number",
+        "defaultValue": 0.2
+      },
+      {
+        "id": "rinseVolumeMl",
+        "required": true,
+        "valueType": "number",
+        "defaultValue": 2
+      },
+      {
+        "id": "indicatorPolicy",
+        "required": true,
+        "valueType": "string",
+        "allowedValues": [
+          "indicator-free-formal"
+        ],
+        "defaultValue": "indicator-free-formal"
+      },
+      {
+        "id": "preparationProtocol",
+        "required": true,
+        "valueType": "string",
+        "defaultValue": "Teacher-approved sample, apparatus, probe, increment, and stability configuration required before running"
+      },
+      {
+        "id": "wasteProtocol",
+        "required": true,
+        "valueType": "string",
+        "defaultValue": "Teacher-approved acid-base neutralization and disposal route required before running"
+      }
+    ],
+    "approvalGates": [],
+    "variants": [
+      {
+        "id": "strong-acid-strong-base",
+        "label": "Known strong acid analyte with known strong base titrant",
+        "enabledWhen": {
+          "kind": "configuration",
+          "slotId": "contextId",
+          "equals": "strong-acid-strong-base"
+        }
+      },
+      {
+        "id": "weak-acid-strong-base",
+        "label": "Unknown weak acid analyte with known strong base titrant",
+        "enabledWhen": {
+          "kind": "configuration",
+          "slotId": "contextId",
+          "equals": "weak-acid-strong-base"
+        }
+      },
+      {
+        "id": "weak-base-strong-acid",
+        "label": "Unknown weak base analyte with known strong acid titrant",
+        "enabledWhen": {
+          "kind": "configuration",
+          "slotId": "contextId",
+          "equals": "weak-base-strong-acid"
+        }
+      }
+    ],
+    "evidenceOutputs": [
+      {
+        "id": "formal-initial-point-evidence",
+        "kind": "notebook",
+        "actionId": "formal-trial-initial-row",
+        "referenceId": "formal-trial-initial-row",
+        "required": true
+      },
+      {
+        "id": "formal-curve-point-evidence",
+        "kind": "notebook",
+        "actionId": "formal-trial-deliver-titrant-record-point",
+        "referenceId": "formal-trial-deliver-titrant-record-point",
+        "required": true
+      },
+      {
+        "id": "formal-curve-stability-evidence",
+        "kind": "notebook",
+        "actionId": "formal-trial-deliver-titrant-decide",
+        "referenceId": "formal-trial-deliver-titrant-decide",
+        "required": true
+      },
+      {
+        "id": "formal-final-burette-evidence",
+        "kind": "measurement",
+        "actionId": "formal-trial-record-final-burette",
+        "referenceId": "formal-trial-burette-final-volume",
+        "required": true
+      }
+    ],
+    "completion": {
+      "exitPortIds": [
+        "exit"
+      ],
+      "requiredEvidenceOutputIds": [
+        "formal-initial-point-evidence",
+        "formal-curve-point-evidence",
+        "formal-curve-stability-evidence",
+        "formal-final-burette-evidence"
+      ],
+      "requiredValidationRuleIds": []
+    },
+    "catalogDisposition": "lab-scoped",
+    "legacyActionEffects": [
+      {
+        "actionId": "formal-trial-probe-ready",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

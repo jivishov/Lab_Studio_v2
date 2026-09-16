@@ -1,0 +1,831 @@
+{
+  "id": "crystal-violet-waste-treatment",
+  "title": "Crystal Violet Waste Treatment",
+  "learningGoal": "Bleach remaining crystal violet with NaOH, then neutralize excess base under teacher-configured acid, pH, and disposal rules.",
+  "requiredEquipment": [
+    "sample-bottle",
+    "reagent-bottle",
+    "waste-beaker",
+    "ph-paper",
+    "cuvette",
+    "spectrophotometer"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "cv11-stock-bottle",
+        "definitionId": "sample-bottle",
+        "label": "Remaining crystal violet stock",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "25.0 micromolar crystal violet",
+          "volumeMl": 20,
+          "solutes": [],
+          "concentration": {
+            "value": 0.000025,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "purple-solution"
+        }
+      },
+      {
+        "id": "cv11-naoh-bottle",
+        "definitionId": "reagent-bottle",
+        "label": "0.200 M sodium hydroxide",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "0.200 M sodium hydroxide",
+          "volumeMl": 20,
+          "solutes": [],
+          "concentration": {
+            "value": 0.2,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "cv11-waste-beaker",
+        "definitionId": "waste-beaker",
+        "label": "Crystal violet treatment waste beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "cv11-approved-acid-bottle",
+        "definitionId": "reagent-bottle",
+        "label": "Teacher-approved neutralizing acid",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Teacher-approved neutralizing acid",
+          "volumeMl": 10,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "cv11-ph-paper",
+        "definitionId": "ph-paper",
+        "label": "pH paper for teacher-approved endpoint",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "cv11-kinetic-cuvette",
+        "definitionId": "cuvette",
+        "label": "Kinetic reaction cuvette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "cv11-spectrophotometer",
+        "definitionId": "spectrophotometer",
+        "label": "Spectrophotometer",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "cv11-remove-kinetic-cuvette",
+      "verb": "place",
+      "label": "Remove the kinetic cuvette",
+      "parameters": {
+        "equipmentDefinitionId": "cuvette",
+        "equipmentInstanceId": "cv11-kinetic-cuvette",
+        "location": "workbench"
+      },
+      "atomId": "atom.place.remove-cuvette",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "cuvette",
+        "stationId": "workbench",
+        "accessibleLabel": "Remove the kinetic cuvette from the spectrophotometer.",
+        "successCue": "The sample compartment is free.",
+        "invalidCue": "Confirm the approved stopping threshold before clearing the instrument."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-remove-kinetic-cuvette-needs-stop",
+          "type": "notebookEntry",
+          "label": "The approved percent-completion stop rule has been confirmed",
+          "notebookTag": "stop-rule"
+        }
+      ],
+      "stateChanges": [
+        "The sample compartment is empty and the run is closed."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The sample compartment is empty and the run is closed.",
+        "invalid": "The action was not accepted. Confirm the stopping threshold first."
+      },
+      "evidence": [
+        "place",
+        "cuvette",
+        "instrument-slot",
+        "kinetics"
+      ]
+    },
+    {
+      "id": "cv11-transfer-cv-waste",
+      "verb": "transfer",
+      "label": "Collect remaining crystal-violet waste",
+      "parameters": {
+        "sourceDefinitionId": "sample-bottle",
+        "sourceInstanceId": "cv11-stock-bottle",
+        "targetDefinitionId": "waste-beaker",
+        "targetInstanceId": "cv11-waste-beaker",
+        "volumeMl": 10
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "sample-bottle",
+        "targetDefinitionId": "waste-beaker",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Collect remaining crystal violet in the designated waste beaker.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Remaining crystal violet is contained for chemical treatment."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Remaining crystal violet is contained for chemical treatment.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "transfer",
+        "cv-waste"
+      ],
+      "atomId": "atom.transfer.route-to-waste-treatment",
+      "equipmentRoleBindings": {
+        "liquid-source": "sample-bottle",
+        "waste-receiver": "waste-beaker"
+      }
+    },
+    {
+      "id": "cv11-bleach-waste-with-naoh",
+      "verb": "transfer",
+      "label": "Add sufficient NaOH until the CV waste is bleached",
+      "parameters": {
+        "sourceDefinitionId": "reagent-bottle",
+        "sourceInstanceId": "cv11-naoh-bottle",
+        "targetDefinitionId": "waste-beaker",
+        "targetInstanceId": "cv11-waste-beaker",
+        "volumeMl": 10,
+        "endpoint": "teacher-verified bleached state",
+        "endpointProvenance": "teacher-verified"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "reagent-bottle",
+        "targetDefinitionId": "waste-beaker",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Add NaOH to the contained CV waste under teacher supervision.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-bleach-needs-waste-collected",
+          "type": "actionEvidence",
+          "label": "The residual crystal violet is in the treatment vessel",
+          "actionId": "cv11-transfer-cv-waste"
+        }
+      ],
+      "stateChanges": [
+        "The CV waste reaches a teacher-verified bleached state."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The CV waste reaches a teacher-verified bleached state.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "transfer",
+        "bleach-treatment"
+      ],
+      "atomId": "atom.transfer.treat-waste-to-endpoint",
+      "equipmentRoleBindings": {
+        "liquid-source": "reagent-bottle",
+        "waste-receiver": "waste-beaker"
+      }
+    },
+    {
+      "id": "cv11-verify-bleached-waste",
+      "verb": "observe",
+      "label": "Verify that the CV waste is bleached",
+      "parameters": {
+        "note": "The teacher verifies decolorization before neutralization; appearance alone is not used to infer neutral pH.",
+        "tag": "bleached-waste",
+        "verificationProvenance": "teacher-verified"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Verify that the CV waste is bleached.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Verify that the CV waste is bleached is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Verify that the CV waste is bleached is recorded.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "bleached-waste"
+      ]
+    },
+    {
+      "id": "cv11-neutralize-excess-base",
+      "verb": "transfer",
+      "label": "Neutralize excess base with the approved acid",
+      "parameters": {
+        "sourceDefinitionId": "reagent-bottle",
+        "sourceInstanceId": "cv11-approved-acid-bottle",
+        "targetDefinitionId": "waste-beaker",
+        "targetInstanceId": "cv11-waste-beaker",
+        "volumeMl": 1,
+        "acidIdentity": "teacher-configured",
+        "endpoint": "teacher-configured",
+        "configurationRequired": true,
+        "unresolvedConfirmationPoint": "Investigation 11 confirmation point 6: the acid identity, the pH target, and the local disposal rule are all teacher-configured."
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "reagent-bottle",
+        "targetDefinitionId": "waste-beaker",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Add only the teacher-approved neutralizing acid to the bleached waste.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-neutralize-needs-bleached",
+          "type": "notebookEntry",
+          "label": "Decolorisation has been verified by the teacher",
+          "notebookTag": "bleached-waste"
+        }
+      ],
+      "stateChanges": [
+        "Neutralization proceeds only under the configured acid, endpoint, and local disposal rule."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Neutralization proceeds only under the configured acid, endpoint, and local disposal rule.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "transfer",
+        "neutralization",
+        "teacher-configured"
+      ],
+      "atomId": "atom.transfer.treat-waste-to-endpoint",
+      "equipmentRoleBindings": {
+        "liquid-source": "reagent-bottle",
+        "waste-receiver": "waste-beaker"
+      }
+    },
+    {
+      "id": "cv11-verify-neutralization-and-disposal",
+      "verb": "observe",
+      "label": "Verify neutralization and follow the local disposal rule",
+      "parameters": {
+        "note": "Use the teacher-configured pH target and local disposal instruction. Do not dispose until the teacher confirms both.",
+        "tag": "disposal-approval",
+        "acidIdentity": "teacher-configured",
+        "disposalTarget": "teacher-configured"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Verify neutralization and follow the local disposal rule.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Verify neutralization and follow the local disposal rule is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Verify neutralization and follow the local disposal rule is recorded.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "disposal-approval"
+      ]
+    }
+  ],
+  "process": {
+    "startNodeId": "cv11-remove-kinetic-cuvette-node",
+    "nodes": [
+      {
+        "id": "cv11-remove-kinetic-cuvette-node",
+        "type": "action",
+        "title": "Remove the kinetic cuvette",
+        "description": "The sample compartment is empty and the run is closed.",
+        "actionId": "cv11-remove-kinetic-cuvette",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-remove-kinetic-cuvette-node-done",
+            "type": "actionEvidence",
+            "label": "cv11-remove-kinetic-cuvette was completed.",
+            "actionId": "cv11-remove-kinetic-cuvette"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Sample compartment free.",
+          "retry": "Confirm the approved percent-completion stop rule first."
+        }
+      },
+      {
+        "id": "cv11-transfer-cv-waste-node",
+        "type": "action",
+        "title": "Collect remaining crystal-violet waste",
+        "description": "Remaining crystal violet is contained for chemical treatment.",
+        "actionId": "cv11-transfer-cv-waste",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-transfer-cv-waste-complete",
+            "type": "actionEvidence",
+            "label": "Collect remaining crystal-violet waste was completed.",
+            "actionId": "cv11-transfer-cv-waste"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Collect remaining crystal-violet waste complete.",
+          "retry": "Review Collect remaining crystal-violet waste and try again."
+        }
+      },
+      {
+        "id": "cv11-bleach-waste-with-naoh-node",
+        "type": "action",
+        "title": "Add sufficient NaOH until the CV waste is bleached",
+        "description": "The CV waste reaches a teacher-verified bleached state.",
+        "actionId": "cv11-bleach-waste-with-naoh",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-bleach-waste-with-naoh-complete",
+            "type": "actionEvidence",
+            "label": "Add sufficient NaOH until the CV waste is bleached was completed.",
+            "actionId": "cv11-bleach-waste-with-naoh"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Add sufficient NaOH until the CV waste is bleached complete.",
+          "retry": "Review Add sufficient NaOH until the CV waste is bleached and try again."
+        }
+      },
+      {
+        "id": "cv11-verify-bleached-waste-node",
+        "type": "observation",
+        "title": "Verify that the CV waste is bleached",
+        "description": "Verify that the CV waste is bleached is recorded.",
+        "actionId": "cv11-verify-bleached-waste",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-verify-bleached-waste-complete",
+            "type": "actionEvidence",
+            "label": "Verify that the CV waste is bleached was completed.",
+            "actionId": "cv11-verify-bleached-waste"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Verify that the CV waste is bleached complete.",
+          "retry": "Review Verify that the CV waste is bleached and try again."
+        }
+      },
+      {
+        "id": "cv11-neutralize-excess-base-node",
+        "type": "action",
+        "title": "Neutralize excess base with the approved acid",
+        "description": "Neutralization proceeds only under the configured acid, endpoint, and local disposal rule.",
+        "actionId": "cv11-neutralize-excess-base",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-neutralize-excess-base-complete",
+            "type": "actionEvidence",
+            "label": "Neutralize excess base with the approved acid was completed.",
+            "actionId": "cv11-neutralize-excess-base"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Neutralize excess base with the approved acid complete.",
+          "retry": "Review Neutralize excess base with the approved acid and try again."
+        }
+      },
+      {
+        "id": "cv11-verify-neutralization-and-disposal-node",
+        "type": "observation",
+        "title": "Verify neutralization and follow the local disposal rule",
+        "description": "Verify neutralization and follow the local disposal rule is recorded.",
+        "actionId": "cv11-verify-neutralization-and-disposal",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-verify-neutralization-and-disposal-complete",
+            "type": "actionEvidence",
+            "label": "Verify neutralization and follow the local disposal rule was completed.",
+            "actionId": "cv11-verify-neutralization-and-disposal"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Verify neutralization and follow the local disposal rule complete.",
+          "retry": "Review Verify neutralization and follow the local disposal rule and try again."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "cv11-remove-kinetic-cuvette-node",
+        "to": "cv11-transfer-cv-waste-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-transfer-cv-waste-node",
+        "to": "cv11-bleach-waste-with-naoh-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-bleach-waste-with-naoh-node",
+        "to": "cv11-verify-bleached-waste-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-verify-bleached-waste-node",
+        "to": "cv11-neutralize-excess-base-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-neutralize-excess-base-node",
+        "to": "cv11-verify-neutralization-and-disposal-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "the current node expects a different action",
+      "message": "That action is out of sequence for the current investigation step.",
+      "recovery": "Return to the highlighted process step and preserve the approved design."
+    },
+    {
+      "id": "cross-contamination",
+      "when": "a pipette assigned to another liquid is selected",
+      "message": "That pipette is assigned to a different solution.",
+      "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+    },
+    {
+      "id": "unapproved-configuration",
+      "when": "a teacher-configured decision has not been approved",
+      "message": "This investigation choice still requires teacher approval.",
+      "recovery": "Submit the design choice and wait for approval before continuing."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.2.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-05T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "chemistry",
+      "crystal-violet",
+      "safety",
+      "bleach",
+      "neutralization",
+      "teacher-configured-disposal",
+      "composition",
+      "cycle-08"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry",
+        "kind": "entry",
+        "nodeId": "cv11-remove-kinetic-cuvette-node"
+      },
+      {
+        "id": "exit",
+        "kind": "exit",
+        "nodeId": "cv11-verify-neutralization-and-disposal-node"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "photometer-instrument",
+        "required": true,
+        "allowedDefinitionIds": [
+          "spectrophotometer"
+        ],
+        "sourceInstanceIds": [
+          "cv11-spectrophotometer"
+        ]
+      },
+      {
+        "roleId": "photometer-sample-holder",
+        "required": true,
+        "allowedDefinitionIds": [
+          "cuvette"
+        ],
+        "sourceInstanceIds": [
+          "cv11-kinetic-cuvette"
+        ]
+      },
+      {
+        "roleId": "liquid-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "sample-bottle",
+          "reagent-bottle"
+        ],
+        "sourceInstanceIds": [
+          "cv11-stock-bottle",
+          "cv11-naoh-bottle",
+          "cv11-approved-acid-bottle"
+        ]
+      },
+      {
+        "roleId": "waste-receiver",
+        "required": true,
+        "allowedDefinitionIds": [
+          "waste-beaker"
+        ],
+        "sourceInstanceIds": [
+          "cv11-waste-beaker"
+        ]
+      }
+    ],
+    "modelSlots": [],
+    "configurationSlots": [],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [
+      {
+        "id": "evidence-cv11-remove-kinetic-cuvette",
+        "kind": "action-evidence",
+        "actionId": "cv11-remove-kinetic-cuvette"
+      },
+      {
+        "id": "evidence-cv11-transfer-cv-waste",
+        "kind": "action-evidence",
+        "actionId": "cv11-transfer-cv-waste"
+      },
+      {
+        "id": "evidence-cv11-bleach-waste-with-naoh",
+        "kind": "action-evidence",
+        "actionId": "cv11-bleach-waste-with-naoh"
+      },
+      {
+        "id": "evidence-cv11-verify-bleached-waste",
+        "kind": "notebook",
+        "actionId": "cv11-verify-bleached-waste"
+      },
+      {
+        "id": "evidence-cv11-neutralize-excess-base",
+        "kind": "action-evidence",
+        "actionId": "cv11-neutralize-excess-base"
+      },
+      {
+        "id": "evidence-cv11-verify-neutralization-and-disposal",
+        "kind": "notebook",
+        "actionId": "cv11-verify-neutralization-and-disposal"
+      }
+    ],
+    "completion": {
+      "exitPortIds": [
+        "exit"
+      ],
+      "requiredEvidenceOutputIds": [],
+      "requiredValidationRuleIds": []
+    },
+    "catalogDisposition": "lab-scoped",
+    "legacyActionEffects": [
+      {
+        "actionId": "cv11-verify-bleached-waste",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "cv11-verify-neutralization-and-disposal",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

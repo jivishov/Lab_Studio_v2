@@ -1,0 +1,4350 @@
+{
+  "id": "crystal-violet-spectrophotometer-calibration",
+  "title": "Crystal Violet Spectrophotometer Calibration",
+  "learningGoal": "Choose and approve a wavelength and blank, then build a five-point CV calibration from four independent standards plus stock.",
+  "requiredEquipment": [
+    "sample-bottle",
+    "test-tube",
+    "cuvette",
+    "spectrophotometer"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "cv11-stock-bottle",
+        "definitionId": "sample-bottle",
+        "label": "25.0 micromolar crystal violet stock",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "25.0 micromolar crystal violet",
+          "volumeMl": 40,
+          "solutes": [],
+          "concentration": {
+            "value": 0.000025,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "purple-solution"
+        }
+      },
+      {
+        "id": "cv11-standard-05-tube",
+        "definitionId": "test-tube",
+        "label": "5 micromolar CV standard tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "5 micromolar crystal violet",
+          "volumeMl": 10,
+          "solutes": [],
+          "concentration": {
+            "value": 0.000005,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "purple-solution"
+        }
+      },
+      {
+        "id": "cv11-standard-10-tube",
+        "definitionId": "test-tube",
+        "label": "10 micromolar CV standard tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "10 micromolar crystal violet",
+          "volumeMl": 10,
+          "solutes": [],
+          "concentration": {
+            "value": 0.00001,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "purple-solution"
+        }
+      },
+      {
+        "id": "cv11-standard-15-tube",
+        "definitionId": "test-tube",
+        "label": "15 micromolar CV standard tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "15 micromolar crystal violet",
+          "volumeMl": 10,
+          "solutes": [],
+          "concentration": {
+            "value": 0.000015,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "purple-solution"
+        }
+      },
+      {
+        "id": "cv11-standard-20-tube",
+        "definitionId": "test-tube",
+        "label": "20 micromolar CV standard tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "20 micromolar crystal violet",
+          "volumeMl": 10,
+          "solutes": [],
+          "concentration": {
+            "value": 0.00002,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "purple-solution"
+        }
+      },
+      {
+        "id": "cv11-spectrophotometer",
+        "definitionId": "spectrophotometer",
+        "label": "Spectrophotometer",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "cv11-blank-cuvette",
+        "definitionId": "cuvette",
+        "label": "Teacher-approved blank cuvette",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "Teacher-approved blank",
+          "volumeMl": 3,
+          "solutes": [],
+          "concentration": {
+            "value": 0,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "cv11-calibration-05-cuvette",
+        "definitionId": "cuvette",
+        "label": "5 micromolar calibration cuvette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "cv11-calibration-10-cuvette",
+        "definitionId": "cuvette",
+        "label": "10 micromolar calibration cuvette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "cv11-calibration-15-cuvette",
+        "definitionId": "cuvette",
+        "label": "15 micromolar calibration cuvette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "cv11-calibration-20-cuvette",
+        "definitionId": "cuvette",
+        "label": "20 micromolar calibration cuvette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "cv11-calibration-25-cuvette",
+        "definitionId": "cuvette",
+        "label": "25 micromolar calibration cuvette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "cv11-select-wavelength",
+      "verb": "observe",
+      "label": "Select and justify a candidate wavelength",
+      "parameters": {
+        "note": "The student selects a wavelength from the supplied spectrum/device options, balancing sensitivity against the approved absorbance range.",
+        "tag": "wavelength-design",
+        "selectedWavelengthNm": "student-selected-and-teacher-approved",
+        "configurationSource": "Teacher-approved simulator profile selected after the student justifies sensitivity and range.",
+        "reliableAbsorbanceMaximum": "teacher-configured"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Select and justify a candidate wavelength.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Select and justify a candidate wavelength is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Select and justify a candidate wavelength is recorded.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "wavelength-design"
+      ]
+    },
+    {
+      "id": "cv11-predict-calibration-range",
+      "verb": "observe",
+      "label": "Predict stock and standard absorbances",
+      "parameters": {
+        "note": "The student predicts whether the 5, 10, 15, 20, and 25 micromolar solutions remain in the teacher-approved reliable range.",
+        "tag": "range-prediction"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Predict stock and standard absorbances.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Predict stock and standard absorbances is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Predict stock and standard absorbances is recorded.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "range-prediction"
+      ]
+    },
+    {
+      "id": "cv11-approve-wavelength-and-blank",
+      "verb": "observe",
+      "label": "Obtain approval for wavelength, blank, and range rules",
+      "parameters": {
+        "note": "Teacher approval records the wavelength, blank composition, absorbance reliability rule, and calibration-fit rule; the source procedure does not supply universal values.",
+        "tag": "teacher-approval",
+        "wavelengthNm": "student-selected-and-teacher-approved",
+        "blankDescription": "Teacher-approved blank; composition intentionally remains unspecified until configured.",
+        "reliableAbsorbanceMaximum": "teacher-configured",
+        "minimumCalibrationR2": "teacher-configured"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Obtain approval for wavelength, blank, and range rules.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Obtain approval for wavelength, blank, and range rules is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Obtain approval for wavelength, blank, and range rules is recorded.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "teacher-approval"
+      ]
+    },
+    {
+      "id": "cv11-place-spectrophotometer",
+      "verb": "place",
+      "label": "Place the spectrophotometer on the workbench",
+      "parameters": {
+        "equipmentDefinitionId": "spectrophotometer",
+        "equipmentInstanceId": "cv11-spectrophotometer",
+        "location": "workbench"
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "spectrophotometer",
+        "stationId": "workbench",
+        "accessibleLabel": "Place the spectrophotometer on the workbench.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "The spectrophotometer is ready at the approved wavelength."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The spectrophotometer is ready at the approved wavelength.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.photometer",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer"
+      }
+    },
+    {
+      "id": "cv11-set-approved-wavelength",
+      "verb": "observe",
+      "label": "Set the approved measurement wavelength",
+      "parameters": {
+        "measurementId": "cv11-approved-wavelength-nm",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputKey": "cv11-approved-wavelength-nm",
+        "inputLabel": "Approved measurement wavelength",
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "nm",
+        "tag": "instrument-wavelength-set",
+        "photometerInstanceId": "cv11-spectrophotometer",
+        "configurationProvenance": "teacher-approved",
+        "unresolvedConfirmationPoint": "Investigation 11 confirmation point 1: the device and wavelength are approved by the instructor; finding 3.4 states the exact wavelength depends on the device and on Figure 1.",
+        "configurationQuantity": "approved measurement wavelength",
+        "photometricMode": "absorbance"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "measurementId",
+        "accessibleLabel": "Set the instrument to the approved measurement wavelength.",
+        "successCue": "The instrument's measurement wavelength is on record.",
+        "invalidCue": "Obtain approval for the wavelength before setting the instrument."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-set-approved-wavelength-needs-approval",
+          "type": "notebookEntry",
+          "label": "The wavelength, blank, and range rules are approved",
+          "notebookTag": "teacher-approval"
+        }
+      ],
+      "stateChanges": [
+        "The instrument is set to the approved measurement wavelength."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The instrument is set to the approved measurement wavelength.",
+        "invalid": "The action was not accepted. Obtain approval before configuring the instrument."
+      },
+      "evidence": [
+        "observe",
+        "configuration",
+        "wavelength"
+      ],
+      "atomId": "atom.observe.configure-photometer",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer"
+      }
+    },
+    {
+      "id": "cv11-prepare-approved-blank",
+      "verb": "observe",
+      "label": "Prepare the teacher-approved blank",
+      "parameters": {
+        "note": "Teacher-approved blank; composition intentionally remains unspecified until configured.",
+        "tag": "blank-configuration",
+        "cuvetteInstanceId": "cv11-blank-cuvette",
+        "configurationProvenance": "teacher-approved",
+        "unresolvedConfirmationPoint": "Investigation 11 confirmation point 1 and finding 3.7: the manual says to use an appropriate blank but does not define its composition, so the instructor defines it."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Prepare the teacher-approved blank.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-prepare-approved-blank-needs-wavelength",
+          "type": "measurementRecorded",
+          "label": "The approved wavelength is set on the instrument",
+          "measurementId": "cv11-approved-wavelength-nm"
+        }
+      ],
+      "stateChanges": [
+        "Prepare the teacher-approved blank is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Prepare the teacher-approved blank is recorded.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "blank-configuration"
+      ],
+      "atomId": "atom.observe.prepare-cuvette-optical-faces",
+      "equipmentRoleBindings": {
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-insert-blank",
+      "verb": "place",
+      "label": "Insert the approved blank cuvette",
+      "parameters": {
+        "equipmentDefinitionId": "cuvette",
+        "equipmentInstanceId": "cv11-blank-cuvette",
+        "sourceDefinitionId": "cuvette",
+        "targetDefinitionId": "spectrophotometer",
+        "targetInstanceId": "cv11-spectrophotometer",
+        "snapZoneId": "spectrophotometer-cuvette-slot"
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "cuvette",
+        "targetDefinitionId": "spectrophotometer",
+        "snapZoneId": "spectrophotometer-cuvette-slot",
+        "accessibleLabel": "Insert the clean, wiped blank cuvette into the spectrophotometer slot.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-insert-blank-needs-preparation",
+          "type": "actionEvidence",
+          "label": "The approved blank cuvette has been prepared",
+          "actionId": "cv11-prepare-approved-blank"
+        }
+      ],
+      "stateChanges": [
+        "The approved blank cuvette is inserted with a consistent orientation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The approved blank cuvette is inserted with a consistent orientation.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.insert-cuvette",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-zero-spectrophotometer",
+      "verb": "observe",
+      "label": "Zero the spectrophotometer with the approved blank",
+      "parameters": {
+        "sourceDefinitionId": "cuvette",
+        "sourceInstanceId": "cv11-blank-cuvette",
+        "note": "The instrument is zeroed only after the approved blank is inserted at the approved wavelength.",
+        "tag": "instrument-blanked",
+        "photometerOperation": "zero",
+        "photometerInstanceId": "cv11-spectrophotometer",
+        "photometerDefinitionId": "spectrophotometer",
+        "wavelengthMeasurementId": "cv11-approved-wavelength-nm",
+        "cuvetteInstanceId": "cv11-blank-cuvette"
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "cuvette",
+        "stationId": "spectrophotometer",
+        "accessibleLabel": "Zero the spectrophotometer using the inserted blank.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-zero-needs-blank-seated",
+          "type": "actionEvidence",
+          "label": "The approved blank is seated in the instrument",
+          "actionId": "cv11-insert-blank"
+        }
+      ],
+      "stateChanges": [
+        "The spectrophotometer is blanked for the approved matrix."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The spectrophotometer is blanked for the approved matrix.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "observe",
+        "instrument-blanked"
+      ],
+      "atomId": "atom.observe.blank-photometer",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-remove-blank",
+      "verb": "place",
+      "label": "Remove the approved blank cuvette",
+      "parameters": {
+        "equipmentDefinitionId": "cuvette",
+        "equipmentInstanceId": "cv11-blank-cuvette",
+        "location": "workbench"
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "cuvette",
+        "stationId": "workbench",
+        "accessibleLabel": "Remove the approved blank cuvette.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-remove-blank-needs-zero",
+          "type": "notebookEntry",
+          "label": "The instrument has been zeroed against the approved blank",
+          "notebookTag": "instrument-blanked"
+        }
+      ],
+      "stateChanges": [
+        "Remove the approved blank cuvette; the spectrophotometer slot is clear for the next cuvette."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Remove the approved blank cuvette; the spectrophotometer slot is clear for the next cuvette.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "place",
+        "cuvette-removed",
+        "instrument-slot-clear"
+      ],
+      "atomId": "atom.place.remove-cuvette",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-condition-cuvette-05",
+      "verb": "observe",
+      "label": "Record optical-face preparation for the 5 micromolar cuvette",
+      "parameters": {
+        "note": "Record the teacher-approved conditioning, wiping, and orientation rule for the 5 micromolar cuvette. This notebook action does not fill the cuvette; the separate following transfer does.",
+        "tag": "cuvette-technique",
+        "cuvetteInstanceId": "cv11-calibration-05-cuvette",
+        "configurationProvenance": "teacher-approved",
+        "evidenceBoundary": "records the teacher rule; does not claim a physical fill"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Condition, fill, wipe, and orient the 5 micromolar cuvette.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-condition-cuvette-05-needs-zero",
+          "type": "notebookEntry",
+          "label": "The instrument has been zeroed against the approved blank",
+          "notebookTag": "instrument-blanked"
+        }
+      ],
+      "stateChanges": [
+        "The teacher-approved optical handling rule is recorded for this cuvette; its fill remains a separate operation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Condition, fill, wipe, and orient the 5 micromolar cuvette is recorded.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "cuvette-technique"
+      ],
+      "atomId": "atom.observe.prepare-cuvette-optical-faces",
+      "equipmentRoleBindings": {
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-fill-cuvette-05",
+      "verb": "transfer",
+      "label": "Fill the 5 micromolar calibration cuvette",
+      "parameters": {
+        "sourceDefinitionId": "test-tube",
+        "sourceInstanceId": "cv11-standard-05-tube",
+        "targetDefinitionId": "cuvette",
+        "targetInstanceId": "cv11-calibration-05-cuvette",
+        "volumeMl": 3,
+        "concentrationUm": 5
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "test-tube",
+        "targetDefinitionId": "cuvette",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Fill the labeled 5 micromolar cuvette without contaminating the source.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "The 5 micromolar cuvette contains a fresh calibration sample."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The 5 micromolar cuvette contains a fresh calibration sample.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "transfer",
+        "calibration-sample"
+      ],
+      "atomId": "atom.transfer.fill-cuvette",
+      "equipmentRoleBindings": {
+        "sample-source": "test-tube",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-insert-cuvette-05",
+      "verb": "place",
+      "label": "Insert the 5 micromolar calibration cuvette",
+      "parameters": {
+        "equipmentDefinitionId": "cuvette",
+        "equipmentInstanceId": "cv11-calibration-05-cuvette",
+        "sourceDefinitionId": "cuvette",
+        "targetDefinitionId": "spectrophotometer",
+        "targetInstanceId": "cv11-spectrophotometer",
+        "snapZoneId": "spectrophotometer-cuvette-slot"
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "cuvette",
+        "targetDefinitionId": "spectrophotometer",
+        "snapZoneId": "spectrophotometer-cuvette-slot",
+        "accessibleLabel": "Insert the wiped calibration cuvette into the spectrophotometer slot.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-insert-cuvette-05-needs-fill",
+          "type": "actionEvidence",
+          "label": "The 5 micromolar cuvette has been filled",
+          "actionId": "cv11-fill-cuvette-05"
+        }
+      ],
+      "stateChanges": [
+        "The 5 micromolar cuvette is inserted consistently."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The 5 micromolar cuvette is inserted consistently.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.insert-cuvette",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-read-absorbance-05",
+      "verb": "observe",
+      "label": "Read the 5 micromolar absorbance",
+      "parameters": {
+        "sourceDefinitionId": "cuvette",
+        "sourceInstanceId": "cv11-calibration-05-cuvette",
+        "note": "Read the fresh 5 micromolar sample only after blanking and checking the teacher-approved reliability rule.",
+        "tag": "absorbance-read",
+        "photometerOperation": "read",
+        "photometricQuantity": "absorbance",
+        "photometerInstanceId": "cv11-spectrophotometer",
+        "photometerDefinitionId": "spectrophotometer",
+        "wavelengthMeasurementId": "cv11-approved-wavelength-nm",
+        "requiresZeroNotebookTag": "instrument-blanked",
+        "cuvetteInstanceId": "cv11-calibration-05-cuvette",
+        "measurementId": "cv11-calibration-absorbance-05",
+        "label": "5 micromolar absorbance",
+        "instrumentReadingValue": 0.19,
+        "readingProvenance": "teacher-approved simulator calibration profile",
+        "concentrationUm": 5,
+        "reliableAbsorbanceMaximum": "teacher-configured"
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "cuvette",
+        "stationId": "spectrophotometer",
+        "accessibleLabel": "Read the inserted 5 micromolar cuvette.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-read-absorbance-05-needs-cuvette-seated",
+          "type": "actionEvidence",
+          "label": "The 5 micromolar cuvette is seated in the instrument",
+          "actionId": "cv11-insert-cuvette-05"
+        }
+      ],
+      "stateChanges": [
+        "A fresh 5 micromolar absorbance is available to record."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "A fresh 5 micromolar absorbance is available to record.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "observe",
+        "absorbance-read"
+      ],
+      "atomId": "atom.observe.read-photometer",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-record-absorbance-05",
+      "verb": "record",
+      "label": "5 micromolar absorbance",
+      "parameters": {
+        "measurementId": "cv11-calibration-absorbance-05",
+        "label": "5 micromolar absorbance",
+        "unit": "absorbance",
+        "concentrationUm": 5,
+        "configurationSource": "teacher-approved simulator calibration profile",
+        "readingProvenance": "teacher-approved simulator calibration profile"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "measurementId",
+        "accessibleLabel": "Record the fresh 5 micromolar absorbance measurement.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-record-absorbance-05-needs-reading",
+          "type": "measurementRecorded",
+          "label": "The 5 micromolar absorbance was read from the instrument",
+          "measurementId": "cv11-calibration-absorbance-05"
+        }
+      ],
+      "stateChanges": [
+        "A fresh 5 micromolar absorbance record is stored."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "A fresh 5 micromolar absorbance record is stored.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "record",
+        "measurement",
+        "cv11-calibration-absorbance-05"
+      ],
+      "atomId": "atom.record.photometer-reading",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-remove-calibration-cuvette-05",
+      "verb": "place",
+      "label": "Remove the 5 micromolar calibration cuvette",
+      "parameters": {
+        "equipmentDefinitionId": "cuvette",
+        "equipmentInstanceId": "cv11-calibration-05-cuvette",
+        "location": "workbench"
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "cuvette",
+        "stationId": "workbench",
+        "accessibleLabel": "Remove the 5 micromolar calibration cuvette.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-remove-calibration-cuvette-05-needs-reading",
+          "type": "measurementRecorded",
+          "label": "The 5 micromolar absorbance has been read",
+          "measurementId": "cv11-calibration-absorbance-05"
+        }
+      ],
+      "stateChanges": [
+        "Remove the 5 micromolar calibration cuvette; the spectrophotometer slot is clear for the next cuvette."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Remove the 5 micromolar calibration cuvette; the spectrophotometer slot is clear for the next cuvette.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "place",
+        "cuvette-removed",
+        "instrument-slot-clear"
+      ],
+      "atomId": "atom.place.remove-cuvette",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-condition-cuvette-10",
+      "verb": "observe",
+      "label": "Record optical-face preparation for the 10 micromolar cuvette",
+      "parameters": {
+        "note": "Record the teacher-approved conditioning, wiping, and orientation rule for the 10 micromolar cuvette. This notebook action does not fill the cuvette; the separate following transfer does.",
+        "tag": "cuvette-technique",
+        "cuvetteInstanceId": "cv11-calibration-10-cuvette",
+        "configurationProvenance": "teacher-approved",
+        "evidenceBoundary": "records the teacher rule; does not claim a physical fill"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Condition, fill, wipe, and orient the 10 micromolar cuvette.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-condition-cuvette-10-needs-zero",
+          "type": "notebookEntry",
+          "label": "The instrument has been zeroed against the approved blank",
+          "notebookTag": "instrument-blanked"
+        }
+      ],
+      "stateChanges": [
+        "The teacher-approved optical handling rule is recorded for this cuvette; its fill remains a separate operation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Condition, fill, wipe, and orient the 10 micromolar cuvette is recorded.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "cuvette-technique"
+      ],
+      "atomId": "atom.observe.prepare-cuvette-optical-faces",
+      "equipmentRoleBindings": {
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-fill-cuvette-10",
+      "verb": "transfer",
+      "label": "Fill the 10 micromolar calibration cuvette",
+      "parameters": {
+        "sourceDefinitionId": "test-tube",
+        "sourceInstanceId": "cv11-standard-10-tube",
+        "targetDefinitionId": "cuvette",
+        "targetInstanceId": "cv11-calibration-10-cuvette",
+        "volumeMl": 3,
+        "concentrationUm": 10
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "test-tube",
+        "targetDefinitionId": "cuvette",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Fill the labeled 10 micromolar cuvette without contaminating the source.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "The 10 micromolar cuvette contains a fresh calibration sample."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The 10 micromolar cuvette contains a fresh calibration sample.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "transfer",
+        "calibration-sample"
+      ],
+      "atomId": "atom.transfer.fill-cuvette",
+      "equipmentRoleBindings": {
+        "sample-source": "test-tube",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-insert-cuvette-10",
+      "verb": "place",
+      "label": "Insert the 10 micromolar calibration cuvette",
+      "parameters": {
+        "equipmentDefinitionId": "cuvette",
+        "equipmentInstanceId": "cv11-calibration-10-cuvette",
+        "sourceDefinitionId": "cuvette",
+        "targetDefinitionId": "spectrophotometer",
+        "targetInstanceId": "cv11-spectrophotometer",
+        "snapZoneId": "spectrophotometer-cuvette-slot"
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "cuvette",
+        "targetDefinitionId": "spectrophotometer",
+        "snapZoneId": "spectrophotometer-cuvette-slot",
+        "accessibleLabel": "Insert the wiped calibration cuvette into the spectrophotometer slot.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-insert-cuvette-10-needs-fill",
+          "type": "actionEvidence",
+          "label": "The 10 micromolar cuvette has been filled",
+          "actionId": "cv11-fill-cuvette-10"
+        }
+      ],
+      "stateChanges": [
+        "The 10 micromolar cuvette is inserted consistently."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The 10 micromolar cuvette is inserted consistently.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.insert-cuvette",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-read-absorbance-10",
+      "verb": "observe",
+      "label": "Read the 10 micromolar absorbance",
+      "parameters": {
+        "sourceDefinitionId": "cuvette",
+        "sourceInstanceId": "cv11-calibration-10-cuvette",
+        "note": "Read the fresh 10 micromolar sample only after blanking and checking the teacher-approved reliability rule.",
+        "tag": "absorbance-read",
+        "photometerOperation": "read",
+        "photometricQuantity": "absorbance",
+        "photometerInstanceId": "cv11-spectrophotometer",
+        "photometerDefinitionId": "spectrophotometer",
+        "wavelengthMeasurementId": "cv11-approved-wavelength-nm",
+        "requiresZeroNotebookTag": "instrument-blanked",
+        "cuvetteInstanceId": "cv11-calibration-10-cuvette",
+        "measurementId": "cv11-calibration-absorbance-10",
+        "label": "10 micromolar absorbance",
+        "instrumentReadingValue": 0.381,
+        "readingProvenance": "teacher-approved simulator calibration profile",
+        "concentrationUm": 10,
+        "reliableAbsorbanceMaximum": "teacher-configured"
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "cuvette",
+        "stationId": "spectrophotometer",
+        "accessibleLabel": "Read the inserted 10 micromolar cuvette.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-read-absorbance-10-needs-cuvette-seated",
+          "type": "actionEvidence",
+          "label": "The 10 micromolar cuvette is seated in the instrument",
+          "actionId": "cv11-insert-cuvette-10"
+        }
+      ],
+      "stateChanges": [
+        "A fresh 10 micromolar absorbance is available to record."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "A fresh 10 micromolar absorbance is available to record.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "observe",
+        "absorbance-read"
+      ],
+      "atomId": "atom.observe.read-photometer",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-record-absorbance-10",
+      "verb": "record",
+      "label": "10 micromolar absorbance",
+      "parameters": {
+        "measurementId": "cv11-calibration-absorbance-10",
+        "label": "10 micromolar absorbance",
+        "unit": "absorbance",
+        "concentrationUm": 10,
+        "configurationSource": "teacher-approved simulator calibration profile",
+        "readingProvenance": "teacher-approved simulator calibration profile"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "measurementId",
+        "accessibleLabel": "Record the fresh 10 micromolar absorbance measurement.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-record-absorbance-10-needs-reading",
+          "type": "measurementRecorded",
+          "label": "The 10 micromolar absorbance was read from the instrument",
+          "measurementId": "cv11-calibration-absorbance-10"
+        }
+      ],
+      "stateChanges": [
+        "A fresh 10 micromolar absorbance record is stored."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "A fresh 10 micromolar absorbance record is stored.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "record",
+        "measurement",
+        "cv11-calibration-absorbance-10"
+      ],
+      "atomId": "atom.record.photometer-reading",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-remove-calibration-cuvette-10",
+      "verb": "place",
+      "label": "Remove the 10 micromolar calibration cuvette",
+      "parameters": {
+        "equipmentDefinitionId": "cuvette",
+        "equipmentInstanceId": "cv11-calibration-10-cuvette",
+        "location": "workbench"
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "cuvette",
+        "stationId": "workbench",
+        "accessibleLabel": "Remove the 10 micromolar calibration cuvette.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-remove-calibration-cuvette-10-needs-reading",
+          "type": "measurementRecorded",
+          "label": "The 10 micromolar absorbance has been read",
+          "measurementId": "cv11-calibration-absorbance-10"
+        }
+      ],
+      "stateChanges": [
+        "Remove the 10 micromolar calibration cuvette; the spectrophotometer slot is clear for the next cuvette."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Remove the 10 micromolar calibration cuvette; the spectrophotometer slot is clear for the next cuvette.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "place",
+        "cuvette-removed",
+        "instrument-slot-clear"
+      ],
+      "atomId": "atom.place.remove-cuvette",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-condition-cuvette-15",
+      "verb": "observe",
+      "label": "Record optical-face preparation for the 15 micromolar cuvette",
+      "parameters": {
+        "note": "Record the teacher-approved conditioning, wiping, and orientation rule for the 15 micromolar cuvette. This notebook action does not fill the cuvette; the separate following transfer does.",
+        "tag": "cuvette-technique",
+        "cuvetteInstanceId": "cv11-calibration-15-cuvette",
+        "configurationProvenance": "teacher-approved",
+        "evidenceBoundary": "records the teacher rule; does not claim a physical fill"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Condition, fill, wipe, and orient the 15 micromolar cuvette.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-condition-cuvette-15-needs-zero",
+          "type": "notebookEntry",
+          "label": "The instrument has been zeroed against the approved blank",
+          "notebookTag": "instrument-blanked"
+        }
+      ],
+      "stateChanges": [
+        "The teacher-approved optical handling rule is recorded for this cuvette; its fill remains a separate operation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Condition, fill, wipe, and orient the 15 micromolar cuvette is recorded.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "cuvette-technique"
+      ],
+      "atomId": "atom.observe.prepare-cuvette-optical-faces",
+      "equipmentRoleBindings": {
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-fill-cuvette-15",
+      "verb": "transfer",
+      "label": "Fill the 15 micromolar calibration cuvette",
+      "parameters": {
+        "sourceDefinitionId": "test-tube",
+        "sourceInstanceId": "cv11-standard-15-tube",
+        "targetDefinitionId": "cuvette",
+        "targetInstanceId": "cv11-calibration-15-cuvette",
+        "volumeMl": 3,
+        "concentrationUm": 15
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "test-tube",
+        "targetDefinitionId": "cuvette",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Fill the labeled 15 micromolar cuvette without contaminating the source.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "The 15 micromolar cuvette contains a fresh calibration sample."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The 15 micromolar cuvette contains a fresh calibration sample.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "transfer",
+        "calibration-sample"
+      ],
+      "atomId": "atom.transfer.fill-cuvette",
+      "equipmentRoleBindings": {
+        "sample-source": "test-tube",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-insert-cuvette-15",
+      "verb": "place",
+      "label": "Insert the 15 micromolar calibration cuvette",
+      "parameters": {
+        "equipmentDefinitionId": "cuvette",
+        "equipmentInstanceId": "cv11-calibration-15-cuvette",
+        "sourceDefinitionId": "cuvette",
+        "targetDefinitionId": "spectrophotometer",
+        "targetInstanceId": "cv11-spectrophotometer",
+        "snapZoneId": "spectrophotometer-cuvette-slot"
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "cuvette",
+        "targetDefinitionId": "spectrophotometer",
+        "snapZoneId": "spectrophotometer-cuvette-slot",
+        "accessibleLabel": "Insert the wiped calibration cuvette into the spectrophotometer slot.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-insert-cuvette-15-needs-fill",
+          "type": "actionEvidence",
+          "label": "The 15 micromolar cuvette has been filled",
+          "actionId": "cv11-fill-cuvette-15"
+        }
+      ],
+      "stateChanges": [
+        "The 15 micromolar cuvette is inserted consistently."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The 15 micromolar cuvette is inserted consistently.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.insert-cuvette",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-read-absorbance-15",
+      "verb": "observe",
+      "label": "Read the 15 micromolar absorbance",
+      "parameters": {
+        "sourceDefinitionId": "cuvette",
+        "sourceInstanceId": "cv11-calibration-15-cuvette",
+        "note": "Read the fresh 15 micromolar sample only after blanking and checking the teacher-approved reliability rule.",
+        "tag": "absorbance-read",
+        "photometerOperation": "read",
+        "photometricQuantity": "absorbance",
+        "photometerInstanceId": "cv11-spectrophotometer",
+        "photometerDefinitionId": "spectrophotometer",
+        "wavelengthMeasurementId": "cv11-approved-wavelength-nm",
+        "requiresZeroNotebookTag": "instrument-blanked",
+        "cuvetteInstanceId": "cv11-calibration-15-cuvette",
+        "measurementId": "cv11-calibration-absorbance-15",
+        "label": "15 micromolar absorbance",
+        "instrumentReadingValue": 0.57,
+        "readingProvenance": "teacher-approved simulator calibration profile",
+        "concentrationUm": 15,
+        "reliableAbsorbanceMaximum": "teacher-configured"
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "cuvette",
+        "stationId": "spectrophotometer",
+        "accessibleLabel": "Read the inserted 15 micromolar cuvette.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-read-absorbance-15-needs-cuvette-seated",
+          "type": "actionEvidence",
+          "label": "The 15 micromolar cuvette is seated in the instrument",
+          "actionId": "cv11-insert-cuvette-15"
+        }
+      ],
+      "stateChanges": [
+        "A fresh 15 micromolar absorbance is available to record."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "A fresh 15 micromolar absorbance is available to record.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "observe",
+        "absorbance-read"
+      ],
+      "atomId": "atom.observe.read-photometer",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-record-absorbance-15",
+      "verb": "record",
+      "label": "15 micromolar absorbance",
+      "parameters": {
+        "measurementId": "cv11-calibration-absorbance-15",
+        "label": "15 micromolar absorbance",
+        "unit": "absorbance",
+        "concentrationUm": 15,
+        "configurationSource": "teacher-approved simulator calibration profile",
+        "readingProvenance": "teacher-approved simulator calibration profile"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "measurementId",
+        "accessibleLabel": "Record the fresh 15 micromolar absorbance measurement.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-record-absorbance-15-needs-reading",
+          "type": "measurementRecorded",
+          "label": "The 15 micromolar absorbance was read from the instrument",
+          "measurementId": "cv11-calibration-absorbance-15"
+        }
+      ],
+      "stateChanges": [
+        "A fresh 15 micromolar absorbance record is stored."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "A fresh 15 micromolar absorbance record is stored.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "record",
+        "measurement",
+        "cv11-calibration-absorbance-15"
+      ],
+      "atomId": "atom.record.photometer-reading",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-remove-calibration-cuvette-15",
+      "verb": "place",
+      "label": "Remove the 15 micromolar calibration cuvette",
+      "parameters": {
+        "equipmentDefinitionId": "cuvette",
+        "equipmentInstanceId": "cv11-calibration-15-cuvette",
+        "location": "workbench"
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "cuvette",
+        "stationId": "workbench",
+        "accessibleLabel": "Remove the 15 micromolar calibration cuvette.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-remove-calibration-cuvette-15-needs-reading",
+          "type": "measurementRecorded",
+          "label": "The 15 micromolar absorbance has been read",
+          "measurementId": "cv11-calibration-absorbance-15"
+        }
+      ],
+      "stateChanges": [
+        "Remove the 15 micromolar calibration cuvette; the spectrophotometer slot is clear for the next cuvette."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Remove the 15 micromolar calibration cuvette; the spectrophotometer slot is clear for the next cuvette.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "place",
+        "cuvette-removed",
+        "instrument-slot-clear"
+      ],
+      "atomId": "atom.place.remove-cuvette",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-condition-cuvette-20",
+      "verb": "observe",
+      "label": "Record optical-face preparation for the 20 micromolar cuvette",
+      "parameters": {
+        "note": "Record the teacher-approved conditioning, wiping, and orientation rule for the 20 micromolar cuvette. This notebook action does not fill the cuvette; the separate following transfer does.",
+        "tag": "cuvette-technique",
+        "cuvetteInstanceId": "cv11-calibration-20-cuvette",
+        "configurationProvenance": "teacher-approved",
+        "evidenceBoundary": "records the teacher rule; does not claim a physical fill"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Condition, fill, wipe, and orient the 20 micromolar cuvette.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-condition-cuvette-20-needs-zero",
+          "type": "notebookEntry",
+          "label": "The instrument has been zeroed against the approved blank",
+          "notebookTag": "instrument-blanked"
+        }
+      ],
+      "stateChanges": [
+        "The teacher-approved optical handling rule is recorded for this cuvette; its fill remains a separate operation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Condition, fill, wipe, and orient the 20 micromolar cuvette is recorded.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "cuvette-technique"
+      ],
+      "atomId": "atom.observe.prepare-cuvette-optical-faces",
+      "equipmentRoleBindings": {
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-fill-cuvette-20",
+      "verb": "transfer",
+      "label": "Fill the 20 micromolar calibration cuvette",
+      "parameters": {
+        "sourceDefinitionId": "test-tube",
+        "sourceInstanceId": "cv11-standard-20-tube",
+        "targetDefinitionId": "cuvette",
+        "targetInstanceId": "cv11-calibration-20-cuvette",
+        "volumeMl": 3,
+        "concentrationUm": 20
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "test-tube",
+        "targetDefinitionId": "cuvette",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Fill the labeled 20 micromolar cuvette without contaminating the source.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "The 20 micromolar cuvette contains a fresh calibration sample."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The 20 micromolar cuvette contains a fresh calibration sample.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "transfer",
+        "calibration-sample"
+      ],
+      "atomId": "atom.transfer.fill-cuvette",
+      "equipmentRoleBindings": {
+        "sample-source": "test-tube",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-insert-cuvette-20",
+      "verb": "place",
+      "label": "Insert the 20 micromolar calibration cuvette",
+      "parameters": {
+        "equipmentDefinitionId": "cuvette",
+        "equipmentInstanceId": "cv11-calibration-20-cuvette",
+        "sourceDefinitionId": "cuvette",
+        "targetDefinitionId": "spectrophotometer",
+        "targetInstanceId": "cv11-spectrophotometer",
+        "snapZoneId": "spectrophotometer-cuvette-slot"
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "cuvette",
+        "targetDefinitionId": "spectrophotometer",
+        "snapZoneId": "spectrophotometer-cuvette-slot",
+        "accessibleLabel": "Insert the wiped calibration cuvette into the spectrophotometer slot.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-insert-cuvette-20-needs-fill",
+          "type": "actionEvidence",
+          "label": "The 20 micromolar cuvette has been filled",
+          "actionId": "cv11-fill-cuvette-20"
+        }
+      ],
+      "stateChanges": [
+        "The 20 micromolar cuvette is inserted consistently."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The 20 micromolar cuvette is inserted consistently.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.insert-cuvette",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-read-absorbance-20",
+      "verb": "observe",
+      "label": "Read the 20 micromolar absorbance",
+      "parameters": {
+        "sourceDefinitionId": "cuvette",
+        "sourceInstanceId": "cv11-calibration-20-cuvette",
+        "note": "Read the fresh 20 micromolar sample only after blanking and checking the teacher-approved reliability rule.",
+        "tag": "absorbance-read",
+        "photometerOperation": "read",
+        "photometricQuantity": "absorbance",
+        "photometerInstanceId": "cv11-spectrophotometer",
+        "photometerDefinitionId": "spectrophotometer",
+        "wavelengthMeasurementId": "cv11-approved-wavelength-nm",
+        "requiresZeroNotebookTag": "instrument-blanked",
+        "cuvetteInstanceId": "cv11-calibration-20-cuvette",
+        "measurementId": "cv11-calibration-absorbance-20",
+        "label": "20 micromolar absorbance",
+        "instrumentReadingValue": 0.762,
+        "readingProvenance": "teacher-approved simulator calibration profile",
+        "concentrationUm": 20,
+        "reliableAbsorbanceMaximum": "teacher-configured"
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "cuvette",
+        "stationId": "spectrophotometer",
+        "accessibleLabel": "Read the inserted 20 micromolar cuvette.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-read-absorbance-20-needs-cuvette-seated",
+          "type": "actionEvidence",
+          "label": "The 20 micromolar cuvette is seated in the instrument",
+          "actionId": "cv11-insert-cuvette-20"
+        }
+      ],
+      "stateChanges": [
+        "A fresh 20 micromolar absorbance is available to record."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "A fresh 20 micromolar absorbance is available to record.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "observe",
+        "absorbance-read"
+      ],
+      "atomId": "atom.observe.read-photometer",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-record-absorbance-20",
+      "verb": "record",
+      "label": "20 micromolar absorbance",
+      "parameters": {
+        "measurementId": "cv11-calibration-absorbance-20",
+        "label": "20 micromolar absorbance",
+        "unit": "absorbance",
+        "concentrationUm": 20,
+        "configurationSource": "teacher-approved simulator calibration profile",
+        "readingProvenance": "teacher-approved simulator calibration profile"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "measurementId",
+        "accessibleLabel": "Record the fresh 20 micromolar absorbance measurement.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-record-absorbance-20-needs-reading",
+          "type": "measurementRecorded",
+          "label": "The 20 micromolar absorbance was read from the instrument",
+          "measurementId": "cv11-calibration-absorbance-20"
+        }
+      ],
+      "stateChanges": [
+        "A fresh 20 micromolar absorbance record is stored."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "A fresh 20 micromolar absorbance record is stored.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "record",
+        "measurement",
+        "cv11-calibration-absorbance-20"
+      ],
+      "atomId": "atom.record.photometer-reading",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-remove-calibration-cuvette-20",
+      "verb": "place",
+      "label": "Remove the 20 micromolar calibration cuvette",
+      "parameters": {
+        "equipmentDefinitionId": "cuvette",
+        "equipmentInstanceId": "cv11-calibration-20-cuvette",
+        "location": "workbench"
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "cuvette",
+        "stationId": "workbench",
+        "accessibleLabel": "Remove the 20 micromolar calibration cuvette.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-remove-calibration-cuvette-20-needs-reading",
+          "type": "measurementRecorded",
+          "label": "The 20 micromolar absorbance has been read",
+          "measurementId": "cv11-calibration-absorbance-20"
+        }
+      ],
+      "stateChanges": [
+        "Remove the 20 micromolar calibration cuvette; the spectrophotometer slot is clear for the next cuvette."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Remove the 20 micromolar calibration cuvette; the spectrophotometer slot is clear for the next cuvette.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "place",
+        "cuvette-removed",
+        "instrument-slot-clear"
+      ],
+      "atomId": "atom.place.remove-cuvette",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-condition-cuvette-25",
+      "verb": "observe",
+      "label": "Record optical-face preparation for the 25 micromolar cuvette",
+      "parameters": {
+        "note": "Record the teacher-approved conditioning, wiping, and orientation rule for the 25 micromolar cuvette. This notebook action does not fill the cuvette; the separate following transfer does.",
+        "tag": "cuvette-technique",
+        "cuvetteInstanceId": "cv11-calibration-25-cuvette",
+        "configurationProvenance": "teacher-approved",
+        "evidenceBoundary": "records the teacher rule; does not claim a physical fill"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Condition, fill, wipe, and orient the 25 micromolar cuvette.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-condition-cuvette-25-needs-zero",
+          "type": "notebookEntry",
+          "label": "The instrument has been zeroed against the approved blank",
+          "notebookTag": "instrument-blanked"
+        }
+      ],
+      "stateChanges": [
+        "The teacher-approved optical handling rule is recorded for this cuvette; its fill remains a separate operation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Condition, fill, wipe, and orient the 25 micromolar cuvette is recorded.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "cuvette-technique"
+      ],
+      "atomId": "atom.observe.prepare-cuvette-optical-faces",
+      "equipmentRoleBindings": {
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-fill-cuvette-25",
+      "verb": "transfer",
+      "label": "Fill the 25 micromolar calibration cuvette",
+      "parameters": {
+        "sourceDefinitionId": "sample-bottle",
+        "sourceInstanceId": "cv11-stock-bottle",
+        "targetDefinitionId": "cuvette",
+        "targetInstanceId": "cv11-calibration-25-cuvette",
+        "volumeMl": 3,
+        "concentrationUm": 25
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "sample-bottle",
+        "targetDefinitionId": "cuvette",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Fill the labeled 25 micromolar cuvette without contaminating the source.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "The 25 micromolar cuvette contains a fresh calibration sample."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The 25 micromolar cuvette contains a fresh calibration sample.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "transfer",
+        "calibration-sample"
+      ],
+      "atomId": "atom.transfer.fill-cuvette",
+      "equipmentRoleBindings": {
+        "sample-source": "sample-bottle",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-insert-cuvette-25",
+      "verb": "place",
+      "label": "Insert the 25 micromolar calibration cuvette",
+      "parameters": {
+        "equipmentDefinitionId": "cuvette",
+        "equipmentInstanceId": "cv11-calibration-25-cuvette",
+        "sourceDefinitionId": "cuvette",
+        "targetDefinitionId": "spectrophotometer",
+        "targetInstanceId": "cv11-spectrophotometer",
+        "snapZoneId": "spectrophotometer-cuvette-slot"
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "cuvette",
+        "targetDefinitionId": "spectrophotometer",
+        "snapZoneId": "spectrophotometer-cuvette-slot",
+        "accessibleLabel": "Insert the wiped calibration cuvette into the spectrophotometer slot.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-insert-cuvette-25-needs-fill",
+          "type": "actionEvidence",
+          "label": "The 25.0 micromolar stock cuvette has been filled",
+          "actionId": "cv11-fill-cuvette-25"
+        }
+      ],
+      "stateChanges": [
+        "The 25 micromolar cuvette is inserted consistently."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The 25 micromolar cuvette is inserted consistently.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.insert-cuvette",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-read-absorbance-25",
+      "verb": "observe",
+      "label": "Read the 25 micromolar absorbance",
+      "parameters": {
+        "sourceDefinitionId": "cuvette",
+        "sourceInstanceId": "cv11-calibration-25-cuvette",
+        "note": "Read the fresh 25 micromolar sample only after blanking and checking the teacher-approved reliability rule.",
+        "tag": "absorbance-read",
+        "photometerOperation": "read",
+        "photometricQuantity": "absorbance",
+        "photometerInstanceId": "cv11-spectrophotometer",
+        "photometerDefinitionId": "spectrophotometer",
+        "wavelengthMeasurementId": "cv11-approved-wavelength-nm",
+        "requiresZeroNotebookTag": "instrument-blanked",
+        "cuvetteInstanceId": "cv11-calibration-25-cuvette",
+        "measurementId": "cv11-calibration-absorbance-25",
+        "label": "25.0 micromolar stock absorbance",
+        "instrumentReadingValue": 0.95,
+        "readingProvenance": "teacher-approved simulator calibration profile",
+        "concentrationUm": 25,
+        "reliableAbsorbanceMaximum": "teacher-configured"
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "cuvette",
+        "stationId": "spectrophotometer",
+        "accessibleLabel": "Read the inserted 25 micromolar cuvette.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-read-absorbance-25-needs-cuvette-seated",
+          "type": "actionEvidence",
+          "label": "The 25.0 micromolar stock cuvette is seated in the instrument",
+          "actionId": "cv11-insert-cuvette-25"
+        }
+      ],
+      "stateChanges": [
+        "A fresh 25 micromolar absorbance is available to record."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "A fresh 25 micromolar absorbance is available to record.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "observe",
+        "absorbance-read"
+      ],
+      "atomId": "atom.observe.read-photometer",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-record-absorbance-25",
+      "verb": "record",
+      "label": "25 micromolar absorbance",
+      "parameters": {
+        "measurementId": "cv11-calibration-absorbance-25",
+        "label": "25 micromolar absorbance",
+        "unit": "absorbance",
+        "concentrationUm": 25,
+        "configurationSource": "teacher-approved simulator calibration profile",
+        "readingProvenance": "teacher-approved simulator calibration profile"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "measurementId",
+        "accessibleLabel": "Record the fresh 25 micromolar absorbance measurement.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-record-absorbance-25-needs-reading",
+          "type": "measurementRecorded",
+          "label": "The 25.0 micromolar stock absorbance was read from the instrument",
+          "measurementId": "cv11-calibration-absorbance-25"
+        }
+      ],
+      "stateChanges": [
+        "A fresh 25 micromolar absorbance record is stored."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "A fresh 25 micromolar absorbance record is stored.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "record",
+        "measurement",
+        "cv11-calibration-absorbance-25"
+      ],
+      "atomId": "atom.record.photometer-reading",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-remove-calibration-cuvette-25",
+      "verb": "place",
+      "label": "Remove the 25 micromolar calibration cuvette",
+      "parameters": {
+        "equipmentDefinitionId": "cuvette",
+        "equipmentInstanceId": "cv11-calibration-25-cuvette",
+        "location": "workbench"
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "cuvette",
+        "stationId": "workbench",
+        "accessibleLabel": "Remove the 25 micromolar calibration cuvette.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-remove-calibration-cuvette-25-needs-reading",
+          "type": "measurementRecorded",
+          "label": "The 25.0 micromolar stock absorbance has been read",
+          "measurementId": "cv11-calibration-absorbance-25"
+        }
+      ],
+      "stateChanges": [
+        "Remove the 25 micromolar calibration cuvette; the spectrophotometer slot is clear for the next cuvette."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Remove the 25 micromolar calibration cuvette; the spectrophotometer slot is clear for the next cuvette.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "place",
+        "cuvette-removed",
+        "instrument-slot-clear"
+      ],
+      "atomId": "atom.place.remove-cuvette",
+      "equipmentRoleBindings": {
+        "photometer-instrument": "spectrophotometer",
+        "photometer-sample-holder": "cuvette"
+      }
+    },
+    {
+      "id": "cv11-fit-calibration",
+      "verb": "calculate",
+      "label": "Fit absorbance versus crystal-violet concentration",
+      "parameters": {
+        "calculationId": "cv11-calibration-regression",
+        "template": "linearRegressionMeasurements",
+        "expected": 0.03802,
+        "tolerance": 0.002,
+        "unit": "absorbance/uM",
+        "xQuantity": "[CV+]",
+        "xUnit": "micromolar",
+        "yQuantity": "absorbance",
+        "equation": "A=m[CV+]+b",
+        "intercept": 0.0003,
+        "rSquared": 0.999991,
+        "acceptanceThreshold": "teacher-configured",
+        "outOfRangeResponse": "Redesign the wavelength or concentration range and obtain renewed approval.",
+        "configurationProvenance": "teacher-approved simulator calibration profile",
+        "sourceMeasurements": [
+          "cv11-calibration-absorbance-05",
+          "cv11-calibration-absorbance-10",
+          "cv11-calibration-absorbance-15",
+          "cv11-calibration-absorbance-20",
+          "cv11-calibration-absorbance-25"
+        ],
+        "sourceValues": [
+          "5",
+          "10",
+          "15",
+          "20",
+          "25"
+        ]
+      },
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Submit Fit absorbance versus crystal-violet concentration.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-fit-calibration-needs-05",
+          "type": "measurementRecorded",
+          "label": "The 5 micromolar absorbance is on record",
+          "measurementId": "cv11-calibration-absorbance-05"
+        },
+        {
+          "id": "cv11-fit-calibration-needs-10",
+          "type": "measurementRecorded",
+          "label": "The 10 micromolar absorbance is on record",
+          "measurementId": "cv11-calibration-absorbance-10"
+        },
+        {
+          "id": "cv11-fit-calibration-needs-15",
+          "type": "measurementRecorded",
+          "label": "The 15 micromolar absorbance is on record",
+          "measurementId": "cv11-calibration-absorbance-15"
+        },
+        {
+          "id": "cv11-fit-calibration-needs-20",
+          "type": "measurementRecorded",
+          "label": "The 20 micromolar absorbance is on record",
+          "measurementId": "cv11-calibration-absorbance-20"
+        },
+        {
+          "id": "cv11-fit-calibration-needs-25",
+          "type": "measurementRecorded",
+          "label": "The 25.0 micromolar stock absorbance is on record",
+          "measurementId": "cv11-calibration-absorbance-25"
+        }
+      ],
+      "stateChanges": [
+        "Fit absorbance versus crystal-violet concentration is stored with units and supporting evidence."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Fit absorbance versus crystal-violet concentration is stored with units and supporting evidence.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "calculate",
+        "cv11-calibration-regression"
+      ]
+    }
+  ],
+  "process": {
+    "startNodeId": "cv11-select-wavelength-node",
+    "nodes": [
+      {
+        "id": "cv11-select-wavelength-node",
+        "type": "observation",
+        "title": "Select and justify a candidate wavelength",
+        "description": "The student selects a wavelength from the supplied spectrum/device options, balancing sensitivity against the approved absorbance range.",
+        "actionId": "cv11-select-wavelength",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-select-wavelength-complete",
+            "type": "actionEvidence",
+            "label": "Select and justify a candidate wavelength was completed.",
+            "actionId": "cv11-select-wavelength"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Select and justify a candidate wavelength complete.",
+          "retry": "Review Select and justify a candidate wavelength and try again."
+        }
+      },
+      {
+        "id": "cv11-predict-calibration-range-node",
+        "type": "observation",
+        "title": "Predict stock and standard absorbances",
+        "description": "The student predicts whether the 5, 10, 15, 20, and 25 micromolar solutions remain in the teacher-approved reliable range.",
+        "actionId": "cv11-predict-calibration-range",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-predict-calibration-range-complete",
+            "type": "actionEvidence",
+            "label": "Predict stock and standard absorbances was completed.",
+            "actionId": "cv11-predict-calibration-range"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Predict stock and standard absorbances complete.",
+          "retry": "Review Predict stock and standard absorbances and try again."
+        }
+      },
+      {
+        "id": "cv11-approve-wavelength-and-blank-node",
+        "type": "observation",
+        "title": "Obtain approval for wavelength, blank, and range rules",
+        "description": "Teacher approval records the wavelength, blank composition, absorbance reliability rule, and calibration-fit rule; the source procedure does not supply universal values.",
+        "actionId": "cv11-approve-wavelength-and-blank",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-approve-wavelength-and-blank-complete",
+            "type": "actionEvidence",
+            "label": "Obtain approval for wavelength, blank, and range rules was completed.",
+            "actionId": "cv11-approve-wavelength-and-blank"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Obtain approval for wavelength, blank, and range rules complete.",
+          "retry": "Review Obtain approval for wavelength, blank, and range rules and try again."
+        }
+      },
+      {
+        "id": "cv11-place-spectrophotometer-node",
+        "type": "action",
+        "title": "Place the spectrophotometer on the workbench",
+        "description": "The spectrophotometer is ready at the approved wavelength.",
+        "actionId": "cv11-place-spectrophotometer",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-place-spectrophotometer-complete",
+            "type": "actionEvidence",
+            "label": "Place the spectrophotometer on the workbench was completed.",
+            "actionId": "cv11-place-spectrophotometer"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Place the spectrophotometer on the workbench complete.",
+          "retry": "Review Place the spectrophotometer on the workbench and try again."
+        }
+      },
+      {
+        "id": "cv11-set-approved-wavelength-node",
+        "type": "action",
+        "title": "Set the approved wavelength",
+        "description": "Set the instrument to the approved wavelength. Every blank and every read from here on depends on this value being on record.",
+        "actionId": "cv11-set-approved-wavelength",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-set-approved-wavelength-node-done",
+            "type": "actionEvidence",
+            "label": "cv11-set-approved-wavelength was completed.",
+            "actionId": "cv11-set-approved-wavelength"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Wavelength set.",
+          "retry": "Obtain approval for the wavelength before setting the instrument."
+        }
+      },
+      {
+        "id": "cv11-prepare-approved-blank-node",
+        "type": "observation",
+        "title": "Prepare the teacher-approved blank",
+        "description": "Teacher-approved blank; composition intentionally remains unspecified until configured.",
+        "actionId": "cv11-prepare-approved-blank",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-prepare-approved-blank-complete",
+            "type": "actionEvidence",
+            "label": "Prepare the teacher-approved blank was completed.",
+            "actionId": "cv11-prepare-approved-blank"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Prepare the teacher-approved blank complete.",
+          "retry": "Review Prepare the teacher-approved blank and try again."
+        }
+      },
+      {
+        "id": "cv11-insert-blank-node",
+        "type": "action",
+        "title": "Insert the approved blank cuvette",
+        "description": "The approved blank cuvette is inserted with a consistent orientation.",
+        "actionId": "cv11-insert-blank",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-insert-blank-complete",
+            "type": "actionEvidence",
+            "label": "Insert the approved blank cuvette was completed.",
+            "actionId": "cv11-insert-blank"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Insert the approved blank cuvette complete.",
+          "retry": "Review Insert the approved blank cuvette and try again."
+        }
+      },
+      {
+        "id": "cv11-zero-spectrophotometer-node",
+        "type": "observation",
+        "title": "Zero the spectrophotometer with the approved blank",
+        "description": "The instrument is zeroed only after the approved blank is inserted at the approved wavelength.",
+        "actionId": "cv11-zero-spectrophotometer",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-zero-spectrophotometer-complete",
+            "type": "actionEvidence",
+            "label": "Zero the spectrophotometer with the approved blank was completed.",
+            "actionId": "cv11-zero-spectrophotometer"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Zero the spectrophotometer with the approved blank complete.",
+          "retry": "Review Zero the spectrophotometer with the approved blank and try again."
+        }
+      },
+      {
+        "id": "cv11-remove-blank-node",
+        "type": "action",
+        "title": "Remove the approved blank cuvette",
+        "description": "Remove the approved blank cuvette; the spectrophotometer slot is clear for the next cuvette.",
+        "actionId": "cv11-remove-blank",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-remove-blank-complete",
+            "type": "actionEvidence",
+            "label": "Remove the approved blank cuvette was completed.",
+            "actionId": "cv11-remove-blank"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Remove the approved blank cuvette complete.",
+          "retry": "Review Remove the approved blank cuvette and try again."
+        }
+      },
+      {
+        "id": "cv11-condition-cuvette-05-node",
+        "type": "observation",
+        "title": "Condition, fill, wipe, and orient the 5 micromolar cuvette",
+        "description": "A clean cuvette is conditioned with the 5 micromolar solution, filled, wiped on the clear optical faces, and oriented consistently.",
+        "actionId": "cv11-condition-cuvette-05",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-condition-cuvette-05-complete",
+            "type": "actionEvidence",
+            "label": "Condition, fill, wipe, and orient the 5 micromolar cuvette was completed.",
+            "actionId": "cv11-condition-cuvette-05"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Condition, fill, wipe, and orient the 5 micromolar cuvette complete.",
+          "retry": "Review Condition, fill, wipe, and orient the 5 micromolar cuvette and try again."
+        }
+      },
+      {
+        "id": "cv11-fill-cuvette-05-node",
+        "type": "action",
+        "title": "Fill the 5 micromolar calibration cuvette",
+        "description": "The 5 micromolar cuvette contains a fresh calibration sample.",
+        "actionId": "cv11-fill-cuvette-05",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-fill-cuvette-05-complete",
+            "type": "actionEvidence",
+            "label": "Fill the 5 micromolar calibration cuvette was completed.",
+            "actionId": "cv11-fill-cuvette-05"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Fill the 5 micromolar calibration cuvette complete.",
+          "retry": "Review Fill the 5 micromolar calibration cuvette and try again."
+        }
+      },
+      {
+        "id": "cv11-insert-cuvette-05-node",
+        "type": "action",
+        "title": "Insert the 5 micromolar calibration cuvette",
+        "description": "The 5 micromolar cuvette is inserted consistently.",
+        "actionId": "cv11-insert-cuvette-05",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-insert-cuvette-05-complete",
+            "type": "actionEvidence",
+            "label": "Insert the 5 micromolar calibration cuvette was completed.",
+            "actionId": "cv11-insert-cuvette-05"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Insert the 5 micromolar calibration cuvette complete.",
+          "retry": "Review Insert the 5 micromolar calibration cuvette and try again."
+        }
+      },
+      {
+        "id": "cv11-read-absorbance-05-node",
+        "type": "observation",
+        "title": "Read the 5 micromolar absorbance",
+        "description": "Read the fresh 5 micromolar sample only after blanking and checking the teacher-approved reliability rule.",
+        "actionId": "cv11-read-absorbance-05",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-read-absorbance-05-complete",
+            "type": "actionEvidence",
+            "label": "Read the 5 micromolar absorbance was completed.",
+            "actionId": "cv11-read-absorbance-05"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read the 5 micromolar absorbance complete.",
+          "retry": "Review Read the 5 micromolar absorbance and try again."
+        }
+      },
+      {
+        "id": "cv11-record-absorbance-05-node",
+        "type": "action",
+        "title": "5 micromolar absorbance",
+        "description": "A fresh 5 micromolar absorbance record is stored.",
+        "actionId": "cv11-record-absorbance-05",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-record-absorbance-05-complete",
+            "type": "actionEvidence",
+            "label": "5 micromolar absorbance was completed.",
+            "actionId": "cv11-record-absorbance-05"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "5 micromolar absorbance complete.",
+          "retry": "Review 5 micromolar absorbance and try again."
+        }
+      },
+      {
+        "id": "cv11-remove-calibration-cuvette-05-node",
+        "type": "action",
+        "title": "Remove the 5 micromolar calibration cuvette",
+        "description": "Remove the 5 micromolar calibration cuvette; the spectrophotometer slot is clear for the next cuvette.",
+        "actionId": "cv11-remove-calibration-cuvette-05",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-remove-calibration-cuvette-05-complete",
+            "type": "actionEvidence",
+            "label": "Remove the 5 micromolar calibration cuvette was completed.",
+            "actionId": "cv11-remove-calibration-cuvette-05"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Remove the 5 micromolar calibration cuvette complete.",
+          "retry": "Review Remove the 5 micromolar calibration cuvette and try again."
+        }
+      },
+      {
+        "id": "cv11-condition-cuvette-10-node",
+        "type": "observation",
+        "title": "Condition, fill, wipe, and orient the 10 micromolar cuvette",
+        "description": "A clean cuvette is conditioned with the 10 micromolar solution, filled, wiped on the clear optical faces, and oriented consistently.",
+        "actionId": "cv11-condition-cuvette-10",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-condition-cuvette-10-complete",
+            "type": "actionEvidence",
+            "label": "Condition, fill, wipe, and orient the 10 micromolar cuvette was completed.",
+            "actionId": "cv11-condition-cuvette-10"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Condition, fill, wipe, and orient the 10 micromolar cuvette complete.",
+          "retry": "Review Condition, fill, wipe, and orient the 10 micromolar cuvette and try again."
+        }
+      },
+      {
+        "id": "cv11-fill-cuvette-10-node",
+        "type": "action",
+        "title": "Fill the 10 micromolar calibration cuvette",
+        "description": "The 10 micromolar cuvette contains a fresh calibration sample.",
+        "actionId": "cv11-fill-cuvette-10",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-fill-cuvette-10-complete",
+            "type": "actionEvidence",
+            "label": "Fill the 10 micromolar calibration cuvette was completed.",
+            "actionId": "cv11-fill-cuvette-10"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Fill the 10 micromolar calibration cuvette complete.",
+          "retry": "Review Fill the 10 micromolar calibration cuvette and try again."
+        }
+      },
+      {
+        "id": "cv11-insert-cuvette-10-node",
+        "type": "action",
+        "title": "Insert the 10 micromolar calibration cuvette",
+        "description": "The 10 micromolar cuvette is inserted consistently.",
+        "actionId": "cv11-insert-cuvette-10",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-insert-cuvette-10-complete",
+            "type": "actionEvidence",
+            "label": "Insert the 10 micromolar calibration cuvette was completed.",
+            "actionId": "cv11-insert-cuvette-10"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Insert the 10 micromolar calibration cuvette complete.",
+          "retry": "Review Insert the 10 micromolar calibration cuvette and try again."
+        }
+      },
+      {
+        "id": "cv11-read-absorbance-10-node",
+        "type": "observation",
+        "title": "Read the 10 micromolar absorbance",
+        "description": "Read the fresh 10 micromolar sample only after blanking and checking the teacher-approved reliability rule.",
+        "actionId": "cv11-read-absorbance-10",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-read-absorbance-10-complete",
+            "type": "actionEvidence",
+            "label": "Read the 10 micromolar absorbance was completed.",
+            "actionId": "cv11-read-absorbance-10"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read the 10 micromolar absorbance complete.",
+          "retry": "Review Read the 10 micromolar absorbance and try again."
+        }
+      },
+      {
+        "id": "cv11-record-absorbance-10-node",
+        "type": "action",
+        "title": "10 micromolar absorbance",
+        "description": "A fresh 10 micromolar absorbance record is stored.",
+        "actionId": "cv11-record-absorbance-10",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-record-absorbance-10-complete",
+            "type": "actionEvidence",
+            "label": "10 micromolar absorbance was completed.",
+            "actionId": "cv11-record-absorbance-10"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "10 micromolar absorbance complete.",
+          "retry": "Review 10 micromolar absorbance and try again."
+        }
+      },
+      {
+        "id": "cv11-remove-calibration-cuvette-10-node",
+        "type": "action",
+        "title": "Remove the 10 micromolar calibration cuvette",
+        "description": "Remove the 10 micromolar calibration cuvette; the spectrophotometer slot is clear for the next cuvette.",
+        "actionId": "cv11-remove-calibration-cuvette-10",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-remove-calibration-cuvette-10-complete",
+            "type": "actionEvidence",
+            "label": "Remove the 10 micromolar calibration cuvette was completed.",
+            "actionId": "cv11-remove-calibration-cuvette-10"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Remove the 10 micromolar calibration cuvette complete.",
+          "retry": "Review Remove the 10 micromolar calibration cuvette and try again."
+        }
+      },
+      {
+        "id": "cv11-condition-cuvette-15-node",
+        "type": "observation",
+        "title": "Condition, fill, wipe, and orient the 15 micromolar cuvette",
+        "description": "A clean cuvette is conditioned with the 15 micromolar solution, filled, wiped on the clear optical faces, and oriented consistently.",
+        "actionId": "cv11-condition-cuvette-15",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-condition-cuvette-15-complete",
+            "type": "actionEvidence",
+            "label": "Condition, fill, wipe, and orient the 15 micromolar cuvette was completed.",
+            "actionId": "cv11-condition-cuvette-15"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Condition, fill, wipe, and orient the 15 micromolar cuvette complete.",
+          "retry": "Review Condition, fill, wipe, and orient the 15 micromolar cuvette and try again."
+        }
+      },
+      {
+        "id": "cv11-fill-cuvette-15-node",
+        "type": "action",
+        "title": "Fill the 15 micromolar calibration cuvette",
+        "description": "The 15 micromolar cuvette contains a fresh calibration sample.",
+        "actionId": "cv11-fill-cuvette-15",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-fill-cuvette-15-complete",
+            "type": "actionEvidence",
+            "label": "Fill the 15 micromolar calibration cuvette was completed.",
+            "actionId": "cv11-fill-cuvette-15"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Fill the 15 micromolar calibration cuvette complete.",
+          "retry": "Review Fill the 15 micromolar calibration cuvette and try again."
+        }
+      },
+      {
+        "id": "cv11-insert-cuvette-15-node",
+        "type": "action",
+        "title": "Insert the 15 micromolar calibration cuvette",
+        "description": "The 15 micromolar cuvette is inserted consistently.",
+        "actionId": "cv11-insert-cuvette-15",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-insert-cuvette-15-complete",
+            "type": "actionEvidence",
+            "label": "Insert the 15 micromolar calibration cuvette was completed.",
+            "actionId": "cv11-insert-cuvette-15"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Insert the 15 micromolar calibration cuvette complete.",
+          "retry": "Review Insert the 15 micromolar calibration cuvette and try again."
+        }
+      },
+      {
+        "id": "cv11-read-absorbance-15-node",
+        "type": "observation",
+        "title": "Read the 15 micromolar absorbance",
+        "description": "Read the fresh 15 micromolar sample only after blanking and checking the teacher-approved reliability rule.",
+        "actionId": "cv11-read-absorbance-15",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-read-absorbance-15-complete",
+            "type": "actionEvidence",
+            "label": "Read the 15 micromolar absorbance was completed.",
+            "actionId": "cv11-read-absorbance-15"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read the 15 micromolar absorbance complete.",
+          "retry": "Review Read the 15 micromolar absorbance and try again."
+        }
+      },
+      {
+        "id": "cv11-record-absorbance-15-node",
+        "type": "action",
+        "title": "15 micromolar absorbance",
+        "description": "A fresh 15 micromolar absorbance record is stored.",
+        "actionId": "cv11-record-absorbance-15",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-record-absorbance-15-complete",
+            "type": "actionEvidence",
+            "label": "15 micromolar absorbance was completed.",
+            "actionId": "cv11-record-absorbance-15"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "15 micromolar absorbance complete.",
+          "retry": "Review 15 micromolar absorbance and try again."
+        }
+      },
+      {
+        "id": "cv11-remove-calibration-cuvette-15-node",
+        "type": "action",
+        "title": "Remove the 15 micromolar calibration cuvette",
+        "description": "Remove the 15 micromolar calibration cuvette; the spectrophotometer slot is clear for the next cuvette.",
+        "actionId": "cv11-remove-calibration-cuvette-15",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-remove-calibration-cuvette-15-complete",
+            "type": "actionEvidence",
+            "label": "Remove the 15 micromolar calibration cuvette was completed.",
+            "actionId": "cv11-remove-calibration-cuvette-15"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Remove the 15 micromolar calibration cuvette complete.",
+          "retry": "Review Remove the 15 micromolar calibration cuvette and try again."
+        }
+      },
+      {
+        "id": "cv11-condition-cuvette-20-node",
+        "type": "observation",
+        "title": "Condition, fill, wipe, and orient the 20 micromolar cuvette",
+        "description": "A clean cuvette is conditioned with the 20 micromolar solution, filled, wiped on the clear optical faces, and oriented consistently.",
+        "actionId": "cv11-condition-cuvette-20",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-condition-cuvette-20-complete",
+            "type": "actionEvidence",
+            "label": "Condition, fill, wipe, and orient the 20 micromolar cuvette was completed.",
+            "actionId": "cv11-condition-cuvette-20"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Condition, fill, wipe, and orient the 20 micromolar cuvette complete.",
+          "retry": "Review Condition, fill, wipe, and orient the 20 micromolar cuvette and try again."
+        }
+      },
+      {
+        "id": "cv11-fill-cuvette-20-node",
+        "type": "action",
+        "title": "Fill the 20 micromolar calibration cuvette",
+        "description": "The 20 micromolar cuvette contains a fresh calibration sample.",
+        "actionId": "cv11-fill-cuvette-20",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-fill-cuvette-20-complete",
+            "type": "actionEvidence",
+            "label": "Fill the 20 micromolar calibration cuvette was completed.",
+            "actionId": "cv11-fill-cuvette-20"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Fill the 20 micromolar calibration cuvette complete.",
+          "retry": "Review Fill the 20 micromolar calibration cuvette and try again."
+        }
+      },
+      {
+        "id": "cv11-insert-cuvette-20-node",
+        "type": "action",
+        "title": "Insert the 20 micromolar calibration cuvette",
+        "description": "The 20 micromolar cuvette is inserted consistently.",
+        "actionId": "cv11-insert-cuvette-20",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-insert-cuvette-20-complete",
+            "type": "actionEvidence",
+            "label": "Insert the 20 micromolar calibration cuvette was completed.",
+            "actionId": "cv11-insert-cuvette-20"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Insert the 20 micromolar calibration cuvette complete.",
+          "retry": "Review Insert the 20 micromolar calibration cuvette and try again."
+        }
+      },
+      {
+        "id": "cv11-read-absorbance-20-node",
+        "type": "observation",
+        "title": "Read the 20 micromolar absorbance",
+        "description": "Read the fresh 20 micromolar sample only after blanking and checking the teacher-approved reliability rule.",
+        "actionId": "cv11-read-absorbance-20",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-read-absorbance-20-complete",
+            "type": "actionEvidence",
+            "label": "Read the 20 micromolar absorbance was completed.",
+            "actionId": "cv11-read-absorbance-20"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read the 20 micromolar absorbance complete.",
+          "retry": "Review Read the 20 micromolar absorbance and try again."
+        }
+      },
+      {
+        "id": "cv11-record-absorbance-20-node",
+        "type": "action",
+        "title": "20 micromolar absorbance",
+        "description": "A fresh 20 micromolar absorbance record is stored.",
+        "actionId": "cv11-record-absorbance-20",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-record-absorbance-20-complete",
+            "type": "actionEvidence",
+            "label": "20 micromolar absorbance was completed.",
+            "actionId": "cv11-record-absorbance-20"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "20 micromolar absorbance complete.",
+          "retry": "Review 20 micromolar absorbance and try again."
+        }
+      },
+      {
+        "id": "cv11-remove-calibration-cuvette-20-node",
+        "type": "action",
+        "title": "Remove the 20 micromolar calibration cuvette",
+        "description": "Remove the 20 micromolar calibration cuvette; the spectrophotometer slot is clear for the next cuvette.",
+        "actionId": "cv11-remove-calibration-cuvette-20",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-remove-calibration-cuvette-20-complete",
+            "type": "actionEvidence",
+            "label": "Remove the 20 micromolar calibration cuvette was completed.",
+            "actionId": "cv11-remove-calibration-cuvette-20"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Remove the 20 micromolar calibration cuvette complete.",
+          "retry": "Review Remove the 20 micromolar calibration cuvette and try again."
+        }
+      },
+      {
+        "id": "cv11-condition-cuvette-25-node",
+        "type": "observation",
+        "title": "Condition, fill, wipe, and orient the 25 micromolar cuvette",
+        "description": "A clean cuvette is conditioned with the 25 micromolar solution, filled, wiped on the clear optical faces, and oriented consistently.",
+        "actionId": "cv11-condition-cuvette-25",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-condition-cuvette-25-complete",
+            "type": "actionEvidence",
+            "label": "Condition, fill, wipe, and orient the 25 micromolar cuvette was completed.",
+            "actionId": "cv11-condition-cuvette-25"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Condition, fill, wipe, and orient the 25 micromolar cuvette complete.",
+          "retry": "Review Condition, fill, wipe, and orient the 25 micromolar cuvette and try again."
+        }
+      },
+      {
+        "id": "cv11-fill-cuvette-25-node",
+        "type": "action",
+        "title": "Fill the 25 micromolar calibration cuvette",
+        "description": "The 25 micromolar cuvette contains a fresh calibration sample.",
+        "actionId": "cv11-fill-cuvette-25",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-fill-cuvette-25-complete",
+            "type": "actionEvidence",
+            "label": "Fill the 25 micromolar calibration cuvette was completed.",
+            "actionId": "cv11-fill-cuvette-25"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Fill the 25 micromolar calibration cuvette complete.",
+          "retry": "Review Fill the 25 micromolar calibration cuvette and try again."
+        }
+      },
+      {
+        "id": "cv11-insert-cuvette-25-node",
+        "type": "action",
+        "title": "Insert the 25 micromolar calibration cuvette",
+        "description": "The 25 micromolar cuvette is inserted consistently.",
+        "actionId": "cv11-insert-cuvette-25",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-insert-cuvette-25-complete",
+            "type": "actionEvidence",
+            "label": "Insert the 25 micromolar calibration cuvette was completed.",
+            "actionId": "cv11-insert-cuvette-25"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Insert the 25 micromolar calibration cuvette complete.",
+          "retry": "Review Insert the 25 micromolar calibration cuvette and try again."
+        }
+      },
+      {
+        "id": "cv11-read-absorbance-25-node",
+        "type": "observation",
+        "title": "Read the 25 micromolar absorbance",
+        "description": "Read the fresh 25 micromolar sample only after blanking and checking the teacher-approved reliability rule.",
+        "actionId": "cv11-read-absorbance-25",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-read-absorbance-25-complete",
+            "type": "actionEvidence",
+            "label": "Read the 25 micromolar absorbance was completed.",
+            "actionId": "cv11-read-absorbance-25"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read the 25 micromolar absorbance complete.",
+          "retry": "Review Read the 25 micromolar absorbance and try again."
+        }
+      },
+      {
+        "id": "cv11-record-absorbance-25-node",
+        "type": "action",
+        "title": "25 micromolar absorbance",
+        "description": "A fresh 25 micromolar absorbance record is stored.",
+        "actionId": "cv11-record-absorbance-25",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-record-absorbance-25-complete",
+            "type": "actionEvidence",
+            "label": "25 micromolar absorbance was completed.",
+            "actionId": "cv11-record-absorbance-25"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "25 micromolar absorbance complete.",
+          "retry": "Review 25 micromolar absorbance and try again."
+        }
+      },
+      {
+        "id": "cv11-remove-calibration-cuvette-25-node",
+        "type": "action",
+        "title": "Remove the 25 micromolar calibration cuvette",
+        "description": "Remove the 25 micromolar calibration cuvette; the spectrophotometer slot is clear for the next cuvette.",
+        "actionId": "cv11-remove-calibration-cuvette-25",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-remove-calibration-cuvette-25-complete",
+            "type": "actionEvidence",
+            "label": "Remove the 25 micromolar calibration cuvette was completed.",
+            "actionId": "cv11-remove-calibration-cuvette-25"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Remove the 25 micromolar calibration cuvette complete.",
+          "retry": "Review Remove the 25 micromolar calibration cuvette and try again."
+        }
+      },
+      {
+        "id": "cv11-fit-calibration-node",
+        "type": "calculation",
+        "title": "Fit absorbance versus crystal-violet concentration",
+        "description": "Fit absorbance versus crystal-violet concentration is stored with units and supporting evidence.",
+        "actionId": "cv11-fit-calibration",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-fit-calibration-complete",
+            "type": "actionEvidence",
+            "label": "Fit absorbance versus crystal-violet concentration was completed.",
+            "actionId": "cv11-fit-calibration"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Fit absorbance versus crystal-violet concentration complete.",
+          "retry": "Review Fit absorbance versus crystal-violet concentration and try again."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "cv11-select-wavelength-node",
+        "to": "cv11-predict-calibration-range-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-predict-calibration-range-node",
+        "to": "cv11-approve-wavelength-and-blank-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-approve-wavelength-and-blank-node",
+        "to": "cv11-place-spectrophotometer-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-place-spectrophotometer-node",
+        "to": "cv11-set-approved-wavelength-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-set-approved-wavelength-node",
+        "to": "cv11-prepare-approved-blank-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-prepare-approved-blank-node",
+        "to": "cv11-insert-blank-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-insert-blank-node",
+        "to": "cv11-zero-spectrophotometer-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-zero-spectrophotometer-node",
+        "to": "cv11-remove-blank-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-remove-blank-node",
+        "to": "cv11-condition-cuvette-05-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-condition-cuvette-05-node",
+        "to": "cv11-fill-cuvette-05-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-fill-cuvette-05-node",
+        "to": "cv11-insert-cuvette-05-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-insert-cuvette-05-node",
+        "to": "cv11-read-absorbance-05-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-read-absorbance-05-node",
+        "to": "cv11-record-absorbance-05-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-record-absorbance-05-node",
+        "to": "cv11-remove-calibration-cuvette-05-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-remove-calibration-cuvette-05-node",
+        "to": "cv11-condition-cuvette-10-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-condition-cuvette-10-node",
+        "to": "cv11-fill-cuvette-10-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-fill-cuvette-10-node",
+        "to": "cv11-insert-cuvette-10-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-insert-cuvette-10-node",
+        "to": "cv11-read-absorbance-10-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-read-absorbance-10-node",
+        "to": "cv11-record-absorbance-10-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-record-absorbance-10-node",
+        "to": "cv11-remove-calibration-cuvette-10-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-remove-calibration-cuvette-10-node",
+        "to": "cv11-condition-cuvette-15-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-condition-cuvette-15-node",
+        "to": "cv11-fill-cuvette-15-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-fill-cuvette-15-node",
+        "to": "cv11-insert-cuvette-15-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-insert-cuvette-15-node",
+        "to": "cv11-read-absorbance-15-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-read-absorbance-15-node",
+        "to": "cv11-record-absorbance-15-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-record-absorbance-15-node",
+        "to": "cv11-remove-calibration-cuvette-15-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-remove-calibration-cuvette-15-node",
+        "to": "cv11-condition-cuvette-20-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-condition-cuvette-20-node",
+        "to": "cv11-fill-cuvette-20-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-fill-cuvette-20-node",
+        "to": "cv11-insert-cuvette-20-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-insert-cuvette-20-node",
+        "to": "cv11-read-absorbance-20-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-read-absorbance-20-node",
+        "to": "cv11-record-absorbance-20-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-record-absorbance-20-node",
+        "to": "cv11-remove-calibration-cuvette-20-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-remove-calibration-cuvette-20-node",
+        "to": "cv11-condition-cuvette-25-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-condition-cuvette-25-node",
+        "to": "cv11-fill-cuvette-25-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-fill-cuvette-25-node",
+        "to": "cv11-insert-cuvette-25-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-insert-cuvette-25-node",
+        "to": "cv11-read-absorbance-25-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-read-absorbance-25-node",
+        "to": "cv11-record-absorbance-25-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-record-absorbance-25-node",
+        "to": "cv11-remove-calibration-cuvette-25-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-remove-calibration-cuvette-25-node",
+        "to": "cv11-fit-calibration-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "the current node expects a different action",
+      "message": "That action is out of sequence for the current investigation step.",
+      "recovery": "Return to the highlighted process step and preserve the approved design."
+    },
+    {
+      "id": "cross-contamination",
+      "when": "a pipette assigned to another liquid is selected",
+      "message": "That pipette is assigned to a different solution.",
+      "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+    },
+    {
+      "id": "unapproved-configuration",
+      "when": "a teacher-configured decision has not been approved",
+      "message": "This investigation choice still requires teacher approval.",
+      "recovery": "Submit the design choice and wait for approval before continuing."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.2.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-05T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "chemistry",
+      "crystal-violet",
+      "beer-law",
+      "student-selected-wavelength",
+      "teacher-configured-blank",
+      "five-point-calibration",
+      "composition",
+      "cycle-08"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry",
+        "kind": "entry",
+        "nodeId": "cv11-select-wavelength-node"
+      },
+      {
+        "id": "exit",
+        "kind": "exit",
+        "nodeId": "cv11-fit-calibration-node"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "photometer-instrument",
+        "required": true,
+        "allowedDefinitionIds": [
+          "spectrophotometer"
+        ],
+        "sourceInstanceIds": [
+          "cv11-spectrophotometer"
+        ]
+      },
+      {
+        "roleId": "photometer-sample-holder",
+        "required": true,
+        "allowedDefinitionIds": [
+          "cuvette"
+        ],
+        "sourceInstanceIds": [
+          "cv11-blank-cuvette",
+          "cv11-calibration-05-cuvette",
+          "cv11-calibration-10-cuvette",
+          "cv11-calibration-15-cuvette",
+          "cv11-calibration-20-cuvette",
+          "cv11-calibration-25-cuvette"
+        ]
+      },
+      {
+        "roleId": "sample-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "test-tube",
+          "sample-bottle"
+        ],
+        "sourceInstanceIds": [
+          "cv11-stock-bottle",
+          "cv11-standard-05-tube",
+          "cv11-standard-10-tube",
+          "cv11-standard-15-tube",
+          "cv11-standard-20-tube"
+        ]
+      }
+    ],
+    "modelSlots": [],
+    "configurationSlots": [],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [
+      {
+        "id": "evidence-cv11-select-wavelength",
+        "kind": "notebook",
+        "actionId": "cv11-select-wavelength"
+      },
+      {
+        "id": "evidence-cv11-predict-calibration-range",
+        "kind": "notebook",
+        "actionId": "cv11-predict-calibration-range"
+      },
+      {
+        "id": "evidence-cv11-approve-wavelength-and-blank",
+        "kind": "notebook",
+        "actionId": "cv11-approve-wavelength-and-blank"
+      },
+      {
+        "id": "evidence-cv11-place-spectrophotometer",
+        "kind": "action-evidence",
+        "actionId": "cv11-place-spectrophotometer"
+      },
+      {
+        "id": "evidence-cv11-set-approved-wavelength",
+        "kind": "notebook",
+        "actionId": "cv11-set-approved-wavelength",
+        "referenceId": "cv11-approved-wavelength-nm"
+      },
+      {
+        "id": "evidence-cv11-prepare-approved-blank",
+        "kind": "notebook",
+        "actionId": "cv11-prepare-approved-blank"
+      },
+      {
+        "id": "evidence-cv11-insert-blank",
+        "kind": "action-evidence",
+        "actionId": "cv11-insert-blank"
+      },
+      {
+        "id": "evidence-cv11-zero-spectrophotometer",
+        "kind": "measurement",
+        "actionId": "cv11-zero-spectrophotometer"
+      },
+      {
+        "id": "evidence-cv11-remove-blank",
+        "kind": "action-evidence",
+        "actionId": "cv11-remove-blank"
+      },
+      {
+        "id": "evidence-cv11-condition-cuvette-05",
+        "kind": "notebook",
+        "actionId": "cv11-condition-cuvette-05"
+      },
+      {
+        "id": "evidence-cv11-fill-cuvette-05",
+        "kind": "action-evidence",
+        "actionId": "cv11-fill-cuvette-05"
+      },
+      {
+        "id": "evidence-cv11-insert-cuvette-05",
+        "kind": "action-evidence",
+        "actionId": "cv11-insert-cuvette-05"
+      },
+      {
+        "id": "evidence-cv11-read-absorbance-05",
+        "kind": "measurement",
+        "actionId": "cv11-read-absorbance-05",
+        "referenceId": "cv11-calibration-absorbance-05"
+      },
+      {
+        "id": "evidence-cv11-record-absorbance-05",
+        "kind": "notebook",
+        "actionId": "cv11-record-absorbance-05",
+        "referenceId": "cv11-calibration-absorbance-05"
+      },
+      {
+        "id": "evidence-cv11-remove-calibration-cuvette-05",
+        "kind": "action-evidence",
+        "actionId": "cv11-remove-calibration-cuvette-05"
+      },
+      {
+        "id": "evidence-cv11-condition-cuvette-10",
+        "kind": "notebook",
+        "actionId": "cv11-condition-cuvette-10"
+      },
+      {
+        "id": "evidence-cv11-fill-cuvette-10",
+        "kind": "action-evidence",
+        "actionId": "cv11-fill-cuvette-10"
+      },
+      {
+        "id": "evidence-cv11-insert-cuvette-10",
+        "kind": "action-evidence",
+        "actionId": "cv11-insert-cuvette-10"
+      },
+      {
+        "id": "evidence-cv11-read-absorbance-10",
+        "kind": "measurement",
+        "actionId": "cv11-read-absorbance-10",
+        "referenceId": "cv11-calibration-absorbance-10"
+      },
+      {
+        "id": "evidence-cv11-record-absorbance-10",
+        "kind": "notebook",
+        "actionId": "cv11-record-absorbance-10",
+        "referenceId": "cv11-calibration-absorbance-10"
+      },
+      {
+        "id": "evidence-cv11-remove-calibration-cuvette-10",
+        "kind": "action-evidence",
+        "actionId": "cv11-remove-calibration-cuvette-10"
+      },
+      {
+        "id": "evidence-cv11-condition-cuvette-15",
+        "kind": "notebook",
+        "actionId": "cv11-condition-cuvette-15"
+      },
+      {
+        "id": "evidence-cv11-fill-cuvette-15",
+        "kind": "action-evidence",
+        "actionId": "cv11-fill-cuvette-15"
+      },
+      {
+        "id": "evidence-cv11-insert-cuvette-15",
+        "kind": "action-evidence",
+        "actionId": "cv11-insert-cuvette-15"
+      },
+      {
+        "id": "evidence-cv11-read-absorbance-15",
+        "kind": "measurement",
+        "actionId": "cv11-read-absorbance-15",
+        "referenceId": "cv11-calibration-absorbance-15"
+      },
+      {
+        "id": "evidence-cv11-record-absorbance-15",
+        "kind": "notebook",
+        "actionId": "cv11-record-absorbance-15",
+        "referenceId": "cv11-calibration-absorbance-15"
+      },
+      {
+        "id": "evidence-cv11-remove-calibration-cuvette-15",
+        "kind": "action-evidence",
+        "actionId": "cv11-remove-calibration-cuvette-15"
+      },
+      {
+        "id": "evidence-cv11-condition-cuvette-20",
+        "kind": "notebook",
+        "actionId": "cv11-condition-cuvette-20"
+      },
+      {
+        "id": "evidence-cv11-fill-cuvette-20",
+        "kind": "action-evidence",
+        "actionId": "cv11-fill-cuvette-20"
+      },
+      {
+        "id": "evidence-cv11-insert-cuvette-20",
+        "kind": "action-evidence",
+        "actionId": "cv11-insert-cuvette-20"
+      },
+      {
+        "id": "evidence-cv11-read-absorbance-20",
+        "kind": "measurement",
+        "actionId": "cv11-read-absorbance-20",
+        "referenceId": "cv11-calibration-absorbance-20"
+      },
+      {
+        "id": "evidence-cv11-record-absorbance-20",
+        "kind": "notebook",
+        "actionId": "cv11-record-absorbance-20",
+        "referenceId": "cv11-calibration-absorbance-20"
+      },
+      {
+        "id": "evidence-cv11-remove-calibration-cuvette-20",
+        "kind": "action-evidence",
+        "actionId": "cv11-remove-calibration-cuvette-20"
+      },
+      {
+        "id": "evidence-cv11-condition-cuvette-25",
+        "kind": "notebook",
+        "actionId": "cv11-condition-cuvette-25"
+      },
+      {
+        "id": "evidence-cv11-fill-cuvette-25",
+        "kind": "action-evidence",
+        "actionId": "cv11-fill-cuvette-25"
+      },
+      {
+        "id": "evidence-cv11-insert-cuvette-25",
+        "kind": "action-evidence",
+        "actionId": "cv11-insert-cuvette-25"
+      },
+      {
+        "id": "evidence-cv11-read-absorbance-25",
+        "kind": "measurement",
+        "actionId": "cv11-read-absorbance-25",
+        "referenceId": "cv11-calibration-absorbance-25"
+      },
+      {
+        "id": "evidence-cv11-record-absorbance-25",
+        "kind": "notebook",
+        "actionId": "cv11-record-absorbance-25",
+        "referenceId": "cv11-calibration-absorbance-25"
+      },
+      {
+        "id": "evidence-cv11-remove-calibration-cuvette-25",
+        "kind": "action-evidence",
+        "actionId": "cv11-remove-calibration-cuvette-25"
+      },
+      {
+        "id": "evidence-cv11-fit-calibration",
+        "kind": "calculation",
+        "actionId": "cv11-fit-calibration",
+        "referenceId": "cv11-calibration-regression"
+      }
+    ],
+    "completion": {
+      "exitPortIds": [
+        "exit"
+      ],
+      "requiredEvidenceOutputIds": [],
+      "requiredValidationRuleIds": []
+    },
+    "catalogDisposition": "lab-scoped",
+    "legacyActionEffects": [
+      {
+        "actionId": "cv11-select-wavelength",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "cv11-predict-calibration-range",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "cv11-approve-wavelength-and-blank",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "cv11-fit-calibration",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

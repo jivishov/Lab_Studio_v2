@@ -1,0 +1,505 @@
+{
+  "id": "intro-filtration-demo",
+  "title": "Precipitate and Filter Calcium Carbonate",
+  "description": "An authored lab that precipitates calcium carbonate, prepares a funnel, filters the mixture, and collects filtrate evidence.",
+  "audience": "Introductory chemistry students",
+  "learningGoals": [
+    "Measure a sample",
+    "Transfer liquid",
+    "Filter a precipitate"
+  ],
+  "safetyNotes": [
+    "Wear eye protection.",
+    "Clean spills immediately."
+  ],
+  "equipment": [
+    "sample-bottle",
+    "graduated-cylinder",
+    "beaker-250ml",
+    "ring-stand",
+    "funnel",
+    "filter-paper",
+    "funnel-stand",
+    "wash-bottle",
+    "erlenmeyer-flask-250ml",
+    "reagent-bottle"
+  ],
+  "techniques": [],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "graduated-cylinder-1",
+        "definitionId": "graduated-cylinder",
+        "label": "Graduated cylinder",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "sample-bottle-1",
+        "definitionId": "sample-bottle",
+        "label": "Sample bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Hard water sample",
+          "volumeMl": 120,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "erlenmeyer-flask-250ml-1",
+        "definitionId": "erlenmeyer-flask-250ml",
+        "label": "Receiving flask",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "reagent-bottle-1",
+        "definitionId": "reagent-bottle",
+        "label": "Reagent bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Carbonate reagent",
+          "volumeMl": 20,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "beaker-250ml-1",
+        "definitionId": "beaker-250ml",
+        "label": "250 mL beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "ring-stand-1",
+        "definitionId": "ring-stand",
+        "label": "Ring stand",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "funnel-1",
+        "definitionId": "funnel",
+        "label": "Glass funnel",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "filter-paper-1",
+        "definitionId": "filter-paper",
+        "label": "Filter paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "funnel-stand-1",
+        "definitionId": "funnel-stand",
+        "label": "Funnel and stand",
+        "location": "storage",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "wash-bottle-1",
+        "definitionId": "wash-bottle",
+        "label": "Wash bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Deionized water",
+          "volumeMl": 500,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      }
+    ]
+  },
+  "actions": [],
+  "process": {
+    "startNodeId": "demo-measure-node",
+    "nodes": [],
+    "edges": []
+  },
+  "assessments": [],
+  "metadata": {
+    "version": "1.2.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-08-30T00:00:00.000Z",
+    "tags": [
+      "lab",
+      "demo",
+      "filtration"
+    ]
+  },
+  "techniqueInstances": [
+    {
+      "instanceId": "measuring-volume",
+      "techniqueId": "measuring-volume",
+      "version": "1.2.0",
+      "bindings": {
+        "equipment": {
+          "variable-volume-measuring-device": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "graduated-cylinder-1",
+                "definitionId": "graduated-cylinder",
+                "instanceId": "graduated-cylinder-1"
+              }
+            ]
+          },
+          "liquid-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "sample-bottle-1",
+                "definitionId": "sample-bottle",
+                "instanceId": "sample-bottle-1"
+              }
+            ]
+          }
+        },
+        "models": {},
+        "configuration": {
+          "targetVolumeMl": 20,
+          "volumeToleranceMl": 1,
+          "volumeMeasurementId": "sample-volume"
+        }
+      },
+      "preserveIds": {
+        "actions": {
+          "place-cylinder": "place-cylinder",
+          "measure-20ml": "measure-20ml",
+          "record-volume": "record-volume"
+        },
+        "nodes": {
+          "place-cylinder-node": "intro-filtration-demo-place-cylinder-node",
+          "measure-sample-node": "demo-measure-node",
+          "record-volume-node": "intro-filtration-demo-record-volume-node"
+        },
+        "validationRules": {
+          "placed-cylinder": "placed-cylinder",
+          "measured-sample": "measured-sample",
+          "sample-volume-evidence": "sample-volume-evidence",
+          "recorded-volume": "recorded-volume",
+          "volume-success": "volume-success"
+        }
+      }
+    },
+    {
+      "instanceId": "transfer",
+      "techniqueId": "transfer",
+      "version": "1.2.0",
+      "bindings": {
+        "equipment": {
+          "measured-solvent-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "graduated-cylinder-1",
+                "definitionId": "graduated-cylinder",
+                "instanceId": "graduated-cylinder-1"
+              }
+            ]
+          },
+          "precipitation-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "beaker-250ml-1",
+                "definitionId": "beaker-250ml",
+                "instanceId": "beaker-250ml-1"
+              }
+            ]
+          }
+        },
+        "models": {},
+        "configuration": {
+          "transferVolumeMl": 20,
+          "transferObservation": "Transferred sample is clear with no spill."
+        }
+      },
+      "preserveIds": {
+        "actions": {
+          "place-beaker": "place-beaker",
+          "transfer-sample": "transfer-sample",
+          "observe-transfer": "observe-transfer"
+        },
+        "nodes": {
+          "place-beaker-node": "intro-filtration-demo-place-beaker-node",
+          "transfer-sample-node": "demo-transfer-node",
+          "observe-transfer-node": "intro-filtration-demo-observe-transfer-node"
+        },
+        "validationRules": {
+          "placed-beaker": "placed-beaker",
+          "transferred-sample": "transferred-sample",
+          "observed-transfer": "observed-transfer",
+          "transfer-success": "transfer-success"
+        }
+      }
+    },
+    {
+      "instanceId": "hard-water-precipitation",
+      "techniqueId": "hard-water-precipitation",
+      "version": "1.2.0",
+      "bindings": {
+        "equipment": {
+          "precipitation-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "beaker-250ml-1",
+                "definitionId": "beaker-250ml",
+                "instanceId": "beaker-250ml-1"
+              }
+            ]
+          },
+          "precipitating-reagent-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "reagent-bottle-1",
+                "definitionId": "reagent-bottle",
+                "instanceId": "reagent-bottle-1"
+              }
+            ]
+          }
+        },
+        "models": {},
+        "configuration": {
+          "precipitateMassG": 0.0075,
+          "finalVolumeMl": 40
+        }
+      },
+      "preserveIds": {
+        "actions": {
+          "precipitate-caco3": "precipitate-caco3"
+        },
+        "nodes": {
+          "precipitate-sample-node": "demo-precipitate-node"
+        },
+        "validationRules": {
+          "precipitate-caco3-complete": "precipitate-caco3-complete",
+          "hard-water-precipitation-success": "hard-water-precipitation-success"
+        }
+      }
+    },
+    {
+      "instanceId": "filtration",
+      "techniqueId": "filtration",
+      "version": "1.2.0",
+      "bindings": {
+        "equipment": {
+          "filtration-support": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "ring-stand-1",
+                "definitionId": "ring-stand",
+                "instanceId": "ring-stand-1"
+              }
+            ]
+          },
+          "filtration-funnel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "funnel-1",
+                "definitionId": "funnel",
+                "instanceId": "funnel-1"
+              },
+              {
+                "sourceInstanceId": "funnel-stand-1",
+                "definitionId": "funnel-stand",
+                "instanceId": "funnel-stand-1"
+              }
+            ]
+          },
+          "filter-medium": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "filter-paper-1",
+                "definitionId": "filter-paper",
+                "instanceId": "filter-paper-1"
+              }
+            ]
+          },
+          "rinse-water-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "wash-bottle-1",
+                "definitionId": "wash-bottle",
+                "instanceId": "wash-bottle-1"
+              }
+            ]
+          },
+          "filtration-receiver": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "erlenmeyer-flask-250ml-1",
+                "definitionId": "erlenmeyer-flask-250ml",
+                "instanceId": "erlenmeyer-flask-250ml-1"
+              }
+            ]
+          },
+          "mixture-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "beaker-250ml-1",
+                "definitionId": "beaker-250ml",
+                "instanceId": "beaker-250ml-1"
+              }
+            ]
+          }
+        },
+        "models": {},
+        "configuration": {
+          "filtrationMode": "gravity",
+          "rinseVolumeMl": 5
+        }
+      },
+      "preserveIds": {
+        "actions": {
+          "assemble-funnel-stand": "assemble-funnel-stand",
+          "place-filter-paper": "place-filter-paper",
+          "wet-filter-paper": "wet-filter-paper",
+          "place-filtration-receiver": "place-filtration-receiver",
+          "filter-mixture": "filter-mixture",
+          "rinse-precipitate": "rinse-precipitate"
+        },
+        "nodes": {
+          "assemble-funnel-stand-node": "demo-assemble-funnel-stand-node",
+          "place-filter-node": "demo-place-filter-node",
+          "wet-filter-node": "demo-wet-filter-node",
+          "place-receiver-node": "demo-place-receiver-node",
+          "filter-mixture-node": "demo-filter-node",
+          "rinse-precipitate-node": "demo-rinse-node"
+        },
+        "validationRules": {
+          "assembled-funnel-stand": "assembled-funnel-stand",
+          "placed-filter-paper": "placed-filter-paper",
+          "wetted-filter-paper": "wetted-filter-paper",
+          "placed-filtration-receiver": "placed-filtration-receiver",
+          "filtered-mixture": "filtered-mixture",
+          "rinsed-precipitate": "rinsed-precipitate",
+          "filtration-success": "filtration-success"
+        }
+      }
+    }
+  ],
+  "compositionStart": {
+    "kind": "technique-port",
+    "instanceId": "measuring-volume",
+    "portId": "entry"
+  },
+  "compositionConnections": [
+    {
+      "id": "measuring-volume-to-transfer",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "measuring-volume",
+        "portId": "exit"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "transfer",
+        "portId": "entry"
+      },
+      "label": "Next",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "transfer-to-hard-water-precipitation",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "transfer",
+        "portId": "exit"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "hard-water-precipitation",
+        "portId": "entry"
+      },
+      "label": "Next",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "hard-water-precipitation-to-filtration",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "hard-water-precipitation",
+        "portId": "exit"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "filtration",
+        "portId": "entry"
+      },
+      "label": "Next",
+      "condition": {
+        "type": "validationPassed"
+      }
+    }
+  ],
+  "reachabilityWitnesses": [
+    {
+      "id": "default",
+      "configuration": {},
+      "approvalGates": {}
+    }
+  ]
+}

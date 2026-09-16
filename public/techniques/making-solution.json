@@ -1,0 +1,441 @@
+{
+  "id": "making-solution",
+  "title": "Make a Solution",
+  "learningGoal": "Dissolve a weighed solid in solvent and track concentration state.",
+  "requiredEquipment": [
+    "volumetric-flask",
+    "reagent-bottle",
+    "wash-bottle",
+    "stirring-rod"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "volumetric-flask-1",
+        "definitionId": "volumetric-flask",
+        "label": "Volumetric flask",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "reagent-bottle-1",
+        "definitionId": "reagent-bottle",
+        "label": "Reagent bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "wash-bottle-1",
+        "definitionId": "wash-bottle",
+        "label": "Wash bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Deionized water",
+          "volumeMl": 500,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "stirring-rod-1",
+        "definitionId": "stirring-rod",
+        "label": "Stirring rod",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "add-solvent",
+      "verb": "transfer",
+      "label": "Add solvent",
+      "parameters": {
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "volumetric-flask",
+        "volumeMl": "{{config.initialSolventVolumeMl}}"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "transfer updates runtime state through structured equipment contents."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Solvent is in the flask.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "transfer"
+      ],
+      "atomId": "atom.transfer.unmeasured-solvent",
+      "equipmentRoleBindings": {
+        "liquid-source": "wash-bottle",
+        "receiving-vessel": "volumetric-flask"
+      }
+    },
+    {
+      "id": "dissolve-solid",
+      "verb": "dissolve",
+      "label": "Dissolve solid",
+      "parameters": {
+        "sourceDefinitionId": "reagent-bottle",
+        "targetDefinitionId": "volumetric-flask",
+        "soluteMassG": "{{config.soluteMassG}}",
+        "finalVolumeMl": "{{config.finalVolumeMl}}"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "dissolve updates runtime state through structured equipment contents."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The solution is homogeneous.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "dissolve"
+      ],
+      "atomId": "atom.dissolve.solid-in-solvent",
+      "equipmentRoleBindings": {
+        "receiving-vessel": "volumetric-flask",
+        "stirring-device": "stirring-rod"
+      }
+    },
+    {
+      "id": "observe-solution",
+      "verb": "record",
+      "label": "Record solution appearance",
+      "parameters": {
+        "note": "{{config.solutionObservation}}",
+        "tag": "solution-observation"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "observe updates runtime state through structured equipment contents."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Observation recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ]
+    }
+  ],
+  "process": {
+    "startNodeId": "add-solvent-node",
+    "nodes": [
+      {
+        "id": "add-solvent-node",
+        "type": "action",
+        "title": "Add solvent",
+        "description": "Add the configured initial solvent volume of deionized water from the wash bottle to the volumetric flask.",
+        "actionId": "add-solvent",
+        "config": {},
+        "validation": [
+          {
+            "id": "added-solvent",
+            "type": "actionEvidence",
+            "label": "Action add-solvent was completed.",
+            "actionId": "add-solvent"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Add solvent complete.",
+          "retry": "Review Add solvent and try again."
+        }
+      },
+      {
+        "id": "dissolve-solid-node",
+        "type": "action",
+        "title": "Dissolve solid",
+        "description": "Dissolve the configured solute mass of solid from the reagent bottle in the volumetric flask.",
+        "actionId": "dissolve-solid",
+        "config": {},
+        "validation": [
+          {
+            "id": "dissolved-solid",
+            "type": "actionEvidence",
+            "label": "Action dissolve-solid was completed.",
+            "actionId": "dissolve-solid"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Dissolve solid complete.",
+          "retry": "Review Dissolve solid and try again."
+        }
+      },
+      {
+        "id": "observe-solution-node",
+        "type": "observation",
+        "title": "Record solution appearance",
+        "description": "Record the configured solution-appearance evidence without inventing an observation.",
+        "actionId": "observe-solution",
+        "config": {},
+        "validation": [
+          {
+            "id": "observed-solution",
+            "type": "actionEvidence",
+            "label": "Action observe-solution was completed.",
+            "actionId": "observe-solution"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Observe solution complete.",
+          "retry": "Review Observe solution and try again."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "add-solvent-node",
+        "to": "dissolve-solid-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "dissolve-solid-node",
+        "to": "observe-solution-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [
+    {
+      "id": "solution-success",
+      "type": "actionEvidence",
+      "label": "Action dissolve-solid was completed.",
+      "actionId": "dissolve-solid"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "current node expects a different action",
+      "message": "That action is out of sequence for the current technique step.",
+      "recovery": "Check the process map and perform the highlighted step first."
+    },
+    {
+      "id": "missing-source",
+      "when": "source equipment or contents are missing",
+      "message": "The selected source does not contain the material required for this action.",
+      "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+    },
+    {
+      "id": "overflow",
+      "when": "target capacity would be exceeded",
+      "message": "The target equipment cannot hold the requested volume.",
+      "recovery": "Use a larger container or transfer a smaller measured amount."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.2.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-08-30T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "solution"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry",
+        "kind": "entry",
+        "nodeId": "add-solvent-node",
+        "label": "Entry"
+      },
+      {
+        "id": "exit",
+        "kind": "exit",
+        "nodeId": "observe-solution-node",
+        "label": "Exit"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "liquid-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "wash-bottle"
+        ],
+        "sourceInstanceIds": [
+          "wash-bottle-1"
+        ]
+      },
+      {
+        "roleId": "receiving-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "volumetric-flask"
+        ],
+        "sourceInstanceIds": [
+          "volumetric-flask-1"
+        ]
+      },
+      {
+        "roleId": "stirring-device",
+        "required": true,
+        "allowedDefinitionIds": [
+          "stirring-rod"
+        ],
+        "sourceInstanceIds": [
+          "stirring-rod-1"
+        ]
+      }
+    ],
+    "modelSlots": [],
+    "configurationSlots": [
+      {
+        "id": "initialSolventVolumeMl",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "soluteMassG",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "finalVolumeMl",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "solutionObservation",
+        "valueType": "string",
+        "required": true
+      }
+    ],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [
+      {
+        "id": "solution-observation",
+        "kind": "notebook",
+        "actionId": "observe-solution",
+        "referenceId": "solution-observation"
+      }
+    ],
+    "completion": {
+      "exitPortIds": [
+        "exit"
+      ],
+      "requiredEvidenceOutputIds": [
+        "solution-observation"
+      ],
+      "requiredValidationRuleIds": [
+        "solution-success"
+      ]
+    },
+    "catalogDisposition": "composable",
+    "legacyActionEffects": [
+      {
+        "actionId": "observe-solution",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

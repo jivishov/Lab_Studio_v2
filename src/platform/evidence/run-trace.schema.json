@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://lab-studio.local/schemas/studio.run-trace/1.0",
+  "title": "Studio Semantic Run Trace v1",
+  "oneOf": [
+    { "$ref": "#/definitions/runEvent" },
+    { "$ref": "#/definitions/runTrace" }
+  ],
+  "definitions": {
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "id": { "type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$" },
+    "stringSet": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/definitions/id" } },
+    "dataValue": {
+      "oneOf": [
+        { "type": "string", "maxLength": 1000 },
+        { "type": "number" },
+        { "type": "boolean" },
+        { "type": "array", "maxItems": 100, "items": { "type": "string", "maxLength": 500 } }
+      ]
+    },
+    "runEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "schemaVersion", "eventId", "sequence", "eventTypeId", "occurredAt", "objectRefs", "evidenceRefs", "outcome", "summary", "data"],
+      "properties": {
+        "schema": { "const": "studio.run-event" },
+        "schemaVersion": { "const": "1.0" },
+        "eventId": { "$ref": "#/definitions/id" },
+        "sequence": { "type": "integer", "minimum": 1 },
+        "eventTypeId": { "$ref": "#/definitions/id" },
+        "occurredAt": { "$ref": "#/definitions/nonEmptyString" },
+        "nodeId": { "$ref": "#/definitions/id" },
+        "operationRef": { "$ref": "#/definitions/id" },
+        "actorRole": { "$ref": "#/definitions/id" },
+        "objectRefs": { "$ref": "#/definitions/stringSet" },
+        "evidenceRefs": { "$ref": "#/definitions/stringSet" },
+        "outcome": { "enum": ["accepted", "rejected", "recorded", "completed"] },
+        "summary": { "type": "string", "minLength": 1, "maxLength": 1000 },
+        "data": {
+          "type": "object",
+          "maxProperties": 32,
+          "propertyNames": { "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$" },
+          "additionalProperties": { "$ref": "#/definitions/dataValue" }
+        }
+      }
+    },
+    "runTrace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "schemaVersion", "traceId", "runId", "startedAt", "events"],
+      "properties": {
+        "schema": { "const": "studio.run-trace" },
+        "schemaVersion": { "const": "1.0" },
+        "traceId": { "$ref": "#/definitions/id" },
+        "runId": { "$ref": "#/definitions/id" },
+        "startedAt": { "$ref": "#/definitions/nonEmptyString" },
+        "completedAt": { "$ref": "#/definitions/nonEmptyString" },
+        "events": { "type": "array", "items": { "$ref": "#/definitions/runEvent" } }
+      }
+    }
+  }
+}

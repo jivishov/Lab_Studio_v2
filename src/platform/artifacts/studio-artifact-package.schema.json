@@ -1,0 +1,89 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://lab-studio.local/schemas/studio.artifact-package/1.0",
+  "title": "Studio Artifact Package v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "schemaVersion", "packageId", "createdAt", "domainPack",
+    "capabilityManifestVersion", "artifactDescriptor", "validation", "artifact",
+    "files", "assumptions", "limitations"
+  ],
+  "properties": {
+    "schema": { "const": "studio.artifact-package" },
+    "schemaVersion": { "const": "1.0" },
+    "packageId": { "$ref": "#/definitions/nonEmptyString" },
+    "createdAt": { "$ref": "#/definitions/nonEmptyString" },
+    "domainPack": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "version"],
+      "properties": {
+        "id": { "enum": ["chemistry", "assay"] },
+        "version": { "$ref": "#/definitions/nonEmptyString" }
+      }
+    },
+    "capabilityManifestVersion": { "$ref": "#/definitions/nonEmptyString" },
+    "artifactDescriptor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifactId", "artifactKind", "title", "version", "fileName", "mediaType"],
+      "properties": {
+        "artifactId": { "$ref": "#/definitions/nonEmptyString" },
+        "artifactKind": { "$ref": "#/definitions/nonEmptyString" },
+        "title": { "$ref": "#/definitions/nonEmptyString" },
+        "version": { "$ref": "#/definitions/nonEmptyString" },
+        "fileName": { "$ref": "#/definitions/safeFileName" },
+        "mediaType": { "const": "application/json" }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ok", "diagnostics"],
+      "properties": {
+        "ok": { "type": "boolean" },
+        "diagnostics": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["code", "path", "message", "severity"],
+            "properties": {
+              "code": { "$ref": "#/definitions/nonEmptyString" },
+              "path": { "type": "string" },
+              "message": { "$ref": "#/definitions/nonEmptyString" },
+              "severity": { "enum": ["error", "warning"] }
+            }
+          }
+        }
+      }
+    },
+    "artifact": { "type": "object", "required": ["id"] },
+    "runPlan": { "type": "object" },
+    "files": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "role", "fileName", "mediaType", "encoding", "byteLength", "content"],
+        "properties": {
+          "id": { "$ref": "#/definitions/nonEmptyString" },
+          "role": { "enum": ["artifact", "requirements-csv", "preparation-checklist"] },
+          "fileName": { "$ref": "#/definitions/safeFileName" },
+          "mediaType": { "enum": ["application/json", "text/csv", "text/markdown"] },
+          "encoding": { "const": "utf-8" },
+          "byteLength": { "type": "integer", "minimum": 0 },
+          "content": { "type": "string" }
+        }
+      }
+    },
+    "assumptions": { "type": "array", "items": { "type": "string" } },
+    "limitations": { "type": "array", "items": { "type": "string" } }
+  },
+  "definitions": {
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "safeFileName": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$" }
+  }
+}

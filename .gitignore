@@ -1,0 +1,39 @@
+node_modules/
+dist/
+dist-server/
+build/
+coverage/
+test-results/
+logs/
+tmp/
+.vite/
+.cache/
+.playwright-mcp/
+
+.env
+.env.*
+!.env.example
+
+*.log
+*.tsbuildinfo
+*.pyc
+__pycache__/
+
+.DS_Store
+Thumbs.db
+
+.claude/
+.codex/
+docs/instructional-video/.render/
+
+# Local QA screenshots and generated previews kept outside the development package.
+/*.png
+/filtration-initial-snapshot.md
+/preview_3d.html
+/vite.config.js
+/vite.config.d.ts
+
+# Handoff archives and phase deliverable dumps. These are large binary/duplicated snapshots that
+# are not GitHub Pages runtime inputs, so they stay out of the repository.
+*.zip
+/hand_warmer/

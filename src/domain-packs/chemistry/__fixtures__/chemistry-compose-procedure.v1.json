@@ -1,0 +1,173 @@
+{
+  "schema": "studio.procedure-ir",
+  "schemaVersion": "1.0",
+  "id": "chemistry-pack-golden-compose",
+  "title": "Measure, observe, and calculate",
+  "purpose": "Compose a deterministic chemistry draft from current Studio step blueprints.",
+  "audience": "Secondary chemistry learners",
+  "learningObjectives": [
+    "Measure a declared sample volume",
+    "Record an observation",
+    "Submit a deterministic calculation"
+  ],
+  "domainHint": "chemistry",
+  "sources": [
+    {
+      "id": "source-1",
+      "kind": "user-input",
+      "title": "Reviewed structured chemistry procedure",
+      "language": "en"
+    }
+  ],
+  "roles": [],
+  "resources": [
+    {
+      "id": "sample-bottle-resource",
+      "label": "Sample bottle",
+      "kind": "equipment",
+      "knownResourceRef": "sample-bottle",
+      "sourceLocators": [
+        {
+          "sourceRef": "source-1",
+          "kind": "structured-step",
+          "pointer": "resources/0"
+        }
+      ],
+      "reviewFlags": []
+    },
+    {
+      "id": "graduated-cylinder-resource",
+      "label": "Graduated cylinder",
+      "kind": "equipment",
+      "knownResourceRef": "graduated-cylinder",
+      "sourceLocators": [
+        {
+          "sourceRef": "source-1",
+          "kind": "structured-step",
+          "pointer": "resources/1"
+        }
+      ],
+      "reviewFlags": []
+    }
+  ],
+  "variables": [],
+  "steps": [
+    {
+      "id": "measure-sample",
+      "ordinal": 1,
+      "title": "Measure sample",
+      "instruction": "Measure 20 mL of sample in the graduated cylinder.",
+      "sourceLocators": [
+        {
+          "sourceRef": "source-1",
+          "kind": "structured-step",
+          "pointer": "steps/0"
+        }
+      ],
+      "normalizedOperation": {
+        "family": "chemistry.action",
+        "actionKey": "measureVolume",
+        "actorRefs": [],
+        "inputRefs": ["sample-bottle-resource", "graduated-cylinder-resource"],
+        "outputRefs": [],
+        "parameters": {
+          "sourceDefinitionId": "sample-bottle",
+          "targetDefinitionId": "graduated-cylinder",
+          "measurementId": "golden-volume",
+          "volumeMl": {
+            "value": "20",
+            "unit": { "kind": "known", "id": "mL" }
+          }
+        }
+      },
+      "preconditions": [],
+      "effects": [],
+      "dependencies": [],
+      "requestedFidelity": "F2",
+      "evidenceRequirements": [],
+      "accessibilityRequirements": ["keyboard"],
+      "ambiguity": [],
+      "reviewFlags": []
+    },
+    {
+      "id": "observe-sample",
+      "ordinal": 2,
+      "title": "Observe sample",
+      "instruction": "Record a text observation about the measured sample.",
+      "sourceLocators": [
+        {
+          "sourceRef": "source-1",
+          "kind": "structured-step",
+          "pointer": "steps/1"
+        }
+      ],
+      "normalizedOperation": {
+        "family": "chemistry.action",
+        "actionKey": "observe",
+        "actorRefs": [],
+        "inputRefs": [],
+        "outputRefs": [],
+        "parameters": {
+          "notebookTag": "golden-observation",
+          "note": "Record the sample appearance."
+        }
+      },
+      "preconditions": [],
+      "effects": [],
+      "dependencies": ["measure-sample"],
+      "requestedFidelity": "F2",
+      "evidenceRequirements": [],
+      "accessibilityRequirements": ["keyboard", "text-alternative"],
+      "ambiguity": [],
+      "reviewFlags": []
+    },
+    {
+      "id": "calculate-hardness",
+      "ordinal": 3,
+      "title": "Calculate hardness",
+      "instruction": "Submit the configured hardness calculation.",
+      "sourceLocators": [
+        {
+          "sourceRef": "source-1",
+          "kind": "structured-step",
+          "pointer": "steps/2"
+        }
+      ],
+      "normalizedOperation": {
+        "family": "chemistry.model",
+        "actionKey": "calculate",
+        "actorRefs": [],
+        "inputRefs": [],
+        "outputRefs": [],
+        "parameters": {
+          "calculationId": "golden-hardness",
+          "template": "hardnessMgLAsCaCO3",
+          "expected": {
+            "value": "375",
+            "unit": { "kind": "known", "id": "1" }
+          }
+        }
+      },
+      "preconditions": [],
+      "effects": [],
+      "dependencies": ["observe-sample"],
+      "requestedFidelity": "F3",
+      "evidenceRequirements": [],
+      "accessibilityRequirements": ["keyboard"],
+      "ambiguity": [],
+      "reviewFlags": []
+    }
+  ],
+  "controlFlow": {
+    "mode": "ordered",
+    "entryStepIds": ["measure-sample"],
+    "completionStepIds": ["calculate-hardness"],
+    "allowParallel": false
+  },
+  "reviewFlags": [],
+  "metadata": {
+    "createdAt": "2026-07-18T03:00:00.000Z",
+    "createdBy": "user",
+    "language": "en"
+  }
+}

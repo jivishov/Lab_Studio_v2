@@ -1,0 +1,440 @@
+{
+  "id": "dilution",
+  "title": "Dilute a Stock Solution",
+  "learningGoal": "Create a target dilution from an aliquot and final volume.",
+  "requiredEquipment": [
+    "graduated-cylinder",
+    "volumetric-flask",
+    "wash-bottle"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "graduated-cylinder-1",
+        "definitionId": "graduated-cylinder",
+        "label": "Graduated cylinder",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "Stock solution",
+          "volumeMl": 10,
+          "solutes": [
+            {
+              "id": "stock-solute",
+              "label": "Stock solute",
+              "amount": 10,
+              "unit": "mg"
+            }
+          ],
+          "concentration": {
+            "value": 1000,
+            "unit": "mg/L"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-solution"
+        }
+      },
+      {
+        "id": "volumetric-flask-1",
+        "definitionId": "volumetric-flask",
+        "label": "Volumetric flask",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "wash-bottle-1",
+        "definitionId": "wash-bottle",
+        "label": "Wash bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Deionized water",
+          "volumeMl": 500,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "transfer-aliquot",
+      "verb": "transfer",
+      "label": "Transfer aliquot",
+      "parameters": {
+        "sourceDefinitionId": "graduated-cylinder",
+        "targetDefinitionId": "volumetric-flask",
+        "volumeMl": "{{config.aliquotVolumeMl}}"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "transfer updates runtime state through structured equipment contents."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Aliquot transferred.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "transfer"
+      ],
+      "atomId": "atom.transfer.measured-liquid",
+      "equipmentRoleBindings": {
+        "measured-solvent-source": "graduated-cylinder",
+        "receiving-vessel": "volumetric-flask"
+      }
+    },
+    {
+      "id": "dilute-to-mark",
+      "verb": "dilute",
+      "label": "Dilute to mark",
+      "parameters": {
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "volumetric-flask",
+        "finalVolumeMl": "{{config.finalVolumeMl}}",
+        "dilutionFactor": "{{config.dilutionFactor}}"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "dilute updates runtime state through structured equipment contents."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Dilution factor recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "dilute"
+      ],
+      "atomId": "atom.dilute.unmeasured-solvent-to-mark",
+      "equipmentRoleBindings": {
+        "liquid-source": "wash-bottle",
+        "receiving-vessel": "volumetric-flask"
+      }
+    },
+    {
+      "id": "record-dilution",
+      "verb": "record",
+      "label": "Record dilution",
+      "parameters": {
+        "measurementId": "{{config.dilutionEvidenceId}}",
+        "label": "Dilution factor",
+        "value": "{{config.dilutionFactor}}",
+        "unit": "x"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "record updates runtime state through structured equipment contents."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Dilution evidence recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "record",
+        "notebook"
+      ]
+    }
+  ],
+  "process": {
+    "startNodeId": "transfer-aliquot-node",
+    "nodes": [
+      {
+        "id": "transfer-aliquot-node",
+        "type": "action",
+        "title": "Transfer aliquot",
+        "description": "Pour the configured aliquot of stock solution from the graduated cylinder into the volumetric flask.",
+        "actionId": "transfer-aliquot",
+        "config": {},
+        "validation": [
+          {
+            "id": "aliquot-transferred",
+            "type": "actionEvidence",
+            "label": "Action transfer-aliquot was completed.",
+            "actionId": "transfer-aliquot"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Transfer aliquot complete.",
+          "retry": "Review Transfer aliquot and try again."
+        }
+      },
+      {
+        "id": "dilute-to-mark-node",
+        "type": "action",
+        "title": "Dilute to mark",
+        "description": "Add deionized water from the wash bottle to bring the volumetric flask to the configured final volume.",
+        "actionId": "dilute-to-mark",
+        "config": {},
+        "validation": [
+          {
+            "id": "diluted-to-mark",
+            "type": "actionEvidence",
+            "label": "Action dilute-to-mark was completed.",
+            "actionId": "dilute-to-mark"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Dilute to mark complete.",
+          "retry": "Review Dilute to mark and try again."
+        }
+      },
+      {
+        "id": "record-dilution-node",
+        "type": "observation",
+        "title": "Record dilution",
+        "description": "Record the the configured dilution factor in the notebook.",
+        "actionId": "record-dilution",
+        "config": {},
+        "validation": [
+          {
+            "id": "recorded-dilution",
+            "type": "actionEvidence",
+            "label": "Action record-dilution was completed.",
+            "actionId": "record-dilution"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record dilution complete.",
+          "retry": "Review Record dilution and try again."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "transfer-aliquot-node",
+        "to": "dilute-to-mark-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "dilute-to-mark-node",
+        "to": "record-dilution-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [
+    {
+      "id": "dilution-success",
+      "type": "actionEvidence",
+      "label": "Action dilute-to-mark was completed.",
+      "actionId": "dilute-to-mark"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "current node expects a different action",
+      "message": "That action is out of sequence for the current technique step.",
+      "recovery": "Check the process map and perform the highlighted step first."
+    },
+    {
+      "id": "missing-source",
+      "when": "source equipment or contents are missing",
+      "message": "The selected source does not contain the material required for this action.",
+      "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+    },
+    {
+      "id": "overflow",
+      "when": "target capacity would be exceeded",
+      "message": "The target equipment cannot hold the requested volume.",
+      "recovery": "Use a larger container or transfer a smaller measured amount."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.2.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-08-30T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "dilution"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry",
+        "kind": "entry",
+        "nodeId": "transfer-aliquot-node",
+        "label": "Entry"
+      },
+      {
+        "id": "exit",
+        "kind": "exit",
+        "nodeId": "record-dilution-node",
+        "label": "Exit"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "measured-solvent-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "graduated-cylinder"
+        ],
+        "sourceInstanceIds": [
+          "graduated-cylinder-1"
+        ]
+      },
+      {
+        "roleId": "receiving-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "volumetric-flask"
+        ],
+        "sourceInstanceIds": [
+          "volumetric-flask-1"
+        ]
+      },
+      {
+        "roleId": "liquid-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "wash-bottle"
+        ],
+        "sourceInstanceIds": [
+          "wash-bottle-1"
+        ]
+      }
+    ],
+    "modelSlots": [],
+    "configurationSlots": [
+      {
+        "id": "aliquotVolumeMl",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "finalVolumeMl",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "dilutionFactor",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "dilutionEvidenceId",
+        "valueType": "string",
+        "required": true
+      }
+    ],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [
+      {
+        "id": "dilution-record",
+        "kind": "notebook",
+        "actionId": "record-dilution",
+        "referenceId": "{{config.dilutionEvidenceId}}"
+      }
+    ],
+    "completion": {
+      "exitPortIds": [
+        "exit"
+      ],
+      "requiredEvidenceOutputIds": [
+        "dilution-record"
+      ],
+      "requiredValidationRuleIds": [
+        "dilution-success"
+      ]
+    },
+    "catalogDisposition": "composable",
+    "legacyActionEffects": [
+      {
+        "actionId": "record-dilution",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://lab-studio.local/schemas/studio.fidelity-assessment/1.0",
+  "title": "Studio Fidelity Assessment v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "classification", "claims", "limitations"],
+  "properties": {
+    "schema": { "const": "studio.fidelity-assessment" },
+    "schemaVersion": { "const": "1.0" },
+    "classification": { "$ref": "#/definitions/classification" },
+    "claims": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/claim" }
+    },
+    "limitations": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/limitation" }
+    }
+  },
+  "definitions": {
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "fidelity": { "enum": ["F0", "F1", "F2", "F3", "F4"] },
+    "classification": { "enum": ["runnable", "representable", "unsupported"] },
+    "limitation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "code", "message", "appliesToRef"],
+      "properties": {
+        "id": { "$ref": "#/definitions/nonEmptyString" },
+        "kind": { "enum": ["scope", "validity", "missing-proof", "missing-capability", "accessibility"] },
+        "code": { "$ref": "#/definitions/nonEmptyString" },
+        "message": { "$ref": "#/definitions/nonEmptyString" },
+        "appliesToRef": { "$ref": "#/definitions/nonEmptyString" }
+      }
+    },
+    "comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requested", "supported", "meetsRequest", "status", "limitations"],
+      "properties": {
+        "requested": { "$ref": "#/definitions/fidelity" },
+        "supported": { "$ref": "#/definitions/fidelity" },
+        "meetsRequest": { "type": "boolean" },
+        "status": { "enum": ["meets", "representable-only", "insufficient"] },
+        "limitations": { "type": "array", "items": { "$ref": "#/definitions/limitation" } }
+      }
+    },
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claimId", "outcome", "essential", "quantitative", "requestedFidelity", "supportedFidelity", "missingRequirements", "limitations", "comparison", "classification"],
+      "properties": {
+        "claimId": { "$ref": "#/definitions/nonEmptyString" },
+        "outcome": { "$ref": "#/definitions/nonEmptyString" },
+        "essential": { "type": "boolean" },
+        "quantitative": { "type": "boolean" },
+        "requestedFidelity": { "$ref": "#/definitions/fidelity" },
+        "supportedFidelity": { "$ref": "#/definitions/fidelity" },
+        "missingRequirements": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "enum": ["object", "operation", "model", "evidence", "accessible-path"] }
+        },
+        "limitations": { "type": "array", "items": { "$ref": "#/definitions/limitation" } },
+        "comparison": { "$ref": "#/definitions/comparison" },
+        "classification": { "$ref": "#/definitions/classification" }
+      }
+    }
+  }
+}

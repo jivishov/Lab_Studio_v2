@@ -1,0 +1,388 @@
+{
+  "id": "transfer",
+  "title": "Transfer Liquid",
+  "learningGoal": "Move a measured liquid volume between containers without overflow.",
+  "requiredEquipment": [
+    "graduated-cylinder",
+    "beaker-250ml"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "graduated-cylinder-1",
+        "definitionId": "graduated-cylinder",
+        "label": "Graduated cylinder",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Measured water sample",
+          "volumeMl": 20,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "beaker-250ml-1",
+        "definitionId": "beaker-250ml",
+        "label": "250 mL beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "place-beaker",
+      "verb": "place",
+      "label": "Place beaker",
+      "parameters": {
+        "equipmentDefinitionId": "beaker-250ml",
+        "location": "workbench"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "place updates runtime state through structured equipment contents."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The beaker is ready.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.precipitation-vessel",
+      "equipmentRoleBindings": {
+        "precipitation-vessel": "beaker-250ml"
+      }
+    },
+    {
+      "id": "transfer-sample",
+      "verb": "transfer",
+      "label": "Transfer measured sample",
+      "parameters": {
+        "sourceDefinitionId": "graduated-cylinder",
+        "targetDefinitionId": "beaker-250ml",
+        "volumeMl": "{{config.transferVolumeMl}}"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "transfer updates runtime state through structured equipment contents."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The sample is transferred to the beaker.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "transfer"
+      ],
+      "atomId": "atom.transfer.measured-liquid-to-precipitation-vessel",
+      "equipmentRoleBindings": {
+        "measured-solvent-source": "graduated-cylinder",
+        "precipitation-vessel": "beaker-250ml"
+      }
+    },
+    {
+      "id": "observe-transfer",
+      "verb": "record",
+      "label": "Record transfer observation",
+      "parameters": {
+        "note": "{{config.transferObservation}}",
+        "tag": "transfer-observation"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "observe updates runtime state through structured equipment contents."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Observation recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ]
+    }
+  ],
+  "process": {
+    "startNodeId": "place-beaker-node",
+    "nodes": [
+      {
+        "id": "place-beaker-node",
+        "type": "action",
+        "title": "Place beaker",
+        "description": "Place the 250 mL beaker on the workbench.",
+        "actionId": "place-beaker",
+        "config": {},
+        "validation": [
+          {
+            "id": "placed-beaker",
+            "type": "actionEvidence",
+            "label": "Action place-beaker was completed.",
+            "actionId": "place-beaker"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Place beaker complete.",
+          "retry": "Review Place beaker and try again."
+        }
+      },
+      {
+        "id": "transfer-sample-node",
+        "type": "action",
+        "title": "Transfer sample",
+        "description": "Pour the configured volume of sample from the graduated cylinder into the 250 mL beaker.",
+        "actionId": "transfer-sample",
+        "config": {},
+        "validation": [
+          {
+            "id": "transferred-sample",
+            "type": "actionEvidence",
+            "label": "Action transfer-sample was completed.",
+            "actionId": "transfer-sample"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Transfer sample complete.",
+          "retry": "Review Transfer sample and try again."
+        }
+      },
+      {
+        "id": "observe-transfer-node",
+        "type": "observation",
+        "title": "Record transfer observation",
+        "description": "Record the configured transfer evidence without inventing an observation.",
+        "actionId": "observe-transfer",
+        "config": {},
+        "validation": [
+          {
+            "id": "observed-transfer",
+            "type": "actionEvidence",
+            "label": "Action observe-transfer was completed.",
+            "actionId": "observe-transfer"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Observe transfer complete.",
+          "retry": "Review Observe transfer and try again."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "place-beaker-node",
+        "to": "transfer-sample-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "transfer-sample-node",
+        "to": "observe-transfer-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [
+    {
+      "id": "transfer-success",
+      "type": "actionEvidence",
+      "label": "Action transfer-sample was completed.",
+      "actionId": "transfer-sample"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "current node expects a different action",
+      "message": "That action is out of sequence for the current technique step.",
+      "recovery": "Check the process map and perform the highlighted step first."
+    },
+    {
+      "id": "missing-source",
+      "when": "source equipment or contents are missing",
+      "message": "The selected source does not contain the material required for this action.",
+      "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+    },
+    {
+      "id": "overflow",
+      "when": "target capacity would be exceeded",
+      "message": "The target equipment cannot hold the requested volume.",
+      "recovery": "Use a larger container or transfer a smaller measured amount."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.2.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-08-30T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "transfer"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry",
+        "kind": "entry",
+        "nodeId": "place-beaker-node",
+        "label": "Entry"
+      },
+      {
+        "id": "exit",
+        "kind": "exit",
+        "nodeId": "observe-transfer-node",
+        "label": "Exit"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "measured-solvent-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "graduated-cylinder"
+        ],
+        "sourceInstanceIds": [
+          "graduated-cylinder-1"
+        ]
+      },
+      {
+        "roleId": "precipitation-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beaker-250ml"
+        ],
+        "sourceInstanceIds": [
+          "beaker-250ml-1"
+        ]
+      }
+    ],
+    "modelSlots": [],
+    "configurationSlots": [
+      {
+        "id": "transferVolumeMl",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "transferObservation",
+        "valueType": "string",
+        "required": true
+      }
+    ],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [
+      {
+        "id": "transfer-observation",
+        "kind": "notebook",
+        "actionId": "observe-transfer",
+        "referenceId": "transfer-observation"
+      }
+    ],
+    "completion": {
+      "exitPortIds": [
+        "exit"
+      ],
+      "requiredEvidenceOutputIds": [
+        "transfer-observation"
+      ],
+      "requiredValidationRuleIds": [
+        "transfer-success"
+      ]
+    },
+    "catalogDisposition": "composable",
+    "legacyActionEffects": [
+      {
+        "actionId": "observe-transfer",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

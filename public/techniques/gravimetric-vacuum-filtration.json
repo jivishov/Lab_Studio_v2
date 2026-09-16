@@ -1,0 +1,2312 @@
+{
+  "id": "gravimetric-vacuum-filtration",
+  "title": "Gravimetric Vacuum Filtration",
+  "learningGoal": "Preweigh paper, assemble a Buchner vacuum-filtration station, filter without overflow, and wash a precipitate quantitatively.",
+  "requiredEquipment": [
+    "analytical-balance",
+    "filter-paper",
+    "buchner-funnel",
+    "side-arm-filter-flask",
+    "vacuum-source",
+    "wash-bottle",
+    "beaker-250ml",
+    "funnel-stand",
+    "erlenmeyer-flask-250ml"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "practice-filter-balance",
+        "definitionId": "analytical-balance",
+        "label": "Analytical balance",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-filter-paper",
+        "definitionId": "filter-paper",
+        "label": "Filter paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-buchner",
+        "definitionId": "buchner-funnel",
+        "label": "Buchner funnel",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-filter-flask",
+        "definitionId": "side-arm-filter-flask",
+        "label": "Side-arm filter flask",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-vacuum",
+        "definitionId": "vacuum-source",
+        "label": "Vacuum source",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-wash-bottle",
+        "definitionId": "wash-bottle",
+        "label": "Deionized-water wash bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Deionized water",
+          "volumeMl": 500,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "practice-mixture-beaker",
+        "definitionId": "beaker-250ml",
+        "label": "250 mL beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "mixture",
+          "label": "Practice CaCO3 suspension",
+          "volumeMl": 40,
+          "solutes": [
+            {
+              "id": "calcium-carbonate",
+              "label": "Calcium carbonate",
+              "amount": 1.71,
+              "unit": "g"
+            }
+          ],
+          "precipitate": {
+            "substance": "Calcium carbonate",
+            "massG": 1.71,
+            "rinsed": false,
+            "dryness": "wet"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "cloudy-precipitate"
+        }
+      },
+      {
+        "id": "practice-gravity-funnel",
+        "definitionId": "funnel-stand",
+        "label": "practice preassembled gravity filtration stand",
+        "location": "storage",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-gravity-receiver",
+        "definitionId": "erlenmeyer-flask-250ml",
+        "label": "practice gravity filtrate receiver",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "weigh-practice-filter-paper",
+      "verb": "weigh",
+      "label": "Weigh dry filter paper",
+      "atomId": "atom.weigh.filter-medium-tare",
+      "equipmentRoleBindings": {
+        "balance-instrument": "analytical-balance",
+        "filter-medium": "filter-paper"
+      },
+      "parameters": {
+        "sourceDefinitionId": "filter-paper",
+        "targetDefinitionId": "analytical-balance",
+        "sourceInstanceId": "practice-filter-paper",
+        "targetInstanceId": "practice-filter-balance",
+        "instrumentDefinitionId": "analytical-balance",
+        "tolerance": 0.001,
+        "evidenceProvenance": "learner-entered reading from the configured simulated balance; no expected mass is embedded",
+        "instruction": "Weigh the clean, dry filter paper before seating or wetting it.",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputKey": "practice-filter-paper-mass-input",
+        "inputLabel": "Weigh dry filter paper from the configured simulated balance (g)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "g"
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "filter-paper",
+        "targetDefinitionId": "analytical-balance",
+        "stationId": "analytical-balance",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Weigh the clean, dry filter paper before seating or wetting it.",
+        "successCue": "The balance reading is available as simulated measurement evidence.",
+        "invalidCue": "Use the named item on the analytical balance and do not weigh it warm."
+      },
+      "prerequisites": [
+        {
+          "id": "weigh-practice-filter-paper--balance-precision-configuration-recorded-required",
+          "type": "notebookEntry",
+          "label": "The teacher-selected balance readability is recorded.",
+          "notebookTag": "balance-precision-configuration"
+        }
+      ],
+      "stateChanges": [
+        "weigh updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Weigh dry filter paper complete.",
+        "invalid": "Review the scientific and physical prerequisites for weigh dry filter paper."
+      },
+      "evidence": [
+        "weigh",
+        "measurement",
+        "simulated-output"
+      ],
+      "mass": {
+        "source": "action-input",
+        "outputMeasurementId": "practice-filter-paper-mass"
+      }
+    },
+    {
+      "id": "record-practice-filter-paper",
+      "verb": "record",
+      "label": "Record filter-paper tare",
+      "parameters": {
+        "measurementId": "practice-filter-paper-mass",
+        "label": "Practice filter-paper mass",
+        "unit": "g",
+        "instruction": "Record the filter-paper tare separately from the watch-glass tare.",
+        "copyExistingMeasurementOnly": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "measurementId",
+        "accessibleLabel": "Record the filter-paper tare separately from the watch-glass tare.",
+        "successCue": "The evidence is recorded in the notebook.",
+        "invalidCue": "Complete and record the named evidence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "record updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Record filter-paper tare complete.",
+        "invalid": "Review the scientific and physical prerequisites for record filter-paper tare."
+      },
+      "evidence": [
+        "record"
+      ]
+    },
+    {
+      "id": "select-filtration-configuration",
+      "verb": "observe",
+      "label": "Record the selected filtration configuration",
+      "parameters": {
+        "note": "Investigation 3 lists a vacuum filtration apparatus without illustrating or enumerating it, and confirmation point 1 leaves gravity versus vacuum open. This simulation runs the vacuum configuration: Buchner funnel, side-arm filter flask, and vacuum source. The gravity configuration -- funnel, stand, and receiving flask -- is the other admissible choice and is published as technique:filtration. Neither is the manual's decision.",
+        "tag": "filtration-configuration",
+        "selectedConfiguration": "vacuum",
+        "admissibleConfigurations": [
+          "gravity",
+          "vacuum"
+        ],
+        "configurationProvenance": "teacher-configured",
+        "instruction": "Record which filtration configuration the teacher selected before assembling any apparatus."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record which filtration configuration the teacher selected before assembling any apparatus.",
+        "successCue": "The selected filtration configuration is recorded.",
+        "invalidCue": "Record the teacher-selected filtration configuration."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "observe updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unconfigured-apparatus",
+          "when": "apparatus is assembled before the filtration configuration is recorded",
+          "message": "The filtration configuration has not been recorded.",
+          "recovery": "Record whether the teacher selected the gravity or the vacuum configuration, then assemble it."
+        }
+      ],
+      "feedback": {
+        "success": "Record the selected filtration configuration complete.",
+        "invalid": "Record the teacher-selected gravity or vacuum filtration configuration before assembling apparatus."
+      },
+      "evidence": [
+        "observe"
+      ]
+    },
+    {
+      "id": "place-practice-buchner",
+      "verb": "place",
+      "label": "Place Buchner funnel",
+      "atomId": "atom.place.filtration-funnel",
+      "equipmentRoleBindings": {
+        "filtration-funnel": "buchner-funnel"
+      },
+      "parameters": {
+        "equipmentDefinitionId": "buchner-funnel",
+        "equipmentInstanceId": "practice-buchner",
+        "location": "workbench",
+        "instruction": "Place the Buchner funnel named by the recorded filtration configuration."
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "buchner-funnel",
+        "stationId": "workbench",
+        "accessibleLabel": "Place the Buchner funnel named by the recorded filtration configuration.",
+        "successCue": "The equipment is ready on the workbench.",
+        "invalidCue": "Move the named equipment to the workbench."
+      },
+      "prerequisites": [
+        {
+          "id": "place-practice-buchner--filtration-configuration-recorded-required",
+          "type": "notebookEntry",
+          "label": "The teacher-selected filtration configuration is recorded.",
+          "notebookTag": "filtration-configuration"
+        }
+      ],
+      "stateChanges": [
+        "place updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Place Buchner funnel complete.",
+        "invalid": "Review the scientific and physical prerequisites for place buchner funnel."
+      },
+      "evidence": [
+        "place"
+      ]
+    },
+    {
+      "id": "seat-practice-filter-paper",
+      "verb": "place",
+      "label": "Seat preweighed filter paper",
+      "atomId": "atom.place.filter-medium",
+      "equipmentRoleBindings": {
+        "filtration-funnel": "buchner-funnel",
+        "filter-medium": "filter-paper"
+      },
+      "parameters": {
+        "equipmentDefinitionId": "filter-paper",
+        "equipmentInstanceId": "practice-filter-paper",
+        "targetDefinitionId": "buchner-funnel",
+        "targetInstanceId": "practice-buchner",
+        "snapZoneId": "buchner-funnel-paper-seat",
+        "instruction": "Seat the preweighed filter paper flat on the Buchner funnel perforated plate."
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "filter-paper",
+        "targetDefinitionId": "buchner-funnel",
+        "snapZoneId": "buchner-funnel-paper-seat",
+        "accessibleLabel": "Seat the preweighed filter paper flat on the Buchner funnel perforated plate.",
+        "successCue": "The apparatus component is seated in the required position.",
+        "invalidCue": "Use the named component and target zone."
+      },
+      "prerequisites": [
+        {
+          "id": "seat-practice-filter-paper--practice-filter-paper-mass-recorded-required",
+          "type": "notebookEntry",
+          "label": "The dry filter-paper tare is recorded.",
+          "notebookTag": "practice-filter-paper-mass"
+        },
+        {
+          "id": "seat-practice-filter-paper--place-practice-buchner-required",
+          "type": "actionEvidence",
+          "label": "The funnel is placed.",
+          "actionId": "place-practice-buchner"
+        }
+      ],
+      "stateChanges": [
+        "place updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Seat preweighed filter paper complete.",
+        "invalid": "Review the scientific and physical prerequisites for seat preweighed filter paper."
+      },
+      "evidence": [
+        "place"
+      ]
+    },
+    {
+      "id": "attach-practice-filter-flask",
+      "verb": "place",
+      "label": "Attach side-arm receiver",
+      "atomId": "atom.place.filtration-receiver",
+      "equipmentRoleBindings": {
+        "filtration-receiver": "side-arm-filter-flask"
+      },
+      "parameters": {
+        "equipmentDefinitionId": "side-arm-filter-flask",
+        "equipmentInstanceId": "practice-filter-flask",
+        "targetDefinitionId": "buchner-funnel",
+        "targetInstanceId": "practice-buchner",
+        "snapZoneId": "buchner-funnel-receiver-neck",
+        "instruction": "Align the side-arm filter flask beneath the Buchner funnel before pouring."
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "side-arm-filter-flask",
+        "targetDefinitionId": "buchner-funnel",
+        "snapZoneId": "buchner-funnel-receiver-neck",
+        "accessibleLabel": "Align the side-arm filter flask beneath the Buchner funnel before pouring.",
+        "successCue": "The apparatus component is seated in the required position.",
+        "invalidCue": "Use the named component and target zone."
+      },
+      "prerequisites": [
+        {
+          "id": "attach-practice-filter-flask--place-practice-buchner-required",
+          "type": "actionEvidence",
+          "label": "The funnel is placed.",
+          "actionId": "place-practice-buchner"
+        }
+      ],
+      "stateChanges": [
+        "place updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Attach side-arm receiver complete.",
+        "invalid": "Review the scientific and physical prerequisites for attach side-arm receiver."
+      },
+      "evidence": [
+        "place"
+      ]
+    },
+    {
+      "id": "place-practice-vacuum",
+      "verb": "place",
+      "label": "Place vacuum source",
+      "atomId": "atom.place.filtration-vacuum-source",
+      "equipmentRoleBindings": {
+        "filtration-vacuum-source": "vacuum-source",
+        "filtration-receiver": "side-arm-filter-flask"
+      },
+      "parameters": {
+        "equipmentDefinitionId": "vacuum-source",
+        "equipmentInstanceId": "practice-vacuum",
+        "location": "workbench",
+        "instruction": "Place the vacuum source named by the recorded filtration configuration beside the side-arm flask."
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "vacuum-source",
+        "stationId": "workbench",
+        "accessibleLabel": "Place the vacuum source named by the recorded filtration configuration beside the side-arm flask.",
+        "successCue": "The equipment is ready on the workbench.",
+        "invalidCue": "Move the named equipment to the workbench."
+      },
+      "prerequisites": [
+        {
+          "id": "place-practice-vacuum--filtration-configuration-recorded-required",
+          "type": "notebookEntry",
+          "label": "The teacher-selected filtration configuration is recorded.",
+          "notebookTag": "filtration-configuration"
+        },
+        {
+          "id": "place-practice-vacuum--attach-practice-filter-flask-required",
+          "type": "actionEvidence",
+          "label": "The receiver is aligned under the funnel.",
+          "actionId": "attach-practice-filter-flask"
+        }
+      ],
+      "stateChanges": [
+        "place updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Place vacuum source complete.",
+        "invalid": "Review the scientific and physical prerequisites for place vacuum source."
+      },
+      "evidence": [
+        "place"
+      ]
+    },
+    {
+      "id": "confirm-practice-vacuum-connection",
+      "verb": "observe",
+      "label": "Confirm vacuum connection",
+      "parameters": {
+        "note": "The Buchner funnel, side-arm flask, and vacuum source are confirmed as connected and aligned. The configuration itself was chosen and recorded in the earlier configuration step.",
+        "tag": "vacuum-filtration-assembly",
+        "instruction": "Confirm the vacuum path and receiver alignment before wetting the paper."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Confirm the vacuum path and receiver alignment before wetting the paper.",
+        "successCue": "The evidence is recorded in the notebook.",
+        "invalidCue": "Complete and record the named evidence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "observe updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Confirm vacuum connection complete.",
+        "invalid": "Review the scientific and physical prerequisites for confirm vacuum connection."
+      },
+      "evidence": [
+        "observe"
+      ]
+    },
+    {
+      "id": "wet-practice-filter-paper",
+      "verb": "rinse",
+      "label": "Wet and seal filter paper",
+      "atomId": "atom.rinse.wet-filter-medium",
+      "equipmentRoleBindings": {
+        "rinse-water-source": "wash-bottle",
+        "filter-medium": "filter-paper"
+      },
+      "parameters": {
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "filter-paper",
+        "sourceInstanceId": "practice-wash-bottle",
+        "targetInstanceId": "practice-filter-paper",
+        "rinseType": "pre-wet",
+        "instruction": "Wet the seated paper with deionized water so it remains sealed to the funnel plate.",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputKey": "wet-practice-filter-paper-rinse-volume",
+        "inputLabel": "Approved rinse portion (mL)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true
+      },
+      "interaction": {
+        "type": "rinseTarget",
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "filter-paper",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Wet the seated paper with deionized water so it remains sealed to the funnel plate.",
+        "successCue": "The rinse is recorded.",
+        "invalidCue": "Use deionized water on the named target."
+      },
+      "prerequisites": [
+        {
+          "id": "wet-practice-filter-paper--seat-practice-filter-paper-required",
+          "type": "actionEvidence",
+          "label": "The paper is seated before it is wetted.",
+          "actionId": "seat-practice-filter-paper"
+        }
+      ],
+      "stateChanges": [
+        "rinse updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Wet and seal filter paper complete.",
+        "invalid": "Review the scientific and physical prerequisites for wet and seal filter paper."
+      },
+      "evidence": [
+        "rinse"
+      ]
+    },
+    {
+      "id": "filter-practice-mixture",
+      "verb": "filter",
+      "label": "Filter the practice suspension",
+      "atomId": "atom.filter.pour-through-medium",
+      "equipmentRoleBindings": {
+        "mixture-source": "beaker-250ml",
+        "filtration-funnel": "buchner-funnel",
+        "filtration-receiver": "side-arm-filter-flask"
+      },
+      "parameters": {
+        "sourceDefinitionId": "beaker-250ml",
+        "targetDefinitionId": "buchner-funnel",
+        "sourceInstanceId": "practice-mixture-beaker",
+        "targetInstanceId": "practice-buchner",
+        "instruction": "Pour slowly so no mixture flows outside the paper or funnel; the aligned flask receives the filtrate."
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "beaker-250ml",
+        "targetDefinitionId": "buchner-funnel",
+        "accessibleLabel": "Pour slowly so no mixture flows outside the paper or funnel; the aligned flask receives the filtrate.",
+        "successCue": "The controlled transfer is complete.",
+        "invalidCue": "Use the named source and target without overflowing the vessel."
+      },
+      "prerequisites": [
+        {
+          "id": "filter-practice-mixture--wet-practice-filter-paper-required",
+          "type": "actionEvidence",
+          "label": "The paper is wetted and sealed.",
+          "actionId": "wet-practice-filter-paper"
+        },
+        {
+          "id": "filter-practice-mixture--attach-practice-filter-flask-required",
+          "type": "actionEvidence",
+          "label": "The receiver is aligned under the funnel.",
+          "actionId": "attach-practice-filter-flask"
+        }
+      ],
+      "stateChanges": [
+        "filter updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Filter the practice suspension complete.",
+        "invalid": "Review the scientific and physical prerequisites for filter the practice suspension."
+      },
+      "evidence": [
+        "filter"
+      ]
+    },
+    {
+      "id": "rinse-practice-beaker",
+      "verb": "rinse",
+      "label": "Rinse residual precipitate from beaker",
+      "atomId": "atom.rinse.quantitative-transfer",
+      "equipmentRoleBindings": {
+        "rinse-water-source": "wash-bottle",
+        "rinsed-vessel": "beaker-250ml"
+      },
+      "parameters": {
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "beaker-250ml",
+        "sourceInstanceId": "practice-wash-bottle",
+        "targetInstanceId": "practice-mixture-beaker",
+        "rinseType": "quantitative-transfer",
+        "instruction": "Use a small quantity of deionized water to rinse remaining precipitate from the beaker.",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputKey": "rinse-practice-beaker-rinse-volume",
+        "inputLabel": "Approved rinse portion (mL)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true
+      },
+      "interaction": {
+        "type": "rinseTarget",
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "beaker-250ml",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Use a small quantity of deionized water to rinse remaining precipitate from the beaker.",
+        "successCue": "The rinse is recorded.",
+        "invalidCue": "Use deionized water on the named target."
+      },
+      "prerequisites": [
+        {
+          "id": "rinse-practice-beaker--filter-practice-mixture-required",
+          "type": "actionEvidence",
+          "label": "The suspension has been filtered.",
+          "actionId": "filter-practice-mixture"
+        }
+      ],
+      "stateChanges": [
+        "rinse updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Rinse residual precipitate from beaker complete.",
+        "invalid": "Review the scientific and physical prerequisites for rinse residual precipitate from beaker."
+      },
+      "evidence": [
+        "rinse"
+      ]
+    },
+    {
+      "id": "wash-practice-precipitate",
+      "verb": "rinse",
+      "label": "Wash collected precipitate",
+      "atomId": "atom.rinse.wash-precipitate",
+      "equipmentRoleBindings": {
+        "rinse-water-source": "wash-bottle",
+        "filter-medium": "filter-paper"
+      },
+      "parameters": {
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "buchner-funnel",
+        "sourceInstanceId": "practice-wash-bottle",
+        "targetInstanceId": "practice-buchner",
+        "rinseType": "precipitate",
+        "instruction": "Wash the collected precipitate with a little more deionized water to remove soluble impurities.",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputKey": "wash-practice-precipitate-rinse-volume",
+        "inputLabel": "Approved rinse portion (mL)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true
+      },
+      "interaction": {
+        "type": "rinseTarget",
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "buchner-funnel",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Wash the collected precipitate with a little more deionized water to remove soluble impurities.",
+        "successCue": "The rinse is recorded.",
+        "invalidCue": "Use deionized water on the named target."
+      },
+      "prerequisites": [
+        {
+          "id": "wash-practice-precipitate--filter-practice-mixture-required",
+          "type": "actionEvidence",
+          "label": "The precipitate is on the medium.",
+          "actionId": "filter-practice-mixture"
+        }
+      ],
+      "stateChanges": [
+        "rinse updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Wash collected precipitate complete.",
+        "invalid": "Review the scientific and physical prerequisites for wash collected precipitate."
+      },
+      "evidence": [
+        "rinse"
+      ]
+    },
+    {
+      "id": "record-practice-filtration",
+      "verb": "observe",
+      "label": "Record filtration and wash observations",
+      "parameters": {
+        "note": "Record pour control, retained white solid, clear filtrate appearance, quantitative-transfer rinse, and final precipitate wash separately.",
+        "tag": "filtration-observation",
+        "instruction": "Record observed filtration and washing evidence without treating visual appearance as measured mass."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record observed filtration and washing evidence without treating visual appearance as measured mass.",
+        "successCue": "The evidence is recorded in the notebook.",
+        "invalidCue": "Complete and record the named evidence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "observe updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Record filtration and wash observations complete.",
+        "invalid": "Review the scientific and physical prerequisites for record filtration and wash observations."
+      },
+      "evidence": [
+        "observe"
+      ]
+    },
+    {
+      "id": "practice-choose-filtration",
+      "verb": "observe",
+      "label": "Select the instructor-approved filtration apparatus",
+      "parameters": {
+        "inputMode": "choice",
+        "inputRole": "teacherConfiguration",
+        "inputKey": "practice-filtration-choice",
+        "inputLabel": "Approved filtration apparatus",
+        "inputRequired": true
+      },
+      "choiceObservation": {
+        "outputCalculationId": "practice-filtration-mode",
+        "options": [
+          {
+            "label": "Gravity",
+            "tag": "gravity",
+            "value": 0
+          },
+          {
+            "label": "Vacuum",
+            "tag": "vacuum",
+            "value": 1
+          }
+        ]
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Select gravity or vacuum filtration before assembly."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "The instructor apparatus selection determines the next assembly path."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "Apparatus selection recorded.",
+        "invalid": "Select the approved apparatus before assembly."
+      },
+      "evidence": [
+        "configuration",
+        "C"
+      ]
+    },
+    {
+      "id": "practice-gravity-place-practice-buchner",
+      "verb": "place",
+      "label": "Gravity filtration: Place gravity funnel stand",
+      "atomId": "atom.place.filtration-funnel",
+      "equipmentRoleBindings": {
+        "filtration-funnel": "funnel-stand"
+      },
+      "parameters": {
+        "equipmentDefinitionId": "funnel-stand",
+        "equipmentInstanceId": "practice-gravity-funnel",
+        "location": "workbench",
+        "instruction": "Place the gravity funnel stand named by the recorded filtration configuration."
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "funnel-stand",
+        "stationId": "workbench",
+        "accessibleLabel": "Place the gravity funnel stand named by the recorded filtration configuration.",
+        "successCue": "The equipment is ready on the workbench.",
+        "invalidCue": "Move the named equipment to the workbench."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "The named sample follows the configured gravity filtration path."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Place gravity funnel stand complete.",
+        "invalid": "Review the scientific and physical prerequisites for place gravity funnel stand."
+      },
+      "evidence": [
+        "place"
+      ]
+    },
+    {
+      "id": "practice-gravity-seat-practice-filter-paper",
+      "verb": "place",
+      "label": "Gravity filtration: Seat preweighed filter paper",
+      "atomId": "atom.place.filter-medium",
+      "equipmentRoleBindings": {
+        "filtration-funnel": "funnel-stand",
+        "filter-medium": "filter-paper"
+      },
+      "parameters": {
+        "equipmentDefinitionId": "filter-paper",
+        "equipmentInstanceId": "practice-filter-paper",
+        "targetDefinitionId": "funnel-stand",
+        "targetInstanceId": "practice-gravity-funnel",
+        "snapZoneId": "funnel-stand-paper-seat",
+        "instruction": "Seat the preweighed filter paper flat on the gravity funnel paper seat."
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "filter-paper",
+        "targetDefinitionId": "funnel-stand",
+        "snapZoneId": "funnel-stand-paper-seat",
+        "accessibleLabel": "Seat the preweighed filter paper flat on the gravity funnel paper seat.",
+        "successCue": "The apparatus component is seated in the required position.",
+        "invalidCue": "Use the named component and target zone."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "The named sample follows the configured gravity filtration path."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Seat preweighed filter paper complete.",
+        "invalid": "Review the scientific and physical prerequisites for seat preweighed filter paper."
+      },
+      "evidence": [
+        "place"
+      ]
+    },
+    {
+      "id": "practice-gravity-attach-practice-filter-flask",
+      "verb": "place",
+      "label": "Gravity filtration: Attach Erlenmeyer receiver",
+      "atomId": "atom.place.filtration-receiver",
+      "equipmentRoleBindings": {
+        "filtration-receiver": "erlenmeyer-flask-250ml"
+      },
+      "parameters": {
+        "equipmentDefinitionId": "erlenmeyer-flask-250ml",
+        "equipmentInstanceId": "practice-gravity-receiver",
+        "targetDefinitionId": "funnel-stand",
+        "targetInstanceId": "practice-gravity-funnel",
+        "snapZoneId": "funnel-receiving-vessel-zone",
+        "instruction": "Align the Erlenmeyer receiver beneath the gravity funnel stand before pouring."
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "erlenmeyer-flask-250ml",
+        "targetDefinitionId": "funnel-stand",
+        "snapZoneId": "funnel-receiving-vessel-zone",
+        "accessibleLabel": "Align the Erlenmeyer receiver beneath the gravity funnel stand before pouring.",
+        "successCue": "The apparatus component is seated in the required position.",
+        "invalidCue": "Use the named component and target zone."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "The named sample follows the configured gravity filtration path."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Attach Erlenmeyer receiver complete.",
+        "invalid": "Review the scientific and physical prerequisites for attach Erlenmeyer receiver."
+      },
+      "evidence": [
+        "place"
+      ]
+    },
+    {
+      "id": "practice-gravity-wet-practice-filter-paper",
+      "verb": "rinse",
+      "label": "Gravity filtration: Wet and seal filter paper",
+      "atomId": "atom.rinse.wet-filter-medium",
+      "equipmentRoleBindings": {
+        "rinse-water-source": "wash-bottle",
+        "filter-medium": "filter-paper"
+      },
+      "parameters": {
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "filter-paper",
+        "sourceInstanceId": "practice-wash-bottle",
+        "targetInstanceId": "practice-filter-paper",
+        "rinseType": "pre-wet",
+        "instruction": "Wet the seated paper with deionized water so it remains sealed to the funnel plate.",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputKey": "practice-gravity-wet-practice-filter-paper-rinse-volume",
+        "inputLabel": "Approved rinse portion (mL)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true
+      },
+      "interaction": {
+        "type": "rinseTarget",
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "filter-paper",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Wet the seated paper with deionized water so it remains sealed to the funnel plate.",
+        "successCue": "The rinse is recorded.",
+        "invalidCue": "Use deionized water on the named target."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "The named sample follows the configured gravity filtration path."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Wet and seal filter paper complete.",
+        "invalid": "Review the scientific and physical prerequisites for wet and seal filter paper."
+      },
+      "evidence": [
+        "rinse"
+      ]
+    },
+    {
+      "id": "practice-gravity-filter-practice-mixture",
+      "verb": "filter",
+      "label": "Gravity filtration: Filter the practice suspension",
+      "atomId": "atom.filter.pour-through-medium",
+      "equipmentRoleBindings": {
+        "mixture-source": "beaker-250ml",
+        "filtration-funnel": "funnel-stand",
+        "filtration-receiver": "erlenmeyer-flask-250ml"
+      },
+      "parameters": {
+        "sourceDefinitionId": "beaker-250ml",
+        "targetDefinitionId": "funnel-stand",
+        "sourceInstanceId": "practice-mixture-beaker",
+        "targetInstanceId": "practice-gravity-funnel",
+        "instruction": "Pour slowly so no mixture flows outside the paper or funnel; the aligned flask receives the filtrate.",
+        "receiverInstanceId": "practice-gravity-receiver"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "beaker-250ml",
+        "targetDefinitionId": "funnel-stand",
+        "accessibleLabel": "Pour slowly so no mixture flows outside the paper or funnel; the aligned flask receives the filtrate.",
+        "successCue": "The controlled transfer is complete.",
+        "invalidCue": "Use the named source and target without overflowing the vessel."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "The named sample follows the configured gravity filtration path."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Filter the practice suspension complete.",
+        "invalid": "Review the scientific and physical prerequisites for filter the practice suspension."
+      },
+      "evidence": [
+        "filter"
+      ]
+    },
+    {
+      "id": "practice-gravity-rinse-practice-beaker",
+      "verb": "rinse",
+      "label": "Gravity filtration: Rinse residual precipitate from beaker",
+      "atomId": "atom.rinse.quantitative-transfer",
+      "equipmentRoleBindings": {
+        "rinse-water-source": "wash-bottle",
+        "rinsed-vessel": "beaker-250ml"
+      },
+      "parameters": {
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "beaker-250ml",
+        "sourceInstanceId": "practice-wash-bottle",
+        "targetInstanceId": "practice-mixture-beaker",
+        "rinseType": "quantitative-transfer",
+        "instruction": "Use a small quantity of deionized water to rinse remaining precipitate from the beaker.",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputKey": "practice-gravity-rinse-practice-beaker-rinse-volume",
+        "inputLabel": "Approved rinse portion (mL)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true
+      },
+      "interaction": {
+        "type": "rinseTarget",
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "beaker-250ml",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Use a small quantity of deionized water to rinse remaining precipitate from the beaker.",
+        "successCue": "The rinse is recorded.",
+        "invalidCue": "Use deionized water on the named target."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "The named sample follows the configured gravity filtration path."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Rinse residual precipitate from beaker complete.",
+        "invalid": "Review the scientific and physical prerequisites for rinse residual precipitate from beaker."
+      },
+      "evidence": [
+        "rinse"
+      ]
+    },
+    {
+      "id": "practice-gravity-wash-practice-precipitate",
+      "verb": "rinse",
+      "label": "Gravity filtration: Wash collected precipitate",
+      "atomId": "atom.rinse.wash-precipitate",
+      "equipmentRoleBindings": {
+        "rinse-water-source": "wash-bottle",
+        "filter-medium": "filter-paper"
+      },
+      "parameters": {
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "funnel-stand",
+        "sourceInstanceId": "practice-wash-bottle",
+        "targetInstanceId": "practice-gravity-funnel",
+        "rinseType": "precipitate",
+        "instruction": "Wash the collected precipitate with a little more deionized water to remove soluble impurities.",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputKey": "practice-gravity-wash-practice-precipitate-rinse-volume",
+        "inputLabel": "Approved rinse portion (mL)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true
+      },
+      "interaction": {
+        "type": "rinseTarget",
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "funnel-stand",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Wash the collected precipitate with a little more deionized water to remove soluble impurities.",
+        "successCue": "The rinse is recorded.",
+        "invalidCue": "Use deionized water on the named target."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "The named sample follows the configured gravity filtration path."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Wash collected precipitate complete.",
+        "invalid": "Review the scientific and physical prerequisites for wash collected precipitate."
+      },
+      "evidence": [
+        "rinse"
+      ]
+    }
+  ],
+  "process": {
+    "startNodeId": "weigh-practice-filter-paper-node",
+    "nodes": [
+      {
+        "id": "weigh-practice-filter-paper-node",
+        "type": "action",
+        "title": "Weigh dry filter paper",
+        "description": "Weigh the clean, dry filter paper before seating or wetting it.",
+        "actionId": "weigh-practice-filter-paper",
+        "config": {},
+        "validation": [
+          {
+            "id": "weigh-practice-filter-paper-node--weigh-practice-filter-paper-evidence",
+            "type": "actionEvidence",
+            "label": "Weigh dry filter paper was completed.",
+            "actionId": "weigh-practice-filter-paper"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Weigh dry filter paper complete.",
+          "retry": "Correct the named prerequisite and retry weigh dry filter paper."
+        }
+      },
+      {
+        "id": "record-practice-filter-paper-node",
+        "type": "observation",
+        "title": "Record filter-paper tare",
+        "description": "Record the filter-paper tare separately from the watch-glass tare.",
+        "actionId": "record-practice-filter-paper",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-practice-filter-paper-node--record-practice-filter-paper-evidence",
+            "type": "actionEvidence",
+            "label": "Record filter-paper tare was completed.",
+            "actionId": "record-practice-filter-paper"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record filter-paper tare complete.",
+          "retry": "Correct the named prerequisite and retry record filter-paper tare."
+        }
+      },
+      {
+        "id": "select-filtration-configuration-node",
+        "type": "observation",
+        "title": "Record the selected filtration configuration",
+        "description": "Record which filtration configuration the teacher selected before assembling any apparatus.",
+        "actionId": "select-filtration-configuration",
+        "config": {
+          "teacherConfigurable": true,
+          "configurationChoice": true,
+          "requiredConfiguration": "gravity or vacuum filtration apparatus and its components (Investigation 3 finding 3, confirmation point 1)"
+        },
+        "validation": [
+          {
+            "id": "select-filtration-configuration-node--select-filtration-configuration-evidence",
+            "type": "actionEvidence",
+            "label": "Record the selected filtration configuration was completed.",
+            "actionId": "select-filtration-configuration"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record the selected filtration configuration complete.",
+          "retry": "Record the teacher-selected gravity or vacuum configuration, then continue."
+        }
+      },
+      {
+        "id": "place-practice-buchner-node",
+        "type": "action",
+        "title": "Place Buchner funnel",
+        "description": "Place the teacher-approved Buchner funnel for vacuum filtration.",
+        "actionId": "place-practice-buchner",
+        "config": {},
+        "validation": [
+          {
+            "id": "place-practice-buchner-node--place-practice-buchner-evidence",
+            "type": "actionEvidence",
+            "label": "Place Buchner funnel was completed.",
+            "actionId": "place-practice-buchner"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Place Buchner funnel complete.",
+          "retry": "Correct the named prerequisite and retry place buchner funnel."
+        }
+      },
+      {
+        "id": "seat-practice-filter-paper-node",
+        "type": "action",
+        "title": "Seat preweighed filter paper",
+        "description": "Seat the preweighed filter paper flat on the Buchner funnel perforated plate.",
+        "actionId": "seat-practice-filter-paper",
+        "config": {},
+        "validation": [
+          {
+            "id": "seat-practice-filter-paper-node--seat-practice-filter-paper-evidence",
+            "type": "actionEvidence",
+            "label": "Seat preweighed filter paper was completed.",
+            "actionId": "seat-practice-filter-paper"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Seat preweighed filter paper complete.",
+          "retry": "Correct the named prerequisite and retry seat preweighed filter paper."
+        }
+      },
+      {
+        "id": "attach-practice-filter-flask-node",
+        "type": "action",
+        "title": "Attach side-arm receiver",
+        "description": "Align the side-arm filter flask beneath the Buchner funnel before pouring.",
+        "actionId": "attach-practice-filter-flask",
+        "config": {},
+        "validation": [
+          {
+            "id": "attach-practice-filter-flask-node--attach-practice-filter-flask-evidence",
+            "type": "actionEvidence",
+            "label": "Attach side-arm receiver was completed.",
+            "actionId": "attach-practice-filter-flask"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Attach side-arm receiver complete.",
+          "retry": "Correct the named prerequisite and retry attach side-arm receiver."
+        }
+      },
+      {
+        "id": "place-practice-vacuum-node",
+        "type": "action",
+        "title": "Place vacuum source",
+        "description": "Place the teacher-approved vacuum source beside the side-arm flask.",
+        "actionId": "place-practice-vacuum",
+        "config": {},
+        "validation": [
+          {
+            "id": "place-practice-vacuum-node--place-practice-vacuum-evidence",
+            "type": "actionEvidence",
+            "label": "Place vacuum source was completed.",
+            "actionId": "place-practice-vacuum"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Place vacuum source complete.",
+          "retry": "Correct the named prerequisite and retry place vacuum source."
+        }
+      },
+      {
+        "id": "confirm-practice-vacuum-connection-node",
+        "type": "observation",
+        "title": "Confirm vacuum connection",
+        "description": "Confirm the vacuum path and receiver alignment before wetting the paper.",
+        "actionId": "confirm-practice-vacuum-connection",
+        "config": {},
+        "validation": [
+          {
+            "id": "confirm-practice-vacuum-connection-node--confirm-practice-vacuum-connection-evidence",
+            "type": "actionEvidence",
+            "label": "Confirm vacuum connection was completed.",
+            "actionId": "confirm-practice-vacuum-connection"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Confirm vacuum connection complete.",
+          "retry": "Correct the named prerequisite and retry confirm vacuum connection."
+        }
+      },
+      {
+        "id": "wet-practice-filter-paper-node",
+        "type": "action",
+        "title": "Wet and seal filter paper",
+        "description": "Wet the seated paper with deionized water so it remains sealed to the funnel plate.",
+        "actionId": "wet-practice-filter-paper",
+        "config": {},
+        "validation": [
+          {
+            "id": "wet-practice-filter-paper-node--wet-practice-filter-paper-evidence",
+            "type": "actionEvidence",
+            "label": "Wet and seal filter paper was completed.",
+            "actionId": "wet-practice-filter-paper"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Wet and seal filter paper complete.",
+          "retry": "Correct the named prerequisite and retry wet and seal filter paper."
+        }
+      },
+      {
+        "id": "filter-practice-mixture-node",
+        "type": "checkpoint",
+        "title": "Filter the practice suspension",
+        "description": "Pour slowly so no mixture flows outside the paper or funnel; the aligned flask receives the filtrate.",
+        "actionId": "filter-practice-mixture",
+        "config": {},
+        "validation": [
+          {
+            "id": "filter-practice-mixture-node--filter-practice-mixture-evidence",
+            "type": "actionEvidence",
+            "label": "Filter the practice suspension was completed.",
+            "actionId": "filter-practice-mixture"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Filter the practice suspension complete.",
+          "retry": "Correct the named prerequisite and retry filter the practice suspension."
+        }
+      },
+      {
+        "id": "rinse-practice-beaker-node",
+        "type": "action",
+        "title": "Rinse residual precipitate from beaker",
+        "description": "Use a small quantity of deionized water to rinse remaining precipitate from the beaker.",
+        "actionId": "rinse-practice-beaker",
+        "config": {},
+        "validation": [
+          {
+            "id": "rinse-practice-beaker-node--rinse-practice-beaker-evidence",
+            "type": "actionEvidence",
+            "label": "Rinse residual precipitate from beaker was completed.",
+            "actionId": "rinse-practice-beaker"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Rinse residual precipitate from beaker complete.",
+          "retry": "Correct the named prerequisite and retry rinse residual precipitate from beaker."
+        }
+      },
+      {
+        "id": "wash-practice-precipitate-node",
+        "type": "action",
+        "title": "Wash collected precipitate",
+        "description": "Wash the collected precipitate with a little more deionized water to remove soluble impurities.",
+        "actionId": "wash-practice-precipitate",
+        "config": {},
+        "validation": [
+          {
+            "id": "wash-practice-precipitate-node--wash-practice-precipitate-evidence",
+            "type": "actionEvidence",
+            "label": "Wash collected precipitate was completed.",
+            "actionId": "wash-practice-precipitate"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Wash collected precipitate complete.",
+          "retry": "Correct the named prerequisite and retry wash collected precipitate."
+        }
+      },
+      {
+        "id": "record-practice-filtration-node",
+        "type": "observation",
+        "title": "Record filtration and wash observations",
+        "description": "Record observed filtration and washing evidence without treating visual appearance as measured mass.",
+        "actionId": "record-practice-filtration",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-practice-filtration-node--record-practice-filtration-evidence",
+            "type": "actionEvidence",
+            "label": "Record filtration and wash observations was completed.",
+            "actionId": "record-practice-filtration"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record filtration and wash observations complete.",
+          "retry": "Correct the named prerequisite and retry record filtration and wash observations."
+        }
+      },
+      {
+        "id": "practice-choose-filtration-node",
+        "type": "action",
+        "title": "Select the instructor-approved filtration apparatus",
+        "description": "Select the instructor-approved filtration apparatus",
+        "actionId": "practice-choose-filtration",
+        "config": {},
+        "validation": [
+          {
+            "id": "practice-choose-filtration-node--practice-choose-filtration-complete",
+            "type": "actionEvidence",
+            "label": "Select the instructor-approved filtration apparatus is complete.",
+            "actionId": "practice-choose-filtration"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Select the instructor-approved filtration apparatus complete.",
+          "retry": "Complete Select the instructor-approved filtration apparatus with the named sample evidence."
+        }
+      },
+      {
+        "id": "practice-gravity-place-practice-buchner-node",
+        "type": "action",
+        "title": "Gravity filtration: Place gravity funnel stand",
+        "description": "Gravity filtration: Place gravity funnel stand",
+        "actionId": "practice-gravity-place-practice-buchner",
+        "config": {},
+        "validation": [
+          {
+            "id": "practice-gravity-place-practice-buchner-node--practice-gravity-place-practice-buchner-complete",
+            "type": "actionEvidence",
+            "label": "Gravity filtration: Place gravity funnel stand is complete.",
+            "actionId": "practice-gravity-place-practice-buchner"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Gravity filtration: Place gravity funnel stand complete.",
+          "retry": "Complete Gravity filtration: Place gravity funnel stand with the named sample evidence."
+        }
+      },
+      {
+        "id": "practice-gravity-seat-practice-filter-paper-node",
+        "type": "action",
+        "title": "Gravity filtration: Seat preweighed filter paper",
+        "description": "Gravity filtration: Seat preweighed filter paper",
+        "actionId": "practice-gravity-seat-practice-filter-paper",
+        "config": {},
+        "validation": [
+          {
+            "id": "practice-gravity-seat-practice-filter-paper-node--practice-gravity-seat-practice-filter-paper-complete",
+            "type": "actionEvidence",
+            "label": "Gravity filtration: Seat preweighed filter paper is complete.",
+            "actionId": "practice-gravity-seat-practice-filter-paper"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Gravity filtration: Seat preweighed filter paper complete.",
+          "retry": "Complete Gravity filtration: Seat preweighed filter paper with the named sample evidence."
+        }
+      },
+      {
+        "id": "practice-gravity-attach-practice-filter-flask-node",
+        "type": "action",
+        "title": "Gravity filtration: Attach Erlenmeyer receiver",
+        "description": "Gravity filtration: Attach Erlenmeyer receiver",
+        "actionId": "practice-gravity-attach-practice-filter-flask",
+        "config": {},
+        "validation": [
+          {
+            "id": "practice-gravity-attach-practice-filter-flask-node--practice-gravity-attach-practice-filter-flask-complete",
+            "type": "actionEvidence",
+            "label": "Gravity filtration: Attach Erlenmeyer receiver is complete.",
+            "actionId": "practice-gravity-attach-practice-filter-flask"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Gravity filtration: Attach Erlenmeyer receiver complete.",
+          "retry": "Complete Gravity filtration: Attach Erlenmeyer receiver with the named sample evidence."
+        }
+      },
+      {
+        "id": "practice-gravity-wet-practice-filter-paper-node",
+        "type": "action",
+        "title": "Gravity filtration: Wet and seal filter paper",
+        "description": "Gravity filtration: Wet and seal filter paper",
+        "actionId": "practice-gravity-wet-practice-filter-paper",
+        "config": {},
+        "validation": [
+          {
+            "id": "practice-gravity-wet-practice-filter-paper-node--practice-gravity-wet-practice-filter-paper-complete",
+            "type": "actionEvidence",
+            "label": "Gravity filtration: Wet and seal filter paper is complete.",
+            "actionId": "practice-gravity-wet-practice-filter-paper"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Gravity filtration: Wet and seal filter paper complete.",
+          "retry": "Complete Gravity filtration: Wet and seal filter paper with the named sample evidence."
+        }
+      },
+      {
+        "id": "practice-gravity-filter-practice-mixture-node",
+        "type": "action",
+        "title": "Gravity filtration: Filter the practice suspension",
+        "description": "Gravity filtration: Filter the practice suspension",
+        "actionId": "practice-gravity-filter-practice-mixture",
+        "config": {},
+        "validation": [
+          {
+            "id": "practice-gravity-filter-practice-mixture-node--practice-gravity-filter-practice-mixture-complete",
+            "type": "actionEvidence",
+            "label": "Gravity filtration: Filter the practice suspension is complete.",
+            "actionId": "practice-gravity-filter-practice-mixture"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Gravity filtration: Filter the practice suspension complete.",
+          "retry": "Complete Gravity filtration: Filter the practice suspension with the named sample evidence."
+        }
+      },
+      {
+        "id": "practice-gravity-rinse-practice-beaker-node",
+        "type": "action",
+        "title": "Gravity filtration: Rinse residual precipitate from beaker",
+        "description": "Gravity filtration: Rinse residual precipitate from beaker",
+        "actionId": "practice-gravity-rinse-practice-beaker",
+        "config": {},
+        "validation": [
+          {
+            "id": "practice-gravity-rinse-practice-beaker-node--practice-gravity-rinse-practice-beaker-complete",
+            "type": "actionEvidence",
+            "label": "Gravity filtration: Rinse residual precipitate from beaker is complete.",
+            "actionId": "practice-gravity-rinse-practice-beaker"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Gravity filtration: Rinse residual precipitate from beaker complete.",
+          "retry": "Complete Gravity filtration: Rinse residual precipitate from beaker with the named sample evidence."
+        }
+      },
+      {
+        "id": "practice-gravity-wash-practice-precipitate-node",
+        "type": "action",
+        "title": "Gravity filtration: Wash collected precipitate",
+        "description": "Gravity filtration: Wash collected precipitate",
+        "actionId": "practice-gravity-wash-practice-precipitate",
+        "config": {},
+        "validation": [
+          {
+            "id": "practice-gravity-wash-practice-precipitate-node--practice-gravity-wash-practice-precipitate-complete",
+            "type": "actionEvidence",
+            "label": "Gravity filtration: Wash collected precipitate is complete.",
+            "actionId": "practice-gravity-wash-practice-precipitate"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Gravity filtration: Wash collected precipitate complete.",
+          "retry": "Complete Gravity filtration: Wash collected precipitate with the named sample evidence."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "weigh-practice-filter-paper-node",
+        "to": "record-practice-filter-paper-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-practice-filter-paper-node",
+        "to": "select-filtration-configuration-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "select-filtration-configuration-node",
+        "to": "practice-choose-filtration-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "place-practice-buchner-node",
+        "to": "seat-practice-filter-paper-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "seat-practice-filter-paper-node",
+        "to": "attach-practice-filter-flask-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "attach-practice-filter-flask-node",
+        "to": "place-practice-vacuum-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "place-practice-vacuum-node",
+        "to": "confirm-practice-vacuum-connection-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "confirm-practice-vacuum-connection-node",
+        "to": "wet-practice-filter-paper-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "wet-practice-filter-paper-node",
+        "to": "filter-practice-mixture-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "filter-practice-mixture-node",
+        "to": "rinse-practice-beaker-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "rinse-practice-beaker-node",
+        "to": "wash-practice-precipitate-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "wash-practice-precipitate-node",
+        "to": "record-practice-filtration-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "practice-choose-filtration-node",
+        "to": "place-practice-buchner-node",
+        "label": "Vacuum apparatus",
+        "condition": {
+          "type": "calculationResult",
+          "calculationId": "practice-filtration-mode",
+          "min": 1,
+          "max": 1
+        }
+      },
+      {
+        "from": "practice-choose-filtration-node",
+        "to": "practice-gravity-place-practice-buchner-node",
+        "label": "Preassembled gravity apparatus",
+        "condition": {
+          "type": "calculationResult",
+          "calculationId": "practice-filtration-mode",
+          "min": 0,
+          "max": 0
+        }
+      },
+      {
+        "from": "practice-gravity-place-practice-buchner-node",
+        "to": "practice-gravity-seat-practice-filter-paper-node",
+        "label": "Continue gravity filtration",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "practice-gravity-seat-practice-filter-paper-node",
+        "to": "practice-gravity-attach-practice-filter-flask-node",
+        "label": "Continue gravity filtration",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "practice-gravity-attach-practice-filter-flask-node",
+        "to": "practice-gravity-wet-practice-filter-paper-node",
+        "label": "Continue gravity filtration",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "practice-gravity-wet-practice-filter-paper-node",
+        "to": "practice-gravity-filter-practice-mixture-node",
+        "label": "Continue gravity filtration",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "practice-gravity-filter-practice-mixture-node",
+        "to": "practice-gravity-rinse-practice-beaker-node",
+        "label": "Continue gravity filtration",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "practice-gravity-rinse-practice-beaker-node",
+        "to": "practice-gravity-wash-practice-precipitate-node",
+        "label": "Continue gravity filtration",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "practice-gravity-wash-practice-precipitate-node",
+        "to": "record-practice-filtration-node",
+        "label": "Continue gravity filtration",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [
+    {
+      "id": "gravimetric-vacuum-filtration-success",
+      "type": "actionEvidence",
+      "label": "Gravimetric Vacuum Filtration reached its final evidence step.",
+      "actionId": "record-practice-filtration"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "the current process node expects a different action",
+      "message": "That action is out of sequence for this gravimetric workflow.",
+      "recovery": "Return to the highlighted process node and preserve each sample identity."
+    },
+    {
+      "id": "missing-evidence",
+      "when": "a calculation or approval step lacks its required evidence",
+      "message": "Required measured or teacher-approved evidence is missing.",
+      "recovery": "Collect and record the named evidence before continuing."
+    },
+    {
+      "id": "unsafe-or-invalid-state",
+      "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+      "message": "The apparatus is not in a safe, valid gravimetric state.",
+      "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.2.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-04T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "chemistry",
+      "hard-water",
+      "gravimetry",
+      "vacuum-filtration"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry-weigh-practice-filter-paper-node",
+        "kind": "entry",
+        "nodeId": "weigh-practice-filter-paper-node",
+        "label": "Entry"
+      },
+      {
+        "id": "exit-record-practice-filtration-node",
+        "kind": "exit",
+        "nodeId": "record-practice-filtration-node",
+        "label": "Exit"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "balance-instrument",
+        "required": true,
+        "allowedDefinitionIds": [
+          "analytical-balance"
+        ],
+        "sourceInstanceIds": [
+          "practice-filter-balance"
+        ]
+      },
+      {
+        "roleId": "filter-medium",
+        "required": true,
+        "allowedDefinitionIds": [
+          "filter-paper"
+        ],
+        "sourceInstanceIds": [
+          "practice-filter-paper"
+        ]
+      },
+      {
+        "roleId": "filtration-funnel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "buchner-funnel",
+          "funnel-stand"
+        ],
+        "sourceInstanceIds": [
+          "practice-buchner",
+          "practice-gravity-funnel"
+        ]
+      },
+      {
+        "roleId": "filtration-receiver",
+        "required": true,
+        "allowedDefinitionIds": [
+          "side-arm-filter-flask",
+          "erlenmeyer-flask-250ml"
+        ],
+        "sourceInstanceIds": [
+          "practice-filter-flask",
+          "practice-gravity-receiver"
+        ]
+      },
+      {
+        "roleId": "filtration-vacuum-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "vacuum-source"
+        ],
+        "sourceInstanceIds": [
+          "practice-vacuum"
+        ]
+      },
+      {
+        "roleId": "rinse-water-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "wash-bottle"
+        ],
+        "sourceInstanceIds": [
+          "practice-wash-bottle"
+        ]
+      },
+      {
+        "roleId": "mixture-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beaker-250ml"
+        ],
+        "sourceInstanceIds": [
+          "practice-mixture-beaker"
+        ]
+      },
+      {
+        "roleId": "rinsed-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beaker-250ml"
+        ],
+        "sourceInstanceIds": [
+          "practice-mixture-beaker"
+        ]
+      }
+    ],
+    "modelSlots": [],
+    "configurationSlots": [],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [],
+    "completion": {
+      "exitPortIds": [
+        "exit-record-practice-filtration-node"
+      ],
+      "requiredEvidenceOutputIds": [],
+      "requiredValidationRuleIds": []
+    },
+    "catalogDisposition": "composable",
+    "legacyActionEffects": [
+      {
+        "actionId": "record-practice-filter-paper",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "select-filtration-configuration",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "confirm-practice-vacuum-connection",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-practice-filtration",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "practice-choose-filtration",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

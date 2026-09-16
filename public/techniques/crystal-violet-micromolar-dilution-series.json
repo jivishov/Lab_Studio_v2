@@ -1,0 +1,2504 @@
+{
+  "id": "crystal-violet-micromolar-dilution-series",
+  "title": "Micromolar Crystal Violet Dilution Series",
+  "learningGoal": "Prepare four independent 10. mL crystal-violet standards from 25.0 micromolar stock without cross-contamination.",
+  "requiredEquipment": [
+    "sample-bottle",
+    "distilled-water-bottle",
+    "graduated-pipette-10ml",
+    "test-tube"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "cv11-stock-bottle",
+        "definitionId": "sample-bottle",
+        "label": "25.0 micromolar crystal violet stock",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "25.0 micromolar crystal violet",
+          "volumeMl": 40,
+          "solutes": [],
+          "concentration": {
+            "value": 0.000025,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "purple-solution"
+        }
+      },
+      {
+        "id": "cv11-water-bottle",
+        "definitionId": "distilled-water-bottle",
+        "label": "Distilled water",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "Distilled water",
+          "volumeMl": 50,
+          "solutes": [],
+          "concentration": {
+            "value": 0,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "cv11-cv-pipette",
+        "definitionId": "graduated-pipette-10ml",
+        "label": "CV-only 10 mL graduated pipette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "cv11-water-pipette",
+        "definitionId": "graduated-pipette-10ml",
+        "label": "Water-only 10 mL graduated pipette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "cv11-standard-05-tube",
+        "definitionId": "test-tube",
+        "label": "5 micromolar CV standard tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "cv11-standard-10-tube",
+        "definitionId": "test-tube",
+        "label": "10 micromolar CV standard tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "cv11-standard-15-tube",
+        "definitionId": "test-tube",
+        "label": "15 micromolar CV standard tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "cv11-standard-20-tube",
+        "definitionId": "test-tube",
+        "label": "20 micromolar CV standard tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "cv11-assign-separate-pipettes",
+      "verb": "observe",
+      "label": "Assign separate CV, NaOH, and water pipettes",
+      "parameters": {
+        "note": "The CV, NaOH, and water pipettes are separately labeled and may not be interchanged.",
+        "tag": "pipette-assignment",
+        "assignedPipettes": [
+          "crystal-violet",
+          "sodium-hydroxide",
+          "water"
+        ]
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Assign separate CV, NaOH, and water pipettes.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Assign separate CV, NaOH, and water pipettes is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Assign separate CV, NaOH, and water pipettes is recorded.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "pipette-assignment"
+      ]
+    },
+    {
+      "id": "cv11-calculate-standard-05",
+      "verb": "calculate",
+      "label": "Calculate 5 micromolar standard dilution",
+      "parameters": {
+        "calculationId": "cv11-standard-05-dilution",
+        "expected": 2,
+        "tolerance": 0.01,
+        "unit": "mL stock",
+        "stockConcentrationUm": 25,
+        "targetConcentrationUm": 5,
+        "finalVolumeMl": 10,
+        "equation": "C1V1=C2V2",
+        "resultQuantity": "volume",
+        "statedFinalVolume": "10. mL"
+      },
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Submit Calculate 5 micromolar standard dilution.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-calculate-standard-05-needs-pipette-assignment",
+          "type": "notebookEntry",
+          "label": "Separate CV, NaOH, and water pipettes are assigned",
+          "notebookTag": "pipette-assignment"
+        }
+      ],
+      "stateChanges": [
+        "Calculate 5 micromolar standard dilution is stored with units and supporting evidence."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Calculate 5 micromolar standard dilution is stored with units and supporting evidence.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "calculate",
+        "cv11-standard-05-dilution"
+      ]
+    },
+    {
+      "id": "cv11-measure-stock-05",
+      "verb": "measureVolume",
+      "label": "Measure stock for 5 micromolar standard",
+      "parameters": {
+        "sourceDefinitionId": "sample-bottle",
+        "sourceInstanceId": "cv11-stock-bottle",
+        "targetDefinitionId": "graduated-pipette-10ml",
+        "targetInstanceId": "cv11-cv-pipette",
+        "volumeMl": 2,
+        "measurementId": "cv11-standard-05-stock-volume-measured",
+        "tolerance": 0.05,
+        "targetConcentrationUm": 5,
+        "finalVolumeMl": 10,
+        "pipetteAssignment": "crystal-violet"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "sample-bottle",
+        "targetDefinitionId": "graduated-pipette-10ml",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Measure 2 mL of 25.0 micromolar CV stock into the CV-only pipette.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-measure-stock-05-needs-pipette-assignment",
+          "type": "notebookEntry",
+          "label": "Separate CV, NaOH, and water pipettes are assigned",
+          "notebookTag": "pipette-assignment"
+        },
+        {
+          "id": "cv11-measure-stock-05-needs-calculation",
+          "type": "calculationWithinTolerance",
+          "label": "The 5 micromolar stock volume has been calculated",
+          "calculationId": "cv11-standard-05-dilution"
+        }
+      ],
+      "stateChanges": [
+        "The CV-only pipette contains the measured stock aliquot for the independent 5 micromolar standard."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The CV-only pipette contains the measured stock aliquot for the independent 5 micromolar standard.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "measureVolume",
+        "independent-standard",
+        "cv-pipette"
+      ],
+      "atomId": "atom.measure.variable-volume",
+      "equipmentRoleBindings": {
+        "variable-volume-measuring-device": "graduated-pipette-10ml",
+        "liquid-source": "sample-bottle"
+      }
+    },
+    {
+      "id": "cv11-transfer-stock-05",
+      "verb": "transfer",
+      "label": "Deliver stock for 5 micromolar standard",
+      "parameters": {
+        "sourceDefinitionId": "graduated-pipette-10ml",
+        "sourceInstanceId": "cv11-cv-pipette",
+        "targetDefinitionId": "test-tube",
+        "targetInstanceId": "cv11-standard-05-tube",
+        "volumeMl": 2,
+        "targetConcentrationUm": 5,
+        "finalVolumeMl": 10,
+        "pipetteAssignment": "crystal-violet"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "graduated-pipette-10ml",
+        "targetDefinitionId": "test-tube",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Deliver the measured CV aliquot from the CV-only pipette into its independent standard tube.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-transfer-stock-05-needs-measurement",
+          "type": "measurementRecorded",
+          "label": "The 5 micromolar stock aliquot was measured",
+          "measurementId": "cv11-standard-05-stock-volume-measured"
+        }
+      ],
+      "stateChanges": [
+        "The independent 5 micromolar standard tube contains its measured CV stock aliquot."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The independent 5 micromolar standard tube contains its measured CV stock aliquot.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "transfer",
+        "independent-standard",
+        "cv-pipette"
+      ],
+      "atomId": "atom.transfer.measured-liquid",
+      "equipmentRoleBindings": {
+        "measured-solvent-source": "graduated-pipette-10ml",
+        "receiving-vessel": "test-tube"
+      }
+    },
+    {
+      "id": "cv11-measure-water-05",
+      "verb": "measureVolume",
+      "label": "Measure water for 5 micromolar standard",
+      "parameters": {
+        "sourceDefinitionId": "distilled-water-bottle",
+        "sourceInstanceId": "cv11-water-bottle",
+        "targetDefinitionId": "graduated-pipette-10ml",
+        "targetInstanceId": "cv11-water-pipette",
+        "volumeMl": 8,
+        "measurementId": "cv11-standard-05-water-volume-measured",
+        "tolerance": 0.05,
+        "pipetteAssignment": "water"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "distilled-water-bottle",
+        "targetDefinitionId": "graduated-pipette-10ml",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Measure 8 mL of distilled water into the water-only pipette.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-measure-water-05-needs-stock",
+          "type": "actionEvidence",
+          "label": "The 5 micromolar stock aliquot is already in the tube",
+          "actionId": "cv11-transfer-stock-05"
+        }
+      ],
+      "stateChanges": [
+        "The water-only pipette contains the measured dilution water for the independent 5 micromolar standard."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The water-only pipette contains the measured dilution water for the independent 5 micromolar standard.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "measureVolume",
+        "independent-standard",
+        "water-pipette"
+      ],
+      "atomId": "atom.measure.variable-volume",
+      "equipmentRoleBindings": {
+        "variable-volume-measuring-device": "graduated-pipette-10ml",
+        "liquid-source": "distilled-water-bottle"
+      }
+    },
+    {
+      "id": "cv11-add-water-05",
+      "verb": "dilute",
+      "label": "Dilute 5 micromolar standard to 10. mL",
+      "parameters": {
+        "sourceDefinitionId": "graduated-pipette-10ml",
+        "sourceInstanceId": "cv11-water-pipette",
+        "targetDefinitionId": "test-tube",
+        "targetInstanceId": "cv11-standard-05-tube",
+        "volumeMl": 8,
+        "finalVolumeMl": 10,
+        "targetConcentrationUm": 5,
+        "pipetteAssignment": "water",
+        "statedFinalVolume": "10. mL"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "graduated-pipette-10ml",
+        "targetDefinitionId": "test-tube",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Deliver the measured water from the water-only pipette to bring the independent standard to 10. mL.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-add-water-05-needs-measurement",
+          "type": "measurementRecorded",
+          "label": "The 5 micromolar water portion was measured",
+          "measurementId": "cv11-standard-05-water-volume-measured"
+        }
+      ],
+      "stateChanges": [
+        "The independent 5 micromolar standard is mixed at 10. mL total volume."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The independent 5 micromolar standard is mixed at 10. mL total volume.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "dilute",
+        "10.-mL-standard",
+        "water-pipette"
+      ],
+      "atomId": "atom.dilute.to-final-volume",
+      "equipmentRoleBindings": {
+        "measured-solvent-source": "graduated-pipette-10ml",
+        "receiving-vessel": "test-tube"
+      }
+    },
+    {
+      "id": "cv11-calculate-standard-10",
+      "verb": "calculate",
+      "label": "Calculate 10 micromolar standard dilution",
+      "parameters": {
+        "calculationId": "cv11-standard-10-dilution",
+        "expected": 4,
+        "tolerance": 0.01,
+        "unit": "mL stock",
+        "stockConcentrationUm": 25,
+        "targetConcentrationUm": 10,
+        "finalVolumeMl": 10,
+        "equation": "C1V1=C2V2",
+        "resultQuantity": "volume",
+        "statedFinalVolume": "10. mL"
+      },
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Submit Calculate 10 micromolar standard dilution.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-calculate-standard-10-needs-pipette-assignment",
+          "type": "notebookEntry",
+          "label": "Separate CV, NaOH, and water pipettes are assigned",
+          "notebookTag": "pipette-assignment"
+        }
+      ],
+      "stateChanges": [
+        "Calculate 10 micromolar standard dilution is stored with units and supporting evidence."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Calculate 10 micromolar standard dilution is stored with units and supporting evidence.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "calculate",
+        "cv11-standard-10-dilution"
+      ]
+    },
+    {
+      "id": "cv11-measure-stock-10",
+      "verb": "measureVolume",
+      "label": "Measure stock for 10 micromolar standard",
+      "parameters": {
+        "sourceDefinitionId": "sample-bottle",
+        "sourceInstanceId": "cv11-stock-bottle",
+        "targetDefinitionId": "graduated-pipette-10ml",
+        "targetInstanceId": "cv11-cv-pipette",
+        "volumeMl": 4,
+        "measurementId": "cv11-standard-10-stock-volume-measured",
+        "tolerance": 0.05,
+        "targetConcentrationUm": 10,
+        "finalVolumeMl": 10,
+        "pipetteAssignment": "crystal-violet"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "sample-bottle",
+        "targetDefinitionId": "graduated-pipette-10ml",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Measure 4 mL of 25.0 micromolar CV stock into the CV-only pipette.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-measure-stock-10-needs-pipette-assignment",
+          "type": "notebookEntry",
+          "label": "Separate CV, NaOH, and water pipettes are assigned",
+          "notebookTag": "pipette-assignment"
+        },
+        {
+          "id": "cv11-measure-stock-10-needs-calculation",
+          "type": "calculationWithinTolerance",
+          "label": "The 10 micromolar stock volume has been calculated",
+          "calculationId": "cv11-standard-10-dilution"
+        }
+      ],
+      "stateChanges": [
+        "The CV-only pipette contains the measured stock aliquot for the independent 10 micromolar standard."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The CV-only pipette contains the measured stock aliquot for the independent 10 micromolar standard.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "measureVolume",
+        "independent-standard",
+        "cv-pipette"
+      ],
+      "atomId": "atom.measure.variable-volume",
+      "equipmentRoleBindings": {
+        "variable-volume-measuring-device": "graduated-pipette-10ml",
+        "liquid-source": "sample-bottle"
+      }
+    },
+    {
+      "id": "cv11-transfer-stock-10",
+      "verb": "transfer",
+      "label": "Deliver stock for 10 micromolar standard",
+      "parameters": {
+        "sourceDefinitionId": "graduated-pipette-10ml",
+        "sourceInstanceId": "cv11-cv-pipette",
+        "targetDefinitionId": "test-tube",
+        "targetInstanceId": "cv11-standard-10-tube",
+        "volumeMl": 4,
+        "targetConcentrationUm": 10,
+        "finalVolumeMl": 10,
+        "pipetteAssignment": "crystal-violet"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "graduated-pipette-10ml",
+        "targetDefinitionId": "test-tube",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Deliver the measured CV aliquot from the CV-only pipette into its independent standard tube.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-transfer-stock-10-needs-measurement",
+          "type": "measurementRecorded",
+          "label": "The 10 micromolar stock aliquot was measured",
+          "measurementId": "cv11-standard-10-stock-volume-measured"
+        }
+      ],
+      "stateChanges": [
+        "The independent 10 micromolar standard tube contains its measured CV stock aliquot."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The independent 10 micromolar standard tube contains its measured CV stock aliquot.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "transfer",
+        "independent-standard",
+        "cv-pipette"
+      ],
+      "atomId": "atom.transfer.measured-liquid",
+      "equipmentRoleBindings": {
+        "measured-solvent-source": "graduated-pipette-10ml",
+        "receiving-vessel": "test-tube"
+      }
+    },
+    {
+      "id": "cv11-measure-water-10",
+      "verb": "measureVolume",
+      "label": "Measure water for 10 micromolar standard",
+      "parameters": {
+        "sourceDefinitionId": "distilled-water-bottle",
+        "sourceInstanceId": "cv11-water-bottle",
+        "targetDefinitionId": "graduated-pipette-10ml",
+        "targetInstanceId": "cv11-water-pipette",
+        "volumeMl": 6,
+        "measurementId": "cv11-standard-10-water-volume-measured",
+        "tolerance": 0.05,
+        "pipetteAssignment": "water"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "distilled-water-bottle",
+        "targetDefinitionId": "graduated-pipette-10ml",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Measure 6 mL of distilled water into the water-only pipette.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-measure-water-10-needs-stock",
+          "type": "actionEvidence",
+          "label": "The 10 micromolar stock aliquot is already in the tube",
+          "actionId": "cv11-transfer-stock-10"
+        }
+      ],
+      "stateChanges": [
+        "The water-only pipette contains the measured dilution water for the independent 10 micromolar standard."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The water-only pipette contains the measured dilution water for the independent 10 micromolar standard.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "measureVolume",
+        "independent-standard",
+        "water-pipette"
+      ],
+      "atomId": "atom.measure.variable-volume",
+      "equipmentRoleBindings": {
+        "variable-volume-measuring-device": "graduated-pipette-10ml",
+        "liquid-source": "distilled-water-bottle"
+      }
+    },
+    {
+      "id": "cv11-add-water-10",
+      "verb": "dilute",
+      "label": "Dilute 10 micromolar standard to 10. mL",
+      "parameters": {
+        "sourceDefinitionId": "graduated-pipette-10ml",
+        "sourceInstanceId": "cv11-water-pipette",
+        "targetDefinitionId": "test-tube",
+        "targetInstanceId": "cv11-standard-10-tube",
+        "volumeMl": 6,
+        "finalVolumeMl": 10,
+        "targetConcentrationUm": 10,
+        "pipetteAssignment": "water",
+        "statedFinalVolume": "10. mL"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "graduated-pipette-10ml",
+        "targetDefinitionId": "test-tube",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Deliver the measured water from the water-only pipette to bring the independent standard to 10. mL.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-add-water-10-needs-measurement",
+          "type": "measurementRecorded",
+          "label": "The 10 micromolar water portion was measured",
+          "measurementId": "cv11-standard-10-water-volume-measured"
+        }
+      ],
+      "stateChanges": [
+        "The independent 10 micromolar standard is mixed at 10. mL total volume."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The independent 10 micromolar standard is mixed at 10. mL total volume.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "dilute",
+        "10.-mL-standard",
+        "water-pipette"
+      ],
+      "atomId": "atom.dilute.to-final-volume",
+      "equipmentRoleBindings": {
+        "measured-solvent-source": "graduated-pipette-10ml",
+        "receiving-vessel": "test-tube"
+      }
+    },
+    {
+      "id": "cv11-calculate-standard-15",
+      "verb": "calculate",
+      "label": "Calculate 15 micromolar standard dilution",
+      "parameters": {
+        "calculationId": "cv11-standard-15-dilution",
+        "expected": 6,
+        "tolerance": 0.01,
+        "unit": "mL stock",
+        "stockConcentrationUm": 25,
+        "targetConcentrationUm": 15,
+        "finalVolumeMl": 10,
+        "equation": "C1V1=C2V2",
+        "resultQuantity": "volume",
+        "statedFinalVolume": "10. mL"
+      },
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Submit Calculate 15 micromolar standard dilution.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-calculate-standard-15-needs-pipette-assignment",
+          "type": "notebookEntry",
+          "label": "Separate CV, NaOH, and water pipettes are assigned",
+          "notebookTag": "pipette-assignment"
+        }
+      ],
+      "stateChanges": [
+        "Calculate 15 micromolar standard dilution is stored with units and supporting evidence."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Calculate 15 micromolar standard dilution is stored with units and supporting evidence.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "calculate",
+        "cv11-standard-15-dilution"
+      ]
+    },
+    {
+      "id": "cv11-measure-stock-15",
+      "verb": "measureVolume",
+      "label": "Measure stock for 15 micromolar standard",
+      "parameters": {
+        "sourceDefinitionId": "sample-bottle",
+        "sourceInstanceId": "cv11-stock-bottle",
+        "targetDefinitionId": "graduated-pipette-10ml",
+        "targetInstanceId": "cv11-cv-pipette",
+        "volumeMl": 6,
+        "measurementId": "cv11-standard-15-stock-volume-measured",
+        "tolerance": 0.05,
+        "targetConcentrationUm": 15,
+        "finalVolumeMl": 10,
+        "pipetteAssignment": "crystal-violet"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "sample-bottle",
+        "targetDefinitionId": "graduated-pipette-10ml",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Measure 6 mL of 25.0 micromolar CV stock into the CV-only pipette.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-measure-stock-15-needs-pipette-assignment",
+          "type": "notebookEntry",
+          "label": "Separate CV, NaOH, and water pipettes are assigned",
+          "notebookTag": "pipette-assignment"
+        },
+        {
+          "id": "cv11-measure-stock-15-needs-calculation",
+          "type": "calculationWithinTolerance",
+          "label": "The 15 micromolar stock volume has been calculated",
+          "calculationId": "cv11-standard-15-dilution"
+        }
+      ],
+      "stateChanges": [
+        "The CV-only pipette contains the measured stock aliquot for the independent 15 micromolar standard."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The CV-only pipette contains the measured stock aliquot for the independent 15 micromolar standard.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "measureVolume",
+        "independent-standard",
+        "cv-pipette"
+      ],
+      "atomId": "atom.measure.variable-volume",
+      "equipmentRoleBindings": {
+        "variable-volume-measuring-device": "graduated-pipette-10ml",
+        "liquid-source": "sample-bottle"
+      }
+    },
+    {
+      "id": "cv11-transfer-stock-15",
+      "verb": "transfer",
+      "label": "Deliver stock for 15 micromolar standard",
+      "parameters": {
+        "sourceDefinitionId": "graduated-pipette-10ml",
+        "sourceInstanceId": "cv11-cv-pipette",
+        "targetDefinitionId": "test-tube",
+        "targetInstanceId": "cv11-standard-15-tube",
+        "volumeMl": 6,
+        "targetConcentrationUm": 15,
+        "finalVolumeMl": 10,
+        "pipetteAssignment": "crystal-violet"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "graduated-pipette-10ml",
+        "targetDefinitionId": "test-tube",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Deliver the measured CV aliquot from the CV-only pipette into its independent standard tube.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-transfer-stock-15-needs-measurement",
+          "type": "measurementRecorded",
+          "label": "The 15 micromolar stock aliquot was measured",
+          "measurementId": "cv11-standard-15-stock-volume-measured"
+        }
+      ],
+      "stateChanges": [
+        "The independent 15 micromolar standard tube contains its measured CV stock aliquot."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The independent 15 micromolar standard tube contains its measured CV stock aliquot.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "transfer",
+        "independent-standard",
+        "cv-pipette"
+      ],
+      "atomId": "atom.transfer.measured-liquid",
+      "equipmentRoleBindings": {
+        "measured-solvent-source": "graduated-pipette-10ml",
+        "receiving-vessel": "test-tube"
+      }
+    },
+    {
+      "id": "cv11-measure-water-15",
+      "verb": "measureVolume",
+      "label": "Measure water for 15 micromolar standard",
+      "parameters": {
+        "sourceDefinitionId": "distilled-water-bottle",
+        "sourceInstanceId": "cv11-water-bottle",
+        "targetDefinitionId": "graduated-pipette-10ml",
+        "targetInstanceId": "cv11-water-pipette",
+        "volumeMl": 4,
+        "measurementId": "cv11-standard-15-water-volume-measured",
+        "tolerance": 0.05,
+        "pipetteAssignment": "water"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "distilled-water-bottle",
+        "targetDefinitionId": "graduated-pipette-10ml",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Measure 4 mL of distilled water into the water-only pipette.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-measure-water-15-needs-stock",
+          "type": "actionEvidence",
+          "label": "The 15 micromolar stock aliquot is already in the tube",
+          "actionId": "cv11-transfer-stock-15"
+        }
+      ],
+      "stateChanges": [
+        "The water-only pipette contains the measured dilution water for the independent 15 micromolar standard."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The water-only pipette contains the measured dilution water for the independent 15 micromolar standard.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "measureVolume",
+        "independent-standard",
+        "water-pipette"
+      ],
+      "atomId": "atom.measure.variable-volume",
+      "equipmentRoleBindings": {
+        "variable-volume-measuring-device": "graduated-pipette-10ml",
+        "liquid-source": "distilled-water-bottle"
+      }
+    },
+    {
+      "id": "cv11-add-water-15",
+      "verb": "dilute",
+      "label": "Dilute 15 micromolar standard to 10. mL",
+      "parameters": {
+        "sourceDefinitionId": "graduated-pipette-10ml",
+        "sourceInstanceId": "cv11-water-pipette",
+        "targetDefinitionId": "test-tube",
+        "targetInstanceId": "cv11-standard-15-tube",
+        "volumeMl": 4,
+        "finalVolumeMl": 10,
+        "targetConcentrationUm": 15,
+        "pipetteAssignment": "water",
+        "statedFinalVolume": "10. mL"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "graduated-pipette-10ml",
+        "targetDefinitionId": "test-tube",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Deliver the measured water from the water-only pipette to bring the independent standard to 10. mL.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-add-water-15-needs-measurement",
+          "type": "measurementRecorded",
+          "label": "The 15 micromolar water portion was measured",
+          "measurementId": "cv11-standard-15-water-volume-measured"
+        }
+      ],
+      "stateChanges": [
+        "The independent 15 micromolar standard is mixed at 10. mL total volume."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The independent 15 micromolar standard is mixed at 10. mL total volume.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "dilute",
+        "10.-mL-standard",
+        "water-pipette"
+      ],
+      "atomId": "atom.dilute.to-final-volume",
+      "equipmentRoleBindings": {
+        "measured-solvent-source": "graduated-pipette-10ml",
+        "receiving-vessel": "test-tube"
+      }
+    },
+    {
+      "id": "cv11-calculate-standard-20",
+      "verb": "calculate",
+      "label": "Calculate 20 micromolar standard dilution",
+      "parameters": {
+        "calculationId": "cv11-standard-20-dilution",
+        "expected": 8,
+        "tolerance": 0.01,
+        "unit": "mL stock",
+        "stockConcentrationUm": 25,
+        "targetConcentrationUm": 20,
+        "finalVolumeMl": 10,
+        "equation": "C1V1=C2V2",
+        "resultQuantity": "volume",
+        "statedFinalVolume": "10. mL"
+      },
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Submit Calculate 20 micromolar standard dilution.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-calculate-standard-20-needs-pipette-assignment",
+          "type": "notebookEntry",
+          "label": "Separate CV, NaOH, and water pipettes are assigned",
+          "notebookTag": "pipette-assignment"
+        }
+      ],
+      "stateChanges": [
+        "Calculate 20 micromolar standard dilution is stored with units and supporting evidence."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Calculate 20 micromolar standard dilution is stored with units and supporting evidence.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "calculate",
+        "cv11-standard-20-dilution"
+      ]
+    },
+    {
+      "id": "cv11-measure-stock-20",
+      "verb": "measureVolume",
+      "label": "Measure stock for 20 micromolar standard",
+      "parameters": {
+        "sourceDefinitionId": "sample-bottle",
+        "sourceInstanceId": "cv11-stock-bottle",
+        "targetDefinitionId": "graduated-pipette-10ml",
+        "targetInstanceId": "cv11-cv-pipette",
+        "volumeMl": 8,
+        "measurementId": "cv11-standard-20-stock-volume-measured",
+        "tolerance": 0.05,
+        "targetConcentrationUm": 20,
+        "finalVolumeMl": 10,
+        "pipetteAssignment": "crystal-violet"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "sample-bottle",
+        "targetDefinitionId": "graduated-pipette-10ml",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Measure 8 mL of 25.0 micromolar CV stock into the CV-only pipette.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-measure-stock-20-needs-pipette-assignment",
+          "type": "notebookEntry",
+          "label": "Separate CV, NaOH, and water pipettes are assigned",
+          "notebookTag": "pipette-assignment"
+        },
+        {
+          "id": "cv11-measure-stock-20-needs-calculation",
+          "type": "calculationWithinTolerance",
+          "label": "The 20 micromolar stock volume has been calculated",
+          "calculationId": "cv11-standard-20-dilution"
+        }
+      ],
+      "stateChanges": [
+        "The CV-only pipette contains the measured stock aliquot for the independent 20 micromolar standard."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The CV-only pipette contains the measured stock aliquot for the independent 20 micromolar standard.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "measureVolume",
+        "independent-standard",
+        "cv-pipette"
+      ],
+      "atomId": "atom.measure.variable-volume",
+      "equipmentRoleBindings": {
+        "variable-volume-measuring-device": "graduated-pipette-10ml",
+        "liquid-source": "sample-bottle"
+      }
+    },
+    {
+      "id": "cv11-transfer-stock-20",
+      "verb": "transfer",
+      "label": "Deliver stock for 20 micromolar standard",
+      "parameters": {
+        "sourceDefinitionId": "graduated-pipette-10ml",
+        "sourceInstanceId": "cv11-cv-pipette",
+        "targetDefinitionId": "test-tube",
+        "targetInstanceId": "cv11-standard-20-tube",
+        "volumeMl": 8,
+        "targetConcentrationUm": 20,
+        "finalVolumeMl": 10,
+        "pipetteAssignment": "crystal-violet"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "graduated-pipette-10ml",
+        "targetDefinitionId": "test-tube",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Deliver the measured CV aliquot from the CV-only pipette into its independent standard tube.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-transfer-stock-20-needs-measurement",
+          "type": "measurementRecorded",
+          "label": "The 20 micromolar stock aliquot was measured",
+          "measurementId": "cv11-standard-20-stock-volume-measured"
+        }
+      ],
+      "stateChanges": [
+        "The independent 20 micromolar standard tube contains its measured CV stock aliquot."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The independent 20 micromolar standard tube contains its measured CV stock aliquot.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "transfer",
+        "independent-standard",
+        "cv-pipette"
+      ],
+      "atomId": "atom.transfer.measured-liquid",
+      "equipmentRoleBindings": {
+        "measured-solvent-source": "graduated-pipette-10ml",
+        "receiving-vessel": "test-tube"
+      }
+    },
+    {
+      "id": "cv11-measure-water-20",
+      "verb": "measureVolume",
+      "label": "Measure water for 20 micromolar standard",
+      "parameters": {
+        "sourceDefinitionId": "distilled-water-bottle",
+        "sourceInstanceId": "cv11-water-bottle",
+        "targetDefinitionId": "graduated-pipette-10ml",
+        "targetInstanceId": "cv11-water-pipette",
+        "volumeMl": 2,
+        "measurementId": "cv11-standard-20-water-volume-measured",
+        "tolerance": 0.05,
+        "pipetteAssignment": "water"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "distilled-water-bottle",
+        "targetDefinitionId": "graduated-pipette-10ml",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Measure 2 mL of distilled water into the water-only pipette.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-measure-water-20-needs-stock",
+          "type": "actionEvidence",
+          "label": "The 20 micromolar stock aliquot is already in the tube",
+          "actionId": "cv11-transfer-stock-20"
+        }
+      ],
+      "stateChanges": [
+        "The water-only pipette contains the measured dilution water for the independent 20 micromolar standard."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The water-only pipette contains the measured dilution water for the independent 20 micromolar standard.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "measureVolume",
+        "independent-standard",
+        "water-pipette"
+      ],
+      "atomId": "atom.measure.variable-volume",
+      "equipmentRoleBindings": {
+        "variable-volume-measuring-device": "graduated-pipette-10ml",
+        "liquid-source": "distilled-water-bottle"
+      }
+    },
+    {
+      "id": "cv11-add-water-20",
+      "verb": "dilute",
+      "label": "Dilute 20 micromolar standard to 10. mL",
+      "parameters": {
+        "sourceDefinitionId": "graduated-pipette-10ml",
+        "sourceInstanceId": "cv11-water-pipette",
+        "targetDefinitionId": "test-tube",
+        "targetInstanceId": "cv11-standard-20-tube",
+        "volumeMl": 2,
+        "finalVolumeMl": 10,
+        "targetConcentrationUm": 20,
+        "pipetteAssignment": "water",
+        "statedFinalVolume": "10. mL"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "graduated-pipette-10ml",
+        "targetDefinitionId": "test-tube",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Deliver the measured water from the water-only pipette to bring the independent standard to 10. mL.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "cv11-add-water-20-needs-measurement",
+          "type": "measurementRecorded",
+          "label": "The 20 micromolar water portion was measured",
+          "measurementId": "cv11-standard-20-water-volume-measured"
+        }
+      ],
+      "stateChanges": [
+        "The independent 20 micromolar standard is mixed at 10. mL total volume."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "The independent 20 micromolar standard is mixed at 10. mL total volume.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "dilute",
+        "10.-mL-standard",
+        "water-pipette"
+      ],
+      "atomId": "atom.dilute.to-final-volume",
+      "equipmentRoleBindings": {
+        "measured-solvent-source": "graduated-pipette-10ml",
+        "receiving-vessel": "test-tube"
+      }
+    }
+  ],
+  "process": {
+    "startNodeId": "cv11-assign-separate-pipettes-node",
+    "nodes": [
+      {
+        "id": "cv11-assign-separate-pipettes-node",
+        "type": "observation",
+        "title": "Assign separate CV, NaOH, and water pipettes",
+        "description": "The CV, NaOH, and water pipettes are separately labeled and may not be interchanged.",
+        "actionId": "cv11-assign-separate-pipettes",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-assign-separate-pipettes-complete",
+            "type": "actionEvidence",
+            "label": "Assign separate CV, NaOH, and water pipettes was completed.",
+            "actionId": "cv11-assign-separate-pipettes"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Assign separate CV, NaOH, and water pipettes complete.",
+          "retry": "Review Assign separate CV, NaOH, and water pipettes and try again."
+        }
+      },
+      {
+        "id": "cv11-calculate-standard-05-node",
+        "type": "calculation",
+        "title": "Calculate 5 micromolar standard dilution",
+        "description": "Calculate 5 micromolar standard dilution is stored with units and supporting evidence.",
+        "actionId": "cv11-calculate-standard-05",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-calculate-standard-05-complete",
+            "type": "actionEvidence",
+            "label": "Calculate 5 micromolar standard dilution was completed.",
+            "actionId": "cv11-calculate-standard-05"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Calculate 5 micromolar standard dilution complete.",
+          "retry": "Review Calculate 5 micromolar standard dilution and try again."
+        }
+      },
+      {
+        "id": "cv11-measure-stock-05-node",
+        "type": "action",
+        "title": "Measure stock for 5 micromolar standard",
+        "description": "The CV-only pipette contains the measured stock aliquot for the independent 5 micromolar standard.",
+        "actionId": "cv11-measure-stock-05",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-measure-stock-05-complete",
+            "type": "actionEvidence",
+            "label": "Measure stock for 5 micromolar standard was completed.",
+            "actionId": "cv11-measure-stock-05"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Measure stock for 5 micromolar standard complete.",
+          "retry": "Review Measure stock for 5 micromolar standard and try again."
+        }
+      },
+      {
+        "id": "cv11-transfer-stock-05-node",
+        "type": "action",
+        "title": "Deliver stock for 5 micromolar standard",
+        "description": "The independent 5 micromolar standard tube contains its measured CV stock aliquot.",
+        "actionId": "cv11-transfer-stock-05",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-transfer-stock-05-complete",
+            "type": "actionEvidence",
+            "label": "Deliver stock for 5 micromolar standard was completed.",
+            "actionId": "cv11-transfer-stock-05"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Deliver stock for 5 micromolar standard complete.",
+          "retry": "Review Deliver stock for 5 micromolar standard and try again."
+        }
+      },
+      {
+        "id": "cv11-measure-water-05-node",
+        "type": "action",
+        "title": "Measure water for 5 micromolar standard",
+        "description": "The water-only pipette contains the measured dilution water for the independent 5 micromolar standard.",
+        "actionId": "cv11-measure-water-05",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-measure-water-05-complete",
+            "type": "actionEvidence",
+            "label": "Measure water for 5 micromolar standard was completed.",
+            "actionId": "cv11-measure-water-05"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Measure water for 5 micromolar standard complete.",
+          "retry": "Review Measure water for 5 micromolar standard and try again."
+        }
+      },
+      {
+        "id": "cv11-add-water-05-node",
+        "type": "action",
+        "title": "Dilute 5 micromolar standard to 10. mL",
+        "description": "The independent 5 micromolar standard is mixed at 10. mL total volume.",
+        "actionId": "cv11-add-water-05",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-add-water-05-complete",
+            "type": "actionEvidence",
+            "label": "Dilute 5 micromolar standard to 10. mL was completed.",
+            "actionId": "cv11-add-water-05"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Dilute 5 micromolar standard to 10. mL complete.",
+          "retry": "Review Dilute 5 micromolar standard to 10. mL and try again."
+        }
+      },
+      {
+        "id": "cv11-calculate-standard-10-node",
+        "type": "calculation",
+        "title": "Calculate 10 micromolar standard dilution",
+        "description": "Calculate 10 micromolar standard dilution is stored with units and supporting evidence.",
+        "actionId": "cv11-calculate-standard-10",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-calculate-standard-10-complete",
+            "type": "actionEvidence",
+            "label": "Calculate 10 micromolar standard dilution was completed.",
+            "actionId": "cv11-calculate-standard-10"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Calculate 10 micromolar standard dilution complete.",
+          "retry": "Review Calculate 10 micromolar standard dilution and try again."
+        }
+      },
+      {
+        "id": "cv11-measure-stock-10-node",
+        "type": "action",
+        "title": "Measure stock for 10 micromolar standard",
+        "description": "The CV-only pipette contains the measured stock aliquot for the independent 10 micromolar standard.",
+        "actionId": "cv11-measure-stock-10",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-measure-stock-10-complete",
+            "type": "actionEvidence",
+            "label": "Measure stock for 10 micromolar standard was completed.",
+            "actionId": "cv11-measure-stock-10"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Measure stock for 10 micromolar standard complete.",
+          "retry": "Review Measure stock for 10 micromolar standard and try again."
+        }
+      },
+      {
+        "id": "cv11-transfer-stock-10-node",
+        "type": "action",
+        "title": "Deliver stock for 10 micromolar standard",
+        "description": "The independent 10 micromolar standard tube contains its measured CV stock aliquot.",
+        "actionId": "cv11-transfer-stock-10",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-transfer-stock-10-complete",
+            "type": "actionEvidence",
+            "label": "Deliver stock for 10 micromolar standard was completed.",
+            "actionId": "cv11-transfer-stock-10"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Deliver stock for 10 micromolar standard complete.",
+          "retry": "Review Deliver stock for 10 micromolar standard and try again."
+        }
+      },
+      {
+        "id": "cv11-measure-water-10-node",
+        "type": "action",
+        "title": "Measure water for 10 micromolar standard",
+        "description": "The water-only pipette contains the measured dilution water for the independent 10 micromolar standard.",
+        "actionId": "cv11-measure-water-10",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-measure-water-10-complete",
+            "type": "actionEvidence",
+            "label": "Measure water for 10 micromolar standard was completed.",
+            "actionId": "cv11-measure-water-10"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Measure water for 10 micromolar standard complete.",
+          "retry": "Review Measure water for 10 micromolar standard and try again."
+        }
+      },
+      {
+        "id": "cv11-add-water-10-node",
+        "type": "action",
+        "title": "Dilute 10 micromolar standard to 10. mL",
+        "description": "The independent 10 micromolar standard is mixed at 10. mL total volume.",
+        "actionId": "cv11-add-water-10",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-add-water-10-complete",
+            "type": "actionEvidence",
+            "label": "Dilute 10 micromolar standard to 10. mL was completed.",
+            "actionId": "cv11-add-water-10"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Dilute 10 micromolar standard to 10. mL complete.",
+          "retry": "Review Dilute 10 micromolar standard to 10. mL and try again."
+        }
+      },
+      {
+        "id": "cv11-calculate-standard-15-node",
+        "type": "calculation",
+        "title": "Calculate 15 micromolar standard dilution",
+        "description": "Calculate 15 micromolar standard dilution is stored with units and supporting evidence.",
+        "actionId": "cv11-calculate-standard-15",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-calculate-standard-15-complete",
+            "type": "actionEvidence",
+            "label": "Calculate 15 micromolar standard dilution was completed.",
+            "actionId": "cv11-calculate-standard-15"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Calculate 15 micromolar standard dilution complete.",
+          "retry": "Review Calculate 15 micromolar standard dilution and try again."
+        }
+      },
+      {
+        "id": "cv11-measure-stock-15-node",
+        "type": "action",
+        "title": "Measure stock for 15 micromolar standard",
+        "description": "The CV-only pipette contains the measured stock aliquot for the independent 15 micromolar standard.",
+        "actionId": "cv11-measure-stock-15",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-measure-stock-15-complete",
+            "type": "actionEvidence",
+            "label": "Measure stock for 15 micromolar standard was completed.",
+            "actionId": "cv11-measure-stock-15"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Measure stock for 15 micromolar standard complete.",
+          "retry": "Review Measure stock for 15 micromolar standard and try again."
+        }
+      },
+      {
+        "id": "cv11-transfer-stock-15-node",
+        "type": "action",
+        "title": "Deliver stock for 15 micromolar standard",
+        "description": "The independent 15 micromolar standard tube contains its measured CV stock aliquot.",
+        "actionId": "cv11-transfer-stock-15",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-transfer-stock-15-complete",
+            "type": "actionEvidence",
+            "label": "Deliver stock for 15 micromolar standard was completed.",
+            "actionId": "cv11-transfer-stock-15"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Deliver stock for 15 micromolar standard complete.",
+          "retry": "Review Deliver stock for 15 micromolar standard and try again."
+        }
+      },
+      {
+        "id": "cv11-measure-water-15-node",
+        "type": "action",
+        "title": "Measure water for 15 micromolar standard",
+        "description": "The water-only pipette contains the measured dilution water for the independent 15 micromolar standard.",
+        "actionId": "cv11-measure-water-15",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-measure-water-15-complete",
+            "type": "actionEvidence",
+            "label": "Measure water for 15 micromolar standard was completed.",
+            "actionId": "cv11-measure-water-15"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Measure water for 15 micromolar standard complete.",
+          "retry": "Review Measure water for 15 micromolar standard and try again."
+        }
+      },
+      {
+        "id": "cv11-add-water-15-node",
+        "type": "action",
+        "title": "Dilute 15 micromolar standard to 10. mL",
+        "description": "The independent 15 micromolar standard is mixed at 10. mL total volume.",
+        "actionId": "cv11-add-water-15",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-add-water-15-complete",
+            "type": "actionEvidence",
+            "label": "Dilute 15 micromolar standard to 10. mL was completed.",
+            "actionId": "cv11-add-water-15"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Dilute 15 micromolar standard to 10. mL complete.",
+          "retry": "Review Dilute 15 micromolar standard to 10. mL and try again."
+        }
+      },
+      {
+        "id": "cv11-calculate-standard-20-node",
+        "type": "calculation",
+        "title": "Calculate 20 micromolar standard dilution",
+        "description": "Calculate 20 micromolar standard dilution is stored with units and supporting evidence.",
+        "actionId": "cv11-calculate-standard-20",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-calculate-standard-20-complete",
+            "type": "actionEvidence",
+            "label": "Calculate 20 micromolar standard dilution was completed.",
+            "actionId": "cv11-calculate-standard-20"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Calculate 20 micromolar standard dilution complete.",
+          "retry": "Review Calculate 20 micromolar standard dilution and try again."
+        }
+      },
+      {
+        "id": "cv11-measure-stock-20-node",
+        "type": "action",
+        "title": "Measure stock for 20 micromolar standard",
+        "description": "The CV-only pipette contains the measured stock aliquot for the independent 20 micromolar standard.",
+        "actionId": "cv11-measure-stock-20",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-measure-stock-20-complete",
+            "type": "actionEvidence",
+            "label": "Measure stock for 20 micromolar standard was completed.",
+            "actionId": "cv11-measure-stock-20"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Measure stock for 20 micromolar standard complete.",
+          "retry": "Review Measure stock for 20 micromolar standard and try again."
+        }
+      },
+      {
+        "id": "cv11-transfer-stock-20-node",
+        "type": "action",
+        "title": "Deliver stock for 20 micromolar standard",
+        "description": "The independent 20 micromolar standard tube contains its measured CV stock aliquot.",
+        "actionId": "cv11-transfer-stock-20",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-transfer-stock-20-complete",
+            "type": "actionEvidence",
+            "label": "Deliver stock for 20 micromolar standard was completed.",
+            "actionId": "cv11-transfer-stock-20"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Deliver stock for 20 micromolar standard complete.",
+          "retry": "Review Deliver stock for 20 micromolar standard and try again."
+        }
+      },
+      {
+        "id": "cv11-measure-water-20-node",
+        "type": "action",
+        "title": "Measure water for 20 micromolar standard",
+        "description": "The water-only pipette contains the measured dilution water for the independent 20 micromolar standard.",
+        "actionId": "cv11-measure-water-20",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-measure-water-20-complete",
+            "type": "actionEvidence",
+            "label": "Measure water for 20 micromolar standard was completed.",
+            "actionId": "cv11-measure-water-20"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Measure water for 20 micromolar standard complete.",
+          "retry": "Review Measure water for 20 micromolar standard and try again."
+        }
+      },
+      {
+        "id": "cv11-add-water-20-node",
+        "type": "action",
+        "title": "Dilute 20 micromolar standard to 10. mL",
+        "description": "The independent 20 micromolar standard is mixed at 10. mL total volume.",
+        "actionId": "cv11-add-water-20",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-add-water-20-complete",
+            "type": "actionEvidence",
+            "label": "Dilute 20 micromolar standard to 10. mL was completed.",
+            "actionId": "cv11-add-water-20"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Dilute 20 micromolar standard to 10. mL complete.",
+          "retry": "Review Dilute 20 micromolar standard to 10. mL and try again."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "cv11-assign-separate-pipettes-node",
+        "to": "cv11-calculate-standard-05-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-calculate-standard-05-node",
+        "to": "cv11-measure-stock-05-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-measure-stock-05-node",
+        "to": "cv11-transfer-stock-05-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-transfer-stock-05-node",
+        "to": "cv11-measure-water-05-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-measure-water-05-node",
+        "to": "cv11-add-water-05-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-add-water-05-node",
+        "to": "cv11-calculate-standard-10-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-calculate-standard-10-node",
+        "to": "cv11-measure-stock-10-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-measure-stock-10-node",
+        "to": "cv11-transfer-stock-10-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-transfer-stock-10-node",
+        "to": "cv11-measure-water-10-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-measure-water-10-node",
+        "to": "cv11-add-water-10-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-add-water-10-node",
+        "to": "cv11-calculate-standard-15-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-calculate-standard-15-node",
+        "to": "cv11-measure-stock-15-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-measure-stock-15-node",
+        "to": "cv11-transfer-stock-15-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-transfer-stock-15-node",
+        "to": "cv11-measure-water-15-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-measure-water-15-node",
+        "to": "cv11-add-water-15-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-add-water-15-node",
+        "to": "cv11-calculate-standard-20-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-calculate-standard-20-node",
+        "to": "cv11-measure-stock-20-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-measure-stock-20-node",
+        "to": "cv11-transfer-stock-20-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-transfer-stock-20-node",
+        "to": "cv11-measure-water-20-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-measure-water-20-node",
+        "to": "cv11-add-water-20-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "the current node expects a different action",
+      "message": "That action is out of sequence for the current investigation step.",
+      "recovery": "Return to the highlighted process step and preserve the approved design."
+    },
+    {
+      "id": "cross-contamination",
+      "when": "a pipette assigned to another liquid is selected",
+      "message": "That pipette is assigned to a different solution.",
+      "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+    },
+    {
+      "id": "unapproved-configuration",
+      "when": "a teacher-configured decision has not been approved",
+      "message": "This investigation choice still requires teacher approval.",
+      "recovery": "Submit the design choice and wait for approval before continuing."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.2.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-05T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "chemistry",
+      "crystal-violet",
+      "dilution",
+      "calibration-standards",
+      "separate-pipettes",
+      "composition",
+      "cycle-08"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry",
+        "kind": "entry",
+        "nodeId": "cv11-assign-separate-pipettes-node"
+      },
+      {
+        "id": "exit",
+        "kind": "exit",
+        "nodeId": "cv11-add-water-20-node"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "variable-volume-measuring-device",
+        "required": true,
+        "allowedDefinitionIds": [
+          "graduated-pipette-10ml"
+        ],
+        "sourceInstanceIds": [
+          "cv11-cv-pipette",
+          "cv11-water-pipette"
+        ]
+      },
+      {
+        "roleId": "liquid-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "sample-bottle",
+          "distilled-water-bottle"
+        ],
+        "sourceInstanceIds": [
+          "cv11-stock-bottle",
+          "cv11-water-bottle"
+        ]
+      },
+      {
+        "roleId": "measured-solvent-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "graduated-pipette-10ml"
+        ],
+        "sourceInstanceIds": [
+          "cv11-cv-pipette",
+          "cv11-water-pipette"
+        ]
+      },
+      {
+        "roleId": "receiving-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "test-tube"
+        ],
+        "sourceInstanceIds": [
+          "cv11-standard-05-tube",
+          "cv11-standard-10-tube",
+          "cv11-standard-15-tube",
+          "cv11-standard-20-tube"
+        ]
+      }
+    ],
+    "modelSlots": [],
+    "configurationSlots": [],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [
+      {
+        "id": "evidence-cv11-assign-separate-pipettes",
+        "kind": "notebook",
+        "actionId": "cv11-assign-separate-pipettes"
+      },
+      {
+        "id": "evidence-cv11-calculate-standard-05",
+        "kind": "calculation",
+        "actionId": "cv11-calculate-standard-05",
+        "referenceId": "cv11-standard-05-dilution"
+      },
+      {
+        "id": "evidence-cv11-measure-stock-05",
+        "kind": "action-evidence",
+        "actionId": "cv11-measure-stock-05",
+        "referenceId": "cv11-standard-05-stock-volume-measured"
+      },
+      {
+        "id": "evidence-cv11-transfer-stock-05",
+        "kind": "action-evidence",
+        "actionId": "cv11-transfer-stock-05"
+      },
+      {
+        "id": "evidence-cv11-measure-water-05",
+        "kind": "action-evidence",
+        "actionId": "cv11-measure-water-05",
+        "referenceId": "cv11-standard-05-water-volume-measured"
+      },
+      {
+        "id": "evidence-cv11-add-water-05",
+        "kind": "action-evidence",
+        "actionId": "cv11-add-water-05"
+      },
+      {
+        "id": "evidence-cv11-calculate-standard-10",
+        "kind": "calculation",
+        "actionId": "cv11-calculate-standard-10",
+        "referenceId": "cv11-standard-10-dilution"
+      },
+      {
+        "id": "evidence-cv11-measure-stock-10",
+        "kind": "action-evidence",
+        "actionId": "cv11-measure-stock-10",
+        "referenceId": "cv11-standard-10-stock-volume-measured"
+      },
+      {
+        "id": "evidence-cv11-transfer-stock-10",
+        "kind": "action-evidence",
+        "actionId": "cv11-transfer-stock-10"
+      },
+      {
+        "id": "evidence-cv11-measure-water-10",
+        "kind": "action-evidence",
+        "actionId": "cv11-measure-water-10",
+        "referenceId": "cv11-standard-10-water-volume-measured"
+      },
+      {
+        "id": "evidence-cv11-add-water-10",
+        "kind": "action-evidence",
+        "actionId": "cv11-add-water-10"
+      },
+      {
+        "id": "evidence-cv11-calculate-standard-15",
+        "kind": "calculation",
+        "actionId": "cv11-calculate-standard-15",
+        "referenceId": "cv11-standard-15-dilution"
+      },
+      {
+        "id": "evidence-cv11-measure-stock-15",
+        "kind": "action-evidence",
+        "actionId": "cv11-measure-stock-15",
+        "referenceId": "cv11-standard-15-stock-volume-measured"
+      },
+      {
+        "id": "evidence-cv11-transfer-stock-15",
+        "kind": "action-evidence",
+        "actionId": "cv11-transfer-stock-15"
+      },
+      {
+        "id": "evidence-cv11-measure-water-15",
+        "kind": "action-evidence",
+        "actionId": "cv11-measure-water-15",
+        "referenceId": "cv11-standard-15-water-volume-measured"
+      },
+      {
+        "id": "evidence-cv11-add-water-15",
+        "kind": "action-evidence",
+        "actionId": "cv11-add-water-15"
+      },
+      {
+        "id": "evidence-cv11-calculate-standard-20",
+        "kind": "calculation",
+        "actionId": "cv11-calculate-standard-20",
+        "referenceId": "cv11-standard-20-dilution"
+      },
+      {
+        "id": "evidence-cv11-measure-stock-20",
+        "kind": "action-evidence",
+        "actionId": "cv11-measure-stock-20",
+        "referenceId": "cv11-standard-20-stock-volume-measured"
+      },
+      {
+        "id": "evidence-cv11-transfer-stock-20",
+        "kind": "action-evidence",
+        "actionId": "cv11-transfer-stock-20"
+      },
+      {
+        "id": "evidence-cv11-measure-water-20",
+        "kind": "action-evidence",
+        "actionId": "cv11-measure-water-20",
+        "referenceId": "cv11-standard-20-water-volume-measured"
+      },
+      {
+        "id": "evidence-cv11-add-water-20",
+        "kind": "action-evidence",
+        "actionId": "cv11-add-water-20"
+      }
+    ],
+    "completion": {
+      "exitPortIds": [
+        "exit"
+      ],
+      "requiredEvidenceOutputIds": [],
+      "requiredValidationRuleIds": []
+    },
+    "catalogDisposition": "lab-scoped",
+    "legacyActionEffects": [
+      {
+        "actionId": "cv11-assign-separate-pipettes",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "cv11-calculate-standard-05",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "cv11-calculate-standard-10",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "cv11-calculate-standard-15",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "cv11-calculate-standard-20",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

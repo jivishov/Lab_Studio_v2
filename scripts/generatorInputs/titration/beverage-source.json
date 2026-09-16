@@ -1,0 +1,1845 @@
+{
+  "id": "beverage-acidity",
+  "title": "How Much Acid Is in Fruit Juice and Soft Drinks?",
+  "description": "An Chemistry inquiry investigation that separates drop-count practice from teacher-approved quantitative beverage titrations, preserving pH-volume curves, indicator-color evidence, stoichiometric acid calculations, class-data provenance, and postlab reasoning.",
+  "audience": "Chemistry students",
+  "learningGoals": [
+    "Compare strong-acid and weak-acid indicator behavior using separate uncalibrated drop-count practice trials.",
+    "Design and obtain approval for a beverage-acidity investigation with a research question, hypothesis, equipment plan, safety precautions, indicator justification, and balanced acid-base model.",
+    "Collect beverage-specific quantitative titration evidence as cumulative NaOH volume, pH, and indicator color, then distinguish endpoint from equivalence.",
+    "Calculate model-dependent beverage acid concentration and compare source-labeled replicate and class results without overstating the evidence."
+  ],
+  "safetyNotes": [
+    "Review the relevant teacher-provided SDS or MSDS information for every selected chemical before beginning.",
+    "Record at least three specific precautions supported by the reviewed safety information.",
+    "Wear instructor-required PPE and follow the instructor-approved handling protocol.",
+    "Treat sodium hydroxide as corrosive and avoid skin and eye contact according to the approved SDS.",
+    "Use only the instructor-provided disposal protocol for titrated beverage and sodium hydroxide mixtures."
+  ],
+  "equipment": [
+    "reagent-bottle",
+    "sample-bottle",
+    "test-tube",
+    "sample-rack",
+    "phenolphthalein-dropper",
+    "dropper-bottle",
+    "naoh-bottle",
+    "graduated-pipette-10ml",
+    "pipette-pump",
+    "erlenmeyer-flask-250ml",
+    "burette-50ml",
+    "ring-stand-clamp",
+    "ph-meter",
+    "ph-paper",
+    "stirring-rod",
+    "wash-bottle",
+    "waste-beaker"
+  ],
+  "teacherConfiguration": {
+    "confirmationRequired": true,
+    "approvalEvidence": "Instructor confirmation is required; a student click is not itself approval.",
+    "beverages": "Assign beverage identities and preserve each identity in run and class-data provenance.",
+    "primaryAcidModels": "Provide accepted acid identities or mixture models and accepted balanced equations.",
+    "stoichiometry": "Provide the accepted analyte-to-NaOH ratio for each acid model.",
+    "carbonatedSamples": "Specify whether degassing is required, the approved method, and the completion criterion.",
+    "quantitativeAliquotsMl": "Provide the aliquot for each beverage; do not inherit the 5.0 mL practice volume.",
+    "naohMolarityChoicesM": [
+      0.1,
+      0.25
+    ],
+    "titrationIncrementsMl": "Provide the increment strategy and any smaller increments near equivalence.",
+    "replicateMinimum": "Provide the minimum independent fresh-aliquot trials per beverage.",
+    "endpointPersistence": "Provide the indicator-specific persistence rule and handling for an overshot endpoint.",
+    "indicatorApproval": "Approve an indicator for each sample and address beverage-color interference.",
+    "phMeterProtocol": "Provide calibration, rinse, stability, and precision requirements.",
+    "buretteProtocol": "Provide conditioning, filling, tip-clearing, reading, and precision requirements.",
+    "calculationTolerance": "Provide accepted significant figures and numeric tolerance after the acid model is known.",
+    "classDataMinimum": "Provide the required number of peer groups or instructor datasets; the manual calls for comparison with three groups or the instructor.",
+    "disposal": "Provide the actual disposal route for all mixtures."
+  },
+  "practiceContract": {
+    "hclTrial": {
+      "acid": "5.0 mL 0.10 M HCl",
+      "indicator": "A few drops of phenolphthalein",
+      "titrant": "0.10 M NaOH added dropwise",
+      "evidence": "Count drops and record the first color change.",
+      "volumeRule": "Drop count is not a calibrated delivered volume unless the teacher separately provides a drop-volume calibration."
+    },
+    "aceticAcidTrial": {
+      "acid": "Fresh 5.0 mL 0.10 M acetic acid",
+      "indicator": "Student-selected and justified",
+      "titrant": "0.10 M NaOH added dropwise",
+      "evidence": "Count drops and record the color change in a separate fresh trial.",
+      "volumeRule": "Do not merge this drop count with the HCl trial or quantitative beverage volumes."
+    }
+  },
+  "quantitativeEvidenceSchema": {
+    "runIdentity": [
+      "beverage",
+      "sample state",
+      "replicate",
+      "student group",
+      "date or run identifier"
+    ],
+    "method": [
+      "aliquot mL",
+      "NaOH molarity M",
+      "indicator and transition range",
+      "degassing method or not applicable",
+      "increment strategy",
+      "burette and pH-meter precision"
+    ],
+    "seriesColumns": [
+      "cumulative NaOH volume mL",
+      "pH",
+      "observed indicator color"
+    ],
+    "analysis": [
+      "initial and final burette readings",
+      "indicator color-change volume and pH",
+      "curve-derived equivalence volume",
+      "balanced equation",
+      "stoichiometric ratio",
+      "acid concentration mol/L",
+      "significant figures",
+      "model limitations"
+    ]
+  },
+  "classDataProtocol": {
+    "appendOnly": true,
+    "requiredProvenance": [
+      "source group or instructor",
+      "beverage identity",
+      "sample state",
+      "replicate",
+      "NaOH molarity",
+      "aliquot",
+      "indicator",
+      "acid model",
+      "calculation basis"
+    ],
+    "comparisonRule": "Compare trends and variation without overwriting the team's own results or treating incompatible methods as directly interchangeable."
+  },
+  "postlabPrompts": [
+    "Why is a preparation step such as teacher-approved degassing needed before locating an endpoint for a carbonated cola, and what criterion shows that preparation is complete?",
+    "How did the strong-acid and weak-acid practice trials differ, and why is drop count evidence not automatically a quantitative volume?",
+    "Why was the selected indicator appropriate for the expected equivalence region, and how could beverage color interfere with the endpoint?",
+    "How do the indicator endpoint and the curve-derived equivalence region compare?",
+    "Show how the balanced equation and stoichiometric ratio enter the acid-concentration calculation.",
+    "How consistent were fresh-aliquot replicates, and what experimental uncertainty or procedural error explains differences?",
+    "How do source-labeled class results compare, and which method differences limit direct comparison?",
+    "What specific procedural improvement would most strengthen the evidence?",
+    "What can the investigation support about acid concentration, and what health or product claims are not supported by these data?"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "practice-hcl-bottle",
+        "definitionId": "reagent-bottle",
+        "label": "0.10 M HCl practice solution",
+        "contents": {
+          "kind": "solution",
+          "label": "0.10 M HCl",
+          "volumeMl": 50,
+          "concentration": {
+            "value": 0.1,
+            "unit": "M"
+          },
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "practice-acetic-acid-bottle",
+        "definitionId": "reagent-bottle",
+        "label": "0.10 M acetic acid practice solution",
+        "contents": {
+          "kind": "solution",
+          "label": "0.10 M acetic acid",
+          "volumeMl": 50,
+          "concentration": {
+            "value": 0.1,
+            "unit": "M"
+          },
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "practice-naoh-bottle",
+        "definitionId": "naoh-bottle",
+        "label": "0.10 M NaOH for drop-count practice",
+        "contents": {
+          "kind": "solution",
+          "label": "0.10 M NaOH",
+          "volumeMl": 100,
+          "concentration": {
+            "value": 0.1,
+            "unit": "M"
+          },
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "practice-hcl-tube",
+        "definitionId": "test-tube",
+        "label": "Fresh HCl practice test tube",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "practice-acetic-tube",
+        "definitionId": "test-tube",
+        "label": "Fresh acetic acid practice test tube",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "practice-sample-rack",
+        "definitionId": "sample-rack",
+        "label": "Practice test-tube rack",
+        "contents": {
+          "kind": "empty",
+          "label": "empty rack for separate HCl and acetic-acid trials",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "phenolphthalein-practice-dropper",
+        "definitionId": "phenolphthalein-dropper",
+        "label": "Phenolphthalein indicator",
+        "contents": {
+          "kind": "solution",
+          "label": "Phenolphthalein indicator",
+          "volumeMl": 10,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "indicator-solution"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "student-selected-indicator-dropper",
+        "definitionId": "dropper-bottle",
+        "label": "Teacher-approved student-selected indicator",
+        "contents": {
+          "kind": "solution",
+          "label": "Teacher-approved indicator",
+          "volumeMl": 10,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "indicator-solution"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "beverage-a-sample",
+        "definitionId": "sample-bottle",
+        "label": "Teacher-assigned beverage A",
+        "contents": {
+          "kind": "solution",
+          "label": "Teacher-assigned beverage A; identity and state required",
+          "volumeMl": 100,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "teacher-configured-beverage"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "beverage-b-sample",
+        "definitionId": "sample-bottle",
+        "label": "Teacher-assigned beverage B",
+        "contents": {
+          "kind": "solution",
+          "label": "Teacher-assigned beverage B; identity and state required",
+          "volumeMl": 100,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "teacher-configured-beverage"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "quantitative-naoh-010",
+        "definitionId": "naoh-bottle",
+        "label": "Standardized 0.10 M NaOH option",
+        "contents": {
+          "kind": "solution",
+          "label": "0.10 M NaOH",
+          "volumeMl": 250,
+          "concentration": {
+            "value": 0.1,
+            "unit": "M"
+          },
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "quantitative-naoh-025",
+        "definitionId": "naoh-bottle",
+        "label": "Standardized 0.25 M NaOH option",
+        "contents": {
+          "kind": "solution",
+          "label": "0.25 M NaOH",
+          "volumeMl": 250,
+          "concentration": {
+            "value": 0.25,
+            "unit": "M"
+          },
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "quantitative-pipette",
+        "definitionId": "graduated-pipette-10ml",
+        "label": "10 mL graduated quantitative pipette",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "pipette-pump",
+        "definitionId": "pipette-pump",
+        "label": "Pipette pump",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "beverage-flask",
+        "definitionId": "erlenmeyer-flask-250ml",
+        "label": "Beverage titration flask",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "beverage-burette",
+        "definitionId": "burette-50ml",
+        "label": "Quantitative NaOH burette",
+        "contents": {
+          "kind": "empty",
+          "label": "empty until conditioned and filled with selected NaOH",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "beverage-ring-stand",
+        "definitionId": "ring-stand-clamp",
+        "label": "Ring stand and burette clamp",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "beverage-ph-meter",
+        "definitionId": "ph-meter",
+        "label": "pH meter and probe",
+        "contents": {
+          "kind": "empty",
+          "label": "requires teacher-specified calibration and rinse protocol",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "beverage-ph-paper",
+        "definitionId": "ph-paper",
+        "label": "pH paper for qualitative screening when approved",
+        "contents": {
+          "kind": "empty",
+          "label": "qualitative pH paper; not a substitute for the quantitative pH-volume series",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "beverage-stirring-rod",
+        "definitionId": "stirring-rod",
+        "label": "Stirring rod",
+        "contents": {
+          "kind": "empty",
+          "label": "clean stirring rod",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "rinse-wash-bottle",
+        "definitionId": "wash-bottle",
+        "label": "Deionized-water wash bottle",
+        "contents": {
+          "kind": "liquid",
+          "label": "deionized water",
+          "volumeMl": 500,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        },
+        "location": "shelf"
+      },
+      {
+        "id": "teacher-directed-waste",
+        "definitionId": "waste-beaker",
+        "label": "Teacher-directed titration waste receiver",
+        "contents": {
+          "kind": "empty",
+          "label": "use only under the teacher-provided disposal protocol",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "location": "shelf"
+      }
+    ]
+  },
+  "techniques": [
+    {
+      "id": "beverage-acidity-inquiry-context",
+      "title": "Beverage Acidity inquiry context",
+      "learningGoal": "Keep the practice, inquiry approval, quantitative runs, analysis, and class comparison within one evidence-preserving investigation.",
+      "requiredEquipment": [
+        "sample-bottle",
+        "test-tube",
+        "burette-50ml",
+        "ring-stand-clamp",
+        "erlenmeyer-flask-250ml",
+        "ph-meter",
+        "naoh-bottle"
+      ],
+      "initialState": {
+        "equipment": []
+      },
+      "actions": [
+        {
+          "id": "review-investigation-boundaries",
+          "verb": "observe",
+          "label": "Review investigation boundaries",
+          "parameters": {
+            "note": "Practice drop counts are not quantitative volumes. Quantitative runs require a teacher-approved beverage-specific plan and preserve pH, cumulative volume, color, calculation, replicate, and class-source evidence.",
+            "tag": "investigation-boundaries"
+          },
+          "prerequisites": [],
+          "stateChanges": [
+            "Record the investigation evidence boundaries."
+          ],
+          "invalidCases": [],
+          "feedback": {
+            "success": "Investigation boundaries are recorded.",
+            "invalid": "Review the difference between practice and quantitative evidence."
+          },
+          "evidence": [
+            "scope",
+            "evidence-boundary"
+          ]
+        }
+      ],
+      "process": {
+        "startNodeId": "review-investigation-boundaries-node",
+        "nodes": [
+          {
+            "id": "review-investigation-boundaries-node",
+            "type": "teacherNote",
+            "title": "Review investigation boundaries",
+            "description": "Distinguish practice evidence from the approved quantitative investigation.",
+            "actionId": "review-investigation-boundaries",
+            "config": {},
+            "validation": [
+              {
+                "id": "boundaries-reviewed",
+                "type": "actionEvidence",
+                "label": "Investigation boundaries are reviewed.",
+                "actionId": "review-investigation-boundaries"
+              }
+            ],
+            "hints": [],
+            "feedback": {
+              "success": "Boundaries reviewed.",
+              "retry": "Review the investigation evidence boundaries."
+            }
+          }
+        ],
+        "edges": []
+      },
+      "successCriteria": [
+        {
+          "id": "context-success",
+          "type": "actionEvidence",
+          "label": "Investigation boundaries are reviewed.",
+          "actionId": "review-investigation-boundaries"
+        }
+      ],
+      "commonMistakes": [],
+      "resetBehavior": "resetTechnique",
+      "metadata": {
+        "version": "1.0.0",
+        "author": "Lab Studio",
+        "updatedAt": "2026-07-27T00:00:00.000Z",
+        "tags": [
+          "technique",
+          "chemistry",
+          "inquiry",
+          "beverage-acidity"
+        ]
+      }
+    }
+  ],
+  "actions": [
+    {
+      "id": "review-safety-and-scope",
+      "verb": "observe",
+      "label": "Review safety, scope, and evidence boundaries",
+      "parameters": {
+        "note": "Review relevant SDS or MSDS information, teacher protocols, and the distinction between uncalibrated practice drop counts and quantitative burette volumes.",
+        "tag": "safety-scope"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record safety and evidence boundaries."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "Safety and scope are reviewed.",
+        "invalid": "Review safety sources and evidence boundaries before handling solutions."
+      },
+      "evidence": [
+        "safety",
+        "scope"
+      ]
+    },
+    {
+      "id": "practice-hcl-drop-count",
+      "verb": "observe",
+      "label": "Complete the HCl drop-count practice trial",
+      "parameters": {
+        "note": "Using a fresh test tube with 5.0 mL 0.10 M HCl and a few drops of phenolphthalein, add 0.10 M NaOH dropwise. Preserve the actual drop count and first color change without converting drops to volume.",
+        "tag": "practice-hcl-drop-count-and-color",
+        "practiceVolumeMl": 5,
+        "acidMolarityM": 0.1,
+        "naohMolarityM": 0.1,
+        "indicatorInstruction": "few drops phenolphthalein",
+        "dropVolumeCalibrated": false,
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputLabel": "Observed HCl practice drop count and first color change",
+        "inputRequired": true
+      },
+      "prerequisites": [
+        {
+          "id": "scope-reviewed",
+          "type": "actionEvidence",
+          "label": "Safety and scope are reviewed.",
+          "actionId": "review-safety-and-scope"
+        }
+      ],
+      "stateChanges": [
+        "Use a fresh test tube containing 5.0 mL 0.10 M HCl.",
+        "Add a few drops of phenolphthalein.",
+        "Add 0.10 M NaOH dropwise, count each drop, and stop at the first color change.",
+        "Record drop count and observed color without converting drops to volume."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "The separate HCl practice drop count and color are recorded.",
+        "invalid": "Record the actual drop count and color; do not report an uncalibrated volume."
+      },
+      "evidence": [
+        "practice",
+        "drop-count",
+        "indicator-color"
+      ]
+    },
+    {
+      "id": "practice-acetic-drop-count",
+      "verb": "observe",
+      "label": "Complete the acetic-acid drop-count practice trial",
+      "parameters": {
+        "note": "Using a separate fresh test tube with 5.0 mL 0.10 M acetic acid and the student-selected justified indicator, add 0.10 M NaOH dropwise. Preserve the actual drop count and first color change separately.",
+        "tag": "practice-acetic-drop-count-and-color",
+        "practiceVolumeMl": 5,
+        "acidMolarityM": 0.1,
+        "naohMolarityM": 0.1,
+        "indicatorInstruction": "student-selected and justified",
+        "dropVolumeCalibrated": false,
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputLabel": "Indicator choice, observed acetic-acid drop count, and first color change",
+        "inputRequired": true
+      },
+      "prerequisites": [
+        {
+          "id": "hcl-practice-recorded",
+          "type": "actionEvidence",
+          "label": "HCl practice evidence is recorded.",
+          "actionId": "practice-hcl-drop-count"
+        }
+      ],
+      "stateChanges": [
+        "Use a separate fresh test tube containing 5.0 mL 0.10 M acetic acid.",
+        "Use the selected indicator and record the justification.",
+        "Add 0.10 M NaOH dropwise, count drops, and record the first color change separately."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "The separate acetic-acid practice evidence is recorded.",
+        "invalid": "Use a fresh trial and preserve the selected indicator, drop count, and color."
+      },
+      "evidence": [
+        "practice",
+        "weak-acid",
+        "indicator-selection"
+      ]
+    },
+    {
+      "id": "submit-research-question-hypothesis",
+      "verb": "observe",
+      "label": "Submit a beverage-acidity research question and hypothesis",
+      "parameters": {
+        "note": "State a testable beverage-acid question and a hypothesis that predicts a measurable comparison before viewing quantitative results.",
+        "tag": "question-hypothesis",
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputLabel": "Research question and testable hypothesis",
+        "inputRequired": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record the student-authored research question and hypothesis."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "Research question and hypothesis are recorded.",
+        "invalid": "The question must concern measurable beverage acidity and the hypothesis must make a testable prediction."
+      },
+      "evidence": [
+        "research-question",
+        "hypothesis"
+      ]
+    },
+    {
+      "id": "submit-variables-equipment-plan",
+      "verb": "observe",
+      "label": "Submit variables, equipment, and labeled setup plan",
+      "parameters": {
+        "note": "Identify independent, dependent, and controlled variables; select the beverage or beverages, choose 0.10 M or 0.25 M NaOH, propose the aliquot, increments, measurements, and apparatus; and label analyte, titrant, burette, flask, quantitative pipette, indicator, and pH probe in the setup plan.",
+        "tag": "equipment-plan",
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputLabel": "Variables, equipment, and labeled setup plan",
+        "inputRequired": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record the student-authored variables and equipment plan."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "Variables and labeled setup plan are recorded.",
+        "invalid": "Label the analyte, titrant, burette, flask, pipette, indicator location, and pH probe."
+      },
+      "evidence": [
+        "variables",
+        "equipment-plan",
+        "setup-sketch"
+      ]
+    },
+    {
+      "id": "record-three-safety-precautions",
+      "verb": "observe",
+      "label": "Record at least three SDS-supported safety precautions",
+      "parameters": {
+        "note": "Preserve at least three specific precautions connected to the reviewed teacher-provided SDS or MSDS information for the selected chemicals.",
+        "tag": "three-safety-precautions",
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputLabel": "Three or more source-supported safety precautions",
+        "inputRequired": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record at least three specific precautions connected to the reviewed safety information."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "At least three safety precautions are recorded.",
+        "invalid": "Record three or more specific precautions supported by the relevant SDS or MSDS information."
+      },
+      "evidence": [
+        "safety-plan",
+        "source-review"
+      ]
+    },
+    {
+      "id": "submit-acid-models-indicator-justification",
+      "verb": "observe",
+      "label": "Submit balanced acid models and indicator justification",
+      "parameters": {
+        "note": "For every proposed beverage acid model, write the balanced neutralization equation, identify the analyte-to-NaOH ratio, and justify the indicator transition range relative to expected equivalence behavior and sample color.",
+        "tag": "stoichiometry-indicator",
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputLabel": "Balanced acid models, ratios, and indicator justification",
+        "inputRequired": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record student acid models, balanced equations, ratios, and indicator reasoning for teacher review."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "Acid models and indicator justification are recorded.",
+        "invalid": "Do not assume a one-to-one ratio or a colorless sample without teacher-approved evidence."
+      },
+      "evidence": [
+        "balanced-equation",
+        "stoichiometry",
+        "indicator-range"
+      ]
+    },
+    {
+      "id": "record-teacher-approval",
+      "verb": "observe",
+      "label": "Obtain and record teacher approval",
+      "parameters": {
+        "note": "Only after the instructor has approved the plan, preserve the approval and the configured beverage identities, acid models, stoichiometry, degassing, aliquots, selected NaOH concentration, indicators, increments, replicates, endpoint, tolerances, instrument protocols, and disposal.",
+        "tag": "teacher-approval",
+        "configurationRequired": true,
+        "unlocked": false,
+        "inputMode": "text",
+        "inputRole": "teacherConfiguration",
+        "inputLabel": "Approved configuration and instructor approval record",
+        "inputRequired": true,
+        "inputKey": "beverage-approved-configuration"
+      },
+      "prerequisites": [
+        {
+          "id": "question-ready",
+          "type": "actionEvidence",
+          "label": "Research question and hypothesis are submitted.",
+          "actionId": "submit-research-question-hypothesis"
+        },
+        {
+          "id": "equipment-ready",
+          "type": "actionEvidence",
+          "label": "Variables and equipment plan are submitted.",
+          "actionId": "submit-variables-equipment-plan"
+        },
+        {
+          "id": "safety-ready",
+          "type": "actionEvidence",
+          "label": "Safety precautions are recorded.",
+          "actionId": "record-three-safety-precautions"
+        },
+        {
+          "id": "chemistry-ready",
+          "type": "actionEvidence",
+          "label": "Acid models and indicator justification are submitted.",
+          "actionId": "submit-acid-models-indicator-justification"
+        }
+      ],
+      "stateChanges": [
+        "Record approval or required revisions for beverage identities, acid models, stoichiometry, degassing, aliquots, NaOH concentration, indicators, increments, replicates, endpoint, tolerances, pH-meter protocol, burette protocol, and disposal."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "Teacher approval and approved configuration are recorded.",
+        "invalid": "Quantitative execution remains locked until the plan is approved."
+      },
+      "evidence": [
+        "teacher-gate",
+        "approved-configuration"
+      ]
+    },
+    {
+      "id": "mount-quantitative-burette",
+      "verb": "place",
+      "label": "Mount the quantitative burette",
+      "parameters": {
+        "equipmentDefinitionId": "burette-50ml",
+        "targetDefinitionId": "ring-stand-clamp",
+        "snapZoneId": "ring-stand-burette-clamp",
+        "sourceDefinitionId": "burette-50ml"
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "burette-50ml",
+        "targetDefinitionId": "ring-stand-clamp",
+        "snapZoneId": "ring-stand-burette-clamp",
+        "successCue": "The quantitative burette is upright and secured.",
+        "invalidCue": "Mount the burette in the ring stand clamp.",
+        "accessibleLabel": "Mount the quantitative 50 mL burette upright in the ring stand clamp."
+      },
+      "prerequisites": [
+        {
+          "id": "approval-recorded",
+          "type": "actionEvidence",
+          "label": "Teacher approval is recorded.",
+          "actionId": "record-teacher-approval"
+        }
+      ],
+      "stateChanges": [
+        "Mount the burette for the approved quantitative investigation."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "The quantitative burette is mounted.",
+        "invalid": "Obtain approval and mount the burette correctly."
+      },
+      "evidence": [
+        "apparatus-setup"
+      ],
+      "atomId": "atom.place.mount-burette",
+      "equipmentRoleBindings": {
+        "titrant-delivery-device": "burette-50ml",
+        "burette-support": "ring-stand-clamp"
+      }
+    },
+    {
+      "id": "place-beverage-ph-probe",
+      "verb": "place",
+      "label": "Insert the approved pH probe in the beverage aliquot",
+      "atomId": "atom.place.immersed-ph-probe",
+      "equipmentRoleBindings": {
+        "immersed-probe-instrument": "ph-meter",
+        "immersed-probe-vessel": "erlenmeyer-flask-250ml",
+        "stirring-device": "stirring-rod"
+      },
+      "parameters": {
+        "equipmentDefinitionId": "ph-meter",
+        "sourceDefinitionId": "ph-meter",
+        "location": "workbench",
+        "probeCalibrationIsTeacherConfigured": true,
+        "indicatorChoiceIsTeacherConfigured": true,
+        "note": "Immerse the probe bulb in the beverage aliquot without letting the stirring rod strike it. The indicator identity and its transition range are recorded separately from the probe evidence, and beverage colour interference is noted rather than assumed away. Probe calibration and rinse rules stay teacher-configured (confirmation point 5).",
+        "configurationRequired": true,
+        "unlocked": false,
+        "inputMode": "text",
+        "inputRole": "teacherConfiguration",
+        "inputLabel": "Approved indicator and pH-probe calibration/rinse protocol",
+        "inputRequired": true,
+        "inputKey": "beverage-indicator-probe-protocol"
+      },
+      "interaction": {
+      "type": "dragToZone",
+      "sourceDefinitionId": "ph-meter",
+      "stationId": "workbench",
+      "successCue": "The probe bulb is immersed in the beverage aliquot.",
+        "invalidCue": "Mount the burette and charge the flask before immersing the probe.",
+        "accessibleLabel": "Insert the pH probe into the beverage aliquot so the bulb is immersed."
+      },
+      "prerequisites": [
+        {
+          "id": "burette-mounted-required",
+          "type": "actionEvidence",
+          "label": "The quantitative burette is mounted.",
+          "actionId": "mount-quantitative-burette"
+        }
+      ],
+      "stateChanges": [
+        "Immerse the pH probe in the beverage aliquot."
+      ],
+      "invalidCases": [
+        {
+          "id": "dry-probe",
+          "when": "the vessel holds too little liquid to cover the bulb",
+          "message": "The probe bulb is not immersed.",
+          "recovery": "Charge the flask with the approved aliquot first."
+        }
+      ],
+      "feedback": {
+        "success": "The probe bulb is immersed in the beverage aliquot.",
+        "invalid": "Mount the burette and charge the flask before immersing the probe."
+      },
+      "evidence": [
+        "place",
+        "probe"
+      ]
+    },
+    {
+      "id": "record-beverage-a-run",
+      "verb": "observe",
+      "label": "Record the quantitative titration series for beverage A",
+      "parameters": {
+        "note": "Preserve beverage A identity and sample state, fresh aliquot, selected NaOH molarity, indicator, initial and final burette readings, initial pH at zero delivered volume, and one source-labeled row per approved increment containing cumulative NaOH volume in mL, stable pH, and observed color through and after endpoint.",
+        "tag": "beverage-a-quantitative-run",
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputLabel": "Beverage A identity, configuration, readings, and pH-volume-color series",
+        "inputRequired": true
+      },
+      "prerequisites": [
+        {
+          "id": "approval-for-a",
+          "type": "actionEvidence",
+          "label": "Teacher approval is recorded.",
+          "actionId": "record-teacher-approval"
+        },
+        {
+          "id": "burette-for-a",
+          "type": "actionEvidence",
+          "label": "Quantitative burette is mounted.",
+          "actionId": "mount-quantitative-burette"
+        },
+        {
+          "id": "probe-for-a",
+          "type": "actionEvidence",
+          "label": "The approved pH probe protocol is configured and the probe is placed.",
+          "actionId": "place-beverage-ph-probe"
+        }
+      ],
+      "stateChanges": [
+        "Prepare or degass beverage A only as approved.",
+        "Use a fresh approved quantitative aliquot.",
+        "Condition and fill the burette with the selected 0.10 M or 0.25 M NaOH and record initial reading.",
+        "Add approved indicator, position the calibrated and rinsed pH probe, and record initial pH at zero delivered volume.",
+        "For every approved increment, mix, obtain a stable pH, observe color, and record cumulative volume, pH, and color.",
+        "Continue through and after endpoint, record final burette reading, and preserve the complete curve."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "Beverage A quantitative pH-volume-color evidence is recorded.",
+        "invalid": "Preserve the approved method, fresh aliquot, burette readings, initial pH, full series, and color-change evidence."
+      },
+      "evidence": [
+        "beverage-a",
+        "ph-volume-curve",
+        "indicator-color",
+        "burette-readings"
+      ]
+    },
+    {
+      "id": "record-beverage-b-run",
+      "verb": "observe",
+      "label": "Record the quantitative titration series for beverage B",
+      "parameters": {
+        "note": "Preserve beverage B identity and sample state, fresh aliquot, its separately approved NaOH molarity and indicator, fresh burette readings, initial pH at zero delivered volume, and one source-labeled row per approved increment containing cumulative NaOH volume in mL, stable pH, and observed color through and after endpoint.",
+        "tag": "beverage-b-quantitative-run",
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputLabel": "Beverage B identity, configuration, readings, and pH-volume-color series",
+        "inputRequired": true
+      },
+      "prerequisites": [
+        {
+          "id": "approval-for-b",
+          "type": "actionEvidence",
+          "label": "Teacher approval is recorded.",
+          "actionId": "record-teacher-approval"
+        },
+        {
+          "id": "probe-for-b",
+          "type": "actionEvidence",
+          "label": "The approved pH probe protocol is configured and the probe is placed.",
+          "actionId": "place-beverage-ph-probe"
+        }
+      ],
+      "stateChanges": [
+        "Prepare or degass beverage B only as approved.",
+        "Use a fresh approved quantitative aliquot and fresh burette readings.",
+        "Use the beverage-B indicator, NaOH choice, increment strategy, and acid model approved by the teacher.",
+        "Record initial pH and cumulative NaOH volume, stable pH, and color through and after endpoint."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "Beverage B quantitative pH-volume-color evidence is recorded separately.",
+        "invalid": "Do not copy beverage A configuration or results into beverage B without explicit approval."
+      },
+      "evidence": [
+        "beverage-b",
+        "ph-volume-curve",
+        "indicator-color",
+        "beverage-specific-method"
+      ]
+    },
+    {
+      "id": "record-replicates-and-overshoots",
+      "verb": "observe",
+      "label": "Complete approved replicates and handle overshoots with fresh trials",
+      "parameters": {
+        "note": "Each replicate requires a fresh beverage aliquot, fresh initial and final burette readings, its own pH-volume-color series, and provenance. An overshot first persistent endpoint is not rewound; start a fresh trial.",
+        "tag": "replicates",
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputLabel": "Replicate identities, accepted runs, and overshoot dispositions",
+        "inputRequired": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record every required beverage replicate separately.",
+        "Flag overshot trials and preserve them as evidence rather than replacing or rewinding them."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "Replicate and overshoot handling is documented.",
+        "invalid": "Use independent fresh trials and preserve rejected or overshot run provenance."
+      },
+      "evidence": [
+        "replicate",
+        "overshoot",
+        "fresh-aliquot"
+      ]
+    },
+    {
+      "id": "analyze-beverage-a",
+      "verb": "observe",
+      "label": "Analyze beverage A concentration",
+      "parameters": {
+        "note": "Plot beverage A pH versus cumulative NaOH volume with labeled axes, mark the indicator color-change volume and pH separately from the curve-derived equivalence region, and preserve the acid-concentration calculation in mol/L using the approved balanced equation and ratio, with units, significant figures, and model limitations.",
+        "tag": "beverage-a-acid-concentration",
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputLabel": "Beverage A endpoint/equivalence analysis and concentration calculation",
+        "inputRequired": true
+      },
+      "prerequisites": [
+        {
+          "id": "beverage-a-data-ready",
+          "type": "actionEvidence",
+          "label": "Beverage A run is recorded.",
+          "actionId": "record-beverage-a-run"
+        }
+      ],
+      "stateChanges": [
+        "Plot pH versus NaOH volume for beverage A.",
+        "Mark indicator color-change volume and pH separately from curve equivalence.",
+        "Calculate acid concentration with units, significant figures, and model limitations."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "Beverage A graph and model-dependent acid concentration are submitted.",
+        "invalid": "Use the approved beverage-A equation and ratio, and distinguish endpoint from equivalence."
+      },
+      "evidence": [
+        "graph",
+        "endpoint-annotation",
+        "equivalence",
+        "concentration"
+      ]
+    },
+    {
+      "id": "analyze-beverage-b",
+      "verb": "observe",
+      "label": "Analyze beverage B concentration",
+      "parameters": {
+        "note": "Plot beverage B pH versus cumulative NaOH volume with labeled axes, mark the indicator color-change volume and pH separately from the curve-derived equivalence region, and preserve the acid-concentration calculation in mol/L using the approved balanced equation and ratio, with units, significant figures, and model limitations.",
+        "tag": "beverage-b-acid-concentration",
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputLabel": "Beverage B endpoint/equivalence analysis and concentration calculation",
+        "inputRequired": true
+      },
+      "prerequisites": [
+        {
+          "id": "beverage-b-data-ready",
+          "type": "actionEvidence",
+          "label": "Beverage B run is recorded.",
+          "actionId": "record-beverage-b-run"
+        }
+      ],
+      "stateChanges": [
+        "Plot pH versus NaOH volume for beverage B.",
+        "Mark indicator color-change volume and pH separately from curve equivalence.",
+        "Calculate acid concentration with units, significant figures, and model limitations."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "Beverage B graph and model-dependent acid concentration are submitted.",
+        "invalid": "Use the approved beverage-B equation and ratio, and preserve beverage-specific evidence."
+      },
+      "evidence": [
+        "graph",
+        "endpoint-annotation",
+        "equivalence",
+        "concentration"
+      ]
+    },
+    {
+      "id": "compare-class-data-with-provenance",
+      "verb": "observe",
+      "label": "Compare source-labeled class data",
+      "parameters": {
+        "note": "Append results from three groups or the instructor as required. Preserve group, beverage, sample state, replicate, NaOH molarity, aliquot, indicator, acid model, and calculation basis before comparing trends.",
+        "tag": "class-data",
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputLabel": "Source-labeled class data and comparison",
+        "inputRequired": true
+      },
+      "prerequisites": [
+        {
+          "id": "beverage-a-analysis-ready",
+          "type": "actionEvidence",
+          "label": "Beverage A analysis is submitted for teacher-configured review.",
+          "actionId": "analyze-beverage-a"
+        },
+        {
+          "id": "beverage-b-analysis-ready",
+          "type": "actionEvidence",
+          "label": "Beverage B analysis is submitted for teacher-configured review.",
+          "actionId": "analyze-beverage-b"
+        }
+      ],
+      "stateChanges": [
+        "Append class results without overwriting group data.",
+        "Compare compatible results and explain method differences, variation, and outliers."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "Class comparison preserves provenance and method context.",
+        "invalid": "Do not compare or average results whose sample state, titrant, aliquot, indicator, or acid model is unknown."
+      },
+      "evidence": [
+        "class-data",
+        "provenance",
+        "comparison"
+      ]
+    },
+    {
+      "id": "submit-postlab-reasoning",
+      "verb": "observe",
+      "label": "Submit postlab reasoning and evidence limits",
+      "parameters": {
+        "note": "Address degassing for cola, strong-versus-weak acid practice, indicator choice and color interference, endpoint versus equivalence, stoichiometric calculation, replicate uncertainty, class comparison, procedural improvement, and unsupported health or product claims.",
+        "tag": "postlab",
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputLabel": "Postlab reasoning, uncertainty, and evidence limits",
+        "inputRequired": true
+      },
+      "prerequisites": [
+        {
+          "id": "class-comparison-ready",
+          "type": "actionEvidence",
+          "label": "Class comparison is recorded.",
+          "actionId": "compare-class-data-with-provenance"
+        }
+      ],
+      "stateChanges": [
+        "Record evidence-based postlab reasoning and limitations."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "Postlab reasoning and evidence limits are recorded.",
+        "invalid": "Support claims with the investigation evidence and distinguish measured acidity from broader health conclusions."
+      },
+      "evidence": [
+        "postlab",
+        "uncertainty",
+        "limitations",
+        "improvement"
+      ]
+    },
+    {
+      "id": "dispose-by-teacher-protocol",
+      "verb": "observe",
+      "label": "Dispose of mixtures by the teacher-provided protocol",
+      "parameters": {
+        "note": "Use only the teacher-provided disposal route for titrated beverage and NaOH mixtures. Do not infer sink or waste-container disposal.",
+        "tag": "disposal",
+        "configurationRequired": true,
+        "unlocked": false,
+        "inputMode": "choice",
+        "inputRole": "teacherConfiguration",
+        "inputLabel": "Teacher-directed disposal completed",
+        "inputOptions": [
+          "Teacher-directed disposal completed"
+        ],
+        "inputRequired": true,
+        "inputKey": "beverage-disposal-protocol"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record completion of the actual teacher-provided disposal protocol."
+      ],
+      "invalidCases": [],
+      "feedback": {
+        "success": "Teacher-provided disposal protocol is recorded.",
+        "invalid": "Obtain the actual disposal direction before discarding any mixture."
+      },
+      "evidence": [
+        "disposal",
+        "teacher-protocol"
+      ]
+    }
+  ],
+  "process": {
+    "startNodeId": "review-safety-and-scope-node",
+    "nodes": [
+      {
+        "id": "review-safety-and-scope-node",
+        "type": "teacherNote",
+        "title": "Review safety and evidence boundaries",
+        "description": "Review safety sources and distinguish drop-count practice from quantitative titration.",
+        "actionId": "review-safety-and-scope",
+        "config": {},
+        "validation": [
+          {
+            "id": "safety-scope-done",
+            "type": "actionEvidence",
+            "label": "Safety and scope are reviewed.",
+            "actionId": "review-safety-and-scope"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Safety and scope reviewed.",
+          "retry": "Review the safety and evidence boundaries."
+        }
+      },
+      {
+        "id": "practice-hcl-drop-count-node",
+        "type": "action",
+        "title": "Practice with HCl",
+        "description": "Use 5.0 mL 0.10 M HCl, a few drops of phenolphthalein, and 0.10 M NaOH added dropwise; count drops to first color change.",
+        "actionId": "practice-hcl-drop-count",
+        "config": {},
+        "validation": [
+          {
+            "id": "hcl-practice-done",
+            "type": "actionEvidence",
+            "label": "HCl practice evidence is recorded.",
+            "actionId": "practice-hcl-drop-count"
+          }
+        ],
+        "hints": [
+          "Do not convert drops to volume without a teacher-provided calibration."
+        ],
+        "feedback": {
+          "success": "HCl practice recorded.",
+          "retry": "Record count and color separately."
+        }
+      },
+      {
+        "id": "practice-acetic-drop-count-node",
+        "type": "action",
+        "title": "Practice with acetic acid",
+        "description": "Use a fresh 5.0 mL 0.10 M acetic acid trial and justify the selected indicator before counting 0.10 M NaOH drops.",
+        "actionId": "practice-acetic-drop-count",
+        "config": {},
+        "validation": [
+          {
+            "id": "acetic-practice-done",
+            "type": "actionEvidence",
+            "label": "Acetic-acid practice evidence is recorded.",
+            "actionId": "practice-acetic-drop-count"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Acetic-acid practice recorded.",
+          "retry": "Use a separate fresh trial and preserve indicator reasoning."
+        }
+      },
+      {
+        "id": "submit-research-question-hypothesis-node",
+        "type": "observation",
+        "title": "Ask and predict",
+        "description": "Submit a measurable beverage-acidity research question and testable hypothesis.",
+        "actionId": "submit-research-question-hypothesis",
+        "config": {},
+        "validation": [
+          {
+            "id": "question-hypothesis-done",
+            "type": "actionEvidence",
+            "label": "Research question and hypothesis are submitted.",
+            "actionId": "submit-research-question-hypothesis"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Question and hypothesis recorded.",
+          "retry": "Make the prediction measurable."
+        }
+      },
+      {
+        "id": "submit-variables-equipment-plan-node",
+        "type": "observation",
+        "title": "Plan variables and apparatus",
+        "description": "Submit variables, selected equipment, and a labeled setup.",
+        "actionId": "submit-variables-equipment-plan",
+        "config": {},
+        "validation": [
+          {
+            "id": "plan-done",
+            "type": "actionEvidence",
+            "label": "Variables and equipment plan are submitted.",
+            "actionId": "submit-variables-equipment-plan"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Variables and apparatus plan recorded.",
+          "retry": "Complete and label the setup plan."
+        }
+      },
+      {
+        "id": "record-three-safety-precautions-node",
+        "type": "observation",
+        "title": "Record safety precautions",
+        "description": "Record at least three precautions supported by relevant safety information.",
+        "actionId": "record-three-safety-precautions",
+        "config": {},
+        "validation": [
+          {
+            "id": "precautions-done",
+            "type": "actionEvidence",
+            "label": "Safety precautions are recorded.",
+            "actionId": "record-three-safety-precautions"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Safety precautions recorded.",
+          "retry": "Record at least three specific precautions."
+        }
+      },
+      {
+        "id": "submit-acid-models-indicator-justification-node",
+        "type": "observation",
+        "title": "Model acids and choose indicators",
+        "description": "Submit balanced equations, ratios, and indicator reasoning for each proposed beverage acid model.",
+        "actionId": "submit-acid-models-indicator-justification",
+        "config": {},
+        "validation": [
+          {
+            "id": "models-indicator-done",
+            "type": "actionEvidence",
+            "label": "Acid models and indicator reasoning are submitted.",
+            "actionId": "submit-acid-models-indicator-justification"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Chemistry model submitted.",
+          "retry": "Include balanced equations, ratios, ranges, and color interference."
+        }
+      },
+      {
+        "id": "record-teacher-approval-node",
+        "type": "teacherNote",
+        "title": "Teacher approval gate",
+        "description": "Obtain approval for every configurable quantitative condition.",
+        "actionId": "record-teacher-approval",
+        "config": {},
+        "validation": [
+          {
+            "id": "teacher-approval-done",
+            "type": "actionEvidence",
+            "label": "Teacher approval is recorded.",
+            "actionId": "record-teacher-approval"
+          }
+        ],
+        "hints": [
+          "Quantitative execution stays locked until this checkpoint is complete."
+        ],
+        "feedback": {
+          "success": "Teacher approval recorded.",
+          "retry": "Revise and resubmit the plan."
+        }
+      },
+      {
+        "id": "mount-quantitative-burette-node",
+        "type": "action",
+        "title": "Assemble quantitative setup",
+        "description": "Mount the 50 mL burette upright in the ring stand clamp.",
+        "actionId": "mount-quantitative-burette",
+        "config": {},
+        "validation": [
+          {
+            "id": "burette-mounted-done",
+            "type": "actionEvidence",
+            "label": "Quantitative burette is mounted.",
+            "actionId": "mount-quantitative-burette"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Burette mounted.",
+          "retry": "Use the ring stand burette clamp."
+        }
+      },
+      {
+        "id": "place-beverage-ph-probe-node",
+        "type": "action",
+        "title": "Insert the pH probe",
+        "description": "Immerse the probe bulb in the beverage aliquot, clear of the stirring rod. Calibration and rinse rules are teacher-configured.",
+        "actionId": "place-beverage-ph-probe",
+        "layout": {
+          "x": 150,
+          "y": 150
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "probe-placed",
+            "type": "actionEvidence",
+            "label": "pH probe immersed.",
+            "actionId": "place-beverage-ph-probe"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Probe checkpoint passed.",
+          "retry": "Immerse the probe bulb in the beverage aliquot."
+        }
+      },
+      {
+        "id": "record-beverage-a-run-node",
+        "type": "action",
+        "title": "Run beverage A titration",
+        "description": "Collect the approved beverage-A pH-volume-color series with a fresh aliquot.",
+        "actionId": "record-beverage-a-run",
+        "config": {},
+        "validation": [
+          {
+            "id": "beverage-a-run-done",
+            "type": "actionEvidence",
+            "label": "Beverage A run is recorded.",
+            "actionId": "record-beverage-a-run"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Beverage A run recorded.",
+          "retry": "Complete and source-label the beverage-A series."
+        }
+      },
+      {
+        "id": "record-beverage-b-run-node",
+        "type": "action",
+        "title": "Run beverage B titration",
+        "description": "Collect the separately approved beverage-B pH-volume-color series with a fresh aliquot.",
+        "actionId": "record-beverage-b-run",
+        "config": {},
+        "validation": [
+          {
+            "id": "beverage-b-run-done",
+            "type": "actionEvidence",
+            "label": "Beverage B run is recorded.",
+            "actionId": "record-beverage-b-run"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Beverage B run recorded.",
+          "retry": "Complete and source-label the beverage-B series."
+        }
+      },
+      {
+        "id": "record-replicates-and-overshoots-node",
+        "type": "observation",
+        "title": "Complete replicates",
+        "description": "Use fresh aliquots and preserve overshot trials instead of rewinding them.",
+        "actionId": "record-replicates-and-overshoots",
+        "config": {},
+        "validation": [
+          {
+            "id": "replicates-done",
+            "type": "actionEvidence",
+            "label": "Replicate and overshoot handling is recorded.",
+            "actionId": "record-replicates-and-overshoots"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Replicate handling recorded.",
+          "retry": "Preserve every trial and start fresh after an overshoot."
+        }
+      },
+      {
+        "id": "analyze-beverage-a-node",
+        "type": "calculation",
+        "title": "Analyze beverage A",
+        "description": "Graph, annotate endpoint and equivalence separately, and calculate concentration with the approved model.",
+        "actionId": "analyze-beverage-a",
+        "config": {},
+        "validation": [
+          {
+            "id": "beverage-a-analysis-done",
+            "type": "actionEvidence",
+            "label": "Beverage A analysis is submitted.",
+            "actionId": "analyze-beverage-a"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Beverage A analysis submitted.",
+          "retry": "Check graph annotation, stoichiometry, units, and assumptions."
+        }
+      },
+      {
+        "id": "analyze-beverage-b-node",
+        "type": "calculation",
+        "title": "Analyze beverage B",
+        "description": "Graph, annotate endpoint and equivalence separately, and calculate concentration with the approved model.",
+        "actionId": "analyze-beverage-b",
+        "config": {},
+        "validation": [
+          {
+            "id": "beverage-b-analysis-done",
+            "type": "actionEvidence",
+            "label": "Beverage B analysis is submitted.",
+            "actionId": "analyze-beverage-b"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Beverage B analysis submitted.",
+          "retry": "Check graph annotation, stoichiometry, units, and assumptions."
+        }
+      },
+      {
+        "id": "compare-class-data-with-provenance-node",
+        "type": "observation",
+        "title": "Compare class data",
+        "description": "Append source-labeled peer or instructor results and compare compatible trends.",
+        "actionId": "compare-class-data-with-provenance",
+        "config": {},
+        "validation": [
+          {
+            "id": "class-data-done",
+            "type": "actionEvidence",
+            "label": "Class-data comparison is recorded.",
+            "actionId": "compare-class-data-with-provenance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Class comparison recorded.",
+          "retry": "Add provenance and method context to every imported result."
+        }
+      },
+      {
+        "id": "submit-postlab-reasoning-node",
+        "type": "observation",
+        "title": "Reason from the evidence",
+        "description": "Complete the postlab prompts, uncertainty analysis, method improvement, and claim limits.",
+        "actionId": "submit-postlab-reasoning",
+        "config": {},
+        "validation": [
+          {
+            "id": "postlab-done",
+            "type": "actionEvidence",
+            "label": "Postlab reasoning is submitted.",
+            "actionId": "submit-postlab-reasoning"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Postlab reasoning submitted.",
+          "retry": "Address every prompt with evidence and limitations."
+        }
+      },
+      {
+        "id": "dispose-by-teacher-protocol-node",
+        "type": "teacherNote",
+        "title": "Dispose safely",
+        "description": "Follow and record the actual teacher-provided disposal protocol.",
+        "actionId": "dispose-by-teacher-protocol",
+        "config": {},
+        "validation": [
+          {
+            "id": "disposal-done",
+            "type": "actionEvidence",
+            "label": "Teacher-provided disposal is recorded.",
+            "actionId": "dispose-by-teacher-protocol"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Disposal recorded.",
+          "retry": "Obtain and follow the actual disposal direction."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "review-safety-and-scope-node",
+        "to": "practice-hcl-drop-count-node",
+        "label": "Ready for practice",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "practice-hcl-drop-count-node",
+        "to": "practice-acetic-drop-count-node",
+        "label": "Fresh weak-acid trial",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "practice-acetic-drop-count-node",
+        "to": "submit-research-question-hypothesis-node",
+        "label": "Practice complete",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "submit-research-question-hypothesis-node",
+        "to": "submit-variables-equipment-plan-node",
+        "label": "Plan method",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "submit-variables-equipment-plan-node",
+        "to": "record-three-safety-precautions-node",
+        "label": "Plan safety",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-three-safety-precautions-node",
+        "to": "submit-acid-models-indicator-justification-node",
+        "label": "Model chemistry",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "submit-acid-models-indicator-justification-node",
+        "to": "record-teacher-approval-node",
+        "label": "Submit for approval",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-teacher-approval-node",
+        "to": "mount-quantitative-burette-node",
+        "label": "Approved",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "place-beverage-ph-probe-node",
+        "to": "record-beverage-a-run-node",
+        "label": "Run beverage A",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-beverage-a-run-node",
+        "to": "record-beverage-b-run-node",
+        "label": "Run beverage B",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-beverage-b-run-node",
+        "to": "record-replicates-and-overshoots-node",
+        "label": "Complete replicates",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-replicates-and-overshoots-node",
+        "to": "analyze-beverage-a-node",
+        "label": "Analyze A",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "analyze-beverage-a-node",
+        "to": "analyze-beverage-b-node",
+        "label": "Analyze B",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "analyze-beverage-b-node",
+        "to": "compare-class-data-with-provenance-node",
+        "label": "Compare class",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "compare-class-data-with-provenance-node",
+        "to": "submit-postlab-reasoning-node",
+        "label": "Reason",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "submit-postlab-reasoning-node",
+        "to": "dispose-by-teacher-protocol-node",
+        "label": "Dispose",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "mount-quantitative-burette-node",
+        "to": "place-beverage-ph-probe-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "assessments": [
+    {
+      "id": "practice-hcl-assessment",
+      "type": "actionEvidence",
+      "label": "HCl practice drop count and color are recorded without a volume claim.",
+      "actionId": "practice-hcl-drop-count"
+    },
+    {
+      "id": "practice-acetic-assessment",
+      "type": "actionEvidence",
+      "label": "Acetic-acid practice evidence and indicator choice are recorded separately.",
+      "actionId": "practice-acetic-drop-count"
+    },
+    {
+      "id": "teacher-approval-assessment",
+      "type": "actionEvidence",
+      "label": "Teacher approval and configuration are recorded.",
+      "actionId": "record-teacher-approval"
+    },
+    {
+      "id": "beverage-a-run-assessment",
+      "type": "actionEvidence",
+      "label": "Beverage A quantitative pH-volume-color evidence is recorded.",
+      "actionId": "record-beverage-a-run"
+    },
+    {
+      "id": "beverage-b-run-assessment",
+      "type": "actionEvidence",
+      "label": "Beverage B quantitative pH-volume-color evidence is recorded.",
+      "actionId": "record-beverage-b-run"
+    },
+    {
+      "id": "beverage-a-calculation-assessment",
+      "type": "actionEvidence",
+      "label": "Beverage A concentration is submitted for teacher-configured review.",
+      "actionId": "analyze-beverage-a"
+    },
+    {
+      "id": "beverage-b-calculation-assessment",
+      "type": "actionEvidence",
+      "label": "Beverage B concentration is submitted for teacher-configured review.",
+      "actionId": "analyze-beverage-b"
+    },
+    {
+      "id": "class-comparison-assessment",
+      "type": "actionEvidence",
+      "label": "Class-data comparison preserves provenance.",
+      "actionId": "compare-class-data-with-provenance"
+    },
+    {
+      "id": "postlab-assessment",
+      "type": "actionEvidence",
+      "label": "Postlab reasoning and evidence limits are submitted.",
+      "actionId": "submit-postlab-reasoning"
+    }
+  ],
+  "metadata": {
+    "version": "1.1.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-08-05T00:00:00.000Z",
+    "tags": [
+      "lab",
+      "chemistry",
+      "beverage-acidity",
+      "acid-base",
+      "beverage",
+      "titration",
+      "ph-curve",
+      "inquiry"
+    ]
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://lab-studio.local/schemas/studio.process-graph/1.0",
+  "title": "Platform Process Graph v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "startNodeId", "nodes", "edges"],
+  "properties": {
+    "schema": { "const": "studio.process-graph" },
+    "schemaVersion": { "const": "1.0" },
+    "startNodeId": { "$ref": "#/definitions/id" },
+    "nodes": { "type": "array", "minItems": 1, "items": { "$ref": "#/definitions/node" } },
+    "edges": { "type": "array", "items": { "$ref": "#/definitions/edge" } }
+  },
+  "definitions": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "layout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y"],
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "lane": { "$ref": "#/definitions/nonEmptyString" },
+        "display": { "enum": ["compact", "expanded"] }
+      }
+    },
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "title", "description", "evidenceRequirementRefs", "hints"],
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "type": { "enum": ["operation", "checkpoint", "decision", "calculation", "observation", "reflection", "teacherNote"] },
+        "title": { "$ref": "#/definitions/nonEmptyString" },
+        "description": { "$ref": "#/definitions/nonEmptyString" },
+        "operationRef": { "$ref": "#/definitions/id" },
+        "evidenceRequirementRefs": { "type": "array", "items": { "$ref": "#/definitions/id" } },
+        "hints": { "type": "array", "items": { "$ref": "#/definitions/nonEmptyString" } },
+        "layout": { "$ref": "#/definitions/layout" }
+      }
+    },
+    "alwaysCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": { "type": { "const": "always" } }
+    },
+    "completedCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": { "type": { "const": "completed" } }
+    },
+    "referencedCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "conditionRef"],
+      "properties": {
+        "type": { "const": "condition" },
+        "conditionRef": { "$ref": "#/definitions/id" },
+        "expected": { "oneOf": [{ "type": "string" }, { "type": "boolean" }] }
+      }
+    },
+    "branchCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "branchKey"],
+      "properties": {
+        "type": { "const": "branch" },
+        "branchKey": { "$ref": "#/definitions/id" }
+      }
+    },
+    "retryCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": { "const": "retry" },
+        "maxAttempts": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "condition": {
+      "oneOf": [
+        { "$ref": "#/definitions/alwaysCondition" },
+        { "$ref": "#/definitions/completedCondition" },
+        { "$ref": "#/definitions/referencedCondition" },
+        { "$ref": "#/definitions/branchCondition" },
+        { "$ref": "#/definitions/retryCondition" }
+      ]
+    },
+    "edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "from", "to", "label", "condition"],
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "from": { "$ref": "#/definitions/id" },
+        "to": { "$ref": "#/definitions/id" },
+        "label": { "$ref": "#/definitions/nonEmptyString" },
+        "condition": { "$ref": "#/definitions/condition" }
+      }
+    }
+  }
+}

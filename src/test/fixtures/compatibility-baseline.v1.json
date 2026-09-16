@@ -1,0 +1,173 @@
+{
+  "schema": "lab-studio.compatibility-baseline",
+  "schemaVersion": "1.0",
+  "capturedAt": "2026-07-18",
+  "routes": [
+    { "hash": "#/", "name": "home" },
+    { "hash": "#/studio", "name": "studio" },
+    { "hash": "#/labs", "name": "labs" },
+    { "hash": "#/techniques", "name": "techniques" },
+    { "hash": "#/play/hard-water-demo", "name": "play", "idKey": "labId", "id": "hard-water-demo" },
+    { "hash": "#/technique/filtration", "name": "technique", "idKey": "techniqueId", "id": "filtration" },
+    { "hash": "#/case/acid-base-titration", "name": "case", "idKey": "caseId", "id": "acid-base-titration" },
+    { "hash": "#/trial/realistic-equipment", "name": "trial", "idKey": "trialId", "id": "realistic-equipment" }
+  ],
+  "artifactContracts": {
+    "detectionOrder": ["LabDefinition", "TechniqueDefinition"],
+    "lab": {
+      "structuralMarker": "audience",
+      "publicDirectory": "public/labs",
+      "exportSuffix": ".lab.json"
+    },
+    "technique": {
+      "structuralMarker": "learningGoal",
+      "publicDirectory": "public/techniques",
+      "exportSuffix": ".technique.json"
+    },
+    "topLevelSchemaDiscriminator": null,
+    "rejectedFutureDiscriminators": [
+      "assay-studio.assay-definition",
+      "causalyst.assessment-definition"
+    ]
+  },
+  "unions": {
+    "actionVerbs": [
+      "place",
+      "weigh",
+      "measureVolume",
+      "transfer",
+      "dissolve",
+      "precipitate",
+      "dilute",
+      "filter",
+      "spotSample",
+      "developChromatogram",
+      "rinse",
+      "dry",
+      "heat",
+      "cool",
+      "stressEquilibrium",
+      "observe",
+      "record",
+      "calculate",
+      "reset"
+    ],
+    "interactionTypes": [
+      "dragToZone",
+      "snapIntoTarget",
+      "pourInto",
+      "dispenseDrops",
+      "spotOnto",
+      "rinseTarget",
+      "placeInInstrument",
+      "readInstrument",
+      "recordTimeSeries",
+      "recordNotebook",
+      "submitCalculation"
+    ],
+    "validationTypes": [
+      "actionEvidence",
+      "measurementRecorded",
+      "dataSeriesRecorded",
+      "notebookEntry",
+      "calculationWithinTolerance",
+      "statePath",
+      "processCompleted"
+    ]
+  },
+  "catalogs": {
+    "equipmentCount": 70,
+    "visualProfileCount": 70
+  },
+  "bundledContent": {
+    "labs": [
+      { "id": "intro-filtration-demo", "file": "intro-filtration-demo.json" },
+      { "id": "hard-water-demo", "file": "hard-water-demo.json" },
+      { "id": "acid-base-titration", "file": "acid-base-titration.json" },
+      { "id": "marble-statue-kinetics", "file": "marble-statue-kinetics.json" },
+      { "id": "paper-chromatography", "file": "paper-chromatography.json" },
+      { "id": "equilibrium-rainbow-display", "file": "equilibrium-rainbow-display.json" },
+      { "id": "hand-warmer-calorimetry", "file": "hand-warmer-calorimetry.json" }
+    ],
+    "techniques": [
+      { "id": "weighing", "file": "weighing.json" },
+      { "id": "measuring-volume", "file": "measuring-volume.json" },
+      { "id": "making-solution", "file": "making-solution.json" },
+      { "id": "dilution", "file": "dilution.json" },
+      { "id": "transmittance-dilution", "file": "transmittance-dilution.json" },
+      { "id": "transfer", "file": "transfer.json" },
+      { "id": "filtration", "file": "filtration.json" },
+      { "id": "drying", "file": "drying.json" },
+      { "id": "thermal-decomposition-mass-loss", "file": "thermal-decomposition-mass-loss.json" },
+      { "id": "paper-chromatography", "file": "paper-chromatography.json" },
+      { "id": "hard-water-calculation", "file": "hard-water-calculation.json" },
+      { "id": "beers-law-calibration", "file": "beers-law-calibration.json" },
+      { "id": "brass-spectrophotometry", "file": "brass-spectrophotometry.json" },
+      { "id": "hard-water-gravimetry", "file": "hard-water-gravimetry.json" },
+      { "id": "titration-endpoint", "file": "titration-endpoint.json" },
+      { "id": "bonding-solids-tests", "file": "bonding-solids-tests.json" },
+      { "id": "redox-titration", "file": "redox-titration.json" },
+      { "id": "tablet-separation", "file": "tablet-separation.json" },
+      { "id": "crystal-violet-kinetics", "file": "crystal-violet-kinetics.json" },
+      { "id": "hand-warmer-calorimetry", "file": "hand-warmer-calorimetry.json" },
+      { "id": "titration-curve-analysis", "file": "titration-curve-analysis.json" }
+    ],
+    "representativeRuntimeIds": [
+      "acid-base-titration",
+      "paper-chromatography",
+      "marble-statue-kinetics",
+      "equilibrium-rainbow-display"
+    ]
+  },
+  "assistantActions": [
+    "validate_draft",
+    "studio_get_snapshot",
+    "studio_query_catalog",
+    "studio_plan_transaction",
+    "studio_commit_transaction",
+    "studio_validate",
+    "studio_run_preview_check",
+    "studio_undo",
+    "select_node",
+    "add_template_node",
+    "update_lab_settings",
+    "update_selected_node",
+    "update_action_fields",
+    "update_interaction_fields",
+    "add_retry_edge",
+    "auto_layout_process",
+    "load_full_lab_template",
+    "save_local_draft",
+    "export_lab_json",
+    "generate_and_save_image_asset"
+  ],
+  "persistenceKeys": [
+    "lab-studio:v1:assistant-server-url",
+    "lab-studio:v1:camera-cursor-speed",
+    "lab-studio:v1:draft",
+    "lab-studio:v1:inspector-width",
+    "lab-studio:v1:studio-layout",
+    "lab-studio:v2:studio-split"
+  ],
+  "exportContract": {
+    "indentSpaces": 2,
+    "trailingNewline": false,
+    "mimeType": "application/json",
+    "runtimeOnlyKeys": [
+      "assetPath",
+      "assetUrl",
+      "assetHash",
+      "resolvedAssetUrl",
+      "blobUrl",
+      "hash",
+      "fileId",
+      "naturalWidth",
+      "naturalHeight",
+      "imageElement",
+      "runtimeId",
+      "generatedAssetPath",
+      "_runtime",
+      "_resolved"
+    ]
+  }
+}

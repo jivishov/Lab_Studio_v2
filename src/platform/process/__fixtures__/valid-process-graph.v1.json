@@ -1,0 +1,70 @@
+{
+  "schema": "studio.process-graph",
+  "schemaVersion": "1.0",
+  "startNodeId": "prepare",
+  "nodes": [
+    {
+      "id": "prepare",
+      "type": "operation",
+      "title": "Prepare",
+      "description": "Prepare the sample.",
+      "operationRef": "chemistry.prepare",
+      "evidenceRequirementRefs": [],
+      "hints": []
+    },
+    {
+      "id": "review",
+      "type": "decision",
+      "title": "Review",
+      "description": "Choose the appropriate observation path.",
+      "evidenceRequirementRefs": [],
+      "hints": []
+    },
+    {
+      "id": "record-clear",
+      "type": "observation",
+      "title": "Record clear sample",
+      "description": "Record a clear sample.",
+      "evidenceRequirementRefs": ["observation-clear"],
+      "hints": []
+    },
+    {
+      "id": "record-cloudy",
+      "type": "observation",
+      "title": "Record cloudy sample",
+      "description": "Record a cloudy sample.",
+      "evidenceRequirementRefs": ["observation-cloudy"],
+      "hints": []
+    }
+  ],
+  "edges": [
+    {
+      "id": "prepare-review",
+      "from": "prepare",
+      "to": "review",
+      "label": "Prepared",
+      "condition": { "type": "completed" }
+    },
+    {
+      "id": "review-clear",
+      "from": "review",
+      "to": "record-clear",
+      "label": "Clear",
+      "condition": { "type": "branch", "branchKey": "clear" }
+    },
+    {
+      "id": "review-cloudy",
+      "from": "review",
+      "to": "record-cloudy",
+      "label": "Cloudy",
+      "condition": { "type": "branch", "branchKey": "cloudy" }
+    },
+    {
+      "id": "retry-preparation",
+      "from": "record-cloudy",
+      "to": "prepare",
+      "label": "Retry preparation",
+      "condition": { "type": "retry", "maxAttempts": 2 }
+    }
+  ]
+}

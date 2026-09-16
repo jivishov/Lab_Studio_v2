@@ -1,0 +1,2798 @@
+{
+  "id": "hard-water-practice-preparation",
+  "title": "Hard-Water Practice Preparation",
+  "learningGoal": "Collect separate reactant masses, dissolve both solids independently, and form CaCO3 by incremental carbonate addition.",
+  "requiredEquipment": [
+    "analytical-balance",
+    "beaker-250ml",
+    "reagent-bottle",
+    "distilled-water-bottle",
+    "graduated-cylinder",
+    "stirring-rod",
+    "stopwatch",
+    "scoopula"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "practice-balance",
+        "definitionId": "analytical-balance",
+        "label": "Analytical balance",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-sodium-beaker",
+        "definitionId": "beaker-250ml",
+        "label": "250 mL beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-calcium-beaker",
+        "definitionId": "beaker-250ml",
+        "label": "250 mL beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-sodium-carbonate",
+        "definitionId": "reagent-bottle",
+        "label": "Anhydrous sodium carbonate",
+        "location": "shelf",
+        "contents": {
+          "kind": "solid",
+          "label": "Anhydrous sodium carbonate",
+          "massG": 25,
+          "solutes": [
+            {
+              "id": "sodium-carbonate",
+              "label": "Anhydrous sodium carbonate",
+              "amount": 25,
+              "unit": "g"
+            }
+          ],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "white-solid"
+        }
+      },
+      {
+        "id": "practice-calcium-chloride",
+        "definitionId": "reagent-bottle",
+        "label": "Anhydrous calcium chloride",
+        "location": "shelf",
+        "contents": {
+          "kind": "solid",
+          "label": "Anhydrous calcium chloride",
+          "massG": 25,
+          "solutes": [
+            {
+              "id": "calcium-chloride",
+              "label": "Anhydrous calcium chloride",
+              "amount": 25,
+              "unit": "g"
+            }
+          ],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "white-solid"
+        }
+      },
+      {
+        "id": "practice-distilled-water",
+        "definitionId": "distilled-water-bottle",
+        "label": "Distilled water bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Distilled water",
+          "volumeMl": 500,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "practice-cylinder",
+        "definitionId": "graduated-cylinder",
+        "label": "100 mL graduated cylinder",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-stirring-rod",
+        "definitionId": "stirring-rod",
+        "label": "Stirring rod",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-stopwatch",
+        "definitionId": "stopwatch",
+        "label": "Stopwatch",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-scoopula",
+        "definitionId": "scoopula",
+        "label": "Metal scoopula",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "review-practice-safety",
+      "verb": "observe",
+      "label": "Review practice safety and balance configuration",
+      "parameters": {
+        "note": "Wear splash-proof goggles. Investigation 3 lists the balance as +/-0.001 g or +/-0.0001 g and leaves the choice to the teacher; this simulation is configured at 0.001 g readability. Every mass tolerance below equals that configured readability.",
+        "instruction": "Review goggles, eye/ingestion hazards, and the teacher-selected balance precision before handling reagents.",
+        "tag": "balance-precision-configuration",
+        "balanceReadabilityG": 0.001,
+        "allowedBalanceReadabilityG": [
+          "0.001 g",
+          "0.0001 g"
+        ],
+        "precisionProvenance": "teacher-configured"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Review goggles, eye/ingestion hazards, and the teacher-selected balance precision before handling reagents.",
+        "successCue": "The evidence is recorded in the notebook.",
+        "invalidCue": "Complete and record the named evidence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "observe updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Review practice safety and balance configuration complete.",
+        "invalid": "Review the scientific and physical prerequisites for review practice safety and balance configuration."
+      },
+      "evidence": [
+        "observe"
+      ]
+    },
+    {
+      "id": "create-practice-data-table",
+      "verb": "observe",
+      "label": "Create the practice data table",
+      "parameters": {
+        "note": "Create separate fields for both reactant masses, filter-paper tare, watch-glass tare, cooled combined mass, observations, theoretical CaCO3, collected CaCO3, and recovery comparison.",
+        "instruction": "Create a data table before collecting practice measurements."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Create a data table before collecting practice measurements.",
+        "successCue": "The evidence is recorded in the notebook.",
+        "invalidCue": "Complete and record the named evidence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "observe updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Create the practice data table complete.",
+        "invalid": "Review the scientific and physical prerequisites for create the practice data table."
+      },
+      "evidence": [
+        "observe"
+      ]
+    },
+    {
+      "id": "add-sodium-carbonate-solid",
+      "verb": "transfer",
+      "label": "Add about 2 g sodium carbonate",
+      "atomId": "atom.transfer.solid-portion",
+      "equipmentRoleBindings": {
+        "solid-reagent-source": "reagent-bottle",
+        "receiving-vessel": "beaker-250ml",
+        "solid-transfer-tool": "scoopula"
+      },
+      "parameters": {
+        "sourceDefinitionId": "reagent-bottle",
+        "targetDefinitionId": "beaker-250ml",
+        "sourceInstanceId": "practice-sodium-carbonate",
+        "targetInstanceId": "practice-sodium-beaker",
+        "massG": 2.037,
+        "visualState": "white-solid",
+        "instruction": "Use a clean, dry beaker and transfer about 2 g of anhydrous sodium carbonate."
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "reagent-bottle",
+        "targetDefinitionId": "beaker-250ml",
+        "accessibleLabel": "Use a clean, dry beaker and transfer about 2 g of anhydrous sodium carbonate.",
+        "successCue": "The controlled transfer is complete.",
+        "invalidCue": "Use the named source and target without overflowing the vessel."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "transfer updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Add about 2 g sodium carbonate complete.",
+        "invalid": "Review the scientific and physical prerequisites for add about 2 g sodium carbonate."
+      },
+      "evidence": [
+        "transfer"
+      ]
+    },
+    {
+      "id": "weigh-sodium-carbonate",
+      "verb": "weigh",
+      "label": "Read sodium carbonate mass",
+      "atomId": "atom.weigh.solid-portion",
+      "equipmentRoleBindings": {
+        "balance-instrument": "analytical-balance",
+        "weighed-vessel": "beaker-250ml",
+        "solid-transfer-tool": "scoopula"
+      },
+      "parameters": {
+        "sourceDefinitionId": "beaker-250ml",
+        "targetDefinitionId": "analytical-balance",
+        "sourceInstanceId": "practice-sodium-beaker",
+        "targetInstanceId": "practice-balance",
+        "instrumentDefinitionId": "analytical-balance",
+        "tolerance": 0.001,
+        "evidenceProvenance": "learner-entered reading from the configured simulated balance; no expected mass is embedded",
+        "instruction": "Read the teacher-configured simulated balance output; do not treat it as a real measured value.",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputKey": "practice-sodium-carbonate-mass-input",
+        "inputLabel": "Read sodium carbonate mass from the configured simulated balance (g)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "g"
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "beaker-250ml",
+        "targetDefinitionId": "analytical-balance",
+        "stationId": "analytical-balance",
+        "accessibleLabel": "Read the teacher-configured simulated balance output; do not treat it as a real measured value.",
+        "successCue": "The balance reading is available as simulated measurement evidence.",
+        "invalidCue": "Use the named item on the analytical balance and do not weigh it warm."
+      },
+      "prerequisites": [
+        {
+          "id": "weigh-sodium-carbonate--balance-precision-configuration-recorded-required",
+          "type": "notebookEntry",
+          "label": "The teacher-selected balance readability is recorded.",
+          "notebookTag": "balance-precision-configuration"
+        }
+      ],
+      "stateChanges": [
+        "weigh updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Read sodium carbonate mass complete.",
+        "invalid": "Review the scientific and physical prerequisites for read sodium carbonate mass."
+      },
+      "evidence": [
+        "weigh",
+        "measurement",
+        "simulated-output"
+      ],
+      "mass": {
+        "source": "action-input",
+        "outputMeasurementId": "practice-sodium-carbonate-mass",
+        "continuity": {
+          "version": 1,
+          "quantityKind": "balance-display",
+          "measuredSupportInstanceId": "practice-sodium-beaker"
+        }
+      }
+    },
+    {
+      "id": "record-sodium-carbonate",
+      "verb": "record",
+      "label": "Record sodium carbonate mass",
+      "parameters": {
+        "measurementId": "practice-sodium-carbonate-mass",
+        "label": "Practice sodium carbonate mass",
+        "unit": "g",
+        "instruction": "Record the displayed sodium carbonate mass to the configured balance precision.",
+        "copyExistingMeasurementOnly": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "measurementId",
+        "accessibleLabel": "Record the displayed sodium carbonate mass to the configured balance precision.",
+        "successCue": "The evidence is recorded in the notebook.",
+        "invalidCue": "Complete and record the named evidence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "record updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Record sodium carbonate mass complete.",
+        "invalid": "Review the scientific and physical prerequisites for record sodium carbonate mass."
+      },
+      "evidence": [
+        "record"
+      ]
+    },
+    {
+      "id": "add-calcium-chloride-solid",
+      "verb": "transfer",
+      "label": "Add about 2 g calcium chloride",
+      "atomId": "atom.transfer.solid-portion",
+      "equipmentRoleBindings": {
+        "solid-reagent-source": "reagent-bottle",
+        "receiving-vessel": "beaker-250ml",
+        "solid-transfer-tool": "scoopula"
+      },
+      "parameters": {
+        "sourceDefinitionId": "reagent-bottle",
+        "targetDefinitionId": "beaker-250ml",
+        "sourceInstanceId": "practice-calcium-chloride",
+        "targetInstanceId": "practice-calcium-beaker",
+        "massG": 2.006,
+        "visualState": "white-solid",
+        "instruction": "Use a second clean, dry beaker and transfer about 2 g of anhydrous calcium chloride."
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "reagent-bottle",
+        "targetDefinitionId": "beaker-250ml",
+        "accessibleLabel": "Use a second clean, dry beaker and transfer about 2 g of anhydrous calcium chloride.",
+        "successCue": "The controlled transfer is complete.",
+        "invalidCue": "Use the named source and target without overflowing the vessel."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "transfer updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Add about 2 g calcium chloride complete.",
+        "invalid": "Review the scientific and physical prerequisites for add about 2 g calcium chloride."
+      },
+      "evidence": [
+        "transfer"
+      ]
+    },
+    {
+      "id": "weigh-calcium-chloride",
+      "verb": "weigh",
+      "label": "Read calcium chloride mass",
+      "atomId": "atom.weigh.solid-portion",
+      "equipmentRoleBindings": {
+        "balance-instrument": "analytical-balance",
+        "weighed-vessel": "beaker-250ml",
+        "solid-transfer-tool": "scoopula"
+      },
+      "parameters": {
+        "sourceDefinitionId": "beaker-250ml",
+        "targetDefinitionId": "analytical-balance",
+        "sourceInstanceId": "practice-calcium-beaker",
+        "targetInstanceId": "practice-balance",
+        "instrumentDefinitionId": "analytical-balance",
+        "tolerance": 0.001,
+        "evidenceProvenance": "learner-entered reading from the configured simulated balance; no expected mass is embedded",
+        "instruction": "Read the separate teacher-configured simulated calcium chloride balance output.",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputKey": "practice-calcium-chloride-mass-input",
+        "inputLabel": "Read calcium chloride mass from the configured simulated balance (g)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "g"
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "beaker-250ml",
+        "targetDefinitionId": "analytical-balance",
+        "stationId": "analytical-balance",
+        "accessibleLabel": "Read the separate teacher-configured simulated calcium chloride balance output.",
+        "successCue": "The balance reading is available as simulated measurement evidence.",
+        "invalidCue": "Use the named item on the analytical balance and do not weigh it warm."
+      },
+      "prerequisites": [
+        {
+          "id": "weigh-calcium-chloride--balance-precision-configuration-recorded-required",
+          "type": "notebookEntry",
+          "label": "The teacher-selected balance readability is recorded.",
+          "notebookTag": "balance-precision-configuration"
+        }
+      ],
+      "stateChanges": [
+        "weigh updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Read calcium chloride mass complete.",
+        "invalid": "Review the scientific and physical prerequisites for read calcium chloride mass."
+      },
+      "evidence": [
+        "weigh",
+        "measurement",
+        "simulated-output"
+      ],
+      "mass": {
+        "source": "action-input",
+        "outputMeasurementId": "practice-calcium-chloride-mass",
+        "continuity": {
+          "version": 1,
+          "quantityKind": "balance-display",
+          "measuredSupportInstanceId": "practice-calcium-beaker"
+        }
+      }
+    },
+    {
+      "id": "record-calcium-chloride",
+      "verb": "record",
+      "label": "Record calcium chloride mass",
+      "parameters": {
+        "measurementId": "practice-calcium-chloride-mass",
+        "label": "Practice calcium chloride mass",
+        "unit": "g",
+        "instruction": "Record the displayed calcium chloride mass to the configured balance precision.",
+        "copyExistingMeasurementOnly": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "measurementId",
+        "accessibleLabel": "Record the displayed calcium chloride mass to the configured balance precision.",
+        "successCue": "The evidence is recorded in the notebook.",
+        "invalidCue": "Complete and record the named evidence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "record updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Record calcium chloride mass complete.",
+        "invalid": "Review the scientific and physical prerequisites for record calcium chloride mass."
+      },
+      "evidence": [
+        "record"
+      ]
+    },
+    {
+      "id": "measure-water-for-sodium",
+      "verb": "measureVolume",
+      "label": "Measure about 20 mL water for sodium carbonate",
+      "atomId": "atom.measure.variable-volume",
+      "equipmentRoleBindings": {
+        "variable-volume-measuring-device": "graduated-cylinder",
+        "liquid-source": "distilled-water-bottle"
+      },
+      "parameters": {
+        "sourceDefinitionId": "distilled-water-bottle",
+        "targetDefinitionId": "graduated-cylinder",
+        "sourceInstanceId": "practice-distilled-water",
+        "targetInstanceId": "practice-cylinder",
+        "measurementId": "practice-sodium-water-volume",
+        "volumeMl": 20,
+        "tolerance": 1,
+        "instruction": "Measure about 20 mL distilled water for the sodium carbonate beaker."
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "distilled-water-bottle",
+        "targetDefinitionId": "graduated-cylinder",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Measure about 20 mL distilled water for the sodium carbonate beaker.",
+        "successCue": "The controlled transfer is complete.",
+        "invalidCue": "Use the named source and target without overflowing the vessel."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "measureVolume updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Measure about 20 mL water for sodium carbonate complete.",
+        "invalid": "Review the scientific and physical prerequisites for measure about 20 ml water for sodium carbonate."
+      },
+      "evidence": [
+        "measureVolume"
+      ]
+    },
+    {
+      "id": "transfer-water-to-sodium",
+      "verb": "transfer",
+      "label": "Add water to sodium carbonate",
+      "atomId": "atom.transfer.measured-liquid",
+      "equipmentRoleBindings": {
+        "measured-solvent-source": "graduated-cylinder",
+        "receiving-vessel": "beaker-250ml"
+      },
+      "parameters": {
+        "sourceDefinitionId": "graduated-cylinder",
+        "targetDefinitionId": "beaker-250ml",
+        "sourceInstanceId": "practice-cylinder",
+        "targetInstanceId": "practice-sodium-beaker",
+        "volumeMl": 20,
+        "instruction": "Transfer the separately measured distilled water into the sodium carbonate beaker."
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "graduated-cylinder",
+        "targetDefinitionId": "beaker-250ml",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Transfer the separately measured distilled water into the sodium carbonate beaker.",
+        "successCue": "The controlled transfer is complete.",
+        "invalidCue": "Use the named source and target without overflowing the vessel."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "transfer updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Add water to sodium carbonate complete.",
+        "invalid": "Review the scientific and physical prerequisites for add water to sodium carbonate."
+      },
+      "evidence": [
+        "transfer"
+      ]
+    },
+    {
+      "id": "dissolve-sodium-solid",
+      "verb": "dissolve",
+      "label": "Stir until sodium carbonate dissolves",
+      "atomId": "atom.dissolve.solid-in-solvent",
+      "equipmentRoleBindings": {
+        "receiving-vessel": "beaker-250ml",
+        "stirring-device": "stirring-rod"
+      },
+      "parameters": {
+        "sourceDefinitionId": "distilled-water-bottle",
+        "targetDefinitionId": "beaker-250ml",
+        "sourceInstanceId": "practice-distilled-water",
+        "targetInstanceId": "practice-sodium-beaker",
+        "finalVolumeMl": 20,
+        "soluteMassG": 2.037,
+        "instruction": "Use the stirring rod until the sodium carbonate is visibly dissolved; keep this dissolution loop separate from the other beaker."
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "distilled-water-bottle",
+        "targetDefinitionId": "beaker-250ml",
+        "accessibleLabel": "Use the stirring rod until the sodium carbonate is visibly dissolved; keep this dissolution loop separate from the other beaker.",
+        "successCue": "The controlled transfer is complete.",
+        "invalidCue": "Use the named source and target without overflowing the vessel."
+      },
+      "prerequisites": [
+        {
+          "id": "dissolve-sodium-solid--transfer-water-to-sodium-required",
+          "type": "actionEvidence",
+          "label": "Water is in the sodium carbonate beaker.",
+          "actionId": "transfer-water-to-sodium"
+        }
+      ],
+      "stateChanges": [
+        "dissolve updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Stir until sodium carbonate dissolves complete.",
+        "invalid": "Review the scientific and physical prerequisites for stir until sodium carbonate dissolves."
+      },
+      "evidence": [
+        "dissolve"
+      ]
+    },
+    {
+      "id": "observe-sodium-solution",
+      "verb": "observe",
+      "label": "Record sodium carbonate dissolution",
+      "parameters": {
+        "note": "The sodium carbonate beaker is recorded as a clear dissolved solution after stirring; this is an observation, not a mass measurement.",
+        "tag": "dissolution-observation",
+        "instruction": "Observe and record the dissolution endpoint for sodium carbonate."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Observe and record the dissolution endpoint for sodium carbonate.",
+        "successCue": "The evidence is recorded in the notebook.",
+        "invalidCue": "Complete and record the named evidence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "observe updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Record sodium carbonate dissolution complete.",
+        "invalid": "Review the scientific and physical prerequisites for record sodium carbonate dissolution."
+      },
+      "evidence": [
+        "observe"
+      ]
+    },
+    {
+      "id": "measure-water-for-calcium",
+      "verb": "measureVolume",
+      "label": "Measure about 20 mL water for calcium chloride",
+      "atomId": "atom.measure.variable-volume",
+      "equipmentRoleBindings": {
+        "variable-volume-measuring-device": "graduated-cylinder",
+        "liquid-source": "distilled-water-bottle"
+      },
+      "parameters": {
+        "sourceDefinitionId": "distilled-water-bottle",
+        "targetDefinitionId": "graduated-cylinder",
+        "sourceInstanceId": "practice-distilled-water",
+        "targetInstanceId": "practice-cylinder",
+        "measurementId": "practice-calcium-water-volume",
+        "volumeMl": 20,
+        "tolerance": 1,
+        "instruction": "Measure about 20 mL distilled water for the calcium chloride beaker."
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "distilled-water-bottle",
+        "targetDefinitionId": "graduated-cylinder",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Measure about 20 mL distilled water for the calcium chloride beaker.",
+        "successCue": "The controlled transfer is complete.",
+        "invalidCue": "Use the named source and target without overflowing the vessel."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "measureVolume updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Measure about 20 mL water for calcium chloride complete.",
+        "invalid": "Review the scientific and physical prerequisites for measure about 20 ml water for calcium chloride."
+      },
+      "evidence": [
+        "measureVolume"
+      ]
+    },
+    {
+      "id": "transfer-water-to-calcium",
+      "verb": "transfer",
+      "label": "Add water to calcium chloride",
+      "atomId": "atom.transfer.measured-liquid",
+      "equipmentRoleBindings": {
+        "measured-solvent-source": "graduated-cylinder",
+        "receiving-vessel": "beaker-250ml"
+      },
+      "parameters": {
+        "sourceDefinitionId": "graduated-cylinder",
+        "targetDefinitionId": "beaker-250ml",
+        "sourceInstanceId": "practice-cylinder",
+        "targetInstanceId": "practice-calcium-beaker",
+        "volumeMl": 20,
+        "instruction": "Transfer the separately measured distilled water into the calcium chloride beaker."
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "graduated-cylinder",
+        "targetDefinitionId": "beaker-250ml",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Transfer the separately measured distilled water into the calcium chloride beaker.",
+        "successCue": "The controlled transfer is complete.",
+        "invalidCue": "Use the named source and target without overflowing the vessel."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "transfer updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Add water to calcium chloride complete.",
+        "invalid": "Review the scientific and physical prerequisites for add water to calcium chloride."
+      },
+      "evidence": [
+        "transfer"
+      ]
+    },
+    {
+      "id": "dissolve-calcium-solid",
+      "verb": "dissolve",
+      "label": "Stir until calcium chloride dissolves",
+      "atomId": "atom.dissolve.solid-in-solvent",
+      "equipmentRoleBindings": {
+        "receiving-vessel": "beaker-250ml",
+        "stirring-device": "stirring-rod"
+      },
+      "parameters": {
+        "sourceDefinitionId": "distilled-water-bottle",
+        "targetDefinitionId": "beaker-250ml",
+        "sourceInstanceId": "practice-distilled-water",
+        "targetInstanceId": "practice-calcium-beaker",
+        "finalVolumeMl": 20,
+        "soluteMassG": 2.006,
+        "instruction": "Use the stirring rod until the calcium chloride is visibly dissolved; keep this dissolution loop separate from the other beaker."
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "distilled-water-bottle",
+        "targetDefinitionId": "beaker-250ml",
+        "accessibleLabel": "Use the stirring rod until the calcium chloride is visibly dissolved; keep this dissolution loop separate from the other beaker.",
+        "successCue": "The controlled transfer is complete.",
+        "invalidCue": "Use the named source and target without overflowing the vessel."
+      },
+      "prerequisites": [
+        {
+          "id": "dissolve-calcium-solid--transfer-water-to-calcium-required",
+          "type": "actionEvidence",
+          "label": "Water is in the calcium chloride beaker.",
+          "actionId": "transfer-water-to-calcium"
+        }
+      ],
+      "stateChanges": [
+        "dissolve updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Stir until calcium chloride dissolves complete.",
+        "invalid": "Review the scientific and physical prerequisites for stir until calcium chloride dissolves."
+      },
+      "evidence": [
+        "dissolve"
+      ]
+    },
+    {
+      "id": "observe-calcium-solution",
+      "verb": "observe",
+      "label": "Record calcium chloride dissolution",
+      "parameters": {
+        "note": "The calcium chloride beaker is recorded as a clear dissolved solution after stirring; this is an observation, not a mass measurement.",
+        "tag": "dissolution-observation",
+        "instruction": "Observe and record the dissolution endpoint for calcium chloride."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Observe and record the dissolution endpoint for calcium chloride.",
+        "successCue": "The evidence is recorded in the notebook.",
+        "invalidCue": "Complete and record the named evidence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "observe updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Record calcium chloride dissolution complete.",
+        "invalid": "Review the scientific and physical prerequisites for record calcium chloride dissolution."
+      },
+      "evidence": [
+        "observe"
+      ]
+    },
+    {
+      "id": "add-carbonate-portion-1",
+      "verb": "transfer",
+      "label": "Add sodium carbonate portion 1",
+      "atomId": "atom.transfer.precipitating-reagent",
+      "equipmentRoleBindings": {
+        "precipitating-reagent-source": "beaker-250ml",
+        "precipitation-vessel": "beaker-250ml",
+        "stirring-device": "stirring-rod"
+      },
+      "parameters": {
+        "sourceDefinitionId": "beaker-250ml",
+        "targetDefinitionId": "beaker-250ml",
+        "sourceInstanceId": "practice-sodium-beaker",
+        "targetInstanceId": "practice-calcium-beaker",
+        "volumeMl": 5,
+        "instruction": "While stirring, add portion 1 of 4 from the sodium carbonate solution to the calcium chloride solution."
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "beaker-250ml",
+        "targetDefinitionId": "beaker-250ml",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "While stirring, add portion 1 of 4 from the sodium carbonate solution to the calcium chloride solution.",
+        "successCue": "The controlled transfer is complete.",
+        "invalidCue": "Use the named source and target without overflowing the vessel."
+      },
+      "prerequisites": [
+        {
+          "id": "add-carbonate-portion-1--dissolve-sodium-solid-required",
+          "type": "actionEvidence",
+          "label": "The sodium carbonate is dissolved.",
+          "actionId": "dissolve-sodium-solid"
+        },
+        {
+          "id": "add-carbonate-portion-1--dissolve-calcium-solid-required",
+          "type": "actionEvidence",
+          "label": "The calcium chloride is dissolved.",
+          "actionId": "dissolve-calcium-solid"
+        }
+      ],
+      "stateChanges": [
+        "transfer updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Add sodium carbonate portion 1 complete.",
+        "invalid": "Review the scientific and physical prerequisites for add sodium carbonate portion 1."
+      },
+      "evidence": [
+        "transfer"
+      ]
+    },
+    {
+      "id": "observe-carbonate-portion-1",
+      "verb": "observe",
+      "label": "Observe precipitation after portion 1",
+      "parameters": {
+        "note": "Fresh observation after carbonate portion 1: white cloudiness and suspended solid are recorded while stirring continues.",
+        "tag": "incremental-precipitation",
+        "instruction": "Record a fresh observation after portion 1; do not collapse the incremental additions into one bulk-mix step."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record a fresh observation after portion 1; do not collapse the incremental additions into one bulk-mix step.",
+        "successCue": "The evidence is recorded in the notebook.",
+        "invalidCue": "Complete and record the named evidence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "observe updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Observe precipitation after portion 1 complete.",
+        "invalid": "Review the scientific and physical prerequisites for observe precipitation after portion 1."
+      },
+      "evidence": [
+        "observe"
+      ]
+    },
+    {
+      "id": "add-carbonate-portion-2",
+      "verb": "transfer",
+      "label": "Add sodium carbonate portion 2",
+      "atomId": "atom.transfer.precipitating-reagent",
+      "equipmentRoleBindings": {
+        "precipitating-reagent-source": "beaker-250ml",
+        "precipitation-vessel": "beaker-250ml",
+        "stirring-device": "stirring-rod"
+      },
+      "parameters": {
+        "sourceDefinitionId": "beaker-250ml",
+        "targetDefinitionId": "beaker-250ml",
+        "sourceInstanceId": "practice-sodium-beaker",
+        "targetInstanceId": "practice-calcium-beaker",
+        "volumeMl": 5,
+        "instruction": "While stirring, add portion 2 of 4 from the sodium carbonate solution to the calcium chloride solution."
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "beaker-250ml",
+        "targetDefinitionId": "beaker-250ml",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "While stirring, add portion 2 of 4 from the sodium carbonate solution to the calcium chloride solution.",
+        "successCue": "The controlled transfer is complete.",
+        "invalidCue": "Use the named source and target without overflowing the vessel."
+      },
+      "prerequisites": [
+        {
+          "id": "add-carbonate-portion-2--add-carbonate-portion-1-required",
+          "type": "actionEvidence",
+          "label": "The previous carbonate portion was added.",
+          "actionId": "add-carbonate-portion-1"
+        }
+      ],
+      "stateChanges": [
+        "transfer updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Add sodium carbonate portion 2 complete.",
+        "invalid": "Review the scientific and physical prerequisites for add sodium carbonate portion 2."
+      },
+      "evidence": [
+        "transfer"
+      ]
+    },
+    {
+      "id": "observe-carbonate-portion-2",
+      "verb": "observe",
+      "label": "Observe precipitation after portion 2",
+      "parameters": {
+        "note": "Fresh observation after carbonate portion 2: white cloudiness and suspended solid are recorded while stirring continues.",
+        "tag": "incremental-precipitation",
+        "instruction": "Record a fresh observation after portion 2; do not collapse the incremental additions into one bulk-mix step."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record a fresh observation after portion 2; do not collapse the incremental additions into one bulk-mix step.",
+        "successCue": "The evidence is recorded in the notebook.",
+        "invalidCue": "Complete and record the named evidence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "observe updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Observe precipitation after portion 2 complete.",
+        "invalid": "Review the scientific and physical prerequisites for observe precipitation after portion 2."
+      },
+      "evidence": [
+        "observe"
+      ]
+    },
+    {
+      "id": "add-carbonate-portion-3",
+      "verb": "transfer",
+      "label": "Add sodium carbonate portion 3",
+      "atomId": "atom.transfer.precipitating-reagent",
+      "equipmentRoleBindings": {
+        "precipitating-reagent-source": "beaker-250ml",
+        "precipitation-vessel": "beaker-250ml",
+        "stirring-device": "stirring-rod"
+      },
+      "parameters": {
+        "sourceDefinitionId": "beaker-250ml",
+        "targetDefinitionId": "beaker-250ml",
+        "sourceInstanceId": "practice-sodium-beaker",
+        "targetInstanceId": "practice-calcium-beaker",
+        "volumeMl": 5,
+        "instruction": "While stirring, add portion 3 of 4 from the sodium carbonate solution to the calcium chloride solution."
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "beaker-250ml",
+        "targetDefinitionId": "beaker-250ml",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "While stirring, add portion 3 of 4 from the sodium carbonate solution to the calcium chloride solution.",
+        "successCue": "The controlled transfer is complete.",
+        "invalidCue": "Use the named source and target without overflowing the vessel."
+      },
+      "prerequisites": [
+        {
+          "id": "add-carbonate-portion-3--add-carbonate-portion-2-required",
+          "type": "actionEvidence",
+          "label": "The previous carbonate portion was added.",
+          "actionId": "add-carbonate-portion-2"
+        }
+      ],
+      "stateChanges": [
+        "transfer updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Add sodium carbonate portion 3 complete.",
+        "invalid": "Review the scientific and physical prerequisites for add sodium carbonate portion 3."
+      },
+      "evidence": [
+        "transfer"
+      ]
+    },
+    {
+      "id": "observe-carbonate-portion-3",
+      "verb": "observe",
+      "label": "Observe precipitation after portion 3",
+      "parameters": {
+        "note": "Fresh observation after carbonate portion 3: white cloudiness and suspended solid are recorded while stirring continues.",
+        "tag": "incremental-precipitation",
+        "instruction": "Record a fresh observation after portion 3; do not collapse the incremental additions into one bulk-mix step."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record a fresh observation after portion 3; do not collapse the incremental additions into one bulk-mix step.",
+        "successCue": "The evidence is recorded in the notebook.",
+        "invalidCue": "Complete and record the named evidence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "observe updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Observe precipitation after portion 3 complete.",
+        "invalid": "Review the scientific and physical prerequisites for observe precipitation after portion 3."
+      },
+      "evidence": [
+        "observe"
+      ]
+    },
+    {
+      "id": "add-carbonate-portion-4",
+      "verb": "transfer",
+      "label": "Add sodium carbonate portion 4",
+      "atomId": "atom.transfer.precipitating-reagent",
+      "equipmentRoleBindings": {
+        "precipitating-reagent-source": "beaker-250ml",
+        "precipitation-vessel": "beaker-250ml",
+        "stirring-device": "stirring-rod"
+      },
+      "parameters": {
+        "sourceDefinitionId": "beaker-250ml",
+        "targetDefinitionId": "beaker-250ml",
+        "sourceInstanceId": "practice-sodium-beaker",
+        "targetInstanceId": "practice-calcium-beaker",
+        "volumeMl": 5,
+        "instruction": "While stirring, add portion 4 of 4 from the sodium carbonate solution to the calcium chloride solution."
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "beaker-250ml",
+        "targetDefinitionId": "beaker-250ml",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "While stirring, add portion 4 of 4 from the sodium carbonate solution to the calcium chloride solution.",
+        "successCue": "The controlled transfer is complete.",
+        "invalidCue": "Use the named source and target without overflowing the vessel."
+      },
+      "prerequisites": [
+        {
+          "id": "add-carbonate-portion-4--add-carbonate-portion-3-required",
+          "type": "actionEvidence",
+          "label": "The previous carbonate portion was added.",
+          "actionId": "add-carbonate-portion-3"
+        }
+      ],
+      "stateChanges": [
+        "transfer updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Add sodium carbonate portion 4 complete.",
+        "invalid": "Review the scientific and physical prerequisites for add sodium carbonate portion 4."
+      },
+      "evidence": [
+        "transfer"
+      ]
+    },
+    {
+      "id": "observe-carbonate-portion-4",
+      "verb": "observe",
+      "label": "Observe precipitation after portion 4",
+      "parameters": {
+        "note": "Fresh observation after carbonate portion 4: white cloudiness and suspended solid are recorded while stirring continues.",
+        "tag": "incremental-precipitation",
+        "instruction": "Record a fresh observation after portion 4; do not collapse the incremental additions into one bulk-mix step."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record a fresh observation after portion 4; do not collapse the incremental additions into one bulk-mix step.",
+        "successCue": "The evidence is recorded in the notebook.",
+        "invalidCue": "Complete and record the named evidence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "observe updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Observe precipitation after portion 4 complete.",
+        "invalid": "Review the scientific and physical prerequisites for observe precipitation after portion 4."
+      },
+      "evidence": [
+        "observe"
+      ]
+    },
+    {
+      "id": "establish-practice-precipitate-state",
+      "verb": "precipitate",
+      "label": "Establish the simulated wet precipitate state",
+      "atomId": "atom.precipitate.form-gravimetric-solid",
+      "equipmentRoleBindings": {
+        "precipitation-vessel": "beaker-250ml",
+        "precipitating-reagent-source": "beaker-250ml"
+      },
+      "parameters": {
+        "sourceDefinitionId": "beaker-250ml",
+        "targetDefinitionId": "beaker-250ml",
+        "sourceInstanceId": "practice-sodium-beaker",
+        "targetInstanceId": "practice-calcium-beaker",
+        "finalVolumeMl": 40,
+        "precipitateMassG": 1.71,
+        "evidenceProvenance": "simulated physical state, not measured mass",
+        "instruction": "After all portions are added, represent the wet CaCO3 suspension for filtration; its configured state mass is not student measurement evidence."
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "beaker-250ml",
+        "targetDefinitionId": "beaker-250ml",
+        "accessibleLabel": "After all portions are added, represent the wet CaCO3 suspension for filtration; its configured state mass is not student measurement evidence.",
+        "successCue": "The controlled transfer is complete.",
+        "invalidCue": "Use the named source and target without overflowing the vessel."
+      },
+      "prerequisites": [
+        {
+          "id": "establish-practice-precipitate-state--add-carbonate-portion-4-required",
+          "type": "actionEvidence",
+          "label": "Every carbonate portion has been added.",
+          "actionId": "add-carbonate-portion-4"
+        }
+      ],
+      "stateChanges": [
+        "precipitate updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Establish the simulated wet precipitate state complete.",
+        "invalid": "Review the scientific and physical prerequisites for establish the simulated wet precipitate state."
+      },
+      "evidence": [
+        "precipitate",
+        "simulated-state"
+      ]
+    },
+    {
+      "id": "age-practice-precipitate",
+      "verb": "observe",
+      "label": "Stir for another two minutes",
+      "parameters": {
+        "note": "The mixed suspension is stirred for another couple of minutes before filtration.",
+        "tag": "timed-stirring",
+        "instruction": "Continue stirring the complete mixture for about two minutes."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Continue stirring the complete mixture for about two minutes.",
+        "successCue": "The evidence is recorded in the notebook.",
+        "invalidCue": "Complete and record the named evidence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "observe updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Stir for another two minutes complete.",
+        "invalid": "Review the scientific and physical prerequisites for stir for another two minutes."
+      },
+      "evidence": [
+        "observe"
+      ]
+    }
+  ],
+  "process": {
+    "startNodeId": "review-practice-safety-node",
+    "nodes": [
+      {
+        "id": "review-practice-safety-node",
+        "type": "observation",
+        "title": "Review practice safety and balance configuration",
+        "description": "Review goggles, eye/ingestion hazards, and the teacher-selected balance precision before handling reagents.",
+        "actionId": "review-practice-safety",
+        "config": {
+          "teacherConfigurable": true,
+          "requiredConfiguration": "analytical balance readability, +/-0.001 g or +/-0.0001 g (Investigation 3 finding 2, confirmation point 2)"
+        },
+        "validation": [
+          {
+            "id": "review-practice-safety-node--review-practice-safety-evidence",
+            "type": "actionEvidence",
+            "label": "Review practice safety and balance configuration was completed.",
+            "actionId": "review-practice-safety"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Review practice safety and balance configuration complete.",
+          "retry": "Correct the named prerequisite and retry review practice safety and balance configuration."
+        }
+      },
+      {
+        "id": "create-practice-data-table-node",
+        "type": "observation",
+        "title": "Create the practice data table",
+        "description": "Create a data table before collecting practice measurements.",
+        "actionId": "create-practice-data-table",
+        "config": {},
+        "validation": [
+          {
+            "id": "create-practice-data-table-node--create-practice-data-table-evidence",
+            "type": "actionEvidence",
+            "label": "Create the practice data table was completed.",
+            "actionId": "create-practice-data-table"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Create the practice data table complete.",
+          "retry": "Correct the named prerequisite and retry create the practice data table."
+        }
+      },
+      {
+        "id": "add-sodium-carbonate-solid-node",
+        "type": "action",
+        "title": "Add about 2 g sodium carbonate",
+        "description": "Use a clean, dry beaker and transfer about 2 g of anhydrous sodium carbonate.",
+        "actionId": "add-sodium-carbonate-solid",
+        "config": {},
+        "validation": [
+          {
+            "id": "add-sodium-carbonate-solid-node--add-sodium-carbonate-solid-evidence",
+            "type": "actionEvidence",
+            "label": "Add about 2 g sodium carbonate was completed.",
+            "actionId": "add-sodium-carbonate-solid"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Add about 2 g sodium carbonate complete.",
+          "retry": "Correct the named prerequisite and retry add about 2 g sodium carbonate."
+        }
+      },
+      {
+        "id": "weigh-sodium-carbonate-node",
+        "type": "action",
+        "title": "Read sodium carbonate mass",
+        "description": "Read the teacher-configured simulated balance output; do not treat it as a real measured value.",
+        "actionId": "weigh-sodium-carbonate",
+        "config": {},
+        "validation": [
+          {
+            "id": "weigh-sodium-carbonate-node--weigh-sodium-carbonate-evidence",
+            "type": "actionEvidence",
+            "label": "Read sodium carbonate mass was completed.",
+            "actionId": "weigh-sodium-carbonate"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read sodium carbonate mass complete.",
+          "retry": "Correct the named prerequisite and retry read sodium carbonate mass."
+        }
+      },
+      {
+        "id": "record-sodium-carbonate-node",
+        "type": "observation",
+        "title": "Record sodium carbonate mass",
+        "description": "Record the displayed sodium carbonate mass to the configured balance precision.",
+        "actionId": "record-sodium-carbonate",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-sodium-carbonate-node--record-sodium-carbonate-evidence",
+            "type": "actionEvidence",
+            "label": "Record sodium carbonate mass was completed.",
+            "actionId": "record-sodium-carbonate"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record sodium carbonate mass complete.",
+          "retry": "Correct the named prerequisite and retry record sodium carbonate mass."
+        }
+      },
+      {
+        "id": "add-calcium-chloride-solid-node",
+        "type": "action",
+        "title": "Add about 2 g calcium chloride",
+        "description": "Use a second clean, dry beaker and transfer about 2 g of anhydrous calcium chloride.",
+        "actionId": "add-calcium-chloride-solid",
+        "config": {},
+        "validation": [
+          {
+            "id": "add-calcium-chloride-solid-node--add-calcium-chloride-solid-evidence",
+            "type": "actionEvidence",
+            "label": "Add about 2 g calcium chloride was completed.",
+            "actionId": "add-calcium-chloride-solid"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Add about 2 g calcium chloride complete.",
+          "retry": "Correct the named prerequisite and retry add about 2 g calcium chloride."
+        }
+      },
+      {
+        "id": "weigh-calcium-chloride-node",
+        "type": "action",
+        "title": "Read calcium chloride mass",
+        "description": "Read the separate teacher-configured simulated calcium chloride balance output.",
+        "actionId": "weigh-calcium-chloride",
+        "config": {},
+        "validation": [
+          {
+            "id": "weigh-calcium-chloride-node--weigh-calcium-chloride-evidence",
+            "type": "actionEvidence",
+            "label": "Read calcium chloride mass was completed.",
+            "actionId": "weigh-calcium-chloride"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read calcium chloride mass complete.",
+          "retry": "Correct the named prerequisite and retry read calcium chloride mass."
+        }
+      },
+      {
+        "id": "record-calcium-chloride-node",
+        "type": "observation",
+        "title": "Record calcium chloride mass",
+        "description": "Record the displayed calcium chloride mass to the configured balance precision.",
+        "actionId": "record-calcium-chloride",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-calcium-chloride-node--record-calcium-chloride-evidence",
+            "type": "actionEvidence",
+            "label": "Record calcium chloride mass was completed.",
+            "actionId": "record-calcium-chloride"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record calcium chloride mass complete.",
+          "retry": "Correct the named prerequisite and retry record calcium chloride mass."
+        }
+      },
+      {
+        "id": "measure-water-for-sodium-node",
+        "type": "action",
+        "title": "Measure about 20 mL water for sodium carbonate",
+        "description": "Measure about 20 mL distilled water for the sodium carbonate beaker.",
+        "actionId": "measure-water-for-sodium",
+        "config": {},
+        "validation": [
+          {
+            "id": "measure-water-for-sodium-node--measure-water-for-sodium-evidence",
+            "type": "actionEvidence",
+            "label": "Measure about 20 mL water for sodium carbonate was completed.",
+            "actionId": "measure-water-for-sodium"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Measure about 20 mL water for sodium carbonate complete.",
+          "retry": "Correct the named prerequisite and retry measure about 20 ml water for sodium carbonate."
+        }
+      },
+      {
+        "id": "transfer-water-to-sodium-node",
+        "type": "action",
+        "title": "Add water to sodium carbonate",
+        "description": "Transfer the separately measured distilled water into the sodium carbonate beaker.",
+        "actionId": "transfer-water-to-sodium",
+        "config": {},
+        "validation": [
+          {
+            "id": "transfer-water-to-sodium-node--transfer-water-to-sodium-evidence",
+            "type": "actionEvidence",
+            "label": "Add water to sodium carbonate was completed.",
+            "actionId": "transfer-water-to-sodium"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Add water to sodium carbonate complete.",
+          "retry": "Correct the named prerequisite and retry add water to sodium carbonate."
+        }
+      },
+      {
+        "id": "dissolve-sodium-solid-node",
+        "type": "action",
+        "title": "Stir until sodium carbonate dissolves",
+        "description": "Use the stirring rod until the sodium carbonate is visibly dissolved; keep this dissolution loop separate from the other beaker.",
+        "actionId": "dissolve-sodium-solid",
+        "config": {},
+        "validation": [
+          {
+            "id": "dissolve-sodium-solid-node--dissolve-sodium-solid-evidence",
+            "type": "actionEvidence",
+            "label": "Stir until sodium carbonate dissolves was completed.",
+            "actionId": "dissolve-sodium-solid"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Stir until sodium carbonate dissolves complete.",
+          "retry": "Correct the named prerequisite and retry stir until sodium carbonate dissolves."
+        }
+      },
+      {
+        "id": "observe-sodium-solution-node",
+        "type": "observation",
+        "title": "Record sodium carbonate dissolution",
+        "description": "Observe and record the dissolution endpoint for sodium carbonate.",
+        "actionId": "observe-sodium-solution",
+        "config": {},
+        "validation": [
+          {
+            "id": "observe-sodium-solution-node--observe-sodium-solution-evidence",
+            "type": "actionEvidence",
+            "label": "Record sodium carbonate dissolution was completed.",
+            "actionId": "observe-sodium-solution"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record sodium carbonate dissolution complete.",
+          "retry": "Correct the named prerequisite and retry record sodium carbonate dissolution."
+        }
+      },
+      {
+        "id": "measure-water-for-calcium-node",
+        "type": "action",
+        "title": "Measure about 20 mL water for calcium chloride",
+        "description": "Measure about 20 mL distilled water for the calcium chloride beaker.",
+        "actionId": "measure-water-for-calcium",
+        "config": {},
+        "validation": [
+          {
+            "id": "measure-water-for-calcium-node--measure-water-for-calcium-evidence",
+            "type": "actionEvidence",
+            "label": "Measure about 20 mL water for calcium chloride was completed.",
+            "actionId": "measure-water-for-calcium"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Measure about 20 mL water for calcium chloride complete.",
+          "retry": "Correct the named prerequisite and retry measure about 20 ml water for calcium chloride."
+        }
+      },
+      {
+        "id": "transfer-water-to-calcium-node",
+        "type": "action",
+        "title": "Add water to calcium chloride",
+        "description": "Transfer the separately measured distilled water into the calcium chloride beaker.",
+        "actionId": "transfer-water-to-calcium",
+        "config": {},
+        "validation": [
+          {
+            "id": "transfer-water-to-calcium-node--transfer-water-to-calcium-evidence",
+            "type": "actionEvidence",
+            "label": "Add water to calcium chloride was completed.",
+            "actionId": "transfer-water-to-calcium"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Add water to calcium chloride complete.",
+          "retry": "Correct the named prerequisite and retry add water to calcium chloride."
+        }
+      },
+      {
+        "id": "dissolve-calcium-solid-node",
+        "type": "action",
+        "title": "Stir until calcium chloride dissolves",
+        "description": "Use the stirring rod until the calcium chloride is visibly dissolved; keep this dissolution loop separate from the other beaker.",
+        "actionId": "dissolve-calcium-solid",
+        "config": {},
+        "validation": [
+          {
+            "id": "dissolve-calcium-solid-node--dissolve-calcium-solid-evidence",
+            "type": "actionEvidence",
+            "label": "Stir until calcium chloride dissolves was completed.",
+            "actionId": "dissolve-calcium-solid"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Stir until calcium chloride dissolves complete.",
+          "retry": "Correct the named prerequisite and retry stir until calcium chloride dissolves."
+        }
+      },
+      {
+        "id": "observe-calcium-solution-node",
+        "type": "observation",
+        "title": "Record calcium chloride dissolution",
+        "description": "Observe and record the dissolution endpoint for calcium chloride.",
+        "actionId": "observe-calcium-solution",
+        "config": {},
+        "validation": [
+          {
+            "id": "observe-calcium-solution-node--observe-calcium-solution-evidence",
+            "type": "actionEvidence",
+            "label": "Record calcium chloride dissolution was completed.",
+            "actionId": "observe-calcium-solution"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record calcium chloride dissolution complete.",
+          "retry": "Correct the named prerequisite and retry record calcium chloride dissolution."
+        }
+      },
+      {
+        "id": "add-carbonate-portion-1-node",
+        "type": "action",
+        "title": "Add sodium carbonate portion 1",
+        "description": "While stirring, add portion 1 of 4 from the sodium carbonate solution to the calcium chloride solution.",
+        "actionId": "add-carbonate-portion-1",
+        "config": {},
+        "validation": [
+          {
+            "id": "add-carbonate-portion-1-node--add-carbonate-portion-1-evidence",
+            "type": "actionEvidence",
+            "label": "Add sodium carbonate portion 1 was completed.",
+            "actionId": "add-carbonate-portion-1"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Add sodium carbonate portion 1 complete.",
+          "retry": "Correct the named prerequisite and retry add sodium carbonate portion 1."
+        }
+      },
+      {
+        "id": "observe-carbonate-portion-1-node",
+        "type": "observation",
+        "title": "Observe precipitation after portion 1",
+        "description": "Record a fresh observation after portion 1; do not collapse the incremental additions into one bulk-mix step.",
+        "actionId": "observe-carbonate-portion-1",
+        "config": {},
+        "validation": [
+          {
+            "id": "observe-carbonate-portion-1-node--observe-carbonate-portion-1-evidence",
+            "type": "actionEvidence",
+            "label": "Observe precipitation after portion 1 was completed.",
+            "actionId": "observe-carbonate-portion-1"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Observe precipitation after portion 1 complete.",
+          "retry": "Correct the named prerequisite and retry observe precipitation after portion 1."
+        }
+      },
+      {
+        "id": "add-carbonate-portion-2-node",
+        "type": "action",
+        "title": "Add sodium carbonate portion 2",
+        "description": "While stirring, add portion 2 of 4 from the sodium carbonate solution to the calcium chloride solution.",
+        "actionId": "add-carbonate-portion-2",
+        "config": {},
+        "validation": [
+          {
+            "id": "add-carbonate-portion-2-node--add-carbonate-portion-2-evidence",
+            "type": "actionEvidence",
+            "label": "Add sodium carbonate portion 2 was completed.",
+            "actionId": "add-carbonate-portion-2"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Add sodium carbonate portion 2 complete.",
+          "retry": "Correct the named prerequisite and retry add sodium carbonate portion 2."
+        }
+      },
+      {
+        "id": "observe-carbonate-portion-2-node",
+        "type": "observation",
+        "title": "Observe precipitation after portion 2",
+        "description": "Record a fresh observation after portion 2; do not collapse the incremental additions into one bulk-mix step.",
+        "actionId": "observe-carbonate-portion-2",
+        "config": {},
+        "validation": [
+          {
+            "id": "observe-carbonate-portion-2-node--observe-carbonate-portion-2-evidence",
+            "type": "actionEvidence",
+            "label": "Observe precipitation after portion 2 was completed.",
+            "actionId": "observe-carbonate-portion-2"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Observe precipitation after portion 2 complete.",
+          "retry": "Correct the named prerequisite and retry observe precipitation after portion 2."
+        }
+      },
+      {
+        "id": "add-carbonate-portion-3-node",
+        "type": "action",
+        "title": "Add sodium carbonate portion 3",
+        "description": "While stirring, add portion 3 of 4 from the sodium carbonate solution to the calcium chloride solution.",
+        "actionId": "add-carbonate-portion-3",
+        "config": {},
+        "validation": [
+          {
+            "id": "add-carbonate-portion-3-node--add-carbonate-portion-3-evidence",
+            "type": "actionEvidence",
+            "label": "Add sodium carbonate portion 3 was completed.",
+            "actionId": "add-carbonate-portion-3"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Add sodium carbonate portion 3 complete.",
+          "retry": "Correct the named prerequisite and retry add sodium carbonate portion 3."
+        }
+      },
+      {
+        "id": "observe-carbonate-portion-3-node",
+        "type": "observation",
+        "title": "Observe precipitation after portion 3",
+        "description": "Record a fresh observation after portion 3; do not collapse the incremental additions into one bulk-mix step.",
+        "actionId": "observe-carbonate-portion-3",
+        "config": {},
+        "validation": [
+          {
+            "id": "observe-carbonate-portion-3-node--observe-carbonate-portion-3-evidence",
+            "type": "actionEvidence",
+            "label": "Observe precipitation after portion 3 was completed.",
+            "actionId": "observe-carbonate-portion-3"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Observe precipitation after portion 3 complete.",
+          "retry": "Correct the named prerequisite and retry observe precipitation after portion 3."
+        }
+      },
+      {
+        "id": "add-carbonate-portion-4-node",
+        "type": "action",
+        "title": "Add sodium carbonate portion 4",
+        "description": "While stirring, add portion 4 of 4 from the sodium carbonate solution to the calcium chloride solution.",
+        "actionId": "add-carbonate-portion-4",
+        "config": {},
+        "validation": [
+          {
+            "id": "add-carbonate-portion-4-node--add-carbonate-portion-4-evidence",
+            "type": "actionEvidence",
+            "label": "Add sodium carbonate portion 4 was completed.",
+            "actionId": "add-carbonate-portion-4"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Add sodium carbonate portion 4 complete.",
+          "retry": "Correct the named prerequisite and retry add sodium carbonate portion 4."
+        }
+      },
+      {
+        "id": "observe-carbonate-portion-4-node",
+        "type": "observation",
+        "title": "Observe precipitation after portion 4",
+        "description": "Record a fresh observation after portion 4; do not collapse the incremental additions into one bulk-mix step.",
+        "actionId": "observe-carbonate-portion-4",
+        "config": {},
+        "validation": [
+          {
+            "id": "observe-carbonate-portion-4-node--observe-carbonate-portion-4-evidence",
+            "type": "actionEvidence",
+            "label": "Observe precipitation after portion 4 was completed.",
+            "actionId": "observe-carbonate-portion-4"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Observe precipitation after portion 4 complete.",
+          "retry": "Correct the named prerequisite and retry observe precipitation after portion 4."
+        }
+      },
+      {
+        "id": "establish-practice-precipitate-state-node",
+        "type": "action",
+        "title": "Establish the simulated wet precipitate state",
+        "description": "After all portions are added, represent the wet CaCO3 suspension for filtration; its configured state mass is not student measurement evidence.",
+        "actionId": "establish-practice-precipitate-state",
+        "config": {},
+        "validation": [
+          {
+            "id": "establish-practice-precipitate-state-node--establish-practice-precipitate-state-evidence",
+            "type": "actionEvidence",
+            "label": "Establish the simulated wet precipitate state was completed.",
+            "actionId": "establish-practice-precipitate-state"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Establish the simulated wet precipitate state complete.",
+          "retry": "Correct the named prerequisite and retry establish the simulated wet precipitate state."
+        }
+      },
+      {
+        "id": "age-practice-precipitate-node",
+        "type": "observation",
+        "title": "Stir for another two minutes",
+        "description": "Continue stirring the complete mixture for about two minutes.",
+        "actionId": "age-practice-precipitate",
+        "config": {},
+        "validation": [
+          {
+            "id": "age-practice-precipitate-node--age-practice-precipitate-evidence",
+            "type": "actionEvidence",
+            "label": "Stir for another two minutes was completed.",
+            "actionId": "age-practice-precipitate"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Stir for another two minutes complete.",
+          "retry": "Correct the named prerequisite and retry stir for another two minutes."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "review-practice-safety-node",
+        "to": "create-practice-data-table-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "create-practice-data-table-node",
+        "to": "add-sodium-carbonate-solid-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "add-sodium-carbonate-solid-node",
+        "to": "weigh-sodium-carbonate-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "weigh-sodium-carbonate-node",
+        "to": "record-sodium-carbonate-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-sodium-carbonate-node",
+        "to": "add-calcium-chloride-solid-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "add-calcium-chloride-solid-node",
+        "to": "weigh-calcium-chloride-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "weigh-calcium-chloride-node",
+        "to": "record-calcium-chloride-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-calcium-chloride-node",
+        "to": "measure-water-for-sodium-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "measure-water-for-sodium-node",
+        "to": "transfer-water-to-sodium-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "transfer-water-to-sodium-node",
+        "to": "dissolve-sodium-solid-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "dissolve-sodium-solid-node",
+        "to": "observe-sodium-solution-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "observe-sodium-solution-node",
+        "to": "measure-water-for-calcium-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "measure-water-for-calcium-node",
+        "to": "transfer-water-to-calcium-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "transfer-water-to-calcium-node",
+        "to": "dissolve-calcium-solid-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "dissolve-calcium-solid-node",
+        "to": "observe-calcium-solution-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "observe-calcium-solution-node",
+        "to": "add-carbonate-portion-1-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "add-carbonate-portion-1-node",
+        "to": "observe-carbonate-portion-1-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "observe-carbonate-portion-1-node",
+        "to": "add-carbonate-portion-2-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "add-carbonate-portion-2-node",
+        "to": "observe-carbonate-portion-2-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "observe-carbonate-portion-2-node",
+        "to": "add-carbonate-portion-3-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "add-carbonate-portion-3-node",
+        "to": "observe-carbonate-portion-3-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "observe-carbonate-portion-3-node",
+        "to": "add-carbonate-portion-4-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "add-carbonate-portion-4-node",
+        "to": "observe-carbonate-portion-4-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "observe-carbonate-portion-4-node",
+        "to": "establish-practice-precipitate-state-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "establish-practice-precipitate-state-node",
+        "to": "age-practice-precipitate-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [
+    {
+      "id": "hard-water-practice-preparation-success",
+      "type": "actionEvidence",
+      "label": "Hard-Water Practice Preparation reached its final evidence step.",
+      "actionId": "age-practice-precipitate"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "the current process node expects a different action",
+      "message": "That action is out of sequence for this gravimetric workflow.",
+      "recovery": "Return to the highlighted process node and preserve each sample identity."
+    },
+    {
+      "id": "missing-evidence",
+      "when": "a calculation or approval step lacks its required evidence",
+      "message": "Required measured or teacher-approved evidence is missing.",
+      "recovery": "Collect and record the named evidence before continuing."
+    },
+    {
+      "id": "unsafe-or-invalid-state",
+      "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+      "message": "The apparatus is not in a safe, valid gravimetric state.",
+      "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.2.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-04T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "chemistry",
+      "hard-water",
+      "gravimetry",
+      "precipitation",
+      "practice"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry-review-practice-safety-node",
+        "kind": "entry",
+        "nodeId": "review-practice-safety-node",
+        "label": "Entry"
+      },
+      {
+        "id": "exit-age-practice-precipitate-node",
+        "kind": "exit",
+        "nodeId": "age-practice-precipitate-node",
+        "label": "Exit"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "solid-reagent-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "reagent-bottle"
+        ],
+        "sourceInstanceIds": [
+          "practice-sodium-carbonate",
+          "practice-calcium-chloride"
+        ]
+      },
+      {
+        "roleId": "receiving-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beaker-250ml"
+        ],
+        "sourceInstanceIds": [
+          "practice-sodium-beaker",
+          "practice-calcium-beaker"
+        ]
+      },
+      {
+        "roleId": "solid-transfer-tool",
+        "required": true,
+        "allowedDefinitionIds": [
+          "scoopula"
+        ],
+        "sourceInstanceIds": [
+          "practice-scoopula"
+        ]
+      },
+      {
+        "roleId": "balance-instrument",
+        "required": true,
+        "allowedDefinitionIds": [
+          "analytical-balance"
+        ],
+        "sourceInstanceIds": [
+          "practice-balance"
+        ]
+      },
+      {
+        "roleId": "weighed-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beaker-250ml"
+        ],
+        "sourceInstanceIds": [
+          "practice-sodium-beaker",
+          "practice-calcium-beaker"
+        ]
+      },
+      {
+        "roleId": "variable-volume-measuring-device",
+        "required": true,
+        "allowedDefinitionIds": [
+          "graduated-cylinder"
+        ],
+        "sourceInstanceIds": [
+          "practice-cylinder"
+        ]
+      },
+      {
+        "roleId": "liquid-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "distilled-water-bottle"
+        ],
+        "sourceInstanceIds": [
+          "practice-distilled-water"
+        ]
+      },
+      {
+        "roleId": "measured-solvent-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "graduated-cylinder"
+        ],
+        "sourceInstanceIds": [
+          "practice-cylinder"
+        ]
+      },
+      {
+        "roleId": "stirring-device",
+        "required": true,
+        "allowedDefinitionIds": [
+          "stirring-rod"
+        ],
+        "sourceInstanceIds": [
+          "practice-stirring-rod"
+        ]
+      },
+      {
+        "roleId": "precipitating-reagent-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beaker-250ml"
+        ],
+        "sourceInstanceIds": [
+          "practice-sodium-beaker"
+        ]
+      },
+      {
+        "roleId": "precipitation-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beaker-250ml"
+        ],
+        "sourceInstanceIds": [
+          "practice-calcium-beaker"
+        ]
+      }
+    ],
+    "modelSlots": [],
+    "configurationSlots": [],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [],
+    "completion": {
+      "exitPortIds": [
+        "exit-age-practice-precipitate-node"
+      ],
+      "requiredEvidenceOutputIds": [],
+      "requiredValidationRuleIds": []
+    },
+    "catalogDisposition": "composable",
+    "legacyActionEffects": [
+      {
+        "actionId": "review-practice-safety",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "create-practice-data-table",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-sodium-carbonate",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-calcium-chloride",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "observe-sodium-solution",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "observe-calcium-solution",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "observe-carbonate-portion-1",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "observe-carbonate-portion-2",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "observe-carbonate-portion-3",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "observe-carbonate-portion-4",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "age-practice-precipitate",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

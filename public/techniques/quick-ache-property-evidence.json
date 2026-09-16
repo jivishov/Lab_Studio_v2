@@ -1,0 +1,1522 @@
+{
+  "id": "quick-ache-property-evidence",
+  "title": "Quick Ache Component Property Evidence",
+  "learningGoal": "Experimentally compare pure sucrose, acetaminophen, and aspirin before designing a separation.",
+  "requiredEquipment": [
+    "small-vial",
+    "test-tube",
+    "sample-rack",
+    "reagent-bottle",
+    "ph-paper",
+    "spatula",
+    "reagent-bottle-1l"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "qar-sucrose-standard",
+        "definitionId": "small-vial",
+        "label": "Pure sucrose standard",
+        "location": "shelf",
+        "contents": {
+          "kind": "solid",
+          "label": "Pure sucrose",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "powder"
+        }
+      },
+      {
+        "id": "qar-acetaminophen-standard",
+        "definitionId": "small-vial",
+        "label": "Pure acetaminophen standard",
+        "location": "shelf",
+        "contents": {
+          "kind": "solid",
+          "label": "Pure acetaminophen",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "powder"
+        }
+      },
+      {
+        "id": "qar-aspirin-standard",
+        "definitionId": "small-vial",
+        "label": "Pure aspirin standard",
+        "location": "shelf",
+        "contents": {
+          "kind": "solid",
+          "label": "Pure aspirin",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "powder"
+        }
+      },
+      {
+        "id": "qar-property-rack",
+        "definitionId": "sample-rack",
+        "label": "Labeled property-test rack",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-property-reagent",
+        "definitionId": "reagent-bottle-1l",
+        "label": "Teacher-approved property-test reagent (1 L stock)",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Teacher-approved test reagent",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid",
+          "volumeMl": 1000
+        }
+      },
+      {
+        "id": "qar-property-ph-paper",
+        "definitionId": "ph-paper",
+        "label": "pH paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-property-spatula",
+        "definitionId": "spatula",
+        "label": "Spatula",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-sucrose-property-test-tube",
+        "definitionId": "test-tube",
+        "label": "Sucrose property-test tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-acetaminophen-property-test-tube",
+        "definitionId": "test-tube",
+        "label": "Acetaminophen property-test tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-aspirin-property-test-tube",
+        "definitionId": "test-tube",
+        "label": "Aspirin property-test tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "qar-commit-consumer-hypotheses",
+      "verb": "observe",
+      "label": "Commit Team A and Team B hypotheses",
+      "parameters": {
+        "prompt": "State both consumer hypotheses before property evidence or unknown composition is revealed. Team B requires aspirin evidence.",
+        "studentResponseRequired": true,
+        "tag": "consumer-hypotheses",
+        "note": "Team A and Team B hypotheses recorded before any property test, so neither can be edited to fit the result."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Commit Team A and Team B hypotheses."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Commit Team A and Team B hypotheses evidence is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the approved investigation.",
+          "recovery": "Return to the highlighted step and preserve the fraction or evidence already collected."
+        },
+        {
+          "id": "unapproved-procedure",
+          "when": "execution is attempted before instructor approval",
+          "message": "The separation plan has not been approved.",
+          "recovery": "Submit the property evidence, chemical rationale, quantities, endpoints, and disposal plan for instructor approval."
+        },
+        {
+          "id": "unlabeled-fraction",
+          "when": "a layer or recovered fraction lacks identity and provenance",
+          "message": "The fraction cannot be interpreted safely without a label.",
+          "recovery": "Label the vessel with source stage, observed layer, retained material, and uncertainty before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Commit Team A and Team B hypotheses complete.",
+        "invalid": "Record the required evidence and use the teacher-approved configuration before continuing."
+      },
+      "evidence": [
+        "notebook"
+      ]
+    },
+    {
+      "id": "qar-select-pure-component-tests",
+      "verb": "observe",
+      "label": "Select pure-component property tests",
+      "parameters": {
+        "prompt": "Select safe solubility or reactivity comparisons for pure sucrose, acetaminophen, and aspirin using available reagents and reviewed SDS information.",
+        "studentResponseRequired": true,
+        "tag": "pure-test-plan",
+        "teacherConfigKey": "pureComponentTestAmountsAndAcceptedEvidence",
+        "configurationRequired": true,
+        "note": "Selected property tests for pure sucrose, acetaminophen, and aspirin recorded, with the teacher-configured amounts."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Select pure-component property tests."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Select pure-component property tests evidence is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the approved investigation.",
+          "recovery": "Return to the highlighted step and preserve the fraction or evidence already collected."
+        },
+        {
+          "id": "unapproved-procedure",
+          "when": "execution is attempted before instructor approval",
+          "message": "The separation plan has not been approved.",
+          "recovery": "Submit the property evidence, chemical rationale, quantities, endpoints, and disposal plan for instructor approval."
+        },
+        {
+          "id": "unlabeled-fraction",
+          "when": "a layer or recovered fraction lacks identity and provenance",
+          "message": "The fraction cannot be interpreted safely without a label.",
+          "recovery": "Label the vessel with source stage, observed layer, retained material, and uncertainty before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Select pure-component property tests complete.",
+        "invalid": "Record the required evidence and use the teacher-approved configuration before continuing."
+      },
+      "evidence": [
+        "notebook"
+      ]
+    },
+    {
+      "id": "qar-transfer-sucrose-test-portion",
+      "verb": "transfer",
+      "label": "Transfer a fresh sucrose test portion",
+      "atomId": "atom.transfer.microsample-portion",
+      "equipmentRoleBindings": {
+        "bonding-test-vessel": "test-tube",
+        "sample-source": "small-vial"
+      },
+      "parameters": {
+        "sourceDefinitionId": "small-vial",
+        "sourceInstanceId": "qar-sucrose-standard",
+        "targetDefinitionId": "test-tube",
+        "targetInstanceId": "qar-sucrose-property-test-tube",
+        "amountProvenance": "teacher-approved microscale configuration"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "small-vial",
+        "targetDefinitionId": "test-tube",
+        "accessibleLabel": "Transfer the approved fresh sucrose microsample."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "A fresh, labeled sucrose microsample is staged without assuming its result."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-standard",
+          "when": "the standard or test vessel identity does not match",
+          "message": "Property evidence must retain the pure-component identity.",
+          "recovery": "Use a fresh labeled portion of the named standard."
+        }
+      ],
+      "feedback": {
+        "success": "Sucrose test portion staged.",
+        "invalid": "Preserve the named pure-component identity and approved amount."
+      },
+      "evidence": [
+        "transfer",
+        "sucrose",
+        "fresh-microsample"
+      ]
+    },
+    {
+      "id": "qar-apply-sucrose-approved-property-test",
+      "verb": "transfer",
+      "label": "Apply the approved property test to sucrose",
+      "atomId": "atom.transfer.apply-test-solvent",
+      "equipmentRoleBindings": {
+        "bonding-test-solvent-source": "reagent-bottle-1l",
+        "bonding-test-vessel": "test-tube"
+      },
+      "parameters": {
+        "sourceDefinitionId": "reagent-bottle-1l",
+        "sourceInstanceId": "qar-property-reagent",
+        "targetDefinitionId": "test-tube",
+        "targetInstanceId": "qar-sucrose-property-test-tube",
+        "solventOrReagentIdentity": "approved property-test choice",
+        "quantityProvenance": "teacher-approved configuration"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "reagent-bottle-1l",
+        "targetDefinitionId": "test-tube",
+        "accessibleLabel": "Apply the approved configured property test to sucrose."
+      },
+      "prerequisites": [
+        {
+          "id": "qar-apply-sucrose-approved-property-test--qar-sucrose-portion-required",
+          "type": "actionEvidence",
+          "label": "Fresh sucrose portion is present.",
+          "actionId": "qar-transfer-sucrose-test-portion"
+        }
+      ],
+      "stateChanges": [
+        "The approved property-test reagent is applied to sucrose; no outcome is prefilled."
+      ],
+      "invalidCases": [
+        {
+          "id": "unapproved-test",
+          "when": "the reagent, amount, or test is not in the approved plan",
+          "message": "Only an approved property test may generate evidence.",
+          "recovery": "Return to the approved test matrix."
+        }
+      ],
+      "feedback": {
+        "success": "Sucrose property test applied.",
+        "invalid": "Use the approved test and configured quantity."
+      },
+      "evidence": [
+        "transfer",
+        "sucrose",
+        "approved-property-test"
+      ]
+    },
+    {
+      "id": "qar-inspect-sucrose-property-result",
+      "verb": "observe",
+      "label": "Inspect the sucrose property result",
+      "parameters": {
+        "sourceDefinitionId": "test-tube",
+        "sourceInstanceId": "qar-sucrose-property-test-tube",
+        "resultProvenance": "student direct observation; no expected identity or result literal",
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputKey": "qar-inspect-sucrose-property-result-input",
+        "inputLabel": "Directly observed property-test result",
+        "inputRequired": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "sourceDefinitionId": "test-tube",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Inspect the sucrose property result"
+      },
+      "prerequisites": [
+        {
+          "id": "qar-inspect-sucrose-property-result--qar-sucrose-test-required",
+          "type": "actionEvidence",
+          "label": "Approved sucrose test is applied.",
+          "actionId": "qar-apply-sucrose-approved-property-test"
+        }
+      ],
+      "stateChanges": [
+        "The observed sucrose result is acquired for its own evidence scope."
+      ],
+      "invalidCases": [
+        {
+          "id": "cross-component-evidence",
+          "when": "an observation belongs to another pure component",
+          "message": "One component's result cannot satisfy another component's evidence.",
+          "recovery": "Inspect the current labeled test portion."
+        }
+      ],
+      "feedback": {
+        "success": "Sucrose property result acquired.",
+        "invalid": "Use the current labeled pure-component test."
+      },
+      "evidence": [
+        "observe",
+        "sucrose",
+        "qar-sucrose-property-observation",
+        "direct-visual-observation",
+        "property-test-result"
+      ],
+      "atomId": "atom.observe.record-property-test-result",
+      "equipmentRoleBindings": {
+        "bonding-test-vessel": "test-tube"
+      }
+    },
+    {
+      "id": "qar-record-sucrose-properties",
+      "verb": "observe",
+      "label": "Record sucrose property evidence",
+      "parameters": {
+        "prompt": "Record the selected test, controlled amount, reagent, observation, and uncertainty for pure sucrose.",
+        "studentResponseRequired": true,
+        "tag": "sucrose-property-evidence",
+        "note": "Observed solubility and reactivity behaviour recorded for pure sucrose."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Record sucrose property evidence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record sucrose property evidence evidence is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the approved investigation.",
+          "recovery": "Return to the highlighted step and preserve the fraction or evidence already collected."
+        },
+        {
+          "id": "unapproved-procedure",
+          "when": "execution is attempted before instructor approval",
+          "message": "The separation plan has not been approved.",
+          "recovery": "Submit the property evidence, chemical rationale, quantities, endpoints, and disposal plan for instructor approval."
+        },
+        {
+          "id": "unlabeled-fraction",
+          "when": "a layer or recovered fraction lacks identity and provenance",
+          "message": "The fraction cannot be interpreted safely without a label.",
+          "recovery": "Label the vessel with source stage, observed layer, retained material, and uncertainty before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Record sucrose property evidence complete.",
+        "invalid": "Record the required evidence and use the teacher-approved configuration before continuing."
+      },
+      "evidence": [
+        "notebook"
+      ]
+    },
+    {
+      "id": "qar-transfer-acetaminophen-test-portion",
+      "verb": "transfer",
+      "label": "Transfer a fresh acetaminophen test portion",
+      "atomId": "atom.transfer.microsample-portion",
+      "equipmentRoleBindings": {
+        "bonding-test-vessel": "test-tube",
+        "sample-source": "small-vial"
+      },
+      "parameters": {
+        "sourceDefinitionId": "small-vial",
+        "sourceInstanceId": "qar-acetaminophen-standard",
+        "targetDefinitionId": "test-tube",
+        "targetInstanceId": "qar-acetaminophen-property-test-tube",
+        "amountProvenance": "teacher-approved microscale configuration"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "small-vial",
+        "targetDefinitionId": "test-tube",
+        "accessibleLabel": "Transfer the approved fresh acetaminophen microsample."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "A fresh, labeled acetaminophen microsample is staged without assuming its result."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-standard",
+          "when": "the standard or test vessel identity does not match",
+          "message": "Property evidence must retain the pure-component identity.",
+          "recovery": "Use a fresh labeled portion of the named standard."
+        }
+      ],
+      "feedback": {
+        "success": "Acetaminophen test portion staged.",
+        "invalid": "Preserve the named pure-component identity and approved amount."
+      },
+      "evidence": [
+        "transfer",
+        "acetaminophen",
+        "fresh-microsample"
+      ]
+    },
+    {
+      "id": "qar-apply-acetaminophen-approved-property-test",
+      "verb": "transfer",
+      "label": "Apply the approved property test to acetaminophen",
+      "atomId": "atom.transfer.apply-test-solvent",
+      "equipmentRoleBindings": {
+        "bonding-test-solvent-source": "reagent-bottle-1l",
+        "bonding-test-vessel": "test-tube"
+      },
+      "parameters": {
+        "sourceDefinitionId": "reagent-bottle-1l",
+        "sourceInstanceId": "qar-property-reagent",
+        "targetDefinitionId": "test-tube",
+        "targetInstanceId": "qar-acetaminophen-property-test-tube",
+        "solventOrReagentIdentity": "approved property-test choice",
+        "quantityProvenance": "teacher-approved configuration"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "reagent-bottle-1l",
+        "targetDefinitionId": "test-tube",
+        "accessibleLabel": "Apply the approved configured property test to acetaminophen."
+      },
+      "prerequisites": [
+        {
+          "id": "qar-apply-acetaminophen-approved-property-test--qar-acetaminophen-portion-required",
+          "type": "actionEvidence",
+          "label": "Fresh acetaminophen portion is present.",
+          "actionId": "qar-transfer-acetaminophen-test-portion"
+        }
+      ],
+      "stateChanges": [
+        "The approved property-test reagent is applied to acetaminophen; no outcome is prefilled."
+      ],
+      "invalidCases": [
+        {
+          "id": "unapproved-test",
+          "when": "the reagent, amount, or test is not in the approved plan",
+          "message": "Only an approved property test may generate evidence.",
+          "recovery": "Return to the approved test matrix."
+        }
+      ],
+      "feedback": {
+        "success": "Acetaminophen property test applied.",
+        "invalid": "Use the approved test and configured quantity."
+      },
+      "evidence": [
+        "transfer",
+        "acetaminophen",
+        "approved-property-test"
+      ]
+    },
+    {
+      "id": "qar-inspect-acetaminophen-property-result",
+      "verb": "observe",
+      "label": "Inspect the acetaminophen property result",
+      "parameters": {
+        "sourceDefinitionId": "test-tube",
+        "sourceInstanceId": "qar-acetaminophen-property-test-tube",
+        "resultProvenance": "student direct observation; no expected identity or result literal",
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputKey": "qar-inspect-acetaminophen-property-result-input",
+        "inputLabel": "Directly observed property-test result",
+        "inputRequired": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "sourceDefinitionId": "test-tube",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Inspect the acetaminophen property result"
+      },
+      "prerequisites": [
+        {
+          "id": "qar-inspect-acetaminophen-property-result--qar-acetaminophen-test-required",
+          "type": "actionEvidence",
+          "label": "Approved acetaminophen test is applied.",
+          "actionId": "qar-apply-acetaminophen-approved-property-test"
+        }
+      ],
+      "stateChanges": [
+        "The observed acetaminophen result is acquired for its own evidence scope."
+      ],
+      "invalidCases": [
+        {
+          "id": "cross-component-evidence",
+          "when": "an observation belongs to another pure component",
+          "message": "One component's result cannot satisfy another component's evidence.",
+          "recovery": "Inspect the current labeled test portion."
+        }
+      ],
+      "feedback": {
+        "success": "Acetaminophen property result acquired.",
+        "invalid": "Use the current labeled pure-component test."
+      },
+      "evidence": [
+        "observe",
+        "acetaminophen",
+        "qar-acetaminophen-property-observation",
+        "direct-visual-observation",
+        "property-test-result"
+      ],
+      "atomId": "atom.observe.record-property-test-result",
+      "equipmentRoleBindings": {
+        "bonding-test-vessel": "test-tube"
+      }
+    },
+    {
+      "id": "qar-record-acetaminophen-properties",
+      "verb": "observe",
+      "label": "Record acetaminophen property evidence",
+      "parameters": {
+        "prompt": "Record the selected test, controlled amount, reagent, observation, and uncertainty for pure acetaminophen.",
+        "studentResponseRequired": true,
+        "tag": "acetaminophen-property-evidence",
+        "note": "Observed solubility and reactivity behaviour recorded for pure acetaminophen."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Record acetaminophen property evidence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record acetaminophen property evidence evidence is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the approved investigation.",
+          "recovery": "Return to the highlighted step and preserve the fraction or evidence already collected."
+        },
+        {
+          "id": "unapproved-procedure",
+          "when": "execution is attempted before instructor approval",
+          "message": "The separation plan has not been approved.",
+          "recovery": "Submit the property evidence, chemical rationale, quantities, endpoints, and disposal plan for instructor approval."
+        },
+        {
+          "id": "unlabeled-fraction",
+          "when": "a layer or recovered fraction lacks identity and provenance",
+          "message": "The fraction cannot be interpreted safely without a label.",
+          "recovery": "Label the vessel with source stage, observed layer, retained material, and uncertainty before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Record acetaminophen property evidence complete.",
+        "invalid": "Record the required evidence and use the teacher-approved configuration before continuing."
+      },
+      "evidence": [
+        "notebook"
+      ]
+    },
+    {
+      "id": "qar-transfer-aspirin-test-portion",
+      "verb": "transfer",
+      "label": "Transfer a fresh aspirin test portion",
+      "atomId": "atom.transfer.microsample-portion",
+      "equipmentRoleBindings": {
+        "bonding-test-vessel": "test-tube",
+        "sample-source": "small-vial"
+      },
+      "parameters": {
+        "sourceDefinitionId": "small-vial",
+        "sourceInstanceId": "qar-aspirin-standard",
+        "targetDefinitionId": "test-tube",
+        "targetInstanceId": "qar-aspirin-property-test-tube",
+        "amountProvenance": "teacher-approved microscale configuration"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "small-vial",
+        "targetDefinitionId": "test-tube",
+        "accessibleLabel": "Transfer the approved fresh aspirin microsample."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "A fresh, labeled aspirin microsample is staged without assuming its result."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-standard",
+          "when": "the standard or test vessel identity does not match",
+          "message": "Property evidence must retain the pure-component identity.",
+          "recovery": "Use a fresh labeled portion of the named standard."
+        }
+      ],
+      "feedback": {
+        "success": "Aspirin test portion staged.",
+        "invalid": "Preserve the named pure-component identity and approved amount."
+      },
+      "evidence": [
+        "transfer",
+        "aspirin",
+        "fresh-microsample"
+      ]
+    },
+    {
+      "id": "qar-apply-aspirin-approved-property-test",
+      "verb": "transfer",
+      "label": "Apply the approved property test to aspirin",
+      "atomId": "atom.transfer.apply-test-solvent",
+      "equipmentRoleBindings": {
+        "bonding-test-solvent-source": "reagent-bottle-1l",
+        "bonding-test-vessel": "test-tube"
+      },
+      "parameters": {
+        "sourceDefinitionId": "reagent-bottle-1l",
+        "sourceInstanceId": "qar-property-reagent",
+        "targetDefinitionId": "test-tube",
+        "targetInstanceId": "qar-aspirin-property-test-tube",
+        "solventOrReagentIdentity": "approved property-test choice",
+        "quantityProvenance": "teacher-approved configuration"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "reagent-bottle-1l",
+        "targetDefinitionId": "test-tube",
+        "accessibleLabel": "Apply the approved configured property test to aspirin."
+      },
+      "prerequisites": [
+        {
+          "id": "qar-apply-aspirin-approved-property-test--qar-aspirin-portion-required",
+          "type": "actionEvidence",
+          "label": "Fresh aspirin portion is present.",
+          "actionId": "qar-transfer-aspirin-test-portion"
+        }
+      ],
+      "stateChanges": [
+        "The approved property-test reagent is applied to aspirin; no outcome is prefilled."
+      ],
+      "invalidCases": [
+        {
+          "id": "unapproved-test",
+          "when": "the reagent, amount, or test is not in the approved plan",
+          "message": "Only an approved property test may generate evidence.",
+          "recovery": "Return to the approved test matrix."
+        }
+      ],
+      "feedback": {
+        "success": "Aspirin property test applied.",
+        "invalid": "Use the approved test and configured quantity."
+      },
+      "evidence": [
+        "transfer",
+        "aspirin",
+        "approved-property-test"
+      ]
+    },
+    {
+      "id": "qar-inspect-aspirin-property-result",
+      "verb": "observe",
+      "label": "Inspect the aspirin property result",
+      "parameters": {
+        "sourceDefinitionId": "test-tube",
+        "sourceInstanceId": "qar-aspirin-property-test-tube",
+        "resultProvenance": "student direct observation; no expected identity or result literal",
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputKey": "qar-inspect-aspirin-property-result-input",
+        "inputLabel": "Directly observed property-test result",
+        "inputRequired": true
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "sourceDefinitionId": "test-tube",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Inspect the aspirin property result"
+      },
+      "prerequisites": [
+        {
+          "id": "qar-inspect-aspirin-property-result--qar-aspirin-test-required",
+          "type": "actionEvidence",
+          "label": "Approved aspirin test is applied.",
+          "actionId": "qar-apply-aspirin-approved-property-test"
+        }
+      ],
+      "stateChanges": [
+        "The observed aspirin result is acquired for its own evidence scope."
+      ],
+      "invalidCases": [
+        {
+          "id": "cross-component-evidence",
+          "when": "an observation belongs to another pure component",
+          "message": "One component's result cannot satisfy another component's evidence.",
+          "recovery": "Inspect the current labeled test portion."
+        }
+      ],
+      "feedback": {
+        "success": "Aspirin property result acquired.",
+        "invalid": "Use the current labeled pure-component test."
+      },
+      "evidence": [
+        "observe",
+        "aspirin",
+        "qar-aspirin-property-observation",
+        "direct-visual-observation",
+        "property-test-result"
+      ],
+      "atomId": "atom.observe.record-property-test-result",
+      "equipmentRoleBindings": {
+        "bonding-test-vessel": "test-tube"
+      }
+    },
+    {
+      "id": "qar-record-aspirin-properties",
+      "verb": "observe",
+      "label": "Record aspirin property evidence",
+      "parameters": {
+        "prompt": "Record the selected test, controlled amount, reagent, observation, and uncertainty for pure aspirin.",
+        "studentResponseRequired": true,
+        "tag": "aspirin-property-evidence",
+        "note": "Observed solubility and reactivity behaviour recorded for pure aspirin."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Record aspirin property evidence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record aspirin property evidence evidence is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the approved investigation.",
+          "recovery": "Return to the highlighted step and preserve the fraction or evidence already collected."
+        },
+        {
+          "id": "unapproved-procedure",
+          "when": "execution is attempted before instructor approval",
+          "message": "The separation plan has not been approved.",
+          "recovery": "Submit the property evidence, chemical rationale, quantities, endpoints, and disposal plan for instructor approval."
+        },
+        {
+          "id": "unlabeled-fraction",
+          "when": "a layer or recovered fraction lacks identity and provenance",
+          "message": "The fraction cannot be interpreted safely without a label.",
+          "recovery": "Label the vessel with source stage, observed layer, retained material, and uncertainty before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Record aspirin property evidence complete.",
+        "invalid": "Record the required evidence and use the teacher-approved configuration before continuing."
+      },
+      "evidence": [
+        "notebook"
+      ]
+    },
+    {
+      "id": "qar-compare-property-matrix",
+      "verb": "observe",
+      "label": "Compare the pure-component property matrix",
+      "parameters": {
+        "prompt": "Use only observed pure-component evidence to identify useful separation contrasts; do not infer the unknown sample composition yet.",
+        "studentResponseRequired": true,
+        "tag": "property-matrix",
+        "note": "Property matrix compared across the three standards; the differences a separation could exploit are recorded."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Compare the pure-component property matrix."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Compare the pure-component property matrix evidence is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the approved investigation.",
+          "recovery": "Return to the highlighted step and preserve the fraction or evidence already collected."
+        },
+        {
+          "id": "unapproved-procedure",
+          "when": "execution is attempted before instructor approval",
+          "message": "The separation plan has not been approved.",
+          "recovery": "Submit the property evidence, chemical rationale, quantities, endpoints, and disposal plan for instructor approval."
+        },
+        {
+          "id": "unlabeled-fraction",
+          "when": "a layer or recovered fraction lacks identity and provenance",
+          "message": "The fraction cannot be interpreted safely without a label.",
+          "recovery": "Label the vessel with source stage, observed layer, retained material, and uncertainty before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Compare the pure-component property matrix complete.",
+        "invalid": "Record the required evidence and use the teacher-approved configuration before continuing."
+      },
+      "evidence": [
+        "notebook"
+      ]
+    }
+  ],
+  "process": {
+    "startNodeId": "qar-consumer-hypotheses-node",
+    "nodes": [
+      {
+        "id": "qar-consumer-hypotheses-node",
+        "type": "decision",
+        "title": "Consumer hypotheses",
+        "description": "Commit the competing label-accuracy hypotheses before seeing the unknown composition.",
+        "actionId": "qar-commit-consumer-hypotheses",
+        "config": {},
+        "validation": [
+          {
+            "id": "qar-consumer-hypotheses-node--qar-consumer-hypotheses-node-complete",
+            "type": "actionEvidence",
+            "label": "Consumer hypotheses was completed.",
+            "actionId": "qar-commit-consumer-hypotheses"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Consumer hypotheses complete.",
+          "retry": "Complete consumer hypotheses with the required evidence."
+        }
+      },
+      {
+        "id": "qar-select-pure-tests-node",
+        "type": "decision",
+        "title": "Select property tests",
+        "description": "Choose safe tests that can distinguish the three pure components without prescribing a fixed recipe.",
+        "actionId": "qar-select-pure-component-tests",
+        "config": {
+          "teacherConfigurable": true,
+          "requiredConfiguration": "pure-component amounts and accepted property evidence"
+        },
+        "validation": [
+          {
+            "id": "qar-select-pure-tests-node--qar-select-pure-tests-node-complete",
+            "type": "actionEvidence",
+            "label": "Select property tests was completed.",
+            "actionId": "qar-select-pure-component-tests"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Select property tests complete.",
+          "retry": "Complete select property tests with the required evidence."
+        }
+      },
+      {
+        "id": "qar-transfer-sucrose-test-portion-node",
+        "type": "action",
+        "title": "Transfer a fresh sucrose test portion",
+        "description": "Transfer a fresh sucrose test portion",
+        "actionId": "qar-transfer-sucrose-test-portion",
+        "config": {},
+        "validation": [
+          {
+            "id": "qar-transfer-sucrose-test-portion-node--qar-transfer-sucrose-test-portion-complete",
+            "type": "actionEvidence",
+            "label": "Transfer a fresh sucrose test portion is complete.",
+            "actionId": "qar-transfer-sucrose-test-portion"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Transfer a fresh sucrose test portion complete.",
+          "retry": "Complete Transfer a fresh sucrose test portion with the named sample evidence."
+        }
+      },
+      {
+        "id": "qar-apply-sucrose-approved-property-test-node",
+        "type": "action",
+        "title": "Apply the approved property test to sucrose",
+        "description": "Apply the approved property test to sucrose",
+        "actionId": "qar-apply-sucrose-approved-property-test",
+        "config": {},
+        "validation": [
+          {
+            "id": "qar-apply-sucrose-approved-property-test-node--qar-apply-sucrose-approved-property-test-complete",
+            "type": "actionEvidence",
+            "label": "Apply the approved property test to sucrose is complete.",
+            "actionId": "qar-apply-sucrose-approved-property-test"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Apply the approved property test to sucrose complete.",
+          "retry": "Complete Apply the approved property test to sucrose with the named sample evidence."
+        }
+      },
+      {
+        "id": "qar-inspect-sucrose-property-result-node",
+        "type": "action",
+        "title": "Inspect the sucrose property result",
+        "description": "Inspect the sucrose property result",
+        "actionId": "qar-inspect-sucrose-property-result",
+        "config": {},
+        "validation": [
+          {
+            "id": "qar-inspect-sucrose-property-result-node--qar-inspect-sucrose-property-result-complete",
+            "type": "actionEvidence",
+            "label": "Inspect the sucrose property result is complete.",
+            "actionId": "qar-inspect-sucrose-property-result"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Inspect the sucrose property result complete.",
+          "retry": "Complete Inspect the sucrose property result with the named sample evidence."
+        }
+      },
+      {
+        "id": "qar-sucrose-properties-node",
+        "type": "observation",
+        "title": "Test sucrose",
+        "description": "Apply the approved test and record sucrose solubility or reactivity evidence.",
+        "actionId": "qar-record-sucrose-properties",
+        "config": {},
+        "validation": [
+          {
+            "id": "qar-sucrose-properties-node--qar-sucrose-properties-node-complete",
+            "type": "actionEvidence",
+            "label": "Test sucrose was completed.",
+            "actionId": "qar-record-sucrose-properties"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Test sucrose complete.",
+          "retry": "Complete test sucrose with the required evidence."
+        }
+      },
+      {
+        "id": "qar-transfer-acetaminophen-test-portion-node",
+        "type": "action",
+        "title": "Transfer a fresh acetaminophen test portion",
+        "description": "Transfer a fresh acetaminophen test portion",
+        "actionId": "qar-transfer-acetaminophen-test-portion",
+        "config": {},
+        "validation": [
+          {
+            "id": "qar-transfer-acetaminophen-test-portion-node--qar-transfer-acetaminophen-test-portion-complete",
+            "type": "actionEvidence",
+            "label": "Transfer a fresh acetaminophen test portion is complete.",
+            "actionId": "qar-transfer-acetaminophen-test-portion"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Transfer a fresh acetaminophen test portion complete.",
+          "retry": "Complete Transfer a fresh acetaminophen test portion with the named sample evidence."
+        }
+      },
+      {
+        "id": "qar-apply-acetaminophen-approved-property-test-node",
+        "type": "action",
+        "title": "Apply the approved property test to acetaminophen",
+        "description": "Apply the approved property test to acetaminophen",
+        "actionId": "qar-apply-acetaminophen-approved-property-test",
+        "config": {},
+        "validation": [
+          {
+            "id": "qar-apply-acetaminophen-approved-property-test-node--qar-apply-acetaminophen-approved-property-test-complete",
+            "type": "actionEvidence",
+            "label": "Apply the approved property test to acetaminophen is complete.",
+            "actionId": "qar-apply-acetaminophen-approved-property-test"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Apply the approved property test to acetaminophen complete.",
+          "retry": "Complete Apply the approved property test to acetaminophen with the named sample evidence."
+        }
+      },
+      {
+        "id": "qar-inspect-acetaminophen-property-result-node",
+        "type": "action",
+        "title": "Inspect the acetaminophen property result",
+        "description": "Inspect the acetaminophen property result",
+        "actionId": "qar-inspect-acetaminophen-property-result",
+        "config": {},
+        "validation": [
+          {
+            "id": "qar-inspect-acetaminophen-property-result-node--qar-inspect-acetaminophen-property-result-complete",
+            "type": "actionEvidence",
+            "label": "Inspect the acetaminophen property result is complete.",
+            "actionId": "qar-inspect-acetaminophen-property-result"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Inspect the acetaminophen property result complete.",
+          "retry": "Complete Inspect the acetaminophen property result with the named sample evidence."
+        }
+      },
+      {
+        "id": "qar-acetaminophen-properties-node",
+        "type": "observation",
+        "title": "Test acetaminophen",
+        "description": "Apply the approved test and record acetaminophen solubility or reactivity evidence.",
+        "actionId": "qar-record-acetaminophen-properties",
+        "config": {},
+        "validation": [
+          {
+            "id": "qar-acetaminophen-properties-node--qar-acetaminophen-properties-node-complete",
+            "type": "actionEvidence",
+            "label": "Test acetaminophen was completed.",
+            "actionId": "qar-record-acetaminophen-properties"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Test acetaminophen complete.",
+          "retry": "Complete test acetaminophen with the required evidence."
+        }
+      },
+      {
+        "id": "qar-transfer-aspirin-test-portion-node",
+        "type": "action",
+        "title": "Transfer a fresh aspirin test portion",
+        "description": "Transfer a fresh aspirin test portion",
+        "actionId": "qar-transfer-aspirin-test-portion",
+        "config": {},
+        "validation": [
+          {
+            "id": "qar-transfer-aspirin-test-portion-node--qar-transfer-aspirin-test-portion-complete",
+            "type": "actionEvidence",
+            "label": "Transfer a fresh aspirin test portion is complete.",
+            "actionId": "qar-transfer-aspirin-test-portion"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Transfer a fresh aspirin test portion complete.",
+          "retry": "Complete Transfer a fresh aspirin test portion with the named sample evidence."
+        }
+      },
+      {
+        "id": "qar-apply-aspirin-approved-property-test-node",
+        "type": "action",
+        "title": "Apply the approved property test to aspirin",
+        "description": "Apply the approved property test to aspirin",
+        "actionId": "qar-apply-aspirin-approved-property-test",
+        "config": {},
+        "validation": [
+          {
+            "id": "qar-apply-aspirin-approved-property-test-node--qar-apply-aspirin-approved-property-test-complete",
+            "type": "actionEvidence",
+            "label": "Apply the approved property test to aspirin is complete.",
+            "actionId": "qar-apply-aspirin-approved-property-test"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Apply the approved property test to aspirin complete.",
+          "retry": "Complete Apply the approved property test to aspirin with the named sample evidence."
+        }
+      },
+      {
+        "id": "qar-inspect-aspirin-property-result-node",
+        "type": "action",
+        "title": "Inspect the aspirin property result",
+        "description": "Inspect the aspirin property result",
+        "actionId": "qar-inspect-aspirin-property-result",
+        "config": {},
+        "validation": [
+          {
+            "id": "qar-inspect-aspirin-property-result-node--qar-inspect-aspirin-property-result-complete",
+            "type": "actionEvidence",
+            "label": "Inspect the aspirin property result is complete.",
+            "actionId": "qar-inspect-aspirin-property-result"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Inspect the aspirin property result complete.",
+          "retry": "Complete Inspect the aspirin property result with the named sample evidence."
+        }
+      },
+      {
+        "id": "qar-aspirin-properties-node",
+        "type": "observation",
+        "title": "Test aspirin",
+        "description": "Apply the approved test and record aspirin solubility or reactivity evidence.",
+        "actionId": "qar-record-aspirin-properties",
+        "config": {},
+        "validation": [
+          {
+            "id": "qar-aspirin-properties-node--qar-aspirin-properties-node-complete",
+            "type": "actionEvidence",
+            "label": "Test aspirin was completed.",
+            "actionId": "qar-record-aspirin-properties"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Test aspirin complete.",
+          "retry": "Complete test aspirin with the required evidence."
+        }
+      },
+      {
+        "id": "qar-property-matrix-node",
+        "type": "checkpoint",
+        "title": "Compare property evidence",
+        "description": "Build a three-component evidence matrix to support—not replace—the separation design.",
+        "actionId": "qar-compare-property-matrix",
+        "config": {},
+        "validation": [
+          {
+            "id": "qar-property-matrix-node--qar-property-matrix-node-complete",
+            "type": "actionEvidence",
+            "label": "Compare property evidence was completed.",
+            "actionId": "qar-compare-property-matrix"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Compare property evidence complete.",
+          "retry": "Complete compare property evidence with the required evidence."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "qar-consumer-hypotheses-node",
+        "to": "qar-select-pure-tests-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "qar-select-pure-tests-node",
+        "to": "qar-transfer-sucrose-test-portion-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "qar-transfer-sucrose-test-portion-node",
+        "to": "qar-apply-sucrose-approved-property-test-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "qar-apply-sucrose-approved-property-test-node",
+        "to": "qar-inspect-sucrose-property-result-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "qar-inspect-sucrose-property-result-node",
+        "to": "qar-sucrose-properties-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "qar-sucrose-properties-node",
+        "to": "qar-transfer-acetaminophen-test-portion-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "qar-transfer-acetaminophen-test-portion-node",
+        "to": "qar-apply-acetaminophen-approved-property-test-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "qar-apply-acetaminophen-approved-property-test-node",
+        "to": "qar-inspect-acetaminophen-property-result-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "qar-inspect-acetaminophen-property-result-node",
+        "to": "qar-acetaminophen-properties-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "qar-acetaminophen-properties-node",
+        "to": "qar-transfer-aspirin-test-portion-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "qar-transfer-aspirin-test-portion-node",
+        "to": "qar-apply-aspirin-approved-property-test-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "qar-apply-aspirin-approved-property-test-node",
+        "to": "qar-inspect-aspirin-property-result-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "qar-inspect-aspirin-property-result-node",
+        "to": "qar-aspirin-properties-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "qar-aspirin-properties-node",
+        "to": "qar-property-matrix-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [
+    {
+      "id": "quick-ache-property-evidence-complete",
+      "type": "actionEvidence",
+      "label": "Quick Ache Pure-Component Property Evidence final evidence was recorded.",
+      "actionId": "qar-compare-property-matrix"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "current node expects a different action",
+      "message": "That action is out of sequence for the approved investigation.",
+      "recovery": "Return to the highlighted step and preserve the fraction or evidence already collected."
+    },
+    {
+      "id": "unapproved-procedure",
+      "when": "execution is attempted before instructor approval",
+      "message": "The separation plan has not been approved.",
+      "recovery": "Submit the property evidence, chemical rationale, quantities, endpoints, and disposal plan for instructor approval."
+    },
+    {
+      "id": "unlabeled-fraction",
+      "when": "a layer or recovered fraction lacks identity and provenance",
+      "message": "The fraction cannot be interpreted safely without a label.",
+      "recovery": "Label the vessel with source stage, observed layer, retained material, and uncertainty before continuing."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.2.1",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-12T00:00:00.000Z",
+    "tags": [
+      "chemistry",
+      "quick-ache-relief",
+      "inquiry",
+      "property-testing"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry-qar-consumer-hypotheses-node",
+        "kind": "entry",
+        "nodeId": "qar-consumer-hypotheses-node",
+        "label": "Entry"
+      },
+      {
+        "id": "exit-qar-property-matrix-node",
+        "kind": "exit",
+        "nodeId": "qar-property-matrix-node",
+        "label": "Exit"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "bonding-test-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "test-tube"
+        ],
+        "sourceInstanceIds": [
+          "qar-sucrose-property-test-tube",
+          "qar-acetaminophen-property-test-tube",
+          "qar-aspirin-property-test-tube"
+        ]
+      },
+      {
+        "roleId": "sample-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "small-vial"
+        ],
+        "sourceInstanceIds": [
+          "qar-sucrose-standard",
+          "qar-acetaminophen-standard",
+          "qar-aspirin-standard"
+        ]
+      },
+      {
+        "roleId": "bonding-test-solvent-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "reagent-bottle",
+          "reagent-bottle-1l"
+        ],
+        "sourceInstanceIds": [
+          "qar-property-reagent"
+        ]
+      }
+    ],
+    "modelSlots": [],
+    "configurationSlots": [],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [],
+    "completion": {
+      "exitPortIds": [
+        "exit-qar-property-matrix-node"
+      ],
+      "requiredEvidenceOutputIds": [],
+      "requiredValidationRuleIds": []
+    },
+    "catalogDisposition": "composable",
+    "legacyActionEffects": [
+      {
+        "actionId": "qar-commit-consumer-hypotheses",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "qar-select-pure-component-tests",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "qar-record-sucrose-properties",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "qar-record-acetaminophen-properties",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "qar-record-aspirin-properties",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "qar-compare-property-matrix",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

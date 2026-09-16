@@ -1,0 +1,119 @@
+{
+  "investigationId": "acid-base-titration-curves",
+  "title": "Acid-Base Titration Curves: Structure, Concentration, and pH During Acid-Base Titration",
+  "assignedQuestion": "How do acid/base strength and concentration affect the shape and landmarks of a pH-volume titration curve?",
+  "teacherName": "Chemistry Instructor",
+  "samples": [
+    {
+      "id": "acid-known",
+      "label": "Acid A — known",
+      "formula": "HCl",
+      "role": "acid",
+      "strength": "strong",
+      "concentrationStatus": "known",
+      "molarityM": 0.1
+    },
+    {
+      "id": "acid-unknown",
+      "label": "Acid B — unknown",
+      "formula": "CH3COOH",
+      "role": "acid",
+      "strength": "weak",
+      "concentrationStatus": "unknown",
+      "molarityM": 0.08,
+      "acceptedEquilibriumConstant": 0.000018
+    },
+    {
+      "id": "base-known",
+      "label": "Base C — known",
+      "formula": "NaOH",
+      "role": "base",
+      "strength": "strong",
+      "concentrationStatus": "known",
+      "molarityM": 0.1
+    },
+    {
+      "id": "base-unknown",
+      "label": "Base D — unknown",
+      "formula": "NH3",
+      "role": "base",
+      "strength": "weak",
+      "concentrationStatus": "unknown",
+      "molarityM": 0.075,
+      "acceptedEquilibriumConstant": 0.000018
+    }
+  ],
+  "combinations": [
+    {
+      "id": "strong-acid-strong-base",
+      "label": "Known strong acid vs known strong base",
+      "analyteId": "acid-known",
+      "titrantId": "base-known",
+      "stoichiometricRatio": { "analyte": 1, "titrant": 1 }
+    },
+    {
+      "id": "weak-acid-strong-base",
+      "label": "Unknown weak acid vs known strong base",
+      "analyteId": "acid-unknown",
+      "titrantId": "base-known",
+      "stoichiometricRatio": { "analyte": 1, "titrant": 1 }
+    },
+    {
+      "id": "weak-base-strong-acid",
+      "label": "Unknown weak base vs known strong acid",
+      "analyteId": "base-unknown",
+      "titrantId": "acid-known",
+      "stoichiometricRatio": { "analyte": 1, "titrant": 1 }
+    }
+  ],
+  "requiredCombinationIds": [
+    "strong-acid-strong-base",
+    "weak-acid-strong-base",
+    "weak-base-strong-acid"
+  ],
+  "minimumReplicates": 1,
+  "practice": {
+    "acidSampleId": "acid-known",
+    "baseSampleId": "base-known",
+    "portionMl": 5,
+    "indicator": "phenolphthalein"
+  },
+  "settings": {
+    "aliquotMl": 25,
+    "allowedAliquotMl": { "min": 10, "max": 25 },
+    "allowedIncrementMl": { "min": 0.1, "max": 5 },
+    "coarseIncrementMl": 2,
+    "fineIncrementMl": 0.25,
+    "fineWindowMl": 2,
+    "buretCapacityMl": 50,
+    "buretPrecisionMl": 0.01,
+    "phPrecision": 2,
+    "temperatureC": 25,
+    "waterIonProduct": 1e-14,
+    "stabilityDeltaPh": 0.12,
+    "stabilityConsecutiveReadings": 2,
+    "minimumPostEquivalenceMl": 6,
+    "maximumPostEquivalenceMl": 20,
+    "probeRules": [
+      "Rinse the probe with deionized water before and between samples; blot gently without wiping the bulb.",
+      "Calibrate with the teacher-specified buffers before the first formal run.",
+      "Keep the sensing bulb immersed without touching the vessel or stir bar.",
+      "Wait for the configured stability criterion before reading, then record pH separately."
+    ],
+    "indicatorInFormalTrials": false
+  },
+  "safety": {
+    "requiredPpe": [
+      "Splash-proof goggles",
+      "Chemical-resistant rubber gloves"
+    ],
+    "hazardSummary": [
+      "Acids and bases can damage skin and eyes; review the teacher-provided SDS information for every assigned sample.",
+      "Some concentrated acids are extremely corrosive and hygroscopic."
+    ],
+    "spillResponse": "Report spills immediately. If solution contacts skin, rinse with running water for 15 minutes and notify the instructor.",
+    "dilutionRule": "When dilution is authorized, add acid to water. Never add water to concentrated acid.",
+    "neutralizationPhRange": { "min": 6, "max": 8 },
+    "disposalProcedure": "Neutralize collected waste, test its pH, and dispose only by the instructor's posted procedure."
+  }
+}

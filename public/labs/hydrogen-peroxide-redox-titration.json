@@ -1,0 +1,1167 @@
+{
+  "id": "hydrogen-peroxide-redox-titration",
+  "title": "Determining Hydrogen Peroxide Concentration by Redox Titration",
+  "description": "A guided-inquiry redox titration investigation with a 15-minute practice, one-minute report, teacher-approved redesign, permanganate standardization, two assigned hydrogen peroxide samples, density-based percent-by-mass calculations, and source-labeled class comparison.",
+  "audience": "Chemistry students preparing for or reflecting on a wet-lab permanganate titration",
+  "learningGoals": [
+    "Standardize KMnO4 solution against acidified 0.100 M Fe2+ using fresh burette readings and the 1:5 permanganate-to-iron stoichiometry.",
+    "Distinguish a colorless pre-endpoint mixture, a persistent faint-pink endpoint, and a dark red-purple overshoot that invalidates a quantitative trial.",
+    "Determine percent H2O2 by mass for two assigned samples using standardized KMnO4, 2:5 permanganate-to-peroxide stoichiometry, and a configured density of 1.00 g/mL.",
+    "Evaluate replicate precision, retain class-data provenance, and justify procedural improvements and outlier decisions."
+  ],
+  "safetyNotes": [
+    "Review the SDS or instructor-provided safety information for KMnO4 solution, H2O2 samples, 6 M H2SO4, and Fe(NH4)2(SO4)2·6H2O before beginning.",
+    "Wear splash-proof goggles and a lab apron; gloves are strongly recommended, and proper ventilation is required.",
+    "Never combine solid KMnO4 with H2SO4. This investigation uses KMnO4 solution only; the solid-acid combination can be explosive.",
+    "Treat sulfuric acid and permanganate as capable of causing skin burns and eye damage. Immediately wash a skin spill with copious water and notify the instructor.",
+    "Use only the teacher-configured local/state/instructor waste procedure. This activity does not invent or assume a drain-disposal route."
+  ],
+  "equipment": [
+    "ring-stand-clamp",
+    "burette-50ml",
+    "erlenmeyer-flask-250ml",
+    "reagent-bottle",
+    "sample-bottle",
+    "graduated-pipette-10ml",
+    "pipette-pump",
+    "funnel",
+    "stirring-rod",
+    "graduated-cylinder",
+    "wash-bottle",
+    "waste-beaker"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "redox-ring-stand-1",
+        "definitionId": "ring-stand-clamp",
+        "label": "Ring stand and burette clamp",
+        "location": "workbench",
+        "x": 42,
+        "y": 25,
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "redox-burette-1",
+        "definitionId": "burette-50ml",
+        "label": "50 mL burette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "redox-flask-1",
+        "definitionId": "erlenmeyer-flask-250ml",
+        "label": "Redox titration flask",
+        "location": "workbench",
+        "x": 50,
+        "y": 66,
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "iron-standard-1",
+        "definitionId": "reagent-bottle",
+        "label": "0.100 M Fe2+ standard solution",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "0.100 M Fe(NH4)2(SO4)2 solution",
+          "volumeMl": 100,
+          "solutes": [
+            {
+              "id": "iron-ii",
+              "label": "Fe2+",
+              "amount": 0.01,
+              "unit": "mol"
+            }
+          ],
+          "concentration": {
+            "value": 0.1,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "redox-colorless-solution"
+        }
+      },
+      {
+        "id": "sulfuric-acid-1",
+        "definitionId": "reagent-bottle",
+        "label": "6 M H2SO4 solution",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "6 M sulfuric acid",
+          "volumeMl": 100,
+          "solutes": [
+            {
+              "id": "sulfuric-acid",
+              "label": "H2SO4",
+              "amount": 0.6,
+              "unit": "mol"
+            }
+          ],
+          "concentration": {
+            "value": 6,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "redox-colorless-solution"
+        }
+      },
+      {
+        "id": "peroxide-sample-a",
+        "definitionId": "sample-bottle",
+        "label": "Assigned H2O2 Sample A (label claim 3.0%)",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "Assigned H2O2 Sample A",
+          "volumeMl": 30,
+          "solutes": [
+            {
+              "id": "hydrogen-peroxide-a",
+              "label": "H2O2",
+              "amount": 0.0264,
+              "unit": "mol"
+            }
+          ],
+          "concentration": {
+            "value": 0.88,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "redox-colorless-solution"
+        }
+      },
+      {
+        "id": "peroxide-sample-b",
+        "definitionId": "sample-bottle",
+        "label": "Assigned H2O2 Sample B (label claim 6.0%)",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "Assigned H2O2 Sample B",
+          "volumeMl": 30,
+          "solutes": [
+            {
+              "id": "hydrogen-peroxide-b",
+              "label": "H2O2",
+              "amount": 0.0528,
+              "unit": "mol"
+            }
+          ],
+          "concentration": {
+            "value": 1.76,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "redox-colorless-solution"
+        }
+      },
+      {
+        "id": "redox-graduated-pipette-1",
+        "definitionId": "graduated-pipette-10ml",
+        "label": "10 mL graduated pipette for precise aliquots",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "redox-pipette-pump-1",
+        "definitionId": "pipette-pump",
+        "label": "Pipette pump",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "redox-funnel-1",
+        "definitionId": "funnel",
+        "label": "Glass funnel for burette filling; remove before titration",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "redox-stirring-rod-1",
+        "definitionId": "stirring-rod",
+        "label": "Glass stirring rod",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "redox-cylinder-1",
+        "definitionId": "graduated-cylinder",
+        "label": "Graduated cylinder",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "redox-wash-bottle-1",
+        "definitionId": "wash-bottle",
+        "label": "Deionized-water wash bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "deionized water",
+          "volumeMl": 250,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "redox-waste-1",
+        "definitionId": "waste-beaker",
+        "label": "Instructor-designated redox waste container",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "permanganate-stock-1",
+        "definitionId": "reagent-bottle",
+        "label": "KMnO4 titrant stock (concentration to be standardized)",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "Potassium permanganate solution",
+          "volumeMl": 240,
+          "solutes": [
+            {
+              "id": "potassium-permanganate",
+              "label": "Potassium permanganate",
+              "amount": 0.00489792,
+              "unit": "mol"
+            }
+          ],
+          "concentration": {
+            "value": 0.020408,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "permanganate-solution"
+        }
+      }
+    ]
+  },
+  "techniques": [],
+  "actions": [],
+  "process": {
+    "startNodeId": "approve-redox-configuration-node",
+    "nodes": [],
+    "edges": []
+  },
+  "assessments": [],
+  "teacherConfiguration": {
+    "practiceDurationMinutes": 15,
+    "reportDurationMinutes": 1,
+    "practiceIronAliquotMinMl": 5,
+    "practiceIronAliquotMaxMl": 15,
+    "practicePermanganateAllocationMl": 10,
+    "practiceAcidMaxMl": 10,
+    "standardizationIronAliquotMl": 10,
+    "analysisSampleAliquotMl": 1,
+    "acidVolumeMl": 5,
+    "endpointPersistenceSeconds": 30,
+    "burettePrecisionMl": 0.01,
+    "standardizationReplicates": 3,
+    "sampleReplicates": 2,
+    "standardizationRangeMaxM": 0.0001,
+    "assignedSampleIds": [
+      "sample-a",
+      "sample-b"
+    ],
+    "teacherApprovalRequired": true,
+    "disposalInstructions": "Use the instructor-designated redox waste container and the locally approved cleanup procedure; do not assume drain disposal."
+  },
+  "metadata": {
+    "version": "3.0.1",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-05T00:00:00.000Z",
+    "tags": [
+      "lab",
+      "chemistry",
+      "hydrogen-peroxide-redox-titration",
+      "redox-titration",
+      "hydrogen-peroxide",
+      "teacher-approved-inquiry",
+      "standardization-gate",
+      "teacher-configurable",
+      "class-data-provenance",
+      "instrument-read",
+      "replicate-trials"
+    ]
+  },
+  "titrationModels": [
+    {
+      "id": "iron-standardization",
+      "type": "redox",
+      "analyteMolarityM": 0.1,
+      "analyteVolumeMl": 10,
+      "titrantMolarityM": 0.02040816326530612,
+      "stoichiometricRatio": {
+        "analyte": 5,
+        "titrant": 1
+      },
+      "dropVolumeMl": 0.2,
+      "endpointOffsetDrops": 0,
+      "maxExtraDrops": 1
+    },
+    {
+      "id": "sample-a-peroxide",
+      "type": "redox",
+      "analyteMolarityM": 0.88,
+      "analyteVolumeMl": 1,
+      "titrantMolarityM": 0.02040816326530612,
+      "stoichiometricRatio": {
+        "analyte": 5,
+        "titrant": 2
+      },
+      "dropVolumeMl": 0.2,
+      "endpointOffsetDrops": 0,
+      "maxExtraDrops": 1,
+      "analyteMolarMassGPerMol": 34.0147,
+      "sampleDensityGPerMl": 1
+    },
+    {
+      "id": "sample-b-peroxide",
+      "type": "redox",
+      "analyteMolarityM": 1.76,
+      "analyteVolumeMl": 1,
+      "titrantMolarityM": 0.02040816326530612,
+      "stoichiometricRatio": {
+        "analyte": 5,
+        "titrant": 2
+      },
+      "dropVolumeMl": 0.2,
+      "endpointOffsetDrops": 0,
+      "maxExtraDrops": 1,
+      "analyteMolarMassGPerMol": 34.0147,
+      "sampleDensityGPerMl": 1
+    }
+  ],
+  "techniqueInstances": [
+    {
+      "instanceId": "investigation",
+      "techniqueId": "redox-titration",
+      "version": "3.0.1",
+      "bindings": {
+        "equipment": {
+          "burette-support": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "redox-ring-stand-1",
+                "definitionId": "ring-stand-clamp",
+                "instanceId": "redox-ring-stand-1"
+              }
+            ]
+          },
+          "titrant-delivery-device": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "redox-burette-1",
+                "definitionId": "burette-50ml",
+                "instanceId": "redox-burette-1"
+              }
+            ]
+          },
+          "analyte-receiver": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "redox-flask-1",
+                "definitionId": "erlenmeyer-flask-250ml",
+                "instanceId": "redox-flask-1"
+              }
+            ]
+          },
+          "titrant-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "iron-standard-1",
+                "definitionId": "reagent-bottle",
+                "instanceId": "iron-standard-1"
+              },
+              {
+                "sourceInstanceId": "sulfuric-acid-1",
+                "definitionId": "reagent-bottle",
+                "instanceId": "sulfuric-acid-1"
+              },
+              {
+                "sourceInstanceId": "permanganate-stock-1",
+                "definitionId": "reagent-bottle",
+                "instanceId": "permanganate-stock-1"
+              }
+            ]
+          },
+          "waste-receiver": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "redox-waste-1",
+                "definitionId": "waste-beaker",
+                "instanceId": "redox-waste-1"
+              }
+            ]
+          },
+          "variable-volume-measuring-device": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "redox-graduated-pipette-1",
+                "definitionId": "graduated-pipette-10ml",
+                "instanceId": "redox-graduated-pipette-1"
+              },
+              {
+                "sourceInstanceId": "redox-cylinder-1",
+                "definitionId": "graduated-cylinder",
+                "instanceId": "redox-cylinder-1"
+              }
+            ]
+          },
+          "liquid-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "iron-standard-1",
+                "definitionId": "reagent-bottle",
+                "instanceId": "iron-standard-1"
+              },
+              {
+                "sourceInstanceId": "sulfuric-acid-1",
+                "definitionId": "reagent-bottle",
+                "instanceId": "sulfuric-acid-1"
+              },
+              {
+                "sourceInstanceId": "peroxide-sample-a",
+                "definitionId": "sample-bottle",
+                "instanceId": "peroxide-sample-a"
+              },
+              {
+                "sourceInstanceId": "peroxide-sample-b",
+                "definitionId": "sample-bottle",
+                "instanceId": "peroxide-sample-b"
+              },
+              {
+                "sourceInstanceId": "permanganate-stock-1",
+                "definitionId": "reagent-bottle",
+                "instanceId": "permanganate-stock-1"
+              }
+            ]
+          },
+          "measured-solvent-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "redox-graduated-pipette-1",
+                "definitionId": "graduated-pipette-10ml",
+                "instanceId": "redox-graduated-pipette-1"
+              },
+              {
+                "sourceInstanceId": "redox-cylinder-1",
+                "definitionId": "graduated-cylinder",
+                "instanceId": "redox-cylinder-1"
+              }
+            ]
+          },
+          "receiving-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "redox-flask-1",
+                "definitionId": "erlenmeyer-flask-250ml",
+                "instanceId": "redox-flask-1"
+              }
+            ]
+          },
+          "burette-filling-funnel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "redox-funnel-1",
+                "definitionId": "funnel",
+                "instanceId": "redox-funnel-1"
+              }
+            ]
+          },
+          "rinse-water-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "redox-wash-bottle-1",
+                "definitionId": "wash-bottle",
+                "instanceId": "redox-wash-bottle-1"
+              }
+            ]
+          },
+          "rinsed-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "redox-flask-1",
+                "definitionId": "erlenmeyer-flask-250ml",
+                "instanceId": "redox-flask-1"
+              }
+            ]
+          }
+        },
+        "models": {
+          "iron-standardization": "iron-standardization",
+          "sample-a-peroxide": "sample-a-peroxide",
+          "sample-b-peroxide": "sample-b-peroxide"
+        },
+        "configuration": {
+          "endpointWindowMl": 0.05,
+          "persistenceSeconds": 5,
+          "maximumIncrementMl": 1,
+          "indicatorVolumeMl": 0.1,
+          "wasteProtocol": "Instructor-defined waste route required before running",
+          "preparationProtocol": "Instructor-defined sample/indicator/probe protocol required before running",
+          "conditioningVolumeMl": 1,
+          "tipPurgeMl": 0.2,
+          "rinseVolumeMl": 2,
+          "standardizationRangeM": 0.0001
+        }
+      },
+      "preserveIds": {
+        "actions": {
+          "approve-redox-configuration": "approve-redox-configuration",
+          "acknowledge-redox-safety": "acknowledge-redox-safety",
+          "submit-practice-plan": "submit-practice-plan",
+          "place-redox-stand": "place-redox-stand",
+          "mount-redox-burette": "mount-redox-burette",
+          "position-redox-receiver": "position-redox-receiver",
+          "condition-redox-burette-drain-residual": "condition-redox-burette-drain-residual",
+          "condition-redox-burette": "condition-redox-burette",
+          "condition-redox-burette-discard-rinsate": "condition-redox-burette-discard-rinsate",
+          "measure-practice-aliquot": "measure-practice-aliquot",
+          "transfer-practice-aliquot": "transfer-practice-aliquot",
+          "measure-redox-practice-acid": "measure-redox-practice-acid",
+          "acidify-practice-analyte": "acidify-practice-analyte",
+          "record-practice-acid-volume": "record-practice-acid-volume",
+          "fill-practice-burette-seat-funnel": "fill-practice-burette-seat-funnel",
+          "fill-practice-burette": "fill-practice-burette",
+          "fill-practice-burette-remove-funnel": "fill-practice-burette-remove-funnel",
+          "fill-practice-burette-purge-tip": "fill-practice-burette-purge-tip",
+          "fill-practice-burette-check-tip": "fill-practice-burette-check-tip",
+          "read-practice-initial-burette": "read-practice-initial-burette",
+          "record-practice-initial-burette": "record-practice-initial-burette",
+          "dispense-practice-permanganate": "dispense-practice-permanganate",
+          "dispense-practice-permanganate-mix": "dispense-practice-permanganate-mix",
+          "dispense-practice-permanganate-observe": "dispense-practice-permanganate-observe",
+          "dispense-practice-permanganate-record-point": "dispense-practice-permanganate-record-point",
+          "dispense-practice-permanganate-decide": "dispense-practice-permanganate-decide",
+          "dispense-practice-permanganate-read-final": "dispense-practice-permanganate-read-final",
+          "observe-practice-endpoint": "observe-practice-endpoint",
+          "record-practice-final-burette": "record-practice-final-burette",
+          "calculate-practice": "calculate-practice",
+          "discard-practice-mixture": "discard-practice-mixture",
+          "discard-practice-mixture-rinse": "discard-practice-mixture-rinse",
+          "discard-practice-mixture-discard-rinse": "discard-practice-mixture-discard-rinse",
+          "submit-one-minute-report": "submit-one-minute-report",
+          "submit-standardization-redesign": "submit-standardization-redesign",
+          "record-teacher-approval": "record-teacher-approval",
+          "measure-standardization-1-aliquot": "measure-standardization-1-aliquot",
+          "transfer-standardization-1-aliquot": "transfer-standardization-1-aliquot",
+          "measure-standardization-1-acid": "measure-standardization-1-acid",
+          "acidify-standardization-1-analyte": "acidify-standardization-1-analyte",
+          "record-standardization-1-acid-volume": "record-standardization-1-acid-volume",
+          "read-standardization-1-initial-burette-refill-seat-funnel": "read-standardization-1-initial-burette-refill-seat-funnel",
+          "read-standardization-1-initial-burette-refill": "read-standardization-1-initial-burette-refill",
+          "read-standardization-1-initial-burette-refill-remove-funnel": "read-standardization-1-initial-burette-refill-remove-funnel",
+          "read-standardization-1-initial-burette-purge-tip": "read-standardization-1-initial-burette-purge-tip",
+          "read-standardization-1-initial-burette-check-tip": "read-standardization-1-initial-burette-check-tip",
+          "read-standardization-1-initial-burette": "read-standardization-1-initial-burette",
+          "record-standardization-1-initial-burette": "record-standardization-1-initial-burette",
+          "dispense-standardization-1-permanganate": "dispense-standardization-1-permanganate",
+          "dispense-standardization-1-permanganate-mix": "dispense-standardization-1-permanganate-mix",
+          "dispense-standardization-1-permanganate-observe": "dispense-standardization-1-permanganate-observe",
+          "dispense-standardization-1-permanganate-record-point": "dispense-standardization-1-permanganate-record-point",
+          "dispense-standardization-1-permanganate-decide": "dispense-standardization-1-permanganate-decide",
+          "dispense-standardization-1-permanganate-read-final": "dispense-standardization-1-permanganate-read-final",
+          "observe-standardization-1-endpoint": "observe-standardization-1-endpoint",
+          "record-standardization-1-final-burette": "record-standardization-1-final-burette",
+          "calculate-standardization-1": "calculate-standardization-1",
+          "discard-standardization-1-mixture": "discard-standardization-1-mixture",
+          "discard-standardization-1-mixture-rinse": "discard-standardization-1-mixture-rinse",
+          "discard-standardization-1-mixture-discard-rinse": "discard-standardization-1-mixture-discard-rinse",
+          "measure-standardization-2-aliquot": "measure-standardization-2-aliquot",
+          "transfer-standardization-2-aliquot": "transfer-standardization-2-aliquot",
+          "measure-standardization-2-acid": "measure-standardization-2-acid",
+          "acidify-standardization-2-analyte": "acidify-standardization-2-analyte",
+          "record-standardization-2-acid-volume": "record-standardization-2-acid-volume",
+          "read-standardization-2-initial-burette-refill-seat-funnel": "read-standardization-2-initial-burette-refill-seat-funnel",
+          "read-standardization-2-initial-burette-refill": "read-standardization-2-initial-burette-refill",
+          "read-standardization-2-initial-burette-refill-remove-funnel": "read-standardization-2-initial-burette-refill-remove-funnel",
+          "read-standardization-2-initial-burette-purge-tip": "read-standardization-2-initial-burette-purge-tip",
+          "read-standardization-2-initial-burette-check-tip": "read-standardization-2-initial-burette-check-tip",
+          "read-standardization-2-initial-burette": "read-standardization-2-initial-burette",
+          "record-standardization-2-initial-burette": "record-standardization-2-initial-burette",
+          "dispense-standardization-2-permanganate": "dispense-standardization-2-permanganate",
+          "dispense-standardization-2-permanganate-mix": "dispense-standardization-2-permanganate-mix",
+          "dispense-standardization-2-permanganate-observe": "dispense-standardization-2-permanganate-observe",
+          "dispense-standardization-2-permanganate-record-point": "dispense-standardization-2-permanganate-record-point",
+          "dispense-standardization-2-permanganate-decide": "dispense-standardization-2-permanganate-decide",
+          "dispense-standardization-2-permanganate-read-final": "dispense-standardization-2-permanganate-read-final",
+          "observe-standardization-2-endpoint": "observe-standardization-2-endpoint",
+          "record-standardization-2-final-burette": "record-standardization-2-final-burette",
+          "calculate-standardization-2": "calculate-standardization-2",
+          "discard-standardization-2-mixture": "discard-standardization-2-mixture",
+          "discard-standardization-2-mixture-rinse": "discard-standardization-2-mixture-rinse",
+          "discard-standardization-2-mixture-discard-rinse": "discard-standardization-2-mixture-discard-rinse",
+          "measure-standardization-3-aliquot": "measure-standardization-3-aliquot",
+          "transfer-standardization-3-aliquot": "transfer-standardization-3-aliquot",
+          "measure-standardization-3-acid": "measure-standardization-3-acid",
+          "acidify-standardization-3-analyte": "acidify-standardization-3-analyte",
+          "record-standardization-3-acid-volume": "record-standardization-3-acid-volume",
+          "read-standardization-3-initial-burette-refill-seat-funnel": "read-standardization-3-initial-burette-refill-seat-funnel",
+          "read-standardization-3-initial-burette-refill": "read-standardization-3-initial-burette-refill",
+          "read-standardization-3-initial-burette-refill-remove-funnel": "read-standardization-3-initial-burette-refill-remove-funnel",
+          "read-standardization-3-initial-burette-purge-tip": "read-standardization-3-initial-burette-purge-tip",
+          "read-standardization-3-initial-burette-check-tip": "read-standardization-3-initial-burette-check-tip",
+          "read-standardization-3-initial-burette": "read-standardization-3-initial-burette",
+          "record-standardization-3-initial-burette": "record-standardization-3-initial-burette",
+          "dispense-standardization-3-permanganate": "dispense-standardization-3-permanganate",
+          "dispense-standardization-3-permanganate-mix": "dispense-standardization-3-permanganate-mix",
+          "dispense-standardization-3-permanganate-observe": "dispense-standardization-3-permanganate-observe",
+          "dispense-standardization-3-permanganate-record-point": "dispense-standardization-3-permanganate-record-point",
+          "dispense-standardization-3-permanganate-decide": "dispense-standardization-3-permanganate-decide",
+          "dispense-standardization-3-permanganate-read-final": "dispense-standardization-3-permanganate-read-final",
+          "observe-standardization-3-endpoint": "observe-standardization-3-endpoint",
+          "record-standardization-3-final-burette": "record-standardization-3-final-burette",
+          "calculate-standardization-3": "calculate-standardization-3",
+          "discard-standardization-3-mixture": "discard-standardization-3-mixture",
+          "discard-standardization-3-mixture-rinse": "discard-standardization-3-mixture-rinse",
+          "discard-standardization-3-mixture-discard-rinse": "discard-standardization-3-mixture-discard-rinse",
+          "accept-standardized-kmno4": "accept-standardized-kmno4",
+          "review-standardization-concordance": "review-standardization-concordance",
+          "measure-sample-a-1-aliquot": "measure-sample-a-1-aliquot",
+          "transfer-sample-a-1-aliquot": "transfer-sample-a-1-aliquot",
+          "measure-sample-a-1-acid": "measure-sample-a-1-acid",
+          "acidify-sample-a-1-analyte": "acidify-sample-a-1-analyte",
+          "record-sample-a-1-acid-volume": "record-sample-a-1-acid-volume",
+          "fill-sample-a-1-burette-seat-funnel": "fill-sample-a-1-burette-seat-funnel",
+          "fill-sample-a-1-burette": "fill-sample-a-1-burette",
+          "fill-sample-a-1-burette-remove-funnel": "fill-sample-a-1-burette-remove-funnel",
+          "fill-sample-a-1-burette-purge-tip": "fill-sample-a-1-burette-purge-tip",
+          "fill-sample-a-1-burette-check-tip": "fill-sample-a-1-burette-check-tip",
+          "read-sample-a-1-initial-burette-refill-seat-funnel": "read-sample-a-1-initial-burette-refill-seat-funnel",
+          "read-sample-a-1-initial-burette-refill": "read-sample-a-1-initial-burette-refill",
+          "read-sample-a-1-initial-burette-refill-remove-funnel": "read-sample-a-1-initial-burette-refill-remove-funnel",
+          "read-sample-a-1-initial-burette-purge-tip": "read-sample-a-1-initial-burette-purge-tip",
+          "read-sample-a-1-initial-burette-check-tip": "read-sample-a-1-initial-burette-check-tip",
+          "read-sample-a-1-initial-burette": "read-sample-a-1-initial-burette",
+          "record-sample-a-1-initial-burette": "record-sample-a-1-initial-burette",
+          "dispense-sample-a-1-permanganate": "dispense-sample-a-1-permanganate",
+          "dispense-sample-a-1-permanganate-mix": "dispense-sample-a-1-permanganate-mix",
+          "dispense-sample-a-1-permanganate-observe": "dispense-sample-a-1-permanganate-observe",
+          "dispense-sample-a-1-permanganate-record-point": "dispense-sample-a-1-permanganate-record-point",
+          "dispense-sample-a-1-permanganate-decide": "dispense-sample-a-1-permanganate-decide",
+          "dispense-sample-a-1-permanganate-read-final": "dispense-sample-a-1-permanganate-read-final",
+          "observe-sample-a-1-endpoint": "observe-sample-a-1-endpoint",
+          "record-sample-a-1-final-burette": "record-sample-a-1-final-burette",
+          "calculate-sample-a-1": "calculate-sample-a-1",
+          "discard-sample-a-1-mixture": "discard-sample-a-1-mixture",
+          "discard-sample-a-1-mixture-rinse": "discard-sample-a-1-mixture-rinse",
+          "discard-sample-a-1-mixture-discard-rinse": "discard-sample-a-1-mixture-discard-rinse",
+          "measure-sample-a-2-aliquot": "measure-sample-a-2-aliquot",
+          "transfer-sample-a-2-aliquot": "transfer-sample-a-2-aliquot",
+          "measure-sample-a-2-acid": "measure-sample-a-2-acid",
+          "acidify-sample-a-2-analyte": "acidify-sample-a-2-analyte",
+          "record-sample-a-2-acid-volume": "record-sample-a-2-acid-volume",
+          "read-sample-a-2-initial-burette-refill-seat-funnel": "read-sample-a-2-initial-burette-refill-seat-funnel",
+          "read-sample-a-2-initial-burette-refill": "read-sample-a-2-initial-burette-refill",
+          "read-sample-a-2-initial-burette-refill-remove-funnel": "read-sample-a-2-initial-burette-refill-remove-funnel",
+          "read-sample-a-2-initial-burette-purge-tip": "read-sample-a-2-initial-burette-purge-tip",
+          "read-sample-a-2-initial-burette-check-tip": "read-sample-a-2-initial-burette-check-tip",
+          "read-sample-a-2-initial-burette": "read-sample-a-2-initial-burette",
+          "record-sample-a-2-initial-burette": "record-sample-a-2-initial-burette",
+          "dispense-sample-a-2-permanganate": "dispense-sample-a-2-permanganate",
+          "dispense-sample-a-2-permanganate-mix": "dispense-sample-a-2-permanganate-mix",
+          "dispense-sample-a-2-permanganate-observe": "dispense-sample-a-2-permanganate-observe",
+          "dispense-sample-a-2-permanganate-record-point": "dispense-sample-a-2-permanganate-record-point",
+          "dispense-sample-a-2-permanganate-decide": "dispense-sample-a-2-permanganate-decide",
+          "dispense-sample-a-2-permanganate-read-final": "dispense-sample-a-2-permanganate-read-final",
+          "observe-sample-a-2-endpoint": "observe-sample-a-2-endpoint",
+          "record-sample-a-2-final-burette": "record-sample-a-2-final-burette",
+          "calculate-sample-a-2": "calculate-sample-a-2",
+          "discard-sample-a-2-mixture": "discard-sample-a-2-mixture",
+          "discard-sample-a-2-mixture-rinse": "discard-sample-a-2-mixture-rinse",
+          "discard-sample-a-2-mixture-discard-rinse": "discard-sample-a-2-mixture-discard-rinse",
+          "average-sample-a": "average-sample-a",
+          "measure-sample-b-1-aliquot": "measure-sample-b-1-aliquot",
+          "transfer-sample-b-1-aliquot": "transfer-sample-b-1-aliquot",
+          "measure-sample-b-1-acid": "measure-sample-b-1-acid",
+          "acidify-sample-b-1-analyte": "acidify-sample-b-1-analyte",
+          "record-sample-b-1-acid-volume": "record-sample-b-1-acid-volume",
+          "fill-sample-b-1-burette-seat-funnel": "fill-sample-b-1-burette-seat-funnel",
+          "fill-sample-b-1-burette": "fill-sample-b-1-burette",
+          "fill-sample-b-1-burette-remove-funnel": "fill-sample-b-1-burette-remove-funnel",
+          "fill-sample-b-1-burette-purge-tip": "fill-sample-b-1-burette-purge-tip",
+          "fill-sample-b-1-burette-check-tip": "fill-sample-b-1-burette-check-tip",
+          "read-sample-b-1-initial-burette-refill-seat-funnel": "read-sample-b-1-initial-burette-refill-seat-funnel",
+          "read-sample-b-1-initial-burette-refill": "read-sample-b-1-initial-burette-refill",
+          "read-sample-b-1-initial-burette-refill-remove-funnel": "read-sample-b-1-initial-burette-refill-remove-funnel",
+          "read-sample-b-1-initial-burette-purge-tip": "read-sample-b-1-initial-burette-purge-tip",
+          "read-sample-b-1-initial-burette-check-tip": "read-sample-b-1-initial-burette-check-tip",
+          "read-sample-b-1-initial-burette": "read-sample-b-1-initial-burette",
+          "record-sample-b-1-initial-burette": "record-sample-b-1-initial-burette",
+          "dispense-sample-b-1-permanganate": "dispense-sample-b-1-permanganate",
+          "dispense-sample-b-1-permanganate-mix": "dispense-sample-b-1-permanganate-mix",
+          "dispense-sample-b-1-permanganate-observe": "dispense-sample-b-1-permanganate-observe",
+          "dispense-sample-b-1-permanganate-record-point": "dispense-sample-b-1-permanganate-record-point",
+          "dispense-sample-b-1-permanganate-decide": "dispense-sample-b-1-permanganate-decide",
+          "dispense-sample-b-1-permanganate-read-final": "dispense-sample-b-1-permanganate-read-final",
+          "observe-sample-b-1-endpoint": "observe-sample-b-1-endpoint",
+          "record-sample-b-1-final-burette": "record-sample-b-1-final-burette",
+          "calculate-sample-b-1": "calculate-sample-b-1",
+          "discard-sample-b-1-mixture": "discard-sample-b-1-mixture",
+          "discard-sample-b-1-mixture-rinse": "discard-sample-b-1-mixture-rinse",
+          "discard-sample-b-1-mixture-discard-rinse": "discard-sample-b-1-mixture-discard-rinse",
+          "measure-sample-b-2-aliquot": "measure-sample-b-2-aliquot",
+          "transfer-sample-b-2-aliquot": "transfer-sample-b-2-aliquot",
+          "measure-sample-b-2-acid": "measure-sample-b-2-acid",
+          "acidify-sample-b-2-analyte": "acidify-sample-b-2-analyte",
+          "record-sample-b-2-acid-volume": "record-sample-b-2-acid-volume",
+          "fill-sample-b-2-burette-seat-funnel": "fill-sample-b-2-burette-seat-funnel",
+          "fill-sample-b-2-burette": "fill-sample-b-2-burette",
+          "fill-sample-b-2-burette-remove-funnel": "fill-sample-b-2-burette-remove-funnel",
+          "fill-sample-b-2-burette-purge-tip": "fill-sample-b-2-burette-purge-tip",
+          "fill-sample-b-2-burette-check-tip": "fill-sample-b-2-burette-check-tip",
+          "read-sample-b-2-initial-burette-refill-seat-funnel": "read-sample-b-2-initial-burette-refill-seat-funnel",
+          "read-sample-b-2-initial-burette-refill": "read-sample-b-2-initial-burette-refill",
+          "read-sample-b-2-initial-burette-refill-remove-funnel": "read-sample-b-2-initial-burette-refill-remove-funnel",
+          "read-sample-b-2-initial-burette-purge-tip": "read-sample-b-2-initial-burette-purge-tip",
+          "read-sample-b-2-initial-burette-check-tip": "read-sample-b-2-initial-burette-check-tip",
+          "read-sample-b-2-initial-burette": "read-sample-b-2-initial-burette",
+          "record-sample-b-2-initial-burette": "record-sample-b-2-initial-burette",
+          "dispense-sample-b-2-permanganate": "dispense-sample-b-2-permanganate",
+          "dispense-sample-b-2-permanganate-mix": "dispense-sample-b-2-permanganate-mix",
+          "dispense-sample-b-2-permanganate-observe": "dispense-sample-b-2-permanganate-observe",
+          "dispense-sample-b-2-permanganate-record-point": "dispense-sample-b-2-permanganate-record-point",
+          "dispense-sample-b-2-permanganate-decide": "dispense-sample-b-2-permanganate-decide",
+          "dispense-sample-b-2-permanganate-read-final": "dispense-sample-b-2-permanganate-read-final",
+          "observe-sample-b-2-endpoint": "observe-sample-b-2-endpoint",
+          "record-sample-b-2-final-burette": "record-sample-b-2-final-burette",
+          "calculate-sample-b-2": "calculate-sample-b-2",
+          "discard-sample-b-2-mixture": "discard-sample-b-2-mixture",
+          "discard-sample-b-2-mixture-rinse": "discard-sample-b-2-mixture-rinse",
+          "discard-sample-b-2-mixture-discard-rinse": "discard-sample-b-2-mixture-discard-rinse",
+          "average-sample-b": "average-sample-b",
+          "record-class-data-provenance": "record-class-data-provenance",
+          "submit-redox-analysis": "submit-redox-analysis",
+          "record-configured-disposal": "record-configured-disposal",
+          "dispense-standardization-1-permanganate-retry-dispose": "dispense-standardization-1-permanganate-retry-dispose",
+          "dispense-standardization-1-permanganate-retry-dispose-rinse": "dispense-standardization-1-permanganate-retry-dispose-rinse",
+          "dispense-standardization-1-permanganate-retry-dispose-discard-rinse": "dispense-standardization-1-permanganate-retry-dispose-discard-rinse",
+          "dispense-standardization-1-permanganate-retry-reset": "dispense-standardization-1-permanganate-retry-reset",
+          "dispense-standardization-2-permanganate-retry-dispose": "dispense-standardization-2-permanganate-retry-dispose",
+          "dispense-standardization-2-permanganate-retry-dispose-rinse": "dispense-standardization-2-permanganate-retry-dispose-rinse",
+          "dispense-standardization-2-permanganate-retry-dispose-discard-rinse": "dispense-standardization-2-permanganate-retry-dispose-discard-rinse",
+          "dispense-standardization-2-permanganate-retry-reset": "dispense-standardization-2-permanganate-retry-reset",
+          "dispense-standardization-3-permanganate-retry-dispose": "dispense-standardization-3-permanganate-retry-dispose",
+          "dispense-standardization-3-permanganate-retry-dispose-rinse": "dispense-standardization-3-permanganate-retry-dispose-rinse",
+          "dispense-standardization-3-permanganate-retry-dispose-discard-rinse": "dispense-standardization-3-permanganate-retry-dispose-discard-rinse",
+          "dispense-standardization-3-permanganate-retry-reset": "dispense-standardization-3-permanganate-retry-reset",
+          "dispense-sample-a-1-permanganate-retry-dispose": "dispense-sample-a-1-permanganate-retry-dispose",
+          "dispense-sample-a-1-permanganate-retry-dispose-rinse": "dispense-sample-a-1-permanganate-retry-dispose-rinse",
+          "dispense-sample-a-1-permanganate-retry-dispose-discard-rinse": "dispense-sample-a-1-permanganate-retry-dispose-discard-rinse",
+          "dispense-sample-a-1-permanganate-retry-reset": "dispense-sample-a-1-permanganate-retry-reset",
+          "dispense-sample-a-2-permanganate-retry-dispose": "dispense-sample-a-2-permanganate-retry-dispose",
+          "dispense-sample-a-2-permanganate-retry-dispose-rinse": "dispense-sample-a-2-permanganate-retry-dispose-rinse",
+          "dispense-sample-a-2-permanganate-retry-dispose-discard-rinse": "dispense-sample-a-2-permanganate-retry-dispose-discard-rinse",
+          "dispense-sample-a-2-permanganate-retry-reset": "dispense-sample-a-2-permanganate-retry-reset",
+          "dispense-sample-b-1-permanganate-retry-dispose": "dispense-sample-b-1-permanganate-retry-dispose",
+          "dispense-sample-b-1-permanganate-retry-dispose-rinse": "dispense-sample-b-1-permanganate-retry-dispose-rinse",
+          "dispense-sample-b-1-permanganate-retry-dispose-discard-rinse": "dispense-sample-b-1-permanganate-retry-dispose-discard-rinse",
+          "dispense-sample-b-1-permanganate-retry-reset": "dispense-sample-b-1-permanganate-retry-reset",
+          "dispense-sample-b-2-permanganate-retry-dispose": "dispense-sample-b-2-permanganate-retry-dispose",
+          "dispense-sample-b-2-permanganate-retry-dispose-rinse": "dispense-sample-b-2-permanganate-retry-dispose-rinse",
+          "dispense-sample-b-2-permanganate-retry-dispose-discard-rinse": "dispense-sample-b-2-permanganate-retry-dispose-discard-rinse",
+          "dispense-sample-b-2-permanganate-retry-reset": "dispense-sample-b-2-permanganate-retry-reset"
+        },
+        "nodes": {
+          "approve-redox-configuration-node": "approve-redox-configuration-node",
+          "acknowledge-redox-safety-node": "acknowledge-redox-safety-node",
+          "submit-practice-plan-node": "submit-practice-plan-node",
+          "place-redox-stand-node": "place-redox-stand-node",
+          "mount-redox-burette-node": "mount-redox-burette-node",
+          "position-redox-receiver-node": "position-redox-receiver-node",
+          "condition-redox-burette-drain-residual-node": "condition-redox-burette-drain-residual-node",
+          "condition-redox-burette-node": "condition-redox-burette-node",
+          "condition-redox-burette-discard-rinsate-node": "condition-redox-burette-discard-rinsate-node",
+          "measure-practice-aliquot-node": "measure-practice-aliquot-node",
+          "transfer-practice-aliquot-node": "transfer-practice-aliquot-node",
+          "measure-redox-practice-acid-node": "measure-redox-practice-acid-node",
+          "acidify-practice-analyte-node": "acidify-practice-analyte-node",
+          "record-practice-acid-volume-node": "record-practice-acid-volume-node",
+          "fill-practice-burette-seat-funnel-node": "fill-practice-burette-seat-funnel-node",
+          "fill-practice-burette-node": "fill-practice-burette-node",
+          "fill-practice-burette-remove-funnel-node": "fill-practice-burette-remove-funnel-node",
+          "fill-practice-burette-purge-tip-node": "fill-practice-burette-purge-tip-node",
+          "fill-practice-burette-check-tip-node": "fill-practice-burette-check-tip-node",
+          "read-practice-initial-burette-node": "read-practice-initial-burette-node",
+          "record-practice-initial-burette-node": "record-practice-initial-burette-node",
+          "dispense-practice-permanganate-node": "dispense-practice-permanganate-node",
+          "dispense-practice-permanganate-mix-node": "dispense-practice-permanganate-mix-node",
+          "dispense-practice-permanganate-observe-node": "dispense-practice-permanganate-observe-node",
+          "dispense-practice-permanganate-record-point-node": "dispense-practice-permanganate-record-point-node",
+          "dispense-practice-permanganate-decide-node": "dispense-practice-permanganate-decide-node",
+          "dispense-practice-permanganate-read-final-node": "dispense-practice-permanganate-read-final-node",
+          "observe-practice-endpoint-node": "observe-practice-endpoint-node",
+          "record-practice-final-burette-node": "record-practice-final-burette-node",
+          "calculate-practice-node": "calculate-practice-node",
+          "discard-practice-mixture-node": "discard-practice-mixture-node",
+          "discard-practice-mixture-rinse-node": "discard-practice-mixture-rinse-node",
+          "discard-practice-mixture-discard-rinse-node": "discard-practice-mixture-discard-rinse-node",
+          "submit-one-minute-report-node": "submit-one-minute-report-node",
+          "submit-standardization-redesign-node": "submit-standardization-redesign-node",
+          "record-teacher-approval-node": "record-teacher-approval-node",
+          "measure-standardization-1-aliquot-node": "measure-standardization-1-aliquot-node",
+          "transfer-standardization-1-aliquot-node": "transfer-standardization-1-aliquot-node",
+          "measure-standardization-1-acid-node": "measure-standardization-1-acid-node",
+          "acidify-standardization-1-analyte-node": "acidify-standardization-1-analyte-node",
+          "record-standardization-1-acid-volume-node": "record-standardization-1-acid-volume-node",
+          "read-standardization-1-initial-burette-refill-seat-funnel-node": "read-standardization-1-initial-burette-refill-seat-funnel-node",
+          "read-standardization-1-initial-burette-refill-node": "read-standardization-1-initial-burette-refill-node",
+          "read-standardization-1-initial-burette-refill-remove-funnel-node": "read-standardization-1-initial-burette-refill-remove-funnel-node",
+          "read-standardization-1-initial-burette-purge-tip-node": "read-standardization-1-initial-burette-purge-tip-node",
+          "read-standardization-1-initial-burette-check-tip-node": "read-standardization-1-initial-burette-check-tip-node",
+          "read-standardization-1-initial-burette-node": "read-standardization-1-initial-burette-node",
+          "record-standardization-1-initial-burette-node": "record-standardization-1-initial-burette-node",
+          "dispense-standardization-1-permanganate-node": "dispense-standardization-1-permanganate-node",
+          "dispense-standardization-1-permanganate-mix-node": "dispense-standardization-1-permanganate-mix-node",
+          "dispense-standardization-1-permanganate-observe-node": "dispense-standardization-1-permanganate-observe-node",
+          "dispense-standardization-1-permanganate-record-point-node": "dispense-standardization-1-permanganate-record-point-node",
+          "dispense-standardization-1-permanganate-decide-node": "dispense-standardization-1-permanganate-decide-node",
+          "dispense-standardization-1-permanganate-read-final-node": "dispense-standardization-1-permanganate-read-final-node",
+          "observe-standardization-1-endpoint-node": "observe-standardization-1-endpoint-node",
+          "record-standardization-1-final-burette-node": "record-standardization-1-final-burette-node",
+          "calculate-standardization-1-node": "calculate-standardization-1-node",
+          "discard-standardization-1-mixture-node": "discard-standardization-1-mixture-node",
+          "discard-standardization-1-mixture-rinse-node": "discard-standardization-1-mixture-rinse-node",
+          "discard-standardization-1-mixture-discard-rinse-node": "discard-standardization-1-mixture-discard-rinse-node",
+          "measure-standardization-2-aliquot-node": "measure-standardization-2-aliquot-node",
+          "transfer-standardization-2-aliquot-node": "transfer-standardization-2-aliquot-node",
+          "measure-standardization-2-acid-node": "measure-standardization-2-acid-node",
+          "acidify-standardization-2-analyte-node": "acidify-standardization-2-analyte-node",
+          "record-standardization-2-acid-volume-node": "record-standardization-2-acid-volume-node",
+          "read-standardization-2-initial-burette-refill-seat-funnel-node": "read-standardization-2-initial-burette-refill-seat-funnel-node",
+          "read-standardization-2-initial-burette-refill-node": "read-standardization-2-initial-burette-refill-node",
+          "read-standardization-2-initial-burette-refill-remove-funnel-node": "read-standardization-2-initial-burette-refill-remove-funnel-node",
+          "read-standardization-2-initial-burette-purge-tip-node": "read-standardization-2-initial-burette-purge-tip-node",
+          "read-standardization-2-initial-burette-check-tip-node": "read-standardization-2-initial-burette-check-tip-node",
+          "read-standardization-2-initial-burette-node": "read-standardization-2-initial-burette-node",
+          "record-standardization-2-initial-burette-node": "record-standardization-2-initial-burette-node",
+          "dispense-standardization-2-permanganate-node": "dispense-standardization-2-permanganate-node",
+          "dispense-standardization-2-permanganate-mix-node": "dispense-standardization-2-permanganate-mix-node",
+          "dispense-standardization-2-permanganate-observe-node": "dispense-standardization-2-permanganate-observe-node",
+          "dispense-standardization-2-permanganate-record-point-node": "dispense-standardization-2-permanganate-record-point-node",
+          "dispense-standardization-2-permanganate-decide-node": "dispense-standardization-2-permanganate-decide-node",
+          "dispense-standardization-2-permanganate-read-final-node": "dispense-standardization-2-permanganate-read-final-node",
+          "observe-standardization-2-endpoint-node": "observe-standardization-2-endpoint-node",
+          "record-standardization-2-final-burette-node": "record-standardization-2-final-burette-node",
+          "calculate-standardization-2-node": "calculate-standardization-2-node",
+          "discard-standardization-2-mixture-node": "discard-standardization-2-mixture-node",
+          "discard-standardization-2-mixture-rinse-node": "discard-standardization-2-mixture-rinse-node",
+          "discard-standardization-2-mixture-discard-rinse-node": "discard-standardization-2-mixture-discard-rinse-node",
+          "measure-standardization-3-aliquot-node": "measure-standardization-3-aliquot-node",
+          "transfer-standardization-3-aliquot-node": "transfer-standardization-3-aliquot-node",
+          "measure-standardization-3-acid-node": "measure-standardization-3-acid-node",
+          "acidify-standardization-3-analyte-node": "acidify-standardization-3-analyte-node",
+          "record-standardization-3-acid-volume-node": "record-standardization-3-acid-volume-node",
+          "read-standardization-3-initial-burette-refill-seat-funnel-node": "read-standardization-3-initial-burette-refill-seat-funnel-node",
+          "read-standardization-3-initial-burette-refill-node": "read-standardization-3-initial-burette-refill-node",
+          "read-standardization-3-initial-burette-refill-remove-funnel-node": "read-standardization-3-initial-burette-refill-remove-funnel-node",
+          "read-standardization-3-initial-burette-purge-tip-node": "read-standardization-3-initial-burette-purge-tip-node",
+          "read-standardization-3-initial-burette-check-tip-node": "read-standardization-3-initial-burette-check-tip-node",
+          "read-standardization-3-initial-burette-node": "read-standardization-3-initial-burette-node",
+          "record-standardization-3-initial-burette-node": "record-standardization-3-initial-burette-node",
+          "dispense-standardization-3-permanganate-node": "dispense-standardization-3-permanganate-node",
+          "dispense-standardization-3-permanganate-mix-node": "dispense-standardization-3-permanganate-mix-node",
+          "dispense-standardization-3-permanganate-observe-node": "dispense-standardization-3-permanganate-observe-node",
+          "dispense-standardization-3-permanganate-record-point-node": "dispense-standardization-3-permanganate-record-point-node",
+          "dispense-standardization-3-permanganate-decide-node": "dispense-standardization-3-permanganate-decide-node",
+          "dispense-standardization-3-permanganate-read-final-node": "dispense-standardization-3-permanganate-read-final-node",
+          "observe-standardization-3-endpoint-node": "observe-standardization-3-endpoint-node",
+          "record-standardization-3-final-burette-node": "record-standardization-3-final-burette-node",
+          "calculate-standardization-3-node": "calculate-standardization-3-node",
+          "discard-standardization-3-mixture-node": "discard-standardization-3-mixture-node",
+          "discard-standardization-3-mixture-rinse-node": "discard-standardization-3-mixture-rinse-node",
+          "discard-standardization-3-mixture-discard-rinse-node": "discard-standardization-3-mixture-discard-rinse-node",
+          "accept-standardized-kmno4-node": "accept-standardized-kmno4-node",
+          "review-standardization-concordance-node": "review-standardization-concordance-node",
+          "measure-sample-a-1-aliquot-node": "measure-sample-a-1-aliquot-node",
+          "transfer-sample-a-1-aliquot-node": "transfer-sample-a-1-aliquot-node",
+          "measure-sample-a-1-acid-node": "measure-sample-a-1-acid-node",
+          "acidify-sample-a-1-analyte-node": "acidify-sample-a-1-analyte-node",
+          "record-sample-a-1-acid-volume-node": "record-sample-a-1-acid-volume-node",
+          "fill-sample-a-1-burette-seat-funnel-node": "fill-sample-a-1-burette-seat-funnel-node",
+          "fill-sample-a-1-burette-node": "fill-sample-a-1-burette-node",
+          "fill-sample-a-1-burette-remove-funnel-node": "fill-sample-a-1-burette-remove-funnel-node",
+          "fill-sample-a-1-burette-purge-tip-node": "fill-sample-a-1-burette-purge-tip-node",
+          "fill-sample-a-1-burette-check-tip-node": "fill-sample-a-1-burette-check-tip-node",
+          "read-sample-a-1-initial-burette-refill-seat-funnel-node": "read-sample-a-1-initial-burette-refill-seat-funnel-node",
+          "read-sample-a-1-initial-burette-refill-node": "read-sample-a-1-initial-burette-refill-node",
+          "read-sample-a-1-initial-burette-refill-remove-funnel-node": "read-sample-a-1-initial-burette-refill-remove-funnel-node",
+          "read-sample-a-1-initial-burette-purge-tip-node": "read-sample-a-1-initial-burette-purge-tip-node",
+          "read-sample-a-1-initial-burette-check-tip-node": "read-sample-a-1-initial-burette-check-tip-node",
+          "read-sample-a-1-initial-burette-node": "read-sample-a-1-initial-burette-node",
+          "record-sample-a-1-initial-burette-node": "record-sample-a-1-initial-burette-node",
+          "dispense-sample-a-1-permanganate-node": "dispense-sample-a-1-permanganate-node",
+          "dispense-sample-a-1-permanganate-mix-node": "dispense-sample-a-1-permanganate-mix-node",
+          "dispense-sample-a-1-permanganate-observe-node": "dispense-sample-a-1-permanganate-observe-node",
+          "dispense-sample-a-1-permanganate-record-point-node": "dispense-sample-a-1-permanganate-record-point-node",
+          "dispense-sample-a-1-permanganate-decide-node": "dispense-sample-a-1-permanganate-decide-node",
+          "dispense-sample-a-1-permanganate-read-final-node": "dispense-sample-a-1-permanganate-read-final-node",
+          "observe-sample-a-1-endpoint-node": "observe-sample-a-1-endpoint-node",
+          "record-sample-a-1-final-burette-node": "record-sample-a-1-final-burette-node",
+          "calculate-sample-a-1-node": "calculate-sample-a-1-node",
+          "discard-sample-a-1-mixture-node": "discard-sample-a-1-mixture-node",
+          "discard-sample-a-1-mixture-rinse-node": "discard-sample-a-1-mixture-rinse-node",
+          "discard-sample-a-1-mixture-discard-rinse-node": "discard-sample-a-1-mixture-discard-rinse-node",
+          "measure-sample-a-2-aliquot-node": "measure-sample-a-2-aliquot-node",
+          "transfer-sample-a-2-aliquot-node": "transfer-sample-a-2-aliquot-node",
+          "measure-sample-a-2-acid-node": "measure-sample-a-2-acid-node",
+          "acidify-sample-a-2-analyte-node": "acidify-sample-a-2-analyte-node",
+          "record-sample-a-2-acid-volume-node": "record-sample-a-2-acid-volume-node",
+          "read-sample-a-2-initial-burette-refill-seat-funnel-node": "read-sample-a-2-initial-burette-refill-seat-funnel-node",
+          "read-sample-a-2-initial-burette-refill-node": "read-sample-a-2-initial-burette-refill-node",
+          "read-sample-a-2-initial-burette-refill-remove-funnel-node": "read-sample-a-2-initial-burette-refill-remove-funnel-node",
+          "read-sample-a-2-initial-burette-purge-tip-node": "read-sample-a-2-initial-burette-purge-tip-node",
+          "read-sample-a-2-initial-burette-check-tip-node": "read-sample-a-2-initial-burette-check-tip-node",
+          "read-sample-a-2-initial-burette-node": "read-sample-a-2-initial-burette-node",
+          "record-sample-a-2-initial-burette-node": "record-sample-a-2-initial-burette-node",
+          "dispense-sample-a-2-permanganate-node": "dispense-sample-a-2-permanganate-node",
+          "dispense-sample-a-2-permanganate-mix-node": "dispense-sample-a-2-permanganate-mix-node",
+          "dispense-sample-a-2-permanganate-observe-node": "dispense-sample-a-2-permanganate-observe-node",
+          "dispense-sample-a-2-permanganate-record-point-node": "dispense-sample-a-2-permanganate-record-point-node",
+          "dispense-sample-a-2-permanganate-decide-node": "dispense-sample-a-2-permanganate-decide-node",
+          "dispense-sample-a-2-permanganate-read-final-node": "dispense-sample-a-2-permanganate-read-final-node",
+          "observe-sample-a-2-endpoint-node": "observe-sample-a-2-endpoint-node",
+          "record-sample-a-2-final-burette-node": "record-sample-a-2-final-burette-node",
+          "calculate-sample-a-2-node": "calculate-sample-a-2-node",
+          "discard-sample-a-2-mixture-node": "discard-sample-a-2-mixture-node",
+          "discard-sample-a-2-mixture-rinse-node": "discard-sample-a-2-mixture-rinse-node",
+          "discard-sample-a-2-mixture-discard-rinse-node": "discard-sample-a-2-mixture-discard-rinse-node",
+          "average-sample-a-node": "average-sample-a-node",
+          "measure-sample-b-1-aliquot-node": "measure-sample-b-1-aliquot-node",
+          "transfer-sample-b-1-aliquot-node": "transfer-sample-b-1-aliquot-node",
+          "measure-sample-b-1-acid-node": "measure-sample-b-1-acid-node",
+          "acidify-sample-b-1-analyte-node": "acidify-sample-b-1-analyte-node",
+          "record-sample-b-1-acid-volume-node": "record-sample-b-1-acid-volume-node",
+          "fill-sample-b-1-burette-seat-funnel-node": "fill-sample-b-1-burette-seat-funnel-node",
+          "fill-sample-b-1-burette-node": "fill-sample-b-1-burette-node",
+          "fill-sample-b-1-burette-remove-funnel-node": "fill-sample-b-1-burette-remove-funnel-node",
+          "fill-sample-b-1-burette-purge-tip-node": "fill-sample-b-1-burette-purge-tip-node",
+          "fill-sample-b-1-burette-check-tip-node": "fill-sample-b-1-burette-check-tip-node",
+          "read-sample-b-1-initial-burette-refill-seat-funnel-node": "read-sample-b-1-initial-burette-refill-seat-funnel-node",
+          "read-sample-b-1-initial-burette-refill-node": "read-sample-b-1-initial-burette-refill-node",
+          "read-sample-b-1-initial-burette-refill-remove-funnel-node": "read-sample-b-1-initial-burette-refill-remove-funnel-node",
+          "read-sample-b-1-initial-burette-purge-tip-node": "read-sample-b-1-initial-burette-purge-tip-node",
+          "read-sample-b-1-initial-burette-check-tip-node": "read-sample-b-1-initial-burette-check-tip-node",
+          "read-sample-b-1-initial-burette-node": "read-sample-b-1-initial-burette-node",
+          "record-sample-b-1-initial-burette-node": "record-sample-b-1-initial-burette-node",
+          "dispense-sample-b-1-permanganate-node": "dispense-sample-b-1-permanganate-node",
+          "dispense-sample-b-1-permanganate-mix-node": "dispense-sample-b-1-permanganate-mix-node",
+          "dispense-sample-b-1-permanganate-observe-node": "dispense-sample-b-1-permanganate-observe-node",
+          "dispense-sample-b-1-permanganate-record-point-node": "dispense-sample-b-1-permanganate-record-point-node",
+          "dispense-sample-b-1-permanganate-decide-node": "dispense-sample-b-1-permanganate-decide-node",
+          "dispense-sample-b-1-permanganate-read-final-node": "dispense-sample-b-1-permanganate-read-final-node",
+          "observe-sample-b-1-endpoint-node": "observe-sample-b-1-endpoint-node",
+          "record-sample-b-1-final-burette-node": "record-sample-b-1-final-burette-node",
+          "calculate-sample-b-1-node": "calculate-sample-b-1-node",
+          "discard-sample-b-1-mixture-node": "discard-sample-b-1-mixture-node",
+          "discard-sample-b-1-mixture-rinse-node": "discard-sample-b-1-mixture-rinse-node",
+          "discard-sample-b-1-mixture-discard-rinse-node": "discard-sample-b-1-mixture-discard-rinse-node",
+          "measure-sample-b-2-aliquot-node": "measure-sample-b-2-aliquot-node",
+          "transfer-sample-b-2-aliquot-node": "transfer-sample-b-2-aliquot-node",
+          "measure-sample-b-2-acid-node": "measure-sample-b-2-acid-node",
+          "acidify-sample-b-2-analyte-node": "acidify-sample-b-2-analyte-node",
+          "record-sample-b-2-acid-volume-node": "record-sample-b-2-acid-volume-node",
+          "fill-sample-b-2-burette-seat-funnel-node": "fill-sample-b-2-burette-seat-funnel-node",
+          "fill-sample-b-2-burette-node": "fill-sample-b-2-burette-node",
+          "fill-sample-b-2-burette-remove-funnel-node": "fill-sample-b-2-burette-remove-funnel-node",
+          "fill-sample-b-2-burette-purge-tip-node": "fill-sample-b-2-burette-purge-tip-node",
+          "fill-sample-b-2-burette-check-tip-node": "fill-sample-b-2-burette-check-tip-node",
+          "read-sample-b-2-initial-burette-refill-seat-funnel-node": "read-sample-b-2-initial-burette-refill-seat-funnel-node",
+          "read-sample-b-2-initial-burette-refill-node": "read-sample-b-2-initial-burette-refill-node",
+          "read-sample-b-2-initial-burette-refill-remove-funnel-node": "read-sample-b-2-initial-burette-refill-remove-funnel-node",
+          "read-sample-b-2-initial-burette-purge-tip-node": "read-sample-b-2-initial-burette-purge-tip-node",
+          "read-sample-b-2-initial-burette-check-tip-node": "read-sample-b-2-initial-burette-check-tip-node",
+          "read-sample-b-2-initial-burette-node": "read-sample-b-2-initial-burette-node",
+          "record-sample-b-2-initial-burette-node": "record-sample-b-2-initial-burette-node",
+          "dispense-sample-b-2-permanganate-node": "dispense-sample-b-2-permanganate-node",
+          "dispense-sample-b-2-permanganate-mix-node": "dispense-sample-b-2-permanganate-mix-node",
+          "dispense-sample-b-2-permanganate-observe-node": "dispense-sample-b-2-permanganate-observe-node",
+          "dispense-sample-b-2-permanganate-record-point-node": "dispense-sample-b-2-permanganate-record-point-node",
+          "dispense-sample-b-2-permanganate-decide-node": "dispense-sample-b-2-permanganate-decide-node",
+          "dispense-sample-b-2-permanganate-read-final-node": "dispense-sample-b-2-permanganate-read-final-node",
+          "observe-sample-b-2-endpoint-node": "observe-sample-b-2-endpoint-node",
+          "record-sample-b-2-final-burette-node": "record-sample-b-2-final-burette-node",
+          "calculate-sample-b-2-node": "calculate-sample-b-2-node",
+          "discard-sample-b-2-mixture-node": "discard-sample-b-2-mixture-node",
+          "discard-sample-b-2-mixture-rinse-node": "discard-sample-b-2-mixture-rinse-node",
+          "discard-sample-b-2-mixture-discard-rinse-node": "discard-sample-b-2-mixture-discard-rinse-node",
+          "average-sample-b-node": "average-sample-b-node",
+          "record-class-data-provenance-node": "record-class-data-provenance-node",
+          "submit-redox-analysis-node": "submit-redox-analysis-node",
+          "record-configured-disposal-node": "record-configured-disposal-node",
+          "dispense-standardization-1-permanganate-retry-dispose-node": "dispense-standardization-1-permanganate-retry-dispose-node",
+          "dispense-standardization-1-permanganate-retry-dispose-rinse-node": "dispense-standardization-1-permanganate-retry-dispose-rinse-node",
+          "dispense-standardization-1-permanganate-retry-dispose-discard-rinse-node": "dispense-standardization-1-permanganate-retry-dispose-discard-rinse-node",
+          "dispense-standardization-1-permanganate-retry-reset-node": "dispense-standardization-1-permanganate-retry-reset-node",
+          "dispense-standardization-2-permanganate-retry-dispose-node": "dispense-standardization-2-permanganate-retry-dispose-node",
+          "dispense-standardization-2-permanganate-retry-dispose-rinse-node": "dispense-standardization-2-permanganate-retry-dispose-rinse-node",
+          "dispense-standardization-2-permanganate-retry-dispose-discard-rinse-node": "dispense-standardization-2-permanganate-retry-dispose-discard-rinse-node",
+          "dispense-standardization-2-permanganate-retry-reset-node": "dispense-standardization-2-permanganate-retry-reset-node",
+          "dispense-standardization-3-permanganate-retry-dispose-node": "dispense-standardization-3-permanganate-retry-dispose-node",
+          "dispense-standardization-3-permanganate-retry-dispose-rinse-node": "dispense-standardization-3-permanganate-retry-dispose-rinse-node",
+          "dispense-standardization-3-permanganate-retry-dispose-discard-rinse-node": "dispense-standardization-3-permanganate-retry-dispose-discard-rinse-node",
+          "dispense-standardization-3-permanganate-retry-reset-node": "dispense-standardization-3-permanganate-retry-reset-node",
+          "dispense-sample-a-1-permanganate-retry-dispose-node": "dispense-sample-a-1-permanganate-retry-dispose-node",
+          "dispense-sample-a-1-permanganate-retry-dispose-rinse-node": "dispense-sample-a-1-permanganate-retry-dispose-rinse-node",
+          "dispense-sample-a-1-permanganate-retry-dispose-discard-rinse-node": "dispense-sample-a-1-permanganate-retry-dispose-discard-rinse-node",
+          "dispense-sample-a-1-permanganate-retry-reset-node": "dispense-sample-a-1-permanganate-retry-reset-node",
+          "dispense-sample-a-2-permanganate-retry-dispose-node": "dispense-sample-a-2-permanganate-retry-dispose-node",
+          "dispense-sample-a-2-permanganate-retry-dispose-rinse-node": "dispense-sample-a-2-permanganate-retry-dispose-rinse-node",
+          "dispense-sample-a-2-permanganate-retry-dispose-discard-rinse-node": "dispense-sample-a-2-permanganate-retry-dispose-discard-rinse-node",
+          "dispense-sample-a-2-permanganate-retry-reset-node": "dispense-sample-a-2-permanganate-retry-reset-node",
+          "dispense-sample-b-1-permanganate-retry-dispose-node": "dispense-sample-b-1-permanganate-retry-dispose-node",
+          "dispense-sample-b-1-permanganate-retry-dispose-rinse-node": "dispense-sample-b-1-permanganate-retry-dispose-rinse-node",
+          "dispense-sample-b-1-permanganate-retry-dispose-discard-rinse-node": "dispense-sample-b-1-permanganate-retry-dispose-discard-rinse-node",
+          "dispense-sample-b-1-permanganate-retry-reset-node": "dispense-sample-b-1-permanganate-retry-reset-node",
+          "dispense-sample-b-2-permanganate-retry-dispose-node": "dispense-sample-b-2-permanganate-retry-dispose-node",
+          "dispense-sample-b-2-permanganate-retry-dispose-rinse-node": "dispense-sample-b-2-permanganate-retry-dispose-rinse-node",
+          "dispense-sample-b-2-permanganate-retry-dispose-discard-rinse-node": "dispense-sample-b-2-permanganate-retry-dispose-discard-rinse-node",
+          "dispense-sample-b-2-permanganate-retry-reset-node": "dispense-sample-b-2-permanganate-retry-reset-node"
+        },
+        "references": {
+          "practice-iron-aliquot": "practice-iron-aliquot",
+          "practice-acid-volume": "practice-acid-volume",
+          "dispense-practice-permanganate": "dispense-practice-permanganate",
+          "practice-initial": "practice-initial",
+          "practice-final": "practice-final",
+          "practice-kmno4": "practice-kmno4",
+          "standardization-1-iron-aliquot": "standardization-1-iron-aliquot",
+          "standardization-1-acid-volume": "standardization-1-acid-volume",
+          "dispense-standardization-1-permanganate": "dispense-standardization-1-permanganate",
+          "standardization-1-initial": "standardization-1-initial",
+          "standardization-1-final": "standardization-1-final",
+          "standardization-trials": "standardization-trials",
+          "standardization-1-kmno4": "standardization-1-kmno4",
+          "standardization-2-iron-aliquot": "standardization-2-iron-aliquot",
+          "standardization-2-acid-volume": "standardization-2-acid-volume",
+          "dispense-standardization-2-permanganate": "dispense-standardization-2-permanganate",
+          "standardization-2-initial": "standardization-2-initial",
+          "standardization-2-final": "standardization-2-final",
+          "standardization-2-kmno4": "standardization-2-kmno4",
+          "standardization-3-iron-aliquot": "standardization-3-iron-aliquot",
+          "standardization-3-acid-volume": "standardization-3-acid-volume",
+          "dispense-standardization-3-permanganate": "dispense-standardization-3-permanganate",
+          "standardization-3-initial": "standardization-3-initial",
+          "standardization-3-final": "standardization-3-final",
+          "standardization-3-kmno4": "standardization-3-kmno4",
+          "standardized-kmno4-molarity": "standardized-kmno4-molarity",
+          "sample-a-1-sample-aliquot": "sample-a-1-sample-aliquot",
+          "sample-a-1-acid-volume": "sample-a-1-acid-volume",
+          "dispense-sample-a-1-permanganate": "dispense-sample-a-1-permanganate",
+          "sample-a-1-initial": "sample-a-1-initial",
+          "sample-a-1-final": "sample-a-1-final",
+          "sample-a-trials": "sample-a-trials",
+          "sample-a-1-percent": "sample-a-1-percent",
+          "sample-a-2-sample-aliquot": "sample-a-2-sample-aliquot",
+          "sample-a-2-acid-volume": "sample-a-2-acid-volume",
+          "dispense-sample-a-2-permanganate": "dispense-sample-a-2-permanganate",
+          "sample-a-2-initial": "sample-a-2-initial",
+          "sample-a-2-final": "sample-a-2-final",
+          "sample-a-2-percent": "sample-a-2-percent",
+          "sample-a-mean-percent": "sample-a-mean-percent",
+          "sample-b-1-sample-aliquot": "sample-b-1-sample-aliquot",
+          "sample-b-1-acid-volume": "sample-b-1-acid-volume",
+          "dispense-sample-b-1-permanganate": "dispense-sample-b-1-permanganate",
+          "sample-b-1-initial": "sample-b-1-initial",
+          "sample-b-1-final": "sample-b-1-final",
+          "sample-b-trials": "sample-b-trials",
+          "sample-b-1-percent": "sample-b-1-percent",
+          "sample-b-2-sample-aliquot": "sample-b-2-sample-aliquot",
+          "sample-b-2-acid-volume": "sample-b-2-acid-volume",
+          "dispense-sample-b-2-permanganate": "dispense-sample-b-2-permanganate",
+          "sample-b-2-initial": "sample-b-2-initial",
+          "sample-b-2-final": "sample-b-2-final",
+          "sample-b-2-percent": "sample-b-2-percent",
+          "sample-b-mean-percent": "sample-b-mean-percent"
+        }
+      }
+    }
+  ],
+  "compositionStart": {
+    "kind": "technique-port",
+    "instanceId": "investigation",
+    "portId": "entry"
+  },
+  "compositionConnections": [],
+  "reachabilityWitnesses": [
+    {
+      "id": "default",
+      "configuration": {},
+      "approvalGates": {}
+    }
+  ]
+}

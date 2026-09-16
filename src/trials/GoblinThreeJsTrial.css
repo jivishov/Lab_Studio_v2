@@ -1,0 +1,172 @@
+.goblin-three-trial {
+  --goblin-three-ink: #102529;
+  --goblin-three-muted: #5c6e70;
+  --goblin-three-line: #d3dfdc;
+  --goblin-three-green: #1f6a4f;
+  background: #f7faf8;
+  color: var(--goblin-three-ink);
+  min-height: calc(100vh - 56px);
+}
+
+.goblin-three-trial__header {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  padding: 1rem 1.1rem 0.8rem;
+}
+
+.goblin-three-trial__header > div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.goblin-three-trial__header h1 {
+  font-size: clamp(1.45rem, 2.5vw, 2.2rem);
+  line-height: 1.05;
+  margin: 0;
+}
+
+.goblin-three-trial__header p {
+  color: var(--goblin-three-muted);
+  margin: 0;
+}
+
+.goblin-three-trial__back {
+  align-items: center;
+  color: #08705d;
+  display: inline-flex;
+  font-size: 0.86rem;
+  font-weight: 800;
+  gap: 0.35rem;
+  text-decoration: none;
+}
+
+.goblin-three-trial__status {
+  background: #fff8eb;
+  border: 1px solid #ecd4aa;
+  border-radius: 8px;
+  color: #70562d;
+  max-width: 34rem;
+  padding: 0.72rem 0.86rem;
+}
+
+.goblin-three-trial__stage {
+  min-height: calc(100vh - 196px);
+  overflow: hidden;
+  position: relative;
+}
+
+.goblin-three-trial__viewport {
+  background:
+    radial-gradient(circle at 50% 36%, rgb(255 255 255 / 92%), transparent 32%),
+    linear-gradient(180deg, #edf6f3 0%, #d8e7e1 56%, #b8894b 56%, #7a512c 100%);
+  height: max(560px, calc(100vh - 196px));
+  min-height: 560px;
+  outline: 1px solid var(--goblin-three-line);
+  position: relative;
+  touch-action: none;
+  width: 100%;
+}
+
+.goblin-three-trial__viewport canvas {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.goblin-three-trial__controls {
+  align-items: center;
+  background: rgb(255 255 255 / 88%);
+  border: 1px solid rgb(211 223 220 / 86%);
+  border-radius: 8px;
+  box-shadow: 0 12px 26px rgb(20 38 42 / 12%);
+  display: flex;
+  gap: 0.5rem;
+  left: 1rem;
+  padding: 0.5rem;
+  position: absolute;
+  top: 1rem;
+  z-index: 5;
+}
+
+.goblin-three-trial__controls button {
+  align-items: center;
+  background: #fff;
+  border: 1px solid #cbdad6;
+  border-radius: 8px;
+  color: var(--goblin-three-ink);
+  display: inline-flex;
+  font-weight: 850;
+  gap: 0.35rem;
+  min-height: 38px;
+  padding: 0.5rem 0.68rem;
+}
+
+.goblin-three-trial__controls button[aria-pressed="true"] {
+  background: #e4f3ea;
+  border-color: #96c5ad;
+  color: #154a38;
+}
+
+.goblin-three-trial__caption {
+  background: rgb(16 37 41 / 82%);
+  border: 1px solid rgb(255 255 255 / 16%);
+  border-radius: 8px;
+  bottom: 1rem;
+  color: #f8fffc;
+  display: grid;
+  gap: 0.2rem;
+  left: 1rem;
+  max-width: min(31rem, calc(100% - 2rem));
+  padding: 0.72rem 0.84rem;
+  position: absolute;
+  z-index: 5;
+}
+
+.goblin-three-trial__caption strong {
+  font-size: 0.92rem;
+}
+
+.goblin-three-trial__caption span {
+  color: #d3e4df;
+  font-size: 0.84rem;
+}
+
+.goblin-three-trial__error {
+  align-items: center;
+  color: var(--goblin-three-muted);
+  display: grid;
+  font-weight: 800;
+  inset: 0;
+  justify-items: center;
+  padding: 2rem;
+  position: absolute;
+  text-align: center;
+}
+
+@media (max-width: 720px) {
+  .goblin-three-trial__header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .goblin-three-trial__status {
+    max-width: none;
+  }
+
+  .goblin-three-trial__viewport {
+    height: 620px;
+  }
+
+  .goblin-three-trial__controls {
+    left: 0.75rem;
+    right: 0.75rem;
+    top: 0.75rem;
+  }
+
+  .goblin-three-trial__controls button {
+    flex: 1;
+    justify-content: center;
+  }
+}

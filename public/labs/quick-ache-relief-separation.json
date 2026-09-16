@@ -1,0 +1,1460 @@
+{
+  "id": "quick-ache-relief-separation",
+  "title": "Separating the Components of Quick Ache Relief",
+  "description": "Test pure-component properties, design and obtain approval for a separation, recover sucrose and acetaminophen while testing for possible aspirin, and evaluate consumer label hypotheses with gravimetric evidence.",
+  "audience": "Chemistry students completing a guided-inquiry consumer-product separation investigation.",
+  "learningGoals": [
+    "Use experimental property evidence for pure sucrose, acetaminophen, and aspirin to justify a separation design.",
+    "Execute a teacher-approved liquid-liquid or acid-base extraction with safe venting, labeled fractions, filtration, drying, and gravimetry.",
+    "Calculate component mass percentages and total recovery separately, then evaluate label accuracy and possible aspirin evidence with uncertainty.",
+    "Explain the separation at the particulate level using polarity, ion formation, partitioning, precipitation, filtration, and drying."
+  ],
+  "safetyNotes": [
+    "Wear safety goggles at all times and review relevant SDS information before selecting tests or a separation.",
+    "Treat acid and base solutions as skin and eye burn hazards.",
+    "Keep ethyl acetate away from ignition sources and use extreme caution with any approved heating.",
+    "Vent the separatory funnel away from people and relieve pressure during mixing.",
+    "Place liquid and solid waste only in teacher-designated containers."
+  ],
+  "equipment": [
+    "small-vial",
+    "test-tube",
+    "sample-rack",
+    "reagent-bottle",
+    "ph-paper",
+    "spatula",
+    "analytical-balance",
+    "watch-glass",
+    "beaker-250ml",
+    "erlenmeyer-flask-250ml",
+    "graduated-cylinder",
+    "separatory-funnel",
+    "ph-meter",
+    "stirring-rod",
+    "buchner-funnel",
+    "filter-paper",
+    "side-arm-filter-flask",
+    "vacuum-source",
+    "drying-oven",
+    "waste-beaker",
+    "wash-bottle",
+    "crucible-tongs",
+    "funnel-stand",
+    "reagent-bottle-1l"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "qar-sucrose-standard",
+        "definitionId": "small-vial",
+        "label": "Pure sucrose standard",
+        "location": "shelf",
+        "contents": {
+          "kind": "solid",
+          "label": "Pure sucrose",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "powder"
+        }
+      },
+      {
+        "id": "qar-acetaminophen-standard",
+        "definitionId": "small-vial",
+        "label": "Pure acetaminophen standard",
+        "location": "shelf",
+        "contents": {
+          "kind": "solid",
+          "label": "Pure acetaminophen",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "powder"
+        }
+      },
+      {
+        "id": "qar-aspirin-standard",
+        "definitionId": "small-vial",
+        "label": "Pure aspirin standard",
+        "location": "shelf",
+        "contents": {
+          "kind": "solid",
+          "label": "Pure aspirin",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "powder"
+        }
+      },
+      {
+        "id": "qar-property-rack",
+        "definitionId": "sample-rack",
+        "label": "Labeled property-test rack",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-property-reagent",
+        "definitionId": "reagent-bottle-1l",
+        "label": "Teacher-approved property-test reagent (1 L stock)",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Teacher-approved test reagent",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid",
+          "volumeMl": 1000
+        }
+      },
+      {
+        "id": "qar-property-ph-paper",
+        "definitionId": "ph-paper",
+        "label": "pH paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-property-spatula",
+        "definitionId": "spatula",
+        "label": "Spatula",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-unknown-sample",
+        "definitionId": "watch-glass",
+        "label": "Quick Ache Relief unknown",
+        "location": "shelf",
+        "contents": {
+          "kind": "solid",
+          "label": "Quick Ache Relief unknown powder",
+          "solutes": [
+            {
+              "id": "qar-sucrose-binder",
+              "label": "Sucrose binder",
+              "amount": 0.45,
+              "unit": "g"
+            },
+            {
+              "id": "qar-acetaminophen",
+              "label": "Acetaminophen",
+              "amount": 2.4,
+              "unit": "g"
+            },
+            {
+              "id": "qar-unidentified-acidic-component",
+              "label": "Unidentified acidic component",
+              "amount": 0.15,
+              "unit": "g"
+            }
+          ],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "powder",
+          "massG": 3
+        }
+      },
+      {
+        "id": "qar-balance",
+        "definitionId": "analytical-balance",
+        "label": "Analytical balance",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-extraction-beaker",
+        "definitionId": "beaker-250ml",
+        "label": "Labeled extraction beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-aqueous-fraction-flask",
+        "definitionId": "erlenmeyer-flask-250ml",
+        "label": "Labeled aqueous-fraction flask",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-organic-fraction-flask",
+        "definitionId": "erlenmeyer-flask-250ml",
+        "label": "Labeled organic-fraction flask",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-cylinder",
+        "definitionId": "graduated-cylinder",
+        "label": "Graduated cylinder",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-separatory-funnel",
+        "definitionId": "separatory-funnel",
+        "label": "Separatory funnel",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-ethyl-acetate",
+        "definitionId": "reagent-bottle",
+        "label": "Ethyl acetate",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Ethyl acetate",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid",
+          "volumeMl": 250
+        }
+      },
+      {
+        "id": "qar-bicarbonate",
+        "definitionId": "reagent-bottle",
+        "label": "10% sodium bicarbonate",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "10% NaHCO3",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid",
+          "volumeMl": 250
+        }
+      },
+      {
+        "id": "qar-hydrochloric-acid",
+        "definitionId": "reagent-bottle",
+        "label": "6 M hydrochloric acid",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "6 M HCl",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid",
+          "volumeMl": 250
+        }
+      },
+      {
+        "id": "qar-magnesium-sulfate",
+        "definitionId": "reagent-bottle",
+        "label": "Magnesium sulfate drying agent",
+        "location": "shelf",
+        "contents": {
+          "kind": "solid",
+          "label": "MgSO4",
+          "solutes": [
+            {
+              "id": "magnesium-sulfate",
+              "label": "Magnesium sulfate",
+              "amount": 50,
+              "unit": "g"
+            }
+          ],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "powder",
+          "massG": 50
+        }
+      },
+      {
+        "id": "qar-ph-paper",
+        "definitionId": "ph-paper",
+        "label": "pH paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-ph-meter",
+        "definitionId": "ph-meter",
+        "label": "pH meter",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-stirring-rod",
+        "definitionId": "stirring-rod",
+        "label": "Stirring rod",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-buchner-funnel",
+        "definitionId": "buchner-funnel",
+        "label": "Buchner funnel",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-filter-paper",
+        "definitionId": "filter-paper",
+        "label": "Filter paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-side-arm-flask",
+        "definitionId": "side-arm-filter-flask",
+        "label": "Side-arm filter flask",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-vacuum",
+        "definitionId": "vacuum-source",
+        "label": "Vacuum source",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-oven",
+        "definitionId": "drying-oven",
+        "label": "Optional drying oven",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-spatula",
+        "definitionId": "spatula",
+        "label": "Spatula",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-waste",
+        "definitionId": "waste-beaker",
+        "label": "Teacher-designated liquid waste",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-wash-bottle",
+        "definitionId": "wash-bottle",
+        "label": "Distilled-water wash bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Distilled water",
+          "volumeMl": 500,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "qar-tongs",
+        "definitionId": "crucible-tongs",
+        "label": "Crucible tongs",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-acidic-recovery-watch-glass",
+        "definitionId": "watch-glass",
+        "label": "Labeled acidic-fraction recovery watch glass",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-organic-recovery-watch-glass",
+        "definitionId": "watch-glass",
+        "label": "Labeled organic-fraction recovery watch glass",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-aqueous-recovery-watch-glass",
+        "definitionId": "watch-glass",
+        "label": "Labeled aqueous-fraction recovery watch glass",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-sucrose-property-test-tube",
+        "definitionId": "test-tube",
+        "label": "Sucrose property-test tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-acetaminophen-property-test-tube",
+        "definitionId": "test-tube",
+        "label": "Acetaminophen property-test tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-aspirin-property-test-tube",
+        "definitionId": "test-tube",
+        "label": "Aspirin property-test tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "qar-dried-organic-fraction-flask",
+        "definitionId": "erlenmeyer-flask-250ml",
+        "label": "Organic solution after drying-agent removal",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "Empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "quick-ache-extraction-recovery-cleanup-waste",
+        "definitionId": "waste-beaker",
+        "label": "Teacher-designated cleanup waste",
+        "location": "workbench",
+        "contents": {
+          "kind": "empty",
+          "label": "Empty designated waste",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "quick-ache-extraction-recovery-cleanup-waste-solid",
+        "definitionId": "waste-beaker",
+        "label": "Teacher-designated solid waste",
+        "location": "workbench",
+        "contents": {
+          "kind": "empty",
+          "label": "Empty solid waste",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "plan-gravity-funnel",
+        "definitionId": "funnel-stand",
+        "label": "Approved gravity funnel",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "Empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "plan-gravity-receiver",
+        "definitionId": "erlenmeyer-flask-250ml",
+        "label": "Approved gravity filtrate receiver",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "Empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "techniques": [],
+  "actions": [],
+  "process": {
+    "startNodeId": "qar-consumer-hypotheses-node",
+    "nodes": [],
+    "edges": []
+  },
+  "assessments": [
+    {
+      "id": "quick-ache-acidic-mass-assessment",
+      "type": "measurementRecorded",
+      "label": "The acidic fraction's dry recovered mass was measured.",
+      "measurementId": "qar-recovered-acidic-component-mass"
+    },
+    {
+      "id": "quick-ache-organic-mass-assessment",
+      "type": "measurementRecorded",
+      "label": "The organic fraction's dry recovered mass was measured.",
+      "measurementId": "qar-recovered-organic-component-mass"
+    },
+    {
+      "id": "quick-ache-aqueous-mass-assessment",
+      "type": "measurementRecorded",
+      "label": "The aqueous fraction's dry recovered mass was measured.",
+      "measurementId": "qar-recovered-aqueous-component-mass"
+    }
+  ],
+  "metadata": {
+    "version": "1.2.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-04T00:00:00.000Z",
+    "tags": [
+      "chemistry",
+      "quick-ache-relief",
+      "guided-inquiry",
+      "consumer-chemistry",
+      "separation",
+      "extraction",
+      "gravimetry"
+    ]
+  },
+  "techniqueInstances": [
+    {
+      "instanceId": "property",
+      "techniqueId": "quick-ache-property-evidence",
+      "version": "1.2.1",
+      "bindings": {
+        "equipment": {
+          "bonding-test-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "qar-sucrose-property-test-tube",
+                "definitionId": "test-tube",
+                "instanceId": "qar-sucrose-property-test-tube"
+              },
+              {
+                "sourceInstanceId": "qar-acetaminophen-property-test-tube",
+                "definitionId": "test-tube",
+                "instanceId": "qar-acetaminophen-property-test-tube"
+              },
+              {
+                "sourceInstanceId": "qar-aspirin-property-test-tube",
+                "definitionId": "test-tube",
+                "instanceId": "qar-aspirin-property-test-tube"
+              }
+            ]
+          },
+          "sample-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "qar-sucrose-standard",
+                "definitionId": "small-vial",
+                "instanceId": "qar-sucrose-standard"
+              },
+              {
+                "sourceInstanceId": "qar-acetaminophen-standard",
+                "definitionId": "small-vial",
+                "instanceId": "qar-acetaminophen-standard"
+              },
+              {
+                "sourceInstanceId": "qar-aspirin-standard",
+                "definitionId": "small-vial",
+                "instanceId": "qar-aspirin-standard"
+              }
+            ]
+          },
+          "bonding-test-solvent-source": {
+            "definitionId": "reagent-bottle-1l",
+            "instanceId": "qar-property-reagent"
+          }
+        },
+        "models": {},
+        "configuration": {}
+      },
+      "preserveIds": {
+        "actions": {
+          "qar-commit-consumer-hypotheses": "qar-commit-consumer-hypotheses",
+          "qar-select-pure-component-tests": "qar-select-pure-component-tests",
+          "qar-transfer-sucrose-test-portion": "qar-transfer-sucrose-test-portion",
+          "qar-apply-sucrose-approved-property-test": "qar-apply-sucrose-approved-property-test",
+          "qar-inspect-sucrose-property-result": "qar-inspect-sucrose-property-result",
+          "qar-record-sucrose-properties": "qar-record-sucrose-properties",
+          "qar-transfer-acetaminophen-test-portion": "qar-transfer-acetaminophen-test-portion",
+          "qar-apply-acetaminophen-approved-property-test": "qar-apply-acetaminophen-approved-property-test",
+          "qar-inspect-acetaminophen-property-result": "qar-inspect-acetaminophen-property-result",
+          "qar-record-acetaminophen-properties": "qar-record-acetaminophen-properties",
+          "qar-transfer-aspirin-test-portion": "qar-transfer-aspirin-test-portion",
+          "qar-apply-aspirin-approved-property-test": "qar-apply-aspirin-approved-property-test",
+          "qar-inspect-aspirin-property-result": "qar-inspect-aspirin-property-result",
+          "qar-record-aspirin-properties": "qar-record-aspirin-properties",
+          "qar-compare-property-matrix": "qar-compare-property-matrix"
+        },
+        "nodes": {
+          "qar-consumer-hypotheses-node": "qar-consumer-hypotheses-node",
+          "qar-select-pure-tests-node": "qar-select-pure-tests-node",
+          "qar-transfer-sucrose-test-portion-node": "qar-transfer-sucrose-test-portion-node",
+          "qar-apply-sucrose-approved-property-test-node": "qar-apply-sucrose-approved-property-test-node",
+          "qar-inspect-sucrose-property-result-node": "qar-inspect-sucrose-property-result-node",
+          "qar-sucrose-properties-node": "qar-sucrose-properties-node",
+          "qar-transfer-acetaminophen-test-portion-node": "qar-transfer-acetaminophen-test-portion-node",
+          "qar-apply-acetaminophen-approved-property-test-node": "qar-apply-acetaminophen-approved-property-test-node",
+          "qar-inspect-acetaminophen-property-result-node": "qar-inspect-acetaminophen-property-result-node",
+          "qar-acetaminophen-properties-node": "qar-acetaminophen-properties-node",
+          "qar-transfer-aspirin-test-portion-node": "qar-transfer-aspirin-test-portion-node",
+          "qar-apply-aspirin-approved-property-test-node": "qar-apply-aspirin-approved-property-test-node",
+          "qar-inspect-aspirin-property-result-node": "qar-inspect-aspirin-property-result-node",
+          "qar-aspirin-properties-node": "qar-aspirin-properties-node",
+          "qar-property-matrix-node": "qar-property-matrix-node"
+        },
+        "validationRules": {},
+        "references": {}
+      }
+    },
+    {
+      "instanceId": "approval",
+      "techniqueId": "quick-ache-design-approval",
+      "version": "1.2.0",
+      "bindings": {
+        "equipment": {},
+        "models": {},
+        "configuration": {}
+      },
+      "preserveIds": {
+        "actions": {
+          "qar-draft-separation-flowchart": "qar-draft-separation-flowchart",
+          "qar-audit-separation-safety": "qar-audit-separation-safety",
+          "qar-record-teacher-approval": "qar-record-teacher-approval"
+        },
+        "nodes": {
+          "qar-draft-flowchart-node": "qar-draft-flowchart-node",
+          "qar-safety-audit-node": "qar-safety-audit-node",
+          "qar-teacher-approval-node": "qar-teacher-approval-node"
+        },
+        "validationRules": {},
+        "references": {}
+      }
+    },
+    {
+      "instanceId": "extraction",
+      "techniqueId": "quick-ache-extraction-recovery",
+      "version": "1.3.1",
+      "bindings": {
+        "equipment": {
+          "balance-instrument": {
+            "definitionId": "analytical-balance",
+            "instanceId": "qar-balance"
+          },
+          "weighed-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "qar-unknown-sample",
+                "definitionId": "watch-glass",
+                "instanceId": "qar-unknown-sample"
+              },
+              {
+                "sourceInstanceId": "qar-acidic-recovery-watch-glass",
+                "definitionId": "watch-glass",
+                "instanceId": "qar-acidic-recovery-watch-glass"
+              },
+              {
+                "sourceInstanceId": "qar-organic-recovery-watch-glass",
+                "definitionId": "watch-glass",
+                "instanceId": "qar-organic-recovery-watch-glass"
+              },
+              {
+                "sourceInstanceId": "qar-aqueous-recovery-watch-glass",
+                "definitionId": "watch-glass",
+                "instanceId": "qar-aqueous-recovery-watch-glass"
+              }
+            ]
+          },
+          "weighed-sample-source": {
+            "definitionId": "watch-glass",
+            "instanceId": "qar-unknown-sample"
+          },
+          "receiving-vessel": {
+            "definitionId": "beaker-250ml",
+            "instanceId": "qar-extraction-beaker"
+          },
+          "solid-transfer-tool": {
+            "definitionId": "spatula",
+            "instanceId": "qar-spatula"
+          },
+          "variable-volume-measuring-device": {
+            "definitionId": "graduated-cylinder",
+            "instanceId": "qar-cylinder"
+          },
+          "liquid-source": {
+            "definitionId": "reagent-bottle",
+            "instanceId": "qar-ethyl-acetate"
+          },
+          "measured-solvent-source": {
+            "definitionId": "graduated-cylinder",
+            "instanceId": "qar-cylinder"
+          },
+          "extraction-phase-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "qar-extraction-beaker",
+                "definitionId": "beaker-250ml",
+                "instanceId": "qar-extraction-beaker"
+              },
+              {
+                "sourceInstanceId": "qar-bicarbonate",
+                "definitionId": "reagent-bottle",
+                "instanceId": "qar-bicarbonate"
+              },
+              {
+                "sourceInstanceId": "qar-organic-fraction-flask",
+                "definitionId": "erlenmeyer-flask-250ml",
+                "instanceId": "qar-organic-fraction-flask"
+              }
+            ]
+          },
+          "extraction-funnel": {
+            "definitionId": "separatory-funnel",
+            "instanceId": "qar-separatory-funnel"
+          },
+          "phase-receiver": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "qar-aqueous-fraction-flask",
+                "definitionId": "erlenmeyer-flask-250ml",
+                "instanceId": "qar-aqueous-fraction-flask"
+              },
+              {
+                "sourceInstanceId": "qar-organic-fraction-flask",
+                "definitionId": "erlenmeyer-flask-250ml",
+                "instanceId": "qar-organic-fraction-flask"
+              },
+              {
+                "sourceInstanceId": "qar-side-arm-flask",
+                "definitionId": "side-arm-filter-flask",
+                "instanceId": "qar-side-arm-flask"
+              },
+              {
+                "sourceInstanceId": "plan-gravity-receiver",
+                "definitionId": "erlenmeyer-flask-250ml",
+                "instanceId": "plan-gravity-receiver"
+              }
+            ]
+          },
+          "precipitating-reagent-source": {
+            "definitionId": "reagent-bottle",
+            "instanceId": "qar-hydrochloric-acid"
+          },
+          "precipitation-vessel": {
+            "definitionId": "erlenmeyer-flask-250ml",
+            "instanceId": "qar-aqueous-fraction-flask"
+          },
+          "stirring-device": {
+            "definitionId": "stirring-rod",
+            "instanceId": "qar-stirring-rod"
+          },
+          "recovery-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "qar-aqueous-fraction-flask",
+                "definitionId": "erlenmeyer-flask-250ml",
+                "instanceId": "qar-aqueous-fraction-flask"
+              },
+              {
+                "sourceInstanceId": "qar-filter-paper",
+                "definitionId": "filter-paper",
+                "instanceId": "qar-filter-paper"
+              },
+              {
+                "sourceInstanceId": "qar-acidic-recovery-watch-glass",
+                "definitionId": "watch-glass",
+                "instanceId": "qar-acidic-recovery-watch-glass"
+              },
+              {
+                "sourceInstanceId": "qar-organic-fraction-flask",
+                "definitionId": "erlenmeyer-flask-250ml",
+                "instanceId": "qar-organic-fraction-flask"
+              },
+              {
+                "sourceInstanceId": "qar-dried-organic-fraction-flask",
+                "definitionId": "erlenmeyer-flask-250ml",
+                "instanceId": "qar-dried-organic-fraction-flask"
+              },
+              {
+                "sourceInstanceId": "qar-organic-recovery-watch-glass",
+                "definitionId": "watch-glass",
+                "instanceId": "qar-organic-recovery-watch-glass"
+              },
+              {
+                "sourceInstanceId": "qar-extraction-beaker",
+                "definitionId": "beaker-250ml",
+                "instanceId": "qar-extraction-beaker"
+              },
+              {
+                "sourceInstanceId": "qar-aqueous-recovery-watch-glass",
+                "definitionId": "watch-glass",
+                "instanceId": "qar-aqueous-recovery-watch-glass"
+              }
+            ]
+          },
+          "immersed-probe-instrument": {
+            "definitionId": "ph-meter",
+            "instanceId": "qar-ph-meter"
+          },
+          "immersed-probe-vessel": {
+            "definitionId": "erlenmeyer-flask-250ml",
+            "instanceId": "qar-aqueous-fraction-flask"
+          },
+          "drying-agent-source": {
+            "definitionId": "reagent-bottle",
+            "instanceId": "qar-magnesium-sulfate"
+          },
+          "filtration-funnel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "qar-buchner-funnel",
+                "definitionId": "buchner-funnel",
+                "instanceId": "qar-buchner-funnel"
+              },
+              {
+                "sourceInstanceId": "plan-gravity-funnel",
+                "definitionId": "funnel-stand",
+                "instanceId": "plan-gravity-funnel"
+              }
+            ]
+          },
+          "filter-medium": {
+            "definitionId": "filter-paper",
+            "instanceId": "qar-filter-paper"
+          },
+          "rinse-water-source": {
+            "definitionId": "wash-bottle",
+            "instanceId": "qar-wash-bottle"
+          },
+          "filtration-receiver": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "qar-side-arm-flask",
+                "definitionId": "side-arm-filter-flask",
+                "instanceId": "qar-side-arm-flask"
+              },
+              {
+                "sourceInstanceId": "plan-gravity-receiver",
+                "definitionId": "erlenmeyer-flask-250ml",
+                "instanceId": "plan-gravity-receiver"
+              }
+            ]
+          },
+          "filtration-vacuum-source": {
+            "definitionId": "vacuum-source",
+            "instanceId": "qar-vacuum"
+          },
+          "mixture-source": {
+            "definitionId": "erlenmeyer-flask-250ml",
+            "instanceId": "qar-aqueous-fraction-flask"
+          },
+          "dried-assembly": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "qar-acidic-recovery-watch-glass",
+                "definitionId": "watch-glass",
+                "instanceId": "qar-acidic-recovery-watch-glass"
+              },
+              {
+                "sourceInstanceId": "qar-organic-recovery-watch-glass",
+                "definitionId": "watch-glass",
+                "instanceId": "qar-organic-recovery-watch-glass"
+              },
+              {
+                "sourceInstanceId": "qar-aqueous-recovery-watch-glass",
+                "definitionId": "watch-glass",
+                "instanceId": "qar-aqueous-recovery-watch-glass"
+              }
+            ]
+          },
+          "waste-receiver": {
+            "definitionId": "waste-beaker",
+            "instanceId": "quick-ache-extraction-recovery-cleanup-waste-solid"
+          }
+        },
+        "models": {},
+        "configuration": {}
+      },
+      "preserveIds": {
+        "actions": {
+          "qar-record-starting-mass": "qar-record-starting-mass",
+          "qar-record-starting-mass-evidence": "qar-record-starting-mass-evidence",
+          "qar-transfer-weighed-sample": "qar-transfer-weighed-sample",
+          "qar-execute-approved-dissolution": "qar-execute-approved-dissolution",
+          "qar-measure-approved-organic-volume": "qar-measure-approved-organic-volume",
+          "qar-transfer-approved-solvent": "qar-transfer-approved-solvent",
+          "qar-charge-funnel-organic-phase": "qar-charge-funnel-organic-phase",
+          "qar-charge-funnel-aqueous-phase": "qar-charge-funnel-aqueous-phase",
+          "qar-load-approved-extraction": "qar-load-approved-extraction",
+          "qar-configure-extraction-controls": "qar-configure-extraction-controls",
+          "qar-mix-and-vent": "qar-mix-and-vent",
+          "qar-vent-extraction-funnel": "qar-vent-extraction-funnel",
+          "qar-settle-and-observe-layers": "qar-settle-and-observe-layers",
+          "qar-inspect-separated-layers": "qar-inspect-separated-layers",
+          "qar-identify-layer-from-evidence": "qar-identify-layer-from-evidence",
+          "qar-drain-lower-layer": "qar-drain-lower-layer",
+          "qar-drain-upper-layer": "qar-drain-upper-layer",
+          "qar-drain-and-retain-layers": "qar-drain-and-retain-layers",
+          "qar-repeat-approved-extractions": "qar-repeat-approved-extractions",
+          "qar-adjust-approved-acid-base-endpoint": "qar-adjust-approved-acid-base-endpoint",
+          "qar-acidify-recovered-fraction": "qar-acidify-recovered-fraction",
+          "qar-read-recovery-ph": "qar-read-recovery-ph",
+          "qar-precipitate-recovered-component": "qar-precipitate-recovered-component",
+          "qar-dry-organic-phase-with-mgso4": "qar-dry-organic-phase-with-mgso4",
+          "qar-dry-organic-phase": "qar-dry-organic-phase",
+          "qar-place-buchner-funnel": "qar-place-buchner-funnel",
+          "qar-weigh-filter-paper-tare": "qar-weigh-filter-paper-tare",
+          "qar-seat-filter-paper": "qar-seat-filter-paper",
+          "qar-wet-filter-paper": "qar-wet-filter-paper",
+          "qar-place-side-arm-flask": "qar-place-side-arm-flask",
+          "qar-place-vacuum-source": "qar-place-vacuum-source",
+          "qar-assemble-vacuum-filtration": "qar-assemble-vacuum-filtration",
+          "qar-filter-recovered-solid": "qar-filter-recovered-solid",
+          "qar-rinse-collected-solid": "qar-rinse-collected-solid",
+          "qar-weigh-acidic-watch-glass-tare": "qar-weigh-acidic-watch-glass-tare",
+          "qar-transfer-solid-to-watch-glass": "qar-transfer-solid-to-watch-glass",
+          "qar-collect-acidic-residue": "qar-collect-acidic-residue",
+          "qar-dry-acidic-solid": "qar-dry-acidic-solid",
+          "qar-cool-acidic-solid": "qar-cool-acidic-solid",
+          "qar-weigh-acidic-solid": "qar-weigh-acidic-solid",
+          "qar-weigh-organic-watch-glass-tare": "qar-weigh-organic-watch-glass-tare",
+          "qar-remove-drying-agent": "qar-remove-drying-agent",
+          "qar-recover-organic-component": "qar-recover-organic-component",
+          "qar-wash-organic-solid": "qar-wash-organic-solid",
+          "qar-collect-organic-residue": "qar-collect-organic-residue",
+          "qar-dry-organic-solid": "qar-dry-organic-solid",
+          "qar-cool-organic-solid": "qar-cool-organic-solid",
+          "qar-weigh-organic-solid": "qar-weigh-organic-solid",
+          "qar-decant-filtrate-to-beaker": "qar-decant-filtrate-to-beaker",
+          "qar-weigh-aqueous-watch-glass-tare": "qar-weigh-aqueous-watch-glass-tare",
+          "qar-recover-aqueous-component": "qar-recover-aqueous-component",
+          "qar-wash-aqueous-solid": "qar-wash-aqueous-solid",
+          "qar-collect-aqueous-residue": "qar-collect-aqueous-residue",
+          "qar-dry-aqueous-solid": "qar-dry-aqueous-solid",
+          "qar-cool-aqueous-solid": "qar-cool-aqueous-solid",
+          "qar-weigh-aqueous-solid": "qar-weigh-aqueous-solid",
+          "qar-dry-recovered-fractions": "qar-dry-recovered-fractions",
+          "cleanup-qar-acidic-recovery-watch-glass-dispose-contents": "cleanup-qar-acidic-recovery-watch-glass-dispose-contents",
+          "cleanup-qar-organic-recovery-watch-glass-dispose-contents": "cleanup-qar-organic-recovery-watch-glass-dispose-contents",
+          "cleanup-qar-aqueous-recovery-watch-glass-dispose-contents": "cleanup-qar-aqueous-recovery-watch-glass-dispose-contents",
+          "cleanup-qar-organic-fraction-flask-dispose-contents": "cleanup-qar-organic-fraction-flask-dispose-contents",
+          "qar-record-dry-component-masses": "qar-record-dry-component-masses",
+          "plan-wash-2-qar-charge-funnel-organic-phase": "plan-wash-2-qar-charge-funnel-organic-phase",
+          "plan-wash-2-qar-charge-funnel-aqueous-phase": "plan-wash-2-qar-charge-funnel-aqueous-phase",
+          "plan-wash-2-qar-mix-and-vent": "plan-wash-2-qar-mix-and-vent",
+          "plan-wash-2-qar-vent-extraction-funnel": "plan-wash-2-qar-vent-extraction-funnel",
+          "plan-wash-2-qar-settle-and-observe-layers": "plan-wash-2-qar-settle-and-observe-layers",
+          "plan-wash-2-qar-inspect-separated-layers": "plan-wash-2-qar-inspect-separated-layers",
+          "plan-wash-2-qar-identify-layer-from-evidence": "plan-wash-2-qar-identify-layer-from-evidence",
+          "plan-wash-2-qar-drain-lower-layer": "plan-wash-2-qar-drain-lower-layer",
+          "plan-wash-2-qar-drain-upper-layer": "plan-wash-2-qar-drain-upper-layer",
+          "plan-wash-3-qar-charge-funnel-organic-phase": "plan-wash-3-qar-charge-funnel-organic-phase",
+          "plan-wash-3-qar-charge-funnel-aqueous-phase": "plan-wash-3-qar-charge-funnel-aqueous-phase",
+          "plan-wash-3-qar-mix-and-vent": "plan-wash-3-qar-mix-and-vent",
+          "plan-wash-3-qar-vent-extraction-funnel": "plan-wash-3-qar-vent-extraction-funnel",
+          "plan-wash-3-qar-settle-and-observe-layers": "plan-wash-3-qar-settle-and-observe-layers",
+          "plan-wash-3-qar-inspect-separated-layers": "plan-wash-3-qar-inspect-separated-layers",
+          "plan-wash-3-qar-identify-layer-from-evidence": "plan-wash-3-qar-identify-layer-from-evidence",
+          "plan-wash-3-qar-drain-lower-layer": "plan-wash-3-qar-drain-lower-layer",
+          "plan-wash-3-qar-drain-upper-layer": "plan-wash-3-qar-drain-upper-layer",
+          "plan-wash-4-qar-charge-funnel-organic-phase": "plan-wash-4-qar-charge-funnel-organic-phase",
+          "plan-wash-4-qar-charge-funnel-aqueous-phase": "plan-wash-4-qar-charge-funnel-aqueous-phase",
+          "plan-wash-4-qar-mix-and-vent": "plan-wash-4-qar-mix-and-vent",
+          "plan-wash-4-qar-vent-extraction-funnel": "plan-wash-4-qar-vent-extraction-funnel",
+          "plan-wash-4-qar-settle-and-observe-layers": "plan-wash-4-qar-settle-and-observe-layers",
+          "plan-wash-4-qar-inspect-separated-layers": "plan-wash-4-qar-inspect-separated-layers",
+          "plan-wash-4-qar-identify-layer-from-evidence": "plan-wash-4-qar-identify-layer-from-evidence",
+          "plan-wash-4-qar-drain-lower-layer": "plan-wash-4-qar-drain-lower-layer",
+          "plan-wash-4-qar-drain-upper-layer": "plan-wash-4-qar-drain-upper-layer",
+          "plan-wash-5-qar-charge-funnel-organic-phase": "plan-wash-5-qar-charge-funnel-organic-phase",
+          "plan-wash-5-qar-charge-funnel-aqueous-phase": "plan-wash-5-qar-charge-funnel-aqueous-phase",
+          "plan-wash-5-qar-mix-and-vent": "plan-wash-5-qar-mix-and-vent",
+          "plan-wash-5-qar-vent-extraction-funnel": "plan-wash-5-qar-vent-extraction-funnel",
+          "plan-wash-5-qar-settle-and-observe-layers": "plan-wash-5-qar-settle-and-observe-layers",
+          "plan-wash-5-qar-inspect-separated-layers": "plan-wash-5-qar-inspect-separated-layers",
+          "plan-wash-5-qar-identify-layer-from-evidence": "plan-wash-5-qar-identify-layer-from-evidence",
+          "plan-wash-5-qar-drain-lower-layer": "plan-wash-5-qar-drain-lower-layer",
+          "plan-wash-5-qar-drain-upper-layer": "plan-wash-5-qar-drain-upper-layer",
+          "plan-gravity-qar-adjust-approved-acid-base-endpoint": "plan-gravity-qar-adjust-approved-acid-base-endpoint",
+          "plan-gravity-qar-acidify-recovered-fraction": "plan-gravity-qar-acidify-recovered-fraction",
+          "plan-gravity-qar-read-recovery-ph": "plan-gravity-qar-read-recovery-ph",
+          "plan-gravity-qar-precipitate-recovered-component": "plan-gravity-qar-precipitate-recovered-component",
+          "plan-gravity-qar-place-funnel-stand": "plan-gravity-qar-place-funnel-stand",
+          "plan-gravity-qar-weigh-filter-paper-tare": "plan-gravity-qar-weigh-filter-paper-tare",
+          "plan-gravity-qar-seat-filter-paper": "plan-gravity-qar-seat-filter-paper",
+          "plan-gravity-qar-wet-filter-paper": "plan-gravity-qar-wet-filter-paper",
+          "plan-gravity-qar-place-side-arm-flask": "plan-gravity-qar-place-side-arm-flask",
+          "plan-gravity-qar-filter-recovered-solid": "plan-gravity-qar-filter-recovered-solid",
+          "plan-gravity-qar-rinse-collected-solid": "plan-gravity-qar-rinse-collected-solid",
+          "plan-gravity-qar-weigh-acidic-watch-glass-tare": "plan-gravity-qar-weigh-acidic-watch-glass-tare",
+          "plan-gravity-qar-transfer-solid-to-watch-glass": "plan-gravity-qar-transfer-solid-to-watch-glass",
+          "plan-gravity-qar-collect-acidic-residue": "plan-gravity-qar-collect-acidic-residue",
+          "plan-gravity-qar-dry-acidic-solid": "plan-gravity-qar-dry-acidic-solid",
+          "plan-gravity-qar-cool-acidic-solid": "plan-gravity-qar-cool-acidic-solid",
+          "plan-gravity-qar-weigh-acidic-solid": "plan-gravity-qar-weigh-acidic-solid",
+          "plan-gravity-qar-decant-filtrate-to-beaker": "plan-gravity-qar-decant-filtrate-to-beaker",
+          "plan-gravity-qar-weigh-aqueous-watch-glass-tare": "plan-gravity-qar-weigh-aqueous-watch-glass-tare",
+          "plan-gravity-qar-recover-aqueous-component": "plan-gravity-qar-recover-aqueous-component",
+          "plan-gravity-qar-wash-aqueous-solid": "plan-gravity-qar-wash-aqueous-solid",
+          "plan-gravity-qar-collect-aqueous-residue": "plan-gravity-qar-collect-aqueous-residue",
+          "plan-gravity-qar-dry-aqueous-solid": "plan-gravity-qar-dry-aqueous-solid",
+          "plan-gravity-qar-cool-aqueous-solid": "plan-gravity-qar-cool-aqueous-solid",
+          "plan-gravity-qar-weigh-aqueous-solid": "plan-gravity-qar-weigh-aqueous-solid"
+        },
+        "nodes": {
+          "qar-starting-mass-node": "qar-starting-mass-node",
+          "qar-record-starting-mass-evidence-node": "qar-record-starting-mass-evidence-node",
+          "qar-transfer-weighed-sample-node": "qar-transfer-weighed-sample-node",
+          "qar-approved-dissolution-node": "qar-approved-dissolution-node",
+          "qar-measure-approved-organic-volume-node": "qar-measure-approved-organic-volume-node",
+          "qar-transfer-approved-solvent-node": "qar-transfer-approved-solvent-node",
+          "qar-charge-funnel-organic-phase-node": "qar-charge-funnel-organic-phase-node",
+          "qar-charge-funnel-aqueous-phase-node": "qar-charge-funnel-aqueous-phase-node",
+          "qar-load-extraction-node": "qar-load-extraction-node",
+          "qar-configure-extraction-controls-node": "qar-configure-extraction-controls-node",
+          "qar-mix-vent-node": "qar-mix-vent-node",
+          "qar-vent-extraction-funnel-node": "qar-vent-extraction-funnel-node",
+          "qar-settle-layers-node": "qar-settle-layers-node",
+          "qar-inspect-separated-layers-node": "qar-inspect-separated-layers-node",
+          "qar-identify-layer-node": "qar-identify-layer-node",
+          "qar-drain-lower-layer-node": "qar-drain-lower-layer-node",
+          "qar-drain-upper-layer-node": "qar-drain-upper-layer-node",
+          "qar-drain-layers-node": "qar-drain-layers-node",
+          "qar-repeat-extraction-node": "qar-repeat-extraction-node",
+          "qar-acid-base-endpoint-node": "qar-acid-base-endpoint-node",
+          "qar-acidify-recovered-fraction-node": "qar-acidify-recovered-fraction-node",
+          "qar-read-recovery-ph-node": "qar-read-recovery-ph-node",
+          "qar-precipitate-recovered-component-node": "qar-precipitate-recovered-component-node",
+          "qar-dry-organic-phase-with-mgso4-node": "qar-dry-organic-phase-with-mgso4-node",
+          "qar-organic-drying-node": "qar-organic-drying-node",
+          "qar-place-buchner-funnel-node": "qar-place-buchner-funnel-node",
+          "qar-weigh-filter-paper-tare-node": "qar-weigh-filter-paper-tare-node",
+          "qar-seat-filter-paper-node": "qar-seat-filter-paper-node",
+          "qar-wet-filter-paper-node": "qar-wet-filter-paper-node",
+          "qar-place-side-arm-flask-node": "qar-place-side-arm-flask-node",
+          "qar-place-vacuum-source-node": "qar-place-vacuum-source-node",
+          "qar-filtration-assembly-node": "qar-filtration-assembly-node",
+          "qar-filter-solid-node": "qar-filter-solid-node",
+          "qar-rinse-collected-solid-node": "qar-rinse-collected-solid-node",
+          "qar-weigh-acidic-watch-glass-tare-node": "qar-weigh-acidic-watch-glass-tare-node",
+          "qar-transfer-solid-to-watch-glass-node": "qar-transfer-solid-to-watch-glass-node",
+          "qar-collect-acidic-residue-node": "qar-collect-acidic-residue-node",
+          "qar-dry-acidic-solid-node": "qar-dry-acidic-solid-node",
+          "qar-cool-acidic-solid-node": "qar-cool-acidic-solid-node",
+          "qar-weigh-acidic-solid-node": "qar-weigh-acidic-solid-node",
+          "qar-weigh-organic-watch-glass-tare-node": "qar-weigh-organic-watch-glass-tare-node",
+          "qar-remove-drying-agent-node": "qar-remove-drying-agent-node",
+          "qar-recover-organic-component-node": "qar-recover-organic-component-node",
+          "qar-wash-organic-solid-node": "qar-wash-organic-solid-node",
+          "qar-collect-organic-residue-node": "qar-collect-organic-residue-node",
+          "qar-dry-organic-solid-node": "qar-dry-organic-solid-node",
+          "qar-cool-organic-solid-node": "qar-cool-organic-solid-node",
+          "qar-weigh-organic-solid-node": "qar-weigh-organic-solid-node",
+          "qar-decant-filtrate-to-beaker-node": "qar-decant-filtrate-to-beaker-node",
+          "qar-weigh-aqueous-watch-glass-tare-node": "qar-weigh-aqueous-watch-glass-tare-node",
+          "qar-recover-aqueous-component-node": "qar-recover-aqueous-component-node",
+          "qar-wash-aqueous-solid-node": "qar-wash-aqueous-solid-node",
+          "qar-collect-aqueous-residue-node": "qar-collect-aqueous-residue-node",
+          "qar-dry-aqueous-solid-node": "qar-dry-aqueous-solid-node",
+          "qar-cool-aqueous-solid-node": "qar-cool-aqueous-solid-node",
+          "qar-weigh-aqueous-solid-node": "qar-weigh-aqueous-solid-node",
+          "qar-dry-fractions-node": "qar-dry-fractions-node",
+          "cleanup-qar-acidic-recovery-watch-glass-dispose-contents-node": "cleanup-qar-acidic-recovery-watch-glass-dispose-contents-node",
+          "cleanup-qar-organic-recovery-watch-glass-dispose-contents-node": "cleanup-qar-organic-recovery-watch-glass-dispose-contents-node",
+          "cleanup-qar-aqueous-recovery-watch-glass-dispose-contents-node": "cleanup-qar-aqueous-recovery-watch-glass-dispose-contents-node",
+          "cleanup-qar-organic-fraction-flask-dispose-contents-node": "cleanup-qar-organic-fraction-flask-dispose-contents-node",
+          "qar-record-masses-node": "qar-record-masses-node",
+          "plan-wash-2-qar-charge-funnel-organic-phase-node": "plan-wash-2-qar-charge-funnel-organic-phase-node",
+          "plan-wash-2-qar-charge-funnel-aqueous-phase-node": "plan-wash-2-qar-charge-funnel-aqueous-phase-node",
+          "plan-wash-2-qar-mix-and-vent-node": "plan-wash-2-qar-mix-and-vent-node",
+          "plan-wash-2-qar-vent-extraction-funnel-node": "plan-wash-2-qar-vent-extraction-funnel-node",
+          "plan-wash-2-qar-settle-and-observe-layers-node": "plan-wash-2-qar-settle-and-observe-layers-node",
+          "plan-wash-2-qar-inspect-separated-layers-node": "plan-wash-2-qar-inspect-separated-layers-node",
+          "plan-wash-2-qar-identify-layer-from-evidence-node": "plan-wash-2-qar-identify-layer-from-evidence-node",
+          "plan-wash-2-qar-drain-lower-layer-node": "plan-wash-2-qar-drain-lower-layer-node",
+          "plan-wash-2-qar-drain-upper-layer-node": "plan-wash-2-qar-drain-upper-layer-node",
+          "plan-wash-3-qar-charge-funnel-organic-phase-node": "plan-wash-3-qar-charge-funnel-organic-phase-node",
+          "plan-wash-3-qar-charge-funnel-aqueous-phase-node": "plan-wash-3-qar-charge-funnel-aqueous-phase-node",
+          "plan-wash-3-qar-mix-and-vent-node": "plan-wash-3-qar-mix-and-vent-node",
+          "plan-wash-3-qar-vent-extraction-funnel-node": "plan-wash-3-qar-vent-extraction-funnel-node",
+          "plan-wash-3-qar-settle-and-observe-layers-node": "plan-wash-3-qar-settle-and-observe-layers-node",
+          "plan-wash-3-qar-inspect-separated-layers-node": "plan-wash-3-qar-inspect-separated-layers-node",
+          "plan-wash-3-qar-identify-layer-from-evidence-node": "plan-wash-3-qar-identify-layer-from-evidence-node",
+          "plan-wash-3-qar-drain-lower-layer-node": "plan-wash-3-qar-drain-lower-layer-node",
+          "plan-wash-3-qar-drain-upper-layer-node": "plan-wash-3-qar-drain-upper-layer-node",
+          "plan-wash-4-qar-charge-funnel-organic-phase-node": "plan-wash-4-qar-charge-funnel-organic-phase-node",
+          "plan-wash-4-qar-charge-funnel-aqueous-phase-node": "plan-wash-4-qar-charge-funnel-aqueous-phase-node",
+          "plan-wash-4-qar-mix-and-vent-node": "plan-wash-4-qar-mix-and-vent-node",
+          "plan-wash-4-qar-vent-extraction-funnel-node": "plan-wash-4-qar-vent-extraction-funnel-node",
+          "plan-wash-4-qar-settle-and-observe-layers-node": "plan-wash-4-qar-settle-and-observe-layers-node",
+          "plan-wash-4-qar-inspect-separated-layers-node": "plan-wash-4-qar-inspect-separated-layers-node",
+          "plan-wash-4-qar-identify-layer-from-evidence-node": "plan-wash-4-qar-identify-layer-from-evidence-node",
+          "plan-wash-4-qar-drain-lower-layer-node": "plan-wash-4-qar-drain-lower-layer-node",
+          "plan-wash-4-qar-drain-upper-layer-node": "plan-wash-4-qar-drain-upper-layer-node",
+          "plan-wash-5-qar-charge-funnel-organic-phase-node": "plan-wash-5-qar-charge-funnel-organic-phase-node",
+          "plan-wash-5-qar-charge-funnel-aqueous-phase-node": "plan-wash-5-qar-charge-funnel-aqueous-phase-node",
+          "plan-wash-5-qar-mix-and-vent-node": "plan-wash-5-qar-mix-and-vent-node",
+          "plan-wash-5-qar-vent-extraction-funnel-node": "plan-wash-5-qar-vent-extraction-funnel-node",
+          "plan-wash-5-qar-settle-and-observe-layers-node": "plan-wash-5-qar-settle-and-observe-layers-node",
+          "plan-wash-5-qar-inspect-separated-layers-node": "plan-wash-5-qar-inspect-separated-layers-node",
+          "plan-wash-5-qar-identify-layer-from-evidence-node": "plan-wash-5-qar-identify-layer-from-evidence-node",
+          "plan-wash-5-qar-drain-lower-layer-node": "plan-wash-5-qar-drain-lower-layer-node",
+          "plan-wash-5-qar-drain-upper-layer-node": "plan-wash-5-qar-drain-upper-layer-node",
+          "plan-gravity-qar-adjust-approved-acid-base-endpoint-node": "plan-gravity-qar-adjust-approved-acid-base-endpoint-node",
+          "plan-gravity-qar-acidify-recovered-fraction-node": "plan-gravity-qar-acidify-recovered-fraction-node",
+          "plan-gravity-qar-read-recovery-ph-node": "plan-gravity-qar-read-recovery-ph-node",
+          "plan-gravity-qar-precipitate-recovered-component-node": "plan-gravity-qar-precipitate-recovered-component-node",
+          "plan-gravity-qar-place-funnel-stand-node": "plan-gravity-qar-place-funnel-stand-node",
+          "plan-gravity-qar-weigh-filter-paper-tare-node": "plan-gravity-qar-weigh-filter-paper-tare-node",
+          "plan-gravity-qar-seat-filter-paper-node": "plan-gravity-qar-seat-filter-paper-node",
+          "plan-gravity-qar-wet-filter-paper-node": "plan-gravity-qar-wet-filter-paper-node",
+          "plan-gravity-qar-place-side-arm-flask-node": "plan-gravity-qar-place-side-arm-flask-node",
+          "plan-gravity-qar-filter-recovered-solid-node": "plan-gravity-qar-filter-recovered-solid-node",
+          "plan-gravity-qar-rinse-collected-solid-node": "plan-gravity-qar-rinse-collected-solid-node",
+          "plan-gravity-qar-weigh-acidic-watch-glass-tare-node": "plan-gravity-qar-weigh-acidic-watch-glass-tare-node",
+          "plan-gravity-qar-transfer-solid-to-watch-glass-node": "plan-gravity-qar-transfer-solid-to-watch-glass-node",
+          "plan-gravity-qar-collect-acidic-residue-node": "plan-gravity-qar-collect-acidic-residue-node",
+          "plan-gravity-qar-dry-acidic-solid-node": "plan-gravity-qar-dry-acidic-solid-node",
+          "plan-gravity-qar-cool-acidic-solid-node": "plan-gravity-qar-cool-acidic-solid-node",
+          "plan-gravity-qar-weigh-acidic-solid-node": "plan-gravity-qar-weigh-acidic-solid-node",
+          "plan-gravity-qar-decant-filtrate-to-beaker-node": "plan-gravity-qar-decant-filtrate-to-beaker-node",
+          "plan-gravity-qar-weigh-aqueous-watch-glass-tare-node": "plan-gravity-qar-weigh-aqueous-watch-glass-tare-node",
+          "plan-gravity-qar-recover-aqueous-component-node": "plan-gravity-qar-recover-aqueous-component-node",
+          "plan-gravity-qar-wash-aqueous-solid-node": "plan-gravity-qar-wash-aqueous-solid-node",
+          "plan-gravity-qar-collect-aqueous-residue-node": "plan-gravity-qar-collect-aqueous-residue-node",
+          "plan-gravity-qar-dry-aqueous-solid-node": "plan-gravity-qar-dry-aqueous-solid-node",
+          "plan-gravity-qar-cool-aqueous-solid-node": "plan-gravity-qar-cool-aqueous-solid-node",
+          "plan-gravity-qar-weigh-aqueous-solid-node": "plan-gravity-qar-weigh-aqueous-solid-node"
+        },
+        "validationRules": {},
+        "references": {}
+      }
+    },
+    {
+      "instanceId": "analysis",
+      "techniqueId": "quick-ache-analysis-report",
+      "version": "1.2.0",
+      "bindings": {
+        "equipment": {},
+        "models": {},
+        "configuration": {}
+      },
+      "preserveIds": {
+        "actions": {
+          "qar-confirm-composition-formula": "qar-confirm-composition-formula",
+          "qar-calculate-sucrose-percentage": "qar-calculate-sucrose-percentage",
+          "qar-calculate-acetaminophen-percentage": "qar-calculate-acetaminophen-percentage",
+          "qar-calculate-possible-aspirin-percentage": "qar-calculate-possible-aspirin-percentage",
+          "qar-calculate-total-recovery": "qar-calculate-total-recovery",
+          "qar-evaluate-label-accuracy": "qar-evaluate-label-accuracy",
+          "qar-analyze-uncertainty": "qar-analyze-uncertainty",
+          "qar-submit-report-evidence": "qar-submit-report-evidence",
+          "qar-submit-particulate-postlab": "qar-submit-particulate-postlab"
+        },
+        "nodes": {
+          "qar-confirm-formula-node": "qar-confirm-formula-node",
+          "qar-sucrose-percent-node": "qar-sucrose-percent-node",
+          "qar-acetaminophen-percent-node": "qar-acetaminophen-percent-node",
+          "qar-possible-aspirin-percent-node": "qar-possible-aspirin-percent-node",
+          "qar-total-recovery-node": "qar-total-recovery-node",
+          "qar-label-accuracy-node": "qar-label-accuracy-node",
+          "qar-uncertainty-node": "qar-uncertainty-node",
+          "qar-report-node": "qar-report-node",
+          "qar-particulate-postlab-node": "qar-particulate-postlab-node"
+        },
+        "validationRules": {},
+        "references": {}
+      }
+    }
+  ],
+  "compositionStart": {
+    "kind": "technique-port",
+    "instanceId": "property",
+    "portId": "entry-qar-consumer-hypotheses-node"
+  },
+  "compositionConnections": [
+    {
+      "id": "property-to-approval",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "property",
+        "portId": "exit-qar-property-matrix-node"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "approval",
+        "portId": "entry-qar-draft-flowchart-node"
+      },
+      "label": "Next",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "approval-to-extraction",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "approval",
+        "portId": "exit-qar-teacher-approval-node"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "extraction",
+        "portId": "entry-qar-starting-mass-node"
+      },
+      "label": "Next",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "extraction-to-analysis",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "extraction",
+        "portId": "exit-qar-record-masses-node"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "analysis",
+        "portId": "entry-qar-confirm-formula-node"
+      },
+      "label": "Next",
+      "condition": {
+        "type": "validationPassed"
+      }
+    }
+  ],
+  "compositionAssessmentOrder": [
+    {
+      "kind": "technique-success-criterion",
+      "instanceId": "property",
+      "ruleId": "quick-ache-property-evidence-complete"
+    },
+    {
+      "kind": "technique-success-criterion",
+      "instanceId": "approval",
+      "ruleId": "quick-ache-design-approval-complete"
+    },
+    {
+      "kind": "technique-success-criterion",
+      "instanceId": "extraction",
+      "ruleId": "quick-ache-extraction-recovery-complete"
+    },
+    {
+      "kind": "technique-success-criterion",
+      "instanceId": "analysis",
+      "ruleId": "quick-ache-analysis-report-complete"
+    },
+    {
+      "kind": "lab-assessment",
+      "ruleId": "quick-ache-acidic-mass-assessment",
+      "substitutes": {
+        "instanceId": "extraction",
+        "ruleId": "quick-ache-acidic-mass-recorded"
+      }
+    },
+    {
+      "kind": "lab-assessment",
+      "ruleId": "quick-ache-organic-mass-assessment",
+      "substitutes": {
+        "instanceId": "extraction",
+        "ruleId": "quick-ache-organic-mass-recorded"
+      }
+    },
+    {
+      "kind": "lab-assessment",
+      "ruleId": "quick-ache-aqueous-mass-assessment",
+      "substitutes": {
+        "instanceId": "extraction",
+        "ruleId": "quick-ache-aqueous-mass-recorded"
+      }
+    }
+  ],
+  "reachabilityWitnesses": [
+    {
+      "id": "default",
+      "configuration": {},
+      "approvalGates": {}
+    }
+  ]
+}

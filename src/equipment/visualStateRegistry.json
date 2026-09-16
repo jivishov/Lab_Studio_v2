@@ -1,0 +1,2372 @@
+{
+  "schema": "lab-studio/visual-state-registry@2",
+  "cycle": "05, extended by 08, extended by 06, extended by 10",
+  "consumedBy": [
+    "scripts/checkContentConsistency.mjs",
+    "src/equipment/registries.ts",
+    "src/equipment/liquidRendering/styles.ts",
+    "src/equipment/solidRendering.ts"
+  ],
+  "policy": "Every authored visualState must appear here with a disposition. An explicit authored state is authoritative: src/equipment/liquidRendering/styles.ts and src/equipment/solidRendering.ts resolve it from this file first and consult the fallbacks below only when an instance authors no state at all, or authors one whose disposition is nonvisual. quantitativeClaim may be \"none\" or \"ordinal\" and never \"absolute\": appearance alone must not imply a measured value. A `runtime-assigned` state must also declare `runtimeAssignment`: `default` when an authored value wins and the literal is only the fallback, `unconditional` when the reducer decides and no authored value reaches that site. The content checker re-reads the reducer and fails when the two disagree.",
+  "dispositions": {
+    "liquid-style": "Rendered as a liquid body from this entry's renderStyle. src/equipment/liquidRendering/styles.ts builds LIQUID_STYLES from these entries; it holds no palette of its own.",
+    "solid-style": "Rendered as a solid or precipitate region from this entry's solidStyle, through src/equipment/solidRendering.ts.",
+    "state-asset": "Rendered as a whole-apparatus asset through stateAssets in src/equipment/visualCatalog.ts.",
+    "nonvisual": "Intentionally has no distinct appearance. Not debt. The container fallbacks may apply.",
+    "unresolved": "Authored but resolves to neither a style nor a state asset today. Carried as debt with an owning cycle; it renders the default appearance and is never silently replaced by a label heuristic."
+  },
+  "evidenceKinds": {
+    "source-observed": "A dated source plan states this appearance, or names it as a required observation.",
+    "measurement-derived": "The appearance participates in a measurement method, so it may not be chosen for presentation reasons. Only the cycle that owns the procedure may set it.",
+    "simulator-configured": "Assigned by the runtime during play rather than authored in content.",
+    "qualitative": "A named appearance that conveys kind or stage only. No source plan states a colour for it.",
+    "presentation-only": "Exists for presentation. Makes no claim about the substance at all."
+  },
+  "selectors": {
+    "authored": "Reachable because content authors this exact visualState today.",
+    "definition-id": "Reachable through the fallbacks.definitionIdStates table when an instance authors no state.",
+    "reagent-heuristic": "Reachable through the fallbacks.reagentKeywordStates table when an instance authors no state.",
+    "runtime-assigned": "Reachable because the runtime sets it during play."
+  },
+  "fallbacks": {
+    "policy": "Consulted only when an instance has no visualState, or when its visualState is registered nonvisual. An authored state that resolves wins outright; an authored state that does not resolve falls through to defaultLiquidState or defaultSolidState and is reported by visual-state/unresolved or visual-state/unregistered, never quietly replaced by a heuristic.",
+    "definitionIdStates": [
+      {
+        "definitionId": "waste-beaker",
+        "state": "waste"
+      },
+      {
+        "definitionId": "phenolphthalein-dropper",
+        "state": "phenolphthalein"
+      },
+      {
+        "definitionId": "sample-bottle",
+        "state": "sample-bottle-water"
+      }
+    ],
+    "reagentKeywordStates": [
+      {
+        "keywords": [
+          "phenolphthalein"
+        ],
+        "state": "phenolphthalein"
+      },
+      {
+        "keywords": [
+          "naoh",
+          "sodium hydroxide"
+        ],
+        "state": "naoh"
+      },
+      {
+        "keywords": [
+          "hcl",
+          "hydrochloric",
+          "acid"
+        ],
+        "state": "acid"
+      },
+      {
+        "keywords": [
+          "filtrate"
+        ],
+        "state": "clear-filtrate"
+      },
+      {
+        "keywords": [
+          "waste"
+        ],
+        "state": "waste"
+      },
+      {
+        "keywords": [
+          "unknown"
+        ],
+        "state": "unknown-sample"
+      }
+    ],
+    "reagentKeywordSource": "Normalized `${equipmentDefinition.label} ${contents.label}`, tested in the order listed.",
+    "defaultLiquidState": "clear-liquid",
+    "defaultSolidState": "powder"
+  },
+  "counts": {
+    "total": 95,
+    "byDisposition": {
+      "liquid-style": 50,
+      "unresolved": 0,
+      "solid-style": 19,
+      "state-asset": 20,
+      "nonvisual": 6
+    }
+  },
+  "states": [
+    {
+      "id": "acid",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": false,
+      "selectors": [
+        "reagent-heuristic"
+      ],
+      "provenance": "Reachable only through the definition-id override or reagent-name heuristic in resolveLiquidStyle, not through an authored visualState.",
+      "renderStyleKey": "acid",
+      "renderStyle": {
+        "fill": "rgba(94, 166, 204, 0.42)",
+        "stroke": "rgba(43, 104, 136, 0.52)",
+        "highlight": "rgba(248, 255, 255, 0.52)",
+        "meniscus": "rgba(240, 249, 255, 0.88)",
+        "opacity": 0.95
+      },
+      "owners": []
+    },
+    {
+      "id": "blue-dye-solution",
+      "disposition": "liquid-style",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Authored by lab or technique content; see owners. Cycle 06: blue1-10-0 is the same liquid seen through Investigation 1s dilution series, and is declared identical rather than left to read as an accident.",
+      "renderStyleKey": "blue-dye-solution",
+      "renderStyle": {
+        "fill": "rgba(36, 99, 220, 0.5)",
+        "stroke": "rgba(30, 64, 175, 0.62)",
+        "highlight": "rgba(219, 234, 254, 0.62)",
+        "meniscus": "rgba(191, 219, 254, 0.92)",
+        "opacity": 0.98
+      },
+      "owners": [
+        "lab:blue1-spectroscopy",
+        "lab:paper-chromatography",
+        "technique:beers-law-calibration",
+        "technique:paper-chromatography",
+        "technique:transmittance-dilution"
+      ],
+      "sharesAppearanceWith": [
+        "blue1-10-0"
+      ]
+    },
+    {
+      "id": "blue1-0-10",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "ordinal",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Perceptually ordered Blue #1 dilution series (Investigation 1, ratios listed at finding 3.2). Resolved by Cycle 06 as a monotonic alpha ladder over the stock's own blue: the series carries the assigned stock fraction as ordinal evidence only. The manual states no colour for any standard, and the stock molarity is teacher-supplied (P-01), so no alpha here could stand for a concentration even in principle. Every quantitative claim in the investigation comes from the %T reading and the M1V1 = M2V2 calculation.",
+      "ownerCycle": "06",
+      "owners": [
+        "lab:blue1-spectroscopy",
+        "lab:blue1-spectroscopy/technique:blue1-percent-transmittance",
+        "technique:blue1-percent-transmittance"
+      ],
+      "renderStyleKey": "blue1-0-10",
+      "renderStyle": {
+        "fill": "rgba(36, 99, 220, 0.06)",
+        "stroke": "rgba(30, 64, 175, 0.24)",
+        "highlight": "rgba(219, 234, 254, 0.34)",
+        "meniscus": "rgba(191, 219, 254, 0.92)",
+        "opacity": 0.98
+      }
+    },
+    {
+      "id": "blue1-1-9",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "ordinal",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Perceptually ordered Blue #1 dilution series (Investigation 1, ratios listed at finding 3.2). Resolved by Cycle 06 as a monotonic alpha ladder over the stock's own blue: the series carries the assigned stock fraction as ordinal evidence only. The manual states no colour for any standard, and the stock molarity is teacher-supplied (P-01), so no alpha here could stand for a concentration even in principle. Every quantitative claim in the investigation comes from the %T reading and the M1V1 = M2V2 calculation.",
+      "ownerCycle": "06",
+      "owners": [
+        "lab:blue1-spectroscopy",
+        "lab:blue1-spectroscopy/technique:blue1-percent-transmittance",
+        "lab:blue1-spectroscopy/technique:blue1-standard-dilutions",
+        "technique:blue1-percent-transmittance",
+        "technique:blue1-standard-dilutions"
+      ],
+      "renderStyleKey": "blue1-1-9",
+      "renderStyle": {
+        "fill": "rgba(36, 99, 220, 0.104)",
+        "stroke": "rgba(30, 64, 175, 0.278)",
+        "highlight": "rgba(219, 234, 254, 0.368)",
+        "meniscus": "rgba(191, 219, 254, 0.92)",
+        "opacity": 0.98
+      }
+    },
+    {
+      "id": "blue1-10-0",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "ordinal",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Perceptually ordered Blue #1 dilution series (Investigation 1, ratios listed at finding 3.2). Resolved by Cycle 06 as a monotonic alpha ladder over the stock's own blue: the series carries the assigned stock fraction as ordinal evidence only. The manual states no colour for any standard, and the stock molarity is teacher-supplied (P-01), so no alpha here could stand for a concentration even in principle. Every quantitative claim in the investigation comes from the %T reading and the M1V1 = M2V2 calculation. The 10 mL stock / 0 mL water standard is the undiluted stock, so the top rung of the ladder is deliberately identical to blue-dye-solution rather than coincidentally close to it.",
+      "ownerCycle": "06",
+      "owners": [
+        "lab:blue1-spectroscopy",
+        "lab:blue1-spectroscopy/technique:blue1-percent-transmittance",
+        "lab:blue1-spectroscopy/technique:blue1-standard-dilutions",
+        "technique:blue1-percent-transmittance",
+        "technique:blue1-standard-dilutions"
+      ],
+      "renderStyleKey": "blue1-10-0",
+      "renderStyle": {
+        "fill": "rgba(36, 99, 220, 0.5)",
+        "stroke": "rgba(30, 64, 175, 0.62)",
+        "highlight": "rgba(219, 234, 254, 0.62)",
+        "meniscus": "rgba(191, 219, 254, 0.92)",
+        "opacity": 0.98
+      },
+      "sharesAppearanceWith": [
+        "blue-dye-solution"
+      ]
+    },
+    {
+      "id": "blue1-2-8",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "ordinal",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Perceptually ordered Blue #1 dilution series (Investigation 1, ratios listed at finding 3.2). Resolved by Cycle 06 as a monotonic alpha ladder over the stock's own blue: the series carries the assigned stock fraction as ordinal evidence only. The manual states no colour for any standard, and the stock molarity is teacher-supplied (P-01), so no alpha here could stand for a concentration even in principle. Every quantitative claim in the investigation comes from the %T reading and the M1V1 = M2V2 calculation.",
+      "ownerCycle": "06",
+      "owners": [
+        "lab:blue1-spectroscopy",
+        "lab:blue1-spectroscopy/technique:blue1-percent-transmittance",
+        "lab:blue1-spectroscopy/technique:blue1-standard-dilutions",
+        "technique:blue1-percent-transmittance",
+        "technique:blue1-standard-dilutions"
+      ],
+      "renderStyleKey": "blue1-2-8",
+      "renderStyle": {
+        "fill": "rgba(36, 99, 220, 0.148)",
+        "stroke": "rgba(30, 64, 175, 0.316)",
+        "highlight": "rgba(219, 234, 254, 0.396)",
+        "meniscus": "rgba(191, 219, 254, 0.92)",
+        "opacity": 0.98
+      }
+    },
+    {
+      "id": "blue1-3-7",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "ordinal",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Perceptually ordered Blue #1 dilution series (Investigation 1, ratios listed at finding 3.2). Resolved by Cycle 06 as a monotonic alpha ladder over the stock's own blue: the series carries the assigned stock fraction as ordinal evidence only. The manual states no colour for any standard, and the stock molarity is teacher-supplied (P-01), so no alpha here could stand for a concentration even in principle. Every quantitative claim in the investigation comes from the %T reading and the M1V1 = M2V2 calculation.",
+      "ownerCycle": "06",
+      "owners": [
+        "lab:blue1-spectroscopy",
+        "lab:blue1-spectroscopy/technique:blue1-percent-transmittance",
+        "lab:blue1-spectroscopy/technique:blue1-standard-dilutions",
+        "technique:blue1-percent-transmittance",
+        "technique:blue1-standard-dilutions"
+      ],
+      "renderStyleKey": "blue1-3-7",
+      "renderStyle": {
+        "fill": "rgba(36, 99, 220, 0.192)",
+        "stroke": "rgba(30, 64, 175, 0.354)",
+        "highlight": "rgba(219, 234, 254, 0.424)",
+        "meniscus": "rgba(191, 219, 254, 0.92)",
+        "opacity": 0.98
+      }
+    },
+    {
+      "id": "blue1-4-6",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "ordinal",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Perceptually ordered Blue #1 dilution series (Investigation 1, ratios listed at finding 3.2). Resolved by Cycle 06 as a monotonic alpha ladder over the stock's own blue: the series carries the assigned stock fraction as ordinal evidence only. The manual states no colour for any standard, and the stock molarity is teacher-supplied (P-01), so no alpha here could stand for a concentration even in principle. Every quantitative claim in the investigation comes from the %T reading and the M1V1 = M2V2 calculation.",
+      "ownerCycle": "06",
+      "owners": [
+        "lab:blue1-spectroscopy",
+        "lab:blue1-spectroscopy/technique:blue1-percent-transmittance",
+        "lab:blue1-spectroscopy/technique:blue1-standard-dilutions",
+        "technique:blue1-percent-transmittance",
+        "technique:blue1-standard-dilutions"
+      ],
+      "renderStyleKey": "blue1-4-6",
+      "renderStyle": {
+        "fill": "rgba(36, 99, 220, 0.236)",
+        "stroke": "rgba(30, 64, 175, 0.392)",
+        "highlight": "rgba(219, 234, 254, 0.452)",
+        "meniscus": "rgba(191, 219, 254, 0.92)",
+        "opacity": 0.98
+      }
+    },
+    {
+      "id": "blue1-6-4",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "ordinal",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Perceptually ordered Blue #1 dilution series (Investigation 1, ratios listed at finding 3.2). Resolved by Cycle 06 as a monotonic alpha ladder over the stock's own blue: the series carries the assigned stock fraction as ordinal evidence only. The manual states no colour for any standard, and the stock molarity is teacher-supplied (P-01), so no alpha here could stand for a concentration even in principle. Every quantitative claim in the investigation comes from the %T reading and the M1V1 = M2V2 calculation.",
+      "ownerCycle": "06",
+      "owners": [
+        "lab:blue1-spectroscopy",
+        "lab:blue1-spectroscopy/technique:blue1-percent-transmittance",
+        "lab:blue1-spectroscopy/technique:blue1-standard-dilutions",
+        "technique:blue1-percent-transmittance",
+        "technique:blue1-standard-dilutions"
+      ],
+      "renderStyleKey": "blue1-6-4",
+      "renderStyle": {
+        "fill": "rgba(36, 99, 220, 0.324)",
+        "stroke": "rgba(30, 64, 175, 0.468)",
+        "highlight": "rgba(219, 234, 254, 0.508)",
+        "meniscus": "rgba(191, 219, 254, 0.92)",
+        "opacity": 0.98
+      }
+    },
+    {
+      "id": "blue1-8-2",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "ordinal",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Perceptually ordered Blue #1 dilution series (Investigation 1, ratios listed at finding 3.2). Resolved by Cycle 06 as a monotonic alpha ladder over the stock's own blue: the series carries the assigned stock fraction as ordinal evidence only. The manual states no colour for any standard, and the stock molarity is teacher-supplied (P-01), so no alpha here could stand for a concentration even in principle. Every quantitative claim in the investigation comes from the %T reading and the M1V1 = M2V2 calculation.",
+      "ownerCycle": "06",
+      "owners": [
+        "lab:blue1-spectroscopy",
+        "lab:blue1-spectroscopy/technique:blue1-percent-transmittance",
+        "lab:blue1-spectroscopy/technique:blue1-standard-dilutions",
+        "technique:blue1-percent-transmittance",
+        "technique:blue1-standard-dilutions"
+      ],
+      "renderStyleKey": "blue1-8-2",
+      "renderStyle": {
+        "fill": "rgba(36, 99, 220, 0.412)",
+        "stroke": "rgba(30, 64, 175, 0.544)",
+        "highlight": "rgba(219, 234, 254, 0.564)",
+        "meniscus": "rgba(191, 219, 254, 0.92)",
+        "opacity": 0.98
+      }
+    },
+    {
+      "id": "brass-sample",
+      "disposition": "solid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Investigation 2 brass stock appearance, resolved by Cycle 07 as a qualitative metallic solid. The balance reading, not this color, supplies mass evidence.",
+      "solidStyle": {
+        "fill": "rgba(174, 139, 65, 0.95)",
+        "stroke": "rgba(91, 69, 24, 0.5)",
+        "highlight": "rgba(255, 237, 174, 0.32)"
+      },
+      "owners": [
+        "lab:brass-colorimetry"
+      ]
+    },
+    {
+      "id": "broken-dry-precipitate",
+      "disposition": "solid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "ordinal",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Stage 3 of the Inv. 3 dryness sequence (manual step 7, basis M), after breaking the cake into small pieces. Appearance conveys dryness order only.",
+      "solidStyle": {
+        "fill": "rgba(238, 234, 220, 0.96)",
+        "stroke": "rgba(110, 104, 84, 0.36)",
+        "highlight": "rgba(255, 255, 255, 0.26)"
+      },
+      "sharesAppearanceWith": [
+        "cooled-dry-precipitate",
+        "dry-precipitate"
+      ],
+      "owners": [
+        "lab:hard-water-analysis",
+        "lab:hard-water-analysis/technique:hard-water-two-sample-inquiry",
+        "lab:hard-water-analysis/technique:two-stage-precipitate-drying",
+        "technique:hard-water-two-sample-inquiry",
+        "technique:two-stage-precipitate-drying"
+      ]
+    },
+    {
+      "id": "CAL-00",
+      "disposition": "state-asset",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Calorimeter assembly stages CAL-00 through CAL-05 (Investigation 12) rendered as state assets on hand-warmer-calorimeter.",
+      "stateAssetEquipmentIds": [
+        "hand-warmer-calorimeter"
+      ],
+      "owners": [
+        "lab:hand-warmer-calorimetry",
+        "lab:hand-warmer-calorimetry/technique:hand-warmer-calorimetry",
+        "technique:hand-warmer-calorimetry"
+      ]
+    },
+    {
+      "id": "CAL-01",
+      "disposition": "state-asset",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Calorimeter assembly stages CAL-00 through CAL-05 (Investigation 12) rendered as state assets on hand-warmer-calorimeter. Cycle 12 authors CAL-01 only when runtime evidence reaches the source-mapped stage: magnetic stirrer seated beneath the support ring. The state is qualitative apparatus art and carries no temperature, heat, or concentration claim.",
+      "stateAssetEquipmentIds": [
+        "hand-warmer-calorimeter"
+      ],
+      "owners": [
+        "lab:hand-warmer-calorimetry",
+        "lab:hand-warmer-calorimetry/technique:hand-warmer-calorimetry",
+        "technique:hand-warmer-calorimetry"
+      ]
+    },
+    {
+      "id": "CAL-02",
+      "disposition": "state-asset",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Calorimeter assembly stages CAL-00 through CAL-05 (Investigation 12) rendered as state assets on hand-warmer-calorimeter. Cycle 12 authors CAL-02 only when runtime evidence reaches the source-mapped stage: outer polystyrene cup supported by the ring. The state is qualitative apparatus art and carries no temperature, heat, or concentration claim.",
+      "stateAssetEquipmentIds": [
+        "hand-warmer-calorimeter"
+      ],
+      "owners": [
+        "lab:hand-warmer-calorimetry",
+        "lab:hand-warmer-calorimetry/technique:hand-warmer-calorimetry",
+        "technique:hand-warmer-calorimetry"
+      ]
+    },
+    {
+      "id": "CAL-03",
+      "disposition": "state-asset",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Calorimeter assembly stages CAL-00 through CAL-05 (Investigation 12) rendered as state assets on hand-warmer-calorimeter. Cycle 12 authors CAL-03 only when runtime evidence reaches the source-mapped stage: second polystyrene cup nested inside the outer cup. The state is qualitative apparatus art and carries no temperature, heat, or concentration claim.",
+      "stateAssetEquipmentIds": [
+        "hand-warmer-calorimeter"
+      ],
+      "owners": [
+        "lab:hand-warmer-calorimetry",
+        "lab:hand-warmer-calorimetry/technique:hand-warmer-calorimetry",
+        "technique:hand-warmer-calorimetry"
+      ]
+    },
+    {
+      "id": "CAL-04",
+      "disposition": "state-asset",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Calorimeter assembly stages CAL-00 through CAL-05 (Investigation 12) rendered as state assets on hand-warmer-calorimeter. Cycle 12 authors CAL-04 only when runtime evidence reaches the source-mapped stage: wooden cover seated on the nested cups. The state is qualitative apparatus art and carries no temperature, heat, or concentration claim.",
+      "stateAssetEquipmentIds": [
+        "hand-warmer-calorimeter"
+      ],
+      "owners": [
+        "lab:hand-warmer-calorimetry",
+        "lab:hand-warmer-calorimetry/technique:hand-warmer-calorimetry",
+        "technique:hand-warmer-calorimetry"
+      ]
+    },
+    {
+      "id": "CAL-05",
+      "disposition": "state-asset",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Calorimeter assembly stages CAL-00 through CAL-05 (Investigation 12) rendered as state assets on hand-warmer-calorimeter. Cycle 12 authors CAL-05 only when runtime evidence reaches the source-mapped stage: probe inserted through the cover in the complete baseline assembly. The state is qualitative apparatus art and carries no temperature, heat, or concentration claim.",
+      "stateAssetEquipmentIds": [
+        "hand-warmer-calorimeter"
+      ],
+      "owners": [
+        "lab:hand-warmer-calorimetry",
+        "lab:hand-warmer-calorimetry/technique:hand-warmer-calorimetry",
+        "technique:hand-warmer-calorimetry"
+      ]
+    },
+    {
+      "id": "CAL-06",
+      "disposition": "state-asset",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Calorimeter assembly stages CAL-00 through CAL-05 (Investigation 12) rendered as state assets on hand-warmer-calorimeter. Cycle 12 authors CAL-06 only when runtime evidence reaches the source-mapped stage: measured water loaded into the inner cup. The state is qualitative apparatus art and carries no temperature, heat, or concentration claim.",
+      "stateAssetEquipmentIds": [
+        "hand-warmer-calorimeter"
+      ],
+      "owners": [
+        "lab:hand-warmer-calorimetry",
+        "lab:hand-warmer-calorimetry/technique:hand-warmer-calorimetry",
+        "technique:hand-warmer-calorimetry"
+      ]
+    },
+    {
+      "id": "CAL-07",
+      "disposition": "state-asset",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Calorimeter assembly stages CAL-00 through CAL-05 (Investigation 12) rendered as state assets on hand-warmer-calorimeter. Cycle 12 authors CAL-07 only when runtime evidence reaches the source-mapped stage: clean magnetic stir bar added to the water. The state is qualitative apparatus art and carries no temperature, heat, or concentration claim.",
+      "stateAssetEquipmentIds": [
+        "hand-warmer-calorimeter"
+      ],
+      "owners": [
+        "lab:hand-warmer-calorimetry",
+        "lab:hand-warmer-calorimetry/technique:hand-warmer-calorimetry",
+        "technique:hand-warmer-calorimetry"
+      ]
+    },
+    {
+      "id": "CAL-08",
+      "disposition": "state-asset",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Calorimeter assembly stages CAL-00 through CAL-05 (Investigation 12) rendered as state assets on hand-warmer-calorimeter. Cycle 12 authors CAL-08 only when runtime evidence reaches the source-mapped stage: water stirring safely without splashing. The state is qualitative apparatus art and carries no temperature, heat, or concentration claim.",
+      "stateAssetEquipmentIds": [
+        "hand-warmer-calorimeter"
+      ],
+      "owners": [
+        "lab:hand-warmer-calorimetry",
+        "lab:hand-warmer-calorimetry/technique:hand-warmer-calorimetry",
+        "technique:hand-warmer-calorimetry"
+      ]
+    },
+    {
+      "id": "CAL-09",
+      "disposition": "state-asset",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Calorimeter assembly stages CAL-00 through CAL-05 (Investigation 12) rendered as state assets on hand-warmer-calorimeter. Cycle 12 authors CAL-09 only when runtime evidence reaches the source-mapped stage: cover opened enough for the weighed solid addition. The state is qualitative apparatus art and carries no temperature, heat, or concentration claim.",
+      "stateAssetEquipmentIds": [
+        "hand-warmer-calorimeter"
+      ],
+      "owners": [
+        "lab:hand-warmer-calorimetry",
+        "lab:hand-warmer-calorimetry/technique:hand-warmer-calorimetry",
+        "technique:hand-warmer-calorimetry"
+      ]
+    },
+    {
+      "id": "CAL-10",
+      "disposition": "state-asset",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Calorimeter assembly stages CAL-00 through CAL-05 (Investigation 12) rendered as state assets on hand-warmer-calorimeter. Cycle 12 authors CAL-10 only when runtime evidence reaches the source-mapped stage: weighed solid transferred with visible undissolved material. The state is qualitative apparatus art and carries no temperature, heat, or concentration claim.",
+      "stateAssetEquipmentIds": [
+        "hand-warmer-calorimeter"
+      ],
+      "owners": [
+        "lab:hand-warmer-calorimetry",
+        "lab:hand-warmer-calorimetry/technique:hand-warmer-calorimetry",
+        "technique:hand-warmer-calorimetry"
+      ]
+    },
+    {
+      "id": "CAL-11",
+      "disposition": "state-asset",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Calorimeter assembly stages CAL-00 through CAL-05 (Investigation 12) rendered as state assets on hand-warmer-calorimeter. Cycle 12 authors CAL-11 only when runtime evidence reaches the source-mapped stage: cover replaced immediately after the addition. The state is qualitative apparatus art and carries no temperature, heat, or concentration claim.",
+      "stateAssetEquipmentIds": [
+        "hand-warmer-calorimeter"
+      ],
+      "owners": [
+        "lab:hand-warmer-calorimetry",
+        "lab:hand-warmer-calorimetry/technique:hand-warmer-calorimetry",
+        "technique:hand-warmer-calorimetry"
+      ]
+    },
+    {
+      "id": "CAL-12",
+      "disposition": "state-asset",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Calorimeter assembly stages CAL-00 through CAL-05 (Investigation 12) rendered as state assets on hand-warmer-calorimeter. Cycle 12 authors CAL-12 only when runtime evidence reaches the source-mapped stage: stirring continued until no visible solid remains. The state is qualitative apparatus art and carries no temperature, heat, or concentration claim.",
+      "stateAssetEquipmentIds": [
+        "hand-warmer-calorimeter"
+      ],
+      "owners": [
+        "lab:hand-warmer-calorimetry",
+        "lab:hand-warmer-calorimetry/technique:hand-warmer-calorimetry",
+        "technique:hand-warmer-calorimetry"
+      ]
+    },
+    {
+      "id": "chromatogram-developed",
+      "disposition": "nonvisual",
+      "evidenceKind": "simulator-configured",
+      "quantitativeClaim": "none",
+      "authoredToday": false,
+      "selectors": [
+        "runtime-assigned"
+      ],
+      "owners": [],
+      "provenance": "Stage 3: the reducer assigns it when the strip finishes developing (src/runtime/reducer.ts, verb developChromatogram, phase TR-06, M/R). The bands and the solvent front that appear at this point are drawn from `contents.chromatogram.bands` and `solventFrontMm`, not from this string. A paper chromatogram's appearance is not carried by `visualState` at all: `contentOverlayByDefinitionId[\"chromatography-paper\"]` in src/player/equipmentOverlays.tsx draws the pencil origin, the sample spot, the solvent-front mark, and every band from `contents.chromatogram`, which is the object the spotSample and developChromatogram handlers build. The state string is a stage label over that object, so it has no appearance of its own to register, and giving it one would put a second, competing description of the strip in the registry. Cycle 10 records this rather than inventing a style.",
+      "runtimeAssignment": "unconditional"
+    },
+    {
+      "id": "clear-filtrate",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored",
+        "reagent-heuristic",
+        "runtime-assigned"
+      ],
+      "provenance": "Authored by lab or technique content; see owners. The reducer also assigns it as a default when an action declares no state, so it is reachable without any authored value; recorded by Cycle 08.",
+      "renderStyleKey": "clear-filtrate",
+      "renderStyle": {
+        "fill": "rgba(110, 164, 196, 0.42)",
+        "stroke": "rgba(61, 105, 136, 0.52)",
+        "highlight": "rgba(248, 255, 255, 0.52)",
+        "meniscus": "rgba(238, 249, 253, 0.88)",
+        "opacity": 0.95
+      },
+      "owners": [
+        "lab:hard-water-analysis",
+        "lab:hard-water-analysis/technique:two-stage-precipitate-drying",
+        "technique:two-stage-precipitate-drying"
+      ],
+      "runtimeAssignment": "default"
+    },
+    {
+      "id": "clear-liquid",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored",
+        "runtime-assigned"
+      ],
+      "provenance": "Authored by lab or technique content; see owners. At reducer defaults for rinse and source restoration, the literal applies only when the current state is empty (src/runtime/reducer.ts lines 1316, 2451, and 3708); a configured resultVisualState can therefore win at line 3722.",
+      "renderStyleKey": "clear-liquid",
+      "renderStyle": {
+        "fill": "rgba(86, 174, 206, 0.46)",
+        "stroke": "rgba(38, 108, 136, 0.58)",
+        "highlight": "rgba(246, 255, 255, 0.58)",
+        "meniscus": "rgba(232, 250, 255, 0.92)",
+        "opacity": 0.98
+      },
+      "sharesAppearanceWith": [
+        "separated-fraction",
+        "titration-clear"
+      ],
+      "owners": [
+        "lab:beverage-acidity",
+        "lab:blue1-spectroscopy",
+        "lab:blue1-spectroscopy/technique:blue1-percent-transmittance",
+        "lab:blue1-spectroscopy/technique:blue1-standard-dilutions",
+        "lab:bonding-unknown-solids",
+        "lab:brass-colorimetry",
+        "lab:crystal-violet-rate-law",
+        "lab:crystal-violet-rate-law/technique:crystal-violet-kinetics",
+        "lab:crystal-violet-rate-law/technique:crystal-violet-micromolar-dilution-series",
+        "lab:crystal-violet-rate-law/technique:crystal-violet-spectrophotometer-calibration",
+        "lab:crystal-violet-rate-law/technique:crystal-violet-waste-treatment",
+        "lab:equilibrium-rainbow-display",
+        "lab:equilibrium-rainbow-display/technique:equilibrium-rainbow-inquiry",
+        "lab:hand-warmer-calorimetry",
+        "lab:hand-warmer-calorimetry/technique:hand-warmer-calorimetry",
+        "lab:hard-water-analysis",
+        "lab:hard-water-analysis/technique:gravimetric-vacuum-filtration",
+        "lab:hard-water-analysis/technique:hard-water-practice-preparation",
+        "lab:hard-water-analysis/technique:hard-water-two-sample-inquiry",
+        "lab:hard-water-analysis/technique:inquiry-plan-approval",
+        "lab:hard-water-analysis/technique:two-stage-precipitate-drying",
+        "lab:hard-water-demo",
+        "lab:hard-water-demo/technique:filtration",
+        "lab:hard-water-demo/technique:measuring-volume",
+        "lab:hard-water-demo/technique:transfer",
+        "lab:hydrogen-peroxide-redox-titration",
+        "lab:intro-filtration-demo/technique:filtration",
+        "lab:intro-filtration-demo/technique:measuring-volume",
+        "lab:intro-filtration-demo/technique:transfer",
+        "lab:paper-chromatography",
+        "lab:quick-ache-relief-separation",
+        "lab:quick-ache-relief-separation/technique:quick-ache-extraction-recovery",
+        "lab:quick-ache-relief-separation/technique:quick-ache-property-evidence",
+        "technique:blue1-percent-transmittance",
+        "technique:blue1-standard-dilutions",
+        "technique:bonding-solids-tests",
+        "technique:crystal-violet-kinetics",
+        "technique:crystal-violet-micromolar-dilution-series",
+        "technique:crystal-violet-spectrophotometer-calibration",
+        "technique:crystal-violet-waste-treatment",
+        "technique:dilution",
+        "technique:equilibrium-rainbow-inquiry",
+        "technique:filtration",
+        "technique:gravimetric-vacuum-filtration",
+        "technique:hand-warmer-calorimetry",
+        "technique:hard-water-gravimetry",
+        "technique:hard-water-practice-preparation",
+        "technique:hard-water-two-sample-inquiry",
+        "technique:inquiry-plan-approval",
+        "technique:making-solution",
+        "technique:measuring-volume",
+        "technique:paper-chromatography",
+        "technique:quick-ache-extraction-recovery",
+        "technique:quick-ache-property-evidence",
+        "technique:redox-titration",
+        "technique:tablet-separation",
+        "technique:titration-curve-analysis",
+        "technique:titration-endpoint",
+        "technique:transfer",
+        "technique:transmittance-dilution",
+        "technique:two-stage-precipitate-drying"
+      ],
+      "runtimeAssignment": "default"
+    },
+    {
+      "id": "clear-solution",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored",
+        "runtime-assigned"
+      ],
+      "provenance": "Authored by lab or technique content; see owners. The reducer also assigns it as a default when an action declares no state, so it is reachable without any authored value; recorded by Cycle 08.",
+      "renderStyleKey": "clear-solution",
+      "renderStyle": {
+        "fill": "rgba(92, 178, 207, 0.44)",
+        "stroke": "rgba(43, 112, 138, 0.54)",
+        "highlight": "rgba(248, 255, 255, 0.54)",
+        "meniscus": "rgba(236, 251, 255, 0.9)",
+        "opacity": 0.96
+      },
+      "owners": [
+        "lab:acid-base-titration/technique:acid-base-titration-state",
+        "lab:equilibrium-rainbow-display",
+        "lab:equilibrium-rainbow-display/technique:equilibrium-rainbow-inquiry",
+        "lab:hard-water-analysis",
+        "lab:hard-water-analysis/technique:hard-water-two-sample-inquiry",
+        "lab:hard-water-analysis/technique:inquiry-plan-approval",
+        "lab:marble-statue-kinetics",
+        "technique:dilution",
+        "technique:equilibrium-rainbow-inquiry",
+        "technique:hard-water-two-sample-inquiry",
+        "technique:inquiry-plan-approval",
+        "technique:marble-gas-syringe-kinetics"
+      ],
+      "runtimeAssignment": "default"
+    },
+    {
+      "id": "cloudy-blue-precipitate",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Investigation 13 copper-hydroxide formation, resolved by Cycle 12 as qualitative blue cloudiness with particles. It does not encode amount or completion.",
+      "renderStyleKey": "cloudy-blue-precipitate",
+      "renderStyle": {
+        "fill": "rgba(79, 151, 196, 0.54)",
+        "stroke": "rgba(37, 92, 132, 0.6)",
+        "highlight": "rgba(232, 249, 255, 0.42)",
+        "meniscus": "rgba(194, 229, 245, 0.88)",
+        "opacity": 0.98,
+        "particles": true
+      },
+      "owners": [
+        "lab:equilibrium-rainbow-display",
+        "lab:equilibrium-rainbow-display/technique:equilibrium-rainbow-inquiry",
+        "technique:equilibrium-rainbow-inquiry"
+      ]
+    },
+    {
+      "id": "cloudy-precipitate",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored",
+        "runtime-assigned"
+      ],
+      "provenance": "Authored by lab or technique content; see owners. The reducer also assigns it unconditionally wherever a transfer merges a precipitate into a vessel, so those sites ignore any authored value; recorded by Cycle 08.",
+      "renderStyleKey": "cloudy-precipitate",
+      "renderStyle": {
+        "fill": "rgba(157, 168, 154, 0.52)",
+        "stroke": "rgba(91, 107, 91, 0.56)",
+        "highlight": "rgba(255, 255, 255, 0.34)",
+        "meniscus": "rgba(232, 236, 226, 0.86)",
+        "opacity": 0.98,
+        "particles": true
+      },
+      "owners": [
+        "lab:hard-water-analysis",
+        "lab:hard-water-analysis/technique:gravimetric-vacuum-filtration",
+        "lab:hard-water-demo/technique:filtration",
+        "lab:intro-filtration-demo/technique:filtration",
+        "technique:filtration",
+        "technique:gravimetric-vacuum-filtration",
+        "technique:hard-water-gravimetry"
+      ],
+      "runtimeAssignment": "unconditional"
+    },
+    {
+      "id": "cooled-dry-precipitate",
+      "disposition": "solid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "ordinal",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Stage 4 of the Inv. 3 dryness sequence (manual step 7, basis M), after cooling. Deliberately identical in appearance to broken-dry-precipitate and dry-precipitate: temperature has no honest visual signature. Cycle 08 made the distinction reachable in state rather than colour — the dry handler now carries the oven temperature onto the assembly and the weigh handler refuses a source above maxSafeTemperatureC, so the cooled and uncooled assemblies differ by what the balance will accept, not by how they look.",
+      "solidStyle": {
+        "fill": "rgba(238, 234, 220, 0.96)",
+        "stroke": "rgba(110, 104, 84, 0.36)",
+        "highlight": "rgba(255, 255, 255, 0.26)"
+      },
+      "sharesAppearanceWith": [
+        "broken-dry-precipitate",
+        "dry-precipitate"
+      ],
+      "owners": [
+        "lab:hard-water-analysis",
+        "lab:hard-water-analysis/technique:hard-water-two-sample-inquiry",
+        "lab:hard-water-analysis/technique:two-stage-precipitate-drying",
+        "lab:quick-ache-relief-separation",
+        "lab:quick-ache-relief-separation/technique:quick-ache-extraction-recovery",
+        "technique:hard-water-two-sample-inquiry",
+        "technique:quick-ache-extraction-recovery",
+        "technique:two-stage-precipitate-drying"
+      ]
+    },
+    {
+      "id": "cooled-residue",
+      "disposition": "solid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "ordinal",
+      "authoredToday": false,
+      "selectors": [
+        "runtime-assigned"
+      ],
+      "owners": [],
+      "provenance": "The same residue after cooling, assigned by the reducer's cool handler as its default when the action declares no state (src/runtime/reducer.ts, verb cool). Deliberately identical in appearance to heated-residue, for the reason Cycle 05 recorded for cooled-dry-precipitate: temperature has no honest visual signature. The distinction is carried by temperatureC and by what the balance accepts, which is the gate the weigh handler applies.",
+      "runtimeAssignment": "default",
+      "solidStyle": {
+        "fill": "rgba(248, 247, 243, 0.97)",
+        "stroke": "rgba(132, 128, 118, 0.38)",
+        "highlight": "rgba(255, 255, 255, 0.34)"
+      },
+      "sharesAppearanceWith": [
+        "heated-residue"
+      ]
+    },
+    {
+      "id": "copper-blue-solution",
+      "disposition": "liquid-style",
+      "evidenceKind": "measurement-derived",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Investigation 2 copper solution used in spectrophotometric and visual-depth comparison, resolved by Cycle 07. Hue is qualitative; concentration and depth remain separate measured evidence.",
+      "renderStyleKey": "copper-blue-solution",
+      "renderStyle": {
+        "fill": "rgba(34, 132, 198, 0.56)",
+        "stroke": "rgba(24, 82, 137, 0.62)",
+        "highlight": "rgba(224, 246, 255, 0.48)",
+        "meniscus": "rgba(184, 225, 247, 0.9)",
+        "opacity": 0.98
+      },
+      "sharesAppearanceWith": [
+        "copper-blue-solution-at-mark"
+      ],
+      "owners": [
+        "lab:brass-colorimetry",
+        "technique:brass-spectrophotometry"
+      ]
+    },
+    {
+      "id": "copper-blue-solution-at-mark",
+      "disposition": "liquid-style",
+      "evidenceKind": "measurement-derived",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Investigation 2 copper solution at the volumetric calibration mark, resolved by Cycle 07. It shares the solution appearance; the vessel volume state carries the at-mark evidence.",
+      "renderStyleKey": "copper-blue-solution-at-mark",
+      "renderStyle": {
+        "fill": "rgba(34, 132, 198, 0.56)",
+        "stroke": "rgba(24, 82, 137, 0.62)",
+        "highlight": "rgba(224, 246, 255, 0.48)",
+        "meniscus": "rgba(184, 225, 247, 0.9)",
+        "opacity": 0.98
+      },
+      "sharesAppearanceWith": [
+        "copper-blue-solution"
+      ],
+      "owners": [
+        "lab:brass-colorimetry"
+      ]
+    },
+    {
+      "id": "damp-precipitate",
+      "disposition": "solid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "ordinal",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Stage 1 of the Inv. 3 dryness sequence (manual step 7, basis M: dry 10-15 min at 110-120 C, break up, dry 5 more min, cool, weigh). The manual states the sequence, not a colour, so the appearance is a qualitative rendering of dryness only. Mass comes from the balance, never from the art.",
+      "solidStyle": {
+        "fill": "rgba(198, 192, 168, 0.94)",
+        "stroke": "rgba(88, 82, 58, 0.46)",
+        "highlight": "rgba(255, 255, 255, 0.16)"
+      },
+      "sharesAppearanceWith": [
+        "wet-residue"
+      ],
+      "owners": [
+        "lab:hard-water-demo/technique:drying",
+        "technique:drying"
+      ]
+    },
+    {
+      "id": "diluted-solution",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Investigation 12 used magnesium-sulfate solution after teacher-directed dilution, resolved by Cycle 12. The clear style makes no concentration or disposal claim.",
+      "renderStyleKey": "diluted-solution",
+      "renderStyle": {
+        "fill": "rgba(104, 185, 211, 0.34)",
+        "stroke": "rgba(52, 119, 145, 0.48)",
+        "highlight": "rgba(249, 255, 255, 0.58)",
+        "meniscus": "rgba(232, 250, 255, 0.9)",
+        "opacity": 0.94
+      },
+      "owners": [
+        "lab:hand-warmer-calorimetry",
+        "lab:hand-warmer-calorimetry/technique:hand-warmer-calorimetry",
+        "technique:hand-warmer-calorimetry"
+      ]
+    },
+    {
+      "id": "dissolving-solid",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored",
+        "runtime-assigned"
+      ],
+      "provenance": "Investigation 12 dissolution stage, resolved by Cycle 12 as a clear solution with visible particles. The reducer also assigns it as a default; particles are qualitative and never quantify undissolved mass.",
+      "renderStyleKey": "dissolving-solid",
+      "renderStyle": {
+        "fill": "rgba(96, 180, 207, 0.42)",
+        "stroke": "rgba(45, 112, 138, 0.54)",
+        "highlight": "rgba(248, 255, 255, 0.52)",
+        "meniscus": "rgba(234, 250, 255, 0.9)",
+        "opacity": 0.97,
+        "particles": true
+      },
+      "owners": [
+        "lab:hand-warmer-calorimetry",
+        "lab:hand-warmer-calorimetry/technique:hand-warmer-calorimetry",
+        "technique:hand-warmer-calorimetry"
+      ],
+      "runtimeAssignment": "default"
+    },
+    {
+      "id": "dry-precipitate",
+      "disposition": "solid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "ordinal",
+      "authoredToday": false,
+      "selectors": [
+        "runtime-assigned"
+      ],
+      "owners": [],
+      "provenance": "The reducer's default for a fully dried precipitate when the dry action declares no state (src/runtime/reducer.ts, verb dry). Identical in appearance to the Inv. 3 stages it stands in for, because a dry precipitate is a dry precipitate; it stays a separate entry because one is authored per stage and this one is the runtime fallback.",
+      "solidStyle": {
+        "fill": "rgba(238, 234, 220, 0.96)",
+        "stroke": "rgba(110, 104, 84, 0.36)",
+        "highlight": "rgba(255, 255, 255, 0.26)"
+      },
+      "sharesAppearanceWith": [
+        "broken-dry-precipitate",
+        "cooled-dry-precipitate"
+      ],
+      "runtimeAssignment": "default"
+    },
+    {
+      "id": "dry-solid",
+      "disposition": "solid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Generic dry solid such as an Inv. 13 stock reagent. Reads matte and dry, not damp.",
+      "solidStyle": {
+        "fill": "rgba(236, 231, 214, 0.96)",
+        "stroke": "rgba(112, 106, 86, 0.36)",
+        "highlight": "rgba(255, 255, 255, 0.24)"
+      },
+      "sharesAppearanceWith": [
+        "dry-residue"
+      ],
+      "owners": [
+        "lab:equilibrium-rainbow-display",
+        "lab:equilibrium-rainbow-display/technique:equilibrium-rainbow-inquiry",
+        "technique:equilibrium-rainbow-inquiry"
+      ]
+    },
+    {
+      "id": "empty",
+      "disposition": "nonvisual",
+      "evidenceKind": "presentation-only",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored",
+        "runtime-assigned"
+      ],
+      "provenance": "The absence of contents. Intentionally has no distinct appearance. The reducer also assigns it as a default when an action declares no state, so it is reachable without any authored value; recorded by Cycle 08.",
+      "owners": [
+        "lab:acid-base-titration/technique:acid-base-titration-state",
+        "lab:beverage-acidity",
+        "lab:blue1-spectroscopy",
+        "lab:blue1-spectroscopy/technique:blue1-percent-transmittance",
+        "lab:blue1-spectroscopy/technique:blue1-standard-dilutions",
+        "lab:bonding-unknown-solids",
+        "lab:brass-colorimetry",
+        "lab:crystal-violet-rate-law",
+        "lab:crystal-violet-rate-law/technique:crystal-violet-kinetics",
+        "lab:crystal-violet-rate-law/technique:crystal-violet-micromolar-dilution-series",
+        "lab:crystal-violet-rate-law/technique:crystal-violet-spectrophotometer-calibration",
+        "lab:crystal-violet-rate-law/technique:crystal-violet-waste-treatment",
+        "lab:equilibrium-rainbow-display",
+        "lab:equilibrium-rainbow-display/technique:equilibrium-rainbow-inquiry",
+        "lab:hand-warmer-calorimetry",
+        "lab:hand-warmer-calorimetry/technique:hand-warmer-calorimetry",
+        "lab:hard-water-analysis",
+        "lab:hard-water-analysis/technique:gravimetric-vacuum-filtration",
+        "lab:hard-water-analysis/technique:hard-water-practice-preparation",
+        "lab:hard-water-analysis/technique:hard-water-two-sample-inquiry",
+        "lab:hard-water-analysis/technique:inquiry-plan-approval",
+        "lab:hard-water-analysis/technique:two-stage-precipitate-drying",
+        "lab:hard-water-demo",
+        "lab:hard-water-demo/technique:drying",
+        "lab:hard-water-demo/technique:filtration",
+        "lab:hard-water-demo/technique:hard-water-calculation",
+        "lab:hard-water-demo/technique:measuring-volume",
+        "lab:hard-water-demo/technique:transfer",
+        "lab:hydrogen-peroxide-redox-titration",
+        "lab:intro-filtration-demo/technique:filtration",
+        "lab:intro-filtration-demo/technique:measuring-volume",
+        "lab:intro-filtration-demo/technique:transfer",
+        "lab:marble-statue-kinetics",
+        "lab:paper-chromatography",
+        "lab:quick-ache-relief-separation",
+        "lab:quick-ache-relief-separation/technique:quick-ache-extraction-recovery",
+        "lab:quick-ache-relief-separation/technique:quick-ache-property-evidence",
+        "technique:beers-law-calibration",
+        "technique:beverage-ph-volume-titration",
+        "technique:blue1-percent-transmittance",
+        "technique:blue1-standard-dilutions",
+        "technique:bonding-solids-tests",
+        "technique:brass-spectrophotometry",
+        "technique:crystal-violet-kinetics",
+        "technique:crystal-violet-micromolar-dilution-series",
+        "technique:crystal-violet-spectrophotometer-calibration",
+        "technique:crystal-violet-waste-treatment",
+        "technique:dilution",
+        "technique:drying",
+        "technique:equilibrium-rainbow-inquiry",
+        "technique:filtration",
+        "technique:gravimetric-vacuum-filtration",
+        "technique:hand-warmer-calorimetry",
+        "technique:hard-water-calculation",
+        "technique:hard-water-gravimetry",
+        "technique:hard-water-practice-preparation",
+        "technique:hard-water-two-sample-inquiry",
+        "technique:inquiry-plan-approval",
+        "technique:making-solution",
+        "technique:marble-gas-syringe-kinetics",
+        "technique:measuring-volume",
+        "technique:paper-chromatography",
+        "technique:quick-ache-extraction-recovery",
+        "technique:quick-ache-property-evidence",
+        "technique:redox-titration",
+        "technique:tablet-separation",
+        "technique:thermal-decomposition-mass-loss",
+        "technique:titration-curve-analysis",
+        "technique:titration-endpoint",
+        "technique:transfer",
+        "technique:transmittance-dilution",
+        "technique:two-stage-precipitate-drying",
+        "technique:weighing"
+      ],
+      "runtimeAssignment": "default"
+    },
+    {
+      "id": "emulsion",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Investigation 9's unsettled separatory funnel. Finding 3.5 marks emulsion recovery R/C: it is required and unstated, so the state exists to make the outcome reportable and recoverable rather than silently resolved. Cloudy and opaque is the one claim, which a single-body renderer can express honestly. Reporting it fails the settling node's validation and routes the process to the approved emulsion recovery.",
+      "owners": [
+        "lab:quick-ache-relief-separation",
+        "lab:quick-ache-relief-separation/technique:quick-ache-extraction-recovery",
+        "technique:quick-ache-extraction-recovery"
+      ],
+      "renderStyleKey": "emulsion",
+      "renderStyle": {
+        "fill": "rgba(226, 224, 214, 0.78)",
+        "stroke": "rgba(140, 136, 124, 0.5)",
+        "highlight": "rgba(252, 252, 248, 0.4)",
+        "meniscus": "rgba(238, 236, 228, 0.86)",
+        "opacity": 0.99
+      }
+    },
+    {
+      "id": "equilibrium-blue",
+      "disposition": "liquid-style",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Rainbow display equilibrium colours (Investigation 13). Colour is qualitative shift evidence, never a concentration readout.",
+      "renderStyleKey": "equilibrium-blue",
+      "renderStyle": {
+        "fill": "rgba(36, 98, 210, 0.64)",
+        "stroke": "rgba(26, 64, 145, 0.66)",
+        "highlight": "rgba(219, 236, 255, 0.48)",
+        "meniscus": "rgba(186, 218, 255, 0.9)",
+        "opacity": 0.99
+      },
+      "owners": [
+        "lab:equilibrium-rainbow-display",
+        "lab:equilibrium-rainbow-display/technique:equilibrium-rainbow-inquiry",
+        "technique:equilibrium-rainbow-inquiry"
+      ]
+    },
+    {
+      "id": "equilibrium-blue-green",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Rainbow display equilibrium colours (Investigation 13). Colour is qualitative shift evidence, never a concentration readout.",
+      "renderStyleKey": "equilibrium-blue-green",
+      "renderStyle": {
+        "fill": "rgba(30, 144, 150, 0.62)",
+        "stroke": "rgba(21, 92, 98, 0.64)",
+        "highlight": "rgba(216, 255, 250, 0.48)",
+        "meniscus": "rgba(181, 239, 235, 0.9)",
+        "opacity": 0.98
+      },
+      "owners": [
+        "lab:equilibrium-rainbow-display",
+        "lab:equilibrium-rainbow-display/technique:equilibrium-rainbow-inquiry",
+        "technique:equilibrium-rainbow-inquiry"
+      ]
+    },
+    {
+      "id": "equilibrium-deep-blue",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Rainbow display equilibrium colours (Investigation 13). Colour is qualitative shift evidence, never a concentration readout.",
+      "renderStyleKey": "equilibrium-deep-blue",
+      "renderStyle": {
+        "fill": "rgba(18, 62, 160, 0.76)",
+        "stroke": "rgba(16, 43, 112, 0.72)",
+        "highlight": "rgba(202, 222, 255, 0.36)",
+        "meniscus": "rgba(164, 196, 255, 0.88)",
+        "opacity": 1
+      },
+      "owners": [
+        "lab:equilibrium-rainbow-display",
+        "lab:equilibrium-rainbow-display/technique:equilibrium-rainbow-inquiry",
+        "technique:equilibrium-rainbow-inquiry"
+      ]
+    },
+    {
+      "id": "equilibrium-green",
+      "disposition": "liquid-style",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Rainbow display equilibrium colours (Investigation 13). Colour is qualitative shift evidence, never a concentration readout.",
+      "renderStyleKey": "equilibrium-green",
+      "renderStyle": {
+        "fill": "rgba(47, 154, 96, 0.62)",
+        "stroke": "rgba(28, 103, 67, 0.64)",
+        "highlight": "rgba(218, 255, 230, 0.48)",
+        "meniscus": "rgba(181, 241, 202, 0.9)",
+        "opacity": 0.98
+      },
+      "owners": [
+        "lab:equilibrium-rainbow-display",
+        "lab:equilibrium-rainbow-display/technique:equilibrium-rainbow-inquiry",
+        "technique:equilibrium-rainbow-inquiry"
+      ]
+    },
+    {
+      "id": "equilibrium-orange",
+      "disposition": "liquid-style",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Rainbow display equilibrium colours (Investigation 13). Colour is qualitative shift evidence, never a concentration readout.",
+      "renderStyleKey": "equilibrium-orange",
+      "renderStyle": {
+        "fill": "rgba(236, 125, 30, 0.68)",
+        "stroke": "rgba(151, 78, 18, 0.66)",
+        "highlight": "rgba(255, 239, 196, 0.5)",
+        "meniscus": "rgba(255, 220, 158, 0.9)",
+        "opacity": 0.99
+      },
+      "owners": [
+        "lab:equilibrium-rainbow-display",
+        "lab:equilibrium-rainbow-display/technique:equilibrium-rainbow-inquiry",
+        "technique:equilibrium-rainbow-inquiry"
+      ]
+    },
+    {
+      "id": "equilibrium-pale-blue",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Rainbow display equilibrium colours (Investigation 13). Colour is qualitative shift evidence, never a concentration readout.",
+      "renderStyleKey": "equilibrium-pale-blue",
+      "renderStyle": {
+        "fill": "rgba(111, 184, 218, 0.46)",
+        "stroke": "rgba(57, 122, 158, 0.56)",
+        "highlight": "rgba(239, 252, 255, 0.58)",
+        "meniscus": "rgba(213, 242, 250, 0.9)",
+        "opacity": 0.96
+      },
+      "owners": [
+        "lab:equilibrium-rainbow-display",
+        "lab:equilibrium-rainbow-display/technique:equilibrium-rainbow-inquiry",
+        "technique:equilibrium-rainbow-inquiry"
+      ]
+    },
+    {
+      "id": "equilibrium-pale-yellow",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Rainbow display equilibrium colours (Investigation 13), resolved by Cycle 12 as a qualitative pale-yellow shift. Colour is never a concentration readout.",
+      "renderStyleKey": "equilibrium-pale-yellow",
+      "renderStyle": {
+        "fill": "rgba(244, 219, 104, 0.46)",
+        "stroke": "rgba(174, 145, 43, 0.54)",
+        "highlight": "rgba(255, 255, 226, 0.6)",
+        "meniscus": "rgba(255, 244, 178, 0.9)",
+        "opacity": 0.96
+      },
+      "owners": [
+        "lab:equilibrium-rainbow-display",
+        "lab:equilibrium-rainbow-display/technique:equilibrium-rainbow-inquiry",
+        "technique:equilibrium-rainbow-inquiry"
+      ]
+    },
+    {
+      "id": "equilibrium-pink",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Rainbow display equilibrium colours (Investigation 13). Colour is qualitative shift evidence, never a concentration readout.",
+      "renderStyleKey": "equilibrium-pink",
+      "renderStyle": {
+        "fill": "rgba(226, 93, 162, 0.58)",
+        "stroke": "rgba(157, 46, 111, 0.64)",
+        "highlight": "rgba(255, 232, 244, 0.5)",
+        "meniscus": "rgba(255, 206, 230, 0.9)",
+        "opacity": 0.98
+      },
+      "owners": [
+        "lab:equilibrium-rainbow-display",
+        "lab:equilibrium-rainbow-display/technique:equilibrium-rainbow-inquiry",
+        "technique:equilibrium-rainbow-inquiry"
+      ]
+    },
+    {
+      "id": "equilibrium-red",
+      "disposition": "liquid-style",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Rainbow display equilibrium colours (Investigation 13). Colour is qualitative shift evidence, never a concentration readout.",
+      "renderStyleKey": "equilibrium-red",
+      "renderStyle": {
+        "fill": "rgba(198, 34, 44, 0.68)",
+        "stroke": "rgba(116, 24, 32, 0.68)",
+        "highlight": "rgba(255, 218, 214, 0.46)",
+        "meniscus": "rgba(255, 193, 187, 0.9)",
+        "opacity": 0.99
+      },
+      "owners": [
+        "lab:equilibrium-rainbow-display",
+        "lab:equilibrium-rainbow-display/technique:equilibrium-rainbow-inquiry",
+        "technique:equilibrium-rainbow-inquiry"
+      ]
+    },
+    {
+      "id": "equilibrium-violet",
+      "disposition": "liquid-style",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Rainbow display equilibrium colours (Investigation 13). Colour is qualitative shift evidence, never a concentration readout.",
+      "renderStyleKey": "equilibrium-violet",
+      "renderStyle": {
+        "fill": "rgba(117, 58, 188, 0.64)",
+        "stroke": "rgba(74, 38, 124, 0.66)",
+        "highlight": "rgba(239, 224, 255, 0.46)",
+        "meniscus": "rgba(222, 199, 255, 0.9)",
+        "opacity": 0.99
+      },
+      "owners": [
+        "lab:equilibrium-rainbow-display",
+        "lab:equilibrium-rainbow-display/technique:equilibrium-rainbow-inquiry",
+        "technique:equilibrium-rainbow-inquiry"
+      ]
+    },
+    {
+      "id": "equilibrium-yellow",
+      "disposition": "liquid-style",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Rainbow display equilibrium colours (Investigation 13). Colour is qualitative shift evidence, never a concentration readout.",
+      "renderStyleKey": "equilibrium-yellow",
+      "renderStyle": {
+        "fill": "rgba(240, 205, 54, 0.62)",
+        "stroke": "rgba(170, 136, 24, 0.62)",
+        "highlight": "rgba(255, 253, 205, 0.56)",
+        "meniscus": "rgba(255, 241, 157, 0.92)",
+        "opacity": 0.98
+      },
+      "owners": [
+        "lab:equilibrium-rainbow-display",
+        "lab:equilibrium-rainbow-display/technique:equilibrium-rainbow-inquiry",
+        "technique:equilibrium-rainbow-inquiry"
+      ]
+    },
+    {
+      "id": "equilibrium-yellow-orange",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Rainbow display equilibrium colours (Investigation 13), resolved by Cycle 12 as a qualitative yellow-orange shift. Colour is never a concentration readout.",
+      "renderStyleKey": "equilibrium-yellow-orange",
+      "renderStyle": {
+        "fill": "rgba(241, 164, 38, 0.64)",
+        "stroke": "rgba(161, 101, 19, 0.64)",
+        "highlight": "rgba(255, 244, 205, 0.52)",
+        "meniscus": "rgba(255, 224, 157, 0.9)",
+        "opacity": 0.98
+      },
+      "owners": [
+        "lab:equilibrium-rainbow-display",
+        "lab:equilibrium-rainbow-display/technique:equilibrium-rainbow-inquiry",
+        "technique:equilibrium-rainbow-inquiry"
+      ]
+    },
+    {
+      "id": "filter-cake",
+      "disposition": "solid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored",
+        "runtime-assigned"
+      ],
+      "provenance": "Solid retained on filter paper. Packed and still wet with mother liquor; distinct from a free powder. The reducer also assigns it as a default when an action declares no state, so it is reachable without any authored value; recorded by Cycle 08.",
+      "solidStyle": {
+        "fill": "rgba(214, 206, 176, 0.95)",
+        "stroke": "rgba(98, 90, 62, 0.42)",
+        "highlight": "rgba(255, 255, 255, 0.18)"
+      },
+      "owners": [
+        "lab:hard-water-analysis",
+        "lab:hard-water-analysis/technique:two-stage-precipitate-drying",
+        "lab:quick-ache-relief-separation",
+        "lab:quick-ache-relief-separation/technique:quick-ache-extraction-recovery",
+        "technique:quick-ache-extraction-recovery",
+        "technique:two-stage-precipitate-drying"
+      ],
+      "sharesAppearanceWith": [
+        "rinsed-precipitate"
+      ],
+      "runtimeAssignment": "default"
+    },
+    {
+      "id": "granular-solid",
+      "disposition": "solid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Generic coarse solid such as an Inv. 5 unknown. Distinguishes grain size from a fine powder; it makes no identity claim.",
+      "solidStyle": {
+        "fill": "rgba(232, 222, 196, 0.95)",
+        "stroke": "rgba(118, 104, 70, 0.38)",
+        "highlight": "rgba(255, 255, 255, 0.2)"
+      },
+      "owners": [
+        "lab:bonding-unknown-solids"
+      ]
+    },
+    {
+      "id": "heated-liquid",
+      "disposition": "liquid-style",
+      "evidenceKind": "simulator-configured",
+      "quantitativeClaim": "none",
+      "authoredToday": false,
+      "selectors": [
+        "runtime-assigned"
+      ],
+      "owners": [],
+      "provenance": "The reducer's default for a liquid brought to a configured target temperature in Investigation 12. Resolved by Cycle 12 as a neutral clear-liquid style; temperature remains instrument evidence and is not inferred from color.",
+      "renderStyleKey": "heated-liquid",
+      "renderStyle": {
+        "fill": "rgba(92, 178, 207, 0.42)",
+        "stroke": "rgba(43, 112, 138, 0.52)",
+        "highlight": "rgba(248, 255, 255, 0.52)",
+        "meniscus": "rgba(236, 251, 255, 0.9)",
+        "opacity": 0.96
+      },
+      "runtimeAssignment": "unconditional"
+    },
+    {
+      "id": "heated-residue",
+      "disposition": "solid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "ordinal",
+      "authoredToday": false,
+      "selectors": [
+        "runtime-assigned"
+      ],
+      "owners": [],
+      "provenance": "The residue left in the crucible after Investigation 7's selective thermal decomposition, assigned by the reducer's heat handler (src/runtime/reducer.ts, verb heat). Whiter and more sintered than a loose carbonate powder, which is the visible change the decomposition produces. It makes no claim about how far the decomposition has gone: the constant-mass decision is a mass comparison, not an appearance.",
+      "runtimeAssignment": "unconditional",
+      "solidStyle": {
+        "fill": "rgba(248, 247, 243, 0.97)",
+        "stroke": "rgba(132, 128, 118, 0.38)",
+        "highlight": "rgba(255, 255, 255, 0.34)"
+      },
+      "sharesAppearanceWith": [
+        "cooled-residue"
+      ]
+    },
+    {
+      "id": "indicator-solution",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Authored by lab or technique content; see owners.",
+      "renderStyleKey": "indicator-solution",
+      "renderStyle": {
+        "fill": "rgba(220, 96, 180, 0.5)",
+        "stroke": "rgba(163, 48, 132, 0.58)",
+        "highlight": "rgba(255, 245, 251, 0.58)",
+        "meniscus": "rgba(255, 224, 241, 0.92)",
+        "opacity": 0.98
+      },
+      "owners": [
+        "lab:acid-base-titration/technique:acid-base-titration-state",
+        "lab:beverage-acidity"
+      ]
+    },
+    {
+      "id": "measured-liquid",
+      "disposition": "liquid-style",
+      "evidenceKind": "simulator-configured",
+      "quantitativeClaim": "none",
+      "authoredToday": false,
+      "selectors": [
+        "runtime-assigned"
+      ],
+      "provenance": "The reducer's final fallback when a measureVolume action declares no state and the source carries none (src/runtime/reducer.ts, verb measureVolume). Cycle 05 recorded that no selector reaches it; that was wrong — the runtime does assign it, which Cycle 08's mirror rule against the reducer is what made visible. Retiring it is no longer a Cycle 13 question.",
+      "renderStyleKey": "measured-liquid",
+      "renderStyle": {
+        "fill": "rgba(78, 166, 204, 0.5)",
+        "stroke": "rgba(37, 104, 136, 0.62)",
+        "highlight": "rgba(247, 255, 255, 0.6)",
+        "meniscus": "rgba(232, 250, 255, 0.94)",
+        "opacity": 0.98
+      },
+      "owners": [],
+      "runtimeAssignment": "default"
+    },
+    {
+      "id": "naoh",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": false,
+      "selectors": [
+        "reagent-heuristic"
+      ],
+      "provenance": "Reachable only through the definition-id override or reagent-name heuristic in resolveLiquidStyle, not through an authored visualState.",
+      "renderStyleKey": "naoh",
+      "renderStyle": {
+        "fill": "rgba(96, 184, 206, 0.42)",
+        "stroke": "rgba(42, 112, 138, 0.52)",
+        "highlight": "rgba(248, 255, 255, 0.52)",
+        "meniscus": "rgba(240, 251, 255, 0.88)",
+        "opacity": 0.95
+      },
+      "owners": []
+    },
+    {
+      "id": "paper-spotted",
+      "disposition": "nonvisual",
+      "evidenceKind": "simulator-configured",
+      "quantitativeClaim": "none",
+      "authoredToday": false,
+      "selectors": [
+        "runtime-assigned"
+      ],
+      "owners": [],
+      "provenance": "Stage 2: the reducer assigns it when a sample is applied to the pencil origin (src/runtime/reducer.ts, verb spotSample, phase TR-04, M/R). A paper chromatogram's appearance is not carried by `visualState` at all: `contentOverlayByDefinitionId[\"chromatography-paper\"]` in src/player/equipmentOverlays.tsx draws the pencil origin, the sample spot, the solvent-front mark, and every band from `contents.chromatogram`, which is the object the spotSample and developChromatogram handlers build. The state string is a stage label over that object, so it has no appearance of its own to register, and giving it one would put a second, competing description of the strip in the registry. Cycle 10 records this rather than inventing a style.",
+      "runtimeAssignment": "unconditional"
+    },
+    {
+      "id": "paper-unspotted",
+      "disposition": "nonvisual",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Stage 1 of the Investigation 5 strip: cut, flat, and not yet marked (apparatus CHR-02, F). A paper chromatogram's appearance is not carried by `visualState` at all: `contentOverlayByDefinitionId[\"chromatography-paper\"]` in src/player/equipmentOverlays.tsx draws the pencil origin, the sample spot, the solvent-front mark, and every band from `contents.chromatogram`, which is the object the spotSample and developChromatogram handlers build. The state string is a stage label over that object, so it has no appearance of its own to register, and giving it one would put a second, competing description of the strip in the registry. Cycle 10 records this rather than inventing a style.",
+      "owners": [
+        "lab:paper-chromatography",
+        "technique:paper-chromatography"
+      ]
+    },
+    {
+      "id": "partially-dry-precipitate",
+      "disposition": "solid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "ordinal",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Stage 2 of the Inv. 3 dryness sequence (manual step 7, basis M). Appearance conveys dryness order only; the manual states no colour.",
+      "solidStyle": {
+        "fill": "rgba(220, 214, 190, 0.95)",
+        "stroke": "rgba(100, 94, 68, 0.4)",
+        "highlight": "rgba(255, 255, 255, 0.2)"
+      },
+      "owners": [
+        "lab:hard-water-analysis",
+        "lab:hard-water-analysis/technique:hard-water-two-sample-inquiry",
+        "lab:hard-water-analysis/technique:two-stage-precipitate-drying",
+        "technique:hard-water-two-sample-inquiry",
+        "technique:two-stage-precipitate-drying"
+      ]
+    },
+    {
+      "id": "permanganate-faint-pink",
+      "disposition": "liquid-style",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Investigation 8 finding 6: the endpoint is a faint pink that persists. Deliberately paler than titration-pale-pink, which is the acid-base indicator endpoint; the two are separate observables produced by different chemistry. The persistence time the endpoint also requires is not stated by the source and stays teacher-configured, so no appearance encodes it. Resolved by Cycle 09.",
+      "owners": [
+        "lab:hydrogen-peroxide-redox-titration"
+      ],
+      "renderStyleKey": "permanganate-faint-pink",
+      "renderStyle": {
+        "fill": "rgba(238, 170, 198, 0.42)",
+        "stroke": "rgba(184, 96, 138, 0.5)",
+        "highlight": "rgba(255, 246, 250, 0.58)",
+        "meniscus": "rgba(255, 231, 242, 0.9)",
+        "opacity": 0.96
+      },
+      "resolvedBy": "09"
+    },
+    {
+      "id": "permanganate-overshoot-purple",
+      "disposition": "liquid-style",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Investigation 8 finding 6: dark red or purple means the titration is overshot. Resolved by Cycle 09. It is not a quantity - the amount of overshoot is carried by the burette readings, not by the depth of the colour.",
+      "owners": [
+        "lab:hydrogen-peroxide-redox-titration"
+      ],
+      "renderStyleKey": "permanganate-overshoot-purple",
+      "renderStyle": {
+        "fill": "rgba(118, 42, 132, 0.66)",
+        "stroke": "rgba(72, 24, 84, 0.7)",
+        "highlight": "rgba(236, 206, 244, 0.4)",
+        "meniscus": "rgba(226, 190, 238, 0.9)",
+        "opacity": 0.99
+      },
+      "resolvedBy": "09"
+    },
+    {
+      "id": "permanganate-solution",
+      "disposition": "liquid-style",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "The permanganate titrant stock as supplied (Investigation 8 section 7, purple KMnO4 additions). Resolved by Cycle 09. Its appearance says nothing about its concentration: the concentration is exactly what the standardization determines, and the stock renders identically whatever the teacher configured.",
+      "owners": [
+        "lab:hydrogen-peroxide-redox-titration"
+      ],
+      "renderStyleKey": "permanganate-solution",
+      "renderStyle": {
+        "fill": "rgba(140, 52, 152, 0.6)",
+        "stroke": "rgba(86, 30, 96, 0.66)",
+        "highlight": "rgba(240, 214, 246, 0.42)",
+        "meniscus": "rgba(232, 200, 242, 0.9)",
+        "opacity": 0.99
+      },
+      "resolvedBy": "09"
+    },
+    {
+      "id": "phenolphthalein",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": false,
+      "selectors": [
+        "definition-id",
+        "reagent-heuristic"
+      ],
+      "provenance": "Reachable only through the definition-id override or reagent-name heuristic in resolveLiquidStyle, not through an authored visualState.",
+      "renderStyleKey": "phenolphthalein",
+      "renderStyle": {
+        "fill": "rgba(225, 92, 184, 0.54)",
+        "stroke": "rgba(166, 44, 132, 0.6)",
+        "highlight": "rgba(255, 245, 251, 0.58)",
+        "meniscus": "rgba(255, 218, 240, 0.9)",
+        "opacity": 0.98
+      },
+      "owners": []
+    },
+    {
+      "id": "powder",
+      "disposition": "solid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored",
+        "runtime-assigned"
+      ],
+      "provenance": "Generic loose solid. Carries the appearance SolidLayer hard-coded before Cycle 05, so no authored instance changed. The reducer also assigns it while removing MgSO4 drying agent during fraction handling (src/runtime/reducer.ts line 1431).",
+      "solidStyle": {
+        "fill": "rgba(222, 214, 170, 0.94)",
+        "stroke": "rgba(106, 94, 54, 0.34)",
+        "highlight": "rgba(255, 255, 255, 0.22)"
+      },
+      "sharesAppearanceWith": [
+        "solid-sample"
+      ],
+      "owners": [
+        "lab:hand-warmer-calorimetry",
+        "lab:hand-warmer-calorimetry/technique:hand-warmer-calorimetry",
+        "lab:quick-ache-relief-separation",
+        "lab:quick-ache-relief-separation/technique:quick-ache-extraction-recovery",
+        "lab:quick-ache-relief-separation/technique:quick-ache-property-evidence",
+        "technique:bonding-solids-tests",
+        "technique:hand-warmer-calorimetry",
+        "technique:quick-ache-extraction-recovery",
+        "technique:quick-ache-property-evidence",
+        "technique:tablet-separation",
+        "technique:thermal-decomposition-mass-loss",
+        "technique:weighing"
+      ],
+      "runtimeAssignment": "unconditional"
+    },
+    {
+      "id": "purple-solution",
+      "disposition": "liquid-style",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Crystal violet in solution (Investigation 11; the source's Figure 1 is a 25 micromolar crystal violet spectrum and Figure 2 draws the coloured cation). Resolved by Cycle 06 as one colour for the dye, not a series: quantitativeClaim is \"none\" because the fading the reaction produces is measured by absorbance, and finding 9 states the run stops at an approved percent-completion threshold rather than when the solution merely looks colourless. Cycle 06 deliberately added no intermediate fade states, so no appearance can stand in for the stop rule.",
+      "ownerCycle": "06",
+      "owners": [
+        "lab:crystal-violet-rate-law",
+        "lab:crystal-violet-rate-law/technique:crystal-violet-kinetics",
+        "lab:crystal-violet-rate-law/technique:crystal-violet-micromolar-dilution-series",
+        "lab:crystal-violet-rate-law/technique:crystal-violet-spectrophotometer-calibration",
+        "lab:crystal-violet-rate-law/technique:crystal-violet-waste-treatment",
+        "technique:crystal-violet-kinetics",
+        "technique:crystal-violet-micromolar-dilution-series",
+        "technique:crystal-violet-spectrophotometer-calibration",
+        "technique:crystal-violet-waste-treatment",
+        "technique:redox-titration"
+      ],
+      "renderStyleKey": "purple-solution",
+      "renderStyle": {
+        "fill": "rgba(124, 58, 183, 0.5)",
+        "stroke": "rgba(88, 28, 135, 0.62)",
+        "highlight": "rgba(233, 213, 255, 0.6)",
+        "meniscus": "rgba(221, 214, 254, 0.92)",
+        "opacity": 0.98
+      }
+    },
+    {
+      "id": "redox-colorless-solution",
+      "disposition": "liquid-style",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Investigation 8 finding 6: before the endpoint the acidified Fe(II) or peroxide mixture is colourless, and a colourless mixture means the permanganate is still being consumed. Resolved by Cycle 09. Deliberately distinct from clear-liquid: this one carries a procedural claim (titrant still being consumed) rather than only an appearance.",
+      "owners": [
+        "lab:hydrogen-peroxide-redox-titration"
+      ],
+      "renderStyleKey": "redox-colorless-solution",
+      "renderStyle": {
+        "fill": "rgba(214, 232, 238, 0.34)",
+        "stroke": "rgba(120, 158, 172, 0.46)",
+        "highlight": "rgba(252, 255, 255, 0.6)",
+        "meniscus": "rgba(240, 252, 255, 0.9)",
+        "opacity": 0.94
+      },
+      "resolvedBy": "09"
+    },
+    {
+      "id": "separated-fraction",
+      "disposition": "liquid-style",
+      "evidenceKind": "simulator-configured",
+      "quantitativeClaim": "none",
+      "authoredToday": false,
+      "selectors": [
+        "runtime-assigned"
+      ],
+      "provenance": "Assigned by the reducer while an extraction drain creates a fraction. It preserves the allocation reference and contamination metadata; it deliberately shares clear-liquid's existing fallback appearance and makes no material-identity or mass claim.",
+      "renderStyleKey": "separated-fraction",
+      "renderStyle": {
+        "fill": "rgba(86, 174, 206, 0.46)",
+        "stroke": "rgba(38, 108, 136, 0.58)",
+        "highlight": "rgba(246, 255, 255, 0.58)",
+        "meniscus": "rgba(232, 250, 255, 0.92)",
+        "opacity": 0.98
+      },
+      "sharesAppearanceWith": [
+        "clear-liquid",
+        "titration-clear"
+      ],
+      "owners": [],
+      "runtimeAssignment": "unconditional"
+    },
+    {
+      "id": "rinsed-precipitate",
+      "disposition": "solid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": false,
+      "selectors": [
+        "runtime-assigned"
+      ],
+      "owners": [],
+      "provenance": "The reducer's default for a washed solid still on the medium when the rinse action declares no state (src/runtime/reducer.ts, verb rinse). Washing removes soluble impurities, not the cake's appearance, so it deliberately matches filter-cake.",
+      "solidStyle": {
+        "fill": "rgba(214, 206, 176, 0.95)",
+        "stroke": "rgba(98, 90, 62, 0.42)",
+        "highlight": "rgba(255, 255, 255, 0.18)"
+      },
+      "sharesAppearanceWith": [
+        "filter-cake"
+      ],
+      "runtimeAssignment": "default"
+    },
+    {
+      "id": "sample-bottle-water",
+      "disposition": "liquid-style",
+      "evidenceKind": "presentation-only",
+      "quantitativeClaim": "none",
+      "authoredToday": false,
+      "selectors": [
+        "definition-id"
+      ],
+      "provenance": "Reachable only through the definition-id override or reagent-name heuristic in resolveLiquidStyle, not through an authored visualState.",
+      "renderStyleKey": "sample-bottle-water",
+      "renderStyle": {
+        "fill": "rgba(43, 158, 204, 0.72)",
+        "stroke": "rgba(15, 91, 132, 0.78)",
+        "highlight": "rgba(235, 255, 255, 0.62)",
+        "meniscus": "rgba(204, 241, 250, 0.96)",
+        "opacity": 1
+      },
+      "owners": []
+    },
+    {
+      "id": "solid",
+      "disposition": "solid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Generic massive solid such as the Inv. 9 marble chips. Stone-grey rather than powder-beige so a chip does not read as a powder.",
+      "solidStyle": {
+        "fill": "rgba(226, 224, 214, 0.95)",
+        "stroke": "rgba(104, 100, 88, 0.4)",
+        "highlight": "rgba(255, 255, 255, 0.26)"
+      },
+      "owners": [
+        "lab:marble-statue-kinetics",
+        "technique:marble-gas-syringe-kinetics"
+      ]
+    },
+    {
+      "id": "solid-sample",
+      "disposition": "solid-style",
+      "evidenceKind": "simulator-configured",
+      "quantitativeClaim": "none",
+      "authoredToday": false,
+      "selectors": [
+        "runtime-assigned"
+      ],
+      "provenance": "Assigned by the reducer when an empty vessel receives a measured solid sample. A retained nonempty visualState wins instead. This entry intentionally preserves the existing powder fallback appearance and makes no material-identity or mass claim.",
+      "solidStyle": {
+        "fill": "rgba(222, 214, 170, 0.94)",
+        "stroke": "rgba(106, 94, 54, 0.34)",
+        "highlight": "rgba(255, 255, 255, 0.22)"
+      },
+      "sharesAppearanceWith": [
+        "powder"
+      ],
+      "owners": [],
+      "runtimeAssignment": "unconditional"
+    },
+    {
+      "id": "syringe-empty",
+      "disposition": "state-asset",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "SYR-00: barrelContents=empty, plunger=home, closure=open, orientation=upright. The valve and plunger are visible, which is why the source calls for a state split from the base asset. One value on the shared `syringe-*` state family. The family fixes four independent axes so a later cycle extends it by adding a value rather than renaming an existing state: `barrelContents` (empty | liquid | liquid-plus-gas), `plunger` (home | extended | nail-locked), `closure` (open | valve-closed), and `orientation` (upright | inverted). The names are deliberately body-agnostic, and the art is the existing realistic Luer-lock series wired through `stateAssets` on the `luer-lock-syringe` visual profile. Investigation 13's Figure 1 sequence is the first consumer and its apparatus rows SYR-00 to SYR-06 map one-for-one onto these seven states (finding 11, basis M/F); Cycle 12 owns authoring the values its own steps reach. Resolved by Cycle 11, which owns the whole family. SYR-07, the shaken colour shift, is a liquid colour rather than a syringe body state and is deliberately not a member.",
+      "owners": [
+        "lab:equilibrium-rainbow-display",
+        "lab:equilibrium-rainbow-display/technique:equilibrium-rainbow-inquiry",
+        "technique:equilibrium-rainbow-inquiry"
+      ],
+      "stateAssetEquipmentIds": [
+        "luer-lock-syringe"
+      ]
+    },
+    {
+      "id": "syringe-extended",
+      "disposition": "state-asset",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "SYR-05: barrelContents=liquid-plus-gas, plunger=extended, closure=valve-closed, orientation=upright. Pulling the piston against a closed valve is what lowers the pressure; an open valve during the pull is one of the invalid cases the source names. One value on the shared `syringe-*` state family. The family fixes four independent axes so a later cycle extends it by adding a value rather than renaming an existing state: `barrelContents` (empty | liquid | liquid-plus-gas), `plunger` (home | extended | nail-locked), `closure` (open | valve-closed), and `orientation` (upright | inverted). The names are deliberately body-agnostic, and the art is the existing realistic Luer-lock series wired through `stateAssets` on the `luer-lock-syringe` visual profile. Investigation 13's Figure 1 sequence is the first consumer and its apparatus rows SYR-00 to SYR-06 map one-for-one onto these seven states (finding 11, basis M/F); Cycle 12 owns authoring the values its own steps reach. Resolved by Cycle 11, which owns the whole family. SYR-07, the shaken colour shift, is a liquid colour rather than a syringe body state and is deliberately not a member.",
+      "owners": [
+        "lab:equilibrium-rainbow-display",
+        "lab:equilibrium-rainbow-display/technique:equilibrium-rainbow-inquiry",
+        "technique:equilibrium-rainbow-inquiry"
+      ],
+      "stateAssetEquipmentIds": [
+        "luer-lock-syringe"
+      ]
+    },
+    {
+      "id": "syringe-filled",
+      "disposition": "state-asset",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "SYR-01: barrelContents=liquid, plunger=home, closure=open, orientation=upright. One value on the shared `syringe-*` state family. The family fixes four independent axes so a later cycle extends it by adding a value rather than renaming an existing state: `barrelContents` (empty | liquid | liquid-plus-gas), `plunger` (home | extended | nail-locked), `closure` (open | valve-closed), and `orientation` (upright | inverted). The names are deliberately body-agnostic, and the art is the existing realistic Luer-lock series wired through `stateAssets` on the `luer-lock-syringe` visual profile. Investigation 13's Figure 1 sequence is the first consumer and its apparatus rows SYR-00 to SYR-06 map one-for-one onto these seven states (finding 11, basis M/F); Cycle 12 owns authoring the values its own steps reach. Resolved by Cycle 11, which owns the whole family. SYR-07, the shaken colour shift, is a liquid colour rather than a syringe body state and is deliberately not a member.",
+      "owners": [
+        "lab:equilibrium-rainbow-display",
+        "lab:equilibrium-rainbow-display/technique:equilibrium-rainbow-inquiry",
+        "technique:equilibrium-rainbow-inquiry"
+      ],
+      "stateAssetEquipmentIds": [
+        "luer-lock-syringe"
+      ]
+    },
+    {
+      "id": "syringe-gas-expelled",
+      "disposition": "state-asset",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "SYR-03: barrelContents=liquid, plunger=home, closure=open, orientation=inverted. Reached by depressing the piston until the headspace is gone, so it differs from syringe-filled by history rather than by axis value. One value on the shared `syringe-*` state family. The family fixes four independent axes so a later cycle extends it by adding a value rather than renaming an existing state: `barrelContents` (empty | liquid | liquid-plus-gas), `plunger` (home | extended | nail-locked), `closure` (open | valve-closed), and `orientation` (upright | inverted). The names are deliberately body-agnostic, and the art is the existing realistic Luer-lock series wired through `stateAssets` on the `luer-lock-syringe` visual profile. Investigation 13's Figure 1 sequence is the first consumer and its apparatus rows SYR-00 to SYR-06 map one-for-one onto these seven states (finding 11, basis M/F); Cycle 12 owns authoring the values its own steps reach. Resolved by Cycle 11, which owns the whole family. SYR-07, the shaken colour shift, is a liquid colour rather than a syringe body state and is deliberately not a member.",
+      "owners": [
+        "lab:equilibrium-rainbow-display",
+        "lab:equilibrium-rainbow-display/technique:equilibrium-rainbow-inquiry",
+        "technique:equilibrium-rainbow-inquiry"
+      ],
+      "stateAssetEquipmentIds": [
+        "luer-lock-syringe"
+      ]
+    },
+    {
+      "id": "syringe-inverted",
+      "disposition": "state-asset",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "SYR-02: barrelContents=liquid, plunger=home, closure=open, orientation=inverted, so the outlet points upward and trapped gas collects at it. One value on the shared `syringe-*` state family. The family fixes four independent axes so a later cycle extends it by adding a value rather than renaming an existing state: `barrelContents` (empty | liquid | liquid-plus-gas), `plunger` (home | extended | nail-locked), `closure` (open | valve-closed), and `orientation` (upright | inverted). The names are deliberately body-agnostic, and the art is the existing realistic Luer-lock series wired through `stateAssets` on the `luer-lock-syringe` visual profile. Investigation 13's Figure 1 sequence is the first consumer and its apparatus rows SYR-00 to SYR-06 map one-for-one onto these seven states (finding 11, basis M/F); Cycle 12 owns authoring the values its own steps reach. Resolved by Cycle 11, which owns the whole family. SYR-07, the shaken colour shift, is a liquid colour rather than a syringe body state and is deliberately not a member.",
+      "owners": [
+        "lab:equilibrium-rainbow-display",
+        "lab:equilibrium-rainbow-display/technique:equilibrium-rainbow-inquiry",
+        "technique:equilibrium-rainbow-inquiry"
+      ],
+      "stateAssetEquipmentIds": [
+        "luer-lock-syringe"
+      ]
+    },
+    {
+      "id": "syringe-nail-locked",
+      "disposition": "state-asset",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "SYR-06: barrelContents=liquid-plus-gas, plunger=nail-locked, closure=valve-closed, orientation=upright. The nail seats in luer-lock-syringe-plunger-hole and the source rejects nail insertion before extension, so the state is procedurally real; Cycle 12 authors it on successful locking-pin insertion. One value on the shared `syringe-*` state family. The family fixes four independent axes so a later cycle extends it by adding a value rather than renaming an existing state: `barrelContents` (empty | liquid | liquid-plus-gas), `plunger` (home | extended | nail-locked), `closure` (open | valve-closed), and `orientation` (upright | inverted). The names are deliberately body-agnostic, and the art is the existing realistic Luer-lock series wired through `stateAssets` on the `luer-lock-syringe` visual profile. Investigation 13's Figure 1 sequence is the first consumer and its apparatus rows SYR-00 to SYR-06 map one-for-one onto these seven states (finding 11, basis M/F); Cycle 12 authors the value reached by its locking-pin step. Resolved by Cycle 11, which owns the whole family. SYR-07, the shaken colour shift, is a liquid colour rather than a syringe body state and is deliberately not a member.",
+      "stateAssetEquipmentIds": [
+        "luer-lock-syringe"
+      ],
+      "owners": [
+        "lab:equilibrium-rainbow-display",
+        "lab:equilibrium-rainbow-display/technique:equilibrium-rainbow-inquiry",
+        "technique:equilibrium-rainbow-inquiry"
+      ]
+    },
+    {
+      "id": "syringe-valve-closed",
+      "disposition": "state-asset",
+      "evidenceKind": "source-observed",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "SYR-04: barrelContents=liquid, plunger=home, closure=valve-closed, orientation=upright. One value on the shared `syringe-*` state family. The family fixes four independent axes so a later cycle extends it by adding a value rather than renaming an existing state: `barrelContents` (empty | liquid | liquid-plus-gas), `plunger` (home | extended | nail-locked), `closure` (open | valve-closed), and `orientation` (upright | inverted). The names are deliberately body-agnostic, and the art is the existing realistic Luer-lock series wired through `stateAssets` on the `luer-lock-syringe` visual profile. Investigation 13's Figure 1 sequence is the first consumer and its apparatus rows SYR-00 to SYR-06 map one-for-one onto these seven states (finding 11, basis M/F); Cycle 12 owns authoring the values its own steps reach. Resolved by Cycle 11, which owns the whole family. SYR-07, the shaken colour shift, is a liquid colour rather than a syringe body state and is deliberately not a member.",
+      "owners": [
+        "lab:equilibrium-rainbow-display",
+        "lab:equilibrium-rainbow-display/technique:equilibrium-rainbow-inquiry",
+        "technique:equilibrium-rainbow-inquiry"
+      ],
+      "stateAssetEquipmentIds": [
+        "luer-lock-syringe"
+      ]
+    },
+    {
+      "id": "teacher-configured-beverage",
+      "disposition": "nonvisual",
+      "evidenceKind": "presentation-only",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "The assigned beverage is teacher configuration (Investigation 4 findings 3 and confirmation point 1), and confirmation point 4 makes colour interference with the indicator endpoint an open question. Cycle 09 resolves the state as deliberately having no distinct appearance rather than inventing one: a rendered colour would assert both an identity the teacher owns and an interference the source leaves open. The container fallbacks apply. This is a decision, not deferred debt.",
+      "owners": [
+        "lab:beverage-acidity"
+      ],
+      "resolvedBy": "09"
+    },
+    {
+      "id": "titration-clear",
+      "disposition": "liquid-style",
+      "evidenceKind": "simulator-configured",
+      "quantitativeClaim": "none",
+      "authoredToday": false,
+      "selectors": [
+        "runtime-assigned"
+      ],
+      "provenance": "Assigned by the reducer during titration (src/runtime/reducer.ts titrationVisualState); not addressable by authors. Shares clear-liquid's appearance because a pre-endpoint titrand is visually clear; the two states stay separate because one is authored and the other is assigned by the reducer.",
+      "renderStyleKey": "titration-clear",
+      "renderStyle": {
+        "fill": "rgba(86, 174, 206, 0.46)",
+        "stroke": "rgba(38, 108, 136, 0.58)",
+        "highlight": "rgba(246, 255, 255, 0.58)",
+        "meniscus": "rgba(232, 250, 255, 0.92)",
+        "opacity": 0.98
+      },
+      "sharesAppearanceWith": [
+        "clear-liquid",
+        "separated-fraction"
+      ],
+      "owners": [],
+      "runtimeAssignment": "unconditional"
+    },
+    {
+      "id": "titration-dark-pink",
+      "disposition": "liquid-style",
+      "evidenceKind": "simulator-configured",
+      "quantitativeClaim": "none",
+      "authoredToday": false,
+      "selectors": [
+        "runtime-assigned"
+      ],
+      "provenance": "Assigned by the reducer during titration (src/runtime/reducer.ts titrationVisualState); not addressable by authors.",
+      "renderStyleKey": "titration-dark-pink",
+      "renderStyle": {
+        "fill": "rgba(190, 45, 124, 0.66)",
+        "stroke": "rgba(116, 28, 84, 0.66)",
+        "highlight": "rgba(255, 224, 240, 0.42)",
+        "meniscus": "rgba(255, 201, 228, 0.9)",
+        "opacity": 0.99
+      },
+      "owners": [],
+      "runtimeAssignment": "unconditional"
+    },
+    {
+      "id": "titration-pale-pink",
+      "disposition": "liquid-style",
+      "evidenceKind": "simulator-configured",
+      "quantitativeClaim": "none",
+      "authoredToday": false,
+      "selectors": [
+        "runtime-assigned"
+      ],
+      "provenance": "Assigned by the reducer during titration (src/runtime/reducer.ts titrationVisualState); not addressable by authors.",
+      "renderStyleKey": "titration-pale-pink",
+      "renderStyle": {
+        "fill": "rgba(236, 126, 190, 0.5)",
+        "stroke": "rgba(176, 62, 138, 0.58)",
+        "highlight": "rgba(255, 245, 251, 0.6)",
+        "meniscus": "rgba(255, 225, 242, 0.92)",
+        "opacity": 0.98
+      },
+      "owners": [],
+      "runtimeAssignment": "unconditional"
+    },
+    {
+      "id": "two-layer-extraction",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Investigation 9's settled separatory funnel: the phases have resolved and a layer can be drained (phase E-05, R). Authored as the default outcome of the settling observation and applied to the funnel by the observe handler's observed-state branch. The renderer draws one liquid body per vessel, so the phase boundary itself is not drawn; what this state claims is that the contents are settled and clear rather than emulsified, and the drainage gate reads the evidence, not the colour.",
+      "owners": [
+        "lab:quick-ache-relief-separation",
+        "lab:quick-ache-relief-separation/technique:quick-ache-extraction-recovery",
+        "technique:quick-ache-extraction-recovery"
+      ],
+      "renderStyleKey": "two-layer-extraction",
+      "renderStyle": {
+        "fill": "rgba(196, 208, 176, 0.44)",
+        "stroke": "rgba(104, 118, 86, 0.54)",
+        "highlight": "rgba(250, 253, 240, 0.54)",
+        "meniscus": "rgba(236, 244, 220, 0.9)",
+        "opacity": 0.95
+      }
+    },
+    {
+      "id": "unknown-sample",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": false,
+      "selectors": [
+        "reagent-heuristic"
+      ],
+      "provenance": "Reachable only through the definition-id override or reagent-name heuristic in resolveLiquidStyle, not through an authored visualState.",
+      "renderStyleKey": "unknown-sample",
+      "renderStyle": {
+        "fill": "rgba(82, 160, 194, 0.46)",
+        "stroke": "rgba(43, 100, 130, 0.56)",
+        "highlight": "rgba(246, 255, 255, 0.54)",
+        "meniscus": "rgba(234, 246, 250, 0.88)",
+        "opacity": 0.96
+      },
+      "owners": []
+    },
+    {
+      "id": "waste",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": false,
+      "selectors": [
+        "definition-id",
+        "reagent-heuristic"
+      ],
+      "provenance": "Reachable only through the definition-id override or reagent-name heuristic in resolveLiquidStyle, not through an authored visualState.",
+      "renderStyleKey": "waste",
+      "renderStyle": {
+        "fill": "rgba(108, 144, 136, 0.48)",
+        "stroke": "rgba(57, 98, 91, 0.56)",
+        "highlight": "rgba(255, 255, 255, 0.32)",
+        "meniscus": "rgba(220, 232, 226, 0.84)",
+        "opacity": 0.97,
+        "particles": true
+      },
+      "owners": []
+    },
+    {
+      "id": "wet-equipment",
+      "disposition": "nonvisual",
+      "evidenceKind": "presentation-only",
+      "quantitativeClaim": "none",
+      "authoredToday": false,
+      "selectors": [
+        "runtime-assigned"
+      ],
+      "owners": [],
+      "provenance": "The reducer's default for a rinsed vessel that holds no precipitate (src/runtime/reducer.ts, verb rinse). A rinsed empty vessel has no contents to render; wetness is carried by wetState, which is what the filter handler checks before it accepts a pour.",
+      "runtimeAssignment": "default"
+    },
+    {
+      "id": "white-powder",
+      "disposition": "solid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Investigation 2 solid reagent appearance, resolved by Cycle 07 as a qualitative white powder. Identity and quantity come from labels and measurements, not color.",
+      "solidStyle": {
+        "fill": "rgba(246, 245, 239, 0.97)",
+        "stroke": "rgba(142, 137, 124, 0.34)",
+        "highlight": "rgba(255, 255, 255, 0.38)"
+      },
+      "owners": [
+        "lab:brass-colorimetry"
+      ]
+    },
+    {
+      "id": "white-solid",
+      "disposition": "solid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Generic white solid such as the Inv. 4 practice-preparation reagent. White is the only claim.",
+      "solidStyle": {
+        "fill": "rgba(246, 246, 242, 0.96)",
+        "stroke": "rgba(120, 120, 112, 0.34)",
+        "highlight": "rgba(255, 255, 255, 0.3)"
+      },
+      "owners": [
+        "lab:hard-water-analysis",
+        "lab:hard-water-analysis/technique:hard-water-practice-preparation",
+        "technique:hard-water-practice-preparation"
+      ]
+    },
+    {
+      "id": "wet-residue",
+      "disposition": "solid-style",
+      "evidenceKind": "simulator-configured",
+      "quantitativeClaim": "none",
+      "authoredToday": false,
+      "selectors": [
+        "runtime-assigned"
+      ],
+      "owners": [],
+      "provenance": "Runtime fallback for a collected recovery fraction before the drying observation (src/runtime/reducer.ts, collect-residue). It reuses the existing damp qualitative palette without claiming a precipitate identity, composition, or mass; wetState and recoveryEvidence remain the authoritative state.",
+      "runtimeAssignment": "unconditional",
+      "solidStyle": {
+        "fill": "rgba(198, 192, 168, 0.94)",
+        "stroke": "rgba(88, 82, 58, 0.46)",
+        "highlight": "rgba(255, 255, 255, 0.16)"
+      },
+      "sharesAppearanceWith": [
+        "damp-precipitate"
+      ]
+    },
+    {
+      "id": "dry-residue",
+      "disposition": "solid-style",
+      "evidenceKind": "simulator-configured",
+      "quantitativeClaim": "none",
+      "authoredToday": false,
+      "selectors": [
+        "runtime-assigned"
+      ],
+      "owners": [],
+      "provenance": "Runtime fallback for a recovered fraction after the drying observation (src/runtime/reducer.ts, observe-dryness). It reuses the existing generic dry-solid palette without claiming identity, composition, yield, or measured mass; wetState and recoveryEvidence remain the authoritative state.",
+      "runtimeAssignment": "unconditional",
+      "solidStyle": {
+        "fill": "rgba(236, 231, 214, 0.96)",
+        "stroke": "rgba(112, 106, 86, 0.36)",
+        "highlight": "rgba(255, 255, 255, 0.24)"
+      },
+      "sharesAppearanceWith": [
+        "dry-solid"
+      ]
+    }
+  ]
+}

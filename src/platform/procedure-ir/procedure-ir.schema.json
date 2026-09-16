@@ -1,0 +1,358 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://lab-studio.local/schemas/studio.procedure-ir/1.0",
+  "title": "ProcedureIR v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schemaVersion",
+    "id",
+    "title",
+    "purpose",
+    "learningObjectives",
+    "sources",
+    "roles",
+    "resources",
+    "variables",
+    "steps",
+    "controlFlow",
+    "reviewFlags",
+    "metadata"
+  ],
+  "properties": {
+    "schema": { "const": "studio.procedure-ir" },
+    "schemaVersion": { "const": "1.0" },
+    "id": { "$ref": "#/definitions/id" },
+    "title": { "$ref": "#/definitions/nonEmptyString" },
+    "purpose": { "$ref": "#/definitions/nonEmptyString" },
+    "audience": { "$ref": "#/definitions/nonEmptyString" },
+    "learningObjectives": { "type": "array", "items": { "$ref": "#/definitions/nonEmptyString" } },
+    "domainHint": { "enum": ["chemistry", "assay"] },
+    "sources": { "type": "array", "items": { "$ref": "#/definitions/sourceReference" } },
+    "roles": { "type": "array", "items": { "$ref": "#/definitions/procedureRole" } },
+    "resources": { "type": "array", "items": { "$ref": "#/definitions/procedureResource" } },
+    "variables": { "type": "array", "items": { "$ref": "#/definitions/procedureVariable" } },
+    "steps": { "type": "array", "minItems": 1, "items": { "$ref": "#/definitions/procedureStep" } },
+    "controlFlow": { "$ref": "#/definitions/controlFlow" },
+    "reviewFlags": { "type": "array", "items": { "$ref": "#/definitions/reviewFlag" } },
+    "metadata": { "$ref": "#/definitions/metadata" }
+  },
+  "definitions": {
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "decimalString": {
+      "type": "string",
+      "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?$"
+    },
+    "knownUnit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "id"],
+      "properties": {
+        "kind": { "const": "known" },
+        "id": {
+          "enum": ["1", "%", "s", "min", "h", "uL", "mL", "L", "ug", "mg", "g", "kg", "umol", "mmol", "mol", "uM", "mM", "M", "degC", "K", "rpm", "nm", "AU", "OD", "pH"]
+        }
+      }
+    },
+    "unknownUnit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "raw", "reason"],
+      "properties": {
+        "kind": { "const": "unknown" },
+        "raw": { "$ref": "#/definitions/nonEmptyString" },
+        "reason": { "$ref": "#/definitions/nonEmptyString" }
+      }
+    },
+    "unitReference": {
+      "oneOf": [
+        { "$ref": "#/definitions/knownUnit" },
+        { "$ref": "#/definitions/unknownUnit" }
+      ]
+    },
+    "quantity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "unit"],
+      "properties": {
+        "value": { "$ref": "#/definitions/decimalString" },
+        "unit": { "$ref": "#/definitions/unitReference" },
+        "uncertainty": { "$ref": "#/definitions/decimalString" }
+      }
+    },
+    "scalarOrQuantity": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "boolean" },
+        { "$ref": "#/definitions/quantity" }
+      ]
+    },
+    "sourcePosition": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "line": { "type": "integer", "minimum": 1 },
+        "column": { "type": "integer", "minimum": 1 },
+        "offset": { "type": "integer", "minimum": 0 }
+      },
+      "minProperties": 1
+    },
+    "sourceLocator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourceRef", "kind", "pointer"],
+      "properties": {
+        "sourceRef": { "$ref": "#/definitions/id" },
+        "kind": { "enum": ["structured-step", "section", "paragraph", "table-cell", "page", "timestamp", "user-selection"] },
+        "pointer": { "$ref": "#/definitions/nonEmptyString" },
+        "start": { "$ref": "#/definitions/sourcePosition" },
+        "end": { "$ref": "#/definitions/sourcePosition" },
+        "quote": { "type": "string" }
+      }
+    },
+    "sourceReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "title"],
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "kind": { "enum": ["user-input", "document", "dataset", "protocol", "web"] },
+        "title": { "$ref": "#/definitions/nonEmptyString" },
+        "reference": { "$ref": "#/definitions/nonEmptyString" },
+        "version": { "$ref": "#/definitions/nonEmptyString" },
+        "language": { "$ref": "#/definitions/nonEmptyString" }
+      }
+    },
+    "reviewFlag": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "code", "severity", "message", "sourceLocators"],
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "code": { "$ref": "#/definitions/id" },
+        "severity": { "enum": ["info", "warning", "blocking"] },
+        "message": { "$ref": "#/definitions/nonEmptyString" },
+        "sourceLocators": { "type": "array", "items": { "$ref": "#/definitions/sourceLocator" } }
+      }
+    },
+    "ambiguity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "category", "message", "sourceLocators", "options", "resolutionStatus"],
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "category": { "enum": ["ambiguous-term", "missing-data", "unsupported-semantics", "conflict", "unknown-unit", "unknown-resource"] },
+        "message": { "$ref": "#/definitions/nonEmptyString" },
+        "sourceLocators": { "type": "array", "items": { "$ref": "#/definitions/sourceLocator" } },
+        "options": { "type": "array", "items": { "$ref": "#/definitions/nonEmptyString" } },
+        "resolutionStatus": { "enum": ["open", "resolved", "deferred"] },
+        "selectedOption": { "$ref": "#/definitions/nonEmptyString" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "resolutionStatus": { "const": "resolved" } } },
+          "then": { "required": ["selectedOption"] }
+        }
+      ]
+    },
+    "evidenceRequirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "typeId", "description", "required", "sourceLocators"],
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "typeId": { "$ref": "#/definitions/id" },
+        "description": { "$ref": "#/definitions/nonEmptyString" },
+        "required": { "type": "boolean" },
+        "sourceLocators": { "type": "array", "items": { "$ref": "#/definitions/sourceLocator" } }
+      }
+    },
+    "procedureRole": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "description", "responsibilities", "sourceLocators"],
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "title": { "$ref": "#/definitions/nonEmptyString" },
+        "description": { "$ref": "#/definitions/nonEmptyString" },
+        "responsibilities": { "type": "array", "items": { "$ref": "#/definitions/nonEmptyString" } },
+        "sourceLocators": { "type": "array", "items": { "$ref": "#/definitions/sourceLocator" } }
+      }
+    },
+    "unknownResource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["raw", "reason"],
+      "properties": {
+        "raw": { "$ref": "#/definitions/nonEmptyString" },
+        "reason": { "$ref": "#/definitions/nonEmptyString" }
+      }
+    },
+    "procedureResource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "kind", "sourceLocators", "reviewFlags"],
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "label": { "$ref": "#/definitions/nonEmptyString" },
+        "kind": { "enum": ["material", "equipment", "reagent", "sample", "instrument", "consumable", "service", "unknown"] },
+        "quantity": { "$ref": "#/definitions/quantity" },
+        "knownResourceRef": { "$ref": "#/definitions/id" },
+        "unknownResource": { "$ref": "#/definitions/unknownResource" },
+        "sourceLocators": { "type": "array", "items": { "$ref": "#/definitions/sourceLocator" } },
+        "reviewFlags": { "type": "array", "items": { "$ref": "#/definitions/reviewFlag" } }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "kind": { "const": "unknown" } }, "required": ["kind"] },
+          "then": { "required": ["unknownResource"], "not": { "required": ["knownResourceRef"] } },
+          "else": { "not": { "required": ["unknownResource"] } }
+        }
+      ]
+    },
+    "procedureVariable": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "kind", "sourceLocators", "reviewFlags"],
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "label": { "$ref": "#/definitions/nonEmptyString" },
+        "kind": { "enum": ["controlled", "independent", "dependent", "observed", "unknown"] },
+        "value": { "$ref": "#/definitions/scalarOrQuantity" },
+        "allowedValues": { "type": "array", "items": { "$ref": "#/definitions/scalarOrQuantity" } },
+        "unit": { "$ref": "#/definitions/unitReference" },
+        "sourceLocators": { "type": "array", "items": { "$ref": "#/definitions/sourceLocator" } },
+        "reviewFlags": { "type": "array", "items": { "$ref": "#/definitions/reviewFlag" } }
+      }
+    },
+    "statePredicate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["subjectRef", "relation", "description"],
+      "properties": {
+        "subjectRef": { "$ref": "#/definitions/id" },
+        "relation": { "enum": ["equals", "not-equals", "contains", "exists", "at-least", "at-most"] },
+        "value": { "$ref": "#/definitions/scalarOrQuantity" },
+        "description": { "$ref": "#/definitions/nonEmptyString" }
+      }
+    },
+    "stateEffect": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["subjectRef", "operation", "description"],
+      "properties": {
+        "subjectRef": { "$ref": "#/definitions/id" },
+        "operation": { "enum": ["set", "increase", "decrease", "create", "remove", "mark"] },
+        "value": { "$ref": "#/definitions/scalarOrQuantity" },
+        "description": { "$ref": "#/definitions/nonEmptyString" }
+      }
+    },
+    "repeat": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "count": { "type": "integer", "minimum": 1 },
+        "until": { "$ref": "#/definitions/statePredicate" },
+        "maxIterations": { "type": "integer", "minimum": 1 }
+      },
+      "anyOf": [{ "required": ["count"] }, { "required": ["until"] }]
+    },
+    "branchOption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "condition", "nextStepIds"],
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "condition": { "$ref": "#/definitions/statePredicate" },
+        "nextStepIds": { "type": "array", "minItems": 1, "items": { "$ref": "#/definitions/id" } }
+      }
+    },
+    "branch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["options", "defaultNextStepIds"],
+      "properties": {
+        "options": { "type": "array", "minItems": 1, "items": { "$ref": "#/definitions/branchOption" } },
+        "defaultNextStepIds": { "type": "array", "items": { "$ref": "#/definitions/id" } }
+      }
+    },
+    "timing": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "duration": { "$ref": "#/definitions/quantity" },
+        "waitAfter": { "$ref": "#/definitions/quantity" },
+        "timepoint": { "$ref": "#/definitions/quantity" }
+      },
+      "minProperties": 1
+    },
+    "normalizedOperation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["family", "actionKey", "actorRefs", "inputRefs", "outputRefs", "parameters"],
+      "properties": {
+        "family": { "$ref": "#/definitions/id" },
+        "actionKey": { "$ref": "#/definitions/id" },
+        "actorRefs": { "type": "array", "items": { "$ref": "#/definitions/id" } },
+        "inputRefs": { "type": "array", "items": { "$ref": "#/definitions/id" } },
+        "outputRefs": { "type": "array", "items": { "$ref": "#/definitions/id" } },
+        "parameters": {
+          "type": "object",
+          "propertyNames": { "$ref": "#/definitions/id" },
+          "additionalProperties": { "$ref": "#/definitions/scalarOrQuantity" }
+        }
+      }
+    },
+    "procedureStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "ordinal", "title", "instruction", "sourceLocators", "preconditions", "effects", "dependencies", "requestedFidelity", "evidenceRequirements", "accessibilityRequirements", "ambiguity", "reviewFlags"],
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "ordinal": { "type": "integer", "minimum": 1 },
+        "title": { "$ref": "#/definitions/nonEmptyString" },
+        "instruction": { "$ref": "#/definitions/nonEmptyString" },
+        "sourceLocators": { "type": "array", "minItems": 1, "items": { "$ref": "#/definitions/sourceLocator" } },
+        "normalizedOperation": { "$ref": "#/definitions/normalizedOperation" },
+        "preconditions": { "type": "array", "items": { "$ref": "#/definitions/statePredicate" } },
+        "effects": { "type": "array", "items": { "$ref": "#/definitions/stateEffect" } },
+        "dependencies": { "type": "array", "items": { "$ref": "#/definitions/id" } },
+        "repeat": { "$ref": "#/definitions/repeat" },
+        "branch": { "$ref": "#/definitions/branch" },
+        "timing": { "$ref": "#/definitions/timing" },
+        "requestedFidelity": { "enum": ["F0", "F1", "F2", "F3", "F4"] },
+        "evidenceRequirements": { "type": "array", "items": { "$ref": "#/definitions/evidenceRequirement" } },
+        "accessibilityRequirements": { "type": "array", "items": { "$ref": "#/definitions/nonEmptyString" } },
+        "ambiguity": { "type": "array", "items": { "$ref": "#/definitions/ambiguity" } },
+        "reviewFlags": { "type": "array", "items": { "$ref": "#/definitions/reviewFlag" } }
+      }
+    },
+    "controlFlow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "entryStepIds", "completionStepIds", "allowParallel"],
+      "properties": {
+        "mode": { "enum": ["ordered", "dependency-graph"] },
+        "entryStepIds": { "type": "array", "minItems": 1, "items": { "$ref": "#/definitions/id" } },
+        "completionStepIds": { "type": "array", "minItems": 1, "items": { "$ref": "#/definitions/id" } },
+        "allowParallel": { "type": "boolean" }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["createdAt", "createdBy", "language"],
+      "properties": {
+        "createdAt": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T" },
+        "createdBy": { "enum": ["user", "import", "host-model", "system"] },
+        "language": { "$ref": "#/definitions/nonEmptyString" }
+      }
+    }
+  }
+}

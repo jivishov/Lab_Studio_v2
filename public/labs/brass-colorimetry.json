@@ -1,0 +1,4282 @@
+{
+  "id": "brass-colorimetry",
+  "title": "How Can Color Determine the Copper Content of Brass?",
+  "description": "Chemistry Brass Colorimetry: use teacher-controlled brass digestion, quantitative dilution, a five-standard spectrophotometric calibration at an approved wavelength, and an independent color-depth comparison; keep the accepted teacher-configured per-wavelength distilled-water scan separate from the source-selected-wavelength calibration while determining copper mass percent.",
+  "audience": "Chemistry students preparing for or documenting a supervised wet-lab investigation",
+  "learningGoals": [
+    "Select and justify a Cu2+ analysis wavelength from 400-700 nm spectra while balancing sensitivity and working range.",
+    "Prepare quantitative transfers and a five-standard dilution series, then calibrate and use a spectrophotometer with defensible cuvette technique; keep the selected-wavelength calibration separate from teacher-configured per-wavelength scan settings.",
+    "Determine copper mass percent by regression and by matched color depth, compare precision and probable accuracy, and preserve safety evidence."
+  ],
+  "safetyNotes": [
+    "Concentrated 15.8 M nitric acid addition, watch-glass covering, digestion, and the initial 50 mL water addition remain locked teacher actions inside an operating fume hood.",
+    "Wear splash-proof goggles, chemical-resistant gloves, and a protective apron. Keep nitric acid away from skin and incompatible materials.",
+    "NO rapidly forms toxic reddish-brown NO2 in air; the digestion must never unlock outside the hood.",
+    "Neutralize brass waste by adding baking soda in small portions until bubbling subsides and pH is 5-9, then follow the teacher-configured local disposal route."
+  ],
+  "equipment": [
+    "brass-fume-hood-digestion",
+    "brass-color-depth-comparison",
+    "analytical-balance",
+    "beaker-250ml",
+    "small-vial",
+    "watch-glass",
+    "volumetric-flask",
+    "wash-bottle",
+    "sample-bottle",
+    "sample-rack",
+    "test-tube",
+    "graduated-pipette-10ml",
+    "pipette-pump",
+    "cuvette",
+    "spectrophotometer",
+    "data-collection-interface",
+    "ph-paper",
+    "reagent-bottle",
+    "waste-beaker",
+    "graduated-cylinder"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "fume-hood-digestion",
+        "definitionId": "brass-fume-hood-digestion",
+        "label": "Teacher-controlled fume hood digestion",
+        "location": "workbench",
+        "x": 24,
+        "y": 34,
+        "zIndex": 1,
+        "interactionStatus": "locked",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "balance",
+        "definitionId": "analytical-balance",
+        "label": "Analytical balance",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "brass-beaker",
+        "definitionId": "beaker-250ml",
+        "label": "Clean, dry brass beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "brass-sample-vial",
+        "definitionId": "small-vial",
+        "label": "Brass sample vial",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "brass-weighing-watch-glass",
+        "definitionId": "watch-glass",
+        "label": "Clean, dry brass weighing support",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "unknown-volumetric-flask",
+        "definitionId": "volumetric-flask",
+        "label": "100 mL brass unknown volumetric flask",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "wash-bottle",
+        "definitionId": "wash-bottle",
+        "label": "Distilled-water wash bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "distilled water",
+          "volumeMl": 500,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "copper-standard-stock",
+        "definitionId": "sample-bottle",
+        "label": "0.400 M Cu2+ stock",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "0.400 M Cu2+ stock",
+          "volumeMl": 100,
+          "solutes": [],
+          "concentration": {
+            "value": 0.4,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "copper-blue-solution"
+        }
+      },
+      {
+        "id": "standard-rack",
+        "definitionId": "sample-rack",
+        "label": "Five-standard rack",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "standard-0p400-tube",
+        "definitionId": "test-tube",
+        "label": "0.400 M standard tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "standard-0p200-tube",
+        "definitionId": "test-tube",
+        "label": "0.200 M standard tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "standard-0p100-tube",
+        "definitionId": "test-tube",
+        "label": "0.100 M standard tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "standard-0p0500-tube",
+        "definitionId": "test-tube",
+        "label": "0.0500 M standard tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "standard-0p0250-tube",
+        "definitionId": "test-tube",
+        "label": "0.0250 M standard tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "graduated-pipette",
+        "definitionId": "graduated-pipette-10ml",
+        "label": "10 mL graduated pipette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "pipette-pump",
+        "definitionId": "pipette-pump",
+        "label": "Pipette pump",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "measurement-cuvette",
+        "definitionId": "cuvette",
+        "label": "Measurement cuvette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "scan-blank-cuvette",
+        "definitionId": "cuvette",
+        "label": "Prepared distilled-water scan blank cuvette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "spectrophotometer",
+        "definitionId": "spectrophotometer",
+        "label": "Spectrophotometer",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "data-interface",
+        "definitionId": "data-collection-interface",
+        "label": "Calibration graph and data interface",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "color-depth-comparison",
+        "definitionId": "brass-color-depth-comparison",
+        "label": "Paired color-depth comparison",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "ph-paper",
+        "definitionId": "ph-paper",
+        "label": "pH paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "baking-soda-bottle",
+        "definitionId": "reagent-bottle",
+        "label": "Baking soda for neutralization",
+        "location": "shelf",
+        "contents": {
+          "kind": "solid",
+          "label": "sodium bicarbonate",
+          "massG": 50,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "white-powder"
+        }
+      },
+      {
+        "id": "waste-beaker",
+        "definitionId": "waste-beaker",
+        "label": "Brass waste beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "unknown-sample-tube",
+        "definitionId": "test-tube",
+        "label": "Brass unknown sample tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "assigned-salt-a-solution",
+        "definitionId": "test-tube",
+        "label": "Teacher-assigned salt A solution",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "assigned salt A solution",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid",
+          "volumeMl": 5
+        }
+      },
+      {
+        "id": "assigned-salt-b-solution",
+        "definitionId": "test-tube",
+        "label": "Teacher-assigned salt B solution",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "assigned salt B solution",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid",
+          "volumeMl": 5
+        }
+      },
+      {
+        "id": "digest-water-cylinder",
+        "definitionId": "graduated-cylinder",
+        "label": "Digest-water graduated cylinder",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "salt-a-scan-cuvette",
+        "definitionId": "cuvette",
+        "label": "Assigned salt A scan cuvette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "salt-b-scan-cuvette",
+        "definitionId": "cuvette",
+        "label": "Assigned salt B scan cuvette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "color-depth-unknown-tube",
+        "definitionId": "test-tube",
+        "label": "Color-depth unknown tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "color-depth-standard-tube",
+        "definitionId": "test-tube",
+        "label": "Color-depth 0.400 M standard tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "teacher-designated-disposal-receiver",
+        "definitionId": "waste-beaker",
+        "label": "Teacher-designated final disposal receiver",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "techniques": [],
+  "actions": [
+    {
+      "id": "safety-ppe-action",
+      "verb": "observe",
+      "label": "Don splash-proof PPE",
+      "parameters": {
+        "note": "Splash-proof goggles, chemical-resistant gloves, and protective apron are in place.",
+        "tag": "safety-ppe"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Don splash-proof PPE: Don splash-proof PPE evidence accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this investigation.",
+          "recovery": "Return to the highlighted step and complete its evidence before continuing."
+        },
+        {
+          "id": "unsafe-state",
+          "when": "a safety or teacher approval prerequisite is incomplete",
+          "message": "This operation is locked by a safety or instructor checkpoint.",
+          "recovery": "Complete the named safety check or obtain the configured teacher approval."
+        },
+        {
+          "id": "technique-not-ready",
+          "when": "the selected apparatus is not prepared for a defensible measurement",
+          "message": "The apparatus is not ready for this measurement.",
+          "recovery": "Check quantitative transfer, cuvette conditioning, calibration, and sample order."
+        }
+      ],
+      "feedback": {
+        "success": "Don splash-proof PPE evidence accepted.",
+        "invalid": "Review the required technique and try again."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "safety-hazards-action",
+      "verb": "observe",
+      "label": "Review concentrated nitric-acid hazards",
+      "parameters": {
+        "note": "The nitric-acid and nitrogen-oxide hazards and spill response were reviewed before unlocking the teacher branch.",
+        "tag": "safety-hazard-review"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Review concentrated nitric-acid hazards: Review concentrated nitric-acid hazards evidence accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this investigation.",
+          "recovery": "Return to the highlighted step and complete its evidence before continuing."
+        },
+        {
+          "id": "unsafe-state",
+          "when": "a safety or teacher approval prerequisite is incomplete",
+          "message": "This operation is locked by a safety or instructor checkpoint.",
+          "recovery": "Complete the named safety check or obtain the configured teacher approval."
+        },
+        {
+          "id": "technique-not-ready",
+          "when": "the selected apparatus is not prepared for a defensible measurement",
+          "message": "The apparatus is not ready for this measurement.",
+          "recovery": "Check quantitative transfer, cuvette conditioning, calibration, and sample order."
+        }
+      ],
+      "feedback": {
+        "success": "Review concentrated nitric-acid hazards evidence accepted.",
+        "invalid": "Review the required technique and try again."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "safety-hood-action",
+      "verb": "observe",
+      "label": "Verify the teacher fume-hood station",
+      "parameters": {
+        "note": "The fume hood is operating and the hazardous digestion remains a teacher-controlled action.",
+        "tag": "teacher-hazard-gate"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Verify the teacher fume-hood station: Verify the teacher fume-hood station evidence accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this investigation.",
+          "recovery": "Return to the highlighted step and complete its evidence before continuing."
+        },
+        {
+          "id": "unsafe-state",
+          "when": "a safety or teacher approval prerequisite is incomplete",
+          "message": "This operation is locked by a safety or instructor checkpoint.",
+          "recovery": "Complete the named safety check or obtain the configured teacher approval."
+        },
+        {
+          "id": "technique-not-ready",
+          "when": "the selected apparatus is not prepared for a defensible measurement",
+          "message": "The apparatus is not ready for this measurement.",
+          "recovery": "Check quantitative transfer, cuvette conditioning, calibration, and sample order."
+        }
+      ],
+      "feedback": {
+        "success": "Verify the teacher fume-hood station evidence accepted.",
+        "invalid": "Review the required technique and try again."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "approved-wavelength-nm-action",
+      "verb": "observe",
+      "label": "Propose a wavelength",
+      "parameters": {
+        "unit": "nm",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Proposed wavelength",
+        "inputMin": 400,
+        "inputMax": 700,
+        "inputStep": 20,
+        "requireStudentValue": true,
+        "photometerProposalMode": "selected-wavelength",
+        "photometerInstanceId": "spectrophotometer",
+        "measurementId": "brass-spectrophotometry--approved-wavelength-nm"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Propose a wavelength: Propose a wavelength evidence accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this investigation.",
+          "recovery": "Return to the highlighted step and complete its evidence before continuing."
+        },
+        {
+          "id": "unsafe-state",
+          "when": "a safety or teacher approval prerequisite is incomplete",
+          "message": "This operation is locked by a safety or instructor checkpoint.",
+          "recovery": "Complete the named safety check or obtain the configured teacher approval."
+        },
+        {
+          "id": "technique-not-ready",
+          "when": "the selected apparatus is not prepared for a defensible measurement",
+          "message": "The apparatus is not ready for this measurement.",
+          "recovery": "Check quantitative transfer, cuvette conditioning, calibration, and sample order."
+        }
+      ],
+      "feedback": {
+        "success": "Propose a wavelength evidence accepted.",
+        "invalid": "Review the required technique and try again."
+      },
+      "evidence": [
+        "calculate",
+        "student-submission",
+        "approved-wavelength-nm"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "measurementId",
+        "accessibleLabel": "Propose a wavelength"
+      }
+    },
+    {
+      "id": "teacher-wavelength-approval-action",
+      "verb": "observe",
+      "label": "Obtain teacher wavelength approval",
+      "parameters": {
+        "note": "Teacher approval recorded for the student-proposed wavelength and the configured absorbance range.",
+        "tag": "teacher-wavelength-approval",
+        "configurationChoice": true,
+        "configurationRequired": true,
+        "unlocked": false,
+        "inputMode": "choice",
+        "inputRole": "teacherConfiguration",
+        "inputLabel": "Teacher wavelength and range approval",
+        "photometerApprovalMode": "selected-wavelength",
+        "photometerInstanceId": "spectrophotometer",
+        "proposalMeasurementId": "brass-spectrophotometry--approved-wavelength-nm",
+        "inputOptions": [
+          "Teacher approved wavelength and range"
+        ]
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Obtain teacher wavelength approval: Obtain teacher wavelength approval evidence accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this investigation.",
+          "recovery": "Return to the highlighted step and complete its evidence before continuing."
+        },
+        {
+          "id": "unsafe-state",
+          "when": "a safety or teacher approval prerequisite is incomplete",
+          "message": "This operation is locked by a safety or instructor checkpoint.",
+          "recovery": "Complete the named safety check or obtain the configured teacher approval."
+        },
+        {
+          "id": "technique-not-ready",
+          "when": "the selected apparatus is not prepared for a defensible measurement",
+          "message": "The apparatus is not ready for this measurement.",
+          "recovery": "Check quantitative transfer, cuvette conditioning, calibration, and sample order."
+        }
+      ],
+      "feedback": {
+        "success": "Obtain teacher wavelength approval evidence accepted.",
+        "invalid": "Review the required technique and try again."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "record-brass-mass-action",
+      "verb": "record",
+      "label": "Record the brass mass",
+      "parameters": {
+        "tag": "brass-mass-recorded",
+        "sourceMeasurementId": "brass-mass-recorded-g"
+      },
+      "prerequisites": [
+        {
+          "id": "record-brass-mass-needs-measurement",
+          "type": "measurementRecorded",
+          "label": "The canonical brass mass exists",
+          "measurementId": "brass-mass-recorded-g"
+        }
+      ],
+      "stateChanges": [
+        "Record the brass mass: Record the brass mass evidence accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this investigation.",
+          "recovery": "Return to the highlighted step and complete its evidence before continuing."
+        },
+        {
+          "id": "unsafe-state",
+          "when": "a safety or teacher approval prerequisite is incomplete",
+          "message": "This operation is locked by a safety or instructor checkpoint.",
+          "recovery": "Complete the named safety check or obtain the configured teacher approval."
+        },
+        {
+          "id": "technique-not-ready",
+          "when": "the selected apparatus is not prepared for a defensible measurement",
+          "message": "The apparatus is not ready for this measurement.",
+          "recovery": "Check quantitative transfer, cuvette conditioning, calibration, and sample order."
+        }
+      ],
+      "feedback": {
+        "success": "Record the brass mass evidence accepted.",
+        "invalid": "Review the required technique and try again."
+      },
+      "evidence": [
+        "record",
+        "measurement",
+        "brass-mass-recorded-g"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "minimum-hno3-volume-ml-action",
+      "verb": "calculate",
+      "label": "Calculate minimum 15.8 M HNO3 volume",
+      "parameters": {
+        "calculationId": "minimum-hno3-volume-ml",
+        "template": "nitricAcidVolumeFromBrassMass",
+        "brassMassMeasurementId": "brass-mass-recorded-g",
+        "acidMolarityM": 15.8,
+        "copperMolarMassGPerMol": 63.546,
+        "acidMolesPerCopperMole": 2.6666666666666665,
+        "tolerance": 0.02,
+        "unit": "mL",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Minimum 15.8 M HNO3 volume",
+        "inputStep": "any",
+        "requireStudentValue": true,
+        "configurationChoice": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Calculate minimum 15.8 M HNO3 volume: Calculate minimum 15.8 M HNO3 volume evidence accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this investigation.",
+          "recovery": "Return to the highlighted step and complete its evidence before continuing."
+        },
+        {
+          "id": "unsafe-state",
+          "when": "a safety or teacher approval prerequisite is incomplete",
+          "message": "This operation is locked by a safety or instructor checkpoint.",
+          "recovery": "Complete the named safety check or obtain the configured teacher approval."
+        },
+        {
+          "id": "technique-not-ready",
+          "when": "the selected apparatus is not prepared for a defensible measurement",
+          "message": "The apparatus is not ready for this measurement.",
+          "recovery": "Check quantitative transfer, cuvette conditioning, calibration, and sample order."
+        }
+      ],
+      "feedback": {
+        "success": "Calculate minimum 15.8 M HNO3 volume evidence accepted.",
+        "invalid": "Review the required technique and try again."
+      },
+      "evidence": [
+        "calculate",
+        "student-submission",
+        "minimum-hno3-volume-ml"
+      ],
+      "effect": {
+        "classes": [
+          "calculation-analysis"
+        ],
+        "targets": [
+          {
+            "domain": "analysis"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "teacher-add-acid-action",
+      "verb": "observe",
+      "label": "Observe teacher add nitric acid",
+      "parameters": {
+        "note": "Teacher added the student-calculated minimum plus the approved excess 15.8 M HNO3 inside the hood.",
+        "tag": "teacher-acid-addition",
+        "configurationChoice": true,
+        "configurationRequired": true,
+        "unlocked": false,
+        "inputMode": "choice",
+        "inputRole": "teacherConfiguration",
+        "inputLabel": "Teacher acid addition in the operating fume hood",
+        "inputOptions": [
+          "Teacher completed acid addition in hood"
+        ]
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Observe teacher add nitric acid: Observe teacher add nitric acid evidence accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this investigation.",
+          "recovery": "Return to the highlighted step and complete its evidence before continuing."
+        },
+        {
+          "id": "unsafe-state",
+          "when": "a safety or teacher approval prerequisite is incomplete",
+          "message": "This operation is locked by a safety or instructor checkpoint.",
+          "recovery": "Complete the named safety check or obtain the configured teacher approval."
+        },
+        {
+          "id": "technique-not-ready",
+          "when": "the selected apparatus is not prepared for a defensible measurement",
+          "message": "The apparatus is not ready for this measurement.",
+          "recovery": "Check quantitative transfer, cuvette conditioning, calibration, and sample order."
+        }
+      ],
+      "feedback": {
+        "success": "Observe teacher add nitric acid evidence accepted.",
+        "invalid": "Review the required technique and try again."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "teacher-cover-digest-action",
+      "verb": "observe",
+      "label": "Observe covered brass digestion",
+      "parameters": {
+        "note": "The watch glass remained seated; brass dissolution completed inside the operating fume hood.",
+        "tag": "teacher-covered-digestion",
+        "configurationRequired": true,
+        "unlocked": false,
+        "inputMode": "choice",
+        "inputRole": "teacherConfiguration",
+        "inputLabel": "Teacher-covered digestion completion",
+        "inputOptions": [
+          "Teacher confirmed covered digestion complete"
+        ]
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Observe covered brass digestion: Observe covered brass digestion evidence accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this investigation.",
+          "recovery": "Return to the highlighted step and complete its evidence before continuing."
+        },
+        {
+          "id": "unsafe-state",
+          "when": "a safety or teacher approval prerequisite is incomplete",
+          "message": "This operation is locked by a safety or instructor checkpoint.",
+          "recovery": "Complete the named safety check or obtain the configured teacher approval."
+        },
+        {
+          "id": "technique-not-ready",
+          "when": "the selected apparatus is not prepared for a defensible measurement",
+          "message": "The apparatus is not ready for this measurement.",
+          "recovery": "Check quantitative transfer, cuvette conditioning, calibration, and sample order."
+        }
+      ],
+      "feedback": {
+        "success": "Observe covered brass digestion evidence accepted.",
+        "invalid": "Review the required technique and try again."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "teacher-standard-approval-action",
+      "verb": "observe",
+      "label": "Obtain approval for the five-standard set",
+      "parameters": {
+        "note": "Teacher approval recorded for 0.0250, 0.0500, 0.100, 0.200, and 0.400 M standards.",
+        "tag": "teacher-standard-approval",
+        "configurationChoice": true,
+        "configurationRequired": true,
+        "unlocked": false,
+        "inputMode": "choice",
+        "inputRole": "teacherConfiguration",
+        "inputLabel": "Teacher approval of the five-standard set",
+        "inputOptions": [
+          "Teacher approved all five standards"
+        ]
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Obtain approval for the five-standard set: Obtain approval for the five-standard set evidence accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this investigation.",
+          "recovery": "Return to the highlighted step and complete its evidence before continuing."
+        },
+        {
+          "id": "unsafe-state",
+          "when": "a safety or teacher approval prerequisite is incomplete",
+          "message": "This operation is locked by a safety or instructor checkpoint.",
+          "recovery": "Complete the named safety check or obtain the configured teacher approval."
+        },
+        {
+          "id": "technique-not-ready",
+          "when": "the selected apparatus is not prepared for a defensible measurement",
+          "message": "The apparatus is not ready for this measurement.",
+          "recovery": "Check quantitative transfer, cuvette conditioning, calibration, and sample order."
+        }
+      ],
+      "feedback": {
+        "success": "Obtain approval for the five-standard set evidence accepted.",
+        "invalid": "Review the required technique and try again."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "calibration-table-check-action",
+      "verb": "calculate",
+      "label": "Verify the five calibration pairs",
+      "parameters": {
+        "calculationId": "calibration-table-check",
+        "template": "measurementCount",
+        "measurementIds": [
+          "0p0250-absorbance-au",
+          "0p0500-absorbance-au",
+          "0p100-absorbance-au",
+          "0p200-absorbance-au",
+          "0p400-absorbance-au"
+        ],
+        "tolerance": 0,
+        "unit": "points",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Number of calibration points",
+        "inputStep": 1,
+        "requireStudentValue": true,
+        "configurationChoice": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Verify the five calibration pairs: Verify the five calibration pairs evidence accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this investigation.",
+          "recovery": "Return to the highlighted step and complete its evidence before continuing."
+        },
+        {
+          "id": "unsafe-state",
+          "when": "a safety or teacher approval prerequisite is incomplete",
+          "message": "This operation is locked by a safety or instructor checkpoint.",
+          "recovery": "Complete the named safety check or obtain the configured teacher approval."
+        },
+        {
+          "id": "technique-not-ready",
+          "when": "the selected apparatus is not prepared for a defensible measurement",
+          "message": "The apparatus is not ready for this measurement.",
+          "recovery": "Check quantitative transfer, cuvette conditioning, calibration, and sample order."
+        }
+      ],
+      "feedback": {
+        "success": "Verify the five calibration pairs evidence accepted.",
+        "invalid": "Review the required technique and try again."
+      },
+      "evidence": [
+        "calculate",
+        "student-submission",
+        "calibration-table-check"
+      ],
+      "effect": {
+        "classes": [
+          "calculation-analysis"
+        ],
+        "targets": [
+          {
+            "domain": "analysis"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "calibration-slope-action",
+      "verb": "calculate",
+      "label": "Submit the calibration slope",
+      "parameters": {
+        "calculationId": "calibration-slope",
+        "template": "linearRegressionMeasurements",
+        "sourceMeasurements": [
+          "0p0250-absorbance-au",
+          "0p0500-absorbance-au",
+          "0p100-absorbance-au",
+          "0p200-absorbance-au",
+          "0p400-absorbance-au"
+        ],
+        "sourceValues": [
+          "0.025",
+          "0.05",
+          "0.1",
+          "0.2",
+          "0.4"
+        ],
+        "tolerance": 0.005,
+        "unit": "AU/M",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Best-fit slope",
+        "inputStep": 0.001,
+        "requireStudentValue": true,
+        "configurationChoice": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Submit the calibration slope: Submit the calibration slope evidence accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this investigation.",
+          "recovery": "Return to the highlighted step and complete its evidence before continuing."
+        },
+        {
+          "id": "unsafe-state",
+          "when": "a safety or teacher approval prerequisite is incomplete",
+          "message": "This operation is locked by a safety or instructor checkpoint.",
+          "recovery": "Complete the named safety check or obtain the configured teacher approval."
+        },
+        {
+          "id": "technique-not-ready",
+          "when": "the selected apparatus is not prepared for a defensible measurement",
+          "message": "The apparatus is not ready for this measurement.",
+          "recovery": "Check quantitative transfer, cuvette conditioning, calibration, and sample order."
+        }
+      ],
+      "feedback": {
+        "success": "Submit the calibration slope evidence accepted.",
+        "invalid": "Review the required technique and try again."
+      },
+      "evidence": [
+        "calculate",
+        "student-submission",
+        "calibration-slope"
+      ],
+      "effect": {
+        "classes": [
+          "calculation-analysis"
+        ],
+        "targets": [
+          {
+            "domain": "analysis"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "calibration-intercept-action",
+      "verb": "calculate",
+      "label": "Submit the calibration intercept",
+      "parameters": {
+        "calculationId": "calibration-intercept",
+        "template": "regressionComponent",
+        "sourceRegressionCalculationId": "calibration-slope",
+        "regressionComponent": "intercept",
+        "tolerance": 0.001,
+        "unit": "AU",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Best-fit intercept",
+        "inputStep": 0.001,
+        "requireStudentValue": true,
+        "configurationChoice": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Submit the calibration intercept: Submit the calibration intercept evidence accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this investigation.",
+          "recovery": "Return to the highlighted step and complete its evidence before continuing."
+        },
+        {
+          "id": "unsafe-state",
+          "when": "a safety or teacher approval prerequisite is incomplete",
+          "message": "This operation is locked by a safety or instructor checkpoint.",
+          "recovery": "Complete the named safety check or obtain the configured teacher approval."
+        },
+        {
+          "id": "technique-not-ready",
+          "when": "the selected apparatus is not prepared for a defensible measurement",
+          "message": "The apparatus is not ready for this measurement.",
+          "recovery": "Check quantitative transfer, cuvette conditioning, calibration, and sample order."
+        }
+      ],
+      "feedback": {
+        "success": "Submit the calibration intercept evidence accepted.",
+        "invalid": "Review the required technique and try again."
+      },
+      "evidence": [
+        "calculate",
+        "student-submission",
+        "calibration-intercept"
+      ],
+      "effect": {
+        "classes": [
+          "calculation-analysis"
+        ],
+        "targets": [
+          {
+            "domain": "analysis"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "calibration-r-squared-action",
+      "verb": "calculate",
+      "label": "Submit calibration fit quality",
+      "parameters": {
+        "calculationId": "calibration-r-squared",
+        "template": "regressionComponent",
+        "sourceRegressionCalculationId": "calibration-slope",
+        "regressionComponent": "rSquared",
+        "tolerance": 0.0001,
+        "unit": "R^2",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Calibration R-squared",
+        "inputStep": 0.0001,
+        "requireStudentValue": true,
+        "configurationChoice": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Submit calibration fit quality: Submit calibration fit quality evidence accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this investigation.",
+          "recovery": "Return to the highlighted step and complete its evidence before continuing."
+        },
+        {
+          "id": "unsafe-state",
+          "when": "a safety or teacher approval prerequisite is incomplete",
+          "message": "This operation is locked by a safety or instructor checkpoint.",
+          "recovery": "Complete the named safety check or obtain the configured teacher approval."
+        },
+        {
+          "id": "technique-not-ready",
+          "when": "the selected apparatus is not prepared for a defensible measurement",
+          "message": "The apparatus is not ready for this measurement.",
+          "recovery": "Check quantitative transfer, cuvette conditioning, calibration, and sample order."
+        }
+      ],
+      "feedback": {
+        "success": "Submit calibration fit quality evidence accepted.",
+        "invalid": "Review the required technique and try again."
+      },
+      "evidence": [
+        "calculate",
+        "student-submission",
+        "calibration-r-squared"
+      ],
+      "effect": {
+        "classes": [
+          "calculation-analysis"
+        ],
+        "targets": [
+          {
+            "domain": "analysis"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "spectrometric-unknown-molarity-action",
+      "verb": "calculate",
+      "label": "Determine unknown Cu2+ molarity",
+      "parameters": {
+        "calculationId": "spectrometric-unknown-molarity",
+        "template": "concentrationFromRegression",
+        "responseMeasurementId": "unknown-absorbance-au",
+        "sourceRegressionCalculationId": "calibration-slope",
+        "tolerance": 0.002,
+        "unit": "M",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Unknown Cu2+ concentration",
+        "inputStep": 0.001,
+        "requireStudentValue": true,
+        "configurationChoice": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Determine unknown Cu2+ molarity: Determine unknown Cu2+ molarity evidence accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this investigation.",
+          "recovery": "Return to the highlighted step and complete its evidence before continuing."
+        },
+        {
+          "id": "unsafe-state",
+          "when": "a safety or teacher approval prerequisite is incomplete",
+          "message": "This operation is locked by a safety or instructor checkpoint.",
+          "recovery": "Complete the named safety check or obtain the configured teacher approval."
+        },
+        {
+          "id": "technique-not-ready",
+          "when": "the selected apparatus is not prepared for a defensible measurement",
+          "message": "The apparatus is not ready for this measurement.",
+          "recovery": "Check quantitative transfer, cuvette conditioning, calibration, and sample order."
+        }
+      ],
+      "feedback": {
+        "success": "Determine unknown Cu2+ molarity evidence accepted.",
+        "invalid": "Review the required technique and try again."
+      },
+      "evidence": [
+        "calculate",
+        "student-submission",
+        "spectrometric-unknown-molarity"
+      ],
+      "effect": {
+        "classes": [
+          "calculation-analysis"
+        ],
+        "targets": [
+          {
+            "domain": "analysis"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "spectrometric-copper-mass-g-action",
+      "verb": "calculate",
+      "label": "Calculate copper mass",
+      "parameters": {
+        "calculationId": "spectrometric-copper-mass-g",
+        "template": "massFromConcentration",
+        "concentrationCalculationId": "spectrometric-unknown-molarity",
+        "solutionVolumeMl": 100,
+        "copperMolarMassGPerMol": 63.546,
+        "tolerance": 0.005,
+        "unit": "g Cu",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Copper mass",
+        "inputStep": 0.001,
+        "requireStudentValue": true,
+        "configurationChoice": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Calculate copper mass: Calculate copper mass evidence accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this investigation.",
+          "recovery": "Return to the highlighted step and complete its evidence before continuing."
+        },
+        {
+          "id": "unsafe-state",
+          "when": "a safety or teacher approval prerequisite is incomplete",
+          "message": "This operation is locked by a safety or instructor checkpoint.",
+          "recovery": "Complete the named safety check or obtain the configured teacher approval."
+        },
+        {
+          "id": "technique-not-ready",
+          "when": "the selected apparatus is not prepared for a defensible measurement",
+          "message": "The apparatus is not ready for this measurement.",
+          "recovery": "Check quantitative transfer, cuvette conditioning, calibration, and sample order."
+        }
+      ],
+      "feedback": {
+        "success": "Calculate copper mass evidence accepted.",
+        "invalid": "Review the required technique and try again."
+      },
+      "evidence": [
+        "calculate",
+        "student-submission",
+        "spectrometric-copper-mass-g"
+      ],
+      "effect": {
+        "classes": [
+          "calculation-analysis"
+        ],
+        "targets": [
+          {
+            "domain": "analysis"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "spectrometric-copper-percent-action",
+      "verb": "calculate",
+      "label": "Calculate spectrometric mass percent Cu",
+      "parameters": {
+        "calculationId": "spectrometric-copper-percent",
+        "template": "massPercentFromCalculation",
+        "componentMassCalculationId": "spectrometric-copper-mass-g",
+        "totalMassMeasurementId": "brass-mass-recorded-g",
+        "tolerance": 0.2,
+        "unit": "% Cu",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Spectrometric mass percent Cu",
+        "inputStep": 0.01,
+        "requireStudentValue": true,
+        "configurationChoice": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Calculate spectrometric mass percent Cu: Calculate spectrometric mass percent Cu evidence accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this investigation.",
+          "recovery": "Return to the highlighted step and complete its evidence before continuing."
+        },
+        {
+          "id": "unsafe-state",
+          "when": "a safety or teacher approval prerequisite is incomplete",
+          "message": "This operation is locked by a safety or instructor checkpoint.",
+          "recovery": "Complete the named safety check or obtain the configured teacher approval."
+        },
+        {
+          "id": "technique-not-ready",
+          "when": "the selected apparatus is not prepared for a defensible measurement",
+          "message": "The apparatus is not ready for this measurement.",
+          "recovery": "Check quantitative transfer, cuvette conditioning, calibration, and sample order."
+        }
+      ],
+      "feedback": {
+        "success": "Calculate spectrometric mass percent Cu evidence accepted.",
+        "invalid": "Review the required technique and try again."
+      },
+      "evidence": [
+        "calculate",
+        "student-submission",
+        "spectrometric-copper-percent"
+      ],
+      "effect": {
+        "classes": [
+          "calculation-analysis"
+        ],
+        "targets": [
+          {
+            "domain": "analysis"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "visual-unknown-molarity-action",
+      "verb": "calculate",
+      "label": "Calculate visual-comparison molarity",
+      "parameters": {
+        "calculationId": "visual-unknown-molarity",
+        "template": "visualComparisonConcentration",
+        "knownConcentrationM": 0.4,
+        "knownDepthMeasurementId": "standard-depth-mm",
+        "unknownDepthMeasurementId": "unknown-depth-mm",
+        "tolerance": 0.002,
+        "unit": "M",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Visual-method unknown molarity",
+        "inputStep": 0.001,
+        "requireStudentValue": true,
+        "configurationChoice": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Calculate visual-comparison molarity: Calculate visual-comparison molarity evidence accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this investigation.",
+          "recovery": "Return to the highlighted step and complete its evidence before continuing."
+        },
+        {
+          "id": "unsafe-state",
+          "when": "a safety or teacher approval prerequisite is incomplete",
+          "message": "This operation is locked by a safety or instructor checkpoint.",
+          "recovery": "Complete the named safety check or obtain the configured teacher approval."
+        },
+        {
+          "id": "technique-not-ready",
+          "when": "the selected apparatus is not prepared for a defensible measurement",
+          "message": "The apparatus is not ready for this measurement.",
+          "recovery": "Check quantitative transfer, cuvette conditioning, calibration, and sample order."
+        }
+      ],
+      "feedback": {
+        "success": "Calculate visual-comparison molarity evidence accepted.",
+        "invalid": "Review the required technique and try again."
+      },
+      "evidence": [
+        "calculate",
+        "student-submission",
+        "visual-unknown-molarity"
+      ],
+      "effect": {
+        "classes": [
+          "calculation-analysis"
+        ],
+        "targets": [
+          {
+            "domain": "analysis"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "visual-copper-percent-action",
+      "verb": "calculate",
+      "label": "Calculate visual-method mass percent Cu",
+      "parameters": {
+        "calculationId": "visual-copper-percent",
+        "template": "massPercentFromConcentration",
+        "concentrationCalculationId": "visual-unknown-molarity",
+        "solutionVolumeMl": 100,
+        "copperMolarMassGPerMol": 63.546,
+        "totalMassMeasurementId": "brass-mass-recorded-g",
+        "tolerance": 0.2,
+        "unit": "% Cu",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Visual-method mass percent Cu",
+        "inputStep": 0.01,
+        "requireStudentValue": true,
+        "configurationChoice": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Calculate visual-method mass percent Cu: Calculate visual-method mass percent Cu evidence accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this investigation.",
+          "recovery": "Return to the highlighted step and complete its evidence before continuing."
+        },
+        {
+          "id": "unsafe-state",
+          "when": "a safety or teacher approval prerequisite is incomplete",
+          "message": "This operation is locked by a safety or instructor checkpoint.",
+          "recovery": "Complete the named safety check or obtain the configured teacher approval."
+        },
+        {
+          "id": "technique-not-ready",
+          "when": "the selected apparatus is not prepared for a defensible measurement",
+          "message": "The apparatus is not ready for this measurement.",
+          "recovery": "Check quantitative transfer, cuvette conditioning, calibration, and sample order."
+        }
+      ],
+      "feedback": {
+        "success": "Calculate visual-method mass percent Cu evidence accepted.",
+        "invalid": "Review the required technique and try again."
+      },
+      "evidence": [
+        "calculate",
+        "student-submission",
+        "visual-copper-percent"
+      ],
+      "effect": {
+        "classes": [
+          "calculation-analysis"
+        ],
+        "targets": [
+          {
+            "domain": "analysis"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "method-percent-difference-action",
+      "verb": "calculate",
+      "label": "Compare the two method results",
+      "parameters": {
+        "calculationId": "method-percent-difference",
+        "template": "percentDifferenceCalculations",
+        "firstCalculationId": "spectrometric-copper-percent",
+        "secondCalculationId": "visual-copper-percent",
+        "tolerance": 0.2,
+        "unit": "%",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Percent difference between methods",
+        "inputStep": 0.01,
+        "requireStudentValue": true,
+        "configurationChoice": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Compare the two method results: Compare the two method results evidence accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this investigation.",
+          "recovery": "Return to the highlighted step and complete its evidence before continuing."
+        },
+        {
+          "id": "unsafe-state",
+          "when": "a safety or teacher approval prerequisite is incomplete",
+          "message": "This operation is locked by a safety or instructor checkpoint.",
+          "recovery": "Complete the named safety check or obtain the configured teacher approval."
+        },
+        {
+          "id": "technique-not-ready",
+          "when": "the selected apparatus is not prepared for a defensible measurement",
+          "message": "The apparatus is not ready for this measurement.",
+          "recovery": "Check quantitative transfer, cuvette conditioning, calibration, and sample order."
+        }
+      ],
+      "feedback": {
+        "success": "Compare the two method results evidence accepted.",
+        "invalid": "Review the required technique and try again."
+      },
+      "evidence": [
+        "calculate",
+        "student-submission",
+        "method-percent-difference"
+      ],
+      "effect": {
+        "classes": [
+          "calculation-analysis"
+        ],
+        "targets": [
+          {
+            "domain": "analysis"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "class-spectrometric-mean-action",
+      "verb": "calculate",
+      "label": "Submit class spectrometric mean",
+      "parameters": {
+        "calculationId": "class-spectrometric-mean",
+        "tolerance": 0.2,
+        "unit": "% Cu",
+        "inputLabel": "Class mean by spectrometric method",
+        "inputStep": 0.01,
+        "requireStudentValue": true,
+        "configurationChoice": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Submit class spectrometric mean: Submit class spectrometric mean evidence accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this investigation.",
+          "recovery": "Return to the highlighted step and complete its evidence before continuing."
+        },
+        {
+          "id": "unsafe-state",
+          "when": "a safety or teacher approval prerequisite is incomplete",
+          "message": "This operation is locked by a safety or instructor checkpoint.",
+          "recovery": "Complete the named safety check or obtain the configured teacher approval."
+        },
+        {
+          "id": "technique-not-ready",
+          "when": "the selected apparatus is not prepared for a defensible measurement",
+          "message": "The apparatus is not ready for this measurement.",
+          "recovery": "Check quantitative transfer, cuvette conditioning, calibration, and sample order."
+        }
+      ],
+      "feedback": {
+        "success": "Submit class spectrometric mean evidence accepted.",
+        "invalid": "Review the required technique and try again."
+      },
+      "evidence": [
+        "calculate",
+        "student-submission",
+        "class-spectrometric-mean"
+      ],
+      "effect": {
+        "classes": [
+          "calculation-analysis"
+        ],
+        "targets": [
+          {
+            "domain": "analysis"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "class-spectrometric-sd-action",
+      "verb": "calculate",
+      "label": "Submit class spectrometric standard deviation",
+      "parameters": {
+        "calculationId": "class-spectrometric-sd",
+        "tolerance": 0.1,
+        "unit": "% Cu",
+        "inputLabel": "Class standard deviation",
+        "inputStep": 0.01,
+        "requireStudentValue": true,
+        "configurationChoice": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Submit class spectrometric standard deviation: Submit class spectrometric standard deviation evidence accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this investigation.",
+          "recovery": "Return to the highlighted step and complete its evidence before continuing."
+        },
+        {
+          "id": "unsafe-state",
+          "when": "a safety or teacher approval prerequisite is incomplete",
+          "message": "This operation is locked by a safety or instructor checkpoint.",
+          "recovery": "Complete the named safety check or obtain the configured teacher approval."
+        },
+        {
+          "id": "technique-not-ready",
+          "when": "the selected apparatus is not prepared for a defensible measurement",
+          "message": "The apparatus is not ready for this measurement.",
+          "recovery": "Check quantitative transfer, cuvette conditioning, calibration, and sample order."
+        }
+      ],
+      "feedback": {
+        "success": "Submit class spectrometric standard deviation evidence accepted.",
+        "invalid": "Review the required technique and try again."
+      },
+      "evidence": [
+        "calculate",
+        "student-submission",
+        "class-spectrometric-sd"
+      ],
+      "effect": {
+        "classes": [
+          "calculation-analysis"
+        ],
+        "targets": [
+          {
+            "domain": "analysis"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "class-visual-mean-action",
+      "verb": "calculate",
+      "label": "Submit class visual-method mean",
+      "parameters": {
+        "calculationId": "class-visual-mean",
+        "tolerance": 0.2,
+        "unit": "% Cu",
+        "inputLabel": "Class mean by visual method",
+        "inputStep": 0.01,
+        "requireStudentValue": true,
+        "configurationChoice": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Submit class visual-method mean: Submit class visual-method mean evidence accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this investigation.",
+          "recovery": "Return to the highlighted step and complete its evidence before continuing."
+        },
+        {
+          "id": "unsafe-state",
+          "when": "a safety or teacher approval prerequisite is incomplete",
+          "message": "This operation is locked by a safety or instructor checkpoint.",
+          "recovery": "Complete the named safety check or obtain the configured teacher approval."
+        },
+        {
+          "id": "technique-not-ready",
+          "when": "the selected apparatus is not prepared for a defensible measurement",
+          "message": "The apparatus is not ready for this measurement.",
+          "recovery": "Check quantitative transfer, cuvette conditioning, calibration, and sample order."
+        }
+      ],
+      "feedback": {
+        "success": "Submit class visual-method mean evidence accepted.",
+        "invalid": "Review the required technique and try again."
+      },
+      "evidence": [
+        "calculate",
+        "student-submission",
+        "class-visual-mean"
+      ],
+      "effect": {
+        "classes": [
+          "calculation-analysis"
+        ],
+        "targets": [
+          {
+            "domain": "analysis"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "class-visual-sd-action",
+      "verb": "calculate",
+      "label": "Submit class visual-method standard deviation",
+      "parameters": {
+        "calculationId": "class-visual-sd",
+        "tolerance": 0.1,
+        "unit": "% Cu",
+        "inputLabel": "Class visual-method standard deviation",
+        "inputStep": 0.01,
+        "requireStudentValue": true,
+        "configurationChoice": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Submit class visual-method standard deviation: Submit class visual-method standard deviation evidence accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this investigation.",
+          "recovery": "Return to the highlighted step and complete its evidence before continuing."
+        },
+        {
+          "id": "unsafe-state",
+          "when": "a safety or teacher approval prerequisite is incomplete",
+          "message": "This operation is locked by a safety or instructor checkpoint.",
+          "recovery": "Complete the named safety check or obtain the configured teacher approval."
+        },
+        {
+          "id": "technique-not-ready",
+          "when": "the selected apparatus is not prepared for a defensible measurement",
+          "message": "The apparatus is not ready for this measurement.",
+          "recovery": "Check quantitative transfer, cuvette conditioning, calibration, and sample order."
+        }
+      ],
+      "feedback": {
+        "success": "Submit class visual-method standard deviation evidence accepted.",
+        "invalid": "Review the required technique and try again."
+      },
+      "evidence": [
+        "calculate",
+        "student-submission",
+        "class-visual-sd"
+      ],
+      "effect": {
+        "classes": [
+          "calculation-analysis"
+        ],
+        "targets": [
+          {
+            "domain": "analysis"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "compare-method-precision-action",
+      "verb": "observe",
+      "label": "Compare method precision",
+      "parameters": {
+        "note": "Precision comparison submitted with class standard-deviation evidence and visual-endpoint limitations.",
+        "tag": "method-precision-reflection",
+        "configurationChoice": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Compare method precision: Compare method precision evidence accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this investigation.",
+          "recovery": "Return to the highlighted step and complete its evidence before continuing."
+        },
+        {
+          "id": "unsafe-state",
+          "when": "a safety or teacher approval prerequisite is incomplete",
+          "message": "This operation is locked by a safety or instructor checkpoint.",
+          "recovery": "Complete the named safety check or obtain the configured teacher approval."
+        },
+        {
+          "id": "technique-not-ready",
+          "when": "the selected apparatus is not prepared for a defensible measurement",
+          "message": "The apparatus is not ready for this measurement.",
+          "recovery": "Check quantitative transfer, cuvette conditioning, calibration, and sample order."
+        }
+      ],
+      "feedback": {
+        "success": "Compare method precision evidence accepted.",
+        "invalid": "Review the required technique and try again."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "justify-method-accuracy-action",
+      "verb": "observe",
+      "label": "Justify probable method accuracy",
+      "parameters": {
+        "note": "Accuracy claim recorded without treating the replaceable simulator profile as a certified composition.",
+        "tag": "method-accuracy-reflection",
+        "configurationChoice": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Justify probable method accuracy: Justify probable method accuracy evidence accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this investigation.",
+          "recovery": "Return to the highlighted step and complete its evidence before continuing."
+        },
+        {
+          "id": "unsafe-state",
+          "when": "a safety or teacher approval prerequisite is incomplete",
+          "message": "This operation is locked by a safety or instructor checkpoint.",
+          "recovery": "Complete the named safety check or obtain the configured teacher approval."
+        },
+        {
+          "id": "technique-not-ready",
+          "when": "the selected apparatus is not prepared for a defensible measurement",
+          "message": "The apparatus is not ready for this measurement.",
+          "recovery": "Check quantitative transfer, cuvette conditioning, calibration, and sample order."
+        }
+      ],
+      "feedback": {
+        "success": "Justify probable method accuracy evidence accepted.",
+        "invalid": "Review the required technique and try again."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "teacher-disposal-gate-action",
+      "verb": "observe",
+      "label": "Obtain teacher disposal direction",
+      "parameters": {
+        "note": "Teacher confirmed the configured local disposal route after pH 5-9 and no active bubbling.",
+        "tag": "teacher-disposal-gate",
+        "configurationChoice": true,
+        "configurationRequired": true,
+        "unlocked": false,
+        "inputMode": "text",
+        "inputRole": "teacherConfiguration",
+        "inputLabel": "Teacher-designated local disposal destination",
+        "inputKey": "teacher-disposal-destination"
+      },
+      "prerequisites": [
+        {
+          "id": "teacher-disposal-needs-safe-ph",
+          "type": "notebookEntry",
+          "label": "The treatment workflow recorded safe pH evidence",
+          "notebookTag": "waste-ph-within-range"
+        }
+      ],
+      "stateChanges": [
+        "Obtain teacher disposal direction: Obtain teacher disposal direction evidence accepted."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this investigation.",
+          "recovery": "Return to the highlighted step and complete its evidence before continuing."
+        },
+        {
+          "id": "unsafe-state",
+          "when": "a safety or teacher approval prerequisite is incomplete",
+          "message": "This operation is locked by a safety or instructor checkpoint.",
+          "recovery": "Complete the named safety check or obtain the configured teacher approval."
+        },
+        {
+          "id": "technique-not-ready",
+          "when": "the selected apparatus is not prepared for a defensible measurement",
+          "message": "The apparatus is not ready for this measurement.",
+          "recovery": "Check quantitative transfer, cuvette conditioning, calibration, and sample order."
+        }
+      ],
+      "feedback": {
+        "success": "Obtain teacher disposal direction evidence accepted.",
+        "invalid": "Review the required technique and try again."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirm-teacher-diluted-digest-action",
+      "verb": "observe",
+      "label": "Authorize the teacher's post-digestion water addition",
+      "parameters": {
+        "tag": "teacher-digest-dilution-authorized",
+        "note": "Dissolution is complete under the seated cover; the teacher authorizes the source-stated 50 mL water addition that follows.",
+        "configurationChoice": true,
+        "configurationRequired": true,
+        "unlocked": false,
+        "inputMode": "choice",
+        "inputRole": "teacherConfiguration",
+        "inputLabel": "Teacher authorization for the post-digestion water addition",
+        "inputOptions": [
+          "Teacher authorized the 50 mL water addition"
+        ]
+      },
+      "prerequisites": [
+        {
+          "id": "dilution-authorization-needs-completed-digestion",
+          "type": "notebookEntry",
+          "label": "The covered digestion was observed to completion",
+          "notebookTag": "teacher-covered-digestion"
+        }
+      ],
+      "stateChanges": [
+        "Authorize the teacher's post-digestion water addition: authorization recorded; no material moved."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the required predecessor evidence or named equipment is unavailable",
+          "message": "This operation is not ready or the selected sample does not match the authored provenance.",
+          "recovery": "Restore the named sample and equipment state, then complete the immediately preceding operation."
+        }
+      ],
+      "feedback": {
+        "success": "The post-digestion water addition is authorized.",
+        "invalid": "Complete the covered digestion observation and obtain teacher approval first."
+      },
+      "evidence": [
+        "observe",
+        "teacher authorization",
+        "no learner physical operation"
+      ],
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "tag",
+        "accessibleLabel": "Record the teacher's authorization for the post-digestion water addition"
+      },
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      }
+    }
+  ],
+  "process": {
+    "startNodeId": "safety-ppe",
+    "nodes": [
+      {
+        "id": "safety-ppe",
+        "type": "observation",
+        "title": "Don splash-proof PPE",
+        "description": "Confirm splash-proof goggles, chemical-resistant gloves, and a protective apron before any brass or nitric-acid work.",
+        "actionId": "safety-ppe-action",
+        "config": {},
+        "validation": [
+          {
+            "id": "safety-ppe-complete",
+            "type": "actionEvidence",
+            "label": "Don splash-proof PPE was completed.",
+            "actionId": "safety-ppe-action"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Don splash-proof PPE evidence accepted.",
+          "retry": "Review Don splash-proof PPE and try again."
+        }
+      },
+      {
+        "id": "safety-hazards",
+        "type": "observation",
+        "title": "Review concentrated nitric-acid hazards",
+        "description": "Review skin-contact avoidance, incompatible-material separation, baking-soda spill response followed by copious water, and the rapid formation of toxic reddish-brown NO2 from NO in air.",
+        "actionId": "safety-hazards-action",
+        "config": {},
+        "validation": [
+          {
+            "id": "safety-hazards-complete",
+            "type": "actionEvidence",
+            "label": "Review concentrated nitric-acid hazards was completed.",
+            "actionId": "safety-hazards-action"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Review concentrated nitric-acid hazards evidence accepted.",
+          "retry": "Review Review concentrated nitric-acid hazards and try again."
+        }
+      },
+      {
+        "id": "safety-hood",
+        "type": "observation",
+        "title": "Verify the teacher fume-hood station",
+        "description": "Confirm the concentrated-acid digestion will remain inside an operating fume hood with the sash at the configured safe height.",
+        "actionId": "safety-hood-action",
+        "config": {},
+        "validation": [
+          {
+            "id": "safety-hood-complete",
+            "type": "actionEvidence",
+            "label": "Verify the teacher fume-hood station was completed.",
+            "actionId": "safety-hood-action"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Verify the teacher fume-hood station evidence accepted.",
+          "retry": "Review Verify the teacher fume-hood station and try again."
+        }
+      },
+      {
+        "id": "approved-wavelength-nm",
+        "type": "calculation",
+        "title": "Propose a wavelength",
+        "description": "Use the prelab spectra to propose a strongly absorbed wavelength while keeping the maximum standard absorbance at or below 1.00 AU. The teacher-approved wavelength must be derived from the recorded prelab spectra and range criterion.",
+        "actionId": "approved-wavelength-nm-action",
+        "config": {
+          "configurationChoice": true
+        },
+        "validation": [
+          {
+            "id": "approved-wavelength-nm-calculation-valid",
+            "type": "calculationWithinTolerance",
+            "label": "Propose a wavelength is within the configured tolerance.",
+            "calculationId": "approved-wavelength-nm"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Propose a wavelength evidence accepted.",
+          "retry": "Review Propose a wavelength and try again."
+        }
+      },
+      {
+        "id": "teacher-wavelength-approval",
+        "type": "checkpoint",
+        "title": "Obtain teacher wavelength approval",
+        "description": "The teacher reviews the spectra, sensitivity/range tradeoff, and maximum expected absorbance before calibration unlocks.",
+        "actionId": "teacher-wavelength-approval-action",
+        "config": {
+          "configurationChoice": true
+        },
+        "validation": [
+          {
+            "id": "teacher-wavelength-approval-complete",
+            "type": "actionEvidence",
+            "label": "Obtain teacher wavelength approval was completed.",
+            "actionId": "teacher-wavelength-approval-action"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Obtain teacher wavelength approval evidence accepted.",
+          "retry": "Review Obtain teacher wavelength approval and try again."
+        }
+      },
+      {
+        "id": "record-brass-mass",
+        "type": "observation",
+        "title": "Record the brass mass",
+        "description": "Commit the balance reading separately before using it in acid and composition calculations.",
+        "actionId": "record-brass-mass-action",
+        "config": {
+          "configurationChoice": true
+        },
+        "validation": [
+          {
+            "id": "record-brass-mass-complete",
+            "type": "actionEvidence",
+            "label": "Record the brass mass was completed.",
+            "actionId": "record-brass-mass-action"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record the brass mass evidence accepted.",
+          "retry": "Review Record the brass mass and try again."
+        }
+      },
+      {
+        "id": "minimum-hno3-volume-ml",
+        "type": "calculation",
+        "title": "Calculate minimum 15.8 M HNO3 volume",
+        "description": "Assume the configured brass mass is 100% Cu. For this teacher-configured profile, use the manual-consistent NO branch, 3 Cu + 8 HNO3 -> 3 Cu(NO3)2 + 2 NO + 4 H2O; NO then oxidizes to NO2 in air. Report the minimum volume before teacher excess is added.",
+        "actionId": "minimum-hno3-volume-ml-action",
+        "config": {
+          "configurationChoice": true
+        },
+        "validation": [
+          {
+            "id": "minimum-hno3-volume-ml-calculation-valid",
+            "type": "calculationWithinTolerance",
+            "label": "Calculate minimum 15.8 M HNO3 volume is within the configured tolerance.",
+            "calculationId": "minimum-hno3-volume-ml"
+          }
+        ],
+        "hints": [
+          "Use 63.546 g/mol Cu and the configured 8/3 mol HNO3 per mol Cu. The manual does not print an equation, so the instructor must confirm this reaction profile."
+        ],
+        "feedback": {
+          "success": "Calculate minimum 15.8 M HNO3 volume evidence accepted.",
+          "retry": "Review Calculate minimum 15.8 M HNO3 volume and try again."
+        }
+      },
+      {
+        "id": "teacher-add-acid",
+        "type": "teacherNote",
+        "title": "Observe teacher add nitric acid",
+        "description": "Locked teacher action: in the hood, the teacher adds the calculated minimum plus approximately 2 mL excess acid.",
+        "actionId": "teacher-add-acid-action",
+        "config": {
+          "configurationChoice": true
+        },
+        "validation": [
+          {
+            "id": "teacher-add-acid-complete",
+            "type": "actionEvidence",
+            "label": "Observe teacher add nitric acid was completed.",
+            "actionId": "teacher-add-acid-action"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Observe teacher add nitric acid evidence accepted.",
+          "retry": "Review Observe teacher add nitric acid and try again."
+        }
+      },
+      {
+        "id": "teacher-cover-digest",
+        "type": "teacherNote",
+        "title": "Observe covered brass digestion",
+        "description": "Locked teacher action: the teacher seats the watch glass and waits for complete dissolution while nitrogen oxides remain captured in the hood.",
+        "actionId": "teacher-cover-digest-action",
+        "config": {},
+        "validation": [
+          {
+            "id": "teacher-cover-digest-complete",
+            "type": "actionEvidence",
+            "label": "Observe covered brass digestion was completed.",
+            "actionId": "teacher-cover-digest-action"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Observe covered brass digestion evidence accepted.",
+          "retry": "Review Observe covered brass digestion and try again."
+        }
+      },
+      {
+        "id": "teacher-standard-approval",
+        "type": "checkpoint",
+        "title": "Obtain approval for the five-standard set",
+        "description": "The teacher checks calculations, labels, and the configured 10.00 mL tolerance convention before measurement.",
+        "actionId": "teacher-standard-approval-action",
+        "config": {
+          "configurationChoice": true
+        },
+        "validation": [
+          {
+            "id": "teacher-standard-approval-complete",
+            "type": "actionEvidence",
+            "label": "Obtain approval for the five-standard set was completed.",
+            "actionId": "teacher-standard-approval-action"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Obtain approval for the five-standard set evidence accepted.",
+          "retry": "Review Obtain approval for the five-standard set and try again."
+        }
+      },
+      {
+        "id": "calibration-table-check",
+        "type": "calculation",
+        "title": "Verify the five calibration pairs",
+        "description": "Before fitting, confirm the graph uses concentration on x and absorbance on y with all five source-stated standard concentrations and their learner-measured absorbances. Enter the number of standard points plotted.",
+        "actionId": "calibration-table-check-action",
+        "config": {
+          "configurationChoice": true
+        },
+        "validation": [
+          {
+            "id": "calibration-table-check-calculation-valid",
+            "type": "calculationWithinTolerance",
+            "label": "Verify the five calibration pairs is within the configured tolerance.",
+            "calculationId": "calibration-table-check"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Verify the five calibration pairs evidence accepted.",
+          "retry": "Review Verify the five calibration pairs and try again."
+        }
+      },
+      {
+        "id": "calibration-slope",
+        "type": "calculation",
+        "title": "Submit the calibration slope",
+        "description": "Fit one straight line to the five measured calibration pairs; measured points remain distinct from the fitted model.",
+        "actionId": "calibration-slope-action",
+        "config": {
+          "configurationChoice": true
+        },
+        "validation": [
+          {
+            "id": "calibration-slope-calculation-valid",
+            "type": "calculationWithinTolerance",
+            "label": "Submit the calibration slope is within the configured tolerance.",
+            "calculationId": "calibration-slope"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Submit the calibration slope evidence accepted.",
+          "retry": "Review Submit the calibration slope and try again."
+        }
+      },
+      {
+        "id": "calibration-intercept",
+        "type": "calculation",
+        "title": "Submit the calibration intercept",
+        "description": "Report the y-intercept from the same five-standard regression; do not force the line through zero unless the teacher configuration requires it.",
+        "actionId": "calibration-intercept-action",
+        "config": {
+          "configurationChoice": true
+        },
+        "validation": [
+          {
+            "id": "calibration-intercept-calculation-valid",
+            "type": "calculationWithinTolerance",
+            "label": "Submit the calibration intercept is within the configured tolerance.",
+            "calculationId": "calibration-intercept"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Submit the calibration intercept evidence accepted.",
+          "retry": "Review Submit the calibration intercept and try again."
+        }
+      },
+      {
+        "id": "calibration-r-squared",
+        "type": "calculation",
+        "title": "Submit calibration fit quality",
+        "description": "Report R-squared and compare it with the teacher-configured regression-quality threshold.",
+        "actionId": "calibration-r-squared-action",
+        "config": {
+          "configurationChoice": true
+        },
+        "validation": [
+          {
+            "id": "calibration-r-squared-calculation-valid",
+            "type": "calculationWithinTolerance",
+            "label": "Submit calibration fit quality is within the configured tolerance.",
+            "calculationId": "calibration-r-squared"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Submit calibration fit quality evidence accepted.",
+          "retry": "Review Submit calibration fit quality and try again."
+        }
+      },
+      {
+        "id": "spectrometric-unknown-molarity",
+        "type": "calculation",
+        "title": "Determine unknown Cu2+ molarity",
+        "description": "Use the submitted slope and intercept with the recorded unknown absorbance to solve x=(A-b)/m.",
+        "actionId": "spectrometric-unknown-molarity-action",
+        "config": {
+          "configurationChoice": true
+        },
+        "validation": [
+          {
+            "id": "spectrometric-unknown-molarity-calculation-valid",
+            "type": "calculationWithinTolerance",
+            "label": "Determine unknown Cu2+ molarity is within the configured tolerance.",
+            "calculationId": "spectrometric-unknown-molarity"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Determine unknown Cu2+ molarity evidence accepted.",
+          "retry": "Review Determine unknown Cu2+ molarity and try again."
+        }
+      },
+      {
+        "id": "spectrometric-copper-mass-g",
+        "type": "calculation",
+        "title": "Calculate copper mass",
+        "description": "Convert the calculated Cu2+ molarity in the 100.0 mL volumetric flask to moles and then grams using 63.546 g/mol Cu.",
+        "actionId": "spectrometric-copper-mass-g-action",
+        "config": {
+          "configurationChoice": true
+        },
+        "validation": [
+          {
+            "id": "spectrometric-copper-mass-g-calculation-valid",
+            "type": "calculationWithinTolerance",
+            "label": "Calculate copper mass is within the configured tolerance.",
+            "calculationId": "spectrometric-copper-mass-g"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Calculate copper mass evidence accepted.",
+          "retry": "Review Calculate copper mass and try again."
+        }
+      },
+      {
+        "id": "spectrometric-copper-percent",
+        "type": "calculation",
+        "title": "Calculate spectrometric mass percent Cu",
+        "description": "Divide copper mass by the recorded brass mass and multiply by 100.",
+        "actionId": "spectrometric-copper-percent-action",
+        "config": {
+          "configurationChoice": true
+        },
+        "validation": [
+          {
+            "id": "spectrometric-copper-percent-calculation-valid",
+            "type": "calculationWithinTolerance",
+            "label": "Calculate spectrometric mass percent Cu is within the configured tolerance.",
+            "calculationId": "spectrometric-copper-percent"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Calculate spectrometric mass percent Cu evidence accepted.",
+          "retry": "Review Calculate spectrometric mass percent Cu and try again."
+        }
+      },
+      {
+        "id": "visual-unknown-molarity",
+        "type": "calculation",
+        "title": "Calculate visual-comparison molarity",
+        "description": "At matched apparent intensity use M_unknown D_unknown = M_standard D_standard with the 0.400 M standard.",
+        "actionId": "visual-unknown-molarity-action",
+        "config": {
+          "configurationChoice": true
+        },
+        "validation": [
+          {
+            "id": "visual-unknown-molarity-calculation-valid",
+            "type": "calculationWithinTolerance",
+            "label": "Calculate visual-comparison molarity is within the configured tolerance.",
+            "calculationId": "visual-unknown-molarity"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Calculate visual-comparison molarity evidence accepted.",
+          "retry": "Review Calculate visual-comparison molarity and try again."
+        }
+      },
+      {
+        "id": "visual-copper-percent",
+        "type": "calculation",
+        "title": "Calculate visual-method mass percent Cu",
+        "description": "Use the visual molarity, 100.0 mL total volume, copper molar mass, and brass mass.",
+        "actionId": "visual-copper-percent-action",
+        "config": {
+          "configurationChoice": true
+        },
+        "validation": [
+          {
+            "id": "visual-copper-percent-calculation-valid",
+            "type": "calculationWithinTolerance",
+            "label": "Calculate visual-method mass percent Cu is within the configured tolerance.",
+            "calculationId": "visual-copper-percent"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Calculate visual-method mass percent Cu evidence accepted.",
+          "retry": "Review Calculate visual-method mass percent Cu and try again."
+        }
+      },
+      {
+        "id": "method-percent-difference",
+        "type": "calculation",
+        "title": "Compare the two method results",
+        "description": "Calculate the percent difference between the spectrometric and visual mass-percent results.",
+        "actionId": "method-percent-difference-action",
+        "config": {
+          "configurationChoice": true
+        },
+        "validation": [
+          {
+            "id": "method-percent-difference-calculation-valid",
+            "type": "calculationWithinTolerance",
+            "label": "Compare the two method results is within the configured tolerance.",
+            "calculationId": "method-percent-difference"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Compare the two method results evidence accepted.",
+          "retry": "Review Compare the two method results and try again."
+        }
+      },
+      {
+        "id": "class-spectrometric-mean",
+        "type": "calculation",
+        "title": "Submit class spectrometric mean",
+        "description": "Use the teacher-provided class dataset.",
+        "actionId": "class-spectrometric-mean-action",
+        "config": {
+          "configurationChoice": true
+        },
+        "validation": [
+          {
+            "id": "class-spectrometric-mean-calculation-valid",
+            "type": "calculationWithinTolerance",
+            "label": "Submit class spectrometric mean is within the configured tolerance.",
+            "calculationId": "class-spectrometric-mean"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Submit class spectrometric mean evidence accepted.",
+          "retry": "Review Submit class spectrometric mean and try again."
+        }
+      },
+      {
+        "id": "class-spectrometric-sd",
+        "type": "calculation",
+        "title": "Submit class spectrometric standard deviation",
+        "description": "Calculate the sample standard deviation from the teacher-provided class spectrometric results.",
+        "actionId": "class-spectrometric-sd-action",
+        "config": {
+          "configurationChoice": true
+        },
+        "validation": [
+          {
+            "id": "class-spectrometric-sd-calculation-valid",
+            "type": "calculationWithinTolerance",
+            "label": "Submit class spectrometric standard deviation is within the configured tolerance.",
+            "calculationId": "class-spectrometric-sd"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Submit class spectrometric standard deviation evidence accepted.",
+          "retry": "Review Submit class spectrometric standard deviation and try again."
+        }
+      },
+      {
+        "id": "class-visual-mean",
+        "type": "calculation",
+        "title": "Submit class visual-method mean",
+        "description": "Use the teacher-provided class dataset.",
+        "actionId": "class-visual-mean-action",
+        "config": {
+          "configurationChoice": true
+        },
+        "validation": [
+          {
+            "id": "class-visual-mean-calculation-valid",
+            "type": "calculationWithinTolerance",
+            "label": "Submit class visual-method mean is within the configured tolerance.",
+            "calculationId": "class-visual-mean"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Submit class visual-method mean evidence accepted.",
+          "retry": "Review Submit class visual-method mean and try again."
+        }
+      },
+      {
+        "id": "class-visual-sd",
+        "type": "calculation",
+        "title": "Submit class visual-method standard deviation",
+        "description": "Calculate the sample standard deviation from the teacher-provided class visual-comparison results.",
+        "actionId": "class-visual-sd-action",
+        "config": {
+          "configurationChoice": true
+        },
+        "validation": [
+          {
+            "id": "class-visual-sd-calculation-valid",
+            "type": "calculationWithinTolerance",
+            "label": "Submit class visual-method standard deviation is within the configured tolerance.",
+            "calculationId": "class-visual-sd"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Submit class visual-method standard deviation evidence accepted.",
+          "retry": "Review Submit class visual-method standard deviation and try again."
+        }
+      },
+      {
+        "id": "compare-method-precision",
+        "type": "observation",
+        "title": "Compare method precision",
+        "description": "Use class standard deviations and visible endpoint judgment to identify which method is more precise and cite quantitative evidence.",
+        "actionId": "compare-method-precision-action",
+        "config": {
+          "configurationChoice": true
+        },
+        "validation": [
+          {
+            "id": "compare-method-precision-complete",
+            "type": "actionEvidence",
+            "label": "Compare method precision was completed.",
+            "actionId": "compare-method-precision-action"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Compare method precision evidence accepted.",
+          "retry": "Review Compare method precision and try again."
+        }
+      },
+      {
+        "id": "justify-method-accuracy",
+        "type": "observation",
+        "title": "Justify probable method accuracy",
+        "description": "State which method is probably more accurate and justify the claim using calibration quality, transfer technique, visual matching limits, and the absence of a manual-stated certified brass value.",
+        "actionId": "justify-method-accuracy-action",
+        "config": {
+          "configurationChoice": true
+        },
+        "validation": [
+          {
+            "id": "justify-method-accuracy-complete",
+            "type": "actionEvidence",
+            "label": "Justify probable method accuracy was completed.",
+            "actionId": "justify-method-accuracy-action"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Justify probable method accuracy evidence accepted.",
+          "retry": "Review Justify probable method accuracy and try again."
+        }
+      },
+      {
+        "id": "teacher-disposal-gate",
+        "type": "checkpoint",
+        "title": "Obtain teacher disposal direction",
+        "description": "The teacher verifies pH 5-9 and supplies the local final waste-stream rule. The simulator does not assume sink disposal.",
+        "actionId": "teacher-disposal-gate-action",
+        "config": {
+          "configurationChoice": true
+        },
+        "validation": [
+          {
+            "id": "teacher-disposal-gate-complete",
+            "type": "actionEvidence",
+            "label": "Obtain teacher disposal direction was completed.",
+            "actionId": "teacher-disposal-gate-action"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Obtain teacher disposal direction evidence accepted.",
+          "retry": "Review Obtain teacher disposal direction and try again."
+        }
+      },
+      {
+        "id": "confirm-teacher-diluted-digest-action-node",
+        "type": "teacherNote",
+        "title": "Authorize the teacher's post-digestion water addition",
+        "description": "Record that the covered digestion is complete and the teacher has authorized the source-stated 50 mL water addition. The technique then measures and transfers that water; this node does not simulate the addition.",
+        "actionId": "confirm-teacher-diluted-digest-action",
+        "config": {},
+        "validation": [
+          {
+            "id": "confirm-teacher-diluted-digest-action-node-done",
+            "type": "actionEvidence",
+            "label": "Post-digestion water-addition authorization was recorded.",
+            "actionId": "confirm-teacher-diluted-digest-action"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "The post-digestion water addition is authorized.",
+          "retry": "Complete the covered digestion observation and obtain the teacher's water-addition authorization."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "safety-ppe",
+        "to": "safety-hazards",
+        "label": "Continue after required evidence",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "safety-hazards",
+        "to": "safety-hood",
+        "label": "Continue after required evidence",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "approved-wavelength-nm",
+        "to": "teacher-wavelength-approval",
+        "label": "Continue after required evidence",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-brass-mass",
+        "to": "minimum-hno3-volume-ml",
+        "label": "Continue after required evidence",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "minimum-hno3-volume-ml",
+        "to": "teacher-add-acid",
+        "label": "Continue after required evidence",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "calibration-table-check",
+        "to": "calibration-slope",
+        "label": "Continue after required evidence",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "calibration-slope",
+        "to": "calibration-intercept",
+        "label": "Continue after required evidence",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "calibration-intercept",
+        "to": "calibration-r-squared",
+        "label": "Continue after required evidence",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "calibration-r-squared",
+        "to": "spectrometric-unknown-molarity",
+        "label": "Continue after required evidence",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "spectrometric-unknown-molarity",
+        "to": "spectrometric-copper-mass-g",
+        "label": "Continue after required evidence",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "spectrometric-copper-mass-g",
+        "to": "spectrometric-copper-percent",
+        "label": "Continue after required evidence",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "visual-unknown-molarity",
+        "to": "visual-copper-percent",
+        "label": "Continue after required evidence",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "visual-copper-percent",
+        "to": "method-percent-difference",
+        "label": "Continue after required evidence",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "method-percent-difference",
+        "to": "class-spectrometric-mean",
+        "label": "Continue after required evidence",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "class-spectrometric-mean",
+        "to": "class-spectrometric-sd",
+        "label": "Continue after required evidence",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "class-spectrometric-sd",
+        "to": "class-visual-mean",
+        "label": "Continue after required evidence",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "class-visual-mean",
+        "to": "class-visual-sd",
+        "label": "Continue after required evidence",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "class-visual-sd",
+        "to": "compare-method-precision",
+        "label": "Continue after required evidence",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "compare-method-precision",
+        "to": "justify-method-accuracy",
+        "label": "Continue after required evidence",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "teacher-add-acid",
+        "to": "teacher-cover-digest",
+        "label": "Continue after teacher-controlled digestion",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "teacher-cover-digest",
+        "to": "confirm-teacher-diluted-digest-action-node",
+        "label": "Teacher authorizes the post-digestion water addition",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "assessments": [
+    {
+      "id": "spectrometric-percent-complete",
+      "type": "calculationWithinTolerance",
+      "label": "Spectrometric copper mass percent was submitted.",
+      "calculationId": "spectrometric-copper-percent"
+    },
+    {
+      "id": "visual-percent-complete",
+      "type": "calculationWithinTolerance",
+      "label": "Visual-method copper mass percent was submitted.",
+      "calculationId": "visual-copper-percent"
+    },
+    {
+      "id": "waste-ph-recorded",
+      "type": "measurementRecorded",
+      "label": "Neutralized waste pH was recorded.",
+      "measurementId": "neutralized-waste-ph"
+    },
+    {
+      "id": "cleanup-complete-assessment",
+      "type": "processCompleted",
+      "label": "Investigation cleanup is complete.",
+      "path": "cleanup"
+    }
+  ],
+  "metadata": {
+    "version": "2.0.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-09T00:00:00.000Z",
+    "tags": [
+      "chemistry",
+      "brass-colorimetry",
+      "brass",
+      "copper",
+      "spectrophotometry",
+      "beers-law",
+      "teacher-hazard-gate",
+      "accessible-color-comparison"
+    ]
+  },
+  "techniqueInstances": [
+    {
+      "instanceId": "brass-spectrophotometry",
+      "techniqueId": "brass-spectrophotometry",
+      "version": "2.0.0",
+      "bindings": {
+        "equipment": {
+          "balance-instrument": {
+            "definitionId": "analytical-balance",
+            "instanceId": "balance"
+          },
+          "weighed-vessel": {
+            "definitionId": "watch-glass",
+            "instanceId": "brass-weighing-watch-glass"
+          },
+          "weighed-sample-source": {
+            "definitionId": "watch-glass",
+            "instanceId": "brass-weighing-watch-glass"
+          },
+          "receiving-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "brass-beaker",
+                "definitionId": "beaker-250ml",
+                "instanceId": "brass-beaker"
+              },
+              {
+                "sourceInstanceId": "unknown-volumetric-flask",
+                "definitionId": "volumetric-flask",
+                "instanceId": "unknown-volumetric-flask"
+              },
+              {
+                "sourceInstanceId": "standard-0p400-tube",
+                "definitionId": "test-tube",
+                "instanceId": "standard-0p400-tube"
+              },
+              {
+                "sourceInstanceId": "standard-0p200-tube",
+                "definitionId": "test-tube",
+                "instanceId": "standard-0p200-tube"
+              },
+              {
+                "sourceInstanceId": "standard-0p100-tube",
+                "definitionId": "test-tube",
+                "instanceId": "standard-0p100-tube"
+              },
+              {
+                "sourceInstanceId": "standard-0p0500-tube",
+                "definitionId": "test-tube",
+                "instanceId": "standard-0p0500-tube"
+              },
+              {
+                "sourceInstanceId": "standard-0p0250-tube",
+                "definitionId": "test-tube",
+                "instanceId": "standard-0p0250-tube"
+              },
+              {
+                "sourceInstanceId": "unknown-sample-tube",
+                "definitionId": "test-tube",
+                "instanceId": "unknown-sample-tube"
+              }
+            ]
+          },
+          "variable-volume-measuring-device": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "graduated-pipette",
+                "definitionId": "graduated-pipette-10ml",
+                "instanceId": "graduated-pipette"
+              },
+              {
+                "sourceInstanceId": "digest-water-cylinder",
+                "definitionId": "graduated-cylinder",
+                "instanceId": "digest-water-cylinder"
+              }
+            ]
+          },
+          "liquid-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "wash-bottle",
+                "definitionId": "wash-bottle",
+                "instanceId": "wash-bottle"
+              },
+              {
+                "sourceInstanceId": "copper-standard-stock",
+                "definitionId": "sample-bottle",
+                "instanceId": "copper-standard-stock"
+              }
+            ]
+          },
+          "measured-solvent-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "unknown-volumetric-flask",
+                "definitionId": "volumetric-flask",
+                "instanceId": "unknown-volumetric-flask"
+              },
+              {
+                "sourceInstanceId": "digest-water-cylinder",
+                "definitionId": "graduated-cylinder",
+                "instanceId": "digest-water-cylinder"
+              }
+            ]
+          },
+          "mixture-source": {
+            "definitionId": "beaker-250ml",
+            "instanceId": "brass-beaker"
+          },
+          "rinse-water-source": {
+            "definitionId": "wash-bottle",
+            "instanceId": "wash-bottle"
+          },
+          "rinsed-vessel": {
+            "definitionId": "beaker-250ml",
+            "instanceId": "brass-beaker"
+          },
+          "final-volume-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "unknown-volumetric-flask",
+                "definitionId": "volumetric-flask",
+                "instanceId": "unknown-volumetric-flask"
+              },
+              {
+                "sourceInstanceId": "standard-0p400-tube",
+                "definitionId": "test-tube",
+                "instanceId": "standard-0p400-tube"
+              },
+              {
+                "sourceInstanceId": "standard-0p200-tube",
+                "definitionId": "test-tube",
+                "instanceId": "standard-0p200-tube"
+              },
+              {
+                "sourceInstanceId": "standard-0p100-tube",
+                "definitionId": "test-tube",
+                "instanceId": "standard-0p100-tube"
+              },
+              {
+                "sourceInstanceId": "standard-0p0500-tube",
+                "definitionId": "test-tube",
+                "instanceId": "standard-0p0500-tube"
+              },
+              {
+                "sourceInstanceId": "standard-0p0250-tube",
+                "definitionId": "test-tube",
+                "instanceId": "standard-0p0250-tube"
+              }
+            ]
+          },
+          "photometer-instrument": {
+            "definitionId": "spectrophotometer",
+            "instanceId": "spectrophotometer"
+          },
+          "photometer-sample-holder": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "measurement-cuvette",
+                "definitionId": "cuvette",
+                "instanceId": "measurement-cuvette"
+              },
+              {
+                "sourceInstanceId": "scan-blank-cuvette",
+                "definitionId": "cuvette",
+                "instanceId": "scan-blank-cuvette"
+              },
+              {
+                "sourceInstanceId": "salt-a-scan-cuvette",
+                "definitionId": "cuvette",
+                "instanceId": "salt-a-scan-cuvette"
+              },
+              {
+                "sourceInstanceId": "salt-b-scan-cuvette",
+                "definitionId": "cuvette",
+                "instanceId": "salt-b-scan-cuvette"
+              }
+            ]
+          },
+          "sample-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "standard-0p400-tube",
+                "definitionId": "test-tube",
+                "instanceId": "standard-0p400-tube"
+              },
+              {
+                "sourceInstanceId": "standard-0p200-tube",
+                "definitionId": "test-tube",
+                "instanceId": "standard-0p200-tube"
+              },
+              {
+                "sourceInstanceId": "standard-0p100-tube",
+                "definitionId": "test-tube",
+                "instanceId": "standard-0p100-tube"
+              },
+              {
+                "sourceInstanceId": "standard-0p0500-tube",
+                "definitionId": "test-tube",
+                "instanceId": "standard-0p0500-tube"
+              },
+              {
+                "sourceInstanceId": "standard-0p0250-tube",
+                "definitionId": "test-tube",
+                "instanceId": "standard-0p0250-tube"
+              },
+              {
+                "sourceInstanceId": "unknown-sample-tube",
+                "definitionId": "test-tube",
+                "instanceId": "unknown-sample-tube"
+              },
+              {
+                "sourceInstanceId": "assigned-salt-a-solution",
+                "definitionId": "test-tube",
+                "instanceId": "assigned-salt-a-solution"
+              },
+              {
+                "sourceInstanceId": "assigned-salt-b-solution",
+                "definitionId": "test-tube",
+                "instanceId": "assigned-salt-b-solution"
+              },
+              {
+                "sourceInstanceId": "color-depth-unknown-tube",
+                "definitionId": "test-tube",
+                "instanceId": "color-depth-unknown-tube"
+              },
+              {
+                "sourceInstanceId": "color-depth-standard-tube",
+                "definitionId": "test-tube",
+                "instanceId": "color-depth-standard-tube"
+              }
+            ]
+          },
+          "provenance-matched-sample-receiver": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "standard-0p400-tube",
+                "definitionId": "test-tube",
+                "instanceId": "standard-0p400-tube"
+              },
+              {
+                "sourceInstanceId": "standard-0p200-tube",
+                "definitionId": "test-tube",
+                "instanceId": "standard-0p200-tube"
+              },
+              {
+                "sourceInstanceId": "standard-0p100-tube",
+                "definitionId": "test-tube",
+                "instanceId": "standard-0p100-tube"
+              },
+              {
+                "sourceInstanceId": "standard-0p0500-tube",
+                "definitionId": "test-tube",
+                "instanceId": "standard-0p0500-tube"
+              },
+              {
+                "sourceInstanceId": "standard-0p0250-tube",
+                "definitionId": "test-tube",
+                "instanceId": "standard-0p0250-tube"
+              },
+              {
+                "sourceInstanceId": "unknown-sample-tube",
+                "definitionId": "test-tube",
+                "instanceId": "unknown-sample-tube"
+              },
+              {
+                "sourceInstanceId": "assigned-salt-a-solution",
+                "definitionId": "test-tube",
+                "instanceId": "assigned-salt-a-solution"
+              },
+              {
+                "sourceInstanceId": "assigned-salt-b-solution",
+                "definitionId": "test-tube",
+                "instanceId": "assigned-salt-b-solution"
+              }
+            ]
+          },
+          "color-depth-comparison-apparatus": {
+            "definitionId": "brass-color-depth-comparison",
+            "instanceId": "color-depth-comparison"
+          },
+          "waste-receiver": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "waste-beaker",
+                "definitionId": "waste-beaker",
+                "instanceId": "waste-beaker"
+              },
+              {
+                "sourceInstanceId": "teacher-designated-disposal-receiver",
+                "definitionId": "waste-beaker",
+                "instanceId": "teacher-designated-disposal-receiver"
+              }
+            ]
+          },
+          "solid-reagent-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "baking-soda-bottle",
+                "definitionId": "reagent-bottle",
+                "instanceId": "baking-soda-bottle"
+              },
+              {
+                "sourceInstanceId": "brass-sample-vial",
+                "definitionId": "small-vial",
+                "instanceId": "brass-sample-vial"
+              }
+            ]
+          },
+          "ph-indicator-medium": {
+            "definitionId": "ph-paper",
+            "instanceId": "ph-paper"
+          },
+          "color-depth-comparison-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "color-depth-unknown-tube",
+                "definitionId": "test-tube",
+                "instanceId": "color-depth-unknown-tube"
+              },
+              {
+                "sourceInstanceId": "color-depth-standard-tube",
+                "definitionId": "test-tube",
+                "instanceId": "color-depth-standard-tube"
+              }
+            ]
+          },
+          "recovery-vessel": {
+            "definitionId": "waste-beaker",
+            "instanceId": "waste-beaker"
+          }
+        },
+        "models": {},
+        "configuration": {
+          "wavelengthMeasurementId": "brass-spectrophotometry--configured-wavelength-nm",
+          "measurementCuvetteInstanceId": "measurement-cuvette"
+        }
+      },
+      "preserveIds": {
+        "actions": {
+          "tare-empty-beaker-action": "tare-empty-beaker-action",
+          "weigh-brass-action": "weigh-brass-action",
+          "place-brass-in-beaker-action": "place-brass-in-beaker-action",
+          "record-unknown-final-volume-action": "record-unknown-final-volume-action",
+          "record-standard-final-volume-action": "record-standard-final-volume-action",
+          "measure-50ml-digest-water-action": "measure-50ml-digest-water-action",
+          "teacher-add-50ml-water-to-digest-action": "teacher-add-50ml-water-to-digest-action",
+          "confirm-diluted-digest-material-action": "confirm-diluted-digest-material-action",
+          "transfer-digest-action": "transfer-digest-action",
+          "rinse-beaker-1-action": "rinse-beaker-1-action",
+          "transfer-rinse-1-action": "transfer-rinse-1-action",
+          "rinse-beaker-2-action": "rinse-beaker-2-action",
+          "transfer-rinse-2-action": "transfer-rinse-2-action",
+          "rinse-beaker-3-action": "rinse-beaker-3-action",
+          "transfer-rinse-3-action": "transfer-rinse-3-action",
+          "rinse-beaker-4-action": "rinse-beaker-4-action",
+          "transfer-rinse-4-action": "transfer-rinse-4-action",
+          "dilute-unknown-to-mark-action": "dilute-unknown-to-mark-action",
+          "standard-0p200-aliquot-ml-action": "standard-0p200-aliquot-ml-action",
+          "standard-0p100-aliquot-ml-action": "standard-0p100-aliquot-ml-action",
+          "standard-0p0500-aliquot-ml-action": "standard-0p0500-aliquot-ml-action",
+          "standard-0p0250-aliquot-ml-action": "standard-0p0250-aliquot-ml-action",
+          "standard-0p400-stock-transfer-action": "standard-0p400-stock-transfer-action",
+          "standard-0p200-stock-transfer-action": "standard-0p200-stock-transfer-action",
+          "standard-0p200-dilute-action": "standard-0p200-dilute-action",
+          "standard-0p100-stock-transfer-action": "standard-0p100-stock-transfer-action",
+          "standard-0p100-dilute-action": "standard-0p100-dilute-action",
+          "standard-0p0500-stock-transfer-action": "standard-0p0500-stock-transfer-action",
+          "standard-0p0500-dilute-action": "standard-0p0500-dilute-action",
+          "standard-0p0250-stock-transfer-action": "standard-0p0250-stock-transfer-action",
+          "standard-0p0250-dilute-action": "standard-0p0250-dilute-action",
+          "calibrate-zero-percent-t-action": "calibrate-zero-percent-t-action",
+          "prepare-blank-action": "prepare-blank-action",
+          "blank-wipe-orient-action": "blank-wipe-orient-action",
+          "insert-blank-action": "insert-blank-action",
+          "calibrate-hundred-percent-t-action": "calibrate-hundred-percent-t-action",
+          "remove-blank-action": "remove-blank-action",
+          "condition-0p0250-action": "condition-0p0250-action",
+          "return-0p0250-action": "return-0p0250-action",
+          "condition-0p0500-action": "condition-0p0500-action",
+          "return-0p0500-action": "return-0p0500-action",
+          "condition-0p100-action": "condition-0p100-action",
+          "return-0p100-action": "return-0p100-action",
+          "condition-0p200-action": "condition-0p200-action",
+          "return-0p200-action": "return-0p200-action",
+          "condition-0p400-action": "condition-0p400-action",
+          "return-0p400-action": "return-0p400-action",
+          "condition-unknown-action": "condition-unknown-action",
+          "read-unknown-absorbance-action": "read-unknown-absorbance-action",
+          "record-unknown-absorbance-action": "record-unknown-absorbance-action",
+          "return-unknown-action": "return-unknown-action",
+          "place-color-depth-comparison-action": "place-color-depth-comparison-action",
+          "visual-match-action": "visual-match-action",
+          "record-unknown-depth-action": "record-unknown-depth-action",
+          "record-standard-depth-action": "record-standard-depth-action",
+          "neutralize-waste-action": "neutralize-waste-action",
+          "record-waste-ph-action": "record-waste-ph-action",
+          "read-0p0250-absorbance-action": "read-0p0250-absorbance-action",
+          "record-0p0250-absorbance-action": "record-0p0250-absorbance-action",
+          "read-0p0500-absorbance-action": "read-0p0500-absorbance-action",
+          "record-0p0500-absorbance-action": "record-0p0500-absorbance-action",
+          "read-0p100-absorbance-action": "read-0p100-absorbance-action",
+          "record-0p100-absorbance-action": "record-0p100-absorbance-action",
+          "read-0p200-absorbance-action": "read-0p200-absorbance-action",
+          "record-0p200-absorbance-action": "record-0p200-absorbance-action",
+          "read-0p400-absorbance-action": "read-0p400-absorbance-action",
+          "record-0p400-absorbance-action": "record-0p400-absorbance-action",
+          "fill-0p0250-cuvette-action": "fill-0p0250-cuvette-action",
+          "prepare-0p0250-optical-faces-action": "prepare-0p0250-optical-faces-action",
+          "insert-0p0250-cuvette-action": "insert-0p0250-cuvette-action",
+          "remove-0p0250-cuvette-action": "remove-0p0250-cuvette-action",
+          "fill-0p0500-cuvette-action": "fill-0p0500-cuvette-action",
+          "prepare-0p0500-optical-faces-action": "prepare-0p0500-optical-faces-action",
+          "insert-0p0500-cuvette-action": "insert-0p0500-cuvette-action",
+          "remove-0p0500-cuvette-action": "remove-0p0500-cuvette-action",
+          "fill-0p100-cuvette-action": "fill-0p100-cuvette-action",
+          "prepare-0p100-optical-faces-action": "prepare-0p100-optical-faces-action",
+          "insert-0p100-cuvette-action": "insert-0p100-cuvette-action",
+          "remove-0p100-cuvette-action": "remove-0p100-cuvette-action",
+          "fill-0p200-cuvette-action": "fill-0p200-cuvette-action",
+          "prepare-0p200-optical-faces-action": "prepare-0p200-optical-faces-action",
+          "insert-0p200-cuvette-action": "insert-0p200-cuvette-action",
+          "remove-0p200-cuvette-action": "remove-0p200-cuvette-action",
+          "fill-0p400-cuvette-action": "fill-0p400-cuvette-action",
+          "prepare-0p400-optical-faces-action": "prepare-0p400-optical-faces-action",
+          "insert-0p400-cuvette-action": "insert-0p400-cuvette-action",
+          "remove-0p400-cuvette-action": "remove-0p400-cuvette-action",
+          "fill-unknown-cuvette-action": "fill-unknown-cuvette-action",
+          "prepare-unknown-optical-faces-action": "prepare-unknown-optical-faces-action",
+          "insert-unknown-cuvette-action": "insert-unknown-cuvette-action",
+          "remove-unknown-cuvette-action": "remove-unknown-cuvette-action",
+          "transfer-prepared-unknown-to-original-tube-action": "transfer-prepared-unknown-to-original-tube-action",
+          "scan-configure-salt-a-inventory-action": "scan-configure-salt-a-inventory-action",
+          "scan-condition-salt-a-once-action": "scan-condition-salt-a-once-action",
+          "scan-fill-salt-a-once-action": "scan-fill-salt-a-once-action",
+          "scan-prepare-salt-a-once-action": "scan-prepare-salt-a-once-action",
+          "scan-configure-salt-b-inventory-action": "scan-configure-salt-b-inventory-action",
+          "scan-condition-salt-b-once-action": "scan-condition-salt-b-once-action",
+          "scan-fill-salt-b-once-action": "scan-fill-salt-b-once-action",
+          "scan-prepare-salt-b-once-action": "scan-prepare-salt-b-once-action",
+          "scan-place-photometer-action": "scan-place-photometer-action",
+          "scan-set-400-action": "scan-set-400-action",
+          "scan-insert-400-salt-a-action": "scan-insert-400-salt-a-action",
+          "scan-read-400-salt-a-action": "scan-read-400-salt-a-action",
+          "scan-record-400-salt-a-action": "scan-record-400-salt-a-action",
+          "scan-remove-400-salt-a-action": "scan-remove-400-salt-a-action",
+          "scan-insert-400-salt-b-action": "scan-insert-400-salt-b-action",
+          "scan-read-400-salt-b-action": "scan-read-400-salt-b-action",
+          "scan-record-400-salt-b-action": "scan-record-400-salt-b-action",
+          "scan-remove-400-salt-b-action": "scan-remove-400-salt-b-action",
+          "scan-set-420-action": "scan-set-420-action",
+          "scan-insert-420-salt-a-action": "scan-insert-420-salt-a-action",
+          "scan-read-420-salt-a-action": "scan-read-420-salt-a-action",
+          "scan-record-420-salt-a-action": "scan-record-420-salt-a-action",
+          "scan-remove-420-salt-a-action": "scan-remove-420-salt-a-action",
+          "scan-insert-420-salt-b-action": "scan-insert-420-salt-b-action",
+          "scan-read-420-salt-b-action": "scan-read-420-salt-b-action",
+          "scan-record-420-salt-b-action": "scan-record-420-salt-b-action",
+          "scan-remove-420-salt-b-action": "scan-remove-420-salt-b-action",
+          "scan-set-440-action": "scan-set-440-action",
+          "scan-insert-440-salt-a-action": "scan-insert-440-salt-a-action",
+          "scan-read-440-salt-a-action": "scan-read-440-salt-a-action",
+          "scan-record-440-salt-a-action": "scan-record-440-salt-a-action",
+          "scan-remove-440-salt-a-action": "scan-remove-440-salt-a-action",
+          "scan-insert-440-salt-b-action": "scan-insert-440-salt-b-action",
+          "scan-read-440-salt-b-action": "scan-read-440-salt-b-action",
+          "scan-record-440-salt-b-action": "scan-record-440-salt-b-action",
+          "scan-remove-440-salt-b-action": "scan-remove-440-salt-b-action",
+          "scan-set-460-action": "scan-set-460-action",
+          "scan-insert-460-salt-a-action": "scan-insert-460-salt-a-action",
+          "scan-read-460-salt-a-action": "scan-read-460-salt-a-action",
+          "scan-record-460-salt-a-action": "scan-record-460-salt-a-action",
+          "scan-remove-460-salt-a-action": "scan-remove-460-salt-a-action",
+          "scan-insert-460-salt-b-action": "scan-insert-460-salt-b-action",
+          "scan-read-460-salt-b-action": "scan-read-460-salt-b-action",
+          "scan-record-460-salt-b-action": "scan-record-460-salt-b-action",
+          "scan-remove-460-salt-b-action": "scan-remove-460-salt-b-action",
+          "scan-set-480-action": "scan-set-480-action",
+          "scan-insert-480-salt-a-action": "scan-insert-480-salt-a-action",
+          "scan-read-480-salt-a-action": "scan-read-480-salt-a-action",
+          "scan-record-480-salt-a-action": "scan-record-480-salt-a-action",
+          "scan-remove-480-salt-a-action": "scan-remove-480-salt-a-action",
+          "scan-insert-480-salt-b-action": "scan-insert-480-salt-b-action",
+          "scan-read-480-salt-b-action": "scan-read-480-salt-b-action",
+          "scan-record-480-salt-b-action": "scan-record-480-salt-b-action",
+          "scan-remove-480-salt-b-action": "scan-remove-480-salt-b-action",
+          "scan-set-500-action": "scan-set-500-action",
+          "scan-insert-500-salt-a-action": "scan-insert-500-salt-a-action",
+          "scan-read-500-salt-a-action": "scan-read-500-salt-a-action",
+          "scan-record-500-salt-a-action": "scan-record-500-salt-a-action",
+          "scan-remove-500-salt-a-action": "scan-remove-500-salt-a-action",
+          "scan-insert-500-salt-b-action": "scan-insert-500-salt-b-action",
+          "scan-read-500-salt-b-action": "scan-read-500-salt-b-action",
+          "scan-record-500-salt-b-action": "scan-record-500-salt-b-action",
+          "scan-remove-500-salt-b-action": "scan-remove-500-salt-b-action",
+          "scan-set-520-action": "scan-set-520-action",
+          "scan-insert-520-salt-a-action": "scan-insert-520-salt-a-action",
+          "scan-read-520-salt-a-action": "scan-read-520-salt-a-action",
+          "scan-record-520-salt-a-action": "scan-record-520-salt-a-action",
+          "scan-remove-520-salt-a-action": "scan-remove-520-salt-a-action",
+          "scan-insert-520-salt-b-action": "scan-insert-520-salt-b-action",
+          "scan-read-520-salt-b-action": "scan-read-520-salt-b-action",
+          "scan-record-520-salt-b-action": "scan-record-520-salt-b-action",
+          "scan-remove-520-salt-b-action": "scan-remove-520-salt-b-action",
+          "scan-set-540-action": "scan-set-540-action",
+          "scan-insert-540-salt-a-action": "scan-insert-540-salt-a-action",
+          "scan-read-540-salt-a-action": "scan-read-540-salt-a-action",
+          "scan-record-540-salt-a-action": "scan-record-540-salt-a-action",
+          "scan-remove-540-salt-a-action": "scan-remove-540-salt-a-action",
+          "scan-insert-540-salt-b-action": "scan-insert-540-salt-b-action",
+          "scan-read-540-salt-b-action": "scan-read-540-salt-b-action",
+          "scan-record-540-salt-b-action": "scan-record-540-salt-b-action",
+          "scan-remove-540-salt-b-action": "scan-remove-540-salt-b-action",
+          "scan-set-560-action": "scan-set-560-action",
+          "scan-insert-560-salt-a-action": "scan-insert-560-salt-a-action",
+          "scan-read-560-salt-a-action": "scan-read-560-salt-a-action",
+          "scan-record-560-salt-a-action": "scan-record-560-salt-a-action",
+          "scan-remove-560-salt-a-action": "scan-remove-560-salt-a-action",
+          "scan-insert-560-salt-b-action": "scan-insert-560-salt-b-action",
+          "scan-read-560-salt-b-action": "scan-read-560-salt-b-action",
+          "scan-record-560-salt-b-action": "scan-record-560-salt-b-action",
+          "scan-remove-560-salt-b-action": "scan-remove-560-salt-b-action",
+          "scan-set-580-action": "scan-set-580-action",
+          "scan-insert-580-salt-a-action": "scan-insert-580-salt-a-action",
+          "scan-read-580-salt-a-action": "scan-read-580-salt-a-action",
+          "scan-record-580-salt-a-action": "scan-record-580-salt-a-action",
+          "scan-remove-580-salt-a-action": "scan-remove-580-salt-a-action",
+          "scan-insert-580-salt-b-action": "scan-insert-580-salt-b-action",
+          "scan-read-580-salt-b-action": "scan-read-580-salt-b-action",
+          "scan-record-580-salt-b-action": "scan-record-580-salt-b-action",
+          "scan-remove-580-salt-b-action": "scan-remove-580-salt-b-action",
+          "scan-set-600-action": "scan-set-600-action",
+          "scan-insert-600-salt-a-action": "scan-insert-600-salt-a-action",
+          "scan-read-600-salt-a-action": "scan-read-600-salt-a-action",
+          "scan-record-600-salt-a-action": "scan-record-600-salt-a-action",
+          "scan-remove-600-salt-a-action": "scan-remove-600-salt-a-action",
+          "scan-insert-600-salt-b-action": "scan-insert-600-salt-b-action",
+          "scan-read-600-salt-b-action": "scan-read-600-salt-b-action",
+          "scan-record-600-salt-b-action": "scan-record-600-salt-b-action",
+          "scan-remove-600-salt-b-action": "scan-remove-600-salt-b-action",
+          "scan-set-620-action": "scan-set-620-action",
+          "scan-insert-620-salt-a-action": "scan-insert-620-salt-a-action",
+          "scan-read-620-salt-a-action": "scan-read-620-salt-a-action",
+          "scan-record-620-salt-a-action": "scan-record-620-salt-a-action",
+          "scan-remove-620-salt-a-action": "scan-remove-620-salt-a-action",
+          "scan-insert-620-salt-b-action": "scan-insert-620-salt-b-action",
+          "scan-read-620-salt-b-action": "scan-read-620-salt-b-action",
+          "scan-record-620-salt-b-action": "scan-record-620-salt-b-action",
+          "scan-remove-620-salt-b-action": "scan-remove-620-salt-b-action",
+          "scan-set-640-action": "scan-set-640-action",
+          "scan-insert-640-salt-a-action": "scan-insert-640-salt-a-action",
+          "scan-read-640-salt-a-action": "scan-read-640-salt-a-action",
+          "scan-record-640-salt-a-action": "scan-record-640-salt-a-action",
+          "scan-remove-640-salt-a-action": "scan-remove-640-salt-a-action",
+          "scan-insert-640-salt-b-action": "scan-insert-640-salt-b-action",
+          "scan-read-640-salt-b-action": "scan-read-640-salt-b-action",
+          "scan-record-640-salt-b-action": "scan-record-640-salt-b-action",
+          "scan-remove-640-salt-b-action": "scan-remove-640-salt-b-action",
+          "scan-set-660-action": "scan-set-660-action",
+          "scan-insert-660-salt-a-action": "scan-insert-660-salt-a-action",
+          "scan-read-660-salt-a-action": "scan-read-660-salt-a-action",
+          "scan-record-660-salt-a-action": "scan-record-660-salt-a-action",
+          "scan-remove-660-salt-a-action": "scan-remove-660-salt-a-action",
+          "scan-insert-660-salt-b-action": "scan-insert-660-salt-b-action",
+          "scan-read-660-salt-b-action": "scan-read-660-salt-b-action",
+          "scan-record-660-salt-b-action": "scan-record-660-salt-b-action",
+          "scan-remove-660-salt-b-action": "scan-remove-660-salt-b-action",
+          "scan-set-680-action": "scan-set-680-action",
+          "scan-insert-680-salt-a-action": "scan-insert-680-salt-a-action",
+          "scan-read-680-salt-a-action": "scan-read-680-salt-a-action",
+          "scan-record-680-salt-a-action": "scan-record-680-salt-a-action",
+          "scan-remove-680-salt-a-action": "scan-remove-680-salt-a-action",
+          "scan-insert-680-salt-b-action": "scan-insert-680-salt-b-action",
+          "scan-read-680-salt-b-action": "scan-read-680-salt-b-action",
+          "scan-record-680-salt-b-action": "scan-record-680-salt-b-action",
+          "scan-remove-680-salt-b-action": "scan-remove-680-salt-b-action",
+          "scan-set-700-action": "scan-set-700-action",
+          "scan-insert-700-salt-a-action": "scan-insert-700-salt-a-action",
+          "scan-read-700-salt-a-action": "scan-read-700-salt-a-action",
+          "scan-record-700-salt-a-action": "scan-record-700-salt-a-action",
+          "scan-remove-700-salt-a-action": "scan-remove-700-salt-a-action",
+          "scan-insert-700-salt-b-action": "scan-insert-700-salt-b-action",
+          "scan-read-700-salt-b-action": "scan-read-700-salt-b-action",
+          "scan-record-700-salt-b-action": "scan-record-700-salt-b-action",
+          "scan-remove-700-salt-b-action": "scan-remove-700-salt-b-action",
+          "scan-return-salt-a-after-series-action": "scan-return-salt-a-after-series-action",
+          "scan-return-salt-b-after-series-action": "scan-return-salt-b-after-series-action",
+          "fill-color-depth-unknown-action": "fill-color-depth-unknown-action",
+          "fill-color-depth-standard-action": "fill-color-depth-standard-action",
+          "collect-0p0250-waste-action": "collect-0p0250-waste-action",
+          "collect-0p0500-waste-action": "collect-0p0500-waste-action",
+          "collect-0p100-waste-action": "collect-0p100-waste-action",
+          "collect-0p200-waste-action": "collect-0p200-waste-action",
+          "collect-0p400-waste-action": "collect-0p400-waste-action",
+          "collect-unknown-waste-action": "collect-unknown-waste-action",
+          "observe-waste-bubbling-action": "observe-waste-bubbling-action",
+          "classify-waste-ph-action": "classify-waste-ph-action",
+          "confirm-waste-ready-for-disposal-action": "confirm-waste-ready-for-disposal-action",
+          "transfer-treated-waste-to-destination-action": "transfer-treated-waste-to-destination-action",
+          "configure-approved-wavelength-action": "configure-approved-wavelength-action",
+          "configure-brass-sample-inventory-action": "configure-brass-sample-inventory-action",
+          "load-brass-onto-weighing-support-action": "load-brass-onto-weighing-support-action",
+          "collect-color-depth-unknown-waste-action": "collect-color-depth-unknown-waste-action",
+          "collect-color-depth-standard-waste-action": "collect-color-depth-standard-waste-action",
+          "confirm-brass-weighing-support-zeroed-action": "confirm-brass-weighing-support-zeroed-action"
+        },
+        "nodes": {
+          "tare-empty-beaker": "tare-empty-beaker",
+          "place-brass-in-beaker": "place-brass-in-beaker",
+          "weigh-brass": "weigh-brass",
+          "transfer-digest": "transfer-digest",
+          "rinse-beaker-1": "rinse-beaker-1",
+          "transfer-rinse-1": "transfer-rinse-1",
+          "rinse-beaker-2": "rinse-beaker-2",
+          "transfer-rinse-2": "transfer-rinse-2",
+          "rinse-beaker-3": "rinse-beaker-3",
+          "transfer-rinse-3": "transfer-rinse-3",
+          "rinse-beaker-4": "rinse-beaker-4",
+          "transfer-rinse-4": "transfer-rinse-4",
+          "dilute-unknown-to-mark": "dilute-unknown-to-mark",
+          "standard-0p400-stock-transfer": "standard-0p400-stock-transfer",
+          "standard-0p200-stock-transfer": "standard-0p200-stock-transfer",
+          "standard-0p200-dilute": "standard-0p200-dilute",
+          "standard-0p100-stock-transfer": "standard-0p100-stock-transfer",
+          "standard-0p100-dilute": "standard-0p100-dilute",
+          "standard-0p0500-stock-transfer": "standard-0p0500-stock-transfer",
+          "standard-0p0500-dilute": "standard-0p0500-dilute",
+          "standard-0p0250-stock-transfer": "standard-0p0250-stock-transfer",
+          "standard-0p0250-dilute": "standard-0p0250-dilute",
+          "calibrate-zero-percent-t": "calibrate-zero-percent-t",
+          "prepare-blank": "prepare-blank",
+          "blank-wipe-orient": "blank-wipe-orient",
+          "insert-blank": "insert-blank",
+          "calibrate-hundred-percent-t": "calibrate-hundred-percent-t",
+          "remove-blank": "remove-blank",
+          "condition-0p0250": "condition-0p0250",
+          "return-0p0250": "return-0p0250",
+          "condition-0p0500": "condition-0p0500",
+          "return-0p0500": "return-0p0500",
+          "condition-0p100": "condition-0p100",
+          "return-0p100": "return-0p100",
+          "condition-0p200": "condition-0p200",
+          "return-0p200": "return-0p200",
+          "condition-0p400": "condition-0p400",
+          "return-0p400": "return-0p400",
+          "condition-unknown": "condition-unknown",
+          "read-unknown-absorbance": "read-unknown-absorbance",
+          "record-unknown-absorbance": "record-unknown-absorbance",
+          "return-unknown": "return-unknown",
+          "place-color-depth-comparison": "place-color-depth-comparison",
+          "visual-match": "visual-match",
+          "record-unknown-depth": "record-unknown-depth",
+          "record-standard-depth": "record-standard-depth",
+          "neutralize-waste": "neutralize-waste",
+          "record-waste-ph": "record-waste-ph",
+          "read-0p0250-absorbance": "read-0p0250-absorbance",
+          "record-0p0250-absorbance": "record-0p0250-absorbance",
+          "read-0p0500-absorbance": "read-0p0500-absorbance",
+          "record-0p0500-absorbance": "record-0p0500-absorbance",
+          "read-0p100-absorbance": "read-0p100-absorbance",
+          "record-0p100-absorbance": "record-0p100-absorbance",
+          "read-0p200-absorbance": "read-0p200-absorbance",
+          "record-0p200-absorbance": "record-0p200-absorbance",
+          "read-0p400-absorbance": "read-0p400-absorbance",
+          "record-0p400-absorbance": "record-0p400-absorbance",
+          "fill-0p0250-cuvette-action-node": "fill-0p0250-cuvette-action-node",
+          "prepare-0p0250-optical-faces-action-node": "prepare-0p0250-optical-faces-action-node",
+          "insert-0p0250-cuvette-action-node": "insert-0p0250-cuvette-action-node",
+          "remove-0p0250-cuvette-action-node": "remove-0p0250-cuvette-action-node",
+          "fill-0p0500-cuvette-action-node": "fill-0p0500-cuvette-action-node",
+          "prepare-0p0500-optical-faces-action-node": "prepare-0p0500-optical-faces-action-node",
+          "insert-0p0500-cuvette-action-node": "insert-0p0500-cuvette-action-node",
+          "remove-0p0500-cuvette-action-node": "remove-0p0500-cuvette-action-node",
+          "fill-0p100-cuvette-action-node": "fill-0p100-cuvette-action-node",
+          "prepare-0p100-optical-faces-action-node": "prepare-0p100-optical-faces-action-node",
+          "insert-0p100-cuvette-action-node": "insert-0p100-cuvette-action-node",
+          "remove-0p100-cuvette-action-node": "remove-0p100-cuvette-action-node",
+          "fill-0p200-cuvette-action-node": "fill-0p200-cuvette-action-node",
+          "prepare-0p200-optical-faces-action-node": "prepare-0p200-optical-faces-action-node",
+          "insert-0p200-cuvette-action-node": "insert-0p200-cuvette-action-node",
+          "remove-0p200-cuvette-action-node": "remove-0p200-cuvette-action-node",
+          "fill-0p400-cuvette-action-node": "fill-0p400-cuvette-action-node",
+          "prepare-0p400-optical-faces-action-node": "prepare-0p400-optical-faces-action-node",
+          "insert-0p400-cuvette-action-node": "insert-0p400-cuvette-action-node",
+          "remove-0p400-cuvette-action-node": "remove-0p400-cuvette-action-node",
+          "fill-unknown-cuvette-action-node": "fill-unknown-cuvette-action-node",
+          "prepare-unknown-optical-faces-action-node": "prepare-unknown-optical-faces-action-node",
+          "insert-unknown-cuvette-action-node": "insert-unknown-cuvette-action-node",
+          "remove-unknown-cuvette-action-node": "remove-unknown-cuvette-action-node",
+          "transfer-prepared-unknown-to-original-tube-action-node": "transfer-prepared-unknown-to-original-tube-action-node",
+          "scan-configure-salt-a-inventory-action-node": "scan-configure-salt-a-inventory-action-node",
+          "scan-condition-salt-a-once-action-node": "scan-condition-salt-a-once-action-node",
+          "scan-fill-salt-a-once-action-node": "scan-fill-salt-a-once-action-node",
+          "scan-prepare-salt-a-once-action-node": "scan-prepare-salt-a-once-action-node",
+          "scan-configure-salt-b-inventory-action-node": "scan-configure-salt-b-inventory-action-node",
+          "scan-condition-salt-b-once-action-node": "scan-condition-salt-b-once-action-node",
+          "scan-fill-salt-b-once-action-node": "scan-fill-salt-b-once-action-node",
+          "scan-prepare-salt-b-once-action-node": "scan-prepare-salt-b-once-action-node",
+          "scan-place-photometer-action-node": "scan-place-photometer-action-node",
+          "scan-set-400-action-node": "scan-set-400-action-node",
+          "scan-insert-400-salt-a-action-node": "scan-insert-400-salt-a-action-node",
+          "scan-read-400-salt-a-action-node": "scan-read-400-salt-a-action-node",
+          "scan-record-400-salt-a-action-node": "scan-record-400-salt-a-action-node",
+          "scan-remove-400-salt-a-action-node": "scan-remove-400-salt-a-action-node",
+          "scan-insert-400-salt-b-action-node": "scan-insert-400-salt-b-action-node",
+          "scan-read-400-salt-b-action-node": "scan-read-400-salt-b-action-node",
+          "scan-record-400-salt-b-action-node": "scan-record-400-salt-b-action-node",
+          "scan-remove-400-salt-b-action-node": "scan-remove-400-salt-b-action-node",
+          "scan-set-420-action-node": "scan-set-420-action-node",
+          "scan-insert-420-salt-a-action-node": "scan-insert-420-salt-a-action-node",
+          "scan-read-420-salt-a-action-node": "scan-read-420-salt-a-action-node",
+          "scan-record-420-salt-a-action-node": "scan-record-420-salt-a-action-node",
+          "scan-remove-420-salt-a-action-node": "scan-remove-420-salt-a-action-node",
+          "scan-insert-420-salt-b-action-node": "scan-insert-420-salt-b-action-node",
+          "scan-read-420-salt-b-action-node": "scan-read-420-salt-b-action-node",
+          "scan-record-420-salt-b-action-node": "scan-record-420-salt-b-action-node",
+          "scan-remove-420-salt-b-action-node": "scan-remove-420-salt-b-action-node",
+          "scan-set-440-action-node": "scan-set-440-action-node",
+          "scan-insert-440-salt-a-action-node": "scan-insert-440-salt-a-action-node",
+          "scan-read-440-salt-a-action-node": "scan-read-440-salt-a-action-node",
+          "scan-record-440-salt-a-action-node": "scan-record-440-salt-a-action-node",
+          "scan-remove-440-salt-a-action-node": "scan-remove-440-salt-a-action-node",
+          "scan-insert-440-salt-b-action-node": "scan-insert-440-salt-b-action-node",
+          "scan-read-440-salt-b-action-node": "scan-read-440-salt-b-action-node",
+          "scan-record-440-salt-b-action-node": "scan-record-440-salt-b-action-node",
+          "scan-remove-440-salt-b-action-node": "scan-remove-440-salt-b-action-node",
+          "scan-set-460-action-node": "scan-set-460-action-node",
+          "scan-insert-460-salt-a-action-node": "scan-insert-460-salt-a-action-node",
+          "scan-read-460-salt-a-action-node": "scan-read-460-salt-a-action-node",
+          "scan-record-460-salt-a-action-node": "scan-record-460-salt-a-action-node",
+          "scan-remove-460-salt-a-action-node": "scan-remove-460-salt-a-action-node",
+          "scan-insert-460-salt-b-action-node": "scan-insert-460-salt-b-action-node",
+          "scan-read-460-salt-b-action-node": "scan-read-460-salt-b-action-node",
+          "scan-record-460-salt-b-action-node": "scan-record-460-salt-b-action-node",
+          "scan-remove-460-salt-b-action-node": "scan-remove-460-salt-b-action-node",
+          "scan-set-480-action-node": "scan-set-480-action-node",
+          "scan-insert-480-salt-a-action-node": "scan-insert-480-salt-a-action-node",
+          "scan-read-480-salt-a-action-node": "scan-read-480-salt-a-action-node",
+          "scan-record-480-salt-a-action-node": "scan-record-480-salt-a-action-node",
+          "scan-remove-480-salt-a-action-node": "scan-remove-480-salt-a-action-node",
+          "scan-insert-480-salt-b-action-node": "scan-insert-480-salt-b-action-node",
+          "scan-read-480-salt-b-action-node": "scan-read-480-salt-b-action-node",
+          "scan-record-480-salt-b-action-node": "scan-record-480-salt-b-action-node",
+          "scan-remove-480-salt-b-action-node": "scan-remove-480-salt-b-action-node",
+          "scan-set-500-action-node": "scan-set-500-action-node",
+          "scan-insert-500-salt-a-action-node": "scan-insert-500-salt-a-action-node",
+          "scan-read-500-salt-a-action-node": "scan-read-500-salt-a-action-node",
+          "scan-record-500-salt-a-action-node": "scan-record-500-salt-a-action-node",
+          "scan-remove-500-salt-a-action-node": "scan-remove-500-salt-a-action-node",
+          "scan-insert-500-salt-b-action-node": "scan-insert-500-salt-b-action-node",
+          "scan-read-500-salt-b-action-node": "scan-read-500-salt-b-action-node",
+          "scan-record-500-salt-b-action-node": "scan-record-500-salt-b-action-node",
+          "scan-remove-500-salt-b-action-node": "scan-remove-500-salt-b-action-node",
+          "scan-set-520-action-node": "scan-set-520-action-node",
+          "scan-insert-520-salt-a-action-node": "scan-insert-520-salt-a-action-node",
+          "scan-read-520-salt-a-action-node": "scan-read-520-salt-a-action-node",
+          "scan-record-520-salt-a-action-node": "scan-record-520-salt-a-action-node",
+          "scan-remove-520-salt-a-action-node": "scan-remove-520-salt-a-action-node",
+          "scan-insert-520-salt-b-action-node": "scan-insert-520-salt-b-action-node",
+          "scan-read-520-salt-b-action-node": "scan-read-520-salt-b-action-node",
+          "scan-record-520-salt-b-action-node": "scan-record-520-salt-b-action-node",
+          "scan-remove-520-salt-b-action-node": "scan-remove-520-salt-b-action-node",
+          "scan-set-540-action-node": "scan-set-540-action-node",
+          "scan-insert-540-salt-a-action-node": "scan-insert-540-salt-a-action-node",
+          "scan-read-540-salt-a-action-node": "scan-read-540-salt-a-action-node",
+          "scan-record-540-salt-a-action-node": "scan-record-540-salt-a-action-node",
+          "scan-remove-540-salt-a-action-node": "scan-remove-540-salt-a-action-node",
+          "scan-insert-540-salt-b-action-node": "scan-insert-540-salt-b-action-node",
+          "scan-read-540-salt-b-action-node": "scan-read-540-salt-b-action-node",
+          "scan-record-540-salt-b-action-node": "scan-record-540-salt-b-action-node",
+          "scan-remove-540-salt-b-action-node": "scan-remove-540-salt-b-action-node",
+          "scan-set-560-action-node": "scan-set-560-action-node",
+          "scan-insert-560-salt-a-action-node": "scan-insert-560-salt-a-action-node",
+          "scan-read-560-salt-a-action-node": "scan-read-560-salt-a-action-node",
+          "scan-record-560-salt-a-action-node": "scan-record-560-salt-a-action-node",
+          "scan-remove-560-salt-a-action-node": "scan-remove-560-salt-a-action-node",
+          "scan-insert-560-salt-b-action-node": "scan-insert-560-salt-b-action-node",
+          "scan-read-560-salt-b-action-node": "scan-read-560-salt-b-action-node",
+          "scan-record-560-salt-b-action-node": "scan-record-560-salt-b-action-node",
+          "scan-remove-560-salt-b-action-node": "scan-remove-560-salt-b-action-node",
+          "scan-set-580-action-node": "scan-set-580-action-node",
+          "scan-insert-580-salt-a-action-node": "scan-insert-580-salt-a-action-node",
+          "scan-read-580-salt-a-action-node": "scan-read-580-salt-a-action-node",
+          "scan-record-580-salt-a-action-node": "scan-record-580-salt-a-action-node",
+          "scan-remove-580-salt-a-action-node": "scan-remove-580-salt-a-action-node",
+          "scan-insert-580-salt-b-action-node": "scan-insert-580-salt-b-action-node",
+          "scan-read-580-salt-b-action-node": "scan-read-580-salt-b-action-node",
+          "scan-record-580-salt-b-action-node": "scan-record-580-salt-b-action-node",
+          "scan-remove-580-salt-b-action-node": "scan-remove-580-salt-b-action-node",
+          "scan-set-600-action-node": "scan-set-600-action-node",
+          "scan-insert-600-salt-a-action-node": "scan-insert-600-salt-a-action-node",
+          "scan-read-600-salt-a-action-node": "scan-read-600-salt-a-action-node",
+          "scan-record-600-salt-a-action-node": "scan-record-600-salt-a-action-node",
+          "scan-remove-600-salt-a-action-node": "scan-remove-600-salt-a-action-node",
+          "scan-insert-600-salt-b-action-node": "scan-insert-600-salt-b-action-node",
+          "scan-read-600-salt-b-action-node": "scan-read-600-salt-b-action-node",
+          "scan-record-600-salt-b-action-node": "scan-record-600-salt-b-action-node",
+          "scan-remove-600-salt-b-action-node": "scan-remove-600-salt-b-action-node",
+          "scan-set-620-action-node": "scan-set-620-action-node",
+          "scan-insert-620-salt-a-action-node": "scan-insert-620-salt-a-action-node",
+          "scan-read-620-salt-a-action-node": "scan-read-620-salt-a-action-node",
+          "scan-record-620-salt-a-action-node": "scan-record-620-salt-a-action-node",
+          "scan-remove-620-salt-a-action-node": "scan-remove-620-salt-a-action-node",
+          "scan-insert-620-salt-b-action-node": "scan-insert-620-salt-b-action-node",
+          "scan-read-620-salt-b-action-node": "scan-read-620-salt-b-action-node",
+          "scan-record-620-salt-b-action-node": "scan-record-620-salt-b-action-node",
+          "scan-remove-620-salt-b-action-node": "scan-remove-620-salt-b-action-node",
+          "scan-set-640-action-node": "scan-set-640-action-node",
+          "scan-insert-640-salt-a-action-node": "scan-insert-640-salt-a-action-node",
+          "scan-read-640-salt-a-action-node": "scan-read-640-salt-a-action-node",
+          "scan-record-640-salt-a-action-node": "scan-record-640-salt-a-action-node",
+          "scan-remove-640-salt-a-action-node": "scan-remove-640-salt-a-action-node",
+          "scan-insert-640-salt-b-action-node": "scan-insert-640-salt-b-action-node",
+          "scan-read-640-salt-b-action-node": "scan-read-640-salt-b-action-node",
+          "scan-record-640-salt-b-action-node": "scan-record-640-salt-b-action-node",
+          "scan-remove-640-salt-b-action-node": "scan-remove-640-salt-b-action-node",
+          "scan-set-660-action-node": "scan-set-660-action-node",
+          "scan-insert-660-salt-a-action-node": "scan-insert-660-salt-a-action-node",
+          "scan-read-660-salt-a-action-node": "scan-read-660-salt-a-action-node",
+          "scan-record-660-salt-a-action-node": "scan-record-660-salt-a-action-node",
+          "scan-remove-660-salt-a-action-node": "scan-remove-660-salt-a-action-node",
+          "scan-insert-660-salt-b-action-node": "scan-insert-660-salt-b-action-node",
+          "scan-read-660-salt-b-action-node": "scan-read-660-salt-b-action-node",
+          "scan-record-660-salt-b-action-node": "scan-record-660-salt-b-action-node",
+          "scan-remove-660-salt-b-action-node": "scan-remove-660-salt-b-action-node",
+          "scan-set-680-action-node": "scan-set-680-action-node",
+          "scan-insert-680-salt-a-action-node": "scan-insert-680-salt-a-action-node",
+          "scan-read-680-salt-a-action-node": "scan-read-680-salt-a-action-node",
+          "scan-record-680-salt-a-action-node": "scan-record-680-salt-a-action-node",
+          "scan-remove-680-salt-a-action-node": "scan-remove-680-salt-a-action-node",
+          "scan-insert-680-salt-b-action-node": "scan-insert-680-salt-b-action-node",
+          "scan-read-680-salt-b-action-node": "scan-read-680-salt-b-action-node",
+          "scan-record-680-salt-b-action-node": "scan-record-680-salt-b-action-node",
+          "scan-remove-680-salt-b-action-node": "scan-remove-680-salt-b-action-node",
+          "scan-set-700-action-node": "scan-set-700-action-node",
+          "scan-insert-700-salt-a-action-node": "scan-insert-700-salt-a-action-node",
+          "scan-read-700-salt-a-action-node": "scan-read-700-salt-a-action-node",
+          "scan-record-700-salt-a-action-node": "scan-record-700-salt-a-action-node",
+          "scan-remove-700-salt-a-action-node": "scan-remove-700-salt-a-action-node",
+          "scan-insert-700-salt-b-action-node": "scan-insert-700-salt-b-action-node",
+          "scan-read-700-salt-b-action-node": "scan-read-700-salt-b-action-node",
+          "scan-record-700-salt-b-action-node": "scan-record-700-salt-b-action-node",
+          "scan-remove-700-salt-b-action-node": "scan-remove-700-salt-b-action-node",
+          "scan-return-salt-a-after-series-action-node": "scan-return-salt-a-after-series-action-node",
+          "scan-return-salt-b-after-series-action-node": "scan-return-salt-b-after-series-action-node",
+          "record-standard-final-volume-action-node": "record-standard-final-volume-action-node",
+          "record-unknown-final-volume-action-node": "record-unknown-final-volume-action-node",
+          "measure-50ml-digest-water-action-node": "measure-50ml-digest-water-action-node",
+          "teacher-add-50ml-water-to-digest-action-node": "teacher-add-50ml-water-to-digest-action-node",
+          "confirm-diluted-digest-material-action-node": "confirm-diluted-digest-material-action-node",
+          "standard-0p200-aliquot-ml-action-node": "standard-0p200-aliquot-ml-action-node",
+          "standard-0p100-aliquot-ml-action-node": "standard-0p100-aliquot-ml-action-node",
+          "standard-0p0500-aliquot-ml-action-node": "standard-0p0500-aliquot-ml-action-node",
+          "standard-0p0250-aliquot-ml-action-node": "standard-0p0250-aliquot-ml-action-node",
+          "fill-color-depth-unknown-action-node": "fill-color-depth-unknown-action-node",
+          "fill-color-depth-standard-action-node": "fill-color-depth-standard-action-node",
+          "collect-0p0250-waste-action-node": "collect-0p0250-waste-action-node",
+          "collect-0p0500-waste-action-node": "collect-0p0500-waste-action-node",
+          "collect-0p100-waste-action-node": "collect-0p100-waste-action-node",
+          "collect-0p200-waste-action-node": "collect-0p200-waste-action-node",
+          "collect-0p400-waste-action-node": "collect-0p400-waste-action-node",
+          "collect-unknown-waste-action-node": "collect-unknown-waste-action-node",
+          "observe-waste-bubbling-action-node": "observe-waste-bubbling-action-node",
+          "classify-waste-ph-action-node": "classify-waste-ph-action-node",
+          "confirm-waste-ready-for-disposal-action-node": "confirm-waste-ready-for-disposal-action-node",
+          "transfer-treated-waste-to-destination-action-node": "transfer-treated-waste-to-destination-action-node",
+          "configure-approved-wavelength": "configure-approved-wavelength",
+          "configure-brass-sample-inventory": "configure-brass-sample-inventory",
+          "load-brass-onto-weighing-support": "load-brass-onto-weighing-support",
+          "collect-color-depth-unknown-waste-action-node": "collect-color-depth-unknown-waste-action-node",
+          "collect-color-depth-standard-waste-action-node": "collect-color-depth-standard-waste-action-node",
+          "confirm-brass-weighing-support-zeroed": "confirm-brass-weighing-support-zeroed"
+        },
+        "validationRules": {},
+        "references": {
+          "brass-mass-recorded-g": "brass-mass-recorded-g",
+          "0p0250-absorbance-au": "0p0250-absorbance-au",
+          "0p0500-absorbance-au": "0p0500-absorbance-au",
+          "0p100-absorbance-au": "0p100-absorbance-au",
+          "0p200-absorbance-au": "0p200-absorbance-au",
+          "0p400-absorbance-au": "0p400-absorbance-au",
+          "unknown-absorbance-au": "unknown-absorbance-au",
+          "unknown-depth-mm": "unknown-depth-mm",
+          "standard-depth-mm": "standard-depth-mm",
+          "neutralized-waste-ph": "neutralized-waste-ph",
+          "teacher-disposal-gate": "teacher-disposal-gate",
+          "waste-ph-within-range": "waste-ph-within-range",
+          "teacher-digest-dilution-authorized": "teacher-digest-dilution-authorized"
+        }
+      }
+    }
+  ],
+  "compositionStart": {
+    "kind": "lab-node",
+    "nodeId": "safety-ppe"
+  },
+  "compositionConnections": [
+    {
+      "id": "brass-cross-1",
+      "from": {
+        "kind": "lab-node",
+        "nodeId": "safety-hood"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "brass-spectrophotometry",
+        "portId": "entry-scan-place-photometer-action-node"
+      },
+      "label": "Continue after required evidence",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "brass-cross-2",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "brass-spectrophotometry",
+        "portId": "exit-scan-return-salt-b-after-series-action-node"
+      },
+      "to": {
+        "kind": "lab-node",
+        "nodeId": "approved-wavelength-nm"
+      },
+      "label": "Continue after required evidence",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "brass-cross-3",
+      "from": {
+        "kind": "lab-node",
+        "nodeId": "teacher-wavelength-approval"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "brass-spectrophotometry",
+        "portId": "entry-configure-approved-wavelength"
+      },
+      "label": "Continue after required evidence",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "brass-cross-4",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "brass-spectrophotometry",
+        "portId": "exit-place-brass-in-beaker"
+      },
+      "to": {
+        "kind": "lab-node",
+        "nodeId": "record-brass-mass"
+      },
+      "label": "Continue after required evidence",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "brass-cross-17",
+      "from": {
+        "kind": "lab-node",
+        "nodeId": "teacher-standard-approval"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "brass-spectrophotometry",
+        "portId": "entry-calibrate-zero-percent-t"
+      },
+      "label": "Continue after required evidence",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "brass-cross-28",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "brass-spectrophotometry",
+        "portId": "exit-return-unknown"
+      },
+      "to": {
+        "kind": "lab-node",
+        "nodeId": "calibration-table-check"
+      },
+      "label": "Continue after required evidence",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "brass-cross-29",
+      "from": {
+        "kind": "lab-node",
+        "nodeId": "spectrometric-copper-percent"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "brass-spectrophotometry",
+        "portId": "entry-fill-color-depth-unknown-action-node"
+      },
+      "label": "Continue after required evidence",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "brass-cross-30",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "brass-spectrophotometry",
+        "portId": "exit-record-standard-depth"
+      },
+      "to": {
+        "kind": "lab-node",
+        "nodeId": "visual-unknown-molarity"
+      },
+      "label": "Continue after required evidence",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "brass-cross-31",
+      "from": {
+        "kind": "lab-node",
+        "nodeId": "justify-method-accuracy"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "brass-spectrophotometry",
+        "portId": "entry-collect-0p0250-waste-action-node"
+      },
+      "label": "Continue after required evidence",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "brass-cross-32",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "brass-spectrophotometry",
+        "portId": "exit-confirm-waste-ready-for-disposal-action-node"
+      },
+      "to": {
+        "kind": "lab-node",
+        "nodeId": "teacher-disposal-gate"
+      },
+      "label": "Continue after required evidence",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "brass-repair-standard-0p400-mix-action-brass-cross-8-brass-cross-9",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "brass-spectrophotometry",
+        "portId": "exit-standard-0p400-stock-transfer"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "brass-spectrophotometry",
+        "portId": "entry-standard-0p200-stock-transfer"
+      },
+      "label": "Continue after required evidence",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "brass-repair-standard-0p200-mix-action-brass-cross-10-brass-cross-11",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "brass-spectrophotometry",
+        "portId": "exit-standard-0p200-dilute"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "brass-spectrophotometry",
+        "portId": "entry-standard-0p100-stock-transfer"
+      },
+      "label": "Continue after required evidence",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "brass-repair-standard-0p100-mix-action-brass-cross-12-brass-cross-13",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "brass-spectrophotometry",
+        "portId": "exit-standard-0p100-dilute"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "brass-spectrophotometry",
+        "portId": "entry-standard-0p0500-stock-transfer"
+      },
+      "label": "Continue after required evidence",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "brass-repair-standard-0p0500-mix-action-brass-cross-14-brass-cross-15",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "brass-spectrophotometry",
+        "portId": "exit-standard-0p0500-dilute"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "brass-spectrophotometry",
+        "portId": "entry-standard-0p0250-stock-transfer"
+      },
+      "label": "Continue after required evidence",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "brass-repair-teacher-digest-to-transfer",
+      "from": {
+        "kind": "lab-node",
+        "nodeId": "confirm-teacher-diluted-digest-action-node"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "brass-spectrophotometry",
+        "portId": "entry-record-unknown-final-volume-action-node"
+      },
+      "label": "Continue after required evidence",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "brass-repair-final-standard-to-approval",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "brass-spectrophotometry",
+        "portId": "exit-standard-0p0250-dilute"
+      },
+      "to": {
+        "kind": "lab-node",
+        "nodeId": "teacher-standard-approval"
+      },
+      "label": "Continue after required evidence",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "brass-cross-33",
+      "from": {
+        "kind": "lab-node",
+        "nodeId": "teacher-disposal-gate"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "brass-spectrophotometry",
+        "portId": "entry-transfer-treated-waste-to-destination-action-node"
+      },
+      "label": "Use the configured destination",
+      "condition": {
+        "type": "validationPassed"
+      }
+    }
+  ],
+  "reachabilityWitnesses": [
+    {
+      "id": "default",
+      "configuration": {},
+      "approvalGates": {}
+    }
+  ]
+}

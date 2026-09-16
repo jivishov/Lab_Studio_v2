@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://lab-studio.local/schemas/studio.evidence-bundle/1.0",
+  "title": "Studio Evidence Bundle v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schemaVersion", "bundleId", "registryVersion", "createdAt", "records"],
+  "properties": {
+    "schema": { "const": "studio.evidence-bundle" },
+    "schemaVersion": { "const": "1.0" },
+    "bundleId": { "$ref": "#/definitions/id" },
+    "registryVersion": { "$ref": "#/definitions/version" },
+    "createdAt": { "$ref": "#/definitions/nonEmptyString" },
+    "records": { "type": "array", "items": { "$ref": "#/definitions/record" } }
+  },
+  "definitions": {
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "id": { "type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$" },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$" },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["retentionClass", "sensitivity", "accessibleRepresentation", "redactionPolicyId"],
+      "properties": {
+        "retentionClass": { "enum": ["ephemeral", "submission", "audit"] },
+        "sensitivity": { "enum": ["none", "educational-record", "user-authored"] },
+        "accessibleRepresentation": { "enum": ["text", "table", "chart+table", "image+alt", "artifact"] },
+        "redactionPolicyId": { "$ref": "#/definitions/id" }
+      }
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidenceId", "typeId", "typeVersion", "occurredAt", "producerId", "summary", "metadata", "payload"],
+      "properties": {
+        "evidenceId": { "$ref": "#/definitions/id" },
+        "typeId": { "$ref": "#/definitions/id" },
+        "typeVersion": { "$ref": "#/definitions/version" },
+        "occurredAt": { "$ref": "#/definitions/nonEmptyString" },
+        "producerId": { "$ref": "#/definitions/id" },
+        "summary": { "type": "string", "minLength": 1, "maxLength": 1000 },
+        "metadata": { "$ref": "#/definitions/metadata" },
+        "payload": { "type": "object" }
+      }
+    }
+  }
+}

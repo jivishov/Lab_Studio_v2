@@ -1,0 +1,219 @@
+{
+  "id": "hard-water-calculation",
+  "title": "Calculate Hardness",
+  "learningGoal": "Calculate mg/L hardness as CaCO3 from precipitate mass and sample volume.",
+  "requiredEquipment": [
+    "analytical-balance"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "analytical-balance-1",
+        "definitionId": "analytical-balance",
+        "label": "Analytical balance",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "calculate-hardness",
+      "verb": "calculate",
+      "label": "Calculate hardness",
+      "parameters": {
+        "calculationId": "{{config.calculationId}}",
+        "template": "hardnessMgLAsCaCO3",
+        "sampleVolumeMeasurementId": "{{config.sampleVolumeMeasurementId}}",
+        "precipitateMassMeasurementId": "{{config.precipitateMassMeasurementId}}",
+        "tolerance": "{{config.calculationTolerance}}",
+        "requireStudentValue": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "calculate updates runtime state through structured equipment contents."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Hardness calculation is within tolerance.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "calculate"
+      ]
+    }
+  ],
+  "process": {
+    "startNodeId": "calculate-hardness-node",
+    "nodes": [
+      {
+        "id": "calculate-hardness-node",
+        "type": "calculation",
+        "title": "Calculate hardness",
+        "description": "Calculate hardness in mg/L as CaCO3 from the precipitate mass and sample volume.",
+        "actionId": "calculate-hardness",
+        "config": {},
+        "validation": [
+          {
+            "id": "hardness-calculation-valid",
+            "type": "calculationWithinTolerance",
+            "label": "Calculation hardness-mg-l is within tolerance.",
+            "calculationId": "{{config.calculationId}}"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Calculate hardness complete.",
+          "retry": "Review Calculate hardness and try again."
+        }
+      }
+    ],
+    "edges": []
+  },
+  "successCriteria": [
+    {
+      "id": "hardness-success",
+      "type": "calculationWithinTolerance",
+      "label": "Calculation hardness-mg-l is within tolerance.",
+      "calculationId": "{{config.calculationId}}"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "current node expects a different action",
+      "message": "That action is out of sequence for the current technique step.",
+      "recovery": "Check the process map and perform the highlighted step first."
+    },
+    {
+      "id": "missing-source",
+      "when": "source equipment or contents are missing",
+      "message": "The selected source does not contain the material required for this action.",
+      "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+    },
+    {
+      "id": "overflow",
+      "when": "target capacity would be exceeded",
+      "message": "The target equipment cannot hold the requested volume.",
+      "recovery": "Use a larger container or transfer a smaller measured amount."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.2.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-08-30T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "calculation",
+      "hard-water-reference"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry",
+        "kind": "entry",
+        "nodeId": "calculate-hardness-node",
+        "label": "Entry"
+      },
+      {
+        "id": "exit",
+        "kind": "exit",
+        "nodeId": "calculate-hardness-node",
+        "label": "Exit"
+      }
+    ],
+    "equipmentRoles": [],
+    "modelSlots": [],
+    "configurationSlots": [
+      {
+        "id": "sampleVolumeMeasurementId",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "id": "precipitateMassMeasurementId",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "id": "calculationId",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "id": "calculationTolerance",
+        "valueType": "number",
+        "required": true
+      }
+    ],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [
+      {
+        "id": "hardness-calculation",
+        "kind": "calculation",
+        "actionId": "calculate-hardness",
+        "referenceId": "{{config.calculationId}}"
+      }
+    ],
+    "completion": {
+      "exitPortIds": [
+        "exit"
+      ],
+      "requiredEvidenceOutputIds": [
+        "hardness-calculation"
+      ],
+      "requiredValidationRuleIds": [
+        "hardness-success"
+      ]
+    },
+    "catalogDisposition": "composable",
+    "legacyActionEffects": [
+      {
+        "actionId": "calculate-hardness",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

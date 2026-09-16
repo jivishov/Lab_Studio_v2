@@ -1,0 +1,2230 @@
+{
+  "id": "tablet-separation",
+  "title": "Tablet Separation",
+  "learningGoal": "Filter one teacher-approved recovered tablet fraction, dry and cool it, and calculate its percent by mass without claiming an unsupported identity.",
+  "requiredEquipment": [
+    "analytical-balance",
+    "beaker-250ml",
+    "buchner-funnel",
+    "filter-paper",
+    "side-arm-filter-flask",
+    "vacuum-source",
+    "wash-bottle",
+    "watch-glass",
+    "drying-oven",
+    "crucible-tongs",
+    "spatula"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "watch-glass-1",
+        "definitionId": "watch-glass",
+        "label": "Watch glass",
+        "location": "shelf",
+        "contents": {
+          "kind": "solid",
+          "label": "Simulated crushed tablet sample",
+          "massG": 3,
+          "solutes": [
+            {
+              "id": "simulated-crushed-tablet-sample",
+              "label": "Simulated crushed tablet sample",
+              "amount": 3,
+              "unit": "g"
+            }
+          ],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "powder"
+        }
+      },
+      {
+        "id": "watch-glass-2",
+        "definitionId": "watch-glass",
+        "label": "Watch glass",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "beaker-250ml-1",
+        "definitionId": "beaker-250ml",
+        "label": "250 mL beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "mixture",
+          "label": "Teacher-approved simulated recovered tablet fraction",
+          "volumeMl": 30,
+          "solutes": [],
+          "precipitate": {
+            "substance": "Simulated recovered tablet solid fraction",
+            "massG": 0.82,
+            "rinsed": false,
+            "dryness": "wet"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "cloudy-precipitate"
+        }
+      },
+      {
+        "id": "wash-bottle-1",
+        "definitionId": "wash-bottle",
+        "label": "Wash bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Teacher-approved rinse",
+          "volumeMl": 100,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "analytical-balance-1",
+        "definitionId": "analytical-balance",
+        "label": "Analytical balance",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "buchner-funnel-1",
+        "definitionId": "buchner-funnel",
+        "label": "Buchner funnel",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "side-arm-filter-flask-1",
+        "definitionId": "side-arm-filter-flask",
+        "label": "Side-arm filter flask",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "vacuum-source-1",
+        "definitionId": "vacuum-source",
+        "label": "Vacuum source",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "filter-paper-1",
+        "definitionId": "filter-paper",
+        "label": "Filter paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "drying-oven-1",
+        "definitionId": "drying-oven",
+        "label": "Drying oven",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "crucible-tongs-1",
+        "definitionId": "crucible-tongs",
+        "label": "Crucible tongs",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "spatula-1",
+        "definitionId": "spatula",
+        "label": "Spatula",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "weigh-tablet-sample",
+      "verb": "weigh",
+      "label": "Read starting sample mass",
+      "parameters": {
+        "sourceDefinitionId": "watch-glass",
+        "sourceInstanceId": "watch-glass-1",
+        "targetDefinitionId": "analytical-balance",
+        "instrumentDefinitionId": "analytical-balance",
+        "tolerance": 0.001,
+        "evidenceProvenance": "learner-entered reading from the configured simulated balance; no expected mass is embedded",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputKey": "tablet-sample-mass-input",
+        "inputLabel": "Read starting sample mass from the configured simulated balance (g)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "g"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Read starting sample mass: The starting sample mass is available from the balance."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The starting sample mass is available from the balance.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "weigh",
+        "measurement"
+      ],
+      "atomId": "atom.weigh.solid-portion",
+      "equipmentRoleBindings": {
+        "balance-instrument": "analytical-balance",
+        "weighed-vessel": "watch-glass"
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "watch-glass",
+        "targetDefinitionId": "analytical-balance",
+        "stationId": "analytical-balance",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Read the starting sample mass on the analytical balance."
+      },
+      "mass": {
+        "source": "action-input",
+        "outputMeasurementId": "tablet-sample-mass",
+        "continuity": {
+          "version": 1,
+          "quantityKind": "balance-display",
+          "measuredSupportInstanceId": "watch-glass-1"
+        }
+      }
+    },
+    {
+      "id": "record-tablet-sample-mass",
+      "verb": "record",
+      "label": "Record starting sample mass",
+      "parameters": {
+        "measurementId": "tablet-sample-mass",
+        "label": "Starting sample mass",
+        "unit": "g",
+        "copyExistingMeasurementOnly": true
+      },
+      "prerequisites": [
+        {
+          "id": "record-tablet-sample-mass--tablet-sample-mass-required",
+          "type": "measurementRecorded",
+          "label": "The starting sample mass has been read.",
+          "measurementId": "tablet-sample-mass"
+        }
+      ],
+      "stateChanges": [
+        "Record starting sample mass: The starting sample mass is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The starting sample mass is recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "record",
+        "measurement"
+      ],
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "measurementId",
+        "accessibleLabel": "Copy the starting balance reading into the notebook."
+      }
+    },
+    {
+      "id": "confirm-tablet-recovery-scope",
+      "verb": "observe",
+      "label": "Confirm approved recovered fraction",
+      "parameters": {
+        "tag": "tablet-recovery-scope-approved",
+        "note": "Confirm that the supplied beaker contains the teacher-approved recovered fraction for this reusable technique. Its chemical identity remains unassigned.",
+        "inputMode": "choice",
+        "inputRole": "teacherConfiguration",
+        "inputLabel": "Recovered-fraction scope",
+        "inputOptions": [
+          "Teacher approved recovered fraction"
+        ],
+        "inputRequired": true,
+        "configurationRequired": true,
+        "unlocked": false
+      },
+      "prerequisites": [
+        {
+          "id": "confirm-tablet-recovery-scope--record-tablet-sample-mass-required",
+          "type": "actionEvidence",
+          "label": "The starting sample mass is recorded.",
+          "actionId": "record-tablet-sample-mass"
+        }
+      ],
+      "stateChanges": [
+        "Confirm approved recovered fraction: The teacher-approved recovered-fraction scope is recorded without assigning an identity."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The teacher-approved recovered-fraction scope is recorded without assigning an identity.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "configuration",
+        "scope-boundary"
+      ],
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Confirm the teacher-approved recovered fraction before setting up filtration."
+      }
+    },
+    {
+      "id": "place-tablet-buchner",
+      "verb": "place",
+      "label": "Place Buchner funnel",
+      "parameters": {
+        "equipmentDefinitionId": "buchner-funnel",
+        "location": "workbench"
+      },
+      "prerequisites": [
+        {
+          "id": "place-tablet-buchner--confirm-tablet-recovery-scope-required",
+          "type": "actionEvidence",
+          "label": "The recovered-fraction scope is approved.",
+          "actionId": "confirm-tablet-recovery-scope"
+        }
+      ],
+      "stateChanges": [
+        "Place Buchner funnel: The Buchner funnel is on the workbench."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The Buchner funnel is on the workbench.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.filtration-funnel",
+      "equipmentRoleBindings": {
+        "filtration-funnel": "buchner-funnel"
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "buchner-funnel",
+        "stationId": "workbench",
+        "accessibleLabel": "Place the Buchner funnel on the workbench."
+      }
+    },
+    {
+      "id": "seat-tablet-filter-paper",
+      "verb": "place",
+      "label": "Seat filter paper",
+      "parameters": {
+        "equipmentDefinitionId": "filter-paper",
+        "targetDefinitionId": "buchner-funnel",
+        "snapZoneId": "buchner-funnel-paper-seat"
+      },
+      "prerequisites": [
+        {
+          "id": "seat-tablet-filter-paper--place-tablet-buchner-required",
+          "type": "actionEvidence",
+          "label": "The Buchner funnel is placed.",
+          "actionId": "place-tablet-buchner"
+        }
+      ],
+      "stateChanges": [
+        "Seat filter paper: The filter paper is seated in the funnel."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The filter paper is seated in the funnel.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.filter-medium",
+      "equipmentRoleBindings": {
+        "filtration-funnel": "buchner-funnel",
+        "filter-medium": "filter-paper"
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "filter-paper",
+        "targetDefinitionId": "buchner-funnel",
+        "snapZoneId": "buchner-funnel-paper-seat",
+        "accessibleLabel": "Seat the filter paper in the Buchner funnel."
+      }
+    },
+    {
+      "id": "attach-tablet-filter-flask",
+      "verb": "place",
+      "label": "Attach side-arm receiver",
+      "parameters": {
+        "equipmentDefinitionId": "side-arm-filter-flask",
+        "targetDefinitionId": "buchner-funnel",
+        "snapZoneId": "buchner-funnel-receiver-neck"
+      },
+      "prerequisites": [
+        {
+          "id": "attach-tablet-filter-flask--place-tablet-buchner-required",
+          "type": "actionEvidence",
+          "label": "The Buchner funnel is placed.",
+          "actionId": "place-tablet-buchner"
+        }
+      ],
+      "stateChanges": [
+        "Attach side-arm receiver: The side-arm receiver is attached."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The side-arm receiver is attached.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.filtration-receiver",
+      "equipmentRoleBindings": {
+        "filtration-receiver": "side-arm-filter-flask"
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "side-arm-filter-flask",
+        "targetDefinitionId": "buchner-funnel",
+        "snapZoneId": "buchner-funnel-receiver-neck",
+        "accessibleLabel": "Attach the side-arm receiver beneath the Buchner funnel."
+      }
+    },
+    {
+      "id": "place-tablet-vacuum",
+      "verb": "place",
+      "label": "Place vacuum source",
+      "parameters": {
+        "equipmentDefinitionId": "vacuum-source",
+        "location": "workbench"
+      },
+      "prerequisites": [
+        {
+          "id": "place-tablet-vacuum--attach-tablet-filter-flask-required",
+          "type": "actionEvidence",
+          "label": "The side-arm receiver is attached.",
+          "actionId": "attach-tablet-filter-flask"
+        }
+      ],
+      "stateChanges": [
+        "Place vacuum source: The vacuum source is beside the filter flask."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The vacuum source is beside the filter flask.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.filtration-vacuum-source",
+      "equipmentRoleBindings": {
+        "filtration-vacuum-source": "vacuum-source",
+        "filtration-receiver": "side-arm-filter-flask"
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "vacuum-source",
+        "stationId": "workbench",
+        "accessibleLabel": "Place the vacuum source beside the side-arm flask."
+      }
+    },
+    {
+      "id": "wet-tablet-filter-paper",
+      "verb": "rinse",
+      "label": "Wet and seal filter paper",
+      "parameters": {
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "filter-paper",
+        "rinseType": "pre-wet",
+        "volumeMl": 3,
+        "volumeProvenance": "teacher-approved rinse"
+      },
+      "prerequisites": [
+        {
+          "id": "wet-tablet-filter-paper--seat-tablet-filter-paper-required",
+          "type": "actionEvidence",
+          "label": "The filter paper is seated.",
+          "actionId": "seat-tablet-filter-paper"
+        }
+      ],
+      "stateChanges": [
+        "Wet and seal filter paper: The filter paper is wetted and sealed."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The filter paper is wetted and sealed.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "rinse"
+      ],
+      "atomId": "atom.rinse.wet-filter-medium",
+      "equipmentRoleBindings": {
+        "rinse-water-source": "wash-bottle",
+        "filter-medium": "filter-paper"
+      },
+      "interaction": {
+        "type": "rinseTarget",
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "filter-paper",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Wet the seated paper with the approved rinse liquid."
+      }
+    },
+    {
+      "id": "filter-tablet-mixture",
+      "verb": "filter",
+      "label": "Filter approved recovered fraction",
+      "parameters": {
+        "sourceDefinitionId": "beaker-250ml",
+        "targetDefinitionId": "buchner-funnel",
+        "retainedVisualState": "filter-cake",
+        "filtrateVisualState": "clear-filtrate",
+        "fractionIdentity": "teacher-approved recovered solid fraction; chemical identity remains unassigned"
+      },
+      "prerequisites": [
+        {
+          "id": "filter-tablet-mixture--wet-tablet-filter-paper-required",
+          "type": "actionEvidence",
+          "label": "The paper is wetted and sealed.",
+          "actionId": "wet-tablet-filter-paper"
+        },
+        {
+          "id": "filter-tablet-mixture--place-tablet-vacuum-required",
+          "type": "actionEvidence",
+          "label": "The vacuum source is placed.",
+          "actionId": "place-tablet-vacuum"
+        }
+      ],
+      "stateChanges": [
+        "Filter approved recovered fraction: The recovered solid fraction is retained on the filter paper."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The recovered solid fraction is retained on the filter paper.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "filter"
+      ],
+      "atomId": "atom.filter.pour-through-medium",
+      "equipmentRoleBindings": {
+        "mixture-source": "beaker-250ml",
+        "filtration-funnel": "buchner-funnel"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "beaker-250ml",
+        "targetDefinitionId": "buchner-funnel",
+        "accessibleLabel": "Filter the teacher-approved recovered fraction through the prepared apparatus."
+      }
+    },
+    {
+      "id": "wash-tablet-residue",
+      "verb": "rinse",
+      "label": "Wash recovered solid",
+      "parameters": {
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "filter-paper",
+        "rinseType": "precipitate",
+        "volumeMl": 3,
+        "volumeProvenance": "teacher-approved rinse"
+      },
+      "prerequisites": [
+        {
+          "id": "wash-tablet-residue--filter-tablet-mixture-required",
+          "type": "actionEvidence",
+          "label": "The recovered fraction has been filtered.",
+          "actionId": "filter-tablet-mixture"
+        }
+      ],
+      "stateChanges": [
+        "Wash recovered solid: The recovered solid is washed before drying."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The recovered solid is washed before drying.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "rinse"
+      ],
+      "atomId": "atom.rinse.wash-precipitate",
+      "equipmentRoleBindings": {
+        "rinse-water-source": "wash-bottle",
+        "filter-medium": "filter-paper"
+      },
+      "interaction": {
+        "type": "rinseTarget",
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "filter-paper",
+        "valueParameter": "volumeMl",
+        "accessibleLabel": "Wash the recovered solid with the teacher-approved rinse."
+      }
+    },
+    {
+      "id": "weigh-tablet-watch-glass-tare",
+      "verb": "weigh",
+      "label": "Tare recovery watch glass",
+      "parameters": {
+        "sourceDefinitionId": "watch-glass",
+        "sourceInstanceId": "watch-glass-2",
+        "targetDefinitionId": "analytical-balance",
+        "instrumentDefinitionId": "analytical-balance",
+        "tolerance": 0.001,
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputKey": "tablet-watch-glass-mass-input",
+        "inputLabel": "Tare recovery watch glass from the configured simulated balance (g)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "g",
+        "evidenceProvenance": "learner-entered reading from the configured simulated balance; no expected mass is embedded"
+      },
+      "prerequisites": [
+        {
+          "id": "weigh-tablet-watch-glass-tare--wash-tablet-residue-required",
+          "type": "actionEvidence",
+          "label": "The recovered solid has been washed.",
+          "actionId": "wash-tablet-residue"
+        }
+      ],
+      "stateChanges": [
+        "Tare recovery watch glass: The balance is tared with the clean, dry recovery watch glass."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The balance is tared with the clean, dry recovery watch glass.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "weigh"
+      ],
+      "atomId": "atom.weigh.tare-vessel",
+      "equipmentRoleBindings": {
+        "balance-instrument": "analytical-balance",
+        "weighed-vessel": "watch-glass"
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "watch-glass",
+        "targetDefinitionId": "analytical-balance",
+        "stationId": "analytical-balance",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Tare the balance with the clean, dry recovery watch glass."
+      },
+      "mass": {
+        "source": "action-input",
+        "outputMeasurementId": "tablet-watch-glass-mass",
+        "continuity": {
+          "version": 1,
+          "quantityKind": "balance-display",
+          "measuredSupportInstanceId": "watch-glass-2"
+        }
+      }
+    },
+    {
+      "id": "record-tablet-watch-glass-tare",
+      "verb": "record",
+      "label": "Record recovery watch-glass tare",
+      "parameters": {
+        "measurementId": "tablet-watch-glass-mass",
+        "label": "Recovery watch-glass tare",
+        "unit": "g",
+        "copyExistingMeasurementOnly": true
+      },
+      "prerequisites": [
+        {
+          "id": "record-tablet-watch-glass-tare--tablet-watch-glass-mass-required",
+          "type": "measurementRecorded",
+          "label": "The recovery watch-glass tare has been read.",
+          "measurementId": "tablet-watch-glass-mass"
+        }
+      ],
+      "stateChanges": [
+        "Record recovery watch-glass tare: The recovery watch-glass tare is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The recovery watch-glass tare is recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "record",
+        "measurement"
+      ],
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "measurementId",
+        "accessibleLabel": "Copy the recovery watch-glass tare into the notebook."
+      }
+    },
+    {
+      "id": "transfer-tablet-paper-to-watch",
+      "verb": "place",
+      "label": "Transfer recovered solid to watch glass",
+      "parameters": {
+        "equipmentDefinitionId": "filter-paper",
+        "targetDefinitionId": "watch-glass",
+        "targetInstanceId": "watch-glass-2",
+        "snapZoneId": "watch-glass-paper-seat",
+        "detachBeforeAttach": true
+      },
+      "prerequisites": [
+        {
+          "id": "transfer-tablet-paper-to-watch--tablet-watch-glass-mass-required",
+          "type": "measurementRecorded",
+          "label": "The recovery watch-glass tare is recorded.",
+          "measurementId": "tablet-watch-glass-mass"
+        }
+      ],
+      "stateChanges": [
+        "Transfer recovered solid to watch glass: The recovered solid and filter paper are on the tared watch glass."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The recovered solid and filter paper are on the tared watch glass.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.transfer-medium-to-drying-vessel",
+      "equipmentRoleBindings": {
+        "filter-medium": "filter-paper",
+        "dried-assembly": "watch-glass"
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "filter-paper",
+        "targetDefinitionId": "watch-glass",
+        "snapZoneId": "watch-glass-paper-seat",
+        "accessibleLabel": "Transfer the filter paper and recovered solid to the tared recovery watch glass."
+      }
+    },
+    {
+      "id": "dry-tablet-residue",
+      "verb": "dry",
+      "label": "Dry recovered solid",
+      "parameters": {
+        "sourceDefinitionId": "watch-glass",
+        "sourceInstanceId": "watch-glass-2",
+        "targetDefinitionId": "watch-glass",
+        "ovenDefinitionId": "drying-oven",
+        "precipitateSourceInstanceId": "filter-paper-1",
+        "drynessResult": "dry",
+        "endpointProvenance": "teacher-approved drying endpoint",
+        "dryMassProvenance": "derived from the teacher-configured recovered-fraction profile; not source fact or an authored answer",
+        "configurationParameter": "temperatureC",
+        "configurationRequired": true,
+        "unlocked": false,
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputLabel": "Teacher-approved oven temperature",
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "inputStep": 1,
+        "unit": "C"
+      },
+      "prerequisites": [
+        {
+          "id": "dry-tablet-residue--transfer-tablet-paper-to-watch-required",
+          "type": "actionEvidence",
+          "label": "The recovered solid is on the tared watch glass.",
+          "actionId": "transfer-tablet-paper-to-watch"
+        }
+      ],
+      "stateChanges": [
+        "Dry recovered solid: The recovered solid reaches the approved dry endpoint."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The recovered solid reaches the approved dry endpoint.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "dry"
+      ],
+      "atomId": "atom.dry.oven-stage",
+      "equipmentRoleBindings": {
+        "drying-instrument": "drying-oven",
+        "dried-assembly": "watch-glass"
+      },
+      "interaction": {
+        "type": "placeInInstrument",
+        "sourceDefinitionId": "watch-glass",
+        "targetDefinitionId": "drying-oven",
+        "stationId": "drying-oven",
+        "accessibleLabel": "Dry the recovered solid to the teacher-approved endpoint."
+      }
+    },
+    {
+      "id": "cool-tablet-residue",
+      "verb": "cool",
+      "label": "Cool recovered solid",
+      "parameters": {
+        "sourceDefinitionId": "watch-glass",
+        "sourceInstanceId": "watch-glass-2",
+        "targetDefinitionId": "crucible-tongs",
+        "cooledTemperatureC": 25,
+        "cooledObjectLabel": "recovery watch-glass assembly"
+      },
+      "prerequisites": [
+        {
+          "id": "cool-tablet-residue--dry-tablet-residue-required",
+          "type": "actionEvidence",
+          "label": "The recovered solid is dry.",
+          "actionId": "dry-tablet-residue"
+        }
+      ],
+      "stateChanges": [
+        "Cool recovered solid: The recovery assembly is cool enough to weigh."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The recovery assembly is cool enough to weigh.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "cool"
+      ],
+      "atomId": "atom.cool.before-weighing",
+      "equipmentRoleBindings": {
+        "dried-assembly": "watch-glass",
+        "cooling-tool": "crucible-tongs"
+      },
+      "interaction": {
+        "type": "placeInInstrument",
+        "sourceDefinitionId": "watch-glass",
+        "targetDefinitionId": "crucible-tongs",
+        "stationId": "crucible-tongs",
+        "accessibleLabel": "Use heat-safe handling and cool the recovery assembly before weighing."
+      }
+    },
+    {
+      "id": "weigh-tablet-residue",
+      "verb": "weigh",
+      "label": "Read dry recovered mass",
+      "parameters": {
+        "sourceDefinitionId": "watch-glass",
+        "sourceInstanceId": "watch-glass-2",
+        "targetDefinitionId": "analytical-balance",
+        "instrumentDefinitionId": "analytical-balance",
+        "requiresDryPrecipitate": true,
+        "maxSafeTemperatureC": 40,
+        "tolerance": 0.001,
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputKey": "tablet-residue-mass-input",
+        "inputLabel": "Read dry recovered mass from the configured simulated balance (g)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "g",
+        "evidenceProvenance": "learner-entered reading from the configured simulated balance; no expected mass is embedded"
+      },
+      "prerequisites": [
+        {
+          "id": "weigh-tablet-residue--cool-tablet-residue-required",
+          "type": "actionEvidence",
+          "label": "The recovery assembly has cooled.",
+          "actionId": "cool-tablet-residue"
+        },
+        {
+          "id": "weigh-tablet-residue--tablet-watch-glass-mass-required",
+          "type": "measurementRecorded",
+          "label": "The recovery watch-glass tare is recorded.",
+          "measurementId": "tablet-watch-glass-mass"
+        }
+      ],
+      "stateChanges": [
+        "Read dry recovered mass: The tared balance reports the dry recovered mass."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The tared balance reports the dry recovered mass.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "weigh"
+      ],
+      "atomId": "atom.weigh.dry-assembly",
+      "equipmentRoleBindings": {
+        "balance-instrument": "analytical-balance",
+        "dried-assembly": "watch-glass"
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "watch-glass",
+        "targetDefinitionId": "analytical-balance",
+        "stationId": "analytical-balance",
+        "valueParameter": "inputKey",
+        "accessibleLabel": "Read the dry recovered mass on the tared balance."
+      },
+      "mass": {
+        "source": "action-input",
+        "outputMeasurementId": "tablet-residue-mass",
+        "continuity": {
+          "version": 1,
+          "quantityKind": "balance-display",
+          "measuredSupportInstanceId": "watch-glass-2"
+        }
+      }
+    },
+    {
+      "id": "record-tablet-residue",
+      "verb": "record",
+      "label": "Record dry recovered mass",
+      "parameters": {
+        "measurementId": "tablet-residue-mass",
+        "unit": "g",
+        "label": "Dry recovered fraction mass",
+        "copyExistingMeasurementOnly": true
+      },
+      "prerequisites": [
+        {
+          "id": "record-tablet-residue--tablet-residue-mass-required",
+          "type": "measurementRecorded",
+          "label": "The dry recovered mass has been read.",
+          "measurementId": "tablet-residue-mass"
+        }
+      ],
+      "stateChanges": [
+        "Record dry recovered mass: The dry recovered fraction mass is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The dry recovered fraction mass is recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "record",
+        "measurement"
+      ],
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "measurementId",
+        "accessibleLabel": "Copy the dry recovered fraction mass into the notebook."
+      }
+    },
+    {
+      "id": "calculate-tablet-component",
+      "verb": "calculate",
+      "label": "Calculate recovered fraction percent",
+      "parameters": {
+        "calculationId": "tablet-component-percent",
+        "template": "componentMassPercent",
+        "startingMassMeasurementId": "tablet-sample-mass",
+        "componentMassMeasurementId": "tablet-residue-mass",
+        "compositionFormulaConfirmation": "component-mass-over-starting-mass",
+        "requireStudentValue": true,
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Recovered fraction percent by mass",
+        "inputMin": 0,
+        "inputMax": 100,
+        "inputStep": 0.1,
+        "tolerance": 0.5,
+        "unit": "%",
+        "identityLimit": "This percent describes a recovered fraction. It does not identify a tablet ingredient without independent evidence."
+      },
+      "prerequisites": [
+        {
+          "id": "calculate-tablet-component--tablet-sample-mass-required",
+          "type": "measurementRecorded",
+          "label": "The starting sample mass is recorded.",
+          "measurementId": "tablet-sample-mass"
+        },
+        {
+          "id": "calculate-tablet-component--tablet-residue-mass-required",
+          "type": "measurementRecorded",
+          "label": "The dry recovered mass is recorded.",
+          "measurementId": "tablet-residue-mass"
+        }
+      ],
+      "stateChanges": [
+        "Calculate recovered fraction percent: Recovered fraction percent is calculated from measured masses."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Recovered fraction percent is calculated from measured masses.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "calculate",
+        "measurement-derived",
+        "identity-boundary"
+      ],
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Calculate recovered fraction percent from the measured starting and dry recovered masses."
+      }
+    }
+  ],
+  "process": {
+    "startNodeId": "weigh-tablet-sample-node",
+    "nodes": [
+      {
+        "id": "weigh-tablet-sample-node",
+        "type": "action",
+        "title": "Read starting mass",
+        "description": "Read the starting sample mass on the balance.",
+        "actionId": "weigh-tablet-sample",
+        "config": {},
+        "validation": [
+          {
+            "id": "weigh-tablet-sample-node--weigh-tablet-sample-node-done",
+            "type": "actionEvidence",
+            "label": "Action weigh-tablet-sample was completed.",
+            "actionId": "weigh-tablet-sample"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read starting mass complete.",
+          "retry": "Review Read starting mass and try again."
+        }
+      },
+      {
+        "id": "record-tablet-sample-mass-node",
+        "type": "observation",
+        "title": "Record starting mass",
+        "description": "Copy the starting mass into the notebook.",
+        "actionId": "record-tablet-sample-mass",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-tablet-sample-mass-node--record-tablet-sample-mass-node-done",
+            "type": "actionEvidence",
+            "label": "Action record-tablet-sample-mass was completed.",
+            "actionId": "record-tablet-sample-mass"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record starting mass complete.",
+          "retry": "Review Record starting mass and try again."
+        }
+      },
+      {
+        "id": "confirm-tablet-recovery-scope-node",
+        "type": "teacherNote",
+        "title": "Confirm recovery scope",
+        "description": "Confirm the supplied beaker is the teacher-approved recovered fraction without assigning it an identity.",
+        "actionId": "confirm-tablet-recovery-scope",
+        "config": {},
+        "validation": [
+          {
+            "id": "confirm-tablet-recovery-scope-node--confirm-tablet-recovery-scope-node-done",
+            "type": "actionEvidence",
+            "label": "Action confirm-tablet-recovery-scope was completed.",
+            "actionId": "confirm-tablet-recovery-scope"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Confirm recovery scope complete.",
+          "retry": "Review Confirm recovery scope and try again."
+        }
+      },
+      {
+        "id": "place-tablet-buchner-node",
+        "type": "action",
+        "title": "Place funnel",
+        "description": "Place the Buchner funnel on the workbench.",
+        "actionId": "place-tablet-buchner",
+        "config": {},
+        "validation": [
+          {
+            "id": "place-tablet-buchner-node--place-tablet-buchner-node-done",
+            "type": "actionEvidence",
+            "label": "Action place-tablet-buchner was completed.",
+            "actionId": "place-tablet-buchner"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Place funnel complete.",
+          "retry": "Review Place funnel and try again."
+        }
+      },
+      {
+        "id": "seat-tablet-filter-paper-node",
+        "type": "action",
+        "title": "Seat filter paper",
+        "description": "Seat the filter paper in the funnel.",
+        "actionId": "seat-tablet-filter-paper",
+        "config": {},
+        "validation": [
+          {
+            "id": "seat-tablet-filter-paper-node--seat-tablet-filter-paper-node-done",
+            "type": "actionEvidence",
+            "label": "Action seat-tablet-filter-paper was completed.",
+            "actionId": "seat-tablet-filter-paper"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Seat filter paper complete.",
+          "retry": "Review Seat filter paper and try again."
+        }
+      },
+      {
+        "id": "attach-tablet-filter-flask-node",
+        "type": "action",
+        "title": "Attach receiver",
+        "description": "Attach the side-arm receiver beneath the funnel.",
+        "actionId": "attach-tablet-filter-flask",
+        "config": {},
+        "validation": [
+          {
+            "id": "attach-tablet-filter-flask-node--attach-tablet-filter-flask-node-done",
+            "type": "actionEvidence",
+            "label": "Action attach-tablet-filter-flask was completed.",
+            "actionId": "attach-tablet-filter-flask"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Attach receiver complete.",
+          "retry": "Review Attach receiver and try again."
+        }
+      },
+      {
+        "id": "place-tablet-vacuum-node",
+        "type": "action",
+        "title": "Place vacuum source",
+        "description": "Place the vacuum source beside the receiver.",
+        "actionId": "place-tablet-vacuum",
+        "config": {},
+        "validation": [
+          {
+            "id": "place-tablet-vacuum-node--place-tablet-vacuum-node-done",
+            "type": "actionEvidence",
+            "label": "Action place-tablet-vacuum was completed.",
+            "actionId": "place-tablet-vacuum"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Place vacuum source complete.",
+          "retry": "Review Place vacuum source and try again."
+        }
+      },
+      {
+        "id": "wet-tablet-filter-paper-node",
+        "type": "action",
+        "title": "Wet filter paper",
+        "description": "Wet and seal the seated filter paper.",
+        "actionId": "wet-tablet-filter-paper",
+        "config": {},
+        "validation": [
+          {
+            "id": "wet-tablet-filter-paper-node--wet-tablet-filter-paper-node-done",
+            "type": "actionEvidence",
+            "label": "Action wet-tablet-filter-paper was completed.",
+            "actionId": "wet-tablet-filter-paper"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Wet filter paper complete.",
+          "retry": "Review Wet filter paper and try again."
+        }
+      },
+      {
+        "id": "filter-tablet-mixture-node",
+        "type": "action",
+        "title": "Filter recovered fraction",
+        "description": "Filter the teacher-approved recovered fraction.",
+        "actionId": "filter-tablet-mixture",
+        "config": {},
+        "validation": [
+          {
+            "id": "filter-tablet-mixture-node--filter-tablet-mixture-node-done",
+            "type": "actionEvidence",
+            "label": "Action filter-tablet-mixture was completed.",
+            "actionId": "filter-tablet-mixture"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Filter recovered fraction complete.",
+          "retry": "Review Filter recovered fraction and try again."
+        }
+      },
+      {
+        "id": "wash-tablet-residue-node",
+        "type": "action",
+        "title": "Wash recovered solid",
+        "description": "Wash the recovered solid with the teacher-approved rinse.",
+        "actionId": "wash-tablet-residue",
+        "config": {},
+        "validation": [
+          {
+            "id": "wash-tablet-residue-node--wash-tablet-residue-node-done",
+            "type": "actionEvidence",
+            "label": "Action wash-tablet-residue was completed.",
+            "actionId": "wash-tablet-residue"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Wash recovered solid complete.",
+          "retry": "Review Wash recovered solid and try again."
+        }
+      },
+      {
+        "id": "weigh-tablet-watch-glass-tare-node",
+        "type": "action",
+        "title": "Tare recovery vessel",
+        "description": "Tare the balance with the clean, dry recovery watch glass.",
+        "actionId": "weigh-tablet-watch-glass-tare",
+        "config": {},
+        "validation": [
+          {
+            "id": "weigh-tablet-watch-glass-tare-node--weigh-tablet-watch-glass-tare-node-done",
+            "type": "actionEvidence",
+            "label": "Action weigh-tablet-watch-glass-tare was completed.",
+            "actionId": "weigh-tablet-watch-glass-tare"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Tare recovery vessel complete.",
+          "retry": "Review Tare recovery vessel and try again."
+        }
+      },
+      {
+        "id": "record-tablet-watch-glass-tare-node",
+        "type": "observation",
+        "title": "Record recovery tare",
+        "description": "Copy the recovery watch-glass tare into the notebook.",
+        "actionId": "record-tablet-watch-glass-tare",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-tablet-watch-glass-tare-node--record-tablet-watch-glass-tare-node-done",
+            "type": "actionEvidence",
+            "label": "Action record-tablet-watch-glass-tare was completed.",
+            "actionId": "record-tablet-watch-glass-tare"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record recovery tare complete.",
+          "retry": "Review Record recovery tare and try again."
+        }
+      },
+      {
+        "id": "transfer-tablet-paper-to-watch-node",
+        "type": "action",
+        "title": "Transfer recovered solid",
+        "description": "Move the filter paper and recovered solid to the tared watch glass.",
+        "actionId": "transfer-tablet-paper-to-watch",
+        "config": {},
+        "validation": [
+          {
+            "id": "transfer-tablet-paper-to-watch-node--transfer-tablet-paper-to-watch-node-done",
+            "type": "actionEvidence",
+            "label": "Action transfer-tablet-paper-to-watch was completed.",
+            "actionId": "transfer-tablet-paper-to-watch"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Transfer recovered solid complete.",
+          "retry": "Review Transfer recovered solid and try again."
+        }
+      },
+      {
+        "id": "dry-tablet-residue-node",
+        "type": "action",
+        "title": "Dry recovered solid",
+        "description": "Dry the recovered solid to the teacher-approved endpoint.",
+        "actionId": "dry-tablet-residue",
+        "config": {},
+        "validation": [
+          {
+            "id": "dry-tablet-residue-node--dry-tablet-residue-node-done",
+            "type": "actionEvidence",
+            "label": "Action dry-tablet-residue was completed.",
+            "actionId": "dry-tablet-residue"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Dry recovered solid complete.",
+          "retry": "Review Dry recovered solid and try again."
+        }
+      },
+      {
+        "id": "cool-tablet-residue-node",
+        "type": "action",
+        "title": "Cool recovered solid",
+        "description": "Cool the recovery assembly before weighing.",
+        "actionId": "cool-tablet-residue",
+        "config": {},
+        "validation": [
+          {
+            "id": "cool-tablet-residue-node--cool-tablet-residue-node-done",
+            "type": "actionEvidence",
+            "label": "Action cool-tablet-residue was completed.",
+            "actionId": "cool-tablet-residue"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Cool recovered solid complete.",
+          "retry": "Review Cool recovered solid and try again."
+        }
+      },
+      {
+        "id": "weigh-tablet-residue-node",
+        "type": "observation",
+        "title": "Read dry recovered mass",
+        "description": "Read the dry recovered fraction mass on the tared balance.",
+        "actionId": "weigh-tablet-residue",
+        "config": {},
+        "validation": [
+          {
+            "id": "weigh-tablet-residue-node--weigh-tablet-residue-node-done",
+            "type": "actionEvidence",
+            "label": "Action weigh-tablet-residue was completed.",
+            "actionId": "weigh-tablet-residue"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read dry recovered mass complete.",
+          "retry": "Review Read dry recovered mass and try again."
+        }
+      },
+      {
+        "id": "record-tablet-residue-node",
+        "type": "observation",
+        "title": "Record dry recovered mass",
+        "description": "Copy the dry recovered fraction mass into the notebook.",
+        "actionId": "record-tablet-residue",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-tablet-residue-node--record-tablet-residue-node-done",
+            "type": "actionEvidence",
+            "label": "Action record-tablet-residue was completed.",
+            "actionId": "record-tablet-residue"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record dry recovered mass complete.",
+          "retry": "Review Record dry recovered mass and try again."
+        }
+      },
+      {
+        "id": "calculate-tablet-component-node",
+        "type": "calculation",
+        "title": "Calculate recovered percent",
+        "description": "Calculate recovered fraction percent from measured masses.",
+        "actionId": "calculate-tablet-component",
+        "config": {},
+        "validation": [
+          {
+            "id": "calculate-tablet-component-node--calculate-tablet-component-node-done",
+            "type": "actionEvidence",
+            "label": "Action calculate-tablet-component was completed.",
+            "actionId": "calculate-tablet-component"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Calculate recovered percent complete.",
+          "retry": "Review Calculate recovered percent and try again."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "weigh-tablet-sample-node",
+        "to": "record-tablet-sample-mass-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-tablet-sample-mass-node",
+        "to": "confirm-tablet-recovery-scope-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "confirm-tablet-recovery-scope-node",
+        "to": "place-tablet-buchner-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "place-tablet-buchner-node",
+        "to": "seat-tablet-filter-paper-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "seat-tablet-filter-paper-node",
+        "to": "attach-tablet-filter-flask-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "attach-tablet-filter-flask-node",
+        "to": "place-tablet-vacuum-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "place-tablet-vacuum-node",
+        "to": "wet-tablet-filter-paper-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "wet-tablet-filter-paper-node",
+        "to": "filter-tablet-mixture-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "filter-tablet-mixture-node",
+        "to": "wash-tablet-residue-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "wash-tablet-residue-node",
+        "to": "weigh-tablet-watch-glass-tare-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "weigh-tablet-watch-glass-tare-node",
+        "to": "record-tablet-watch-glass-tare-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-tablet-watch-glass-tare-node",
+        "to": "transfer-tablet-paper-to-watch-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "transfer-tablet-paper-to-watch-node",
+        "to": "dry-tablet-residue-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "dry-tablet-residue-node",
+        "to": "cool-tablet-residue-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cool-tablet-residue-node",
+        "to": "weigh-tablet-residue-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "weigh-tablet-residue-node",
+        "to": "record-tablet-residue-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-tablet-residue-node",
+        "to": "calculate-tablet-component-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [
+    {
+      "id": "weigh-tablet-sample-node-success",
+      "type": "actionEvidence",
+      "label": "Action weigh-tablet-sample was completed.",
+      "actionId": "weigh-tablet-sample"
+    },
+    {
+      "id": "record-tablet-sample-mass-node-success",
+      "type": "actionEvidence",
+      "label": "Action record-tablet-sample-mass was completed.",
+      "actionId": "record-tablet-sample-mass"
+    },
+    {
+      "id": "confirm-tablet-recovery-scope-node-success",
+      "type": "actionEvidence",
+      "label": "Action confirm-tablet-recovery-scope was completed.",
+      "actionId": "confirm-tablet-recovery-scope"
+    },
+    {
+      "id": "place-tablet-buchner-node-success",
+      "type": "actionEvidence",
+      "label": "Action place-tablet-buchner was completed.",
+      "actionId": "place-tablet-buchner"
+    },
+    {
+      "id": "seat-tablet-filter-paper-node-success",
+      "type": "actionEvidence",
+      "label": "Action seat-tablet-filter-paper was completed.",
+      "actionId": "seat-tablet-filter-paper"
+    },
+    {
+      "id": "attach-tablet-filter-flask-node-success",
+      "type": "actionEvidence",
+      "label": "Action attach-tablet-filter-flask was completed.",
+      "actionId": "attach-tablet-filter-flask"
+    },
+    {
+      "id": "place-tablet-vacuum-node-success",
+      "type": "actionEvidence",
+      "label": "Action place-tablet-vacuum was completed.",
+      "actionId": "place-tablet-vacuum"
+    },
+    {
+      "id": "wet-tablet-filter-paper-node-success",
+      "type": "actionEvidence",
+      "label": "Action wet-tablet-filter-paper was completed.",
+      "actionId": "wet-tablet-filter-paper"
+    },
+    {
+      "id": "filter-tablet-mixture-node-success",
+      "type": "actionEvidence",
+      "label": "Action filter-tablet-mixture was completed.",
+      "actionId": "filter-tablet-mixture"
+    },
+    {
+      "id": "wash-tablet-residue-node-success",
+      "type": "actionEvidence",
+      "label": "Action wash-tablet-residue was completed.",
+      "actionId": "wash-tablet-residue"
+    },
+    {
+      "id": "weigh-tablet-watch-glass-tare-node-success",
+      "type": "actionEvidence",
+      "label": "Action weigh-tablet-watch-glass-tare was completed.",
+      "actionId": "weigh-tablet-watch-glass-tare"
+    },
+    {
+      "id": "record-tablet-watch-glass-tare-node-success",
+      "type": "actionEvidence",
+      "label": "Action record-tablet-watch-glass-tare was completed.",
+      "actionId": "record-tablet-watch-glass-tare"
+    },
+    {
+      "id": "transfer-tablet-paper-to-watch-node-success",
+      "type": "actionEvidence",
+      "label": "Action transfer-tablet-paper-to-watch was completed.",
+      "actionId": "transfer-tablet-paper-to-watch"
+    },
+    {
+      "id": "dry-tablet-residue-node-success",
+      "type": "actionEvidence",
+      "label": "Action dry-tablet-residue was completed.",
+      "actionId": "dry-tablet-residue"
+    },
+    {
+      "id": "cool-tablet-residue-node-success",
+      "type": "actionEvidence",
+      "label": "Action cool-tablet-residue was completed.",
+      "actionId": "cool-tablet-residue"
+    },
+    {
+      "id": "weigh-tablet-residue-node-success",
+      "type": "actionEvidence",
+      "label": "Action weigh-tablet-residue was completed.",
+      "actionId": "weigh-tablet-residue"
+    },
+    {
+      "id": "record-tablet-residue-node-success",
+      "type": "actionEvidence",
+      "label": "Action record-tablet-residue was completed.",
+      "actionId": "record-tablet-residue"
+    },
+    {
+      "id": "calculate-tablet-component-node-success",
+      "type": "actionEvidence",
+      "label": "Action calculate-tablet-component was completed.",
+      "actionId": "calculate-tablet-component"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "current node expects a different action",
+      "message": "That action is out of sequence for the current technique step.",
+      "recovery": "Check the process map and perform the highlighted step first."
+    },
+    {
+      "id": "missing-source",
+      "when": "source equipment or contents are missing",
+      "message": "The selected source does not contain the material required for this action.",
+      "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+    },
+    {
+      "id": "overflow",
+      "when": "target capacity would be exceeded",
+      "message": "The target equipment cannot hold the requested volume.",
+      "recovery": "Use a larger container or transfer a smaller measured amount."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.1.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-04T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "chemistry",
+      "separation",
+      "tablet"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry-weigh-tablet-sample-node",
+        "kind": "entry",
+        "nodeId": "weigh-tablet-sample-node",
+        "label": "Entry"
+      },
+      {
+        "id": "exit-calculate-tablet-component-node",
+        "kind": "exit",
+        "nodeId": "calculate-tablet-component-node",
+        "label": "Exit"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "balance-instrument",
+        "required": true,
+        "allowedDefinitionIds": [
+          "analytical-balance"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "weighed-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "watch-glass"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "filtration-funnel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "buchner-funnel"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "filter-medium",
+        "required": true,
+        "allowedDefinitionIds": [
+          "filter-paper"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "filtration-receiver",
+        "required": true,
+        "allowedDefinitionIds": [
+          "side-arm-filter-flask"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "filtration-vacuum-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "vacuum-source"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "rinse-water-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "wash-bottle"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "mixture-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beaker-250ml"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "dried-assembly",
+        "required": true,
+        "allowedDefinitionIds": [
+          "watch-glass"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "drying-instrument",
+        "required": true,
+        "allowedDefinitionIds": [
+          "drying-oven"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "cooling-tool",
+        "required": true,
+        "allowedDefinitionIds": [
+          "crucible-tongs"
+        ],
+        "sourceInstanceIds": []
+      }
+    ],
+    "modelSlots": [],
+    "configurationSlots": [],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [],
+    "completion": {
+      "exitPortIds": [
+        "exit-calculate-tablet-component-node"
+      ],
+      "requiredEvidenceOutputIds": [],
+      "requiredValidationRuleIds": []
+    },
+    "catalogDisposition": "composable",
+    "legacyActionEffects": [
+      {
+        "actionId": "record-tablet-sample-mass",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "confirm-tablet-recovery-scope",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-tablet-watch-glass-tare",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-tablet-residue",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "calculate-tablet-component",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,1316 @@
+{
+  "id": "crystal-violet-integrated-rate-law-comparison",
+  "title": "Integrated Rate-Law Comparison",
+  "learningGoal": "Convert absorbance to concentration, compare zero-, first-, and second-order linearizations, select w, and calculate k* with sign and units.",
+  "requiredEquipment": [],
+  "initialState": {
+    "equipment": []
+  },
+  "actions": [
+    {
+      "id": "cv11-convert-absorbance-to-concentration",
+      "verb": "calculate",
+      "label": "Convert absorbance records to crystal-violet concentration",
+      "parameters": {
+        "calculationId": "cv11-concentration-series",
+        "template": "concentrationSeriesFromCalibration",
+        "tolerance": 0.2,
+        "unit": "micromolar at first recorded time",
+        "equation": "[CV+]=(A-b)/m",
+        "calibrationSlope": 0.03802,
+        "calibrationIntercept": 0.0003,
+        "sourceMeasurements": [
+          "cv11-kinetic-absorbance-1",
+          "cv11-kinetic-absorbance-2",
+          "cv11-kinetic-absorbance-3",
+          "cv11-kinetic-absorbance-4",
+          "cv11-kinetic-absorbance-5",
+          "cv11-kinetic-absorbance-6",
+          "cv11-kinetic-absorbance-7",
+          "cv11-kinetic-absorbance-8"
+        ],
+        "timeMeasurements": [
+          "cv11-kinetic-time-1",
+          "cv11-kinetic-time-2",
+          "cv11-kinetic-time-3",
+          "cv11-kinetic-time-4",
+          "cv11-kinetic-time-5",
+          "cv11-kinetic-time-6",
+          "cv11-kinetic-time-7",
+          "cv11-kinetic-time-8"
+        ],
+        "calibrationCalculationId": "cv11-calibration-regression",
+        "evidenceBoundary": "derived from recorded calibration and kinetic evidence; no expected model result is stored"
+      },
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Submit Convert absorbance records to crystal-violet concentration.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Convert absorbance records to crystal-violet concentration is stored with units and supporting evidence."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Convert absorbance records to crystal-violet concentration is stored with units and supporting evidence.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "calculate",
+        "cv11-concentration-series"
+      ]
+    },
+    {
+      "id": "cv11-fit-zero-order",
+      "verb": "calculate",
+      "label": "Fit [CV+] versus time",
+      "parameters": {
+        "calculationId": "cv11-zero-order-fit",
+        "template": "regressionFromCalculationSeries",
+        "sourceCalculationId": "cv11-concentration-series",
+        "transformTemplate": "identity",
+        "tolerance": 0.02,
+        "unit": "R^2",
+        "transform": "[CV+]",
+        "slopeUnit": "micromolar/s",
+        "fitRole": "candidate-zero-order",
+        "evidenceBoundary": "derived from recorded calibration and kinetic evidence; no expected model result is stored"
+      },
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Submit Fit [CV+] versus time.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Fit [CV+] versus time is stored with units and supporting evidence."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Fit [CV+] versus time is stored with units and supporting evidence.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "calculate",
+        "cv11-zero-order-fit"
+      ]
+    },
+    {
+      "id": "cv11-fit-first-order",
+      "verb": "calculate",
+      "label": "Fit ln[CV+] versus time",
+      "parameters": {
+        "calculationId": "cv11-first-order-fit",
+        "template": "regressionFromCalculationSeries",
+        "sourceCalculationId": "cv11-concentration-series",
+        "transformTemplate": "ln",
+        "tolerance": 0.001,
+        "unit": "R^2",
+        "transform": "ln[CV+]",
+        "slopeUnit": "s^-1",
+        "fitRole": "candidate-first-order",
+        "evidenceBoundary": "derived from recorded calibration and kinetic evidence; no expected model result is stored"
+      },
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Submit Fit ln[CV+] versus time.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Fit ln[CV+] versus time is stored with units and supporting evidence."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Fit ln[CV+] versus time is stored with units and supporting evidence.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "calculate",
+        "cv11-first-order-fit"
+      ]
+    },
+    {
+      "id": "cv11-fit-second-order",
+      "verb": "calculate",
+      "label": "Fit 1/[CV+] versus time",
+      "parameters": {
+        "calculationId": "cv11-second-order-fit",
+        "template": "regressionFromCalculationSeries",
+        "sourceCalculationId": "cv11-concentration-series",
+        "transformTemplate": "reciprocal",
+        "tolerance": 0.02,
+        "unit": "R^2",
+        "transform": "1/[CV+]",
+        "slopeUnit": "micromolar^-1 s^-1",
+        "fitRole": "candidate-second-order",
+        "evidenceBoundary": "derived from recorded calibration and kinetic evidence; no expected model result is stored"
+      },
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Submit Fit 1/[CV+] versus time.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Fit 1/[CV+] versus time is stored with units and supporting evidence."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Fit 1/[CV+] versus time is stored with units and supporting evidence.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "calculate",
+        "cv11-second-order-fit"
+      ]
+    },
+    {
+      "id": "cv11-compare-integrated-rate-law-fits",
+      "verb": "observe",
+      "label": "Record the comparison of all three least-squares fits",
+      "parameters": {
+        "note": "Record a comparison of equations, residual patterns, and fit metrics already calculated for [CV+], ln[CV+], and 1/[CV+] versus time before selecting w. This evidence action does not perform the regressions.",
+        "tag": "integrated-rate-law-comparison",
+        "evidenceBoundary": "derived from recorded calibration and kinetic evidence; no expected model result is stored",
+        "sourceCalculationIds": [
+          "cv11-zero-order-fit",
+          "cv11-first-order-fit",
+          "cv11-second-order-fit"
+        ]
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Compare all three least-squares fits.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "A source-grounded comparison of the three completed candidate fits is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Compare all three least-squares fits is recorded.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "integrated-rate-law-comparison"
+      ]
+    },
+    {
+      "id": "cv11-select-order-w",
+      "verb": "calculate",
+      "label": "Select the crystal-violet order w",
+      "parameters": {
+        "calculationId": "cv11-order-w",
+        "template": "bestRegressionOrder",
+        "sourceCalculationIds": [
+          "cv11-zero-order-fit",
+          "cv11-first-order-fit",
+          "cv11-second-order-fit"
+        ],
+        "sourceOrders": [
+          "0",
+          "1",
+          "2"
+        ],
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Selected crystal-violet order w",
+        "inputMin": 0,
+        "inputMax": 2,
+        "inputStep": 1,
+        "requireStudentValue": true,
+        "unit": "order",
+        "basis": "linearity of the three integrated-rate-law plots",
+        "evidenceBoundary": "derived from recorded calibration and kinetic evidence; no expected model result is stored"
+      },
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Submit Select the crystal-violet order w.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Select the crystal-violet order w is stored with units and supporting evidence."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Select the crystal-violet order w is stored with units and supporting evidence.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "calculate",
+        "cv11-order-w"
+      ]
+    },
+    {
+      "id": "cv11-calculate-k-star",
+      "verb": "calculate",
+      "label": "Calculate pseudo-rate constant k*",
+      "parameters": {
+        "calculationId": "cv11-k-star",
+        "template": "rateConstantFromRegression",
+        "sourceRegressionCalculationId": "cv11-first-order-fit",
+        "orderCalculationId": "cv11-order-w",
+        "unit": "s^-1",
+        "equation": "rate=k*[CV+]^w",
+        "relationship": "k*=k[OH-]^z",
+        "slopeRule": "For w=1, k* is the negative of the ln[CV+] versus time slope.",
+        "sign": "positive rate constant from negative integrated-plot slope",
+        "evidenceBoundary": "derived from recorded calibration and kinetic evidence; no expected model result is stored"
+      },
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Submit Calculate pseudo-rate constant k*.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Calculate pseudo-rate constant k* is stored with units and supporting evidence."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Calculate pseudo-rate constant k* is stored with units and supporting evidence.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "calculate",
+        "cv11-k-star"
+      ]
+    },
+    {
+      "id": "cv11-report-uncertainty-and-design-limits",
+      "verb": "observe",
+      "label": "Report uncertainty and design limitations",
+      "parameters": {
+        "note": "The report addresses wavelength/range choice, blank matrix, calibration fit, mixing and dead time, sampling, instrument precision, hydroxide-excess assumption, and the approved stop rule.",
+        "tag": "uncertainty",
+        "evidenceBoundary": "derived from recorded calibration and kinetic evidence; no expected model result is stored"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Report uncertainty and design limitations.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Report uncertainty and design limitations is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Report uncertainty and design limitations is recorded.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "uncertainty"
+      ]
+    },
+    {
+      "id": "cv11-extension-approval-gate",
+      "verb": "observe",
+      "label": "Confirm teacher approval for the optional z and k extension",
+      "parameters": {
+        "note": "This instance is emitted only by the declared teacher-approved witness. Record the approval and the method boundary before proposing hydroxide conditions.",
+        "tag": "optional-extension-gate",
+        "configurationRequired": true,
+        "approvalBinding": "analysis-extension.teacher-approved=true",
+        "recovery": "Leave the extension absent and continue to waste handling when approval is false."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Confirm teacher approval for the optional z and k extension.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Confirm teacher approval for the optional z and k extension is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Confirm teacher approval for the optional z and k extension is recorded.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "optional-extension-gate"
+      ]
+    },
+    {
+      "id": "cv11-extension-design-hydroxide-series",
+      "verb": "observe",
+      "label": "Design the approved hydroxide-variation series",
+      "parameters": {
+        "note": "After unlocking, design multiple hydroxide conditions, preserve the approved total volume and measurement workflow, and collect a separate k* for each condition.",
+        "tag": "optional-extension-design"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Design the approved hydroxide-variation series.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "extension-approval-required",
+          "type": "actionEvidence",
+          "label": "Teacher approval for the optional extension is recorded.",
+          "actionId": "cv11-extension-approval-gate"
+        }
+      ],
+      "stateChanges": [
+        "Design the approved hydroxide-variation series is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Design the approved hydroxide-variation series is recorded.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "optional-extension-design"
+      ]
+    },
+    {
+      "id": "cv11-extension-determine-z-and-k",
+      "verb": "observe",
+      "label": "Determine z and recover k",
+      "parameters": {
+        "note": "Use the approved k* versus [OH-] analysis to determine z, then apply k*=k[OH-]^z with units and uncertainty. No value is supplied until evidence is collected.",
+        "tag": "optional-extension-analysis"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Determine z and recover k.",
+        "successCue": "The accepted action is recorded in the investigation evidence.",
+        "invalidCue": "Use the named equipment and preserve the approved investigation sequence."
+      },
+      "prerequisites": [
+        {
+          "id": "extension-design-required",
+          "type": "actionEvidence",
+          "label": "The approved hydroxide-variation design is recorded.",
+          "actionId": "cv11-extension-design-hydroxide-series"
+        }
+      ],
+      "stateChanges": [
+        "Determine z and recover k is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current node expects a different action",
+          "message": "That action is out of sequence for the current investigation step.",
+          "recovery": "Return to the highlighted process step and preserve the approved design."
+        },
+        {
+          "id": "cross-contamination",
+          "when": "a pipette assigned to another liquid is selected",
+          "message": "That pipette is assigned to a different solution.",
+          "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+        },
+        {
+          "id": "unapproved-configuration",
+          "when": "a teacher-configured decision has not been approved",
+          "message": "This investigation choice still requires teacher approval.",
+          "recovery": "Submit the design choice and wait for approval before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Determine z and recover k is recorded.",
+        "invalid": "The action was not accepted. Review the investigation design and equipment assignments."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "optional-extension-analysis"
+      ]
+    }
+  ],
+  "process": {
+    "startNodeId": "cv11-convert-absorbance-to-concentration-node",
+    "nodes": [
+      {
+        "id": "cv11-convert-absorbance-to-concentration-node",
+        "type": "calculation",
+        "title": "Convert absorbance records to crystal-violet concentration",
+        "description": "Convert absorbance records to crystal-violet concentration is stored with units and supporting evidence.",
+        "actionId": "cv11-convert-absorbance-to-concentration",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-convert-absorbance-to-concentration-complete",
+            "type": "actionEvidence",
+            "label": "Convert absorbance records to crystal-violet concentration was completed.",
+            "actionId": "cv11-convert-absorbance-to-concentration"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Convert absorbance records to crystal-violet concentration complete.",
+          "retry": "Review Convert absorbance records to crystal-violet concentration and try again."
+        }
+      },
+      {
+        "id": "cv11-fit-zero-order-node",
+        "type": "calculation",
+        "title": "Fit [CV+] versus time",
+        "description": "Fit [CV+] versus time is stored with units and supporting evidence.",
+        "actionId": "cv11-fit-zero-order",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-fit-zero-order-complete",
+            "type": "actionEvidence",
+            "label": "Fit [CV+] versus time was completed.",
+            "actionId": "cv11-fit-zero-order"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Fit [CV+] versus time complete.",
+          "retry": "Review Fit [CV+] versus time and try again."
+        }
+      },
+      {
+        "id": "cv11-fit-first-order-node",
+        "type": "calculation",
+        "title": "Fit ln[CV+] versus time",
+        "description": "Fit ln[CV+] versus time is stored with units and supporting evidence.",
+        "actionId": "cv11-fit-first-order",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-fit-first-order-complete",
+            "type": "actionEvidence",
+            "label": "Fit ln[CV+] versus time was completed.",
+            "actionId": "cv11-fit-first-order"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Fit ln[CV+] versus time complete.",
+          "retry": "Review Fit ln[CV+] versus time and try again."
+        }
+      },
+      {
+        "id": "cv11-fit-second-order-node",
+        "type": "calculation",
+        "title": "Fit 1/[CV+] versus time",
+        "description": "Fit 1/[CV+] versus time is stored with units and supporting evidence.",
+        "actionId": "cv11-fit-second-order",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-fit-second-order-complete",
+            "type": "actionEvidence",
+            "label": "Fit 1/[CV+] versus time was completed.",
+            "actionId": "cv11-fit-second-order"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Fit 1/[CV+] versus time complete.",
+          "retry": "Review Fit 1/[CV+] versus time and try again."
+        }
+      },
+      {
+        "id": "cv11-compare-integrated-rate-law-fits-node",
+        "type": "observation",
+        "title": "Record the comparison of all three least-squares fits",
+        "description": "A source-grounded comparison of the three completed candidate fits is recorded.",
+        "actionId": "cv11-compare-integrated-rate-law-fits",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-compare-integrated-rate-law-fits-complete",
+            "type": "actionEvidence",
+            "label": "Compare all three least-squares fits was completed.",
+            "actionId": "cv11-compare-integrated-rate-law-fits"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Compare all three least-squares fits complete.",
+          "retry": "Review Compare all three least-squares fits and try again."
+        }
+      },
+      {
+        "id": "cv11-select-order-w-node",
+        "type": "calculation",
+        "title": "Select the crystal-violet order w",
+        "description": "Select the crystal-violet order w is stored with units and supporting evidence.",
+        "actionId": "cv11-select-order-w",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-select-order-w-complete",
+            "type": "actionEvidence",
+            "label": "Select the crystal-violet order w was completed.",
+            "actionId": "cv11-select-order-w"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Select the crystal-violet order w complete.",
+          "retry": "Review Select the crystal-violet order w and try again."
+        }
+      },
+      {
+        "id": "cv11-calculate-k-star-node",
+        "type": "calculation",
+        "title": "Calculate pseudo-rate constant k*",
+        "description": "Calculate pseudo-rate constant k* is stored with units and supporting evidence.",
+        "actionId": "cv11-calculate-k-star",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-calculate-k-star-complete",
+            "type": "actionEvidence",
+            "label": "Calculate pseudo-rate constant k* was completed.",
+            "actionId": "cv11-calculate-k-star"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Calculate pseudo-rate constant k* complete.",
+          "retry": "Review Calculate pseudo-rate constant k* and try again."
+        }
+      },
+      {
+        "id": "cv11-report-uncertainty-and-design-limits-node",
+        "type": "observation",
+        "title": "Report uncertainty and design limitations",
+        "description": "Report uncertainty and design limitations is recorded.",
+        "actionId": "cv11-report-uncertainty-and-design-limits",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-report-uncertainty-and-design-limits-complete",
+            "type": "actionEvidence",
+            "label": "Report uncertainty and design limitations was completed.",
+            "actionId": "cv11-report-uncertainty-and-design-limits"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Report uncertainty and design limitations complete.",
+          "retry": "Review Report uncertainty and design limitations and try again."
+        }
+      },
+      {
+        "id": "cv11-extension-approval-gate-node",
+        "type": "observation",
+        "title": "Confirm teacher approval for the optional z and k extension",
+        "description": "Confirm teacher approval for the optional z and k extension is recorded.",
+        "actionId": "cv11-extension-approval-gate",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-extension-approval-gate-complete",
+            "type": "actionEvidence",
+            "label": "Confirm teacher approval for the optional z and k extension was completed.",
+            "actionId": "cv11-extension-approval-gate"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Confirm teacher approval for the optional z and k extension complete.",
+          "retry": "Review Confirm teacher approval for the optional z and k extension and try again."
+        }
+      },
+      {
+        "id": "cv11-extension-design-hydroxide-series-node",
+        "type": "observation",
+        "title": "Design the approved hydroxide-variation series",
+        "description": "Design the approved hydroxide-variation series is recorded.",
+        "actionId": "cv11-extension-design-hydroxide-series",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-extension-design-hydroxide-series-complete",
+            "type": "actionEvidence",
+            "label": "Design the approved hydroxide-variation series was completed.",
+            "actionId": "cv11-extension-design-hydroxide-series"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Design the approved hydroxide-variation series complete.",
+          "retry": "Review Design the approved hydroxide-variation series and try again."
+        }
+      },
+      {
+        "id": "cv11-extension-determine-z-and-k-node",
+        "type": "observation",
+        "title": "Determine z and recover k",
+        "description": "Determine z and recover k is recorded.",
+        "actionId": "cv11-extension-determine-z-and-k",
+        "config": {},
+        "validation": [
+          {
+            "id": "cv11-extension-determine-z-and-k-complete",
+            "type": "actionEvidence",
+            "label": "Determine z and recover k was completed.",
+            "actionId": "cv11-extension-determine-z-and-k"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Determine z and recover k complete.",
+          "retry": "Review Determine z and recover k and try again."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "cv11-convert-absorbance-to-concentration-node",
+        "to": "cv11-fit-zero-order-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-fit-zero-order-node",
+        "to": "cv11-fit-first-order-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-fit-first-order-node",
+        "to": "cv11-fit-second-order-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-fit-second-order-node",
+        "to": "cv11-compare-integrated-rate-law-fits-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-compare-integrated-rate-law-fits-node",
+        "to": "cv11-select-order-w-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-select-order-w-node",
+        "to": "cv11-calculate-k-star-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-calculate-k-star-node",
+        "to": "cv11-report-uncertainty-and-design-limits-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-report-uncertainty-and-design-limits-node",
+        "to": "cv11-extension-approval-gate-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-extension-approval-gate-node",
+        "to": "cv11-extension-design-hydroxide-series-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cv11-extension-design-hydroxide-series-node",
+        "to": "cv11-extension-determine-z-and-k-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "the current node expects a different action",
+      "message": "That action is out of sequence for the current investigation step.",
+      "recovery": "Return to the highlighted process step and preserve the approved design."
+    },
+    {
+      "id": "cross-contamination",
+      "when": "a pipette assigned to another liquid is selected",
+      "message": "That pipette is assigned to a different solution.",
+      "recovery": "Use the separately labeled CV, NaOH, or water pipette."
+    },
+    {
+      "id": "unapproved-configuration",
+      "when": "a teacher-configured decision has not been approved",
+      "message": "This investigation choice still requires teacher approval.",
+      "recovery": "Submit the design choice and wait for approval before continuing."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "2.0.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-05T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "chemistry",
+      "crystal-violet",
+      "integrated-rate-law",
+      "least-squares",
+      "order-w",
+      "k-star",
+      "composition",
+      "cycle-08"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry",
+        "kind": "entry",
+        "nodeId": "cv11-convert-absorbance-to-concentration-node"
+      },
+      {
+        "id": "exit",
+        "kind": "exit",
+        "nodeId": "cv11-extension-determine-z-and-k-node"
+      }
+    ],
+    "equipmentRoles": [],
+    "modelSlots": [],
+    "configurationSlots": [
+      {
+        "id": "selectedProcedure",
+        "valueType": "string",
+        "required": true,
+        "allowedValues": [
+          "integrated-rate-law-analysis",
+          "hydroxide-order-extension"
+        ]
+      }
+    ],
+    "approvalGates": [
+      {
+        "id": "teacher-approved",
+        "label": "Teacher approved the optional hydroxide-order method"
+      }
+    ],
+    "variants": [
+      {
+        "id": "hydroxide-order-extension",
+        "label": "Teacher-approved hydroxide-order extension",
+        "enabledWhen": {
+          "kind": "approval",
+          "gateId": "teacher-approved",
+          "equals": true
+        }
+      }
+    ],
+    "evidenceOutputs": [
+      {
+        "id": "evidence-cv11-convert-absorbance-to-concentration",
+        "kind": "calculation",
+        "actionId": "cv11-convert-absorbance-to-concentration",
+        "referenceId": "cv11-concentration-series"
+      },
+      {
+        "id": "evidence-cv11-fit-zero-order",
+        "kind": "calculation",
+        "actionId": "cv11-fit-zero-order",
+        "referenceId": "cv11-zero-order-fit"
+      },
+      {
+        "id": "evidence-cv11-fit-first-order",
+        "kind": "calculation",
+        "actionId": "cv11-fit-first-order",
+        "referenceId": "cv11-first-order-fit"
+      },
+      {
+        "id": "evidence-cv11-fit-second-order",
+        "kind": "calculation",
+        "actionId": "cv11-fit-second-order",
+        "referenceId": "cv11-second-order-fit"
+      },
+      {
+        "id": "evidence-cv11-compare-integrated-rate-law-fits",
+        "kind": "notebook",
+        "actionId": "cv11-compare-integrated-rate-law-fits"
+      },
+      {
+        "id": "evidence-cv11-select-order-w",
+        "kind": "calculation",
+        "actionId": "cv11-select-order-w",
+        "referenceId": "cv11-order-w"
+      },
+      {
+        "id": "evidence-cv11-calculate-k-star",
+        "kind": "calculation",
+        "actionId": "cv11-calculate-k-star",
+        "referenceId": "cv11-k-star"
+      },
+      {
+        "id": "evidence-cv11-report-uncertainty-and-design-limits",
+        "kind": "notebook",
+        "actionId": "cv11-report-uncertainty-and-design-limits"
+      },
+      {
+        "id": "evidence-cv11-extension-approval-gate",
+        "kind": "notebook",
+        "actionId": "cv11-extension-approval-gate"
+      },
+      {
+        "id": "evidence-cv11-extension-design-hydroxide-series",
+        "kind": "notebook",
+        "actionId": "cv11-extension-design-hydroxide-series"
+      },
+      {
+        "id": "evidence-cv11-extension-determine-z-and-k",
+        "kind": "notebook",
+        "actionId": "cv11-extension-determine-z-and-k"
+      }
+    ],
+    "completion": {
+      "exitPortIds": [
+        "exit"
+      ],
+      "requiredEvidenceOutputIds": [],
+      "requiredValidationRuleIds": []
+    },
+    "catalogDisposition": "lab-scoped",
+    "legacyActionEffects": [
+      {
+        "actionId": "cv11-convert-absorbance-to-concentration",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "cv11-fit-zero-order",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "cv11-fit-first-order",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "cv11-fit-second-order",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "cv11-compare-integrated-rate-law-fits",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "cv11-select-order-w",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "cv11-calculate-k-star",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "cv11-report-uncertainty-and-design-limits",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "cv11-extension-approval-gate",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "cv11-extension-design-hydroxide-series",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "cv11-extension-determine-z-and-k",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ],
+    "orderedProcedure": {
+      "configurationSlotId": "selectedProcedure",
+      "startActionIds": [],
+      "endActionIds": [],
+      "minimumTests": 1,
+      "resources": [],
+      "groups": [
+        {
+          "id": "integrated-rate-law-analysis",
+          "actionIds": [
+            "cv11-convert-absorbance-to-concentration",
+            "cv11-fit-zero-order",
+            "cv11-fit-first-order",
+            "cv11-fit-second-order",
+            "cv11-compare-integrated-rate-law-fits",
+            "cv11-select-order-w",
+            "cv11-calculate-k-star",
+            "cv11-report-uncertainty-and-design-limits"
+          ],
+          "testCount": 1,
+          "evidenceKind": "quantitative"
+        },
+        {
+          "id": "hydroxide-order-extension",
+          "actionIds": [
+            "cv11-extension-approval-gate",
+            "cv11-extension-design-hydroxide-series",
+            "cv11-extension-determine-z-and-k"
+          ],
+          "testCount": 1,
+          "evidenceKind": "procedure"
+        }
+      ]
+    }
+  }
+}

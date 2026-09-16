@@ -1,0 +1,88 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:07.191
+Lab Studio is a static chemistry workspace for authoring and running schema-driven labs.
+
+00:00:07.191 --> 00:00:14.311
+Teachers build structured process maps, and students practice the same workflows in the simulator.
+
+00:00:14.311 --> 00:00:20.389
+Hash routes make each lab and technique easy to share from static hosting.
+
+00:00:20.389 --> 00:00:25.719
+This walkthrough covers the student flow first, then the teacher authoring flow.
+
+00:00:25.719 --> 00:00:34.815
+In Student Player, the learner sees the goal, mode toggle, equipment, workbench, process progress, feedback, and evidence panels together.
+
+00:00:34.815 --> 00:00:43.910
+Guided mode keeps the expected step visible. Assessment mode lets the same runtime run with less scaffolding.
+
+00:00:43.910 --> 00:00:55.044
+The shelf and workbench keep equipment state visible while each process node advances.
+
+00:00:55.044 --> 00:01:07.105
+Direct bench manipulation sends a typed action request through the simulator runtime.
+
+00:01:07.105 --> 00:01:20.252
+Feedback explains what changed, and the process map moves to the next required action.
+
+00:01:20.252 --> 00:01:35.412
+Evidence controls appear when measurements, calculations, or notebook entries are ready.
+
+00:01:35.412 --> 00:01:47.522
+Assessment mode uses the same lab definition, so teachers are not maintaining a separate activity.
+
+00:01:47.522 --> 00:02:00.530
+Reset returns the lab to its initial equipment and process state for another attempt.
+
+00:02:00.530 --> 00:02:15.831
+The hard-water demo is reference content built from general schema-backed actions.
+
+00:02:15.831 --> 00:02:26.552
+Standalone techniques isolate one skill, such as filtering and rinsing a precipitate.
+
+00:02:26.552 --> 00:02:41.608
+Learners can place equipment with pointer or drag interactions while the runtime records the same state transition.
+
+00:02:41.608 --> 00:02:53.697
+The keyboard path exposes source and target selection for the same underlying action.
+
+00:02:53.697 --> 00:03:08.713
+Confirm accessible action completes the expected step without requiring drag and drop.
+
+00:03:08.713 --> 00:03:19.060
+Technique practice can be used alone or embedded inside a larger lab.
+
+00:03:19.060 --> 00:03:31.128
+Lab Design Studio authors constrained LabDefinition JSON instead of arbitrary teacher code.
+
+00:03:31.128 --> 00:03:45.244
+Templates add supported actions and nodes that the simulator already understands.
+
+00:03:45.244 --> 00:04:00.426
+Adding a filtration template extends the process map and keeps the draft schema-driven.
+
+00:04:00.426 --> 00:04:15.514
+Details edits structured fields such as title, description, hints, action parameters, and feedback.
+
+00:04:15.514 --> 00:04:29.641
+Validation rules, retry paths, required equipment, and start node choices stay explicit in the authoring surface.
+
+00:04:29.641 --> 00:04:44.965
+Live preview runs the current draft through the same Student Player used by learners.
+
+00:04:44.965 --> 00:04:56.491
+Save draft stores local authoring work for this browser.
+
+00:04:56.491 --> 00:05:06.825
+Export and import round-trip the lab as portable JSON for review or publishing.
+
+00:05:06.825 --> 00:05:19.918
+Published bundled labs come from public JSON files and load through the same route path students use.
+
+00:05:19.918 --> 00:05:33.047
+Bundled techniques follow the same contract, so fixtures are not the publishing source of truth.
+
+00:05:33.047 --> 00:05:47.112
+Share the lab catalog with #/labs, link directly to #/play/hard-water-demo, or publish new JSON-backed content after validation and build checks pass.

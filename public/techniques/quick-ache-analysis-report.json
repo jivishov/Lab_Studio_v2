@@ -1,0 +1,1082 @@
+{
+  "id": "quick-ache-analysis-report",
+  "title": "Quick Ache Composition Analysis",
+  "learningGoal": "Calculate composition and recovery, evaluate consumer hypotheses, and defend the separation with report and particulate-level evidence.",
+  "requiredEquipment": [],
+  "initialState": {
+    "equipment": []
+  },
+  "actions": [
+    {
+      "id": "qar-confirm-composition-formula",
+      "verb": "observe",
+      "label": "Confirm the component-percent formula",
+      "parameters": {
+        "prompt": "The source sentence describes dividing the sum of all recovered masses by the starting mass, which is total percent recovery, while the task asks for the percent of each component. Record which convention the instructor confirmed before any figure is submitted.",
+        "studentResponseRequired": true,
+        "tag": "composition-formula",
+        "confirmedConvention": "component-mass-over-starting-mass",
+        "sourceAmbiguity": "finding 3.7: the manual's wording describes total percent recovery, not per-component composition",
+        "note": "Confirmed percent-composition convention recorded, together with the source wording it resolves."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Confirm the component-percent formula."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Confirm the component-percent formula evidence is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the approved investigation.",
+          "recovery": "Return to the highlighted step and preserve the fraction or evidence already collected."
+        },
+        {
+          "id": "unapproved-procedure",
+          "when": "execution is attempted before instructor approval",
+          "message": "The separation plan has not been approved.",
+          "recovery": "Submit the property evidence, chemical rationale, quantities, endpoints, and disposal plan for instructor approval."
+        },
+        {
+          "id": "unlabeled-fraction",
+          "when": "a layer or recovered fraction lacks identity and provenance",
+          "message": "The fraction cannot be interpreted safely without a label.",
+          "recovery": "Label the vessel with source stage, observed layer, retained material, and uncertainty before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Confirm the component-percent formula complete.",
+        "invalid": "Record the required evidence and use the teacher-approved configuration before continuing."
+      },
+      "evidence": [
+        "notebook"
+      ]
+    },
+    {
+      "id": "qar-calculate-sucrose-percentage",
+      "verb": "calculate",
+      "label": "Calculate recovered sucrose percent by mass",
+      "parameters": {
+        "studentValueRequired": true,
+        "calculationId": "qar-sucrose-percentage",
+        "formula": "component dry mass / starting sample mass x 100",
+        "component": "sucrose",
+        "teacherConfigKey": "acceptedRoundingAndUncertaintyRule",
+        "configurationRequired": true,
+        "unit": "%",
+        "template": "componentMassPercent",
+        "compositionFormulaConfirmation": "component-mass-over-starting-mass",
+        "startingMassMeasurementId": "qar-starting-mass",
+        "componentMassMeasurementId": "qar-recovered-aqueous-component-mass",
+        "tolerance": 0.5,
+        "evidenceProvenance": "recorded dry recovered mass divided by the recorded starting mass",
+        "identityLimit": "This percentage describes the water-soluble fraction. Calling it sucrose is a separate claim that needs the pure-component property evidence behind it."
+      },
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Submit Calculate recovered sucrose percent by mass."
+      },
+      "prerequisites": [
+        {
+          "id": "qar-calculate-sucrose-percentage--qar-calculate-sucrose-percentage-starting-mass",
+          "type": "measurementRecorded",
+          "label": "The starting sample mass is recorded.",
+          "measurementId": "qar-starting-mass"
+        },
+        {
+          "id": "qar-calculate-sucrose-percentage--qar-calculate-sucrose-percentage-component-mass",
+          "type": "measurementRecorded",
+          "label": "The aqueous fraction's dry mass is recorded.",
+          "measurementId": "qar-recovered-aqueous-component-mass"
+        },
+        {
+          "id": "qar-calculate-sucrose-percentage--qar-calculate-sucrose-percentage-formula-confirmed",
+          "type": "notebookEntry",
+          "label": "The intended composition formula is confirmed.",
+          "notebookTag": "composition-formula"
+        }
+      ],
+      "stateChanges": [
+        "Calculate recovered sucrose percent by mass evidence is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the approved investigation.",
+          "recovery": "Return to the highlighted step and preserve the fraction or evidence already collected."
+        },
+        {
+          "id": "unapproved-procedure",
+          "when": "execution is attempted before instructor approval",
+          "message": "The separation plan has not been approved.",
+          "recovery": "Submit the property evidence, chemical rationale, quantities, endpoints, and disposal plan for instructor approval."
+        },
+        {
+          "id": "unlabeled-fraction",
+          "when": "a layer or recovered fraction lacks identity and provenance",
+          "message": "The fraction cannot be interpreted safely without a label.",
+          "recovery": "Label the vessel with source stage, observed layer, retained material, and uncertainty before continuing."
+        },
+        {
+          "id": "identity-asserted-without-evidence",
+          "when": "a recovered fraction is named from an expected recipe rather than from evidence",
+          "message": "A solid recovered by bicarbonate extraction and re-acidification is an acid; that does not make it aspirin.",
+          "recovery": "Record what the recovery establishes and what it does not, and keep the component identity open until independent evidence supports it."
+        }
+      ],
+      "feedback": {
+        "success": "Calculate recovered sucrose percent by mass complete.",
+        "invalid": "Record the required evidence and use the teacher-approved configuration before continuing."
+      },
+      "evidence": [
+        "calculate",
+        "composition"
+      ]
+    },
+    {
+      "id": "qar-calculate-acetaminophen-percentage",
+      "verb": "calculate",
+      "label": "Calculate recovered acetaminophen percent by mass",
+      "parameters": {
+        "studentValueRequired": true,
+        "calculationId": "qar-acetaminophen-percentage",
+        "formula": "component dry mass / starting sample mass x 100",
+        "component": "acetaminophen",
+        "teacherConfigKey": "acceptedRoundingAndUncertaintyRule",
+        "configurationRequired": true,
+        "unit": "%",
+        "template": "componentMassPercent",
+        "compositionFormulaConfirmation": "component-mass-over-starting-mass",
+        "startingMassMeasurementId": "qar-starting-mass",
+        "componentMassMeasurementId": "qar-recovered-organic-component-mass",
+        "tolerance": 0.5,
+        "evidenceProvenance": "recorded dry recovered mass divided by the recorded starting mass",
+        "identityLimit": "This percentage describes the ethyl-acetate-soluble fraction. Calling it acetaminophen is a separate claim that needs the pure-component property evidence behind it."
+      },
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Submit Calculate recovered acetaminophen percent by mass."
+      },
+      "prerequisites": [
+        {
+          "id": "qar-calculate-acetaminophen-percentage--qar-calculate-acetaminophen-percentage-starting-mass",
+          "type": "measurementRecorded",
+          "label": "The starting sample mass is recorded.",
+          "measurementId": "qar-starting-mass"
+        },
+        {
+          "id": "qar-calculate-acetaminophen-percentage--qar-calculate-acetaminophen-percentage-component-mass",
+          "type": "measurementRecorded",
+          "label": "The organic fraction's dry mass is recorded.",
+          "measurementId": "qar-recovered-organic-component-mass"
+        },
+        {
+          "id": "qar-calculate-acetaminophen-percentage--qar-calculate-acetaminophen-percentage-formula-confirmed",
+          "type": "notebookEntry",
+          "label": "The intended composition formula is confirmed.",
+          "notebookTag": "composition-formula"
+        }
+      ],
+      "stateChanges": [
+        "Calculate recovered acetaminophen percent by mass evidence is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the approved investigation.",
+          "recovery": "Return to the highlighted step and preserve the fraction or evidence already collected."
+        },
+        {
+          "id": "unapproved-procedure",
+          "when": "execution is attempted before instructor approval",
+          "message": "The separation plan has not been approved.",
+          "recovery": "Submit the property evidence, chemical rationale, quantities, endpoints, and disposal plan for instructor approval."
+        },
+        {
+          "id": "unlabeled-fraction",
+          "when": "a layer or recovered fraction lacks identity and provenance",
+          "message": "The fraction cannot be interpreted safely without a label.",
+          "recovery": "Label the vessel with source stage, observed layer, retained material, and uncertainty before continuing."
+        },
+        {
+          "id": "identity-asserted-without-evidence",
+          "when": "a recovered fraction is named from an expected recipe rather than from evidence",
+          "message": "A solid recovered by bicarbonate extraction and re-acidification is an acid; that does not make it aspirin.",
+          "recovery": "Record what the recovery establishes and what it does not, and keep the component identity open until independent evidence supports it."
+        }
+      ],
+      "feedback": {
+        "success": "Calculate recovered acetaminophen percent by mass complete.",
+        "invalid": "Record the required evidence and use the teacher-approved configuration before continuing."
+      },
+      "evidence": [
+        "calculate",
+        "composition"
+      ]
+    },
+    {
+      "id": "qar-calculate-possible-aspirin-percentage",
+      "verb": "calculate",
+      "label": "Calculate possible recovered aspirin percent by mass",
+      "parameters": {
+        "studentValueRequired": true,
+        "calculationId": "qar-possible-aspirin-percentage",
+        "formula": "possible aspirin dry mass / starting sample mass x 100; enter 0 only with method-supported non-detection evidence",
+        "component": "possible aspirin",
+        "teacherConfigKey": "acceptedRoundingUncertaintyAndNonDetectionRule",
+        "configurationRequired": true,
+        "unit": "%",
+        "template": "componentMassPercent",
+        "compositionFormulaConfirmation": "component-mass-over-starting-mass",
+        "startingMassMeasurementId": "qar-starting-mass",
+        "componentMassMeasurementId": "qar-recovered-acidic-component-mass",
+        "tolerance": 0.5,
+        "evidenceProvenance": "recorded dry recovered mass divided by the recorded starting mass",
+        "identityLimit": "This percentage describes an acidic fraction recovered by bicarbonate extraction and re-acidification. A mass of zero is a genuine non-detection; a mass above zero is not an identification of aspirin."
+      },
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Submit Calculate possible recovered aspirin percent by mass."
+      },
+      "prerequisites": [
+        {
+          "id": "qar-calculate-possible-aspirin-percentage--qar-calculate-possible-aspirin-percentage-starting-mass",
+          "type": "measurementRecorded",
+          "label": "The starting sample mass is recorded.",
+          "measurementId": "qar-starting-mass"
+        },
+        {
+          "id": "qar-calculate-possible-aspirin-percentage--qar-calculate-possible-aspirin-percentage-component-mass",
+          "type": "measurementRecorded",
+          "label": "The acidic fraction's dry mass is recorded.",
+          "measurementId": "qar-recovered-acidic-component-mass"
+        },
+        {
+          "id": "qar-calculate-possible-aspirin-percentage--qar-calculate-possible-aspirin-percentage-formula-confirmed",
+          "type": "notebookEntry",
+          "label": "The intended composition formula is confirmed.",
+          "notebookTag": "composition-formula"
+        }
+      ],
+      "stateChanges": [
+        "Calculate possible recovered aspirin percent by mass evidence is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the approved investigation.",
+          "recovery": "Return to the highlighted step and preserve the fraction or evidence already collected."
+        },
+        {
+          "id": "unapproved-procedure",
+          "when": "execution is attempted before instructor approval",
+          "message": "The separation plan has not been approved.",
+          "recovery": "Submit the property evidence, chemical rationale, quantities, endpoints, and disposal plan for instructor approval."
+        },
+        {
+          "id": "unlabeled-fraction",
+          "when": "a layer or recovered fraction lacks identity and provenance",
+          "message": "The fraction cannot be interpreted safely without a label.",
+          "recovery": "Label the vessel with source stage, observed layer, retained material, and uncertainty before continuing."
+        },
+        {
+          "id": "identity-asserted-without-evidence",
+          "when": "a recovered fraction is named from an expected recipe rather than from evidence",
+          "message": "A solid recovered by bicarbonate extraction and re-acidification is an acid; that does not make it aspirin.",
+          "recovery": "Record what the recovery establishes and what it does not, and keep the component identity open until independent evidence supports it."
+        }
+      ],
+      "feedback": {
+        "success": "Calculate possible recovered aspirin percent by mass complete.",
+        "invalid": "Record the required evidence and use the teacher-approved configuration before continuing."
+      },
+      "evidence": [
+        "calculate",
+        "composition",
+        "identity-boundary"
+      ]
+    },
+    {
+      "id": "qar-calculate-total-recovery",
+      "verb": "calculate",
+      "label": "Calculate total percent recovery",
+      "parameters": {
+        "studentValueRequired": true,
+        "calculationId": "qar-total-percent-recovery",
+        "formula": "sum of recovered dry component masses / starting sample mass x 100",
+        "teacherConfigKey": "recoveryToleranceAndUncertaintyRule",
+        "configurationRequired": true,
+        "unit": "%",
+        "template": "totalPercentRecovery",
+        "compositionFormulaConfirmation": "component-mass-over-starting-mass",
+        "startingMassMeasurementId": "qar-starting-mass",
+        "recoveredMassMeasurementIds": [
+          "qar-recovered-aqueous-component-mass",
+          "qar-recovered-organic-component-mass",
+          "qar-recovered-acidic-component-mass"
+        ],
+        "tolerance": 0.5,
+        "evidenceProvenance": "sum of the recorded dry recovered masses divided by the recorded starting mass"
+      },
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Submit Calculate total percent recovery."
+      },
+      "prerequisites": [
+        {
+          "id": "qar-calculate-total-recovery--qar-total-starting-mass",
+          "type": "measurementRecorded",
+          "label": "The starting sample mass is recorded.",
+          "measurementId": "qar-starting-mass"
+        },
+        {
+          "id": "qar-calculate-total-recovery--qar-total-aqueous",
+          "type": "measurementRecorded",
+          "label": "The aqueous fraction's dry mass is recorded.",
+          "measurementId": "qar-recovered-aqueous-component-mass"
+        },
+        {
+          "id": "qar-calculate-total-recovery--qar-total-organic",
+          "type": "measurementRecorded",
+          "label": "The organic fraction's dry mass is recorded.",
+          "measurementId": "qar-recovered-organic-component-mass"
+        },
+        {
+          "id": "qar-calculate-total-recovery--qar-total-acidic",
+          "type": "measurementRecorded",
+          "label": "The acidic fraction's dry mass is recorded.",
+          "measurementId": "qar-recovered-acidic-component-mass"
+        },
+        {
+          "id": "qar-calculate-total-recovery--qar-total-formula-confirmed",
+          "type": "notebookEntry",
+          "label": "The intended composition formula is confirmed.",
+          "notebookTag": "composition-formula"
+        }
+      ],
+      "stateChanges": [
+        "Calculate total percent recovery evidence is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the approved investigation.",
+          "recovery": "Return to the highlighted step and preserve the fraction or evidence already collected."
+        },
+        {
+          "id": "unapproved-procedure",
+          "when": "execution is attempted before instructor approval",
+          "message": "The separation plan has not been approved.",
+          "recovery": "Submit the property evidence, chemical rationale, quantities, endpoints, and disposal plan for instructor approval."
+        },
+        {
+          "id": "unlabeled-fraction",
+          "when": "a layer or recovered fraction lacks identity and provenance",
+          "message": "The fraction cannot be interpreted safely without a label.",
+          "recovery": "Label the vessel with source stage, observed layer, retained material, and uncertainty before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Calculate total percent recovery complete.",
+        "invalid": "Record the required evidence and use the teacher-approved configuration before continuing."
+      },
+      "evidence": [
+        "calculate",
+        "recovery"
+      ]
+    },
+    {
+      "id": "qar-evaluate-label-accuracy",
+      "verb": "observe",
+      "label": "Evaluate label accuracy and Team A or Team B",
+      "parameters": {
+        "prompt": "Compare binder with 12-18% and acetaminophen with 82-88%. Treat 15% binder and 85% acetaminophen as the label reference. Aspirin evidence supports Team B; absence of recovered aspirin is not overclaimed without method limitations.",
+        "studentResponseRequired": true,
+        "tag": "consumer-conclusion",
+        "labelReference": "15 % binder and 85 % acetaminophen",
+        "reasonableRange": "12-18 % binder and 82-88 % acetaminophen",
+        "identityLimit": "The comparison is between the label's claim and the fractions actually recovered. A fraction is not the named ingredient until independent evidence says so.",
+        "note": "Recovered fractions compared against the label's stated 15 % binder and 85 % acetaminophen and the accepted 12-18 % and 82-88 % ranges."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Evaluate label accuracy and Team A or Team B."
+      },
+      "prerequisites": [
+        {
+          "id": "qar-evaluate-label-accuracy--qar-composition-before-label",
+          "type": "notebookEntry",
+          "label": "The composition convention is confirmed.",
+          "notebookTag": "composition-formula"
+        }
+      ],
+      "stateChanges": [
+        "Evaluate label accuracy and Team A or Team B evidence is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the approved investigation.",
+          "recovery": "Return to the highlighted step and preserve the fraction or evidence already collected."
+        },
+        {
+          "id": "unapproved-procedure",
+          "when": "execution is attempted before instructor approval",
+          "message": "The separation plan has not been approved.",
+          "recovery": "Submit the property evidence, chemical rationale, quantities, endpoints, and disposal plan for instructor approval."
+        },
+        {
+          "id": "unlabeled-fraction",
+          "when": "a layer or recovered fraction lacks identity and provenance",
+          "message": "The fraction cannot be interpreted safely without a label.",
+          "recovery": "Label the vessel with source stage, observed layer, retained material, and uncertainty before continuing."
+        },
+        {
+          "id": "identity-asserted-without-evidence",
+          "when": "a recovered fraction is named from an expected recipe rather than from evidence",
+          "message": "A solid recovered by bicarbonate extraction and re-acidification is an acid; that does not make it aspirin.",
+          "recovery": "Record what the recovery establishes and what it does not, and keep the component identity open until independent evidence supports it."
+        }
+      ],
+      "feedback": {
+        "success": "Evaluate label accuracy and Team A or Team B complete.",
+        "invalid": "Record the required evidence and use the teacher-approved configuration before continuing."
+      },
+      "evidence": [
+        "notebook"
+      ]
+    },
+    {
+      "id": "qar-analyze-uncertainty",
+      "verb": "observe",
+      "label": "Analyze uncertainty, recovery, and error",
+      "parameters": {
+        "prompt": "Use the configured replicate rule and measurement precision to discuss transfer losses, incomplete extraction, emulsions, incomplete drying, contamination, and identity uncertainty.",
+        "studentResponseRequired": true,
+        "tag": "uncertainty-analysis",
+        "teacherConfigKey": "replicateUncertaintyAndRecoveryToleranceRules",
+        "configurationRequired": true,
+        "note": "Error sources recorded: transfer losses, incomplete phase separation, residual solvent, balance readability, and their direction on each figure."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Analyze uncertainty, recovery, and error."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Analyze uncertainty, recovery, and error evidence is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the approved investigation.",
+          "recovery": "Return to the highlighted step and preserve the fraction or evidence already collected."
+        },
+        {
+          "id": "unapproved-procedure",
+          "when": "execution is attempted before instructor approval",
+          "message": "The separation plan has not been approved.",
+          "recovery": "Submit the property evidence, chemical rationale, quantities, endpoints, and disposal plan for instructor approval."
+        },
+        {
+          "id": "unlabeled-fraction",
+          "when": "a layer or recovered fraction lacks identity and provenance",
+          "message": "The fraction cannot be interpreted safely without a label.",
+          "recovery": "Label the vessel with source stage, observed layer, retained material, and uncertainty before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Analyze uncertainty, recovery, and error complete.",
+        "invalid": "Record the required evidence and use the teacher-approved configuration before continuing."
+      },
+      "evidence": [
+        "notebook"
+      ]
+    },
+    {
+      "id": "qar-submit-report-evidence",
+      "verb": "observe",
+      "label": "Submit the investigation report evidence",
+      "parameters": {
+        "prompt": "Include consumer hypotheses, property matrix, approved flowchart, amounts and concentrations, layer evidence, fraction provenance, pH and precipitation evidence, dry masses, calculations, label comparison, aspirin evidence, error analysis, conclusion, and an additional-analysis proposal.",
+        "studentResponseRequired": true,
+        "tag": "investigation-report",
+        "note": "Report evidence submitted: starting mass, property matrix, every reagent and volume, layer observations, fraction transfers, pH, masses, composition, recovery, and label comparison."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Submit the investigation report evidence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Submit the investigation report evidence evidence is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the approved investigation.",
+          "recovery": "Return to the highlighted step and preserve the fraction or evidence already collected."
+        },
+        {
+          "id": "unapproved-procedure",
+          "when": "execution is attempted before instructor approval",
+          "message": "The separation plan has not been approved.",
+          "recovery": "Submit the property evidence, chemical rationale, quantities, endpoints, and disposal plan for instructor approval."
+        },
+        {
+          "id": "unlabeled-fraction",
+          "when": "a layer or recovered fraction lacks identity and provenance",
+          "message": "The fraction cannot be interpreted safely without a label.",
+          "recovery": "Label the vessel with source stage, observed layer, retained material, and uncertainty before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Submit the investigation report evidence complete.",
+        "invalid": "Record the required evidence and use the teacher-approved configuration before continuing."
+      },
+      "evidence": [
+        "notebook"
+      ]
+    },
+    {
+      "id": "qar-submit-particulate-postlab",
+      "verb": "observe",
+      "label": "Submit the particulate-level postlab model",
+      "parameters": {
+        "prompt": "Explain at the particle level how polarity, ion formation, intermolecular attractions, phase partitioning, precipitation, filtration, and drying account for the observed separation and any imperfect recovery.",
+        "studentResponseRequired": true,
+        "tag": "particulate-postlab",
+        "note": "Particulate-level explanation recorded, using polarity, ion formation, partitioning, precipitation, filtration, and drying."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record evidence for Submit the particulate-level postlab model."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Submit the particulate-level postlab model evidence is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the approved investigation.",
+          "recovery": "Return to the highlighted step and preserve the fraction or evidence already collected."
+        },
+        {
+          "id": "unapproved-procedure",
+          "when": "execution is attempted before instructor approval",
+          "message": "The separation plan has not been approved.",
+          "recovery": "Submit the property evidence, chemical rationale, quantities, endpoints, and disposal plan for instructor approval."
+        },
+        {
+          "id": "unlabeled-fraction",
+          "when": "a layer or recovered fraction lacks identity and provenance",
+          "message": "The fraction cannot be interpreted safely without a label.",
+          "recovery": "Label the vessel with source stage, observed layer, retained material, and uncertainty before continuing."
+        }
+      ],
+      "feedback": {
+        "success": "Submit the particulate-level postlab model complete.",
+        "invalid": "Record the required evidence and use the teacher-approved configuration before continuing."
+      },
+      "evidence": [
+        "notebook"
+      ]
+    }
+  ],
+  "process": {
+    "startNodeId": "qar-confirm-formula-node",
+    "nodes": [
+      {
+        "id": "qar-confirm-formula-node",
+        "type": "checkpoint",
+        "title": "Confirm calculation formulas",
+        "description": "Separate component percent by mass from total percent recovery before calculating.",
+        "actionId": "qar-confirm-composition-formula",
+        "config": {},
+        "validation": [
+          {
+            "id": "qar-confirm-formula-node--qar-confirm-formula-node-complete",
+            "type": "actionEvidence",
+            "label": "Confirm calculation formulas was completed.",
+            "actionId": "qar-confirm-composition-formula"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Confirm calculation formulas complete.",
+          "retry": "Complete confirm calculation formulas with the required evidence."
+        }
+      },
+      {
+        "id": "qar-sucrose-percent-node",
+        "type": "calculation",
+        "title": "Sucrose percentage",
+        "description": "Calculate recovered sucrose percent by mass from its independent dry mass.",
+        "actionId": "qar-calculate-sucrose-percentage",
+        "config": {
+          "teacherConfigurable": true,
+          "requiredConfiguration": "rounding and uncertainty rule"
+        },
+        "validation": [
+          {
+            "id": "qar-sucrose-percent-node--qar-sucrose-percent-node-complete",
+            "type": "actionEvidence",
+            "label": "Sucrose percentage was completed.",
+            "actionId": "qar-calculate-sucrose-percentage"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Sucrose percentage complete.",
+          "retry": "Complete sucrose percentage with the required evidence."
+        }
+      },
+      {
+        "id": "qar-acetaminophen-percent-node",
+        "type": "calculation",
+        "title": "Acetaminophen percentage",
+        "description": "Calculate recovered acetaminophen percent by mass from its independent dry mass.",
+        "actionId": "qar-calculate-acetaminophen-percentage",
+        "config": {
+          "teacherConfigurable": true,
+          "requiredConfiguration": "rounding and uncertainty rule"
+        },
+        "validation": [
+          {
+            "id": "qar-acetaminophen-percent-node--qar-acetaminophen-percent-node-complete",
+            "type": "actionEvidence",
+            "label": "Acetaminophen percentage was completed.",
+            "actionId": "qar-calculate-acetaminophen-percentage"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Acetaminophen percentage complete.",
+          "retry": "Complete acetaminophen percentage with the required evidence."
+        }
+      },
+      {
+        "id": "qar-possible-aspirin-percent-node",
+        "type": "calculation",
+        "title": "Possible aspirin percentage",
+        "description": "Calculate possible recovered aspirin percent by mass without converting non-recovery into a false absence claim.",
+        "actionId": "qar-calculate-possible-aspirin-percentage",
+        "config": {
+          "teacherConfigurable": true,
+          "requiredConfiguration": "rounding, uncertainty, and non-detection rule"
+        },
+        "validation": [
+          {
+            "id": "qar-possible-aspirin-percent-node--qar-possible-aspirin-percent-node-complete",
+            "type": "actionEvidence",
+            "label": "Possible aspirin percentage was completed.",
+            "actionId": "qar-calculate-possible-aspirin-percentage"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Possible aspirin percentage complete.",
+          "retry": "Complete possible aspirin percentage with the required evidence."
+        }
+      },
+      {
+        "id": "qar-total-recovery-node",
+        "type": "calculation",
+        "title": "Total percent recovery",
+        "description": "Calculate total recovery separately from the individual composition percentages.",
+        "actionId": "qar-calculate-total-recovery",
+        "config": {
+          "teacherConfigurable": true,
+          "requiredConfiguration": "recovery tolerance"
+        },
+        "validation": [
+          {
+            "id": "qar-total-recovery-node--qar-total-recovery-node-complete",
+            "type": "actionEvidence",
+            "label": "Total percent recovery was completed.",
+            "actionId": "qar-calculate-total-recovery"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Total percent recovery complete.",
+          "retry": "Complete total percent recovery with the required evidence."
+        }
+      },
+      {
+        "id": "qar-label-accuracy-node",
+        "type": "decision",
+        "title": "Consumer conclusion",
+        "description": "Use the stated binder and acetaminophen ranges plus aspirin evidence to evaluate Team A or Team B.",
+        "actionId": "qar-evaluate-label-accuracy",
+        "config": {},
+        "validation": [
+          {
+            "id": "qar-label-accuracy-node--qar-label-accuracy-node-complete",
+            "type": "actionEvidence",
+            "label": "Consumer conclusion was completed.",
+            "actionId": "qar-evaluate-label-accuracy"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Consumer conclusion complete.",
+          "retry": "Complete consumer conclusion with the required evidence."
+        }
+      },
+      {
+        "id": "qar-uncertainty-node",
+        "type": "observation",
+        "title": "Uncertainty and error",
+        "description": "Relate uncertainty and recovery limits to the strength of the consumer conclusion.",
+        "actionId": "qar-analyze-uncertainty",
+        "config": {},
+        "validation": [
+          {
+            "id": "qar-uncertainty-node--qar-uncertainty-node-complete",
+            "type": "actionEvidence",
+            "label": "Uncertainty and error was completed.",
+            "actionId": "qar-analyze-uncertainty"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Uncertainty and error complete.",
+          "retry": "Complete uncertainty and error with the required evidence."
+        }
+      },
+      {
+        "id": "qar-report-node",
+        "type": "checkpoint",
+        "title": "Investigation report",
+        "description": "Submit a claim-evidence-reasoning report with complete procedural and quantitative evidence.",
+        "actionId": "qar-submit-report-evidence",
+        "config": {},
+        "validation": [
+          {
+            "id": "qar-report-node--qar-report-node-complete",
+            "type": "actionEvidence",
+            "label": "Investigation report was completed.",
+            "actionId": "qar-submit-report-evidence"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Investigation report complete.",
+          "retry": "Complete investigation report with the required evidence."
+        }
+      },
+      {
+        "id": "qar-particulate-postlab-node",
+        "type": "checkpoint",
+        "title": "Particulate-level postlab",
+        "description": "Connect molecular and ionic behavior to the macroscopic separation and recovery evidence.",
+        "actionId": "qar-submit-particulate-postlab",
+        "config": {},
+        "validation": [
+          {
+            "id": "qar-particulate-postlab-node--qar-particulate-postlab-node-complete",
+            "type": "actionEvidence",
+            "label": "Particulate-level postlab was completed.",
+            "actionId": "qar-submit-particulate-postlab"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Particulate-level postlab complete.",
+          "retry": "Complete particulate-level postlab with the required evidence."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "qar-confirm-formula-node",
+        "to": "qar-sucrose-percent-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "qar-sucrose-percent-node",
+        "to": "qar-acetaminophen-percent-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "qar-acetaminophen-percent-node",
+        "to": "qar-possible-aspirin-percent-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "qar-possible-aspirin-percent-node",
+        "to": "qar-total-recovery-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "qar-total-recovery-node",
+        "to": "qar-label-accuracy-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "qar-label-accuracy-node",
+        "to": "qar-uncertainty-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "qar-uncertainty-node",
+        "to": "qar-report-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "qar-report-node",
+        "to": "qar-particulate-postlab-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [
+    {
+      "id": "quick-ache-analysis-report-complete",
+      "type": "actionEvidence",
+      "label": "Quick Ache Composition Analysis and Report final evidence was recorded.",
+      "actionId": "qar-submit-particulate-postlab"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "current node expects a different action",
+      "message": "That action is out of sequence for the approved investigation.",
+      "recovery": "Return to the highlighted step and preserve the fraction or evidence already collected."
+    },
+    {
+      "id": "unapproved-procedure",
+      "when": "execution is attempted before instructor approval",
+      "message": "The separation plan has not been approved.",
+      "recovery": "Submit the property evidence, chemical rationale, quantities, endpoints, and disposal plan for instructor approval."
+    },
+    {
+      "id": "unlabeled-fraction",
+      "when": "a layer or recovered fraction lacks identity and provenance",
+      "message": "The fraction cannot be interpreted safely without a label.",
+      "recovery": "Label the vessel with source stage, observed layer, retained material, and uncertainty before continuing."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.2.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-04T00:00:00.000Z",
+    "tags": [
+      "chemistry",
+      "quick-ache-relief",
+      "analysis",
+      "consumer-chemistry",
+      "particulate-model"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry-qar-confirm-formula-node",
+        "kind": "entry",
+        "nodeId": "qar-confirm-formula-node",
+        "label": "Entry"
+      },
+      {
+        "id": "exit-qar-particulate-postlab-node",
+        "kind": "exit",
+        "nodeId": "qar-particulate-postlab-node",
+        "label": "Exit"
+      }
+    ],
+    "equipmentRoles": [],
+    "modelSlots": [],
+    "configurationSlots": [],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [],
+    "completion": {
+      "exitPortIds": [
+        "exit-qar-particulate-postlab-node"
+      ],
+      "requiredEvidenceOutputIds": [],
+      "requiredValidationRuleIds": []
+    },
+    "catalogDisposition": "composable",
+    "legacyActionEffects": [
+      {
+        "actionId": "qar-confirm-composition-formula",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "qar-calculate-sucrose-percentage",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "qar-calculate-acetaminophen-percentage",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "qar-calculate-possible-aspirin-percentage",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "qar-calculate-total-recovery",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "qar-evaluate-label-accuracy",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "qar-analyze-uncertainty",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "qar-submit-report-evidence",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "qar-submit-particulate-postlab",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

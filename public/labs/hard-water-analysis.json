@@ -1,0 +1,1973 @@
+{
+  "id": "hard-water-analysis",
+  "title": "What Makes Hard Water Hard?",
+  "description": "Chemistry Hard-Water Analysis: a manual-faithful practice sequence followed by teacher-approved gravimetric analysis of two preconcentrated water samples, six-sample class ranking, and a qualified client recommendation. All balance outputs and peer results in this standalone simulator are explicitly teacher-configured simulated evidence.",
+  "audience": "Chemistry students",
+  "learningGoals": [
+    "Use limiting-reactant and Ksp reasoning to design complete Ca2+ precipitation as CaCO3.",
+    "Collect separate observations, simulated measurements, tare-corrected calculations, and uncertainty evidence through gravimetric analysis.",
+    "Correct a 20 mL preconcentrated aliquot result by the stated 200x factor and report original-source hardness in mg/L as CaCO3.",
+    "Pool six class results, defend the method, and write a qualified client recommendation."
+  ],
+  "safetyNotes": [
+    "Wear splash-proof goggles; solutions may be harmful if swallowed and may irritate eyes.",
+    "Use only the teacher-approved vacuum-filtration configuration and confirm the receiver before pouring.",
+    "Use heat-safe handling at 110-120 C and never weigh a warm watch-glass assembly.",
+    "Follow the configured disposal path: approved liquids to the drain, paper and precipitate to solid waste, and rubbing alcohol for marker cleanup."
+  ],
+  "equipment": [
+    "analytical-balance",
+    "beaker-250ml",
+    "reagent-bottle",
+    "distilled-water-bottle",
+    "graduated-cylinder",
+    "stirring-rod",
+    "stopwatch",
+    "filter-paper",
+    "buchner-funnel",
+    "side-arm-filter-flask",
+    "vacuum-source",
+    "wash-bottle",
+    "watch-glass",
+    "drying-oven",
+    "crucible-tongs",
+    "scoopula",
+    "permanent-marker",
+    "rubbing-alcohol-bottle",
+    "waste-beaker",
+    "sample-rack",
+    "sample-bottle",
+    "funnel-stand",
+    "erlenmeyer-flask-250ml"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "practice-balance",
+        "definitionId": "analytical-balance",
+        "label": "Analytical balance",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-sodium-beaker",
+        "definitionId": "beaker-250ml",
+        "label": "250 mL beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-calcium-beaker",
+        "definitionId": "beaker-250ml",
+        "label": "250 mL beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-sodium-carbonate",
+        "definitionId": "reagent-bottle",
+        "label": "Anhydrous sodium carbonate",
+        "location": "shelf",
+        "contents": {
+          "kind": "solid",
+          "label": "Anhydrous sodium carbonate",
+          "massG": 25,
+          "solutes": [
+            {
+              "id": "sodium-carbonate",
+              "label": "Anhydrous sodium carbonate",
+              "amount": 25,
+              "unit": "g"
+            }
+          ],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "white-solid"
+        }
+      },
+      {
+        "id": "practice-calcium-chloride",
+        "definitionId": "reagent-bottle",
+        "label": "Anhydrous calcium chloride",
+        "location": "shelf",
+        "contents": {
+          "kind": "solid",
+          "label": "Anhydrous calcium chloride",
+          "massG": 25,
+          "solutes": [
+            {
+              "id": "calcium-chloride",
+              "label": "Anhydrous calcium chloride",
+              "amount": 25,
+              "unit": "g"
+            }
+          ],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "white-solid"
+        }
+      },
+      {
+        "id": "practice-distilled-water",
+        "definitionId": "distilled-water-bottle",
+        "label": "Distilled water bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Distilled water",
+          "volumeMl": 500,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "practice-cylinder",
+        "definitionId": "graduated-cylinder",
+        "label": "100 mL graduated cylinder",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-stirring-rod",
+        "definitionId": "stirring-rod",
+        "label": "Stirring rod",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-stopwatch",
+        "definitionId": "stopwatch",
+        "label": "Stopwatch",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-filter-balance",
+        "definitionId": "analytical-balance",
+        "label": "Analytical balance",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-filter-paper",
+        "definitionId": "filter-paper",
+        "label": "Filter paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-buchner",
+        "definitionId": "buchner-funnel",
+        "label": "Buchner funnel",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-filter-flask",
+        "definitionId": "side-arm-filter-flask",
+        "label": "Side-arm filter flask",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-vacuum",
+        "definitionId": "vacuum-source",
+        "label": "Vacuum source",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-wash-bottle",
+        "definitionId": "wash-bottle",
+        "label": "Deionized-water wash bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Deionized water",
+          "volumeMl": 500,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "practice-mixture-beaker",
+        "definitionId": "beaker-250ml",
+        "label": "250 mL beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "mixture",
+          "label": "Practice CaCO3 suspension",
+          "volumeMl": 40,
+          "solutes": [
+            {
+              "id": "calcium-carbonate",
+              "label": "Calcium carbonate",
+              "amount": 1.71,
+              "unit": "g"
+            }
+          ],
+          "precipitate": {
+            "substance": "Calcium carbonate",
+            "massG": 1.71,
+            "rinsed": false,
+            "dryness": "wet"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "cloudy-precipitate"
+        }
+      },
+      {
+        "id": "practice-dry-balance",
+        "definitionId": "analytical-balance",
+        "label": "Analytical balance",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-dry-paper",
+        "definitionId": "filter-paper",
+        "label": "Filter paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "precipitate",
+          "label": "Calcium carbonate",
+          "massG": 1.71,
+          "solutes": [
+            {
+              "id": "calcium-carbonate",
+              "label": "Calcium carbonate",
+              "amount": 1.71,
+              "unit": "g"
+            }
+          ],
+          "precipitate": {
+            "substance": "Calcium carbonate",
+            "massG": 1.71,
+            "rinsed": true,
+            "dryness": "wet"
+          },
+          "contamination": [],
+          "wetState": "rinsed",
+          "visualState": "filter-cake"
+        }
+      },
+      {
+        "id": "practice-watch-glass",
+        "definitionId": "watch-glass",
+        "label": "Watch glass",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-dry-flask",
+        "definitionId": "side-arm-filter-flask",
+        "label": "Side-arm filter flask",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Practice filtrate",
+          "volumeMl": 50,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-filtrate"
+        }
+      },
+      {
+        "id": "practice-drying-oven",
+        "definitionId": "drying-oven",
+        "label": "Drying oven",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-tongs",
+        "definitionId": "crucible-tongs",
+        "label": "Crucible tongs",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-scoopula",
+        "definitionId": "scoopula",
+        "label": "Metal scoopula",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-marker",
+        "definitionId": "permanent-marker",
+        "label": "Permanent marker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-rubbing-alcohol",
+        "definitionId": "rubbing-alcohol-bottle",
+        "label": "Rubbing alcohol bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Rubbing alcohol",
+          "volumeMl": 100,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "practice-waste",
+        "definitionId": "waste-beaker",
+        "label": "Waste beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "inquiry-sample-rack",
+        "definitionId": "sample-rack",
+        "label": "Six-sample class rack",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "inquiry-sample-c",
+        "definitionId": "sample-bottle",
+        "label": "Water sample bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Preconcentrated sample C",
+          "volumeMl": 25,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "inquiry-sample-d",
+        "definitionId": "sample-bottle",
+        "label": "Water sample bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Preconcentrated sample D",
+          "volumeMl": 25,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "inquiry-carbonate",
+        "definitionId": "reagent-bottle",
+        "label": "Reagent bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "0.50 M sodium carbonate",
+          "volumeMl": 120,
+          "concentration": {
+            "value": 0.5,
+            "unit": "M"
+          },
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-solution"
+        }
+      },
+      {
+        "id": "unknown-balance",
+        "definitionId": "analytical-balance",
+        "label": "Analytical balance",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "unknown-carbonate",
+        "definitionId": "reagent-bottle",
+        "label": "Reagent bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "0.50 M sodium carbonate",
+          "volumeMl": 120,
+          "concentration": {
+            "value": 0.5,
+            "unit": "M"
+          },
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-solution"
+        }
+      },
+      {
+        "id": "unknown-wash-bottle",
+        "definitionId": "wash-bottle",
+        "label": "Deionized-water wash bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Deionized water",
+          "volumeMl": 500,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "unknown-oven",
+        "definitionId": "drying-oven",
+        "label": "Drying oven",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "unknown-tongs",
+        "definitionId": "crucible-tongs",
+        "label": "Crucible tongs",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "unknown-scoopula",
+        "definitionId": "scoopula",
+        "label": "Metal scoopula",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "unknown-marker",
+        "definitionId": "permanent-marker",
+        "label": "Permanent marker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "unknown-class-rack",
+        "definitionId": "sample-rack",
+        "label": "Six-sample class rack",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "unknown-c-bottle",
+        "definitionId": "sample-bottle",
+        "label": "Sample C",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Preconcentrated Sample C",
+          "volumeMl": 25,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "unknown-c-cylinder",
+        "definitionId": "graduated-cylinder",
+        "label": "100 mL graduated cylinder",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "unknown-c-beaker",
+        "definitionId": "beaker-250ml",
+        "label": "250 mL beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "unknown-c-paper",
+        "definitionId": "filter-paper",
+        "label": "Filter paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "unknown-c-buchner",
+        "definitionId": "buchner-funnel",
+        "label": "Buchner funnel",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "unknown-c-flask",
+        "definitionId": "side-arm-filter-flask",
+        "label": "Side-arm filter flask",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "unknown-c-vacuum",
+        "definitionId": "vacuum-source",
+        "label": "Vacuum source",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "unknown-c-watch",
+        "definitionId": "watch-glass",
+        "label": "Watch glass",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "unknown-d-bottle",
+        "definitionId": "sample-bottle",
+        "label": "Sample D",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Preconcentrated Sample D",
+          "volumeMl": 25,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "unknown-d-cylinder",
+        "definitionId": "graduated-cylinder",
+        "label": "100 mL graduated cylinder",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "unknown-d-beaker",
+        "definitionId": "beaker-250ml",
+        "label": "250 mL beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "unknown-d-paper",
+        "definitionId": "filter-paper",
+        "label": "Filter paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "unknown-d-buchner",
+        "definitionId": "buchner-funnel",
+        "label": "Buchner funnel",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "unknown-d-flask",
+        "definitionId": "side-arm-filter-flask",
+        "label": "Side-arm filter flask",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "unknown-d-vacuum",
+        "definitionId": "vacuum-source",
+        "label": "Vacuum source",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "unknown-d-watch",
+        "definitionId": "watch-glass",
+        "label": "Watch glass",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-gravity-funnel",
+        "definitionId": "funnel-stand",
+        "label": "practice preassembled gravity filtration stand",
+        "location": "storage",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "practice-gravity-receiver",
+        "definitionId": "erlenmeyer-flask-250ml",
+        "label": "practice gravity filtrate receiver",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "unknown-c-gravity-funnel",
+        "definitionId": "funnel-stand",
+        "label": "unknown-c preassembled gravity filtration stand",
+        "location": "storage",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "unknown-c-gravity-receiver",
+        "definitionId": "erlenmeyer-flask-250ml",
+        "label": "unknown-c gravity filtrate receiver",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "unknown-d-gravity-funnel",
+        "definitionId": "funnel-stand",
+        "label": "unknown-d preassembled gravity filtration stand",
+        "location": "storage",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "unknown-d-gravity-receiver",
+        "definitionId": "erlenmeyer-flask-250ml",
+        "label": "unknown-d gravity filtrate receiver",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "two-stage-precipitate-drying-cleanup-waste",
+        "definitionId": "waste-beaker",
+        "label": "Teacher-designated cleanup waste",
+        "location": "workbench",
+        "contents": {
+          "kind": "empty",
+          "label": "Empty designated waste",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "two-stage-precipitate-drying-cleanup-waste-solid",
+        "definitionId": "waste-beaker",
+        "label": "Teacher-designated solid waste",
+        "location": "workbench",
+        "contents": {
+          "kind": "empty",
+          "label": "Empty solid waste",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "hard-water-two-sample-inquiry-cleanup-waste",
+        "definitionId": "waste-beaker",
+        "label": "Teacher-designated cleanup waste",
+        "location": "workbench",
+        "contents": {
+          "kind": "empty",
+          "label": "Empty designated waste",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "hard-water-two-sample-inquiry-cleanup-waste-solid",
+        "definitionId": "waste-beaker",
+        "label": "Teacher-designated solid waste",
+        "location": "workbench",
+        "contents": {
+          "kind": "empty",
+          "label": "Empty solid waste",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "techniques": [],
+  "actions": [],
+  "process": {
+    "startNodeId": "hard-water-practice-preparation--review-practice-safety-node",
+    "nodes": [],
+    "edges": []
+  },
+  "assessments": [
+    {
+      "id": "hard-water-practice-preparation-lab-assessment",
+      "type": "actionEvidence",
+      "label": "Hard-Water Practice Preparation final evidence is complete.",
+      "actionId": "age-practice-precipitate"
+    },
+    {
+      "id": "gravimetric-vacuum-filtration-lab-assessment",
+      "type": "actionEvidence",
+      "label": "Gravimetric Vacuum Filtration final evidence is complete.",
+      "actionId": "record-practice-filtration"
+    },
+    {
+      "id": "two-stage-precipitate-drying-lab-assessment",
+      "type": "actionEvidence",
+      "label": "Two-Stage Precipitate Drying final evidence is complete.",
+      "actionId": "complete-practice-cleanup"
+    },
+    {
+      "id": "inquiry-plan-approval-lab-assessment",
+      "type": "actionEvidence",
+      "label": "Inquiry Plan Approval final evidence is complete.",
+      "actionId": "approve-inquiry-procedure"
+    },
+    {
+      "id": "hard-water-two-sample-inquiry-lab-assessment",
+      "type": "actionEvidence",
+      "label": "Two-Sample Hard-Water Inquiry final evidence is complete.",
+      "actionId": "complete-unknown-cleanup"
+    }
+  ],
+  "metadata": {
+    "version": "1.2.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-04T00:00:00.000Z",
+    "tags": [
+      "lab",
+      "chemistry",
+      "hard-water",
+      "hard-water",
+      "gravimetry",
+      "inquiry",
+      "teacher-configured-simulation"
+    ]
+  },
+  "techniqueInstances": [
+    {
+      "instanceId": "hard-water-practice-preparation",
+      "techniqueId": "hard-water-practice-preparation",
+      "version": "1.2.0",
+      "bindings": {
+        "equipment": {
+          "solid-reagent-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "practice-sodium-carbonate",
+                "definitionId": "reagent-bottle",
+                "instanceId": "practice-sodium-carbonate"
+              },
+              {
+                "sourceInstanceId": "practice-calcium-chloride",
+                "definitionId": "reagent-bottle",
+                "instanceId": "practice-calcium-chloride"
+              }
+            ]
+          },
+          "receiving-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "practice-sodium-beaker",
+                "definitionId": "beaker-250ml",
+                "instanceId": "practice-sodium-beaker"
+              },
+              {
+                "sourceInstanceId": "practice-calcium-beaker",
+                "definitionId": "beaker-250ml",
+                "instanceId": "practice-calcium-beaker"
+              }
+            ]
+          },
+          "solid-transfer-tool": {
+            "definitionId": "scoopula",
+            "instanceId": "practice-scoopula"
+          },
+          "balance-instrument": {
+            "definitionId": "analytical-balance",
+            "instanceId": "practice-balance"
+          },
+          "weighed-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "practice-sodium-beaker",
+                "definitionId": "beaker-250ml",
+                "instanceId": "practice-sodium-beaker"
+              },
+              {
+                "sourceInstanceId": "practice-calcium-beaker",
+                "definitionId": "beaker-250ml",
+                "instanceId": "practice-calcium-beaker"
+              }
+            ]
+          },
+          "variable-volume-measuring-device": {
+            "definitionId": "graduated-cylinder",
+            "instanceId": "practice-cylinder"
+          },
+          "liquid-source": {
+            "definitionId": "distilled-water-bottle",
+            "instanceId": "practice-distilled-water"
+          },
+          "measured-solvent-source": {
+            "definitionId": "graduated-cylinder",
+            "instanceId": "practice-cylinder"
+          },
+          "stirring-device": {
+            "definitionId": "stirring-rod",
+            "instanceId": "practice-stirring-rod"
+          },
+          "precipitating-reagent-source": {
+            "definitionId": "beaker-250ml",
+            "instanceId": "practice-sodium-beaker"
+          },
+          "precipitation-vessel": {
+            "definitionId": "beaker-250ml",
+            "instanceId": "practice-calcium-beaker"
+          }
+        },
+        "models": {},
+        "configuration": {}
+      },
+      "preserveIds": {
+        "actions": {
+          "review-practice-safety": "review-practice-safety",
+          "create-practice-data-table": "create-practice-data-table",
+          "add-sodium-carbonate-solid": "add-sodium-carbonate-solid",
+          "weigh-sodium-carbonate": "weigh-sodium-carbonate",
+          "record-sodium-carbonate": "record-sodium-carbonate",
+          "add-calcium-chloride-solid": "add-calcium-chloride-solid",
+          "weigh-calcium-chloride": "weigh-calcium-chloride",
+          "record-calcium-chloride": "record-calcium-chloride",
+          "measure-water-for-sodium": "measure-water-for-sodium",
+          "transfer-water-to-sodium": "transfer-water-to-sodium",
+          "dissolve-sodium-solid": "dissolve-sodium-solid",
+          "observe-sodium-solution": "observe-sodium-solution",
+          "measure-water-for-calcium": "measure-water-for-calcium",
+          "transfer-water-to-calcium": "transfer-water-to-calcium",
+          "dissolve-calcium-solid": "dissolve-calcium-solid",
+          "observe-calcium-solution": "observe-calcium-solution",
+          "add-carbonate-portion-1": "add-carbonate-portion-1",
+          "observe-carbonate-portion-1": "observe-carbonate-portion-1",
+          "add-carbonate-portion-2": "add-carbonate-portion-2",
+          "observe-carbonate-portion-2": "observe-carbonate-portion-2",
+          "add-carbonate-portion-3": "add-carbonate-portion-3",
+          "observe-carbonate-portion-3": "observe-carbonate-portion-3",
+          "add-carbonate-portion-4": "add-carbonate-portion-4",
+          "observe-carbonate-portion-4": "observe-carbonate-portion-4",
+          "establish-practice-precipitate-state": "establish-practice-precipitate-state",
+          "age-practice-precipitate": "age-practice-precipitate"
+        },
+        "nodes": {
+          "review-practice-safety-node": "hard-water-practice-preparation--review-practice-safety-node",
+          "create-practice-data-table-node": "hard-water-practice-preparation--create-practice-data-table-node",
+          "add-sodium-carbonate-solid-node": "hard-water-practice-preparation--add-sodium-carbonate-solid-node",
+          "weigh-sodium-carbonate-node": "hard-water-practice-preparation--weigh-sodium-carbonate-node",
+          "record-sodium-carbonate-node": "hard-water-practice-preparation--record-sodium-carbonate-node",
+          "add-calcium-chloride-solid-node": "hard-water-practice-preparation--add-calcium-chloride-solid-node",
+          "weigh-calcium-chloride-node": "hard-water-practice-preparation--weigh-calcium-chloride-node",
+          "record-calcium-chloride-node": "hard-water-practice-preparation--record-calcium-chloride-node",
+          "measure-water-for-sodium-node": "hard-water-practice-preparation--measure-water-for-sodium-node",
+          "transfer-water-to-sodium-node": "hard-water-practice-preparation--transfer-water-to-sodium-node",
+          "dissolve-sodium-solid-node": "hard-water-practice-preparation--dissolve-sodium-solid-node",
+          "observe-sodium-solution-node": "hard-water-practice-preparation--observe-sodium-solution-node",
+          "measure-water-for-calcium-node": "hard-water-practice-preparation--measure-water-for-calcium-node",
+          "transfer-water-to-calcium-node": "hard-water-practice-preparation--transfer-water-to-calcium-node",
+          "dissolve-calcium-solid-node": "hard-water-practice-preparation--dissolve-calcium-solid-node",
+          "observe-calcium-solution-node": "hard-water-practice-preparation--observe-calcium-solution-node",
+          "add-carbonate-portion-1-node": "hard-water-practice-preparation--add-carbonate-portion-1-node",
+          "observe-carbonate-portion-1-node": "hard-water-practice-preparation--observe-carbonate-portion-1-node",
+          "add-carbonate-portion-2-node": "hard-water-practice-preparation--add-carbonate-portion-2-node",
+          "observe-carbonate-portion-2-node": "hard-water-practice-preparation--observe-carbonate-portion-2-node",
+          "add-carbonate-portion-3-node": "hard-water-practice-preparation--add-carbonate-portion-3-node",
+          "observe-carbonate-portion-3-node": "hard-water-practice-preparation--observe-carbonate-portion-3-node",
+          "add-carbonate-portion-4-node": "hard-water-practice-preparation--add-carbonate-portion-4-node",
+          "observe-carbonate-portion-4-node": "hard-water-practice-preparation--observe-carbonate-portion-4-node",
+          "establish-practice-precipitate-state-node": "hard-water-practice-preparation--establish-practice-precipitate-state-node",
+          "age-practice-precipitate-node": "hard-water-practice-preparation--age-practice-precipitate-node"
+        },
+        "validationRules": {},
+        "references": {}
+      }
+    },
+    {
+      "instanceId": "gravimetric-vacuum-filtration",
+      "techniqueId": "gravimetric-vacuum-filtration",
+      "version": "1.2.0",
+      "bindings": {
+        "equipment": {
+          "balance-instrument": {
+            "definitionId": "analytical-balance",
+            "instanceId": "practice-filter-balance"
+          },
+          "filter-medium": {
+            "definitionId": "filter-paper",
+            "instanceId": "practice-filter-paper"
+          },
+          "filtration-funnel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "practice-buchner",
+                "definitionId": "buchner-funnel",
+                "instanceId": "practice-buchner"
+              },
+              {
+                "sourceInstanceId": "practice-gravity-funnel",
+                "definitionId": "funnel-stand",
+                "instanceId": "practice-gravity-funnel"
+              }
+            ]
+          },
+          "filtration-receiver": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "practice-filter-flask",
+                "definitionId": "side-arm-filter-flask",
+                "instanceId": "practice-filter-flask"
+              },
+              {
+                "sourceInstanceId": "practice-gravity-receiver",
+                "definitionId": "erlenmeyer-flask-250ml",
+                "instanceId": "practice-gravity-receiver"
+              }
+            ]
+          },
+          "filtration-vacuum-source": {
+            "definitionId": "vacuum-source",
+            "instanceId": "practice-vacuum"
+          },
+          "rinse-water-source": {
+            "definitionId": "wash-bottle",
+            "instanceId": "practice-wash-bottle"
+          },
+          "mixture-source": {
+            "definitionId": "beaker-250ml",
+            "instanceId": "practice-mixture-beaker"
+          },
+          "rinsed-vessel": {
+            "definitionId": "beaker-250ml",
+            "instanceId": "practice-mixture-beaker"
+          }
+        },
+        "models": {},
+        "configuration": {}
+      },
+      "preserveIds": {
+        "actions": {
+          "weigh-practice-filter-paper": "weigh-practice-filter-paper",
+          "record-practice-filter-paper": "record-practice-filter-paper",
+          "select-filtration-configuration": "select-filtration-configuration",
+          "place-practice-buchner": "place-practice-buchner",
+          "seat-practice-filter-paper": "seat-practice-filter-paper",
+          "attach-practice-filter-flask": "attach-practice-filter-flask",
+          "place-practice-vacuum": "place-practice-vacuum",
+          "confirm-practice-vacuum-connection": "confirm-practice-vacuum-connection",
+          "wet-practice-filter-paper": "wet-practice-filter-paper",
+          "filter-practice-mixture": "filter-practice-mixture",
+          "rinse-practice-beaker": "rinse-practice-beaker",
+          "wash-practice-precipitate": "wash-practice-precipitate",
+          "record-practice-filtration": "record-practice-filtration"
+        },
+        "nodes": {
+          "weigh-practice-filter-paper-node": "gravimetric-vacuum-filtration--weigh-practice-filter-paper-node",
+          "record-practice-filter-paper-node": "gravimetric-vacuum-filtration--record-practice-filter-paper-node",
+          "select-filtration-configuration-node": "gravimetric-vacuum-filtration--select-filtration-configuration-node",
+          "place-practice-buchner-node": "gravimetric-vacuum-filtration--place-practice-buchner-node",
+          "seat-practice-filter-paper-node": "gravimetric-vacuum-filtration--seat-practice-filter-paper-node",
+          "attach-practice-filter-flask-node": "gravimetric-vacuum-filtration--attach-practice-filter-flask-node",
+          "place-practice-vacuum-node": "gravimetric-vacuum-filtration--place-practice-vacuum-node",
+          "confirm-practice-vacuum-connection-node": "gravimetric-vacuum-filtration--confirm-practice-vacuum-connection-node",
+          "wet-practice-filter-paper-node": "gravimetric-vacuum-filtration--wet-practice-filter-paper-node",
+          "filter-practice-mixture-node": "gravimetric-vacuum-filtration--filter-practice-mixture-node",
+          "rinse-practice-beaker-node": "gravimetric-vacuum-filtration--rinse-practice-beaker-node",
+          "wash-practice-precipitate-node": "gravimetric-vacuum-filtration--wash-practice-precipitate-node",
+          "record-practice-filtration-node": "gravimetric-vacuum-filtration--record-practice-filtration-node"
+        },
+        "validationRules": {},
+        "references": {}
+      }
+    },
+    {
+      "instanceId": "two-stage-precipitate-drying",
+      "techniqueId": "two-stage-precipitate-drying",
+      "version": "1.2.0",
+      "bindings": {
+        "equipment": {
+          "balance-instrument": {
+            "definitionId": "analytical-balance",
+            "instanceId": "practice-dry-balance"
+          },
+          "weighed-vessel": {
+            "definitionId": "watch-glass",
+            "instanceId": "practice-watch-glass"
+          },
+          "filter-medium": {
+            "definitionId": "filter-paper",
+            "instanceId": "practice-filter-paper"
+          },
+          "dried-assembly": {
+            "definitionId": "watch-glass",
+            "instanceId": "practice-watch-glass"
+          },
+          "recovery-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "practice-dry-flask",
+                "definitionId": "side-arm-filter-flask",
+                "instanceId": "practice-filter-flask"
+              },
+              {
+                "sourceInstanceId": "practice-watch-glass",
+                "definitionId": "watch-glass",
+                "instanceId": "practice-watch-glass"
+              },
+              {
+                "sourceInstanceId": "practice-dry-paper",
+                "definitionId": "filter-paper",
+                "instanceId": "practice-filter-paper"
+              },
+              {
+                "sourceInstanceId": "practice-gravity-receiver",
+                "definitionId": "erlenmeyer-flask-250ml",
+                "instanceId": "practice-gravity-receiver"
+              }
+            ]
+          },
+          "waste-receiver": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "two-stage-precipitate-drying-cleanup-waste",
+                "definitionId": "waste-beaker",
+                "instanceId": "two-stage-precipitate-drying-cleanup-waste"
+              },
+              {
+                "sourceInstanceId": "two-stage-precipitate-drying-cleanup-waste-solid",
+                "definitionId": "waste-beaker",
+                "instanceId": "two-stage-precipitate-drying-cleanup-waste-solid"
+              }
+            ]
+          },
+          "drying-instrument": {
+            "definitionId": "drying-oven",
+            "instanceId": "practice-drying-oven"
+          },
+          "cooling-tool": {
+            "definitionId": "crucible-tongs",
+            "instanceId": "practice-tongs"
+          }
+        },
+        "models": {},
+        "configuration": {}
+      },
+      "preserveIds": {
+        "actions": {
+          "label-practice-watch-glass": "label-practice-watch-glass",
+          "weigh-practice-watch-glass": "weigh-practice-watch-glass",
+          "record-practice-watch-glass": "record-practice-watch-glass",
+          "transfer-practice-paper-to-watch": "transfer-practice-paper-to-watch",
+          "dispose-practice-filtrate": "dispose-practice-filtrate",
+          "set-practice-oven": "set-practice-oven",
+          "first-practice-drying": "first-practice-drying",
+          "remove-warm-practice-watch": "remove-warm-practice-watch",
+          "break-practice-precipitate": "break-practice-precipitate",
+          "second-practice-drying": "second-practice-drying",
+          "cool-practice-assembly": "cool-practice-assembly",
+          "weigh-practice-combined": "weigh-practice-combined",
+          "record-practice-combined": "record-practice-combined",
+          "calculate-practice-theoretical": "calculate-practice-theoretical",
+          "calculate-practice-collected": "calculate-practice-collected",
+          "compare-practice-yield": "compare-practice-yield",
+          "evaluate-extra-carbonate-branch": "evaluate-extra-carbonate-branch",
+          "explain-wet-unwashed-bias": "explain-wet-unwashed-bias",
+          "complete-practice-cleanup": "complete-practice-cleanup"
+        },
+        "nodes": {
+          "label-practice-watch-glass-node": "two-stage-precipitate-drying--label-practice-watch-glass-node",
+          "weigh-practice-watch-glass-node": "two-stage-precipitate-drying--weigh-practice-watch-glass-node",
+          "record-practice-watch-glass-node": "two-stage-precipitate-drying--record-practice-watch-glass-node",
+          "transfer-practice-paper-to-watch-node": "two-stage-precipitate-drying--transfer-practice-paper-to-watch-node",
+          "dispose-practice-filtrate-node": "two-stage-precipitate-drying--dispose-practice-filtrate-node",
+          "set-practice-oven-node": "two-stage-precipitate-drying--set-practice-oven-node",
+          "first-practice-drying-node": "two-stage-precipitate-drying--first-practice-drying-node",
+          "remove-warm-practice-watch-node": "two-stage-precipitate-drying--remove-warm-practice-watch-node",
+          "break-practice-precipitate-node": "two-stage-precipitate-drying--break-practice-precipitate-node",
+          "second-practice-drying-node": "two-stage-precipitate-drying--second-practice-drying-node",
+          "cool-practice-assembly-node": "two-stage-precipitate-drying--cool-practice-assembly-node",
+          "weigh-practice-combined-node": "two-stage-precipitate-drying--weigh-practice-combined-node",
+          "record-practice-combined-node": "two-stage-precipitate-drying--record-practice-combined-node",
+          "calculate-practice-theoretical-node": "two-stage-precipitate-drying--calculate-practice-theoretical-node",
+          "calculate-practice-collected-node": "two-stage-precipitate-drying--calculate-practice-collected-node",
+          "compare-practice-yield-node": "two-stage-precipitate-drying--compare-practice-yield-node",
+          "evaluate-extra-carbonate-branch-node": "two-stage-precipitate-drying--evaluate-extra-carbonate-branch-node",
+          "explain-wet-unwashed-bias-node": "two-stage-precipitate-drying--explain-wet-unwashed-bias-node",
+          "complete-practice-cleanup-node": "two-stage-precipitate-drying--complete-practice-cleanup-node"
+        },
+        "validationRules": {},
+        "references": {}
+      }
+    },
+    {
+      "instanceId": "inquiry-plan-approval",
+      "techniqueId": "inquiry-plan-approval",
+      "version": "1.2.0",
+      "bindings": {
+        "equipment": {},
+        "models": {},
+        "configuration": {}
+      },
+      "preserveIds": {
+        "actions": {
+          "review-ksp-and-precipitation-model": "review-ksp-and-precipitation-model",
+          "select-two-assigned-samples": "select-two-assigned-samples",
+          "define-carbonate-excess-plan": "define-carbonate-excess-plan",
+          "select-inquiry-apparatus": "select-inquiry-apparatus",
+          "define-inquiry-evidence": "define-inquiry-evidence",
+          "define-inquiry-quality-choices": "define-inquiry-quality-choices",
+          "submit-inquiry-procedure": "submit-inquiry-procedure",
+          "approve-inquiry-procedure": "approve-inquiry-procedure"
+        },
+        "nodes": {
+          "review-ksp-and-precipitation-model-node": "inquiry-plan-approval--review-ksp-and-precipitation-model-node",
+          "select-two-assigned-samples-node": "inquiry-plan-approval--select-two-assigned-samples-node",
+          "define-carbonate-excess-plan-node": "inquiry-plan-approval--define-carbonate-excess-plan-node",
+          "select-inquiry-apparatus-node": "inquiry-plan-approval--select-inquiry-apparatus-node",
+          "define-inquiry-evidence-node": "inquiry-plan-approval--define-inquiry-evidence-node",
+          "define-inquiry-quality-choices-node": "inquiry-plan-approval--define-inquiry-quality-choices-node",
+          "submit-inquiry-procedure-node": "inquiry-plan-approval--submit-inquiry-procedure-node",
+          "approve-inquiry-procedure-node": "inquiry-plan-approval--approve-inquiry-procedure-node"
+        },
+        "validationRules": {},
+        "references": {}
+      }
+    },
+    {
+      "instanceId": "hard-water-two-sample-inquiry",
+      "techniqueId": "hard-water-two-sample-inquiry",
+      "version": "1.2.0",
+      "bindings": {
+        "equipment": {
+          "balance-instrument": {
+            "definitionId": "analytical-balance",
+            "instanceId": "unknown-balance"
+          },
+          "filter-medium": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "unknown-c-paper",
+                "definitionId": "filter-paper",
+                "instanceId": "unknown-c-paper"
+              },
+              {
+                "sourceInstanceId": "unknown-d-paper",
+                "definitionId": "filter-paper",
+                "instanceId": "unknown-d-paper"
+              }
+            ]
+          },
+          "variable-volume-measuring-device": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "unknown-c-cylinder",
+                "definitionId": "graduated-cylinder",
+                "instanceId": "unknown-c-cylinder"
+              },
+              {
+                "sourceInstanceId": "unknown-d-cylinder",
+                "definitionId": "graduated-cylinder",
+                "instanceId": "unknown-d-cylinder"
+              }
+            ]
+          },
+          "liquid-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "unknown-c-bottle",
+                "definitionId": "sample-bottle",
+                "instanceId": "unknown-c-bottle"
+              },
+              {
+                "sourceInstanceId": "unknown-d-bottle",
+                "definitionId": "sample-bottle",
+                "instanceId": "unknown-d-bottle"
+              }
+            ]
+          },
+          "measured-solvent-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "unknown-c-cylinder",
+                "definitionId": "graduated-cylinder",
+                "instanceId": "unknown-c-cylinder"
+              },
+              {
+                "sourceInstanceId": "unknown-d-cylinder",
+                "definitionId": "graduated-cylinder",
+                "instanceId": "unknown-d-cylinder"
+              }
+            ]
+          },
+          "receiving-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "unknown-c-beaker",
+                "definitionId": "beaker-250ml",
+                "instanceId": "unknown-c-beaker"
+              },
+              {
+                "sourceInstanceId": "unknown-d-beaker",
+                "definitionId": "beaker-250ml",
+                "instanceId": "unknown-d-beaker"
+              }
+            ]
+          },
+          "precipitating-reagent-source": {
+            "definitionId": "reagent-bottle",
+            "instanceId": "unknown-carbonate"
+          },
+          "precipitation-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "unknown-c-beaker",
+                "definitionId": "beaker-250ml",
+                "instanceId": "unknown-c-beaker"
+              },
+              {
+                "sourceInstanceId": "unknown-d-beaker",
+                "definitionId": "beaker-250ml",
+                "instanceId": "unknown-d-beaker"
+              }
+            ]
+          },
+          "stirring-device": {
+            "definitionId": "stirring-rod",
+            "instanceId": "practice-stirring-rod"
+          },
+          "filtration-funnel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "unknown-c-buchner",
+                "definitionId": "buchner-funnel",
+                "instanceId": "unknown-c-buchner"
+              },
+              {
+                "sourceInstanceId": "unknown-d-buchner",
+                "definitionId": "buchner-funnel",
+                "instanceId": "unknown-d-buchner"
+              },
+              {
+                "sourceInstanceId": "unknown-c-gravity-funnel",
+                "definitionId": "funnel-stand",
+                "instanceId": "unknown-c-gravity-funnel"
+              },
+              {
+                "sourceInstanceId": "unknown-d-gravity-funnel",
+                "definitionId": "funnel-stand",
+                "instanceId": "unknown-d-gravity-funnel"
+              }
+            ]
+          },
+          "filtration-receiver": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "unknown-c-flask",
+                "definitionId": "side-arm-filter-flask",
+                "instanceId": "unknown-c-flask"
+              },
+              {
+                "sourceInstanceId": "unknown-d-flask",
+                "definitionId": "side-arm-filter-flask",
+                "instanceId": "unknown-d-flask"
+              },
+              {
+                "sourceInstanceId": "unknown-c-gravity-receiver",
+                "definitionId": "erlenmeyer-flask-250ml",
+                "instanceId": "unknown-c-gravity-receiver"
+              },
+              {
+                "sourceInstanceId": "unknown-d-gravity-receiver",
+                "definitionId": "erlenmeyer-flask-250ml",
+                "instanceId": "unknown-d-gravity-receiver"
+              }
+            ]
+          },
+          "filtration-vacuum-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "unknown-c-vacuum",
+                "definitionId": "vacuum-source",
+                "instanceId": "unknown-c-vacuum"
+              },
+              {
+                "sourceInstanceId": "unknown-d-vacuum",
+                "definitionId": "vacuum-source",
+                "instanceId": "unknown-d-vacuum"
+              }
+            ]
+          },
+          "rinse-water-source": {
+            "definitionId": "wash-bottle",
+            "instanceId": "unknown-wash-bottle"
+          },
+          "mixture-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "unknown-c-beaker",
+                "definitionId": "beaker-250ml",
+                "instanceId": "unknown-c-beaker"
+              },
+              {
+                "sourceInstanceId": "unknown-d-beaker",
+                "definitionId": "beaker-250ml",
+                "instanceId": "unknown-d-beaker"
+              }
+            ]
+          },
+          "rinsed-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "unknown-c-beaker",
+                "definitionId": "beaker-250ml",
+                "instanceId": "unknown-c-beaker"
+              },
+              {
+                "sourceInstanceId": "unknown-d-beaker",
+                "definitionId": "beaker-250ml",
+                "instanceId": "unknown-d-beaker"
+              }
+            ]
+          },
+          "weighed-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "unknown-c-watch",
+                "definitionId": "watch-glass",
+                "instanceId": "unknown-c-watch"
+              },
+              {
+                "sourceInstanceId": "unknown-d-watch",
+                "definitionId": "watch-glass",
+                "instanceId": "unknown-d-watch"
+              }
+            ]
+          },
+          "dried-assembly": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "unknown-c-watch",
+                "definitionId": "watch-glass",
+                "instanceId": "unknown-c-watch"
+              },
+              {
+                "sourceInstanceId": "unknown-d-watch",
+                "definitionId": "watch-glass",
+                "instanceId": "unknown-d-watch"
+              }
+            ]
+          },
+          "drying-instrument": {
+            "definitionId": "drying-oven",
+            "instanceId": "unknown-oven"
+          },
+          "cooling-tool": {
+            "definitionId": "crucible-tongs",
+            "instanceId": "unknown-tongs"
+          },
+          "recovery-vessel": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "unknown-c-watch",
+                "definitionId": "watch-glass",
+                "instanceId": "unknown-c-watch"
+              },
+              {
+                "sourceInstanceId": "unknown-c-paper",
+                "definitionId": "filter-paper",
+                "instanceId": "unknown-c-paper"
+              },
+              {
+                "sourceInstanceId": "unknown-c-flask",
+                "definitionId": "side-arm-filter-flask",
+                "instanceId": "unknown-c-flask"
+              },
+              {
+                "sourceInstanceId": "unknown-c-gravity-receiver",
+                "definitionId": "erlenmeyer-flask-250ml",
+                "instanceId": "unknown-c-gravity-receiver"
+              },
+              {
+                "sourceInstanceId": "unknown-d-watch",
+                "definitionId": "watch-glass",
+                "instanceId": "unknown-d-watch"
+              },
+              {
+                "sourceInstanceId": "unknown-d-paper",
+                "definitionId": "filter-paper",
+                "instanceId": "unknown-d-paper"
+              },
+              {
+                "sourceInstanceId": "unknown-d-flask",
+                "definitionId": "side-arm-filter-flask",
+                "instanceId": "unknown-d-flask"
+              },
+              {
+                "sourceInstanceId": "unknown-d-gravity-receiver",
+                "definitionId": "erlenmeyer-flask-250ml",
+                "instanceId": "unknown-d-gravity-receiver"
+              }
+            ]
+          },
+          "waste-receiver": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "hard-water-two-sample-inquiry-cleanup-waste-solid",
+                "definitionId": "waste-beaker",
+                "instanceId": "hard-water-two-sample-inquiry-cleanup-waste-solid"
+              },
+              {
+                "sourceInstanceId": "hard-water-two-sample-inquiry-cleanup-waste",
+                "definitionId": "waste-beaker",
+                "instanceId": "hard-water-two-sample-inquiry-cleanup-waste"
+              }
+            ]
+          }
+        },
+        "models": {},
+        "configuration": {}
+      },
+      "preserveIds": {
+        "actions": {
+          "review-approved-execution-plan": "review-approved-execution-plan",
+          "unknown-c-weigh-paper": "unknown-c-weigh-paper",
+          "unknown-c-record-paper": "unknown-c-record-paper",
+          "unknown-c-measure-aliquot": "unknown-c-measure-aliquot",
+          "unknown-c-record-aliquot": "unknown-c-record-aliquot",
+          "unknown-c-transfer-aliquot": "unknown-c-transfer-aliquot",
+          "unknown-c-add-carbonate": "unknown-c-add-carbonate",
+          "unknown-c-precipitate": "unknown-c-precipitate",
+          "unknown-c-record-precipitation": "unknown-c-record-precipitation",
+          "unknown-c-place-buchner": "unknown-c-place-buchner",
+          "unknown-c-seat-paper": "unknown-c-seat-paper",
+          "unknown-c-attach-flask": "unknown-c-attach-flask",
+          "unknown-c-place-vacuum": "unknown-c-place-vacuum",
+          "unknown-c-wet-paper": "unknown-c-wet-paper",
+          "unknown-c-filter": "unknown-c-filter",
+          "unknown-c-rinse-beaker": "unknown-c-rinse-beaker",
+          "unknown-c-wash-precipitate": "unknown-c-wash-precipitate",
+          "unknown-c-label-watch": "unknown-c-label-watch",
+          "unknown-c-weigh-watch": "unknown-c-weigh-watch",
+          "unknown-c-record-watch": "unknown-c-record-watch",
+          "unknown-c-transfer-paper": "unknown-c-transfer-paper",
+          "unknown-c-first-dry": "unknown-c-first-dry",
+          "unknown-c-break-solid": "unknown-c-break-solid",
+          "unknown-c-second-dry": "unknown-c-second-dry",
+          "unknown-c-cool": "unknown-c-cool",
+          "unknown-c-weigh-combined": "unknown-c-weigh-combined",
+          "unknown-c-record-combined": "unknown-c-record-combined",
+          "unknown-c-calculate-precipitate": "unknown-c-calculate-precipitate",
+          "unknown-c-calculate-hardness": "unknown-c-calculate-hardness",
+          "unknown-c-record-uncertainty": "unknown-c-record-uncertainty",
+          "unknown-d-weigh-paper": "unknown-d-weigh-paper",
+          "unknown-d-record-paper": "unknown-d-record-paper",
+          "unknown-d-measure-aliquot": "unknown-d-measure-aliquot",
+          "unknown-d-record-aliquot": "unknown-d-record-aliquot",
+          "unknown-d-transfer-aliquot": "unknown-d-transfer-aliquot",
+          "unknown-d-add-carbonate": "unknown-d-add-carbonate",
+          "unknown-d-precipitate": "unknown-d-precipitate",
+          "unknown-d-record-precipitation": "unknown-d-record-precipitation",
+          "unknown-d-place-buchner": "unknown-d-place-buchner",
+          "unknown-d-seat-paper": "unknown-d-seat-paper",
+          "unknown-d-attach-flask": "unknown-d-attach-flask",
+          "unknown-d-place-vacuum": "unknown-d-place-vacuum",
+          "unknown-d-wet-paper": "unknown-d-wet-paper",
+          "unknown-d-filter": "unknown-d-filter",
+          "unknown-d-rinse-beaker": "unknown-d-rinse-beaker",
+          "unknown-d-wash-precipitate": "unknown-d-wash-precipitate",
+          "unknown-d-label-watch": "unknown-d-label-watch",
+          "unknown-d-weigh-watch": "unknown-d-weigh-watch",
+          "unknown-d-record-watch": "unknown-d-record-watch",
+          "unknown-d-transfer-paper": "unknown-d-transfer-paper",
+          "unknown-d-first-dry": "unknown-d-first-dry",
+          "unknown-d-break-solid": "unknown-d-break-solid",
+          "unknown-d-second-dry": "unknown-d-second-dry",
+          "unknown-d-cool": "unknown-d-cool",
+          "unknown-d-weigh-combined": "unknown-d-weigh-combined",
+          "unknown-d-record-combined": "unknown-d-record-combined",
+          "unknown-d-calculate-precipitate": "unknown-d-calculate-precipitate",
+          "unknown-d-calculate-hardness": "unknown-d-calculate-hardness",
+          "unknown-d-record-uncertainty": "unknown-d-record-uncertainty",
+          "post-two-local-results": "post-two-local-results",
+          "load-configured-peer-results": "load-configured-peer-results",
+          "rank-six-samples": "rank-six-samples",
+          "defend-inquiry-technique": "defend-inquiry-technique",
+          "analyze-remaining-ions": "analyze-remaining-ions",
+          "draft-client-letter": "draft-client-letter",
+          "complete-unknown-cleanup": "complete-unknown-cleanup"
+        },
+        "nodes": {
+          "review-approved-execution-plan-node": "hard-water-two-sample-inquiry--review-approved-execution-plan-node",
+          "unknown-c-weigh-paper-node": "hard-water-two-sample-inquiry--unknown-c-weigh-paper-node",
+          "unknown-c-record-paper-node": "hard-water-two-sample-inquiry--unknown-c-record-paper-node",
+          "unknown-c-measure-aliquot-node": "hard-water-two-sample-inquiry--unknown-c-measure-aliquot-node",
+          "unknown-c-record-aliquot-node": "hard-water-two-sample-inquiry--unknown-c-record-aliquot-node",
+          "unknown-c-transfer-aliquot-node": "hard-water-two-sample-inquiry--unknown-c-transfer-aliquot-node",
+          "unknown-c-add-carbonate-node": "hard-water-two-sample-inquiry--unknown-c-add-carbonate-node",
+          "unknown-c-precipitate-node": "hard-water-two-sample-inquiry--unknown-c-precipitate-node",
+          "unknown-c-record-precipitation-node": "hard-water-two-sample-inquiry--unknown-c-record-precipitation-node",
+          "unknown-c-place-buchner-node": "hard-water-two-sample-inquiry--unknown-c-place-buchner-node",
+          "unknown-c-seat-paper-node": "hard-water-two-sample-inquiry--unknown-c-seat-paper-node",
+          "unknown-c-attach-flask-node": "hard-water-two-sample-inquiry--unknown-c-attach-flask-node",
+          "unknown-c-place-vacuum-node": "hard-water-two-sample-inquiry--unknown-c-place-vacuum-node",
+          "unknown-c-wet-paper-node": "hard-water-two-sample-inquiry--unknown-c-wet-paper-node",
+          "unknown-c-filter-node": "hard-water-two-sample-inquiry--unknown-c-filter-node",
+          "unknown-c-rinse-beaker-node": "hard-water-two-sample-inquiry--unknown-c-rinse-beaker-node",
+          "unknown-c-wash-precipitate-node": "hard-water-two-sample-inquiry--unknown-c-wash-precipitate-node",
+          "unknown-c-label-watch-node": "hard-water-two-sample-inquiry--unknown-c-label-watch-node",
+          "unknown-c-weigh-watch-node": "hard-water-two-sample-inquiry--unknown-c-weigh-watch-node",
+          "unknown-c-record-watch-node": "hard-water-two-sample-inquiry--unknown-c-record-watch-node",
+          "unknown-c-transfer-paper-node": "hard-water-two-sample-inquiry--unknown-c-transfer-paper-node",
+          "unknown-c-first-dry-node": "hard-water-two-sample-inquiry--unknown-c-first-dry-node",
+          "unknown-c-break-solid-node": "hard-water-two-sample-inquiry--unknown-c-break-solid-node",
+          "unknown-c-second-dry-node": "hard-water-two-sample-inquiry--unknown-c-second-dry-node",
+          "unknown-c-cool-node": "hard-water-two-sample-inquiry--unknown-c-cool-node",
+          "unknown-c-weigh-combined-node": "hard-water-two-sample-inquiry--unknown-c-weigh-combined-node",
+          "unknown-c-record-combined-node": "hard-water-two-sample-inquiry--unknown-c-record-combined-node",
+          "unknown-c-calculate-precipitate-node": "hard-water-two-sample-inquiry--unknown-c-calculate-precipitate-node",
+          "unknown-c-calculate-hardness-node": "hard-water-two-sample-inquiry--unknown-c-calculate-hardness-node",
+          "unknown-c-record-uncertainty-node": "hard-water-two-sample-inquiry--unknown-c-record-uncertainty-node",
+          "unknown-d-weigh-paper-node": "hard-water-two-sample-inquiry--unknown-d-weigh-paper-node",
+          "unknown-d-record-paper-node": "hard-water-two-sample-inquiry--unknown-d-record-paper-node",
+          "unknown-d-measure-aliquot-node": "hard-water-two-sample-inquiry--unknown-d-measure-aliquot-node",
+          "unknown-d-record-aliquot-node": "hard-water-two-sample-inquiry--unknown-d-record-aliquot-node",
+          "unknown-d-transfer-aliquot-node": "hard-water-two-sample-inquiry--unknown-d-transfer-aliquot-node",
+          "unknown-d-add-carbonate-node": "hard-water-two-sample-inquiry--unknown-d-add-carbonate-node",
+          "unknown-d-precipitate-node": "hard-water-two-sample-inquiry--unknown-d-precipitate-node",
+          "unknown-d-record-precipitation-node": "hard-water-two-sample-inquiry--unknown-d-record-precipitation-node",
+          "unknown-d-place-buchner-node": "hard-water-two-sample-inquiry--unknown-d-place-buchner-node",
+          "unknown-d-seat-paper-node": "hard-water-two-sample-inquiry--unknown-d-seat-paper-node",
+          "unknown-d-attach-flask-node": "hard-water-two-sample-inquiry--unknown-d-attach-flask-node",
+          "unknown-d-place-vacuum-node": "hard-water-two-sample-inquiry--unknown-d-place-vacuum-node",
+          "unknown-d-wet-paper-node": "hard-water-two-sample-inquiry--unknown-d-wet-paper-node",
+          "unknown-d-filter-node": "hard-water-two-sample-inquiry--unknown-d-filter-node",
+          "unknown-d-rinse-beaker-node": "hard-water-two-sample-inquiry--unknown-d-rinse-beaker-node",
+          "unknown-d-wash-precipitate-node": "hard-water-two-sample-inquiry--unknown-d-wash-precipitate-node",
+          "unknown-d-label-watch-node": "hard-water-two-sample-inquiry--unknown-d-label-watch-node",
+          "unknown-d-weigh-watch-node": "hard-water-two-sample-inquiry--unknown-d-weigh-watch-node",
+          "unknown-d-record-watch-node": "hard-water-two-sample-inquiry--unknown-d-record-watch-node",
+          "unknown-d-transfer-paper-node": "hard-water-two-sample-inquiry--unknown-d-transfer-paper-node",
+          "unknown-d-first-dry-node": "hard-water-two-sample-inquiry--unknown-d-first-dry-node",
+          "unknown-d-break-solid-node": "hard-water-two-sample-inquiry--unknown-d-break-solid-node",
+          "unknown-d-second-dry-node": "hard-water-two-sample-inquiry--unknown-d-second-dry-node",
+          "unknown-d-cool-node": "hard-water-two-sample-inquiry--unknown-d-cool-node",
+          "unknown-d-weigh-combined-node": "hard-water-two-sample-inquiry--unknown-d-weigh-combined-node",
+          "unknown-d-record-combined-node": "hard-water-two-sample-inquiry--unknown-d-record-combined-node",
+          "unknown-d-calculate-precipitate-node": "hard-water-two-sample-inquiry--unknown-d-calculate-precipitate-node",
+          "unknown-d-calculate-hardness-node": "hard-water-two-sample-inquiry--unknown-d-calculate-hardness-node",
+          "unknown-d-record-uncertainty-node": "hard-water-two-sample-inquiry--unknown-d-record-uncertainty-node",
+          "post-two-local-results-node": "hard-water-two-sample-inquiry--post-two-local-results-node",
+          "load-configured-peer-results-node": "hard-water-two-sample-inquiry--load-configured-peer-results-node",
+          "rank-six-samples-node": "hard-water-two-sample-inquiry--rank-six-samples-node",
+          "defend-inquiry-technique-node": "hard-water-two-sample-inquiry--defend-inquiry-technique-node",
+          "analyze-remaining-ions-node": "hard-water-two-sample-inquiry--analyze-remaining-ions-node",
+          "draft-client-letter-node": "hard-water-two-sample-inquiry--draft-client-letter-node",
+          "complete-unknown-cleanup-node": "hard-water-two-sample-inquiry--complete-unknown-cleanup-node"
+        },
+        "validationRules": {},
+        "references": {}
+      }
+    }
+  ],
+  "compositionStart": {
+    "kind": "technique-port",
+    "instanceId": "hard-water-practice-preparation",
+    "portId": "entry-review-practice-safety-node"
+  },
+  "compositionConnections": [
+    {
+      "id": "hard-water-analysis-cross-128",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "hard-water-practice-preparation",
+        "portId": "exit-age-practice-precipitate-node"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "gravimetric-vacuum-filtration",
+        "portId": "entry-weigh-practice-filter-paper-node"
+      },
+      "label": "Continue investigation",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "hard-water-analysis-cross-129",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "gravimetric-vacuum-filtration",
+        "portId": "exit-record-practice-filtration-node"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "two-stage-precipitate-drying",
+        "portId": "entry-label-practice-watch-glass-node"
+      },
+      "label": "Continue investigation",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "hard-water-analysis-cross-130",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "two-stage-precipitate-drying",
+        "portId": "exit-complete-practice-cleanup-node"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "inquiry-plan-approval",
+        "portId": "entry-review-ksp-and-precipitation-model-node"
+      },
+      "label": "Continue investigation",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "hard-water-analysis-cross-131",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "inquiry-plan-approval",
+        "portId": "exit-approve-inquiry-procedure-node"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "hard-water-two-sample-inquiry",
+        "portId": "entry-review-approved-execution-plan-node"
+      },
+      "label": "Continue investigation",
+      "condition": {
+        "type": "validationPassed"
+      }
+    }
+  ],
+  "reachabilityWitnesses": [
+    {
+      "id": "default",
+      "configuration": {},
+      "approvalGates": {}
+    }
+  ]
+}

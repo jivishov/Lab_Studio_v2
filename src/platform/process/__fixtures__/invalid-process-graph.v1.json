@@ -1,0 +1,24 @@
+{
+  "schema": "studio.process-graph",
+  "schemaVersion": "1.0",
+  "startNodeId": "start",
+  "nodes": [
+    {
+      "id": "start",
+      "type": "operation",
+      "title": "Start",
+      "description": "Start the graph.",
+      "evidenceRequirementRefs": [],
+      "hints": []
+    }
+  ],
+  "edges": [
+    {
+      "id": "missing-target",
+      "from": "start",
+      "to": "absent",
+      "label": "Invalid edge",
+      "condition": { "type": "always" }
+    }
+  ]
+}

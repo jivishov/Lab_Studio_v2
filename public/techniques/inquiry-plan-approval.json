@@ -1,0 +1,887 @@
+{
+  "id": "inquiry-plan-approval",
+  "title": "Inquiry Plan Approval",
+  "learningGoal": "Design and document a safe two-sample gravimetric plan with sufficient carbonate, complete evidence, and an explicit teacher-approval gate.",
+  "requiredEquipment": [
+    "sample-rack",
+    "sample-bottle",
+    "reagent-bottle"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "inquiry-sample-rack",
+        "definitionId": "sample-rack",
+        "label": "Six-sample class rack",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "inquiry-sample-c",
+        "definitionId": "sample-bottle",
+        "label": "Water sample bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Preconcentrated sample C",
+          "volumeMl": 25,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "inquiry-sample-d",
+        "definitionId": "sample-bottle",
+        "label": "Water sample bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Preconcentrated sample D",
+          "volumeMl": 25,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "inquiry-carbonate",
+        "definitionId": "reagent-bottle",
+        "label": "Reagent bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "0.50 M sodium carbonate",
+          "volumeMl": 120,
+          "concentration": {
+            "value": 0.5,
+            "unit": "M"
+          },
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-solution"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "review-ksp-and-precipitation-model",
+      "verb": "observe",
+      "label": "Review Ksp and precipitation reasoning",
+      "parameters": {
+        "note": "Use solubility-product reasoning to select carbonate as a precipitating ion for Ca2+. The simulator does not reveal an unknown outcome before the plan is submitted.",
+        "tag": "prelab-reasoning",
+        "instruction": "Use the prelab Ksp evidence to justify CaCO3 precipitation without treating the selection as hidden outcome instruction."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Use the prelab Ksp evidence to justify CaCO3 precipitation without treating the selection as hidden outcome instruction.",
+        "successCue": "The evidence is recorded in the notebook.",
+        "invalidCue": "Complete and record the named evidence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "observe updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Review Ksp and precipitation reasoning complete.",
+        "invalid": "Review the scientific and physical prerequisites for review ksp and precipitation reasoning."
+      },
+      "evidence": [
+        "observe"
+      ]
+    },
+    {
+      "id": "select-two-assigned-samples",
+      "verb": "observe",
+      "label": "Select two assigned sample IDs",
+      "parameters": {
+        "note": "Teacher-assigned samples C and D are selected from the six-sample class set; they remain distinct throughout execution.",
+        "tag": "sample-identity",
+        "instruction": "Record the two teacher-assigned samples and keep independent evidence for each."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record the two teacher-assigned samples and keep independent evidence for each.",
+        "successCue": "The evidence is recorded in the notebook.",
+        "invalidCue": "Complete and record the named evidence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "observe updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Select two assigned sample IDs complete.",
+        "invalid": "Review the scientific and physical prerequisites for select two assigned sample ids."
+      },
+      "evidence": [
+        "observe"
+      ]
+    },
+    {
+      "id": "define-carbonate-excess-plan",
+      "verb": "observe",
+      "label": "Define carbonate-excess plan",
+      "parameters": {
+        "note": "The approved simulator plan uses 12.0 mL of 0.50 M Na2CO3 for each 20.0 mL concentrated aliquot. This supplies 0.00600 mol carbonate, enough for 0.6005 g CaCO3, which exceeds the larger configured 0.5600 g sample result.",
+        "tag": "teacher-configured-inquiry-choice",
+        "instruction": "Specify how sufficient carbonate will completely precipitate calcium from each aliquot."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Specify how sufficient carbonate will completely precipitate calcium from each aliquot.",
+        "successCue": "The evidence is recorded in the notebook.",
+        "invalidCue": "Complete and record the named evidence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "observe updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Define carbonate-excess plan complete.",
+        "invalid": "Review the scientific and physical prerequisites for define carbonate-excess plan."
+      },
+      "evidence": [
+        "observe"
+      ]
+    },
+    {
+      "id": "select-inquiry-apparatus",
+      "verb": "observe",
+      "label": "Select apparatus and requested materials",
+      "parameters": {
+        "note": "The approved apparatus is the available Buchner funnel, side-arm flask, vacuum source, preweighed paper, wash bottle, labeled watch glass, 115 C oven, heat-safe tool, and analytical balance. No unapproved extra material is added.",
+        "tag": "materials-plan",
+        "instruction": "List the available materials and identify any extra request for teacher approval."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "List the available materials and identify any extra request for teacher approval.",
+        "successCue": "The evidence is recorded in the notebook.",
+        "invalidCue": "Complete and record the named evidence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "observe updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Select apparatus and requested materials complete.",
+        "invalid": "Review the scientific and physical prerequisites for select apparatus and requested materials."
+      },
+      "evidence": [
+        "observe"
+      ]
+    },
+    {
+      "id": "define-inquiry-evidence",
+      "verb": "observe",
+      "label": "Define measurements and observations",
+      "parameters": {
+        "note": "For each sample, collect aliquot volume, reagent volume, paper tare, watch-glass tare, cooled combined mass, precipitate mass calculation, observations, and source-water hardness after the 200x correction.",
+        "tag": "evidence-plan",
+        "instruction": "Create an independent data and observation table for both samples."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Create an independent data and observation table for both samples.",
+        "successCue": "The evidence is recorded in the notebook.",
+        "invalidCue": "Complete and record the named evidence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "observe updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Define measurements and observations complete.",
+        "invalid": "Review the scientific and physical prerequisites for define measurements and observations."
+      },
+      "evidence": [
+        "observe"
+      ]
+    },
+    {
+      "id": "define-inquiry-quality-choices",
+      "verb": "observe",
+      "label": "Define replicate and dry-mass choices",
+      "parameters": {
+        "note": "Teacher configuration uses one simulated trial per assigned sample for runtime length, requires the manual's two-stage drying, and flags additional constant-mass cycles as an instructor decision rather than inventing a rule.",
+        "tag": "teacher-configured-inquiry-choice",
+        "instruction": "Record the teacher-approved replicate count, drying criterion, balance readability, and calculation tolerance."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Record the teacher-approved replicate count, drying criterion, balance readability, and calculation tolerance.",
+        "successCue": "The evidence is recorded in the notebook.",
+        "invalidCue": "Complete and record the named evidence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "observe updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Define replicate and dry-mass choices complete.",
+        "invalid": "Review the scientific and physical prerequisites for define replicate and dry-mass choices."
+      },
+      "evidence": [
+        "observe"
+      ]
+    },
+    {
+      "id": "submit-inquiry-procedure",
+      "verb": "observe",
+      "label": "Submit detailed inquiry procedure",
+      "parameters": {
+        "note": "The proposed procedure contains sample identity, 20 mL aliquot, carbonate excess, vacuum filtration, washing, two-stage drying, safe cooling, tare subtraction, 200x correction, class sharing, and cleanup.",
+        "tag": "procedure-submission",
+        "instruction": "Submit the step-by-step procedure, materials list, data table, calculations, and safety controls."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Submit the step-by-step procedure, materials list, data table, calculations, and safety controls.",
+        "successCue": "The evidence is recorded in the notebook.",
+        "invalidCue": "Complete and record the named evidence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "observe updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Submit detailed inquiry procedure complete.",
+        "invalid": "Review the scientific and physical prerequisites for submit detailed inquiry procedure."
+      },
+      "evidence": [
+        "observe"
+      ]
+    },
+    {
+      "id": "approve-inquiry-procedure",
+      "verb": "observe",
+      "label": "Record teacher approval",
+      "parameters": {
+        "note": "Teacher approval is recorded for the configured simulation plan. This gate represents approval evidence; it is not an automated claim that any real-world procedure has been approved.",
+        "tag": "teacher-approval",
+        "instruction": "Do not execute the unknown analysis until teacher approval is recorded."
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "note",
+        "accessibleLabel": "Do not execute the unknown analysis until teacher approval is recorded.",
+        "successCue": "The evidence is recorded in the notebook.",
+        "invalidCue": "Complete and record the named evidence."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "observe updates only the structured simulator state and evidence named by this action."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for this gravimetric workflow.",
+          "recovery": "Return to the highlighted process node and preserve each sample identity."
+        },
+        {
+          "id": "missing-evidence",
+          "when": "a calculation or approval step lacks its required evidence",
+          "message": "Required measured or teacher-approved evidence is missing.",
+          "recovery": "Collect and record the named evidence before continuing."
+        },
+        {
+          "id": "unsafe-or-invalid-state",
+          "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+          "message": "The apparatus is not in a safe, valid gravimetric state.",
+          "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Record teacher approval complete.",
+        "invalid": "Review the scientific and physical prerequisites for record teacher approval."
+      },
+      "evidence": [
+        "observe",
+        "teacher-approval"
+      ]
+    }
+  ],
+  "process": {
+    "startNodeId": "review-ksp-and-precipitation-model-node",
+    "nodes": [
+      {
+        "id": "review-ksp-and-precipitation-model-node",
+        "type": "observation",
+        "title": "Review Ksp and precipitation reasoning",
+        "description": "Use the prelab Ksp evidence to justify CaCO3 precipitation without treating the selection as hidden outcome instruction.",
+        "actionId": "review-ksp-and-precipitation-model",
+        "config": {},
+        "validation": [
+          {
+            "id": "review-ksp-and-precipitation-model-node--review-ksp-and-precipitation-model-evidence",
+            "type": "actionEvidence",
+            "label": "Review Ksp and precipitation reasoning was completed.",
+            "actionId": "review-ksp-and-precipitation-model"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Review Ksp and precipitation reasoning complete.",
+          "retry": "Correct the named prerequisite and retry review ksp and precipitation reasoning."
+        }
+      },
+      {
+        "id": "select-two-assigned-samples-node",
+        "type": "observation",
+        "title": "Select two assigned sample IDs",
+        "description": "Record the two teacher-assigned samples and keep independent evidence for each.",
+        "actionId": "select-two-assigned-samples",
+        "config": {},
+        "validation": [
+          {
+            "id": "select-two-assigned-samples-node--select-two-assigned-samples-evidence",
+            "type": "actionEvidence",
+            "label": "Select two assigned sample IDs was completed.",
+            "actionId": "select-two-assigned-samples"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Select two assigned sample IDs complete.",
+          "retry": "Correct the named prerequisite and retry select two assigned sample ids."
+        }
+      },
+      {
+        "id": "define-carbonate-excess-plan-node",
+        "type": "observation",
+        "title": "Define carbonate-excess plan",
+        "description": "Specify how sufficient carbonate will completely precipitate calcium from each aliquot.",
+        "actionId": "define-carbonate-excess-plan",
+        "config": {
+          "teacherConfigurable": true,
+          "requiredConfiguration": "reagent excess sufficient to precipitate all calcium (Investigation 3 finding 12, R/C)"
+        },
+        "validation": [
+          {
+            "id": "define-carbonate-excess-plan-node--define-carbonate-excess-plan-evidence",
+            "type": "actionEvidence",
+            "label": "Define carbonate-excess plan was completed.",
+            "actionId": "define-carbonate-excess-plan"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Define carbonate-excess plan complete.",
+          "retry": "Correct the named prerequisite and retry define carbonate-excess plan."
+        }
+      },
+      {
+        "id": "select-inquiry-apparatus-node",
+        "type": "observation",
+        "title": "Select apparatus and requested materials",
+        "description": "List the available materials and identify any extra request for teacher approval.",
+        "actionId": "select-inquiry-apparatus",
+        "config": {
+          "teacherConfigurable": true,
+          "configurationChoice": true,
+          "requiredConfiguration": "the inquiry filtration apparatus and any requested extra material (Investigation 3 confirmation point 1)"
+        },
+        "validation": [
+          {
+            "id": "select-inquiry-apparatus-node--select-inquiry-apparatus-evidence",
+            "type": "actionEvidence",
+            "label": "Select apparatus and requested materials was completed.",
+            "actionId": "select-inquiry-apparatus"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Select apparatus and requested materials complete.",
+          "retry": "Correct the named prerequisite and retry select apparatus and requested materials."
+        }
+      },
+      {
+        "id": "define-inquiry-evidence-node",
+        "type": "observation",
+        "title": "Define measurements and observations",
+        "description": "Create an independent data and observation table for both samples.",
+        "actionId": "define-inquiry-evidence",
+        "config": {},
+        "validation": [
+          {
+            "id": "define-inquiry-evidence-node--define-inquiry-evidence-evidence",
+            "type": "actionEvidence",
+            "label": "Define measurements and observations was completed.",
+            "actionId": "define-inquiry-evidence"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Define measurements and observations complete.",
+          "retry": "Correct the named prerequisite and retry define measurements and observations."
+        }
+      },
+      {
+        "id": "define-inquiry-quality-choices-node",
+        "type": "observation",
+        "title": "Define replicate and dry-mass choices",
+        "description": "Record the teacher-approved replicate count, drying criterion, balance readability, and calculation tolerance.",
+        "actionId": "define-inquiry-quality-choices",
+        "config": {
+          "teacherConfigurable": true,
+          "requiredConfiguration": "replicate count, dry-mass criterion, balance readability, and calculation tolerance (Investigation 3 finding 12, R/C; confirmation point 3 leaves constant mass unresolved)"
+        },
+        "validation": [
+          {
+            "id": "define-inquiry-quality-choices-node--define-inquiry-quality-choices-evidence",
+            "type": "actionEvidence",
+            "label": "Define replicate and dry-mass choices was completed.",
+            "actionId": "define-inquiry-quality-choices"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Define replicate and dry-mass choices complete.",
+          "retry": "Correct the named prerequisite and retry define replicate and dry-mass choices."
+        }
+      },
+      {
+        "id": "submit-inquiry-procedure-node",
+        "type": "observation",
+        "title": "Submit detailed inquiry procedure",
+        "description": "Submit the step-by-step procedure, materials list, data table, calculations, and safety controls.",
+        "actionId": "submit-inquiry-procedure",
+        "config": {},
+        "validation": [
+          {
+            "id": "submit-inquiry-procedure-node--submit-inquiry-procedure-evidence",
+            "type": "actionEvidence",
+            "label": "Submit detailed inquiry procedure was completed.",
+            "actionId": "submit-inquiry-procedure"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Submit detailed inquiry procedure complete.",
+          "retry": "Correct the named prerequisite and retry submit detailed inquiry procedure."
+        }
+      },
+      {
+        "id": "approve-inquiry-procedure-node",
+        "type": "observation",
+        "title": "Record teacher approval",
+        "description": "Do not execute the unknown analysis until teacher approval is recorded.",
+        "actionId": "approve-inquiry-procedure",
+        "config": {
+          "approvalRequired": true,
+          "approvalRecorded": false
+        },
+        "validation": [
+          {
+            "id": "approve-inquiry-procedure-node--approve-inquiry-procedure-evidence",
+            "type": "actionEvidence",
+            "label": "Record teacher approval was completed.",
+            "actionId": "approve-inquiry-procedure"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record teacher approval complete.",
+          "retry": "Correct the named prerequisite and retry record teacher approval."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "review-ksp-and-precipitation-model-node",
+        "to": "select-two-assigned-samples-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "select-two-assigned-samples-node",
+        "to": "define-carbonate-excess-plan-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "define-carbonate-excess-plan-node",
+        "to": "select-inquiry-apparatus-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "select-inquiry-apparatus-node",
+        "to": "define-inquiry-evidence-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "define-inquiry-evidence-node",
+        "to": "define-inquiry-quality-choices-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "define-inquiry-quality-choices-node",
+        "to": "submit-inquiry-procedure-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "submit-inquiry-procedure-node",
+        "to": "approve-inquiry-procedure-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [
+    {
+      "id": "inquiry-plan-approval-success",
+      "type": "actionEvidence",
+      "label": "Inquiry Plan Approval reached its final evidence step.",
+      "actionId": "approve-inquiry-procedure"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "the current process node expects a different action",
+      "message": "That action is out of sequence for this gravimetric workflow.",
+      "recovery": "Return to the highlighted process node and preserve each sample identity."
+    },
+    {
+      "id": "missing-evidence",
+      "when": "a calculation or approval step lacks its required evidence",
+      "message": "Required measured or teacher-approved evidence is missing.",
+      "recovery": "Collect and record the named evidence before continuing."
+    },
+    {
+      "id": "unsafe-or-invalid-state",
+      "when": "paper is unseated, a receiver is missing, or warm glassware is weighed",
+      "message": "The apparatus is not in a safe, valid gravimetric state.",
+      "recovery": "Correct the physical prerequisite named in the feedback, then retry."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.2.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-04T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "chemistry",
+      "hard-water",
+      "inquiry",
+      "teacher-approval",
+      "planning"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry-review-ksp-and-precipitation-model-node",
+        "kind": "entry",
+        "nodeId": "review-ksp-and-precipitation-model-node",
+        "label": "Entry"
+      },
+      {
+        "id": "exit-approve-inquiry-procedure-node",
+        "kind": "exit",
+        "nodeId": "approve-inquiry-procedure-node",
+        "label": "Exit"
+      }
+    ],
+    "equipmentRoles": [],
+    "modelSlots": [],
+    "configurationSlots": [],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [],
+    "completion": {
+      "exitPortIds": [
+        "exit-approve-inquiry-procedure-node"
+      ],
+      "requiredEvidenceOutputIds": [],
+      "requiredValidationRuleIds": []
+    },
+    "catalogDisposition": "composable",
+    "legacyActionEffects": [
+      {
+        "actionId": "review-ksp-and-precipitation-model",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "select-two-assigned-samples",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "define-carbonate-excess-plan",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "select-inquiry-apparatus",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "define-inquiry-evidence",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "define-inquiry-quality-choices",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "submit-inquiry-procedure",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "approve-inquiry-procedure",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

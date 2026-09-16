@@ -1,0 +1,1593 @@
+{
+  "id": "titration-curve-analysis",
+  "title": "Titration Curve Analysis",
+  "learningGoal": "Screen acid-base behavior, monitor pH during titration, and calculate unknown molarity.",
+  "requiredEquipment": [
+    "unknown-acid-bottle",
+    "graduated-cylinder",
+    "beaker-250ml",
+    "burette-50ml",
+    "ring-stand-clamp",
+    "ph-meter",
+    "ph-paper",
+    "data-collection-interface",
+    "naoh-bottle"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "unknown-acid-bottle-1",
+        "definitionId": "unknown-acid-bottle",
+        "label": "Unknown acid",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "Unknown acid",
+          "volumeMl": 100,
+          "solutes": [],
+          "concentration": {
+            "value": 0.1,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "naoh-bottle-1",
+        "definitionId": "naoh-bottle",
+        "label": "0.100 M NaOH",
+        "location": "shelf",
+        "contents": {
+          "kind": "solution",
+          "label": "Standard base",
+          "volumeMl": 250,
+          "solutes": [],
+          "concentration": {
+            "value": 0.1,
+            "unit": "M"
+          },
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "graduated-cylinder-1",
+        "definitionId": "graduated-cylinder",
+        "label": "Graduated cylinder",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "beaker-250ml-1",
+        "definitionId": "beaker-250ml",
+        "label": "250 mL beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "burette-50ml-1",
+        "definitionId": "burette-50ml",
+        "label": "50 mL burette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "ring-stand-clamp-1",
+        "definitionId": "ring-stand-clamp",
+        "label": "Ring stand and clamp",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "ph-meter-1",
+        "definitionId": "ph-meter",
+        "label": "pH meter",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "ph-paper-1",
+        "definitionId": "ph-paper",
+        "label": "pH paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "data-collection-interface-1",
+        "definitionId": "data-collection-interface",
+        "label": "Data collection interface",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "observe-ph-paper",
+      "verb": "observe",
+      "label": "Observe pH paper",
+      "parameters": {
+        "tag": "ph-paper-screen",
+        "note": "The acid and base are screened with pH paper before the titration curve run."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Observe pH paper: pH paper screening is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "pH paper screening is recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ]
+    },
+    {
+      "id": "measure-curve-analyte",
+      "verb": "measureVolume",
+      "label": "Measure titration analyte",
+      "parameters": {
+        "sourceDefinitionId": "unknown-acid-bottle",
+        "targetDefinitionId": "graduated-cylinder",
+        "measurementId": "curve-analyte-volume",
+        "volumeMl": 25,
+        "tolerance": 0.2,
+        "aliquotIsTeacherConfigured": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Measure titration analyte: The titration analyte volume is measured."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The titration analyte volume is measured.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "measureVolume",
+        "measurement"
+      ],
+      "atomId": "atom.measure.variable-volume",
+      "equipmentRoleBindings": {
+        "variable-volume-measuring-device": "graduated-cylinder",
+        "liquid-source": "unknown-acid-bottle"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "unknown-acid-bottle",
+        "targetDefinitionId": "graduated-cylinder",
+        "valueParameter": "volumeMl",
+        "successCue": "Analyte aliquot measured.",
+        "invalidCue": "Measure the approved analyte aliquot.",
+        "accessibleLabel": "Measure the approved analyte aliquot into the graduated cylinder."
+      }
+    },
+    {
+      "id": "transfer-curve-analyte",
+      "verb": "transfer",
+      "label": "Transfer the analyte into the titration beaker",
+      "parameters": {
+        "sourceDefinitionId": "graduated-cylinder",
+        "targetDefinitionId": "beaker-250ml",
+        "volumeMl": 25,
+        "receiverIsBeakerForProbeClearance": true,
+        "note": "A beaker is used here rather than an Erlenmeyer because TIT-04 immerses a pH probe and needs the depth and wall clearance; see analyte-receiver.receiverSelection in the equipment-role registry."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Transfer titration analyte: The analyte is in the titration beaker."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The analyte is in the titration beaker.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "transfer"
+      ],
+      "atomId": "atom.transfer.measured-liquid",
+      "equipmentRoleBindings": {
+        "measured-solvent-source": "graduated-cylinder",
+        "receiving-vessel": "beaker-250ml"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "graduated-cylinder",
+        "targetDefinitionId": "beaker-250ml",
+        "valueParameter": "volumeMl",
+        "successCue": "Analyte delivered to the titration beaker.",
+        "invalidCue": "Deliver the measured analyte into the titration beaker.",
+        "accessibleLabel": "Pour the measured analyte into the titration beaker."
+      }
+    },
+    {
+      "id": "place-curve-ph-probe",
+      "verb": "place",
+      "label": "Insert the pH probe in the titration beaker",
+      "atomId": "atom.place.immersed-ph-probe",
+      "equipmentRoleBindings": {
+        "immersed-probe-instrument": "ph-meter",
+        "immersed-probe-vessel": "beaker-250ml"
+      },
+      "parameters": {
+        "equipmentDefinitionId": "ph-meter",
+        "sourceDefinitionId": "ph-meter",
+        "location": "workbench",
+        "probeCalibrationIsTeacherConfigured": true,
+        "note": "TIT-04: the bulb must be immersed and must not be struck by the stir bar. Calibration and rinsing rules stay teacher-configured (confirmation point 4)."
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "ph-meter",
+        "stationId": "workbench",
+        "successCue": "The probe bulb is immersed in the analyte.",
+        "invalidCue": "Charge the beaker with analyte before immersing the probe.",
+        "accessibleLabel": "Insert the pH probe into the titration beaker so the bulb is immersed."
+      },
+      "prerequisites": [
+        {
+          "id": "analyte-required-for-probe",
+          "type": "actionEvidence",
+          "label": "The analyte is in the beaker.",
+          "actionId": "transfer-curve-analyte"
+        }
+      ],
+      "stateChanges": [
+        "Immerse the pH probe in the analyte."
+      ],
+      "invalidCases": [
+        {
+          "id": "dry-probe",
+          "when": "the vessel holds too little liquid to cover the bulb",
+          "message": "The probe bulb is not immersed.",
+          "recovery": "Charge the beaker with the approved aliquot first."
+        }
+      ],
+      "feedback": {
+        "success": "The probe bulb is immersed in the analyte.",
+        "invalid": "Charge the beaker before immersing the probe."
+      },
+      "evidence": [
+        "place",
+        "probe"
+      ]
+    },
+    {
+      "id": "read-initial-ph",
+      "verb": "observe",
+      "label": "Read the initial pH",
+      "atomId": "atom.observe.read-titration-ph",
+      "equipmentRoleBindings": {
+        "immersed-probe-instrument": "ph-meter",
+        "immersed-probe-vessel": "beaker-250ml"
+      },
+      "parameters": {
+        "sourceDefinitionId": "ph-meter",
+        "targetDefinitionId": "beaker-250ml",
+        "tag": "initial-ph-read",
+        "note": "Read the meter with zero titrant delivered. The stability criterion is unresolved in the source (finding 4) and stays teacher-configured; the simulator does not model the pH, so the value you read is the value you record.",
+        "phStabilityCriterionIsTeacherConfigured": true
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "ph-meter",
+        "targetDefinitionId": "beaker-250ml",
+        "stationId": "ph-meter",
+        "successCue": "Initial pH read from the meter.",
+        "invalidCue": "Immerse the probe before reading the meter.",
+        "accessibleLabel": "Read the pH meter with zero titrant delivered."
+      },
+      "prerequisites": [
+        {
+          "id": "probe-required",
+          "type": "actionEvidence",
+          "label": "The probe is immersed.",
+          "actionId": "place-curve-ph-probe"
+        }
+      ],
+      "stateChanges": [
+        "Read the pH meter; reading and recording stay separate."
+      ],
+      "invalidCases": [
+        {
+          "id": "probe-not-immersed",
+          "when": "the probe is not in the analyte",
+          "message": "A probe out of solution reports nothing meaningful.",
+          "recovery": "Immerse the probe bulb, then read the meter."
+        }
+      ],
+      "feedback": {
+        "success": "Initial pH read from the meter.",
+        "invalid": "Immerse the probe before reading the meter."
+      },
+      "evidence": [
+        "observe",
+        "measurement"
+      ]
+    },
+    {
+      "id": "record-initial-ph",
+      "verb": "record",
+      "label": "Record initial pH",
+      "parameters": {
+        "measurementId": "initial-ph",
+        "label": "Initial pH",
+        "unit": "pH",
+        "studentValueRequired": true
+      },
+      "prerequisites": [
+        {
+          "id": "ph-read-required",
+          "type": "notebookEntry",
+          "label": "The initial pH has been read.",
+          "notebookTag": "initial-ph-read"
+        }
+      ],
+      "stateChanges": [
+        "Record initial pH: Initial pH is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Initial pH is recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "record",
+        "measurement"
+      ],
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "measurementId",
+        "successCue": "Initial pH recorded.",
+        "invalidCue": "Read the meter before recording a pH.",
+        "accessibleLabel": "Record the initial pH you read from the meter."
+      }
+    },
+    {
+      "id": "mount-curve-burette",
+      "verb": "place",
+      "label": "Mount the burette in the clamp",
+      "atomId": "atom.place.mount-burette",
+      "equipmentRoleBindings": {
+        "titrant-delivery-device": "burette-50ml",
+        "burette-support": "ring-stand-clamp"
+      },
+      "parameters": {
+        "equipmentDefinitionId": "burette-50ml",
+        "sourceDefinitionId": "burette-50ml",
+        "targetDefinitionId": "ring-stand-clamp",
+        "snapZoneId": "ring-stand-burette-clamp"
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "burette-50ml",
+        "targetDefinitionId": "ring-stand-clamp",
+        "snapZoneId": "ring-stand-burette-clamp",
+        "successCue": "The burette is clamped vertically with the stopcock reachable.",
+        "invalidCue": "Seat the burette in the ring-stand clamp before conditioning or filling it.",
+        "accessibleLabel": "Mount the 50 mL burette in the ring stand clamp."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Clamp the burette to the ring stand."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for this technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "no-support",
+          "when": "no ring stand and clamp are on the workbench",
+          "message": "There is nothing to clamp the burette to.",
+          "recovery": "Place the ring stand and clamp, then seat the burette in it."
+        }
+      ],
+      "feedback": {
+        "success": "The burette is clamped vertically with the stopcock reachable.",
+        "invalid": "Place the ring stand and clamp before mounting the burette."
+      },
+      "evidence": [
+        "place",
+        "titration-setup"
+      ]
+    },
+    {
+      "id": "fill-curve-burette",
+      "verb": "transfer",
+      "label": "Fill the conditioned burette with titrant",
+      "parameters": {
+        "sourceDefinitionId": "naoh-bottle",
+        "targetDefinitionId": "burette-50ml",
+        "volumeMl": 45,
+        "tipAirRemovalIsTeacherConfigured": true
+      },
+      "prerequisites": [
+        {
+          "id": "burette-mounted-required-for-fill",
+          "type": "actionEvidence",
+          "label": "The burette is clamped to the stand.",
+          "actionId": "mount-curve-burette"
+        }
+      ],
+      "stateChanges": [
+        "Fill curve burette: The burette is filled with titrant."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The burette is filled with titrant.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "transfer"
+      ],
+      "atomId": "atom.transfer.fill-burette",
+      "equipmentRoleBindings": {
+        "titrant-source": "naoh-bottle",
+        "titrant-delivery-device": "burette-50ml"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "naoh-bottle",
+        "targetDefinitionId": "burette-50ml",
+        "valueParameter": "volumeMl",
+        "successCue": "The burette is filled and the tip is clear.",
+        "invalidCue": "Condition the burette before filling it.",
+        "accessibleLabel": "Fill the conditioned burette with titrant."
+      }
+    },
+    {
+      "id": "read-curve-initial-burette",
+      "verb": "measureVolume",
+      "label": "Read the initial burette level",
+      "atomId": "atom.measure.read-burette",
+      "equipmentRoleBindings": {
+        "titrant-delivery-device": "burette-50ml"
+      },
+      "parameters": {
+        "sourceDefinitionId": "burette-50ml",
+        "measurementId": "curve-initial-burette",
+        "label": "Initial burette reading",
+        "readingPrecisionMl": 0.05,
+        "scaleReadsDownward": true
+      },
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "burette-50ml",
+        "stationId": "burette-50ml",
+        "successCue": "Initial burette level read.",
+        "invalidCue": "Fill the burette before reading its scale.",
+        "accessibleLabel": "Read the meniscus on the filled burette."
+      },
+      "prerequisites": [
+        {
+          "id": "filled-required",
+          "type": "actionEvidence",
+          "label": "The burette has been filled.",
+          "actionId": "fill-curve-burette"
+        }
+      ],
+      "stateChanges": [
+        "Read the burette scale; a reading delivers nothing."
+      ],
+      "invalidCases": [
+        {
+          "id": "empty-burette",
+          "when": "the burette holds no titrant",
+          "message": "There is no meniscus to read.",
+          "recovery": "Fill the burette, then read the scale."
+        }
+      ],
+      "feedback": {
+        "success": "Initial burette level read.",
+        "invalid": "Fill the burette before reading it."
+      },
+      "evidence": [
+        "measureVolume",
+        "measurement"
+      ]
+    },
+    {
+      "id": "deliver-curve-titrant",
+      "verb": "transfer",
+      "label": "Deliver titrant through the steep region",
+      "parameters": {
+        "sourceDefinitionId": "burette-50ml",
+        "targetDefinitionId": "beaker-250ml",
+        "titrationModelId": "curve-unknown-acid",
+        "initialBuretteMeasurementId": "curve-initial-burette",
+        "finalBuretteMeasurementId": "curve-final-burette",
+        "finalBuretteLabel": "Final burette reading",
+        "mixtureLabel": "Titrating analyte with pH probe immersed",
+        "incrementStrategyIsTeacherConfigured": true,
+        "phStabilityCriterionIsTeacherConfigured": true
+      },
+      "prerequisites": [
+        {
+          "id": "burette-mounted-required-for-delivery",
+          "type": "actionEvidence",
+          "label": "The burette is clamped to the stand.",
+          "actionId": "mount-curve-burette"
+        },
+        {
+          "id": "analyte-in-beaker-required",
+          "type": "actionEvidence",
+          "label": "The analyte is in the titration beaker.",
+          "actionId": "transfer-curve-analyte"
+        },
+        {
+          "id": "curve-initial-required",
+          "type": "measurementRecorded",
+          "label": "The initial burette reading is recorded.",
+          "measurementId": "curve-initial-burette"
+        }
+      ],
+      "stateChanges": [
+        "Deliver curve titrant: Titrant is delivered while pH is monitored."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Titrant is delivered while pH is monitored.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "transfer"
+      ],
+      "atomId": "atom.transfer.deliver-titrant",
+      "equipmentRoleBindings": {
+        "titrant-delivery-device": "burette-50ml",
+        "analyte-receiver": "beaker-250ml"
+      },
+      "interaction": {
+        "type": "dispenseDrops",
+        "sourceDefinitionId": "burette-50ml",
+        "targetDefinitionId": "beaker-250ml",
+        "successCue": "Titrant delivered through the steep region.",
+        "invalidCue": "Fill the burette, charge the beaker, and record the initial reading first.",
+        "accessibleLabel": "Deliver titrant in the approved increments, using smaller ones near the steep region."
+      }
+    },
+    {
+      "id": "record-equivalence-volume",
+      "verb": "record",
+      "label": "Record equivalence volume",
+      "parameters": {
+        "measurementId": "equivalence-volume",
+        "label": "Equivalence volume",
+        "unit": "mL",
+        "studentValueRequired": true
+      },
+      "prerequisites": [
+        {
+          "id": "curve-final-required",
+          "type": "measurementRecorded",
+          "label": "The titration has reached its final reading.",
+          "measurementId": "curve-final-burette"
+        }
+      ],
+      "stateChanges": [
+        "Record equivalence volume: Equivalence volume is recorded."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Equivalence volume is recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "record",
+        "measurement"
+      ],
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "measurementId",
+        "successCue": "Equivalence volume recorded.",
+        "invalidCue": "Complete the curve before identifying the equivalence volume.",
+        "accessibleLabel": "Record the equivalence volume you identified from your own curve."
+      }
+    },
+    {
+      "id": "calculate-curve-molarity",
+      "verb": "calculate",
+      "label": "Calculate curve molarity",
+      "parameters": {
+        "calculationId": "curve-molarity",
+        "expected": 0.099,
+        "tolerance": 0.005,
+        "unit": "M",
+        "studentValueRequired": true,
+        "analyteVolumeMeasurementId": "curve-analyte-volume",
+        "equivalenceVolumeMeasurementId": "equivalence-volume"
+      },
+      "prerequisites": [
+        {
+          "id": "analyte-required-for-calculation",
+          "type": "measurementRecorded",
+          "label": "The analyte volume is recorded.",
+          "measurementId": "curve-analyte-volume"
+        },
+        {
+          "id": "equivalence-required",
+          "type": "measurementRecorded",
+          "label": "The equivalence volume is recorded.",
+          "measurementId": "equivalence-volume"
+        }
+      ],
+      "stateChanges": [
+        "Calculate curve molarity: Unknown molarity is calculated from the titration curve."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Unknown molarity is calculated from the titration curve.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "calculate"
+      ]
+    }
+  ],
+  "process": {
+    "startNodeId": "observe-ph-paper-node",
+    "nodes": [
+      {
+        "id": "observe-ph-paper-node",
+        "type": "observation",
+        "title": "Observe pH paper",
+        "description": "Record pH paper evidence for the acid and base.",
+        "actionId": "observe-ph-paper",
+        "config": {},
+        "validation": [
+          {
+            "id": "observe-ph-paper-node-done",
+            "type": "actionEvidence",
+            "label": "Action observe-ph-paper was completed.",
+            "actionId": "observe-ph-paper"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Observe pH paper complete.",
+          "retry": "Review Observe pH paper and try again."
+        },
+        "layout": {
+          "x": 40,
+          "y": 60
+        }
+      },
+      {
+        "id": "measure-curve-analyte-node",
+        "type": "action",
+        "title": "Measure analyte",
+        "description": "Pour 25 mL of titration analyte into the graduated cylinder.",
+        "actionId": "measure-curve-analyte",
+        "config": {},
+        "validation": [
+          {
+            "id": "measure-curve-analyte-node-done",
+            "type": "actionEvidence",
+            "label": "Action measure-curve-analyte was completed.",
+            "actionId": "measure-curve-analyte"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Measure analyte complete.",
+          "retry": "Review Measure analyte and try again."
+        },
+        "layout": {
+          "x": 340,
+          "y": 60
+        }
+      },
+      {
+        "id": "transfer-curve-analyte-node",
+        "type": "action",
+        "title": "Transfer analyte",
+        "description": "Pour the titration analyte into the beaker.",
+        "actionId": "transfer-curve-analyte",
+        "config": {},
+        "validation": [
+          {
+            "id": "transfer-curve-analyte-node-done",
+            "type": "actionEvidence",
+            "label": "Action transfer-curve-analyte was completed.",
+            "actionId": "transfer-curve-analyte"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Transfer analyte complete.",
+          "retry": "Review Transfer analyte and try again."
+        },
+        "layout": {
+          "x": 640,
+          "y": 60
+        }
+      },
+      {
+        "id": "place-curve-ph-probe-node",
+        "type": "action",
+        "title": "Insert the pH probe",
+        "description": "Immerse the probe bulb in the analyte, clear of the stirrer.",
+        "actionId": "place-curve-ph-probe",
+        "layout": {
+          "x": 940,
+          "y": 60,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "place-curve-ph-probe-complete",
+            "type": "actionEvidence",
+            "label": "Insert the pH probe completed.",
+            "actionId": "place-curve-ph-probe"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Insert the pH probe checkpoint passed.",
+          "retry": "Immerse the probe bulb in the analyte, clear of the stirrer."
+        }
+      },
+      {
+        "id": "read-initial-ph-node",
+        "type": "observation",
+        "title": "Read the initial pH",
+        "description": "Read the meter with zero titrant delivered.",
+        "actionId": "read-initial-ph",
+        "layout": {
+          "x": 40,
+          "y": 260,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "read-initial-ph-complete",
+            "type": "actionEvidence",
+            "label": "Read the initial pH completed.",
+            "actionId": "read-initial-ph"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read the initial pH checkpoint passed.",
+          "retry": "Read the meter with zero titrant delivered."
+        }
+      },
+      {
+        "id": "record-initial-ph-node",
+        "type": "observation",
+        "title": "Record initial pH",
+        "description": "Record the initial pH of the analyte.",
+        "actionId": "record-initial-ph",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-initial-ph-node-done",
+            "type": "actionEvidence",
+            "label": "Action record-initial-ph was completed.",
+            "actionId": "record-initial-ph"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record initial pH complete.",
+          "retry": "Review Record initial pH and try again."
+        },
+        "layout": {
+          "x": 340,
+          "y": 260
+        }
+      },
+      {
+        "id": "mount-curve-burette-node",
+        "type": "action",
+        "title": "Mount the burette",
+        "description": "Seat the burette in the ring-stand clamp so the stopcock is reachable and the tip clears the receiving vessel. Nothing may be delivered from a hand-held burette.",
+        "actionId": "mount-curve-burette",
+        "layout": {
+          "x": 640,
+          "y": 260
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "mount-curve-burette-complete",
+            "type": "actionEvidence",
+            "label": "Burette mounted on the ring stand.",
+            "actionId": "mount-curve-burette"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Burette mount checkpoint passed.",
+          "retry": "Clamp the burette to the ring stand before filling it."
+        }
+      },
+      {
+        "id": "fill-curve-burette-node",
+        "type": "action",
+        "title": "Fill burette",
+        "description": "Pour standard base into the burette.",
+        "actionId": "fill-curve-burette",
+        "config": {},
+        "validation": [
+          {
+            "id": "fill-curve-burette-node-done",
+            "type": "actionEvidence",
+            "label": "Action fill-curve-burette was completed.",
+            "actionId": "fill-curve-burette"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Fill burette complete.",
+          "retry": "Review Fill burette and try again."
+        },
+        "layout": {
+          "x": 940,
+          "y": 260
+        }
+      },
+      {
+        "id": "read-curve-initial-burette-node",
+        "type": "observation",
+        "title": "Read the initial burette level",
+        "description": "Read the meniscus on the filled burette.",
+        "actionId": "read-curve-initial-burette",
+        "layout": {
+          "x": 40,
+          "y": 460,
+          "lane": "procedure",
+          "display": "expanded"
+        },
+        "config": {},
+        "validation": [
+          {
+            "id": "read-curve-initial-burette-complete",
+            "type": "actionEvidence",
+            "label": "Read the initial burette level completed.",
+            "actionId": "read-curve-initial-burette"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read the initial burette level checkpoint passed.",
+          "retry": "Read the meniscus on the filled burette."
+        }
+      },
+      {
+        "id": "deliver-curve-titrant-node",
+        "type": "action",
+        "title": "Deliver titrant",
+        "description": "Pour titrant in measured portions while monitoring pH.",
+        "actionId": "deliver-curve-titrant",
+        "config": {},
+        "validation": [
+          {
+            "id": "deliver-curve-titrant-node-done",
+            "type": "actionEvidence",
+            "label": "Action deliver-curve-titrant was completed.",
+            "actionId": "deliver-curve-titrant"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Deliver titrant complete.",
+          "retry": "Review Deliver titrant and try again."
+        },
+        "layout": {
+          "x": 340,
+          "y": 460
+        }
+      },
+      {
+        "id": "record-equivalence-volume-node",
+        "type": "observation",
+        "title": "Record equivalence volume",
+        "description": "Record the equivalence-point volume from the titration curve.",
+        "actionId": "record-equivalence-volume",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-equivalence-volume-node-done",
+            "type": "actionEvidence",
+            "label": "Action record-equivalence-volume was completed.",
+            "actionId": "record-equivalence-volume"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record equivalence volume complete.",
+          "retry": "Review Record equivalence volume and try again."
+        },
+        "layout": {
+          "x": 640,
+          "y": 460
+        }
+      },
+      {
+        "id": "calculate-curve-molarity-node",
+        "type": "calculation",
+        "title": "Calculate molarity",
+        "description": "Calculate unknown molarity from the equivalence-point volume.",
+        "actionId": "calculate-curve-molarity",
+        "config": {},
+        "validation": [
+          {
+            "id": "calculate-curve-molarity-node-done",
+            "type": "actionEvidence",
+            "label": "Action calculate-curve-molarity was completed.",
+            "actionId": "calculate-curve-molarity"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Calculate molarity complete.",
+          "retry": "Review Calculate molarity and try again."
+        },
+        "layout": {
+          "x": 940,
+          "y": 460
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "observe-ph-paper-node",
+        "to": "measure-curve-analyte-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "measure-curve-analyte-node",
+        "to": "transfer-curve-analyte-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "transfer-curve-analyte-node",
+        "to": "place-curve-ph-probe-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "place-curve-ph-probe-node",
+        "to": "read-initial-ph-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "read-initial-ph-node",
+        "to": "record-initial-ph-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-initial-ph-node",
+        "to": "mount-curve-burette-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "mount-curve-burette-node",
+        "to": "fill-curve-burette-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "fill-curve-burette-node",
+        "to": "read-curve-initial-burette-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "read-curve-initial-burette-node",
+        "to": "deliver-curve-titrant-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "deliver-curve-titrant-node",
+        "to": "record-equivalence-volume-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-equivalence-volume-node",
+        "to": "calculate-curve-molarity-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [
+    {
+      "id": "observe-ph-paper-node-success",
+      "type": "actionEvidence",
+      "label": "Action observe-ph-paper was completed.",
+      "actionId": "observe-ph-paper"
+    },
+    {
+      "id": "measure-curve-analyte-node-success",
+      "type": "actionEvidence",
+      "label": "Action measure-curve-analyte was completed.",
+      "actionId": "measure-curve-analyte"
+    },
+    {
+      "id": "transfer-curve-analyte-node-success",
+      "type": "actionEvidence",
+      "label": "Action transfer-curve-analyte was completed.",
+      "actionId": "transfer-curve-analyte"
+    },
+    {
+      "id": "fill-curve-burette-node-success",
+      "type": "actionEvidence",
+      "label": "Action fill-curve-burette was completed.",
+      "actionId": "fill-curve-burette"
+    },
+    {
+      "id": "record-initial-ph-node-success",
+      "type": "actionEvidence",
+      "label": "Action record-initial-ph was completed.",
+      "actionId": "record-initial-ph"
+    },
+    {
+      "id": "deliver-curve-titrant-node-success",
+      "type": "actionEvidence",
+      "label": "Action deliver-curve-titrant was completed.",
+      "actionId": "deliver-curve-titrant"
+    },
+    {
+      "id": "record-equivalence-volume-node-success",
+      "type": "actionEvidence",
+      "label": "Action record-equivalence-volume was completed.",
+      "actionId": "record-equivalence-volume"
+    },
+    {
+      "id": "calculate-curve-molarity-node-success",
+      "type": "actionEvidence",
+      "label": "Action calculate-curve-molarity was completed.",
+      "actionId": "calculate-curve-molarity"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "current node expects a different action",
+      "message": "That action is out of sequence for the current technique step.",
+      "recovery": "Check the process map and perform the highlighted step first."
+    },
+    {
+      "id": "missing-source",
+      "when": "source equipment or contents are missing",
+      "message": "The selected source does not contain the material required for this action.",
+      "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+    },
+    {
+      "id": "overflow",
+      "when": "target capacity would be exceeded",
+      "message": "The target equipment cannot hold the requested volume.",
+      "recovery": "Use a larger container or transfer a smaller measured amount."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.2.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-09-06T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "chemistry",
+      "titration",
+      "ph-curve",
+      "technique-composition",
+      "cycle-10",
+      "recorded-evidence"
+    ]
+  },
+  "titrationModels": [
+    {
+      "id": "curve-unknown-acid",
+      "type": "acidBase",
+      "analyte": {
+        "formula": "CH3COOH",
+        "role": "acid",
+        "strength": "weak",
+        "equilibriumConstant": 0.00001753,
+        "equilibriumConstantSource": "https://nvlpubs.nist.gov/nistpubs/jres/100/5/j15wu.pdf"
+      },
+      "titrant": {
+        "formula": "NaOH",
+        "role": "base",
+        "strength": "strong"
+      },
+      "analyteMolarityM": 0.099,
+      "analyteVolumeMl": 25,
+      "titrantMolarityM": 0.1,
+      "stoichiometricRatio": {
+        "analyte": 1,
+        "titrant": 1
+      },
+      "dropVolumeMl": 0.05,
+      "endpointOffsetDrops": 0,
+      "maxExtraDrops": 5,
+      "temperatureC": 25,
+      "waterIonProduct": 1e-14,
+      "phPrecision": 2
+    }
+  ],
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry",
+        "kind": "entry",
+        "nodeId": "observe-ph-paper-node",
+        "label": "Screen and acquire one recorded pH-volume curve"
+      },
+      {
+        "id": "exit",
+        "kind": "exit",
+        "nodeId": "calculate-curve-molarity-node",
+        "label": "Recorded curve calculations complete"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "variable-volume-measuring-device",
+        "required": true,
+        "sourceInstanceIds": [
+          "graduated-cylinder-1"
+        ],
+        "allowedDefinitionIds": [
+          "graduated-cylinder"
+        ]
+      },
+      {
+        "roleId": "liquid-source",
+        "required": true,
+        "sourceInstanceIds": [
+          "unknown-acid-bottle-1"
+        ],
+        "allowedDefinitionIds": [
+          "unknown-acid-bottle"
+        ]
+      },
+      {
+        "roleId": "measured-solvent-source",
+        "required": true,
+        "sourceInstanceIds": [
+          "graduated-cylinder-1"
+        ],
+        "allowedDefinitionIds": [
+          "graduated-cylinder"
+        ]
+      },
+      {
+        "roleId": "receiving-vessel",
+        "required": true,
+        "sourceInstanceIds": [
+          "beaker-250ml-1"
+        ],
+        "allowedDefinitionIds": [
+          "beaker-250ml"
+        ]
+      },
+      {
+        "roleId": "immersed-probe-instrument",
+        "required": true,
+        "sourceInstanceIds": [
+          "ph-meter-1"
+        ],
+        "allowedDefinitionIds": [
+          "ph-meter"
+        ]
+      },
+      {
+        "roleId": "immersed-probe-vessel",
+        "required": true,
+        "sourceInstanceIds": [
+          "beaker-250ml-1"
+        ],
+        "allowedDefinitionIds": [
+          "beaker-250ml"
+        ]
+      },
+      {
+        "roleId": "titrant-delivery-device",
+        "required": true,
+        "sourceInstanceIds": [
+          "burette-50ml-1"
+        ],
+        "allowedDefinitionIds": [
+          "burette-50ml"
+        ]
+      },
+      {
+        "roleId": "burette-support",
+        "required": true,
+        "sourceInstanceIds": [
+          "ring-stand-clamp-1"
+        ],
+        "allowedDefinitionIds": [
+          "ring-stand-clamp"
+        ]
+      },
+      {
+        "roleId": "titrant-source",
+        "required": true,
+        "sourceInstanceIds": [
+          "naoh-bottle-1"
+        ],
+        "allowedDefinitionIds": [
+          "naoh-bottle"
+        ]
+      },
+      {
+        "roleId": "analyte-receiver",
+        "required": true,
+        "sourceInstanceIds": [
+          "beaker-250ml-1"
+        ],
+        "allowedDefinitionIds": [
+          "beaker-250ml"
+        ]
+      }
+    ],
+    "modelSlots": [
+      {
+        "id": "curve-analysis-model",
+        "kind": "titration",
+        "sourceModelId": "curve-unknown-acid",
+        "required": true
+      }
+    ],
+    "configurationSlots": [
+      {
+        "id": "analysisMode",
+        "required": true,
+        "valueType": "string",
+        "allowedValues": [
+          "recorded-evidence-only"
+        ],
+        "defaultValue": "recorded-evidence-only"
+      }
+    ],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [
+      {
+        "id": "analysis-screen-evidence",
+        "kind": "notebook",
+        "actionId": "observe-ph-paper",
+        "referenceId": "ph-paper-screen",
+        "required": true
+      },
+      {
+        "id": "analysis-initial-ph-evidence",
+        "kind": "measurement",
+        "actionId": "record-initial-ph",
+        "referenceId": "initial-ph",
+        "required": true
+      },
+      {
+        "id": "analysis-equivalence-evidence",
+        "kind": "measurement",
+        "actionId": "record-equivalence-volume",
+        "referenceId": "equivalence-volume",
+        "required": true
+      },
+      {
+        "id": "analysis-molarity-calculation",
+        "kind": "calculation",
+        "actionId": "calculate-curve-molarity",
+        "referenceId": "curve-molarity",
+        "required": true
+      }
+    ],
+    "completion": {
+      "exitPortIds": [
+        "exit"
+      ],
+      "requiredEvidenceOutputIds": [
+        "analysis-screen-evidence",
+        "analysis-initial-ph-evidence",
+        "analysis-equivalence-evidence",
+        "analysis-molarity-calculation"
+      ],
+      "requiredValidationRuleIds": []
+    },
+    "catalogDisposition": "composable",
+    "legacyActionEffects": [
+      {
+        "actionId": "observe-ph-paper",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-initial-ph",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-equivalence-volume",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "calculate-curve-molarity",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

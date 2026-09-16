@@ -1,0 +1,868 @@
+{
+  "id": "drying",
+  "title": "Dry and Weigh a Precipitate",
+  "learningGoal": "Dry a precipitate to stable mass and record the calculation evidence.",
+  "requiredEquipment": [
+    "watch-glass",
+    "drying-oven",
+    "crucible-tongs",
+    "analytical-balance",
+    "scoopula"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "watch-glass-1",
+        "definitionId": "watch-glass",
+        "label": "Watch glass",
+        "location": "shelf",
+        "contents": {
+          "kind": "precipitate",
+          "label": "Wet calcium carbonate",
+          "massG": 0.0081,
+          "solutes": [],
+          "precipitate": {
+            "substance": "Calcium carbonate",
+            "massG": 0.0081,
+            "dryMassG": 0.0075,
+            "rinsed": true,
+            "dryness": "damp"
+          },
+          "contamination": [],
+          "wetState": "rinsed",
+          "visualState": "damp-precipitate"
+        }
+      },
+      {
+        "id": "drying-oven-1",
+        "definitionId": "drying-oven",
+        "label": "Drying oven",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "crucible-tongs-1",
+        "definitionId": "crucible-tongs",
+        "label": "Crucible tongs",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "analytical-balance-1",
+        "definitionId": "analytical-balance",
+        "label": "Analytical balance",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "scoopula-1",
+        "definitionId": "scoopula",
+        "label": "Metal scoopula",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "dry-precipitate",
+      "verb": "dry",
+      "label": "Complete the first configured drying stage",
+      "parameters": {
+        "targetDefinitionId": "watch-glass",
+        "ovenDefinitionId": "drying-oven",
+        "dryMassG": "{{config.dryMassG}}",
+        "dryingMinutes": "{{config.firstDryingMinutes}}",
+        "ovenTemperatureC": "{{config.ovenTemperatureC}}"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "dry updates runtime state through structured equipment contents."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The precipitate is dry enough to weigh.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "dry"
+      ],
+      "interaction": {
+        "type": "placeInInstrument",
+        "sourceDefinitionId": "watch-glass",
+        "targetDefinitionId": "drying-oven",
+        "stationId": "drying-oven",
+        "accessibleLabel": "Place the precipitate assembly in the configured oven for the first configured drying stage.",
+        "successCue": "The precipitate is dry enough to weigh.",
+        "invalidCue": "Only a watch glass carrying rinsed precipitate belongs in the drying oven."
+      },
+      "atomId": "atom.dry.oven-stage",
+      "equipmentRoleBindings": {
+        "drying-instrument": "drying-oven",
+        "dried-assembly": "watch-glass"
+      }
+    },
+    {
+      "id": "remove-warm-precipitate",
+      "verb": "place",
+      "label": "Remove the warm assembly",
+      "parameters": {
+        "sourceDefinitionId": "watch-glass",
+        "targetDefinitionId": "crucible-tongs"
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "watch-glass",
+        "targetDefinitionId": "crucible-tongs",
+        "stationId": "crucible-tongs",
+        "accessibleLabel": "Use the configured heat-safe tool to remove the warm assembly without weighing it.",
+        "successCue": "The warm assembly is safely removed.",
+        "invalidCue": "Use the heat-safe tool only after the first drying stage is complete."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "The partially dried assembly is warm and outside the oven."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for warm-assembly removal.",
+          "recovery": "Return to the highlighted node and complete its prerequisite first."
+        },
+        {
+          "id": "invalid-apparatus-state",
+          "when": "the required source, target, tool, or temperature state is missing",
+          "message": "The apparatus is not ready for warm-assembly removal.",
+          "recovery": "Correct the named apparatus or temperature prerequisite, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Warm assembly removed.",
+        "invalid": "Complete the first drying stage and use the configured heat-safe tool."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.remove-warm-drying-assembly",
+      "equipmentRoleBindings": {
+        "drying-instrument": "drying-oven",
+        "dried-assembly": "watch-glass",
+        "cooling-tool": "crucible-tongs"
+      }
+    },
+    {
+      "id": "break-precipitate",
+      "verb": "place",
+      "label": "Break the precipitate into small pieces",
+      "parameters": {
+        "sourceDefinitionId": "scoopula",
+        "targetDefinitionId": "watch-glass"
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "scoopula",
+        "targetDefinitionId": "watch-glass",
+        "stationId": "watch-glass",
+        "accessibleLabel": "Use the configured solid tool to break the warm precipitate into small pieces before redrying.",
+        "successCue": "The precipitate is represented as broken into smaller pieces.",
+        "invalidCue": "Remove the warm assembly before breaking the precipitate."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "The partially dried precipitate is broken into smaller pieces for the second stage."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for precipitate breakup.",
+          "recovery": "Return to the highlighted node and complete its prerequisite first."
+        },
+        {
+          "id": "invalid-apparatus-state",
+          "when": "the required source, target, tool, or temperature state is missing",
+          "message": "The apparatus is not ready for precipitate breakup.",
+          "recovery": "Correct the named apparatus or temperature prerequisite, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Precipitate broken into smaller pieces.",
+        "invalid": "Remove the warm assembly and use the configured solid tool."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.break.precipitate",
+      "equipmentRoleBindings": {
+        "dried-assembly": "watch-glass",
+        "solid-transfer-tool": "scoopula"
+      }
+    },
+    {
+      "id": "second-dry-precipitate",
+      "verb": "dry",
+      "label": "Complete the second configured drying stage",
+      "parameters": {
+        "targetDefinitionId": "watch-glass",
+        "ovenDefinitionId": "drying-oven",
+        "dryMassG": "{{config.dryMassG}}",
+        "dryingMinutes": "{{config.secondDryingMinutes}}",
+        "ovenTemperatureC": "{{config.ovenTemperatureC}}"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "dry updates runtime state through structured equipment contents."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The precipitate is dry enough to weigh.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "dry"
+      ],
+      "interaction": {
+        "type": "placeInInstrument",
+        "sourceDefinitionId": "watch-glass",
+        "targetDefinitionId": "drying-oven",
+        "stationId": "drying-oven",
+        "accessibleLabel": "Return the broken precipitate assembly to the configured oven for the second configured drying stage.",
+        "successCue": "The precipitate is dry enough to weigh.",
+        "invalidCue": "Only a watch glass carrying rinsed precipitate belongs in the drying oven."
+      },
+      "atomId": "atom.dry.oven-stage",
+      "equipmentRoleBindings": {
+        "drying-instrument": "drying-oven",
+        "dried-assembly": "watch-glass"
+      }
+    },
+    {
+      "id": "cool-dry-precipitate",
+      "verb": "cool",
+      "label": "Cool the dried assembly before weighing",
+      "parameters": {
+        "sourceDefinitionId": "watch-glass",
+        "targetDefinitionId": "crucible-tongs"
+      },
+      "interaction": {
+        "type": "placeInInstrument",
+        "sourceDefinitionId": "watch-glass",
+        "targetDefinitionId": "crucible-tongs",
+        "stationId": "crucible-tongs",
+        "accessibleLabel": "Remove the assembly with the heat-safe tool and allow it to cool before weighing.",
+        "successCue": "The assembly is cool enough to weigh.",
+        "invalidCue": "Complete the second drying stage before cooling, and do not weigh the assembly warm."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "The dried assembly is cooled to the configured safe weighing state."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the current process node expects a different action",
+          "message": "That action is out of sequence for cooling before weighing.",
+          "recovery": "Return to the highlighted node and complete its prerequisite first."
+        },
+        {
+          "id": "invalid-apparatus-state",
+          "when": "the required source, target, tool, or temperature state is missing",
+          "message": "The apparatus is not ready for cooling before weighing.",
+          "recovery": "Correct the named apparatus or temperature prerequisite, then retry."
+        }
+      ],
+      "feedback": {
+        "success": "Dried assembly cooled.",
+        "invalid": "Complete the second drying stage and cool before weighing."
+      },
+      "evidence": [
+        "cool"
+      ],
+      "atomId": "atom.cool.before-weighing",
+      "equipmentRoleBindings": {
+        "dried-assembly": "watch-glass",
+        "cooling-tool": "crucible-tongs"
+      }
+    },
+    {
+      "id": "weigh-dry-precipitate",
+      "verb": "weigh",
+      "label": "Weigh dry precipitate",
+      "parameters": {
+        "sourceDefinitionId": "watch-glass",
+        "sourceInstanceId": "watch-glass-1",
+        "tolerance": "{{config.massToleranceG}}",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Balance display for the cooled dry watch glass (g)",
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "inputStep": 0.001,
+        "inputRequired": true,
+        "unit": "g"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "weigh updates runtime state through structured equipment contents."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Dry precipitate mass recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "weigh",
+        "measurement"
+      ],
+      "interaction": {
+        "type": "readInstrument",
+        "sourceDefinitionId": "watch-glass",
+        "targetDefinitionId": "analytical-balance",
+        "stationId": "analytical-balance",
+        "accessibleLabel": "Place the cooled dry assembly on the analytical balance and read the configured simulated mass.",
+        "successCue": "Dry precipitate mass recorded.",
+        "invalidCue": "Only dry precipitate on the watch glass should be weighed."
+      },
+      "atomId": "atom.weigh.dry-assembly",
+      "equipmentRoleBindings": {
+        "balance-instrument": "analytical-balance",
+        "dried-assembly": "watch-glass"
+      },
+      "mass": {
+        "source": "action-input",
+        "outputMeasurementId": "{{config.dryMassMeasurementId}}",
+        "continuity": {
+          "version": 1,
+          "quantityKind": "balance-display",
+          "measuredSupportInstanceId": "watch-glass-1"
+        }
+      }
+    },
+    {
+      "id": "record-dry-mass",
+      "verb": "record",
+      "label": "Record dry mass",
+      "parameters": {
+        "measurementId": "{{config.dryMassMeasurementId}}",
+        "label": "Dry precipitate mass",
+        "unit": "g"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "record updates runtime state through structured equipment contents."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Dry mass recorded in the notebook.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "record",
+        "notebook"
+      ]
+    }
+  ],
+  "process": {
+    "startNodeId": "dry-precipitate-node",
+    "nodes": [
+      {
+        "id": "dry-precipitate-node",
+        "type": "checkpoint",
+        "title": "Complete the first configured drying stage",
+        "description": "Place the precipitate assembly in the configured oven for the first configured drying stage.",
+        "actionId": "dry-precipitate",
+        "config": {},
+        "validation": [
+          {
+            "id": "dry-precipitate-complete",
+            "type": "actionEvidence",
+            "label": "Complete the first configured drying stage was completed.",
+            "actionId": "dry-precipitate"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Complete the first configured drying stage complete.",
+          "retry": "Correct the prerequisite and retry complete the first configured drying stage."
+        }
+      },
+      {
+        "id": "remove-warm-precipitate-node",
+        "type": "action",
+        "title": "Remove the warm assembly",
+        "description": "Use the configured heat-safe tool to remove the warm assembly without weighing it.",
+        "actionId": "remove-warm-precipitate",
+        "config": {},
+        "validation": [
+          {
+            "id": "remove-warm-precipitate-complete",
+            "type": "actionEvidence",
+            "label": "Remove the warm assembly was completed.",
+            "actionId": "remove-warm-precipitate"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Remove the warm assembly complete.",
+          "retry": "Correct the prerequisite and retry remove the warm assembly."
+        }
+      },
+      {
+        "id": "break-precipitate-node",
+        "type": "action",
+        "title": "Break the precipitate into small pieces",
+        "description": "Use the configured solid tool to break the warm precipitate into small pieces before redrying.",
+        "actionId": "break-precipitate",
+        "config": {},
+        "validation": [
+          {
+            "id": "break-precipitate-complete",
+            "type": "actionEvidence",
+            "label": "Break the precipitate into small pieces was completed.",
+            "actionId": "break-precipitate"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Break the precipitate into small pieces complete.",
+          "retry": "Correct the prerequisite and retry break the precipitate into small pieces."
+        }
+      },
+      {
+        "id": "second-dry-precipitate-node",
+        "type": "checkpoint",
+        "title": "Complete the second configured drying stage",
+        "description": "Return the broken precipitate assembly to the configured oven for the second configured drying stage.",
+        "actionId": "second-dry-precipitate",
+        "config": {},
+        "validation": [
+          {
+            "id": "second-dry-precipitate-complete",
+            "type": "actionEvidence",
+            "label": "Complete the second configured drying stage was completed.",
+            "actionId": "second-dry-precipitate"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Complete the second configured drying stage complete.",
+          "retry": "Correct the prerequisite and retry complete the second configured drying stage."
+        }
+      },
+      {
+        "id": "cool-dry-precipitate-node",
+        "type": "action",
+        "title": "Cool the dried assembly before weighing",
+        "description": "Remove the assembly with the heat-safe tool and allow it to cool before weighing.",
+        "actionId": "cool-dry-precipitate",
+        "config": {},
+        "validation": [
+          {
+            "id": "cool-dry-precipitate-complete",
+            "type": "actionEvidence",
+            "label": "Cool the dried assembly before weighing was completed.",
+            "actionId": "cool-dry-precipitate"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Cool the dried assembly before weighing complete.",
+          "retry": "Correct the prerequisite and retry cool the dried assembly before weighing."
+        }
+      },
+      {
+        "id": "weigh-dry-node",
+        "type": "action",
+        "title": "Weigh dry precipitate",
+        "description": "Place the cooled dry assembly on the analytical balance and read the configured simulated mass.",
+        "actionId": "weigh-dry-precipitate",
+        "config": {},
+        "validation": [
+          {
+            "id": "weigh-dry-precipitate-complete",
+            "type": "actionEvidence",
+            "label": "Weigh dry precipitate was completed.",
+            "actionId": "weigh-dry-precipitate"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Weigh dry precipitate complete.",
+          "retry": "Correct the prerequisite and retry weigh dry precipitate."
+        }
+      },
+      {
+        "id": "record-dry-node",
+        "type": "observation",
+        "title": "Record dry mass",
+        "description": "Record dry mass",
+        "actionId": "record-dry-mass",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-dry-mass-complete",
+            "type": "actionEvidence",
+            "label": "Record dry mass was completed.",
+            "actionId": "record-dry-mass"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record dry mass complete.",
+          "retry": "Correct the prerequisite and retry record dry mass."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "dry-precipitate-node",
+        "to": "remove-warm-precipitate-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "remove-warm-precipitate-node",
+        "to": "break-precipitate-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "break-precipitate-node",
+        "to": "second-dry-precipitate-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "second-dry-precipitate-node",
+        "to": "cool-dry-precipitate-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cool-dry-precipitate-node",
+        "to": "weigh-dry-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "weigh-dry-node",
+        "to": "record-dry-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [
+    {
+      "id": "dry-mass-success",
+      "type": "actionEvidence",
+      "label": "The cooled dry mass was recorded.",
+      "actionId": "record-dry-mass"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "current node expects a different action",
+      "message": "That action is out of sequence for the current technique step.",
+      "recovery": "Check the process map and perform the highlighted step first."
+    },
+    {
+      "id": "missing-source",
+      "when": "source equipment or contents are missing",
+      "message": "The selected source does not contain the material required for this action.",
+      "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+    },
+    {
+      "id": "overflow",
+      "when": "target capacity would be exceeded",
+      "message": "The target equipment cannot hold the requested volume.",
+      "recovery": "Use a larger container or transfer a smaller measured amount."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.2.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-08-30T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "drying"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry",
+        "kind": "entry",
+        "nodeId": "dry-precipitate-node",
+        "label": "Entry"
+      },
+      {
+        "id": "exit",
+        "kind": "exit",
+        "nodeId": "record-dry-node",
+        "label": "Exit"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "drying-instrument",
+        "required": true,
+        "allowedDefinitionIds": [
+          "drying-oven"
+        ],
+        "sourceInstanceIds": [
+          "drying-oven-1"
+        ]
+      },
+      {
+        "roleId": "dried-assembly",
+        "required": true,
+        "allowedDefinitionIds": [
+          "watch-glass"
+        ],
+        "sourceInstanceIds": [
+          "watch-glass-1"
+        ]
+      },
+      {
+        "roleId": "balance-instrument",
+        "required": true,
+        "allowedDefinitionIds": [
+          "analytical-balance"
+        ],
+        "sourceInstanceIds": [
+          "analytical-balance-1"
+        ]
+      },
+      {
+        "roleId": "cooling-tool",
+        "required": true,
+        "allowedDefinitionIds": [
+          "crucible-tongs"
+        ],
+        "sourceInstanceIds": [
+          "crucible-tongs-1"
+        ]
+      },
+      {
+        "roleId": "solid-transfer-tool",
+        "required": true,
+        "allowedDefinitionIds": [
+          "scoopula"
+        ],
+        "sourceInstanceIds": [
+          "scoopula-1"
+        ]
+      }
+    ],
+    "modelSlots": [],
+    "configurationSlots": [
+      {
+        "id": "firstDryingMinutes",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "secondDryingMinutes",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "ovenTemperatureC",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "dryMassG",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "massToleranceG",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "dryMassMeasurementId",
+        "valueType": "string",
+        "required": true
+      }
+    ],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [
+      {
+        "id": "first-drying-stage",
+        "kind": "action-evidence",
+        "actionId": "dry-precipitate"
+      },
+      {
+        "id": "second-drying-stage",
+        "kind": "action-evidence",
+        "actionId": "second-dry-precipitate"
+      },
+      {
+        "id": "cooled-dry-mass-reading",
+        "kind": "measurement",
+        "actionId": "weigh-dry-precipitate",
+        "referenceId": "{{config.dryMassMeasurementId}}"
+      },
+      {
+        "id": "cooled-dry-mass-record",
+        "kind": "notebook",
+        "actionId": "record-dry-mass",
+        "referenceId": "{{config.dryMassMeasurementId}}"
+      }
+    ],
+    "completion": {
+      "exitPortIds": [
+        "exit"
+      ],
+      "requiredEvidenceOutputIds": [
+        "first-drying-stage",
+        "second-drying-stage",
+        "cooled-dry-mass-reading",
+        "cooled-dry-mass-record"
+      ],
+      "requiredValidationRuleIds": [
+        "dry-mass-success"
+      ]
+    },
+    "catalogDisposition": "composable",
+    "legacyActionEffects": [
+      {
+        "actionId": "record-dry-mass",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
