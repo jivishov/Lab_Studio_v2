@@ -2798,7 +2798,8 @@
       "documentationLabel": "Develop the inserted strip in the closed chamber",
       "verb": "developChromatogram",
       "allowedInteractionTypes": [
-        "snapIntoTarget"
+        "snapIntoTarget",
+        "recordNotebook"
       ],
       "effectContract": {
         "classes": [
@@ -2826,7 +2827,7 @@
         "Insertion geometry is validated: the lower edge is in solvent and the spot is above it.",
         "The stop condition is a configuration point; the solvent front is marked promptly after removal."
       ],
-      "evidence": "developed chromatogram with a marked solvent front",
+      "evidence": "developed chromatogram ready for removal and prompt solvent-front marking",
       "sourceExamples": [
         {
           "sourceFile": "sticky-question-paper-chromatography_2026-07-27.md",

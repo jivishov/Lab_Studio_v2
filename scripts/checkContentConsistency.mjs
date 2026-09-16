@@ -139,6 +139,9 @@ const TYPED_ATOM_INTERACTION_EFFECT_CLASSES = {
   "atom.observe.set-active-photometer-wavelength": {
     readInstrument: ["apparatus-material-instrument-state", "evidence-recording"],
   },
+  "atom.developChromatogram.develop-strip": {
+    recordNotebook: ["apparatus-material-instrument-state"],
+  },
 };
 
 const requiredEffectClassesForAtomInteraction = (atomId, interactionType) =>
@@ -165,7 +168,7 @@ const COMPATIBLE_INTERACTION_VERBS = {
   placeInInstrument: ["dry", "heat", "cool", "stressEquilibrium"],
   readInstrument: ["weigh", "measureVolume", "observe", "stressEquilibrium"],
   recordTimeSeries: ["record"],
-  recordNotebook: ["calculate", "record", "observe", "stressEquilibrium", "mix", "vent", "settle", "dry", "cool", "transfer", "rinse"],
+  recordNotebook: ["calculate", "record", "observe", "stressEquilibrium", "mix", "vent", "settle", "dry", "cool", "transfer", "rinse", "developChromatogram"],
   submitCalculation: ["calculate"],
 };
 
