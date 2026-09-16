@@ -19,9 +19,10 @@ import { hostLabsForTechnique } from "./techniqueHosts";
  * are supposed to hold values and refuses partway through with a message about the value rather than
  * about the missing configuration.
  *
- * Required composition declarations that are not bound anywhere are also unresolved for a standalone
- * route. They are not harmless just because no `{{config.*}}` token survives in an action: the host
- * compiler may use them to choose a procedure or materialize data that standalone setup cannot infer.
+ * While an authored definition still contains configuration templates, required composition
+ * declarations that are not bound anywhere are unresolved too: the host compiler may consume them
+ * structurally (for example to select a procedure), while the player has no equivalent materializer.
+ * Once substitution has produced a concrete definition, declarations alone do not make it unresolved.
  *
  * This reports what is unresolved so a caller can say so before a learner starts. It fills nothing
  * in by itself.
@@ -51,11 +52,13 @@ export const unresolvedConfigurationSlots = (
   collect((definition as TechniqueDefinition).successCriteria, found);
   collect((definition as LabDefinition).assessments, found);
 
-  // A required declared slot with no template binding is still unresolved on the standalone path.
-  // The host compiler may consume it structurally (for example to select a procedure), while the
-  // player has no equivalent materialization step. Surface it instead of silently dropping it.
-  for (const declaration of (definition as TechniqueDefinition).composition?.configurationSlots ?? []) {
-    if (declaration.required && !found.has(declaration.id)) found.add(declaration.id);
+  // Required declaration-only slots matter while this is still an authored configuration surface.
+  // After successful substitution there are no templates left; retaining the declaration metadata
+  // must not make the concrete result appear unresolved again.
+  if (found.size > 0) {
+    for (const declaration of (definition as TechniqueDefinition).composition?.configurationSlots ?? []) {
+      if (declaration.required && !found.has(declaration.id)) found.add(declaration.id);
+    }
   }
 
   return [...found].sort();
