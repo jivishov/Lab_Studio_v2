@@ -33,24 +33,50 @@ export interface StandaloneEvidenceIssue {
 const copiesExistingMeasurementOnly = (action: ActionDefinition): boolean =>
   action.verb === "record" && action.parameters.copyExistingMeasurementOnly === true;
 
+const hasOwnNumericRecordInput = (action: ActionDefinition): boolean =>
+  action.parameters.inputMode === "numeric"
+  || (typeof action.parameters.value === "number" && Number.isFinite(action.parameters.value));
+
+/**
+ * Whether the reducer can write `parameters.measurementId` for this action without first requiring
+ * that same measurement to exist. Keep this aligned with the concrete runtime branches rather than
+ * treating a verb name as evidence production.
+ */
 const measurementParameterIsProduced = (action: ActionDefinition): boolean => {
   const params = action.parameters;
   if (params.measurementId === undefined || copiesExistingMeasurementOnly(action)) return false;
-  if (
-    action.verb === "developChromatogram"
-    && params.recordMeasurementsOnDevelop === false
-  ) {
-    return false;
+
+  if (action.verb === "weigh") {
+    // An action-input mass contract writes its own `mass.outputMeasurementId`; otherwise the weigh
+    // branch falls back to `parameters.measurementId`.
+    return action.mass?.source !== "action-input";
   }
-  if (new Set(["weigh", "measureVolume", "dilute", "developChromatogram", "record"]).has(action.verb)) {
-    return true;
+
+  if (action.verb === "measureVolume") {
+    // Instrument reads always use `parameters.measurementId`. A physical volume measurement prefers
+    // `volume.outputMeasurementId` when one is declared, so the parameter is not also produced.
+    if (action.interaction?.type === "readInstrument") return true;
+    return action.volume?.outputMeasurementId === undefined;
   }
-  if (action.atomId === "atom.measure.read-burette") return true;
-  return action.verb === "observe" && (
-    params.chromatographyMeasurementType !== undefined
-    || params.configurationQuantity !== undefined
-    || params.photometerOperation === "read"
-  );
+
+  if (action.verb === "observe") {
+    return params.chromatographyMeasurementType !== undefined
+      || params.configurationQuantity !== undefined
+      || params.photometerOperation === "read"
+      || params.instrumentEvidence !== undefined
+      || params.inputMode === "numeric";
+  }
+
+  if (action.verb === "record") {
+    // A plain record action only copies/relabels an existing measurement. It is a producer from
+    // source-level inspection only when it declares its own numeric input/value.
+    return hasOwnNumericRecordInput(action);
+  }
+
+  // `dilute` does not generically write parameters.measurementId, and developChromatogram writes
+  // measurements derived from its prefix/model rather than this parameter. Do not credit either as
+  // a producer merely because a similarly named parameter is present.
+  return false;
 };
 
 const dropDispenseFinalReadingIsProduced = (action: ActionDefinition): boolean =>
@@ -72,10 +98,22 @@ const producedMeasurements = (action: ActionDefinition): MeasurementReference[] 
     if (reference) produced.set(reference.key, reference);
   };
 
-  add(action.volume?.outputMeasurementId);
-  add(action.mass?.outputMeasurementId);
+  if (
+    action.verb === "measureVolume"
+    && action.interaction?.type !== "readInstrument"
+    && action.volume?.outputMeasurementId !== undefined
+  ) {
+    add(action.volume.outputMeasurementId);
+  }
+  if (action.verb === "weigh" && action.mass?.source === "action-input") {
+    add(action.mass.outputMeasurementId);
+  }
+  if (action.sourceInventory) add(action.sourceInventory.outputMeasurementId);
   if (measurementParameterIsProduced(action)) add(action.parameters.measurementId);
   if (dropDispenseFinalReadingIsProduced(action)) add(action.parameters.finalBuretteMeasurementId);
+  if (action.runtimeRepeat && measurementParameterIsProduced(action)) {
+    add(action.runtimeRepeat.outputMeasurementId);
+  }
 
   return [...produced.values()];
 };
@@ -115,6 +153,16 @@ const consumedMeasurements = (definition: TechniqueDefinition): MeasurementConsu
       add(
         action.parameters.measurementId,
         `copy-only measurement source ${action.id}.measurementId`,
+        action.id,
+      );
+    } else if (
+      action.verb === "record"
+      && action.parameters.measurementId !== undefined
+      && !measurementParameterIsProduced(action)
+    ) {
+      add(
+        action.parameters.measurementId,
+        `record source ${action.id}.measurementId`,
         action.id,
       );
     }
