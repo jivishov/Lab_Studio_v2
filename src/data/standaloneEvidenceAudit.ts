@@ -22,7 +22,8 @@ export interface StandaloneEvidenceIssue {
   code:
     | "missing-measurement-producer"
     | "misleading-final-volume-producer"
-    | "untyped-dilution-calculation";
+    | "untyped-dilution-calculation"
+    | "untyped-photometric-calculation";
   message: string;
   actionId?: string;
   ruleId?: string;
@@ -207,6 +208,37 @@ const referenceLabel = (reference: MeasurementReference): string =>
     ? `configuration slot "${reference.configurationSlot}"`
     : `measurement "${reference.measurementId}"`;
 
+const expectedPhotometricTemplate = (
+  action: ActionDefinition,
+  producers: ReadonlyMap<string, { reference: MeasurementReference; actions: ActionDefinition[] }>,
+): string | undefined => {
+  if (action.verb !== "calculate") return undefined;
+  const source = measurementReference(action.parameters.sourceMeasurementId);
+  if (!source) return undefined;
+  const sourceActions = producers.get(source.key)?.actions ?? [];
+  const quantities = new Set(
+    sourceActions
+      .map((producer) => producer.parameters.photometricQuantity)
+      .filter((value): value is string => typeof value === "string"),
+  );
+  if (quantities.size !== 1) return undefined;
+
+  const identity = `${String(action.parameters.calculationId ?? "")} ${action.label}`.toLowerCase();
+  const [quantity] = [...quantities];
+  if (identity.includes("absorbance")) {
+    if (quantity === "percentTransmittance") return "absorbanceFromPercentT";
+    if (quantity === "decimalTransmittance") return "absorbanceFromDecimalT";
+  }
+  if (
+    identity.includes("decimal")
+    && identity.includes("transmittance")
+    && quantity === "percentTransmittance"
+  ) {
+    return "decimalTransmittance";
+  }
+  return undefined;
+};
+
 /**
  * Source-level audit for standalone evidence plumbing.
  *
@@ -288,6 +320,15 @@ export const auditStandaloneEvidence = (
         code: "untyped-dilution-calculation",
         actionId: action.id,
         message: `Calculation "${action.id}" consumes stock concentration, stock volume and final volume but is not bound to the dilutedConcentration template.`,
+      });
+    }
+
+    const expectedTemplate = expectedPhotometricTemplate(action, producers);
+    if (expectedTemplate && action.parameters.template !== expectedTemplate) {
+      issues.push({
+        code: "untyped-photometric-calculation",
+        actionId: action.id,
+        message: `Calculation "${action.id}" consumes a typed photometer measurement but is not bound to the ${expectedTemplate} template required by that measurement quantity.`,
       });
     }
   }
