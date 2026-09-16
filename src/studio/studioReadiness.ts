@@ -57,6 +57,7 @@ const categoryLabels: Record<StudioReadinessCategoryId, string> = {
 };
 
 const referencePattern = /reference|unknown|not included|snap zone|compatible/i;
+const configurationTemplatePattern = /\{\{config\.([A-Za-z0-9_-]+)\}\}/g;
 
 const issue = (
   id: string,
@@ -91,9 +92,66 @@ const hasSetupContent = (draft: LabDefinition): boolean =>
   draft.learningGoals.some((goal) => goal.trim().length > 0) &&
   draft.equipment.length > 0;
 
+interface UnresolvedStudioConfiguration {
+  slot: string;
+  actionId?: string;
+}
+
+const configurationTemplatesIn = (value: unknown): string[] => {
+  const found = new Set<string>();
+  const visit = (current: unknown): void => {
+    if (typeof current === "string") {
+      for (const match of current.matchAll(configurationTemplatePattern)) found.add(match[1]);
+      return;
+    }
+    if (Array.isArray(current)) {
+      current.forEach(visit);
+      return;
+    }
+    if (current && typeof current === "object") {
+      Object.values(current as Record<string, unknown>).forEach(visit);
+    }
+  };
+  visit(value);
+  return [...found].sort();
+};
+
+/**
+ * Studio intentionally allows an incomplete draft to be saved. Preview/export are different: a
+ * template such as {{config.stockConcentrationMeasurementId}} is not a value and must not escape as
+ * runnable content. Track action ownership where possible so diagnostics can take the teacher back
+ * to the affected process step instead of merely showing a global warning.
+ */
+const unresolvedStudioConfiguration = (draft: LabDefinition): UnresolvedStudioConfiguration[] => {
+  const unresolved: UnresolvedStudioConfiguration[] = [];
+  const seen = new Set<string>();
+  for (const action of draft.actions) {
+    for (const slot of configurationTemplatesIn(action)) {
+      const key = `${action.id}\u0000${slot}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      unresolved.push({ slot, actionId: action.id });
+    }
+  }
+  for (const slot of configurationTemplatesIn({
+    assessments: draft.assessments,
+    process: draft.process,
+  })) {
+    const key = `\u0000${slot}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    unresolved.push({ slot });
+  }
+  return unresolved.sort((left, right) =>
+    left.slot === right.slot
+      ? (left.actionId ?? "").localeCompare(right.actionId ?? "")
+      : left.slot.localeCompare(right.slot));
+};
+
 export const assessStudioReadiness = (draft: LabDefinition): StudioReadiness => {
   const validation = validateLabDefinition(draft);
   const interactionIssues = collectStudioInteractionIssues(draft);
+  const unresolvedConfiguration = unresolvedStudioConfiguration(draft);
 
   const draftDiagnostics: StudioDiagnostic[] = [];
   if (!draft.title.trim()) {
@@ -150,6 +208,17 @@ export const assessStudioReadiness = (draft: LabDefinition): StudioReadiness => 
       .map((message, index) =>
         issue(`reference-${index}`, message, "references", "fail", { section: "details" }),
       ),
+    ...unresolvedConfiguration.map((entry, index) =>
+      issue(
+        `unresolved-configuration-${index}`,
+        `Bind teacher configuration "${entry.slot}" before preview or export. Saving this incomplete draft is still allowed.`,
+        "references",
+        "fail",
+        entry.actionId
+          ? { section: "process", actionId: entry.actionId }
+          : { section: "details" },
+      ),
+    ),
     ...interactionIssues.map((interactionIssue, index) =>
       issue(
         `interaction-${index}`,
@@ -161,17 +230,25 @@ export const assessStudioReadiness = (draft: LabDefinition): StudioReadiness => 
     ),
   ];
 
-  const previewDiagnostics: StudioDiagnostic[] = validation.ok
-    ? []
-    : [
-        issue(
-          "preview-not-runnable",
-          "Live preview needs a structurally valid draft.",
-          "studentPreview",
-          "fail",
-          { section: "preview" },
-        ),
-      ];
+  const previewDiagnostics: StudioDiagnostic[] = [];
+  if (!validation.ok) {
+    previewDiagnostics.push(issue(
+      "preview-not-runnable",
+      "Live preview needs a structurally valid draft.",
+      "studentPreview",
+      "fail",
+      { section: "preview" },
+    ));
+  }
+  if (unresolvedConfiguration.length) {
+    previewDiagnostics.push(issue(
+      "preview-unresolved-configuration",
+      "Live preview is blocked until every teacher configuration binding has a concrete approved value or evidence identifier.",
+      "studentPreview",
+      "fail",
+      { section: "details" },
+    ));
+  }
 
   const exportDiagnostics: StudioDiagnostic[] = [];
   if (!validation.ok) {
@@ -181,6 +258,15 @@ export const assessStudioReadiness = (draft: LabDefinition): StudioReadiness => 
       "exportReadiness",
       "fail",
       { section: "export" },
+    ));
+  }
+  if (unresolvedConfiguration.length) {
+    exportDiagnostics.push(issue(
+      "export-unresolved-configuration",
+      "Resolve teacher configuration before export; identifier names do not supply the scientific values they reference.",
+      "exportReadiness",
+      "fail",
+      { section: "details" },
     ));
   }
   if (interactionIssues.length) {
@@ -209,11 +295,12 @@ export const assessStudioReadiness = (draft: LabDefinition): StudioReadiness => 
     category("exportReadiness", exportDiagnostics),
   ];
   const diagnostics = categories.flatMap((entry) => entry.diagnostics);
+  const configurationResolved = unresolvedConfiguration.length === 0;
 
   const level: StudioReadinessLevel =
-    validation.ok && !interactionIssues.length && hasSetupContent(draft)
+    validation.ok && configurationResolved && !interactionIssues.length && hasSetupContent(draft)
       ? "exportReady"
-      : validation.ok
+      : validation.ok && configurationResolved
         ? "runnable"
         : draft.title.trim() && draft.process.nodes.length
           ? "structurallyValid"
