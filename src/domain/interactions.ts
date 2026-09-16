@@ -36,7 +36,9 @@ export const interactionStationIds = [
 
 export const compatibleInteractionVerbs: Record<ActionInteractionType, readonly ActionVerb[]> = {
   dragToZone: ["place", "reset"],
-  snapIntoTarget: ["place", "developChromatogram"],
+  // Chromatography insertion is a distinct `place` action. Development itself is the
+  // stateful process control performed only after the strip is already seated and the lid closed.
+  snapIntoTarget: ["place"],
   pourInto: ["measureVolume", "transfer", "dissolve", "precipitate", "dilute", "filter", "stressEquilibrium"],
   dispenseDrops: ["transfer"],
   spotOnto: ["spotSample"],
@@ -44,7 +46,7 @@ export const compatibleInteractionVerbs: Record<ActionInteractionType, readonly 
   placeInInstrument: ["dry", "heat", "cool", "stressEquilibrium"],
   readInstrument: ["weigh", "measureVolume", "observe", "stressEquilibrium"],
   recordTimeSeries: ["record"],
-  recordNotebook: ["calculate", "record", "observe", "stressEquilibrium", "mix", "vent", "settle", "dry", "cool", "transfer", "rinse"],
+  recordNotebook: ["calculate", "record", "observe", "stressEquilibrium", "mix", "vent", "settle", "dry", "cool", "transfer", "rinse", "developChromatogram"],
   submitCalculation: ["calculate"],
 };
 
@@ -164,11 +166,9 @@ export const defaultInteractionForAction = (
 
   if (action.verb === "developChromatogram") {
     return withCommonCues(action, {
-      type: "snapIntoTarget",
-      sourceDefinitionId,
-      targetDefinitionId,
-      snapZoneId,
-      accessibleLabel: `Place ${definiteEquipmentLabel(equipmentLabel(sourceDefinitionId, "the spotted chromatography paper"))} into ${definiteEquipmentLabel(equipmentLabel(targetDefinitionId, "the chromatography chamber"))}.`,
+      type: "recordNotebook",
+      valueParameter: "note",
+      accessibleLabel: `Develop the already inserted strip under the closed-chamber conditions for ${action.label}.`,
     });
   }
 
