@@ -148,6 +148,16 @@ const unresolvedStudioConfiguration = (draft: LabDefinition): UnresolvedStudioCo
       : left.slot.localeCompare(right.slot));
 };
 
+const actionAnchor = (
+  draft: LabDefinition,
+  actionId: string,
+  section: StudioDiagnostic["anchor"]["section"] = "process",
+): NonNullable<StudioDiagnostic["anchor"]> => ({
+  section,
+  actionId,
+  nodeId: draft.process.nodes.find((node) => node.actionId === actionId)?.id,
+});
+
 export const assessStudioReadiness = (draft: LabDefinition): StudioReadiness => {
   const validation = validateLabDefinition(draft);
   const interactionIssues = collectStudioInteractionIssues(draft);
@@ -215,7 +225,7 @@ export const assessStudioReadiness = (draft: LabDefinition): StudioReadiness => 
         "references",
         "fail",
         entry.actionId
-          ? { section: "process", actionId: entry.actionId }
+          ? actionAnchor(draft, entry.actionId)
           : { section: "details" },
       ),
     ),
@@ -225,7 +235,7 @@ export const assessStudioReadiness = (draft: LabDefinition): StudioReadiness => 
         interactionIssue.message,
         "references",
         "warning",
-        { section: "details", actionId: interactionIssue.actionId },
+        actionAnchor(draft, interactionIssue.actionId, "details"),
       ),
     ),
   ];
