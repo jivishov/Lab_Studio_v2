@@ -5,6 +5,7 @@ import type {
   TechniqueDefinition,
 } from "../domain/types";
 import { validateTechniqueDefinition } from "../domain/validation";
+import { validateStandaloneConfigurationSemantics } from "./standaloneConfigurationSemantics";
 import { auditStandaloneEvidence } from "./standaloneEvidenceAudit";
 import { hostLabsForTechnique } from "./techniqueHosts";
 
@@ -358,6 +359,18 @@ export const applyTechniqueConfiguration = <T extends TechniqueDefinition | LabD
     throw new TechniqueConfigurationError(
       `Supply the approved classroom ${missing.length === 1 ? "value" : "values"}: ${missing.join(", ")}.`,
     );
+  }
+
+  if ("successCriteria" in definition) {
+    const semanticIssues = validateStandaloneConfigurationSemantics(
+      definition as TechniqueDefinition,
+      values,
+    );
+    if (semanticIssues.length > 0) {
+      throw new TechniqueConfigurationError(
+        `Configured technique is not physically consistent: ${semanticIssues.map((entry) => entry.message).join(" ")}`,
+      );
+    }
   }
 
   const configured = substitute(definition, values) as T;
