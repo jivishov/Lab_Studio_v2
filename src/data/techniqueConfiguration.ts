@@ -1,4 +1,11 @@
-import type { LabDefinition, TechniqueDefinition } from "../domain/types";
+import type {
+  LabDefinition,
+  TechniqueConfigurationSlot,
+  TechniqueConfigurationValue,
+  TechniqueDefinition,
+} from "../domain/types";
+import { validateTechniqueDefinition } from "../domain/validation";
+import { hostLabsForTechnique } from "./techniqueHosts";
 
 /**
  * Configuration slots a definition still asks for and nobody has filled.
@@ -8,12 +15,11 @@ import type { LabDefinition, TechniqueDefinition } from "../domain/types";
  * technique route has no such step: `loadBundledTechnique` validates a published technique and hands
  * it to the player exactly as authored. A technique whose procedure is written against teacher
  * configuration therefore reaches the runtime with template strings sitting in the parameters that
- * are supposed to hold numbers — a volume, a tolerance, a stop condition — and refuses partway
- * through with a message about the quantity rather than about the missing configuration.
+ * are supposed to hold values and refuses partway through with a message about the value rather than
+ * about the missing configuration.
  *
  * This reports what is unresolved so a caller can say so before a learner starts. It fills nothing
- * in: a technique that needs classroom values still needs them, and the host lab that supplies them
- * is the supported way to get them.
+ * in by itself.
  */
 const CONFIGURATION_TEMPLATE = /\{\{config\.([A-Za-z0-9_-]+)\}\}/g;
 
@@ -37,60 +43,26 @@ export const unresolvedConfigurationSlots = (
   const found = new Set<string>();
   collect(definition.actions, found);
   collect(definition.process, found);
-  // Labs carry assessments where techniques carry success criteria; both are walked when present.
   collect((definition as TechniqueDefinition).successCriteria, found);
   collect((definition as LabDefinition).assessments, found);
   return [...found].sort();
 };
 
-/**
- * Learner-facing explanation for a definition that cannot be started as it stands. It names the
- * exact fields rather than saying the activity is unavailable, so a teacher can tell at a glance
- * which classroom values the activity is waiting for.
- */
 export const unresolvedConfigurationMessage = (slots: readonly string[]): string =>
-  `This technique is written against teacher-approved configuration and cannot run on its own. `
+  `This technique is written against teacher-approved configuration and cannot run as published. `
   + `It is still waiting for ${slots.length === 1 ? "the value" : "values"} for `
-  + `${slots.join(", ")}. Start it from a lab that hosts this technique and supplies that `
-  + `configuration; no default is substituted here, because a substituted value would not be the `
-  + `classroom's.`;
+  + `${slots.join(", ")}. Hosted techniques must be started from their supported lab composition; `
+  + `unhosted techniques may use the standalone setup only when their declared configuration `
+  + `contract can be satisfied. No classroom value is invented here.`;
 
-/*
- * ---------------------------------------------------------------------------------------------
- * Supplying the configuration, rather than only reporting that it is missing.
- *
- * Reporting the gap stopped a learner starting an activity that would refuse partway through, but
- * it left six indexed techniques with no way to start at all: no lab composes them, so the host
- * they were sent to does not exist. What follows is the supported path — a teacher supplies the
- * values, exactly as a host lab's compilation would, and nothing is defaulted on their behalf.
- *
- * The slots are not all the same kind of thing, and treating them alike is what would make this
- * dishonest. Two kinds:
- *
- *   - A classroom quantity is a real teaching decision — an aliquot volume, an oven temperature,
- *     a mass tolerance. Only a teacher can supply it, and this module never invents one.
- *   - An internal measurement identifier is evidence plumbing: the name one step files a reading
- *     under so a later step can cite it. A host lab assigns these to keep instances distinct; it
- *     is not a classroom decision and asking a teacher to name one would be asking them to guess
- *     at the runtime's bookkeeping. Standalone, each is bound to a stable derived name.
- *
- * Which kind a slot is comes from where it is bound, not from how its name reads: a slot bound
- * only into identifier-shaped parameters is plumbing, and a slot bound into anything else is a
- * quantity. Mixed bindings count as a quantity, so an unfamiliar binding is asked about rather
- * than filled in.
- * ---------------------------------------------------------------------------------------------
- */
-
-/** Parameter keys whose value names a piece of evidence rather than a measured quantity. */
+/** Parameter keys whose value names evidence plumbing rather than a classroom quantity. */
 const isIdentifierBinding = (key: string): boolean => {
   const lower = key.toLowerCase();
   return lower.endsWith("measurementid")
+    || lower.endsWith("calculationid")
     || lower === "referenceid"
-    || lower === "calculationid"
     || lower === "tag";
 };
-
-const TEXT_BINDINGS = new Set(["note", "label", "instruction", "tag", "observation"]);
 
 const UNIT_BY_SUFFIX: ReadonlyArray<readonly [string, string]> = [
   ["Ml", "mL"],
@@ -121,19 +93,17 @@ const humanize = (slot: string, unit?: string): string => {
 export type ConfigurationSlotKind =
   | "classroom-quantity"
   | "internal-identifier"
-  /**
-   * Declared in the technique's composition contract but bound into nothing the runtime reads.
-   * Some are consumed at composition time rather than at play time — an ordered procedure's
-   * selection slot is read by `materializeOrderedProcedure`, which only a lab compilation runs —
-   * and some are simply declared ahead of use. Either way the standalone route neither needs one
-   * nor may invent one, so they are reported rather than asked for.
-   */
   | "host-composition-only";
 
 export interface ConfigurationSlot {
   id: string;
   kind: ConfigurationSlotKind;
-  mode: "numeric" | "text";
+  /** Preserved from the technique's declared composition contract whenever one exists. */
+  valueType: TechniqueConfigurationSlot["valueType"];
+  mode: "numeric" | "text" | "boolean";
+  required: boolean;
+  allowedValues?: readonly TechniqueConfigurationValue[];
+  defaultValue?: TechniqueConfigurationValue;
   unit?: string;
   label: string;
   /** Parameter keys this slot is bound into, so a teacher can see what the value drives. */
@@ -164,9 +134,25 @@ const collectBindings = (value: unknown, key: string, found: Map<string, Set<str
   }
 };
 
+const modeForValueType = (
+  valueType: TechniqueConfigurationSlot["valueType"],
+): ConfigurationSlot["mode"] => valueType === "number"
+  ? "numeric"
+  : valueType === "boolean"
+    ? "boolean"
+    : "text";
+
+const declaredSlots = (
+  definition: TechniqueDefinition | LabDefinition,
+): ReadonlyMap<string, TechniqueConfigurationSlot> => new Map(
+  ((definition as TechniqueDefinition).composition?.configurationSlots ?? [])
+    .map((slot) => [slot.id, slot] as const),
+);
+
 /**
- * Every unresolved slot, classified, in the order a teacher should meet them: the values they have
- * to decide first, then the plumbing that is filled in for them.
+ * Every unresolved slot, classified in the order a teacher should meet them. The declared
+ * composition contract is authoritative for value type, enum choices, required/default semantics;
+ * parameter-name heuristics are used only for legacy definitions that have no declaration.
  */
 export const configurationSlots = (
   definition: TechniqueDefinition | LabDefinition,
@@ -177,24 +163,24 @@ export const configurationSlots = (
   collectBindings((definition as TechniqueDefinition).successCriteria, "successCriteria", found);
   collectBindings((definition as LabDefinition).assessments, "assessments", found);
 
-  // A technique's composition contract is the declaration of what configuration it takes;
-  // `compositionValidation` refuses an instance that binds a slot absent from it. Reading both the
-  // declaration and the bindings is what makes the two visibly disagree instead of one silently
-  // standing in for the other.
-  const declared = ((definition as TechniqueDefinition).composition?.configurationSlots ?? [])
-    .map((slot) => slot.id);
-
+  const declarations = declaredSlots(definition);
   const slots = [...found].map(([id, bindings]): ConfigurationSlot => {
     const boundTo = [...bindings].sort();
+    const declaration = declarations.get(id);
     const kind: ConfigurationSlotKind = boundTo.every(isIdentifierBinding)
       ? "internal-identifier"
       : "classroom-quantity";
-    const unit = kind === "classroom-quantity" ? unitFor(id) : undefined;
-    const mode = boundTo.every((key) => TEXT_BINDINGS.has(key.toLowerCase())) ? "text" : "numeric";
+    const valueType: TechniqueConfigurationSlot["valueType"] = declaration?.valueType
+      ?? (kind === "internal-identifier" ? "string" : "number");
+    const unit = kind === "classroom-quantity" && valueType === "number" ? unitFor(id) : undefined;
     return {
       id,
       kind,
-      mode,
+      valueType,
+      mode: modeForValueType(valueType),
+      required: declaration?.required ?? true,
+      allowedValues: declaration?.allowedValues,
+      defaultValue: declaration?.defaultValue,
       unit,
       label: humanize(id, unit),
       boundTo,
@@ -202,13 +188,17 @@ export const configurationSlots = (
     };
   });
 
-  for (const id of declared) {
-    if (found.has(id)) continue;
+  for (const declaration of declarations.values()) {
+    if (found.has(declaration.id)) continue;
     slots.push({
-      id,
+      id: declaration.id,
       kind: "host-composition-only",
-      mode: "text",
-      label: humanize(id),
+      valueType: declaration.valueType,
+      mode: modeForValueType(declaration.valueType),
+      required: declaration.required,
+      allowedValues: declaration.allowedValues,
+      defaultValue: declaration.defaultValue,
+      label: humanize(declaration.id),
       boundTo: [],
     });
   }
@@ -224,21 +214,12 @@ export const configurationSlots = (
       : rank[left.kind] - rank[right.kind]);
 };
 
-/**
- * The name an evidence slot takes when no host lab assigns one.
- *
- * Stable and derived from the slot, so every reference to that slot resolves to the same name and
- * the citations between steps still line up. Prefixed so it can never be mistaken for, or collide
- * with, an identifier a lab composition assigned.
- */
 export const derivedIdentifier = (slot: string): string =>
   `standalone-${slot.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase()}`;
 
-const substitute = (value: unknown, values: ReadonlyMap<string, string | number>): unknown => {
+const substitute = (value: unknown, values: ReadonlyMap<string, TechniqueConfigurationValue>): unknown => {
   if (typeof value === "string") {
     const whole = value.match(new RegExp(`^${CONFIGURATION_SLOT.source}$`));
-    // A whole-string slot takes the value's own type, exactly as the composition compiler binds it:
-    // that is what lets a slot carry a number into a parameter the runtime reads as a number.
     if (whole) {
       const resolved = values.get(whole[1]);
       return resolved === undefined ? value : resolved;
@@ -259,40 +240,95 @@ const substitute = (value: unknown, values: ReadonlyMap<string, string | number>
 
 export class TechniqueConfigurationError extends Error {}
 
+const parseDeclaredValue = (slot: ConfigurationSlot, raw: string): TechniqueConfigurationValue => {
+  let value: TechniqueConfigurationValue;
+  if (slot.valueType === "number") {
+    const numeric = Number(raw);
+    if (!Number.isFinite(numeric)) {
+      throw new TechniqueConfigurationError(`${slot.label} must be a finite number.`);
+    }
+    value = numeric;
+  } else if (slot.valueType === "boolean") {
+    if (raw !== "true" && raw !== "false") {
+      throw new TechniqueConfigurationError(`${slot.label} must be true or false.`);
+    }
+    value = raw === "true";
+  } else {
+    value = raw;
+  }
+
+  if (slot.allowedValues && !slot.allowedValues.some((allowed) => Object.is(allowed, value))) {
+    throw new TechniqueConfigurationError(
+      `${slot.label} must be one of: ${slot.allowedValues.map(String).join(", ")}.`,
+    );
+  }
+  return value;
+};
+
+/** Hosted or ordered techniques must stay on the composition path that selects procedure/data. */
+export const standaloneTechniqueConfigurationBlocker = (
+  definition: TechniqueDefinition,
+): string | null => {
+  if (unresolvedConfigurationSlots(definition).length === 0) return null;
+  const hosts = hostLabsForTechnique(definition.id);
+  if (hosts.length > 0) {
+    return `This technique has a supported composed lab route (${hosts.join(", ")}). `
+      + `Use that route so procedure selection, datasets, validation and evidence bindings are materialized together.`;
+  }
+  if (definition.composition?.orderedProcedure) {
+    return "This technique uses an ordered-procedure composition contract and cannot be materialized by the standalone setup form.";
+  }
+  if (configurationSlots(definition).some((slot) => slot.kind === "host-composition-only" && slot.required)) {
+    return "This technique has required composition-only configuration that the standalone route cannot materialize.";
+  }
+  return null;
+};
+
+export const supportsStandaloneTechniqueConfiguration = (
+  definition: TechniqueDefinition,
+): boolean => standaloneTechniqueConfigurationBlocker(definition) === null;
+
 /**
- * Bind a teacher's supplied configuration into a standalone technique.
+ * Bind a teacher's supplied configuration into an unhosted standalone technique.
  *
- * Refuses rather than guesses: a classroom quantity that is missing, non-numeric where the binding
- * is numeric, or blank where it is text, stops the activity starting and says which field it was.
- * Internal identifiers are bound from their derived names and are not asked for.
+ * The composition declaration controls parsing and enum acceptance. Internal identifiers receive
+ * stable standalone names but never create the measurements or approved values those names refer to.
+ * Hosted/ordered techniques are refused here rather than being flattened into a different procedure.
+ * The concrete definition is passed through the shipped technique validator before it can start.
  */
 export const applyTechniqueConfiguration = <T extends TechniqueDefinition | LabDefinition>(
   definition: T,
   supplied: Readonly<Record<string, string>>,
 ): T => {
-  const values = new Map<string, string | number>();
+  if ("successCriteria" in definition) {
+    const blocker = standaloneTechniqueConfigurationBlocker(definition as TechniqueDefinition);
+    if (blocker) throw new TechniqueConfigurationError(blocker);
+  }
+
+  const values = new Map<string, TechniqueConfigurationValue>();
   const missing: string[] = [];
 
   for (const slot of configurationSlots(definition)) {
-    if (slot.kind === "host-composition-only") continue;
+    if (slot.kind === "host-composition-only") {
+      if (slot.required && slot.defaultValue === undefined) missing.push(slot.label);
+      else if (slot.defaultValue !== undefined) values.set(slot.id, slot.defaultValue);
+      continue;
+    }
     if (slot.kind === "internal-identifier") {
       values.set(slot.id, slot.derivedValue!);
       continue;
     }
+
     const raw = supplied[slot.id]?.trim() ?? "";
     if (!raw) {
-      missing.push(slot.label);
-      continue;
-    }
-    if (slot.mode === "numeric") {
-      const numeric = Number(raw);
-      if (!Number.isFinite(numeric)) {
-        throw new TechniqueConfigurationError(`${slot.label} must be a number.`);
+      if (slot.defaultValue !== undefined) {
+        values.set(slot.id, slot.defaultValue);
+        continue;
       }
-      values.set(slot.id, numeric);
+      if (slot.required) missing.push(slot.label);
       continue;
     }
-    values.set(slot.id, raw);
+    values.set(slot.id, parseDeclaredValue(slot, raw));
   }
 
   if (missing.length > 0) {
@@ -301,5 +337,14 @@ export const applyTechniqueConfiguration = <T extends TechniqueDefinition | LabD
     );
   }
 
-  return substitute(definition, values) as T;
+  const configured = substitute(definition, values) as T;
+  if ("successCriteria" in configured) {
+    const validation = validateTechniqueDefinition(configured as TechniqueDefinition);
+    if (!validation.ok) {
+      throw new TechniqueConfigurationError(
+        `Configured technique is not valid: ${validation.errors.join(" ")}`,
+      );
+    }
+  }
+  return configured;
 };
