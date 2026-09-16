@@ -25,10 +25,14 @@ import { hostLabsForTechnique } from "./techniqueHosts";
  * structurally (for example to select a procedure), while the player has no equivalent materializer.
  * Once substitution has produced a concrete definition, declarations alone do not make it unresolved.
  *
- * This reports what is unresolved so a caller can say so before a learner starts. It fills nothing
- * in by itself.
+ * The current App route uses a non-empty result to enter `TechniqueSetupForm`. A hosted, ordered, or
+ * evidence-incomplete technique must still enter that gate even when it has no surviving template,
+ * otherwise it can bypass `standaloneTechniqueConfigurationBlocker` and mount Student Player
+ * directly. The reserved route marker below is never shown as a teacher field; the setup form turns
+ * it into the actionable blocker message/link.
  */
 const CONFIGURATION_TEMPLATE = /\{\{config\.([A-Za-z0-9_-]+)\}\}/g;
+const STANDALONE_ROUTE_BLOCKED = "__standalone-route-blocked__";
 
 const collect = (value: unknown, found: Set<string>): void => {
   if (typeof value === "string") {
@@ -59,6 +63,20 @@ export const unresolvedConfigurationSlots = (
   if (found.size > 0) {
     for (const declaration of (definition as TechniqueDefinition).composition?.configurationSlots ?? []) {
       if (declaration.required && !found.has(declaration.id)) found.add(declaration.id);
+    }
+  }
+
+  // Do not let the route skip the setup blocker just because no raw template remains. Keep this
+  // deliberately narrower than the blocker itself so a successfully configured unhosted technique
+  // does not become unresolved merely because its composition declarations remain as metadata.
+  if (found.size === 0 && "successCriteria" in definition) {
+    const technique = definition as TechniqueDefinition;
+    if (
+      hostLabsForTechnique(technique.id).length > 0
+      || Boolean(technique.composition?.orderedProcedure)
+      || auditStandaloneEvidence(technique).length > 0
+    ) {
+      found.add(STANDALONE_ROUTE_BLOCKED);
     }
   }
 
