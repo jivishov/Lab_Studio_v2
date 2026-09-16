@@ -5,6 +5,7 @@ import type {
   TechniqueDefinition,
 } from "../domain/types";
 import { validateTechniqueDefinition } from "../domain/validation";
+import { auditStandaloneEvidence } from "./standaloneEvidenceAudit";
 import { hostLabsForTechnique } from "./techniqueHosts";
 
 /**
@@ -280,6 +281,11 @@ export const standaloneTechniqueConfigurationBlocker = (
   }
   if (configurationSlots(definition).some((slot) => slot.kind === "host-composition-only" && slot.required)) {
     return "This technique has required composition-only configuration that the standalone route cannot materialize.";
+  }
+  const evidenceIssues = auditStandaloneEvidence(definition);
+  if (evidenceIssues.length > 0) {
+    return `This technique's standalone evidence path is incomplete: ${evidenceIssues.map((entry) => entry.message).join(" ")} `
+      + `Identifier substitution alone cannot create the missing scientific evidence.`;
   }
   return null;
 };
