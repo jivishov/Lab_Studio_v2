@@ -20,8 +20,8 @@ import { hostLabsForTechnique } from "../techniqueHosts";
  * These cases replace the former "feed every numeric-looking slot 1 and prove no template remains"
  * oracle. Removing braces is not evidence that a configured technique is scientifically runnable.
  * The repaired contract instead preserves declared slot types, leaves hosted procedure selection to
- * composition, audits identifier producers/consumers, and passes a concrete standalone definition
- * through the same production validator used by the bundle loader.
+ * composition, audits identifier producers/consumers through completion rules, and passes a concrete
+ * standalone definition through the same production validator used by the bundle loader.
  *
  * Authored, not executed, under the repository validation policy.
  */
@@ -66,6 +66,19 @@ describe("declared standalone configuration contracts", () => {
     expect(hosts.map((host) => host.id)).toContain("paper-chromatography");
     expect(standaloneTechniqueConfigurationBlocker(chromatography)).toMatch(/supported composed lab route/i);
     expect(() => applyTechniqueConfiguration(chromatography, {})).toThrow(TechniqueConfigurationError);
+  });
+
+  it("surfaces required declared-but-unbound configuration instead of treating it as resolved", async () => {
+    const weighing = await readTechnique("weighing");
+    expect(hostLabsForTechnique(weighing.id)).toEqual([]);
+    expect(unresolvedConfigurationSlots(weighing)).toContain("targetMassG");
+    expect(slotById(weighing, "targetMassG")).toMatchObject({
+      kind: "host-composition-only",
+      required: true,
+      valueType: "number",
+    });
+    expect(standaloneTechniqueConfigurationBlocker(weighing)).toMatch(/targetMassG/);
+    expect(() => applyTechniqueConfiguration(weighing, {})).toThrow(TechniqueConfigurationError);
   });
 
   it("binds an unhosted standalone technique using declared values and validates the result", async () => {
@@ -116,6 +129,15 @@ describe("standalone evidence is produced, not invented from identifiers", () =>
     expect(blocker).toMatch(/standalone evidence path is incomplete/i);
     expect(blocker).toMatch(/identifier substitution alone cannot create/i);
     expect(() => applyTechniqueConfiguration(technique, {})).toThrow(TechniqueConfigurationError);
+  });
+
+  it("checks process and success-rule measurement ids, not only action parameters", async () => {
+    const weighing = await readTechnique("weighing");
+    const issues = auditStandaloneEvidence(weighing);
+    const missingSolidMass = issues.find((issue) =>
+      issue.code === "missing-measurement-producer" && issue.measurementId === "solid-mass");
+    expect(missingSolidMass).toBeDefined();
+    expect(missingSolidMass?.message).toMatch(/process validation|success criterion/i);
   });
 });
 
