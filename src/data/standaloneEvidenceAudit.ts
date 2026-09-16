@@ -30,9 +30,12 @@ export interface StandaloneEvidenceIssue {
   measurementId?: string;
 }
 
+const copiesExistingMeasurementOnly = (action: ActionDefinition): boolean =>
+  action.verb === "record" && action.parameters.copyExistingMeasurementOnly === true;
+
 const measurementParameterIsProduced = (action: ActionDefinition): boolean => {
   const params = action.parameters;
-  if (params.measurementId === undefined) return false;
+  if (params.measurementId === undefined || copiesExistingMeasurementOnly(action)) return false;
   if (
     action.verb === "developChromatogram"
     && params.recordMeasurementsOnDevelop === false
@@ -50,6 +53,18 @@ const measurementParameterIsProduced = (action: ActionDefinition): boolean => {
   );
 };
 
+const dropDispenseFinalReadingIsProduced = (action: ActionDefinition): boolean =>
+  action.verb === "transfer"
+  && action.interaction?.type === "dispenseDrops"
+  && action.parameters.finalBuretteMeasurementId !== undefined;
+
+const producedParameterKeys = (action: ActionDefinition): ReadonlySet<string> => {
+  const keys = new Set<string>();
+  if (measurementParameterIsProduced(action)) keys.add("measurementId");
+  if (dropDispenseFinalReadingIsProduced(action)) keys.add("finalBuretteMeasurementId");
+  return keys;
+};
+
 const producedMeasurements = (action: ActionDefinition): MeasurementReference[] => {
   const produced = new Map<string, MeasurementReference>();
   const add = (value: unknown) => {
@@ -60,6 +75,7 @@ const producedMeasurements = (action: ActionDefinition): MeasurementReference[] 
   add(action.volume?.outputMeasurementId);
   add(action.mass?.outputMeasurementId);
   if (measurementParameterIsProduced(action)) add(action.parameters.measurementId);
+  if (dropDispenseFinalReadingIsProduced(action)) add(action.parameters.finalBuretteMeasurementId);
 
   return [...produced.values()];
 };
@@ -90,9 +106,17 @@ const consumedMeasurements = (definition: TechniqueDefinition): MeasurementConsu
   };
 
   for (const action of definition.actions) {
+    const producedKeys = producedParameterKeys(action);
     for (const [key, value] of Object.entries(action.parameters)) {
-      if (!key.endsWith("MeasurementId")) continue;
+      if (!key.endsWith("MeasurementId") || producedKeys.has(key)) continue;
       add(value, `action parameter ${action.id}.${key}`, action.id);
+    }
+    if (copiesExistingMeasurementOnly(action)) {
+      add(
+        action.parameters.measurementId,
+        `copy-only measurement source ${action.id}.measurementId`,
+        action.id,
+      );
     }
     if (action.volume?.source === "measurement") {
       add(action.volume.referenceId, `volume source for ${action.id}`, action.id);
@@ -139,9 +163,13 @@ const referenceLabel = (reference: MeasurementReference): string =>
  * Source-level audit for standalone evidence plumbing.
  *
  * A configuration slot whose value is an evidence *identifier* is only a name. It becomes useful
- * when a reachable action really produces the named measurement. Literal validation ids are checked
- * as well: a process node or success criterion must not wait on a measurement that no action writes.
- * This deliberately does not invent values and does not treat substitution as evidence creation.
+ * when an action with supported runtime semantics really produces the named measurement. Literal
+ * validation ids are checked as well: a process node or success criterion must not wait on a
+ * measurement that no action writes. This deliberately does not invent values and does not treat
+ * substitution as evidence creation.
+ *
+ * This pass checks producer existence and producer/consumer meaning. It does not prove graph order
+ * or reachability, so callers must not describe a clean result as an end-to-end reachability proof.
  */
 export const auditStandaloneEvidence = (
   definition: TechniqueDefinition,
@@ -170,10 +198,22 @@ export const auditStandaloneEvidence = (
     });
   }
 
+  const dilutionFinalVolumeReferences = new Set(
+    definition.actions
+      .filter((action) =>
+        action.verb === "calculate"
+        && action.parameters.stockConcentrationMeasurementId !== undefined
+        && action.parameters.stockVolumeMeasurementId !== undefined
+        && action.parameters.finalVolumeMeasurementId !== undefined)
+      .map((action) => measurementReference(action.parameters.finalVolumeMeasurementId)?.key)
+      .filter((key): key is string => Boolean(key)),
+  );
+
   // A water-addition measurement is not automatically the final *solution* volume. Keep this
-  // semantic guard narrow: it exists for the repaired catalog path where the same configured id was
-  // wired to the water measurement and then consumed as final volume by the dilution calculation.
+  // semantic guard tied to a real dilution calculation that consumes that exact reference. Other
+  // workflows may legitimately name a water-volume record with a finalVolumeMeasurementId slot.
   for (const entry of producers.values()) {
+    if (!dilutionFinalVolumeReferences.has(entry.reference.key)) continue;
     const slot = entry.reference.configurationSlot;
     if (!slot || !/finalVolumeMeasurementId$/i.test(slot)) continue;
     for (const producer of entry.actions) {
