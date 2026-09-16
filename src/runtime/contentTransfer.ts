@@ -274,7 +274,13 @@ const matchingConcentration = (
     : undefined;
 };
 
-/** Merges a transferred ordinary liquid portion into an ordinary or empty receiver. */
+/**
+ * Merges a transferred ordinary liquid portion into an ordinary or empty receiver.
+ *
+ * `developingChamberClosed` belongs to the receiving apparatus, not to the liquid being moved. An
+ * empty chamber therefore keeps its explicit open/closed state when the first solvent charge turns
+ * its contents into liquid. We never copy a source vessel's lid state into the receiver.
+ */
 export const mergeTransferredContents = (
   targetContents: ContentState,
   transferredContents: ContentState,
@@ -283,8 +289,12 @@ export const mergeTransferredContents = (
     return cloneContents(targetContents);
   }
   if (targetContents.kind === "empty" || (targetContents.volumeMl ?? 0) === 0) {
+    const receiverClosure = targetContents.developingChamberClosed;
     return {
       ...transferredContents,
+      ...(receiverClosure === undefined
+        ? { developingChamberClosed: undefined }
+        : { developingChamberClosed: receiverClosure }),
       solutes: transferredContents.solutes.map(cloneSolute),
       contamination: [...transferredContents.contamination],
       concentration: transferredContents.concentration
