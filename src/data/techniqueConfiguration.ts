@@ -19,6 +19,10 @@ import { hostLabsForTechnique } from "./techniqueHosts";
  * are supposed to hold values and refuses partway through with a message about the value rather than
  * about the missing configuration.
  *
+ * Required composition declarations that are not bound anywhere are also unresolved for a standalone
+ * route. They are not harmless just because no `{{config.*}}` token survives in an action: the host
+ * compiler may use them to choose a procedure or materialize data that standalone setup cannot infer.
+ *
  * This reports what is unresolved so a caller can say so before a learner starts. It fills nothing
  * in by itself.
  */
@@ -46,6 +50,14 @@ export const unresolvedConfigurationSlots = (
   collect(definition.process, found);
   collect((definition as TechniqueDefinition).successCriteria, found);
   collect((definition as LabDefinition).assessments, found);
+
+  // A required declared slot with no template binding is still unresolved on the standalone path.
+  // The host compiler may consume it structurally (for example to select a procedure), while the
+  // player has no equivalent materialization step. Surface it instead of silently dropping it.
+  for (const declaration of (definition as TechniqueDefinition).composition?.configurationSlots ?? []) {
+    if (declaration.required && !found.has(declaration.id)) found.add(declaration.id);
+  }
+
   return [...found].sort();
 };
 
@@ -270,7 +282,6 @@ const parseDeclaredValue = (slot: ConfigurationSlot, raw: string): TechniqueConf
 export const standaloneTechniqueConfigurationBlocker = (
   definition: TechniqueDefinition,
 ): string | null => {
-  if (unresolvedConfigurationSlots(definition).length === 0) return null;
   const hosts = hostLabsForTechnique(definition.id);
   if (hosts.length > 0) {
     return `This technique has a supported composed lab route (${hosts.map((host) => host.title).join(", ")}). `
@@ -279,8 +290,11 @@ export const standaloneTechniqueConfigurationBlocker = (
   if (definition.composition?.orderedProcedure) {
     return "This technique uses an ordered-procedure composition contract and cannot be materialized by the standalone setup form.";
   }
-  if (configurationSlots(definition).some((slot) => slot.kind === "host-composition-only" && slot.required)) {
-    return "This technique has required composition-only configuration that the standalone route cannot materialize.";
+  const compositionOnly = configurationSlots(definition)
+    .filter((slot) => slot.kind === "host-composition-only" && slot.required);
+  if (compositionOnly.length > 0) {
+    return `This technique has required composition-only configuration that the standalone route cannot materialize: `
+      + `${compositionOnly.map((slot) => slot.id).join(", ")}.`;
   }
   const evidenceIssues = auditStandaloneEvidence(definition);
   if (evidenceIssues.length > 0) {
