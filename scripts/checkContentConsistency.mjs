@@ -152,7 +152,7 @@ const requiredEffectClassesForAtomInteraction = (atomId, interactionType) =>
 /** Mirrors `compatibleInteractionVerbs` in src/domain/interactions.ts. */
 const COMPATIBLE_INTERACTION_VERBS = {
   dragToZone: ["place", "reset"],
-  snapIntoTarget: ["place", "developChromatogram"],
+  snapIntoTarget: ["place"],
   pourInto: [
     "measureVolume",
     "transfer",
