@@ -397,6 +397,10 @@ export const deriveActionEffectContract = (
   const chamberOperation = action.parameters.chamberOperation;
   const chamberAtom = typeof chamberOperation === "string" ? chamberAtoms[chamberOperation] : undefined;
   const titrationOperation = typeof action.parameters.titrationOperation === "string" ? titrationOperations[action.parameters.titrationOperation] : undefined;
+  const isPhysicalChromatogramDevelopment =
+    action.verb === "developChromatogram" &&
+    action.atomId === "atom.developChromatogram.develop-strip" &&
+    interaction.type === "recordNotebook";
   if (action.parameters.titrationOperation !== undefined) {
     if (!titrationOperation || action.verb !== titrationOperation.verb || action.atomId !== `atom.${action.verb}.titration-${action.parameters.titrationOperation}` || interaction.type !== "recordNotebook") errors.push(`Action "${action.id}" requires a matching registered titration operation.`);
     for (const key of ["trialReferenceId", "buretteInstanceId", "receiverInstanceId", "titrationModelId"]) if (typeof action.parameters[key] !== "string" || !action.parameters[key]) errors.push(`Action "${action.id}" lacks titration binding ${key}.`);
@@ -409,6 +413,7 @@ export const deriveActionEffectContract = (
   if (action.extractionOperation && (action.verb !== action.extractionOperation.operation || action.atomId !== `atom.${action.extractionOperation.operation}.extraction-funnel` || interaction.type !== "recordNotebook")) errors.push(`Action "${action.id}" has incompatible extraction operation semantics.`);
   if (chromatographyOperation !== undefined && (!chromatographyAtom || action.verb !== "observe" || action.atomId !== chromatographyAtom || interaction.type !== "recordNotebook")) errors.push(`Action "${action.id}" has incompatible chromatography operation semantics.`);
   if (action.atomId && Object.values(chromatographyAtoms).includes(action.atomId) && action.atomId !== chromatographyAtom) errors.push(`Action "${action.id}" requires its chromatography operation.`);
+  if (action.atomId === "atom.developChromatogram.develop-strip" && !isPhysicalChromatogramDevelopment) errors.push(`Action "${action.id}" requires the typed physical chromatogram-development process endpoint.`);
   // A chamber atom and a chamber operation imply each other, so neither a notebook sentence claiming
   // the atom nor an operation without one can stand in for the physical handling.
   if (chamberOperation !== undefined && (!chamberAtom || action.verb !== "observe" || action.atomId !== chamberAtom || interaction.type !== "recordNotebook")) errors.push(`Action "${action.id}" has incompatible chamber operation semantics.`);
@@ -478,6 +483,15 @@ export const deriveActionEffectContract = (
           classes: ["apparatus-material-instrument-state"],
           targets: [{ domain: "equipment" }, { domain: "material" }],
         };
+  } else if (isPhysicalChromatogramDevelopment) {
+    // The UI endpoint is a process control, but the reducer performs the real developing operation:
+    // it checks chamber closure, strip attachment, wet/dry state, selected classroom dataset and
+    // stop condition, then mutates the chromatogram. With recordMeasurementsOnDevelop=false it
+    // intentionally records no measurement at this point; solvent-front marking is a later action.
+    handler = {
+      classes: ["apparatus-material-instrument-state"],
+      targets: [{ domain: "equipment" }, { domain: "material" }, { domain: "instrument" }],
+    };
   } else if (observeHandler) {
     handler = observeHandler;
   } else {
