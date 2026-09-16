@@ -273,7 +273,7 @@ export const standaloneTechniqueConfigurationBlocker = (
   if (unresolvedConfigurationSlots(definition).length === 0) return null;
   const hosts = hostLabsForTechnique(definition.id);
   if (hosts.length > 0) {
-    return `This technique has a supported composed lab route (${hosts.join(", ")}). `
+    return `This technique has a supported composed lab route (${hosts.map((host) => host.title).join(", ")}). `
       + `Use that route so procedure selection, datasets, validation and evidence bindings are materialized together.`;
   }
   if (definition.composition?.orderedProcedure) {
