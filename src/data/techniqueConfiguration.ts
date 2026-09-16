@@ -21,8 +21,9 @@ import { hostLabsForTechnique } from "./techniqueHosts";
  * about the missing configuration.
  *
  * While an authored definition still contains configuration templates, required composition
- * declarations that are not bound anywhere are unresolved too: the host compiler may consume them
- * structurally (for example to select a procedure), while the player has no equivalent materializer.
+ * declarations that are not bound anywhere are unresolved too only when they have no declared
+ * default. A required declaration with an approved default is metadata that can already resolve
+ * deterministically; it must not force an otherwise template-free standalone route into setup.
  * Once substitution has produced a concrete definition, declarations alone do not make it unresolved.
  *
  * The current App route uses a non-empty result to enter `TechniqueSetupForm`. A hosted, ordered, or
@@ -57,12 +58,18 @@ export const unresolvedConfigurationSlots = (
   collect((definition as TechniqueDefinition).successCriteria, found);
   collect((definition as LabDefinition).assessments, found);
 
-  // Required declaration-only slots matter while this is still an authored configuration surface.
-  // After successful substitution there are no templates left; retaining the declaration metadata
-  // must not make the concrete result appear unresolved again.
+  // Declaration-only slots are unresolved only when they are required and have no approved default.
+  // A bound template remains unresolved until substitution even when its declaration has a default;
+  // the form/materializer will apply that default to the template itself.
   if (found.size > 0) {
     for (const declaration of (definition as TechniqueDefinition).composition?.configurationSlots ?? []) {
-      if (declaration.required && !found.has(declaration.id)) found.add(declaration.id);
+      if (
+        declaration.required
+        && declaration.defaultValue === undefined
+        && !found.has(declaration.id)
+      ) {
+        found.add(declaration.id);
+      }
     }
   }
 
@@ -208,6 +215,9 @@ export const configurationSlots = (
     const valueType: TechniqueConfigurationSlot["valueType"] = declaration?.valueType
       ?? (kind === "internal-identifier" ? "string" : "number");
     const unit = kind === "classroom-quantity" && valueType === "number" ? unitFor(id) : undefined;
+    const defaultIdentifier = kind === "internal-identifier" && typeof declaration?.defaultValue === "string"
+      ? declaration.defaultValue
+      : undefined;
     return {
       id,
       kind,
@@ -219,7 +229,9 @@ export const configurationSlots = (
       unit,
       label: humanize(id, unit),
       boundTo,
-      derivedValue: kind === "internal-identifier" ? derivedIdentifier(id) : undefined,
+      derivedValue: kind === "internal-identifier"
+        ? defaultIdentifier ?? derivedIdentifier(id)
+        : undefined,
     };
   });
 
@@ -313,7 +325,10 @@ export const standaloneTechniqueConfigurationBlocker = (
     return "This technique uses an ordered-procedure composition contract and cannot be materialized by the standalone setup form.";
   }
   const compositionOnly = configurationSlots(definition)
-    .filter((slot) => slot.kind === "host-composition-only" && slot.required);
+    .filter((slot) =>
+      slot.kind === "host-composition-only"
+      && slot.required
+      && slot.defaultValue === undefined);
   if (compositionOnly.length > 0) {
     return `This technique has required composition-only configuration that the standalone route cannot materialize: `
       + `${compositionOnly.map((slot) => slot.id).join(", ")}.`;
@@ -330,19 +345,16 @@ export const supportsStandaloneTechniqueConfiguration = (
   definition: TechniqueDefinition,
 ): boolean => standaloneTechniqueConfigurationBlocker(definition) === null;
 
-/**
- * Bind a teacher's supplied configuration into an unhosted standalone technique.
- *
- * The composition declaration controls parsing and enum acceptance. Internal identifiers receive
- * stable standalone names but never create the measurements or approved values those names refer to.
- * Hosted/ordered techniques are refused here rather than being flattened into a different procedure.
- * The concrete definition is passed through the shipped technique validator before it can start.
- */
-export const applyTechniqueConfiguration = <T extends TechniqueDefinition | LabDefinition>(
+interface MaterializeConfigurationOptions {
+  enforceStandaloneRoute: boolean;
+}
+
+const materializeTechniqueConfiguration = <T extends TechniqueDefinition | LabDefinition>(
   definition: T,
   supplied: Readonly<Record<string, string>>,
+  options: MaterializeConfigurationOptions,
 ): T => {
-  if ("successCriteria" in definition) {
+  if (options.enforceStandaloneRoute && "successCriteria" in definition) {
     const blocker = standaloneTechniqueConfigurationBlocker(definition as TechniqueDefinition);
     if (blocker) throw new TechniqueConfigurationError(blocker);
   }
@@ -351,11 +363,6 @@ export const applyTechniqueConfiguration = <T extends TechniqueDefinition | LabD
   const missing: string[] = [];
 
   for (const slot of configurationSlots(definition)) {
-    if (slot.kind === "host-composition-only") {
-      if (slot.required && slot.defaultValue === undefined) missing.push(slot.label);
-      else if (slot.defaultValue !== undefined) values.set(slot.id, slot.defaultValue);
-      continue;
-    }
     if (slot.kind === "internal-identifier") {
       values.set(slot.id, slot.derivedValue!);
       continue;
@@ -402,3 +409,32 @@ export const applyTechniqueConfiguration = <T extends TechniqueDefinition | LabD
   }
   return configured;
 };
+
+/**
+ * Bind a teacher's supplied configuration into an unhosted standalone technique.
+ *
+ * The composition declaration controls parsing and enum acceptance. Internal identifiers receive
+ * stable standalone names (or their declared stable default) but never create the measurements or
+ * approved values those names refer to. Hosted/ordered techniques are refused here rather than being
+ * flattened into a different procedure. The concrete definition is passed through the shipped
+ * technique validator before it can start.
+ */
+export const applyTechniqueConfiguration = <T extends TechniqueDefinition | LabDefinition>(
+  definition: T,
+  supplied: Readonly<Record<string, string>>,
+): T => materializeTechniqueConfiguration(definition, supplied, { enforceStandaloneRoute: true });
+
+/**
+ * Materialize declared slots for Studio composition before ids are prefixed and appended to a draft.
+ * Unlike the standalone route, Studio is itself a composition surface, so hosted/ordered policy is
+ * not used as a blanket blocker here. Required declaration-only values still must be supplied (or
+ * have an authored default), and the same type/choice/physical/production validation is applied.
+ */
+export const applyTechniqueConfigurationForComposition = (
+  definition: TechniqueDefinition,
+  supplied: Readonly<Record<string, string>>,
+): TechniqueDefinition => materializeTechniqueConfiguration(
+  definition,
+  supplied,
+  { enforceStandaloneRoute: false },
+);
