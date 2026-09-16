@@ -218,10 +218,17 @@ describe("standalone evidence producer/consumer semantics", () => {
     ]));
   });
 
-  it("does not apply the dilution final-volume heuristic to Beer's-law calibration", async () => {
+  it("keeps Beer's-law out of the dilution heuristic but blocks its untyped absorbance calculation", async () => {
     const technique = await readTechnique("beers-law-calibration");
     const issues = auditStandaloneEvidence(technique);
 
     expect(issues.some((issue) => issue.code === "misleading-final-volume-producer")).toBe(false);
+    expect(issues).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        code: "untyped-photometric-calculation",
+        actionId: "beers-law-calibration-calculate-absorbance",
+      }),
+    ]));
+    expect(standaloneTechniqueConfigurationBlocker(technique)).toMatch(/standalone evidence path is incomplete/i);
   });
 });
