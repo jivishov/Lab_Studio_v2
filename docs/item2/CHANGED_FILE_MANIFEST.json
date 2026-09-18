@@ -1,8 +1,8 @@
 {
-  "schemaVersion": 5,
+  "schemaVersion": 6,
   "branch": "codex/item2-catalog-reconciliation",
   "baseline": "f7c2b863f641090d9abc5c08ee22da72702fdfd6",
-  "documentedHeadBeforeManifestUpdate": "380628f0f5169ac7272a46bcf84dbe2f8f1f2721",
+  "documentedHeadBeforeManifestUpdate": "0830a9ed284680fc069704d07c6d48e9067ff2a1",
   "selfExcluded": true,
   "selfExclusionReason": "The manifest update itself creates the next commit; its own final Git blob SHA cannot be recursively embedded.",
   "implementation": [
@@ -26,11 +26,11 @@
   "item2Records": [
     {
       "path": "docs/item2/CATALOG_DISPOSITIONS.json",
-      "blobSha": "c198775985483f076fb721579aff07d50432a9bf"
+      "blobSha": "3912630edbdb89cd88527715e58f986549646665"
     },
     {
       "path": "docs/item2/CATALOG_DISPOSITIONS.md",
-      "blobSha": "6b4baa629d4cb6146b347b1c6fce47f257e0649d"
+      "blobSha": "5277f60377afc9d51ed09ab9c833afb8b8ce29fa"
     },
     {
       "path": "docs/item2/CONFIGURATION_COVERAGE.json",
@@ -38,7 +38,7 @@
     },
     {
       "path": "docs/item2/CRITICAL_REVIEW.md",
-      "blobSha": "d1c383f312da3c27a475731d1968ce87dae1bbd6"
+      "blobSha": "926a871c396d0018de6a3fe89984a269bbeb6280"
     },
     {
       "path": "docs/item2/EVIDENCE_DEPENDENCY_RESTORATION.json",
@@ -54,23 +54,23 @@
     },
     {
       "path": "docs/item2/ITEM2_REPORT.md",
-      "blobSha": "1d2fd38958d119b3a21633b9f80601bf1648b1f3"
+      "blobSha": "5bf5ecb228dfedc3cb138f98151ece88456aed34"
     },
     {
       "path": "docs/item2/RUN_LEDGER.json",
-      "blobSha": "cc8ffc1b8a8e64a92c69343d94de1ba52b58b41f"
+      "blobSha": "4330a035afe9b0bb7ea17449d06071682fb50f61"
     },
     {
       "path": "docs/item2/SCENARIO_AUDIT.json",
-      "blobSha": "4526e693d6238b4cf33f9fdc6cc064b850ef241c"
+      "blobSha": "0b7818a3494f7356362f8a619cd2d40199b6ca3c"
     },
     {
       "path": "docs/item2/SCENARIO_MATRIX.md",
-      "blobSha": "0d77fb41e7a538ebf4317df7d0842f5d12ca1a1f"
+      "blobSha": "64ca3da4bfa38f7fa0f45b75ad24ae86ba3267a4"
     },
     {
       "path": "docs/item2/SELF_REVIEW_AUDIT.json",
-      "blobSha": "442752dc59836539ef68d3c9b6cd2df9f712e5dd"
+      "blobSha": "c6b5ebb84c63720afa5e788f4af6e634f12e7d8f"
     }
   ],
   "scenarioAudit": {
@@ -95,5 +95,18 @@
     "extras": 0,
     "githubBranchPresence": "absent; local verified artifact only"
   },
-  "evidenceStatus": "not-run; separate authorization not received; source-level reconciliation closure not claimed"
+  "evidenceStatus": "not-run; separate authorization not received; source-level reconciliation closure not claimed",
+  "targetedScenarioCorrections": {
+    "greenChemistry": {
+      "heatedProductRecovery": "qualitative provenance only; no recovered-product mass measurement",
+      "compositionBasis": "recorded thermal balance evidence",
+      "atomEconomyBasis": "teacher-assigned report stoichiometric convention",
+      "tareConventions": "both supported conventions preserved as separate witnesses"
+    },
+    "quickAcheAnalysis": {
+      "retry": "may reuse still-valid recorded measurements",
+      "physicalRecovery": "reacquire measurements invalidated by the affected upstream physical branch",
+      "fullActivityReset": "fresh runtime state; prior measurements and calculations are both cleared"
+    }
+  }
 }
