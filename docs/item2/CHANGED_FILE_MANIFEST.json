@@ -1,10 +1,10 @@
 {
-  "schemaVersion": 3,
+  "schemaVersion": 4,
   "branch": "codex/item2-catalog-reconciliation",
   "baseline": "f7c2b863f641090d9abc5c08ee22da72702fdfd6",
-  "documentedHeadBeforeManifestUpdate": "251ad0388c8a936be4b7a31e77dc71b9ce2fe4cf",
+  "documentedHeadBeforeManifestUpdate": "d06218fd62e3e2146584f60588d5db60fa207c12",
   "selfExcluded": true,
-  "selfExclusionReason": "The manifest update itself creates the next commit; its own blob cannot recursively contain its final blob SHA.",
+  "selfExclusionReason": "The manifest update itself creates the next commit; its own final Git blob SHA cannot be recursively embedded.",
   "implementation": [
     {
       "path": "public/techniques/titration-curve-analysis.json",
@@ -26,7 +26,7 @@
   "item2Records": [
     {
       "path": "docs/item2/CATALOG_DISPOSITIONS.json",
-      "blobSha": "394fd7ea132d682c784929eab12226b0dae42c98"
+      "blobSha": "6da3a5d7e3b8bdb521acf52548c8bc57f31ecd07"
     },
     {
       "path": "docs/item2/CATALOG_DISPOSITIONS.md",
@@ -38,11 +38,11 @@
     },
     {
       "path": "docs/item2/CRITICAL_REVIEW.md",
-      "blobSha": "4a4097a48ae5e52de50a305cae1f1f0544592542"
+      "blobSha": "66f35728c1523f573eafbcd28685ab2fce18f712"
     },
     {
       "path": "docs/item2/EVIDENCE_DEPENDENCY_RESTORATION.json",
-      "blobSha": "e18d12d554b54dc216956d98f09f3b06d7993e24"
+      "blobSha": "3cc5cd56634a502742d4806ca95e077947827937"
     },
     {
       "path": "docs/item2/EXECUTION_REQUEST.md",
@@ -50,23 +50,42 @@
     },
     {
       "path": "docs/item2/FINDING_TRIAGE.json",
-      "blobSha": "3db49db1b1d863db07a373f927539dc2d5ff8eff"
+      "blobSha": "4a53e9e97f5a7bb51eda57e3ff7b98020a3bed62"
     },
     {
       "path": "docs/item2/ITEM2_REPORT.md",
-      "blobSha": "f5c647d1ec6b703d7dd2a2a9889c17c498438a1a"
+      "blobSha": "eea9d454159b0a8b26770780dd77d9e747fc069b"
     },
     {
       "path": "docs/item2/RUN_LEDGER.json",
-      "blobSha": "88aca30e41619199e64408d93d223b2cdbfb739d"
+      "blobSha": "6c783b2e66259d2ac17d644e549627a3e86d2bcb"
+    },
+    {
+      "path": "docs/item2/SCENARIO_AUDIT.json",
+      "blobSha": "c0fd50e5636c55d5fbe2860ac57711849e0fff65"
+    },
+    {
+      "path": "docs/item2/SCENARIO_MATRIX.md",
+      "blobSha": "3ccfd98b4266da8851accba329d20a1b19112287"
     }
   ],
+  "scenarioAudit": {
+    "indexedActivities": 59,
+    "uniqueRecoveryScenarios": 59,
+    "uniqueEvidenceScenarios": 59,
+    "legacyScenarioAssignmentsRemaining": 0,
+    "titrationCurveAnalysisRefusal": "missing curve-analyte-volume/equivalence-volume; omitted analysisMode uses the approved recorded-evidence-only default"
+  },
   "localDependencyRestoration": {
-    "files": 46,
-    "bytes": 39500058,
-    "manifestSha256Matches": 46,
-    "workspace": "/mnt/data/item2_local_restore",
-    "githubBranchPresence": "absent"
+    "zipSha256": "8b5d1b207019eafd2100e520105537b37531b9aa405fe36fe168e3eec00e0968",
+    "zipBytes": 1398845,
+    "repositoryFiles": 46,
+    "uncompressedBytes": 39500058,
+    "sha256Matches": 46,
+    "missing": 0,
+    "mismatches": 0,
+    "extras": 0,
+    "githubBranchPresence": "absent; local verified artifact only"
   },
   "evidenceStatus": "not-run; separate authorization not received"
 }
