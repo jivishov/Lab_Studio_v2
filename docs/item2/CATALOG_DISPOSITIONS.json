@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "scope": "item-2 complete indexed Lab Studio catalog",
   "branch": "codex/item2-catalog-reconciliation",
   "mainBaseline": "f7c2b863f641090d9abc5c08ee22da72702fdfd6",
@@ -10,11 +10,10 @@
     "total": 59
   },
   "notes": [
-    "All 17 labs and 42 indexed techniques have individual source rationales, planned scenario assignments, finding references, and source-review dispositions.",
-    "Scenario assignments are plans only; none were executed under the current basic-static validation ceiling.",
-    "Historical finding counts are preserved as historical evidence and are not asserted to be current diagnostics.",
-    "ph-volume-formal-titration-trial remains the 42nd indexed technique absent from the historical 41-technique ownership map.",
-    "Unindexed ph-volume-titration-trial and acid-base-titration-curves-config retain special carrier/config roles and are not additional catalog entries."
+    "All 17 labs and 42 indexed techniques have activity-specific scientific focus, ordinary/refusal-or-configuration/recovery/evidence scenarios, and a per-activity historical finding disposition.",
+    "Historical finding-bearing activities record rule families, representative scopes, historical evaluation scope, present source-review disposition, and the claim boundary; counts are no longer used as a substitute for disposition.",
+    "Source-level inventory/configuration accounting is complete, but source-level reconciliation closure is deliberately not claimed before fresh current evidence.",
+    "Historical findings remain preparation evidence only; fresh current diagnostics were not generated in this session."
   ],
   "labs": [
     {
@@ -49,8 +48,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "measure the sample volume, precipitate calcium carbonate, assemble the funnel/filter-paper path, filter the mixture, and preserve the collected filtrate/precipitate evidence",
+        "ordinarySupportedCase": "Complete a valid Precipitate and Filter Calcium Carbonate path that measure the sample volume, precipitate calcium carbonate, assemble the funnel/filter-paper path, filter the mixture, and preserve the collected filtrate/precipitate evidence.",
+        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Precipitate and Filter Calcium Carbonate and verify the shared/custom runtime rejects it without committing evidence.",
+        "recoveryOrResetCase": "After the Precipitate and Filter Calcium Carbonate refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Precipitate and Filter Calcium Carbonate is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "lab",
@@ -86,8 +100,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "measure a hard-water sample, precipitate calcium carbonate, filter and dry the precipitate, then calculate hardness from the recorded sample-volume and mass evidence",
+        "ordinarySupportedCase": "Complete a valid Hard-Water Reference Demo path that measure a hard-water sample, precipitate calcium carbonate, filter and dry the precipitate, then calculate hardness from the recorded sample-volume and mass evidence.",
+        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Hard-Water Reference Demo and verify the shared/custom runtime rejects it without committing evidence.",
+        "recoveryOrResetCase": "After the Hard-Water Reference Demo refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Hard-Water Reference Demo is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "lab",
@@ -118,8 +147,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "condition and fill the burette, prepare the analyte/indicator, acquire separate initial/final burette readings, accept the endpoint, and calculate acid molarity from those readings",
+        "ordinarySupportedCase": "Complete a valid Acid-Base Titration path that condition and fill the burette, prepare the analyte/indicator, acquire separate initial/final burette readings, accept the endpoint, and calculate acid molarity from those readings.",
+        "configurationOrRefusalCase": "Start without or with an invalid titration-form setup and verify the activity refuses before composition/play; then supply a valid instructor-approved setup and confirm only that configured path becomes available.",
+        "recoveryOrResetCase": "After the Acid-Base Titration refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Acid-Base Titration is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "lab",
@@ -160,8 +204,36 @@
           "source-trace/unknown-action": 11
         }
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; current diagnostic disposition pending final evidence where noted",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "weigh marble chips, run teacher-configured acid-concentration trials with a gas syringe, record timed gas volumes, and calculate/compare initial rates",
+        "ordinarySupportedCase": "Complete a valid How Long Will That Marble Statue Last? path that weigh marble chips, run teacher-configured acid-concentration trials with a gas syringe, record timed gas volumes, and calculate/compare initial rates.",
+        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to How Long Will That Marble Statue Last? and verify the shared/custom runtime rejects it without committing evidence.",
+        "recoveryOrResetCase": "After the How Long Will That Marble Statue Last? refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for How Long Will That Marble Statue Last? is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 11,
+        "summary": "Eleven historical source-trace/unknown-action rows named lab-local gas-apparatus/acquisition actions.",
+        "rules": [
+          {
+            "rule": "source-trace/unknown-action",
+            "count": 11,
+            "samples": [
+              "lab:marble-statue-kinetics/assemble-gas-apparatus",
+              "lab:marble-statue-kinetics/connect-gas-syringe",
+              "lab:marble-statue-kinetics/measure-practice-acid",
+              "lab:marble-statue-kinetics/record-acid-2m-run"
+            ],
+            "evaluation": "raw-template-rule",
+            "presentDisposition": "pending-fresh-source-trace-reconciliation",
+            "basis": "The current lab imports marble-gas-syringe-kinetics instances; whether the old lab-local trace rows are fully reconciled is a fresh checker question, not established by inventory alone."
+          }
+        ],
+        "claimBoundary": "These are supplied historical raw-template findings. They are neither promoted to current bugs nor marked fixed unless a current source contract is specifically identified; final current status requires the authorized fresh diagnostics/compiled-evidence phase."
+      }
     },
     {
       "kind": "lab",
@@ -194,8 +266,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "configuration-path-accounted",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "execute only the host-selected solvent procedure, charge and close the chamber correctly, develop/mark/dry the chromatogram, record distances, and calculate Rf from those recorded distances",
+        "ordinarySupportedCase": "Complete a valid Sticky Question: Paper Chromatography path that execute only the host-selected solvent procedure, charge and close the chamber correctly, develop/mark/dry the chromatogram, record distances, and calculate Rf from those recorded distances.",
+        "configurationOrRefusalCase": "Start without or with an invalid paper-form setup and verify the activity refuses before composition/play; then supply a valid instructor-approved setup and confirm only that configured path becomes available.",
+        "recoveryOrResetCase": "After the Sticky Question: Paper Chromatography refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Sticky Question: Paper Chromatography is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "lab",
@@ -226,8 +313,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "prepare the supported equilibrium mixtures, apply only approved stresses, record qualitative color/state changes, and distinguish observation from explanation",
+        "ordinarySupportedCase": "Complete a valid Equilibrium Rainbow Display path that prepare the supported equilibrium mixtures, apply only approved stresses, record qualitative color/state changes, and distinguish observation from explanation.",
+        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Equilibrium Rainbow Display and verify the shared/custom runtime rejects it without committing evidence.",
+        "recoveryOrResetCase": "After the Equilibrium Rainbow Display refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Equilibrium Rainbow Display is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "lab",
@@ -260,8 +362,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "configuration-path-accounted",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "execute the lab-scoped calorimetry procedure with teacher waste configuration, physical mass/temperature/timing evidence, calibration, and evidence-backed design calculations",
+        "ordinarySupportedCase": "Complete a valid Designing an Effective Hand Warmer path that execute the lab-scoped calorimetry procedure with teacher waste configuration, physical mass/temperature/timing evidence, calibration, and evidence-backed design calculations.",
+        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Designing an Effective Hand Warmer and verify the shared/custom runtime rejects it without committing evidence.",
+        "recoveryOrResetCase": "After the Designing an Effective Hand Warmer refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Designing an Effective Hand Warmer is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "lab",
@@ -298,8 +415,34 @@
           "cycle06/confirmation-point-action-missing": 2
         }
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; current diagnostic disposition pending final evidence where noted",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "prepare the Blue #1 standards/unknown, acquire percent-transmittance readings through the calibrated photometer path, build the class calibration, and derive the unknown result from recorded evidence",
+        "ordinarySupportedCase": "Complete a valid Spectroscopy of Blue #1 Dye in a Sports Drink path that prepare the Blue #1 standards/unknown, acquire percent-transmittance readings through the calibrated photometer path, build the class calibration, and derive the unknown result from recorded evidence.",
+        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Spectroscopy of Blue #1 Dye in a Sports Drink and verify the shared/custom runtime rejects it without committing evidence.",
+        "recoveryOrResetCase": "After the Spectroscopy of Blue #1 Dye in a Sports Drink refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Spectroscopy of Blue #1 Dye in a Sports Drink is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 2,
+        "summary": "Two historical raw-template confirmation-point findings named the molar-mass reference and over-range response actions.",
+        "rules": [
+          {
+            "rule": "cycle06/confirmation-point-action-missing",
+            "count": 2,
+            "samples": [
+              "lab:blue1-spectroscopy/i1-record-molar-mass-reference",
+              "lab:blue1-spectroscopy/i1-record-over-range-response"
+            ],
+            "evaluation": "raw-template-rule",
+            "presentDisposition": "pending-fresh-diagnostic",
+            "basis": "The current lab/hosted spectroscopy source is inventoried, but the historical checker that raised these two confirmation-point rows has not been rerun on this branch."
+          }
+        ],
+        "claimBoundary": "These are supplied historical raw-template findings. They are neither promoted to current bugs nor marked fixed unless a current source contract is specifically identified; final current status requires the authorized fresh diagnostics/compiled-evidence phase."
+      }
     },
     {
       "kind": "lab",
@@ -330,8 +473,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "prepare the brass/copper solutions, perform the wavelength scan with the required dark/blank zero gates, calibrate at the approved wavelength, measure the prepared unknown, and calculate copper content from evidence",
+        "ordinarySupportedCase": "Complete a valid How Can Color Determine the Copper Content of Brass? path that prepare the brass/copper solutions, perform the wavelength scan with the required dark/blank zero gates, calibrate at the approved wavelength, measure the prepared unknown, and calculate copper content from evidence.",
+        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to How Can Color Determine the Copper Content of Brass? and verify the shared/custom runtime rejects it without committing evidence.",
+        "recoveryOrResetCase": "After the How Can Color Determine the Copper Content of Brass? refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for How Can Color Determine the Copper Content of Brass? is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "lab",
@@ -368,8 +526,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "configuration-path-accounted",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "complete practice preparation/filtration, apply the instructor drying/cooling setup, run the two-sample gravimetric inquiry, and compare hardness with measurement-backed uncertainty",
+        "ordinarySupportedCase": "Complete a valid What Makes Hard Water Hard? path that complete practice preparation/filtration, apply the instructor drying/cooling setup, run the two-sample gravimetric inquiry, and compare hardness with measurement-backed uncertainty.",
+        "configurationOrRefusalCase": "Start without or with an invalid hard-water-form setup and verify the activity refuses before composition/play; then supply a valid instructor-approved setup and confirm only that configured path becomes available.",
+        "recoveryOrResetCase": "After the What Makes Hard Water Hard? refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for What Makes Hard Water Hard? is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "lab",
@@ -400,8 +573,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "prepare the teacher-configured beverage aliquot, acquire the pH-volume titration evidence, identify the supported endpoint/equivalence evidence, and calculate acidity without inventing beverage chemistry",
+        "ordinarySupportedCase": "Complete a valid How Much Acid Is in Fruit Juice and Soft Drinks? path that prepare the teacher-configured beverage aliquot, acquire the pH-volume titration evidence, identify the supported endpoint/equivalence evidence, and calculate acidity without inventing beverage chemistry.",
+        "configurationOrRefusalCase": "Start without or with an invalid titration-form setup and verify the activity refuses before composition/play; then supply a valid instructor-approved setup and confirm only that configured path becomes available.",
+        "recoveryOrResetCase": "After the How Much Acid Is in Fruit Juice and Soft Drinks? refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for How Much Acid Is in Fruit Juice and Soft Drinks? is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "lab",
@@ -447,8 +635,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "configuration-path-accounted",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "run the approved known/blind test panel while preserving blind identity, record aqueous/solvent/reagent/melting evidence, and classify only from the accumulated observations",
+        "ordinarySupportedCase": "Complete a valid What's in That Bottle? Bonding in Unknown Solids path that run the approved known/blind test panel while preserving blind identity, record aqueous/solvent/reagent/melting evidence, and classify only from the accumulated observations.",
+        "configurationOrRefusalCase": "Start without or with an invalid bonding-form setup and verify the activity refuses before composition/play; then supply a valid instructor-approved setup and confirm only that configured path becomes available.",
+        "recoveryOrResetCase": "After the What's in That Bottle? Bonding in Unknown Solids refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for What's in That Bottle? Bonding in Unknown Solids is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "lab",
@@ -483,8 +686,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "run the custom separation/thermal workflow with the approved setup, preserve both supported tare conventions as separate cases, recover/weigh products, and calculate green-chemistry metrics from evidence",
+        "ordinarySupportedCase": "Complete a valid Purifying a Mixture with Green Chemistry path that run the custom separation/thermal workflow with the approved setup, preserve both supported tare conventions as separate cases, recover/weigh products, and calculate green-chemistry metrics from evidence.",
+        "configurationOrRefusalCase": "Start without or with an invalid custom-player setup and verify the activity refuses before composition/play; then supply a valid instructor-approved setup and confirm only that configured path becomes available.",
+        "recoveryOrResetCase": "After the Purifying a Mixture with Green Chemistry refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Purifying a Mixture with Green Chemistry is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "lab",
@@ -515,8 +733,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "standardize permanganate first, then titrate the peroxide aliquot, record replicate burette evidence, enforce concordance, and calculate peroxide concentration/percent from the standardized titrant",
+        "ordinarySupportedCase": "Complete a valid Determining Hydrogen Peroxide Concentration by Redox Titration path that standardize permanganate first, then titrate the peroxide aliquot, record replicate burette evidence, enforce concordance, and calculate peroxide concentration/percent from the standardized titrant.",
+        "configurationOrRefusalCase": "Start without or with an invalid titration-form setup and verify the activity refuses before composition/play; then supply a valid instructor-approved setup and confirm only that configured path becomes available.",
+        "recoveryOrResetCase": "After the Determining Hydrogen Peroxide Concentration by Redox Titration refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Determining Hydrogen Peroxide Concentration by Redox Titration is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "lab",
@@ -552,8 +785,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "configuration-path-accounted",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "collect component-property evidence, obtain plan approval, execute the configured extraction/recovery order, dry/weigh recovered fractions, and calculate/report composition without asserting identity from recipe alone",
+        "ordinarySupportedCase": "Complete a valid Separating the Components of Quick Ache Relief path that collect component-property evidence, obtain plan approval, execute the configured extraction/recovery order, dry/weigh recovered fractions, and calculate/report composition without asserting identity from recipe alone.",
+        "configurationOrRefusalCase": "Start without or with an invalid quick-ache-form setup and verify the activity refuses before composition/play; then supply a valid instructor-approved setup and confirm only that configured path becomes available.",
+        "recoveryOrResetCase": "After the Separating the Components of Quick Ache Relief refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Separating the Components of Quick Ache Relief is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "lab",
@@ -601,8 +849,36 @@
           "source-trace/unknown-action": 23
         }
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; current diagnostic disposition pending final evidence where noted",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "prepare micromolar standards, calibrate the spectrophotometer, acquire timed crystal-violet absorbance data, compare integrated-rate-law regressions/approved extension, and complete waste treatment",
+        "ordinarySupportedCase": "Complete a valid Rate Law of Crystal Violet Fading Using Beer's Law path that prepare micromolar standards, calibrate the spectrophotometer, acquire timed crystal-violet absorbance data, compare integrated-rate-law regressions/approved extension, and complete waste treatment.",
+        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Rate Law of Crystal Violet Fading Using Beer's Law and verify the shared/custom runtime rejects it without committing evidence.",
+        "recoveryOrResetCase": "After the Rate Law of Crystal Violet Fading Using Beer's Law refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Rate Law of Crystal Violet Fading Using Beer's Law is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 23,
+        "summary": "Twenty-three historical source-trace/unknown-action rows were attached to lab-local crystal-violet action ids.",
+        "rules": [
+          {
+            "rule": "source-trace/unknown-action",
+            "count": 23,
+            "samples": [
+              "lab:crystal-violet-rate-law/cv11-fill-kinetic-cuvette",
+              "lab:crystal-violet-rate-law/cv11-insert-kinetic-cuvette",
+              "lab:crystal-violet-rate-law/cv11-measure-kinetic-cv",
+              "lab:crystal-violet-rate-law/cv11-measure-kinetic-naoh"
+            ],
+            "evaluation": "raw-template-rule",
+            "presentDisposition": "pending-fresh-source-trace-reconciliation",
+            "basis": "Current source composes the crystal-violet workflow from explicit technique instances, but the source-trace checker/overlay has not been freshly regenerated."
+          }
+        ],
+        "claimBoundary": "These are supplied historical raw-template findings. They are neither promoted to current bugs nor marked fixed unless a current source contract is specifically identified; final current status requires the authorized fresh diagnostics/compiled-evidence phase."
+      }
     },
     {
       "kind": "lab",
@@ -633,8 +909,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "approve a research plan, acquire indicator-free pH-volume curves for the selected acid/base contexts, identify curve landmarks, calculate unknown molarity/equilibrium quantities, compare class evidence, and clean up",
+        "ordinarySupportedCase": "Complete a valid Exploring Acid-Base Titration Curves path that approve a research plan, acquire indicator-free pH-volume curves for the selected acid/base contexts, identify curve landmarks, calculate unknown molarity/equilibrium quantities, compare class evidence, and clean up.",
+        "configurationOrRefusalCase": "Start without or with an invalid custom-investigation-config setup and verify the activity refuses before composition/play; then supply a valid instructor-approved setup and confirm only that configured path becomes available.",
+        "recoveryOrResetCase": "After the Exploring Acid-Base Titration Curves refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Exploring Acid-Base Titration Curves is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     }
   ],
   "techniques": [
@@ -669,8 +960,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "place the weighing vessel, obtain a balance reading, and record the mass under the configured measurement identifier",
+        "ordinarySupportedCase": "Complete a valid Weigh a Solid path that place the weighing vessel, obtain a balance reading, and record the mass under the configured measurement identifier. No indexed lab host is declared; use the standalone route only if its configuration blocker permits it.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (massMeasurementId) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Weigh a Solid refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Weigh a Solid is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "technique",
@@ -716,8 +1022,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "measure the configured target volume with the graduated cylinder and record it under the configured measurement identifier/tolerance",
+        "ordinarySupportedCase": "Complete a valid Measure Liquid Volume path that measure the configured target volume with the graduated cylinder and record it under the configured measurement identifier/tolerance. Preferred supported context: intro-filtration-demo#measuring-volume, hard-water-demo#measuring-volume.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (targetVolumeMl, volumeToleranceMl, volumeMeasurementId) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Measure Liquid Volume refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Measure Liquid Volume is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "technique",
@@ -753,8 +1074,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "add the configured solvent amount, incorporate the configured solute mass, bring to the configured final volume, and record the solution observation",
+        "ordinarySupportedCase": "Complete a valid Make a Solution path that add the configured solvent amount, incorporate the configured solute mass, bring to the configured final volume, and record the solution observation. No indexed lab host is declared; use the standalone route only if its configuration blocker permits it.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (initialSolventVolumeMl, soluteMassG, finalVolumeMl, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Make a Solution refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Make a Solution is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "technique",
@@ -790,8 +1126,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "transfer the configured aliquot, dilute to the configured final volume, and record/verify the configured dilution factor and evidence identifier",
+        "ordinarySupportedCase": "Complete a valid Dilute a Stock Solution path that transfer the configured aliquot, dilute to the configured final volume, and record/verify the configured dilution factor and evidence identifier. No indexed lab host is declared; use the standalone route only if its configuration blocker permits it.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (aliquotVolumeMl, finalVolumeMl, dilutionFactor, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Dilute a Stock Solution refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Dilute a Stock Solution is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "technique",
@@ -835,8 +1186,34 @@
           "cycle06/transmittance-operand-confused": 2
         }
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; current diagnostic disposition pending final evidence where noted",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "record the teacher stock concentration, prepare the configured dilution, acquire percent transmittance, convert %T to decimal T, and calculate absorbance without confusing the operands",
+        "ordinarySupportedCase": "Complete a valid Analyze Transmittance of a Dilution path that record the teacher stock concentration, prepare the configured dilution, acquire percent transmittance, convert %T to decimal T, and calculate absorbance without confusing the operands. No indexed lab host is declared; use the standalone route only if its configuration blocker permits it.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (stockConcentrationM, stockConcentrationMeasurementId, stockVolumeMeasurementId, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Analyze Transmittance of a Dilution refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Analyze Transmittance of a Dilution is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 2,
+        "summary": "Two historical rules identified percent-transmittance/decimal-transmittance operand confusion.",
+        "rules": [
+          {
+            "rule": "cycle06/transmittance-operand-confused",
+            "count": 2,
+            "samples": [
+              "technique:transmittance-dilution/transmittance-dilution-calculate-absorbance",
+              "technique:transmittance-dilution/transmittance-dilution-calculate-decimal-transmittance"
+            ],
+            "evaluation": "raw-template-rule",
+            "presentDisposition": "source-contract-addressed-execution-unverified",
+            "basis": "Current reducer has separate decimalTransmittance and absorbanceFromPercentT/absorbanceFromDecimalT paths with explicit range/unit checks, but no fresh item-2 runtime/content execution was performed."
+          }
+        ],
+        "claimBoundary": "These are supplied historical raw-template findings. They are neither promoted to current bugs nor marked fixed unless a current source contract is specifically identified; final current status requires the authorized fresh diagnostics/compiled-evidence phase."
+      }
     },
     {
       "kind": "technique",
@@ -881,8 +1258,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "transfer the configured liquid amount between the declared source/receiver and record the transfer observation",
+        "ordinarySupportedCase": "Complete a valid Transfer Liquid path that transfer the configured liquid amount between the declared source/receiver and record the transfer observation. Preferred supported context: intro-filtration-demo#transfer, hard-water-demo#transfer.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (transferVolumeMl, transferObservation) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Transfer Liquid refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Transfer Liquid is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "technique",
@@ -927,8 +1319,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "combine the hard-water reagents to form calcium carbonate, preserve the configured final volume/mass basis, and record precipitate evidence",
+        "ordinarySupportedCase": "Complete a valid Hard-Water Calcium Carbonate Precipitation path that combine the hard-water reagents to form calcium carbonate, preserve the configured final volume/mass basis, and record precipitate evidence. Preferred supported context: intro-filtration-demo#hard-water-precipitation, hard-water-demo#hard-water-precipitation.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (precipitateMassG, finalVolumeMl) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Hard-Water Calcium Carbonate Precipitation refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Hard-Water Calcium Carbonate Precipitation is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "technique",
@@ -973,8 +1380,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "assemble the configured gravity/vacuum filtration path, transfer the mixture, rinse as configured, and preserve filtrate/precipitate state",
+        "ordinarySupportedCase": "Complete a valid Filter a Precipitate path that assemble the configured gravity/vacuum filtration path, transfer the mixture, rinse as configured, and preserve filtrate/precipitate state. Preferred supported context: intro-filtration-demo#filtration, hard-water-demo#filtration.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (filtrationMode, rinseVolumeMl) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Filter a Precipitate refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Filter a Precipitate is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "technique",
@@ -1018,8 +1440,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "dry, cool, and reweigh the precipitate under the configured time/temperature/tolerance contract until the supported endpoint is reached",
+        "ordinarySupportedCase": "Complete a valid Dry and Weigh a Precipitate path that dry, cool, and reweigh the precipitate under the configured time/temperature/tolerance contract until the supported endpoint is reached. Preferred supported context: hard-water-demo#drying.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (firstDryingMinutes, secondDryingMinutes, ovenTemperatureC, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Dry and Weigh a Precipitate refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Dry and Weigh a Precipitate is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "technique",
@@ -1071,8 +1508,33 @@
           "action/source-trace-missing": 1
         }
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; current diagnostic disposition pending final evidence where noted",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "configure the stock/sample and tare convention, heat/cool/reweigh through the bounded cycle, and calculate composition from the recorded mass loss",
+        "ordinarySupportedCase": "Complete a valid Heat and Reweigh a Carbonate Mixture path that configure the stock/sample and tare convention, heat/cool/reweigh through the bounded cycle, and calculate composition from the recorded mass loss. Preferred supported context: green-chemistry-mixture-purification#thermal-decomposition.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (sampleMassG, warmDurationMin, heatingDurationMin, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Heat and Reweigh a Carbonate Mixture refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Heat and Reweigh a Carbonate Mixture is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 1,
+        "summary": "One historical raw-template action (unheated stock configuration) lacked source-trace evidence.",
+        "rules": [
+          {
+            "rule": "action/source-trace-missing",
+            "count": 1,
+            "samples": [
+              "technique:thermal-decomposition-mass-loss/configure-unheated-stock"
+            ],
+            "evaluation": "raw-template-rule",
+            "presentDisposition": "pending-fresh-source-trace-overlay-check",
+            "basis": "Current green-chemistry host binds the thermal configuration/tare convention, but this trace row must be re-evaluated by the current checker."
+          }
+        ],
+        "claimBoundary": "These are supplied historical raw-template findings. They are neither promoted to current bugs nor marked fixed unless a current source contract is specifically identified; final current status requires the authorized fresh diagnostics/compiled-evidence phase."
+      }
     },
     {
       "kind": "technique",
@@ -1122,8 +1584,36 @@
           "action/source-trace-missing": 188
         }
       },
-      "sourceReviewDisposition": "configuration-path-accounted",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; current diagnostic disposition pending final evidence where noted",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "execute only the host-selected solvent procedure, charge and close the chamber correctly, develop/mark/dry the chromatogram, record distances, and calculate Rf from those recorded distances",
+        "ordinarySupportedCase": "Complete a valid Paper Chromatography path that execute only the host-selected solvent procedure, charge and close the chamber correctly, develop/mark/dry the chromatogram, record distances, and calculate Rf from those recorded distances. Preferred supported context: paper-chromatography#chromatography-trials.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (selectedProcedure, baselineHeightMm, solventDepthMm, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Paper Chromatography refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Paper Chromatography is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 188,
+        "summary": "188 historical raw-template actions lacked source-trace entries across the many solvent/region procedure alternatives.",
+        "rules": [
+          {
+            "rule": "action/source-trace-missing",
+            "count": 188,
+            "samples": [
+              "technique:paper-chromatography/add-choice-acetone-1-solvent",
+              "technique:paper-chromatography/add-choice-acetone-2-solvent",
+              "technique:paper-chromatography/add-choice-acetone-3-solvent",
+              "technique:paper-chromatography/add-choice-chromatography-solvent-1-solvent"
+            ],
+            "evaluation": "raw-template-rule",
+            "presentDisposition": "pending-fresh-source-trace-overlay-check",
+            "basis": "Current host-only procedure materialization is now source-accounted, but the large ordered-procedure trace set requires regenerated overlay/content evidence."
+          }
+        ],
+        "claimBoundary": "These are supplied historical raw-template findings. They are neither promoted to current bugs nor marked fixed unless a current source contract is specifically identified; final current status requires the authorized fresh diagnostics/compiled-evidence phase."
+      }
     },
     {
       "kind": "technique",
@@ -1165,8 +1655,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "consume the configured sample-volume and precipitate-mass evidence and calculate hardness under the configured calculation id/tolerance",
+        "ordinarySupportedCase": "Complete a valid Calculate Hardness path that consume the configured sample-volume and precipitate-mass evidence and calculate hardness under the configured calculation id/tolerance. Preferred supported context: hard-water-demo#hard-water-calculation.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (sampleVolumeMeasurementId, precipitateMassMeasurementId, calculationId, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Calculate Hardness refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Calculate Hardness is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "technique",
@@ -1203,8 +1708,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "acquire the standard absorbance/concentration evidence and derive the calibration relationship rather than substituting an authored answer",
+        "ordinarySupportedCase": "Complete a valid Beer's Law Calibration path that acquire the standard absorbance/concentration evidence and derive the calibration relationship rather than substituting an authored answer. No indexed lab host is declared; use the standalone route only if its configuration blocker permits it.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (stockVolumeMeasurementId, finalVolumeMeasurementId, wavelengthMeasurementId, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Beer's Law Calibration refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Beer's Law Calibration is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "technique",
@@ -1249,8 +1769,48 @@
           "action/source-trace-missing": 3
         }
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; current diagnostic disposition pending final evidence where noted",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "run the assigned-salt wavelength scan through zero/configuration gates, calibrate at the approved wavelength, measure the prepared brass unknown, and derive concentration/copper evidence",
+        "ordinarySupportedCase": "Complete a valid Brass Spectrophotometry path that run the assigned-salt wavelength scan through zero/configuration gates, calibrate at the approved wavelength, measure the prepared brass unknown, and derive concentration/copper evidence. Preferred supported context: brass-colorimetry#brass-spectrophotometry.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (wavelengthMeasurementId, measurementCuvetteInstanceId) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Brass Spectrophotometry refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Brass Spectrophotometry is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 35,
+        "summary": "The 35 historical findings are not one undifferentiated defect set: 32 concern photometer zero/read gating and 3 concern source-trace coverage.",
+        "rules": [
+          {
+            "rule": "cycle06/photometer-read-ungated",
+            "count": 32,
+            "samples": [
+              "technique:brass-spectrophotometry/scan-read-400-salt-a-action/requiresZeroNotebookTag",
+              "technique:brass-spectrophotometry/scan-read-400-salt-b-action/requiresZeroNotebookTag",
+              "technique:brass-spectrophotometry/scan-read-420-salt-a-action/requiresZeroNotebookTag",
+              "technique:brass-spectrophotometry/scan-read-420-salt-b-action/requiresZeroNotebookTag"
+            ],
+            "evaluation": "raw-template-rule",
+            "presentDisposition": "source-contract-addressed-execution-unverified",
+            "basis": "Current Cycle-05 migration/source defines scan read actions with zero/configuration gating and genericBrassScan regression coverage exists; neither the regression nor fresh content checker was run here."
+          },
+          {
+            "rule": "action/source-trace-missing",
+            "count": 3,
+            "samples": [
+              "technique:brass-spectrophotometry/scan-configure-salt-a-inventory-action",
+              "technique:brass-spectrophotometry/scan-configure-salt-b-inventory-action",
+              "technique:brass-spectrophotometry/transfer-prepared-unknown-to-original-tube-action"
+            ],
+            "evaluation": "raw-template-rule",
+            "presentDisposition": "pending-fresh-source-trace-overlay-check",
+            "basis": "The migration script emits a source-trace overlay for brass, but current overlay freshness/completeness is not established until the authorized pipeline regenerates/checks it."
+          }
+        ],
+        "claimBoundary": "These are supplied historical raw-template findings. They are neither promoted to current bugs nor marked fixed unless a current source contract is specifically identified; final current status requires the authorized fresh diagnostics/compiled-evidence phase."
+      }
     },
     {
       "kind": "technique",
@@ -1285,8 +1845,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "carry the sample through precipitation/filtration/drying and calculate hardness from the named recorded mass and volume evidence",
+        "ordinarySupportedCase": "Complete a valid Hard Water Gravimetry path that carry the sample through precipitation/filtration/drying and calculate hardness from the named recorded mass and volume evidence. No indexed lab host is declared; use the standalone route only if its configuration blocker permits it.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (ovenTemperatureC, firstDurationMinutes, coolingTemperatureC) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Hard Water Gravimetry refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Hard Water Gravimetry is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "technique",
@@ -1347,8 +1922,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "mount/condition/fill the burette, prepare the analyte/indicator, deliver titrant to the supported persistent endpoint, and calculate from separate recorded readings",
+        "ordinarySupportedCase": "Complete a valid Acid-Base Titration to an Indicator Endpoint path that mount/condition/fill the burette, prepare the analyte/indicator, deliver titrant to the supported persistent endpoint, and calculate from separate recorded readings. Preferred supported context: acid-base-titration#investigation.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (endpointWindowMl, persistenceSeconds, maximumIncrementMl, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Acid-Base Titration to an Indicator Endpoint refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Acid-Base Titration to an Indicator Endpoint is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "technique",
@@ -1478,8 +2068,47 @@
           "cycle11/aqueous-read-without-test-solution": 2
         }
       },
-      "sourceReviewDisposition": "configuration-path-accounted",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; current diagnostic disposition pending final evidence where noted",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "execute the host-selected test sequence for one known/blind sample, preserve blind redaction, and record each qualitative/quantitative test result before classification",
+        "ordinarySupportedCase": "Complete a valid Bonding Solids Tests path that execute the host-selected test sequence for one known/blind sample, preserve blind redaction, and record each qualitative/quantitative test result before classification. Preferred supported context: bonding-unknown-solids#known-1, bonding-unknown-solids#known-2, bonding-unknown-solids#known-3, bonding-unknown-solids#known-4, bonding-unknown-solids#known-5-count5, bonding-unknown-solids#known-5-count6, bonding-unknown-solids#known-6, bonding-unknown-solids#blind-1, bonding-unknown-solids#blind-2, bonding-unknown-solids#blind-3, bonding-unknown-solids#blind-4, bonding-unknown-solids#blind-5-count5, bonding-unknown-solids#blind-5-count6, bonding-unknown-solids#blind-6.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (sampleIdentity, sampleMode, evidenceScopeId, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Bonding Solids Tests refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Bonding Solids Tests is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 19,
+        "summary": "Historical rows comprise 17 missing traces and 2 aqueous-read-without-test-solution findings.",
+        "rules": [
+          {
+            "rule": "action/source-trace-missing",
+            "count": 17,
+            "samples": [
+              "technique:bonding-solids-tests/apply-ethanol-solvent",
+              "technique:bonding-solids-tests/apply-hcl-reagent",
+              "technique:bonding-solids-tests/apply-hexanes-solvent",
+              "technique:bonding-solids-tests/apply-naoh-reagent"
+            ],
+            "evaluation": "raw-template-rule",
+            "presentDisposition": "pending-fresh-source-trace-overlay-check",
+            "basis": "Current host setup now binds the selected procedure/test panel, but trace completeness is still a fresh checker question."
+          },
+          {
+            "rule": "cycle11/aqueous-read-without-test-solution",
+            "count": 2,
+            "samples": [
+              "technique:bonding-solids-tests/read-aqueous-conductivity",
+              "technique:bonding-solids-tests/read-ph-indicator"
+            ],
+            "evaluation": "raw-template-rule",
+            "presentDisposition": "source-path-reviewed-execution-unverified",
+            "basis": "The current ordered test path and host-selected procedure were source-reviewed; the exact aqueous-state gate must be reconfirmed by the fresh content/runtime evidence phase."
+          }
+        ],
+        "claimBoundary": "These are supplied historical raw-template findings. They are neither promoted to current bugs nor marked fixed unless a current source contract is specifically identified; final current status requires the authorized fresh diagnostics/compiled-evidence phase."
+      }
     },
     {
       "kind": "technique",
@@ -1542,8 +2171,36 @@
           "action/source-trace-missing": 163
         }
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; current diagnostic disposition pending final evidence where noted",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "condition/fill the burette, standardize the redox titrant, acquire sample-trial burette evidence, enforce replicate/concordance requirements, and calculate the analyte result",
+        "ordinarySupportedCase": "Complete a valid Redox Titration path that condition/fill the burette, standardize the redox titrant, acquire sample-trial burette evidence, enforce replicate/concordance requirements, and calculate the analyte result. Preferred supported context: hydrogen-peroxide-redox-titration#investigation.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (endpointWindowMl, persistenceSeconds, maximumIncrementMl, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Redox Titration refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Redox Titration is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 163,
+        "summary": "163 historical raw-template actions lacked source-trace entries across standardization, trial, rinse/disposal and analysis paths.",
+        "rules": [
+          {
+            "rule": "action/source-trace-missing",
+            "count": 163,
+            "samples": [
+              "technique:redox-titration/condition-redox-burette-discard-rinsate",
+              "technique:redox-titration/condition-redox-burette-drain-residual",
+              "technique:redox-titration/discard-practice-mixture-discard-rinse",
+              "technique:redox-titration/discard-practice-mixture-rinse"
+            ],
+            "evaluation": "raw-template-rule",
+            "presentDisposition": "pending-fresh-source-trace-overlay-check",
+            "basis": "Current source includes standardization/sample calculation contracts and setup binding, but the historical trace deficit is not declared fixed without a fresh overlay check."
+          }
+        ],
+        "claimBoundary": "These are supplied historical raw-template findings. They are neither promoted to current bugs nor marked fixed unless a current source contract is specifically identified; final current status requires the authorized fresh diagnostics/compiled-evidence phase."
+      }
     },
     {
       "kind": "technique",
@@ -1574,8 +2231,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "separate tablet components through the authored extraction/filtration/recovery sequence, record recovered masses, and calculate component mass percent from those masses",
+        "ordinarySupportedCase": "Complete a valid Tablet Separation path that separate tablet components through the authored extraction/filtration/recovery sequence, record recovered masses, and calculate component mass percent from those masses. No indexed lab host is declared; use the standalone route only if its configuration blocker permits it.",
+        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Tablet Separation and verify the shared/custom runtime rejects it without committing evidence.",
+        "recoveryOrResetCase": "After the Tablet Separation refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Tablet Separation is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "technique",
@@ -1669,8 +2341,43 @@
           "cycle06/photometer-wavelength-unproduced": 1
         }
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; current diagnostic disposition pending final evidence where noted",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "initiate the configured reaction, acquire scheduled time/absorbance pairs with wavelength/zero state intact, and preserve the series for downstream rate-law analysis",
+        "ordinarySupportedCase": "Complete a valid Crystal Violet Kinetics path that initiate the configured reaction, acquire scheduled time/absorbance pairs with wavelength/zero state intact, and preserve the series for downstream rate-law analysis. Preferred supported context: crystal-violet-rate-law#kinetics-initiation, crystal-violet-rate-law#kinetics-reading-1, crystal-violet-rate-law#kinetics-reading-2, crystal-violet-rate-law#kinetics-reading-3, crystal-violet-rate-law#kinetics-reading-4, crystal-violet-rate-law#kinetics-reading-5, crystal-violet-rate-law#kinetics-reading-6, crystal-violet-rate-law#kinetics-reading-7, crystal-violet-rate-law#kinetics-reading-8.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (selectedProcedure, cvVolumeMl, naohVolumeMl, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Crystal Violet Kinetics refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Crystal Violet Kinetics is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 2,
+        "summary": "Both historical findings were explicitly labeled raw-template-inconclusive because compiled configuration coverage was incomplete.",
+        "rules": [
+          {
+            "rule": "cycle06/cuvette-slot-unbalanced",
+            "count": 1,
+            "samples": [
+              "technique:crystal-violet-kinetics/kinetics-reaction-cuvette"
+            ],
+            "evaluation": "raw-template-inconclusive-compiled-coverage",
+            "presentDisposition": "requires-fresh-compiled-coverage",
+            "basis": "No current concrete compiled-instance failure is claimed; the final witness/content phase must determine whether the raw-template concern manifests in supported configurations."
+          },
+          {
+            "rule": "cycle06/photometer-wavelength-unproduced",
+            "count": 1,
+            "samples": [
+              "technique:crystal-violet-kinetics/read-cv-scheduled-absorbance/{{config.wavelengthMeasurementId}}"
+            ],
+            "evaluation": "raw-template-inconclusive-compiled-coverage",
+            "presentDisposition": "requires-fresh-compiled-coverage",
+            "basis": "The host supplies wavelengthMeasurementId in current source, but exhaustive/declared compiled coverage must be checked in the final evidence phase."
+          }
+        ],
+        "claimBoundary": "These are supplied historical raw-template findings. They are neither promoted to current bugs nor marked fixed unless a current source contract is specifically identified; final current status requires the authorized fresh diagnostics/compiled-evidence phase."
+      }
     },
     {
       "kind": "technique",
@@ -1713,8 +2420,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "configuration-path-accounted",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "execute the lab-scoped calorimetry procedure with teacher waste configuration, physical mass/temperature/timing evidence, calibration, and evidence-backed design calculations",
+        "ordinarySupportedCase": "Complete a valid Hand-Warmer Calorimetry path that execute the lab-scoped calorimetry procedure with teacher waste configuration, physical mass/temperature/timing evidence, calibration, and evidence-backed design calculations. Preferred supported context: hand-warmer-calorimetry#hand-warmer.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (wasteRoute) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Hand-Warmer Calorimetry refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Hand-Warmer Calorimetry is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "technique",
@@ -1751,8 +2473,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "repaired-source-defect",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "repaired-source-defect; regression/current evidence pending",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "screen the system, record the analyte aliquot/initial pH/equivalence volume, and calculate curve molarity from the recorded aliquot/equivalence evidence rather than a static answer key",
+        "ordinarySupportedCase": "Complete a valid Titration Curve Analysis path that screen the system, record the analyte aliquot/initial pH/equivalence volume, and calculate curve molarity from the recorded aliquot/equivalence evidence rather than a static answer key. No indexed lab host is declared; use the standalone route only if its configuration blocker permits it.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (analysisMode) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Titration Curve Analysis refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Titration Curve Analysis is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "technique",
@@ -1789,8 +2526,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "prepare the configured Blue #1 dilution series with explicit stock/final volumes and record the dilution evidence for each standard",
+        "ordinarySupportedCase": "Complete a valid Blue #1 Standard Dilutions path that prepare the configured Blue #1 dilution series with explicit stock/final volumes and record the dilution evidence for each standard. Preferred supported context: blue1-spectroscopy#blue1-standard-dilutions.",
+        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Blue #1 Standard Dilutions and verify the shared/custom runtime rejects it without committing evidence.",
+        "recoveryOrResetCase": "After the Blue #1 Standard Dilutions refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Blue #1 Standard Dilutions is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "technique",
@@ -1835,8 +2587,58 @@
           "cycle06/photometer-record-without-read": 2
         }
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; current diagnostic disposition pending final evidence where noted",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "configure the unknown/blank inventory, insert/read the cuvette through photometer gating, keep read and record steps distinct, and calculate downstream photometric quantities from recorded %T",
+        "ordinarySupportedCase": "Complete a valid Blue #1 Percent-Transmittance Measurement path that configure the unknown/blank inventory, insert/read the cuvette through photometer gating, keep read and record steps distinct, and calculate downstream photometric quantities from recorded %T. Preferred supported context: blue1-spectroscopy#blue1-percent-transmittance.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (calibrationRegressionCalculationId) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Blue #1 Percent-Transmittance Measurement refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Blue #1 Percent-Transmittance Measurement is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 21,
+        "summary": "Historical rows split into 17 missing source traces, 2 ungated photometer reads, and 2 record-without-read findings.",
+        "rules": [
+          {
+            "rule": "action/source-trace-missing",
+            "count": 17,
+            "samples": [
+              "technique:blue1-percent-transmittance/i1-configure-unknown-dilution-water",
+              "technique:blue1-percent-transmittance/i1-configure-unknown-operational-inventory",
+              "technique:blue1-percent-transmittance/i1-fill-blank-cuvette",
+              "technique:blue1-percent-transmittance/i1-fill-diluted-unknown-cuvette"
+            ],
+            "evaluation": "raw-template-rule",
+            "presentDisposition": "pending-fresh-source-trace-overlay-check",
+            "basis": "Trace completeness is not re-proven by the current inventory."
+          },
+          {
+            "rule": "cycle06/photometer-read-ungated",
+            "count": 2,
+            "samples": [
+              "technique:blue1-percent-transmittance/i1-read-diluted-unknown-percent-t/measurementId",
+              "technique:blue1-percent-transmittance/i1-read-unknown-percent-t/measurementId"
+            ],
+            "evaluation": "raw-template-rule",
+            "presentDisposition": "source-contract-addressed-execution-unverified",
+            "basis": "Current spectroscopy runtime/content separates instrument configuration/zero/read paths; the focused current checker/tests were not executed in this item-2 session."
+          },
+          {
+            "rule": "cycle06/photometer-record-without-read",
+            "count": 2,
+            "samples": [
+              "technique:blue1-percent-transmittance/i1-record-diluted-unknown-percent-t",
+              "technique:blue1-percent-transmittance/i1-record-unknown-percent-t"
+            ],
+            "evaluation": "raw-template-rule",
+            "presentDisposition": "source-contract-addressed-execution-unverified",
+            "basis": "Current content keeps read and record as distinct actions/evidence, but fresh execution/content-check evidence is pending."
+          }
+        ],
+        "claimBoundary": "These are supplied historical raw-template findings. They are neither promoted to current bugs nor marked fixed unless a current source contract is specifically identified; final current status requires the authorized fresh diagnostics/compiled-evidence phase."
+      }
     },
     {
       "kind": "technique",
@@ -1885,8 +2687,33 @@
           "cycle06/confirmation-point-resolved": 1
         }
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; current diagnostic disposition pending final evidence where noted",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "pool the confirmed class standards, fit the calibration only from accepted class evidence, and preserve the confirmed calibration record for the unknown",
+        "ordinarySupportedCase": "Complete a valid Class-Pooled Blue #1 Calibration path that pool the confirmed class standards, fit the calibration only from accepted class evidence, and preserve the confirmed calibration record for the unknown. Preferred supported context: blue1-spectroscopy#blue1-class-calibration.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (i1-r10-0-concentrationCalculationId, i1-r8-2-concentrationCalculationId, i1-r6-4-concentrationCalculationId, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Class-Pooled Blue #1 Calibration refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Class-Pooled Blue #1 Calibration is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 1,
+        "summary": "One historical confirmation row was explicitly classified by the historical checker as resolved.",
+        "rules": [
+          {
+            "rule": "cycle06/confirmation-point-resolved",
+            "count": 1,
+            "samples": [
+              "technique:blue1-class-calibration/i1-record-confirmed-calibration"
+            ],
+            "evaluation": "raw-template-rule",
+            "presentDisposition": "historically-resolved-marker-current-status-to-reconfirm",
+            "basis": "This is a historical resolved marker, not evidence of a current defect; the final pipeline should confirm no regression."
+          }
+        ],
+        "claimBoundary": "These are supplied historical raw-template findings. They are neither promoted to current bugs nor marked fixed unless a current source contract is specifically identified; final current status requires the authorized fresh diagnostics/compiled-evidence phase."
+      }
     },
     {
       "kind": "technique",
@@ -1923,8 +2750,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "prepare the practice hard-water mixture/apparatus and produce the named practice evidence needed before the gravimetric workflow",
+        "ordinarySupportedCase": "Complete a valid Hard-Water Practice Preparation path that prepare the practice hard-water mixture/apparatus and produce the named practice evidence needed before the gravimetric workflow. Preferred supported context: hard-water-analysis#hard-water-practice-preparation.",
+        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Hard-Water Practice Preparation and verify the shared/custom runtime rejects it without committing evidence.",
+        "recoveryOrResetCase": "After the Hard-Water Practice Preparation refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Hard-Water Practice Preparation is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "technique",
@@ -1965,8 +2807,36 @@
           "action/source-trace-missing": 7
         }
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; current diagnostic disposition pending final evidence where noted",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "assemble the vacuum filtration apparatus, filter/rinse the precipitate, and preserve the collected solid/receiver evidence for drying",
+        "ordinarySupportedCase": "Complete a valid Gravimetric Vacuum Filtration path that assemble the vacuum filtration apparatus, filter/rinse the precipitate, and preserve the collected solid/receiver evidence for drying. Preferred supported context: hard-water-analysis#gravimetric-vacuum-filtration.",
+        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Gravimetric Vacuum Filtration and verify the shared/custom runtime rejects it without committing evidence.",
+        "recoveryOrResetCase": "After the Gravimetric Vacuum Filtration refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Gravimetric Vacuum Filtration is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 7,
+        "summary": "Seven historical raw-template actions lacked source-trace entries.",
+        "rules": [
+          {
+            "rule": "action/source-trace-missing",
+            "count": 7,
+            "samples": [
+              "technique:gravimetric-vacuum-filtration/practice-gravity-attach-practice-filter-flask",
+              "technique:gravimetric-vacuum-filtration/practice-gravity-filter-practice-mixture",
+              "technique:gravimetric-vacuum-filtration/practice-gravity-place-practice-buchner",
+              "technique:gravimetric-vacuum-filtration/practice-gravity-rinse-practice-beaker"
+            ],
+            "evaluation": "raw-template-rule",
+            "presentDisposition": "pending-fresh-source-trace-overlay-check",
+            "basis": "The technique is currently hosted by hard-water-analysis, but current trace completeness is not proven by host/accounting alone."
+          }
+        ],
+        "claimBoundary": "These are supplied historical raw-template findings. They are neither promoted to current bugs nor marked fixed unless a current source contract is specifically identified; final current status requires the authorized fresh diagnostics/compiled-evidence phase."
+      }
     },
     {
       "kind": "technique",
@@ -2012,8 +2882,36 @@
           "action/source-trace-missing": 31
         }
       },
-      "sourceReviewDisposition": "configuration-path-accounted",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; current diagnostic disposition pending final evidence where noted",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "apply the instructor oven/time/cooling setup, dry/cool/weigh in two stages, and gate completion on the configured mass/temperature criteria",
+        "ordinarySupportedCase": "Complete a valid Two-Stage Precipitate Drying path that apply the instructor oven/time/cooling setup, dry/cool/weigh in two stages, and gate completion on the configured mass/temperature criteria. Preferred supported context: hard-water-analysis#two-stage-precipitate-drying.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (ovenTemperatureC, firstDurationMinutes, coolingTemperatureC) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Two-Stage Precipitate Drying refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Two-Stage Precipitate Drying is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 31,
+        "summary": "Thirty-one historical raw-template actions lacked source-trace entries across drying/cooling/cleanup.",
+        "rules": [
+          {
+            "rule": "action/source-trace-missing",
+            "count": 31,
+            "samples": [
+              "technique:two-stage-precipitate-drying/cleanup-practice-dry-paper-dispose-contents",
+              "technique:two-stage-precipitate-drying/cleanup-practice-gravity-receiver-dispose-contents",
+              "technique:two-stage-precipitate-drying/cleanup-practice-watch-glass-dispose-contents",
+              "technique:two-stage-precipitate-drying/cleanup-practice-watch-glass-remove-marker"
+            ],
+            "evaluation": "raw-template-rule",
+            "presentDisposition": "pending-fresh-source-trace-overlay-check",
+            "basis": "The hard-water setup now supplies the required drying/cooling parameters, but trace completeness is a separate pending current checker result."
+          }
+        ],
+        "claimBoundary": "These are supplied historical raw-template findings. They are neither promoted to current bugs nor marked fixed unless a current source contract is specifically identified; final current status requires the authorized fresh diagnostics/compiled-evidence phase."
+      }
     },
     {
       "kind": "technique",
@@ -2050,8 +2948,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "record the inquiry design and require the authored teacher approval gate before the experimental branch can proceed",
+        "ordinarySupportedCase": "Complete a valid Inquiry Plan Approval path that record the inquiry design and require the authored teacher approval gate before the experimental branch can proceed. Preferred supported context: hard-water-analysis#inquiry-plan-approval.",
+        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Inquiry Plan Approval and verify the shared/custom runtime rejects it without committing evidence.",
+        "recoveryOrResetCase": "After the Inquiry Plan Approval refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Inquiry Plan Approval is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "technique",
@@ -2097,8 +3010,36 @@
           "action/source-trace-missing": 76
         }
       },
-      "sourceReviewDisposition": "configuration-path-accounted",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; current diagnostic disposition pending final evidence where noted",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "apply the instructor drying/cooling settings to both samples, acquire paired gravimetric evidence, calculate both hardness values, and preserve sample-specific evidence identifiers",
+        "ordinarySupportedCase": "Complete a valid Two-Sample Hard-Water Inquiry path that apply the instructor drying/cooling settings to both samples, acquire paired gravimetric evidence, calculate both hardness values, and preserve sample-specific evidence identifiers. Preferred supported context: hard-water-analysis#hard-water-two-sample-inquiry.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (ovenTemperatureC, firstDurationMinutes, coolingTemperatureC) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Two-Sample Hard-Water Inquiry refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Two-Sample Hard-Water Inquiry is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 76,
+        "summary": "Seventy-six historical raw-template actions lacked source-trace entries across cleanup/acquisition branches.",
+        "rules": [
+          {
+            "rule": "action/source-trace-missing",
+            "count": 76,
+            "samples": [
+              "technique:hard-water-two-sample-inquiry/cleanup-unknown-c-flask-dispose-contents",
+              "technique:hard-water-two-sample-inquiry/cleanup-unknown-c-gravity-receiver-dispose-contents",
+              "technique:hard-water-two-sample-inquiry/cleanup-unknown-c-paper-dispose-contents",
+              "technique:hard-water-two-sample-inquiry/cleanup-unknown-c-watch-dispose-contents"
+            ],
+            "evaluation": "raw-template-rule",
+            "presentDisposition": "pending-fresh-source-trace-overlay-check",
+            "basis": "Teacher drying/cooling configuration is now source-accounted, but trace rows still require a fresh overlay/content check."
+          }
+        ],
+        "claimBoundary": "These are supplied historical raw-template findings. They are neither promoted to current bugs nor marked fixed unless a current source contract is specifically identified; final current status requires the authorized fresh diagnostics/compiled-evidence phase."
+      }
     },
     {
       "kind": "technique",
@@ -2165,8 +3106,36 @@
           "action/source-trace-missing": 212
         }
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; current diagnostic disposition pending final evidence where noted",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "run the configured beverage pH-volume trial, acquire separate instrument readings/records, preserve the quantitative curve evidence, and calculate only from the accepted trial data",
+        "ordinarySupportedCase": "Complete a valid Beverage pH-Volume Titration path that run the configured beverage pH-volume trial, acquire separate instrument readings/records, preserve the quantitative curve evidence, and calculate only from the accepted trial data. Preferred supported context: beverage-acidity#investigation.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (endpointWindowMl, persistenceSeconds, maximumIncrementMl, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Beverage pH-Volume Titration refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Beverage pH-Volume Titration is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 212,
+        "summary": "212 historical rows were missing raw-template source-trace entries across the expanded beverage trial family.",
+        "rules": [
+          {
+            "rule": "action/source-trace-missing",
+            "count": 212,
+            "samples": [
+              "technique:beverage-ph-volume-titration/beverage-a-sample-trial-1-add-indicator",
+              "technique:beverage-ph-volume-titration/beverage-a-sample-trial-1-concentration",
+              "technique:beverage-ph-volume-titration/beverage-a-sample-trial-1-concentration-approve-equivalence",
+              "technique:beverage-ph-volume-titration/beverage-a-sample-trial-1-concentration-select-equivalence"
+            ],
+            "evaluation": "raw-template-rule",
+            "presentDisposition": "pending-fresh-source-trace-overlay-check",
+            "basis": "Current source and generator/migration code define the quantitative beverage workflow, but source-trace completeness must be established by the fresh overlay/content-check phase."
+          }
+        ],
+        "claimBoundary": "These are supplied historical raw-template findings. They are neither promoted to current bugs nor marked fixed unless a current source contract is specifically identified; final current status requires the authorized fresh diagnostics/compiled-evidence phase."
+      }
     },
     {
       "kind": "technique",
@@ -2203,8 +3172,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "prepare the micromolar crystal-violet series from configured stock/final volumes and record the concentration evidence for calibration",
+        "ordinarySupportedCase": "Complete a valid Micromolar Crystal Violet Dilution Series path that prepare the micromolar crystal-violet series from configured stock/final volumes and record the concentration evidence for calibration. Preferred supported context: crystal-violet-rate-law#dilution-series.",
+        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Micromolar Crystal Violet Dilution Series and verify the shared/custom runtime rejects it without committing evidence.",
+        "recoveryOrResetCase": "After the Micromolar Crystal Violet Dilution Series refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Micromolar Crystal Violet Dilution Series is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "technique",
@@ -2241,8 +3225,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "set the configured wavelength, zero/calibrate the instrument with the declared blank/standards, and preserve calibration evidence before kinetics",
+        "ordinarySupportedCase": "Complete a valid Crystal Violet Spectrophotometer Calibration path that set the configured wavelength, zero/calibrate the instrument with the declared blank/standards, and preserve calibration evidence before kinetics. Preferred supported context: crystal-violet-rate-law#instrument-calibration.",
+        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Crystal Violet Spectrophotometer Calibration and verify the shared/custom runtime rejects it without committing evidence.",
+        "recoveryOrResetCase": "After the Crystal Violet Spectrophotometer Calibration refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Crystal Violet Spectrophotometer Calibration is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "technique",
@@ -2286,8 +3285,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "transform the recorded concentration/time series for zero/first/second-order fits, compare the regressions, and accept only the evidence-backed order/extension path",
+        "ordinarySupportedCase": "Complete a valid Integrated Rate-Law Comparison path that transform the recorded concentration/time series for zero/first/second-order fits, compare the regressions, and accept only the evidence-backed order/extension path. Preferred supported context: crystal-violet-rate-law#rate-law-analysis, crystal-violet-rate-law#analysis-extension.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (selectedProcedure) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Integrated Rate-Law Comparison refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Integrated Rate-Law Comparison is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "technique",
@@ -2328,8 +3342,33 @@
           "cycle06/cuvette-slot-unbalanced": 1
         }
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; current diagnostic disposition pending final evidence where noted",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "route the completed crystal-violet material through the authored waste-treatment sequence after acquisition is complete",
+        "ordinarySupportedCase": "Complete a valid Crystal Violet Waste Treatment path that route the completed crystal-violet material through the authored waste-treatment sequence after acquisition is complete. Preferred supported context: crystal-violet-rate-law#waste-treatment.",
+        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Crystal Violet Waste Treatment and verify the shared/custom runtime rejects it without committing evidence.",
+        "recoveryOrResetCase": "After the Crystal Violet Waste Treatment refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Crystal Violet Waste Treatment is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 1,
+        "summary": "The single historical cuvette-slot finding was explicitly inconclusive pending compiled coverage.",
+        "rules": [
+          {
+            "rule": "cycle06/cuvette-slot-unbalanced",
+            "count": 1,
+            "samples": [
+              "technique:crystal-violet-waste-treatment/cv11-kinetic-cuvette"
+            ],
+            "evaluation": "raw-template-inconclusive-compiled-coverage",
+            "presentDisposition": "requires-fresh-compiled-coverage",
+            "basis": "It is not treated as a current concrete bug until supported compiled contexts are freshly evaluated."
+          }
+        ],
+        "claimBoundary": "These are supplied historical raw-template findings. They are neither promoted to current bugs nor marked fixed unless a current source contract is specifically identified; final current status requires the authorized fresh diagnostics/compiled-evidence phase."
+      }
     },
     {
       "kind": "technique",
@@ -2370,8 +3409,36 @@
           "action/source-trace-missing": 6
         }
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; current diagnostic disposition pending final evidence where noted",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "test pure component references with the approved property panel and record evidence without inferring recovered-fraction identity",
+        "ordinarySupportedCase": "Complete a valid Quick Ache Component Property Evidence path that test pure component references with the approved property panel and record evidence without inferring recovered-fraction identity. Preferred supported context: quick-ache-relief-separation#property.",
+        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Quick Ache Component Property Evidence and verify the shared/custom runtime rejects it without committing evidence.",
+        "recoveryOrResetCase": "After the Quick Ache Component Property Evidence refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Quick Ache Component Property Evidence is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 6,
+        "summary": "Six historical raw-template property-test actions lacked source-trace entries.",
+        "rules": [
+          {
+            "rule": "action/source-trace-missing",
+            "count": 6,
+            "samples": [
+              "technique:quick-ache-property-evidence/qar-apply-acetaminophen-approved-property-test",
+              "technique:quick-ache-property-evidence/qar-apply-aspirin-approved-property-test",
+              "technique:quick-ache-property-evidence/qar-apply-sucrose-approved-property-test",
+              "technique:quick-ache-property-evidence/qar-transfer-acetaminophen-test-portion"
+            ],
+            "evaluation": "raw-template-rule",
+            "presentDisposition": "pending-fresh-source-trace-overlay-check",
+            "basis": "Current activity preserves property evidence as a separate stage; trace completeness itself remains a fresh checker result."
+          }
+        ],
+        "claimBoundary": "These are supplied historical raw-template findings. They are neither promoted to current bugs nor marked fixed unless a current source contract is specifically identified; final current status requires the authorized fresh diagnostics/compiled-evidence phase."
+      }
     },
     {
       "kind": "technique",
@@ -2408,8 +3475,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "draft the separation flow, audit safety, and require explicit teacher approval before extraction/recovery",
+        "ordinarySupportedCase": "Complete a valid Quick Ache Separation Design and Approval path that draft the separation flow, audit safety, and require explicit teacher approval before extraction/recovery. Preferred supported context: quick-ache-relief-separation#approval.",
+        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Quick Ache Separation Design and Approval and verify the shared/custom runtime rejects it without committing evidence.",
+        "recoveryOrResetCase": "After the Quick Ache Separation Design and Approval refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Quick Ache Separation Design and Approval is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "technique",
@@ -2462,8 +3544,36 @@
           "action/source-trace-missing": 57
         }
       },
-      "sourceReviewDisposition": "configuration-path-accounted",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; current diagnostic disposition pending final evidence where noted",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "execute the teacher-configured extraction count/recovery order, enforce supported unheated recovery/drying conditions, and record recovered masses",
+        "ordinarySupportedCase": "Complete a valid Quick Ache Extraction, Recovery, and Gravimetry path that execute the teacher-configured extraction count/recovery order, enforce supported unheated recovery/drying conditions, and record recovered masses. Preferred supported context: quick-ache-relief-separation#extraction.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (organicRecoveryMethod, aqueousRecoveryMethod, drynessCriterion, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Quick Ache Extraction, Recovery, and Gravimetry refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Quick Ache Extraction, Recovery, and Gravimetry is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 57,
+        "summary": "Fifty-seven historical raw-template actions lacked source-trace entries across extraction/recovery/cleanup branches.",
+        "rules": [
+          {
+            "rule": "action/source-trace-missing",
+            "count": 57,
+            "samples": [
+              "technique:quick-ache-extraction-recovery/cleanup-qar-acidic-recovery-watch-glass-dispose-contents",
+              "technique:quick-ache-extraction-recovery/cleanup-qar-aqueous-recovery-watch-glass-dispose-contents",
+              "technique:quick-ache-extraction-recovery/cleanup-qar-organic-fraction-flask-dispose-contents",
+              "technique:quick-ache-extraction-recovery/cleanup-qar-organic-recovery-watch-glass-dispose-contents"
+            ],
+            "evaluation": "raw-template-rule",
+            "presentDisposition": "pending-fresh-source-trace-overlay-check",
+            "basis": "The recovery configuration path is source-accounted, but source-trace completeness for the expanded cleanup/recovery actions awaits the fresh overlay/content phase."
+          }
+        ],
+        "claimBoundary": "These are supplied historical raw-template findings. They are neither promoted to current bugs nor marked fixed unless a current source contract is specifically identified; final current status requires the authorized fresh diagnostics/compiled-evidence phase."
+      }
     },
     {
       "kind": "technique",
@@ -2500,8 +3610,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "confirm the composition formula convention, calculate each recovered component percentage/total recovery from recorded masses, and produce the evidence-backed report",
+        "ordinarySupportedCase": "Complete a valid Quick Ache Composition Analysis path that confirm the composition formula convention, calculate each recovered component percentage/total recovery from recorded masses, and produce the evidence-backed report. Preferred supported context: quick-ache-relief-separation#analysis.",
+        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Quick Ache Composition Analysis and verify the shared/custom runtime rejects it without committing evidence.",
+        "recoveryOrResetCase": "After the Quick Ache Composition Analysis refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Quick Ache Composition Analysis is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "technique",
@@ -2588,8 +3713,33 @@
           "cycle11/reactant-mass-measurement-unmatched": 1
         }
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; current diagnostic disposition pending final evidence where noted",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "prepare the marble/acid trial, ensure gas-syringe apparatus and reactant-mass evidence are aligned, record timed gas volumes, and calculate the initial rate",
+        "ordinarySupportedCase": "Complete a valid Gas-Syringe Kinetics with Marble Chips path that prepare the marble/acid trial, ensure gas-syringe apparatus and reactant-mass evidence are aligned, record timed gas volumes, and calculate the initial rate. Preferred supported context: marble-statue-kinetics#practice-trial, marble-statue-kinetics#acid-2m-trial, marble-statue-kinetics#acid-4m-trial, marble-statue-kinetics#acid-6m-trial, marble-statue-kinetics#acid-2m-rate-analysis, marble-statue-kinetics#acid-4m-rate-analysis, marble-statue-kinetics#acid-6m-rate-analysis.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (selectedProcedure, acidVolumeMl, acidVolumeToleranceMl, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Gas-Syringe Kinetics with Marble Chips refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Gas-Syringe Kinetics with Marble Chips is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 1,
+        "summary": "One historical rule found the reactant-mass measurement unmatched to the marble transfer action.",
+        "rules": [
+          {
+            "rule": "cycle11/reactant-mass-measurement-unmatched",
+            "count": 1,
+            "samples": [
+              "technique:marble-gas-syringe-kinetics/gas-technique-transfer-marble/gas-technique-marble-mass"
+            ],
+            "evaluation": "raw-template-rule",
+            "presentDisposition": "source-path-reviewed-execution-unverified",
+            "basis": "The current activity is explicitly framed around measured marble mass and gas-trial acquisition, but the specific measurement-to-transfer match must be rechecked by the fresh content/runtime phase."
+          }
+        ],
+        "claimBoundary": "These are supplied historical raw-template findings. They are neither promoted to current bugs nor marked fixed unless a current source contract is specifically identified; final current status requires the authorized fresh diagnostics/compiled-evidence phase."
+      }
     },
     {
       "kind": "technique",
@@ -2626,8 +3776,23 @@
         "count": 0,
         "rules": {}
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "apply the configured equilibrium stresses one at a time, record the resulting qualitative observations, and support the inquiry explanation without hard-coded expected colors",
+        "ordinarySupportedCase": "Complete a valid Equilibrium Rainbow Inquiry path that apply the configured equilibrium stresses one at a time, record the resulting qualitative observations, and support the inquiry explanation without hard-coded expected colors. Preferred supported context: equilibrium-rainbow-display#equilibrium.",
+        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Equilibrium Rainbow Inquiry and verify the shared/custom runtime rejects it without committing evidence.",
+        "recoveryOrResetCase": "After the Equilibrium Rainbow Inquiry refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Equilibrium Rainbow Inquiry is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 0,
+        "summary": "No retained historical-content-check finding is directly scoped to this indexed activity id.",
+        "rules": [],
+        "presentDisposition": "no-direct-historical-row; current activity-specific scenario still requires final evidence execution",
+        "claimBoundary": "Absence of a direct historical row is not a runtime/physical/scientific pass."
+      }
     },
     {
       "kind": "technique",
@@ -2698,13 +3863,42 @@
           "action/source-trace-missing": 35
         }
       },
-      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
-      "sourceScenarioStatus": "planned-not-executed"
+      "sourceReviewDisposition": "activity-specific-source-review-recorded; current diagnostic disposition pending final evidence where noted",
+      "sourceScenarioStatus": "planned-not-executed",
+      "activitySpecificReview": {
+        "scientificFocus": "assemble/condition/fill the formal pH-volume apparatus, acquire initial and sequential pH/burette evidence under the configured context, handle retry/disposal branches, and finish only after cleanup",
+        "ordinarySupportedCase": "Complete a valid Indicator-free formal pH-volume titration trial path that assemble/condition/fill the formal pH-volume apparatus, acquire initial and sequential pH/burette evidence under the configured context, handle retry/disposal branches, and finish only after cleanup. Preferred supported context: acid-base-titration-curves#formal-trial.",
+        "configurationOrRefusalCase": "Omit or invalidate one required slot (contextId, formalContextModelId, aliquotMl, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "recoveryOrResetCase": "After the Indicator-free formal pH-volume titration trial refusal/rejection, recover through its supported correction path, then reset/restart and verify no stale measurement, calculation, approval, attachment, or procedure-selection state is carried forward.",
+        "evidenceCase": "Verify the completion gate for Indicator-free formal pH-volume titration trial is satisfied by the named learner/instrument/configuration evidence produced by this activity, not by a static expected answer or unrelated host evidence.",
+        "currentExecutionStatus": "not executed in item-2 source-review phase"
+      },
+      "historicalFindingDisposition": {
+        "directHistoricalFindingCount": 35,
+        "summary": "Thirty-five historical raw-template actions lacked source-trace entries in the formal pH-volume route.",
+        "rules": [
+          {
+            "rule": "action/source-trace-missing",
+            "count": 35,
+            "samples": [
+              "technique:ph-volume-formal-titration-trial/formal-trial-condition-burette",
+              "technique:ph-volume-formal-titration-trial/formal-trial-condition-burette-discard-rinsate",
+              "technique:ph-volume-formal-titration-trial/formal-trial-condition-burette-drain-residual",
+              "technique:ph-volume-formal-titration-trial/formal-trial-deliver-titrant"
+            ],
+            "evaluation": "raw-template-rule",
+            "presentDisposition": "pending-fresh-source-trace-overlay-check",
+            "basis": "The custom titration-curves route binds the formal context/model/setup in current source, but trace-overlay freshness remains unverified."
+          }
+        ],
+        "claimBoundary": "These are supplied historical raw-template findings. They are neither promoted to current bugs nor marked fixed unless a current source contract is specifically identified; final current status requires the authorized fresh diagnostics/compiled-evidence phase."
+      }
     }
   ],
   "status": {
-    "sourceRepairStatus": "complete-within-source-review-scope",
-    "currentEvidenceStatus": "pending-separate-authorization-and-evidence-dependency-transfer",
+    "sourceInventoryAndStaticRationale": "complete",
+    "sourceLevelReconciliationClosure": "not-claimed",
+    "currentEvidenceStatus": "pending-separate-authorization-and-repository-restoration",
     "fullItem2Status": "incomplete"
   }
 }

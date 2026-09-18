@@ -1,22 +1,49 @@
-# Item 2 critical review
+# Item 2 critical review — revision after external review
 
-## Review identity
+## Identity
 
 - Model: GPT-5.6 Sol.
-- Implementation reasoning-effort setting: not exposed to this assistant runtime; therefore not claimed as High.
-- Review reasoning-effort setting: not exposed to this assistant runtime; therefore not claimed as xHigh.
-- Independence: same-session self-review, not an independent model review.
+- Reasoning-effort setting: not exposed by this runtime; High/xHigh is not claimed.
+- Review type: same-session revision informed by an external GPT-6 Astra source/JSON/hash review.
 
-## Review findings
+## External-review findings and disposition
 
-1. **Catalog completeness corrected.** The prior ledger had all 59 IDs but generic dispositions. The revised ledger now gives every indexed lab/technique an individual rationale, route/execution context, planned ordinary/refusal/recovery/evidence scenarios, finding references and a source-review disposition.
-2. **Configuration false positives corrected.** The previous 17 raw-host missing-slot flags are all supplied by the supported teacher setup path: 2 hard-water instances, 14 bonding instances and 1 Quick Ache extraction instance. Paper chromatography is likewise materialized by its setup path. Hand-warmer configuration is explicitly represented by its one `wasteRoute` slot. Source-level host accounting is therefore 66/66; compiled representation is still unmeasured.
-3. **Titration-curve defect remains correctly scoped.** The indexed `titration-curve-analysis` technique formerly carried `expected: 0.099`; the branch removes that answer-key fallback and derives the accepted molarity from recorded aliquot/equivalence evidence plus the model's titrant/stoichiometric contract. The authored regression remains intentionally unrun.
-4. **Historical diagnostics are not promoted to current evidence.** The 973 supplied findings remain a historical comparison. No fresh raw diagnostic set is claimed because the named pipeline was not authorized.
-5. **Evidence dependencies are still a real blocker.** The package contains the required omitted planning files, but the current GitHub connector cannot transfer the exact local 39.5 MB set to the repository. The branch deliberately avoids a misleading partial `planning/` restoration.
-6. **Validation ceiling preserved.** No tests, typecheck, build, browser/runtime checks or optional evidence commands were run. This prevents the unrun regression from being presented as passing.
-7. **Main remains outside scope.** All new changes remain on `codex/item2-catalog-reconciliation`; no merge or push of these changes to `main` is performed.
+### 1. Generic activity justification — corrected
 
-## Review conclusion
+Confirmed. The previous ledger had 59 records but its scenarios and historical-finding treatment were too generic to support a reconciliation-closure claim.
 
-The branch is ready for the pending restoration + authorized evidence-run phase, but Item 2 must remain **incomplete** until that phase produces current witness/reconciliation/overlay/content-check evidence.
+Correction:
+- all 59 entries now receive activity-specific scientific and scenario descriptions;
+- historical finding-bearing entries list rule families, counts, representative scopes, historical evaluation scope and a present disposition;
+- no activity is declared clean merely because its direct historical count is zero;
+- historical counts are not treated as current bug counts or fixed counts.
+
+The source-level closure claim is withdrawn. The narrower claim is inventory/static-rationale accounting, pending current evidence.
+
+### 2. Evidence freshness — corrected
+
+Confirmed. Updating tracked `FINDING_TRIAGE.json` after a final verification check would change the source snapshot the run was meant to attest to.
+
+Correction:
+- the execution request now freezes tracked reports/ledgers before an accepted run;
+- Run A may be used as discovery evidence;
+- if Run A causes tracked triage/report/source changes, those changes are committed and a complete Run B with a new run id is required;
+- no accepted run is reused after tracked source changes.
+
+### 3. Paper-chromatography coverage contradiction — corrected
+
+Confirmed. The previous record incorrectly retained `requiredSlotsKnown: false` and a stale “not-assessed” marker even though the setup path had already been source-traced.
+
+Correction:
+- `requiredSlotsKnown: true`;
+- all seven required values are named;
+- the pre-setup missing set is explicit;
+- after supported teacher setup, missing required slots are zero.
+
+## Dependency restoration
+
+The 46 dependencies are now restored locally and re-hashed: 39,500,058 bytes, 46/46 matches. They remain absent from the GitHub branch because the available GitHub mutation interface cannot upload a local file snapshot. This is an execution-workspace transfer blocker, not a package-integrity blocker.
+
+## Remaining acceptance boundary
+
+Item 2 remains incomplete. Fresh compiler witness, reconciliation, overlay checks, static verifier and complete content diagnostics are still required after separate authorization and repository/workspace restoration.

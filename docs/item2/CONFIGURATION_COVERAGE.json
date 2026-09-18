@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "branch": "codex/item2-catalog-reconciliation",
   "baseline": "f7c2b863f641090d9abc5c08ee22da72702fdfd6",
   "mode": "source-level hosted configuration reconciliation; compiled coverage intentionally unrun",
@@ -361,14 +361,28 @@
         "instanceId": "chromatography-trials",
         "techniqueId": "paper-chromatography",
         "version": "1.2.1",
-        "configurationKeys": [],
-        "requiredSlotsKnown": false,
+        "configurationKeys": [
+          "selectedProcedure",
+          "baselineHeightMm",
+          "solventDepthMm",
+          "spotVolumeMl",
+          "solventVolumeMl",
+          "spotterLoadVolumeMl",
+          "stopCondition"
+        ],
+        "requiredSlotsKnown": true,
         "missingRequiredSlots": [],
         "staticBindingStatus": "represented-after-supported-teacher-setup",
         "preSetupMissingRequiredSlots": [
-          "not-assessed: source too large for full connector materialization"
+          "selectedProcedure",
+          "baselineHeightMm",
+          "solventDepthMm",
+          "spotVolumeMl",
+          "solventVolumeMl",
+          "spotterLoadVolumeMl",
+          "stopCondition"
         ],
-        "sourceConfigurationEvidence": "src/data/labSetup.ts materializes the required hosted configuration before compilation"
+        "sourceConfigurationEvidence": "src/data/labSetup.ts validates/binds selectedProcedure, baselineHeightMm, solventDepthMm, spotVolumeMl, solventVolumeMl, spotterLoadVolumeMl and stopCondition; src/data/__tests__/techniqueConfiguration.test.ts identifies selectedProcedure as host-composition-only."
       },
       {
         "labId": "equilibrium-rainbow-display",
@@ -1398,7 +1412,8 @@
     "sourceReviewSummary": {
       "representedOrMaterialized": 66,
       "unresolvedSourceConfiguration": 0,
-      "note": "This is source-level binding/setup coverage only. Compiled witness representation remains unmeasured until the authorized pipeline runs."
+      "unassessed": 0,
+      "note": "Source-level binding/setup coverage only; not compiled-witness acceptance."
     }
   },
   "currentCompiledCoverage": {

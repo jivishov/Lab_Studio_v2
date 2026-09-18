@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "status": "blocked-in-current-web-toolchain",
   "suppliedPackageManifestSha256": "f5be35a5d87902398a4991bac02a10257d60849c66e33801b7542d10149e7a04",
   "manifestListedRepositoryPlanningFiles": 46,
@@ -11,6 +11,19 @@
     "Confirmed the available GitHub mutation interface accepts UTF-8/base64 content strings but has no attachment/container-file upload handoff."
   ],
   "reason": "The exact files are present in the attached sandbox package, but several are 3-12 MB and the complete set is ~39.5 MB. This environment cannot transfer those exact local bytes into GitHub without serializing them through model/tool arguments, which is not a reliable byte-preserving upload path. A partial planning tree was deliberately not committed.",
-  "effect": "Source-level reconciliation can proceed, but the named evidence scripts remain non-runnable on this branch until the exact dependencies are restored in a repository-capable environment.",
-  "requiredNextCapability": "A writable checkout or GitHub upload interface that can copy the 46 manifest-listed files directly from the attached package, verify their SHA-256 hashes, and commit them on this branch."
+  "effect": "The dependency set is locally restored and hash-verified. The authorized evidence scripts still require a full repository checkout/workspace containing both current branch source and these planning paths; branch evidence must not claim restoration until those files are actually present in that execution workspace.",
+  "requiredNextCapability": "A writable checkout or GitHub upload interface that can copy the 46 manifest-listed files directly from the attached package, verify their SHA-256 hashes, and commit them on this branch.",
+  "localRestoration": {
+    "status": "complete",
+    "workspace": "/mnt/data/item2_local_restore",
+    "files": 46,
+    "bytes": 39500058,
+    "sha256Matches": 46,
+    "sha256Mismatches": 0,
+    "source": "attached ITEM2_WEB_SOL_HANDOFF.zip / BUNDLE_MANIFEST.json"
+  },
+  "gitBranchRestoration": {
+    "status": "pending-tool-capability",
+    "reason": "The GitHub connector available in this web session has no local-file/source_file_ref upload mutation. The exact local bytes are restored and verified, but cannot be copied byte-for-byte into GitHub without an upload-capable repository workspace."
+  }
 }

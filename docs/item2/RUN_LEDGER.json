@@ -25,6 +25,14 @@
     {
       "kind": "ledger-validation",
       "detail": "JSON ledgers were parsed before mutation and serialized from structured objects."
+    },
+    {
+      "kind": "external-review-corrections",
+      "detail": "Replaced generic activity scenarios/count-only historical summaries with activity-specific scenarios and per-rule historical dispositions; corrected paper coverage contradiction and evidence freshness protocol."
+    },
+    {
+      "kind": "local-dependency-restoration",
+      "detail": "Copied all 46 manifest-listed repository planning files into /mnt/data/item2_local_restore and verified 46/46 SHA-256 hashes; total 39,500,058 bytes."
     }
   ],
   "intentionallyUnrun": [
@@ -46,5 +54,6 @@
     }
   ],
   "evidencePipelineStatus": "not-run",
-  "currentEvidenceStatus": "pending"
+  "currentEvidenceStatus": "pending separate user authorization and upload-capable repository restoration",
+  "sourceLevelClosureClaim": "withdrawn; inventory/static-rationale accounting only"
 }

@@ -1,44 +1,59 @@
-# Item 2 pending execution request
+# Item 2 pending evidence execution request
 
 ## Status
 
-Item 2 is **not fully complete**. Source-level catalog/configuration/finding reconciliation is complete within the authorized basic-static scope, but current evidence is pending.
+Item 2 remains **incomplete**. Catalog/source/configuration records have been corrected, and the 46 historical dependencies are locally restored with 46/46 SHA-256 matches, but they are not present on the GitHub branch. The named evidence phase has not been authorized in a separate instruction.
 
-Two prerequisites remain:
+## Preconditions
 
-1. The user must send the optional evidence-pipeline exception as a **separate instruction**. `OPTIONAL_EVIDENCE_AUTHORIZATION.txt` in the package is proposed permission text, not authorization.
-2. The execution environment must be able to restore the 46 manifest-listed planning dependencies byte-for-byte from the attached package into this branch. The current web GitHub connector cannot upload the local 39.5 MB dependency set directly.
+1. Receive the optional evidence-pipeline exception as a **separate user instruction**. The attached OPTIONAL_EVIDENCE_AUTHORIZATION.txt is proposed permission text, not authorization by attachment.
+2. Use an upload-capable writable checkout of `codex/item2-catalog-reconciliation`.
+3. Copy the 46 manifest-listed files from the verified local/package source into their exact repository-relative `planning/...` paths and re-verify every SHA-256 against `BUNDLE_MANIFEST.json`.
+4. Commit/freeze every intended tracked source/ledger/report change **before** the accepted final verification run.
 
-## Branch to continue
+## Evidence freshness rule
 
-`codex/item2-catalog-reconciliation`
+`docs/item2/FINDING_TRIAGE.json`, `docs/item2/ITEM2_REPORT.md`, catalog/configuration ledgers, implementation source and tests are part of the tracked source snapshot. **Do not modify any of those tracked files after the accepted run's source identity is initialized and then present that same run as evidence for the modified tree.**
 
-Start from the then-current head of that branch. Do not merge to `main`.
+Generated phase outputs may change only where the recorder explicitly treats them as replaceable evidence outputs.
 
-## Restore before executing
+Because fresh diagnostics are needed to finish tracked triage/reporting, use a two-run protocol:
 
-Copy exactly the manifest-listed repository files from the attached package into their repository-relative `planning/...` paths. Verify each SHA-256 against `BUNDLE_MANIFEST.json`. Do not normalize or regenerate the historical files.
+### Run A — discovery/current-diagnostics run
 
-## Exact authorized pipeline order
-
-Only after the separate authorization is received and the dependencies are restored:
-
-```text
-node scripts/recordCurrentVerificationRun.mjs --initialize --run-id <run-id>
-node scripts/recordCurrentVerificationRun.mjs --run-phase cycle12-compiler-witness --run-id <run-id>
-node scripts/recordCurrentVerificationRun.mjs --run-phase cycle12-reconciliation --run-id <run-id>
-node scripts/recordCurrentVerificationRun.mjs --run-phase cycle09-overlay-refresh --run-id <run-id>
-node scripts/recordCurrentVerificationRun.mjs --run-phase cycle09-overlay-check --run-id <run-id>
-node scripts/recordCurrentVerificationRun.mjs --run-phase cycle12-reconciliation-check --run-id <run-id>
-node scripts/recordCurrentVerificationRun.mjs --run-phase cycle12-static-verifier --run-id <run-id>
-node scripts/recordCurrentVerificationRun.mjs --run-phase repository-content-check --run-id <run-id>
-node scripts/recordCurrentVerificationRun.mjs --check --run-id <run-id>
-```
-
-Then capture the complete JSON diagnostic result:
+After dependency restoration and a clean tracked source freeze, run:
 
 ```text
+node scripts/recordCurrentVerificationRun.mjs --initialize --run-id <discovery-run-id>
+node scripts/recordCurrentVerificationRun.mjs --run-phase cycle12-compiler-witness --run-id <discovery-run-id>
+node scripts/recordCurrentVerificationRun.mjs --run-phase cycle12-reconciliation --run-id <discovery-run-id>
+node scripts/recordCurrentVerificationRun.mjs --run-phase cycle09-overlay-refresh --run-id <discovery-run-id>
+node scripts/recordCurrentVerificationRun.mjs --run-phase cycle09-overlay-check --run-id <discovery-run-id>
+node scripts/recordCurrentVerificationRun.mjs --run-phase cycle12-reconciliation-check --run-id <discovery-run-id>
+node scripts/recordCurrentVerificationRun.mjs --run-phase cycle12-static-verifier --run-id <discovery-run-id>
+node scripts/recordCurrentVerificationRun.mjs --run-phase repository-content-check --run-id <discovery-run-id>
+node scripts/recordCurrentVerificationRun.mjs --check --run-id <discovery-run-id>
 node --experimental-strip-types --experimental-loader ./scripts/tsCompositionLoader.mjs scripts/checkContentConsistency.mjs --compiled --json
 ```
 
-Capture stdout, stderr and exit status for every command. Refresh witness/reconciliation/overlay artifacts only from that run, update `FINDING_TRIAGE.json` from the fresh raw diagnostics, and keep source-repair status separate from current-evidence status.
+Capture stdout, stderr and exit status for every command.
+
+Use Run A only to obtain fresh witness/reconciliation/overlay/content diagnostics. Prepare the new activity/finding dispositions from those results **outside the tracked source tree first**.
+
+### Finalize tracked records
+
+Update tracked `docs/item2/FINDING_TRIAGE.json`, `ITEM2_REPORT.md`, ledgers or source only if the fresh Run-A evidence requires it. Commit those changes.
+
+If nothing tracked changes after Run A, Run A may be accepted as final evidence. If any tracked file changes, Run A is discovery evidence only.
+
+### Run B — accepted final run when tracked source changed
+
+Against the finalized commit, use a **new run id** and repeat the complete ordered pipeline plus the complete JSON content check. The accepted final evidence must identify the final source commit and must pass the recorder's final source/integrity check for that commit.
+
+Do not edit tracked reports/triage again after Run B unless you are prepared to make another commit and repeat the final run.
+
+## Required outputs
+
+Return the final source commit, exact command logs/exit statuses, refreshed compiler witness/reconciliation/overlays, fresh content-check JSON, final per-finding dispositions, and the final recorder source/integrity result. Keep current raw diagnostics separate from historical findings.
+
+Do not merge to `main` unless separately requested.

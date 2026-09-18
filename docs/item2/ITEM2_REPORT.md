@@ -1,79 +1,67 @@
-# Item 2 — complete Lab Studio catalog reconciliation
+# Item 2 — Lab Studio catalog reconciliation status
 
-## Status
+## Current status
 
 - Branch: `codex/item2-catalog-reconciliation`
-- Preparation baseline / current main: `f7c2b863f641090d9abc5c08ee22da72702fdfd6`
-- Indexed catalog: **17 labs + 42 techniques = 59 activities**
-- Source-level hosted configuration accounting: **66 / 66 represented or materialized by a supported setup path**
-- Source-repair status: **complete within the source-review scope**
-- Current-evidence status: **pending**
-- Full Item 2 status: **incomplete**
+- Current main/preparation baseline: `f7c2b863f641090d9abc5c08ee22da72702fdfd6`
+- Indexed catalog accounted: **17 labs + 42 techniques = 59**
+- Hosted source configuration accounted: **66 / 66**
+- Historical dependency set locally restored: **46 / 46 files, 39,500,058 bytes, 46/46 SHA-256 matches**
+- Historical dependencies on GitHub branch: **not restored**
+- Fresh current evidence pipeline: **not run**
+- Source-level reconciliation closure: **not claimed**
+- Full Item 2: **incomplete**
 - Items 3–5: **not started**
 
-## Implementation
+## Record corrections after external review
 
-The in-scope source defect found during reconciliation was the indexed `titration-curve-analysis` calculation path. Its molarity calculation carried a static `0.099 M` expected value while the generic reducer could use that same authored value as the computed fallback. The branch now uses `acidBaseMolarityFromEquivalenceVolume`: the learner's recorded analyte aliquot and recorded equivalence volume are required, while the titration model supplies only titrant concentration and stoichiometry. The public definition, generator source, reducer and a focused regression were changed together. The regression was authored but **not run** under repository policy.
+### Activity-specific justification
 
-## Catalog ledger
+The catalog ledger no longer treats a generic scenario sentence or historical finding count as a disposition. Every indexed activity now has a distinct scientific focus and ordinary, refusal/configuration, recovery/reset and evidence scenario. Every activity that owns historical findings also records the historical rule families, representative affected scopes, historical evaluation scope, present source-review disposition, and the boundary on what can be claimed before fresh current diagnostics.
 
-`CATALOG_DISPOSITIONS.json` now records every one of the 59 indexed activities with its current file/blob identity, route/execution path, configuration/host context, individual rationale, planned scenario assignments, finding references, historical owner summary and source-review disposition.
+Example: `brass-spectrophotometry` now separates its 35 supplied historical findings into:
+- 32 `cycle06/photometer-read-ungated` rows. Current source contains the zero/configuration gating contract and focused regression coverage, so the source-level disposition is **source contract addressed, execution/current checker unverified**.
+- 3 `action/source-trace-missing` rows. The migration source emits source-trace overlay data, but freshness/completeness is **pending the fresh overlay/content-check phase**.
 
-The two special non-counted sources remain explicit:
-- `public/techniques/ph-volume-titration-trial.json`: unindexed generated composition carrier, not a 43rd technique.
-- `public/labs/acid-base-titration-curves-config.json`: custom investigation configuration/data contract, not an 18th lab.
+Thus the ledger does not equate “35 historical findings” with 35 current bugs or with 35 fixed bugs.
 
-`ph-volume-formal-titration-trial` remains the indexed 42nd technique that was absent from the historical 41-technique ownership map.
+### Configuration coverage
 
-## Configuration reconciliation
+The contradictory paper-chromatography row is corrected. It now records these seven required hosted values:
 
-The prior 17 missing-slot flags were pre-setup observations, not 17 application defects:
+`selectedProcedure`, `baselineHeightMm`, `solventDepthMm`, `spotVolumeMl`, `solventVolumeMl`, `spotterLoadVolumeMl`, and `stopCondition`.
 
-- Hard water: `applyLabSetup` validates/injects oven temperature, first drying duration and cooling temperature into both affected instances.
-- Bonding: `applyLabSetup` injects the selected procedure, selected test panel and teacher thresholds/limits for all 14 known/blind instances.
-- Quick Ache: `applyLabSetup` validates and injects the supported recovery methods, dryness/cooling/pH/density values, extraction count, selected procedure and approval flag.
-- Paper chromatography: `applyLabSetup` validates classroom geometry/data/solvent choices and binds the host-only procedure, volumes and stop condition.
-- Hand warmer: the authoritative generator declares exactly one required `wasteRoute` slot with `teacher-configured` default; the lab host already binds that value.
+`requiredSlotsKnown` is true. `src/data/labSetup.ts` is recorded as the setup materializer, and `selectedProcedure` remains intentionally host-composition-only.
 
-This closes source-level host/configuration accounting at 66/66. It does **not** claim current compiled-witness coverage; that remains pending the authorized pipeline.
+The other formerly raw-missing configuration values remain source-accounted through their supported teacher-setup paths. This is 66/66 source-level host binding/setup accounting, **not compiled-witness acceptance**.
 
-## Findings
+### Evidence freshness
 
-`FINDING_TRIAGE.json` separates:
-- current source-review findings (including the repaired molarity defect and configuration-path resolutions),
-- fresh raw diagnostics (**not generated**), and
-- the attached preparation baseline's **973 historical findings**, retained only as historical comparison.
+The execution request now uses a freshness-safe two-run protocol. Fresh diagnostics may be used to update tracked triage/reporting only before a new accepted final run. A verification run is never presented as evidence for tracked source files edited after that run's source identity.
 
-No historical finding is silently relabeled as current.
+## Implementation repair retained
 
-## Evidence dependency restoration
+The item-2 source repair remains `titration-curve-analysis`: its molarity result is derived from recorded analyte/equivalence evidence via `acidBaseMolarityFromEquivalenceVolume`, rather than using the authored 0.099 M as a fallback answer. The public definition, generator, reducer and focused regression remain aligned. The regression is still intentionally unrun.
 
-The package supplies the omitted manifest-listed planning evidence, but exact restoration is blocked in this web toolchain. The 46 repository planning files total **39,500,058 bytes** and include individual 3–12 MB JSON artifacts. They never existed in `Lab_Studio_v2` history, so there are no existing Git blobs to reattach. The current GitHub connector has text/blob mutation calls but no attachment/container-file upload handoff. A partial `planning/` tree was deliberately not committed.
+## Dependency restoration
 
-See `EVIDENCE_DEPENDENCY_RESTORATION.json` for the exact blocker.
+The attached package was extracted locally and the 46 repository planning dependencies were copied into `/mnt/data/item2_local_restore/planning/...`. Every copied file was re-hashed: **46 matches, 0 mismatches**.
 
-## Actual run / unrun record
+The web GitHub connector cannot upload those local file snapshots directly, so branch restoration remains pending an upload-capable writable checkout. The branch must not claim those dependencies are present until that copy is made in the actual execution workspace.
 
-Performed:
-- Read and reconciled current `main` and branch state.
-- Parsed current lab/technique indexes and ledgers.
-- Source-traced routes, setup materialization, special carriers and the molarity calculation path.
-- Verified the branch remains based on current `main`.
-- Performed JSON parsing while constructing/re-reading the ledgers through the GitHub connector.
+## Validation/run boundary
 
-Intentionally not run:
-- the named evidence pipeline;
-- complete compiled content JSON check;
-- unit/integration tests, including the new titration regression;
-- typecheck;
-- build;
-- browser/runtime/E2E checks;
-- broad lint/test suites.
+Performed in this continuation:
+- source/JSON review of the three external-review findings;
+- activity-specific historical disposition reconstruction from the supplied historical content-check artifact;
+- source tracing of paper/hand-warmer/teacher setup paths;
+- local byte-exact planning dependency restoration and SHA-256 verification;
+- ledger/report corrections.
 
-Reasons: no separate optional-pipeline authorization, missing restored planning dependencies, no writable repository checkout/Node execution path in this web session, and the repository's basic-static validation ceiling.
+Not run:
+- optional evidence pipeline;
+- fresh compiled JSON content check;
+- tests, including the new titration regression;
+- typecheck/build/browser/runtime/E2E/broad lint.
 
-## Pending phase
-
-`EXECUTION_REQUEST.md` is the exact continuation request. After separate authorization and byte-exact dependency restoration, run the named phases in the handoff's order, capture every stdout/stderr/exit code, refresh current evidence, then update finding triage from the newly generated raw diagnostics.
-
-No work from Items 3–5 is included.
+The optional evidence phase still requires a separate user authorization.
