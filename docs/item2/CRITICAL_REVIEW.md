@@ -62,3 +62,10 @@ The catalog now has:
 - a corrected `titration-curve-analysis` refusal case that recognizes the defaulted `analysisMode=recorded-evidence-only` and instead tests absence of the recorded analyte aliquot/equivalence measurements.
 
 `SCENARIO_AUDIT.json` records these invariants. Scenario closure is source-specification closure only; it is not execution evidence.
+
+
+## Self-critical refinement
+
+After the external-review fixes, an additional audit found contradictory top-level evidence wording, 20 residual generic refusal cases, 51 generated ordinary-case grammar defects, and ambiguous local-vs-repository dependency-restoration wording. It also confirmed that scenario identity must use kind + id because lab and technique namespaces share some ids.
+
+All are corrected in catalog schema version 5 / scenario-audit schema version 2. All four scenario dimensions are now 59/59 distinct and kind-scoped. This remains non-executed source review; it does not add a current-evidence acceptance claim.

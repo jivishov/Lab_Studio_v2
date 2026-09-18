@@ -1,9 +1,9 @@
 {
-  "schemaVersion": 4,
+  "schemaVersion": 5,
   "scope": "item-2 complete indexed Lab Studio catalog",
   "branch": "codex/item2-catalog-reconciliation",
   "mainBaseline": "f7c2b863f641090d9abc5c08ee22da72702fdfd6",
-  "evidenceMode": "complete source-level reconciliation; named current-evidence pipeline not authorized",
+  "evidenceMode": "source inventory/static rationale/scenario specification only; source-level reconciliation closure not claimed; named current-evidence pipeline not authorized or run",
   "counts": {
     "labs": 17,
     "techniques": 42,
@@ -46,8 +46,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "measure the sample volume, precipitate calcium carbonate, assemble the funnel/filter-paper path, filter the mixture, and preserve the collected filtrate/precipitate evidence",
-        "ordinarySupportedCase": "Complete a valid Precipitate and Filter Calcium Carbonate path that measure the sample volume, precipitate calcium carbonate, assemble the funnel/filter-paper path, filter the mixture, and preserve the collected filtrate/precipitate evidence.",
-        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Precipitate and Filter Calcium Carbonate and verify the shared/custom runtime rejects it without committing evidence.",
+        "ordinarySupportedCase": "Supported lab case for Precipitate and Filter Calcium Carbonate: Measure the sample volume, precipitate calcium carbonate, assemble the funnel/filter-paper path, filter the mixture, and preserve the collected filtrate/precipitate evidence.",
+        "configurationOrRefusalCase": "Refusal case for lab Precipitate and Filter Calcium Carbonate: filtration is attempted before the funnel/filter paper and receiver are correctly staged, correct that apparatus state, repeat only the rejected transfer/filtration step, then restart the demo and verify the previous filtrate/precipitate records are gone. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If filtration is attempted before the funnel/filter paper and receiver are correctly staged, correct that apparatus state, repeat only the rejected transfer/filtration step, then restart the demo and verify the previous filtrate/precipitate records are gone.",
         "evidenceCase": "Require the recorded sample-volume evidence, successful calcium-carbonate precipitation, filtration completion, and distinct filtrate/precipitate state needed by the demo's terminal validations.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -92,8 +92,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "measure a hard-water sample, precipitate calcium carbonate, filter and dry the precipitate, then calculate hardness from the recorded sample-volume and mass evidence",
-        "ordinarySupportedCase": "Complete a valid Hard-Water Reference Demo path that measure a hard-water sample, precipitate calcium carbonate, filter and dry the precipitate, then calculate hardness from the recorded sample-volume and mass evidence.",
-        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Hard-Water Reference Demo and verify the shared/custom runtime rejects it without committing evidence.",
+        "ordinarySupportedCase": "Supported lab case for Hard-Water Reference Demo: Measure a hard-water sample, precipitate calcium carbonate, filter and dry the precipitate, then calculate hardness from the recorded sample-volume and mass evidence.",
+        "configurationOrRefusalCase": "Refusal case for lab Hard-Water Reference Demo: the gravimetric path reaches weighing before the precipitate is properly filtered/dried, return to filtration or drying as indicated, cool and reweigh, then reset the demo and confirm prior mass/hardness records do not survive. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If the gravimetric path reaches weighing before the precipitate is properly filtered/dried, return to filtration or drying as indicated, cool and reweigh, then reset the demo and confirm prior mass/hardness records do not survive.",
         "evidenceCase": "Require sample-volume evidence, precipitate formation/filtration, final dry-mass evidence, and the hardness calculation tied to those named measurements.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -133,8 +133,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "condition and fill the burette, prepare the analyte/indicator, acquire separate initial/final burette readings, accept the endpoint, and calculate acid molarity from those readings",
-        "ordinarySupportedCase": "Complete a valid Acid-Base Titration path that condition and fill the burette, prepare the analyte/indicator, acquire separate initial/final burette readings, accept the endpoint, and calculate acid molarity from those readings.",
-        "configurationOrRefusalCase": "Start without or with an invalid titration-form setup and verify the activity refuses before composition/play; then supply a valid instructor-approved setup and confirm only that configured path becomes available.",
+        "ordinarySupportedCase": "Supported lab case for Acid-Base Titration: Condition and fill the burette, prepare the analyte/indicator, acquire separate initial/final burette readings, accept the endpoint, and calculate acid molarity from those readings.",
+        "configurationOrRefusalCase": "Refusal case for lab Acid-Base Titration: titration is rejected for missing preparation/readings or an unacceptable endpoint path, correct the burette/analyte state, reacquire the required reading or restart the trial, then reset and verify no old endpoint or molarity calculation remains. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If titration is rejected for missing preparation/readings or an unacceptable endpoint path, correct the burette/analyte state, reacquire the required reading or restart the trial, then reset and verify no old endpoint or molarity calculation remains.",
         "evidenceCase": "Require preparation evidence, separate initial/final burette readings, accepted endpoint evidence, and the acid-molarity calculation derived from delivered volume rather than an authored result.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -184,8 +184,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "weigh marble chips, run teacher-configured acid-concentration trials with a gas syringe, record timed gas volumes, and calculate/compare initial rates",
-        "ordinarySupportedCase": "Complete a valid How Long Will That Marble Statue Last? path that weigh marble chips, run teacher-configured acid-concentration trials with a gas syringe, record timed gas volumes, and calculate/compare initial rates.",
-        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to How Long Will That Marble Statue Last? and verify the shared/custom runtime rejects it without committing evidence.",
+        "ordinarySupportedCase": "Supported lab case for How Long Will That Marble Statue Last?: Weigh marble chips, run teacher-configured acid-concentration trials with a gas syringe, record timed gas volumes, and calculate/compare initial rates.",
+        "configurationOrRefusalCase": "Refusal case for lab How Long Will That Marble Statue Last?: a kinetics trial is rejected because the marble mass, acid preparation, gas-syringe connection, or timed series is incomplete, repair that trial setup and reacquire its series. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If a kinetics trial is rejected because the marble mass, acid preparation, gas-syringe connection, or timed series is incomplete, repair that trial setup and reacquire its series; on restart, confirm the prior gas-volume series/rate is cleared.",
         "evidenceCase": "Require measured marble mass, configured acid trial identity, a recorded gas-volume time series for each selected trial, and initial-rate calculations/comparison from those series.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -240,8 +240,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "execute only the host-selected solvent procedure, charge and close the chamber correctly, develop/mark/dry the chromatogram, record distances, and calculate Rf from those recorded distances",
-        "ordinarySupportedCase": "Complete a valid Sticky Question: Paper Chromatography path that execute only the host-selected solvent procedure, charge and close the chamber correctly, develop/mark/dry the chromatogram, record distances, and calculate Rf from those recorded distances.",
-        "configurationOrRefusalCase": "Start without or with an invalid paper-form setup and verify the activity refuses before composition/play; then supply a valid instructor-approved setup and confirm only that configured path becomes available.",
+        "ordinarySupportedCase": "Supported lab case for Sticky Question: Paper Chromatography: Execute only the host-selected solvent procedure, charge and close the chamber correctly, develop/mark/dry the chromatogram, record distances, and calculate Rf from those recorded distances.",
+        "configurationOrRefusalCase": "Refusal case for lab Sticky Question: Paper Chromatography: the origin is not above the solvent, the selected solvent/data set is unsupported, or the chamber procedure is invalid, revise the instructor setup or prepare a fresh paper/chamber and rerun that trial. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If the origin is not above the solvent, the selected solvent/data set is unsupported, or the chamber procedure is invalid, revise the instructor setup or prepare a fresh paper/chamber and rerun that trial; reset must discard its old band/front/Rf evidence.",
         "evidenceCase": "Require selected-solvent/procedure records, solvent-front and band-distance measurements for each approved trial, Rf calculations from those distances, and the configured disposal record.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -281,8 +281,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "prepare the supported equilibrium mixtures, apply only approved stresses, record qualitative color/state changes, and distinguish observation from explanation",
-        "ordinarySupportedCase": "Complete a valid Equilibrium Rainbow Display path that prepare the supported equilibrium mixtures, apply only approved stresses, record qualitative color/state changes, and distinguish observation from explanation.",
-        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Equilibrium Rainbow Display and verify the shared/custom runtime rejects it without committing evidence.",
+        "ordinarySupportedCase": "Supported lab case for Equilibrium Rainbow Display: Prepare the supported equilibrium mixtures, apply only approved stresses, record qualitative color/state changes, and distinguish observation from explanation.",
+        "configurationOrRefusalCase": "Refusal case for lab Equilibrium Rainbow Display: an unsupported or out-of-sequence stress is selected, restore the mixture to the supported baseline/previous node, apply one approved stress, rerecord the observation, and verify a reset removes the prior stressed-state evidence. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If an unsupported or out-of-sequence stress is selected, restore the mixture to the supported baseline/previous node, apply one approved stress, rerecord the observation, and verify a reset removes the prior stressed-state evidence.",
         "evidenceCase": "Require baseline/stress identity, qualitative before/after observation evidence for each approved stress, and the learner's equilibrium interpretation without substituting expected colors.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -324,8 +324,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "execute the lab-scoped calorimetry procedure with teacher waste configuration, physical mass/temperature/timing evidence, calibration, and evidence-backed design calculations",
-        "ordinarySupportedCase": "Complete a valid Designing an Effective Hand Warmer path that execute the lab-scoped calorimetry procedure with teacher waste configuration, physical mass/temperature/timing evidence, calibration, and evidence-backed design calculations.",
-        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Designing an Effective Hand Warmer and verify the shared/custom runtime rejects it without committing evidence.",
+        "ordinarySupportedCase": "Supported lab case for Designing an Effective Hand Warmer: Execute the lab-scoped calorimetry procedure with teacher waste configuration, physical mass/temperature/timing evidence, calibration, and evidence-backed design calculations.",
+        "configurationOrRefusalCase": "Refusal case for lab Designing an Effective Hand Warmer: required teacher configuration, mass, timer, or temperature evidence is missing, return to the exact acquisition/configuration step rather than substituting a value, repeat the affected calorimetry segment, and reset without carrying the old calibration/design calculations. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If required teacher configuration, mass, timer, or temperature evidence is missing, return to the exact acquisition/configuration step rather than substituting a value, repeat the affected calorimetry segment, and reset without carrying the old calibration/design calculations.",
         "evidenceCase": "Require balance/timing/temperature evidence, calorimeter calibration calculations, trial calorimetry calculations, teacher waste configuration, and the evidence-backed design decision.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -371,8 +371,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "prepare the Blue #1 standards/unknown, acquire percent-transmittance readings through the calibrated photometer path, build the class calibration, and derive the unknown result from recorded evidence",
-        "ordinarySupportedCase": "Complete a valid Spectroscopy of Blue #1 Dye in a Sports Drink path that prepare the Blue #1 standards/unknown, acquire percent-transmittance readings through the calibrated photometer path, build the class calibration, and derive the unknown result from recorded evidence.",
-        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Spectroscopy of Blue #1 Dye in a Sports Drink and verify the shared/custom runtime rejects it without committing evidence.",
+        "ordinarySupportedCase": "Supported lab case for Spectroscopy of Blue #1 Dye in a Sports Drink: Prepare the Blue #1 standards/unknown, acquire percent-transmittance readings through the calibrated photometer path, build the class calibration, and derive the unknown result from recorded evidence.",
+        "configurationOrRefusalCase": "Refusal case for lab Spectroscopy of Blue #1 Dye in a Sports Drink: a photometer reading is attempted before wavelength/zero/cuvette state is valid, complete the missing calibration/blank/insertion steps and reread the same sample. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If a photometer reading is attempted before wavelength/zero/cuvette state is valid, complete the missing calibration/blank/insertion steps and reread the same sample; restarting must clear the old %T/absorbance/calibration evidence.",
         "evidenceCase": "Require standard/dilution preparation evidence, valid instrument zero/wavelength/cuvette reads, recorded %T/absorbance values, accepted class calibration, and the unknown result derived from that calibration.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -423,8 +423,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "prepare the brass/copper solutions, perform the wavelength scan with the required dark/blank zero gates, calibrate at the approved wavelength, measure the prepared unknown, and calculate copper content from evidence",
-        "ordinarySupportedCase": "Complete a valid How Can Color Determine the Copper Content of Brass? path that prepare the brass/copper solutions, perform the wavelength scan with the required dark/blank zero gates, calibrate at the approved wavelength, measure the prepared unknown, and calculate copper content from evidence.",
-        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to How Can Color Determine the Copper Content of Brass? and verify the shared/custom runtime rejects it without committing evidence.",
+        "ordinarySupportedCase": "Supported lab case for How Can Color Determine the Copper Content of Brass?: Prepare the brass/copper solutions, perform the wavelength scan with the required dark/blank zero gates, calibrate at the approved wavelength, measure the prepared unknown, and calculate copper content from evidence.",
+        "configurationOrRefusalCase": "Refusal case for lab How Can Color Determine the Copper Content of Brass?: a scan or unknown read is rejected for missing dark/blank zero, wavelength configuration, or cuvette state, restore the instrument sequence and reacquire that wavelength/sample. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If a scan or unknown read is rejected for missing dark/blank zero, wavelength configuration, or cuvette state, restore the instrument sequence and reacquire that wavelength/sample; reset must remove the old scan/calibration/unknown result.",
         "evidenceCase": "Require the wavelength-scan read/record series under valid zero state, approved-wavelength calibration evidence, prepared unknown absorbance, and the resulting concentration/copper calculation.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -470,8 +470,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "complete practice preparation/filtration, apply the instructor drying/cooling setup, run the two-sample gravimetric inquiry, and compare hardness with measurement-backed uncertainty",
-        "ordinarySupportedCase": "Complete a valid What Makes Hard Water Hard? path that complete practice preparation/filtration, apply the instructor drying/cooling setup, run the two-sample gravimetric inquiry, and compare hardness with measurement-backed uncertainty.",
-        "configurationOrRefusalCase": "Start without or with an invalid hard-water-form setup and verify the activity refuses before composition/play; then supply a valid instructor-approved setup and confirm only that configured path becomes available.",
+        "ordinarySupportedCase": "Supported lab case for What Makes Hard Water Hard?: Complete practice preparation/filtration, apply the instructor drying/cooling setup, run the two-sample gravimetric inquiry, and compare hardness with measurement-backed uncertainty.",
+        "configurationOrRefusalCase": "Refusal case for lab What Makes Hard Water Hard?: instructor drying/cooling settings are invalid or a sample lacks the required filtered/dried mass evidence, correct the setup or repeat the affected dry-cool-weigh stage for that sample, then restart without retaining either sample's prior hardness/uncertainty values. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If instructor drying/cooling settings are invalid or a sample lacks the required filtered/dried mass evidence, correct the setup or repeat the affected dry-cool-weigh stage for that sample, then restart without retaining either sample's prior hardness/uncertainty values.",
         "evidenceCase": "Require practice preparation, filtration/drying evidence under instructor settings, sample-specific volume and dry-mass evidence for both waters, and paired hardness/uncertainty calculations.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -511,8 +511,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "prepare the teacher-configured beverage aliquot, acquire the pH-volume titration evidence, identify the supported endpoint/equivalence evidence, and calculate acidity without inventing beverage chemistry",
-        "ordinarySupportedCase": "Complete a valid How Much Acid Is in Fruit Juice and Soft Drinks? path that prepare the teacher-configured beverage aliquot, acquire the pH-volume titration evidence, identify the supported endpoint/equivalence evidence, and calculate acidity without inventing beverage chemistry.",
-        "configurationOrRefusalCase": "Start without or with an invalid titration-form setup and verify the activity refuses before composition/play; then supply a valid instructor-approved setup and confirm only that configured path becomes available.",
+        "ordinarySupportedCase": "Supported lab case for How Much Acid Is in Fruit Juice and Soft Drinks?: Prepare the teacher-configured beverage aliquot, acquire the pH-volume titration evidence, identify the supported endpoint/equivalence evidence, and calculate acidity without inventing beverage chemistry.",
+        "configurationOrRefusalCase": "Refusal case for lab How Much Acid Is in Fruit Juice and Soft Drinks?: the teacher proxy concentrations/aliquot/NaOH setting is invalid or a pH-volume trial lacks required preparation/evidence, correct the setup and rerun that beverage trial from its valid start. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If the teacher proxy concentrations/aliquot/NaOH setting is invalid or a pH-volume trial lacks required preparation/evidence, correct the setup and rerun that beverage trial from its valid start; reset must clear its old curve/equivalence/acidity result.",
         "evidenceCase": "Require teacher configuration identity, beverage aliquot evidence, recorded pH-volume/burette rows, accepted equivalence/endpoint evidence, and acidity calculations from each selected beverage trial.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -567,8 +567,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "run the approved known/blind test panel while preserving blind identity, record aqueous/solvent/reagent/melting evidence, and classify only from the accumulated observations",
-        "ordinarySupportedCase": "Complete a valid What's in That Bottle? Bonding in Unknown Solids path that run the approved known/blind test panel while preserving blind identity, record aqueous/solvent/reagent/melting evidence, and classify only from the accumulated observations.",
-        "configurationOrRefusalCase": "Start without or with an invalid bonding-form setup and verify the activity refuses before composition/play; then supply a valid instructor-approved setup and confirm only that configured path becomes available.",
+        "ordinarySupportedCase": "Supported lab case for What's in That Bottle? Bonding in Unknown Solids: Run the approved known/blind test panel while preserving blind identity, record aqueous/solvent/reagent/melting evidence, and classify only from the accumulated observations.",
+        "configurationOrRefusalCase": "Refusal case for lab What's in That Bottle? Bonding in Unknown Solids: a selected test is outside the approved panel/order, lacks the required prepared test solution, or risks revealing a blind identity, return to the approved test step for that sample and rerecord it. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If a selected test is outside the approved panel/order, lacks the required prepared test solution, or risks revealing a blind identity, return to the approved test step for that sample and rerecord it; reset must preserve blindness while clearing prior test/classification evidence.",
         "evidenceCase": "Require the host-selected test panel evidence per known/blind sample, preserve blind-redacted identity in those records, and require classification reasoning to consume the recorded observations rather than hidden labels.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -608,8 +608,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "run the custom separation/thermal workflow with the approved setup, preserve both supported tare conventions as separate cases, recover/weigh products, and calculate green-chemistry metrics from evidence",
-        "ordinarySupportedCase": "Complete a valid Purifying a Mixture with Green Chemistry path that run the custom separation/thermal workflow with the approved setup, preserve both supported tare conventions as separate cases, recover/weigh products, and calculate green-chemistry metrics from evidence.",
-        "configurationOrRefusalCase": "Start without or with an invalid custom-player setup and verify the activity refuses before composition/play; then supply a valid instructor-approved setup and confirm only that configured path becomes available.",
+        "ordinarySupportedCase": "Supported lab case for Purifying a Mixture with Green Chemistry: Run the custom separation/thermal workflow with the approved setup, preserve both supported tare conventions as separate cases, recover/weigh products, and calculate green-chemistry metrics from evidence.",
+        "configurationOrRefusalCase": "Refusal case for lab Purifying a Mixture with Green Chemistry: the selected tare convention/setup is inconsistent or constant-mass/recovery evidence is incomplete, return to the appropriate tare/heating/cooling/recovery step under the same approved convention, reacquire masses, and restart without cross-contaminating the alternate tare witness. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If the selected tare convention/setup is inconsistent or constant-mass/recovery evidence is incomplete, return to the appropriate tare/heating/cooling/recovery step under the same approved convention, reacquire masses, and restart without cross-contaminating the alternate tare witness.",
         "evidenceCase": "Require approved setup/tare-convention identity, starting/tare/heating-cooling mass evidence, recovered-fraction masses, and atom-economy/recovery/green-chemistry calculations tied to those records.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -649,8 +649,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "standardize permanganate first, then titrate the peroxide aliquot, record replicate burette evidence, enforce concordance, and calculate peroxide concentration/percent from the standardized titrant",
-        "ordinarySupportedCase": "Complete a valid Determining Hydrogen Peroxide Concentration by Redox Titration path that standardize permanganate first, then titrate the peroxide aliquot, record replicate burette evidence, enforce concordance, and calculate peroxide concentration/percent from the standardized titrant.",
-        "configurationOrRefusalCase": "Start without or with an invalid titration-form setup and verify the activity refuses before composition/play; then supply a valid instructor-approved setup and confirm only that configured path becomes available.",
+        "ordinarySupportedCase": "Supported lab case for Determining Hydrogen Peroxide Concentration by Redox Titration: Standardize permanganate first, then titrate the peroxide aliquot, record replicate burette evidence, enforce concordance, and calculate peroxide concentration/percent from the standardized titrant.",
+        "configurationOrRefusalCase": "Refusal case for lab Determining Hydrogen Peroxide Concentration by Redox Titration: sample analysis is attempted before titrant standardization or replicate concordance fails, complete/repeat the standardization replicate set first, then rerun the affected sample titration. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If sample analysis is attempted before titrant standardization or replicate concordance fails, complete/repeat the standardization replicate set first, then rerun the affected sample titration; reset must clear stale standardized-titrant and sample-percent calculations.",
         "evidenceCase": "Require accepted standardization replicate calculations/concordance before sample work, sample aliquot and separate burette readings, and peroxide percent/concentration calculations using the standardized titrant record.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -695,8 +695,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "collect component-property evidence, obtain plan approval, execute the configured extraction/recovery order, dry/weigh recovered fractions, and calculate/report composition without asserting identity from recipe alone",
-        "ordinarySupportedCase": "Complete a valid Separating the Components of Quick Ache Relief path that collect component-property evidence, obtain plan approval, execute the configured extraction/recovery order, dry/weigh recovered fractions, and calculate/report composition without asserting identity from recipe alone.",
-        "configurationOrRefusalCase": "Start without or with an invalid quick-ache-form setup and verify the activity refuses before composition/play; then supply a valid instructor-approved setup and confirm only that configured path becomes available.",
+        "ordinarySupportedCase": "Supported lab case for Separating the Components of Quick Ache Relief: Collect component-property evidence, obtain plan approval, execute the configured extraction/recovery order, dry/weigh recovered fractions, and calculate/report composition without asserting identity from recipe alone.",
+        "configurationOrRefusalCase": "Refusal case for lab Separating the Components of Quick Ache Relief: the extraction count/recovery order, acidification endpoint, recovery method, or dryness state is invalid, revise the teacher setup or repeat that recovery stage before weighing. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If the extraction count/recovery order, acidification endpoint, recovery method, or dryness state is invalid, revise the teacher setup or repeat that recovery stage before weighing; reset must clear recovered-mass/composition evidence but not invent component identity.",
         "evidenceCase": "Require property-reference evidence, explicit plan approval, configured extraction/recovery execution, dried recovered-fraction masses, confirmed formula convention, and the final composition/recovery report calculations.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -753,8 +753,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "prepare micromolar standards, calibrate the spectrophotometer, acquire timed crystal-violet absorbance data, compare integrated-rate-law regressions/approved extension, and complete waste treatment",
-        "ordinarySupportedCase": "Complete a valid Rate Law of Crystal Violet Fading Using Beer's Law path that prepare micromolar standards, calibrate the spectrophotometer, acquire timed crystal-violet absorbance data, compare integrated-rate-law regressions/approved extension, and complete waste treatment.",
-        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Rate Law of Crystal Violet Fading Using Beer's Law and verify the shared/custom runtime rejects it without committing evidence.",
+        "ordinarySupportedCase": "Supported lab case for Rate Law of Crystal Violet Fading Using Beer's Law: Prepare micromolar standards, calibrate the spectrophotometer, acquire timed crystal-violet absorbance data, compare integrated-rate-law regressions/approved extension, and complete waste treatment.",
+        "configurationOrRefusalCase": "Refusal case for lab Rate Law of Crystal Violet Fading Using Beer's Law: a kinetics reading is attempted before wavelength/zero/calibration or at an invalid scheduled state, repair the instrument/reaction sequence and reacquire that time point. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If a kinetics reading is attempted before wavelength/zero/calibration or at an invalid scheduled state, repair the instrument/reaction sequence and reacquire that time point; restart must clear the old series/regressions/order selection before a new run.",
         "evidenceCase": "Require micromolar dilution evidence, spectrophotometer calibration, scheduled time-absorbance series, transformed regressions/order selection, any approved extension result, and completion of waste treatment.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -807,8 +807,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "approve a research plan, acquire indicator-free pH-volume curves for the selected acid/base contexts, identify curve landmarks, calculate unknown molarity/equilibrium quantities, compare class evidence, and clean up",
-        "ordinarySupportedCase": "Complete a valid Exploring Acid-Base Titration Curves path that approve a research plan, acquire indicator-free pH-volume curves for the selected acid/base contexts, identify curve landmarks, calculate unknown molarity/equilibrium quantities, compare class evidence, and clean up.",
-        "configurationOrRefusalCase": "Start without or with an invalid custom-investigation-config setup and verify the activity refuses before composition/play; then supply a valid instructor-approved setup and confirm only that configured path becomes available.",
+        "ordinarySupportedCase": "Supported lab case for Exploring Acid-Base Titration Curves: Approve a research plan, acquire indicator-free pH-volume curves for the selected acid/base contexts, identify curve landmarks, calculate unknown molarity/equilibrium quantities, compare class evidence, and clean up.",
+        "configurationOrRefusalCase": "Refusal case for lab Exploring Acid-Base Titration Curves: the approved aliquot/increment/stability plan cannot produce a supported curve or a formal trial rejects a delivery/read branch, revise the plan or use the authored retry/disposal path and rerun that context. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If the approved aliquot/increment/stability plan cannot produce a supported curve or a formal trial rejects a delivery/read branch, revise the plan or use the authored retry/disposal path and rerun that context; reset must clear old curve rows/landmark calculations/reflections.",
         "evidenceCase": "Require approved-plan identity, recorded pH-volume rows for every selected context/replicate, equivalence/half-equivalence landmarks and unknown molarity/equilibrium calculations, plus particulate/uncertainty reflections and cleanup.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -852,8 +852,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "place the weighing vessel, obtain a balance reading, and record the mass under the configured measurement identifier",
-        "ordinarySupportedCase": "Complete a valid Weigh a Solid path that place the weighing vessel, obtain a balance reading, and record the mass under the configured measurement identifier. No indexed lab host is declared; use the standalone route only if its configuration blocker permits it.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (massMeasurementId) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Weigh a Solid: Place the weighing vessel, obtain a balance reading, and record the mass under the configured measurement identifier.",
+        "configurationOrRefusalCase": "Refusal case for technique Weigh a Solid: the mass cannot be acquired because the weighing vessel/balance state is wrong, place the correct vessel and repeat the balance read/record step. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If the mass cannot be acquired because the weighing vessel/balance state is wrong, place the correct vessel and repeat the balance read/record step; reset must remove the prior mass measurement and notebook record.",
         "evidenceCase": "Require a balance-produced mass measurement under the configured measurement id and a notebook record tied to the same reading; a static configured mass must not satisfy completion.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -908,8 +908,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "measure the configured target volume with the graduated cylinder and record it under the configured measurement identifier/tolerance",
-        "ordinarySupportedCase": "Complete a valid Measure Liquid Volume path that measure the configured target volume with the graduated cylinder and record it under the configured measurement identifier/tolerance. Preferred supported context: intro-filtration-demo#measuring-volume, hard-water-demo#measuring-volume.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (targetVolumeMl, volumeToleranceMl, volumeMeasurementId) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Measure Liquid Volume: Measure the configured target volume with the graduated cylinder and record it under the configured measurement identifier/tolerance.",
+        "configurationOrRefusalCase": "Refusal case for technique Measure Liquid Volume: the requested volume is outside the source/cylinder capacity or the wrong device/source is used, correct the configured target or apparatus and remeasure. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If the requested volume is outside the source/cylinder capacity or the wrong device/source is used, correct the configured target or apparatus and remeasure; reset must clear the old volume reading under its configured measurement id.",
         "evidenceCase": "Require the measured cylinder volume under the configured measurement id, within the configured target/tolerance, plus the matching record step.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -954,8 +954,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "add the configured solvent amount, incorporate the configured solute mass, bring to the configured final volume, and record the solution observation",
-        "ordinarySupportedCase": "Complete a valid Make a Solution path that add the configured solvent amount, incorporate the configured solute mass, bring to the configured final volume, and record the solution observation. No indexed lab host is declared; use the standalone route only if its configuration blocker permits it.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (initialSolventVolumeMl, soluteMassG, finalVolumeMl, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Make a Solution: Add the configured solvent amount, incorporate the configured solute mass, bring to the configured final volume, and record the solution observation.",
+        "configurationOrRefusalCase": "Refusal case for technique Make a Solution: initial/final volumes are physically inconsistent or solvent/solute transfer cannot complete, correct the teacher values or container state, repeat the failed addition/dissolution step, and restart without retaining the old solution observation. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If initial/final volumes are physically inconsistent or solvent/solute transfer cannot complete, correct the teacher values or container state, repeat the failed addition/dissolution step, and restart without retaining the old solution observation.",
         "evidenceCase": "Require completion of solvent/solute/final-volume operations and the configured solution observation; configuration alone must not count as prepared-solution evidence.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -1000,8 +1000,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "transfer the configured aliquot, dilute to the configured final volume, and record/verify the configured dilution factor and evidence identifier",
-        "ordinarySupportedCase": "Complete a valid Dilute a Stock Solution path that transfer the configured aliquot, dilute to the configured final volume, and record/verify the configured dilution factor and evidence identifier. No indexed lab host is declared; use the standalone route only if its configuration blocker permits it.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (aliquotVolumeMl, finalVolumeMl, dilutionFactor, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Dilute a Stock Solution: Transfer the configured aliquot, dilute to the configured final volume, and record/verify the configured dilution factor and evidence identifier.",
+        "configurationOrRefusalCase": "Refusal case for technique Dilute a Stock Solution: final volume is below aliquot volume or the configured factor disagrees with finalVolume/aliquot, correct the configuration before proceeding, remake the dilution, and reset the old dilution evidence/calculation. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If final volume is below aliquot volume or the configured factor disagrees with finalVolume/aliquot, correct the configuration before proceeding, remake the dilution, and reset the old dilution evidence/calculation.",
         "evidenceCase": "Require recorded aliquot/final-volume execution evidence and the dilution-factor result consistent with finalVolume/aliquot under the configured evidence id.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -1054,8 +1054,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "record the teacher stock concentration, prepare the configured dilution, acquire percent transmittance, convert %T to decimal T, and calculate absorbance without confusing the operands",
-        "ordinarySupportedCase": "Complete a valid Analyze Transmittance of a Dilution path that record the teacher stock concentration, prepare the configured dilution, acquire percent transmittance, convert %T to decimal T, and calculate absorbance without confusing the operands. No indexed lab host is declared; use the standalone route only if its configuration blocker permits it.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (stockConcentrationM, stockConcentrationMeasurementId, stockVolumeMeasurementId, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Analyze Transmittance of a Dilution: Record the teacher stock concentration, prepare the configured dilution, acquire percent transmittance, convert %T to decimal T, and calculate absorbance without confusing the operands.",
+        "configurationOrRefusalCase": "Refusal case for technique Analyze Transmittance of a Dilution: %T/decimal-T/absorbance calculation is rejected for missing or invalid recorded operands, reacquire the photometer reading or preceding dilution evidence and recalculate in order. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If %T/decimal-T/absorbance calculation is rejected for missing or invalid recorded operands, reacquire the photometer reading or preceding dilution evidence and recalculate in order; reset must clear the dependent photometric calculation chain.",
         "evidenceCase": "Require recorded stock/dilution operands and an actual %T measurement, then require decimal-transmittance/absorbance calculations to consume the correct recorded operand type.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -1120,8 +1120,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "transfer the configured liquid amount between the declared source/receiver and record the transfer observation",
-        "ordinarySupportedCase": "Complete a valid Transfer Liquid path that transfer the configured liquid amount between the declared source/receiver and record the transfer observation. Preferred supported context: intro-filtration-demo#transfer, hard-water-demo#transfer.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (transferVolumeMl, transferObservation) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Transfer Liquid: Transfer the configured liquid amount between the declared source/receiver and record the transfer observation.",
+        "configurationOrRefusalCase": "Refusal case for technique Transfer Liquid: transfer is rejected for missing source contents, receiver overflow, or wrong source/target, select a valid source/receiver or smaller configured amount and repeat only the transfer. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If transfer is rejected for missing source contents, receiver overflow, or wrong source/target, select a valid source/receiver or smaller configured amount and repeat only the transfer; reset must restore pre-transfer contents/evidence.",
         "evidenceCase": "Require a successful physical transfer that updates source/receiver contents plus the configured transfer observation; a notebook-only claim must not replace material movement.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -1175,8 +1175,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "combine the hard-water reagents to form calcium carbonate, preserve the configured final volume/mass basis, and record precipitate evidence",
-        "ordinarySupportedCase": "Complete a valid Hard-Water Calcium Carbonate Precipitation path that combine the hard-water reagents to form calcium carbonate, preserve the configured final volume/mass basis, and record precipitate evidence. Preferred supported context: intro-filtration-demo#hard-water-precipitation, hard-water-demo#hard-water-precipitation.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (precipitateMassG, finalVolumeMl) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Hard-Water Calcium Carbonate Precipitation: Combine the hard-water reagents to form calcium carbonate, preserve the configured final volume/mass basis, and record precipitate evidence.",
+        "configurationOrRefusalCase": "Refusal case for technique Hard-Water Calcium Carbonate Precipitation: reagent transfer/final-volume state cannot produce the declared precipitate path, correct the configured quantities or source state and repeat the precipitation sequence. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If reagent transfer/final-volume state cannot produce the declared precipitate path, correct the configured quantities or source state and repeat the precipitation sequence; reset must remove prior precipitate/final-volume evidence.",
         "evidenceCase": "Require reagent-transfer/precipitation evidence and the configured final-volume/precipitate evidence produced by the physical sequence.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -1230,8 +1230,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "assemble the configured gravity/vacuum filtration path, transfer the mixture, rinse as configured, and preserve filtrate/precipitate state",
-        "ordinarySupportedCase": "Complete a valid Filter a Precipitate path that assemble the configured gravity/vacuum filtration path, transfer the mixture, rinse as configured, and preserve filtrate/precipitate state. Preferred supported context: intro-filtration-demo#filtration, hard-water-demo#filtration.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (filtrationMode, rinseVolumeMl) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Filter a Precipitate: Assemble the configured gravity/vacuum filtration path, transfer the mixture, rinse as configured, and preserve filtrate/precipitate state.",
+        "configurationOrRefusalCase": "Refusal case for technique Filter a Precipitate: the filter assembly/receiver is missing, the target would overflow, or the mixture/rinse step is out of order, repair the apparatus and resume at that filtration step. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If the filter assembly/receiver is missing, the target would overflow, or the mixture/rinse step is out of order, repair the apparatus and resume at that filtration step; reset must clear prior filtrate/retentate transfer evidence.",
         "evidenceCase": "Require apparatus placement, mixture transfer through the filter path, configured rinse action, and resulting filtrate/retentate state/evidence before exit.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -1284,8 +1284,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "dry, cool, and reweigh the precipitate under the configured time/temperature/tolerance contract until the supported endpoint is reached",
-        "ordinarySupportedCase": "Complete a valid Dry and Weigh a Precipitate path that dry, cool, and reweigh the precipitate under the configured time/temperature/tolerance contract until the supported endpoint is reached. Preferred supported context: hard-water-demo#drying.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (firstDryingMinutes, secondDryingMinutes, ovenTemperatureC, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Dry and Weigh a Precipitate: Dry, cool, and reweigh the precipitate under the configured time/temperature/tolerance contract until the supported endpoint is reached.",
+        "configurationOrRefusalCase": "Refusal case for technique Dry and Weigh a Precipitate: a mass is taken before the required dry/cool sequence or repeat-drying tolerance is not met, return to heating/cooling and reweigh until the configured criterion is satisfied. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If a mass is taken before the required dry/cool sequence or repeat-drying tolerance is not met, return to heating/cooling and reweigh until the configured criterion is satisfied; reset must discard previous dry-mass iterations.",
         "evidenceCase": "Require each authored dry/cool/weigh stage and the final mass/tolerance evidence under the configured measurement id before the technique can complete.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -1346,8 +1346,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "configure the stock/sample and tare convention, heat/cool/reweigh through the bounded cycle, and calculate composition from the recorded mass loss",
-        "ordinarySupportedCase": "Complete a valid Heat and Reweigh a Carbonate Mixture path that configure the stock/sample and tare convention, heat/cool/reweigh through the bounded cycle, and calculate composition from the recorded mass loss. Preferred supported context: green-chemistry-mixture-purification#thermal-decomposition.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (sampleMassG, warmDurationMin, heatingDurationMin, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Heat and Reweigh a Carbonate Mixture: Configure the stock/sample and tare convention, heat/cool/reweigh through the bounded cycle, and calculate composition from the recorded mass loss.",
+        "configurationOrRefusalCase": "Refusal case for technique Heat and Reweigh a Carbonate Mixture: tare/sample/heating/cooling evidence is incomplete or constant-mass criteria fail, repeat the bounded heat-cool-weigh cycle under the same tare convention. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If tare/sample/heating/cooling evidence is incomplete or constant-mass criteria fail, repeat the bounded heat-cool-weigh cycle under the same tare convention; reset must clear prior cycle masses/composition and not switch conventions implicitly.",
         "evidenceCase": "Require the selected tare-convention setup, initial/final mass readings across bounded heat-cool cycles, constant-mass satisfaction, and the composition calculation derived from measured mass loss.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -1416,8 +1416,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "execute only the host-selected solvent procedure, charge and close the chamber correctly, develop/mark/dry the chromatogram, record distances, and calculate Rf from those recorded distances",
-        "ordinarySupportedCase": "Complete a valid Paper Chromatography path that execute only the host-selected solvent procedure, charge and close the chamber correctly, develop/mark/dry the chromatogram, record distances, and calculate Rf from those recorded distances. Preferred supported context: paper-chromatography#chromatography-trials.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (selectedProcedure, baselineHeightMm, solventDepthMm, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Paper Chromatography: Execute only the host-selected solvent procedure, charge and close the chamber correctly, develop/mark/dry the chromatogram, record distances, and calculate Rf from those recorded distances.",
+        "configurationOrRefusalCase": "Refusal case for technique Paper Chromatography: host-selected geometry/procedure is invalid or a paper/chamber step is out of order, correct the host setup or prepare a fresh selected trial and resume from its first valid node. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If host-selected geometry/procedure is invalid or a paper/chamber step is out of order, correct the host setup or prepare a fresh selected trial and resume from its first valid node; reset must clear that trial's front/band/Rf evidence.",
         "evidenceCase": "Require the host-selected procedure path, physical chamber/paper development sequence, recorded front/band distances, calculated Rf values, and disposal evidence for exactly the selected trials.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -1481,8 +1481,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "consume the configured sample-volume and precipitate-mass evidence and calculate hardness under the configured calculation id/tolerance",
-        "ordinarySupportedCase": "Complete a valid Calculate Hardness path that consume the configured sample-volume and precipitate-mass evidence and calculate hardness under the configured calculation id/tolerance. Preferred supported context: hard-water-demo#hard-water-calculation.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (sampleVolumeMeasurementId, precipitateMassMeasurementId, calculationId, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Calculate Hardness: Consume the configured sample-volume and precipitate-mass evidence and calculate hardness under the configured calculation id/tolerance.",
+        "configurationOrRefusalCase": "Refusal case for technique Calculate Hardness: named sample-volume or precipitate-mass evidence is missing, return to the producer step that owns that measurement/calculation, acquire it, and resubmit hardness. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If named sample-volume or precipitate-mass evidence is missing, return to the producer step that owns that measurement/calculation, acquire it, and resubmit hardness; reset must remove the old hardness calculation.",
         "evidenceCase": "Require the named sample-volume and precipitate-mass evidence records and a hardness calculation under the configured calculation id/tolerance that consumes those operands.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -1528,8 +1528,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "acquire the standard absorbance/concentration evidence and derive the calibration relationship rather than substituting an authored answer",
-        "ordinarySupportedCase": "Complete a valid Beer's Law Calibration path that acquire the standard absorbance/concentration evidence and derive the calibration relationship rather than substituting an authored answer. No indexed lab host is declared; use the standalone route only if its configuration blocker permits it.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (stockVolumeMeasurementId, finalVolumeMeasurementId, wavelengthMeasurementId, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Beer's Law Calibration: Acquire the standard absorbance/concentration evidence and derive the calibration relationship rather than substituting an authored answer.",
+        "configurationOrRefusalCase": "Refusal case for technique Beer's Law Calibration: a standard pair is missing or the calibration regression cannot be formed, reacquire/record the missing concentration-absorbance pair and rebuild the fit. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If a standard pair is missing or the calibration regression cannot be formed, reacquire/record the missing concentration-absorbance pair and rebuild the fit; reset must clear the old regression before accepting a new standard set.",
         "evidenceCase": "Require the complete accepted concentration/absorbance standard pairs and the regression parameters calculated from those pairs; no authored slope/intercept may stand in for the fit.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -1583,8 +1583,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "run the assigned-salt wavelength scan through zero/configuration gates, calibrate at the approved wavelength, measure the prepared brass unknown, and derive concentration/copper evidence",
-        "ordinarySupportedCase": "Complete a valid Brass Spectrophotometry path that run the assigned-salt wavelength scan through zero/configuration gates, calibrate at the approved wavelength, measure the prepared brass unknown, and derive concentration/copper evidence. Preferred supported context: brass-colorimetry#brass-spectrophotometry.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (wavelengthMeasurementId, measurementCuvetteInstanceId) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Brass Spectrophotometry: Run the assigned-salt wavelength scan through zero/configuration gates, calibrate at the approved wavelength, measure the prepared brass unknown, and derive concentration/copper evidence.",
+        "configurationOrRefusalCase": "Refusal case for technique Brass Spectrophotometry: a scan/read is rejected because the photometer is not zeroed/configured or the proper cuvette is not inserted, complete that exact dark/blank/wavelength/insertion prerequisite and reread. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If a scan/read is rejected because the photometer is not zeroed/configured or the proper cuvette is not inserted, complete that exact dark/blank/wavelength/insertion prerequisite and reread; reset must clear stale scan/calibration/unknown evidence.",
         "evidenceCase": "Require valid zero/wavelength/cuvette state for every scan/calibration/unknown read, distinct read/record evidence, and concentration/copper calculations based on the accepted calibration/unknown measurements.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -1653,8 +1653,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "carry the sample through precipitation/filtration/drying and calculate hardness from the named recorded mass and volume evidence",
-        "ordinarySupportedCase": "Complete a valid Hard Water Gravimetry path that carry the sample through precipitation/filtration/drying and calculate hardness from the named recorded mass and volume evidence. No indexed lab host is declared; use the standalone route only if its configuration blocker permits it.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (ovenTemperatureC, firstDurationMinutes, coolingTemperatureC) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Hard Water Gravimetry: Carry the sample through precipitation/filtration/drying and calculate hardness from the named recorded mass and volume evidence.",
+        "configurationOrRefusalCase": "Refusal case for technique Hard Water Gravimetry: sample volume, precipitate mass, or drying evidence is incomplete, return to the named acquisition/derivation step, produce the missing evidence, and recalculate. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If sample volume, precipitate mass, or drying evidence is incomplete, return to the named acquisition/derivation step, produce the missing evidence, and recalculate; reset must remove the previous gravimetric mass/hardness chain.",
         "evidenceCase": "Require named sample-volume, precipitate mass/combined-tare derivation, and resulting hardness evidence, with every derivation consuming recorded upstream measurements.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -1724,8 +1724,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "mount/condition/fill the burette, prepare the analyte/indicator, deliver titrant to the supported persistent endpoint, and calculate from separate recorded readings",
-        "ordinarySupportedCase": "Complete a valid Acid-Base Titration to an Indicator Endpoint path that mount/condition/fill the burette, prepare the analyte/indicator, deliver titrant to the supported persistent endpoint, and calculate from separate recorded readings. Preferred supported context: acid-base-titration#investigation.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (endpointWindowMl, persistenceSeconds, maximumIncrementMl, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Acid-Base Titration to an Indicator Endpoint: Mount/condition/fill the burette, prepare the analyte/indicator, deliver titrant to the supported persistent endpoint, and calculate from separate recorded readings.",
+        "configurationOrRefusalCase": "Refusal case for technique Acid-Base Titration to an Indicator Endpoint: the endpoint path is rejected for missing initial reading, preparation, or persistence/appearance requirement, restore the burette/analyte state and repeat delivery/read/record from the last valid node. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If the endpoint path is rejected for missing initial reading, preparation, or persistence/appearance requirement, restore the burette/analyte state and repeat delivery/read/record from the last valid node; reset must clear prior endpoint/trial calculations.",
         "evidenceCase": "Require mounted/conditioned burette state, separate initial/final readings, accepted persistent endpoint evidence, and the final titration calculation from those readings.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -1864,8 +1864,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "execute the host-selected test sequence for one known/blind sample, preserve blind redaction, and record each qualitative/quantitative test result before classification",
-        "ordinarySupportedCase": "Complete a valid Bonding Solids Tests path that execute the host-selected test sequence for one known/blind sample, preserve blind redaction, and record each qualitative/quantitative test result before classification. Preferred supported context: bonding-unknown-solids#known-1, bonding-unknown-solids#known-2, bonding-unknown-solids#known-3, bonding-unknown-solids#known-4, bonding-unknown-solids#known-5-count5, bonding-unknown-solids#known-5-count6, bonding-unknown-solids#known-6, bonding-unknown-solids#blind-1, bonding-unknown-solids#blind-2, bonding-unknown-solids#blind-3, bonding-unknown-solids#blind-4, bonding-unknown-solids#blind-5-count5, bonding-unknown-solids#blind-5-count6, bonding-unknown-solids#blind-6.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (sampleIdentity, sampleMode, evidenceScopeId, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Bonding Solids Tests: Execute the host-selected test sequence for one known/blind sample, preserve blind redaction, and record each qualitative/quantitative test result before classification.",
+        "configurationOrRefusalCase": "Refusal case for technique Bonding Solids Tests: an aqueous/reagent/solvent/melting test is attempted without its required prepared sample state or outside the host-selected procedure, return to the preparation step for that test and repeat it without revealing blind identity. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If an aqueous/reagent/solvent/melting test is attempted without its required prepared sample state or outside the host-selected procedure, return to the preparation step for that test and repeat it without revealing blind identity; reset clears that sample's test evidence.",
         "evidenceCase": "Require evidence for every test selected by the host procedure—prepared portion, test application/read/record—and preserve blind-redaction metadata through the final classification evidence.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -1961,8 +1961,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "condition/fill the burette, standardize the redox titrant, acquire sample-trial burette evidence, enforce replicate/concordance requirements, and calculate the analyte result",
-        "ordinarySupportedCase": "Complete a valid Redox Titration path that condition/fill the burette, standardize the redox titrant, acquire sample-trial burette evidence, enforce replicate/concordance requirements, and calculate the analyte result. Preferred supported context: hydrogen-peroxide-redox-titration#investigation.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (endpointWindowMl, persistenceSeconds, maximumIncrementMl, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Redox Titration: Condition/fill the burette, standardize the redox titrant, acquire sample-trial burette evidence, enforce replicate/concordance requirements, and calculate the analyte result.",
+        "configurationOrRefusalCase": "Refusal case for technique Redox Titration: standardization/sample calculation is attempted with missing burette/aliquot evidence or replicate spread exceeds the approved range, reacquire/repeat the affected trial and recompute the standardized titrant before sample analysis. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If standardization/sample calculation is attempted with missing burette/aliquot evidence or replicate spread exceeds the approved range, reacquire/repeat the affected trial and recompute the standardized titrant before sample analysis; reset clears both trial and derived records.",
         "evidenceCase": "Require standard aliquot and burette evidence for each standardization trial, accepted mean/concordance, sample aliquot/readings, and the final peroxide/redox calculation derived from the standardized concentration.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -2015,8 +2015,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "separate tablet components through the authored extraction/filtration/recovery sequence, record recovered masses, and calculate component mass percent from those masses",
-        "ordinarySupportedCase": "Complete a valid Tablet Separation path that separate tablet components through the authored extraction/filtration/recovery sequence, record recovered masses, and calculate component mass percent from those masses. No indexed lab host is declared; use the standalone route only if its configuration blocker permits it.",
-        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Tablet Separation and verify the shared/custom runtime rejects it without committing evidence.",
+        "ordinarySupportedCase": "Supported technique case for Tablet Separation: Separate tablet components through the authored extraction/filtration/recovery sequence, record recovered masses, and calculate component mass percent from those masses.",
+        "configurationOrRefusalCase": "Refusal case for technique Tablet Separation: an extraction/filtration/recovery mass is missing or a component-percent calculation lacks its starting/recovered mass, return to the specific separation/recovery/weigh step, reacquire the mass, and recalculate. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If an extraction/filtration/recovery mass is missing or a component-percent calculation lacks its starting/recovered mass, return to the specific separation/recovery/weigh step, reacquire the mass, and recalculate; reset removes old recovered-fraction evidence.",
         "evidenceCase": "Require physical separation/recovery evidence, named starting/recovered masses, and component-percent/total-recovery calculations derived from those masses.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -2119,8 +2119,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "initiate the configured reaction, acquire scheduled time/absorbance pairs with wavelength/zero state intact, and preserve the series for downstream rate-law analysis",
-        "ordinarySupportedCase": "Complete a valid Crystal Violet Kinetics path that initiate the configured reaction, acquire scheduled time/absorbance pairs with wavelength/zero state intact, and preserve the series for downstream rate-law analysis. Preferred supported context: crystal-violet-rate-law#kinetics-initiation, crystal-violet-rate-law#kinetics-reading-1, crystal-violet-rate-law#kinetics-reading-2, crystal-violet-rate-law#kinetics-reading-3, crystal-violet-rate-law#kinetics-reading-4, crystal-violet-rate-law#kinetics-reading-5, crystal-violet-rate-law#kinetics-reading-6, crystal-violet-rate-law#kinetics-reading-7, crystal-violet-rate-law#kinetics-reading-8.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (selectedProcedure, cvVolumeMl, naohVolumeMl, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Crystal Violet Kinetics: Initiate the configured reaction, acquire scheduled time/absorbance pairs with wavelength/zero state intact, and preserve the series for downstream rate-law analysis.",
+        "configurationOrRefusalCase": "Refusal case for technique Crystal Violet Kinetics: a scheduled absorbance read lacks wavelength/zero state, reaction initiation, or its paired time record, restore the instrument/reaction state and reacquire that point. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If a scheduled absorbance read lacks wavelength/zero state, reaction initiation, or its paired time record, restore the instrument/reaction state and reacquire that point; reset must clear the time-absorbance series used by later regressions.",
         "evidenceCase": "Require reaction initiation evidence plus paired recorded scheduled-time and absorbance values under valid instrument state, producing the series consumed downstream.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -2192,8 +2192,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "execute the lab-scoped calorimetry procedure with teacher waste configuration, physical mass/temperature/timing evidence, calibration, and evidence-backed design calculations",
-        "ordinarySupportedCase": "Complete a valid Hand-Warmer Calorimetry path that execute the lab-scoped calorimetry procedure with teacher waste configuration, physical mass/temperature/timing evidence, calibration, and evidence-backed design calculations. Preferred supported context: hand-warmer-calorimetry#hand-warmer.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (wasteRoute) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Hand-Warmer Calorimetry: Execute the lab-scoped calorimetry procedure with teacher waste configuration, physical mass/temperature/timing evidence, calibration, and evidence-backed design calculations.",
+        "configurationOrRefusalCase": "Refusal case for technique Hand-Warmer Calorimetry: the lab-scoped procedure lacks waste configuration, mass, timer, or temperature evidence, repair the exact configuration/acquisition step and repeat that branch. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If the lab-scoped procedure lacks waste configuration, mass, timer, or temperature evidence, repair the exact configuration/acquisition step and repeat that branch; reset must clear calorimetry measurements/calculations while preserving no hidden teacher result.",
         "evidenceCase": "Require lab-scoped teacher waste configuration, physical balance/timer/temperature evidence, calibration and trial calculations, and the final inquiry/design evidence outputs declared by the technique.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -2239,8 +2239,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "screen the system, record the analyte aliquot/initial pH/equivalence volume, and calculate curve molarity from the recorded aliquot/equivalence evidence rather than a static answer key",
-        "ordinarySupportedCase": "Complete a valid Titration Curve Analysis path that screen the system, record the analyte aliquot/initial pH/equivalence volume, and calculate curve molarity from the recorded aliquot/equivalence evidence rather than a static answer key. No indexed lab host is declared; use the standalone route only if its configuration blocker permits it.",
-        "configurationOrRefusalCase": "Do not expect refusal when `analysisMode` is omitted: its approved `recorded-evidence-only` default is applied. Instead attempt `calculate-curve-molarity` without recorded `curve-analyte-volume` or `equivalence-volume` and verify the reducer refuses; after both measurements are recorded, the calculation may proceed.",
+        "ordinarySupportedCase": "Supported technique case for Titration Curve Analysis: Screen the system, record the analyte aliquot/initial pH/equivalence volume, and calculate curve molarity from the recorded aliquot/equivalence evidence rather than a static answer key.",
+        "configurationOrRefusalCase": "Refusal case for technique Titration Curve Analysis: molarity calculation is attempted without recorded `curve-analyte-volume` or `equivalence-volume`, return to measurement/curve analysis to record those values and resubmit. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If molarity calculation is attempted without recorded `curve-analyte-volume` or `equivalence-volume`, return to measurement/curve analysis to record those values and resubmit; reset must clear the previous curve-molarity calculation. Omitting `analysisMode` alone is not a refusal because its approved `recorded-evidence-only` default is applied.",
         "evidenceCase": "Require recorded `curve-analyte-volume`, initial-pH/equivalence evidence, and `curve-molarity` computed from the recorded aliquot/equivalence plus model titrant/stoichiometry; the defaulted `analysisMode` is configuration, not completion evidence.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -2286,8 +2286,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "prepare the configured Blue #1 dilution series with explicit stock/final volumes and record the dilution evidence for each standard",
-        "ordinarySupportedCase": "Complete a valid Blue #1 Standard Dilutions path that prepare the configured Blue #1 dilution series with explicit stock/final volumes and record the dilution evidence for each standard. Preferred supported context: blue1-spectroscopy#blue1-standard-dilutions.",
-        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Blue #1 Standard Dilutions and verify the shared/custom runtime rejects it without committing evidence.",
+        "ordinarySupportedCase": "Supported technique case for Blue #1 Standard Dilutions: Prepare the configured Blue #1 dilution series with explicit stock/final volumes and record the dilution evidence for each standard.",
+        "configurationOrRefusalCase": "Refusal case for technique Blue #1 Standard Dilutions: a standard's stock/final-volume evidence is missing or a dilution volume is invalid, correct/remake that standard and rerecord its dilution evidence. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If a standard's stock/final-volume evidence is missing or a dilution volume is invalid, correct/remake that standard and rerecord its dilution evidence; reset must clear only the old standard-preparation evidence.",
         "evidenceCase": "Require each standard's measured/configured stock/final-volume preparation evidence and its derived concentration/dilution record before that standard is available to calibration.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -2341,8 +2341,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "configure the unknown/blank inventory, insert/read the cuvette through photometer gating, keep read and record steps distinct, and calculate downstream photometric quantities from recorded %T",
-        "ordinarySupportedCase": "Complete a valid Blue #1 Percent-Transmittance Measurement path that configure the unknown/blank inventory, insert/read the cuvette through photometer gating, keep read and record steps distinct, and calculate downstream photometric quantities from recorded %T. Preferred supported context: blue1-spectroscopy#blue1-percent-transmittance.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (calibrationRegressionCalculationId) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Blue #1 Percent-Transmittance Measurement: Configure the unknown/blank inventory, insert/read the cuvette through photometer gating, keep read and record steps distinct, and calculate downstream photometric quantities from recorded %T.",
+        "configurationOrRefusalCase": "Refusal case for technique Blue #1 Percent-Transmittance Measurement: %T is read/recorded before the photometer is configured/zeroed or the sample cuvette is properly inserted, perform those prerequisites and reacquire the instrument value. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If %T is read/recorded before the photometer is configured/zeroed or the sample cuvette is properly inserted, perform those prerequisites and reacquire the instrument value; reset clears old %T/derived photometric records.",
         "evidenceCase": "Require instrument configuration/zero/cuvette insertion, an actual %T read, a distinct recorded %T entry, and any downstream decimal-T/absorbance result consuming that record.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -2435,8 +2435,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "pool the confirmed class standards, fit the calibration only from accepted class evidence, and preserve the confirmed calibration record for the unknown",
-        "ordinarySupportedCase": "Complete a valid Class-Pooled Blue #1 Calibration path that pool the confirmed class standards, fit the calibration only from accepted class evidence, and preserve the confirmed calibration record for the unknown. Preferred supported context: blue1-spectroscopy#blue1-class-calibration.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (i1-r10-0-concentrationCalculationId, i1-r8-2-concentrationCalculationId, i1-r6-4-concentrationCalculationId, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Class-Pooled Blue #1 Calibration: Pool the confirmed class standards, fit the calibration only from accepted class evidence, and preserve the confirmed calibration record for the unknown.",
+        "configurationOrRefusalCase": "Refusal case for technique Class-Pooled Blue #1 Calibration: the class calibration lacks enough accepted standard pairs or includes an unconfirmed pair, correct the class evidence set and recompute the regression. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If the class calibration lacks enough accepted standard pairs or includes an unconfirmed pair, correct the class evidence set and recompute the regression; reset removes the prior fit without rewriting original standard evidence.",
         "evidenceCase": "Require the accepted set of class standard concentration/absorbance records and the regression derived from those accepted pairs, preserving source-pair provenance.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -2492,8 +2492,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "prepare the practice hard-water mixture/apparatus and produce the named practice evidence needed before the gravimetric workflow",
-        "ordinarySupportedCase": "Complete a valid Hard-Water Practice Preparation path that prepare the practice hard-water mixture/apparatus and produce the named practice evidence needed before the gravimetric workflow. Preferred supported context: hard-water-analysis#hard-water-practice-preparation.",
-        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Hard-Water Practice Preparation and verify the shared/custom runtime rejects it without committing evidence.",
+        "ordinarySupportedCase": "Supported technique case for Hard-Water Practice Preparation: Prepare the practice hard-water mixture/apparatus and produce the named practice evidence needed before the gravimetric workflow.",
+        "configurationOrRefusalCase": "Refusal case for technique Hard-Water Practice Preparation: practice reagent/apparatus preparation is incomplete or out of order, return to the missing preparation step and complete it before the gravimetric handoff. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If practice reagent/apparatus preparation is incomplete or out of order, return to the missing preparation step and complete it before the gravimetric handoff; reset clears the practice setup evidence so the preparation can be repeated cleanly.",
         "evidenceCase": "Require completion/recording of the declared practice reagent/apparatus preparation outputs that gate the later hard-water gravimetric path.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -2543,8 +2543,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "assemble the vacuum filtration apparatus, filter/rinse the precipitate, and preserve the collected solid/receiver evidence for drying",
-        "ordinarySupportedCase": "Complete a valid Gravimetric Vacuum Filtration path that assemble the vacuum filtration apparatus, filter/rinse the precipitate, and preserve the collected solid/receiver evidence for drying. Preferred supported context: hard-water-analysis#gravimetric-vacuum-filtration.",
-        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Gravimetric Vacuum Filtration and verify the shared/custom runtime rejects it without committing evidence.",
+        "ordinarySupportedCase": "Supported technique case for Gravimetric Vacuum Filtration: Assemble the vacuum filtration apparatus, filter/rinse the precipitate, and preserve the collected solid/receiver evidence for drying.",
+        "configurationOrRefusalCase": "Refusal case for technique Gravimetric Vacuum Filtration: vacuum apparatus attachment, transfer, or rinse state is invalid, correct the flask/Büchner/filter/vacuum setup and repeat the affected filtration step. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If vacuum apparatus attachment, transfer, or rinse state is invalid, correct the flask/Büchner/filter/vacuum setup and repeat the affected filtration step; reset must clear collected filtrate/solid transfer evidence.",
         "evidenceCase": "Require assembled vacuum apparatus evidence, physical mixture/rinse transfers, and the filtered precipitate/receiver state needed by downstream drying.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -2612,8 +2612,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "apply the instructor oven/time/cooling setup, dry/cool/weigh in two stages, and gate completion on the configured mass/temperature criteria",
-        "ordinarySupportedCase": "Complete a valid Two-Stage Precipitate Drying path that apply the instructor oven/time/cooling setup, dry/cool/weigh in two stages, and gate completion on the configured mass/temperature criteria. Preferred supported context: hard-water-analysis#two-stage-precipitate-drying.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (ovenTemperatureC, firstDurationMinutes, coolingTemperatureC) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Two-Stage Precipitate Drying: Apply the instructor oven/time/cooling setup, dry/cool/weigh in two stages, and gate completion on the configured mass/temperature criteria.",
+        "configurationOrRefusalCase": "Refusal case for technique Two-Stage Precipitate Drying: teacher oven/time/cooling values are absent/invalid or the second-stage mass criterion is not met, correct the setup or repeat dry-cool-weigh until valid. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If teacher oven/time/cooling values are absent/invalid or the second-stage mass criterion is not met, correct the setup or repeat dry-cool-weigh until valid; reset clears stage-specific masses/temperature evidence.",
         "evidenceCase": "Require instructor oven/time/cooling configuration plus first/second dry-cool-weigh records and the configured endpoint/mass criterion before exit.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -2672,8 +2672,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "record the inquiry design and require the authored teacher approval gate before the experimental branch can proceed",
-        "ordinarySupportedCase": "Complete a valid Inquiry Plan Approval path that record the inquiry design and require the authored teacher approval gate before the experimental branch can proceed. Preferred supported context: hard-water-analysis#inquiry-plan-approval.",
-        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Inquiry Plan Approval and verify the shared/custom runtime rejects it without committing evidence.",
+        "ordinarySupportedCase": "Supported technique case for Inquiry Plan Approval: Record the inquiry design and require the authored teacher approval gate before the experimental branch can proceed.",
+        "configurationOrRefusalCase": "Refusal case for technique Inquiry Plan Approval: the inquiry plan is incomplete or teacher approval has not been recorded, return to the design/safety fields, revise them, and resubmit for approval. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If the inquiry plan is incomplete or teacher approval has not been recorded, return to the design/safety fields, revise them, and resubmit for approval; reset clears the approval record so a changed plan cannot inherit an old approval.",
         "evidenceCase": "Require the learner's plan/safety evidence and a distinct teacher approval record bound to that plan version; approval is the completion gate.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -2728,8 +2728,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "apply the instructor drying/cooling settings to both samples, acquire paired gravimetric evidence, calculate both hardness values, and preserve sample-specific evidence identifiers",
-        "ordinarySupportedCase": "Complete a valid Two-Sample Hard-Water Inquiry path that apply the instructor drying/cooling settings to both samples, acquire paired gravimetric evidence, calculate both hardness values, and preserve sample-specific evidence identifiers. Preferred supported context: hard-water-analysis#hard-water-two-sample-inquiry.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (ovenTemperatureC, firstDurationMinutes, coolingTemperatureC) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Two-Sample Hard-Water Inquiry: Apply the instructor drying/cooling settings to both samples, acquire paired gravimetric evidence, calculate both hardness values, and preserve sample-specific evidence identifiers.",
+        "configurationOrRefusalCase": "Refusal case for technique Two-Sample Hard-Water Inquiry: either sample lacks configured drying/cooling or named mass/volume evidence, repair/repeat only that sample's affected stage and recalculate it. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If either sample lacks configured drying/cooling or named mass/volume evidence, repair/repeat only that sample's affected stage and recalculate it; reset must clear both samples' derived hardness comparison while preserving sample identity separation.",
         "evidenceCase": "Require sample-specific volume/filtration/dry-mass evidence for both waters under the instructor setup and separate hardness results before comparative interpretation.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -2818,8 +2818,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "run the configured beverage pH-volume trial, acquire separate instrument readings/records, preserve the quantitative curve evidence, and calculate only from the accepted trial data",
-        "ordinarySupportedCase": "Complete a valid Beverage pH-Volume Titration path that run the configured beverage pH-volume trial, acquire separate instrument readings/records, preserve the quantitative curve evidence, and calculate only from the accepted trial data. Preferred supported context: beverage-acidity#investigation.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (endpointWindowMl, persistenceSeconds, maximumIncrementMl, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Beverage pH-Volume Titration: Run the configured beverage pH-volume trial, acquire separate instrument readings/records, preserve the quantitative curve evidence, and calculate only from the accepted trial data.",
+        "configurationOrRefusalCase": "Refusal case for technique Beverage pH-Volume Titration: a beverage trial lacks configured preparation/aliquot, valid burette/pH evidence, or an accepted quantitative branch, repair that trial's setup/read sequence and rerun it. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If a beverage trial lacks configured preparation/aliquot, valid burette/pH evidence, or an accepted quantitative branch, repair that trial's setup/read sequence and rerun it; reset clears old curve/equivalence/calculation records for that trial.",
         "evidenceCase": "Require configured beverage trial identity, physical pH/burette row acquisition with read/record provenance, and the quantitative endpoint/equivalence/calculation evidence for the accepted trial.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -2878,8 +2878,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "prepare the micromolar crystal-violet series from configured stock/final volumes and record the concentration evidence for calibration",
-        "ordinarySupportedCase": "Complete a valid Micromolar Crystal Violet Dilution Series path that prepare the micromolar crystal-violet series from configured stock/final volumes and record the concentration evidence for calibration. Preferred supported context: crystal-violet-rate-law#dilution-series.",
-        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Micromolar Crystal Violet Dilution Series and verify the shared/custom runtime rejects it without committing evidence.",
+        "ordinarySupportedCase": "Supported technique case for Micromolar Crystal Violet Dilution Series: Prepare the micromolar crystal-violet series from configured stock/final volumes and record the concentration evidence for calibration.",
+        "configurationOrRefusalCase": "Refusal case for technique Micromolar Crystal Violet Dilution Series: a micromolar standard has missing stock/final-volume inputs or an invalid dilution relationship, correct/remake that standard and recalculate its concentration. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If a micromolar standard has missing stock/final-volume inputs or an invalid dilution relationship, correct/remake that standard and recalculate its concentration; reset clears the old concentration-series preparation evidence.",
         "evidenceCase": "Require source/final-volume preparation records and derived micromolar concentration evidence for every standard used by calibration.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -2925,8 +2925,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "set the configured wavelength, zero/calibrate the instrument with the declared blank/standards, and preserve calibration evidence before kinetics",
-        "ordinarySupportedCase": "Complete a valid Crystal Violet Spectrophotometer Calibration path that set the configured wavelength, zero/calibrate the instrument with the declared blank/standards, and preserve calibration evidence before kinetics. Preferred supported context: crystal-violet-rate-law#instrument-calibration.",
-        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Crystal Violet Spectrophotometer Calibration and verify the shared/custom runtime rejects it without committing evidence.",
+        "ordinarySupportedCase": "Supported technique case for Crystal Violet Spectrophotometer Calibration: Set the configured wavelength, zero/calibrate the instrument with the declared blank/standards, and preserve calibration evidence before kinetics.",
+        "configurationOrRefusalCase": "Refusal case for technique Crystal Violet Spectrophotometer Calibration: calibration is attempted before the configured wavelength/blank/standard reads are complete, finish the missing zero/read step and rebuild the calibration. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If calibration is attempted before the configured wavelength/blank/standard reads are complete, finish the missing zero/read step and rebuild the calibration; reset clears the old instrument-calibration evidence before a new kinetics run.",
         "evidenceCase": "Require configured wavelength, zero/blank/standard instrument evidence and the resulting accepted calibration record before any kinetics read can count.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -2979,8 +2979,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "transform the recorded concentration/time series for zero/first/second-order fits, compare the regressions, and accept only the evidence-backed order/extension path",
-        "ordinarySupportedCase": "Complete a valid Integrated Rate-Law Comparison path that transform the recorded concentration/time series for zero/first/second-order fits, compare the regressions, and accept only the evidence-backed order/extension path. Preferred supported context: crystal-violet-rate-law#rate-law-analysis, crystal-violet-rate-law#analysis-extension.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (selectedProcedure) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Integrated Rate-Law Comparison: Transform the recorded concentration/time series for zero/first/second-order fits, compare the regressions, and accept only the evidence-backed order/extension path.",
+        "configurationOrRefusalCase": "Refusal case for technique Integrated Rate-Law Comparison: a regression/order calculation lacks the concentration-time series or one transformed fit, return to the missing upstream calculation/series, regenerate it, and rerun the comparison. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If a regression/order calculation lacks the concentration-time series or one transformed fit, return to the missing upstream calculation/series, regenerate it, and rerun the comparison; reset clears prior regressions/order/k values.",
         "evidenceCase": "Require the recorded concentration-time series, all configured transformed regressions, their R² evidence, evidence-backed order selection, and any rate-constant/extension calculation.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -3030,8 +3030,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "route the completed crystal-violet material through the authored waste-treatment sequence after acquisition is complete",
-        "ordinarySupportedCase": "Complete a valid Crystal Violet Waste Treatment path that route the completed crystal-violet material through the authored waste-treatment sequence after acquisition is complete. Preferred supported context: crystal-violet-rate-law#waste-treatment.",
-        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Crystal Violet Waste Treatment and verify the shared/custom runtime rejects it without committing evidence.",
+        "ordinarySupportedCase": "Supported technique case for Crystal Violet Waste Treatment: Route the completed crystal-violet material through the authored waste-treatment sequence after acquisition is complete.",
+        "configurationOrRefusalCase": "Refusal case for technique Crystal Violet Waste Treatment: waste treatment is attempted before the kinetics material is in the declared cleanup state or the disposal sequence is out of order, restore the correct waste receiver/material state and repeat cleanup. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If waste treatment is attempted before the kinetics material is in the declared cleanup state or the disposal sequence is out of order, restore the correct waste receiver/material state and repeat cleanup; reset clears cleanup evidence without recreating analytical data.",
         "evidenceCase": "Require the physical cleanup/waste-transfer actions and destination evidence for the post-kinetics material before the treatment technique exits.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -3091,8 +3091,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "test pure component references with the approved property panel and record evidence without inferring recovered-fraction identity",
-        "ordinarySupportedCase": "Complete a valid Quick Ache Component Property Evidence path that test pure component references with the approved property panel and record evidence without inferring recovered-fraction identity. Preferred supported context: quick-ache-relief-separation#property.",
-        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Quick Ache Component Property Evidence and verify the shared/custom runtime rejects it without committing evidence.",
+        "ordinarySupportedCase": "Supported technique case for Quick Ache Component Property Evidence: Test pure component references with the approved property panel and record evidence without inferring recovered-fraction identity.",
+        "configurationOrRefusalCase": "Refusal case for technique Quick Ache Component Property Evidence: a property test is attempted with the wrong reference portion/reagent or before the test portion is prepared, prepare the correct portion and repeat that test. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If a property test is attempted with the wrong reference portion/reagent or before the test portion is prepared, prepare the correct portion and repeat that test; reset clears the property observations while preserving no inferred recovered identity.",
         "evidenceCase": "Require the prepared reference test portions and recorded property-test results for each selected pure component; no recovered-fraction identity claim is an evidence substitute.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -3151,8 +3151,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "draft the separation flow, audit safety, and require explicit teacher approval before extraction/recovery",
-        "ordinarySupportedCase": "Complete a valid Quick Ache Separation Design and Approval path that draft the separation flow, audit safety, and require explicit teacher approval before extraction/recovery. Preferred supported context: quick-ache-relief-separation#approval.",
-        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Quick Ache Separation Design and Approval and verify the shared/custom runtime rejects it without committing evidence.",
+        "ordinarySupportedCase": "Supported technique case for Quick Ache Separation Design and Approval: Draft the separation flow, audit safety, and require explicit teacher approval before extraction/recovery.",
+        "configurationOrRefusalCase": "Refusal case for technique Quick Ache Separation Design and Approval: the separation flow/safety audit is incomplete or teacher approval is absent, revise the plan and obtain a new approval. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If the separation flow/safety audit is incomplete or teacher approval is absent, revise the plan and obtain a new approval; reset must revoke the old approval so a changed procedure cannot proceed under stale authorization.",
         "evidenceCase": "Require a recorded separation-flow design, safety audit, and explicit teacher approval tied to that design before extraction can proceed.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -3214,8 +3214,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "execute the teacher-configured extraction count/recovery order, enforce supported unheated recovery/drying conditions, and record recovered masses",
-        "ordinarySupportedCase": "Complete a valid Quick Ache Extraction, Recovery, and Gravimetry path that execute the teacher-configured extraction count/recovery order, enforce supported unheated recovery/drying conditions, and record recovered masses. Preferred supported context: quick-ache-relief-separation#extraction.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (organicRecoveryMethod, aqueousRecoveryMethod, drynessCriterion, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Quick Ache Extraction, Recovery, and Gravimetry: Execute the teacher-configured extraction count/recovery order, enforce supported unheated recovery/drying conditions, and record recovered masses.",
+        "configurationOrRefusalCase": "Refusal case for technique Quick Ache Extraction, Recovery, and Gravimetry: extraction count/order, acidification endpoint, drying/recovery approval, or fraction state is invalid, correct the teacher configuration or repeat the affected extraction/recovery stage before weighing. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If extraction count/order, acidification endpoint, drying/recovery approval, or fraction state is invalid, correct the teacher configuration or repeat the affected extraction/recovery stage before weighing; reset clears fraction/recovered-mass evidence.",
         "evidenceCase": "Require configured recovery approval/procedure, physical extraction/fraction/recovery/drying actions, and recorded recovered masses for every required fraction.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -3274,8 +3274,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "confirm the composition formula convention, calculate each recovered component percentage/total recovery from recorded masses, and produce the evidence-backed report",
-        "ordinarySupportedCase": "Complete a valid Quick Ache Composition Analysis path that confirm the composition formula convention, calculate each recovered component percentage/total recovery from recorded masses, and produce the evidence-backed report. Preferred supported context: quick-ache-relief-separation#analysis.",
-        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Quick Ache Composition Analysis and verify the shared/custom runtime rejects it without committing evidence.",
+        "ordinarySupportedCase": "Supported technique case for Quick Ache Composition Analysis: Confirm the composition formula convention, calculate each recovered component percentage/total recovery from recorded masses, and produce the evidence-backed report.",
+        "configurationOrRefusalCase": "Refusal case for technique Quick Ache Composition Analysis: composition/recovery calculations lack the confirmed formula convention or named starting/recovered masses, return to the confirmation/weighing producer, record the missing evidence, and recalculate. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If composition/recovery calculations lack the confirmed formula convention or named starting/recovered masses, return to the confirmation/weighing producer, record the missing evidence, and recalculate; reset removes old report calculations but not source measurements.",
         "evidenceCase": "Require confirmed calculation convention plus named starting/recovered-mass evidence and the component-percent/total-recovery calculations/report derived from those values.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -3371,8 +3371,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "prepare the marble/acid trial, ensure gas-syringe apparatus and reactant-mass evidence are aligned, record timed gas volumes, and calculate the initial rate",
-        "ordinarySupportedCase": "Complete a valid Gas-Syringe Kinetics with Marble Chips path that prepare the marble/acid trial, ensure gas-syringe apparatus and reactant-mass evidence are aligned, record timed gas volumes, and calculate the initial rate. Preferred supported context: marble-statue-kinetics#practice-trial, marble-statue-kinetics#acid-2m-trial, marble-statue-kinetics#acid-4m-trial, marble-statue-kinetics#acid-6m-trial, marble-statue-kinetics#acid-2m-rate-analysis, marble-statue-kinetics#acid-4m-rate-analysis, marble-statue-kinetics#acid-6m-rate-analysis.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (selectedProcedure, acidVolumeMl, acidVolumeToleranceMl, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Gas-Syringe Kinetics with Marble Chips: Prepare the marble/acid trial, ensure gas-syringe apparatus and reactant-mass evidence are aligned, record timed gas volumes, and calculate the initial rate.",
+        "configurationOrRefusalCase": "Refusal case for technique Gas-Syringe Kinetics with Marble Chips: marble mass, acid volume/concentration, gas-syringe connection, or 0/15-s gas readings are missing, repair/repeat that trial setup and reacquire the timed series. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If marble mass, acid volume/concentration, gas-syringe connection, or 0/15-s gas readings are missing, repair/repeat that trial setup and reacquire the timed series; reset clears the old series and initial-rate result.",
         "evidenceCase": "Require measured marble mass, prepared acid/trial identity, recorded gas-volume time series including required early points, and the initial-rate calculation from that series.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -3428,8 +3428,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "apply the configured equilibrium stresses one at a time, record the resulting qualitative observations, and support the inquiry explanation without hard-coded expected colors",
-        "ordinarySupportedCase": "Complete a valid Equilibrium Rainbow Inquiry path that apply the configured equilibrium stresses one at a time, record the resulting qualitative observations, and support the inquiry explanation without hard-coded expected colors. Preferred supported context: equilibrium-rainbow-display#equilibrium.",
-        "configurationOrRefusalCase": "Attempt one scientifically invalid or out-of-sequence operation specific to Equilibrium Rainbow Inquiry and verify the shared/custom runtime rejects it without committing evidence.",
+        "ordinarySupportedCase": "Supported technique case for Equilibrium Rainbow Inquiry: Apply the configured equilibrium stresses one at a time, record the resulting qualitative observations, and support the inquiry explanation without hard-coded expected colors.",
+        "configurationOrRefusalCase": "Refusal case for technique Equilibrium Rainbow Inquiry: an unsupported stress or unprepared equilibrium state is used, restore the declared baseline/sample condition and reapply one supported stress before rerecording. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If an unsupported stress or unprepared equilibrium state is used, restore the declared baseline/sample condition and reapply one supported stress before rerecording; reset clears the prior stressed observation/explanation.",
         "evidenceCase": "Require baseline identity, approved stress application, qualitative observation record, and the learner's interpretation/reflection for the selected inquiry path.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -3509,8 +3509,8 @@
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
         "scientificFocus": "assemble/condition/fill the formal pH-volume apparatus, acquire initial and sequential pH/burette evidence under the configured context, handle retry/disposal branches, and finish only after cleanup",
-        "ordinarySupportedCase": "Complete a valid Indicator-free formal pH-volume titration trial path that assemble/condition/fill the formal pH-volume apparatus, acquire initial and sequential pH/burette evidence under the configured context, handle retry/disposal branches, and finish only after cleanup. Preferred supported context: acid-base-titration-curves#formal-trial.",
-        "configurationOrRefusalCase": "Omit or invalidate one required slot (contextId, formalContextModelId, aliquotMl, …) and verify standalone/composition materialization refuses instead of inventing a value.",
+        "ordinarySupportedCase": "Supported technique case for Indicator-free formal pH-volume titration trial: Assemble/condition/fill the formal pH-volume apparatus, acquire initial and sequential pH/burette evidence under the configured context, handle retry/disposal branches, and finish only after cleanup.",
+        "configurationOrRefusalCase": "Refusal case for technique Indicator-free formal pH-volume titration trial: an increment violates configured bounds, a pH/burette read is missing, or the retry branch is selected, follow the authored dispose-rinse-reset chain and restart that formal context from its valid trial state. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If an increment violates configured bounds, a pH/burette read is missing, or the retry branch is selected, follow the authored dispose-rinse-reset chain and restart that formal context from its valid trial state; reset clears old row/reading evidence.",
         "evidenceCase": "Require apparatus/setup state, initial burette/pH row, every accepted delivery-mix-read-record decision row, final burette record, and required disposal/cleanup evidence for the selected context.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
@@ -3578,11 +3578,15 @@
     }
   },
   "scenarioReview": {
-    "status": "corrected-after-external-review",
+    "status": "self-reviewed-and-refined",
     "indexedActivities": 59,
     "legacyScenarioAssignmentsRemaining": 0,
+    "uniqueOrdinaryScenarios": 59,
+    "uniqueConfigurationOrRefusalScenarios": 59,
     "uniqueRecoveryScenarios": 59,
     "uniqueEvidenceScenarios": 59,
+    "genericRefusalTemplateRemaining": 0,
+    "generatedOrdinaryGrammarDefectsRemaining": 0,
     "titrationCurveAnalysisRefusal": "missing curve-analyte-volume/equivalence-volume; analysisMode omission uses approved default"
   }
 }

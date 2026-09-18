@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "branch": "codex/item2-catalog-reconciliation",
+  "reviewedHead": "0f224c4f63614cb5316f17b83b266a342773f320",
+  "findings": [
+    {
+      "id": "SELF-001",
+      "finding": "Top-level evidenceMode contradicted the authoritative not-claimed reconciliation status.",
+      "disposition": "corrected"
+    },
+    {
+      "id": "SELF-002",
+      "finding": "Residual configuration/refusal cases retained the old generic invalid/out-of-sequence template.",
+      "disposition": "corrected"
+    },
+    {
+      "id": "SELF-003",
+      "finding": "Ordinary supported cases retained generated 'path that <verb>' grammar.",
+      "disposition": "corrected"
+    },
+    {
+      "id": "SELF-004",
+      "finding": "Scenario uniqueness must be kind-scoped because lab and technique namespaces can share ids.",
+      "disposition": "corrected"
+    },
+    {
+      "id": "SELF-005",
+      "finding": "RUN_LEDGER did not distinguish verified local dependency restoration from repository-workspace restoration.",
+      "disposition": "corrected"
+    }
+  ],
+  "postCorrectionInvariants": {
+    "catalogEntries": 59,
+    "uniqueOrdinaryScenarios": 59,
+    "uniqueConfigurationOrRefusalScenarios": 59,
+    "uniqueRecoveryScenarios": 59,
+    "uniqueEvidenceScenarios": 59,
+    "legacyScenarioAssignmentsRemaining": 0,
+    "historicalAccounting": "894 indexed + 45 generated carrier + 34 cross-catalog = 973",
+    "sourceLevelReconciliationClosure": "not claimed",
+    "evidencePipeline": "not run"
+  }
+}

@@ -94,3 +94,17 @@ The locally restored planning ZIP was independently reopened and checked directl
 - extras: 0
 
 The files remain absent from the GitHub branch; this verifies the local restoration artifact only.
+
+
+## Self-critical refinement
+
+A stricter consistency review found four remaining static-artifact defects and corrected them:
+
+1. The catalog top-level `evidenceMode` still overstated source-level reconciliation even though the authoritative status correctly says closure is not claimed.
+2. Twenty configuration/refusal scenarios still used the same generic invalid/out-of-sequence template.
+3. Fifty-one ordinary-case strings contained generated grammar such as “path that measure/execute”.
+4. The run ledger said dependencies were “not restored” without distinguishing verified local restoration from their absence in the writable repository execution workspace.
+
+Catalog schema version 5 now has 59/59 distinct ordinary, configuration/refusal, recovery/reset, and evidence cases. Lab and technique namespaces are explicitly included in scenario wording so the two duplicated ids remain distinct. `SCENARIO_AUDIT.json` schema version 2 records zero legacy scenario assignments, zero old generic refusal templates, and zero old generated ordinary-case grammar defects.
+
+These changes improve static specification fidelity only. Item 2 remains incomplete pending repository-workspace restoration and separately authorized fresh evidence.

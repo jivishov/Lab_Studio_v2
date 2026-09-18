@@ -45,16 +45,20 @@
     {
       "kind": "independent-restored-zip-verification",
       "detail": "Reopened item2_local_restored_planning.zip and verified 46/46 exact repositoryPath members against BUNDLE_MANIFEST.json: 39,500,058 uncompressed bytes, 46 SHA-256 matches, 0 missing/mismatch/extra; ZIP SHA-256 8b5d1b207019eafd2100e520105537b37531b9aa405fe36fe168e3eec00e0968."
+    },
+    {
+      "kind": "self-critical-static-artifact-review",
+      "detail": "Corrected contradictory evidenceMode wording, residual generic refusal cases, generated ordinary-case grammar, kind-vs-id scenario scoping, and ambiguous local-vs-repository dependency-restoration wording."
     }
   ],
   "intentionallyUnrun": [
     {
       "command": "named recordCurrentVerificationRun.mjs pipeline",
-      "reason": "separate optional evidence authorization not provided; required planning dependencies also not restored"
+      "reason": "separate optional evidence authorization not provided; the 46 planning dependencies are verified locally but are not restored into the writable repository execution workspace"
     },
     {
       "command": "node --experimental-strip-types --experimental-loader ./scripts/tsCompositionLoader.mjs scripts/checkContentConsistency.mjs --compiled --json",
-      "reason": "belongs to the separately authorized current-evidence phase and requires restored dependencies"
+      "reason": "belongs to the separately authorized current-evidence phase; the verified planning dependencies are still absent from the writable repository execution workspace"
     },
     {
       "command": "unit/integration tests (including cycle09Titration.test.ts)",
@@ -66,6 +70,6 @@
     }
   ],
   "evidencePipelineStatus": "not-run",
-  "currentEvidenceStatus": "pending separate user authorization and upload-capable repository restoration",
+  "currentEvidenceStatus": "pending separate user authorization and upload-capable repository execution-workspace restoration",
   "sourceLevelClosureClaim": "withdrawn; inventory/static-rationale accounting only"
 }
