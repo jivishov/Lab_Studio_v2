@@ -1242,6 +1242,452 @@
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
       "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "technique",
+      "id": "inquiry-plan-approval",
+      "title": "Inquiry Plan Approval",
+      "file": "public/techniques/inquiry-plan-approval.json",
+      "version": "1.2.0",
+      "blob": "679df6df81227c87db3e7cde748c8bf98640ab3b",
+      "route": "#/technique/inquiry-plan-approval",
+      "catalogDisposition": "composable",
+      "requiredConfigurationSlots": [],
+      "defaultedConfigurationSlots": [],
+      "configurationInspection": "full-source",
+      "hosts": [
+        {
+          "labId": "hard-water-analysis",
+          "instanceId": "inquiry-plan-approval",
+          "version": "1.2.0"
+        }
+      ],
+      "specialRole": "indexed-technique",
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "technique",
+      "id": "hard-water-two-sample-inquiry",
+      "title": "Two-Sample Hard-Water Inquiry",
+      "file": "public/techniques/hard-water-two-sample-inquiry.json",
+      "version": "1.2.0",
+      "blob": "c606d436d8eea25b5040cf8c01a269fb8eec15c2",
+      "route": "#/technique/hard-water-two-sample-inquiry",
+      "catalogDisposition": "composable",
+      "requiredConfigurationSlots": [
+        "ovenTemperatureC",
+        "firstDurationMinutes",
+        "coolingTemperatureC"
+      ],
+      "defaultedConfigurationSlots": [],
+      "configurationInspection": "full-source",
+      "hosts": [
+        {
+          "labId": "hard-water-analysis",
+          "instanceId": "hard-water-two-sample-inquiry",
+          "version": "1.2.0"
+        }
+      ],
+      "specialRole": "indexed-technique",
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "technique",
+      "id": "beverage-ph-volume-titration",
+      "title": "Beverage pH-Volume Titration",
+      "file": "public/techniques/beverage-ph-volume-titration.json",
+      "version": "3.0.1",
+      "blob": "b7bef58821d58b680d2dcb1263d61a0ae82c55dd",
+      "route": "#/technique/beverage-ph-volume-titration",
+      "catalogDisposition": "lab-scoped",
+      "requiredConfigurationSlots": [
+        "endpointWindowMl",
+        "persistenceSeconds",
+        "maximumIncrementMl",
+        "indicatorVolumeMl",
+        "wasteProtocol",
+        "preparationProtocol",
+        "beverageAliquotMl",
+        "conditioningVolumeMl",
+        "tipPurgeMl",
+        "rinseVolumeMl",
+        "indicatorStartPh",
+        "indicatorStrongPh"
+      ],
+      "defaultedConfigurationSlots": [
+        "endpointWindowMl",
+        "persistenceSeconds",
+        "maximumIncrementMl",
+        "indicatorVolumeMl",
+        "wasteProtocol",
+        "preparationProtocol",
+        "beverageAliquotMl",
+        "conditioningVolumeMl",
+        "tipPurgeMl",
+        "rinseVolumeMl",
+        "indicatorStartPh",
+        "indicatorStrongPh"
+      ],
+      "configurationInspection": "full-source",
+      "hosts": [
+        {
+          "labId": "beverage-acidity",
+          "instanceId": "investigation",
+          "version": "3.0.1"
+        }
+      ],
+      "specialRole": "indexed-technique",
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "technique",
+      "id": "crystal-violet-micromolar-dilution-series",
+      "title": "Micromolar Crystal Violet Dilution Series",
+      "file": "public/techniques/crystal-violet-micromolar-dilution-series.json",
+      "version": "1.2.0",
+      "blob": "bcb3db850e1481e5bb2c8bd30955e6907db4cd30",
+      "route": "#/technique/crystal-violet-micromolar-dilution-series",
+      "catalogDisposition": "lab-scoped",
+      "requiredConfigurationSlots": [],
+      "defaultedConfigurationSlots": [],
+      "configurationInspection": "full-source",
+      "hosts": [
+        {
+          "labId": "crystal-violet-rate-law",
+          "instanceId": "dilution-series",
+          "version": "1.2.0"
+        }
+      ],
+      "specialRole": "indexed-technique",
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "technique",
+      "id": "crystal-violet-spectrophotometer-calibration",
+      "title": "Crystal Violet Spectrophotometer Calibration",
+      "file": "public/techniques/crystal-violet-spectrophotometer-calibration.json",
+      "version": "1.2.0",
+      "blob": "e86f98e4b9398d87ecef64c50c7732d6e5e59c59",
+      "route": "#/technique/crystal-violet-spectrophotometer-calibration",
+      "catalogDisposition": "lab-scoped",
+      "requiredConfigurationSlots": [],
+      "defaultedConfigurationSlots": [],
+      "configurationInspection": "full-source",
+      "hosts": [
+        {
+          "labId": "crystal-violet-rate-law",
+          "instanceId": "instrument-calibration",
+          "version": "1.2.0"
+        }
+      ],
+      "specialRole": "indexed-technique",
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "technique",
+      "id": "crystal-violet-integrated-rate-law-comparison",
+      "title": "Integrated Rate-Law Comparison",
+      "file": "public/techniques/crystal-violet-integrated-rate-law-comparison.json",
+      "version": "2.0.0",
+      "blob": "772cfeded4e68b7a27cb38455dc257bdc000f501",
+      "route": "#/technique/crystal-violet-integrated-rate-law-comparison",
+      "catalogDisposition": "lab-scoped",
+      "requiredConfigurationSlots": [
+        "selectedProcedure"
+      ],
+      "defaultedConfigurationSlots": [],
+      "configurationInspection": "full-source",
+      "hosts": [
+        {
+          "labId": "crystal-violet-rate-law",
+          "instanceId": "rate-law-analysis",
+          "version": "2.0.0"
+        },
+        {
+          "labId": "crystal-violet-rate-law",
+          "instanceId": "analysis-extension",
+          "version": "2.0.0"
+        }
+      ],
+      "specialRole": "indexed-technique",
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "technique",
+      "id": "crystal-violet-waste-treatment",
+      "title": "Crystal Violet Waste Treatment",
+      "file": "public/techniques/crystal-violet-waste-treatment.json",
+      "version": "1.2.0",
+      "blob": "1e0cc1631c29dd564a307e5e443c3f4ab2aa79bf",
+      "route": "#/technique/crystal-violet-waste-treatment",
+      "catalogDisposition": "lab-scoped",
+      "requiredConfigurationSlots": [],
+      "defaultedConfigurationSlots": [],
+      "configurationInspection": "full-source",
+      "hosts": [
+        {
+          "labId": "crystal-violet-rate-law",
+          "instanceId": "waste-treatment",
+          "version": "1.2.0"
+        }
+      ],
+      "specialRole": "indexed-technique",
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "technique",
+      "id": "quick-ache-property-evidence",
+      "title": "Quick Ache Component Property Evidence",
+      "file": "public/techniques/quick-ache-property-evidence.json",
+      "version": "1.2.1",
+      "blob": "f22927a2d81d82141672b54cd48ba4392300238f",
+      "route": "#/technique/quick-ache-property-evidence",
+      "catalogDisposition": "composable",
+      "requiredConfigurationSlots": [],
+      "defaultedConfigurationSlots": [],
+      "configurationInspection": "full-source",
+      "hosts": [
+        {
+          "labId": "quick-ache-relief-separation",
+          "instanceId": "property",
+          "version": "1.2.1"
+        }
+      ],
+      "specialRole": "indexed-technique",
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "technique",
+      "id": "quick-ache-design-approval",
+      "title": "Quick Ache Separation Design and Approval",
+      "file": "public/techniques/quick-ache-design-approval.json",
+      "version": "1.2.0",
+      "blob": "23ea8a7b6bc3c0c6f075a0bd14fa17214276d7cf",
+      "route": "#/technique/quick-ache-design-approval",
+      "catalogDisposition": "composable",
+      "requiredConfigurationSlots": [],
+      "defaultedConfigurationSlots": [],
+      "configurationInspection": "full-source",
+      "hosts": [
+        {
+          "labId": "quick-ache-relief-separation",
+          "instanceId": "approval",
+          "version": "1.2.0"
+        }
+      ],
+      "specialRole": "indexed-technique",
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "technique",
+      "id": "quick-ache-extraction-recovery",
+      "title": "Quick Ache Extraction, Recovery, and Gravimetry",
+      "file": "public/techniques/quick-ache-extraction-recovery.json",
+      "version": "1.3.1",
+      "blob": "7fb71001122fd3936948c49d2975fe39d8685ef1",
+      "route": "#/technique/quick-ache-extraction-recovery",
+      "catalogDisposition": "composable",
+      "requiredConfigurationSlots": [
+        "organicRecoveryMethod",
+        "aqueousRecoveryMethod",
+        "drynessCriterion",
+        "coolingLimitC",
+        "acidEndpointPh",
+        "organicDensity",
+        "aqueousDensity",
+        "recoverySetupApproved",
+        "extractionCount",
+        "selectedProcedure"
+      ],
+      "defaultedConfigurationSlots": [],
+      "configurationInspection": "full-source",
+      "hosts": [
+        {
+          "labId": "quick-ache-relief-separation",
+          "instanceId": "extraction",
+          "version": "1.3.1"
+        }
+      ],
+      "specialRole": "indexed-technique",
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "technique",
+      "id": "quick-ache-analysis-report",
+      "title": "Quick Ache Composition Analysis",
+      "file": "public/techniques/quick-ache-analysis-report.json",
+      "version": "1.2.0",
+      "blob": "befbdfa30b5fb7461f049fe1d1c6a4d60f999804",
+      "route": "#/technique/quick-ache-analysis-report",
+      "catalogDisposition": "composable",
+      "requiredConfigurationSlots": [],
+      "defaultedConfigurationSlots": [],
+      "configurationInspection": "full-source",
+      "hosts": [
+        {
+          "labId": "quick-ache-relief-separation",
+          "instanceId": "analysis",
+          "version": "1.2.0"
+        }
+      ],
+      "specialRole": "indexed-technique",
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "technique",
+      "id": "marble-gas-syringe-kinetics",
+      "title": "Gas-Syringe Kinetics with Marble Chips",
+      "file": "public/techniques/marble-gas-syringe-kinetics.json",
+      "version": "2.1.0",
+      "blob": "b392df37a5fd1e5a1984c88357dbcea5e283ca7d",
+      "route": "#/technique/marble-gas-syringe-kinetics",
+      "catalogDisposition": "lab-scoped",
+      "requiredConfigurationSlots": [
+        "selectedProcedure",
+        "acidVolumeMl",
+        "acidVolumeToleranceMl",
+        "marbleMassG",
+        "marbleMassToleranceG",
+        "seriesLabel",
+        "instrumentCapacityMl",
+        "instrumentGraduationMl",
+        "samplingIntervalS",
+        "rateIntervalS",
+        "evidenceScopeId",
+        "zeroNotebookTag",
+        "pathCheckNotebookTag",
+        "reactionStartNotebookTag",
+        "evidenceLimitsNotebookTag"
+      ],
+      "defaultedConfigurationSlots": [],
+      "configurationInspection": "full-source",
+      "hosts": [
+        {
+          "labId": "marble-statue-kinetics",
+          "instanceId": "practice-trial",
+          "version": "2.1.0"
+        },
+        {
+          "labId": "marble-statue-kinetics",
+          "instanceId": "acid-2m-trial",
+          "version": "2.1.0"
+        },
+        {
+          "labId": "marble-statue-kinetics",
+          "instanceId": "acid-4m-trial",
+          "version": "2.1.0"
+        },
+        {
+          "labId": "marble-statue-kinetics",
+          "instanceId": "acid-6m-trial",
+          "version": "2.1.0"
+        },
+        {
+          "labId": "marble-statue-kinetics",
+          "instanceId": "acid-2m-rate-analysis",
+          "version": "2.1.0"
+        },
+        {
+          "labId": "marble-statue-kinetics",
+          "instanceId": "acid-4m-rate-analysis",
+          "version": "2.1.0"
+        },
+        {
+          "labId": "marble-statue-kinetics",
+          "instanceId": "acid-6m-rate-analysis",
+          "version": "2.1.0"
+        }
+      ],
+      "specialRole": "indexed-technique",
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "technique",
+      "id": "equilibrium-rainbow-inquiry",
+      "title": "Equilibrium Rainbow Inquiry",
+      "file": "public/techniques/equilibrium-rainbow-inquiry.json",
+      "version": "2.3.0",
+      "blob": "a15ee9eb383c55b0d7eed34577638055ccd16b99",
+      "route": "#/technique/equilibrium-rainbow-inquiry",
+      "catalogDisposition": "composable",
+      "requiredConfigurationSlots": [],
+      "defaultedConfigurationSlots": [],
+      "configurationInspection": "full-source",
+      "hosts": [
+        {
+          "labId": "equilibrium-rainbow-display",
+          "instanceId": "equilibrium",
+          "version": "2.3.0"
+        }
+      ],
+      "specialRole": "indexed-technique",
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "technique",
+      "id": "ph-volume-formal-titration-trial",
+      "title": "Indicator-free formal pH-volume titration trial",
+      "file": "public/techniques/ph-volume-formal-titration-trial.json",
+      "version": "1.0.0",
+      "blob": "4ba53d598c5e088d772eb40fd5d37bef201c72f7",
+      "route": "#/technique/ph-volume-formal-titration-trial",
+      "catalogDisposition": "lab-scoped",
+      "requiredConfigurationSlots": [
+        "contextId",
+        "formalContextModelId",
+        "aliquotMl",
+        "maximumIncrementMl",
+        "maximumDeliveryMl",
+        "stabilityDeltaPh",
+        "stabilityConsecutiveReadings",
+        "minimumPostSteepRegionMl",
+        "conditioningVolumeMl",
+        "tipPurgeMl",
+        "rinseVolumeMl",
+        "indicatorPolicy",
+        "preparationProtocol",
+        "wasteProtocol"
+      ],
+      "defaultedConfigurationSlots": [
+        "contextId",
+        "formalContextModelId",
+        "aliquotMl",
+        "maximumIncrementMl",
+        "maximumDeliveryMl",
+        "stabilityDeltaPh",
+        "stabilityConsecutiveReadings",
+        "minimumPostSteepRegionMl",
+        "conditioningVolumeMl",
+        "tipPurgeMl",
+        "rinseVolumeMl",
+        "indicatorPolicy",
+        "preparationProtocol",
+        "wasteProtocol"
+      ],
+      "configurationInspection": "full-source",
+      "hosts": [
+        {
+          "labId": "acid-base-titration-curves",
+          "instanceId": "formal-trial",
+          "version": "1.0.0"
+        }
+      ],
+      "specialRole": "indexed-route-carrier",
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
     }
   ]
 }
