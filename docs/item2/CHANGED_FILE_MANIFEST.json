@@ -1,75 +1,72 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 3,
   "branch": "codex/item2-catalog-reconciliation",
   "baseline": "f7c2b863f641090d9abc5c08ee22da72702fdfd6",
-  "parentHead": "7214b3409cc2bb419dcaf839b5ea858b9626502b",
+  "documentedHeadBeforeManifestUpdate": "251ad0388c8a936be4b7a31e77dc71b9ce2fe4cf",
   "selfExcluded": true,
-  "selfExclusionReason": "A file cannot contain its own final Git blob SHA without changing that SHA.",
-  "files": [
+  "selfExclusionReason": "The manifest update itself creates the next commit; its own blob cannot recursively contain its final blob SHA.",
+  "implementation": [
     {
       "path": "public/techniques/titration-curve-analysis.json",
-      "blobSha": "ce492df1c2e5e1e27adc5641ea13cd70fc110954",
-      "role": "implementation"
+      "blobSha": "ce492df1c2e5e1e27adc5641ea13cd70fc110954"
     },
     {
       "path": "scripts/generateApChemTechniqueFragments.mjs",
-      "blobSha": "762a777819ddb9f25af4503080efc48cdaa008f7",
-      "role": "implementation"
-    },
-    {
-      "path": "src/runtime/reducer.ts",
-      "blobSha": "ee2ab19db7d8c23a64e789f86f60d2d6141d6945",
-      "role": "implementation"
+      "blobSha": "762a777819ddb9f25af4503080efc48cdaa008f7"
     },
     {
       "path": "src/runtime/__tests__/cycle09Titration.test.ts",
-      "blobSha": "da76dd14d8362b4b726eecd65772800bcafe0a53",
-      "role": "implementation"
+      "blobSha": "da76dd14d8362b4b726eecd65772800bcafe0a53"
     },
+    {
+      "path": "src/runtime/reducer.ts",
+      "blobSha": "ee2ab19db7d8c23a64e789f86f60d2d6141d6945"
+    }
+  ],
+  "item2Records": [
     {
       "path": "docs/item2/CATALOG_DISPOSITIONS.json",
-      "blobSha": "a580df7ca9960f6dce907f92ee331c304246ef01",
-      "role": "item2-ledger-or-report"
-    },
-    {
-      "path": "docs/item2/CONFIGURATION_COVERAGE.json",
-      "blobSha": "ac21b1463d808f3f9175fceba3eaa90b9df0a49f",
-      "role": "item2-ledger-or-report"
+      "blobSha": "394fd7ea132d682c784929eab12226b0dae42c98"
     },
     {
       "path": "docs/item2/CATALOG_DISPOSITIONS.md",
-      "blobSha": "057de3f0e3b0f0a3d335166d73a2115dd0727403",
-      "role": "item2-ledger-or-report"
+      "blobSha": "6b4baa629d4cb6146b347b1c6fce47f257e0649d"
     },
     {
-      "path": "docs/item2/FINDING_TRIAGE.json",
-      "blobSha": "fb06242a9eee3b9bf7c7941f1e14fbe7d6a6fa7d",
-      "role": "item2-ledger-or-report"
-    },
-    {
-      "path": "docs/item2/EVIDENCE_DEPENDENCY_RESTORATION.json",
-      "blobSha": "b4610281479d221424ef8732ca6249124a63128f",
-      "role": "item2-ledger-or-report"
-    },
-    {
-      "path": "docs/item2/EXECUTION_REQUEST.md",
-      "blobSha": "6f14d9861772ec176d4e9686ea3498bb54a1a808",
-      "role": "item2-ledger-or-report"
+      "path": "docs/item2/CONFIGURATION_COVERAGE.json",
+      "blobSha": "47b89dd6d3a517f2e1d1c17e1528481af8275e56"
     },
     {
       "path": "docs/item2/CRITICAL_REVIEW.md",
-      "blobSha": "c8a3254b6ba57cc83ede181697f71095ff7c263d",
-      "role": "item2-ledger-or-report"
+      "blobSha": "4a4097a48ae5e52de50a305cae1f1f0544592542"
+    },
+    {
+      "path": "docs/item2/EVIDENCE_DEPENDENCY_RESTORATION.json",
+      "blobSha": "e18d12d554b54dc216956d98f09f3b06d7993e24"
+    },
+    {
+      "path": "docs/item2/EXECUTION_REQUEST.md",
+      "blobSha": "864a30bc427a05e13b8b6328d512135d1c62e1d1"
+    },
+    {
+      "path": "docs/item2/FINDING_TRIAGE.json",
+      "blobSha": "3db49db1b1d863db07a373f927539dc2d5ff8eff"
     },
     {
       "path": "docs/item2/ITEM2_REPORT.md",
-      "blobSha": "adbd0546e92693708281bec6bc340ca3bc21785b",
-      "role": "item2-ledger-or-report"
+      "blobSha": "f5c647d1ec6b703d7dd2a2a9889c17c498438a1a"
     },
     {
       "path": "docs/item2/RUN_LEDGER.json",
-      "blobSha": "1e57431dcf53e037cd020713b561694ebddfc6fd",
-      "role": "item2-ledger-or-report"
+      "blobSha": "88aca30e41619199e64408d93d223b2cdbfb739d"
     }
-  ]
+  ],
+  "localDependencyRestoration": {
+    "files": 46,
+    "bytes": 39500058,
+    "manifestSha256Matches": 46,
+    "workspace": "/mnt/data/item2_local_restore",
+    "githubBranchPresence": "absent"
+  },
+  "evidenceStatus": "not-run; separate authorization not received"
 }
