@@ -1,8 +1,8 @@
 {
-  "schemaVersion": 4,
+  "schemaVersion": 5,
   "branch": "codex/item2-catalog-reconciliation",
   "baseline": "f7c2b863f641090d9abc5c08ee22da72702fdfd6",
-  "documentedHeadBeforeManifestUpdate": "d06218fd62e3e2146584f60588d5db60fa207c12",
+  "documentedHeadBeforeManifestUpdate": "380628f0f5169ac7272a46bcf84dbe2f8f1f2721",
   "selfExcluded": true,
   "selfExclusionReason": "The manifest update itself creates the next commit; its own final Git blob SHA cannot be recursively embedded.",
   "implementation": [
@@ -26,7 +26,7 @@
   "item2Records": [
     {
       "path": "docs/item2/CATALOG_DISPOSITIONS.json",
-      "blobSha": "6da3a5d7e3b8bdb521acf52548c8bc57f31ecd07"
+      "blobSha": "c198775985483f076fb721579aff07d50432a9bf"
     },
     {
       "path": "docs/item2/CATALOG_DISPOSITIONS.md",
@@ -38,7 +38,7 @@
     },
     {
       "path": "docs/item2/CRITICAL_REVIEW.md",
-      "blobSha": "66f35728c1523f573eafbcd28685ab2fce18f712"
+      "blobSha": "d1c383f312da3c27a475731d1968ce87dae1bbd6"
     },
     {
       "path": "docs/item2/EVIDENCE_DEPENDENCY_RESTORATION.json",
@@ -54,26 +54,34 @@
     },
     {
       "path": "docs/item2/ITEM2_REPORT.md",
-      "blobSha": "eea9d454159b0a8b26770780dd77d9e747fc069b"
+      "blobSha": "1d2fd38958d119b3a21633b9f80601bf1648b1f3"
     },
     {
       "path": "docs/item2/RUN_LEDGER.json",
-      "blobSha": "6c783b2e66259d2ac17d644e549627a3e86d2bcb"
+      "blobSha": "cc8ffc1b8a8e64a92c69343d94de1ba52b58b41f"
     },
     {
       "path": "docs/item2/SCENARIO_AUDIT.json",
-      "blobSha": "c0fd50e5636c55d5fbe2860ac57711849e0fff65"
+      "blobSha": "4526e693d6238b4cf33f9fdc6cc064b850ef241c"
     },
     {
       "path": "docs/item2/SCENARIO_MATRIX.md",
-      "blobSha": "3ccfd98b4266da8851accba329d20a1b19112287"
+      "blobSha": "0d77fb41e7a538ebf4317df7d0842f5d12ca1a1f"
+    },
+    {
+      "path": "docs/item2/SELF_REVIEW_AUDIT.json",
+      "blobSha": "442752dc59836539ef68d3c9b6cd2df9f712e5dd"
     }
   ],
   "scenarioAudit": {
     "indexedActivities": 59,
+    "uniqueOrdinaryScenarios": 59,
+    "uniqueConfigurationOrRefusalScenarios": 59,
     "uniqueRecoveryScenarios": 59,
     "uniqueEvidenceScenarios": 59,
     "legacyScenarioAssignmentsRemaining": 0,
+    "genericRefusalTemplateRemaining": 0,
+    "generatedOrdinaryGrammarDefectsRemaining": 0,
     "titrationCurveAnalysisRefusal": "missing curve-analyte-volume/equivalence-volume; omitted analysisMode uses the approved recorded-evidence-only default"
   },
   "localDependencyRestoration": {
@@ -87,5 +95,5 @@
     "extras": 0,
     "githubBranchPresence": "absent; local verified artifact only"
   },
-  "evidenceStatus": "not-run; separate authorization not received"
+  "evidenceStatus": "not-run; separate authorization not received; source-level reconciliation closure not claimed"
 }
