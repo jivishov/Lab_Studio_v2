@@ -790,7 +790,8 @@
       "label": "Calculate curve molarity",
       "parameters": {
         "calculationId": "curve-molarity",
-        "expected": 0.099,
+        "template": "acidBaseMolarityFromEquivalenceVolume",
+        "titrationModelId": "curve-unknown-acid",
         "tolerance": 0.005,
         "unit": "M",
         "studentValueRequired": true,
