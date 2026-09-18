@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "branch": "codex/item2-catalog-reconciliation",
+  "baseline": "f7c2b863f641090d9abc5c08ee22da72702fdfd6",
+  "status": {
+    "sourceReviewTriage": "complete",
+    "currentRawDiagnostics": "not-generated",
+    "fullItem2FindingClosure": "incomplete"
+  },
+  "currentRawDiagnostics": {
+    "status": "not-generated",
+    "reason": "The named current-evidence pipeline and complete JSON content check require separate authorization; none was provided.",
+    "findings": []
+  },
+  "sourceReviewFindings": [
+    {
+      "id": "SR-001",
+      "origin": "current-source-review",
+      "rule": "calculation/evidence-derived-target-required",
+      "severity": "high",
+      "context": "technique:titration-curve-analysis action calculate-curve-molarity",
+      "evidence": [
+        "public/techniques/titration-curve-analysis.json",
+        "scripts/generateApChemTechniqueFragments.mjs",
+        "src/runtime/reducer.ts",
+        "src/runtime/__tests__/cycle09Titration.test.ts"
+      ],
+      "scenarioImpact": "Standalone indexed technique could compare a student entry against an authored 0.099 M key instead of deriving the target from the learner's recorded aliquot/equivalence evidence.",
+      "disposition": "repaired",
+      "reason": "The action now uses acidBaseMolarityFromEquivalenceVolume with recorded aliquot/equivalence measurements and the authored model only for titrant concentration/stoichiometry; the regression is authored but intentionally unrun."
+    },
+    {
+      "id": "CFG-001",
+      "origin": "current-source-review",
+      "rule": "configuration/pre-setup-missing-hard-water",
+      "severity": "informational",
+      "context": "lab:hard-water-analysis hosted two-stage-precipitate-drying and hard-water-two-sample-inquiry",
+      "evidence": [
+        "src/data/labSetup.ts",
+        "src/player/HardWaterSetupForm.tsx"
+      ],
+      "scenarioImpact": "Raw lab JSON omits three teacher setup values before preparation.",
+      "disposition": "resolved-as-supported-setup-path",
+      "reason": "applyLabSetup validates and injects ovenTemperatureC, firstDurationMinutes, and coolingTemperatureC before composition."
+    },
+    {
+      "id": "CFG-002",
+      "origin": "current-source-review",
+      "rule": "configuration/pre-setup-missing-bonding-procedure",
+      "severity": "informational",
+      "context": "lab:bonding-unknown-solids 14 bonding-solids-tests instances",
+      "evidence": [
+        "src/data/labSetup.ts",
+        "src/player/BondingSetupForm.tsx"
+      ],
+      "scenarioImpact": "Raw instances omit selectedProcedure before instructor setup.",
+      "disposition": "resolved-as-supported-setup-path",
+      "reason": "applyLabSetup selects the bounded witness, injects thresholds/panel values, and supplies selectedProcedure (teacher choice or the supported default sequence)."
+    },
+    {
+      "id": "CFG-003",
+      "origin": "current-source-review",
+      "rule": "configuration/pre-setup-missing-quick-ache-recovery",
+      "severity": "informational",
+      "context": "lab:quick-ache-relief-separation extraction instance",
+      "evidence": [
+        "src/data/labSetup.ts",
+        "src/player/QuickAcheSetupForm.tsx"
+      ],
+      "scenarioImpact": "Raw extraction host carries no recovery configuration before teacher setup.",
+      "disposition": "resolved-as-supported-setup-path",
+      "reason": "applyLabSetup validates the supported recovery methods and injects recovery methods, dryness/cooling/pH/density values, extraction count, selectedProcedure and recoverySetupApproved."
+    },
+    {
+      "id": "CFG-004",
+      "origin": "current-source-review",
+      "rule": "configuration/paper-host-only-materialization",
+      "severity": "informational",
+      "context": "lab:paper-chromatography chromatography-trials instance",
+      "evidence": [
+        "src/data/labSetup.ts",
+        "scripts/migrateCycle06GravimetrySeparationComposition.mjs",
+        "src/data/__tests__/techniqueConfiguration.test.ts"
+      ],
+      "scenarioImpact": "Raw host configuration is empty until classroom geometry/data/solvent choices are supplied.",
+      "disposition": "resolved-as-supported-setup-path",
+      "reason": "applyLabSetup validates the selected classroom datasets and binds selectedProcedure, geometry/volume fields and stopCondition; selectedProcedure is intentionally host-composition-only."
+    },
+    {
+      "id": "CFG-005",
+      "origin": "current-source-review",
+      "rule": "configuration/hand-warmer-waste-route",
+      "severity": "informational",
+      "context": "lab:hand-warmer-calorimetry hand-warmer instance",
+      "evidence": [
+        "scripts/generatorInputs/handWarmerCalorimetry.mjs",
+        "public/labs/hand-warmer-calorimetry.json"
+      ],
+      "scenarioImpact": "Waste destination must remain teacher-configured.",
+      "disposition": "represented-in-source",
+      "reason": "The authoritative generator declares exactly one required wasteRoute slot with default teacher-configured, and the lab host binds that value."
+    }
+  ],
+  "historicalComparison": {
+    "source": "attached references/historical-content-check.json",
+    "totalFindings": 973,
+    "byRule": {
+      "action/source-trace-missing": 858,
+      "asset/disposition-mismatch": 6,
+      "corpus/action-id-collision": 8,
+      "cycle06/confirmation-point-action-missing": 2,
+      "cycle06/confirmation-point-resolved": 1,
+      "cycle06/cuvette-slot-unbalanced": 2,
+      "cycle06/hydroxide-extension-missing": 3,
+      "cycle06/photometer-read-ungated": 34,
+      "cycle06/photometer-record-without-read": 2,
+      "cycle06/photometer-wavelength-unproduced": 1,
+      "cycle06/transmittance-operand-confused": 2,
+      "cycle11/aqueous-read-without-test-solution": 2,
+      "cycle11/reactant-mass-measurement-unmatched": 1,
+      "registry/atom-content-example-missing": 12,
+      "source-citation/basis-disagreement": 4,
+      "source-citation/sourceTable-disagreement": 1,
+      "source-trace/unknown-action": 34
+    },
+    "treatment": "Historical preparation evidence only. These findings were not regenerated and are not relabeled as current.",
+    "individualHistoricalTriage": "not-replayed; current source-level owner summaries are attached to CATALOG_DISPOSITIONS.json where previously computed from the supplied historical artifact."
+  }
+}

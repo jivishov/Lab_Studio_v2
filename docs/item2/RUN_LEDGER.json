@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "branch": "codex/item2-catalog-reconciliation",
+  "baseline": "f7c2b863f641090d9abc5c08ee22da72702fdfd6",
+  "actualModel": "GPT-5.6 Sol",
+  "implementationReasoningEffort": "not exposed by runtime; not claimed",
+  "criticalReviewReasoningEffort": "not exposed by runtime; not claimed",
+  "performed": [
+    {
+      "kind": "source-review",
+      "detail": "Verified main equals preparation baseline and branch is based on it."
+    },
+    {
+      "kind": "catalog-parse",
+      "detail": "Parsed public/labs/index.json (17) and public/techniques/index.json (42) during source reconciliation."
+    },
+    {
+      "kind": "configuration-trace",
+      "detail": "Traced teacher setup materialization in src/data/labSetup.ts and the hand-warmer generator contract."
+    },
+    {
+      "kind": "source-repair",
+      "detail": "Updated titration curve public definition, generator and reducer; authored a focused regression."
+    },
+    {
+      "kind": "ledger-validation",
+      "detail": "JSON ledgers were parsed before mutation and serialized from structured objects."
+    }
+  ],
+  "intentionallyUnrun": [
+    {
+      "command": "named recordCurrentVerificationRun.mjs pipeline",
+      "reason": "separate optional evidence authorization not provided; required planning dependencies also not restored"
+    },
+    {
+      "command": "node --experimental-strip-types --experimental-loader ./scripts/tsCompositionLoader.mjs scripts/checkContentConsistency.mjs --compiled --json",
+      "reason": "belongs to the separately authorized current-evidence phase and requires restored dependencies"
+    },
+    {
+      "command": "unit/integration tests (including cycle09Titration.test.ts)",
+      "reason": "repository basic-static validation ceiling"
+    },
+    {
+      "command": "typecheck / build / browser / runtime / E2E / broad lint suites",
+      "reason": "repository basic-static validation ceiling"
+    }
+  ],
+  "evidencePipelineStatus": "not-run",
+  "currentEvidenceStatus": "pending"
+}

@@ -1,17 +1,20 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "scope": "item-2 complete indexed Lab Studio catalog",
   "branch": "codex/item2-catalog-reconciliation",
   "mainBaseline": "f7c2b863f641090d9abc5c08ee22da72702fdfd6",
-  "evidenceMode": "source-review-only; named evidence pipeline not authorized",
+  "evidenceMode": "complete source-level reconciliation; named current-evidence pipeline not authorized",
   "counts": {
     "labs": 17,
     "techniques": 42,
     "total": 59
   },
   "notes": [
-    "Host associations are source-derived and do not substitute for compiled witness coverage.",
-    "ph-volume-formal-titration-trial is the 42nd indexed technique absent from the historical 41-technique ownership map."
+    "All 17 labs and 42 indexed techniques have individual source rationales, planned scenario assignments, finding references, and source-review dispositions.",
+    "Scenario assignments are plans only; none were executed under the current basic-static validation ceiling.",
+    "Historical finding counts are preserved as historical evidence and are not asserted to be current diagnostics.",
+    "ph-volume-formal-titration-trial remains the 42nd indexed technique absent from the historical 41-technique ownership map.",
+    "Unindexed ph-volume-titration-trial and acid-base-titration-curves-config retain special carrier/config roles and are not additional catalog entries."
   ],
   "labs": [
     {
@@ -32,7 +35,22 @@
       ],
       "reachabilityWitnessesAuthored": 1,
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "indexed-lab",
+      "individualRationale": "Indexed lab intro-filtration-demo is present at public/labs/intro-filtration-demo.json, resolves through #/play/intro-filtration-demo, uses shared-definition-player, setup surface generic, and declares 4 hosted technique instance(s) with 1 authored bounded witness(es).",
+      "scenarioAssignments": {
+        "ordinary": "intro-filtration-demo:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "intro-filtration-demo:refusal-or-configuration-gate — Runtime refusal: attempt an invalid/out-of-order operation and verify the shared runtime rejects it without fabricating evidence.",
+        "recoveryOrReset": "intro-filtration-demo:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "intro-filtration-demo:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "lab",
@@ -54,7 +72,22 @@
       ],
       "reachabilityWitnessesAuthored": 1,
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "indexed-lab",
+      "individualRationale": "Indexed lab hard-water-demo is present at public/labs/hard-water-demo.json, resolves through #/play/hard-water-demo, uses shared-definition-player, setup surface generic, and declares 6 hosted technique instance(s) with 1 authored bounded witness(es).",
+      "scenarioAssignments": {
+        "ordinary": "hard-water-demo:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "hard-water-demo:refusal-or-configuration-gate — Runtime refusal: attempt an invalid/out-of-order operation and verify the shared runtime rejects it without fabricating evidence.",
+        "recoveryOrReset": "hard-water-demo:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "hard-water-demo:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "lab",
@@ -71,7 +104,22 @@
       ],
       "reachabilityWitnessesAuthored": 1,
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "indexed-lab",
+      "individualRationale": "Indexed lab acid-base-titration is present at public/labs/acid-base-titration.json, resolves through #/play/acid-base-titration, uses shared-definition-player, setup surface titration-form, and declares 1 hosted technique instance(s) with 1 authored bounded witness(es).",
+      "scenarioAssignments": {
+        "ordinary": "acid-base-titration:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "acid-base-titration:refusal-or-configuration-gate — Teacher/setup gate: exercise the supported titration-form path; invalid or absent setup must refuse before play.",
+        "recoveryOrReset": "acid-base-titration:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "acid-base-titration:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "lab",
@@ -94,7 +142,26 @@
       ],
       "reachabilityWitnessesAuthored": 1,
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "indexed-lab",
+      "individualRationale": "Indexed lab marble-statue-kinetics is present at public/labs/marble-statue-kinetics.json, resolves through #/play/marble-statue-kinetics, uses shared-definition-player, setup surface generic, and declares 7 hosted technique instance(s) with 1 authored bounded witness(es).",
+      "scenarioAssignments": {
+        "ordinary": "marble-statue-kinetics:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "marble-statue-kinetics:refusal-or-configuration-gate — Runtime refusal: attempt an invalid/out-of-order operation and verify the shared runtime rejects it without fabricating evidence.",
+        "recoveryOrReset": "marble-statue-kinetics:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "marble-statue-kinetics:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [
+        "HISTORICAL-OWNER-SUMMARY:11"
+      ],
+      "historicalFindingSummary": {
+        "count": 11,
+        "rules": {
+          "source-trace/unknown-action": 11
+        }
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "lab",
@@ -111,7 +178,24 @@
       ],
       "reachabilityWitnessesAuthored": 1,
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "indexed-lab",
+      "individualRationale": "Indexed lab paper-chromatography is present at public/labs/paper-chromatography.json, resolves through #/play/paper-chromatography, uses shared-definition-player, setup surface paper-form, and declares 1 hosted technique instance(s) with 1 authored bounded witness(es).",
+      "scenarioAssignments": {
+        "ordinary": "paper-chromatography:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "paper-chromatography:refusal-or-configuration-gate — Teacher/setup gate: exercise the supported paper-form path; invalid or absent setup must refuse before play.",
+        "recoveryOrReset": "paper-chromatography:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "paper-chromatography:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [
+        "CFG-004"
+      ],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "configuration-path-accounted",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "lab",
@@ -128,7 +212,22 @@
       ],
       "reachabilityWitnessesAuthored": 1,
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "indexed-lab",
+      "individualRationale": "Indexed lab equilibrium-rainbow-display is present at public/labs/equilibrium-rainbow-display.json, resolves through #/play/equilibrium-rainbow-display, uses shared-definition-player, setup surface generic, and declares 1 hosted technique instance(s) with 1 authored bounded witness(es).",
+      "scenarioAssignments": {
+        "ordinary": "equilibrium-rainbow-display:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "equilibrium-rainbow-display:refusal-or-configuration-gate — Runtime refusal: attempt an invalid/out-of-order operation and verify the shared runtime rejects it without fabricating evidence.",
+        "recoveryOrReset": "equilibrium-rainbow-display:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "equilibrium-rainbow-display:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "lab",
@@ -145,7 +244,24 @@
       ],
       "reachabilityWitnessesAuthored": 1,
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "indexed-lab",
+      "individualRationale": "Indexed lab hand-warmer-calorimetry is present at public/labs/hand-warmer-calorimetry.json, resolves through #/play/hand-warmer-calorimetry, uses shared-definition-player, setup surface generic, and declares 1 hosted technique instance(s) with 1 authored bounded witness(es).",
+      "scenarioAssignments": {
+        "ordinary": "hand-warmer-calorimetry:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "hand-warmer-calorimetry:refusal-or-configuration-gate — Runtime refusal: attempt an invalid/out-of-order operation and verify the shared runtime rejects it without fabricating evidence.",
+        "recoveryOrReset": "hand-warmer-calorimetry:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "hand-warmer-calorimetry:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [
+        "CFG-005"
+      ],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "configuration-path-accounted",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "lab",
@@ -164,7 +280,26 @@
       ],
       "reachabilityWitnessesAuthored": 1,
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "indexed-lab",
+      "individualRationale": "Indexed lab blue1-spectroscopy is present at public/labs/blue1-spectroscopy.json, resolves through #/play/blue1-spectroscopy, uses shared-definition-player, setup surface generic, and declares 3 hosted technique instance(s) with 1 authored bounded witness(es).",
+      "scenarioAssignments": {
+        "ordinary": "blue1-spectroscopy:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "blue1-spectroscopy:refusal-or-configuration-gate — Runtime refusal: attempt an invalid/out-of-order operation and verify the shared runtime rejects it without fabricating evidence.",
+        "recoveryOrReset": "blue1-spectroscopy:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "blue1-spectroscopy:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [
+        "HISTORICAL-OWNER-SUMMARY:2"
+      ],
+      "historicalFindingSummary": {
+        "count": 2,
+        "rules": {
+          "cycle06/confirmation-point-action-missing": 2
+        }
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "lab",
@@ -181,7 +316,22 @@
       ],
       "reachabilityWitnessesAuthored": 1,
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "indexed-lab",
+      "individualRationale": "Indexed lab brass-colorimetry is present at public/labs/brass-colorimetry.json, resolves through #/play/brass-colorimetry, uses shared-definition-player, setup surface generic, and declares 1 hosted technique instance(s) with 1 authored bounded witness(es).",
+      "scenarioAssignments": {
+        "ordinary": "brass-colorimetry:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "brass-colorimetry:refusal-or-configuration-gate — Runtime refusal: attempt an invalid/out-of-order operation and verify the shared runtime rejects it without fabricating evidence.",
+        "recoveryOrReset": "brass-colorimetry:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "brass-colorimetry:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "lab",
@@ -202,7 +352,24 @@
       ],
       "reachabilityWitnessesAuthored": 1,
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "indexed-lab",
+      "individualRationale": "Indexed lab hard-water-analysis is present at public/labs/hard-water-analysis.json, resolves through #/play/hard-water-analysis, uses shared-definition-player, setup surface hard-water-form, and declares 5 hosted technique instance(s) with 1 authored bounded witness(es).",
+      "scenarioAssignments": {
+        "ordinary": "hard-water-analysis:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "hard-water-analysis:refusal-or-configuration-gate — Teacher/setup gate: exercise the supported hard-water-form path; invalid or absent setup must refuse before play.",
+        "recoveryOrReset": "hard-water-analysis:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "hard-water-analysis:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [
+        "CFG-001"
+      ],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "configuration-path-accounted",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "lab",
@@ -219,7 +386,22 @@
       ],
       "reachabilityWitnessesAuthored": 1,
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "indexed-lab",
+      "individualRationale": "Indexed lab beverage-acidity is present at public/labs/beverage-acidity.json, resolves through #/play/beverage-acidity, uses shared-definition-player, setup surface titration-form, and declares 1 hosted technique instance(s) with 1 authored bounded witness(es).",
+      "scenarioAssignments": {
+        "ordinary": "beverage-acidity:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "beverage-acidity:refusal-or-configuration-gate — Teacher/setup gate: exercise the supported titration-form path; invalid or absent setup must refuse before play.",
+        "recoveryOrReset": "beverage-acidity:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "beverage-acidity:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "lab",
@@ -249,7 +431,24 @@
       ],
       "reachabilityWitnessesAuthored": 9,
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "indexed-lab",
+      "individualRationale": "Indexed lab bonding-unknown-solids is present at public/labs/bonding-unknown-solids.json, resolves through #/play/bonding-unknown-solids, uses shared-definition-player, setup surface bonding-form, and declares 14 hosted technique instance(s) with 9 authored bounded witness(es).",
+      "scenarioAssignments": {
+        "ordinary": "bonding-unknown-solids:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "bonding-unknown-solids:refusal-or-configuration-gate — Teacher/setup gate: exercise the supported bonding-form path; invalid or absent setup must refuse before play.",
+        "recoveryOrReset": "bonding-unknown-solids:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "bonding-unknown-solids:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [
+        "CFG-002"
+      ],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "configuration-path-accounted",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "lab",
@@ -266,7 +465,26 @@
       ],
       "reachabilityWitnessesAuthored": 3,
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "indexed-lab",
+      "individualRationale": "Indexed lab green-chemistry-mixture-purification is present at public/labs/green-chemistry-mixture-purification.json, resolves through #/play/green-chemistry-mixture-purification, uses custom-player, setup surface custom-player, and declares 1 hosted technique instance(s) with 3 authored bounded witness(es).",
+      "scenarioAssignments": {
+        "ordinary": "green-chemistry-mixture-purification:ordinary-supported-progression — traverse the supported custom route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "green-chemistry-mixture-purification:refusal-or-configuration-gate — Teacher/setup gate: exercise the supported custom-player path; invalid or absent setup must refuse before play.",
+        "recoveryOrReset": "green-chemistry-mixture-purification:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "green-chemistry-mixture-purification:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers.",
+        "additional": [
+          "green-chemistry-mixture-purification:tare-record-crucible-plus-lid",
+          "green-chemistry-mixture-purification:tare-record-crucible-only"
+        ]
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "lab",
@@ -283,7 +501,22 @@
       ],
       "reachabilityWitnessesAuthored": 1,
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "indexed-lab",
+      "individualRationale": "Indexed lab hydrogen-peroxide-redox-titration is present at public/labs/hydrogen-peroxide-redox-titration.json, resolves through #/play/hydrogen-peroxide-redox-titration, uses shared-definition-player, setup surface titration-form, and declares 1 hosted technique instance(s) with 1 authored bounded witness(es).",
+      "scenarioAssignments": {
+        "ordinary": "hydrogen-peroxide-redox-titration:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "hydrogen-peroxide-redox-titration:refusal-or-configuration-gate — Teacher/setup gate: exercise the supported titration-form path; invalid or absent setup must refuse before play.",
+        "recoveryOrReset": "hydrogen-peroxide-redox-titration:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "hydrogen-peroxide-redox-titration:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "lab",
@@ -303,7 +536,24 @@
       ],
       "reachabilityWitnessesAuthored": 1,
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "indexed-lab",
+      "individualRationale": "Indexed lab quick-ache-relief-separation is present at public/labs/quick-ache-relief-separation.json, resolves through #/play/quick-ache-relief-separation, uses shared-definition-player, setup surface quick-ache-form, and declares 4 hosted technique instance(s) with 1 authored bounded witness(es).",
+      "scenarioAssignments": {
+        "ordinary": "quick-ache-relief-separation:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "quick-ache-relief-separation:refusal-or-configuration-gate — Teacher/setup gate: exercise the supported quick-ache-form path; invalid or absent setup must refuse before play.",
+        "recoveryOrReset": "quick-ache-relief-separation:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "quick-ache-relief-separation:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [
+        "CFG-003"
+      ],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "configuration-path-accounted",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "lab",
@@ -333,7 +583,26 @@
       ],
       "reachabilityWitnessesAuthored": 2,
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "indexed-lab",
+      "individualRationale": "Indexed lab crystal-violet-rate-law is present at public/labs/crystal-violet-rate-law.json, resolves through #/play/crystal-violet-rate-law, uses shared-definition-player, setup surface generic, and declares 14 hosted technique instance(s) with 2 authored bounded witness(es).",
+      "scenarioAssignments": {
+        "ordinary": "crystal-violet-rate-law:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "crystal-violet-rate-law:refusal-or-configuration-gate — Runtime refusal: attempt an invalid/out-of-order operation and verify the shared runtime rejects it without fabricating evidence.",
+        "recoveryOrReset": "crystal-violet-rate-law:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "crystal-violet-rate-law:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [
+        "HISTORICAL-OWNER-SUMMARY:23"
+      ],
+      "historicalFindingSummary": {
+        "count": 23,
+        "rules": {
+          "source-trace/unknown-action": 23
+        }
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "lab",
@@ -350,7 +619,22 @@
       ],
       "reachabilityWitnessesAuthored": 3,
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "indexed-lab",
+      "individualRationale": "Indexed lab acid-base-titration-curves is present at public/labs/acid-base-titration-curves.json, resolves through #/play/acid-base-titration-curves, uses custom-player, setup surface custom-investigation-config, and declares 1 hosted technique instance(s) with 3 authored bounded witness(es).",
+      "scenarioAssignments": {
+        "ordinary": "acid-base-titration-curves:ordinary-supported-progression — traverse the supported custom route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "acid-base-titration-curves:refusal-or-configuration-gate — Teacher/setup gate: exercise the supported custom-investigation-config path; invalid or absent setup must refuse before play.",
+        "recoveryOrReset": "acid-base-titration-curves:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "acid-base-titration-curves:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     }
   ],
   "techniques": [
@@ -371,7 +655,22 @@
       "hosts": [],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "composable",
+      "individualRationale": "Indexed technique weighing is present at public/techniques/weighing.json, resolves through #/technique/weighing, has source disposition composable, has no indexed lab host, and exposes 1 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "weighing:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "weighing:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "weighing:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "weighing:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -403,7 +702,22 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "composable",
+      "individualRationale": "Indexed technique measuring-volume is present at public/techniques/measuring-volume.json, resolves through #/technique/measuring-volume, has source disposition composable, is hosted by intro-filtration-demo, hard-water-demo, and exposes 3 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "measuring-volume:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "measuring-volume:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "measuring-volume:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "measuring-volume:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -425,7 +739,22 @@
       "hosts": [],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "composable",
+      "individualRationale": "Indexed technique making-solution is present at public/techniques/making-solution.json, resolves through #/technique/making-solution, has source disposition composable, has no indexed lab host, and exposes 4 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "making-solution:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "making-solution:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "making-solution:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "making-solution:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -447,7 +776,22 @@
       "hosts": [],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "composable",
+      "individualRationale": "Indexed technique dilution is present at public/techniques/dilution.json, resolves through #/technique/dilution, has source disposition composable, has no indexed lab host, and exposes 4 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "dilution:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "dilution:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "dilution:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "dilution:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -473,7 +817,26 @@
       "hosts": [],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "composable",
+      "individualRationale": "Indexed technique transmittance-dilution is present at public/techniques/transmittance-dilution.json, resolves through #/technique/transmittance-dilution, has source disposition composable, has no indexed lab host, and exposes 8 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "transmittance-dilution:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "transmittance-dilution:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "transmittance-dilution:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "transmittance-dilution:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [
+        "HISTORICAL-OWNER-SUMMARY:2"
+      ],
+      "historicalFindingSummary": {
+        "count": 2,
+        "rules": {
+          "cycle06/transmittance-operand-confused": 2
+        }
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -504,7 +867,22 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "composable",
+      "individualRationale": "Indexed technique transfer is present at public/techniques/transfer.json, resolves through #/technique/transfer, has source disposition composable, is hosted by intro-filtration-demo, hard-water-demo, and exposes 2 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "transfer:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "transfer:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "transfer:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "transfer:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -535,7 +913,22 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "lab-scoped",
+      "individualRationale": "Indexed technique hard-water-precipitation is present at public/techniques/hard-water-precipitation.json, resolves through #/technique/hard-water-precipitation, has source disposition lab-scoped, is hosted by intro-filtration-demo, hard-water-demo, and exposes 2 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "hard-water-precipitation:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "hard-water-precipitation:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "hard-water-precipitation:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "hard-water-precipitation:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -566,7 +959,22 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "composable",
+      "individualRationale": "Indexed technique filtration is present at public/techniques/filtration.json, resolves through #/technique/filtration, has source disposition composable, is hosted by intro-filtration-demo, hard-water-demo, and exposes 2 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "filtration:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "filtration:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "filtration:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "filtration:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -596,7 +1004,22 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "composable",
+      "individualRationale": "Indexed technique drying is present at public/techniques/drying.json, resolves through #/technique/drying, has source disposition composable, is hosted by hard-water-demo, and exposes 6 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "drying:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "drying:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "drying:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "drying:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -630,7 +1053,26 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "lab-scoped",
+      "individualRationale": "Indexed technique thermal-decomposition-mass-loss is present at public/techniques/thermal-decomposition-mass-loss.json, resolves through #/technique/thermal-decomposition-mass-loss, has source disposition lab-scoped, is hosted by green-chemistry-mixture-purification, and exposes 10 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "thermal-decomposition-mass-loss:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "thermal-decomposition-mass-loss:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "thermal-decomposition-mass-loss:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "thermal-decomposition-mass-loss:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [
+        "HISTORICAL-OWNER-SUMMARY:1"
+      ],
+      "historicalFindingSummary": {
+        "count": 1,
+        "rules": {
+          "action/source-trace-missing": 1
+        }
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -640,10 +1082,18 @@
       "version": "1.2.1",
       "blob": "f6397bc466bebd4e5d4373b26d46dd1c66654d77",
       "route": "#/technique/paper-chromatography",
-      "catalogDisposition": "source-not-fully-materialized",
-      "requiredConfigurationSlots": [],
+      "catalogDisposition": "ordered-host-composition-only",
+      "requiredConfigurationSlots": [
+        "selectedProcedure",
+        "baselineHeightMm",
+        "solventDepthMm",
+        "spotVolumeMl",
+        "solventVolumeMl",
+        "spotterLoadVolumeMl",
+        "stopCondition"
+      ],
       "defaultedConfigurationSlots": [],
-      "configurationInspection": "large-source metadata/host fallback; detailed current execution coverage pending pipeline",
+      "configurationInspection": "source-traced via src/data/labSetup.ts, Cycle 06 migration contract, and host-composition-only configuration tests",
       "hosts": [
         {
           "labId": "paper-chromatography",
@@ -653,7 +1103,27 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "ordered-host-composition-only",
+      "individualRationale": "Indexed technique paper-chromatography is present at public/techniques/paper-chromatography.json, resolves through #/technique/paper-chromatography, has source disposition ordered-host-composition-only, is hosted by paper-chromatography, and exposes 7 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "paper-chromatography:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "paper-chromatography:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "paper-chromatography:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "paper-chromatography:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [
+        "CFG-004",
+        "HISTORICAL-OWNER-SUMMARY:188"
+      ],
+      "historicalFindingSummary": {
+        "count": 188,
+        "rules": {
+          "action/source-trace-missing": 188
+        }
+      },
+      "sourceReviewDisposition": "configuration-path-accounted",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -681,7 +1151,22 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "composable",
+      "individualRationale": "Indexed technique hard-water-calculation is present at public/techniques/hard-water-calculation.json, resolves through #/technique/hard-water-calculation, has source disposition composable, is hosted by hard-water-demo, and exposes 4 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "hard-water-calculation:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "hard-water-calculation:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "hard-water-calculation:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "hard-water-calculation:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -704,7 +1189,22 @@
       "hosts": [],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "composable",
+      "individualRationale": "Indexed technique beers-law-calibration is present at public/techniques/beers-law-calibration.json, resolves through #/technique/beers-law-calibration, has source disposition composable, has no indexed lab host, and exposes 5 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "beers-law-calibration:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "beers-law-calibration:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "beers-law-calibration:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "beers-law-calibration:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -730,7 +1230,27 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "composable",
+      "individualRationale": "Indexed technique brass-spectrophotometry is present at public/techniques/brass-spectrophotometry.json, resolves through #/technique/brass-spectrophotometry, has source disposition composable, is hosted by brass-colorimetry, and exposes 2 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "brass-spectrophotometry:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "brass-spectrophotometry:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "brass-spectrophotometry:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "brass-spectrophotometry:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [
+        "HISTORICAL-OWNER-SUMMARY:35"
+      ],
+      "historicalFindingSummary": {
+        "count": 35,
+        "rules": {
+          "cycle06/photometer-read-ungated": 32,
+          "action/source-trace-missing": 3
+        }
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -751,7 +1271,22 @@
       "hosts": [],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "composable",
+      "individualRationale": "Indexed technique hard-water-gravimetry is present at public/techniques/hard-water-gravimetry.json, resolves through #/technique/hard-water-gravimetry, has source disposition composable, has no indexed lab host, and exposes 3 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "hard-water-gravimetry:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "hard-water-gravimetry:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "hard-water-gravimetry:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "hard-water-gravimetry:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -798,7 +1333,22 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "lab-scoped",
+      "individualRationale": "Indexed technique titration-endpoint is present at public/techniques/titration-endpoint.json, resolves through #/technique/titration-endpoint, has source disposition lab-scoped, is hosted by acid-base-titration, and exposes 11 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "titration-endpoint:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "titration-endpoint:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "titration-endpoint:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "titration-endpoint:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -908,7 +1458,28 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "composable",
+      "individualRationale": "Indexed technique bonding-solids-tests is present at public/techniques/bonding-solids-tests.json, resolves through #/technique/bonding-solids-tests, has source disposition composable, is hosted by bonding-unknown-solids, bonding-unknown-solids, bonding-unknown-solids, bonding-unknown-solids, bonding-unknown-solids, bonding-unknown-solids, bonding-unknown-solids, bonding-unknown-solids, bonding-unknown-solids, bonding-unknown-solids, bonding-unknown-solids, bonding-unknown-solids, bonding-unknown-solids, bonding-unknown-solids, and exposes 21 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "bonding-solids-tests:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "bonding-solids-tests:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "bonding-solids-tests:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "bonding-solids-tests:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [
+        "CFG-002",
+        "HISTORICAL-OWNER-SUMMARY:19"
+      ],
+      "historicalFindingSummary": {
+        "count": 19,
+        "rules": {
+          "action/source-trace-missing": 17,
+          "cycle11/aqueous-read-without-test-solution": 2
+        }
+      },
+      "sourceReviewDisposition": "configuration-path-accounted",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -953,7 +1524,26 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "lab-scoped",
+      "individualRationale": "Indexed technique redox-titration is present at public/techniques/redox-titration.json, resolves through #/technique/redox-titration, has source disposition lab-scoped, is hosted by hydrogen-peroxide-redox-titration, and exposes 10 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "redox-titration:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "redox-titration:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "redox-titration:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "redox-titration:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [
+        "HISTORICAL-OWNER-SUMMARY:163"
+      ],
+      "historicalFindingSummary": {
+        "count": 163,
+        "rules": {
+          "action/source-trace-missing": 163
+        }
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -970,7 +1560,22 @@
       "hosts": [],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "composable",
+      "individualRationale": "Indexed technique tablet-separation is present at public/techniques/tablet-separation.json, resolves through #/technique/tablet-separation, has source disposition composable, has no indexed lab host, and exposes 0 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "tablet-separation:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "tablet-separation:refusal-or-configuration-gate — Runtime refusal: attempt an invalid/out-of-order operation and verify the shared runtime rejects it.",
+        "recoveryOrReset": "tablet-separation:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "tablet-separation:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -1045,7 +1650,27 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "lab-scoped",
+      "individualRationale": "Indexed technique crystal-violet-kinetics is present at public/techniques/crystal-violet-kinetics.json, resolves through #/technique/crystal-violet-kinetics, has source disposition lab-scoped, is hosted by crystal-violet-rate-law, crystal-violet-rate-law, crystal-violet-rate-law, crystal-violet-rate-law, crystal-violet-rate-law, crystal-violet-rate-law, crystal-violet-rate-law, crystal-violet-rate-law, crystal-violet-rate-law, and exposes 11 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "crystal-violet-kinetics:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "crystal-violet-kinetics:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "crystal-violet-kinetics:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "crystal-violet-kinetics:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [
+        "HISTORICAL-OWNER-SUMMARY:2"
+      ],
+      "historicalFindingSummary": {
+        "count": 2,
+        "rules": {
+          "cycle06/cuvette-slot-unbalanced": 1,
+          "cycle06/photometer-wavelength-unproduced": 1
+        }
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -1055,10 +1680,14 @@
       "version": "2.5.1",
       "blob": "d9cbeb852f831c589fd49e895e39f565928d7a9b",
       "route": "#/technique/hand-warmer-calorimetry",
-      "catalogDisposition": "source-not-fully-materialized",
-      "requiredConfigurationSlots": [],
-      "defaultedConfigurationSlots": [],
-      "configurationInspection": "large-source metadata/host fallback; detailed current execution coverage pending pipeline",
+      "catalogDisposition": "lab-scoped",
+      "requiredConfigurationSlots": [
+        "wasteRoute"
+      ],
+      "defaultedConfigurationSlots": [
+        "wasteRoute"
+      ],
+      "configurationInspection": "authoritative generator input declares wasteRoute required with default teacher-configured; lab host binds same value",
       "hosts": [
         {
           "labId": "hand-warmer-calorimetry",
@@ -1068,7 +1697,24 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "lab-scoped",
+      "individualRationale": "Indexed technique hand-warmer-calorimetry is present at public/techniques/hand-warmer-calorimetry.json, resolves through #/technique/hand-warmer-calorimetry, has source disposition lab-scoped, is hosted by hand-warmer-calorimetry, and exposes 1 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "hand-warmer-calorimetry:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "hand-warmer-calorimetry:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "hand-warmer-calorimetry:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "hand-warmer-calorimetry:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [
+        "CFG-005"
+      ],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "configuration-path-accounted",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -1089,7 +1735,24 @@
       "hosts": [],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "composable",
+      "individualRationale": "Indexed technique titration-curve-analysis is present at public/techniques/titration-curve-analysis.json, resolves through #/technique/titration-curve-analysis, has source disposition composable, has no indexed lab host, and exposes 1 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "titration-curve-analysis:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "titration-curve-analysis:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "titration-curve-analysis:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "titration-curve-analysis:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [
+        "SR-001"
+      ],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "repaired-source-defect",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -1112,7 +1775,22 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "composable",
+      "individualRationale": "Indexed technique blue1-standard-dilutions is present at public/techniques/blue1-standard-dilutions.json, resolves through #/technique/blue1-standard-dilutions, has source disposition composable, is hosted by blue1-spectroscopy, and exposes 0 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "blue1-standard-dilutions:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "blue1-standard-dilutions:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "blue1-standard-dilutions:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "blue1-standard-dilutions:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -1137,7 +1815,28 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "composable",
+      "individualRationale": "Indexed technique blue1-percent-transmittance is present at public/techniques/blue1-percent-transmittance.json, resolves through #/technique/blue1-percent-transmittance, has source disposition composable, is hosted by blue1-spectroscopy, and exposes 1 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "blue1-percent-transmittance:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "blue1-percent-transmittance:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "blue1-percent-transmittance:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "blue1-percent-transmittance:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [
+        "HISTORICAL-OWNER-SUMMARY:21"
+      ],
+      "historicalFindingSummary": {
+        "count": 21,
+        "rules": {
+          "action/source-trace-missing": 17,
+          "cycle06/photometer-read-ungated": 2,
+          "cycle06/photometer-record-without-read": 2
+        }
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -1168,7 +1867,26 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "composable",
+      "individualRationale": "Indexed technique blue1-class-calibration is present at public/techniques/blue1-class-calibration.json, resolves through #/technique/blue1-class-calibration, has source disposition composable, is hosted by blue1-spectroscopy, and exposes 7 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "blue1-class-calibration:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "blue1-class-calibration:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "blue1-class-calibration:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "blue1-class-calibration:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [
+        "HISTORICAL-OWNER-SUMMARY:1"
+      ],
+      "historicalFindingSummary": {
+        "count": 1,
+        "rules": {
+          "cycle06/confirmation-point-resolved": 1
+        }
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -1191,7 +1909,22 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "composable",
+      "individualRationale": "Indexed technique hard-water-practice-preparation is present at public/techniques/hard-water-practice-preparation.json, resolves through #/technique/hard-water-practice-preparation, has source disposition composable, is hosted by hard-water-analysis, and exposes 0 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "hard-water-practice-preparation:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "hard-water-practice-preparation:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "hard-water-practice-preparation:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "hard-water-practice-preparation:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -1214,7 +1947,26 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "composable",
+      "individualRationale": "Indexed technique gravimetric-vacuum-filtration is present at public/techniques/gravimetric-vacuum-filtration.json, resolves through #/technique/gravimetric-vacuum-filtration, has source disposition composable, is hosted by hard-water-analysis, and exposes 0 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "gravimetric-vacuum-filtration:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "gravimetric-vacuum-filtration:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "gravimetric-vacuum-filtration:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "gravimetric-vacuum-filtration:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [
+        "HISTORICAL-OWNER-SUMMARY:7"
+      ],
+      "historicalFindingSummary": {
+        "count": 7,
+        "rules": {
+          "action/source-trace-missing": 7
+        }
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -1241,7 +1993,27 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "composable",
+      "individualRationale": "Indexed technique two-stage-precipitate-drying is present at public/techniques/two-stage-precipitate-drying.json, resolves through #/technique/two-stage-precipitate-drying, has source disposition composable, is hosted by hard-water-analysis, and exposes 3 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "two-stage-precipitate-drying:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "two-stage-precipitate-drying:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "two-stage-precipitate-drying:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "two-stage-precipitate-drying:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [
+        "CFG-001",
+        "HISTORICAL-OWNER-SUMMARY:31"
+      ],
+      "historicalFindingSummary": {
+        "count": 31,
+        "rules": {
+          "action/source-trace-missing": 31
+        }
+      },
+      "sourceReviewDisposition": "configuration-path-accounted",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -1264,7 +2036,22 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "composable",
+      "individualRationale": "Indexed technique inquiry-plan-approval is present at public/techniques/inquiry-plan-approval.json, resolves through #/technique/inquiry-plan-approval, has source disposition composable, is hosted by hard-water-analysis, and exposes 0 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "inquiry-plan-approval:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "inquiry-plan-approval:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "inquiry-plan-approval:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "inquiry-plan-approval:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -1291,7 +2078,27 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "composable",
+      "individualRationale": "Indexed technique hard-water-two-sample-inquiry is present at public/techniques/hard-water-two-sample-inquiry.json, resolves through #/technique/hard-water-two-sample-inquiry, has source disposition composable, is hosted by hard-water-analysis, and exposes 3 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "hard-water-two-sample-inquiry:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "hard-water-two-sample-inquiry:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "hard-water-two-sample-inquiry:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "hard-water-two-sample-inquiry:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [
+        "CFG-001",
+        "HISTORICAL-OWNER-SUMMARY:76"
+      ],
+      "historicalFindingSummary": {
+        "count": 76,
+        "rules": {
+          "action/source-trace-missing": 76
+        }
+      },
+      "sourceReviewDisposition": "configuration-path-accounted",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -1340,7 +2147,26 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "lab-scoped",
+      "individualRationale": "Indexed technique beverage-ph-volume-titration is present at public/techniques/beverage-ph-volume-titration.json, resolves through #/technique/beverage-ph-volume-titration, has source disposition lab-scoped, is hosted by beverage-acidity, and exposes 12 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "beverage-ph-volume-titration:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "beverage-ph-volume-titration:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "beverage-ph-volume-titration:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "beverage-ph-volume-titration:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [
+        "HISTORICAL-OWNER-SUMMARY:212"
+      ],
+      "historicalFindingSummary": {
+        "count": 212,
+        "rules": {
+          "action/source-trace-missing": 212
+        }
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -1363,7 +2189,22 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "lab-scoped",
+      "individualRationale": "Indexed technique crystal-violet-micromolar-dilution-series is present at public/techniques/crystal-violet-micromolar-dilution-series.json, resolves through #/technique/crystal-violet-micromolar-dilution-series, has source disposition lab-scoped, is hosted by crystal-violet-rate-law, and exposes 0 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "crystal-violet-micromolar-dilution-series:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "crystal-violet-micromolar-dilution-series:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "crystal-violet-micromolar-dilution-series:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "crystal-violet-micromolar-dilution-series:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -1386,7 +2227,22 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "lab-scoped",
+      "individualRationale": "Indexed technique crystal-violet-spectrophotometer-calibration is present at public/techniques/crystal-violet-spectrophotometer-calibration.json, resolves through #/technique/crystal-violet-spectrophotometer-calibration, has source disposition lab-scoped, is hosted by crystal-violet-rate-law, and exposes 0 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "crystal-violet-spectrophotometer-calibration:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "crystal-violet-spectrophotometer-calibration:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "crystal-violet-spectrophotometer-calibration:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "crystal-violet-spectrophotometer-calibration:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -1416,7 +2272,22 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "lab-scoped",
+      "individualRationale": "Indexed technique crystal-violet-integrated-rate-law-comparison is present at public/techniques/crystal-violet-integrated-rate-law-comparison.json, resolves through #/technique/crystal-violet-integrated-rate-law-comparison, has source disposition lab-scoped, is hosted by crystal-violet-rate-law, crystal-violet-rate-law, and exposes 1 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "crystal-violet-integrated-rate-law-comparison:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "crystal-violet-integrated-rate-law-comparison:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "crystal-violet-integrated-rate-law-comparison:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "crystal-violet-integrated-rate-law-comparison:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -1439,7 +2310,26 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "lab-scoped",
+      "individualRationale": "Indexed technique crystal-violet-waste-treatment is present at public/techniques/crystal-violet-waste-treatment.json, resolves through #/technique/crystal-violet-waste-treatment, has source disposition lab-scoped, is hosted by crystal-violet-rate-law, and exposes 0 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "crystal-violet-waste-treatment:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "crystal-violet-waste-treatment:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "crystal-violet-waste-treatment:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "crystal-violet-waste-treatment:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [
+        "HISTORICAL-OWNER-SUMMARY:1"
+      ],
+      "historicalFindingSummary": {
+        "count": 1,
+        "rules": {
+          "cycle06/cuvette-slot-unbalanced": 1
+        }
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -1462,7 +2352,26 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "composable",
+      "individualRationale": "Indexed technique quick-ache-property-evidence is present at public/techniques/quick-ache-property-evidence.json, resolves through #/technique/quick-ache-property-evidence, has source disposition composable, is hosted by quick-ache-relief-separation, and exposes 0 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "quick-ache-property-evidence:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "quick-ache-property-evidence:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "quick-ache-property-evidence:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "quick-ache-property-evidence:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [
+        "HISTORICAL-OWNER-SUMMARY:6"
+      ],
+      "historicalFindingSummary": {
+        "count": 6,
+        "rules": {
+          "action/source-trace-missing": 6
+        }
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -1485,7 +2394,22 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "composable",
+      "individualRationale": "Indexed technique quick-ache-design-approval is present at public/techniques/quick-ache-design-approval.json, resolves through #/technique/quick-ache-design-approval, has source disposition composable, is hosted by quick-ache-relief-separation, and exposes 0 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "quick-ache-design-approval:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "quick-ache-design-approval:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "quick-ache-design-approval:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "quick-ache-design-approval:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -1519,7 +2443,27 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "composable",
+      "individualRationale": "Indexed technique quick-ache-extraction-recovery is present at public/techniques/quick-ache-extraction-recovery.json, resolves through #/technique/quick-ache-extraction-recovery, has source disposition composable, is hosted by quick-ache-relief-separation, and exposes 10 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "quick-ache-extraction-recovery:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "quick-ache-extraction-recovery:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "quick-ache-extraction-recovery:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "quick-ache-extraction-recovery:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [
+        "CFG-003",
+        "HISTORICAL-OWNER-SUMMARY:57"
+      ],
+      "historicalFindingSummary": {
+        "count": 57,
+        "rules": {
+          "action/source-trace-missing": 57
+        }
+      },
+      "sourceReviewDisposition": "configuration-path-accounted",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -1542,7 +2486,22 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "composable",
+      "individualRationale": "Indexed technique quick-ache-analysis-report is present at public/techniques/quick-ache-analysis-report.json, resolves through #/technique/quick-ache-analysis-report, has source disposition composable, is hosted by quick-ache-relief-separation, and exposes 0 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "quick-ache-analysis-report:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "quick-ache-analysis-report:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "quick-ache-analysis-report:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "quick-ache-analysis-report:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -1611,7 +2570,26 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "lab-scoped",
+      "individualRationale": "Indexed technique marble-gas-syringe-kinetics is present at public/techniques/marble-gas-syringe-kinetics.json, resolves through #/technique/marble-gas-syringe-kinetics, has source disposition lab-scoped, is hosted by marble-statue-kinetics, marble-statue-kinetics, marble-statue-kinetics, marble-statue-kinetics, marble-statue-kinetics, marble-statue-kinetics, marble-statue-kinetics, and exposes 15 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "marble-gas-syringe-kinetics:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "marble-gas-syringe-kinetics:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "marble-gas-syringe-kinetics:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "marble-gas-syringe-kinetics:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [
+        "HISTORICAL-OWNER-SUMMARY:1"
+      ],
+      "historicalFindingSummary": {
+        "count": 1,
+        "rules": {
+          "cycle11/reactant-mass-measurement-unmatched": 1
+        }
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -1634,7 +2612,22 @@
       ],
       "specialRole": "indexed-technique",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "composable",
+      "individualRationale": "Indexed technique equilibrium-rainbow-inquiry is present at public/techniques/equilibrium-rainbow-inquiry.json, resolves through #/technique/equilibrium-rainbow-inquiry, has source disposition composable, is hosted by equilibrium-rainbow-display, and exposes 0 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "equilibrium-rainbow-inquiry:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "equilibrium-rainbow-inquiry:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "equilibrium-rainbow-inquiry:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "equilibrium-rainbow-inquiry:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [],
+      "historicalFindingSummary": {
+        "count": 0,
+        "rules": {}
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     },
     {
       "kind": "technique",
@@ -1687,7 +2680,31 @@
       ],
       "specialRole": "indexed-route-carrier",
       "disposition": "accounted-source",
-      "currentEvidence": "pending-authorized-pipeline"
+      "currentEvidence": "pending-separate-authorization",
+      "sourceDisposition": "lab-scoped",
+      "individualRationale": "Indexed technique ph-volume-formal-titration-trial is present at public/techniques/ph-volume-formal-titration-trial.json, resolves through #/technique/ph-volume-formal-titration-trial, has source disposition lab-scoped, is hosted by acid-base-titration-curves, and exposes 14 required configuration slot(s) in the source-reviewed contract.",
+      "scenarioAssignments": {
+        "ordinary": "ph-volume-formal-titration-trial:ordinary-supported-progression — traverse the supported published route with valid authored/configured inputs.",
+        "refusalOrConfigurationGate": "ph-volume-formal-titration-trial:refusal-or-configuration-gate — Configuration/host gate: verify the supported host or teacher-configuration path is required and generic materialization does not bypass host-only semantics.",
+        "recoveryOrReset": "ph-volume-formal-titration-trial:recovery-reset — recover from the refusal where supported, then reset/restart without carrying stale runtime evidence.",
+        "evidence": "ph-volume-formal-titration-trial:evidence — acquire/record the route's required measurement, notebook and calculation evidence without substituting authored answers."
+      },
+      "findingReferences": [
+        "HISTORICAL-OWNER-SUMMARY:35"
+      ],
+      "historicalFindingSummary": {
+        "count": 35,
+        "rules": {
+          "action/source-trace-missing": 35
+        }
+      },
+      "sourceReviewDisposition": "no-known-source-defect-from-current-source-review",
+      "sourceScenarioStatus": "planned-not-executed"
     }
-  ]
+  ],
+  "status": {
+    "sourceRepairStatus": "complete-within-source-review-scope",
+    "currentEvidenceStatus": "pending-separate-authorization-and-evidence-dependency-transfer",
+    "fullItem2Status": "incomplete"
+  }
 }

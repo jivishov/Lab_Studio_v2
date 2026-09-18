@@ -1,8 +1,8 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "branch": "codex/item2-catalog-reconciliation",
   "baseline": "f7c2b863f641090d9abc5c08ee22da72702fdfd6",
-  "mode": "static source configuration accounting only; no compiler/witness pipeline executed",
+  "mode": "source-level hosted configuration reconciliation; compiled coverage intentionally unrun",
   "declaredCatalog": {
     "labs": 17,
     "techniques": 42,
@@ -10,532 +10,9 @@
   },
   "sourceHostInstances": {
     "count": 66,
-    "represented": 47,
-    "missingRequired": [
-      {
-        "labId": "hard-water-analysis",
-        "instanceId": "two-stage-precipitate-drying",
-        "techniqueId": "two-stage-precipitate-drying",
-        "version": "1.2.0",
-        "configurationKeys": [],
-        "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
-          "ovenTemperatureC",
-          "firstDurationMinutes",
-          "coolingTemperatureC"
-        ],
-        "staticBindingStatus": "missing-required-slot"
-      },
-      {
-        "labId": "hard-water-analysis",
-        "instanceId": "hard-water-two-sample-inquiry",
-        "techniqueId": "hard-water-two-sample-inquiry",
-        "version": "1.2.0",
-        "configurationKeys": [],
-        "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
-          "ovenTemperatureC",
-          "firstDurationMinutes",
-          "coolingTemperatureC"
-        ],
-        "staticBindingStatus": "missing-required-slot"
-      },
-      {
-        "labId": "bonding-unknown-solids",
-        "instanceId": "known-1",
-        "techniqueId": "bonding-solids-tests",
-        "version": "1.2.0",
-        "configurationKeys": [
-          "conductivityThresholds",
-          "dryWasteDestination",
-          "ethanolAmount",
-          "ethanolWasteDestination",
-          "evidenceScopeId",
-          "hclAmount",
-          "hclWasteDestination",
-          "hexanesAmount",
-          "hexanesWasteDestination",
-          "hoodControl",
-          "meltingApparatusLimits",
-          "microsampleAmount",
-          "naohAmount",
-          "naohWasteDestination",
-          "phThresholds",
-          "sampleIdentity",
-          "sampleMode",
-          "selectedTestPanel",
-          "waterAmount",
-          "waterWasteDestination"
-        ],
-        "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
-          "selectedProcedure"
-        ],
-        "staticBindingStatus": "missing-required-slot"
-      },
-      {
-        "labId": "bonding-unknown-solids",
-        "instanceId": "known-2",
-        "techniqueId": "bonding-solids-tests",
-        "version": "1.2.0",
-        "configurationKeys": [
-          "conductivityThresholds",
-          "dryWasteDestination",
-          "ethanolAmount",
-          "ethanolWasteDestination",
-          "evidenceScopeId",
-          "hclAmount",
-          "hclWasteDestination",
-          "hexanesAmount",
-          "hexanesWasteDestination",
-          "hoodControl",
-          "meltingApparatusLimits",
-          "microsampleAmount",
-          "naohAmount",
-          "naohWasteDestination",
-          "phThresholds",
-          "sampleIdentity",
-          "sampleMode",
-          "selectedTestPanel",
-          "waterAmount",
-          "waterWasteDestination"
-        ],
-        "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
-          "selectedProcedure"
-        ],
-        "staticBindingStatus": "missing-required-slot"
-      },
-      {
-        "labId": "bonding-unknown-solids",
-        "instanceId": "known-3",
-        "techniqueId": "bonding-solids-tests",
-        "version": "1.2.0",
-        "configurationKeys": [
-          "conductivityThresholds",
-          "dryWasteDestination",
-          "ethanolAmount",
-          "ethanolWasteDestination",
-          "evidenceScopeId",
-          "hclAmount",
-          "hclWasteDestination",
-          "hexanesAmount",
-          "hexanesWasteDestination",
-          "hoodControl",
-          "meltingApparatusLimits",
-          "microsampleAmount",
-          "naohAmount",
-          "naohWasteDestination",
-          "phThresholds",
-          "sampleIdentity",
-          "sampleMode",
-          "selectedTestPanel",
-          "waterAmount",
-          "waterWasteDestination"
-        ],
-        "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
-          "selectedProcedure"
-        ],
-        "staticBindingStatus": "missing-required-slot"
-      },
-      {
-        "labId": "bonding-unknown-solids",
-        "instanceId": "known-4",
-        "techniqueId": "bonding-solids-tests",
-        "version": "1.2.0",
-        "configurationKeys": [
-          "conductivityThresholds",
-          "dryWasteDestination",
-          "ethanolAmount",
-          "ethanolWasteDestination",
-          "evidenceScopeId",
-          "hclAmount",
-          "hclWasteDestination",
-          "hexanesAmount",
-          "hexanesWasteDestination",
-          "hoodControl",
-          "meltingApparatusLimits",
-          "microsampleAmount",
-          "naohAmount",
-          "naohWasteDestination",
-          "phThresholds",
-          "sampleIdentity",
-          "sampleMode",
-          "selectedTestPanel",
-          "waterAmount",
-          "waterWasteDestination"
-        ],
-        "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
-          "selectedProcedure"
-        ],
-        "staticBindingStatus": "missing-required-slot"
-      },
-      {
-        "labId": "bonding-unknown-solids",
-        "instanceId": "known-5-count5",
-        "techniqueId": "bonding-solids-tests",
-        "version": "1.2.0",
-        "configurationKeys": [
-          "conductivityThresholds",
-          "dryWasteDestination",
-          "ethanolAmount",
-          "ethanolWasteDestination",
-          "evidenceScopeId",
-          "hclAmount",
-          "hclWasteDestination",
-          "hexanesAmount",
-          "hexanesWasteDestination",
-          "hoodControl",
-          "meltingApparatusLimits",
-          "microsampleAmount",
-          "naohAmount",
-          "naohWasteDestination",
-          "phThresholds",
-          "sampleIdentity",
-          "sampleMode",
-          "selectedTestPanel",
-          "waterAmount",
-          "waterWasteDestination"
-        ],
-        "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
-          "selectedProcedure"
-        ],
-        "staticBindingStatus": "missing-required-slot"
-      },
-      {
-        "labId": "bonding-unknown-solids",
-        "instanceId": "known-5-count6",
-        "techniqueId": "bonding-solids-tests",
-        "version": "1.2.0",
-        "configurationKeys": [
-          "conductivityThresholds",
-          "dryWasteDestination",
-          "ethanolAmount",
-          "ethanolWasteDestination",
-          "evidenceScopeId",
-          "hclAmount",
-          "hclWasteDestination",
-          "hexanesAmount",
-          "hexanesWasteDestination",
-          "hoodControl",
-          "meltingApparatusLimits",
-          "microsampleAmount",
-          "naohAmount",
-          "naohWasteDestination",
-          "phThresholds",
-          "sampleIdentity",
-          "sampleMode",
-          "selectedTestPanel",
-          "waterAmount",
-          "waterWasteDestination"
-        ],
-        "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
-          "selectedProcedure"
-        ],
-        "staticBindingStatus": "missing-required-slot"
-      },
-      {
-        "labId": "bonding-unknown-solids",
-        "instanceId": "known-6",
-        "techniqueId": "bonding-solids-tests",
-        "version": "1.2.0",
-        "configurationKeys": [
-          "conductivityThresholds",
-          "dryWasteDestination",
-          "ethanolAmount",
-          "ethanolWasteDestination",
-          "evidenceScopeId",
-          "hclAmount",
-          "hclWasteDestination",
-          "hexanesAmount",
-          "hexanesWasteDestination",
-          "hoodControl",
-          "meltingApparatusLimits",
-          "microsampleAmount",
-          "naohAmount",
-          "naohWasteDestination",
-          "phThresholds",
-          "sampleIdentity",
-          "sampleMode",
-          "selectedTestPanel",
-          "waterAmount",
-          "waterWasteDestination"
-        ],
-        "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
-          "selectedProcedure"
-        ],
-        "staticBindingStatus": "missing-required-slot"
-      },
-      {
-        "labId": "bonding-unknown-solids",
-        "instanceId": "blind-1",
-        "techniqueId": "bonding-solids-tests",
-        "version": "1.2.0",
-        "configurationKeys": [
-          "conductivityThresholds",
-          "dryWasteDestination",
-          "ethanolAmount",
-          "ethanolWasteDestination",
-          "evidenceScopeId",
-          "hclAmount",
-          "hclWasteDestination",
-          "hexanesAmount",
-          "hexanesWasteDestination",
-          "hoodControl",
-          "meltingApparatusLimits",
-          "microsampleAmount",
-          "naohAmount",
-          "naohWasteDestination",
-          "phThresholds",
-          "sampleIdentity",
-          "sampleMode",
-          "selectedTestPanel",
-          "waterAmount",
-          "waterWasteDestination"
-        ],
-        "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
-          "selectedProcedure"
-        ],
-        "staticBindingStatus": "missing-required-slot"
-      },
-      {
-        "labId": "bonding-unknown-solids",
-        "instanceId": "blind-2",
-        "techniqueId": "bonding-solids-tests",
-        "version": "1.2.0",
-        "configurationKeys": [
-          "conductivityThresholds",
-          "dryWasteDestination",
-          "ethanolAmount",
-          "ethanolWasteDestination",
-          "evidenceScopeId",
-          "hclAmount",
-          "hclWasteDestination",
-          "hexanesAmount",
-          "hexanesWasteDestination",
-          "hoodControl",
-          "meltingApparatusLimits",
-          "microsampleAmount",
-          "naohAmount",
-          "naohWasteDestination",
-          "phThresholds",
-          "sampleIdentity",
-          "sampleMode",
-          "selectedTestPanel",
-          "waterAmount",
-          "waterWasteDestination"
-        ],
-        "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
-          "selectedProcedure"
-        ],
-        "staticBindingStatus": "missing-required-slot"
-      },
-      {
-        "labId": "bonding-unknown-solids",
-        "instanceId": "blind-3",
-        "techniqueId": "bonding-solids-tests",
-        "version": "1.2.0",
-        "configurationKeys": [
-          "conductivityThresholds",
-          "dryWasteDestination",
-          "ethanolAmount",
-          "ethanolWasteDestination",
-          "evidenceScopeId",
-          "hclAmount",
-          "hclWasteDestination",
-          "hexanesAmount",
-          "hexanesWasteDestination",
-          "hoodControl",
-          "meltingApparatusLimits",
-          "microsampleAmount",
-          "naohAmount",
-          "naohWasteDestination",
-          "phThresholds",
-          "sampleIdentity",
-          "sampleMode",
-          "selectedTestPanel",
-          "waterAmount",
-          "waterWasteDestination"
-        ],
-        "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
-          "selectedProcedure"
-        ],
-        "staticBindingStatus": "missing-required-slot"
-      },
-      {
-        "labId": "bonding-unknown-solids",
-        "instanceId": "blind-4",
-        "techniqueId": "bonding-solids-tests",
-        "version": "1.2.0",
-        "configurationKeys": [
-          "conductivityThresholds",
-          "dryWasteDestination",
-          "ethanolAmount",
-          "ethanolWasteDestination",
-          "evidenceScopeId",
-          "hclAmount",
-          "hclWasteDestination",
-          "hexanesAmount",
-          "hexanesWasteDestination",
-          "hoodControl",
-          "meltingApparatusLimits",
-          "microsampleAmount",
-          "naohAmount",
-          "naohWasteDestination",
-          "phThresholds",
-          "sampleIdentity",
-          "sampleMode",
-          "selectedTestPanel",
-          "waterAmount",
-          "waterWasteDestination"
-        ],
-        "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
-          "selectedProcedure"
-        ],
-        "staticBindingStatus": "missing-required-slot"
-      },
-      {
-        "labId": "bonding-unknown-solids",
-        "instanceId": "blind-5-count5",
-        "techniqueId": "bonding-solids-tests",
-        "version": "1.2.0",
-        "configurationKeys": [
-          "conductivityThresholds",
-          "dryWasteDestination",
-          "ethanolAmount",
-          "ethanolWasteDestination",
-          "evidenceScopeId",
-          "hclAmount",
-          "hclWasteDestination",
-          "hexanesAmount",
-          "hexanesWasteDestination",
-          "hoodControl",
-          "meltingApparatusLimits",
-          "microsampleAmount",
-          "naohAmount",
-          "naohWasteDestination",
-          "phThresholds",
-          "sampleIdentity",
-          "sampleMode",
-          "selectedTestPanel",
-          "waterAmount",
-          "waterWasteDestination"
-        ],
-        "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
-          "selectedProcedure"
-        ],
-        "staticBindingStatus": "missing-required-slot"
-      },
-      {
-        "labId": "bonding-unknown-solids",
-        "instanceId": "blind-5-count6",
-        "techniqueId": "bonding-solids-tests",
-        "version": "1.2.0",
-        "configurationKeys": [
-          "conductivityThresholds",
-          "dryWasteDestination",
-          "ethanolAmount",
-          "ethanolWasteDestination",
-          "evidenceScopeId",
-          "hclAmount",
-          "hclWasteDestination",
-          "hexanesAmount",
-          "hexanesWasteDestination",
-          "hoodControl",
-          "meltingApparatusLimits",
-          "microsampleAmount",
-          "naohAmount",
-          "naohWasteDestination",
-          "phThresholds",
-          "sampleIdentity",
-          "sampleMode",
-          "selectedTestPanel",
-          "waterAmount",
-          "waterWasteDestination"
-        ],
-        "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
-          "selectedProcedure"
-        ],
-        "staticBindingStatus": "missing-required-slot"
-      },
-      {
-        "labId": "bonding-unknown-solids",
-        "instanceId": "blind-6",
-        "techniqueId": "bonding-solids-tests",
-        "version": "1.2.0",
-        "configurationKeys": [
-          "conductivityThresholds",
-          "dryWasteDestination",
-          "ethanolAmount",
-          "ethanolWasteDestination",
-          "evidenceScopeId",
-          "hclAmount",
-          "hclWasteDestination",
-          "hexanesAmount",
-          "hexanesWasteDestination",
-          "hoodControl",
-          "meltingApparatusLimits",
-          "microsampleAmount",
-          "naohAmount",
-          "naohWasteDestination",
-          "phThresholds",
-          "sampleIdentity",
-          "sampleMode",
-          "selectedTestPanel",
-          "waterAmount",
-          "waterWasteDestination"
-        ],
-        "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
-          "selectedProcedure"
-        ],
-        "staticBindingStatus": "missing-required-slot"
-      },
-      {
-        "labId": "quick-ache-relief-separation",
-        "instanceId": "extraction",
-        "techniqueId": "quick-ache-extraction-recovery",
-        "version": "1.3.1",
-        "configurationKeys": [],
-        "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
-          "organicRecoveryMethod",
-          "aqueousRecoveryMethod",
-          "drynessCriterion",
-          "coolingLimitC",
-          "acidEndpointPh",
-          "organicDensity",
-          "aqueousDensity",
-          "recoverySetupApproved",
-          "extractionCount",
-          "selectedProcedure"
-        ],
-        "staticBindingStatus": "missing-required-slot"
-      }
-    ],
-    "detailedComparisonPending": [
-      {
-        "labId": "paper-chromatography",
-        "instanceId": "chromatography-trials",
-        "techniqueId": "paper-chromatography"
-      },
-      {
-        "labId": "hand-warmer-calorimetry",
-        "instanceId": "hand-warmer",
-        "techniqueId": "hand-warmer-calorimetry"
-      }
-    ],
+    "represented": 66,
+    "missingRequired": [],
+    "detailedComparisonPending": [],
     "instances": [
       {
         "labId": "intro-filtration-demo",
@@ -886,10 +363,12 @@
         "version": "1.2.1",
         "configurationKeys": [],
         "requiredSlotsKnown": false,
-        "missingRequiredSlots": [
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-after-supported-teacher-setup",
+        "preSetupMissingRequiredSlots": [
           "not-assessed: source too large for full connector materialization"
         ],
-        "staticBindingStatus": "represented-host; detailed required-slot comparison pending"
+        "sourceConfigurationEvidence": "src/data/labSetup.ts materializes the required hosted configuration before compilation"
       },
       {
         "labId": "equilibrium-rainbow-display",
@@ -909,11 +388,11 @@
         "configurationKeys": [
           "wasteRoute"
         ],
-        "requiredSlotsKnown": false,
-        "missingRequiredSlots": [
-          "not-assessed: source too large for full connector materialization"
-        ],
-        "staticBindingStatus": "represented-host; detailed required-slot comparison pending"
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source",
+        "preSetupMissingRequiredSlots": [],
+        "sourceConfigurationEvidence": "lab host binds wasteRoute=teacher-configured; authoritative hand-warmer generator declares the same required slot with that default"
       },
       {
         "labId": "blue1-spectroscopy",
@@ -995,12 +474,14 @@
         "version": "1.2.0",
         "configurationKeys": [],
         "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-after-supported-teacher-setup",
+        "preSetupMissingRequiredSlots": [
           "ovenTemperatureC",
           "firstDurationMinutes",
           "coolingTemperatureC"
         ],
-        "staticBindingStatus": "missing-required-slot"
+        "sourceConfigurationEvidence": "src/data/labSetup.ts materializes the required hosted configuration before compilation"
       },
       {
         "labId": "hard-water-analysis",
@@ -1019,12 +500,14 @@
         "version": "1.2.0",
         "configurationKeys": [],
         "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-after-supported-teacher-setup",
+        "preSetupMissingRequiredSlots": [
           "ovenTemperatureC",
           "firstDurationMinutes",
           "coolingTemperatureC"
         ],
-        "staticBindingStatus": "missing-required-slot"
+        "sourceConfigurationEvidence": "src/data/labSetup.ts materializes the required hosted configuration before compilation"
       },
       {
         "labId": "beverage-acidity",
@@ -1077,10 +560,12 @@
           "waterWasteDestination"
         ],
         "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-after-supported-teacher-setup",
+        "preSetupMissingRequiredSlots": [
           "selectedProcedure"
         ],
-        "staticBindingStatus": "missing-required-slot"
+        "sourceConfigurationEvidence": "src/data/labSetup.ts materializes the required hosted configuration before compilation"
       },
       {
         "labId": "bonding-unknown-solids",
@@ -1110,10 +595,12 @@
           "waterWasteDestination"
         ],
         "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-after-supported-teacher-setup",
+        "preSetupMissingRequiredSlots": [
           "selectedProcedure"
         ],
-        "staticBindingStatus": "missing-required-slot"
+        "sourceConfigurationEvidence": "src/data/labSetup.ts materializes the required hosted configuration before compilation"
       },
       {
         "labId": "bonding-unknown-solids",
@@ -1143,10 +630,12 @@
           "waterWasteDestination"
         ],
         "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-after-supported-teacher-setup",
+        "preSetupMissingRequiredSlots": [
           "selectedProcedure"
         ],
-        "staticBindingStatus": "missing-required-slot"
+        "sourceConfigurationEvidence": "src/data/labSetup.ts materializes the required hosted configuration before compilation"
       },
       {
         "labId": "bonding-unknown-solids",
@@ -1176,10 +665,12 @@
           "waterWasteDestination"
         ],
         "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-after-supported-teacher-setup",
+        "preSetupMissingRequiredSlots": [
           "selectedProcedure"
         ],
-        "staticBindingStatus": "missing-required-slot"
+        "sourceConfigurationEvidence": "src/data/labSetup.ts materializes the required hosted configuration before compilation"
       },
       {
         "labId": "bonding-unknown-solids",
@@ -1209,10 +700,12 @@
           "waterWasteDestination"
         ],
         "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-after-supported-teacher-setup",
+        "preSetupMissingRequiredSlots": [
           "selectedProcedure"
         ],
-        "staticBindingStatus": "missing-required-slot"
+        "sourceConfigurationEvidence": "src/data/labSetup.ts materializes the required hosted configuration before compilation"
       },
       {
         "labId": "bonding-unknown-solids",
@@ -1242,10 +735,12 @@
           "waterWasteDestination"
         ],
         "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-after-supported-teacher-setup",
+        "preSetupMissingRequiredSlots": [
           "selectedProcedure"
         ],
-        "staticBindingStatus": "missing-required-slot"
+        "sourceConfigurationEvidence": "src/data/labSetup.ts materializes the required hosted configuration before compilation"
       },
       {
         "labId": "bonding-unknown-solids",
@@ -1275,10 +770,12 @@
           "waterWasteDestination"
         ],
         "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-after-supported-teacher-setup",
+        "preSetupMissingRequiredSlots": [
           "selectedProcedure"
         ],
-        "staticBindingStatus": "missing-required-slot"
+        "sourceConfigurationEvidence": "src/data/labSetup.ts materializes the required hosted configuration before compilation"
       },
       {
         "labId": "bonding-unknown-solids",
@@ -1308,10 +805,12 @@
           "waterWasteDestination"
         ],
         "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-after-supported-teacher-setup",
+        "preSetupMissingRequiredSlots": [
           "selectedProcedure"
         ],
-        "staticBindingStatus": "missing-required-slot"
+        "sourceConfigurationEvidence": "src/data/labSetup.ts materializes the required hosted configuration before compilation"
       },
       {
         "labId": "bonding-unknown-solids",
@@ -1341,10 +840,12 @@
           "waterWasteDestination"
         ],
         "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-after-supported-teacher-setup",
+        "preSetupMissingRequiredSlots": [
           "selectedProcedure"
         ],
-        "staticBindingStatus": "missing-required-slot"
+        "sourceConfigurationEvidence": "src/data/labSetup.ts materializes the required hosted configuration before compilation"
       },
       {
         "labId": "bonding-unknown-solids",
@@ -1374,10 +875,12 @@
           "waterWasteDestination"
         ],
         "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-after-supported-teacher-setup",
+        "preSetupMissingRequiredSlots": [
           "selectedProcedure"
         ],
-        "staticBindingStatus": "missing-required-slot"
+        "sourceConfigurationEvidence": "src/data/labSetup.ts materializes the required hosted configuration before compilation"
       },
       {
         "labId": "bonding-unknown-solids",
@@ -1407,10 +910,12 @@
           "waterWasteDestination"
         ],
         "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-after-supported-teacher-setup",
+        "preSetupMissingRequiredSlots": [
           "selectedProcedure"
         ],
-        "staticBindingStatus": "missing-required-slot"
+        "sourceConfigurationEvidence": "src/data/labSetup.ts materializes the required hosted configuration before compilation"
       },
       {
         "labId": "bonding-unknown-solids",
@@ -1440,10 +945,12 @@
           "waterWasteDestination"
         ],
         "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-after-supported-teacher-setup",
+        "preSetupMissingRequiredSlots": [
           "selectedProcedure"
         ],
-        "staticBindingStatus": "missing-required-slot"
+        "sourceConfigurationEvidence": "src/data/labSetup.ts materializes the required hosted configuration before compilation"
       },
       {
         "labId": "bonding-unknown-solids",
@@ -1473,10 +980,12 @@
           "waterWasteDestination"
         ],
         "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-after-supported-teacher-setup",
+        "preSetupMissingRequiredSlots": [
           "selectedProcedure"
         ],
-        "staticBindingStatus": "missing-required-slot"
+        "sourceConfigurationEvidence": "src/data/labSetup.ts materializes the required hosted configuration before compilation"
       },
       {
         "labId": "bonding-unknown-solids",
@@ -1506,10 +1015,12 @@
           "waterWasteDestination"
         ],
         "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-after-supported-teacher-setup",
+        "preSetupMissingRequiredSlots": [
           "selectedProcedure"
         ],
-        "staticBindingStatus": "missing-required-slot"
+        "sourceConfigurationEvidence": "src/data/labSetup.ts materializes the required hosted configuration before compilation"
       },
       {
         "labId": "green-chemistry-mixture-purification",
@@ -1580,7 +1091,9 @@
         "version": "1.3.1",
         "configurationKeys": [],
         "requiredSlotsKnown": true,
-        "missingRequiredSlots": [
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-after-supported-teacher-setup",
+        "preSetupMissingRequiredSlots": [
           "organicRecoveryMethod",
           "aqueousRecoveryMethod",
           "drynessCriterion",
@@ -1592,7 +1105,7 @@
           "extractionCount",
           "selectedProcedure"
         ],
-        "staticBindingStatus": "missing-required-slot"
+        "sourceConfigurationEvidence": "src/data/labSetup.ts materializes the required hosted configuration before compilation"
       },
       {
         "labId": "quick-ache-relief-separation",
@@ -1881,7 +1394,12 @@
         "missingRequiredSlots": [],
         "staticBindingStatus": "represented-in-source"
       }
-    ]
+    ],
+    "sourceReviewSummary": {
+      "representedOrMaterialized": 66,
+      "unresolvedSourceConfiguration": 0,
+      "note": "This is source-level binding/setup coverage only. Compiled witness representation remains unmeasured until the authorized pipeline runs."
+    }
   },
   "currentCompiledCoverage": {
     "status": "not-run",
