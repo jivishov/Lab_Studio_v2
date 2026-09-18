@@ -1,0 +1,357 @@
+{
+  "schemaVersion": 1,
+  "scope": "item-2 complete indexed Lab Studio catalog",
+  "branch": "codex/item2-catalog-reconciliation",
+  "mainBaseline": "f7c2b863f641090d9abc5c08ee22da72702fdfd6",
+  "evidenceMode": "source-review-only; named evidence pipeline not authorized",
+  "counts": {
+    "labs": 17,
+    "techniques": 42,
+    "total": 59
+  },
+  "notes": [
+    "Host associations are source-derived and do not substitute for compiled witness coverage.",
+    "ph-volume-formal-titration-trial is the 42nd indexed technique absent from the historical 41-technique ownership map."
+  ],
+  "labs": [
+    {
+      "kind": "lab",
+      "id": "intro-filtration-demo",
+      "title": "Precipitate and Filter Calcium Carbonate",
+      "file": "public/labs/intro-filtration-demo.json",
+      "version": "1.2.0",
+      "blob": "07a93194e81f8b6da267d2bfc757355d72fd903a",
+      "route": "#/play/intro-filtration-demo",
+      "executionModel": "shared-definition-player",
+      "setupSurface": "generic",
+      "hostedTechniqueInstances": [
+        "measuring-volume#measuring-volume@1.2.0",
+        "transfer#transfer@1.2.0",
+        "hard-water-precipitation#hard-water-precipitation@1.2.0",
+        "filtration#filtration@1.2.0"
+      ],
+      "reachabilityWitnessesAuthored": 1,
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "lab",
+      "id": "hard-water-demo",
+      "title": "Hard-Water Reference Demo",
+      "file": "public/labs/hard-water-demo.json",
+      "version": "1.2.0",
+      "blob": "0e78615c6dead9f9399de1910ff3898f1f381226",
+      "route": "#/play/hard-water-demo",
+      "executionModel": "shared-definition-player",
+      "setupSurface": "generic",
+      "hostedTechniqueInstances": [
+        "measuring-volume#measuring-volume@1.2.0",
+        "transfer#transfer@1.2.0",
+        "hard-water-precipitation#hard-water-precipitation@1.2.0",
+        "filtration#filtration@1.2.0",
+        "drying#drying@1.2.0",
+        "hard-water-calculation#hard-water-calculation@1.2.0"
+      ],
+      "reachabilityWitnessesAuthored": 1,
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "lab",
+      "id": "acid-base-titration",
+      "title": "Acid-Base Titration",
+      "file": "public/labs/acid-base-titration.json",
+      "version": "3.0.1",
+      "blob": "a82bd98f630b090c8afacf529ed448eaaf3317a2",
+      "route": "#/play/acid-base-titration",
+      "executionModel": "shared-definition-player",
+      "setupSurface": "titration-form",
+      "hostedTechniqueInstances": [
+        "titration-endpoint#investigation@3.0.1"
+      ],
+      "reachabilityWitnessesAuthored": 1,
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "lab",
+      "id": "marble-statue-kinetics",
+      "title": "How Long Will That Marble Statue Last?",
+      "file": "public/labs/marble-statue-kinetics.json",
+      "version": "3.1.0",
+      "blob": "1da7898472bfcfb63b9b2a0dfc2afe49bb520e5e",
+      "route": "#/play/marble-statue-kinetics",
+      "executionModel": "shared-definition-player",
+      "setupSurface": "generic",
+      "hostedTechniqueInstances": [
+        "marble-gas-syringe-kinetics#practice-trial@2.1.0",
+        "marble-gas-syringe-kinetics#acid-2m-trial@2.1.0",
+        "marble-gas-syringe-kinetics#acid-4m-trial@2.1.0",
+        "marble-gas-syringe-kinetics#acid-6m-trial@2.1.0",
+        "marble-gas-syringe-kinetics#acid-2m-rate-analysis@2.1.0",
+        "marble-gas-syringe-kinetics#acid-4m-rate-analysis@2.1.0",
+        "marble-gas-syringe-kinetics#acid-6m-rate-analysis@2.1.0"
+      ],
+      "reachabilityWitnessesAuthored": 1,
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "lab",
+      "id": "paper-chromatography",
+      "title": "Sticky Question: Paper Chromatography",
+      "file": "public/labs/paper-chromatography.json",
+      "version": "1.2.0",
+      "blob": "3405d6da4aae8f1eabdb4761ade589255e6bdc37",
+      "route": "#/play/paper-chromatography",
+      "executionModel": "shared-definition-player",
+      "setupSurface": "paper-form",
+      "hostedTechniqueInstances": [
+        "paper-chromatography#chromatography-trials@1.2.1"
+      ],
+      "reachabilityWitnessesAuthored": 1,
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "lab",
+      "id": "equilibrium-rainbow-display",
+      "title": "Equilibrium Rainbow Display",
+      "file": "public/labs/equilibrium-rainbow-display.json",
+      "version": "2.3.0",
+      "blob": "a2646774e49870daf8a46bd71c552df76d7b01f9",
+      "route": "#/play/equilibrium-rainbow-display",
+      "executionModel": "shared-definition-player",
+      "setupSurface": "generic",
+      "hostedTechniqueInstances": [
+        "equilibrium-rainbow-inquiry#equilibrium@2.3.0"
+      ],
+      "reachabilityWitnessesAuthored": 1,
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "lab",
+      "id": "hand-warmer-calorimetry",
+      "title": "Designing an Effective Hand Warmer",
+      "file": "public/labs/hand-warmer-calorimetry.json",
+      "version": "2.5.1",
+      "blob": "7cdf314f86bd799c8eb4992d3959c479a74cc1fd",
+      "route": "#/play/hand-warmer-calorimetry",
+      "executionModel": "shared-definition-player",
+      "setupSurface": "generic",
+      "hostedTechniqueInstances": [
+        "hand-warmer-calorimetry#hand-warmer@2.5.1"
+      ],
+      "reachabilityWitnessesAuthored": 1,
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "lab",
+      "id": "blue1-spectroscopy",
+      "title": "Spectroscopy of Blue #1 Dye in a Sports Drink",
+      "file": "public/labs/blue1-spectroscopy.json",
+      "version": "1.3.0",
+      "blob": "82e1b6862a1bd587ecb8943d6b73939bb9973b0a",
+      "route": "#/play/blue1-spectroscopy",
+      "executionModel": "shared-definition-player",
+      "setupSurface": "generic",
+      "hostedTechniqueInstances": [
+        "blue1-standard-dilutions#blue1-standard-dilutions@1.3.0",
+        "blue1-class-calibration#blue1-class-calibration@1.3.0",
+        "blue1-percent-transmittance#blue1-percent-transmittance@2.0.0"
+      ],
+      "reachabilityWitnessesAuthored": 1,
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "lab",
+      "id": "brass-colorimetry",
+      "title": "How Can Color Determine the Copper Content of Brass?",
+      "file": "public/labs/brass-colorimetry.json",
+      "version": "2.0.0",
+      "blob": "b681469269c72664d9d8c657af61a850ebeda665",
+      "route": "#/play/brass-colorimetry",
+      "executionModel": "shared-definition-player",
+      "setupSurface": "generic",
+      "hostedTechniqueInstances": [
+        "brass-spectrophotometry#brass-spectrophotometry@2.0.0"
+      ],
+      "reachabilityWitnessesAuthored": 1,
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "lab",
+      "id": "hard-water-analysis",
+      "title": "What Makes Hard Water Hard?",
+      "file": "public/labs/hard-water-analysis.json",
+      "version": "1.2.0",
+      "blob": "72430270c22ba1fea6065af5cc47dd8011102aed",
+      "route": "#/play/hard-water-analysis",
+      "executionModel": "shared-definition-player",
+      "setupSurface": "hard-water-form",
+      "hostedTechniqueInstances": [
+        "hard-water-practice-preparation#hard-water-practice-preparation@1.2.0",
+        "gravimetric-vacuum-filtration#gravimetric-vacuum-filtration@1.2.0",
+        "two-stage-precipitate-drying#two-stage-precipitate-drying@1.2.0",
+        "inquiry-plan-approval#inquiry-plan-approval@1.2.0",
+        "hard-water-two-sample-inquiry#hard-water-two-sample-inquiry@1.2.0"
+      ],
+      "reachabilityWitnessesAuthored": 1,
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "lab",
+      "id": "beverage-acidity",
+      "title": "How Much Acid Is in Fruit Juice and Soft Drinks?",
+      "file": "public/labs/beverage-acidity.json",
+      "version": "3.0.1",
+      "blob": "77946f4add92b36814d6502cc922277f1faa4ab8",
+      "route": "#/play/beverage-acidity",
+      "executionModel": "shared-definition-player",
+      "setupSurface": "titration-form",
+      "hostedTechniqueInstances": [
+        "beverage-ph-volume-titration#investigation@3.0.1"
+      ],
+      "reachabilityWitnessesAuthored": 1,
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "lab",
+      "id": "bonding-unknown-solids",
+      "title": "What's in That Bottle? Bonding in Unknown Solids",
+      "file": "public/labs/bonding-unknown-solids.json",
+      "version": "1.3.0",
+      "blob": "fb6380e22b665711c21dce14f269b80b3e79805a",
+      "route": "#/play/bonding-unknown-solids",
+      "executionModel": "shared-definition-player",
+      "setupSurface": "bonding-form",
+      "hostedTechniqueInstances": [
+        "bonding-solids-tests#known-1@1.2.0",
+        "bonding-solids-tests#known-2@1.2.0",
+        "bonding-solids-tests#known-3@1.2.0",
+        "bonding-solids-tests#known-4@1.2.0",
+        "bonding-solids-tests#known-5-count5@1.2.0",
+        "bonding-solids-tests#known-5-count6@1.2.0",
+        "bonding-solids-tests#known-6@1.2.0",
+        "bonding-solids-tests#blind-1@1.2.0",
+        "bonding-solids-tests#blind-2@1.2.0",
+        "bonding-solids-tests#blind-3@1.2.0",
+        "bonding-solids-tests#blind-4@1.2.0",
+        "bonding-solids-tests#blind-5-count5@1.2.0",
+        "bonding-solids-tests#blind-5-count6@1.2.0",
+        "bonding-solids-tests#blind-6@1.2.0"
+      ],
+      "reachabilityWitnessesAuthored": 9,
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "lab",
+      "id": "green-chemistry-mixture-purification",
+      "title": "Purifying a Mixture with Green Chemistry",
+      "file": "public/labs/green-chemistry-mixture-purification.json",
+      "version": "1.3.0",
+      "blob": "155230be30172475fa0e53eac8efe059d8081e43",
+      "route": "#/play/green-chemistry-mixture-purification",
+      "executionModel": "custom-player",
+      "setupSurface": "custom-player",
+      "hostedTechniqueInstances": [
+        "thermal-decomposition-mass-loss#thermal-decomposition@2.0.1"
+      ],
+      "reachabilityWitnessesAuthored": 3,
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "lab",
+      "id": "hydrogen-peroxide-redox-titration",
+      "title": "Determining Hydrogen Peroxide Concentration by Redox Titration",
+      "file": "public/labs/hydrogen-peroxide-redox-titration.json",
+      "version": "3.0.1",
+      "blob": "d37eb89a635f83c7078ea45fdd3355d85adbb3b6",
+      "route": "#/play/hydrogen-peroxide-redox-titration",
+      "executionModel": "shared-definition-player",
+      "setupSurface": "titration-form",
+      "hostedTechniqueInstances": [
+        "redox-titration#investigation@3.0.1"
+      ],
+      "reachabilityWitnessesAuthored": 1,
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "lab",
+      "id": "quick-ache-relief-separation",
+      "title": "Separating the Components of Quick Ache Relief",
+      "file": "public/labs/quick-ache-relief-separation.json",
+      "version": "1.2.0",
+      "blob": "53640441c1ea86436c822ba8f21dc0ee2d3ded1e",
+      "route": "#/play/quick-ache-relief-separation",
+      "executionModel": "shared-definition-player",
+      "setupSurface": "quick-ache-form",
+      "hostedTechniqueInstances": [
+        "quick-ache-property-evidence#property@1.2.1",
+        "quick-ache-design-approval#approval@1.2.0",
+        "quick-ache-extraction-recovery#extraction@1.3.1",
+        "quick-ache-analysis-report#analysis@1.2.0"
+      ],
+      "reachabilityWitnessesAuthored": 1,
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "lab",
+      "id": "crystal-violet-rate-law",
+      "title": "Rate Law of Crystal Violet Fading Using Beer's Law",
+      "file": "public/labs/crystal-violet-rate-law.json",
+      "version": "2.1.0",
+      "blob": "a1c091ead4b323f7fc684e6f9bafc6be04030beb",
+      "route": "#/play/crystal-violet-rate-law",
+      "executionModel": "shared-definition-player",
+      "setupSurface": "generic",
+      "hostedTechniqueInstances": [
+        "crystal-violet-micromolar-dilution-series#dilution-series@1.2.0",
+        "crystal-violet-spectrophotometer-calibration#instrument-calibration@1.2.0",
+        "crystal-violet-kinetics#kinetics-initiation@1.2.0",
+        "crystal-violet-kinetics#kinetics-reading-1@1.2.0",
+        "crystal-violet-kinetics#kinetics-reading-2@1.2.0",
+        "crystal-violet-kinetics#kinetics-reading-3@1.2.0",
+        "crystal-violet-kinetics#kinetics-reading-4@1.2.0",
+        "crystal-violet-kinetics#kinetics-reading-5@1.2.0",
+        "crystal-violet-kinetics#kinetics-reading-6@1.2.0",
+        "crystal-violet-kinetics#kinetics-reading-7@1.2.0",
+        "crystal-violet-kinetics#kinetics-reading-8@1.2.0",
+        "crystal-violet-integrated-rate-law-comparison#rate-law-analysis@2.0.0",
+        "crystal-violet-integrated-rate-law-comparison#analysis-extension@2.0.0",
+        "crystal-violet-waste-treatment#waste-treatment@1.2.0"
+      ],
+      "reachabilityWitnessesAuthored": 2,
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "lab",
+      "id": "acid-base-titration-curves",
+      "title": "Exploring Acid-Base Titration Curves",
+      "file": "public/labs/acid-base-titration-curves.json",
+      "version": "2.1.0",
+      "blob": "bae40032bb1d867e482e66cbe3e5a4a6e8fa5171",
+      "route": "#/play/acid-base-titration-curves",
+      "executionModel": "custom-player",
+      "setupSurface": "custom-investigation-config",
+      "hostedTechniqueInstances": [
+        "ph-volume-formal-titration-trial#formal-trial@1.0.0"
+      ],
+      "reachabilityWitnessesAuthored": 3,
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    }
+  ],
+  "techniques": []
+}
