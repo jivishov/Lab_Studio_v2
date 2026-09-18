@@ -1588,7 +1588,9 @@
       "id": "i1-record-confirmed-calibration",
       "verb": "calculate",
       "label": "Record teacher-confirmed calibration relationship",
-      "parameters": {},
+      "parameters": {
+        "unresolvedConfirmationPoint": "Investigation 1 confirmation point 2: the printed transformation `1 x 10^T` is typographically ambiguous (finding 3.4) and the linearity criterion is stated as a positive slope through zero while the standard absorbance relation is A = -log T (finding 3.5). Neither is resolved here."
+      },
       "prerequisites": [
         {
           "id": "teacher-transform-confirmed",

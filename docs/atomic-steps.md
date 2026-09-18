@@ -29,7 +29,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 
 ## Atoms
 
-200 atoms across 15 families.
+204 atoms across 15 families.
 
 | Atom | Family | Verb | Interactions | Required roles |
 |---|---|---|---|---|
@@ -79,7 +79,10 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 | `atom.observe.read-titration-ph` | titration | `observe` | `readInstrument` | `immersed-probe-instrument`, `immersed-probe-vessel` |
 | `atom.transfer.charge-developing-chamber` | chromatography | `transfer` | `pourInto` | `liquid-source`, `developing-chamber` |
 | `atom.spotSample.apply-baseline-spot` | chromatography | `spotSample` | `spotOnto` | `spotting-tool`, `stationary-phase` |
-| `atom.developChromatogram.develop-strip` | chromatography | `developChromatogram` | `snapIntoTarget` | `stationary-phase`, `developing-chamber` |
+| `atom.developChromatogram.develop-strip` | chromatography | `developChromatogram` | `recordNotebook` | `stationary-phase`, `developing-chamber` |
+| `atom.place.insert-strip-into-chamber` | chromatography | `place` | `snapIntoTarget` | `stationary-phase`, `developing-chamber` |
+| `atom.observe.close-developing-chamber` | chromatography | `observe` | `recordNotebook` | `developing-chamber` |
+| `atom.observe.open-developing-chamber` | chromatography | `observe` | `recordNotebook` | `developing-chamber` |
 | `atom.place.gas-collection-apparatus` | kinetics | `place` | `snapIntoTarget` | `reaction-vessel`, `gas-delivery-connector`, `gas-collection-instrument` |
 | `atom.record.timed-gas-volume` | kinetics | `record` | `recordTimeSeries` | `gas-collection-instrument`, `timing-instrument` |
 | `atom.stressEquilibrium.reagent-stress` | equilibrium | `stressEquilibrium` | `pourInto` | `stress-reagent-source`, `equilibrium-vessel` |
@@ -528,22 +531,77 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 
 #### `atom.developChromatogram.develop-strip`
 
-**Develop the spotted strip in the chamber**
+**Develop the inserted strip in the closed chamber**
 
 - Verb: `developChromatogram`
+- Allowed interaction types: `recordNotebook`
+- Required roles: `stationary-phase`, `developing-chamber`
+- Optional roles: none
+- Evidence: developed chromatogram ready for removal and prompt solvent-front marking
+- Procedural constraints:
+  - The strip is already suspended in the chamber and the lid is closed: content declaring chamberSealed refuses an empty seat and an open chamber rather than seating the strip itself.
+  - Insertion geometry is validated: the lower edge is in solvent and the spot is above it.
+  - The stop condition is a configuration point; the solvent front is marked promptly after removal.
+- Source examples:
+  - `sticky-question-paper-chromatography_2026-07-27.md` phase step `TR-08` (M/C)
+- Content examples:
+  - `technique:paper-chromatography` action `develop-water-paper`
+  - `technique:paper-chromatography` action `develop-propanol-paper`
+
+#### `atom.place.insert-strip-into-chamber`
+
+**Suspend the spotted strip in the open chamber**
+
+- Verb: `place`
 - Allowed interaction types: `snapIntoTarget`
 - Required roles: `stationary-phase`, `developing-chamber`
 - Optional roles: none
-- Evidence: developed chromatogram with a marked solvent front
+- Evidence: a spotted strip suspended in its own open chamber
 - Procedural constraints:
-  - Insertion geometry is validated: the lower edge is in solvent and the spot is above it.
-  - The stop condition is a configuration point; the solvent front is marked promptly after removal.
+  - The chamber has to be open: a closed chamber refuses every insertion and removal, so this operation always precedes closing the lid.
+  - The lower edge sits in the solvent and the pencil origin stays above it; trial identity and orientation are preserved.
 - Source examples:
   - `sticky-question-paper-chromatography_2026-07-27.md` phase step `TR-06` (M/R)
   - `sticky-question-paper-chromatography_2026-07-27.md` apparatus step `CHR-04` (F)
 - Content examples:
-  - `technique:paper-chromatography` action `develop-water-paper`
-  - `technique:paper-chromatography` action `develop-propanol-paper`
+  - `technique:paper-chromatography` action `insert-water-paper`
+  - `technique:paper-chromatography` action `insert-propanol-paper`
+
+#### `atom.observe.close-developing-chamber`
+
+**Close the developing chamber lid**
+
+- Verb: `observe`
+- Allowed interaction types: `recordNotebook`
+- Required roles: `developing-chamber`
+- Optional roles: none
+- Evidence: a sealed developing chamber
+- Procedural constraints:
+  - Requires the matching closed chamberOperation on the named chamber; a notebook-only action cannot claim this physical operation.
+  - Closure is held per chamber instance, so closing one trial's chamber authorizes nothing in another.
+  - The lid changes no contents: no evaporation, pressure, timed-development or pause/resume behaviour is modeled.
+- Source examples:
+  - `sticky-question-paper-chromatography_2026-07-27.md` phase step `TR-07` (M)
+- Content examples:
+  - `technique:paper-chromatography` action `close-water-chamber`
+  - `technique:paper-chromatography` action `close-propanol-chamber`
+
+#### `atom.observe.open-developing-chamber`
+
+**Open the developing chamber lid**
+
+- Verb: `observe`
+- Allowed interaction types: `recordNotebook`
+- Required roles: `developing-chamber`
+- Optional roles: none
+- Evidence: an open developing chamber whose contents are unchanged
+- Procedural constraints:
+  - Requires the matching closed chamberOperation on the named chamber; a notebook-only action cannot claim this physical operation.
+  - Opening after a successful development leaves the chromatogram untouched so the strip can still be removed, front-marked and measured.
+  - The plan names no separate lid-opening step. This operation exists because closure is modeled state that a learner has to be able to undo; it is inferred handling, not a prescribed source step.
+- Content examples:
+  - `technique:paper-chromatography` action `open-water-chamber`
+  - `technique:paper-chromatography` action `open-propanol-chamber`
 
 #### `atom.place.developing-chamber`
 
@@ -1249,7 +1307,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
   - The stated sample range stays a range: the exact configured mass is a teacher decision, not a value an implementation may choose.
   - Setup precedes physical use of the container in the attempt; a stock the attempt has already consumed is not refilled.
 - Source examples:
-  - `how-can-color-determine-copper-in-brass_2026-07-27.md` apparatus step `BRASS-01` (F/C)
+  - `how-can-color-determine-copper-in-brass_2026-07-27.md` apparatus step `BRASS-01` (F)
 - Content examples:
   - `technique:brass-spectrophotometry` action `configure-brass-sample-inventory-action`
 
@@ -1467,7 +1525,6 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
   - `how-long-will-that-marble-statue-last_2026-07-27.md` apparatus step `GAS-03` (F)
   - `how-long-will-that-marble-statue-last_2026-07-27.md` phase step `T-02` (M)
 - Content examples:
-  - `lab:marble-statue-kinetics` action `assemble-gas-apparatus`
   - `technique:marble-gas-syringe-kinetics` action `gas-technique-seat-stopper`
 
 #### `atom.record.timed-gas-volume`
@@ -1486,10 +1543,6 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
   - `how-long-will-that-marble-statue-last_2026-07-27.md` phase step `T-15` (M)
   - `how-long-will-that-marble-statue-last_2026-07-27.md` phase step `T-13` (R/C)
 - Content examples:
-  - `lab:marble-statue-kinetics` action `record-practice-run`
-  - `lab:marble-statue-kinetics` action `record-acid-2m-run`
-  - `lab:marble-statue-kinetics` action `record-acid-4m-run`
-  - `lab:marble-statue-kinetics` action `record-acid-6m-run`
   - `technique:marble-gas-syringe-kinetics` action `gas-technique-record-series`
 
 #### `atom.place.gas-delivery-train`
@@ -1508,7 +1561,6 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
   - `how-long-will-that-marble-statue-last_2026-07-27.md` apparatus step `GAS-02` (F)
   - `how-long-will-that-marble-statue-last_2026-07-27.md` apparatus step `GAS-03` (F)
 - Content examples:
-  - `lab:marble-statue-kinetics` action `connect-gas-syringe`
   - `technique:marble-gas-syringe-kinetics` action `gas-technique-connect-syringe`
 
 #### `atom.observe.zero-gas-collection-instrument`
@@ -1527,7 +1579,6 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
   - `how-long-will-that-marble-statue-last_2026-07-27.md` phase step `T-10` (R)
   - `how-long-will-that-marble-statue-last_2026-07-27.md` apparatus step `GAS-03` (F)
 - Content examples:
-  - `lab:marble-statue-kinetics` action `zero-gas-syringe`
   - `technique:marble-gas-syringe-kinetics` action `gas-technique-zero-syringe`
 
 #### `atom.weigh.solid-reactant-portion`
@@ -1545,7 +1596,6 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 - Source examples:
   - `how-long-will-that-marble-statue-last_2026-07-27.md` phase step `T-07` (M)
 - Content examples:
-  - `lab:marble-statue-kinetics` action `weigh-practice-marble`
   - `technique:marble-gas-syringe-kinetics` action `gas-technique-weigh-marble`
 
 #### `atom.transfer.initiate-solid-reactant-contact`
@@ -1564,7 +1614,6 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 - Source examples:
   - `how-long-will-that-marble-statue-last_2026-07-27.md` phase step `T-11` (M/R)
 - Content examples:
-  - `lab:marble-statue-kinetics` action `transfer-practice-marble`
   - `technique:marble-gas-syringe-kinetics` action `gas-technique-transfer-marble`
 
 #### `atom.transfer.initiate-timed-reaction`
@@ -1582,7 +1631,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 - Source examples:
   - `crystal-violet-rate-law_2026-07-27.md` phase step `K-03` (M)
 - Content examples:
-  - `lab:crystal-violet-rate-law` action `cv11-start-reaction-with-naoh`
+  - `technique:crystal-violet-kinetics` action `initiate-cv-naoh-reaction`
 
 ### Family: measurement
 
@@ -1642,7 +1691,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
   - `hydrogen-peroxide-redox-titration_2026-07-27.md` phase step `PA-02` (M)
   - `equilibrium-rainbow-display_2026-07-27.md` phase step `BTB-02` (M)
 - Content examples:
-  - `lab:marble-statue-kinetics` action `transfer-practice-acid`
+  - `technique:marble-gas-syringe-kinetics` action `gas-technique-transfer-acid`
   - `technique:quick-ache-extraction-recovery` action `qar-transfer-approved-solvent`
   - `technique:titration-endpoint` action `transfer-acid-flask`
   - `technique:beverage-ph-volume-titration` action `practice-hcl-transfer`
@@ -1697,7 +1746,6 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 - Procedural constraints:
   - The action consumes an approved final-volume input, then records the resulting target volume as final evidence after the physical addition.
   - The resulting final-volume measurement is runtime evidence; it is not a graduated test-tube reading.
-- Source examples: none; this is a runtime evidence variant of the stated-volume dilution atom.
 - Content examples:
   - `technique:transmittance-dilution` action `transmittance-dilution-add-water-below-mark`
 
@@ -2090,8 +2138,9 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 - Evidence: qualitative settle state on the named vessel
 - Procedural constraints:
   - Requires its typed extractionOperation contract, named vessel and acquired teacher configuration. Mixing invalidates venting, settling and layer readiness; settling never asserts successful separation. No pressure or timing model.
+  - The E-05 source row states only that the layers are allowed to separate (R). The approved settling controls this action requires are simulator configuration held here, not a claim about that row's basis.
 - Source examples:
-  - `quick-ache-relief-component-separation_2026-07-27.md` phase step `E-05` (R/C)
+  - `quick-ache-relief-component-separation_2026-07-27.md` phase step `E-05` (R)
 
 #### `atom.dry.fraction-remove-solvent`
 
@@ -2505,7 +2554,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 - Source examples:
   - `crystal-violet-rate-law_2026-07-27.md` phase step `K-04` (R/C)
 - Content examples:
-  - `lab:crystal-violet-rate-law` action `cv11-measure-reacting-aliquot`
+  - `technique:crystal-violet-kinetics` action `measure-reacting-aliquot`
 
 #### `atom.dilute.brass-to-approved-final-volume`
 
@@ -3673,7 +3722,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
   - Repeated collections accumulate in the shared receiver. An earlier portion is never overwritten or discarded.
   - Gathering the used solutions into one shared container is the local bench implementation of the stated pre-disposal treatment, not a manual-stated step of its own.
 - Source examples:
-  - `how-can-color-determine-copper-in-brass_2026-07-27.md` safety step `S-08` (M/R/C)
+  - `how-can-color-determine-copper-in-brass_2026-07-27.md` safety step `S-08` (M/C)
 - Content examples:
   - `technique:brass-spectrophotometry` action `collect-0p0250-waste-action`
   - `technique:brass-spectrophotometry` action `collect-unknown-waste-action`
@@ -3780,7 +3829,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
   - The delivered amount comes from the stock container's own inventory. Nothing here creates material.
   - The support must be the clean, dry vessel the balance reading will name.
 - Source examples:
-  - `how-can-color-determine-copper-in-brass_2026-07-27.md` phase step `B-01` (M/R)
+  - `how-can-color-determine-copper-in-brass_2026-07-27.md` phase step `B-01` (M)
 - Content examples:
   - `technique:brass-spectrophotometry` action `load-brass-onto-weighing-support-action`
 
@@ -3797,7 +3846,7 @@ A role is a constraint, not a synonym for one apparatus id. Capacity, tolerance,
 | `fixed-volume-delivery-device` | delivery | `volumetric-flask` | `graduated-cylinder`, `graduated-cylinder-25ml`, `burette-50ml` | A single calibration mark defines the volume, so the student fills to the mark instead of reading a scale. Substituting a graduated device changes the measurement claim the source makes. |
 | `measured-solvent-source` | delivery | `beaker-150ml`, `burette-50ml`, `graduated-cylinder`, `graduated-cylinder-25ml`, `graduated-pipette-10ml`, `volumetric-flask` | `wash-bottle`, `distilled-water-bottle` | Investigation 5 states an approved solvent amount for the developing chamber and Investigation 3 states about 20 mL of distilled water. Investigation 12 CA-07 transfers the already measured 100.0 mL hot-water sample from its 150 mL beaker into the calorimeter, so that beaker may carry measured-volume provenance forward. Delivering any of these from a wash bottle would present an unmeasured stream as a stated volume. |
 | `rinse-water-source` | delivery | `distilled-water-bottle`, `wash-bottle` | `burette-50ml`, `graduated-cylinder`, `graduated-cylinder-25ml`, `volumetric-flask` | The manual rinses with small quantities of water and never assigns the rinse a volume. Using a calibrated device here would invent a quantity the source does not state. |
-| `liquid-source` | delivery | `distilled-water-bottle`, `dropper-bottle`, `naoh-bottle`, `propanol-bottle`, `reagent-bottle`, `rubbing-alcohol-bottle`, `sample-bottle`, `unknown-acid-bottle`, `wash-bottle` | — | Stock containers and droppers from which a graduated device measures a stated volume. They originate the liquid but do not establish the measurement precision. |
+| `liquid-source` | delivery | `distilled-water-bottle`, `dropper-bottle`, `naoh-bottle`, `propanol-bottle`, `reagent-bottle`, `rubbing-alcohol-bottle`, `sample-bottle`, `unknown-acid-bottle`, `wash-bottle`, `sample-bottle-1l` | — | Stock containers and droppers from which a graduated device measures a stated volume. They originate the liquid but do not establish the measurement precision. The user-configured 1 L stock variant retains the permitted bottle delivery mode; only its stock capacity changes, not measurement precision. |
 | `solid-reagent-source` | delivery | `reagent-bottle`, `sample-bottle`, `small-vial` | — | Named solids may be supplied in a small vial or stock bottle. The source delivers the approximate portion; the balance produces the recorded mass. |
 | `precipitating-reagent-source` | delivery | `beaker-150ml`, `beaker-250ml`, `burette-50ml`, `graduated-cylinder`, `graduated-cylinder-25ml`, `reagent-bottle` | — | The two Investigation 3 phases deliver carbonate from different vessels: PR-11 pours prepared Na2CO3 solution out of the practice beaker, INQ-02 draws 0.50 M Na2CO3 from a reagent container. Finding 12 (R/C) leaves the excess to the student within teacher-approved constraints, so the role admits both and fixes neither the vessel nor the amount. |
 | `precipitation-vessel` | vessel | `beaker-150ml`, `beaker-250ml`, `erlenmeyer-flask-250ml` | — | PR-11 through PR-15 and INQ-06/INQ-07 form and age CaCO3 in the vessel that later feeds FD-06. It is distinct from reaction-vessel, whose gas-collection sealing constraint belongs to Investigation 10. |
@@ -3817,7 +3866,7 @@ A role is a constraint, not a synonym for one apparatus id. Capacity, tolerance,
 | `cooling-tool` | tool | `crucible-tongs` | — | S-05 and S-06 require heat-safe handling and full cooling before the assembly is weighed. |
 | `photometer-instrument` | instrument | `spectrophotometer` | — | Investigations 1, 2, and 11 all leave the wavelength a confirmation point, and all three blank the instrument before the first sample read. |
 | `photometer-sample-holder` | vessel | `cuvette` | — | SPEC-01 and SPEC-02 distinguish the blank cuvette from the sample cuvette; both are the same role filled at different times. |
-| `sample-source` | delivery | `beral-pipette`, `distilled-water-bottle`, `graduated-pipette-10ml`, `reagent-bottle`, `sample-bottle`, `small-vial`, `test-tube` | — | The container or pipette a measured sample is drawn from when the source step does not constrain the delivery precision. A distilled-water bottle is included when the approved water volume is the measured source liquid. |
+| `sample-source` | delivery | `beral-pipette`, `distilled-water-bottle`, `graduated-pipette-10ml`, `reagent-bottle`, `sample-bottle`, `small-vial`, `test-tube`, `sample-bottle-1l`, `distilled-water-bottle-1l` | — | The container or pipette a measured sample is drawn from when the source step does not constrain the delivery precision. A distilled-water bottle is included when the approved water volume is the measured source liquid. The user-configured 1 L stock variant retains the permitted bottle delivery mode; only its stock capacity changes, not measurement precision. |
 | `burette-filling-funnel` | vessel | `funnel` | — | ST-01 identifies a funnel among the titration filling apparatus (R/C). This role is limited to temporarily filling a burette and cannot satisfy the separate filtration-funnel role. |
 | `titrant-delivery-device` | delivery | `burette-50ml` | — | ST-01 conditions and fills the burette and records an initial reading before any titrant is delivered. |
 | `burette-support` | support | `ring-stand`, `ring-stand-clamp` | — | IQ-04 sketches the burette clamped over the flask; the stand and clamp are the same support role. |
@@ -3840,7 +3889,7 @@ A role is a constraint, not a synonym for one apparatus id. Capacity, tolerance,
 | `stirring-device` | tool | `hot-plate-stirrer`, `magnetic-stir-bar`, `stirring-rod` | — | Investigation 3 says stir but does not name a tool (an R classification); Investigation 12 uses a magnetic stirrer. Both fill one role. |
 | `reactant-solid-source` | delivery | `marble-chips`, `reagent-bottle`, `sample-bottle`, `small-vial` | — | T-06 and T-07 select a chip-size class and weigh CaCO3 within an approved range, and T-11 adds it to the acid. The role fixes where the solid comes from and leaves both the mass and the surface-area class to the student and the teacher, because Investigation 10 confirmation point 2 keeps the treatment ranges open. Distinct from solid-reagent-source, whose rationale is Investigation 3's bottled powders. |
 | `bonding-test-vessel` | vessel | `test-tube`, `watch-glass` | — | K-01 labels one test location per sample and test line, and Investigation 6 section 9 consumes a fresh microsample for each line unless the teacher approves otherwise, so the vessel identity is part of the evidence. Two tests may share one line's portion only when the non-destructive one runs first: magnetism before a melting stage, never after it. Not reaction-vessel, which carries Investigation 10's mustBeSealedForGasCollection constraint and misdescribes an open test tube. |
-| `bonding-test-solvent-source` | delivery | `distilled-water-bottle`, `naoh-bottle`, `reagent-bottle` | — | K-03 applies the selected solvent or reagent. Investigation 6 finding 3 lists water, ethanol, hexanes, 0.1 M HCl and 0.1 M NaOH as candidates and finding 5 keeps hexanes and iodine in the hood under teacher control, so the role names the container and leaves both the identity and the amount to the approved panel. |
+| `bonding-test-solvent-source` | delivery | `distilled-water-bottle`, `naoh-bottle`, `reagent-bottle`, `reagent-bottle-1l` | — | K-03 applies the selected solvent or reagent. Investigation 6 finding 3 lists water, ethanol, hexanes, 0.1 M HCl and 0.1 M NaOH as candidates and finding 5 keeps hexanes and iodine in the hood under teacher control, so the role names the container and leaves both the identity and the amount to the approved panel. The user-configured 1 L stock variant retains the permitted bottle delivery mode; only its stock capacity changes, not measurement precision. |
 | `melting-point-instrument` | instrument | `melting-point-apparatus` | — | Investigation 6 confirmation point 3 leaves the melting-point apparatus, method and temperature limits to the teacher, so the role fixes the apparatus and asserts no heating programme. The simulator stages a sample at the instrument and never produces a melting temperature. |
 | `ph-indicator-medium` | tool | `ph-paper` | — | K-04 reads the pH screen. Investigation 6 section 9 branches to pH only when an aqueous test solution exists, so the role records that the medium is meaningless without one. Separate from immersed-probe-instrument, which describes a probe immersed in a liquid rather than paper touched to it. |
 | `magnetic-response-tool` | tool | `magnet` | — | K-04 brings the magnet near a contained fresh microsample and records attraction, no attraction, or an ambiguous response. The constraint is the one the source states: the sample stays contained and samples are not mixed. |

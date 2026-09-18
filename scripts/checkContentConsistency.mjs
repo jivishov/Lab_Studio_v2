@@ -809,23 +809,23 @@ const checkActions = (world, report) => {
 };
 
 const checkActionIdCollisions = (world, report) => {
-  const byId = new Map();
+  // Action ids are owner-local. The compiler and every evidence registry key them as
+  // `${owner}#${actionId}`, so two independent techniques may legitimately reuse a short id such as
+  // `place-ring-stand` with different fingerprints. The old corpus-wide comparison reported those
+  // intentional owner-local identities as collisions. Keep the invariant that matters: one owner
+  // must not publish the same id with two different definitions.
   for (const entry of world.owners) {
+    const byId = new Map();
     for (const action of entry.definition.actions ?? []) {
-      if (!byId.has(action.id)) byId.set(action.id, []);
-      byId.get(action.id).push({ owner: entry.owner, key: fingerprint(action) });
+      const records = byId.get(action.id) ?? [];
+      records.push(fingerprint(action));
+      byId.set(action.id, records);
     }
-  }
-  for (const [actionId, records] of byId) {
-    if (records.length < 2) continue;
-    const variants = new Set(records.map((record) => record.key));
-    if (variants.size === 1) continue;
-    report(
-      "corpus/action-id-collision",
-      actionId,
-      [...new Set(records.map((record) => record.owner))].sort().join(" | "),
-      { variants: variants.size },
-    );
+    for (const [actionId, records] of byId) {
+      const variants = new Set(records);
+      if (variants.size < 2) continue;
+      report("corpus/action-id-collision", `${entry.owner}/${actionId}`, entry.file, { variants: variants.size });
+    }
   }
 };
 
@@ -1822,10 +1822,10 @@ const checkCycle11Protocols = (world, report) => {
       }
     }
 
-    // The mass that reaches the reaction vessel and the mass the balance read are one quantity. The
-    // reducer's transfer branch takes `massG` as a literal and cannot consume a measurement id, so the
-    // coupling cannot be dynamic without a shared-runtime change; the content declares which reading
-    // it means and this rule refuses to let the two numbers drift apart silently.
+    // The mass that reaches the reaction vessel and the mass the balance read are one quantity. Modern
+    // content carries that continuity through the typed `mass` contract; legacy content may still
+    // carry a literal massG pair. Validate both shapes without forcing migrated actions back onto a
+    // stale parameter-only representation.
     for (const contact of byAtom.get("atom.transfer.initiate-solid-reactant-contact") ?? []) {
       const measurementId = contact.parameters?.massMeasurementId;
       if (!present(measurementId)) {
@@ -1839,7 +1839,8 @@ const checkCycle11Protocols = (world, report) => {
       const weighed = actions.find(
         (candidate) =>
           candidate.atomId === "atom.weigh.solid-reactant-portion" &&
-          candidate.parameters?.measurementId === measurementId,
+          (candidate.parameters?.measurementId === measurementId ||
+            candidate.mass?.outputMeasurementId === measurementId),
       );
       if (!weighed) {
         report(
@@ -1849,6 +1850,12 @@ const checkCycle11Protocols = (world, report) => {
         );
         continue;
       }
+      const typedContinuity =
+        weighed.mass?.source === "action-input" &&
+        weighed.mass.outputMeasurementId === measurementId &&
+        contact.mass?.source === "measurement" &&
+        contact.mass.referenceId === measurementId;
+      if (typedContinuity) continue;
       const transferred = Number(contact.parameters?.massG);
       const expected = Number(weighed.parameters?.expectedMassG);
       if (!Number.isFinite(transferred) || !Number.isFinite(expected) || transferred !== expected) {
@@ -2155,7 +2162,10 @@ const cycle06ResolvedActions = (entry, standaloneById) => {
 };
 
 const cycle06ProducedMeasurementId = (action) => {
-  const measurementId = cycle06Parameter(action, "measurementId");
+  const measurementId = cycle06Parameter(action, "measurementId") ??
+    (cycle06Parameter(action, "photometerOperation") === "read"
+      ? action.runtimeRepeat?.outputMeasurementId
+      : undefined);
   if (!measurementId) return undefined;
   if (CYCLE_06_MEASUREMENT_WRITING_VERBS.has(action.verb)) return measurementId;
   if (action.verb !== "observe") return undefined;
@@ -2165,6 +2175,12 @@ const cycle06ProducedMeasurementId = (action) => {
     ? measurementId
     : undefined;
 };
+
+const cycle06PhotometerReadMeasurementId = (action) =>
+  cycle06Parameter(action, "measurementId") ??
+  (cycle06Parameter(action, "photometerOperation") === "read"
+    ? action.runtimeRepeat?.outputMeasurementId
+    : undefined);
 
 /**
  * Actions whose teacher-configuration marker must survive.
@@ -2180,8 +2196,8 @@ const CYCLE_06_CONFIRMATION_POINTS = [
   ["technique:blue1-percent-transmittance", "i1-record-blank-cuvette-rule"],
   ["technique:blue1-class-calibration", "i1-record-source-ambiguity"],
   ["technique:blue1-class-calibration", "i1-record-confirmed-calibration"],
-  ["lab:blue1-spectroscopy", "i1-record-molar-mass-reference"],
-  ["lab:blue1-spectroscopy", "i1-record-over-range-response"],
+  ["technique:blue1-percent-transmittance", "i1-record-molar-mass-reference"],
+  ["technique:blue1-percent-transmittance", "i1-record-over-range-response"],
   ["technique:crystal-violet-spectrophotometer-calibration", "cv11-set-approved-wavelength"],
   ["technique:crystal-violet-spectrophotometer-calibration", "cv11-prepare-approved-blank"],
   ["technique:crystal-violet-waste-treatment", "cv11-neutralize-excess-base"],
@@ -2376,7 +2392,10 @@ const checkCycle06Photometry = (world, report) => {
           "measurementId",
         ]) {
           if (key === "requiresZeroNotebookTag" && stateGatedScanRead) continue;
-          if (!cycle06Parameter(action, key)) {
+          const value = key === "measurementId"
+            ? cycle06PhotometerReadMeasurementId(action)
+            : cycle06Parameter(action, key);
+          if (!value) {
             report("cycle06/photometer-read-ungated", `${scope}/${key}`, entry.file);
           }
         }
@@ -2430,8 +2449,12 @@ const checkCycle06Photometry = (world, report) => {
         if (action.parameters?.value !== undefined) {
           report("cycle06/photometer-reading-prepopulated", scope, entry.file);
         }
-        const measurementId = cycle06Parameter(action, "measurementId");
-        if (!measurementId || !cycle06PrerequisiteMeasurementIds(action).has(measurementId)) {
+        // A record has an output measurement id and, in the migrated photometry content, a distinct
+        // sourceMeasurementId naming the read it consumes. The old check compared the prerequisite
+        // with the output id and rejected every honest read -> record alias.
+        const sourceMeasurementId = cycle06Parameter(action, "sourceMeasurementId") ??
+          cycle06Parameter(action, "measurementId");
+        if (!sourceMeasurementId || !cycle06PrerequisiteMeasurementIds(action).has(sourceMeasurementId)) {
           report("cycle06/photometer-record-without-read", scope, entry.file);
         }
       }
@@ -2511,8 +2534,15 @@ const checkCycle06Photometry = (world, report) => {
       const referenced = new Set(
         (entry.definition.process?.nodes ?? []).map((node) => node.actionId).filter(Boolean),
       );
+      const declared = new Set([
+        ...byId.keys(),
+        ...(entry.definition.techniques ?? []).flatMap((technique) =>
+          (technique.actions ?? []).map((action) => action.id)),
+      ]);
       for (const actionId of CYCLE_06_EXTENSION_ACTIONS) {
-        if (!byId.has(actionId)) {
+        // The optional branch is deliberately carried by an embedded technique, not by the lab
+        // root. Checking only the root action array made the valid carrier look undeclared.
+        if (!declared.has(actionId)) {
           report("cycle06/hydroxide-extension-missing", actionId, entry.file);
         }
         if (referenced.has(actionId)) {
@@ -3194,6 +3224,17 @@ const parseEquipmentCatalog = () => {
   const realisticAssetById = new Map(
     [...mapBlock.matchAll(/"([a-z0-9-]+)":\s*"([a-z0-9-]*)"/g)].map((match) => [match[1], match[2]]),
   );
+  // `catalog.ts` appends the three explicit 1 L stock variants after the literal catalog block.
+  // They are real runtime definitions, not aliases that the source checker may ignore. Mirror that
+  // small derived loop here so role bindings and image aliases resolve exactly as they do in the
+  // player.
+  const stockBottleVariants = readJson("src/equipment/stockBottleVariants.json");
+  for (const [id, baseId] of Object.entries(stockBottleVariants)) {
+    const base = equipment.get(baseId);
+    if (!base) continue;
+    equipment.set(id, { ...base, id, label: `${base.label} (1 L)` });
+    realisticAssetById.set(id, realisticAssetById.get(baseId) ?? baseId);
+  }
   // Snap zones are the only `{ id, label, ... }` literals in the catalog block; requiring the
   // following `label:` keeps the match from widening if the catalog ever gains another `id:` field.
   const snapZoneIds = new Set(
@@ -3377,7 +3418,7 @@ const parseInlineStateAssetNames = () => {
   const source = readText("src/equipment/visualCatalog.ts");
   const names = new Set();
   for (const match of source.matchAll(/stateAssets:\s*\{([^}]*)\}/g)) {
-    for (const entry of match[1].matchAll(/asset\(\s*["']([A-Za-z0-9._-]+)["']\s*\)/g)) {
+    for (const entry of match[1].matchAll(/(?:asset|realisticAsset)\(\s*["']([A-Za-z0-9._-]+)["']\s*\)/g)) {
       names.add(entry[1]);
     }
   }
@@ -3558,6 +3599,14 @@ const buildReachability = (assetFiles, realisticAssetById, stateAssetsByEquipmen
   const composite = new Set(
     composites.filter((entry) => entry.kind === "visual").map((entry) => entry.resultAsset),
   );
+  // Open-lid art is a registry-adjacent composite override: it is selected by the shared composite
+  // evaluator, but the open asset is not itself the resultAsset of a registry composite. Include the
+  // evaluator's explicit mapping so the disposition registry can distinguish active art from debt.
+  const compositeSource = readText("src/equipment/composites.ts");
+  const openLidBlock = compositeSource.match(
+    /OPEN_LID_ASSET_BY_SEALED_ASSET[\s\S]*?=\s*\{([\s\S]*?)\n\};/,
+  )?.[1] ?? "";
+  for (const match of openLidBlock.matchAll(/:\s*"([a-z0-9-]+)"/g)) composite.add(match[1]);
   const customRoute = new Set();
   for (const file of walkSourceFiles("src/investigations")) {
     for (const asset of collectAssetReferences(file, knownBaseNames)) customRoute.add(asset);

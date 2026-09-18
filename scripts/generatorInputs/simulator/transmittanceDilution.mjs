@@ -977,7 +977,7 @@ const definition = {
       "parameters": {
         "calculationId": "decimal-transmittance",
         "template": "decimalTransmittance",
-        "sourceMeasurementId": "percent-transmittance"
+        "percentTransmittanceMeasurementId": "percent-transmittance"
       },
       "prerequisites": [],
       "stateChanges": [
@@ -1009,7 +1009,7 @@ const definition = {
       "parameters": {
         "calculationId": "absorbance",
         "template": "absorbanceFromPercentT",
-        "sourceMeasurementId": "percent-transmittance"
+        "percentTransmittanceMeasurementId": "percent-transmittance"
       },
       "prerequisites": [],
       "stateChanges": [

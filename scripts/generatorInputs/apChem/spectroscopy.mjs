@@ -859,7 +859,7 @@ const definitions = new Map([
           "parameters": {
             "calculationId": "absorbance",
             "template": "absorbanceFromPercentT",
-            "sourceMeasurementId": "percent-transmittance"
+            "percentTransmittanceMeasurementId": "percent-transmittance"
           },
           "prerequisites": [],
           "stateChanges": [

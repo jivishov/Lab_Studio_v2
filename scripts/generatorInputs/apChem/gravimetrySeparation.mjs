@@ -3816,6 +3816,12 @@ const definitions = new Map([
               "type": "actionEvidence",
               "label": "Previous sample operation is complete.",
               "actionId": "record-water-solubility"
+            },
+            {
+              "id": "read-aqueous-conductivity--test-solution-required",
+              "type": "actionEvidence",
+              "label": "The water test solution has been applied.",
+              "actionId": "apply-water-solvent"
             }
           ],
           "stateChanges": [
@@ -3902,6 +3908,12 @@ const definitions = new Map([
               "type": "actionEvidence",
               "label": "Previous sample operation is complete.",
               "actionId": "record-aqueous-conductivity"
+            },
+            {
+              "id": "read-ph-indicator--test-solution-required",
+              "type": "actionEvidence",
+              "label": "The water test solution has been applied.",
+              "actionId": "apply-water-solvent"
             }
           ],
           "stateChanges": [

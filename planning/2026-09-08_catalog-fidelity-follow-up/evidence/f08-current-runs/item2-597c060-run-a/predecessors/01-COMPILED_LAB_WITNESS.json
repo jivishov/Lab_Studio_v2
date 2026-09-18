@@ -4075,10 +4075,10 @@
       "sourceTechniqueInstanceCount": 1,
       "sourceLocalActionCount": 15,
       "sourceLocalNodeCount": 15,
-      "compiledActionCount": 68,
-      "compiledNodeCount": 68,
-      "compiledEdgeCount": 67,
-      "compiledOriginCount": 53,
+      "compiledActionCount": 62,
+      "compiledNodeCount": 62,
+      "compiledEdgeCount": 61,
+      "compiledOriginCount": 47,
       "compiledManifestInstanceCount": 1,
       "startNodeId": "review-challenge-safety-node",
       "initialEquipmentCount": 60,
@@ -4150,7 +4150,7 @@
       "techniqueInstanceIds": [
         "chromatography-trials"
       ],
-      "unionNodeCount": 68,
+      "unionNodeCount": 62,
       "unionTechniqueInstanceIds": [
         "chromatography-trials"
       ],
@@ -4159,12 +4159,12 @@
           "witnessId": "default",
           "setupFixtureId": "cycle12-paper-chromatography-setup-v1",
           "startNodeId": "review-challenge-safety-node",
-          "compiledNodeCount": 68,
-          "compiledActionCount": 68,
-          "compiledEdgeCount": 67,
-          "compiledOriginCount": 53,
+          "compiledNodeCount": 62,
+          "compiledActionCount": 62,
+          "compiledEdgeCount": 61,
+          "compiledOriginCount": 47,
           "compiledManifestInstanceCount": 1,
-          "reachableNodeCount": 68,
+          "reachableNodeCount": 62,
           "initialEquipmentCount": 60,
           "techniqueInstanceIds": [
             "chromatography-trials"
@@ -4321,20 +4321,6 @@
         },
         {
           "from": "dry-water-spot-node",
-          "to": "insert-water-paper-node",
-          "condition": {
-            "type": "validationPassed"
-          }
-        },
-        {
-          "from": "insert-water-paper-node",
-          "to": "close-water-chamber-node",
-          "condition": {
-            "type": "validationPassed"
-          }
-        },
-        {
-          "from": "close-water-chamber-node",
           "to": "develop-water-paper-node",
           "condition": {
             "type": "validationPassed"
@@ -4342,13 +4328,6 @@
         },
         {
           "from": "develop-water-paper-node",
-          "to": "open-water-chamber-node",
-          "condition": {
-            "type": "validationPassed"
-          }
-        },
-        {
-          "from": "open-water-chamber-node",
           "to": "remove-water-paper-node",
           "condition": {
             "type": "validationPassed"
@@ -4496,20 +4475,6 @@
         },
         {
           "from": "dry-propanol-spot-node",
-          "to": "insert-propanol-paper-node",
-          "condition": {
-            "type": "validationPassed"
-          }
-        },
-        {
-          "from": "insert-propanol-paper-node",
-          "to": "close-propanol-chamber-node",
-          "condition": {
-            "type": "validationPassed"
-          }
-        },
-        {
-          "from": "close-propanol-chamber-node",
           "to": "develop-propanol-paper-node",
           "condition": {
             "type": "validationPassed"
@@ -4517,13 +4482,6 @@
         },
         {
           "from": "develop-propanol-paper-node",
-          "to": "open-propanol-chamber-node",
-          "condition": {
-            "type": "validationPassed"
-          }
-        },
-        {
-          "from": "open-propanol-chamber-node",
           "to": "remove-propanol-paper-node",
           "condition": {
             "type": "validationPassed"
@@ -5028,48 +4986,6 @@
           "gatedInWitnesses": []
         },
         {
-          "nodeId": "insert-water-paper-node",
-          "actionId": "insert-water-paper",
-          "origin": {
-            "actionId": "insert-water-paper",
-            "nodeId": "insert-water-paper-node",
-            "techniqueId": "paper-chromatography",
-            "techniqueVersion": "1.2.1",
-            "instanceId": "chromatography-trials",
-            "sourceActionId": "insert-water-paper",
-            "sourceNodeId": "insert-water-paper-node"
-          },
-          "validationRuleCount": 1,
-          "presentInWitnesses": [
-            "default"
-          ],
-          "reachableInWitnesses": [
-            "default"
-          ],
-          "gatedInWitnesses": []
-        },
-        {
-          "nodeId": "close-water-chamber-node",
-          "actionId": "close-water-chamber",
-          "origin": {
-            "actionId": "close-water-chamber",
-            "nodeId": "close-water-chamber-node",
-            "techniqueId": "paper-chromatography",
-            "techniqueVersion": "1.2.1",
-            "instanceId": "chromatography-trials",
-            "sourceActionId": "close-water-chamber",
-            "sourceNodeId": "close-water-chamber-node"
-          },
-          "validationRuleCount": 1,
-          "presentInWitnesses": [
-            "default"
-          ],
-          "reachableInWitnesses": [
-            "default"
-          ],
-          "gatedInWitnesses": []
-        },
-        {
           "nodeId": "develop-water-paper-node",
           "actionId": "develop-water-paper",
           "origin": {
@@ -5080,27 +4996,6 @@
             "instanceId": "chromatography-trials",
             "sourceActionId": "develop-water-paper",
             "sourceNodeId": "develop-water-paper-node"
-          },
-          "validationRuleCount": 1,
-          "presentInWitnesses": [
-            "default"
-          ],
-          "reachableInWitnesses": [
-            "default"
-          ],
-          "gatedInWitnesses": []
-        },
-        {
-          "nodeId": "open-water-chamber-node",
-          "actionId": "open-water-chamber",
-          "origin": {
-            "actionId": "open-water-chamber",
-            "nodeId": "open-water-chamber-node",
-            "techniqueId": "paper-chromatography",
-            "techniqueVersion": "1.2.1",
-            "instanceId": "chromatography-trials",
-            "sourceActionId": "open-water-chamber",
-            "sourceNodeId": "open-water-chamber-node"
           },
           "validationRuleCount": 1,
           "presentInWitnesses": [
@@ -5553,48 +5448,6 @@
           "gatedInWitnesses": []
         },
         {
-          "nodeId": "insert-propanol-paper-node",
-          "actionId": "insert-propanol-paper",
-          "origin": {
-            "actionId": "insert-propanol-paper",
-            "nodeId": "insert-propanol-paper-node",
-            "techniqueId": "paper-chromatography",
-            "techniqueVersion": "1.2.1",
-            "instanceId": "chromatography-trials",
-            "sourceActionId": "insert-propanol-paper",
-            "sourceNodeId": "insert-propanol-paper-node"
-          },
-          "validationRuleCount": 1,
-          "presentInWitnesses": [
-            "default"
-          ],
-          "reachableInWitnesses": [
-            "default"
-          ],
-          "gatedInWitnesses": []
-        },
-        {
-          "nodeId": "close-propanol-chamber-node",
-          "actionId": "close-propanol-chamber",
-          "origin": {
-            "actionId": "close-propanol-chamber",
-            "nodeId": "close-propanol-chamber-node",
-            "techniqueId": "paper-chromatography",
-            "techniqueVersion": "1.2.1",
-            "instanceId": "chromatography-trials",
-            "sourceActionId": "close-propanol-chamber",
-            "sourceNodeId": "close-propanol-chamber-node"
-          },
-          "validationRuleCount": 1,
-          "presentInWitnesses": [
-            "default"
-          ],
-          "reachableInWitnesses": [
-            "default"
-          ],
-          "gatedInWitnesses": []
-        },
-        {
           "nodeId": "develop-propanol-paper-node",
           "actionId": "develop-propanol-paper",
           "origin": {
@@ -5605,27 +5458,6 @@
             "instanceId": "chromatography-trials",
             "sourceActionId": "develop-propanol-paper",
             "sourceNodeId": "develop-propanol-paper-node"
-          },
-          "validationRuleCount": 1,
-          "presentInWitnesses": [
-            "default"
-          ],
-          "reachableInWitnesses": [
-            "default"
-          ],
-          "gatedInWitnesses": []
-        },
-        {
-          "nodeId": "open-propanol-chamber-node",
-          "actionId": "open-propanol-chamber",
-          "origin": {
-            "actionId": "open-propanol-chamber",
-            "nodeId": "open-propanol-chamber-node",
-            "techniqueId": "paper-chromatography",
-            "techniqueVersion": "1.2.1",
-            "instanceId": "chromatography-trials",
-            "sourceActionId": "open-propanol-chamber",
-            "sourceNodeId": "open-propanol-chamber-node"
           },
           "validationRuleCount": 1,
           "presentInWitnesses": [
@@ -70850,7 +70682,6 @@
       ],
       "reachabilityWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "techniqueInstanceIds": [
@@ -70863,21 +70694,6 @@
       "witnessCompiles": [
         {
           "witnessId": "teacher-approved-route",
-          "setupFixtureId": "cycle12-green-chemistry-mixture-purification-setup-v1",
-          "startNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
-          "compiledNodeCount": 34,
-          "compiledActionCount": 34,
-          "compiledEdgeCount": 33,
-          "compiledOriginCount": 31,
-          "compiledManifestInstanceCount": 1,
-          "reachableNodeCount": 34,
-          "initialEquipmentCount": 11,
-          "techniqueInstanceIds": [
-            "thermal-decomposition"
-          ]
-        },
-        {
-          "witnessId": "teacher-approved-tared-balance-route",
           "setupFixtureId": "cycle12-green-chemistry-mixture-purification-setup-v1",
           "startNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
           "compiledNodeCount": 34,
@@ -71148,12 +70964,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71165,12 +70979,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71182,12 +70994,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71207,12 +71017,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71232,12 +71040,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71257,12 +71063,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71282,12 +71086,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71307,12 +71109,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71332,12 +71132,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71357,12 +71155,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71382,12 +71178,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71407,12 +71201,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71432,12 +71224,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71457,12 +71247,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71482,12 +71270,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71507,12 +71293,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71532,12 +71316,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71557,12 +71339,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71582,12 +71362,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71607,12 +71385,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71632,12 +71408,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71657,12 +71431,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71682,12 +71454,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71707,12 +71477,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71732,12 +71500,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71757,12 +71523,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71782,12 +71546,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71807,12 +71569,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71832,12 +71592,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71857,12 +71615,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71882,12 +71638,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71907,12 +71661,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71932,12 +71684,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -71957,12 +71707,10 @@
           "validationRuleCount": 1,
           "presentInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "reachableInWitnesses": [
             "teacher-approved-route",
-            "teacher-approved-tared-balance-route",
             "approval-locked-static-witness"
           ],
           "gatedInWitnesses": []
@@ -86879,12 +86627,12 @@
     "sourceTechniqueInstanceCount": 66,
     "sourceLocalActionCount": 101,
     "sourceLocalNodeCount": 101,
-    "compiledActionCount": 2606,
-    "compiledNodeCount": 2606,
-    "compiledEdgeCount": 2685,
-    "compiledOriginCount": 2505,
+    "compiledActionCount": 2600,
+    "compiledNodeCount": 2600,
+    "compiledEdgeCount": 2679,
+    "compiledOriginCount": 2499,
     "compiledManifestInstanceCount": 59,
-    "unionNodeCount": 2849,
-    "witnessCompileCount": 30
+    "unionNodeCount": 2843,
+    "witnessCompileCount": 29
   }
 }

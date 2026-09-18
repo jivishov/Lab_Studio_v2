@@ -1,11 +1,11 @@
 {
   "schema": "lab-studio/lab-composition-audit@cycle12",
-  "generatedAt": "2026-09-18T17:47:31.829Z",
+  "generatedAt": "2026-09-15T00:22:41.881Z",
   "currentEvidence": {
-    "path": "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-597c060-run-a/CURRENT_VERIFICATION_RUN.json",
+    "path": "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/verification-20260914-closure-r3/CURRENT_VERIFICATION_RUN.json",
     "status": "current",
-    "capturedAt": "2026-09-18T17:47:31.829Z",
-    "sourceSnapshotPayloadSha256": "0e664aac5c53f86c4950f11c87fd5d9c965fbd13fec9160ef2deccbe54eb45a1",
+    "capturedAt": "2026-09-15T00:22:41.881Z",
+    "sourceSnapshotPayloadSha256": "687ea4d58db591ef5e81f9abaa25ee5908fb5568dc5743fd96c8a6045269a459",
     "reconciliationInputManifestSha256": null,
     "reason": "Selected current-verification source snapshot is current; serialized reconciliation provenance is limited to its immutable source identity and fixed output boundary. Dynamic phase receipts remain in the current-verification ledger and CLI.",
     "mismatches": [],
@@ -14,36 +14,36 @@
     "stableDomainBoundary": [],
     "evidenceRunProvenance": "selected-current-verification-run; only the immutable selected source snapshot and required prior phase receipt are read so later receipts cannot make reconciliation output self-referential",
     "selection": "explicit-current-verification-run",
-    "runId": "item2-597c060-run-a",
+    "runId": "verification-20260914-closure-r3",
     "sourceSnapshotExcludes": "only fixed current phase outputs and fixed current-run artifacts; those paths are validated by phase receipts instead"
   },
   "inventory": {
     "indexedLabs": 17,
-    "nodeActionRows": 2849,
-    "uniqueRowIds": 2849,
+    "nodeActionRows": 2843,
+    "uniqueRowIds": 2843,
     "sourceLocalActionRows": 101,
     "sourceTechniqueInstanceRows": 66,
-    "witnessCompileCount": 30,
-    "defaultWitnessNodeRows": 2606,
+    "witnessCompileCount": 29,
+    "defaultWitnessNodeRows": 2600,
     "reachabilityCounts": {
-      "mandatory": 2564,
+      "mandatory": 2558,
       "conditional": 285,
       "dead-under-witness": 0
     },
     "originCounts": {
-      "technique-instance": 2748,
+      "technique-instance": 2742,
       "lab-local": 101
     },
     "complianceCounts": {
-      "technique-origin procedure": 2748,
+      "technique-origin procedure": 2742,
       "allowed-orchestration": 101,
       "anonymous-local-procedure": 0,
       "missing-origin": 0
     },
     "effectClassCounts": {
-      "apparatus-material-instrument-state": 1353,
+      "apparatus-material-instrument-state": 1347,
       "measurement-direct-observation-acquisition": 410,
-      "evidence-recording": 1265,
+      "evidence-recording": 1261,
       "calculation-analysis": 156
     },
     "effectConflictRows": 0,
@@ -10572,146 +10572,6 @@
       "evaluated": true
     },
     {
-      "rowId": "paper-chromatography#insert-water-paper-node",
-      "labId": "paper-chromatography",
-      "processId": "root",
-      "nodeId": "insert-water-paper-node",
-      "actionId": "insert-water-paper",
-      "reachability": "mandatory",
-      "validConfigurationApprovalWitnesses": [
-        {
-          "id": "default",
-          "configuration": {},
-          "approvalGates": {}
-        }
-      ],
-      "reachableUnderWitnessIds": [
-        "default"
-      ],
-      "gatedUnderWitnessIds": [],
-      "currentActionOrigin": {
-        "kind": "technique-instance",
-        "techniqueId": "paper-chromatography",
-        "techniqueVersion": "1.2.1",
-        "instanceId": "chromatography-trials",
-        "sourceActionId": "insert-water-paper",
-        "sourceNodeId": "insert-water-paper-node"
-      },
-      "effect": {
-        "registryHandlerDerivedClasses": [
-          "apparatus-material-instrument-state"
-        ],
-        "typedTargetDomains": [
-          "equipment",
-          "material",
-          "instrument"
-        ],
-        "flags": {
-          "apparatusMaterialInstrumentState": true,
-          "measurementOrDirectObservation": false,
-          "evidenceRecording": false,
-          "calculationOrAnalysis": false,
-          "pedagogicalOrchestration": false
-        },
-        "declaredVersusDerivedConflict": {
-          "hasConflict": false,
-          "reasons": []
-        },
-        "resolvedInteractionType": "snapIntoTarget"
-      },
-      "complianceVerdict": "technique-origin procedure",
-      "techniqueMatchEscalation": {
-        "decision": "exact-compatible-version",
-        "candidates": []
-      },
-      "laterOwnerCycle": "06",
-      "sourceConflictOrConfigurationBlock": {
-        "sourceClaims": [
-          {
-            "sourceFile": "sticky-question-paper-chromatography_2026-07-27.md",
-            "sourceTable": "phase",
-            "step": "TR-06",
-            "basis": "M/R"
-          }
-        ],
-        "conflict": false,
-        "traceDebt": null,
-        "block": null
-      },
-      "requiredRemediation": null,
-      "evaluated": true
-    },
-    {
-      "rowId": "paper-chromatography#close-water-chamber-node",
-      "labId": "paper-chromatography",
-      "processId": "root",
-      "nodeId": "close-water-chamber-node",
-      "actionId": "close-water-chamber",
-      "reachability": "mandatory",
-      "validConfigurationApprovalWitnesses": [
-        {
-          "id": "default",
-          "configuration": {},
-          "approvalGates": {}
-        }
-      ],
-      "reachableUnderWitnessIds": [
-        "default"
-      ],
-      "gatedUnderWitnessIds": [],
-      "currentActionOrigin": {
-        "kind": "technique-instance",
-        "techniqueId": "paper-chromatography",
-        "techniqueVersion": "1.2.1",
-        "instanceId": "chromatography-trials",
-        "sourceActionId": "close-water-chamber",
-        "sourceNodeId": "close-water-chamber-node"
-      },
-      "effect": {
-        "registryHandlerDerivedClasses": [
-          "apparatus-material-instrument-state",
-          "evidence-recording"
-        ],
-        "typedTargetDomains": [
-          "equipment",
-          "evidence"
-        ],
-        "flags": {
-          "apparatusMaterialInstrumentState": true,
-          "measurementOrDirectObservation": false,
-          "evidenceRecording": true,
-          "calculationOrAnalysis": false,
-          "pedagogicalOrchestration": false
-        },
-        "declaredVersusDerivedConflict": {
-          "hasConflict": false,
-          "reasons": []
-        },
-        "resolvedInteractionType": "recordNotebook"
-      },
-      "complianceVerdict": "technique-origin procedure",
-      "techniqueMatchEscalation": {
-        "decision": "exact-compatible-version",
-        "candidates": []
-      },
-      "laterOwnerCycle": "06",
-      "sourceConflictOrConfigurationBlock": {
-        "sourceClaims": [
-          {
-            "sourceFile": "sticky-question-paper-chromatography_2026-07-27.md",
-            "sourceTable": "phase",
-            "step": "TR-07",
-            "basis": "M"
-          }
-        ],
-        "conflict": false,
-        "traceDebt": null,
-        "block": null
-      },
-      "requiredRemediation": null,
-      "evaluated": true
-    },
-    {
       "rowId": "paper-chromatography#develop-water-paper-node",
       "labId": "paper-chromatography",
       "processId": "root",
@@ -10757,7 +10617,7 @@
           "hasConflict": false,
           "reasons": []
         },
-        "resolvedInteractionType": "recordNotebook"
+        "resolvedInteractionType": "snapIntoTarget"
       },
       "complianceVerdict": "technique-origin procedure",
       "techniqueMatchEscalation": {
@@ -10772,76 +10632,6 @@
             "sourceTable": "Section 8 procedure phases",
             "step": "TR-01 to TR-19",
             "basis": "M/R/C"
-          }
-        ],
-        "conflict": false,
-        "traceDebt": null,
-        "block": null
-      },
-      "requiredRemediation": null,
-      "evaluated": true
-    },
-    {
-      "rowId": "paper-chromatography#open-water-chamber-node",
-      "labId": "paper-chromatography",
-      "processId": "root",
-      "nodeId": "open-water-chamber-node",
-      "actionId": "open-water-chamber",
-      "reachability": "mandatory",
-      "validConfigurationApprovalWitnesses": [
-        {
-          "id": "default",
-          "configuration": {},
-          "approvalGates": {}
-        }
-      ],
-      "reachableUnderWitnessIds": [
-        "default"
-      ],
-      "gatedUnderWitnessIds": [],
-      "currentActionOrigin": {
-        "kind": "technique-instance",
-        "techniqueId": "paper-chromatography",
-        "techniqueVersion": "1.2.1",
-        "instanceId": "chromatography-trials",
-        "sourceActionId": "open-water-chamber",
-        "sourceNodeId": "open-water-chamber-node"
-      },
-      "effect": {
-        "registryHandlerDerivedClasses": [
-          "apparatus-material-instrument-state",
-          "evidence-recording"
-        ],
-        "typedTargetDomains": [
-          "equipment",
-          "evidence"
-        ],
-        "flags": {
-          "apparatusMaterialInstrumentState": true,
-          "measurementOrDirectObservation": false,
-          "evidenceRecording": true,
-          "calculationOrAnalysis": false,
-          "pedagogicalOrchestration": false
-        },
-        "declaredVersusDerivedConflict": {
-          "hasConflict": false,
-          "reasons": []
-        },
-        "resolvedInteractionType": "recordNotebook"
-      },
-      "complianceVerdict": "technique-origin procedure",
-      "techniqueMatchEscalation": {
-        "decision": "exact-compatible-version",
-        "candidates": []
-      },
-      "laterOwnerCycle": "06",
-      "sourceConflictOrConfigurationBlock": {
-        "sourceClaims": [
-          {
-            "sourceFile": "sticky-question-paper-chromatography_2026-07-27.md",
-            "sourceTable": "phase",
-            "step": "TR-09",
-            "basis": "R"
           }
         ],
         "conflict": false,
@@ -12322,146 +12112,6 @@
       "evaluated": true
     },
     {
-      "rowId": "paper-chromatography#insert-propanol-paper-node",
-      "labId": "paper-chromatography",
-      "processId": "root",
-      "nodeId": "insert-propanol-paper-node",
-      "actionId": "insert-propanol-paper",
-      "reachability": "mandatory",
-      "validConfigurationApprovalWitnesses": [
-        {
-          "id": "default",
-          "configuration": {},
-          "approvalGates": {}
-        }
-      ],
-      "reachableUnderWitnessIds": [
-        "default"
-      ],
-      "gatedUnderWitnessIds": [],
-      "currentActionOrigin": {
-        "kind": "technique-instance",
-        "techniqueId": "paper-chromatography",
-        "techniqueVersion": "1.2.1",
-        "instanceId": "chromatography-trials",
-        "sourceActionId": "insert-propanol-paper",
-        "sourceNodeId": "insert-propanol-paper-node"
-      },
-      "effect": {
-        "registryHandlerDerivedClasses": [
-          "apparatus-material-instrument-state"
-        ],
-        "typedTargetDomains": [
-          "equipment",
-          "material",
-          "instrument"
-        ],
-        "flags": {
-          "apparatusMaterialInstrumentState": true,
-          "measurementOrDirectObservation": false,
-          "evidenceRecording": false,
-          "calculationOrAnalysis": false,
-          "pedagogicalOrchestration": false
-        },
-        "declaredVersusDerivedConflict": {
-          "hasConflict": false,
-          "reasons": []
-        },
-        "resolvedInteractionType": "snapIntoTarget"
-      },
-      "complianceVerdict": "technique-origin procedure",
-      "techniqueMatchEscalation": {
-        "decision": "exact-compatible-version",
-        "candidates": []
-      },
-      "laterOwnerCycle": "06",
-      "sourceConflictOrConfigurationBlock": {
-        "sourceClaims": [
-          {
-            "sourceFile": "sticky-question-paper-chromatography_2026-07-27.md",
-            "sourceTable": "phase",
-            "step": "TR-06",
-            "basis": "M/R"
-          }
-        ],
-        "conflict": false,
-        "traceDebt": null,
-        "block": null
-      },
-      "requiredRemediation": null,
-      "evaluated": true
-    },
-    {
-      "rowId": "paper-chromatography#close-propanol-chamber-node",
-      "labId": "paper-chromatography",
-      "processId": "root",
-      "nodeId": "close-propanol-chamber-node",
-      "actionId": "close-propanol-chamber",
-      "reachability": "mandatory",
-      "validConfigurationApprovalWitnesses": [
-        {
-          "id": "default",
-          "configuration": {},
-          "approvalGates": {}
-        }
-      ],
-      "reachableUnderWitnessIds": [
-        "default"
-      ],
-      "gatedUnderWitnessIds": [],
-      "currentActionOrigin": {
-        "kind": "technique-instance",
-        "techniqueId": "paper-chromatography",
-        "techniqueVersion": "1.2.1",
-        "instanceId": "chromatography-trials",
-        "sourceActionId": "close-propanol-chamber",
-        "sourceNodeId": "close-propanol-chamber-node"
-      },
-      "effect": {
-        "registryHandlerDerivedClasses": [
-          "apparatus-material-instrument-state",
-          "evidence-recording"
-        ],
-        "typedTargetDomains": [
-          "equipment",
-          "evidence"
-        ],
-        "flags": {
-          "apparatusMaterialInstrumentState": true,
-          "measurementOrDirectObservation": false,
-          "evidenceRecording": true,
-          "calculationOrAnalysis": false,
-          "pedagogicalOrchestration": false
-        },
-        "declaredVersusDerivedConflict": {
-          "hasConflict": false,
-          "reasons": []
-        },
-        "resolvedInteractionType": "recordNotebook"
-      },
-      "complianceVerdict": "technique-origin procedure",
-      "techniqueMatchEscalation": {
-        "decision": "exact-compatible-version",
-        "candidates": []
-      },
-      "laterOwnerCycle": "06",
-      "sourceConflictOrConfigurationBlock": {
-        "sourceClaims": [
-          {
-            "sourceFile": "sticky-question-paper-chromatography_2026-07-27.md",
-            "sourceTable": "phase",
-            "step": "TR-07",
-            "basis": "M"
-          }
-        ],
-        "conflict": false,
-        "traceDebt": null,
-        "block": null
-      },
-      "requiredRemediation": null,
-      "evaluated": true
-    },
-    {
       "rowId": "paper-chromatography#develop-propanol-paper-node",
       "labId": "paper-chromatography",
       "processId": "root",
@@ -12507,7 +12157,7 @@
           "hasConflict": false,
           "reasons": []
         },
-        "resolvedInteractionType": "recordNotebook"
+        "resolvedInteractionType": "snapIntoTarget"
       },
       "complianceVerdict": "technique-origin procedure",
       "techniqueMatchEscalation": {
@@ -12522,76 +12172,6 @@
             "sourceTable": "Section 8 procedure phases",
             "step": "TR-01 to TR-19",
             "basis": "M/R/C"
-          }
-        ],
-        "conflict": false,
-        "traceDebt": null,
-        "block": null
-      },
-      "requiredRemediation": null,
-      "evaluated": true
-    },
-    {
-      "rowId": "paper-chromatography#open-propanol-chamber-node",
-      "labId": "paper-chromatography",
-      "processId": "root",
-      "nodeId": "open-propanol-chamber-node",
-      "actionId": "open-propanol-chamber",
-      "reachability": "mandatory",
-      "validConfigurationApprovalWitnesses": [
-        {
-          "id": "default",
-          "configuration": {},
-          "approvalGates": {}
-        }
-      ],
-      "reachableUnderWitnessIds": [
-        "default"
-      ],
-      "gatedUnderWitnessIds": [],
-      "currentActionOrigin": {
-        "kind": "technique-instance",
-        "techniqueId": "paper-chromatography",
-        "techniqueVersion": "1.2.1",
-        "instanceId": "chromatography-trials",
-        "sourceActionId": "open-propanol-chamber",
-        "sourceNodeId": "open-propanol-chamber-node"
-      },
-      "effect": {
-        "registryHandlerDerivedClasses": [
-          "apparatus-material-instrument-state",
-          "evidence-recording"
-        ],
-        "typedTargetDomains": [
-          "equipment",
-          "evidence"
-        ],
-        "flags": {
-          "apparatusMaterialInstrumentState": true,
-          "measurementOrDirectObservation": false,
-          "evidenceRecording": true,
-          "calculationOrAnalysis": false,
-          "pedagogicalOrchestration": false
-        },
-        "declaredVersusDerivedConflict": {
-          "hasConflict": false,
-          "reasons": []
-        },
-        "resolvedInteractionType": "recordNotebook"
-      },
-      "complianceVerdict": "technique-origin procedure",
-      "techniqueMatchEscalation": {
-        "decision": "exact-compatible-version",
-        "candidates": []
-      },
-      "laterOwnerCycle": "06",
-      "sourceConflictOrConfigurationBlock": {
-        "sourceClaims": [
-          {
-            "sourceFile": "sticky-question-paper-chromatography_2026-07-27.md",
-            "sourceTable": "phase",
-            "step": "TR-09",
-            "basis": "R"
           }
         ],
         "conflict": false,
@@ -58626,7 +58206,7 @@
             "sourceFile": "how-can-color-determine-copper-in-brass_2026-07-27.md",
             "sourceTable": "apparatus",
             "step": "BRASS-01",
-            "basis": "F"
+            "basis": "F/C"
           }
         ],
         "conflict": false,
@@ -58826,7 +58406,7 @@
             "sourceFile": "how-can-color-determine-copper-in-brass_2026-07-27.md",
             "sourceTable": "apparatus",
             "step": "BRASS-01",
-            "basis": "F"
+            "basis": "F/R/C"
           }
         ],
         "conflict": false,
@@ -62030,7 +61610,7 @@
             "sourceFile": "how-can-color-determine-copper-in-brass_2026-07-27.md",
             "sourceTable": "safety",
             "step": "S-08",
-            "basis": "M/C"
+            "basis": "M/R/C"
           }
         ],
         "conflict": false,
@@ -62099,7 +61679,7 @@
             "sourceFile": "how-can-color-determine-copper-in-brass_2026-07-27.md",
             "sourceTable": "safety",
             "step": "S-08",
-            "basis": "M/C"
+            "basis": "M/R/C"
           }
         ],
         "conflict": false,
@@ -232947,27 +232527,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -232975,7 +232542,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -233027,27 +232593,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -233055,7 +232608,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -233107,27 +232659,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -233135,7 +232674,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -233187,27 +232725,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -233215,7 +232740,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -233279,27 +232803,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -233307,7 +232818,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -233367,27 +232877,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -233395,7 +232892,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -233460,27 +232956,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -233488,7 +232971,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -233554,27 +233036,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -233582,7 +233051,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -233648,27 +233116,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -233676,7 +233131,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -233740,27 +233194,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -233768,7 +233209,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -233834,27 +233274,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -233862,7 +233289,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -233928,27 +233354,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -233956,7 +233369,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -234020,27 +233432,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -234048,7 +233447,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -234113,27 +233511,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -234141,7 +233526,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -234206,27 +233590,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -234234,7 +233605,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -234299,27 +233669,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -234327,7 +233684,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -234392,27 +233748,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -234420,7 +233763,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -234486,27 +233828,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -234514,7 +233843,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -234580,27 +233908,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -234608,7 +233923,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -234674,27 +233988,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -234702,7 +234003,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -234768,27 +234068,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -234796,7 +234083,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -234861,27 +234147,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -234889,7 +234162,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -234955,27 +234227,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -234983,7 +234242,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -235049,27 +234307,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -235077,7 +234322,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -235141,27 +234385,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -235169,7 +234400,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -235235,27 +234465,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -235263,7 +234480,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -235329,27 +234545,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -235357,7 +234560,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -235423,27 +234625,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -235451,7 +234640,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -235515,27 +234703,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -235543,7 +234718,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -235608,27 +234782,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -235636,7 +234797,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -235700,27 +234860,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -235728,7 +234875,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -235793,27 +234939,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -235821,7 +234954,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -235886,27 +235018,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -235914,7 +235033,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
@@ -235978,27 +235096,14 @@
       "validConfigurationApprovalWitnesses": [
         {
           "id": "teacher-approved-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
-          "approvalGates": {
-            "thermal-decomposition.teacher-approved-plan": true
-          }
-        },
-        {
-          "id": "teacher-approved-tared-balance-route",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "tare-balance-with-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": true
           }
         },
         {
           "id": "approval-locked-static-witness",
-          "configuration": {
-            "thermal-decomposition.tareConvention": "record-crucible-plus-lid"
-          },
+          "configuration": {},
           "approvalGates": {
             "thermal-decomposition.teacher-approved-plan": false
           }
@@ -236006,7 +235111,6 @@
       ],
       "reachableUnderWitnessIds": [
         "teacher-approved-route",
-        "teacher-approved-tared-balance-route",
         "approval-locked-static-witness"
       ],
       "gatedUnderWitnessIds": [],
