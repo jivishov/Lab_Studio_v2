@@ -8,9 +8,9 @@
 - Hosted source configuration accounted: **66 / 66**
 - Historical dependency set locally restored: **46 / 46 files, 39,500,058 bytes, 46/46 SHA-256 matches**
 - Historical dependencies on GitHub branch: **not restored**
-- Fresh current evidence pipeline: **not run**
-- Source-level reconciliation closure: **not claimed**
-- Full Item 2: **incomplete**
+- Fresh current evidence pipeline: **Run B current; six core phases passed; supplemental content check exited 1 and is fully triaged**
+- Source-level reconciliation closure: **current static reconciliation recorded; runtime/scientific/release closure not claimed**
+- Full Item 2: **complete for the authorized source/current-evidence scope, with explicit static limitations**
 - Items 3–5: **not started**
 
 ## Record corrections after external review
@@ -45,9 +45,9 @@ The item-2 source repair remains `titration-curve-analysis`: its molarity result
 
 ## Dependency restoration
 
-The attached package was extracted locally and the 46 repository planning dependencies were copied into `/mnt/data/item2_local_restore/planning/...`. Every copied file was re-hashed: **46 matches, 0 mismatches**.
+The attached package was extracted locally and the 46 repository planning dependencies were copied into the isolated checkout at `planning/...`. Every copied file was re-hashed: **46 matches, 0 mismatches**; total **39,500,058 bytes**. The exact restoration was committed locally; no push or merge was performed.
 
-The web GitHub connector cannot upload those local file snapshots directly, so branch restoration remains pending an upload-capable writable checkout. The branch must not claim those dependencies are present until that copy is made in the actual execution workspace.
+The branch remains isolated from `main`; this is a local evidence candidate, not a published release.
 
 ## Validation/run boundary
 
@@ -59,12 +59,10 @@ Performed in this continuation:
 - ledger/report corrections.
 
 Not run:
-- optional evidence pipeline;
-- fresh compiled JSON content check;
 - tests, including the new titration regression;
 - typecheck/build/browser/runtime/E2E/broad lint.
 
-The optional evidence phase still requires a separate user authorization.
+The authorized item-2 evidence phase is now recorded in Run B. The remaining unrun checks are deliberately outside the repository validation policy and this scoped request.
 
 
 ## Final external-review scenario correction
@@ -118,4 +116,17 @@ A subsequent source review corrected two remaining scenario-contract errors.
 
 **Quick Ache analysis:** retry/recalculation may reuse still-valid source measurements; an upstream physical recovery requires reacquiring measurements invalidated by that physical branch; full player Reset creates fresh state and clears both measurements and calculations.
 
-No runtime/evidence pipeline was executed for these documentation corrections.
+No runtime/evidence pipeline was executed for those documentation corrections before the authorized current-evidence pass.
+
+## Fresh current evidence — Run B
+
+- Run ID: `item2-f9c9229-run-b`
+- Source commit at initialization: `f9c9229`
+- Source snapshot payload SHA-256: `f14055d751a2bfbbe604d0c92f5995b4dabcc64942ed3b73a2fe5019731cedd0`
+- Core chain: **6/6 passed** — compiler witness, reconciliation, Cycle 09 overlay refresh/check, reconciliation check and static verifier.
+- Recorder `--check`: **source current; integrity passed; complete-current-run-with-supplemental-failures**.
+- Complete content JSON: `delivery/run-b-content-check-compiled-json.stdout.json` (SHA-256 `e5b849bfe6893b9cf7570aacab34a1737eeebc016d15cd4872ab92013b501e02`; exit 1).
+
+The content result retains 906 static findings: 903 source-trace registry gaps, two inconclusive cuvette-composition rows and one inconclusive configured-wavelength row. One raw composition row was routed to compiled-context evaluation and produced no compiled finding. The compiled campaign covered 30/30 attempted witnesses and 6,278 node contexts, with zero compiled-context findings; 38 declared configurations remain unrepresented in the static witness set. Every retained finding, routed row and coverage limitation has a stable identity and explicit disposition in `docs/item2/FINDING_TRIAGE.json`.
+
+These results are source/static evidence only. No runtime, browser, scientific, classroom, safety or release acceptance is claimed, and no push/merge/deployment was performed.

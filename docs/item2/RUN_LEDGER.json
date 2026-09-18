@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "branch": "codex/item2-catalog-reconciliation",
   "baseline": "f7c2b863f641090d9abc5c08ee22da72702fdfd6",
-  "actualModel": "GPT-5.6 Sol",
-  "implementationReasoningEffort": "not exposed by runtime; not claimed",
-  "criticalReviewReasoningEffort": "not exposed by runtime; not claimed",
+  "actualModel": "GPT-5.6 Luna",
+  "implementationReasoningEffort": "Max (requested execution setting; separate runtime attestation not exposed)",
+  "criticalReviewReasoningEffort": "Max (requested execution setting; no independent reviewer claimed)",
   "performed": [
     {
       "kind": "source-review",
@@ -53,16 +53,36 @@
     {
       "kind": "targeted-scenario-contract-correction",
       "detail": "Corrected Green Chemistry heated-product recovery/atom-economy semantics and Quick Ache retry/physical-recovery/full-reset semantics after source review."
+    },
+    {
+      "kind": "scoped-item2-source-repairs",
+      "detail": "Repaired owner-local action collision checking, runtime stock-variant/asset reachability parsing, migrated photometer and mass continuity checks, source-trace stale-owner rows, current measurement evidence parameters, bonding solvent prerequisites and unresolved spectroscopy confirmation markers."
+    },
+    {
+      "kind": "current-evidence-run-a",
+      "detail": "item2-597c060-run-a discovered the pre-repair state; six core phases passed and repository-content-check exited 1."
+    },
+    {
+      "kind": "current-evidence-run-b",
+      "detail": "item2-f9c9229-run-b ran against source commit f9c9229; six core phases passed, source/integrity check is current, and repository-content-check retained 906 static findings with exit 1."
+    },
+    {
+      "kind": "complete-current-content-diagnostic",
+      "detail": "Captured delivery/run-b-content-check-compiled-json.stdout.json with SHA-256 e5b849bfe6893b9cf7570aacab34a1737eeebc016d15cd4872ab92013b501e02; 906 retained findings, 1 routed raw row, 0 compiled-context findings and 38 unrepresented-configuration coverage limitations."
+    },
+    {
+      "kind": "current-finding-triage",
+      "detail": "FINDING_TRIAGE.json records stable id, rule, severity, context, evidence, scenario impact, disposition and reason for all 906 retained findings, the routed raw row and 38 compiled coverage limitations."
     }
   ],
   "intentionallyUnrun": [
     {
-      "command": "named recordCurrentVerificationRun.mjs pipeline",
-      "reason": "separate optional evidence authorization not provided; the 46 planning dependencies are verified locally but are not restored into the writable repository execution workspace"
+      "command": "unit/integration tests (including cycle09Titration.test.ts)",
+      "reason": "repository basic-static validation ceiling"
     },
     {
-      "command": "node --experimental-strip-types --experimental-loader ./scripts/tsCompositionLoader.mjs scripts/checkContentConsistency.mjs --compiled --json",
-      "reason": "belongs to the separately authorized current-evidence phase; the verified planning dependencies are still absent from the writable repository execution workspace"
+      "command": "typecheck / build / browser / runtime / E2E / broad lint suites",
+      "reason": "repository basic-static validation ceiling"
     },
     {
       "command": "unit/integration tests (including cycle09Titration.test.ts)",
@@ -71,9 +91,25 @@
     {
       "command": "typecheck / build / browser / runtime / E2E / broad lint suites",
       "reason": "repository basic-static validation ceiling"
+    },
+    {
+      "command": "live scientific, classroom, safety and release acceptance",
+      "reason": "outside the authorized source/current-evidence item-2 scope"
     }
   ],
-  "evidencePipelineStatus": "not-run",
-  "currentEvidenceStatus": "pending separate user authorization and upload-capable repository execution-workspace restoration",
-  "sourceLevelClosureClaim": "withdrawn; inventory/static-rationale accounting only"
+  "evidencePipelineStatus": "complete-current-run-with-supplemental-failures",
+  "currentEvidenceStatus": "Run B is current and integrity-complete for the repaired source commit; the six core static phases passed, while repository-content-check retains explicit nonblocking/inconclusive limitations and exits 1.",
+  "sourceLevelClosureClaim": "current source/static reconciliation and evidence recorded; runtime/scientific/browser/release closure not claimed",
+  "modelAttestation": "The continuation task requested GPT-5.6 Luna with Max reasoning; this ledger records that setting without claiming a separate independent review.",
+  "acceptedRun": {
+    "runId": "item2-f9c9229-run-b",
+    "sourceCommit": "f9c9229",
+    "sourceSnapshotPayloadSha256": "f14055d751a2bfbbe604d0c92f5995b4dabcc64942ed3b73a2fe5019731cedd0",
+    "recorderCheck": "complete-current-run-with-supplemental-failures",
+    "integrity": "passed",
+    "corePhases": "6/6 passed",
+    "supplemental": {
+      "repositoryContentCheck": "failed exit 1; explicitly triaged"
+    }
+  }
 }

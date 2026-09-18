@@ -1,15 +1,15 @@
-# Item 2 pending evidence execution request
+# Item 2 evidence execution record
 
 ## Status
 
-Item 2 remains **incomplete**. Catalog/source/configuration records have been corrected, and the 46 historical dependencies are locally restored with 46/46 SHA-256 matches, but they are not present on the GitHub branch. The named evidence phase has not been authorized in a separate instruction.
+Item 2 is **complete for the authorized isolated source/current-evidence scope with explicit static limitations**. Catalog/source/configuration records were corrected, the 46 historical dependencies were restored into the isolated checkout with 46/46 SHA-256 matches, and the named evidence phase was executed as Run B. The branch was not pushed or merged.
 
 ## Preconditions
 
-1. Receive the optional evidence-pipeline exception as a **separate user instruction**. The attached OPTIONAL_EVIDENCE_AUTHORIZATION.txt is proposed permission text, not authorization by attachment.
-2. Use an upload-capable writable checkout of `codex/item2-catalog-reconciliation`.
-3. Copy the 46 manifest-listed files from the verified local/package source into their exact repository-relative `planning/...` paths and re-verify every SHA-256 against `BUNDLE_MANIFEST.json`.
-4. Commit/freeze every intended tracked source/ledger/report change **before** the accepted final verification run.
+1. The optional evidence-pipeline exception was supplied as a separate task instruction.
+2. The evidence ran in the prepared writable checkout of `codex/item2-catalog-reconciliation`.
+3. The 46 manifest-listed files were copied into their exact repository-relative `planning/...` paths and re-verified: 46/46 SHA-256 matches.
+4. Source repairs and discovery evidence were committed before Run B; current triage/report edits are followed by a final freshness run when needed.
 
 ## Evidence freshness rule
 
@@ -57,3 +57,12 @@ Do not edit tracked reports/triage again after Run B unless you are prepared to 
 Return the final source commit, exact command logs/exit statuses, refreshed compiler witness/reconciliation/overlays, fresh content-check JSON, final per-finding dispositions, and the final recorder source/integrity result. Keep current raw diagnostics separate from historical findings.
 
 Do not merge to `main` unless separately requested.
+
+## Current execution result
+
+- Run A: `item2-597c060-run-a`, retained as pre-repair discovery evidence.
+- Run B: `item2-f9c9229-run-b`, current against source commit `f9c9229`.
+- Core static chain: 6/6 passed; recorder source status current; integrity passed.
+- Supplemental content check: exit 1, with 906 retained findings, 1 routed raw row, 0 compiled-context findings and 38 unrepresented static coverage configurations.
+- Complete JSON capture: `delivery/run-b-content-check-compiled-json.stdout.json`, SHA-256 `e5b849bfe6893b9cf7570aacab34a1737eeebc016d15cd4872ab92013b501e02`.
+- Per-finding dispositions: `FINDING_TRIAGE.json`; runtime, scientific, browser, classroom, safety and release acceptance remain outside this evidence scope.

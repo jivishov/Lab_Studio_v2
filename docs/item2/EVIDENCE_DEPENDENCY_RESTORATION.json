@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "status": "blocked-in-current-web-toolchain",
+  "status": "restored-and-verified-in-isolated-checkout",
   "suppliedPackageManifestSha256": "f5be35a5d87902398a4991bac02a10257d60849c66e33801b7542d10149e7a04",
   "manifestListedRepositoryPlanningFiles": 46,
   "manifestListedRepositoryPlanningBytes": 39500058,
@@ -10,21 +10,21 @@
     "Queried Lab_Studio_v2 commit history for representative omitted paths; they have no prior repository commits/blobs to reattach.",
     "Confirmed the available GitHub mutation interface accepts UTF-8/base64 content strings but has no attachment/container-file upload handoff."
   ],
-  "reason": "The exact files are present in the attached sandbox package, but several are 3-12 MB and the complete set is ~39.5 MB. This environment cannot transfer those exact local bytes into GitHub without serializing them through model/tool arguments, which is not a reliable byte-preserving upload path. A partial planning tree was deliberately not committed.",
-  "effect": "The dependency set is locally restored and hash-verified. The authorized evidence scripts still require a full repository checkout/workspace containing both current branch source and these planning paths; branch evidence must not claim restoration until those files are actually present in that execution workspace.",
-  "requiredNextCapability": "A writable checkout or GitHub upload interface that can copy the 46 manifest-listed files directly from the attached package, verify their SHA-256 hashes, and commit them on this branch.",
+  "reason": "The exact 46 manifest-listed files were copied from the supplied package into the prepared isolated checkout and re-hashed. The restoration is local evidence state only and was not pushed to GitHub.",
+  "effect": "The authorized item-2 evidence scripts ran successfully against the isolated checkout. This branch remains a local candidate; no publication, merge or deployment is implied.",
+  "requiredNextCapability": "No additional capability is required for this local item-2 evidence candidate; publication or merge requires separate authorization.",
   "localRestoration": {
     "status": "independently-reverified",
-    "workspace": "/mnt/data/item2_local_restore",
+    "workspace": "C:\\Users\\EmilJivishov\\Projects\\Lab_studio\\tmp\\item2-luna-local-20260918\\checkout",
     "files": 46,
     "bytes": 39500058,
     "sha256Matches": 46,
     "sha256Mismatches": 0,
-    "source": "attached ITEM2_WEB_SOL_HANDOFF.zip / BUNDLE_MANIFEST.json"
+    "source": "attached item-2 package and BUNDLE_MANIFEST.json"
   },
   "gitBranchRestoration": {
-    "status": "pending-tool-capability",
-    "reason": "The GitHub connector available in this web session has no local-file/source_file_ref upload mutation. The exact local bytes are restored and verified, but cannot be copied byte-for-byte into GitHub without an upload-capable repository workspace."
+    "status": "local-only-commit",
+    "reason": "Exact files are present and hash-verified in the isolated checkout; no push or merge was requested."
   },
   "independentZipVerification": {
     "verifiedAt": "2026-09-18",

@@ -2,9 +2,9 @@
 
 ## Identity
 
-- Model: GPT-5.6 Sol.
-- Reasoning-effort setting: not exposed by this runtime; High/xHigh is not claimed.
-- Review type: same-session revision informed by an external GPT-6 Astra source/JSON/hash review.
+- Model setting: GPT-5.6 Luna, Max reasoning (the requested continuation setting).
+- Runtime attestation: a separate model/effort attestation was not exposed; no stronger claim is made.
+- Review type: same-session critical review of the repaired source and current evidence; no independent reviewer is claimed.
 
 ## External-review findings and disposition
 
@@ -46,7 +46,7 @@ The 46 dependencies are now restored locally and re-hashed: 39,500,058 bytes, 46
 
 ## Remaining acceptance boundary
 
-Item 2 remains incomplete. Fresh compiler witness, reconciliation, overlay checks, static verifier and complete content diagnostics are still required after separate authorization and repository/workspace restoration.
+The current evidence phase is now complete for the authorized source/static scope. Run B has current compiler witness, reconciliation, overlay checks, static verifier and complete content diagnostics. The content checker remains nonzero because its 906 retained static findings and 38 unrepresented configurations are explicitly triaged; runtime, scientific, browser, classroom, safety and release acceptance remain unclaimed.
 
 
 ## Final scenario review correction
@@ -86,4 +86,10 @@ The previous scenario incorrectly described Reset as clearing report calculation
 - upstream physical recovery/reset, which requires reacquisition of any measurements invalidated by that physical recovery; and
 - full activity Reset through `usePlayerRuntime.reset()`, which creates fresh runtime state and therefore clears both measurements and calculations.
 
-These are documentation/source-contract corrections only; the evidence pipeline remains unrun.
+Those documentation/source-contract corrections were source-only; the current evidence result is recorded separately below.
+
+## Current-evidence challenge
+
+Run B (`item2-f9c9229-run-b`) was executed after the source repairs were committed at `f9c9229`. The six core phases passed and the recorder reported a current source snapshot with integrity passed. The separate complete content capture reported 903 source-trace registry gaps, two inconclusive cuvette-composition findings and one inconclusive configured-wavelength finding; it also reported one raw row routed to compiled-context diagnostics, zero compiled-context findings, and 38 unrepresented configurations. Those are retained as explicit limitations in `FINDING_TRIAGE.json`, not converted into a false clean pass.
+
+The source/static result does not establish runtime progression, physical/scientific correctness, learner-facing behavior, classroom safety or release readiness. The authored titration regression and all broader tests remain intentionally unrun under the repository validation ceiling.

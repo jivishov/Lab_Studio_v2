@@ -95,7 +95,7 @@
     "extras": 0,
     "githubBranchPresence": "absent; local verified artifact only"
   },
-  "evidenceStatus": "not-run; separate authorization not received; source-level reconciliation closure not claimed",
+  "evidenceStatus": "Run B current for the repaired source snapshot; no runtime/scientific/browser/release claim",
   "targetedScenarioCorrections": {
     "greenChemistry": {
       "heatedProductRecovery": "qualitative provenance only; no recovered-product mass measurement",
@@ -108,5 +108,32 @@
       "physicalRecovery": "reacquire measurements invalidated by the affected upstream physical branch",
       "fullActivityReset": "fresh runtime state; prior measurements and calculations are both cleared"
     }
-  }
+  },
+  "currentEvidence": {
+    "runId": "item2-f9c9229-run-b",
+    "sourceCommit": "f9c9229",
+    "sourceSnapshotPayloadSha256": "f14055d751a2bfbbe604d0c92f5995b4dabcc64942ed3b73a2fe5019731cedd0",
+    "recorderCheck": "complete-current-run-with-supplemental-failures",
+    "corePhasesPassed": 6,
+    "contentCheckExitCode": 1,
+    "contentJsonSha256": "e5b849bfe6893b9cf7570aacab34a1737eeebc016d15cd4872ab92013b501e02",
+    "retainedFindings": 906,
+    "routedRawFindings": 1,
+    "compiledContextFindings": 0,
+    "unrepresentedConfigurations": 38,
+    "triagePath": "docs/item2/FINDING_TRIAGE.json"
+  },
+  "sourceRepairs": [
+    "scripts/checkContentConsistency.mjs",
+    "scripts/generatorInputs/apChem/gravimetrySeparation.mjs",
+    "scripts/generatorInputs/apChem/spectroscopy.mjs",
+    "scripts/generatorInputs/simulator/transmittanceDilution.mjs",
+    "public/techniques/beers-law-calibration.json",
+    "public/techniques/blue1-class-calibration.json",
+    "public/techniques/blue1-percent-transmittance.json",
+    "public/techniques/bonding-solids-tests.json",
+    "public/techniques/transmittance-dilution.json",
+    "src/domain/atomRegistry.json",
+    "docs/architecture/source-trace-registry.json"
+  ]
 }

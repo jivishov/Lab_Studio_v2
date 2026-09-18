@@ -1,11 +1,11 @@
 {
   "schema": "lab-studio/technique-atomicity-audit@cycle12",
-  "generatedAt": "2026-09-18T18:16:24.094Z",
+  "generatedAt": "2026-09-18T17:47:31.829Z",
   "currentEvidence": {
-    "path": "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/CURRENT_VERIFICATION_RUN.json",
+    "path": "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-597c060-run-a/CURRENT_VERIFICATION_RUN.json",
     "status": "current",
-    "capturedAt": "2026-09-18T18:16:24.094Z",
-    "sourceSnapshotPayloadSha256": "f14055d751a2bfbbe604d0c92f5995b4dabcc64942ed3b73a2fe5019731cedd0",
+    "capturedAt": "2026-09-18T17:47:31.829Z",
+    "sourceSnapshotPayloadSha256": "0e664aac5c53f86c4950f11c87fd5d9c965fbd13fec9160ef2deccbe54eb45a1",
     "reconciliationInputManifestSha256": null,
     "reason": "Selected current-verification source snapshot is current; serialized reconciliation provenance is limited to its immutable source identity and fixed output boundary. Dynamic phase receipts remain in the current-verification ledger and CLI.",
     "mismatches": [],
@@ -14,7 +14,7 @@
     "stableDomainBoundary": [],
     "evidenceRunProvenance": "selected-current-verification-run; only the immutable selected source snapshot and required prior phase receipt are read so later receipts cannot make reconciliation output self-referential",
     "selection": "explicit-current-verification-run",
-    "runId": "item2-f9c9229-run-b",
+    "runId": "item2-597c060-run-a",
     "sourceSnapshotExcludes": "only fixed current phase outputs and fixed current-run artifacts; those paths are validated by phase receipts instead"
   },
   "inventory": {
@@ -111622,12 +111622,6 @@
             "type": "actionEvidence",
             "label": "Previous sample operation is complete.",
             "actionId": "record-water-solubility"
-          },
-          {
-            "id": "read-aqueous-conductivity--test-solution-required",
-            "type": "actionEvidence",
-            "label": "The water test solution has been applied.",
-            "actionId": "apply-water-solvent"
           }
         ],
         "distinctPausePoint": "Completion of node evidence for read-aqueous-conductivity; no un-authored microstep is introduced.",
@@ -111821,12 +111815,6 @@
             "type": "actionEvidence",
             "label": "Previous sample operation is complete.",
             "actionId": "record-aqueous-conductivity"
-          },
-          {
-            "id": "read-ph-indicator--test-solution-required",
-            "type": "actionEvidence",
-            "label": "The water test solution has been applied.",
-            "actionId": "apply-water-solvent"
           }
         ],
         "distinctPausePoint": "Completion of node evidence for read-ph-indicator; no un-authored microstep is introduced.",
