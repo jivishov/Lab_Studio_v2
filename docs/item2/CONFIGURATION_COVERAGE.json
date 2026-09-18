@@ -1,0 +1,1968 @@
+{
+  "schemaVersion": 1,
+  "branch": "codex/item2-catalog-reconciliation",
+  "baseline": "f7c2b863f641090d9abc5c08ee22da72702fdfd6",
+  "mode": "static source configuration accounting only; no compiler/witness pipeline executed",
+  "declaredCatalog": {
+    "labs": 17,
+    "techniques": 42,
+    "total": 59
+  },
+  "sourceHostInstances": {
+    "count": 66,
+    "represented": 47,
+    "missingRequired": [
+      {
+        "labId": "hard-water-analysis",
+        "instanceId": "two-stage-precipitate-drying",
+        "techniqueId": "two-stage-precipitate-drying",
+        "version": "1.2.0",
+        "configurationKeys": [],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "ovenTemperatureC",
+          "firstDurationMinutes",
+          "coolingTemperatureC"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "hard-water-analysis",
+        "instanceId": "hard-water-two-sample-inquiry",
+        "techniqueId": "hard-water-two-sample-inquiry",
+        "version": "1.2.0",
+        "configurationKeys": [],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "ovenTemperatureC",
+          "firstDurationMinutes",
+          "coolingTemperatureC"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "bonding-unknown-solids",
+        "instanceId": "known-1",
+        "techniqueId": "bonding-solids-tests",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "conductivityThresholds",
+          "dryWasteDestination",
+          "ethanolAmount",
+          "ethanolWasteDestination",
+          "evidenceScopeId",
+          "hclAmount",
+          "hclWasteDestination",
+          "hexanesAmount",
+          "hexanesWasteDestination",
+          "hoodControl",
+          "meltingApparatusLimits",
+          "microsampleAmount",
+          "naohAmount",
+          "naohWasteDestination",
+          "phThresholds",
+          "sampleIdentity",
+          "sampleMode",
+          "selectedTestPanel",
+          "waterAmount",
+          "waterWasteDestination"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "bonding-unknown-solids",
+        "instanceId": "known-2",
+        "techniqueId": "bonding-solids-tests",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "conductivityThresholds",
+          "dryWasteDestination",
+          "ethanolAmount",
+          "ethanolWasteDestination",
+          "evidenceScopeId",
+          "hclAmount",
+          "hclWasteDestination",
+          "hexanesAmount",
+          "hexanesWasteDestination",
+          "hoodControl",
+          "meltingApparatusLimits",
+          "microsampleAmount",
+          "naohAmount",
+          "naohWasteDestination",
+          "phThresholds",
+          "sampleIdentity",
+          "sampleMode",
+          "selectedTestPanel",
+          "waterAmount",
+          "waterWasteDestination"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "bonding-unknown-solids",
+        "instanceId": "known-3",
+        "techniqueId": "bonding-solids-tests",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "conductivityThresholds",
+          "dryWasteDestination",
+          "ethanolAmount",
+          "ethanolWasteDestination",
+          "evidenceScopeId",
+          "hclAmount",
+          "hclWasteDestination",
+          "hexanesAmount",
+          "hexanesWasteDestination",
+          "hoodControl",
+          "meltingApparatusLimits",
+          "microsampleAmount",
+          "naohAmount",
+          "naohWasteDestination",
+          "phThresholds",
+          "sampleIdentity",
+          "sampleMode",
+          "selectedTestPanel",
+          "waterAmount",
+          "waterWasteDestination"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "bonding-unknown-solids",
+        "instanceId": "known-4",
+        "techniqueId": "bonding-solids-tests",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "conductivityThresholds",
+          "dryWasteDestination",
+          "ethanolAmount",
+          "ethanolWasteDestination",
+          "evidenceScopeId",
+          "hclAmount",
+          "hclWasteDestination",
+          "hexanesAmount",
+          "hexanesWasteDestination",
+          "hoodControl",
+          "meltingApparatusLimits",
+          "microsampleAmount",
+          "naohAmount",
+          "naohWasteDestination",
+          "phThresholds",
+          "sampleIdentity",
+          "sampleMode",
+          "selectedTestPanel",
+          "waterAmount",
+          "waterWasteDestination"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "bonding-unknown-solids",
+        "instanceId": "known-5-count5",
+        "techniqueId": "bonding-solids-tests",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "conductivityThresholds",
+          "dryWasteDestination",
+          "ethanolAmount",
+          "ethanolWasteDestination",
+          "evidenceScopeId",
+          "hclAmount",
+          "hclWasteDestination",
+          "hexanesAmount",
+          "hexanesWasteDestination",
+          "hoodControl",
+          "meltingApparatusLimits",
+          "microsampleAmount",
+          "naohAmount",
+          "naohWasteDestination",
+          "phThresholds",
+          "sampleIdentity",
+          "sampleMode",
+          "selectedTestPanel",
+          "waterAmount",
+          "waterWasteDestination"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "bonding-unknown-solids",
+        "instanceId": "known-5-count6",
+        "techniqueId": "bonding-solids-tests",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "conductivityThresholds",
+          "dryWasteDestination",
+          "ethanolAmount",
+          "ethanolWasteDestination",
+          "evidenceScopeId",
+          "hclAmount",
+          "hclWasteDestination",
+          "hexanesAmount",
+          "hexanesWasteDestination",
+          "hoodControl",
+          "meltingApparatusLimits",
+          "microsampleAmount",
+          "naohAmount",
+          "naohWasteDestination",
+          "phThresholds",
+          "sampleIdentity",
+          "sampleMode",
+          "selectedTestPanel",
+          "waterAmount",
+          "waterWasteDestination"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "bonding-unknown-solids",
+        "instanceId": "known-6",
+        "techniqueId": "bonding-solids-tests",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "conductivityThresholds",
+          "dryWasteDestination",
+          "ethanolAmount",
+          "ethanolWasteDestination",
+          "evidenceScopeId",
+          "hclAmount",
+          "hclWasteDestination",
+          "hexanesAmount",
+          "hexanesWasteDestination",
+          "hoodControl",
+          "meltingApparatusLimits",
+          "microsampleAmount",
+          "naohAmount",
+          "naohWasteDestination",
+          "phThresholds",
+          "sampleIdentity",
+          "sampleMode",
+          "selectedTestPanel",
+          "waterAmount",
+          "waterWasteDestination"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "bonding-unknown-solids",
+        "instanceId": "blind-1",
+        "techniqueId": "bonding-solids-tests",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "conductivityThresholds",
+          "dryWasteDestination",
+          "ethanolAmount",
+          "ethanolWasteDestination",
+          "evidenceScopeId",
+          "hclAmount",
+          "hclWasteDestination",
+          "hexanesAmount",
+          "hexanesWasteDestination",
+          "hoodControl",
+          "meltingApparatusLimits",
+          "microsampleAmount",
+          "naohAmount",
+          "naohWasteDestination",
+          "phThresholds",
+          "sampleIdentity",
+          "sampleMode",
+          "selectedTestPanel",
+          "waterAmount",
+          "waterWasteDestination"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "bonding-unknown-solids",
+        "instanceId": "blind-2",
+        "techniqueId": "bonding-solids-tests",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "conductivityThresholds",
+          "dryWasteDestination",
+          "ethanolAmount",
+          "ethanolWasteDestination",
+          "evidenceScopeId",
+          "hclAmount",
+          "hclWasteDestination",
+          "hexanesAmount",
+          "hexanesWasteDestination",
+          "hoodControl",
+          "meltingApparatusLimits",
+          "microsampleAmount",
+          "naohAmount",
+          "naohWasteDestination",
+          "phThresholds",
+          "sampleIdentity",
+          "sampleMode",
+          "selectedTestPanel",
+          "waterAmount",
+          "waterWasteDestination"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "bonding-unknown-solids",
+        "instanceId": "blind-3",
+        "techniqueId": "bonding-solids-tests",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "conductivityThresholds",
+          "dryWasteDestination",
+          "ethanolAmount",
+          "ethanolWasteDestination",
+          "evidenceScopeId",
+          "hclAmount",
+          "hclWasteDestination",
+          "hexanesAmount",
+          "hexanesWasteDestination",
+          "hoodControl",
+          "meltingApparatusLimits",
+          "microsampleAmount",
+          "naohAmount",
+          "naohWasteDestination",
+          "phThresholds",
+          "sampleIdentity",
+          "sampleMode",
+          "selectedTestPanel",
+          "waterAmount",
+          "waterWasteDestination"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "bonding-unknown-solids",
+        "instanceId": "blind-4",
+        "techniqueId": "bonding-solids-tests",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "conductivityThresholds",
+          "dryWasteDestination",
+          "ethanolAmount",
+          "ethanolWasteDestination",
+          "evidenceScopeId",
+          "hclAmount",
+          "hclWasteDestination",
+          "hexanesAmount",
+          "hexanesWasteDestination",
+          "hoodControl",
+          "meltingApparatusLimits",
+          "microsampleAmount",
+          "naohAmount",
+          "naohWasteDestination",
+          "phThresholds",
+          "sampleIdentity",
+          "sampleMode",
+          "selectedTestPanel",
+          "waterAmount",
+          "waterWasteDestination"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "bonding-unknown-solids",
+        "instanceId": "blind-5-count5",
+        "techniqueId": "bonding-solids-tests",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "conductivityThresholds",
+          "dryWasteDestination",
+          "ethanolAmount",
+          "ethanolWasteDestination",
+          "evidenceScopeId",
+          "hclAmount",
+          "hclWasteDestination",
+          "hexanesAmount",
+          "hexanesWasteDestination",
+          "hoodControl",
+          "meltingApparatusLimits",
+          "microsampleAmount",
+          "naohAmount",
+          "naohWasteDestination",
+          "phThresholds",
+          "sampleIdentity",
+          "sampleMode",
+          "selectedTestPanel",
+          "waterAmount",
+          "waterWasteDestination"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "bonding-unknown-solids",
+        "instanceId": "blind-5-count6",
+        "techniqueId": "bonding-solids-tests",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "conductivityThresholds",
+          "dryWasteDestination",
+          "ethanolAmount",
+          "ethanolWasteDestination",
+          "evidenceScopeId",
+          "hclAmount",
+          "hclWasteDestination",
+          "hexanesAmount",
+          "hexanesWasteDestination",
+          "hoodControl",
+          "meltingApparatusLimits",
+          "microsampleAmount",
+          "naohAmount",
+          "naohWasteDestination",
+          "phThresholds",
+          "sampleIdentity",
+          "sampleMode",
+          "selectedTestPanel",
+          "waterAmount",
+          "waterWasteDestination"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "bonding-unknown-solids",
+        "instanceId": "blind-6",
+        "techniqueId": "bonding-solids-tests",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "conductivityThresholds",
+          "dryWasteDestination",
+          "ethanolAmount",
+          "ethanolWasteDestination",
+          "evidenceScopeId",
+          "hclAmount",
+          "hclWasteDestination",
+          "hexanesAmount",
+          "hexanesWasteDestination",
+          "hoodControl",
+          "meltingApparatusLimits",
+          "microsampleAmount",
+          "naohAmount",
+          "naohWasteDestination",
+          "phThresholds",
+          "sampleIdentity",
+          "sampleMode",
+          "selectedTestPanel",
+          "waterAmount",
+          "waterWasteDestination"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "quick-ache-relief-separation",
+        "instanceId": "extraction",
+        "techniqueId": "quick-ache-extraction-recovery",
+        "version": "1.3.1",
+        "configurationKeys": [],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "organicRecoveryMethod",
+          "aqueousRecoveryMethod",
+          "drynessCriterion",
+          "coolingLimitC",
+          "acidEndpointPh",
+          "organicDensity",
+          "aqueousDensity",
+          "recoverySetupApproved",
+          "extractionCount",
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      }
+    ],
+    "detailedComparisonPending": [
+      {
+        "labId": "paper-chromatography",
+        "instanceId": "chromatography-trials",
+        "techniqueId": "paper-chromatography"
+      },
+      {
+        "labId": "hand-warmer-calorimetry",
+        "instanceId": "hand-warmer",
+        "techniqueId": "hand-warmer-calorimetry"
+      }
+    ],
+    "instances": [
+      {
+        "labId": "intro-filtration-demo",
+        "instanceId": "measuring-volume",
+        "techniqueId": "measuring-volume",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "targetVolumeMl",
+          "volumeMeasurementId",
+          "volumeToleranceMl"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "intro-filtration-demo",
+        "instanceId": "transfer",
+        "techniqueId": "transfer",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "transferObservation",
+          "transferVolumeMl"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "intro-filtration-demo",
+        "instanceId": "hard-water-precipitation",
+        "techniqueId": "hard-water-precipitation",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "finalVolumeMl",
+          "precipitateMassG"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "intro-filtration-demo",
+        "instanceId": "filtration",
+        "techniqueId": "filtration",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "filtrationMode",
+          "rinseVolumeMl"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "hard-water-demo",
+        "instanceId": "measuring-volume",
+        "techniqueId": "measuring-volume",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "targetVolumeMl",
+          "volumeMeasurementId",
+          "volumeToleranceMl"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "hard-water-demo",
+        "instanceId": "transfer",
+        "techniqueId": "transfer",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "transferObservation",
+          "transferVolumeMl"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "hard-water-demo",
+        "instanceId": "hard-water-precipitation",
+        "techniqueId": "hard-water-precipitation",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "finalVolumeMl",
+          "precipitateMassG"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "hard-water-demo",
+        "instanceId": "filtration",
+        "techniqueId": "filtration",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "filtrationMode",
+          "rinseVolumeMl"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "hard-water-demo",
+        "instanceId": "drying",
+        "techniqueId": "drying",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "dryMassG",
+          "dryMassMeasurementId",
+          "firstDryingMinutes",
+          "massToleranceG",
+          "ovenTemperatureC",
+          "secondDryingMinutes"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "hard-water-demo",
+        "instanceId": "hard-water-calculation",
+        "techniqueId": "hard-water-calculation",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "calculationId",
+          "calculationTolerance",
+          "precipitateMassMeasurementId",
+          "sampleVolumeMeasurementId"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "acid-base-titration",
+        "instanceId": "investigation",
+        "techniqueId": "titration-endpoint",
+        "version": "3.0.1",
+        "configurationKeys": [
+          "conditioningVolumeMl",
+          "endpointWindowMl",
+          "indicatorStartPh",
+          "indicatorStrongPh",
+          "indicatorVolumeMl",
+          "maximumIncrementMl",
+          "persistenceSeconds",
+          "preparationProtocol",
+          "rinseVolumeMl",
+          "tipPurgeMl",
+          "wasteProtocol"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "marble-statue-kinetics",
+        "instanceId": "practice-trial",
+        "techniqueId": "marble-gas-syringe-kinetics",
+        "version": "2.1.0",
+        "configurationKeys": [
+          "acidVolumeMl",
+          "acidVolumeToleranceMl",
+          "evidenceLimitsNotebookTag",
+          "evidenceScopeId",
+          "instrumentCapacityMl",
+          "instrumentGraduationMl",
+          "marbleMassG",
+          "marbleMassToleranceG",
+          "pathCheckNotebookTag",
+          "rateIntervalS",
+          "reactionStartNotebookTag",
+          "samplingIntervalS",
+          "selectedProcedure",
+          "seriesLabel",
+          "zeroNotebookTag"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "marble-statue-kinetics",
+        "instanceId": "acid-2m-trial",
+        "techniqueId": "marble-gas-syringe-kinetics",
+        "version": "2.1.0",
+        "configurationKeys": [
+          "acidVolumeMl",
+          "acidVolumeToleranceMl",
+          "evidenceLimitsNotebookTag",
+          "evidenceScopeId",
+          "instrumentCapacityMl",
+          "instrumentGraduationMl",
+          "marbleMassG",
+          "marbleMassToleranceG",
+          "pathCheckNotebookTag",
+          "rateIntervalS",
+          "reactionStartNotebookTag",
+          "samplingIntervalS",
+          "selectedProcedure",
+          "seriesLabel",
+          "zeroNotebookTag"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "marble-statue-kinetics",
+        "instanceId": "acid-4m-trial",
+        "techniqueId": "marble-gas-syringe-kinetics",
+        "version": "2.1.0",
+        "configurationKeys": [
+          "acidVolumeMl",
+          "acidVolumeToleranceMl",
+          "evidenceLimitsNotebookTag",
+          "evidenceScopeId",
+          "instrumentCapacityMl",
+          "instrumentGraduationMl",
+          "marbleMassG",
+          "marbleMassToleranceG",
+          "pathCheckNotebookTag",
+          "rateIntervalS",
+          "reactionStartNotebookTag",
+          "samplingIntervalS",
+          "selectedProcedure",
+          "seriesLabel",
+          "zeroNotebookTag"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "marble-statue-kinetics",
+        "instanceId": "acid-6m-trial",
+        "techniqueId": "marble-gas-syringe-kinetics",
+        "version": "2.1.0",
+        "configurationKeys": [
+          "acidVolumeMl",
+          "acidVolumeToleranceMl",
+          "evidenceLimitsNotebookTag",
+          "evidenceScopeId",
+          "instrumentCapacityMl",
+          "instrumentGraduationMl",
+          "marbleMassG",
+          "marbleMassToleranceG",
+          "pathCheckNotebookTag",
+          "rateIntervalS",
+          "reactionStartNotebookTag",
+          "samplingIntervalS",
+          "selectedProcedure",
+          "seriesLabel",
+          "zeroNotebookTag"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "marble-statue-kinetics",
+        "instanceId": "acid-2m-rate-analysis",
+        "techniqueId": "marble-gas-syringe-kinetics",
+        "version": "2.1.0",
+        "configurationKeys": [
+          "acidVolumeMl",
+          "acidVolumeToleranceMl",
+          "evidenceLimitsNotebookTag",
+          "evidenceScopeId",
+          "instrumentCapacityMl",
+          "instrumentGraduationMl",
+          "marbleMassG",
+          "marbleMassToleranceG",
+          "pathCheckNotebookTag",
+          "rateIntervalS",
+          "reactionStartNotebookTag",
+          "samplingIntervalS",
+          "selectedProcedure",
+          "seriesLabel",
+          "zeroNotebookTag"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "marble-statue-kinetics",
+        "instanceId": "acid-4m-rate-analysis",
+        "techniqueId": "marble-gas-syringe-kinetics",
+        "version": "2.1.0",
+        "configurationKeys": [
+          "acidVolumeMl",
+          "acidVolumeToleranceMl",
+          "evidenceLimitsNotebookTag",
+          "evidenceScopeId",
+          "instrumentCapacityMl",
+          "instrumentGraduationMl",
+          "marbleMassG",
+          "marbleMassToleranceG",
+          "pathCheckNotebookTag",
+          "rateIntervalS",
+          "reactionStartNotebookTag",
+          "samplingIntervalS",
+          "selectedProcedure",
+          "seriesLabel",
+          "zeroNotebookTag"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "marble-statue-kinetics",
+        "instanceId": "acid-6m-rate-analysis",
+        "techniqueId": "marble-gas-syringe-kinetics",
+        "version": "2.1.0",
+        "configurationKeys": [
+          "acidVolumeMl",
+          "acidVolumeToleranceMl",
+          "evidenceLimitsNotebookTag",
+          "evidenceScopeId",
+          "instrumentCapacityMl",
+          "instrumentGraduationMl",
+          "marbleMassG",
+          "marbleMassToleranceG",
+          "pathCheckNotebookTag",
+          "rateIntervalS",
+          "reactionStartNotebookTag",
+          "samplingIntervalS",
+          "selectedProcedure",
+          "seriesLabel",
+          "zeroNotebookTag"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "paper-chromatography",
+        "instanceId": "chromatography-trials",
+        "techniqueId": "paper-chromatography",
+        "version": "1.2.1",
+        "configurationKeys": [],
+        "requiredSlotsKnown": false,
+        "missingRequiredSlots": [
+          "not-assessed: source too large for full connector materialization"
+        ],
+        "staticBindingStatus": "represented-host; detailed required-slot comparison pending"
+      },
+      {
+        "labId": "equilibrium-rainbow-display",
+        "instanceId": "equilibrium",
+        "techniqueId": "equilibrium-rainbow-inquiry",
+        "version": "2.3.0",
+        "configurationKeys": [],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "hand-warmer-calorimetry",
+        "instanceId": "hand-warmer",
+        "techniqueId": "hand-warmer-calorimetry",
+        "version": "2.5.1",
+        "configurationKeys": [
+          "wasteRoute"
+        ],
+        "requiredSlotsKnown": false,
+        "missingRequiredSlots": [
+          "not-assessed: source too large for full connector materialization"
+        ],
+        "staticBindingStatus": "represented-host; detailed required-slot comparison pending"
+      },
+      {
+        "labId": "blue1-spectroscopy",
+        "instanceId": "blue1-standard-dilutions",
+        "techniqueId": "blue1-standard-dilutions",
+        "version": "1.3.0",
+        "configurationKeys": [],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "blue1-spectroscopy",
+        "instanceId": "blue1-class-calibration",
+        "techniqueId": "blue1-class-calibration",
+        "version": "1.3.0",
+        "configurationKeys": [
+          "i1-r1-9-concentrationCalculationId",
+          "i1-r10-0-concentrationCalculationId",
+          "i1-r2-8-concentrationCalculationId",
+          "i1-r3-7-concentrationCalculationId",
+          "i1-r4-6-concentrationCalculationId",
+          "i1-r6-4-concentrationCalculationId",
+          "i1-r8-2-concentrationCalculationId"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "blue1-spectroscopy",
+        "instanceId": "blue1-percent-transmittance",
+        "techniqueId": "blue1-percent-transmittance",
+        "version": "2.0.0",
+        "configurationKeys": [
+          "calibrationRegressionCalculationId"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "brass-colorimetry",
+        "instanceId": "brass-spectrophotometry",
+        "techniqueId": "brass-spectrophotometry",
+        "version": "2.0.0",
+        "configurationKeys": [
+          "measurementCuvetteInstanceId",
+          "wavelengthMeasurementId"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "hard-water-analysis",
+        "instanceId": "hard-water-practice-preparation",
+        "techniqueId": "hard-water-practice-preparation",
+        "version": "1.2.0",
+        "configurationKeys": [],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "hard-water-analysis",
+        "instanceId": "gravimetric-vacuum-filtration",
+        "techniqueId": "gravimetric-vacuum-filtration",
+        "version": "1.2.0",
+        "configurationKeys": [],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "hard-water-analysis",
+        "instanceId": "two-stage-precipitate-drying",
+        "techniqueId": "two-stage-precipitate-drying",
+        "version": "1.2.0",
+        "configurationKeys": [],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "ovenTemperatureC",
+          "firstDurationMinutes",
+          "coolingTemperatureC"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "hard-water-analysis",
+        "instanceId": "inquiry-plan-approval",
+        "techniqueId": "inquiry-plan-approval",
+        "version": "1.2.0",
+        "configurationKeys": [],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "hard-water-analysis",
+        "instanceId": "hard-water-two-sample-inquiry",
+        "techniqueId": "hard-water-two-sample-inquiry",
+        "version": "1.2.0",
+        "configurationKeys": [],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "ovenTemperatureC",
+          "firstDurationMinutes",
+          "coolingTemperatureC"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "beverage-acidity",
+        "instanceId": "investigation",
+        "techniqueId": "beverage-ph-volume-titration",
+        "version": "3.0.1",
+        "configurationKeys": [
+          "beverageAliquotMl",
+          "conditioningVolumeMl",
+          "endpointWindowMl",
+          "indicatorStartPh",
+          "indicatorStrongPh",
+          "indicatorVolumeMl",
+          "maximumIncrementMl",
+          "persistenceSeconds",
+          "preparationProtocol",
+          "rinseVolumeMl",
+          "tipPurgeMl",
+          "wasteProtocol"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "bonding-unknown-solids",
+        "instanceId": "known-1",
+        "techniqueId": "bonding-solids-tests",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "conductivityThresholds",
+          "dryWasteDestination",
+          "ethanolAmount",
+          "ethanolWasteDestination",
+          "evidenceScopeId",
+          "hclAmount",
+          "hclWasteDestination",
+          "hexanesAmount",
+          "hexanesWasteDestination",
+          "hoodControl",
+          "meltingApparatusLimits",
+          "microsampleAmount",
+          "naohAmount",
+          "naohWasteDestination",
+          "phThresholds",
+          "sampleIdentity",
+          "sampleMode",
+          "selectedTestPanel",
+          "waterAmount",
+          "waterWasteDestination"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "bonding-unknown-solids",
+        "instanceId": "known-2",
+        "techniqueId": "bonding-solids-tests",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "conductivityThresholds",
+          "dryWasteDestination",
+          "ethanolAmount",
+          "ethanolWasteDestination",
+          "evidenceScopeId",
+          "hclAmount",
+          "hclWasteDestination",
+          "hexanesAmount",
+          "hexanesWasteDestination",
+          "hoodControl",
+          "meltingApparatusLimits",
+          "microsampleAmount",
+          "naohAmount",
+          "naohWasteDestination",
+          "phThresholds",
+          "sampleIdentity",
+          "sampleMode",
+          "selectedTestPanel",
+          "waterAmount",
+          "waterWasteDestination"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "bonding-unknown-solids",
+        "instanceId": "known-3",
+        "techniqueId": "bonding-solids-tests",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "conductivityThresholds",
+          "dryWasteDestination",
+          "ethanolAmount",
+          "ethanolWasteDestination",
+          "evidenceScopeId",
+          "hclAmount",
+          "hclWasteDestination",
+          "hexanesAmount",
+          "hexanesWasteDestination",
+          "hoodControl",
+          "meltingApparatusLimits",
+          "microsampleAmount",
+          "naohAmount",
+          "naohWasteDestination",
+          "phThresholds",
+          "sampleIdentity",
+          "sampleMode",
+          "selectedTestPanel",
+          "waterAmount",
+          "waterWasteDestination"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "bonding-unknown-solids",
+        "instanceId": "known-4",
+        "techniqueId": "bonding-solids-tests",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "conductivityThresholds",
+          "dryWasteDestination",
+          "ethanolAmount",
+          "ethanolWasteDestination",
+          "evidenceScopeId",
+          "hclAmount",
+          "hclWasteDestination",
+          "hexanesAmount",
+          "hexanesWasteDestination",
+          "hoodControl",
+          "meltingApparatusLimits",
+          "microsampleAmount",
+          "naohAmount",
+          "naohWasteDestination",
+          "phThresholds",
+          "sampleIdentity",
+          "sampleMode",
+          "selectedTestPanel",
+          "waterAmount",
+          "waterWasteDestination"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "bonding-unknown-solids",
+        "instanceId": "known-5-count5",
+        "techniqueId": "bonding-solids-tests",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "conductivityThresholds",
+          "dryWasteDestination",
+          "ethanolAmount",
+          "ethanolWasteDestination",
+          "evidenceScopeId",
+          "hclAmount",
+          "hclWasteDestination",
+          "hexanesAmount",
+          "hexanesWasteDestination",
+          "hoodControl",
+          "meltingApparatusLimits",
+          "microsampleAmount",
+          "naohAmount",
+          "naohWasteDestination",
+          "phThresholds",
+          "sampleIdentity",
+          "sampleMode",
+          "selectedTestPanel",
+          "waterAmount",
+          "waterWasteDestination"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "bonding-unknown-solids",
+        "instanceId": "known-5-count6",
+        "techniqueId": "bonding-solids-tests",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "conductivityThresholds",
+          "dryWasteDestination",
+          "ethanolAmount",
+          "ethanolWasteDestination",
+          "evidenceScopeId",
+          "hclAmount",
+          "hclWasteDestination",
+          "hexanesAmount",
+          "hexanesWasteDestination",
+          "hoodControl",
+          "meltingApparatusLimits",
+          "microsampleAmount",
+          "naohAmount",
+          "naohWasteDestination",
+          "phThresholds",
+          "sampleIdentity",
+          "sampleMode",
+          "selectedTestPanel",
+          "waterAmount",
+          "waterWasteDestination"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "bonding-unknown-solids",
+        "instanceId": "known-6",
+        "techniqueId": "bonding-solids-tests",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "conductivityThresholds",
+          "dryWasteDestination",
+          "ethanolAmount",
+          "ethanolWasteDestination",
+          "evidenceScopeId",
+          "hclAmount",
+          "hclWasteDestination",
+          "hexanesAmount",
+          "hexanesWasteDestination",
+          "hoodControl",
+          "meltingApparatusLimits",
+          "microsampleAmount",
+          "naohAmount",
+          "naohWasteDestination",
+          "phThresholds",
+          "sampleIdentity",
+          "sampleMode",
+          "selectedTestPanel",
+          "waterAmount",
+          "waterWasteDestination"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "bonding-unknown-solids",
+        "instanceId": "blind-1",
+        "techniqueId": "bonding-solids-tests",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "conductivityThresholds",
+          "dryWasteDestination",
+          "ethanolAmount",
+          "ethanolWasteDestination",
+          "evidenceScopeId",
+          "hclAmount",
+          "hclWasteDestination",
+          "hexanesAmount",
+          "hexanesWasteDestination",
+          "hoodControl",
+          "meltingApparatusLimits",
+          "microsampleAmount",
+          "naohAmount",
+          "naohWasteDestination",
+          "phThresholds",
+          "sampleIdentity",
+          "sampleMode",
+          "selectedTestPanel",
+          "waterAmount",
+          "waterWasteDestination"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "bonding-unknown-solids",
+        "instanceId": "blind-2",
+        "techniqueId": "bonding-solids-tests",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "conductivityThresholds",
+          "dryWasteDestination",
+          "ethanolAmount",
+          "ethanolWasteDestination",
+          "evidenceScopeId",
+          "hclAmount",
+          "hclWasteDestination",
+          "hexanesAmount",
+          "hexanesWasteDestination",
+          "hoodControl",
+          "meltingApparatusLimits",
+          "microsampleAmount",
+          "naohAmount",
+          "naohWasteDestination",
+          "phThresholds",
+          "sampleIdentity",
+          "sampleMode",
+          "selectedTestPanel",
+          "waterAmount",
+          "waterWasteDestination"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "bonding-unknown-solids",
+        "instanceId": "blind-3",
+        "techniqueId": "bonding-solids-tests",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "conductivityThresholds",
+          "dryWasteDestination",
+          "ethanolAmount",
+          "ethanolWasteDestination",
+          "evidenceScopeId",
+          "hclAmount",
+          "hclWasteDestination",
+          "hexanesAmount",
+          "hexanesWasteDestination",
+          "hoodControl",
+          "meltingApparatusLimits",
+          "microsampleAmount",
+          "naohAmount",
+          "naohWasteDestination",
+          "phThresholds",
+          "sampleIdentity",
+          "sampleMode",
+          "selectedTestPanel",
+          "waterAmount",
+          "waterWasteDestination"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "bonding-unknown-solids",
+        "instanceId": "blind-4",
+        "techniqueId": "bonding-solids-tests",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "conductivityThresholds",
+          "dryWasteDestination",
+          "ethanolAmount",
+          "ethanolWasteDestination",
+          "evidenceScopeId",
+          "hclAmount",
+          "hclWasteDestination",
+          "hexanesAmount",
+          "hexanesWasteDestination",
+          "hoodControl",
+          "meltingApparatusLimits",
+          "microsampleAmount",
+          "naohAmount",
+          "naohWasteDestination",
+          "phThresholds",
+          "sampleIdentity",
+          "sampleMode",
+          "selectedTestPanel",
+          "waterAmount",
+          "waterWasteDestination"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "bonding-unknown-solids",
+        "instanceId": "blind-5-count5",
+        "techniqueId": "bonding-solids-tests",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "conductivityThresholds",
+          "dryWasteDestination",
+          "ethanolAmount",
+          "ethanolWasteDestination",
+          "evidenceScopeId",
+          "hclAmount",
+          "hclWasteDestination",
+          "hexanesAmount",
+          "hexanesWasteDestination",
+          "hoodControl",
+          "meltingApparatusLimits",
+          "microsampleAmount",
+          "naohAmount",
+          "naohWasteDestination",
+          "phThresholds",
+          "sampleIdentity",
+          "sampleMode",
+          "selectedTestPanel",
+          "waterAmount",
+          "waterWasteDestination"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "bonding-unknown-solids",
+        "instanceId": "blind-5-count6",
+        "techniqueId": "bonding-solids-tests",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "conductivityThresholds",
+          "dryWasteDestination",
+          "ethanolAmount",
+          "ethanolWasteDestination",
+          "evidenceScopeId",
+          "hclAmount",
+          "hclWasteDestination",
+          "hexanesAmount",
+          "hexanesWasteDestination",
+          "hoodControl",
+          "meltingApparatusLimits",
+          "microsampleAmount",
+          "naohAmount",
+          "naohWasteDestination",
+          "phThresholds",
+          "sampleIdentity",
+          "sampleMode",
+          "selectedTestPanel",
+          "waterAmount",
+          "waterWasteDestination"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "bonding-unknown-solids",
+        "instanceId": "blind-6",
+        "techniqueId": "bonding-solids-tests",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "conductivityThresholds",
+          "dryWasteDestination",
+          "ethanolAmount",
+          "ethanolWasteDestination",
+          "evidenceScopeId",
+          "hclAmount",
+          "hclWasteDestination",
+          "hexanesAmount",
+          "hexanesWasteDestination",
+          "hoodControl",
+          "meltingApparatusLimits",
+          "microsampleAmount",
+          "naohAmount",
+          "naohWasteDestination",
+          "phThresholds",
+          "sampleIdentity",
+          "sampleMode",
+          "selectedTestPanel",
+          "waterAmount",
+          "waterWasteDestination"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "green-chemistry-mixture-purification",
+        "instanceId": "thermal-decomposition",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "version": "2.0.1",
+        "configurationKeys": [
+          "constantMassToleranceG",
+          "coolingEndpointC",
+          "coolingSurface",
+          "heatingDurationMin",
+          "heatingIntensity",
+          "maximumHeatCycles",
+          "minimumReplicates",
+          "sampleMassG",
+          "tareConvention",
+          "warmDurationMin"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "hydrogen-peroxide-redox-titration",
+        "instanceId": "investigation",
+        "techniqueId": "redox-titration",
+        "version": "3.0.1",
+        "configurationKeys": [
+          "conditioningVolumeMl",
+          "endpointWindowMl",
+          "indicatorVolumeMl",
+          "maximumIncrementMl",
+          "persistenceSeconds",
+          "preparationProtocol",
+          "rinseVolumeMl",
+          "standardizationRangeM",
+          "tipPurgeMl",
+          "wasteProtocol"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "quick-ache-relief-separation",
+        "instanceId": "property",
+        "techniqueId": "quick-ache-property-evidence",
+        "version": "1.2.1",
+        "configurationKeys": [],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "quick-ache-relief-separation",
+        "instanceId": "approval",
+        "techniqueId": "quick-ache-design-approval",
+        "version": "1.2.0",
+        "configurationKeys": [],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "quick-ache-relief-separation",
+        "instanceId": "extraction",
+        "techniqueId": "quick-ache-extraction-recovery",
+        "version": "1.3.1",
+        "configurationKeys": [],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [
+          "organicRecoveryMethod",
+          "aqueousRecoveryMethod",
+          "drynessCriterion",
+          "coolingLimitC",
+          "acidEndpointPh",
+          "organicDensity",
+          "aqueousDensity",
+          "recoverySetupApproved",
+          "extractionCount",
+          "selectedProcedure"
+        ],
+        "staticBindingStatus": "missing-required-slot"
+      },
+      {
+        "labId": "quick-ache-relief-separation",
+        "instanceId": "analysis",
+        "techniqueId": "quick-ache-analysis-report",
+        "version": "1.2.0",
+        "configurationKeys": [],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "crystal-violet-rate-law",
+        "instanceId": "dilution-series",
+        "techniqueId": "crystal-violet-micromolar-dilution-series",
+        "version": "1.2.0",
+        "configurationKeys": [],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "crystal-violet-rate-law",
+        "instanceId": "instrument-calibration",
+        "techniqueId": "crystal-violet-spectrophotometer-calibration",
+        "version": "1.2.0",
+        "configurationKeys": [],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "crystal-violet-rate-law",
+        "instanceId": "kinetics-initiation",
+        "techniqueId": "crystal-violet-kinetics",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "absorbanceLabel",
+          "aliquotVolumeMl",
+          "cvVolumeMl",
+          "instrumentReadingValue",
+          "naohVolumeMl",
+          "pairId",
+          "scheduledTimeS",
+          "selectedProcedure",
+          "totalVolumeMl",
+          "wavelengthMeasurementId",
+          "zeroNotebookTag"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "crystal-violet-rate-law",
+        "instanceId": "kinetics-reading-1",
+        "techniqueId": "crystal-violet-kinetics",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "absorbanceLabel",
+          "aliquotVolumeMl",
+          "cvVolumeMl",
+          "instrumentReadingValue",
+          "naohVolumeMl",
+          "pairId",
+          "scheduledTimeS",
+          "selectedProcedure",
+          "totalVolumeMl",
+          "wavelengthMeasurementId",
+          "zeroNotebookTag"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "crystal-violet-rate-law",
+        "instanceId": "kinetics-reading-2",
+        "techniqueId": "crystal-violet-kinetics",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "absorbanceLabel",
+          "aliquotVolumeMl",
+          "cvVolumeMl",
+          "instrumentReadingValue",
+          "naohVolumeMl",
+          "pairId",
+          "scheduledTimeS",
+          "selectedProcedure",
+          "totalVolumeMl",
+          "wavelengthMeasurementId",
+          "zeroNotebookTag"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "crystal-violet-rate-law",
+        "instanceId": "kinetics-reading-3",
+        "techniqueId": "crystal-violet-kinetics",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "absorbanceLabel",
+          "aliquotVolumeMl",
+          "cvVolumeMl",
+          "instrumentReadingValue",
+          "naohVolumeMl",
+          "pairId",
+          "scheduledTimeS",
+          "selectedProcedure",
+          "totalVolumeMl",
+          "wavelengthMeasurementId",
+          "zeroNotebookTag"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "crystal-violet-rate-law",
+        "instanceId": "kinetics-reading-4",
+        "techniqueId": "crystal-violet-kinetics",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "absorbanceLabel",
+          "aliquotVolumeMl",
+          "cvVolumeMl",
+          "instrumentReadingValue",
+          "naohVolumeMl",
+          "pairId",
+          "scheduledTimeS",
+          "selectedProcedure",
+          "totalVolumeMl",
+          "wavelengthMeasurementId",
+          "zeroNotebookTag"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "crystal-violet-rate-law",
+        "instanceId": "kinetics-reading-5",
+        "techniqueId": "crystal-violet-kinetics",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "absorbanceLabel",
+          "aliquotVolumeMl",
+          "cvVolumeMl",
+          "instrumentReadingValue",
+          "naohVolumeMl",
+          "pairId",
+          "scheduledTimeS",
+          "selectedProcedure",
+          "totalVolumeMl",
+          "wavelengthMeasurementId",
+          "zeroNotebookTag"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "crystal-violet-rate-law",
+        "instanceId": "kinetics-reading-6",
+        "techniqueId": "crystal-violet-kinetics",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "absorbanceLabel",
+          "aliquotVolumeMl",
+          "cvVolumeMl",
+          "instrumentReadingValue",
+          "naohVolumeMl",
+          "pairId",
+          "scheduledTimeS",
+          "selectedProcedure",
+          "totalVolumeMl",
+          "wavelengthMeasurementId",
+          "zeroNotebookTag"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "crystal-violet-rate-law",
+        "instanceId": "kinetics-reading-7",
+        "techniqueId": "crystal-violet-kinetics",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "absorbanceLabel",
+          "aliquotVolumeMl",
+          "cvVolumeMl",
+          "instrumentReadingValue",
+          "naohVolumeMl",
+          "pairId",
+          "scheduledTimeS",
+          "selectedProcedure",
+          "totalVolumeMl",
+          "wavelengthMeasurementId",
+          "zeroNotebookTag"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "crystal-violet-rate-law",
+        "instanceId": "kinetics-reading-8",
+        "techniqueId": "crystal-violet-kinetics",
+        "version": "1.2.0",
+        "configurationKeys": [
+          "absorbanceLabel",
+          "aliquotVolumeMl",
+          "cvVolumeMl",
+          "instrumentReadingValue",
+          "naohVolumeMl",
+          "pairId",
+          "scheduledTimeS",
+          "selectedProcedure",
+          "totalVolumeMl",
+          "wavelengthMeasurementId",
+          "zeroNotebookTag"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "crystal-violet-rate-law",
+        "instanceId": "rate-law-analysis",
+        "techniqueId": "crystal-violet-integrated-rate-law-comparison",
+        "version": "2.0.0",
+        "configurationKeys": [
+          "selectedProcedure"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "crystal-violet-rate-law",
+        "instanceId": "analysis-extension",
+        "techniqueId": "crystal-violet-integrated-rate-law-comparison",
+        "version": "2.0.0",
+        "configurationKeys": [
+          "selectedProcedure"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "crystal-violet-rate-law",
+        "instanceId": "waste-treatment",
+        "techniqueId": "crystal-violet-waste-treatment",
+        "version": "1.2.0",
+        "configurationKeys": [],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      },
+      {
+        "labId": "acid-base-titration-curves",
+        "instanceId": "formal-trial",
+        "techniqueId": "ph-volume-formal-titration-trial",
+        "version": "1.0.0",
+        "configurationKeys": [
+          "aliquotMl",
+          "conditioningVolumeMl",
+          "contextId",
+          "formalContextModelId",
+          "indicatorPolicy",
+          "maximumDeliveryMl",
+          "maximumIncrementMl",
+          "minimumPostSteepRegionMl",
+          "preparationProtocol",
+          "rinseVolumeMl",
+          "stabilityConsecutiveReadings",
+          "stabilityDeltaPh",
+          "tipPurgeMl",
+          "wasteProtocol"
+        ],
+        "requiredSlotsKnown": true,
+        "missingRequiredSlots": [],
+        "staticBindingStatus": "represented-in-source"
+      }
+    ]
+  },
+  "currentCompiledCoverage": {
+    "status": "not-run",
+    "declared": null,
+    "represented": null,
+    "unrepresented": null,
+    "reason": "separate authorization for the named evidence pipeline was not provided"
+  },
+  "historicalComparison": {
+    "source": "attached historical-content-check.json and historical follow-up artifacts",
+    "historicalUnrepresentedConfigurations": 39,
+    "currentStatus": "not carried forward as a current count"
+  },
+  "witnessFixtureIds": [
+    {
+      "labs": [
+        "paper-chromatography"
+      ],
+      "fixtureId": "cycle12-paper-chromatography-setup-v1"
+    },
+    {
+      "labs": [
+        "hard-water-analysis"
+      ],
+      "fixtureId": "cycle12-hard-water-analysis-setup-v1"
+    },
+    {
+      "labs": [
+        "bonding-unknown-solids"
+      ],
+      "fixtureId": "cycle12-bonding-unknown-solids-setup-v1"
+    },
+    {
+      "labs": [
+        "quick-ache-relief-separation"
+      ],
+      "fixtureId": "cycle12-quick-ache-relief-separation-setup-v1"
+    },
+    {
+      "labs": [
+        "green-chemistry-mixture-purification"
+      ],
+      "fixtureId": "cycle12-green-chemistry-mixture-purification-setup-v1"
+    },
+    {
+      "labs": [
+        "acid-base-titration",
+        "beverage-acidity",
+        "hydrogen-peroxide-redox-titration",
+        "acid-base-titration-curves"
+      ],
+      "fixtureId": "cycle12-titration-setup-v1"
+    },
+    {
+      "labs": [
+        "all other indexed labs"
+      ],
+      "fixtureId": "none"
+    }
+  ],
+  "specialConfigurationSources": [
+    {
+      "id": "ph-volume-formal-titration-trial",
+      "file": "public/techniques/ph-volume-formal-titration-trial.json",
+      "role": "indexed route carrier; 42nd technique absent from historical 41-technique ownership map"
+    },
+    {
+      "id": "ph-volume-titration-trial",
+      "file": "public/techniques/ph-volume-titration-trial.json",
+      "role": "unindexed generated composition carrier; not a 43rd catalog technique"
+    },
+    {
+      "id": "acid-base-titration-curves-config",
+      "file": "public/labs/acid-base-titration-curves-config.json",
+      "role": "custom investigation settings/data contract; not an 18th lab"
+    }
+  ],
+  "externalDataAndApprovalBoundaries": [
+    "Teacher setup/configuration values are required by the named setup surfaces before affected hosted workflows are appended or played.",
+    "Student/instrument-response fields remain runtime evidence; this ledger does not fabricate classroom readings or convert them into static configuration.",
+    "Approval-gated or specialized workflows remain behind their authored approval/configuration contracts; no broad bypass or default was introduced.",
+    "Current compiled scenario representation, external-data sufficiency and approval reachability require the authorized evidence pipeline."
+  ]
+}
