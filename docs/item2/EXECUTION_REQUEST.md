@@ -62,6 +62,7 @@ Do not merge to `main` unless separately requested.
 
 - Run A: `item2-597c060-run-a`, retained as pre-repair discovery evidence.
 - Run B: `item2-f9c9229-run-b`, current against source commit `f9c9229`.
+- Run C: `item2-646169f-run-c`, final freshness receipt after the tracked triage/report updates.
 - Core static chain: 6/6 passed; recorder source status current; integrity passed.
 - Supplemental content check: exit 1, with 906 retained findings, 1 routed raw row, 0 compiled-context findings and 38 unrepresented static coverage configurations.
 - Complete JSON capture: `delivery/run-b-content-check-compiled-json.stdout.json`, SHA-256 `e5b849bfe6893b9cf7570aacab34a1737eeebc016d15cd4872ab92013b501e02`.

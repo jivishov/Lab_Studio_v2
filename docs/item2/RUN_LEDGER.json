@@ -98,18 +98,18 @@
     }
   ],
   "evidencePipelineStatus": "complete-current-run-with-supplemental-failures",
-  "currentEvidenceStatus": "Run B is current and integrity-complete for the repaired source commit; the six core static phases passed, while repository-content-check retains explicit nonblocking/inconclusive limitations and exits 1.",
+  "currentEvidenceStatus": "Run C is the final freshness receipt after tracked triage/report updates; Run B supplied the complete retained-finding JSON. The six core static phases are expected current with integrity passed; repository-content-check remains an explicitly triaged supplemental failure.",
   "sourceLevelClosureClaim": "current source/static reconciliation and evidence recorded; runtime/scientific/browser/release closure not claimed",
   "modelAttestation": "The continuation task requested GPT-5.6 Luna with Max reasoning; this ledger records that setting without claiming a separate independent review.",
   "acceptedRun": {
-    "runId": "item2-f9c9229-run-b",
-    "sourceCommit": "f9c9229",
-    "sourceSnapshotPayloadSha256": "f14055d751a2bfbbe604d0c92f5995b4dabcc64942ed3b73a2fe5019731cedd0",
-    "recorderCheck": "complete-current-run-with-supplemental-failures",
-    "integrity": "passed",
-    "corePhases": "6/6 passed",
+    "runId": "item2-646169f-run-c",
+    "sourceCommit": "recorded in the final CURRENT_VERIFICATION_RUN.json",
+    "sourceSnapshotPayloadSha256": "recorded in the final CURRENT_VERIFICATION_RUN.json",
+    "recorderCheck": "final freshness receipt",
+    "integrity": "must be read from final receipt",
+    "corePhases": "6/6 required",
     "supplemental": {
-      "repositoryContentCheck": "failed exit 1; explicitly triaged"
+      "repositoryContentCheck": "nonzero exit retained and triaged"
     }
   }
 }

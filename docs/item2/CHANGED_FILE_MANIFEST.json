@@ -95,7 +95,7 @@
     "extras": 0,
     "githubBranchPresence": "absent; local verified artifact only"
   },
-  "evidenceStatus": "Run B current for the repaired source snapshot; no runtime/scientific/browser/release claim",
+  "evidenceStatus": "Run B complete diagnostics plus Run C final freshness receipt; no runtime/scientific/browser/release claim",
   "targetedScenarioCorrections": {
     "greenChemistry": {
       "heatedProductRecovery": "qualitative provenance only; no recovered-product mass measurement",
@@ -121,7 +121,12 @@
     "routedRawFindings": 1,
     "compiledContextFindings": 0,
     "unrepresentedConfigurations": 38,
-    "triagePath": "docs/item2/FINDING_TRIAGE.json"
+    "triagePath": "docs/item2/FINDING_TRIAGE.json",
+    "finalFreshnessRun": {
+      "runId": "item2-646169f-run-c",
+      "sourceCommit": "recorded in final receipt",
+      "purpose": "freshness receipt after current triage/report changes"
+    }
   },
   "sourceRepairs": [
     "scripts/checkContentConsistency.mjs",

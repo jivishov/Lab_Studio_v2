@@ -8,7 +8,7 @@
 - Hosted source configuration accounted: **66 / 66**
 - Historical dependency set locally restored: **46 / 46 files, 39,500,058 bytes, 46/46 SHA-256 matches**
 - Historical dependencies on GitHub branch: **not restored**
-- Fresh current evidence pipeline: **Run B current; six core phases passed; supplemental content check exited 1 and is fully triaged**
+- Fresh current evidence pipeline: **Run B diagnostic capture plus Run C final freshness receipt; six core phases passed; supplemental content check exited 1 and is fully triaged**
 - Source-level reconciliation closure: **current static reconciliation recorded; runtime/scientific/release closure not claimed**
 - Full Item 2: **complete for the authorized source/current-evidence scope, with explicit static limitations**
 - Items 3–5: **not started**
@@ -130,3 +130,5 @@ No runtime/evidence pipeline was executed for those documentation corrections be
 The content result retains 906 static findings: 903 source-trace registry gaps, two inconclusive cuvette-composition rows and one inconclusive configured-wavelength row. One raw composition row was routed to compiled-context evaluation and produced no compiled finding. The compiled campaign covered 30/30 attempted witnesses and 6,278 node contexts, with zero compiled-context findings; 38 declared configurations remain unrepresented in the static witness set. Every retained finding, routed row and coverage limitation has a stable identity and explicit disposition in `docs/item2/FINDING_TRIAGE.json`.
 
 These results are source/static evidence only. No runtime, browser, scientific, classroom, safety or release acceptance is claimed, and no push/merge/deployment was performed.
+
+The tracked triage and report updates were then frozen in the local final candidate. Run C (`item2-646169f-run-c`) is the final freshness receipt for that exact tree; its source snapshot and recorder `--check` are the authoritative final identity.
