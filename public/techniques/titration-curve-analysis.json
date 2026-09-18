@@ -423,8 +423,13 @@
       "parameters": {
         "measurementId": "initial-ph",
         "label": "Initial pH",
-        "unit": "pH",
-        "studentValueRequired": true
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Initial pH read from the meter (pH)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMax": 14,
+        "unit": "pH"
       },
       "prerequisites": [
         {
@@ -724,8 +729,13 @@
       "parameters": {
         "measurementId": "equivalence-volume",
         "label": "Equivalence volume",
-        "unit": "mL",
-        "studentValueRequired": true
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Equivalence volume identified from the recorded curve (mL)",
+        "inputRequired": true,
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "mL"
       },
       "prerequisites": [
         {

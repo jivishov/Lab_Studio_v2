@@ -25,6 +25,7 @@ export interface StudioDiagnostic {
     section: "setup" | "process" | "details" | "preview" | "export";
     nodeId?: string;
     actionId?: string;
+    techniqueId?: string;
   };
 }
 
@@ -151,7 +152,7 @@ const unresolvedStudioConfiguration = (draft: LabDefinition): UnresolvedStudioCo
 const actionAnchor = (
   draft: LabDefinition,
   actionId: string,
-  section: StudioDiagnostic["anchor"]["section"] = "process",
+  section: NonNullable<StudioDiagnostic["anchor"]>["section"] = "process",
 ): NonNullable<StudioDiagnostic["anchor"]> => ({
   section,
   actionId,
@@ -225,7 +226,8 @@ export const assessStudioReadiness = (draft: LabDefinition): StudioReadiness => 
         "references",
         "fail",
         entry.actionId
-          ? actionAnchor(draft, entry.actionId)
+          ? { ...actionAnchor(draft, entry.actionId), techniqueId: draft.techniques.find((technique) =>
+            technique.actions.some((action) => action.id === entry.actionId))?.id }
           : { section: "details" },
       ),
     ),

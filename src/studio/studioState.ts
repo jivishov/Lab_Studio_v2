@@ -972,6 +972,7 @@ export const appendTechniqueToDraft = (
       actions: [...draft.actions, ...prefixedTechnique.actions],
       process: {
         ...draft.process,
+        startNodeId: draft.process.startNodeId || prefixedTechnique.process.startNodeId,
         nodes: [...draft.process.nodes, ...prefixedTechnique.process.nodes],
         edges: [...draft.process.edges, ...connector, ...prefixedTechnique.process.edges],
       },

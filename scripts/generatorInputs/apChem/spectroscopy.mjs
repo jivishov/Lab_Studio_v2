@@ -324,6 +324,7 @@ const definitions = new Map([
           "parameters": {
             "sourceInstanceId": "graduated-cylinder-1",
             "targetInstanceId": "prepared-receiver-1",
+            "sourceDefinitionId": "graduated-cylinder",
             "inputMode": "numeric",
             "inputRole": "teacherConfiguration",
             "inputLabel": "Dilute and mix the standard to its configured final volume: final volume (mL)",
@@ -371,6 +372,13 @@ const definitions = new Map([
             "photometerInstanceId": "spectrophotometer-1",
             "measurementId": "{{config.wavelengthMeasurementId}}",
             "configurationQuantity": "measurement wavelength",
+            "inputMode": "numeric",
+            "inputRole": "teacherConfiguration",
+            "inputRequired": false,
+            "inputLabel": "Approved measurement wavelength (nm)",
+            "inputMin": 0,
+            "inputMinExclusive": true,
+            "configuredValue": "{{config.wavelengthNm}}",
             "unit": "nm",
             "photometricMode": "percentTransmittance",
             "tag": "generic-photometer-configured"
@@ -450,6 +458,11 @@ const definitions = new Map([
           "label": "Record the configured blank optical-face rule",
           "parameters": {
             "cuvetteInstanceId": "blank-cuvette-1",
+            "requiresStudentNote": true,
+            "inputMode": "text",
+            "inputRole": "studentResponse",
+            "inputRequired": true,
+            "inputLabel": "Describe the optical-face rule used for the blank cuvette",
             "tag": "{{config.blankRuleNotebookTag}}"
           },
           "prerequisites": [],
@@ -639,6 +652,11 @@ const definitions = new Map([
           "label": "Record the configured sample optical-face rule",
           "parameters": {
             "cuvetteInstanceId": "cuvette-1",
+            "requiresStudentNote": true,
+            "inputMode": "text",
+            "inputRole": "studentResponse",
+            "inputRequired": true,
+            "inputLabel": "Describe the optical-face rule used for the sample cuvette",
             "tag": "{{config.blankRuleNotebookTag}}"
           },
           "prerequisites": [],
@@ -717,6 +735,13 @@ const definitions = new Map([
             "photometerOperation": "read",
             "measurementId": "percent-transmittance",
             "photometricQuantity": "percentTransmittance",
+            "inputMode": "numeric",
+            "inputRole": "studentResponse",
+            "inputRequired": true,
+            "inputLabel": "Percent transmittance shown by the photometer (%T)",
+            "inputMin": 0,
+            "inputMinExclusive": true,
+            "inputMax": 100,
             "unit": "%T"
           },
           "prerequisites": [],
@@ -833,6 +858,7 @@ const definitions = new Map([
           "label": "Calculate absorbance from the recorded transmittance",
           "parameters": {
             "calculationId": "absorbance",
+            "template": "absorbanceFromPercentT",
             "sourceMeasurementId": "percent-transmittance"
           },
           "prerequisites": [],
@@ -1504,6 +1530,11 @@ const definitions = new Map([
           {
             "id": "wavelengthMeasurementId",
             "valueType": "string",
+            "required": true
+          },
+          {
+            "id": "wavelengthNm",
+            "valueType": "number",
             "required": true
           },
           {

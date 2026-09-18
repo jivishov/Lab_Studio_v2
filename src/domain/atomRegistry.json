@@ -4976,6 +4976,53 @@
       ]
     },
     {
+      "id": "atom.dilute.record-resulting-final-volume",
+      "family": "measurement",
+      "documentationLabel": "Dilute and record the resulting final volume",
+      "verb": "dilute",
+      "allowedInteractionTypes": [
+        "pourInto"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state",
+          "measurement-direct-observation-acquisition",
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "measurement-observation"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "measured-solvent-source",
+        "receiving-vessel"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "The action consumes an approved final-volume input, then records the resulting target volume as final evidence after the physical addition.",
+        "The resulting final-volume measurement is runtime evidence; it is not a graduated test-tube reading."
+      ],
+      "evidence": "solution at its resulting final volume",
+      "sourceExamples": [],
+      "contentExamples": [
+        {
+          "owner": "technique:transmittance-dilution",
+          "actionId": "transmittance-dilution-add-water-below-mark"
+        }
+      ]
+    },
+    {
       "id": "atom.dilute.used-calorimetry-solution",
       "family": "calorimetry",
       "documentationLabel": "Dilute a used calorimetry solution before disposal",

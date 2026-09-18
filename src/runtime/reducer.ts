@@ -603,8 +603,17 @@ const mergeContents = (
   volumeMl?: number,
 ): ContentState => {
   if (target.kind === "empty") {
+    // Closure is apparatus state owned by the receiving vessel, not material state owned by the
+    // source. Preserve an explicit receiver value, including `false`, and do not let a source
+    // vessel's lid flag appear on a receiver that does not model a lid.
+    const receiverClosure = target.developingChamberClosed;
+    const sourceContents = cloneContent(source);
+    delete sourceContents.developingChamberClosed;
     return {
-      ...cloneContent(source),
+      ...sourceContents,
+      ...(receiverClosure === undefined
+        ? {}
+        : { developingChamberClosed: receiverClosure }),
       recoveryEvidence: undefined,
       extractionState: chargedExtractionState(target),
       volumeMl: volumeMl ?? source.volumeMl,
@@ -3314,15 +3323,26 @@ const executeAction = (
             };
           })
         : nextTarget;
+    const nextWithFinalVolumeEvidence = actionDefinition.volume?.outputMeasurementId
+      ? upsertMeasurement(
+          next,
+          actionDefinition.volume.outputMeasurementId,
+          stringSetting(params, "finalVolumeMeasurementLabel") ?? "Resulting final solution volume",
+          finalVolumeMl,
+          "mL",
+          target.id,
+          nodeId,
+        )
+      : next;
     return {
       ok: true,
       state: {
-        ...next,
+        ...nextWithFinalVolumeEvidence,
         ...(actionDefinition.volume
           ? {
               calculations: actionDefinition.dilutionFactorOutputId
                 ? [
-                    ...next.calculations.filter((entry) => entry.id !== actionDefinition.dilutionFactorOutputId),
+                    ...nextWithFinalVolumeEvidence.calculations.filter((entry) => entry.id !== actionDefinition.dilutionFactorOutputId),
                     {
                       id: actionDefinition.dilutionFactorOutputId,
                       label: "Dilution factor",
@@ -3331,11 +3351,11 @@ const executeAction = (
                       nodeId,
                     },
                   ]
-                : next.calculations,
+                : nextWithFinalVolumeEvidence.calculations,
             }
           : {
               measurements: [
-                ...next.measurements,
+                ...nextWithFinalVolumeEvidence.measurements,
                 {
                   id: "dilution-factor",
                   label: "Dilution factor",

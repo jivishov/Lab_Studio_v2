@@ -116,6 +116,65 @@ const recordFixture = (withNumericInput: boolean): TechniqueDefinition => ({
   },
 } as TechniqueDefinition);
 
+const configuredRecordFixture = (
+  valueType: "number" | "string",
+  required = true,
+): TechniqueDefinition => ({
+  id: `configured-record-${valueType}`,
+  title: "Configured record fixture",
+  learningGoal: "Audit configured numeric record evidence.",
+  requiredEquipment: [],
+  initialState: { equipment: [] },
+  actions: [
+    {
+      id: "record-configured-reading",
+      verb: "record",
+      label: "Record configured reading",
+      parameters: {
+        measurementId: "{{config.readingId}}",
+        value: "{{config.readingValue}}",
+      },
+      prerequisites: [],
+      stateChanges: [],
+      invalidCases: [],
+      feedback: { success: "Recorded.", invalid: "Retry." },
+      evidence: [],
+    },
+  ],
+  process: { startNodeId: "record-configured-node", nodes: [], edges: [] },
+  successCriteria: [
+    {
+      id: "configured-reading-recorded",
+      type: "measurementRecorded",
+      label: "Configured reading recorded",
+      measurementId: "{{config.readingId}}",
+    },
+  ],
+  commonMistakes: [],
+  resetBehavior: "resetTechnique",
+  metadata: {
+    version: "test",
+    author: "test",
+    updatedAt: "2026-09-16T00:00:00.000Z",
+    tags: ["test"],
+  },
+  composition: {
+    schemaVersion: 1,
+    ports: [],
+    equipmentRoles: [],
+    modelSlots: [],
+    configurationSlots: [
+      { id: "readingId", valueType: "string", required: true },
+      { id: "readingValue", valueType, required },
+    ],
+    approvalGates: [],
+    variants: [],
+    evidenceOutputs: [],
+    completion: { exitPortIds: [], requiredEvidenceOutputIds: [], requiredValidationRuleIds: [] },
+    catalogDisposition: "composable",
+  },
+} as TechniqueDefinition);
+
 const diluteFixture = (): TechniqueDefinition => ({
   id: "dilute-measurement-parameter",
   title: "Dilute fixture",
@@ -158,11 +217,35 @@ describe("standalone evidence producer/consumer semantics", () => {
   it("treats the titration-curve drop-dispense final burette reading as an output", async () => {
     const technique = await readTechnique("titration-curve-analysis");
     const issues = auditStandaloneEvidence(technique);
+    const initialPh = technique.actions.find((action) => action.id === "record-initial-ph");
+    const equivalenceVolume = technique.actions.find((action) => action.id === "record-equivalence-volume");
 
     expect(issues.some((issue) =>
       issue.code === "missing-measurement-producer"
       && issue.measurementId === "curve-final-burette"
     )).toBe(false);
+    expect(initialPh).toMatchObject({
+      parameters: {
+        inputMode: "numeric",
+        inputRole: "studentResponse",
+        inputRequired: true,
+        inputMin: 0,
+        inputMax: 14,
+        unit: "pH",
+      },
+    });
+    expect(initialPh?.parameters.studentValueRequired).toBeUndefined();
+    expect(equivalenceVolume).toMatchObject({
+      parameters: {
+        inputMode: "numeric",
+        inputRole: "studentResponse",
+        inputRequired: true,
+        inputMin: 0,
+        inputMinExclusive: true,
+        unit: "mL",
+      },
+    });
+    expect(equivalenceVolume?.parameters.studentValueRequired).toBeUndefined();
     expect(standaloneTechniqueConfigurationBlocker(technique)).toBeNull();
     expect(unresolvedConfigurationSlots(technique)).toEqual([]);
 
@@ -208,6 +291,36 @@ describe("standalone evidence producer/consumer semantics", () => {
     )).toBe(false);
   });
 
+  it("credits only a declared numeric configuration binding as a record producer", () => {
+    expect(auditStandaloneEvidence(configuredRecordFixture("number"))).toEqual([]);
+
+    expect(auditStandaloneEvidence(configuredRecordFixture("number", false))).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        code: "missing-measurement-producer",
+        configurationSlot: "readingId",
+        actionId: "record-configured-reading",
+      }),
+    ]));
+
+    expect(auditStandaloneEvidence(configuredRecordFixture("string"))).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        code: "missing-measurement-producer",
+        configurationSlot: "readingId",
+        actionId: "record-configured-reading",
+      }),
+    ]));
+  });
+
+  it("records the configured making-solution observation through the observe note path", async () => {
+    const technique = await readTechnique("making-solution");
+    const action = technique.actions.find((entry) => entry.id === "observe-solution");
+    expect(action).toMatchObject({
+      verb: "observe",
+      parameters: { note: "{{config.solutionObservation}}" },
+    });
+    expect(auditStandaloneEvidence(technique)).toEqual([]);
+  });
+
   it("does not credit dilute.parameters.measurementId as a runtime measurement output", () => {
     const issues = auditStandaloneEvidence(diluteFixture());
     expect(issues).toEqual(expect.arrayContaining([
@@ -218,17 +331,12 @@ describe("standalone evidence producer/consumer semantics", () => {
     ]));
   });
 
-  it("keeps Beer's-law out of the dilution heuristic but blocks its untyped absorbance calculation", async () => {
+  it("keeps Beer's-law out of the dilution heuristic and types percent-T absorbance", async () => {
     const technique = await readTechnique("beers-law-calibration");
     const issues = auditStandaloneEvidence(technique);
 
     expect(issues.some((issue) => issue.code === "misleading-final-volume-producer")).toBe(false);
-    expect(issues).toEqual(expect.arrayContaining([
-      expect.objectContaining({
-        code: "untyped-photometric-calculation",
-        actionId: "beers-law-calibration-calculate-absorbance",
-      }),
-    ]));
-    expect(standaloneTechniqueConfigurationBlocker(technique)).toMatch(/standalone evidence path is incomplete/i);
+    expect(issues.some((issue) => issue.code === "untyped-photometric-calculation")).toBe(false);
+    expect(standaloneTechniqueConfigurationBlocker(technique)).toBeNull();
   });
 });

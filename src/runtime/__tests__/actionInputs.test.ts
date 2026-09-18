@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
-import type { ActionDefinition } from "../../domain/types";
+import transmittanceDilutionTechniqueJson from "../../../public/techniques/transmittance-dilution.json";
+import { applyTechniqueConfiguration } from "../../data/techniqueConfiguration";
+import type { ActionDefinition, TechniqueDefinition } from "../../domain/types";
 import { actionInputField, actionInputRequestError, resolveActionInput } from "../actionInputs";
 
 const action = (parameters: ActionDefinition["parameters"]): ActionDefinition => ({
@@ -46,6 +48,48 @@ describe("action inputs", () => {
       key: "measurement-wavelength",
       role: "teacherConfiguration",
     });
+  });
+
+  it("allows the shipped optional stock quantity to fall back to its configured value", () => {
+    const configured = applyTechniqueConfiguration(
+      transmittanceDilutionTechniqueJson as unknown as TechniqueDefinition,
+      {
+        stockConcentrationM: "0.25",
+        wavelengthNm: "600",
+      },
+    );
+    const definition = configured.actions.find(
+      (candidate) => candidate.id === "transmittance-dilution-record-stock-concentration",
+    );
+    if (!definition) throw new Error("Missing stock concentration acquisition action.");
+    expect(definition.parameters).toMatchObject({
+      configurationQuantity: "stock solution concentration",
+      configuredValue: 0.25,
+      inputRequired: false,
+      unit: "M",
+    });
+
+    expect(actionInputField(definition)).toMatchObject({
+      mode: "numeric",
+      required: false,
+      role: "teacherConfiguration",
+      unit: "M",
+    });
+    expect(resolveActionInput(definition, "")).toMatchObject({ valid: true });
+    expect(resolveActionInput(definition, "0.25")).toMatchObject({ valid: true, value: 0.25 });
+    expect(actionInputRequestError(definition, { verb: "observe" })).toBeUndefined();
+
+    const wavelength = configured.actions.find(
+      (candidate) => candidate.id === "transmittance-dilution-configure-photometer",
+    );
+    if (!wavelength) throw new Error("Missing wavelength configuration action.");
+    expect(actionInputField(wavelength)).toMatchObject({
+      mode: "numeric",
+      required: false,
+      role: "teacherConfiguration",
+      unit: "nm",
+    });
+    expect(resolveActionInput(wavelength, "")).toMatchObject({ valid: true });
   });
 
   it("turns source-required notes into required student text evidence", () => {

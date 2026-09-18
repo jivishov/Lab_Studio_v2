@@ -435,8 +435,8 @@ const validateActionVolumeContract = (
   }
   if (input.volume.outputMeasurementId !== undefined) {
     requireString(errors, input.volume.outputMeasurementId, `${volumePath}.outputMeasurementId`);
-    if (actionVerb !== "measureVolume") {
-      errors.push(`${volumePath}.outputMeasurementId is legal only on measureVolume actions.`);
+    if (actionVerb !== "measureVolume" && actionVerb !== "dilute") {
+      errors.push(`${volumePath}.outputMeasurementId is legal only on measureVolume or dilute actions.`);
     }
   }
   if (source === "action-input" && isObject(input.parameters) && input.parameters.inputMode !== "numeric") {

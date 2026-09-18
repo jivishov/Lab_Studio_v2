@@ -3,7 +3,7 @@ import { StudentPlayer } from "../player/StudentPlayer";
 import type { StudioReadiness } from "./studioReadiness";
 
 interface PreviewPanelProps {
-  draft: LabDefinition;
+  draft?: LabDefinition;
   isStale?: boolean;
   readiness: StudioReadiness;
   selectedNodeId?: string;
@@ -26,11 +26,11 @@ export const PreviewPanel = ({
           Showing the last runnable preview while the current draft is {readiness.label.toLowerCase()}.
         </div>
       ) : null}
-      {readiness.level === "incomplete" && !draft.process.nodes.length ? (
+      {!draft ? (
         <>
           <div className="panel-heading">
             <h2>Live preview</h2>
-            <span>needs work</span>
+            <span>No runnable preview yet. Complete the current draft's setup.</span>
           </div>
           <ul className="validation-errors">
             {readiness.diagnostics.map((diagnostic) => (

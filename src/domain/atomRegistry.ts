@@ -376,6 +376,7 @@ export const isExternalMaterialTransitionForm = (
 export const deriveActionEffectContract = (
   action: ActionDefinition,
 ): { contract?: ActionEffectContract; errors: string[] } => {
+  const resultingFinalVolumeAtomId = "atom.dilute.record-resulting-final-volume";
   const errors: string[] = [];
   const interaction = resolveActionInteraction(action);
   if (!interaction) {
@@ -409,6 +410,12 @@ export const deriveActionEffectContract = (
   if (action.atomId?.includes(".titration-") && !titrationOperation && !["atom.place.titration-receiver"].includes(action.atomId)) errors.push(`Action "${action.id}" lacks its titration operation.`);
   if (action.fractionHandling && (action.atomId !== `atom.${action.verb}.fraction-${action.fractionHandling.operation}` || interaction.type !== "recordNotebook")) errors.push(`Action "${action.id}" requires the matching fraction atom and process endpoint.`);
   if (action.atomId?.includes(".fraction-") && !action.fractionHandling && !titrationOperation) errors.push(`Action "${action.id}" requires typed fraction handling.`);
+  if (action.verb === "dilute" && action.volume?.outputMeasurementId && action.atomId !== resultingFinalVolumeAtomId) {
+    errors.push(`Action "${action.id}" requires ${resultingFinalVolumeAtomId} when a dilute action emits a final-volume measurement.`);
+  }
+  if (action.atomId === resultingFinalVolumeAtomId && !action.volume?.outputMeasurementId) {
+    errors.push(`Action "${action.id}" requires volume.outputMeasurementId for ${resultingFinalVolumeAtomId}.`);
+  }
   if (interaction.type === "recordNotebook" && ["dry", "cool", "transfer", "rinse"].includes(action.verb) && !action.fractionHandling && !titrationOperation) errors.push(`Action "${action.id}" requires a typed physical fraction handler for this endpoint.`);
   if (action.extractionOperation && (action.verb !== action.extractionOperation.operation || action.atomId !== `atom.${action.extractionOperation.operation}.extraction-funnel` || interaction.type !== "recordNotebook")) errors.push(`Action "${action.id}" has incompatible extraction operation semantics.`);
   if (chromatographyOperation !== undefined && (!chromatographyAtom || action.verb !== "observe" || action.atomId !== chromatographyAtom || interaction.type !== "recordNotebook")) errors.push(`Action "${action.id}" has incompatible chromatography operation semantics.`);
@@ -491,6 +498,27 @@ export const deriveActionEffectContract = (
     handler = {
       classes: ["apparatus-material-instrument-state"],
       targets: [{ domain: "equipment" }, { domain: "material" }, { domain: "instrument" }],
+    };
+  } else if (
+    action.verb === "dilute"
+    && action.atomId === resultingFinalVolumeAtomId
+    && action.volume?.outputMeasurementId
+  ) {
+    // A typed dilution may emit the actual final target volume after the physical addition. This
+    // is derived runtime evidence, not a graduated-test-tube read, but it still belongs in the
+    // shared measurement/evidence contract so composition can consume the named output honestly.
+    handler = {
+      classes: [
+        "apparatus-material-instrument-state",
+        "measurement-direct-observation-acquisition",
+        "evidence-recording",
+      ],
+      targets: [
+        { domain: "equipment" },
+        { domain: "material" },
+        { domain: "measurement-observation" },
+        { domain: "evidence" },
+      ],
     };
   } else if (observeHandler) {
     handler = observeHandler;

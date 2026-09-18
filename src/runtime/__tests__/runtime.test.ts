@@ -21,6 +21,7 @@ import type { ContentState, LabCompositionSourceDefinition, LabDefinition, Runti
 import { validateLabCompositionSource, validateLabDefinition, validateTechniqueDefinition } from "../../domain/validation";
 import { compileLabComposition } from "../../data/compileLabComposition";
 import { applyLabSetup } from "../../data/labSetup";
+import { applyTechniqueConfiguration } from "../../data/techniqueConfiguration";
 import { createEquipmentInstance } from "../../equipment/catalog";
 import { appendTechniqueToDraft, createDraftFromDemo } from "../../studio/studioState";
 import {
@@ -522,6 +523,88 @@ describe("runtime reducer", () => {
     });
   });
 
+  it("records the shipped opt-in dilution final-volume evidence after conserving added diluent", () => {
+    const configured = applyTechniqueConfiguration(transmittanceDilutionTechnique, {
+      stockConcentrationM: "0.25",
+      wavelengthNm: "600",
+    });
+    const finalVolumeAction = configured.actions.find(
+      (candidate) => candidate.id === "transmittance-dilution-add-water-below-mark",
+    );
+    if (!finalVolumeAction || finalVolumeAction.volume?.source !== "action-input") {
+      throw new Error("Missing shipped transmittance final-volume action contract.");
+    }
+    const finalVolumeMeasurementId = finalVolumeAction.volume.outputMeasurementId;
+    let state = createRuntimeState(configured);
+    state = performRuntimeAction(configured, state, {
+      actionId: "transmittance-dilution-record-stock-concentration",
+      verb: "observe",
+    });
+    state = performRuntimeAction(configured, state, {
+      actionId: "transmittance-dilution-place-volumetric-flask",
+      verb: "place",
+    });
+    state = performRuntimeAction(configured, state, {
+      actionId: "transmittance-dilution-place-graduated-cylinder",
+      verb: "place",
+    });
+    state = performRuntimeAction(configured, state, {
+      actionId: "transmittance-dilution-measure-stock-dye",
+      verb: "measureVolume",
+      value: 5,
+    });
+    state = performRuntimeAction(configured, state, {
+      actionId: "transmittance-dilution-transfer-dye-aliquot",
+      verb: "transfer",
+    });
+    state = performRuntimeAction(configured, state, {
+      actionId: "transmittance-dilution-measure-water-volume",
+      verb: "measureVolume",
+      value: 5,
+    });
+    state = performRuntimeAction(configured, state, {
+      actionId: finalVolumeAction.id,
+      verb: finalVolumeAction.verb,
+      value: 10,
+    });
+
+    expect(state.contents["prepared-receiver-1"]).toMatchObject({ volumeMl: 10, finalVolumeMl: 10 });
+    expect(state.contents["graduated-cylinder-1"]).toMatchObject({ kind: "empty", volumeMl: undefined });
+    expect(state.measurements).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        id: finalVolumeMeasurementId,
+        value: 10,
+        unit: "mL",
+        equipmentInstanceId: "prepared-receiver-1",
+        nodeId: "transmittance-dilution-add-water-below-mark-node",
+      }),
+    ]));
+  });
+
+  it("records the configured stock concentration through the optional teacher-input path", () => {
+    const configured = applyTechniqueConfiguration(transmittanceDilutionTechnique, {
+      stockConcentrationM: "0.25",
+      wavelengthNm: "600",
+    });
+    const action = configured.actions.find(
+      (candidate) => candidate.id === "transmittance-dilution-record-stock-concentration",
+    );
+    if (!action) throw new Error("Missing stock concentration acquisition action.");
+
+    const state = performRuntimeAction(configured, createRuntimeState(configured), {
+      actionId: action.id,
+      verb: action.verb,
+    });
+
+    expect(state.measurements).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        id: action.parameters.measurementId,
+        value: 0.25,
+        unit: "M",
+      }),
+    ]));
+  });
+
   it("calculates spectrophotometry formulas and preserves the current dilution input gate", () => {
     expect(calculateDilutedConcentration(10, 8, 10)).toBe(8);
     expect(calculateDilutedConcentration(10, 0, 10)).toBe(0);
@@ -529,9 +612,9 @@ describe("runtime reducer", () => {
     expect(calculateAbsorbanceFromPercentT(42)).toBe(0.3768);
 
     const state = runUntilStalled(transmittanceDilutionTechnique);
-    expect(state.currentNodeId).toBe("transmittance-dilution-measure-stock-dye-node");
+    expect(state.currentNodeId).toBe("transmittance-dilution-record-stock-concentration-node");
     expect(state.attemptHistory.at(-1)).toMatchObject({
-      actionId: "transmittance-dilution-measure-stock-dye",
+      actionId: "transmittance-dilution-record-stock-concentration",
       success: false,
     });
     expect(state.measurements).toEqual([]);

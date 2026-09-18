@@ -2355,7 +2355,12 @@ for (const id of onlyIds) {
     action("record-initial-ph", "record", "Record initial pH", {
       measurementId: "initial-ph",
       label: "Initial pH",
-      value: 2.8,
+      inputMode: "numeric",
+      inputRole: "studentResponse",
+      inputLabel: "Initial pH read from the meter (pH)",
+      inputRequired: true,
+      inputMin: 0,
+      inputMax: 14,
       unit: "pH",
     }, "Initial pH is recorded.", ["record", "measurement"]),
     action("deliver-curve-titrant", "transfer", "Deliver curve titrant", {
@@ -2366,7 +2371,12 @@ for (const id of onlyIds) {
     action("record-equivalence-volume", "record", "Record equivalence volume", {
       measurementId: "equivalence-volume",
       label: "Equivalence volume",
-      value: 24.8,
+      inputMode: "numeric",
+      inputRole: "studentResponse",
+      inputLabel: "Equivalence volume identified from the recorded curve (mL)",
+      inputRequired: true,
+      inputMin: 0,
+      inputMinExclusive: true,
       unit: "mL",
     }, "Equivalence volume is recorded.", ["record", "measurement"]),
     action("calculate-curve-molarity", "calculate", "Calculate curve molarity", {

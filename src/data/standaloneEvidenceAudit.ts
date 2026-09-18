@@ -4,6 +4,14 @@ const CONFIG_SLOT = /^\{\{config\.([A-Za-z0-9_-]+)\}\}$/;
 const configSlot = (value: unknown): string | undefined =>
   typeof value === "string" ? value.match(CONFIG_SLOT)?.[1] : undefined;
 
+const numericConfigurationValue = (
+  value: unknown,
+  numericConfigurationSlots: ReadonlySet<string>,
+): boolean => {
+  const slot = configSlot(value);
+  return slot !== undefined && numericConfigurationSlots.has(slot);
+};
+
 interface MeasurementReference {
   key: string;
   configurationSlot?: string;
@@ -34,16 +42,23 @@ export interface StandaloneEvidenceIssue {
 const copiesExistingMeasurementOnly = (action: ActionDefinition): boolean =>
   action.verb === "record" && action.parameters.copyExistingMeasurementOnly === true;
 
-const hasOwnNumericRecordInput = (action: ActionDefinition): boolean =>
+const hasOwnNumericRecordInput = (
+  action: ActionDefinition,
+  numericConfigurationSlots: ReadonlySet<string>,
+): boolean =>
   action.parameters.inputMode === "numeric"
-  || (typeof action.parameters.value === "number" && Number.isFinite(action.parameters.value));
+  || (typeof action.parameters.value === "number" && Number.isFinite(action.parameters.value))
+  || numericConfigurationValue(action.parameters.value, numericConfigurationSlots);
 
 /**
  * Whether the reducer can write `parameters.measurementId` for this action without first requiring
  * that same measurement to exist. Keep this aligned with the concrete runtime branches rather than
  * treating a verb name as evidence production.
  */
-const measurementParameterIsProduced = (action: ActionDefinition): boolean => {
+const measurementParameterIsProduced = (
+  action: ActionDefinition,
+  numericConfigurationSlots: ReadonlySet<string>,
+): boolean => {
   const params = action.parameters;
   if (params.measurementId === undefined || copiesExistingMeasurementOnly(action)) return false;
 
@@ -70,8 +85,10 @@ const measurementParameterIsProduced = (action: ActionDefinition): boolean => {
 
   if (action.verb === "record") {
     // A plain record action only copies/relabels an existing measurement. It is a producer from
-    // source-level inspection only when it declares its own numeric input/value.
-    return hasOwnNumericRecordInput(action);
+    // source-level inspection only when it declares its own numeric input/value. A whole-slot
+    // numeric configuration binding is also a producer capability: materialization supplies the
+    // approved value before the record action runs. Identifier-only bindings are never credited.
+    return hasOwnNumericRecordInput(action, numericConfigurationSlots);
   }
 
   // `dilute` does not generically write parameters.measurementId, and developChromatogram writes
@@ -85,14 +102,20 @@ const dropDispenseFinalReadingIsProduced = (action: ActionDefinition): boolean =
   && action.interaction?.type === "dispenseDrops"
   && action.parameters.finalBuretteMeasurementId !== undefined;
 
-const producedParameterKeys = (action: ActionDefinition): ReadonlySet<string> => {
+const producedParameterKeys = (
+  action: ActionDefinition,
+  numericConfigurationSlots: ReadonlySet<string>,
+): ReadonlySet<string> => {
   const keys = new Set<string>();
-  if (measurementParameterIsProduced(action)) keys.add("measurementId");
+  if (measurementParameterIsProduced(action, numericConfigurationSlots)) keys.add("measurementId");
   if (dropDispenseFinalReadingIsProduced(action)) keys.add("finalBuretteMeasurementId");
   return keys;
 };
 
-const producedMeasurements = (action: ActionDefinition): MeasurementReference[] => {
+const producedMeasurements = (
+  action: ActionDefinition,
+  numericConfigurationSlots: ReadonlySet<string>,
+): MeasurementReference[] => {
   const produced = new Map<string, MeasurementReference>();
   const add = (value: unknown) => {
     const reference = measurementReference(value);
@@ -100,7 +123,7 @@ const producedMeasurements = (action: ActionDefinition): MeasurementReference[] 
   };
 
   if (
-    action.verb === "measureVolume"
+    (action.verb === "measureVolume" || action.verb === "dilute")
     && action.interaction?.type !== "readInstrument"
     && action.volume?.outputMeasurementId !== undefined
   ) {
@@ -110,9 +133,9 @@ const producedMeasurements = (action: ActionDefinition): MeasurementReference[] 
     add(action.mass.outputMeasurementId);
   }
   if (action.sourceInventory) add(action.sourceInventory.outputMeasurementId);
-  if (measurementParameterIsProduced(action)) add(action.parameters.measurementId);
+  if (measurementParameterIsProduced(action, numericConfigurationSlots)) add(action.parameters.measurementId);
   if (dropDispenseFinalReadingIsProduced(action)) add(action.parameters.finalBuretteMeasurementId);
-  if (action.runtimeRepeat && measurementParameterIsProduced(action)) {
+  if (action.runtimeRepeat && measurementParameterIsProduced(action, numericConfigurationSlots)) {
     add(action.runtimeRepeat.outputMeasurementId);
   }
 
@@ -137,7 +160,10 @@ const validationConsumer = (
     : undefined;
 };
 
-const consumedMeasurements = (definition: TechniqueDefinition): MeasurementConsumer[] => {
+const consumedMeasurements = (
+  definition: TechniqueDefinition,
+  numericConfigurationSlots: ReadonlySet<string>,
+): MeasurementConsumer[] => {
   const consumed: MeasurementConsumer[] = [];
   const add = (value: unknown, context: string, actionId?: string, ruleId?: string) => {
     const reference = measurementReference(value);
@@ -145,7 +171,7 @@ const consumedMeasurements = (definition: TechniqueDefinition): MeasurementConsu
   };
 
   for (const action of definition.actions) {
-    const producedKeys = producedParameterKeys(action);
+    const producedKeys = producedParameterKeys(action, numericConfigurationSlots);
     for (const [key, value] of Object.entries(action.parameters)) {
       if (!key.endsWith("MeasurementId") || producedKeys.has(key)) continue;
       add(value, `action parameter ${action.id}.${key}`, action.id);
@@ -159,7 +185,7 @@ const consumedMeasurements = (definition: TechniqueDefinition): MeasurementConsu
     } else if (
       action.verb === "record"
       && action.parameters.measurementId !== undefined
-      && !measurementParameterIsProduced(action)
+      && !measurementParameterIsProduced(action, numericConfigurationSlots)
     ) {
       add(
         action.parameters.measurementId,
@@ -254,9 +280,17 @@ const expectedPhotometricTemplate = (
 export const auditStandaloneEvidence = (
   definition: TechniqueDefinition,
 ): StandaloneEvidenceIssue[] => {
+  const numericConfigurationSlots = new Set(
+    (definition.composition?.configurationSlots ?? [])
+      .filter((slot) =>
+        slot.valueType === "number"
+        && (slot.required || (typeof slot.defaultValue === "number" && Number.isFinite(slot.defaultValue)))
+      )
+      .map((slot) => slot.id),
+  );
   const producers = new Map<string, { reference: MeasurementReference; actions: ActionDefinition[] }>();
   for (const action of definition.actions) {
-    for (const reference of producedMeasurements(action)) {
+    for (const reference of producedMeasurements(action, numericConfigurationSlots)) {
       const entry = producers.get(reference.key) ?? { reference, actions: [] };
       entry.actions.push(action);
       producers.set(reference.key, entry);
@@ -265,7 +299,7 @@ export const auditStandaloneEvidence = (
 
   const issues: StandaloneEvidenceIssue[] = [];
   const seenMissing = new Set<string>();
-  for (const consumer of consumedMeasurements(definition)) {
+  for (const consumer of consumedMeasurements(definition, numericConfigurationSlots)) {
     if (producers.has(consumer.key) || seenMissing.has(consumer.key)) continue;
     seenMissing.add(consumer.key);
     issues.push({

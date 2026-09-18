@@ -7,6 +7,8 @@ import { validateTechniqueDefinition } from "../../domain/validation";
 import { auditStandaloneEvidence } from "../standaloneEvidenceAudit";
 import {
   applyTechniqueConfiguration,
+  applyTechniqueConfigurationForComposition,
+  compositionTechniqueConfigurationBlocker,
   configurationSlots,
   standaloneTechniqueConfigurationBlocker,
   TechniqueConfigurationError,
@@ -68,17 +70,22 @@ describe("declared standalone configuration contracts", () => {
     expect(() => applyTechniqueConfiguration(chromatography, {})).toThrow(TechniqueConfigurationError);
   });
 
-  it("surfaces required declared-but-unbound configuration instead of treating it as resolved", async () => {
+  it("keeps weighing bound to the actual acquired mass identifier without a stale target", async () => {
     const weighing = await readTechnique("weighing");
     expect(hostLabsForTechnique(weighing.id)).toEqual([]);
-    expect(unresolvedConfigurationSlots(weighing)).toContain("targetMassG");
-    expect(slotById(weighing, "targetMassG")).toMatchObject({
-      kind: "host-composition-only",
+    expect(configurationSlots(weighing).map((slot) => slot.id)).toEqual(["massMeasurementId"]);
+    expect(slotById(weighing, "massMeasurementId")).toMatchObject({
+      kind: "internal-identifier",
       required: true,
-      valueType: "number",
+      valueType: "string",
     });
-    expect(standaloneTechniqueConfigurationBlocker(weighing)).toMatch(/targetMassG/);
-    expect(() => applyTechniqueConfiguration(weighing, {})).toThrow(TechniqueConfigurationError);
+    expect(standaloneTechniqueConfigurationBlocker(weighing)).toBeNull();
+    const configured = applyTechniqueConfiguration(weighing, {});
+    expect(unresolvedConfigurationSlots(configured)).toEqual([]);
+    const mass = configured.actions.find((action) => action.id === "weigh-solid")?.mass;
+    expect(mass?.source).toBe("action-input");
+    expect(mass?.source === "action-input" ? mass.outputMeasurementId : undefined)
+      .toBe("standalone-mass-measurement-id");
   });
 
   it("binds an unhosted standalone technique using declared values and validates the result", async () => {
@@ -107,28 +114,135 @@ describe("declared standalone configuration contracts", () => {
       dilutionFactor: "10",
     })).toThrow(/finite number/i);
   });
+
+  it("guards generic Studio composition with the same structural blocker as the shared API", async () => {
+    const chromatography = await readTechnique("paper-chromatography");
+    expect(compositionTechniqueConfigurationBlocker(chromatography)).toMatch(/ordered[- ]procedure/i);
+    expect(() => applyTechniqueConfigurationForComposition(chromatography, {}))
+      .toThrow(TechniqueConfigurationError);
+
+    const dilution = await readTechnique("dilution");
+    expect(compositionTechniqueConfigurationBlocker(dilution)).toBeNull();
+  });
 });
 
 describe("standalone evidence is produced, not invented from identifiers", () => {
-  it("identifies the three transmittance-dilution evidence defects from the shipped definition", async () => {
+  it("keeps transmittance dilution tied to real configuration and final-volume evidence", async () => {
     const technique = await readTechnique("transmittance-dilution");
     const issues = auditStandaloneEvidence(technique);
-    expect(issues.map((issue) => issue.code)).toEqual(expect.arrayContaining([
-      "missing-measurement-producer",
-      "misleading-final-volume-producer",
-      "untyped-dilution-calculation",
-    ]));
-    expect(issues.some((issue) => issue.configurationSlot === "stockConcentrationMeasurementId"))
-      .toBe(true);
-    expect(issues.some((issue) => issue.configurationSlot === "finalVolumeMeasurementId"))
-      .toBe(true);
-    expect(issues.some((issue) => issue.actionId === "transmittance-dilution-calculate-diluted-concentration"))
-      .toBe(true);
+    expect(issues).toEqual([]);
+    expect(technique.actions.find((action) => action.id === "transmittance-dilution-record-stock-concentration"))
+      .toMatchObject({
+        verb: "observe",
+        parameters: {
+          configurationQuantity: "stock solution concentration",
+          inputMode: "numeric",
+          inputRole: "teacherConfiguration",
+          inputRequired: false,
+          configuredValue: "{{config.stockConcentrationM}}",
+          unit: "M",
+        },
+      });
+    expect(technique.actions.find((action) => action.id === "transmittance-dilution-wipe-blank-cuvette"))
+      .toMatchObject({
+        parameters: {
+          requiresStudentNote: true,
+          inputMode: "text",
+          inputRole: "studentResponse",
+          inputRequired: true,
+        },
+      });
+    expect(technique.actions.find((action) => action.id === "transmittance-dilution-configure-photometer"))
+      .toMatchObject({
+        parameters: {
+          configurationQuantity: "measurement wavelength",
+          inputMode: "numeric",
+          inputRole: "teacherConfiguration",
+          inputRequired: false,
+          configuredValue: "{{config.wavelengthNm}}",
+          inputMin: 0,
+          inputMinExclusive: true,
+          unit: "nm",
+        },
+      });
+    expect(technique.actions.find((action) => action.id === "transmittance-dilution-wipe-orient-sample-cuvette"))
+      .toMatchObject({
+        parameters: {
+          requiresStudentNote: true,
+          inputMode: "text",
+          inputRole: "studentResponse",
+          inputRequired: true,
+        },
+      });
+    expect(technique.actions.find((action) => action.id === "transmittance-dilution-read-percent-transmittance"))
+      .toMatchObject({
+        parameters: {
+          inputMode: "numeric",
+          inputRole: "studentResponse",
+          inputRequired: true,
+          inputMin: 0,
+          inputMinExclusive: true,
+          inputMax: 100,
+          unit: "%T",
+        },
+      });
+    expect(technique.actions.find((action) => action.id === "transmittance-dilution-add-water-below-mark"))
+      .toMatchObject({
+        atomId: "atom.dilute.record-resulting-final-volume",
+        volume: { outputMeasurementId: "{{config.finalVolumeMeasurementId}}" },
+      });
+    expect(technique.actions.find((action) => action.id === "transmittance-dilution-calculate-diluted-concentration"))
+      .toMatchObject({ parameters: { template: "dilutedConcentration", unit: "M" } });
 
     const blocker = standaloneTechniqueConfigurationBlocker(technique);
-    expect(blocker).toMatch(/standalone evidence path is incomplete/i);
-    expect(blocker).toMatch(/identifier substitution alone cannot create/i);
-    expect(() => applyTechniqueConfiguration(technique, {})).toThrow(TechniqueConfigurationError);
+    expect(blocker).toBeNull();
+    expect(slotById(technique, "wavelengthNm")).toMatchObject({
+      valueType: "number",
+      required: true,
+      unit: "nm",
+    });
+
+    const beersLaw = await readTechnique("beers-law-calibration");
+    expect(beersLaw.actions.find((action) => action.id === "beers-law-calibration-configure-photometer"))
+      .toMatchObject({
+        parameters: {
+          configurationQuantity: "measurement wavelength",
+          inputMode: "numeric",
+          inputRole: "teacherConfiguration",
+          inputRequired: false,
+          configuredValue: "{{config.wavelengthNm}}",
+          unit: "nm",
+        },
+      });
+    expect(beersLaw.actions.find((action) => action.id === "beers-law-calibration-prepare-calibration-blank-optical-faces"))
+      .toMatchObject({ parameters: { requiresStudentNote: true, inputMode: "text", inputRequired: true } });
+    expect(beersLaw.actions.find((action) => action.id === "beers-law-calibration-prepare-standard-optical-faces"))
+      .toMatchObject({ parameters: { requiresStudentNote: true, inputMode: "text", inputRequired: true } });
+    expect(beersLaw.actions.find((action) => action.id === "beers-law-calibration-read-percent-transmittance"))
+      .toMatchObject({
+        parameters: {
+          inputMode: "numeric",
+          inputRole: "studentResponse",
+          inputRequired: true,
+          inputMin: 0,
+          inputMinExclusive: true,
+          inputMax: 100,
+          unit: "%T",
+        },
+      });
+    expect(slotById(beersLaw, "wavelengthNm")).toMatchObject({
+      valueType: "number",
+      required: true,
+      unit: "nm",
+    });
+  });
+
+  it("rejects a non-positive teacher-approved wavelength instead of inventing one", async () => {
+    const technique = await readTechnique("transmittance-dilution");
+    expect(() => applyTechniqueConfiguration(technique, {
+      stockConcentrationM: "0.25",
+      wavelengthNm: "0",
+    })).toThrow(/wavelengthNm.*greater than zero/i);
   });
 
   it("checks process and success-rule measurement ids, not only action parameters", async () => {
@@ -136,8 +250,7 @@ describe("standalone evidence is produced, not invented from identifiers", () =>
     const issues = auditStandaloneEvidence(weighing);
     const missingSolidMass = issues.find((issue) =>
       issue.code === "missing-measurement-producer" && issue.measurementId === "solid-mass");
-    expect(missingSolidMass).toBeDefined();
-    expect(missingSolidMass?.message).toMatch(/process validation|success criterion/i);
+    expect(missingSolidMass).toBeUndefined();
   });
 });
 

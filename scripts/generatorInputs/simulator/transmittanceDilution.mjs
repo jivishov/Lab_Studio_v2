@@ -151,6 +151,47 @@ const definition = {
   },
   "actions": [
     {
+      "id": "transmittance-dilution-record-stock-concentration",
+      "verb": "observe",
+      "label": "Record the instructor-approved stock concentration",
+      "atomId": "atom.observe.record-teacher-configured-numeric-value",
+      "parameters": {
+        "measurementId": "{{config.stockConcentrationMeasurementId}}",
+        "configurationQuantity": "stock solution concentration",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputRequired": false,
+        "inputLabel": "Instructor-approved stock solution concentration (M)",
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "M",
+        "configurationProvenance": "teacher-approved; the stock concentration is supplied by the instructor",
+        "configuredValue": "{{config.stockConcentrationM}}"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record the instructor-approved stock concentration: the named concentration is available as measurement evidence for the dilution calculation."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the approved stock concentration is missing or invalid",
+          "message": "The dilution cannot proceed without an instructor-approved stock concentration.",
+          "recovery": "Enter a positive instructor-approved stock concentration in mol/L."
+        }
+      ],
+      "feedback": {
+        "success": "Instructor-approved stock concentration recorded.",
+        "invalid": "Enter the positive instructor-approved stock concentration before measuring the aliquot."
+      },
+      "evidence": [],
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "measurementId",
+        "accessibleLabel": "Record the instructor-approved stock concentration"
+      }
+    },
+    {
       "id": "transmittance-dilution-place-volumetric-flask",
       "verb": "place",
       "label": "Select the clean labelled dilution receiver",
@@ -314,7 +355,7 @@ const definition = {
     {
       "id": "transmittance-dilution-measure-water-volume",
       "verb": "measureVolume",
-      "label": "Measure the configured water volume",
+      "label": "Measure the configured water addition",
       "parameters": {
         "sourceInstanceId": "wash-bottle-1",
         "targetInstanceId": "graduated-cylinder-1",
@@ -327,7 +368,7 @@ const definition = {
       },
       "prerequisites": [],
       "stateChanges": [
-        "Measure the configured water volume: completed with the named sample and configuration provenance preserved."
+        "Measure the configured water addition: completed with the named sample and configuration provenance preserved."
       ],
       "invalidCases": [
         {
@@ -338,7 +379,7 @@ const definition = {
         }
       ],
       "feedback": {
-        "success": "Measure the configured water volume complete.",
+        "success": "Measure the configured water addition complete.",
         "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
       },
       "evidence": [],
@@ -351,20 +392,21 @@ const definition = {
         "type": "pourInto",
         "sourceDefinitionId": "wash-bottle",
         "targetDefinitionId": "graduated-cylinder",
-        "accessibleLabel": "Measure the configured water volume"
+        "accessibleLabel": "Measure the configured water addition"
       },
       "volume": {
         "source": "action-input",
-        "outputMeasurementId": "{{config.finalVolumeMeasurementId}}"
+        "outputMeasurementId": "{{config.waterVolumeMeasurementId}}"
       }
     },
     {
       "id": "transmittance-dilution-add-water-below-mark",
       "verb": "dilute",
-      "label": "Dilute and mix to the configured final volume",
+      "label": "Add the measured water and mix to the configured final volume",
       "parameters": {
         "sourceInstanceId": "graduated-cylinder-1",
         "targetInstanceId": "prepared-receiver-1",
+        "sourceDefinitionId": "graduated-cylinder",
         "inputMode": "numeric",
         "inputRole": "teacherConfiguration",
         "inputLabel": "Dilute and mix to the configured final volume: final volume (mL)",
@@ -389,7 +431,7 @@ const definition = {
         "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
       },
       "evidence": [],
-      "atomId": "atom.dilute.to-final-volume",
+      "atomId": "atom.dilute.record-resulting-final-volume",
       "equipmentRoleBindings": {
         "measured-solvent-source": "graduated-cylinder",
         "receiving-vessel": "test-tube"
@@ -401,7 +443,8 @@ const definition = {
         "accessibleLabel": "Dilute and mix to the configured final volume"
       },
       "volume": {
-        "source": "action-input"
+        "source": "action-input",
+        "outputMeasurementId": "{{config.finalVolumeMeasurementId}}"
       }
     },
     {
@@ -447,6 +490,13 @@ const definition = {
         "photometerInstanceId": "spectrophotometer-1",
         "measurementId": "{{config.wavelengthMeasurementId}}",
         "configurationQuantity": "measurement wavelength",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputRequired": false,
+        "inputLabel": "Approved measurement wavelength (nm)",
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "configuredValue": "{{config.wavelengthNm}}",
         "unit": "nm",
         "photometricMode": "percentTransmittance",
         "tag": "generic-photometer-configured"
@@ -526,6 +576,11 @@ const definition = {
       "label": "Record the configured blank optical-face rule",
       "parameters": {
         "cuvetteInstanceId": "blank-cuvette-1",
+        "requiresStudentNote": true,
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputRequired": true,
+        "inputLabel": "Describe the optical-face rule used for the blank cuvette",
         "tag": "{{config.blankRuleNotebookTag}}"
       },
       "prerequisites": [],
@@ -715,6 +770,11 @@ const definition = {
       "label": "Record the configured sample optical-face rule",
       "parameters": {
         "cuvetteInstanceId": "sample-cuvette-1",
+        "requiresStudentNote": true,
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputRequired": true,
+        "inputLabel": "Describe the optical-face rule used for the sample cuvette",
         "tag": "{{config.blankRuleNotebookTag}}"
       },
       "prerequisites": [],
@@ -793,6 +853,13 @@ const definition = {
         "photometerOperation": "read",
         "measurementId": "percent-transmittance",
         "photometricQuantity": "percentTransmittance",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputRequired": true,
+        "inputLabel": "Percent transmittance shown by the photometer (%T)",
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "inputMax": 100,
         "unit": "%T"
       },
       "prerequisites": [],
@@ -909,6 +976,7 @@ const definition = {
       "label": "Calculate decimal transmittance",
       "parameters": {
         "calculationId": "decimal-transmittance",
+        "template": "decimalTransmittance",
         "sourceMeasurementId": "percent-transmittance"
       },
       "prerequisites": [],
@@ -940,6 +1008,7 @@ const definition = {
       "label": "Calculate absorbance",
       "parameters": {
         "calculationId": "absorbance",
+        "template": "absorbanceFromPercentT",
         "sourceMeasurementId": "percent-transmittance"
       },
       "prerequisites": [],
@@ -971,6 +1040,8 @@ const definition = {
       "label": "Calculate the diluted concentration",
       "parameters": {
         "calculationId": "diluted-concentration",
+        "template": "dilutedConcentration",
+        "unit": "M",
         "stockConcentrationMeasurementId": "{{config.stockConcentrationMeasurementId}}",
         "stockVolumeMeasurementId": "{{config.stockVolumeMeasurementId}}",
         "finalVolumeMeasurementId": "{{config.finalVolumeMeasurementId}}"
@@ -1000,8 +1071,29 @@ const definition = {
     }
   ],
   "process": {
-    "startNodeId": "transmittance-dilution-place-volumetric-flask-node",
+    "startNodeId": "transmittance-dilution-record-stock-concentration-node",
     "nodes": [
+      {
+        "id": "transmittance-dilution-record-stock-concentration-node",
+        "type": "action",
+        "title": "Record the instructor-approved stock concentration",
+        "description": "Record the instructor-approved stock concentration",
+        "actionId": "transmittance-dilution-record-stock-concentration",
+        "config": {},
+        "validation": [
+          {
+            "id": "transmittance-dilution-record-stock-concentration-node-done",
+            "type": "actionEvidence",
+            "label": "Record the instructor-approved stock concentration was completed.",
+            "actionId": "transmittance-dilution-record-stock-concentration"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Instructor-approved stock concentration recorded.",
+          "retry": "Review the approved stock concentration and try again."
+        }
+      },
       {
         "id": "transmittance-dilution-place-volumetric-flask-node",
         "type": "action",
@@ -1467,6 +1559,14 @@ const definition = {
     ],
     "edges": [
       {
+        "from": "transmittance-dilution-record-stock-concentration-node",
+        "to": "transmittance-dilution-place-volumetric-flask-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
         "from": "transmittance-dilution-place-volumetric-flask-node",
         "to": "transmittance-dilution-place-graduated-cylinder-node",
         "label": "Next",
@@ -1673,9 +1773,9 @@ const definition = {
     "schemaVersion": 1,
     "ports": [
       {
-        "id": "entry-transmittance-dilution-place-volumetric-flask-node",
+        "id": "entry-transmittance-dilution-record-stock-concentration-node",
         "kind": "entry",
-        "nodeId": "transmittance-dilution-place-volumetric-flask-node",
+        "nodeId": "transmittance-dilution-record-stock-concentration-node",
         "label": "Entry"
       },
       {
@@ -1748,12 +1848,22 @@ const definition = {
     "modelSlots": [],
     "configurationSlots": [
       {
+        "id": "stockConcentrationM",
+        "valueType": "number",
+        "required": true
+      },
+      {
         "id": "stockConcentrationMeasurementId",
         "valueType": "string",
         "required": true
       },
       {
         "id": "stockVolumeMeasurementId",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "id": "waterVolumeMeasurementId",
         "valueType": "string",
         "required": true
       },
@@ -1765,6 +1875,11 @@ const definition = {
       {
         "id": "wavelengthMeasurementId",
         "valueType": "string",
+        "required": true
+      },
+      {
+        "id": "wavelengthNm",
+        "valueType": "number",
         "required": true
       },
       {

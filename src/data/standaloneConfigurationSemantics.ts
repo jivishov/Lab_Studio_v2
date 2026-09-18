@@ -73,7 +73,7 @@ export const validateStandaloneConfigurationSemantics = (
 
   for (const [slotId, value] of values) {
     if (typeof value !== "number" || !Number.isFinite(value)) continue;
-    if (/(?:VolumeMl|MassG|DurationMinutes|Factor)$/i.test(slotId) && value <= 0) {
+    if (/(?:VolumeMl|MassG|DurationMinutes|Factor|WavelengthNm)$/i.test(slotId) && value <= 0) {
       add([slotId], `${slotId} must be greater than zero.`);
     }
   }
@@ -137,6 +137,16 @@ export const validateStandaloneConfigurationSemantics = (
           `${durationSlot} must stay within the authored ${durationRange[0]}-${durationRange[1]} minute range.`,
         );
       }
+    }
+  }
+
+  if (definition.id === "transmittance-dilution") {
+    const stockConcentration = numeric(values, "stockConcentrationM");
+    if (stockConcentration !== undefined && stockConcentration <= 0) {
+      add(
+        ["stockConcentrationM"],
+        "stockConcentrationM must be greater than zero so the instructor-approved concentration is usable in the dilution calculation.",
+      );
     }
   }
 

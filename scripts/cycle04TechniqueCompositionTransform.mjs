@@ -44,17 +44,14 @@ const specs = {
       role("weighed-vessel", ["watch-glass"], ["watch-glass-1"]),
       role("solid-transfer-tool", ["spatula"], ["spatula-1"]),
     ],
-    configurationSlots: [configuration("targetMassG"), configuration("massToleranceG"), configuration("massMeasurementId", "string")],
+    configurationSlots: [configuration("massMeasurementId", "string")],
     evidenceOutputs: [
       evidenceOutput("mass-reading", "measurement", "weigh-solid", "{{config.massMeasurementId}}"),
       evidenceOutput("mass-record", "notebook", "record-solid-mass", "{{config.massMeasurementId}}"),
     ],
     bind(definition) {
-      Object.assign(definition.actions.find((action) => action.id === "weigh-solid").parameters, {
-        measurementId: "{{config.massMeasurementId}}", expectedMassG: "{{config.targetMassG}}", tolerance: "{{config.massToleranceG}}",
-      });
       definition.actions.find((action) => action.id === "record-solid-mass").parameters.measurementId = "{{config.massMeasurementId}}";
-      rewriteStrings(definition, [["2.5 g", "the configured mass"]]);
+      rewriteStrings(definition, [["2.5 g", "the learner-entered balance reading"]]);
     },
   },
   "measuring-volume": {
@@ -100,7 +97,7 @@ const specs = {
       });
       Object.assign(definition.actions.find((action) => action.id === "observe-solution"), {
         label: "Record solution appearance",
-        verb: "record",
+        verb: "observe",
       });
       definition.actions.find((action) => action.id === "observe-solution").parameters.note = "{{config.solutionObservation}}";
       Object.assign(definition.process.nodes.find((node) => node.actionId === "observe-solution"), {

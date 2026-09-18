@@ -13,6 +13,7 @@ import { equipmentById } from "../equipment/catalog";
 import { autoLayoutProcessMap } from "./autoLayoutProcessMap";
 import { serializeLab } from "./importExport";
 import { assessStudioReadiness, type StudioDiagnostic } from "./studioReadiness";
+import { appendConfiguredWorkflow, configureWorkflowInDraft } from "./workflowConfiguration";
 import {
   appendTechniqueToDraft,
   insertTemplateStepIntoDraft,
@@ -33,6 +34,8 @@ export type StudioOperation =
   | { type: "autoLayoutProcess" }
   | { type: "appendTemplateStep"; templateId: string; options?: InsertTemplateStepOptions }
   | { type: "appendTechnique"; technique: TechniqueDefinition }
+  | { type: "appendConfiguredWorkflow"; technique: TechniqueDefinition; values: Record<string, string>; approved: boolean }
+  | { type: "configureWorkflow"; instanceId: string; values: Record<string, string>; approved: boolean }
   | { type: "updateEquipmentList"; equipment: string[] }
   | { type: "addEquipment"; definitionId: string }
   | { type: "removeEquipment"; definitionId: string }
@@ -188,6 +191,8 @@ const compositionMutatingOperations = new Set<StudioOperation["type"]>([
   "autoLayoutProcess",
   "appendTemplateStep",
   "appendTechnique",
+  "appendConfiguredWorkflow",
+  "configureWorkflow",
   "updateEquipmentList",
   "addEquipment",
   "removeEquipment",
@@ -464,6 +469,15 @@ const applyOperation = (draft: LabDefinition, operation: StudioOperation): LabDe
     case "appendTechnique": {
       requireRecord(operation.technique, "technique");
       return appendTechniqueToDraft(draft, operation.technique).lab;
+    }
+    case "appendConfiguredWorkflow": {
+      requireRecord(operation.technique, "technique");
+      requireRecord(operation.values, "values");
+      return appendConfiguredWorkflow(draft, operation.technique, operation.values, operation.approved).lab;
+    }
+    case "configureWorkflow": {
+      requireRecord(operation.values, "values");
+      return configureWorkflowInDraft(draft, requireText(operation.instanceId, "instanceId"), operation.values, operation.approved);
     }
     case "updateEquipmentList": {
       requireArray(operation.equipment, "equipment");

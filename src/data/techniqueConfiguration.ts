@@ -109,6 +109,7 @@ const isIdentifierBinding = (key: string): boolean => {
 const UNIT_BY_SUFFIX: ReadonlyArray<readonly [string, string]> = [
   ["Ml", "mL"],
   ["Mm", "mm"],
+  ["Nm", "nm"],
   ["Minutes", "minutes"],
   ["Seconds", "s"],
   ["C", "°C"],
@@ -126,7 +127,7 @@ const humanize = (slot: string, unit?: string): string => {
     .trim()
     .toLowerCase();
   const withoutUnit = unit
-    ? words.replace(/\s+(ml|mm|minutes|seconds|c|g|m)$/i, "")
+    ? words.replace(/\s+(ml|mm|nm|minutes|seconds|c|g|m)$/i, "")
     : words;
   const sentence = withoutUnit.charAt(0).toUpperCase() + withoutUnit.slice(1);
   return unit ? `${sentence} (${unit})` : sentence;
@@ -312,6 +313,50 @@ const parseDeclaredValue = (slot: ConfigurationSlot, raw: string): TechniqueConf
   return value;
 };
 
+/**
+ * Guard the generic Studio composition path before it appends a configured technique to a lab.
+ *
+ * Studio can materialize ordinary declaration values, but it must not flatten a technique whose
+ * procedure/data selection belongs to a supported lab, nor clear a source-level evidence audit by
+ * substituting identifier strings. Keep this policy beside the standalone blocker so both entry
+ * points share the same structural and evidence boundary.
+ */
+export const compositionTechniqueConfigurationBlocker = (
+  definition: TechniqueDefinition,
+): string | null => {
+  if (definition.composition?.orderedProcedure) {
+    return "This technique uses an ordered-procedure composition contract and cannot be materialized by the generic workflow configuration.";
+  }
+  if (definition.composition?.catalogDisposition === "lab-scoped") {
+    return "This technique is lab-scoped and must be configured by its supported lab composition.";
+  }
+  if (
+    (definition.composition?.variants?.length ?? 0) > 0
+    || (definition.composition?.approvalGates?.length ?? 0) > 0
+  ) {
+    return "This technique has variants or approval gates that require its supported lab composition.";
+  }
+  const hosts = hostLabsForTechnique(definition.id);
+  if (hosts.length > 0) {
+    return `This technique has a supported composed lab route (${hosts.map((host) => host.title).join(", ")}); use that route so procedure selection and evidence bindings are materialized together.`;
+  }
+  const compositionOnly = configurationSlots(definition)
+    .filter((slot) =>
+      slot.kind === "host-composition-only"
+      && slot.required
+      && slot.defaultValue === undefined);
+  if (compositionOnly.length > 0) {
+    return `This technique has required composition-only configuration that the generic workflow configuration cannot materialize: `
+      + `${compositionOnly.map((slot) => slot.id).join(", ")}.`;
+  }
+  const evidenceIssues = auditStandaloneEvidence(definition);
+  if (evidenceIssues.length > 0) {
+    return `This technique's composition evidence path is incomplete: ${evidenceIssues.map((entry) => entry.message).join(" ")} `
+      + `Identifier substitution alone cannot create the missing scientific evidence.`;
+  }
+  return null;
+};
+
 /** Hosted or ordered techniques must stay on the composition path that selects procedure/data. */
 export const standaloneTechniqueConfigurationBlocker = (
   definition: TechniqueDefinition,
@@ -426,15 +471,20 @@ export const applyTechniqueConfiguration = <T extends TechniqueDefinition | LabD
 
 /**
  * Materialize declared slots for Studio composition before ids are prefixed and appended to a draft.
- * Unlike the standalone route, Studio is itself a composition surface, so hosted/ordered policy is
- * not used as a blanket blocker here. Required declaration-only values still must be supplied (or
- * have an authored default), and the same type/choice/physical/production validation is applied.
+ * Studio is itself a composition surface, but this generic path still refuses hosted, ordered,
+ * variant-gated, and evidence-incomplete definitions before materialization. Required declaration-
+ * only values must also be supplied (or have an authored default), and the same type/choice/
+ * physical/production validation is applied.
  */
 export const applyTechniqueConfigurationForComposition = (
   definition: TechniqueDefinition,
   supplied: Readonly<Record<string, string>>,
-): TechniqueDefinition => materializeTechniqueConfiguration(
-  definition,
-  supplied,
-  { enforceStandaloneRoute: false },
-);
+): TechniqueDefinition => {
+  const blocker = compositionTechniqueConfigurationBlocker(definition);
+  if (blocker) throw new TechniqueConfigurationError(blocker);
+  return materializeTechniqueConfiguration(
+    definition,
+    supplied,
+    { enforceStandaloneRoute: false },
+  );
+};

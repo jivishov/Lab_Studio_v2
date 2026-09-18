@@ -207,6 +207,54 @@ describe("action atomic identity contract", () => {
   });
 });
 
+describe("dilution final-volume evidence contract", () => {
+  const finalVolumeAction = (overrides: Partial<ActionDefinition> = {}): ActionDefinition => baseAction({
+    id: "record-final-volume",
+    verb: "dilute",
+    label: "Add solvent to the final volume",
+    atomId: "atom.dilute.record-resulting-final-volume",
+    parameters: { inputMode: "numeric" },
+    equipmentRoleBindings: {
+      "measured-solvent-source": "graduated-cylinder",
+      "receiving-vessel": "volumetric-flask",
+    },
+    interaction: {
+      type: "pourInto",
+      sourceDefinitionId: "graduated-cylinder",
+      targetDefinitionId: "volumetric-flask",
+      accessibleLabel: "Add the measured solvent to the receiving vessel.",
+    },
+    volume: { source: "action-input", outputMeasurementId: "final-volume" },
+    ...overrides,
+  }) as ActionDefinition;
+
+  it("derives measurement and evidence effects only for the paired opt-in atom", () => {
+    const valid = deriveActionEffectContract(finalVolumeAction());
+    expect(valid.errors).toEqual([]);
+    expect(valid.contract?.classes).toEqual([
+      "apparatus-material-instrument-state",
+      "measurement-direct-observation-acquisition",
+      "evidence-recording",
+    ]);
+    expect(valid.contract?.targets).toEqual([
+      { domain: "equipment" },
+      { domain: "material" },
+      { domain: "measurement-observation" },
+      { domain: "evidence" },
+    ]);
+
+    const physicalOnly = deriveActionEffectContract(finalVolumeAction({
+      atomId: "atom.dilute.to-final-volume",
+    }));
+    expect(physicalOnly.errors.join(" ")).toContain("record-resulting-final-volume");
+
+    const missingOutput = deriveActionEffectContract(finalVolumeAction({
+      volume: { source: "action-input" },
+    }));
+    expect(missingOutput.errors.join(" ")).toContain("volume.outputMeasurementId");
+  });
+});
+
 describe("observe handler effect derivation", () => {
   const configurationAction = (
     parameters: ActionDefinition["parameters"],

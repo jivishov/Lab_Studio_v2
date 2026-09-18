@@ -1,15 +1,21 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import acidBaseTitrationLabJson from "../../../public/labs/acid-base-titration.json";
+import transmittanceDilutionTechniqueJson from "../../../public/techniques/transmittance-dilution.json";
 import { createLegacySampleRackDraft } from "../../test/legacyDrafts";
 import * as bundledLabLoader from "../../data/loadBundledLabs";
-import type { LabDefinition } from "../../domain/types";
+import type { LabDefinition, TechniqueDefinition } from "../../domain/types";
 import { DRAFT_STORAGE_KEY } from "../persistence";
 import { TeacherStudio } from "../TeacherStudio";
+import { appendTechniqueToDraft, createDraftFromDemo } from "../studioState";
 
 const acidBaseTitrationLab = acidBaseTitrationLabJson as LabDefinition;
 
 describe("TeacherStudio", () => {
+  // This named value is only a teacher-entry fixture for the authored UI regression; it is not a product default.
+  const teacherApprovedStockConcentrationM = "0.20";
+  const teacherApprovedWavelengthNm = "600";
+
   beforeEach(() => {
     window.localStorage.clear();
   });
@@ -302,15 +308,48 @@ describe("TeacherStudio", () => {
     expect(within(labSelect).queryByRole("option", { name: /weigh item/i })).not.toBeInTheDocument();
   }, 15000);
 
-  it("adds a reusable workflow without opening details", async () => {
+  it("opens workflow setup before appending a reusable workflow", async () => {
     render(<TeacherStudio />);
     fireEvent.change(screen.getByLabelText(/add workflow/i), {
       target: { value: "template-transmittance-dilution-technique" },
     });
 
-    expect(await screen.findByText(/spectrophotometer dilution workflow appended/i)).toBeInTheDocument();
+    const dialog = await screen.findByRole("dialog", { name: /configure spectrophotometer dilution/i });
+    expect(dialog).toBeInTheDocument();
+    const stockConcentration = await within(dialog).findByLabelText(/stock concentration/i);
+    fireEvent.change(stockConcentration, { target: { value: teacherApprovedStockConcentrationM } });
+    const wavelength = await within(dialog).findByLabelText(/wavelength/i);
+    fireEvent.change(wavelength, { target: { value: teacherApprovedWavelengthNm } });
+    const approval = await within(dialog).findByRole("checkbox", { name: /teacher-entered settings/i });
+    fireEvent.click(approval);
+    fireEvent.click(await within(dialog).findByRole("button", { name: /append configured workflow/i }));
+    expect(await screen.findByText(/spectrophotometer dilution configured workflow appended/i))
+      .toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: /details/i })).not.toBeInTheDocument();
     expect(screen.getByRole("tab", { name: /connections/i })).toBeInTheDocument();
+  }, 15000);
+
+  it("restores an invalid saved draft without a runnable preview and routes its configuration diagnostic", async () => {
+    const raw = appendTechniqueToDraft(
+      createDraftFromDemo(),
+      transmittanceDilutionTechniqueJson as TechniqueDefinition,
+    ).lab;
+    window.localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify({
+      version: 2,
+      savedAt: new Date().toISOString(),
+      artifactKind: "lab",
+      draft: raw,
+    }));
+
+    render(<TeacherStudio />);
+    expect(screen.queryByLabelText(/student player preview/i)).not.toBeInTheDocument();
+    expect(screen.getByText(/no runnable preview yet/i)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("tab", { name: /preview & validate/i }));
+    fireEvent.click(await screen.findByRole("button", { name: /bind teacher configuration "stockConcentrationM"/i }));
+
+    expect(await screen.findByRole("dialog", { name: /configure analyze transmittance of a dilution/i }))
+      .toBeInTheDocument();
   }, 15000);
 
   it("guards full lab templates before replacing the current draft", async () => {

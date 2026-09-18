@@ -13,7 +13,6 @@ import { GitBranch, PanelRightClose, PanelRightOpen, Plus, RotateCcw, Trash2, X 
 import { createStudioAssistantAdapter } from "../assistant/studioPageAdapter";
 import { loadBundledLab } from "../data/loadBundledLabs";
 import { loadBundledTechnique } from "../data/loadBundledTechniques";
-import { configurationSlots } from "../data/techniqueConfiguration";
 import type {
   ActionDefinition,
   ContentState,
@@ -22,6 +21,7 @@ import type {
   ProcessEdge,
   ProcessNode,
   RuntimeInvalidCase,
+  TechniqueDefinition,
 } from "../domain/types";
 import { emptyContents } from "../domain/types";
 import { createEquipmentInstance, equipmentById, v1EquipmentCatalog } from "../equipment/catalog";
@@ -54,6 +54,8 @@ import { PreviewPanel } from "./PreviewPanel";
 import { ProcessMap } from "./ProcessMap";
 import { StudioCommandHeader, type StudioStage } from "./StudioCommandHeader";
 import { StudioResizeHandle } from "./StudioResizeHandle";
+import { WorkflowConfigurationDialog } from "./WorkflowConfigurationDialog";
+import { currentWorkflowInstance, workflowNeedsConfiguration } from "./workflowConfiguration";
 import { loadDraftArtifact, saveDraft } from "./persistence";
 import {
   artifactKindLabels,
@@ -80,7 +82,6 @@ import {
 import { collectStudioInteractionIssues } from "./studioValidation";
 import "../styles/studio-process.css";
 import {
-  appendTechniqueToDraft,
   createDraftFromDemo,
   studioTemplates,
   type InsertTemplateStepOptions,
@@ -208,6 +209,15 @@ interface StudioHistoryEntry {
   revision: string;
   selectedNodeId: string;
   artifactKind: StudioArtifactKind;
+}
+
+interface PendingWorkflowConfiguration {
+  requestId: number;
+  title: string;
+  technique?: TechniqueDefinition;
+  instanceId?: string;
+  baseRevision?: string;
+  loadError?: string;
 }
 
 interface GuidedRehearsalSession {
@@ -338,6 +348,8 @@ export const TeacherStudio = () => {
   const [assistantOpen, setAssistantOpen] = useState(false);
   const [equipmentToAdd, setEquipmentToAdd] = useState(v1EquipmentCatalog[0]?.id ?? "");
   const [pendingEntryTemplate, setPendingEntryTemplate] = useState<StudioTemplate | null>(null);
+  const workflowRequestRef = useRef(0);
+  const [pendingWorkflow, setPendingWorkflow] = useState<PendingWorkflowConfiguration | null>(null);
   const aboutTitleId = useId();
   const aboutDescriptionId = useId();
   const selectedStepEditorBodyId = useId();
@@ -349,7 +361,7 @@ export const TeacherStudio = () => {
   const readiness = useMemo(() => assessStudioReadiness(draft), [draft]);
   const canPreview = isRunnableReadiness(readiness);
   const canExport = isExportReadyReadiness(readiness);
-  const [lastRunnableDraft, setLastRunnableDraft] = useState<LabDefinition>(draft);
+  const [lastRunnableDraft, setLastRunnableDraft] = useState<LabDefinition | undefined>(() => canPreview ? draft : undefined);
   const interactionIssues = useMemo(() => collectStudioInteractionIssues(draft), [draft]);
   const hasUnsavedChanges = savedRevision !== revision;
   const isSplitVisible = activeStage === "process" && workspaceLayout === "split" && !isNarrowWorkspace;
@@ -360,6 +372,26 @@ export const TeacherStudio = () => {
     stageSidebarWidth,
     isSplitVisible ? MAX_SPLIT_STAGE_SIDEBAR_WIDTH : MAX_STAGE_SIDEBAR_WIDTH,
   );
+  const selectedWorkflow = draft.techniques.find((technique) =>
+    technique.actions.some((action) => action.id === selectedNode?.actionId)
+    && workflowNeedsConfiguration(technique));
+
+  const closeWorkflowConfiguration = () => {
+    workflowRequestRef.current += 1;
+    setPendingWorkflow(null);
+  };
+
+  const openWorkflowConfiguration = (instanceId: string) => {
+    const requestId = ++workflowRequestRef.current;
+    const stored = draft.techniques.find((technique) => technique.id === instanceId);
+    try {
+      const technique = currentWorkflowInstance(draft, instanceId);
+      setPendingWorkflow({ requestId, title: technique.title, technique, instanceId, baseRevision: revision });
+    } catch (error) {
+      setPendingWorkflow({ requestId, title: stored?.title ?? instanceId, technique: stored, instanceId,
+        loadError: error instanceof Error ? error.message : "Unable to open workflow settings." });
+    }
+  };
 
   const focusNodeInPreview = (nodeId: string) => {
     setSelectedNodeId(nodeId);
@@ -905,6 +937,7 @@ export const TeacherStudio = () => {
     options?: InsertTemplateStepOptions,
     confirmedEntryTemplate = false,
   ) => {
+    closeWorkflowConfiguration();
     if (template.labId) {
       if (!confirmedEntryTemplate) {
         setPendingEntryTemplate(template);
@@ -931,31 +964,16 @@ export const TeacherStudio = () => {
       return;
     }
     if (template.techniqueId) {
+      const requestId = ++workflowRequestRef.current;
+      setPendingWorkflow({ requestId, title: template.title });
       try {
         const technique = await loadBundledTechnique(template.techniqueId);
-        const appended = appendTechniqueToDraft(draft, technique);
-        // Appending copies the published technique as authored, templates and all: `prefixAction`
-        // renames ids, it does not bind configuration. A workflow written against teacher
-        // configuration therefore lands in the draft with `{{config.*}}` still sitting in the
-        // parameters that should hold numbers, and the preview runs it that way. The append is
-        // still the right thing to allow — the draft is being authored, not played — but the gap
-        // is named at the moment it is introduced rather than discovered in the preview.
-        const pending = configurationSlots(technique)
-          .filter((slot) => slot.kind === "classroom-quantity")
-          .map((slot) => slot.id);
-        const pendingNote = pending.length > 0
-          ? ` This workflow still needs approved ${pending.length === 1 ? "value" : "values"} for `
-            + `${pending.join(", ")}; the preview will refuse until a host composition supplies them.`
-          : "";
-        commitTransaction("Append workflow", [
-          { type: "appendTechnique", technique },
-          { type: "autoLayoutProcess" },
-        ], {
-          message: `${template.title} workflow appended.${pendingNote}`,
-          selectedNodeId: appended.startNodeId,
-        });
+        if (workflowRequestRef.current !== requestId) return;
+        setPendingWorkflow({ requestId, title: template.title, technique });
       } catch (error) {
-        setImportMessage(error instanceof Error ? error.message : "Unable to load workflow template.");
+        if (workflowRequestRef.current !== requestId) return;
+        setPendingWorkflow({ requestId, title: template.title,
+          loadError: error instanceof Error ? error.message : "Unable to load workflow template." });
       }
       return;
     }
@@ -969,7 +987,30 @@ export const TeacherStudio = () => {
     }
   };
 
+  const applyWorkflowConfiguration = (values: Record<string, string>, approved: boolean): string | undefined => {
+    if (!pendingWorkflow?.technique) return "The workflow has not loaded yet.";
+    if (pendingWorkflow.instanceId && pendingWorkflow.baseRevision !== revision) {
+      return "The draft changed while setup was open. Close this panel and reopen the workflow settings to review the current draft.";
+    }
+    const instanceId = pendingWorkflow.instanceId;
+    const operations: StudioOperation[] = instanceId
+      ? [{ type: "configureWorkflow", instanceId, values, approved }]
+      : [{ type: "appendConfiguredWorkflow", technique: pendingWorkflow.technique, values, approved }, { type: "autoLayoutProcess" }];
+    const result = commitTransaction(instanceId ? "Configure workflow" : "Append configured workflow", operations, {
+      message: instanceId ? `${pendingWorkflow.title} setup applied to this workflow.` : `${pendingWorkflow.title} configured workflow appended.`,
+    });
+    if (!result.ok) return result.error ?? "Unable to apply workflow settings.";
+    const configured = instanceId
+      ? result.draft.techniques.find((technique) => technique.id === instanceId)
+      : result.draft.techniques.at(-1);
+    if (configured) focusNodeInPreview(configured.process.startNodeId);
+    setActiveStage("process");
+    closeWorkflowConfiguration();
+    return undefined;
+  };
+
   const createNewLab = () => {
+    closeWorkflowConfiguration();
     const nextDraft = createBlankStudioLab();
     commitTransaction("New lab", [{ type: "replaceDraft", draft: nextDraft }], {
       artifactKind: "lab",
@@ -979,6 +1020,7 @@ export const TeacherStudio = () => {
   };
 
   const createNewTechnique = () => {
+    closeWorkflowConfiguration();
     const nextDraft = createBlankStudioTechniqueLab();
     commitTransaction("New technique", [{ type: "replaceDraft", draft: nextDraft }], {
       artifactKind: "technique",
@@ -1185,11 +1227,14 @@ export const TeacherStudio = () => {
       return;
     }
     changeStage("process");
-    if (anchor?.nodeId) {
-      focusNodeInPreview(anchor.nodeId);
+    const nodeId = draft.process.nodes.find((node) => node.id === anchor?.nodeId)?.id
+      ?? draft.process.nodes.find((node) => anchor?.actionId && node.actionId === anchor.actionId)?.id;
+    if (nodeId) focusNodeInPreview(nodeId);
+    if (anchor?.techniqueId) {
+      openWorkflowConfiguration(anchor.techniqueId);
       return;
     }
-    openDetails();
+    if (!nodeId) openDetails();
   };
 
   const exportDraft = () => {
@@ -1202,6 +1247,7 @@ export const TeacherStudio = () => {
 
   const importDraft = async (file: File | undefined) => {
     if (!file) return;
+    closeWorkflowConfiguration();
     const result = parseImportedJson(await file.text());
     if (!result.ok || !result.value) {
       setImportRepairErrors(result.errors);
@@ -1323,6 +1369,12 @@ export const TeacherStudio = () => {
           </section>
         </div>
       ) : null}
+      {pendingWorkflow ? (
+        <WorkflowConfigurationDialog key={pendingWorkflow.requestId}
+          title={pendingWorkflow.title} technique={pendingWorkflow.technique}
+          instanceId={pendingWorkflow.instanceId} loadError={pendingWorkflow.loadError}
+          onCancel={closeWorkflowConfiguration} onApply={applyWorkflowConfiguration} />
+      ) : null}
       <div
         ref={workspaceRef}
         className={`studio-workspace ${isSplitVisible ? "is-split" : "is-tabs"} is-stage-${activeStage}`}
@@ -1423,6 +1475,11 @@ export const TeacherStudio = () => {
               aria-label="Selected step editor"
               tabIndex={isNarrowWorkspace && isInspectorOpen ? -1 : undefined}
             >
+                {selectedWorkflow && isInspectorOpen ? (
+                  <div className="studio-workflow-setup">
+                    <button type="button" onClick={() => openWorkflowConfiguration(selectedWorkflow.id)}>Complete workflow setup</button>
+                  </div>
+                ) : null}
                 <div className="selected-step-command-bar">
                   <div>
                     <span>Editing step {Math.max(1, draft.process.nodes.findIndex((node) => node.id === selectedNodeId) + 1)} of {draft.process.nodes.length}</span>
@@ -2048,7 +2105,7 @@ export const TeacherStudio = () => {
           ) : null}
           <PreviewPanel
             draft={canPreview ? draft : lastRunnableDraft}
-            isStale={!canPreview}
+            isStale={!canPreview && Boolean(lastRunnableDraft)}
             readiness={readiness}
             selectedNodeFocusVersion={selectedNodeFocusVersion}
             selectedNodeId={selectedNodeId}

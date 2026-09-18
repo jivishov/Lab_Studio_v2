@@ -117,6 +117,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 | `atom.record.photometer-reading` | spectrophotometry | `record` | `recordNotebook` | `photometer-instrument` |
 | `atom.measure.photometric-aliquot` | spectrophotometry | `measureVolume` | `pourInto` | `sample-source`, `photometric-aliquot-tool` |
 | `atom.dilute.to-final-volume` | measurement | `dilute` | `pourInto` | `measured-solvent-source`, `receiving-vessel` |
+| `atom.dilute.record-resulting-final-volume` | measurement | `dilute` | `pourInto` | `measured-solvent-source`, `receiving-vessel` |
 | `atom.dilute.used-calorimetry-solution` | calorimetry | `dilute` | `pourInto` | `liquid-source`, `calorimeter-vessel` |
 | `atom.transfer.initiate-timed-reaction` | kinetics | `transfer` | `pourInto` | `measured-solvent-source`, `reaction-vessel` |
 | `atom.transfer.route-to-waste-treatment` | waste-treatment | `transfer` | `pourInto` | `liquid-source`, `waste-receiver` |
@@ -1683,6 +1684,22 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
   - `sports-drink-blue-dye-spectroscopy_2026-07-27.md` phase step `P-06` (M/R)
 - Content examples:
   - `technique:crystal-violet-micromolar-dilution-series` action `cv11-add-water-05`
+
+#### `atom.dilute.record-resulting-final-volume`
+
+**Dilute and record the resulting final volume**
+
+- Verb: `dilute`
+- Allowed interaction types: `pourInto`
+- Required roles: `measured-solvent-source`, `receiving-vessel`
+- Optional roles: none
+- Evidence: solution at its resulting final volume
+- Procedural constraints:
+  - The action consumes an approved final-volume input, then records the resulting target volume as final evidence after the physical addition.
+  - The resulting final-volume measurement is runtime evidence; it is not a graduated test-tube reading.
+- Source examples: none; this is a runtime evidence variant of the stated-volume dilution atom.
+- Content examples:
+  - `technique:transmittance-dilution` action `transmittance-dilution-add-water-below-mark`
 
 #### `atom.rinse.measured-quantitative-transfer`
 
