@@ -3,9 +3,9 @@
   "branch": "codex/item2-catalog-reconciliation",
   "baseline": "f7c2b863f641090d9abc5c08ee22da72702fdfd6",
   "status": {
-    "sourceReviewTriage": "complete",
+    "sourceReviewTriage": "revised-after-external-review; source closure not claimed",
     "currentRawDiagnostics": "not-generated",
-    "fullItem2FindingClosure": "incomplete"
+    "fullItem2FindingClosure": "incomplete-pending-fresh-current-diagnostics"
   },
   "currentRawDiagnostics": {
     "status": "not-generated",
@@ -125,5 +125,25 @@
     },
     "treatment": "Historical preparation evidence only. These findings were not regenerated and are not relabeled as current.",
     "individualHistoricalTriage": "not-replayed; current source-level owner summaries are attached to CATALOG_DISPOSITIONS.json where previously computed from the supplied historical artifact."
-  }
+  },
+  "externalReviewCorrections": [
+    {
+      "id": "REV-001",
+      "finding": "Activity-specific justification was insufficient.",
+      "disposition": "corrected",
+      "evidence": "CATALOG_DISPOSITIONS schemaVersion 3 contains activitySpecificReview and per-rule historicalFindingDisposition for all 59 indexed activities."
+    },
+    {
+      "id": "REV-002",
+      "finding": "Post-run tracked triage/report edits would invalidate source freshness.",
+      "disposition": "corrected",
+      "evidence": "EXECUTION_REQUEST now uses discovery/final two-run handling when fresh evidence changes tracked source."
+    },
+    {
+      "id": "REV-003",
+      "finding": "Paper chromatography retained requiredSlotsKnown=false/not-assessed.",
+      "disposition": "corrected",
+      "evidence": "CONFIGURATION_COVERAGE now names all seven required fields and marks requiredSlotsKnown=true."
+    }
+  ]
 }
