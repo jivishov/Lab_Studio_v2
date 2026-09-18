@@ -610,3 +610,47 @@ describe("endpoint appearance and narration", () => {
     );
   });
 });
+
+
+const curveAnalysisTechnique = JSON.parse(
+  readFileSync(join(process.cwd(), "public", "techniques", "titration-curve-analysis.json"), "utf8"),
+) as TechniqueDefinition;
+
+describe("titration-curve molarity evidence", () => {
+  it("derives the accepted molarity from recorded aliquot/equivalence evidence instead of an authored answer", () => {
+    const actionId = "calculate-curve-molarity";
+    const action = curveAnalysisTechnique.actions.find((candidate) => candidate.id === actionId);
+    const node = curveAnalysisTechnique.process.nodes.find((candidate) => candidate.actionId === actionId);
+    if (!action || !node) throw new Error("Missing curve-molarity action or node.");
+
+    expect(action.parameters.expected).toBeUndefined();
+    expect(action.parameters.template).toBe("acidBaseMolarityFromEquivalenceVolume");
+
+    const initial = createRuntimeState(curveAnalysisTechnique);
+    const baseState: RuntimeState = {
+      ...initial,
+      currentNodeId: node.id,
+      completedNodes: initial.completedNodes.filter((nodeId) => nodeId !== node.id),
+      measurements: [
+        { id: "curve-analyte-volume", label: "Analyte aliquot", value: 25, unit: "mL", nodeId: "fixture" },
+        { id: "equivalence-volume", label: "Curve equivalence", value: 20, unit: "mL", nodeId: "fixture" },
+      ],
+    };
+
+    const accepted = performRuntimeAction(curveAnalysisTechnique, baseState, {
+      actionId,
+      verb: "calculate",
+      value: 0.08,
+    });
+    const acceptedCalculation = accepted.calculations.find((entry) => entry.id === "curve-molarity");
+    expect(acceptedCalculation?.expected).toBeCloseTo(0.08, 6);
+    expect(acceptedCalculation?.passed).toBe(true);
+
+    const rejected = performRuntimeAction(curveAnalysisTechnique, baseState, {
+      actionId,
+      verb: "calculate",
+      value: 0.099,
+    });
+    expect(rejected.calculations.find((entry) => entry.id === "curve-molarity")?.passed).toBe(false);
+  });
+});
