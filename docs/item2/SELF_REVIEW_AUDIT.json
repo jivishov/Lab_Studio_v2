@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "branch": "codex/item2-catalog-reconciliation",
-  "reviewedHead": "f9c9229",
+  "reviewedHead": "recorded in final CURRENT_VERIFICATION_RUN.json",
   "findings": [
     {
       "id": "SELF-001",
@@ -37,6 +37,21 @@
       "id": "SELF-007",
       "finding": "Quick Ache analysis scenario incorrectly implied full Reset preserves source measurements.",
       "disposition": "corrected"
+    },
+    {
+      "id": "SELF-008",
+      "finding": "Generated contextual source groups selected ownerRows[0] or examples[0], making cross-activity provenance order-dependent.",
+      "disposition": "corrected-by-reviewed-source-selection-module"
+    },
+    {
+      "id": "SELF-009",
+      "finding": "The current 64-group cross-activity review did not record owner/version/member ids, source support, transfer validity, quantity/configuration limits and unsupported claims in the generated groups.",
+      "disposition": "corrected-by-reviewed-mapping-records"
+    },
+    {
+      "id": "SELF-010",
+      "finding": "The 21 current source-trace residuals were described as unresolved even though the authored inventory and qualitative drying contracts provide bounded nonblocking explanations.",
+      "disposition": "corrected-with-explicit-residual-boundary"
     }
   ],
   "postCorrectionInvariants": {
@@ -47,8 +62,10 @@
     "uniqueEvidenceScenarios": 59,
     "legacyScenarioAssignmentsRemaining": 0,
     "historicalAccounting": "894 indexed + 45 generated carrier + 34 cross-catalog = 973",
-    "sourceLevelReconciliationClosure": "current source/static reconciliation recorded; runtime/scientific closure not claimed",
-    "evidencePipeline": "Run B current; supplemental content findings explicitly triaged",
+    "sourceLevelReconciliationClosure": "current source/static reconciliation recorded; 21 justified nonblocking source-trace residuals remain; runtime/scientific closure not claimed",
+    "evidencePipeline": "item2-luna-final3-20260918 current; five core phases and two supplemental phases are recorded; repository content check retains 21 justified nonblocking residuals",
+    "sourceTraceReviewedMappings": "192 groups cover 882 exact owner-local members; explicit source selections replace array-order fallbacks",
+    "sourceTraceResiduals": "4 teacher-configured operational inventory residuals and 17 qualitative paper-drying residuals remain visible without invented source citations",
     "greenChemistryHeatedProductMassRequirement": "none",
     "greenChemistryAtomEconomyBasis": "teacher-assigned report convention",
     "greenChemistryTareWitnesses": "two supported conventions remain separate",

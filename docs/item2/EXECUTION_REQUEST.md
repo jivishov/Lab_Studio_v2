@@ -61,7 +61,7 @@ Do not merge to `main` unless separately requested.
 ## Current execution result
 
 - Discovery runs remain historical: Run A `item2-597c060-run-a`, Run B `item2-f9c9229-run-b`, and Run C `item2-646169f-run-c` are not used as the final identity for this repaired tree.
-- Final run: `item2-luna-final2-20260918`; source commit and source snapshot identity are recorded in its `CURRENT_VERIFICATION_RUN.json`.
-- Core chain: **5/5 passed**; supplemental static verifier passed; repository-content-check exited 1 and retained only 21 explicit source-trace residuals.
-- Complete current diagnostic: 882 grouped source-trace members, 21 residuals, three prior Crystal Violet rows resolved by compiled static routing, 30/30 compiled witnesses, 6,278 node contexts, zero compiled-context findings, and 37 fixed-role plus one not-applicable configuration resolutions.
+- Final run: `item2-luna-final3-20260918`; source commit and source snapshot identity are recorded in its `CURRENT_VERIFICATION_RUN.json`.
+- Core chain: **5/5 passed**; supplemental static verifier passed; repository-content-check exited 1 and retained only 21 justified nonblocking source-trace residuals.
+- Complete current diagnostic: 882 grouped source-trace members, 21 residuals, three prior Crystal Violet rows resolved by compiled static routing, 30 compiled witnesses, 6278 node contexts, 0 compiled-context findings, and 37 fixed-role plus 1 not-applicable configuration resolutions.
 - The final recorder receipt records the source/integrity result and exact command outcomes; the source/static boundary remains explicit and no runtime, scientific, browser, classroom, safety or release acceptance is claimed.

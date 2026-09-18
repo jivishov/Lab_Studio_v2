@@ -2,7 +2,7 @@
   "schemaVersion": 3,
   "branch": "codex/item2-catalog-reconciliation",
   "baseline": "f7c2b863f641090d9abc5c08ee22da72702fdfd6",
-  "mode": "source-level hosted configuration reconciliation; compiled coverage intentionally unrun",
+  "mode": "current source-level and compiled static configuration reconciliation; runtime traversal intentionally unrun",
   "declaredCatalog": {
     "labs": 17,
     "techniques": 42,
@@ -1418,7 +1418,7 @@
   },
   "currentCompiledCoverage": {
     "status": "current-final-static-diagnostic",
-    "runId": "item2-luna-final2-20260918",
+    "runId": "item2-luna-final3-20260918",
     "sourceCommit": "recorded in final CURRENT_VERIFICATION_RUN.json",
     "attemptedWitnessCount": 30,
     "compiledWitnessCount": 30,
@@ -2509,14 +2509,14 @@
       }
     },
     "evidence": {
-      "compiledWitness": "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-luna-final2-20260918/predecessors/01-COMPILED_LAB_WITNESS.json",
-      "contentCheckLog": "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-luna-final2-20260918/logs/repository-content-check.log",
+      "compiledWitness": "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-luna-final3-20260918/predecessors/01-COMPILED_LAB_WITNESS.json",
+      "contentCheckLog": "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-luna-final3-20260918/logs/repository-content-check.log",
       "triage": "docs/item2/FINDING_TRIAGE.json"
     },
     "limitations": [
-      "The 30 compiled witnesses and 6,278 node contexts are static composition evidence, not runtime traversal or scientific acceptance.",
+      "30 compiled witnesses and 6278 node contexts are static composition evidence, not runtime traversal or scientific acceptance.",
       "The 37 fixed-role rows are narrow authored host-role boundaries; generic fixtures and other hosts remain subject to ordinary coverage reporting.",
-      "The 21 unresolved source-trace residuals remain outside provenance closure and are not converted into invented citations."
+      "The 21 source-trace residuals remain visible and are dispositioned as justified nonblocking boundaries; they are not converted into invented citations."
     ]
   },
   "historicalComparison": {

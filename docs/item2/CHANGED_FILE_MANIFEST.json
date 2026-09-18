@@ -2,13 +2,13 @@
   "schemaVersion": 6,
   "branch": "codex/item2-catalog-reconciliation",
   "baseline": "f7c2b863f641090d9abc5c08ee22da72702fdfd6",
-  "documentedHeadBeforeManifestUpdate": "421ac8afdb0ef211f96ed2da42ce215e4e52c4da",
+  "documentedHeadBeforeManifestUpdate": "3cf0e73cd35bcfab7f727ca22234141f85c6741b",
   "selfExcluded": true,
   "selfExclusionReason": "The manifest update itself creates the next commit; its own final Git blob SHA cannot be recursively embedded.",
   "implementation": [
     {
       "path": "docs/architecture/source-trace-registry.json",
-      "blobSha": "d04de1d65752d261c44f490cf4a23cdac9bad964"
+      "blobSha": "84622a64f133f567ffd5085e388e3fb837720c9c"
     },
     {
       "path": "public/techniques/titration-curve-analysis.json",
@@ -16,7 +16,7 @@
     },
     {
       "path": "scripts/__tests__/f07SourceTraceRegistry.test.mjs",
-      "blobSha": "04a6302bda3c129454b12dd53a4404803428b5d2"
+      "blobSha": "dcfef39abd955dddaec1ffe1793a596f46e52fed"
     },
     {
       "path": "scripts/checkContentConsistency.mjs",
@@ -28,11 +28,15 @@
     },
     {
       "path": "scripts/generateItem2SourceTraceGroups.mjs",
-      "blobSha": "b6f3a680825929619cae0a1e1d671664e88267c0"
+      "blobSha": "7c55a1ba99844a6f82e631bd42f28402e2dce3d2"
+    },
+    {
+      "path": "scripts/generatorInputs/item2SourceTraceMappings.mjs",
+      "blobSha": "5ffb0123c6d7d6fce3f163589cfc958f452148f8"
     },
     {
       "path": "scripts/reconcileItem2CurrentRecords.mjs",
-      "blobSha": "b5782fa7c1e15b69d991ad532f122bbd298b1782"
+      "blobSha": "28bb1290afc0879bba6b7a07afa2ccf3eea810b1"
     },
     {
       "path": "scripts/recordItem2FinalCommandSequence.mjs",
@@ -40,7 +44,7 @@
     },
     {
       "path": "src/data/__tests__/compiledWitnessDiagnostics.test.ts",
-      "blobSha": "8467678a32162db3760679204de62b8fd1f22b79"
+      "blobSha": "6f026208e827d7aafc1fe3baa7faeb23335f7b15"
     },
     {
       "path": "src/data/compiledWitnessDiagnostics.ts",
@@ -58,19 +62,19 @@
   "item2Records": [
     {
       "path": "docs/item2/CATALOG_DISPOSITIONS.json",
-      "blobSha": "676982be467cad0b74afb3b1b1313d9b604cdd34"
+      "blobSha": "e9581377fdf2b11e09eba27fdaa46dba0a665d94"
     },
     {
       "path": "docs/item2/CATALOG_DISPOSITIONS.md",
-      "blobSha": "2c3d9377925ba44da0e3e9552faf38d8e5b11a6a"
+      "blobSha": "71b724b31829a1e89b214e329ede3db17debe2b8"
     },
     {
       "path": "docs/item2/CONFIGURATION_COVERAGE.json",
-      "blobSha": "a2df5c1cefa162e2d2e1e4d2c2c3f1650ee428c6"
+      "blobSha": "7072e6546f5d5f732c0680629ebbb90d22ed0c62"
     },
     {
       "path": "docs/item2/CRITICAL_REVIEW.md",
-      "blobSha": "fba7938c81e7735dd6ad0fc44dc73e8acf5b6588"
+      "blobSha": "96c4e728d8047ee4a154cd7257e8bbef246fca67"
     },
     {
       "path": "docs/item2/EVIDENCE_DEPENDENCY_RESTORATION.json",
@@ -78,23 +82,23 @@
     },
     {
       "path": "docs/item2/EXECUTION_REQUEST.md",
-      "blobSha": "3c7ff916aee54ec18a7bb5973323ad03f9a3b4a4"
+      "blobSha": "833f41dc70f5ba908c5e8a9de6cc9e5557ff3362"
     },
     {
       "path": "docs/item2/FINDING_TRIAGE.json",
-      "blobSha": "ceb7cc7881427ad9f3a88fe5a506ad4f98766537"
+      "blobSha": "e8a132f8c3140a8d919bef0796252d7f7b378245"
     },
     {
       "path": "docs/item2/ITEM2_REPORT.md",
-      "blobSha": "277ab5507c6ebc0cffece73071893751a30d4a41"
+      "blobSha": "7aa02302b0c759ac350aa7f7694a799d5597a5cf"
     },
     {
       "path": "docs/item2/RUN_LEDGER.json",
-      "blobSha": "a754a3091c70eebc034c7b1aea5df84ce27823ae"
+      "blobSha": "2cbe1d599a6b36fa5504eb1641515eedd904f1ea"
     },
     {
       "path": "docs/item2/SCENARIO_AUDIT.json",
-      "blobSha": "4998b95ff3fe282942a9fa101372c5c3ed422beb"
+      "blobSha": "4128119372874ad36cc20dc269a2ff58fbb54d7a"
     },
     {
       "path": "docs/item2/SCENARIO_MATRIX.md",
@@ -102,7 +106,7 @@
     },
     {
       "path": "docs/item2/SELF_REVIEW_AUDIT.json",
-      "blobSha": "584ea1d8b5f261ad8baea0baa21335423964b0f9"
+      "blobSha": "78c64d3c13a00590796077e02dee86710e1021fc"
     }
   ],
   "scenarioAudit": {
@@ -127,7 +131,7 @@
     "extras": 0,
     "githubBranchPresence": "absent; local verified artifact only"
   },
-  "evidenceStatus": "item2-luna-final2-20260918 final current source/static evidence; no runtime/scientific/browser/release claim",
+  "evidenceStatus": "item2-luna-final3-20260918 final current source/static evidence; no runtime/scientific/browser/release claim",
   "targetedScenarioCorrections": {
     "greenChemistry": {
       "heatedProductRecovery": "qualitative provenance only; no recovered-product mass measurement",
@@ -142,7 +146,7 @@
     }
   },
   "currentEvidence": {
-    "runId": "item2-luna-final2-20260918",
+    "runId": "item2-luna-final3-20260918",
     "sourceCommit": "recorded in final CURRENT_VERIFICATION_RUN.json",
     "corePhasesPassed": 5,
     "supplementalPhasesRecorded": 2,

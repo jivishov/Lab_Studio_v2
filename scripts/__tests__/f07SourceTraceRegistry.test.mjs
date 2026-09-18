@@ -82,6 +82,19 @@ describe("F07 Phase 2 source-row coverage", () => {
       expect(group.actionBasis, group.id).toEqual(expect.any(String));
       expect(group.mappingRationale, group.id).toEqual(expect.any(String));
       expect(group.sourceFile, group.id).toEqual(expect.any(String));
+      expect(group.reviewedMapping, group.id).toMatchObject({
+        schema: "lab-studio/source-trace-reviewed-mapping@1",
+        reviewStatus: "reviewed-static-source-mapping",
+        owner,
+        ownerVersion: expect.any(String),
+        atomId: group.atomId,
+        memberActionIds: group.actionIds,
+        sourceSupports: expect.any(String),
+        transferValidity: expect.any(String),
+        quantityAndConfigurationLimits: expect.any(String),
+        notSupported: expect.any(String),
+        decisionId: expect.any(String),
+      });
       for (const actionId of group.actionIds) {
         const key = `${owner}#${actionId}`;
         expect(groupedMembers.has(key), key).toBe(false);
@@ -336,6 +349,35 @@ describe("F07 Phase 2 source-row coverage", () => {
     }
     const dryAtom = atomRegistry.atoms.find((atom) => atom.id === "atom.observe.dry-developed-chromatography-paper");
     expect(dryAtom.sourceExamples).toEqual([]);
+  });
+
+  it("uses explicit reviewed locators for previously ambiguous titration mappings", () => {
+    const redoxReview = traceGroups.find((group) =>
+      group.ownerId === "redox-titration" && group.atomId === "atom.observe.titration-review-standardization",
+    );
+    expect(redoxReview).toMatchObject({
+      sourceFile: "hydrogen-peroxide-redox-titration_2026-07-27.md",
+      sourceTable: "phase",
+      step: "ST-06",
+      basis: "M/C",
+      reviewedMapping: expect.objectContaining({
+        decisionId: "item2-redox-standardization-review-v2",
+        sourceScope: "owner-source-family",
+      }),
+    });
+
+    const formalCurveDecision = traceGroups.find((group) =>
+      group.ownerId === "ph-volume-formal-titration-trial" && group.atomId === "atom.observe.titration-decide-curve",
+    );
+    expect(formalCurveDecision).toMatchObject({
+      sourceFile: "acid-base-titration-curves_2026-07-27.md",
+      sourceTable: "phase",
+      step: "T-10",
+      basis: "M/C",
+      reviewedMapping: expect.objectContaining({
+        decisionId: "item2-titration-curve-decision-v2",
+      }),
+    });
   });
 
   it("keeps Quick E-12 direct evidence narrow and records Green apparatus inference", () => {

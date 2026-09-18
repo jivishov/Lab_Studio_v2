@@ -918,7 +918,7 @@ describe("compiled witness diagnostics", () => {
     expect(fixedRole.coverage.fixedRoleConfigurations).toEqual(expect.arrayContaining([
       expect.objectContaining({
         status: "fixed-role-configuration",
-        detail: expect.stringContaining("blind.sampleMode is authored as the fixed host role value"),
+        detail: expect.stringContaining("probe.sampleMode is authored as the fixed host role value"),
       }),
     ]));
     expect(generic.coverage.unrepresentedConfigurations).toEqual(expect.arrayContaining([

@@ -3,7 +3,7 @@
   "scope": "item-2 complete indexed Lab Studio catalog",
   "branch": "codex/item2-catalog-reconciliation",
   "mainBaseline": "f7c2b863f641090d9abc5c08ee22da72702fdfd6",
-  "evidenceMode": "current source/static evidence recorded in the final item-2 run; 21 explicit source-trace residuals remain; runtime/scientific/browser/release acceptance not claimed",
+  "evidenceMode": "current source/static evidence recorded in the final item-2 run; 21 explicit source-trace residuals remain with justified nonblocking dispositions; runtime/scientific/browser/release acceptance not claimed",
   "counts": {
     "labs": 17,
     "techniques": 42,
@@ -3539,7 +3539,7 @@
   ],
   "status": {
     "sourceInventoryAndStaticRationale": "complete",
-    "sourceLevelReconciliationClosure": "current-static-with-21-explicit-source-trace-residuals",
+    "sourceLevelReconciliationClosure": "current-static-with-21-justified-source-trace-residuals",
     "currentEvidenceStatus": "current final static evidence recorded; runtime/scientific/browser/release acceptance not claimed",
     "fullItem2Status": "complete-for-authorized-source-current-evidence-scope"
   },
@@ -3592,12 +3592,12 @@
     "quickAcheResetSemantics": "retry/recalculation may reuse still-valid measurements; upstream physical recovery reacquires invalidated measurements; full activity Reset clears measurements and calculations"
   },
   "currentEvidence": {
-    "runId": "item2-luna-final2-20260918",
+    "runId": "item2-luna-final3-20260918",
     "sourceCommit": "recorded in final CURRENT_VERIFICATION_RUN.json",
     "corePhases": "5/5 passed",
     "supplementalPhases": {
       "cycle12StaticVerifier": "passed",
-      "repositoryContentCheck": "exit 1; 21 explicit source-trace residuals"
+      "repositoryContentCheck": "exit 1; 21 explicit source-trace residuals with justified nonblocking dispositions"
     },
     "recorderCheck": "exit 1; source current; integrity passed; core complete; supplemental-failures reports repository-content-check",
     "contentCheck": {
@@ -3605,6 +3605,7 @@
       "evaluatedSourceTraceFindings": 903,
       "groupedSourceTraceMembers": 882,
       "unresolvedSourceTraceResiduals": 21,
+      "justifiedNonblockingSourceTraceResiduals": 21,
       "resolvedPriorCrystalVioletRows": 3,
       "compiledContextFindings": 0,
       "formerConfigurationGapsResolved": 38,
