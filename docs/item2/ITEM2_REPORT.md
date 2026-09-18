@@ -65,3 +65,32 @@ Not run:
 - typecheck/build/browser/runtime/E2E/broad lint.
 
 The optional evidence phase still requires a separate user authorization.
+
+
+## Final external-review scenario correction
+
+The remaining activity-scenario review finding is corrected in `CATALOG_DISPOSITIONS.json` schema version 4.
+
+- 59/59 indexed activities have activity-specific recovery/reset cases.
+- 59/59 indexed activities have activity-specific evidence cases.
+- Recovery scenario strings are 59/59 unique.
+- Evidence scenario strings are 59/59 unique.
+- The older generic `scenarioAssignments` field is removed from all 59 entries.
+- `titration-curve-analysis` no longer treats omitted `analysisMode` as a refusal. The approved `recorded-evidence-only` default is recognized; its refusal/recovery case instead requires missing `curve-analyte-volume` or `equivalence-volume` evidence to block `calculate-curve-molarity`.
+
+These are scenario specifications only. They remain unexecuted until the separately authorized evidence phase.
+
+## Independent restored-ZIP verification
+
+The locally restored planning ZIP was independently reopened and checked directly against `BUNDLE_MANIFEST.json`:
+
+- ZIP SHA-256: `8b5d1b207019eafd2100e520105537b37531b9aa405fe36fe168e3eec00e0968`
+- ZIP size: 1,398,845 bytes
+- repository planning members: 46 expected / 46 found
+- uncompressed planning bytes: 39,500,058 expected / 39,500,058 found
+- SHA-256 matches: 46
+- missing: 0
+- mismatches: 0
+- extras: 0
+
+The files remain absent from the GitHub branch; this verifies the local restoration artifact only.

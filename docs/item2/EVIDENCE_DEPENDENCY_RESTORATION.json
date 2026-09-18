@@ -14,7 +14,7 @@
   "effect": "The dependency set is locally restored and hash-verified. The authorized evidence scripts still require a full repository checkout/workspace containing both current branch source and these planning paths; branch evidence must not claim restoration until those files are actually present in that execution workspace.",
   "requiredNextCapability": "A writable checkout or GitHub upload interface that can copy the 46 manifest-listed files directly from the attached package, verify their SHA-256 hashes, and commit them on this branch.",
   "localRestoration": {
-    "status": "complete",
+    "status": "independently-reverified",
     "workspace": "/mnt/data/item2_local_restore",
     "files": 46,
     "bytes": 39500058,
@@ -25,5 +25,21 @@
   "gitBranchRestoration": {
     "status": "pending-tool-capability",
     "reason": "The GitHub connector available in this web session has no local-file/source_file_ref upload mutation. The exact local bytes are restored and verified, but cannot be copied byte-for-byte into GitHub without an upload-capable repository workspace."
+  },
+  "independentZipVerification": {
+    "verifiedAt": "2026-09-18",
+    "zipPath": "/mnt/data/item2_local_restored_planning.zip",
+    "zipBytes": 1398845,
+    "zipSha256": "8b5d1b207019eafd2100e520105537b37531b9aa405fe36fe168e3eec00e0968",
+    "manifest": "/mnt/data/item2_review/BUNDLE_MANIFEST.json",
+    "repositoryEntriesExpected": 46,
+    "repositoryEntriesFound": 46,
+    "uncompressedBytesExpected": 39500058,
+    "uncompressedBytesFound": 39500058,
+    "hashMatches": 46,
+    "missing": 0,
+    "mismatches": 0,
+    "extras": 0,
+    "method": "Opened the ZIP independently, matched its exact repository-relative member set against BUNDLE_MANIFEST.json repositoryPath entries, and recomputed SHA-256 plus byte length for every member."
   }
 }

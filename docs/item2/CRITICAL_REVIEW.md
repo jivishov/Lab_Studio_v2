@@ -47,3 +47,18 @@ The 46 dependencies are now restored locally and re-hashed: 39,500,058 bytes, 46
 ## Remaining acceptance boundary
 
 Item 2 remains incomplete. Fresh compiler witness, reconciliation, overlay checks, static verifier and complete content diagnostics are still required after separate authorization and repository/workspace restoration.
+
+
+## Final scenario review correction
+
+The remaining external-review finding is confirmed and corrected.
+
+The previous revision made scientific focus and ordinary cases activity-specific, but recovery/evidence cases still reused common sentence templates and the older generic `scenarioAssignments` remained. This was insufficient.
+
+The catalog now has:
+- 59 distinct recovery/reset cases;
+- 59 distinct evidence cases;
+- zero legacy `scenarioAssignments` properties;
+- a corrected `titration-curve-analysis` refusal case that recognizes the defaulted `analysisMode=recorded-evidence-only` and instead tests absence of the recorded analyte aliquot/equivalence measurements.
+
+`SCENARIO_AUDIT.json` records these invariants. Scenario closure is source-specification closure only; it is not execution evidence.

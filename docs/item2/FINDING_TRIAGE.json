@@ -144,6 +144,12 @@
       "finding": "Paper chromatography retained requiredSlotsKnown=false/not-assessed.",
       "disposition": "corrected",
       "evidence": "CONFIGURATION_COVERAGE now names all seven required fields and marks requiredSlotsKnown=true."
+    },
+    {
+      "id": "REV-004",
+      "finding": "Recovery/evidence scenarios remained templated across all 59 activities; legacy scenarioAssignments remained; titration-curve-analysis incorrectly expected refusal when defaulted analysisMode was omitted.",
+      "disposition": "corrected",
+      "evidence": "CATALOG_DISPOSITIONS schemaVersion 4 and SCENARIO_AUDIT.json: 59 unique recovery cases, 59 unique evidence cases, zero legacy scenarioAssignments, and titration-curve-analysis refuses on missing recorded aliquot/equivalence evidence instead of omitted defaulted analysisMode."
     }
   ]
 }

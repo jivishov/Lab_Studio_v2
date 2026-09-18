@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "branch": "codex/item2-catalog-reconciliation",
+  "catalogActivities": 59,
+  "checks": {
+    "activitySpecificReviewPresent": 59,
+    "recoveryScenarioPresent": 59,
+    "evidenceScenarioPresent": 59,
+    "uniqueRecoveryScenarios": 59,
+    "uniqueEvidenceScenarios": 59,
+    "legacyScenarioAssignmentsRemaining": 0,
+    "titrationCurveAnalysisDefaultRecognized": true,
+    "titrationCurveAnalysisMissingMeasurementRefusal": true
+  },
+  "titrationCurveAnalysis": {
+    "configurationOrRefusalCase": "Do not expect refusal when `analysisMode` is omitted: its approved `recorded-evidence-only` default is applied. Instead attempt `calculate-curve-molarity` without recorded `curve-analyte-volume` or `equivalence-volume` and verify the reducer refuses; after both measurements are recorded, the calculation may proceed.",
+    "recoveryOrResetCase": "If molarity calculation is attempted without recorded `curve-analyte-volume` or `equivalence-volume`, return to measurement/curve analysis to record those values and resubmit; reset must clear the previous curve-molarity calculation. Omitting `analysisMode` alone is not a refusal because its approved `recorded-evidence-only` default is applied.",
+    "evidenceCase": "Require recorded `curve-analyte-volume`, initial-pH/equivalence evidence, and `curve-molarity` computed from the recorded aliquot/equivalence plus model titrant/stoichiometry; the defaulted `analysisMode` is configuration, not completion evidence."
+  },
+  "conclusion": "All 59 indexed activities now have distinct recovery and evidence scenarios. The legacy generic scenarioAssignments field is absent. These are source-review scenario specifications, not executed evidence."
+}
