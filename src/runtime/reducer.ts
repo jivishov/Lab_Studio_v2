@@ -6246,6 +6246,44 @@ const executeAction = (
     const analyteVolumeMeasurement = state.measurements.find(
       (measurement) => measurement.id === String(params.analyteVolumeMeasurementId ?? "acid-aliquot-volume"),
     );
+    const equivalenceVolumeMeasurement = state.measurements.find(
+      (measurement) => measurement.id === String(params.equivalenceVolumeMeasurementId ?? "equivalence-volume"),
+    );
+    const curveAnalysisModelId = stringSetting(params, "titrationModelId");
+    const curveAnalysisModel = curveAnalysisModelId
+      ? findTitrationModel(definition, curveAnalysisModelId)
+      : undefined;
+    if (template === "acidBaseMolarityFromEquivalenceVolume") {
+      if (!analyteVolumeMeasurement || !equivalenceVolumeMeasurement) {
+        return fail(
+          state,
+          "Required curve-analysis evidence is missing.",
+          "Record the analyte aliquot and the equivalence volume identified from the recorded curve before calculating molarity.",
+          nodeId,
+        );
+      }
+      if (!curveAnalysisModel || curveAnalysisModel.type !== "acidBase") {
+        return fail(
+          state,
+          "The acid-base curve model is unavailable.",
+          "Configure the acid-base titration model that supplies titrant concentration and stoichiometry before calculating molarity.",
+          nodeId,
+        );
+      }
+      if (
+        !Number.isFinite(analyteVolumeMeasurement.value) ||
+        analyteVolumeMeasurement.value <= 0 ||
+        !Number.isFinite(equivalenceVolumeMeasurement.value) ||
+        equivalenceVolumeMeasurement.value <= 0
+      ) {
+        return fail(
+          state,
+          "Curve-analysis volumes must be positive finite measurements.",
+          "Recheck the recorded aliquot and equivalence-volume evidence before calculating molarity.",
+          nodeId,
+        );
+      }
+    }
     const initialBuretteMeasurement = state.measurements.find(
       (measurement) => measurement.id === String(params.initialBuretteMeasurementId ?? "burette-initial-volume"),
     );
@@ -6945,6 +6983,16 @@ const executeAction = (
                 titrant: Number(params.stoichiometricRatioTitrant ?? 1),
               },
             )
+          : template === "acidBaseMolarityFromEquivalenceVolume"
+            ? calculateAcidBaseMolarity(
+                Number(curveAnalysisModel?.type === "acidBase" ? curveAnalysisModel.titrantMolarityM : Number.NaN),
+                0,
+                Number(equivalenceVolumeMeasurement?.value ?? Number.NaN),
+                Number(analyteVolumeMeasurement?.value ?? Number.NaN),
+                curveAnalysisModel?.type === "acidBase"
+                  ? curveAnalysisModel.stoichiometricRatio
+                  : { analyte: 1, titrant: 1 },
+              )
           : template === "dilutedConcentration"
             ? calculateDilutedConcentration(stockConcentration, stockVolumeMl, finalVolumeMl)
             : template === "dilutedConcentrationMicromolar"
@@ -6987,7 +7035,7 @@ const executeAction = (
         ? String(params.unit ?? "% H2O2 by mass")
         : template === "permanganateMolarityFromIron"
         ? String(params.unit ?? "M")
-        : template === "acidBaseMolarity"
+        : template === "acidBaseMolarity" || template === "acidBaseMolarityFromEquivalenceVolume"
         ? "M"
         : template === "hardnessMgLAsCaCO3"
           ? "mg/L as CaCO3"
