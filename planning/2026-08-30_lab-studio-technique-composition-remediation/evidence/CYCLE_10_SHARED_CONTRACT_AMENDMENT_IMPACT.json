@@ -1,0 +1,96 @@
+{
+  "schema": "lab-studio/shared-contract-amendment-impact@1",
+  "baselineRevision": 10,
+  "state": "candidate-not-frozen",
+  "request": {
+    "requestId": "cycle-10-ph-volume-route-variants-01",
+    "path": "planning/2026-08-30_lab-studio-technique-composition-remediation/evidence/lane-10/shared-contract-request-01-ph-volume-route-variants.json",
+    "sha256": "7d50accc65e40d7a02bedf6a114bf7a7afa6648867419b4d63d8882064cb47ca"
+  },
+  "predecessor": {
+    "baselineRevision": 9,
+    "manifestPath": "planning/2026-08-30_lab-studio-technique-composition-remediation/evidence/CYCLE_08_PLUS_SHARED_CONTRACT_BASELINE_REVISION_9.json",
+    "manifestSha256": "c7bf84a0593075edcb46c8d2effcfd15e23cffbee39a10b52084b00b048e5df2",
+    "cycle07Commit": "1bfad0c56685baaff40c06cb58edc4b501387d8c",
+    "cycle07InterfaceSha256": "07f49bdd0c1bc5a10e8ebd3a4a19afe32fadc957a0cafecc64e0882ef008b465"
+  },
+  "disposition": {
+    "kind": "route-only-formal-entry-replaces-unowned-carrier-index-entry",
+    "formalTechnique": "ph-volume-formal-titration-trial@1.0.0",
+    "formalPublicPath": "public/techniques/ph-volume-formal-titration-trial.json",
+    "replacedIndexedEntry": "ph-volume-titration-trial",
+    "cycle07CarrierPathRetained": "public/techniques/ph-volume-titration-trial.json",
+    "cycle07Consumers": "The frozen 3.0.1 carrier generator, JSON, action/node identities, and direct generated-family consumers remain unchanged.",
+    "coordinatorRebaselineRequired": true
+  },
+  "catalogAccounting": {
+    "expectedOwnerTechniqueCount": 41,
+    "candidateIndexCount": 42,
+    "candidateOwnedIndexCount": 41,
+    "candidateUnownedIndexCount": 1,
+    "candidateUnownedId": "ph-volume-formal-titration-trial",
+    "newIndexedTechniqueCount": 0,
+    "rationale": "This is a one-for-one replacement of the existing unowned carrier entry, not an addition. No 43rd indexed technique is present."
+  },
+  "formalContextBindings": [
+    {
+      "contextId": "strong-acid-strong-base",
+      "sampleIds": ["acid-known", "base-known"],
+      "sourceModelId": "formal-strong-acid-strong-base-model",
+      "analyte": {"formula": "HCl", "role": "acid", "strength": "strong", "molarityM": 0.1},
+      "titrant": {"formula": "NaOH", "role": "base", "strength": "strong", "molarityM": 0.1}
+    },
+    {
+      "contextId": "weak-acid-strong-base",
+      "sampleIds": ["acid-unknown", "base-known"],
+      "sourceModelId": "formal-weak-acid-strong-base-model",
+      "analyte": {"formula": "CH3COOH", "role": "acid", "strength": "weak", "molarityM": 0.08, "equilibriumConstant": 0.000018},
+      "titrant": {"formula": "NaOH", "role": "base", "strength": "strong", "molarityM": 0.1}
+    },
+    {
+      "contextId": "weak-base-strong-acid",
+      "sampleIds": ["base-unknown", "acid-known"],
+      "sourceModelId": "formal-weak-base-strong-acid-model",
+      "analyte": {"formula": "NH3", "role": "base", "strength": "weak", "molarityM": 0.075, "equilibriumConstant": 0.000018},
+      "titrant": {"formula": "HCl", "role": "acid", "strength": "strong", "molarityM": 0.1}
+    }
+  ],
+  "modelSelectionContract": {
+    "ordinaryActionModelId": "formal-strong-acid-strong-base-model",
+    "formalContextModelIdParameter": "{{config.formalContextModelId}}",
+    "selectionRule": "A composed instance binds formalContextModelId to the sourceModelId matching contextId; the shared runtime then verifies formula, role, strength, molarity, and weak-species equilibrium constant before evidence is accepted.",
+    "indicatorPolicy": "indicator-free-formal",
+    "aliquotRangeMl": [10, 25],
+    "requiredCombinationIds": ["strong-acid-strong-base", "weak-acid-strong-base", "weak-base-strong-acid"]
+  },
+  "affectedFiles": [
+    {"path": "scripts/generateHandWarmerCalorimetry.mjs", "sha256": "2c4f660a305a5ac7570371b774ad3ffb8a14b87b13ccf95a1679c91998de422f", "change": "Composition-aware generator guard preserves the legacy 264-assessment contract and validates local action/node ownership."},
+    {"path": "scripts/generatorInputs/titration/build.mjs", "sha256": "688a23086d34c5fd837f47129a762311de4a284215928bcedb39e86c0109fbd2", "change": "Generator-owned formal candidate with three exact acid/base models, explicit model selection, indicator-free curve evidence, a connected preparation graph, neutral variant-safe labels, and canonical equipment roles."},
+    {"path": "scripts/migrateCycle07Titration.mjs", "sha256": "8e4788442624268d49bcaf6907c8b7c0f29a2fbd1256da9ae4fa1ab4300970ef", "change": "Generated formal route entry replaces the unowned carrier index entry without appending a new entry."},
+    {"path": "src/runtime/titrationProcedure.ts", "sha256": "48b10a599a29e73594321057620f35293ce72a2a2b8347a90014d0e140f2db68", "change": "Formal model binding, indicator-free recording, bounded additions, curve stability review, and rejected-attempt recovery are shared runtime operations."},
+    {"path": "public/techniques/index.json", "sha256": "9e7b03a9230f9795568ed9dd8df318cbe202fba56292dbfa1000b800fae95e44", "change": "One-for-one replacement of ph-volume-titration-trial carrier entry with the formal route-only entry; count remains 42."},
+    {"path": "public/techniques/ph-volume-formal-titration-trial.json", "sha256": "99a67957eac5feed466d7a3795106a87768a1d429b87a5b6e53beef169019fad", "change": "Generated candidate public definition validates with three models, canonical roles, a connected preparation graph, reachable ports, variant-safe labels, and four evidence producers."}
+  ],
+  "unchangedReferences": [
+    {"path": "public/techniques/ph-volume-titration-trial.json", "sha256": "e60dde10aebe7b4c68add71a032014d6d35df49c5df6139977bad80d78f1a190"},
+    {"path": "public/labs/acid-base-titration-curves-config.json", "sha256": "f3c3ea8f9fb63baf25ee6198f1bd9ec03a9e9755ce752c1b8442d980c269e8ea", "requiredCombinationIds": ["strong-acid-strong-base", "weak-acid-strong-base", "weak-base-strong-acid"]}
+  ],
+  "checks": {
+    "nodeSyntax": "passed: node --check on hand-warmer, titration builder, and migration scripts",
+    "typecheck": "passed: npm run typecheck -- --pretty false",
+    "formalAndCarrierValidation": "passed: source loader validation for formal candidate and frozen 3.0.1 carrier",
+    "catalogCountAndModelBinding": "passed: index=42, formal route present, carrier route absent, three config combinations and exact models verified",
+    "compiledModelSelection": "passed: in-memory composition compile bound each of the three required contextIds to its exact formalContextModelId",
+    "cycle07StaticVerifier": "passed: node --no-warnings --experimental-loader ./scripts/tsCompositionLoader.mjs scripts/checkCycle07Titration.mjs",
+    "diffWhitespace": "passed: git diff --check"
+  },
+  "unrun": [
+    "Vitest and detailed tests",
+    "full build and browser/E2E or WebMCP checks",
+    "mobile, accessibility, performance, deployment, release, and physical validation"
+  ],
+  "remainingBlockers": [
+    "Revision 10 remains a candidate until the coordinator reissues the shared baseline and Cycle 10 interface hashes.",
+    "The formal route is indexed as a one-for-one replacement for the carrier, but the central Cycle 10 lab route/configuration acceptance is outside this lane and was not claimed."
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "schema": "lab-studio/worktree-ref-baseline-manifest@1",
+  "baselineRevision": 9,
+  "state": "reviewed-frozen",
+  "reviewedAt": "2026-09-06T14:36:03.7256664-05:00",
+  "transportMode": "worktree-ref",
+  "repositoryScope": "Lab_studio subtree in the Projects parent repository",
+  "source": {
+    "branch": "codex/Lab_Studio",
+    "commit": "1bfad0c56685baaff40c06cb58edc4b501387d8c",
+    "labStudioTree": "3c8539993e16a1c31cf214fe07b6b6c408c3ec3c",
+    "trackedFileCount": 1481,
+    "gitTreeListingSha256": "a656bd064f8333c91a82011bf3af6444e9cbab2aafba0b5eb122d0c8969e7ee5"
+  },
+  "predecessor": {
+    "baselineRevision": 8,
+    "state": "historical-predecessor",
+    "manifestPath": "planning/2026-08-30_lab-studio-technique-composition-remediation/evidence/CYCLE_08_SHARED_CONTRACT_BASELINE_REVISION_8.json",
+    "manifestSha256": "09b3e1acbb63dce5633c26e574d2845adcae4065967ab0b997fd810f930a3bc7",
+    "fileCount": 1397,
+    "aggregateSha256": "3fa1f0ab4fb61215542f397e675c3028ae811f17cf6a692aaf4e253f9c805e8b"
+  },
+  "cycle07Acceptance": {
+    "implementationCommit": "b36371458dc30872053af51ca499c21bc5541b03",
+    "reviewThreadId": "01a073d7-6520-7b42-9fbb-85fa30641716",
+    "reviewSeparateFromImplementation": true,
+    "reviewModel": "gpt-6-astra",
+    "reviewReasoningEffort": "medium",
+    "reviewedCommit": "b36371458dc30872053af51ca499c21bc5541b03",
+    "reviewPath": "planning/2026-08-30_lab-studio-technique-composition-remediation/evidence/lane-07/ASTRA_MEDIUM_CRITICAL_FIDELITY_REVIEW.md",
+    "reviewSha256": "27c0a71ae50cfba06ff221201fd8be0444d80e64aa728d81cfe5eb98d2c57ebc",
+    "refinementPath": "planning/2026-08-30_lab-studio-technique-composition-remediation/evidence/lane-07/REVIEW_REFINEMENT_HANDOFF.md",
+    "refinementSha256": "d9d84f4dc4a6d621f71a61199ef1bccf2b38003d6dc6b571c4facd6c59d126c4",
+    "refinementVersion": "3.0.1",
+    "authoritativeCommit": "1bfad0c56685baaff40c06cb58edc4b501387d8c",
+    "interfacePath": "planning/2026-08-30_lab-studio-technique-composition-remediation/evidence/lane-07/cycle-10-interface.json",
+    "interfaceSha256": "07f49bdd0c1bc5a10e8ebd3a4a19afe32fadc957a0cafecc64e0882ef008b465",
+    "disposition": "accepted-source-static-after-separate-review-and-bounded-refinement"
+  },
+  "contractDependencies": {
+    "compilerContractVersion": "1.6",
+    "typesSha256": "3859c2b640f01d369f3852c58a44d196e13620dab4bb9b469c922a1928bcd3df",
+    "validationSha256": "24900266a55355923d4c819db33bbeca427e2e3bf84f18fd5728b86b6967c8b7",
+    "atomRegistrySha256": "2baf8ee05c0994c33cb217f94cf0cce6ede06d6146cab122160ac39d9cba0132",
+    "equipmentRoleRegistrySha256": "a799062d60ccd00ff7501a68045460a5cfa03baf898b34d4951091c27f7389fc",
+    "compositionCompilerSha256": "ed44d534b5959090743f315a9a4a400a3970b7ec702dbe072bad28c422e89ed7",
+    "contentCheckerSha256": "00a47138112577bb9fd19d465b3805b42c1afe4136bc8615cf4032ad62901918",
+    "apGeneratorSha256": "3e64dc6a73812446bd5253ca16dc4c5742d6a7888240596a219c16e871412f82",
+    "simulatorGeneratorSha256": "50fcf3ace2844978ce399aaca6a0d2589f26330f43e746460d1afd755519ce49",
+    "handWarmerGeneratorSha256": "832066909b7305b5e0a290170b6c18a6e1ad4a9adc360289b8dad7fc6a168ca3",
+    "sourceTraceRegistrySha256": "f2297d2eb0c15382306bd0a645ba4cc2f4330855349dd4ddc686737384494a48",
+    "techniqueAtomicityAuditSha256": "af8f9e0ae6d5d2375644ca4a2a0e6a39ad5f683470958bcbfc87483cafe206dd",
+    "labCompositionAuditSha256": "7eadc66bf4005a109758acac04a1ee2c9dc86fb1a8bb40c1bcc024112fc143bd"
+  },
+  "eligibleParallelCycles": [
+    "08",
+    "09",
+    "10",
+    "11"
+  ],
+  "cycle10Lineage": {
+    "requiredCycle07Commit": "1bfad0c56685baaff40c06cb58edc4b501387d8c",
+    "requiredInterfaceSha256": "07f49bdd0c1bc5a10e8ebd3a4a19afe32fadc957a0cafecc64e0882ef008b465"
+  },
+  "parallelOwnership": {
+    "laneOwnedFilesOnly": true,
+    "centralLedgerEditsForbidden": true,
+    "sharedContractEditsForbidden": true,
+    "sharedRequestsRequireCoordinatorDisposition": true,
+    "separateReviewThreadRequired": true
+  },
+  "excludedState": [
+    "sibling-project files",
+    "untracked sibling folders",
+    "node_modules and build caches",
+    "real environment or credential files",
+    "runtime-only attachments and provider handles"
+  ],
+  "validationBoundary": "Source review and allowed basic static checks only. No detailed tests, full suites, build, browser/E2E, mobile, deployment, publication, or physical validation."
+}

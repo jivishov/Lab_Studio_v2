@@ -1,0 +1,1487 @@
+{
+  "schema": "lab-studio/route-control-map@1",
+  "lane": "11",
+  "baselineRevision": 9,
+  "baselineManifestSha256": "c7bf84a0593075edcb46c8d2effcfd15e23cffbee39a10b52084b00b048e5df2",
+  "baselineAggregateSha256": "a656bd064f8333c91a82011bf3af6444e9cbab2aafba0b5eb122d0c8969e7ee5",
+  "owners": [
+    "public/labs/green-chemistry-mixture-purification.json",
+    "public/techniques/thermal-decomposition-mass-loss.json",
+    "scripts/generatorInputs/simulator/thermalDecompositionMassLoss.mjs",
+    "scripts/checkCycle11GreenChemistryRoute.mjs",
+    "src/investigations/purifyMixtureGreenChemistry/PurifyMixtureGreenChemistryPlayer.tsx",
+    "src/investigations/purifyMixtureGreenChemistry/configuredComposition.ts",
+    "src/investigations/purifyMixtureGreenChemistry/model.ts",
+    "src/investigations/purifyMixtureGreenChemistry/routeAdapter.ts"
+  ],
+  "route": {
+    "techniqueId": "thermal-decomposition-mass-loss",
+    "techniqueVersion": "1.1.0",
+    "instanceId": "thermal-decomposition",
+    "expectedNodeCount": 32,
+    "expectedEdgeCount": 31,
+    "expectedActionCount": 32,
+    "expectedTechniqueNodePrefix": "thermal-decomposition--",
+    "expectedTechniqueEvidencePrefix": "thermal-decomposition--",
+    "labOrchestrationInstanceId": "lab-orchestration",
+    "labOwnedActionIds": [
+      "review-assigned-green-chemistry-report",
+      "calculate-assigned-report-atom-economy",
+      "complete-green-chemistry-peer-review"
+    ],
+    "witnesses": [
+      "teacher-approved-route",
+      "approval-locked-static-witness"
+    ],
+    "witnessDisposition": "Neither witness carries an approval or configuration branch predicate, so both compile the same 32 nodes. Approval gates execution in the route adapter and the UI projection, not in the compiled node set."
+  },
+  "configurationDisposition": {
+    "publicLabBinding": {
+      "sampleMassG": 0,
+      "warmDurationMin": 0,
+      "heatingDurationMin": 0,
+      "heatingIntensity": "unconfigured-teacher-choice",
+      "constantMassToleranceG": 0,
+      "maximumHeatCycles": 0,
+      "coolingEndpointC": 0,
+      "coolingSurface": "unconfigured-teacher-choice",
+      "tareConvention": "record-crucible-plus-lid",
+      "minimumReplicates": 0
+    },
+    "placeholderQuantityValue": 0,
+    "placeholderTextValue": "unconfigured-teacher-choice",
+    "executableConfigurationSource": "src/investigations/purifyMixtureGreenChemistry/configuredComposition.ts compiles the owned public source with the teacher-approved configuration bound to the technique instance.",
+    "adapterRuleSource": "greenChemistryRulesFromCompiled reads sampleMassG, warmDurationMin, heatingDurationMin, heatingIntensity, constantMassToleranceG, maximumHeatCycles, coolingEndpointC, coolingSurface and minimumReplicates back out of the compiled action parameters.",
+    "noAuthoredQuantity": true,
+    "sharedRequestForCycle12": "Register a green-chemistry setup in src/data/labSetup.ts so the public lab can carry an empty configuration like hard-water-analysis, quick-ache-relief-separation and paper-chromatography."
+  },
+  "controls": [
+    {
+      "controlId": "reset-investigation",
+      "label": "Reset investigation",
+      "surface": "reset",
+      "handler": "routeAdapter.reset",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "routeAdapter.reset"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "plan-rationale",
+      "label": "Selective-heating rationale",
+      "surface": "inquiry",
+      "handler": "plan.rationale",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "plan.rationale"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "plan-sample-mass",
+      "label": "Proposed sample mass (g)",
+      "surface": "inquiry",
+      "handler": "plan.sampleMassG",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "plan.sampleMassG"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "plan-heating-intensity",
+      "label": "Heating intensity",
+      "surface": "inquiry",
+      "handler": "plan.heatingIntensity",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "plan.heatingIntensity"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "plan-heating-duration",
+      "label": "Heating time per cycle (min)",
+      "surface": "inquiry",
+      "handler": "plan.heatingDurationMin",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "plan.heatingDurationMin"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "plan-constant-mass-rule",
+      "label": "Proposed constant-mass rule",
+      "surface": "inquiry",
+      "handler": "plan.constantMassRule",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "plan.constantMassRule"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "plan-replicates",
+      "label": "Replicates",
+      "surface": "inquiry",
+      "handler": "plan.replicates",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "plan.replicates"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "plan-apparatus-observations",
+      "label": "Apparatus, observations, and evidence",
+      "surface": "inquiry",
+      "handler": "plan.apparatusAndObservations",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "plan.apparatusAndObservations"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "plan-calculations",
+      "label": "Calculation approach",
+      "surface": "inquiry",
+      "handler": "plan.calculations",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "plan.calculations"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "plan-uncertainty",
+      "label": "Uncertainty plan",
+      "surface": "inquiry",
+      "handler": "plan.uncertainty",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "plan.uncertainty"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "plan-safety",
+      "label": "Safety precautions",
+      "surface": "inquiry",
+      "handler": "plan.safety",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "plan.safety"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "plan-recovery",
+      "label": "Recovery plan",
+      "surface": "inquiry",
+      "handler": "plan.recovery",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "plan.recovery"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "config-constant-mass-tolerance",
+      "label": "Constant-mass tolerance (g)",
+      "surface": "teacher-configuration",
+      "handler": "configuration.constantMassToleranceG",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "configuration.constantMassToleranceG"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "config-maximum-heat-cycles",
+      "label": "Maximum heat cycles",
+      "surface": "teacher-configuration",
+      "handler": "configuration.maximumHeatCycles",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "configuration.maximumHeatCycles"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "config-warm-duration",
+      "label": "Approved gentle warm-up duration (min)",
+      "surface": "teacher-configuration",
+      "handler": "configuration.warmDurationMin",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "configuration.warmDurationMin"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "config-heating-duration",
+      "label": "Approved cycle duration (min)",
+      "surface": "teacher-configuration",
+      "handler": "configuration.heatingDurationMin",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "configuration.heatingDurationMin"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "config-cooling-endpoint",
+      "label": "Teacher-approved cool endpoint (°C)",
+      "surface": "teacher-configuration",
+      "handler": "configuration.coolingEndpointC",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "configuration.coolingEndpointC"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "config-cooling-surface",
+      "label": "Approved cooling location",
+      "surface": "teacher-configuration",
+      "handler": "configuration.coolingSurface",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "configuration.coolingSurface"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "config-ppe",
+      "label": "Baseline PPE / local safety policy",
+      "surface": "teacher-configuration",
+      "handler": "configuration.ppeRequirements",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "configuration.ppeRequirements"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "config-tare-convention",
+      "label": "Tare convention",
+      "surface": "teacher-configuration",
+      "handler": "configuration.tareConvention",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "configuration.tareConvention"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "config-minimum-replicates",
+      "label": "Minimum replicates",
+      "surface": "teacher-configuration",
+      "handler": "configuration.minimumReplicates",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "configuration.minimumReplicates"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "config-percentage-tolerance",
+      "label": "Percentage tolerance (percentage points)",
+      "surface": "teacher-configuration",
+      "handler": "configuration.acceptableCompositionUncertaintyPercent",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "configuration.acceptableCompositionUncertaintyPercent"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "config-calculation-tolerance",
+      "label": "Mass-calculation tolerance (g)",
+      "surface": "teacher-configuration",
+      "handler": "configuration.calculationToleranceG",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "configuration.calculationToleranceG"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "config-report-assignment",
+      "label": "Assigned peer report",
+      "surface": "teacher-configuration",
+      "handler": "configuration.reportAssignment",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "configuration.reportAssignment"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "report-text",
+      "label": "Assigned report content",
+      "surface": "teacher-report",
+      "handler": "assignedReport.text",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "assignedReport.text"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "report-desired-product",
+      "label": "Desired product convention",
+      "surface": "teacher-report",
+      "handler": "assignedReport.desiredProduct",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "assignedReport.desiredProduct"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "report-desired-product-mass",
+      "label": "Desired-product stoichiometric mass contribution (g)",
+      "surface": "teacher-report",
+      "handler": "assignedReport.desiredProductStoichiometricMassG",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "assignedReport.desiredProductStoichiometricMassG"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "report-reactant-mass",
+      "label": "Total-reactant stoichiometric mass contribution (g)",
+      "surface": "teacher-report",
+      "handler": "assignedReport.totalReactantStoichiometricMassG",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "assignedReport.totalReactantStoichiometricMassG"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "config-reheat-shared-product",
+      "label": "Teacher manages post-session reheating",
+      "surface": "teacher-configuration",
+      "handler": "configuration.reheatSharedProductAfterSession",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "configuration.reheatSharedProductAfterSession"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "approve-plan",
+      "label": "Teacher approve and unlock execution",
+      "surface": "approval",
+      "handler": "executeRouteSequence",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "approve-thermal-decomposition-plan"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--approve-thermal-decomposition-plan-node"
+        ],
+        "evidenceOutputIds": [
+          "thermal-decomposition--approval"
+        ]
+      },
+      "approval": "teacher-approved-plan",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "balance-reading-input",
+      "label": "Observed balance display (g)",
+      "surface": "measurement-input",
+      "handler": "studentMeasurement.valueG",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "read-empty-crucible",
+          "weigh-initial-crucible",
+          "weigh-preliminary-final-mass",
+          "weigh-final-crucible"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--read-empty-crucible-node",
+          "thermal-decomposition--weigh-initial-crucible-node",
+          "thermal-decomposition--weigh-preliminary-final-mass-node",
+          "thermal-decomposition--weigh-final-crucible-node"
+        ],
+        "evidenceOutputIds": [
+          "thermal-decomposition--empty-mass",
+          "thermal-decomposition--loaded-mass",
+          "thermal-decomposition--cycle-mass",
+          "thermal-decomposition--final-mass"
+        ]
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "read-empty-balance-a",
+      "label": "Read empty on Balance A",
+      "surface": "procedure",
+      "handler": "readEmptyMass(balance-a)",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "place-balance",
+          "place-empty-crucible",
+          "read-empty-crucible"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--place-balance-node",
+          "thermal-decomposition--place-empty-crucible-node",
+          "thermal-decomposition--read-empty-crucible-node"
+        ],
+        "evidenceOutputIds": [
+          "thermal-decomposition--empty-mass"
+        ]
+      },
+      "approval": "teacher-approved-plan",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "read-empty-balance-b",
+      "label": "Read empty on Balance B",
+      "surface": "procedure",
+      "handler": "readEmptyMass(balance-b)",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "place-balance",
+          "place-empty-crucible",
+          "read-empty-crucible"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--place-balance-node",
+          "thermal-decomposition--place-empty-crucible-node",
+          "thermal-decomposition--read-empty-crucible-node"
+        ],
+        "evidenceOutputIds": [
+          "thermal-decomposition--empty-mass"
+        ]
+      },
+      "approval": "teacher-approved-plan",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "load-sample",
+      "label": "Load approved carbonate-mixture portion",
+      "surface": "procedure",
+      "handler": "loadSample",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "add-carbonate-sample"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--add-carbonate-sample-node"
+        ],
+        "evidenceOutputIds": []
+      },
+      "approval": "teacher-approved-plan",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "read-loaded-balance-a",
+      "label": "Read loaded on Balance A",
+      "surface": "procedure",
+      "handler": "readLoadedMass(balance-a)",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "weigh-initial-crucible"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--weigh-initial-crucible-node"
+        ],
+        "evidenceOutputIds": [
+          "thermal-decomposition--loaded-mass"
+        ]
+      },
+      "approval": "teacher-approved-plan",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "read-loaded-balance-b",
+      "label": "Read loaded on Balance B",
+      "surface": "procedure",
+      "handler": "readLoadedMass(balance-b)",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "weigh-initial-crucible"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--weigh-initial-crucible-node"
+        ],
+        "evidenceOutputIds": [
+          "thermal-decomposition--loaded-mass"
+        ]
+      },
+      "approval": "teacher-approved-plan",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "record-displayed-reading",
+      "label": "Record displayed reading",
+      "surface": "evidence",
+      "handler": "recordCurrentMassReading",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "record-empty-crucible",
+          "record-initial-crucible-mass",
+          "record-cycle-mass",
+          "record-final-crucible-mass"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--record-empty-crucible-node",
+          "thermal-decomposition--record-initial-crucible-mass-node",
+          "thermal-decomposition--record-cycle-mass-node",
+          "thermal-decomposition--record-final-crucible-mass-node"
+        ],
+        "evidenceOutputIds": [
+          "thermal-decomposition--empty-mass-record",
+          "thermal-decomposition--loaded-mass-record",
+          "thermal-decomposition--cycle-mass-record",
+          "thermal-decomposition--final-mass-record"
+        ]
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "recover-unused-sample-unused",
+      "label": "Recover unused unheated mixture",
+      "surface": "recovery",
+      "handler": "destination=unused",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "recover-unused-sample"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--recover-unused-sample-node"
+        ],
+        "evidenceOutputIds": [
+          "thermal-decomposition--unused-sample-recovery"
+        ]
+      },
+      "approval": "teacher-approved-plan",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "recover-unused-sample-product",
+      "label": "Recover excess into product vessel",
+      "surface": "recovery",
+      "handler": "destination=product",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "recover-unused-sample"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--recover-unused-sample-node"
+        ],
+        "evidenceOutputIds": [
+          "thermal-decomposition--unused-sample-recovery"
+        ]
+      },
+      "approval": "teacher-approved-plan",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "assembly-ring-stand",
+      "label": "Place the ring stand",
+      "surface": "procedure",
+      "handler": "addAssemblyStep",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "place-ring-stand"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--place-ring-stand-node"
+        ],
+        "evidenceOutputIds": []
+      },
+      "approval": "teacher-approved-plan",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "assembly-clay-triangle",
+      "label": "Seat the clay triangle",
+      "surface": "procedure",
+      "handler": "addAssemblyStep",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "add-clay-triangle"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--add-clay-triangle-node"
+        ],
+        "evidenceOutputIds": []
+      },
+      "approval": "teacher-approved-plan",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "assembly-bunsen-burner",
+      "label": "Place the Bunsen burner",
+      "surface": "procedure",
+      "handler": "addAssemblyStep",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "place-bunsen-burner"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--place-bunsen-burner-node"
+        ],
+        "evidenceOutputIds": []
+      },
+      "approval": "teacher-approved-plan",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "assembly-crucible",
+      "label": "Place the crucible on the support",
+      "surface": "procedure",
+      "handler": "addAssemblyStep",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "place-crucible-on-support"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--place-crucible-on-support-node"
+        ],
+        "evidenceOutputIds": []
+      },
+      "approval": "teacher-approved-plan",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "lid-off",
+      "label": "Set lid off",
+      "surface": "safety-gate",
+      "handler": "position=off",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "set-crucible-lid"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--set-crucible-lid-node"
+        ],
+        "evidenceOutputIds": []
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "lid-closed",
+      "label": "Set lid fully seated",
+      "surface": "safety-gate",
+      "handler": "position=closed",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "set-crucible-lid"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--set-crucible-lid-node"
+        ],
+        "evidenceOutputIds": []
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "lid-askew",
+      "label": "Set lid askew",
+      "surface": "safety-gate",
+      "handler": "position=askew",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "set-crucible-lid"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--set-crucible-lid-node"
+        ],
+        "evidenceOutputIds": []
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "heat-cycle",
+      "label": "Heat cycle",
+      "surface": "procedure",
+      "handler": "heatCrucible",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "warm-gently",
+          "heat-carbonate-mixture",
+          "repeat-heat-to-constant-mass"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--warm-gently-node",
+          "thermal-decomposition--heat-carbonate-mixture-node",
+          "thermal-decomposition--repeat-heat-to-constant-mass-node"
+        ],
+        "evidenceOutputIds": []
+      },
+      "approval": "teacher-approved-plan",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "extinguish-burner",
+      "label": "Extinguish burner",
+      "surface": "safety",
+      "handler": "extinguishBurner",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "turn-off-burner"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--turn-off-burner-node"
+        ],
+        "evidenceOutputIds": []
+      },
+      "approval": "teacher-approved-plan",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "cool-crucible",
+      "label": "Move with tongs and cool",
+      "surface": "safety",
+      "handler": "coolCrucible",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "cool-crucible",
+          "cool-constant-mass-crucible"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--cool-crucible-node",
+          "thermal-decomposition--cool-constant-mass-crucible-node"
+        ],
+        "evidenceOutputIds": []
+      },
+      "approval": "teacher-approved-plan",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "read-cycle-balance-a",
+      "label": "Read cooled on Balance A",
+      "surface": "procedure",
+      "handler": "readCycleMass(balance-a)",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "weigh-preliminary-final-mass",
+          "weigh-final-crucible"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--weigh-preliminary-final-mass-node",
+          "thermal-decomposition--weigh-final-crucible-node"
+        ],
+        "evidenceOutputIds": [
+          "thermal-decomposition--cycle-mass",
+          "thermal-decomposition--final-mass"
+        ]
+      },
+      "approval": "teacher-approved-plan",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "read-cycle-balance-b",
+      "label": "Read cooled on Balance B",
+      "surface": "procedure",
+      "handler": "readCycleMass(balance-b)",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "weigh-preliminary-final-mass",
+          "weigh-final-crucible"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--weigh-preliminary-final-mass-node",
+          "thermal-decomposition--weigh-final-crucible-node"
+        ],
+        "evidenceOutputIds": [
+          "thermal-decomposition--cycle-mass",
+          "thermal-decomposition--final-mass"
+        ]
+      },
+      "approval": "teacher-approved-plan",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "recover-replicate-unused",
+      "label": "Recover replicate to unused vessel",
+      "surface": "recovery",
+      "handler": "destination=unused",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "recover-replicate-product",
+          "complete-replicate"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--recover-replicate-product-node",
+          "thermal-decomposition--complete-replicate-node"
+        ],
+        "evidenceOutputIds": [
+          "thermal-decomposition--replicate-recovery",
+          "thermal-decomposition--replicate-completion"
+        ]
+      },
+      "approval": "teacher-approved-plan",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "recover-replicate-product",
+      "label": "Recover replicate to product vessel",
+      "surface": "recovery",
+      "handler": "destination=product",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "recover-replicate-product",
+          "complete-replicate"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--recover-replicate-product-node",
+          "thermal-decomposition--complete-replicate-node"
+        ],
+        "evidenceOutputIds": [
+          "thermal-decomposition--replicate-recovery",
+          "thermal-decomposition--replicate-completion"
+        ]
+      },
+      "approval": "teacher-approved-plan",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "continue-analysis",
+      "label": "Continue to composition analysis",
+      "surface": "phase-transition",
+      "handler": "beginAnalysis",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "beginAnalysis"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "analysis-mass-loss",
+      "label": "Mass lost (g)",
+      "surface": "analysis-input",
+      "handler": "analysis.massLossG",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "calculate-carbonate-composition"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--calculate-carbonate-composition-node"
+        ],
+        "evidenceOutputIds": [
+          "thermal-decomposition--composition-calculation"
+        ]
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "analysis-final-na2co3",
+      "label": "Final Na2CO3 product mass (g)",
+      "surface": "analysis-input",
+      "handler": "analysis.finalSodiumCarbonateMassG",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "calculate-carbonate-composition"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--calculate-carbonate-composition-node"
+        ],
+        "evidenceOutputIds": [
+          "thermal-decomposition--composition-calculation"
+        ]
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "analysis-starting-nahco3",
+      "label": "Starting NaHCO3 mass (g)",
+      "surface": "analysis-input",
+      "handler": "analysis.sodiumBicarbonateMassG",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "calculate-carbonate-composition"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--calculate-carbonate-composition-node"
+        ],
+        "evidenceOutputIds": [
+          "thermal-decomposition--composition-calculation"
+        ]
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "analysis-starting-na2co3",
+      "label": "Starting Na2CO3 mass (g)",
+      "surface": "analysis-input",
+      "handler": "analysis.sodiumCarbonateMassG",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "calculate-carbonate-composition"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--calculate-carbonate-composition-node"
+        ],
+        "evidenceOutputIds": [
+          "thermal-decomposition--composition-calculation"
+        ]
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "analysis-percent-nahco3",
+      "label": "NaHCO3 (%)",
+      "surface": "analysis-input",
+      "handler": "analysis.sodiumBicarbonatePercent",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "calculate-carbonate-composition"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--calculate-carbonate-composition-node"
+        ],
+        "evidenceOutputIds": [
+          "thermal-decomposition--composition-calculation"
+        ]
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "analysis-percent-na2co3",
+      "label": "Na2CO3 (%)",
+      "surface": "analysis-input",
+      "handler": "analysis.sodiumCarbonatePercent",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "calculate-carbonate-composition"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--calculate-carbonate-composition-node"
+        ],
+        "evidenceOutputIds": [
+          "thermal-decomposition--composition-calculation"
+        ]
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "analysis-uncertainty",
+      "label": "Uncertainty and limitations",
+      "surface": "analysis-input",
+      "handler": "analysis.uncertainty",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "record-composition-uncertainty"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--record-composition-uncertainty-node"
+        ],
+        "evidenceOutputIds": [
+          "thermal-decomposition--uncertainty-record"
+        ]
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "submit-composition",
+      "label": "Submit composition",
+      "surface": "analysis-submit",
+      "handler": "submitAnalysis",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "calculate-carbonate-composition",
+          "record-composition-uncertainty"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--calculate-carbonate-composition-node",
+          "thermal-decomposition--record-composition-uncertainty-node"
+        ],
+        "evidenceOutputIds": [
+          "thermal-decomposition--composition-calculation",
+          "thermal-decomposition--uncertainty-record"
+        ]
+      },
+      "approval": "teacher-approved-plan",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "recover-final-unused",
+      "label": "Recover final material as unused",
+      "surface": "recovery",
+      "handler": "destination=unused",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "recover-final-product"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--recover-final-product-node"
+        ],
+        "evidenceOutputIds": [
+          "thermal-decomposition--final-product-recovery"
+        ]
+      },
+      "approval": "teacher-approved-plan",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "recover-final-product",
+      "label": "Recover final material as product",
+      "surface": "recovery",
+      "handler": "destination=product",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "actionIds": [
+          "recover-final-product"
+        ],
+        "nodeIds": [
+          "thermal-decomposition--recover-final-product-node"
+        ],
+        "evidenceOutputIds": [
+          "thermal-decomposition--final-product-recovery"
+        ]
+      },
+      "approval": "teacher-approved-plan",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "review-investigation-quality",
+      "label": "Investigation quality",
+      "surface": "review-input",
+      "handler": "review.investigationQuality",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "review.investigationQuality"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "review-communication-quality",
+      "label": "Reporting quality",
+      "surface": "review-input",
+      "handler": "review.communicationQuality",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "review.communicationQuality"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "review-desired-product",
+      "label": "Desired product identified",
+      "surface": "review-input",
+      "handler": "review.desiredProduct",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "review.desiredProduct"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "review-atom-economy",
+      "label": "Atom economy (%)",
+      "surface": "review-input",
+      "handler": "review.atomEconomyPercent",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "review.atomEconomyPercent"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "review-additional-principle",
+      "label": "One additional green-chemistry principle",
+      "surface": "review-input",
+      "handler": "review.additionalGreenPrinciple",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "review.additionalGreenPrinciple"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "review-recommendations",
+      "label": "Concise improvement recommendations",
+      "surface": "review-input",
+      "handler": "review.recommendations",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "review.recommendations"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "review-person-style",
+      "label": "Recommendation voice",
+      "surface": "review-input",
+      "handler": "review.personStyle",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "review.personStyle"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    },
+    {
+      "controlId": "submit-peer-review",
+      "label": "Submit assigned peer review",
+      "surface": "review-submit",
+      "handler": "submitPeerReview",
+      "target": {
+        "kind": "compiled-lab-owned-node",
+        "labId": "green-chemistry-mixture-purification",
+        "instanceId": "lab-orchestration",
+        "actionIds": [
+          "review-assigned-green-chemistry-report",
+          "calculate-assigned-report-atom-economy",
+          "complete-green-chemistry-peer-review"
+        ],
+        "nodeIds": [
+          "review-assigned-green-chemistry-report-node",
+          "calculate-assigned-report-atom-economy-node",
+          "complete-green-chemistry-peer-review-node"
+        ],
+        "evidenceOutputIds": []
+      },
+      "approval": "teacher-approved-plan",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "normal route notice plus adapter rejection; reset-investigation clears route state",
+      "evaluated": true
+    }
+  ],
+  "coverage": {
+    "controlCount": 72,
+    "uniqueControlIds": 72,
+    "duplicateControlIds": [],
+    "everyControlMappedExactlyOnce": true,
+    "noExpectedMeasurementsOrResults": true
+  },
+  "validationBoundary": "Source review, compile-output identity review, the narrow scripts/checkCycle11GreenChemistryRoute.mjs adapter/evidence walk, node check, typecheck, targeted generator comparison, JSON checks, and git diff check only. No runtime, browser, detailed test, build, deployment, physical-safety or classroom-disposal validation."
+}

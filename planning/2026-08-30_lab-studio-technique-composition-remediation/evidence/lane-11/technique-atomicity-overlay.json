@@ -1,0 +1,2328 @@
+{
+  "schema": "lab-studio/technique-atomicity-overlay@1",
+  "lane": "11",
+  "baselineRevision": 9,
+  "baselineManifestSha256": "c7bf84a0593075edcb46c8d2effcfd15e23cffbee39a10b52084b00b048e5df2",
+  "baselineAggregateSha256": "a656bd064f8333c91a82011bf3af6444e9cbab2aafba0b5eb122d0c8969e7ee5",
+  "baselineDisposition": "Frozen revision 9 audit rows are carried as historical identity; every current thermal action is evaluated against the regenerated 1.1.0 composition contract.",
+  "frozenTechniqueAuditSha256": "af8f9e0ae6d5d2375644ca4a2a0e6a39ad5f683470958bcbfc87483cafe206dd",
+  "frozenLabAuditSha256": "7eadc66bf4005a109758acac04a1ee2c9dc86fb1a8bb40c1bcc024112fc143bd",
+  "frozenRegistrySha256": "f2297d2eb0c15382306bd0a645ba4cc2f4330855349dd4ddc686737384494a48",
+  "owners": [
+    "public/techniques/thermal-decomposition-mass-loss.json",
+    "scripts/generatorInputs/simulator/thermalDecompositionMassLoss.mjs",
+    "src/investigations/purifyMixtureGreenChemistry/routeAdapter.ts",
+    "src/investigations/purifyMixtureGreenChemistry/configuredComposition.ts"
+  ],
+  "validationBoundary": "Source review, compile-output identity review, the narrow scripts/checkCycle11GreenChemistryRoute.mjs adapter/evidence walk, node check, typecheck, targeted generator comparison, JSON checks, and git diff check only. No runtime, browser, detailed test, build, deployment, physical-safety or classroom-disposal validation.",
+  "rows": [
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#approve-thermal-decomposition-plan",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "approve-thermal-decomposition-plan",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          "evidence"
+        ],
+        "interactionType": "recordNotebook"
+      },
+      "roleBindings": [
+        "balance-instrument"
+      ],
+      "nodeConsumers": [
+        "thermal-decomposition--approve-thermal-decomposition-plan-node"
+      ],
+      "decision": "evidence-recording-or-recovery",
+      "prerequisites": [],
+      "pausePoint": "Pause after thermal-decomposition--approve-thermal-decomposition-plan-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "approval",
+          "notebook"
+        ],
+        "compiledEvidenceOutputIds": [
+          "thermal-decomposition--approval"
+        ]
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": null,
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "procedure",
+        "step": "IQ-04",
+        "basis": "M",
+        "rationale": "Approval gates physical execution after the learner plan and safety controls are resolved."
+      },
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#place-balance",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "place-balance",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          "equipment"
+        ],
+        "interactionType": "dragToZone"
+      },
+      "roleBindings": [
+        "balance-instrument"
+      ],
+      "nodeConsumers": [
+        "thermal-decomposition--place-balance-node"
+      ],
+      "decision": "apparatus-material-instrument-state",
+      "prerequisites": [
+        "approve-thermal-decomposition-plan"
+      ],
+      "pausePoint": "Pause after thermal-decomposition--place-balance-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "place"
+        ],
+        "compiledEvidenceOutputIds": []
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": null,
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "procedure",
+        "step": "EX-01",
+        "basis": "M",
+        "rationale": "The learner selects the balance used for every mass reading."
+      },
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#place-empty-crucible",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "place-empty-crucible",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          "equipment"
+        ],
+        "interactionType": "dragToZone"
+      },
+      "roleBindings": [
+        "weighed-vessel"
+      ],
+      "nodeConsumers": [
+        "thermal-decomposition--place-empty-crucible-node"
+      ],
+      "decision": "apparatus-material-instrument-state",
+      "prerequisites": [
+        "place-balance"
+      ],
+      "pausePoint": "Pause after thermal-decomposition--place-empty-crucible-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "place"
+        ],
+        "compiledEvidenceOutputIds": []
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": null,
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "procedure",
+        "step": "EX-03",
+        "basis": "M/R",
+        "rationale": "The vessel is cleaned and cooled before the empty-vessel reading."
+      },
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#read-empty-crucible",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "read-empty-crucible",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "measurement-direct-observation-acquisition"
+        ],
+        "targets": [
+          "instrument",
+          "measurement-observation",
+          "evidence"
+        ],
+        "interactionType": "readInstrument"
+      },
+      "roleBindings": [
+        "balance-instrument",
+        "weighed-vessel"
+      ],
+      "nodeConsumers": [
+        "thermal-decomposition--read-empty-crucible-node"
+      ],
+      "decision": "measurement-direct-observation",
+      "prerequisites": [
+        "place-empty-crucible"
+      ],
+      "pausePoint": "Pause after thermal-decomposition--read-empty-crucible-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [
+        "coolingEndpointC"
+      ],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "weigh",
+          "measurement",
+          "student-entered-reading"
+        ],
+        "compiledEvidenceOutputIds": [
+          "thermal-decomposition--empty-mass"
+        ]
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": null,
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "procedure",
+        "step": "EX-04",
+        "basis": "M",
+        "rationale": "The empty crucible and lid are read before sample transfer."
+      },
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#record-empty-crucible",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "record-empty-crucible",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          "evidence"
+        ],
+        "interactionType": "recordNotebook"
+      },
+      "roleBindings": [],
+      "nodeConsumers": [
+        "thermal-decomposition--record-empty-crucible-node"
+      ],
+      "decision": "evidence-recording-or-recovery",
+      "prerequisites": [
+        "read-empty-crucible"
+      ],
+      "pausePoint": "Pause after thermal-decomposition--record-empty-crucible-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "record",
+          "notebook"
+        ],
+        "compiledEvidenceOutputIds": [
+          "thermal-decomposition--empty-mass-record"
+        ]
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": null,
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "procedure",
+        "step": "EX-05",
+        "basis": "M",
+        "rationale": "The empty-vessel display is preserved as notebook evidence."
+      },
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#add-carbonate-sample",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "add-carbonate-sample",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          "equipment",
+          "material"
+        ],
+        "interactionType": "pourInto"
+      },
+      "roleBindings": [
+        "weighed-vessel",
+        "solid-reagent-source"
+      ],
+      "nodeConsumers": [
+        "thermal-decomposition--add-carbonate-sample-node"
+      ],
+      "decision": "apparatus-material-instrument-state",
+      "prerequisites": [
+        "record-empty-crucible"
+      ],
+      "pausePoint": "Pause after thermal-decomposition--add-carbonate-sample-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [
+        "sampleMassG"
+      ],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "transfer"
+        ],
+        "compiledEvidenceOutputIds": []
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": null,
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "procedure",
+        "step": "EX-06",
+        "basis": "M",
+        "rationale": "The planned mixture portion is transferred into the crucible."
+      },
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#weigh-initial-crucible",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "weigh-initial-crucible",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "measurement-direct-observation-acquisition"
+        ],
+        "targets": [
+          "instrument",
+          "measurement-observation",
+          "evidence"
+        ],
+        "interactionType": "readInstrument"
+      },
+      "roleBindings": [
+        "balance-instrument",
+        "weighed-vessel"
+      ],
+      "nodeConsumers": [
+        "thermal-decomposition--weigh-initial-crucible-node"
+      ],
+      "decision": "measurement-direct-observation",
+      "prerequisites": [
+        "add-carbonate-sample"
+      ],
+      "pausePoint": "Pause after thermal-decomposition--weigh-initial-crucible-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [
+        "coolingEndpointC"
+      ],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "weigh",
+          "measurement",
+          "student-entered-reading"
+        ],
+        "compiledEvidenceOutputIds": [
+          "thermal-decomposition--loaded-mass"
+        ]
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": null,
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "procedure",
+        "step": "EX-07",
+        "basis": "M",
+        "rationale": "The loaded crucible and lid are read on the selected balance."
+      },
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#record-initial-crucible-mass",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "record-initial-crucible-mass",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          "evidence"
+        ],
+        "interactionType": "recordNotebook"
+      },
+      "roleBindings": [],
+      "nodeConsumers": [
+        "thermal-decomposition--record-initial-crucible-mass-node"
+      ],
+      "decision": "evidence-recording-or-recovery",
+      "prerequisites": [
+        "weigh-initial-crucible"
+      ],
+      "pausePoint": "Pause after thermal-decomposition--record-initial-crucible-mass-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "record",
+          "notebook"
+        ],
+        "compiledEvidenceOutputIds": [
+          "thermal-decomposition--loaded-mass-record"
+        ]
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": null,
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "procedure",
+        "step": "EX-07",
+        "basis": "M/R",
+        "rationale": "The loaded display is recorded separately from the instrument reading."
+      },
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#recover-unused-sample",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "recover-unused-sample",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          "equipment",
+          "material"
+        ],
+        "interactionType": "pourInto"
+      },
+      "roleBindings": [
+        "solid-reagent-source",
+        "recovery-vessel"
+      ],
+      "nodeConsumers": [
+        "thermal-decomposition--recover-unused-sample-node"
+      ],
+      "decision": "apparatus-material-instrument-state",
+      "prerequisites": [
+        "record-initial-crucible-mass"
+      ],
+      "pausePoint": "Pause after thermal-decomposition--recover-unused-sample-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "transfer",
+          "recovery",
+          "provenance"
+        ],
+        "compiledEvidenceOutputIds": [
+          "thermal-decomposition--unused-sample-recovery"
+        ]
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": null,
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "procedure",
+        "step": "EX-08",
+        "basis": "M",
+        "rationale": "Excess unheated mixture remains in its separate unused-sample vessel."
+      },
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#place-ring-stand",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "place-ring-stand",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          "equipment"
+        ],
+        "interactionType": "dragToZone"
+      },
+      "roleBindings": [],
+      "nodeConsumers": [
+        "thermal-decomposition--place-ring-stand-node"
+      ],
+      "decision": "apparatus-material-instrument-state",
+      "prerequisites": [
+        "recover-unused-sample"
+      ],
+      "pausePoint": "Pause after thermal-decomposition--place-ring-stand-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "place"
+        ],
+        "compiledEvidenceOutputIds": []
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": null,
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "apparatus",
+        "step": "HEAT-00",
+        "basis": "F/R",
+        "rationale": "The support assembly is placed as a figure/table-supported apparatus state."
+      },
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#add-clay-triangle",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "add-clay-triangle",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          "equipment",
+          "instrument"
+        ],
+        "interactionType": "snapIntoTarget"
+      },
+      "roleBindings": [],
+      "nodeConsumers": [
+        "thermal-decomposition--add-clay-triangle-node"
+      ],
+      "decision": "apparatus-material-instrument-state",
+      "prerequisites": [
+        "place-ring-stand"
+      ],
+      "pausePoint": "Pause after thermal-decomposition--add-clay-triangle-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "place"
+        ],
+        "compiledEvidenceOutputIds": []
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": null,
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "apparatus",
+        "step": "HEAT-02",
+        "basis": "F/R",
+        "rationale": "The clay triangle is seated in the iron ring; the apparatus table is figure-supported."
+      },
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#place-bunsen-burner",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "place-bunsen-burner",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          "equipment"
+        ],
+        "interactionType": "dragToZone"
+      },
+      "roleBindings": [],
+      "nodeConsumers": [
+        "thermal-decomposition--place-bunsen-burner-node"
+      ],
+      "decision": "apparatus-material-instrument-state",
+      "prerequisites": [
+        "add-clay-triangle"
+      ],
+      "pausePoint": "Pause after thermal-decomposition--place-bunsen-burner-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "place"
+        ],
+        "compiledEvidenceOutputIds": []
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": null,
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "apparatus",
+        "step": "HEAT-05",
+        "basis": "F/R",
+        "rationale": "The burner is positioned beneath the support; the apparatus table is figure-supported."
+      },
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#place-crucible-on-support",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "place-crucible-on-support",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          "equipment",
+          "instrument"
+        ],
+        "interactionType": "snapIntoTarget"
+      },
+      "roleBindings": [
+        "weighed-vessel"
+      ],
+      "nodeConsumers": [
+        "thermal-decomposition--place-crucible-on-support-node"
+      ],
+      "decision": "apparatus-material-instrument-state",
+      "prerequisites": [
+        "place-bunsen-burner"
+      ],
+      "pausePoint": "Pause after thermal-decomposition--place-crucible-on-support-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "place"
+        ],
+        "compiledEvidenceOutputIds": []
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": null,
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "apparatus",
+        "step": "HEAT-03",
+        "basis": "F/R",
+        "rationale": "The crucible is placed on the ceramic triangle; the apparatus table is figure-supported."
+      },
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#set-crucible-lid",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "set-crucible-lid",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          "equipment"
+        ],
+        "interactionType": "dragToZone"
+      },
+      "roleBindings": [
+        "weighed-vessel"
+      ],
+      "nodeConsumers": [
+        "thermal-decomposition--set-crucible-lid-node"
+      ],
+      "decision": "apparatus-material-instrument-state",
+      "prerequisites": [
+        "place-crucible-on-support"
+      ],
+      "pausePoint": "Pause after thermal-decomposition--set-crucible-lid-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "place",
+          "safety-state"
+        ],
+        "compiledEvidenceOutputIds": []
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": null,
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "procedure",
+        "step": "EX-09",
+        "basis": "M/F",
+        "rationale": "Heating uses a lid askew; a closed lid is unsafe and blocked."
+      },
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#warm-gently",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "warm-gently",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          "equipment",
+          "instrument",
+          "material"
+        ],
+        "interactionType": "placeInInstrument"
+      },
+      "roleBindings": [
+        "weighed-vessel"
+      ],
+      "nodeConsumers": [
+        "thermal-decomposition--warm-gently-node"
+      ],
+      "decision": "apparatus-material-instrument-state",
+      "prerequisites": [
+        "set-crucible-lid"
+      ],
+      "pausePoint": "Pause after thermal-decomposition--warm-gently-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [
+        "warmDurationMin"
+      ],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "heat",
+          "safety-state"
+        ],
+        "compiledEvidenceOutputIds": []
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": "The source leaves this parameter or boundary open; the implementation keeps it teacher-configurable and records no expected result.",
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "procedure",
+        "step": "EX-10",
+        "basis": "M/C",
+        "rationale": "Gentle warm-up is retained while duration and intensity remain teacher-configured."
+      },
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#heat-carbonate-mixture",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "heat-carbonate-mixture",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          "equipment",
+          "instrument",
+          "material"
+        ],
+        "interactionType": "placeInInstrument"
+      },
+      "roleBindings": [
+        "weighed-vessel"
+      ],
+      "nodeConsumers": [
+        "thermal-decomposition--heat-carbonate-mixture-node"
+      ],
+      "decision": "apparatus-material-instrument-state",
+      "prerequisites": [
+        "warm-gently"
+      ],
+      "pausePoint": "Pause after thermal-decomposition--heat-carbonate-mixture-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [
+        "heatingDurationMin",
+        "heatingIntensity"
+      ],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "heat"
+        ],
+        "compiledEvidenceOutputIds": []
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": "The source leaves this parameter or boundary open; the implementation keeps it teacher-configurable and records no expected result.",
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "procedure",
+        "step": "EX-10",
+        "basis": "M/C",
+        "rationale": "Selective heating is source-grounded; duration and intensity are configuration choices."
+      },
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#turn-off-burner",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "turn-off-burner",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          "equipment"
+        ],
+        "interactionType": "dragToZone"
+      },
+      "roleBindings": [],
+      "nodeConsumers": [
+        "thermal-decomposition--turn-off-burner-node"
+      ],
+      "decision": "apparatus-material-instrument-state",
+      "prerequisites": [
+        "heat-carbonate-mixture"
+      ],
+      "pausePoint": "Pause after thermal-decomposition--turn-off-burner-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "apparatus-state",
+          "safety-state"
+        ],
+        "compiledEvidenceOutputIds": []
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": null,
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "procedure",
+        "step": "EX-11",
+        "basis": "M",
+        "rationale": "The burner is extinguished before the hot crucible is moved."
+      },
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#cool-crucible",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "cool-crucible",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          "equipment",
+          "instrument",
+          "material"
+        ],
+        "interactionType": "placeInInstrument"
+      },
+      "roleBindings": [
+        "weighed-vessel",
+        "cooling-tool"
+      ],
+      "nodeConsumers": [
+        "thermal-decomposition--cool-crucible-node"
+      ],
+      "decision": "apparatus-material-instrument-state",
+      "prerequisites": [
+        "turn-off-burner"
+      ],
+      "pausePoint": "Pause after thermal-decomposition--cool-crucible-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [
+        "coolingEndpointC",
+        "coolingSurface"
+      ],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "cool",
+          "safety-state"
+        ],
+        "compiledEvidenceOutputIds": []
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": null,
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "procedure",
+        "step": "EX-12/EX-13",
+        "basis": "M/R",
+        "rationale": "Tongs and a cooling surface are used, and the crucible must be cool enough to weigh."
+      },
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#weigh-preliminary-final-mass",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "weigh-preliminary-final-mass",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "measurement-direct-observation-acquisition"
+        ],
+        "targets": [
+          "instrument",
+          "measurement-observation",
+          "evidence"
+        ],
+        "interactionType": "readInstrument"
+      },
+      "roleBindings": [
+        "balance-instrument",
+        "weighed-vessel"
+      ],
+      "nodeConsumers": [
+        "thermal-decomposition--weigh-preliminary-final-mass-node"
+      ],
+      "decision": "measurement-direct-observation",
+      "prerequisites": [
+        "cool-crucible"
+      ],
+      "pausePoint": "Pause after thermal-decomposition--weigh-preliminary-final-mass-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [
+        "coolingEndpointC"
+      ],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "weigh",
+          "measurement",
+          "student-entered-reading"
+        ],
+        "compiledEvidenceOutputIds": [
+          "thermal-decomposition--cycle-mass"
+        ]
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": null,
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "procedure",
+        "step": "EX-14",
+        "basis": "M",
+        "rationale": "The first cooled-cycle mass is read on the same balance."
+      },
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#record-cycle-mass",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "record-cycle-mass",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          "evidence"
+        ],
+        "interactionType": "recordNotebook"
+      },
+      "roleBindings": [],
+      "nodeConsumers": [
+        "thermal-decomposition--record-cycle-mass-node"
+      ],
+      "decision": "evidence-recording-or-recovery",
+      "prerequisites": [
+        "weigh-preliminary-final-mass"
+      ],
+      "pausePoint": "Pause after thermal-decomposition--record-cycle-mass-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [
+        "constantMassToleranceG"
+      ],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "record",
+          "notebook",
+          "constant-mass-comparison"
+        ],
+        "compiledEvidenceOutputIds": [
+          "thermal-decomposition--cycle-mass-record"
+        ]
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": "The source leaves this parameter or boundary open; the implementation keeps it teacher-configurable and records no expected result.",
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "procedure",
+        "step": "EX-14/EX-15",
+        "basis": "M/R/C",
+        "rationale": "Cooled readings are recorded and compared consecutively against the configured tolerance."
+      },
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#repeat-heat-to-constant-mass",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "repeat-heat-to-constant-mass",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          "equipment",
+          "instrument",
+          "material"
+        ],
+        "interactionType": "placeInInstrument"
+      },
+      "roleBindings": [
+        "weighed-vessel"
+      ],
+      "nodeConsumers": [
+        "thermal-decomposition--repeat-heat-to-constant-mass-node"
+      ],
+      "decision": "apparatus-material-instrument-state",
+      "prerequisites": [
+        "record-cycle-mass"
+      ],
+      "pausePoint": "Pause after thermal-decomposition--repeat-heat-to-constant-mass-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [
+        "heatingDurationMin",
+        "heatingIntensity",
+        "maximumHeatCycles"
+      ],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "heat",
+          "bounded-repeat"
+        ],
+        "compiledEvidenceOutputIds": []
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": "The source leaves this parameter or boundary open; the implementation keeps it teacher-configurable and records no expected result.",
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "procedure",
+        "step": "EX-16",
+        "basis": "M/C",
+        "rationale": "The heat/cool/weigh loop repeats until constant mass or the teacher limit."
+      },
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#cool-constant-mass-crucible",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "cool-constant-mass-crucible",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          "equipment",
+          "instrument",
+          "material"
+        ],
+        "interactionType": "placeInInstrument"
+      },
+      "roleBindings": [
+        "weighed-vessel",
+        "cooling-tool"
+      ],
+      "nodeConsumers": [
+        "thermal-decomposition--cool-constant-mass-crucible-node"
+      ],
+      "decision": "apparatus-material-instrument-state",
+      "prerequisites": [
+        "repeat-heat-to-constant-mass"
+      ],
+      "pausePoint": "Pause after thermal-decomposition--cool-constant-mass-crucible-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [
+        "coolingEndpointC",
+        "coolingSurface"
+      ],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "cool",
+          "safety-state"
+        ],
+        "compiledEvidenceOutputIds": []
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": "The source leaves this parameter or boundary open; the implementation keeps it teacher-configurable and records no expected result.",
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "procedure",
+        "step": "EX-16",
+        "basis": "M/R/C",
+        "rationale": "The repeat product cools before the next same-balance reading."
+      },
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#weigh-final-crucible",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "weigh-final-crucible",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "measurement-direct-observation-acquisition"
+        ],
+        "targets": [
+          "instrument",
+          "measurement-observation",
+          "evidence"
+        ],
+        "interactionType": "readInstrument"
+      },
+      "roleBindings": [
+        "balance-instrument",
+        "weighed-vessel"
+      ],
+      "nodeConsumers": [
+        "thermal-decomposition--weigh-final-crucible-node"
+      ],
+      "decision": "measurement-direct-observation",
+      "prerequisites": [
+        "cool-constant-mass-crucible"
+      ],
+      "pausePoint": "Pause after thermal-decomposition--weigh-final-crucible-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [
+        "coolingEndpointC"
+      ],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "weigh",
+          "measurement",
+          "student-entered-reading"
+        ],
+        "compiledEvidenceOutputIds": [
+          "thermal-decomposition--final-mass"
+        ]
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": null,
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "procedure",
+        "step": "EX-14/EX-16",
+        "basis": "M",
+        "rationale": "A subsequent cooled mass is read without an authored expected value."
+      },
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#record-final-crucible-mass",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "record-final-crucible-mass",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          "evidence"
+        ],
+        "interactionType": "recordNotebook"
+      },
+      "roleBindings": [],
+      "nodeConsumers": [
+        "thermal-decomposition--record-final-crucible-mass-node"
+      ],
+      "decision": "evidence-recording-or-recovery",
+      "prerequisites": [
+        "weigh-final-crucible"
+      ],
+      "pausePoint": "Pause after thermal-decomposition--record-final-crucible-mass-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [
+        "constantMassToleranceG"
+      ],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "record",
+          "notebook",
+          "constant-mass"
+        ],
+        "compiledEvidenceOutputIds": [
+          "thermal-decomposition--final-mass-record"
+        ]
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": "The source leaves this parameter or boundary open; the implementation keeps it teacher-configurable and records no expected result.",
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "procedure",
+        "step": "EX-14/EX-16",
+        "basis": "M/R/C",
+        "rationale": "The final reading is recorded only after a consecutive constant-mass comparison."
+      },
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#recover-replicate-product",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "recover-replicate-product",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          "evidence"
+        ],
+        "interactionType": "recordNotebook"
+      },
+      "roleBindings": [
+        "weighed-vessel",
+        "recovery-vessel"
+      ],
+      "nodeConsumers": [
+        "thermal-decomposition--recover-replicate-product-node"
+      ],
+      "decision": "evidence-recording-or-recovery",
+      "prerequisites": [
+        "record-final-crucible-mass"
+      ],
+      "pausePoint": "Pause after thermal-decomposition--recover-replicate-product-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "transfer",
+          "recovery",
+          "provenance"
+        ],
+        "compiledEvidenceOutputIds": [
+          "thermal-decomposition--replicate-recovery"
+        ]
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": "The source leaves this parameter or boundary open; the implementation keeps it teacher-configurable and records no expected result.",
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "procedure",
+        "step": "EX-19",
+        "basis": "M/C",
+        "rationale": "The cooled replicate product is isolated in the product vessel; replicate partition is configured."
+      },
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#complete-replicate",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "complete-replicate",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          "evidence"
+        ],
+        "interactionType": "recordNotebook"
+      },
+      "roleBindings": [],
+      "nodeConsumers": [
+        "thermal-decomposition--complete-replicate-node"
+      ],
+      "decision": "evidence-recording-or-recovery",
+      "prerequisites": [
+        "recover-replicate-product"
+      ],
+      "pausePoint": "Pause after thermal-decomposition--complete-replicate-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [
+        "minimumReplicates"
+      ],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "record",
+          "notebook",
+          "replicate"
+        ],
+        "compiledEvidenceOutputIds": [
+          "thermal-decomposition--replicate-completion"
+        ]
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": "The source leaves this parameter or boundary open; the implementation keeps it teacher-configurable and records no expected result.",
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "procedure",
+        "step": "EX-16/EX-19",
+        "basis": "M/C",
+        "rationale": "Replicate evidence is closed before another configured replicate begins."
+      },
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#calculate-carbonate-composition",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "calculate-carbonate-composition",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "calculation-analysis"
+        ],
+        "targets": [
+          "analysis",
+          "evidence"
+        ],
+        "interactionType": "submitCalculation"
+      },
+      "roleBindings": [],
+      "nodeConsumers": [
+        "thermal-decomposition--calculate-carbonate-composition-node"
+      ],
+      "decision": "calculation-analysis",
+      "prerequisites": [
+        "complete-replicate"
+      ],
+      "pausePoint": "Pause after thermal-decomposition--calculate-carbonate-composition-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "calculate",
+          "measurement-derived"
+        ],
+        "compiledEvidenceOutputIds": [
+          "thermal-decomposition--composition-calculation"
+        ]
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": "The source equation extraction is corrupted; the balanced equation is a governed chemistry confirmation, not a copied source claim.",
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "procedure",
+        "step": "EX-17/EX-18",
+        "basis": "M",
+        "rationale": "Composition is derived from measured mass loss and relative-amount calculations; extracted equation text is independently checked."
+      },
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#record-composition-uncertainty",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "record-composition-uncertainty",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          "evidence"
+        ],
+        "interactionType": "recordNotebook"
+      },
+      "roleBindings": [],
+      "nodeConsumers": [
+        "thermal-decomposition--record-composition-uncertainty-node"
+      ],
+      "decision": "evidence-recording-or-recovery",
+      "prerequisites": [
+        "calculate-carbonate-composition"
+      ],
+      "pausePoint": "Pause after thermal-decomposition--record-composition-uncertainty-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "record",
+          "notebook",
+          "uncertainty"
+        ],
+        "compiledEvidenceOutputIds": [
+          "thermal-decomposition--uncertainty-record"
+        ]
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": "The source leaves this parameter or boundary open; the implementation keeps it teacher-configurable and records no expected result.",
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "procedure",
+        "step": "11",
+        "basis": "M/C",
+        "rationale": "Uncertainty and limitations are recorded from the measured replicate evidence and teacher tolerance."
+      },
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#recover-final-product",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "actionId": "recover-final-product",
+      "atomId": null,
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          "evidence"
+        ],
+        "interactionType": "recordNotebook"
+      },
+      "roleBindings": [
+        "weighed-vessel",
+        "recovery-vessel"
+      ],
+      "nodeConsumers": [
+        "thermal-decomposition--recover-final-product-node"
+      ],
+      "decision": "evidence-recording-or-recovery",
+      "prerequisites": [
+        "record-composition-uncertainty"
+      ],
+      "pausePoint": "Pause after thermal-decomposition--recover-final-product-node evidence; no cursor/grasp microstep is introduced.",
+      "recoveryBoundary": [
+        {
+          "caseId": "wrong-order",
+          "recovery": "Return to the highlighted prerequisite and preserve the current evidence."
+        },
+        {
+          "caseId": "teacher-approval-required",
+          "recovery": "Complete the plan, configuration, PPE, and report assignment before approval."
+        },
+        {
+          "caseId": "same-balance-required",
+          "recovery": "Return to the balance locked by the empty-crucible reading or restart the run."
+        }
+      ],
+      "configurationParameters": [],
+      "evidenceBoundary": {
+        "declaredActionEvidence": [
+          "transfer",
+          "recovery",
+          "provenance"
+        ],
+        "compiledEvidenceOutputIds": [
+          "thermal-decomposition--final-product-recovery"
+        ]
+      },
+      "reviewBoundary": "Cycle 11 source review and basic static checks only; no detailed tests, build, browser, or physical validation.",
+      "configurationWitness": {
+        "instanceId": "thermal-decomposition",
+        "routeWitnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "teacherApprovalGate": "teacher-approved-plan",
+        "noAuthoredExpectedValue": true
+      },
+      "sourceConflict": null,
+      "sourceLocator": {
+        "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+        "sourceTable": "procedure",
+        "step": "EX-19",
+        "basis": "M",
+        "rationale": "The final heated product is recovered separately from unused mixture."
+      },
+      "evaluated": true
+    }
+  ],
+  "baselineRows": [
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#approve-thermal-decomposition-plan",
+      "actionId": "approve-thermal-decomposition-plan",
+      "replacementActionId": "approve-thermal-decomposition-plan",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "nonphysical",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#place-balance",
+      "actionId": "place-balance",
+      "replacementActionId": "place-balance",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "nonphysical",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#place-empty-crucible",
+      "actionId": "place-empty-crucible",
+      "replacementActionId": "place-empty-crucible",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "nonphysical",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#read-empty-crucible",
+      "actionId": "read-empty-crucible",
+      "replacementActionId": "read-empty-crucible",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "nonphysical",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#record-empty-crucible",
+      "actionId": "record-empty-crucible",
+      "replacementActionId": "record-empty-crucible",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "nonphysical",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#add-carbonate-sample",
+      "actionId": "add-carbonate-sample",
+      "replacementActionId": "add-carbonate-sample",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "nonphysical",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#weigh-initial-crucible",
+      "actionId": "weigh-initial-crucible",
+      "replacementActionId": "weigh-initial-crucible",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "nonphysical",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#record-initial-crucible-mass",
+      "actionId": "record-initial-crucible-mass",
+      "replacementActionId": "record-initial-crucible-mass",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "nonphysical",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#recover-unused-sample",
+      "actionId": "recover-unused-sample",
+      "replacementActionId": "recover-unused-sample",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "nonphysical",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#place-ring-stand",
+      "actionId": "place-ring-stand",
+      "replacementActionId": "place-ring-stand",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "nonphysical",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#add-clay-triangle",
+      "actionId": "add-clay-triangle",
+      "replacementActionId": "add-clay-triangle",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "nonphysical",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#place-bunsen-burner",
+      "actionId": "place-bunsen-burner",
+      "replacementActionId": "place-bunsen-burner",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "nonphysical",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#place-crucible-on-support",
+      "actionId": "place-crucible-on-support",
+      "replacementActionId": "place-crucible-on-support",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "nonphysical",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#set-crucible-lid",
+      "actionId": "set-crucible-lid",
+      "replacementActionId": "set-crucible-lid",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "nonphysical",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#warm-gently",
+      "actionId": "warm-gently",
+      "replacementActionId": "warm-gently",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "nonphysical",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#heat-carbonate-mixture",
+      "actionId": "heat-carbonate-mixture",
+      "replacementActionId": "heat-carbonate-mixture",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "nonphysical",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#turn-off-burner",
+      "actionId": "turn-off-burner",
+      "replacementActionId": "turn-off-burner",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "nonphysical",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#cool-crucible",
+      "actionId": "cool-crucible",
+      "replacementActionId": "cool-crucible",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "nonphysical",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#weigh-preliminary-final-mass",
+      "actionId": "weigh-preliminary-final-mass",
+      "replacementActionId": "weigh-preliminary-final-mass",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "nonphysical",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#record-cycle-mass",
+      "actionId": "record-cycle-mass",
+      "replacementActionId": "record-cycle-mass",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "nonphysical",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#repeat-heat-to-constant-mass",
+      "actionId": "repeat-heat-to-constant-mass",
+      "replacementActionId": "repeat-heat-to-constant-mass",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "nonphysical",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#cool-constant-mass-crucible",
+      "actionId": "cool-constant-mass-crucible",
+      "replacementActionId": "cool-constant-mass-crucible",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "nonphysical",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#weigh-final-crucible",
+      "actionId": "weigh-final-crucible",
+      "replacementActionId": "weigh-final-crucible",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "nonphysical",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#record-final-crucible-mass",
+      "actionId": "record-final-crucible-mass",
+      "replacementActionId": "record-final-crucible-mass",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "nonphysical",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#recover-replicate-product",
+      "actionId": "recover-replicate-product",
+      "replacementActionId": "recover-replicate-product",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "keep",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#complete-replicate",
+      "actionId": "complete-replicate",
+      "replacementActionId": "complete-replicate",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "nonphysical",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#calculate-carbonate-composition",
+      "actionId": "calculate-carbonate-composition",
+      "replacementActionId": "calculate-carbonate-composition",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "nonphysical",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#record-composition-uncertainty",
+      "actionId": "record-composition-uncertainty",
+      "replacementActionId": "record-composition-uncertainty",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "nonphysical",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    },
+    {
+      "rowId": "thermal-decomposition-mass-loss@1.1.0#recover-final-product",
+      "actionId": "recover-final-product",
+      "replacementActionId": "recover-final-product",
+      "replacementVersion": "1.1.0",
+      "priorVerdict": "keep",
+      "disposition": "Replaced by the source-traced 1.1.0 action with explicit configuration, evidence, and recovery boundaries.",
+      "evaluated": true
+    }
+  ]
+}

@@ -1,0 +1,593 @@
+{
+  "project": "Lab Studio Technique-Composition Remediation",
+  "planDate": "2026-08-30",
+  "currentCycle": null,
+  "totalCycles": 12,
+  "lastCompleted": 12,
+  "lastCompletedAt": "2026-09-06T18:17:19.0639010-05:00",
+  "coordinatorPolicy": {
+    "centralLedgerOwner": "coordinator only",
+    "sharedContractOwner": "Cycles 02-04, coordinator amendment windows, and Cycle 12 only",
+    "parallelTasksRequireExplicitAuthorization": true,
+    "sequentialFallbackWhenBaselineCannotBeReproduced": true,
+    "separateReviewThreadRequired": true
+  },
+  "parallelExecution": {
+    "enabledAfter": "04",
+    "transportMode": "worktree-ref",
+    "baselineRevision": 9,
+    "baselineRevisionState": "reviewed-frozen",
+    "baselineManifestPath": "evidence/CYCLE_08_PLUS_SHARED_CONTRACT_BASELINE_REVISION_9.json",
+    "baselineManifestSha256": "c7bf84a0593075edcb46c8d2effcfd15e23cffbee39a10b52084b00b048e5df2",
+    "baselineFileCount": 1481,
+    "baselineAggregateSha256": "a656bd064f8333c91a82011bf3af6444e9cbab2aafba0b5eb122d0c8969e7ee5",
+    "lastBaselineReconciledAt": "2026-09-06",
+    "baselineCriticalReview": {
+      "model": "gpt-6-astra",
+      "reasoningEffort": "medium",
+      "performed": true,
+      "accepted": true,
+      "reviewedAt": "2026-09-05",
+      "verdict": "accepted-after-separate-review-and-bounded-refinement"
+    },
+    "amendmentImpactPath": "evidence/lane-07/REVIEW_REFINEMENT_HANDOFF.md",
+    "amendmentImpactSha256": "d9d84f4dc4a6d621f71a61199ef1bccf2b38003d6dc6b571c4facd6c59d126c4",
+    "revision7Predecessor": {
+      "revision": 7,
+      "state": "reviewed-frozen",
+      "manifestPath": "evidence/CYCLE_07_SHARED_CONTRACT_BASELINE_REVISION_7.json",
+      "manifestSha256": "55416fd97b61533c0effcb91c999fd7aacf9ba517d53e53f42eca6b841ce9ab7",
+      "fileCount": 1395,
+      "aggregateSha256": "646b7e469e85ca7fc29dedc123c3daac1006d0987881ea171262fc88d1fb1953",
+      "amendmentImpactPath": "evidence/CYCLE_06_EXECUTABLE_BONDING_PANEL_AMENDMENT_IMPACT.json",
+      "amendmentImpactSha256": "948c5980d4d007294b01b9e3bd8c2d656fd8b14c6ce7bd30bb75259829a23475",
+      "predecessorCapturePath": "evidence/CYCLE_07_SHARED_CONTRACT_PREDECESSOR_REVISION_7_BONDING_SCALAR_CONFIGURATION.json",
+      "predecessorCaptureSha256": "f4687c7938f846367bd7f2a4c3da42682d8a72a86e9dee61dc49842e0d66e7d4",
+      "supersededByCandidate": "cycle-06-bonding-scalar-configuration-placeholders-03"
+    },
+    "revision6Predecessor": {
+      "revision": 6,
+      "state": "reviewed-frozen",
+      "manifestPath": "evidence/CYCLE_06_SHARED_CONTRACT_BASELINE_REVISION_6.json",
+      "manifestSha256": "478a7aa07dde09cbaa559d5c42b981d51ebbd94cc6ff3dd1e3b130345acf8e83",
+      "fileCount": 1388,
+      "aggregateSha256": "b04d1561187236a8e277f89d407498f4cca1140ed208944c552fe812f430f596",
+      "amendmentImpactPath": "evidence/CYCLE_06_AP_GENERATOR_BONDING_ATOMIC_CONTRACT_AMENDMENT_IMPACT.json",
+      "amendmentImpactSha256": "f1b49ffbbea65501020366ccc0ee1950b1405d7f43ba4807dab936ba5d070af0",
+      "predecessorCapturePath": "evidence/CYCLE_06_SHARED_CONTRACT_PREDECESSOR_REVISION_6_EXECUTABLE_BONDING_PANEL.json",
+      "predecessorCaptureSha256": "2fd792eee87a10ea8a7e09f21889273d70e248faf4853f35107e817aa2692f9f",
+      "supersededByCandidate": "cycle-06-bonding-executable-per-sample-contract-02"
+    },
+    "revision5Predecessor": {
+      "revision": 5,
+      "state": "reviewed-frozen",
+      "manifestPath": "evidence/CYCLE_05_SHARED_CONTRACT_BASELINE_REVISION_5.json",
+      "manifestSha256": "843ef11963a30932b40a7dfedaf078a45a04dbbd2cf5b4fc26e324f0b138a565",
+      "fileCount": 1385,
+      "aggregateSha256": "f50e1a3e763193c89df1ddf727d9418dbff0667bdaf77dd486d88f2c09c42cfb",
+      "amendmentImpactPath": "evidence/CYCLE_05_ANALYSIS_AND_PROCEDURE_EVIDENCE_AMENDMENT_IMPACT.json",
+      "amendmentImpactSha256": "15191226b5d4ee74fd35b9f4146504a4e2ce7adedcbf763be0173a2827649cd8",
+      "predecessorCapturePath": "evidence/CYCLE_06_SHARED_CONTRACT_PREDECESSOR_REVISION_5_AP_GENERATOR_BONDING_ATOMIC_CONTRACT.json",
+      "predecessorCaptureSha256": "4cb351c2c48c8c2a1f365058304447505519e091f8d94861baa001c172a1a8da",
+      "supersededByCandidate": "cycle-06-ap-generator-bonding-atomic-contract-01"
+    },
+    "revision4Predecessor": {
+      "revision": 4,
+      "manifestPath": "evidence/CYCLE_05_SHARED_CONTRACT_BASELINE_REVISION_4.json",
+      "manifestSha256": "fc7e66901ee17c66c7088e364ad9d0e3772f2eb9ae0a77d6043e063fd734c1b1",
+      "fileCount": 1382,
+      "aggregateSha256": "fa8c9ec99d059db40d836f6e4cef959d874705a92b932d2c93280648c0d79033",
+      "amendmentImpactPath": "evidence/CYCLE_05_EXECUTABLE_EVIDENCE_AMENDMENT_IMPACT.json",
+      "amendmentImpactSha256": "66cf3670cebd420812125a511c6a414889ff11e16ba12e22ae4bd33a141b8803",
+      "supersededBy": "cycle-05-analysis-and-procedure-evidence-04"
+    },
+    "revision3Predecessor": {
+      "revision": 3,
+      "manifestPath": "evidence/CYCLE_05_SHARED_CONTRACT_BASELINE_REVISION_3.json",
+      "manifestSha256": "08a8871d51e35967ac994510c9948ab9ac1aad3cc4c021f6d227ae2ed14574cd",
+      "fileCount": 1379,
+      "aggregateSha256": "3f602b891d06c3a4de65f53dba5c03110eec79c15b80708b79c6a6e9f7da6849",
+      "amendmentImpactPath": "evidence/CYCLE_05_ROLE_CONTINUITY_AMENDMENT_IMPACT.json",
+      "amendmentImpactSha256": "b1a421670e3681de1c4f821d656ed03e550634a5d487c28053f90d331d2df1c4",
+      "supersededBy": "cycle-05-executable-evidence-03"
+    },
+    "previousBaseline": {
+      "revision": 2,
+      "manifestPath": "evidence/CYCLE_05_SHARED_CONTRACT_BASELINE_REVISION_2.json",
+      "manifestSha256": "c79e1a634b4c1e979fc1ff7acb198887ae0e7a0d37f163a0c04af27af0771ce3",
+      "fileCount": 1371,
+      "aggregateSha256": "9c57fc74980c8e93f815a34b06c0b2039b92c195769a120e12f77ca2f3f884c3",
+      "amendmentImpactPath": "evidence/CYCLE_05_SHARED_CONTRACT_AMENDMENT_IMPACT.json",
+      "amendmentImpactSha256": "52fb5eb7a11be5c244764ca2a605e04fa57b5be3ba7fdf7e863dced70506f958",
+      "supersededBy": "cycle-05-role-continuity-02",
+      "previousBaseline": {
+        "revision": 1,
+        "manifestPath": "evidence/CYCLE_04_BASELINE_MANIFEST.json",
+        "fileCount": 1370,
+        "aggregateSha256": "48892f534384c9901eff2479a94090678155778e552f8fa61fc4c740c028c85a",
+        "supersededBy": "cycle-05-brass-observable-operation-contracts"
+      }
+    },
+    "laneContractDependencyManifestRequired": true,
+    "cycle04ReadinessGates": [
+      "reproducible-baseline-transport",
+      "shared-contract-gaps-closed",
+      "real-route-adapter-feasibility",
+      "disjoint-generator-input-ownership",
+      "overlay-schemas-and-source-trace-baseline-frozen"
+    ],
+    "allowedTransportModes": [
+      "worktree-ref",
+      "verified-scoped-copy",
+      "sequential"
+    ],
+    "initialParallelCycles": [
+      "05",
+      "06",
+      "07",
+      "08",
+      "09",
+      "11"
+    ],
+    "lateParallelCycle": {
+      "cycle": "10",
+      "unlockedBy": [
+        "07"
+      ]
+    },
+    "reconciliationCycle": "12",
+    "fixedReconciliationOrder": [
+      "05",
+      "06",
+      "07",
+      "08",
+      "09",
+      "11",
+      "10"
+    ],
+    "amendmentPolicy": {
+      "requestArtifact": "evidence/lane-NN/shared-contract-request.json",
+      "decisionOwner": "coordinator only",
+      "exclusiveAmendmentWindow": true,
+      "incrementBaselineRevision": true,
+      "impactManifestRequired": true,
+      "affectedLanePolicy": "rerun-and-review-on-new-revision",
+      "incompatibleOutputPolicy": "reject-from-cycle-12"
+    },
+    "parallelSharedLedgerPolicy": {
+      "directEditsForbidden": [
+        "TECHNIQUE_ATOMICITY_AUDIT.json",
+        "LAB_COMPOSITION_AUDIT.json",
+        "docs/architecture/source-trace-registry.json"
+      ],
+      "laneOverlayRoot": "evidence/lane-NN"
+    },
+    "baselineRevisionNote": "Revision 9 is the reviewed worktree-ref freeze at authoritative commit 1bfad0c after Cycle 07's separate critical review and bounded 3.0.1 refinement. Revision 8 remains immutable historical lineage. Cycles 08, 09, 10, and 11 must start from the coordinator baseline commit containing this manifest and may change only their lane-owned paths.",
+    "acceptedAmendmentImpactPaths": [
+      "evidence/lane-06/shared-amendment-04-06-impact.json",
+      "evidence/lane-06/shared-amendment-10-impact.json",
+      "evidence/lane-07/REVIEW_REFINEMENT_HANDOFF.md"
+    ],
+    "revision8HistoricalPredecessor": {
+      "baselineRevision": 8,
+      "baselineRevisionState": "reviewed-amendments-lane-blocked",
+      "baselineManifestPath": "evidence/CYCLE_08_SHARED_CONTRACT_BASELINE_REVISION_8.json",
+      "baselineManifestSha256": "09b3e1acbb63dce5633c26e574d2845adcae4065967ab0b997fd810f930a3bc7",
+      "baselineFileCount": 1397,
+      "baselineAggregateSha256": "3fa1f0ab4fb61215542f397e675c3028ae811f17cf6a692aaf4e253f9c805e8b",
+      "amendmentImpactPath": "evidence/CYCLE_06_BONDING_SCALAR_CONFIGURATION_AMENDMENT_IMPACT.json",
+      "amendmentImpactSha256": "0b4b53a275f1bc26a7aae30c42fc1bba16e9a414ee2cd27680faaf71e8e1af00"
+    },
+    "revision9WorktreeRef": {
+      "baselineRevision": 9,
+      "state": "reviewed-frozen",
+      "sourceCommit": "1bfad0c56685baaff40c06cb58edc4b501387d8c",
+      "labStudioTree": "3c8539993e16a1c31cf214fe07b6b6c408c3ec3c",
+      "manifestPath": "evidence/CYCLE_08_PLUS_SHARED_CONTRACT_BASELINE_REVISION_9.json",
+      "manifestSha256": "c7bf84a0593075edcb46c8d2effcfd15e23cffbee39a10b52084b00b048e5df2",
+      "fileCount": 1481,
+      "aggregateSha256": "a656bd064f8333c91a82011bf3af6444e9cbab2aafba0b5eb122d0c8969e7ee5",
+      "eligibleParallelCycles": [
+        "08",
+        "09",
+        "10",
+        "11"
+      ],
+      "separateReviewThreadRequired": true
+    },
+    "currentReviewBoundary": {
+      "state": "accepted-after-separate-review-and-bounded-refinement",
+      "implementationCommit": "b36371458dc30872053af51ca499c21bc5541b03",
+      "reviewThreadId": "01a073d7-6520-7b42-9fbb-85fa30641716",
+      "reviewPath": "evidence/lane-07/ASTRA_MEDIUM_CRITICAL_FIDELITY_REVIEW.md",
+      "reviewSha256": "27c0a71ae50cfba06ff221201fd8be0444d80e64aa728d81cfe5eb98d2c57ebc",
+      "refinementPath": "evidence/lane-07/REVIEW_REFINEMENT_HANDOFF.md",
+      "refinementSha256": "d9d84f4dc4a6d621f71a61199ef1bccf2b38003d6dc6b571c4facd6c59d126c4",
+      "authoritativeCommit": "1bfad0c56685baaff40c06cb58edc4b501387d8c",
+      "acceptedAt": "2026-09-06T14:36:03.7256664-05:00",
+      "stoppedAfterCycle": 7
+    }
+  },
+  "cycles": {
+    "10": {
+      "title": "Acid-base titration-curves custom-route adapter",
+      "status": "completed",
+      "dependsOn": [
+        "07"
+      ],
+      "parallelGroup": "custom-route-wave",
+      "implementationCommits": [
+        "5112de4",
+        "31ec272"
+      ],
+      "reviewCommits": [
+        "3106ef7",
+        "046d407",
+        "6cb2b0c"
+      ],
+      "formalAmendmentPath": "evidence/lane-10/SEPARATE_REVIEW_FORMAL_CONTRACT_AMENDMENT.md",
+      "reviewPath": "evidence/lane-10/SEPARATE_REVIEW_CYCLE_10.md",
+      "reviewDisposition": "accepted-source-static-after-separate-review-and-bounded-refinement",
+      "modelSettings": {
+        "implementation": {
+          "model": "task-default-gpt-6",
+          "reasoningEffort": "default"
+        },
+        "criticalReviewAndRereview": {
+          "model": "gpt-6-astra",
+          "reasoningEffort": "medium-requested; coordinator source/static due host quota"
+        }
+      },
+      "validationBoundary": "Source/static only; no runtime, detailed test, browser, build, deployment, release, or physical acceptance.",
+      "completedAt": "2026-09-06",
+      "rereview": {
+        "performedAt": "2026-09-06",
+        "startingHead": "41f77132dfc2ce825ca7d81eaf0ed00f03078f06",
+        "trigger": "Post-acceptance independent fidelity re-review of the shipped code rather than the ledger.",
+        "disposition": "refined-and-reaccepted-source-static",
+        "findingCount": 10,
+        "record": "CONTINUATION_CYCLE_10.md, section '2026-09-06 Independent Re-Review and Refinement (post-acceptance)'",
+        "summary": "Earlier acceptance rested on vacuous checks: the analysis-instance route targets never matched the compiler's renamed identities and were filtered out, and an escape hatch let them execute unvalidated. The composed analysis instance also bound a 0.099 M unknown model contradicting the teacher-configured 0.08 M sample and duplicated the exact Cycle 07 physical acquisition, so it was removed from the composition while the technique itself stayed unchanged and catalog-composable. The compiled delivery loop, per-trial disposal chain, lab-owned nodes, authored endpoint choices, increment contract and rejected-attempt recovery are now all actually traversed and fail-closed against the compiled parameters.",
+        "newVerifier": "scripts/verifyCycle10RouteExecution.mjs",
+        "verifierInvocation": "node --experimental-strip-types --experimental-loader ./scripts/tsCompositionLoader.mjs scripts/verifyCycle10RouteExecution.mjs",
+        "labVersion": "2.1.0",
+        "analysisTechniqueVersion": "1.2.0 (unchanged; no longer instantiated by this lab)",
+        "checks": [
+          "npm run typecheck: passed",
+          "npm run content:check: output byte-identical to 41f7713 in both directions",
+          "scripts/verifyCycle10RouteExecution.mjs: passed, 36/40 compiled nodes traversed per witness plus the retry branch proven reachable",
+          "scripts/documentCycle10Titration.mjs: passed with derived and cross-checked control map (41 controls, 40 compiled actions covered)",
+          "scripts/collectCycle12CompileWitness.mjs: passed, 17 labs / 2543 nodes / 2543 actions",
+          "git diff --check and JSON parse of every owned JSON: passed"
+        ],
+        "crossLane": "evidence/lane-12/COMPILED_LAB_WITNESS.json regenerated; its committed copy was stale for this lab and for a hand-warmer edit.",
+        "validationBoundary": "Source/static only; no runtime, detailed test, browser, build, deployment, release, or physical acceptance.",
+        "commit": "6cb2b0c"
+      }
+    },
+    "11": {
+      "title": "Green-chemistry purification custom-route adapter",
+      "status": "completed",
+      "dependsOn": [
+        "04"
+      ],
+      "parallelGroup": "science-family-wave",
+      "implementationCommit": "40abc18",
+      "reviewPath": "evidence/lane-11/CYCLE_11_SEPARATE_REVIEW.md",
+      "staticReviewPath": "evidence/lane-11/CYCLE_11_STATIC_REVIEW.md",
+      "reviewDisposition": "accepted-source-static-after-separate-review, then refined and re-accepted after an independent post-acceptance fidelity re-review",
+      "modelSettings": {
+        "implementation": {
+          "model": "gpt-5-codex-subagent",
+          "reasoningEffort": "not-exposed"
+        },
+        "criticalReviewAndRereview": {
+          "model": "gpt-5-codex-subagent",
+          "reasoningEffort": "not-exposed"
+        }
+      },
+      "validationBoundary": "Source/static only; no runtime, detailed test, browser, build, deployment, release, or physical acceptance.",
+      "completedAt": "2026-09-06",
+      "reviewCommits": [
+        "cc8359c",
+        "30fb0c8"
+      ],
+      "laneVerifier": "scripts/checkCycle11GreenChemistryRoute.mjs",
+      "rereview": {
+        "performedAt": "2026-09-07",
+        "startingHead": "eda9e7da6ec25ff6871230ecb29a603665b9dc40",
+        "trigger": "Post-acceptance independent fidelity re-review of the shipped code rather than the ledger.",
+        "disposition": "refined-and-reaccepted-source-static",
+        "findingCount": 6,
+        "record": "CONTINUATION_CYCLE_11.md, section 'Independent Cycle 11 Re-Review and Refinement (2026-09-07)'",
+        "summary": "The accepted lane still let the route own an independent procedural truth. The public lab authored every quantity the source manual leaves open (1.5 g portion, 1 and 5 min heat stages, 0.005 g tolerance, 4-cycle cap, 25 C cooling endpoint, two replicates) and those resolved into the compiled action parameters, while the player ignored the compiled configuration and handed the adapter rules typed into component state. Approval unlocked physical execution on two caller-asserted booleans; the three compiled lab-owned report nodes and the lab assessment were never dispatched; a one-replicate approved plan could complete the route without producing the required replicate-recovery and replicate-completion evidence; the gentle-warm duration and the atom-economy tolerance were invented in route code; and a later replicate heated a crucible the model believed was off its support. The lab now binds an explicit unconfigured placeholder, a route-local configured compile binds the teacher-approved configuration to the technique instance, and the adapter reads its rules back out of the compiled parameters and fails closed on a placeholder or a mismatched approval.",
+        "newVerifier": "scripts/checkCycle11GreenChemistryRoute.mjs",
+        "verifierInvocation": "node --experimental-strip-types --experimental-loader ./scripts/tsCompositionLoader.mjs scripts/checkCycle11GreenChemistryRoute.mjs",
+        "labVersion": "1.2.0",
+        "techniqueVersion": "1.1.0 (unchanged; the technique file is byte-identical)",
+        "checks": [
+          "npm run typecheck: passed",
+          "npm run content:check: output byte-identical to eda9e7d (repository-wide baseline, 1323 violations, exit 1)",
+          "scripts/checkCycle11GreenChemistryRoute.mjs: passed, 72 mapped controls / 29 compiled technique origins / 3 lab-owned nodes / 32 actions executed / 15 required evidence outputs satisfied",
+          "scripts/documentCycle11GreenChemistry.mjs: passed, 72 controls / 29 technique rows / 32 composition rows regenerated",
+          "node scripts/generateSimulatorTechniqueDefinitions.mjs --only thermal-decomposition-mass-loss: byte-identical output (377c3795bf92ccbdc7a6692a81057065333b1ae56fd17a148f8f7fbf5d16d342)",
+          "node --check for both lane scripts, JSON parse of every touched JSON, and git diff --check: passed"
+        ],
+        "openSharedRequests": [
+          "Register a green-chemistry setup in src/data/labSetup.ts so the public lab can carry an empty bindings.configuration and loadBundledLab throws LabSetupRequired instead of compiling the placeholder."
+        ],
+        "validationBoundary": "Source/static only; no runtime, detailed test, browser, build, deployment, release, or physical acceptance.",
+        "modelSettings": {
+          "model": "claude-opus-5",
+          "reasoningEffort": "default"
+        },
+        "commit": "30fb0c8"
+      }
+    },
+    "12": {
+      "title": "Reconciliation, authoring enforcement, and catalog closure",
+      "status": "completed",
+      "dependsOn": [
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "10",
+        "11"
+      ],
+      "parallelGroup": null,
+      "implementationCommit": "7603f9a",
+      "reviewCommit": "8c32813",
+      "reviewPath": "evidence/lane-12/SEPARATE_REVIEW_CYCLE_12.md",
+      "reviewWorktree": "C:/Users/EmilJivishov/.codex/orchestrated-worktrees/technique-remediation-cycle12-review/Lab_studio",
+      "reviewDisposition": "accepted-source-static-after-separate-review-and-bounded-owner-scope-refinement",
+      "modelSettings": {
+        "implementation": {
+          "model": "task-default-gpt-6",
+          "reasoningEffort": "default"
+        },
+        "criticalReviewAndRereview": {
+          "model": "gpt-6-astra",
+          "reasoningEffort": "medium-requested; coordinator source/static due host quota"
+        }
+      },
+      "separateReviewThreadRequired": true,
+      "separateReviewTaskRequest": "client-new-thread:86f8e85e-955f-4e9b-b1ec-8611cf75772e (client-only handle; no runnable model after host quota exhaustion)",
+      "fixedReconciliationOrder": [
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "11",
+        "10"
+      ],
+      "catalogOutcome": {
+        "indexedTechniques": 42,
+        "ownedTechniques": 41,
+        "routeOnlyTechnique": "ph-volume-formal-titration-trial",
+        "indexedLabs": 17,
+        "techniqueActionRows": 2589,
+        "witnessCompiles": 29,
+        "compiledLabNodeActionRows": 2786,
+        "defaultWitnessNodeRows": 2543,
+        "effectConflicts": 0,
+        "anonymousLocalProcedures": 0,
+        "deadUnderWitness": 0,
+        "unreferencedDeclaredActions": 0,
+        "atomlessPhysicalTechniqueRows": 99,
+        "atomlessPhysicalCompiledLabRows": 45,
+        "untracedAcquisitionRows": 3,
+        "declaredSourceConflictRows": 3,
+        "baselineConflictsSupersededByLaneEvidence": 80,
+        "unreviewedBaselineConflicts": 0,
+        "unboundMassOutputRows": 19,
+        "weighActionRows": 74,
+        "openSharedContractRequests": [
+          "lane-11-green-chemistry-lab-setup"
+        ]
+      },
+      "checks": "node --check, npm run cycle12:compile-witness (17 labs / 29 witness compiles / 2786 union nodes), reconcile --check (idempotent), the 24-check static verifier, lane verifiers 05/07/08/09/11 and the Cycle 10 route-execution verifier, JSON/status parsing, and git diff --check all pass. npm run typecheck passes. npm run content:check remains exit 1 at 1323 repository-wide violations, byte-identical to the pre-refinement run; no baseline was rewritten. scripts/checkCycle06GravimetrySeparationComposition.mjs still fails on hard-water-practice-preparation/weigh-sodium-carbonate exactly as it did before this session; it is lane-06 owned.",
+      "validationBoundary": "Source/static only; no runtime, detailed test, browser, build, deployment, release, or physical acceptance.",
+      "completedAt": "2026-09-06",
+      "reReviewCommit": "827537f",
+      "reReviewPath": "CONTINUATION_CYCLE_12.md#independent-cycle-12-re-review-and-refinement-2026-09-07",
+      "reReviewDisposition": "re-reviewed-and-refined-after-post-closure-lane-09-10-11-refinements; coordinator outputs regenerated, residual debt now counted and disclosed, one shared request left explicitly open",
+      "reReviewModelSettings": {
+        "model": "claude-opus-5",
+        "reasoningEffort": "default",
+        "checkout": "C:/Users/EmilJivishov/Projects/Lab_studio",
+        "note": "Independent re-review in the authoritative checkout; source/static only, no runtime, build, or test claim."
+      },
+      "reReviewTriggers": [
+        "Cycles 09, 10, and 11 were refined after Cycle 12 closed (dcae1f1, 41f7713, 6cb2b0c, 30fb0c8); the coordinator was never re-run."
+      ],
+      "consistencyCategories": {
+        "ownershipAndPublicIds": "pass",
+        "compositionSourceShape": "pass",
+        "techniqueAtomicityAndEffects": "pass",
+        "labOriginsAndReachability": "pass",
+        "atomicIdentityCoverage": "disclosed-residual",
+        "sourceTraceCoverage": "disclosed-residual",
+        "massOutputBinding": "disclosed-residual",
+        "broadRepositoryBaseline": "not-clean"
+      },
+      "reReviewedAt": "2026-09-07"
+    },
+    "01": {
+      "title": "Authoritative baseline, source disposition, and workspace gate",
+      "status": "completed",
+      "dependsOn": [],
+      "parallelGroup": null
+    },
+    "02": {
+      "title": "Composition/effect contracts, compiler, manifest, and checker",
+      "status": "completed",
+      "dependsOn": [
+        "01"
+      ],
+      "parallelGroup": null
+    },
+    "03": {
+      "title": "Single- and multi-technique parity pilots",
+      "status": "completed",
+      "dependsOn": [
+        "02"
+      ],
+      "parallelGroup": null
+    },
+    "04": {
+      "title": "Foundational techniques, demos, route feasibility, and parallel contract freeze",
+      "status": "completed",
+      "dependsOn": [
+        "03"
+      ],
+      "parallelGroup": null
+    },
+    "05": {
+      "title": "Spectroscopy family composition",
+      "status": "completed",
+      "dependsOn": [
+        "04"
+      ],
+      "parallelGroup": "science-family-wave"
+    },
+    "06": {
+      "title": "Gravimetry and separation family composition",
+      "status": "completed",
+      "dependsOn": [
+        "04"
+      ],
+      "parallelGroup": "science-family-wave",
+      "finalReview": "evidence/lane-06/ASTRA_MEDIUM_FINAL_CRITICAL_REVIEW.md",
+      "modelSettings": {
+        "implementation": {
+          "model": "gpt-6-astra",
+          "reasoningEffort": "low"
+        },
+        "criticalReviewAndRereview": {
+          "model": "gpt-6-astra",
+          "reasoningEffort": "medium"
+        }
+      },
+      "reviewDisposition": "source-review-accepted",
+      "historicalDispositions": [
+        {
+          "archivedAt": "2026-09-05T02:11:02.206576+00:00",
+          "status": "blocked",
+          "blockedReason": "Reviewed blocked handoff; requests07 recovery methods,08 chromatography configuration/model,09 bonding mass input and inherited limits remain. Cycle06 incomplete.",
+          "blockedRequestPaths": [
+            "evidence/lane-06/shared-contract-request-07-solvent-removal.json",
+            "evidence/lane-06/shared-contract-request-08-chromatography-configuration.json",
+            "evidence/lane-06/shared-contract-request-09-bonding-mass-binding.json"
+          ],
+          "finalReview": "evidence/lane-06/FINAL_CRITICAL_REVIEW.md",
+          "reviewDisposition": "accepted-as-reviewed-blocked-handoff"
+        }
+      ],
+      "completedAt": "2026-09-05T02:11:02.206576+00:00",
+      "checkpoint": "evidence/lane-06/ASTRA_LOW_CANDIDATE_CHECKPOINT.json",
+      "checkpointSha256": "85f52016eb3677bb5c92bd300c22142e6ca207534335790f12b42343ae264a45"
+    },
+    "07": {
+      "title": "Titration family composition",
+      "status": "completed",
+      "dependsOn": [
+        "04"
+      ],
+      "parallelGroup": "science-family-wave",
+      "implementationDate": "2026-09-05",
+      "implementationHandoff": "evidence/lane-07/IMPLEMENTATION_HANDOFF.md",
+      "interfaceHandoff": "evidence/lane-07/cycle-10-interface.json",
+      "sharedAmendmentAuthority": "User explicitly authorized all necessary repository changes and deviations after prerequisite reconciliation 055d766.",
+      "checks": "Source/static only; global content checker findings disclosed.",
+      "completedAt": "2026-09-06T14:36:03.7256664-05:00",
+      "authoritativeCommit": "1bfad0c56685baaff40c06cb58edc4b501387d8c",
+      "reviewDisposition": "accepted-source-static-after-separate-review-and-bounded-refinement",
+      "fidelityReview": {
+        "status": "accepted-after-bounded-refinement",
+        "codingModel": "Current GPT-6 task; exact deployed identifier unavailable",
+        "codingEffort": "unavailable",
+        "separateReviewPerformed": true,
+        "reviewThreadId": "01a073d7-6520-7b42-9fbb-85fa30641716",
+        "reviewModel": "gpt-6-astra",
+        "reviewEffort": "medium",
+        "reviewedCommit": "b36371458dc30872053af51ca499c21bc5541b03",
+        "reviewPath": "evidence/lane-07/ASTRA_MEDIUM_CRITICAL_FIDELITY_REVIEW.md",
+        "refinementPath": "evidence/lane-07/REVIEW_REFINEMENT_HANDOFF.md",
+        "refinementVersion": "3.0.1",
+        "refinementCommit": "1bfad0c56685baaff40c06cb58edc4b501387d8c",
+        "validationBoundary": "Source/static only; no runtime, detailed test, browser or physical acceptance."
+      }
+    },
+    "08": {
+      "title": "Kinetics family composition",
+      "status": "completed",
+      "dependsOn": [
+        "04"
+      ],
+      "parallelGroup": "science-family-wave",
+      "implementationCommit": "1079bbd",
+      "priorReviewCommit": "67e6a12",
+      "priorReviewPath": "evidence/lane-08/SEPARATE_REVIEW_REFINEMENT.md",
+      "reviewCommit": "7fa2fcc",
+      "reviewPath": "evidence/lane-08/COORDINATOR_REVIEW_REFINEMENT.md",
+      "reviewDisposition": "accepted-source-static-after-separate-review-and-coordinator-reachability-refinement",
+      "modelSettings": {
+        "implementation": {
+          "model": "delegated-codex-default",
+          "reasoningEffort": "not-exposed"
+        },
+        "criticalReviewAndRereview": {
+          "model": "claude-opus-5",
+          "reasoningEffort": "not-exposed"
+        }
+      },
+      "validationBoundary": "Source/static only; no runtime, detailed test, browser, build, deployment, release, or physical acceptance.",
+      "completedAt": "2026-09-06"
+    },
+    "09": {
+      "title": "Calorimetry and equilibrium inquiry composition",
+      "status": "completed",
+      "dependsOn": [
+        "04"
+      ],
+      "parallelGroup": "science-family-wave",
+      "implementationCommit": "938e75f",
+      "reviewCommits": [
+        "33abd0e",
+        "906d43a"
+      ],
+      "reviewPath": "evidence/lane-09/SEPARATE_REVIEW_CYCLE_09.md",
+      "reviewDisposition": "accepted-source-static-after-independent-critical-re-review, five-finding refinement (one later found to be a false positive and reverted), and residual-issue closure",
+      "modelSettings": {
+        "implementation": {
+          "model": "task-default-gpt-6",
+          "reasoningEffort": "default"
+        },
+        "criticalReviewAndRereview": {
+          "model": "claude-opus-5",
+          "reasoningEffort": "high",
+          "note": "The earlier gpt-6-astra request was never runnable (host quota); that pass was coordinator self-review. The independent re-review recorded in evidence/lane-09/SEPARATE_REVIEW_CYCLE_09.md corrected five findings."
+        }
+      },
+      "validationBoundary": "Source/static only; no runtime, detailed test, browser, build, deployment, release, or physical acceptance.",
+      "completedAt": "2026-09-06",
+      "laneVerifier": "scripts/checkCycle09Composition.mjs",
+      "openSharedRequests": [
+        "evidence/lane-09/shared-contract-request-02.json"
+      ],
+      "reviewedAt": "2026-09-07",
+      "residualClosure": {
+        "closed": [
+          "requiredEvidenceOutputIds now names the 37 source-mandated acquisitions and calculations",
+          "wasteRoute is read by the three disposal actions; the unread selectedProcedure slot is removed",
+          "lab-composition-overlay records the wiring of all 472 compiler-expanded rows",
+          "timing-instrument role restored after the review finding proved to be a false positive"
+        ],
+        "notClosed": "1071 action/source-trace-missing plus 109 stale pointers to renamed action ids need scientific provenance authored from the dated investigation plans; guessing it would assert lab-manual backing that does not exist."
+      }
+    }
+  }
+}

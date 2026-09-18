@@ -1,0 +1,268 @@
+{
+  "schema": "lab-studio/source-trace-overlay@1",
+  "lane": "10",
+  "baselineRevision": 9,
+  "baselineManifestPath": "planning/2026-08-30_lab-studio-technique-composition-remediation/evidence/CYCLE_08_PLUS_SHARED_CONTRACT_BASELINE_REVISION_9.json",
+  "baselineManifestSha256": "c7bf84a0593075edcb46c8d2effcfd15e23cffbee39a10b52084b00b048e5df2",
+  "baselineAggregateSha256": "a656bd064f8333c91a82011bf3af6444e9cbab2aafba0b5eb122d0c8969e7ee5",
+  "baselineSourceCommit": "1bfad0c56685baaff40c06cb58edc4b501387d8c",
+  "baselineLabStudioTree": "3c8539993e16a1c31cf214fe07b6b6c408c3ec3c",
+  "baselineGitTreeListingSha256": "a656bd064f8333c91a82011bf3af6444e9cbab2aafba0b5eb122d0c8969e7ee5",
+  "baselineDisposition": "Reviewed-frozen revision 9 worktree-ref identity; Cycle 10 is additive and does not mutate the manifest.",
+  "owners": [
+    "technique:titration-curve-analysis",
+    "lab:acid-base-titration-curves"
+  ],
+  "validationBoundary": "Source/static evidence only; runtime, browser, detailed tests, build, and physical validation intentionally not run.",
+  "rows": [
+    {
+      "rowId": "titration-curve-analysis@1.2.0#observe-ph-paper",
+      "owner": "technique:titration-curve-analysis",
+      "actionId": "observe-ph-paper",
+      "atomId": null,
+      "sourceFile": null,
+      "sourceTable": null,
+      "step": null,
+      "basis": "C",
+      "rationale": "Nonphysical evidence/configuration carrier remains explicit and does not invent a source procedure or expected result.",
+      "roleBindings": [],
+      "nodeConsumers": [],
+      "sourceStatus": "configuration-orchestration",
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#measure-curve-analyte",
+      "owner": "technique:titration-curve-analysis",
+      "actionId": "measure-curve-analyte",
+      "atomId": "atom.measure.variable-volume",
+      "sourceFile": "acid-base-titration-curves_2026-07-27.md",
+      "sourceTable": "phase",
+      "step": "T-03",
+      "basis": "M",
+      "rationale": "Exact dated source-trace row retained for the physical action; the exact Cycle 07 formal trial is this lab's only physical acquisition authority, so the row is not consumed by an instance here.",
+      "roleBindings": [
+        {
+          "roleId": "variable-volume-measuring-device",
+          "definitionId": "graduated-cylinder"
+        },
+        {
+          "roleId": "liquid-source",
+          "definitionId": "unknown-acid-bottle"
+        }
+      ],
+      "nodeConsumers": [],
+      "sourceStatus": "source-traced",
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#transfer-curve-analyte",
+      "owner": "technique:titration-curve-analysis",
+      "actionId": "transfer-curve-analyte",
+      "atomId": "atom.transfer.measured-liquid",
+      "sourceFile": "acid-base-titration-curves_2026-07-27.md",
+      "sourceTable": "phase",
+      "step": "T-03",
+      "basis": "M",
+      "rationale": "Exact dated source-trace row retained for the physical action; the exact Cycle 07 formal trial is this lab's only physical acquisition authority, so the row is not consumed by an instance here.",
+      "roleBindings": [
+        {
+          "roleId": "measured-solvent-source",
+          "definitionId": "graduated-cylinder"
+        },
+        {
+          "roleId": "receiving-vessel",
+          "definitionId": "beaker-250ml"
+        }
+      ],
+      "nodeConsumers": [],
+      "sourceStatus": "source-traced",
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#place-curve-ph-probe",
+      "owner": "technique:titration-curve-analysis",
+      "actionId": "place-curve-ph-probe",
+      "atomId": "atom.place.immersed-ph-probe",
+      "sourceFile": "acid-base-titration-curves_2026-07-27.md",
+      "sourceTable": "phase",
+      "step": "T-04",
+      "basis": "M/R",
+      "rationale": "Exact dated source-trace row retained for the physical action; the exact Cycle 07 formal trial is this lab's only physical acquisition authority, so the row is not consumed by an instance here.",
+      "roleBindings": [
+        {
+          "roleId": "immersed-probe-instrument",
+          "definitionId": "ph-meter"
+        },
+        {
+          "roleId": "immersed-probe-vessel",
+          "definitionId": "beaker-250ml"
+        }
+      ],
+      "nodeConsumers": [],
+      "sourceStatus": "source-traced",
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#read-initial-ph",
+      "owner": "technique:titration-curve-analysis",
+      "actionId": "read-initial-ph",
+      "atomId": "atom.observe.read-titration-ph",
+      "sourceFile": "acid-base-titration-curves_2026-07-27.md",
+      "sourceTable": "phase",
+      "step": "T-05",
+      "basis": "M",
+      "rationale": "Exact dated source-trace row retained for the physical action; the exact Cycle 07 formal trial is this lab's only physical acquisition authority, so the row is not consumed by an instance here.",
+      "roleBindings": [
+        {
+          "roleId": "immersed-probe-instrument",
+          "definitionId": "ph-meter"
+        },
+        {
+          "roleId": "immersed-probe-vessel",
+          "definitionId": "beaker-250ml"
+        }
+      ],
+      "nodeConsumers": [],
+      "sourceStatus": "source-traced",
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#record-initial-ph",
+      "owner": "technique:titration-curve-analysis",
+      "actionId": "record-initial-ph",
+      "atomId": null,
+      "sourceFile": null,
+      "sourceTable": null,
+      "step": null,
+      "basis": "C",
+      "rationale": "Nonphysical evidence/configuration carrier remains explicit and does not invent a source procedure or expected result.",
+      "roleBindings": [],
+      "nodeConsumers": [],
+      "sourceStatus": "configuration-orchestration",
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#mount-curve-burette",
+      "owner": "technique:titration-curve-analysis",
+      "actionId": "mount-curve-burette",
+      "atomId": "atom.place.mount-burette",
+      "sourceFile": "acid-base-titration-curves_2026-07-27.md",
+      "sourceTable": "phase",
+      "step": "T-02",
+      "basis": "M/R",
+      "rationale": "Exact dated source-trace row retained for the physical action; the exact Cycle 07 formal trial is this lab's only physical acquisition authority, so the row is not consumed by an instance here.",
+      "roleBindings": [
+        {
+          "roleId": "titrant-delivery-device",
+          "definitionId": "burette-50ml"
+        },
+        {
+          "roleId": "burette-support",
+          "definitionId": "ring-stand-clamp"
+        }
+      ],
+      "nodeConsumers": [],
+      "sourceStatus": "source-traced",
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#fill-curve-burette",
+      "owner": "technique:titration-curve-analysis",
+      "actionId": "fill-curve-burette",
+      "atomId": "atom.transfer.fill-burette",
+      "sourceFile": "acid-base-titration-curves_2026-07-27.md",
+      "sourceTable": "phase",
+      "step": "T-02",
+      "basis": "M/R",
+      "rationale": "Exact dated source-trace row retained for the physical action; the exact Cycle 07 formal trial is this lab's only physical acquisition authority, so the row is not consumed by an instance here.",
+      "roleBindings": [
+        {
+          "roleId": "titrant-source",
+          "definitionId": "naoh-bottle"
+        },
+        {
+          "roleId": "titrant-delivery-device",
+          "definitionId": "burette-50ml"
+        }
+      ],
+      "nodeConsumers": [],
+      "sourceStatus": "source-traced",
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#read-curve-initial-burette",
+      "owner": "technique:titration-curve-analysis",
+      "actionId": "read-curve-initial-burette",
+      "atomId": "atom.measure.read-burette",
+      "sourceFile": "acid-base-titration-curves_2026-07-27.md",
+      "sourceTable": "phase",
+      "step": "T-02",
+      "basis": "M/R",
+      "rationale": "Exact dated source-trace row retained for the physical action; the exact Cycle 07 formal trial is this lab's only physical acquisition authority, so the row is not consumed by an instance here.",
+      "roleBindings": [
+        {
+          "roleId": "titrant-delivery-device",
+          "definitionId": "burette-50ml"
+        }
+      ],
+      "nodeConsumers": [],
+      "sourceStatus": "source-traced",
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#deliver-curve-titrant",
+      "owner": "technique:titration-curve-analysis",
+      "actionId": "deliver-curve-titrant",
+      "atomId": "atom.transfer.deliver-titrant",
+      "sourceFile": "acid-base-titration-curves_2026-07-27.md",
+      "sourceTable": "phase",
+      "step": "T-06",
+      "basis": "M/C",
+      "rationale": "Exact dated source-trace row retained for the physical action; the exact Cycle 07 formal trial is this lab's only physical acquisition authority, so the row is not consumed by an instance here.",
+      "roleBindings": [
+        {
+          "roleId": "titrant-delivery-device",
+          "definitionId": "burette-50ml"
+        },
+        {
+          "roleId": "analyte-receiver",
+          "definitionId": "beaker-250ml"
+        }
+      ],
+      "nodeConsumers": [],
+      "sourceStatus": "source-traced",
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#record-equivalence-volume",
+      "owner": "technique:titration-curve-analysis",
+      "actionId": "record-equivalence-volume",
+      "atomId": null,
+      "sourceFile": null,
+      "sourceTable": null,
+      "step": null,
+      "basis": "C",
+      "rationale": "Nonphysical evidence/configuration carrier remains explicit and does not invent a source procedure or expected result.",
+      "roleBindings": [],
+      "nodeConsumers": [],
+      "sourceStatus": "configuration-orchestration",
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#calculate-curve-molarity",
+      "owner": "technique:titration-curve-analysis",
+      "actionId": "calculate-curve-molarity",
+      "atomId": null,
+      "sourceFile": null,
+      "sourceTable": null,
+      "step": null,
+      "basis": "C",
+      "rationale": "Nonphysical evidence/configuration carrier remains explicit and does not invent a source procedure or expected result.",
+      "roleBindings": [],
+      "nodeConsumers": [],
+      "sourceStatus": "configuration-orchestration",
+      "evaluated": true
+    }
+  ],
+  "sourcePolicy": "Source-derived physical actions retain exact dated trace rows; configuration, analysis, and route orchestration carriers are explicit C/non-source dispositions."
+}

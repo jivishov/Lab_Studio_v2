@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "catalogBaselineDate": "2026-08-30",
+  "expectedTechniqueCount": 41,
+  "expectedLabCount": 17,
+  "techniquesByFinalCycle": {
+    "04": [
+      "weighing",
+      "measuring-volume",
+      "making-solution",
+      "dilution",
+      "transfer",
+      "hard-water-precipitation",
+      "filtration",
+      "drying",
+      "hard-water-calculation"
+    ],
+    "05": [
+      "transmittance-dilution",
+      "beers-law-calibration",
+      "brass-spectrophotometry",
+      "blue1-standard-dilutions",
+      "blue1-percent-transmittance",
+      "blue1-class-calibration"
+    ],
+    "06": [
+      "hard-water-gravimetry",
+      "hard-water-practice-preparation",
+      "gravimetric-vacuum-filtration",
+      "two-stage-precipitate-drying",
+      "inquiry-plan-approval",
+      "hard-water-two-sample-inquiry",
+      "paper-chromatography",
+      "bonding-solids-tests",
+      "tablet-separation",
+      "quick-ache-property-evidence",
+      "quick-ache-design-approval",
+      "quick-ache-extraction-recovery",
+      "quick-ache-analysis-report"
+    ],
+    "07": [
+      "titration-endpoint",
+      "beverage-ph-volume-titration",
+      "redox-titration"
+    ],
+    "08": [
+      "marble-gas-syringe-kinetics",
+      "crystal-violet-micromolar-dilution-series",
+      "crystal-violet-spectrophotometer-calibration",
+      "crystal-violet-integrated-rate-law-comparison",
+      "crystal-violet-waste-treatment",
+      "crystal-violet-kinetics"
+    ],
+    "09": [
+      "hand-warmer-calorimetry",
+      "equilibrium-rainbow-inquiry"
+    ],
+    "10": [
+      "titration-curve-analysis"
+    ],
+    "11": [
+      "thermal-decomposition-mass-loss"
+    ]
+  },
+  "labsByFinalCycle": {
+    "04": [
+      "intro-filtration-demo",
+      "hard-water-demo"
+    ],
+    "05": [
+      "blue1-spectroscopy",
+      "brass-colorimetry"
+    ],
+    "06": [
+      "hard-water-analysis",
+      "paper-chromatography",
+      "bonding-unknown-solids",
+      "quick-ache-relief-separation"
+    ],
+    "07": [
+      "acid-base-titration",
+      "beverage-acidity",
+      "hydrogen-peroxide-redox-titration"
+    ],
+    "08": [
+      "marble-statue-kinetics",
+      "crystal-violet-rate-law"
+    ],
+    "09": [
+      "hand-warmer-calorimetry",
+      "equilibrium-rainbow-display"
+    ],
+    "10": [
+      "acid-base-titration-curves"
+    ],
+    "11": [
+      "green-chemistry-mixture-purification"
+    ]
+  },
+  "sequentialPilotTransitions": [
+    {
+      "kind": "lab",
+      "id": "equilibrium-rainbow-display",
+      "pilotCycle": "03",
+      "finalOwnerCycle": "09"
+    },
+    {
+      "kind": "technique",
+      "id": "equilibrium-rainbow-inquiry",
+      "pilotCycle": "03",
+      "finalOwnerCycle": "09"
+    },
+    {
+      "kind": "lab",
+      "id": "quick-ache-relief-separation",
+      "pilotCycle": "03",
+      "finalOwnerCycle": "06"
+    },
+    {
+      "kind": "technique",
+      "id": "quick-ache-property-evidence",
+      "pilotCycle": "03",
+      "finalOwnerCycle": "06"
+    },
+    {
+      "kind": "technique",
+      "id": "quick-ache-design-approval",
+      "pilotCycle": "03",
+      "finalOwnerCycle": "06"
+    },
+    {
+      "kind": "technique",
+      "id": "quick-ache-extraction-recovery",
+      "pilotCycle": "03",
+      "finalOwnerCycle": "06"
+    },
+    {
+      "kind": "technique",
+      "id": "quick-ache-analysis-report",
+      "pilotCycle": "03",
+      "finalOwnerCycle": "06"
+    }
+  ],
+  "driftRule": "Cycle 01 must stop and rebaseline this ownership map if either public index adds, removes, or renames an owner before implementation begins."
+}

@@ -1,0 +1,54 @@
+{
+  "schema": "lab-studio/worktree-ref-baseline-manifest@1",
+  "baselineRevision": 10,
+  "state": "candidate-not-frozen",
+  "candidate": true,
+  "capturedOn": "2026-09-06",
+  "transportMode": "worktree-ref",
+  "repositoryScope": "Lab_studio subtree in the Projects parent repository",
+  "source": {
+    "branch": "codex/Lab_Studio",
+    "parentCommit": "bc3974c4165ad52e8a495517b36473aab397b3fa",
+    "parentLabStudioTree": "8f0696fd144016d4e392a3baa9a94c812b82ce87"
+  },
+  "predecessor": {
+    "baselineRevision": 9,
+    "state": "reviewed-frozen",
+    "manifestPath": "planning/2026-08-30_lab-studio-technique-composition-remediation/evidence/CYCLE_08_PLUS_SHARED_CONTRACT_BASELINE_REVISION_9.json",
+    "manifestSha256": "c7bf84a0593075edcb46c8d2effcfd15e23cffbee39a10b52084b00b048e5df2",
+    "sourceCommit": "1bfad0c56685baaff40c06cb58edc4b501387d8c"
+  },
+  "candidateScope": {
+    "purpose": "Record the revision-10 shared titration evidence candidate and its catalog reconciliation without changing the coordinator ledger.",
+    "ownedPaths": [
+      "scripts/generateHandWarmerCalorimetry.mjs",
+      "scripts/generatorInputs/titration/build.mjs",
+      "scripts/migrateCycle07Titration.mjs",
+      "src/runtime/titrationProcedure.ts",
+      "public/techniques/index.json",
+      "public/techniques/ph-volume-formal-titration-trial.json",
+      "planning/2026-08-30_lab-studio-technique-composition-remediation/evidence/CYCLE_10_SHARED_CONTRACT_BASELINE_REVISION_10.json",
+      "planning/2026-08-30_lab-studio-technique-composition-remediation/evidence/CYCLE_10_SHARED_CONTRACT_AMENDMENT_IMPACT.json"
+    ],
+    "generatedCycle07CarrierRetained": "public/techniques/ph-volume-titration-trial.json"
+  },
+  "catalogAccounting": {
+    "ownershipPath": "planning/2026-08-30_lab-studio-technique-composition-remediation/CATALOG_OWNERSHIP.json",
+    "expectedOwnerTechniqueCount": 41,
+    "frozenIndexCountBeforeCandidate": 42,
+    "frozenIndexCompositionBeforeCandidate": "41 catalog owners plus the unowned ph-volume-titration-trial carrier",
+    "candidateIndexCount": 42,
+    "candidateIndexComposition": "41 catalog owners plus one explicit route-only ph-volume-formal-titration-trial entry",
+    "replacedIndexedId": "ph-volume-titration-trial",
+    "candidateIndexedId": "ph-volume-formal-titration-trial",
+    "historicalPlanCount": 40,
+    "rationale": "The current ownership contract is 41 owners and the accepted frozen index already contains 42 entries. The candidate replaces the existing unowned carrier entry instead of appending a 43rd entry; the Cycle 07 carrier JSON remains generated and available to its direct consumers."
+  },
+  "freezeBoundary": {
+    "centralLedgerUnedited": "planning/2026-08-30_lab-studio-technique-composition-remediation/_CYCLE_STATUS.json",
+    "ownershipMatrixUnedited": "planning/2026-08-30_lab-studio-technique-composition-remediation/CATALOG_OWNERSHIP.json",
+    "cycle07InterfaceUnedited": "planning/2026-08-30_lab-studio-technique-composition-remediation/evidence/lane-07/cycle-10-interface.json",
+    "candidateAcceptanceRequired": true
+  },
+  "validationBoundary": "Source review and allowed basic static checks only. This candidate is not browser, build, detailed-test, deployment, or physical-validation evidence."
+}

@@ -1,0 +1,2793 @@
+{
+  "schema": "lab-studio/technique-atomicity-overlay@1",
+  "lane": "10",
+  "baselineRevision": 9,
+  "baselineManifestPath": "planning/2026-08-30_lab-studio-technique-composition-remediation/evidence/CYCLE_08_PLUS_SHARED_CONTRACT_BASELINE_REVISION_9.json",
+  "baselineManifestSha256": "c7bf84a0593075edcb46c8d2effcfd15e23cffbee39a10b52084b00b048e5df2",
+  "baselineAggregateSha256": "a656bd064f8333c91a82011bf3af6444e9cbab2aafba0b5eb122d0c8969e7ee5",
+  "baselineSourceCommit": "1bfad0c56685baaff40c06cb58edc4b501387d8c",
+  "baselineLabStudioTree": "3c8539993e16a1c31cf214fe07b6b6c408c3ec3c",
+  "baselineGitTreeListingSha256": "a656bd064f8333c91a82011bf3af6444e9cbab2aafba0b5eb122d0c8969e7ee5",
+  "baselineDisposition": "Reviewed-frozen revision 9 worktree-ref identity; Cycle 10 is additive and does not mutate the manifest.",
+  "owners": [
+    "technique:titration-curve-analysis",
+    "lab:acid-base-titration-curves"
+  ],
+  "validationBoundary": "Source/static evidence only; runtime, browser, detailed tests, build, and physical validation intentionally not run.",
+  "rows": [
+    {
+      "rowId": "titration-curve-analysis@1.2.0#observe-ph-paper",
+      "techniqueId": "titration-curve-analysis",
+      "techniqueVersion": "1.2.0",
+      "actionId": "observe-ph-paper",
+      "actionLabel": "Observe pH paper",
+      "actionVerb": "observe",
+      "reachableTechniqueNodeConsumers": [],
+      "coverage": {
+        "atomId": null,
+        "atomRegistryEntryPresent": false,
+        "equipmentRoleBindings": {},
+        "equipmentRoleRegistryEntriesPresent": true,
+        "missingRequiredRoles": [],
+        "sourceTraceCount": 0,
+        "sourceStatus": "source-trace-missing"
+      },
+      "finalOwningCycle": "10",
+      "effect": {
+        "registryHandlerDerivedClasses": [
+          "evidence-recording"
+        ],
+        "typedTargetDomains": [
+          "evidence"
+        ],
+        "flags": {
+          "apparatusMaterialInstrumentState": false,
+          "measurementOrDirectObservation": false,
+          "evidenceRecording": true,
+          "calculationOrAnalysis": false,
+          "pedagogicalOrchestration": false
+        },
+        "declaredVersusDerivedConflict": {
+          "hasConflict": false,
+          "reasons": []
+        },
+        "resolvedInteractionType": null
+      },
+      "atomicity": {
+        "realBenchVerb": "observe",
+        "persistentStateTransition": [
+          "Observe pH paper: pH paper screening is recorded."
+        ],
+        "prerequisites": [],
+        "distinctPausePoint": "Completion of node evidence for observe-ph-paper; no cursor/grasp microstep is introduced.",
+        "invalidUnsafeCases": [
+          {
+            "id": "wrong-order",
+            "when": "current node expects a different action",
+            "message": "That action is out of sequence for the current technique step.",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "id": "missing-source",
+            "when": "source equipment or contents are missing",
+            "message": "The selected source does not contain the material required for this action.",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "id": "overflow",
+            "when": "target capacity would be exceeded",
+            "message": "The target equipment cannot hold the requested volume.",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "recoveryBoundary": [
+          {
+            "caseId": "wrong-order",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "caseId": "missing-source",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "caseId": "overflow",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "evidenceBoundary": {
+          "actionEvidence": [
+            "observe",
+            "notebook"
+          ],
+          "atomEvidence": null
+        },
+        "flags": {
+          "multiVerb": false,
+          "positionVersusOperate": false,
+          "readVersusRecord": false,
+          "conditionVersusMeasure": false
+        },
+        "verdict": "nonphysical",
+        "proposedChildOperations": [],
+        "publicIdDisposition": "Preserve observe-ph-paper."
+      },
+      "sourceDisposition": {
+        "applicableSourceClaims": [],
+        "conflict": true,
+        "governingAuthorityAndRationale": "Nonphysical evidence/configuration carrier remains explicit and does not invent a source procedure or expected result.",
+        "unresolvedConfirmationPoint": null
+      },
+      "techniqueMatchDecision": "exact-compatible-version",
+      "blockedReason": null,
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#measure-curve-analyte",
+      "techniqueId": "titration-curve-analysis",
+      "techniqueVersion": "1.2.0",
+      "actionId": "measure-curve-analyte",
+      "actionLabel": "Measure titration analyte",
+      "actionVerb": "measureVolume",
+      "reachableTechniqueNodeConsumers": [],
+      "coverage": {
+        "atomId": "atom.measure.variable-volume",
+        "atomRegistryEntryPresent": true,
+        "equipmentRoleBindings": {
+          "variable-volume-measuring-device": "graduated-cylinder",
+          "liquid-source": "unknown-acid-bottle"
+        },
+        "equipmentRoleRegistryEntriesPresent": true,
+        "missingRequiredRoles": [],
+        "sourceTraceCount": 1,
+        "sourceStatus": "source-traced"
+      },
+      "finalOwningCycle": "10",
+      "effect": {
+        "registryHandlerDerivedClasses": [
+          "apparatus-material-instrument-state",
+          "measurement-direct-observation-acquisition"
+        ],
+        "typedTargetDomains": [
+          "equipment",
+          "material",
+          "instrument",
+          "measurement-observation",
+          "evidence"
+        ],
+        "flags": {
+          "apparatusMaterialInstrumentState": true,
+          "measurementOrDirectObservation": true,
+          "evidenceRecording": false,
+          "calculationOrAnalysis": false,
+          "pedagogicalOrchestration": false
+        },
+        "declaredVersusDerivedConflict": {
+          "hasConflict": false,
+          "reasons": []
+        },
+        "resolvedInteractionType": "pourInto"
+      },
+      "atomicity": {
+        "realBenchVerb": "measureVolume",
+        "persistentStateTransition": [
+          "Measure titration analyte: The titration analyte volume is measured."
+        ],
+        "prerequisites": [],
+        "distinctPausePoint": "Completion of node evidence for measure-curve-analyte; no cursor/grasp microstep is introduced.",
+        "invalidUnsafeCases": [
+          {
+            "id": "wrong-order",
+            "when": "current node expects a different action",
+            "message": "That action is out of sequence for the current technique step.",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "id": "missing-source",
+            "when": "source equipment or contents are missing",
+            "message": "The selected source does not contain the material required for this action.",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "id": "overflow",
+            "when": "target capacity would be exceeded",
+            "message": "The target equipment cannot hold the requested volume.",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "recoveryBoundary": [
+          {
+            "caseId": "wrong-order",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "caseId": "missing-source",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "caseId": "overflow",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "evidenceBoundary": {
+          "actionEvidence": [
+            "measureVolume",
+            "measurement"
+          ],
+          "atomEvidence": "measured volume at the device's precision"
+        },
+        "flags": {
+          "multiVerb": false,
+          "positionVersusOperate": false,
+          "readVersusRecord": false,
+          "conditionVersusMeasure": false
+        },
+        "verdict": "keep",
+        "proposedChildOperations": [],
+        "publicIdDisposition": "Preserve measure-curve-analyte."
+      },
+      "sourceDisposition": {
+        "applicableSourceClaims": [
+          {
+            "sourceFile": "acid-base-titration-curves_2026-07-27.md",
+            "sourceTable": "phase",
+            "step": "T-03",
+            "basis": "M"
+          }
+        ],
+        "conflict": false,
+        "governingAuthorityAndRationale": "Exact dated source-trace row retained for the physical action; the formal trial remains the route authority for context-specific acquisition.",
+        "unresolvedConfirmationPoint": null
+      },
+      "techniqueMatchDecision": "exact-compatible-version",
+      "blockedReason": null,
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#transfer-curve-analyte",
+      "techniqueId": "titration-curve-analysis",
+      "techniqueVersion": "1.2.0",
+      "actionId": "transfer-curve-analyte",
+      "actionLabel": "Transfer the analyte into the titration beaker",
+      "actionVerb": "transfer",
+      "reachableTechniqueNodeConsumers": [],
+      "coverage": {
+        "atomId": "atom.transfer.measured-liquid",
+        "atomRegistryEntryPresent": true,
+        "equipmentRoleBindings": {
+          "measured-solvent-source": "graduated-cylinder",
+          "receiving-vessel": "beaker-250ml"
+        },
+        "equipmentRoleRegistryEntriesPresent": true,
+        "missingRequiredRoles": [],
+        "sourceTraceCount": 1,
+        "sourceStatus": "source-traced"
+      },
+      "finalOwningCycle": "10",
+      "effect": {
+        "registryHandlerDerivedClasses": [
+          "apparatus-material-instrument-state"
+        ],
+        "typedTargetDomains": [
+          "equipment",
+          "material",
+          "instrument"
+        ],
+        "flags": {
+          "apparatusMaterialInstrumentState": true,
+          "measurementOrDirectObservation": false,
+          "evidenceRecording": false,
+          "calculationOrAnalysis": false,
+          "pedagogicalOrchestration": false
+        },
+        "declaredVersusDerivedConflict": {
+          "hasConflict": false,
+          "reasons": []
+        },
+        "resolvedInteractionType": "pourInto"
+      },
+      "atomicity": {
+        "realBenchVerb": "transfer",
+        "persistentStateTransition": [
+          "Transfer titration analyte: The analyte is in the titration beaker."
+        ],
+        "prerequisites": [],
+        "distinctPausePoint": "Completion of node evidence for transfer-curve-analyte; no cursor/grasp microstep is introduced.",
+        "invalidUnsafeCases": [
+          {
+            "id": "wrong-order",
+            "when": "current node expects a different action",
+            "message": "That action is out of sequence for the current technique step.",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "id": "missing-source",
+            "when": "source equipment or contents are missing",
+            "message": "The selected source does not contain the material required for this action.",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "id": "overflow",
+            "when": "target capacity would be exceeded",
+            "message": "The target equipment cannot hold the requested volume.",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "recoveryBoundary": [
+          {
+            "caseId": "wrong-order",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "caseId": "missing-source",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "caseId": "overflow",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "evidenceBoundary": {
+          "actionEvidence": [
+            "transfer"
+          ],
+          "atomEvidence": "receiving vessel holding the transferred volume"
+        },
+        "flags": {
+          "multiVerb": false,
+          "positionVersusOperate": false,
+          "readVersusRecord": false,
+          "conditionVersusMeasure": false
+        },
+        "verdict": "keep",
+        "proposedChildOperations": [],
+        "publicIdDisposition": "Preserve transfer-curve-analyte."
+      },
+      "sourceDisposition": {
+        "applicableSourceClaims": [
+          {
+            "sourceFile": "acid-base-titration-curves_2026-07-27.md",
+            "sourceTable": "phase",
+            "step": "T-03",
+            "basis": "M"
+          }
+        ],
+        "conflict": false,
+        "governingAuthorityAndRationale": "Exact dated source-trace row retained for the physical action; the formal trial remains the route authority for context-specific acquisition.",
+        "unresolvedConfirmationPoint": null
+      },
+      "techniqueMatchDecision": "exact-compatible-version",
+      "blockedReason": null,
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#place-curve-ph-probe",
+      "techniqueId": "titration-curve-analysis",
+      "techniqueVersion": "1.2.0",
+      "actionId": "place-curve-ph-probe",
+      "actionLabel": "Insert the pH probe in the titration beaker",
+      "actionVerb": "place",
+      "reachableTechniqueNodeConsumers": [],
+      "coverage": {
+        "atomId": "atom.place.immersed-ph-probe",
+        "atomRegistryEntryPresent": true,
+        "equipmentRoleBindings": {
+          "immersed-probe-instrument": "ph-meter",
+          "immersed-probe-vessel": "beaker-250ml"
+        },
+        "equipmentRoleRegistryEntriesPresent": true,
+        "missingRequiredRoles": [],
+        "sourceTraceCount": 1,
+        "sourceStatus": "source-traced"
+      },
+      "finalOwningCycle": "10",
+      "effect": {
+        "registryHandlerDerivedClasses": [
+          "apparatus-material-instrument-state"
+        ],
+        "typedTargetDomains": [
+          "equipment",
+          "material",
+          "instrument"
+        ],
+        "flags": {
+          "apparatusMaterialInstrumentState": true,
+          "measurementOrDirectObservation": false,
+          "evidenceRecording": false,
+          "calculationOrAnalysis": false,
+          "pedagogicalOrchestration": false
+        },
+        "declaredVersusDerivedConflict": {
+          "hasConflict": false,
+          "reasons": []
+        },
+        "resolvedInteractionType": "dragToZone"
+      },
+      "atomicity": {
+        "realBenchVerb": "place",
+        "persistentStateTransition": [
+          "Immerse the pH probe in the analyte."
+        ],
+        "prerequisites": [
+          {
+            "id": "analyte-required-for-probe",
+            "type": "actionEvidence",
+            "label": "The analyte is in the beaker.",
+            "actionId": "transfer-curve-analyte"
+          }
+        ],
+        "distinctPausePoint": "Completion of node evidence for place-curve-ph-probe; no cursor/grasp microstep is introduced.",
+        "invalidUnsafeCases": [
+          {
+            "id": "dry-probe",
+            "when": "the vessel holds too little liquid to cover the bulb",
+            "message": "The probe bulb is not immersed.",
+            "recovery": "Charge the beaker with the approved aliquot first."
+          }
+        ],
+        "recoveryBoundary": [
+          {
+            "caseId": "dry-probe",
+            "recovery": "Charge the beaker with the approved aliquot first."
+          }
+        ],
+        "evidenceBoundary": {
+          "actionEvidence": [
+            "place",
+            "probe"
+          ],
+          "atomEvidence": "probe immersed in the analyte with the burette overhead"
+        },
+        "flags": {
+          "multiVerb": false,
+          "positionVersusOperate": false,
+          "readVersusRecord": false,
+          "conditionVersusMeasure": false
+        },
+        "verdict": "keep",
+        "proposedChildOperations": [],
+        "publicIdDisposition": "Preserve place-curve-ph-probe."
+      },
+      "sourceDisposition": {
+        "applicableSourceClaims": [
+          {
+            "sourceFile": "acid-base-titration-curves_2026-07-27.md",
+            "sourceTable": "phase",
+            "step": "T-04",
+            "basis": "M/R"
+          }
+        ],
+        "conflict": false,
+        "governingAuthorityAndRationale": "Exact dated source-trace row retained for the physical action; the formal trial remains the route authority for context-specific acquisition.",
+        "unresolvedConfirmationPoint": null
+      },
+      "techniqueMatchDecision": "exact-compatible-version",
+      "blockedReason": null,
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#read-initial-ph",
+      "techniqueId": "titration-curve-analysis",
+      "techniqueVersion": "1.2.0",
+      "actionId": "read-initial-ph",
+      "actionLabel": "Read the initial pH",
+      "actionVerb": "observe",
+      "reachableTechniqueNodeConsumers": [],
+      "coverage": {
+        "atomId": "atom.observe.read-titration-ph",
+        "atomRegistryEntryPresent": true,
+        "equipmentRoleBindings": {
+          "immersed-probe-instrument": "ph-meter",
+          "immersed-probe-vessel": "beaker-250ml"
+        },
+        "equipmentRoleRegistryEntriesPresent": true,
+        "missingRequiredRoles": [],
+        "sourceTraceCount": 1,
+        "sourceStatus": "source-traced"
+      },
+      "finalOwningCycle": "10",
+      "effect": {
+        "registryHandlerDerivedClasses": [
+          "measurement-direct-observation-acquisition"
+        ],
+        "typedTargetDomains": [
+          "instrument",
+          "measurement-observation",
+          "evidence"
+        ],
+        "flags": {
+          "apparatusMaterialInstrumentState": false,
+          "measurementOrDirectObservation": true,
+          "evidenceRecording": false,
+          "calculationOrAnalysis": false,
+          "pedagogicalOrchestration": false
+        },
+        "declaredVersusDerivedConflict": {
+          "hasConflict": false,
+          "reasons": []
+        },
+        "resolvedInteractionType": "readInstrument"
+      },
+      "atomicity": {
+        "realBenchVerb": "observe",
+        "persistentStateTransition": [
+          "Read the pH meter; reading and recording stay separate."
+        ],
+        "prerequisites": [
+          {
+            "id": "probe-required",
+            "type": "actionEvidence",
+            "label": "The probe is immersed.",
+            "actionId": "place-curve-ph-probe"
+          }
+        ],
+        "distinctPausePoint": "Completion of node evidence for read-initial-ph; no cursor/grasp microstep is introduced.",
+        "invalidUnsafeCases": [
+          {
+            "id": "probe-not-immersed",
+            "when": "the probe is not in the analyte",
+            "message": "A probe out of solution reports nothing meaningful.",
+            "recovery": "Immerse the probe bulb, then read the meter."
+          }
+        ],
+        "recoveryBoundary": [
+          {
+            "caseId": "probe-not-immersed",
+            "recovery": "Immerse the probe bulb, then read the meter."
+          }
+        ],
+        "evidenceBoundary": {
+          "actionEvidence": [
+            "observe",
+            "measurement"
+          ],
+          "atomEvidence": "pH at a stated cumulative titrant volume, tagged live or stabilised"
+        },
+        "flags": {
+          "multiVerb": false,
+          "positionVersusOperate": false,
+          "readVersusRecord": false,
+          "conditionVersusMeasure": false
+        },
+        "verdict": "keep",
+        "proposedChildOperations": [],
+        "publicIdDisposition": "Preserve read-initial-ph."
+      },
+      "sourceDisposition": {
+        "applicableSourceClaims": [
+          {
+            "sourceFile": "acid-base-titration-curves_2026-07-27.md",
+            "sourceTable": "phase",
+            "step": "T-05",
+            "basis": "M"
+          }
+        ],
+        "conflict": false,
+        "governingAuthorityAndRationale": "Exact dated source-trace row retained for the physical action; the formal trial remains the route authority for context-specific acquisition.",
+        "unresolvedConfirmationPoint": null
+      },
+      "techniqueMatchDecision": "exact-compatible-version",
+      "blockedReason": null,
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#record-initial-ph",
+      "techniqueId": "titration-curve-analysis",
+      "techniqueVersion": "1.2.0",
+      "actionId": "record-initial-ph",
+      "actionLabel": "Record initial pH",
+      "actionVerb": "record",
+      "reachableTechniqueNodeConsumers": [],
+      "coverage": {
+        "atomId": null,
+        "atomRegistryEntryPresent": false,
+        "equipmentRoleBindings": {},
+        "equipmentRoleRegistryEntriesPresent": true,
+        "missingRequiredRoles": [],
+        "sourceTraceCount": 0,
+        "sourceStatus": "source-trace-missing"
+      },
+      "finalOwningCycle": "10",
+      "effect": {
+        "registryHandlerDerivedClasses": [
+          "evidence-recording"
+        ],
+        "typedTargetDomains": [
+          "evidence"
+        ],
+        "flags": {
+          "apparatusMaterialInstrumentState": false,
+          "measurementOrDirectObservation": false,
+          "evidenceRecording": true,
+          "calculationOrAnalysis": false,
+          "pedagogicalOrchestration": false
+        },
+        "declaredVersusDerivedConflict": {
+          "hasConflict": false,
+          "reasons": []
+        },
+        "resolvedInteractionType": "recordNotebook"
+      },
+      "atomicity": {
+        "realBenchVerb": "record",
+        "persistentStateTransition": [
+          "Record initial pH: Initial pH is recorded."
+        ],
+        "prerequisites": [
+          {
+            "id": "ph-read-required",
+            "type": "notebookEntry",
+            "label": "The initial pH has been read.",
+            "notebookTag": "initial-ph-read"
+          }
+        ],
+        "distinctPausePoint": "Completion of node evidence for record-initial-ph; no cursor/grasp microstep is introduced.",
+        "invalidUnsafeCases": [
+          {
+            "id": "wrong-order",
+            "when": "current node expects a different action",
+            "message": "That action is out of sequence for the current technique step.",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "id": "missing-source",
+            "when": "source equipment or contents are missing",
+            "message": "The selected source does not contain the material required for this action.",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "id": "overflow",
+            "when": "target capacity would be exceeded",
+            "message": "The target equipment cannot hold the requested volume.",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "recoveryBoundary": [
+          {
+            "caseId": "wrong-order",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "caseId": "missing-source",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "caseId": "overflow",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "evidenceBoundary": {
+          "actionEvidence": [
+            "record",
+            "measurement"
+          ],
+          "atomEvidence": null
+        },
+        "flags": {
+          "multiVerb": false,
+          "positionVersusOperate": false,
+          "readVersusRecord": false,
+          "conditionVersusMeasure": false
+        },
+        "verdict": "nonphysical",
+        "proposedChildOperations": [],
+        "publicIdDisposition": "Preserve record-initial-ph."
+      },
+      "sourceDisposition": {
+        "applicableSourceClaims": [],
+        "conflict": false,
+        "governingAuthorityAndRationale": "Nonphysical evidence/configuration carrier remains explicit and does not invent a source procedure or expected result.",
+        "unresolvedConfirmationPoint": null
+      },
+      "techniqueMatchDecision": "exact-compatible-version",
+      "blockedReason": null,
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#mount-curve-burette",
+      "techniqueId": "titration-curve-analysis",
+      "techniqueVersion": "1.2.0",
+      "actionId": "mount-curve-burette",
+      "actionLabel": "Mount the burette in the clamp",
+      "actionVerb": "place",
+      "reachableTechniqueNodeConsumers": [],
+      "coverage": {
+        "atomId": "atom.place.mount-burette",
+        "atomRegistryEntryPresent": true,
+        "equipmentRoleBindings": {
+          "titrant-delivery-device": "burette-50ml",
+          "burette-support": "ring-stand-clamp"
+        },
+        "equipmentRoleRegistryEntriesPresent": true,
+        "missingRequiredRoles": [],
+        "sourceTraceCount": 1,
+        "sourceStatus": "source-traced"
+      },
+      "finalOwningCycle": "10",
+      "effect": {
+        "registryHandlerDerivedClasses": [
+          "apparatus-material-instrument-state"
+        ],
+        "typedTargetDomains": [
+          "equipment",
+          "material",
+          "instrument"
+        ],
+        "flags": {
+          "apparatusMaterialInstrumentState": true,
+          "measurementOrDirectObservation": false,
+          "evidenceRecording": false,
+          "calculationOrAnalysis": false,
+          "pedagogicalOrchestration": false
+        },
+        "declaredVersusDerivedConflict": {
+          "hasConflict": false,
+          "reasons": []
+        },
+        "resolvedInteractionType": "snapIntoTarget"
+      },
+      "atomicity": {
+        "realBenchVerb": "place",
+        "persistentStateTransition": [
+          "Clamp the burette to the ring stand."
+        ],
+        "prerequisites": [],
+        "distinctPausePoint": "Completion of node evidence for mount-curve-burette; no cursor/grasp microstep is introduced.",
+        "invalidUnsafeCases": [
+          {
+            "id": "wrong-order",
+            "when": "current node expects a different action",
+            "message": "That action is out of sequence for this technique step.",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "id": "no-support",
+            "when": "no ring stand and clamp are on the workbench",
+            "message": "There is nothing to clamp the burette to.",
+            "recovery": "Place the ring stand and clamp, then seat the burette in it."
+          }
+        ],
+        "recoveryBoundary": [
+          {
+            "caseId": "wrong-order",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "caseId": "no-support",
+            "recovery": "Place the ring stand and clamp, then seat the burette in it."
+          }
+        ],
+        "evidenceBoundary": {
+          "actionEvidence": [
+            "place",
+            "titration-setup"
+          ],
+          "atomEvidence": "burette clamped above the receiver"
+        },
+        "flags": {
+          "multiVerb": false,
+          "positionVersusOperate": false,
+          "readVersusRecord": false,
+          "conditionVersusMeasure": false
+        },
+        "verdict": "keep",
+        "proposedChildOperations": [],
+        "publicIdDisposition": "Preserve mount-curve-burette."
+      },
+      "sourceDisposition": {
+        "applicableSourceClaims": [
+          {
+            "sourceFile": "acid-base-titration-curves_2026-07-27.md",
+            "sourceTable": "phase",
+            "step": "T-02",
+            "basis": "M/R"
+          }
+        ],
+        "conflict": false,
+        "governingAuthorityAndRationale": "Exact dated source-trace row retained for the physical action; the formal trial remains the route authority for context-specific acquisition.",
+        "unresolvedConfirmationPoint": null
+      },
+      "techniqueMatchDecision": "exact-compatible-version",
+      "blockedReason": null,
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#fill-curve-burette",
+      "techniqueId": "titration-curve-analysis",
+      "techniqueVersion": "1.2.0",
+      "actionId": "fill-curve-burette",
+      "actionLabel": "Fill the conditioned burette with titrant",
+      "actionVerb": "transfer",
+      "reachableTechniqueNodeConsumers": [],
+      "coverage": {
+        "atomId": "atom.transfer.fill-burette",
+        "atomRegistryEntryPresent": true,
+        "equipmentRoleBindings": {
+          "titrant-source": "naoh-bottle",
+          "titrant-delivery-device": "burette-50ml"
+        },
+        "equipmentRoleRegistryEntriesPresent": true,
+        "missingRequiredRoles": [],
+        "sourceTraceCount": 1,
+        "sourceStatus": "source-traced"
+      },
+      "finalOwningCycle": "10",
+      "effect": {
+        "registryHandlerDerivedClasses": [
+          "apparatus-material-instrument-state"
+        ],
+        "typedTargetDomains": [
+          "equipment",
+          "material",
+          "instrument"
+        ],
+        "flags": {
+          "apparatusMaterialInstrumentState": true,
+          "measurementOrDirectObservation": false,
+          "evidenceRecording": false,
+          "calculationOrAnalysis": false,
+          "pedagogicalOrchestration": false
+        },
+        "declaredVersusDerivedConflict": {
+          "hasConflict": false,
+          "reasons": []
+        },
+        "resolvedInteractionType": "pourInto"
+      },
+      "atomicity": {
+        "realBenchVerb": "transfer",
+        "persistentStateTransition": [
+          "Fill curve burette: The burette is filled with titrant."
+        ],
+        "prerequisites": [
+          {
+            "id": "burette-mounted-required-for-fill",
+            "type": "actionEvidence",
+            "label": "The burette is clamped to the stand.",
+            "actionId": "mount-curve-burette"
+          }
+        ],
+        "distinctPausePoint": "Completion of node evidence for fill-curve-burette; no cursor/grasp microstep is introduced.",
+        "invalidUnsafeCases": [
+          {
+            "id": "wrong-order",
+            "when": "current node expects a different action",
+            "message": "That action is out of sequence for the current technique step.",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "id": "missing-source",
+            "when": "source equipment or contents are missing",
+            "message": "The selected source does not contain the material required for this action.",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "id": "overflow",
+            "when": "target capacity would be exceeded",
+            "message": "The target equipment cannot hold the requested volume.",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "recoveryBoundary": [
+          {
+            "caseId": "wrong-order",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "caseId": "missing-source",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "caseId": "overflow",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "evidenceBoundary": {
+          "actionEvidence": [
+            "transfer"
+          ],
+          "atomEvidence": "burette holding titrant, ready to be read"
+        },
+        "flags": {
+          "multiVerb": false,
+          "positionVersusOperate": false,
+          "readVersusRecord": false,
+          "conditionVersusMeasure": false
+        },
+        "verdict": "keep",
+        "proposedChildOperations": [],
+        "publicIdDisposition": "Preserve fill-curve-burette."
+      },
+      "sourceDisposition": {
+        "applicableSourceClaims": [
+          {
+            "sourceFile": "acid-base-titration-curves_2026-07-27.md",
+            "sourceTable": "phase",
+            "step": "T-02",
+            "basis": "M/R"
+          }
+        ],
+        "conflict": false,
+        "governingAuthorityAndRationale": "Exact dated source-trace row retained for the physical action; the formal trial remains the route authority for context-specific acquisition.",
+        "unresolvedConfirmationPoint": null
+      },
+      "techniqueMatchDecision": "exact-compatible-version",
+      "blockedReason": null,
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#read-curve-initial-burette",
+      "techniqueId": "titration-curve-analysis",
+      "techniqueVersion": "1.2.0",
+      "actionId": "read-curve-initial-burette",
+      "actionLabel": "Read the initial burette level",
+      "actionVerb": "measureVolume",
+      "reachableTechniqueNodeConsumers": [],
+      "coverage": {
+        "atomId": "atom.measure.read-burette",
+        "atomRegistryEntryPresent": true,
+        "equipmentRoleBindings": {
+          "titrant-delivery-device": "burette-50ml"
+        },
+        "equipmentRoleRegistryEntriesPresent": true,
+        "missingRequiredRoles": [],
+        "sourceTraceCount": 1,
+        "sourceStatus": "source-traced"
+      },
+      "finalOwningCycle": "10",
+      "effect": {
+        "registryHandlerDerivedClasses": [
+          "measurement-direct-observation-acquisition"
+        ],
+        "typedTargetDomains": [
+          "instrument",
+          "measurement-observation",
+          "evidence"
+        ],
+        "flags": {
+          "apparatusMaterialInstrumentState": false,
+          "measurementOrDirectObservation": true,
+          "evidenceRecording": false,
+          "calculationOrAnalysis": false,
+          "pedagogicalOrchestration": false
+        },
+        "declaredVersusDerivedConflict": {
+          "hasConflict": false,
+          "reasons": []
+        },
+        "resolvedInteractionType": "readInstrument"
+      },
+      "atomicity": {
+        "realBenchVerb": "measureVolume",
+        "persistentStateTransition": [
+          "Read the burette scale; a reading delivers nothing."
+        ],
+        "prerequisites": [
+          {
+            "id": "filled-required",
+            "type": "actionEvidence",
+            "label": "The burette has been filled.",
+            "actionId": "fill-curve-burette"
+          }
+        ],
+        "distinctPausePoint": "Completion of node evidence for read-curve-initial-burette; no cursor/grasp microstep is introduced.",
+        "invalidUnsafeCases": [
+          {
+            "id": "empty-burette",
+            "when": "the burette holds no titrant",
+            "message": "There is no meniscus to read.",
+            "recovery": "Fill the burette, then read the scale."
+          }
+        ],
+        "recoveryBoundary": [
+          {
+            "caseId": "empty-burette",
+            "recovery": "Fill the burette, then read the scale."
+          }
+        ],
+        "evidenceBoundary": {
+          "actionEvidence": [
+            "measureVolume",
+            "measurement"
+          ],
+          "atomEvidence": "burette reading at the instrument's precision"
+        },
+        "flags": {
+          "multiVerb": false,
+          "positionVersusOperate": false,
+          "readVersusRecord": false,
+          "conditionVersusMeasure": false
+        },
+        "verdict": "keep",
+        "proposedChildOperations": [],
+        "publicIdDisposition": "Preserve read-curve-initial-burette."
+      },
+      "sourceDisposition": {
+        "applicableSourceClaims": [
+          {
+            "sourceFile": "acid-base-titration-curves_2026-07-27.md",
+            "sourceTable": "phase",
+            "step": "T-02",
+            "basis": "M/R"
+          }
+        ],
+        "conflict": false,
+        "governingAuthorityAndRationale": "Exact dated source-trace row retained for the physical action; the formal trial remains the route authority for context-specific acquisition.",
+        "unresolvedConfirmationPoint": null
+      },
+      "techniqueMatchDecision": "exact-compatible-version",
+      "blockedReason": null,
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#deliver-curve-titrant",
+      "techniqueId": "titration-curve-analysis",
+      "techniqueVersion": "1.2.0",
+      "actionId": "deliver-curve-titrant",
+      "actionLabel": "Deliver titrant through the steep region",
+      "actionVerb": "transfer",
+      "reachableTechniqueNodeConsumers": [],
+      "coverage": {
+        "atomId": "atom.transfer.deliver-titrant",
+        "atomRegistryEntryPresent": true,
+        "equipmentRoleBindings": {
+          "titrant-delivery-device": "burette-50ml",
+          "analyte-receiver": "beaker-250ml"
+        },
+        "equipmentRoleRegistryEntriesPresent": true,
+        "missingRequiredRoles": [],
+        "sourceTraceCount": 1,
+        "sourceStatus": "source-traced"
+      },
+      "finalOwningCycle": "10",
+      "effect": {
+        "registryHandlerDerivedClasses": [
+          "apparatus-material-instrument-state"
+        ],
+        "typedTargetDomains": [
+          "equipment",
+          "material",
+          "instrument"
+        ],
+        "flags": {
+          "apparatusMaterialInstrumentState": true,
+          "measurementOrDirectObservation": false,
+          "evidenceRecording": false,
+          "calculationOrAnalysis": false,
+          "pedagogicalOrchestration": false
+        },
+        "declaredVersusDerivedConflict": {
+          "hasConflict": false,
+          "reasons": []
+        },
+        "resolvedInteractionType": "dispenseDrops"
+      },
+      "atomicity": {
+        "realBenchVerb": "transfer",
+        "persistentStateTransition": [
+          "Deliver curve titrant: Titrant is delivered while pH is monitored."
+        ],
+        "prerequisites": [
+          {
+            "id": "burette-mounted-required-for-delivery",
+            "type": "actionEvidence",
+            "label": "The burette is clamped to the stand.",
+            "actionId": "mount-curve-burette"
+          },
+          {
+            "id": "analyte-in-beaker-required",
+            "type": "actionEvidence",
+            "label": "The analyte is in the titration beaker.",
+            "actionId": "transfer-curve-analyte"
+          },
+          {
+            "id": "curve-initial-required",
+            "type": "measurementRecorded",
+            "label": "The initial burette reading is recorded.",
+            "measurementId": "curve-initial-burette"
+          }
+        ],
+        "distinctPausePoint": "Completion of node evidence for deliver-curve-titrant; no cursor/grasp microstep is introduced.",
+        "invalidUnsafeCases": [
+          {
+            "id": "wrong-order",
+            "when": "current node expects a different action",
+            "message": "That action is out of sequence for the current technique step.",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "id": "missing-source",
+            "when": "source equipment or contents are missing",
+            "message": "The selected source does not contain the material required for this action.",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "id": "overflow",
+            "when": "target capacity would be exceeded",
+            "message": "The target equipment cannot hold the requested volume.",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "recoveryBoundary": [
+          {
+            "caseId": "wrong-order",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "caseId": "missing-source",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "caseId": "overflow",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "evidenceBoundary": {
+          "actionEvidence": [
+            "transfer"
+          ],
+          "atomEvidence": "delivered volume and the current colour state"
+        },
+        "flags": {
+          "multiVerb": false,
+          "positionVersusOperate": false,
+          "readVersusRecord": false,
+          "conditionVersusMeasure": false
+        },
+        "verdict": "keep",
+        "proposedChildOperations": [],
+        "publicIdDisposition": "Preserve deliver-curve-titrant."
+      },
+      "sourceDisposition": {
+        "applicableSourceClaims": [
+          {
+            "sourceFile": "acid-base-titration-curves_2026-07-27.md",
+            "sourceTable": "phase",
+            "step": "T-06",
+            "basis": "M/C"
+          }
+        ],
+        "conflict": false,
+        "governingAuthorityAndRationale": "Exact dated source-trace row retained for the physical action; the formal trial remains the route authority for context-specific acquisition.",
+        "unresolvedConfirmationPoint": null
+      },
+      "techniqueMatchDecision": "exact-compatible-version",
+      "blockedReason": null,
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#record-equivalence-volume",
+      "techniqueId": "titration-curve-analysis",
+      "techniqueVersion": "1.2.0",
+      "actionId": "record-equivalence-volume",
+      "actionLabel": "Record equivalence volume",
+      "actionVerb": "record",
+      "reachableTechniqueNodeConsumers": [],
+      "coverage": {
+        "atomId": null,
+        "atomRegistryEntryPresent": false,
+        "equipmentRoleBindings": {},
+        "equipmentRoleRegistryEntriesPresent": true,
+        "missingRequiredRoles": [],
+        "sourceTraceCount": 0,
+        "sourceStatus": "source-trace-missing"
+      },
+      "finalOwningCycle": "10",
+      "effect": {
+        "registryHandlerDerivedClasses": [
+          "evidence-recording"
+        ],
+        "typedTargetDomains": [
+          "evidence"
+        ],
+        "flags": {
+          "apparatusMaterialInstrumentState": false,
+          "measurementOrDirectObservation": false,
+          "evidenceRecording": true,
+          "calculationOrAnalysis": false,
+          "pedagogicalOrchestration": false
+        },
+        "declaredVersusDerivedConflict": {
+          "hasConflict": false,
+          "reasons": []
+        },
+        "resolvedInteractionType": "recordNotebook"
+      },
+      "atomicity": {
+        "realBenchVerb": "record",
+        "persistentStateTransition": [
+          "Record equivalence volume: Equivalence volume is recorded."
+        ],
+        "prerequisites": [
+          {
+            "id": "curve-final-required",
+            "type": "measurementRecorded",
+            "label": "The titration has reached its final reading.",
+            "measurementId": "curve-final-burette"
+          }
+        ],
+        "distinctPausePoint": "Completion of node evidence for record-equivalence-volume; no cursor/grasp microstep is introduced.",
+        "invalidUnsafeCases": [
+          {
+            "id": "wrong-order",
+            "when": "current node expects a different action",
+            "message": "That action is out of sequence for the current technique step.",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "id": "missing-source",
+            "when": "source equipment or contents are missing",
+            "message": "The selected source does not contain the material required for this action.",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "id": "overflow",
+            "when": "target capacity would be exceeded",
+            "message": "The target equipment cannot hold the requested volume.",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "recoveryBoundary": [
+          {
+            "caseId": "wrong-order",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "caseId": "missing-source",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "caseId": "overflow",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "evidenceBoundary": {
+          "actionEvidence": [
+            "record",
+            "measurement"
+          ],
+          "atomEvidence": null
+        },
+        "flags": {
+          "multiVerb": false,
+          "positionVersusOperate": false,
+          "readVersusRecord": false,
+          "conditionVersusMeasure": false
+        },
+        "verdict": "nonphysical",
+        "proposedChildOperations": [],
+        "publicIdDisposition": "Preserve record-equivalence-volume."
+      },
+      "sourceDisposition": {
+        "applicableSourceClaims": [],
+        "conflict": false,
+        "governingAuthorityAndRationale": "Nonphysical evidence/configuration carrier remains explicit and does not invent a source procedure or expected result.",
+        "unresolvedConfirmationPoint": null
+      },
+      "techniqueMatchDecision": "exact-compatible-version",
+      "blockedReason": null,
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#calculate-curve-molarity",
+      "techniqueId": "titration-curve-analysis",
+      "techniqueVersion": "1.2.0",
+      "actionId": "calculate-curve-molarity",
+      "actionLabel": "Calculate curve molarity",
+      "actionVerb": "calculate",
+      "reachableTechniqueNodeConsumers": [],
+      "coverage": {
+        "atomId": null,
+        "atomRegistryEntryPresent": false,
+        "equipmentRoleBindings": {},
+        "equipmentRoleRegistryEntriesPresent": true,
+        "missingRequiredRoles": [],
+        "sourceTraceCount": 0,
+        "sourceStatus": "source-trace-missing"
+      },
+      "finalOwningCycle": "10",
+      "effect": {
+        "registryHandlerDerivedClasses": [
+          "calculation-analysis"
+        ],
+        "typedTargetDomains": [
+          "analysis",
+          "evidence"
+        ],
+        "flags": {
+          "apparatusMaterialInstrumentState": false,
+          "measurementOrDirectObservation": false,
+          "evidenceRecording": false,
+          "calculationOrAnalysis": true,
+          "pedagogicalOrchestration": false
+        },
+        "declaredVersusDerivedConflict": {
+          "hasConflict": false,
+          "reasons": []
+        },
+        "resolvedInteractionType": null
+      },
+      "atomicity": {
+        "realBenchVerb": "calculate",
+        "persistentStateTransition": [
+          "Calculate curve molarity: Unknown molarity is calculated from the titration curve."
+        ],
+        "prerequisites": [
+          {
+            "id": "analyte-required-for-calculation",
+            "type": "measurementRecorded",
+            "label": "The analyte volume is recorded.",
+            "measurementId": "curve-analyte-volume"
+          },
+          {
+            "id": "equivalence-required",
+            "type": "measurementRecorded",
+            "label": "The equivalence volume is recorded.",
+            "measurementId": "equivalence-volume"
+          }
+        ],
+        "distinctPausePoint": "Completion of node evidence for calculate-curve-molarity; no cursor/grasp microstep is introduced.",
+        "invalidUnsafeCases": [
+          {
+            "id": "wrong-order",
+            "when": "current node expects a different action",
+            "message": "That action is out of sequence for the current technique step.",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "id": "missing-source",
+            "when": "source equipment or contents are missing",
+            "message": "The selected source does not contain the material required for this action.",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "id": "overflow",
+            "when": "target capacity would be exceeded",
+            "message": "The target equipment cannot hold the requested volume.",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "recoveryBoundary": [
+          {
+            "caseId": "wrong-order",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "caseId": "missing-source",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "caseId": "overflow",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "evidenceBoundary": {
+          "actionEvidence": [
+            "calculate"
+          ],
+          "atomEvidence": null
+        },
+        "flags": {
+          "multiVerb": false,
+          "positionVersusOperate": false,
+          "readVersusRecord": false,
+          "conditionVersusMeasure": false
+        },
+        "verdict": "nonphysical",
+        "proposedChildOperations": [],
+        "publicIdDisposition": "Preserve calculate-curve-molarity."
+      },
+      "sourceDisposition": {
+        "applicableSourceClaims": [],
+        "conflict": false,
+        "governingAuthorityAndRationale": "Nonphysical evidence/configuration carrier remains explicit and does not invent a source procedure or expected result.",
+        "unresolvedConfirmationPoint": null
+      },
+      "techniqueMatchDecision": "exact-compatible-version",
+      "blockedReason": null,
+      "evaluated": true
+    }
+  ],
+  "baselineRows": [
+    {
+      "rowId": "titration-curve-analysis@1.2.0#observe-ph-paper",
+      "techniqueId": "titration-curve-analysis",
+      "techniqueVersion": "1.2.0",
+      "actionId": "observe-ph-paper",
+      "actionLabel": "Observe pH paper",
+      "actionVerb": "observe",
+      "reachableTechniqueNodeConsumers": [
+        "observe-ph-paper-node"
+      ],
+      "coverage": {
+        "atomId": null,
+        "atomRegistryEntryPresent": false,
+        "equipmentRoleBindings": {},
+        "equipmentRoleRegistryEntriesPresent": true,
+        "missingRequiredRoles": [],
+        "sourceTraceCount": 1,
+        "sourceStatus": "configuration-orchestration"
+      },
+      "finalOwningCycle": "10",
+      "effect": {
+        "registryHandlerDerivedClasses": [
+          "evidence-recording"
+        ],
+        "typedTargetDomains": [
+          "evidence"
+        ],
+        "flags": {
+          "apparatusMaterialInstrumentState": false,
+          "measurementOrDirectObservation": false,
+          "evidenceRecording": true,
+          "calculationOrAnalysis": false,
+          "pedagogicalOrchestration": false
+        },
+        "declaredVersusDerivedConflict": {
+          "hasConflict": false,
+          "reasons": []
+        },
+        "resolvedInteractionType": null
+      },
+      "atomicity": {
+        "realBenchVerb": "observe",
+        "persistentStateTransition": [
+          "Observe pH paper: pH paper screening is recorded."
+        ],
+        "prerequisites": [],
+        "distinctPausePoint": "Completion of node evidence for observe-ph-paper; no un-authored microstep is introduced.",
+        "invalidUnsafeCases": [
+          {
+            "id": "wrong-order",
+            "when": "current node expects a different action",
+            "message": "That action is out of sequence for the current technique step.",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "id": "missing-source",
+            "when": "source equipment or contents are missing",
+            "message": "The selected source does not contain the material required for this action.",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "id": "overflow",
+            "when": "target capacity would be exceeded",
+            "message": "The target equipment cannot hold the requested volume.",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "recoveryBoundary": [
+          {
+            "caseId": "wrong-order",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "caseId": "missing-source",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "caseId": "overflow",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "evidenceBoundary": {
+          "actionEvidence": [
+            "observe",
+            "notebook"
+          ],
+          "atomEvidence": null
+        },
+        "flags": {
+          "multiVerb": false,
+          "positionVersusOperate": false,
+          "readVersusRecord": false,
+          "conditionVersusMeasure": false
+        },
+        "verdict": "nonphysical",
+        "proposedChildOperations": [],
+        "publicIdDisposition": "Preserve observe-ph-paper."
+      },
+      "sourceDisposition": {
+        "applicableSourceClaims": [],
+        "conflict": true,
+        "governingAuthorityAndRationale": "Nonphysical evidence/configuration carrier remains explicit and does not invent a source procedure or expected result.",
+        "unresolvedConfirmationPoint": null
+      },
+      "techniqueMatchDecision": "exact-compatible-version",
+      "blockedReason": null,
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#measure-curve-analyte",
+      "techniqueId": "titration-curve-analysis",
+      "techniqueVersion": "1.2.0",
+      "actionId": "measure-curve-analyte",
+      "actionLabel": "Measure titration analyte",
+      "actionVerb": "measureVolume",
+      "reachableTechniqueNodeConsumers": [
+        "measure-curve-analyte-node"
+      ],
+      "coverage": {
+        "atomId": "atom.measure.variable-volume",
+        "atomRegistryEntryPresent": true,
+        "equipmentRoleBindings": {
+          "variable-volume-measuring-device": "graduated-cylinder",
+          "liquid-source": "unknown-acid-bottle"
+        },
+        "equipmentRoleRegistryEntriesPresent": true,
+        "missingRequiredRoles": [],
+        "sourceTraceCount": 1,
+        "sourceStatus": "source-traced"
+      },
+      "finalOwningCycle": "10",
+      "effect": {
+        "registryHandlerDerivedClasses": [
+          "apparatus-material-instrument-state",
+          "measurement-direct-observation-acquisition"
+        ],
+        "typedTargetDomains": [
+          "equipment",
+          "material",
+          "instrument",
+          "measurement-observation",
+          "evidence"
+        ],
+        "flags": {
+          "apparatusMaterialInstrumentState": true,
+          "measurementOrDirectObservation": true,
+          "evidenceRecording": false,
+          "calculationOrAnalysis": false,
+          "pedagogicalOrchestration": false
+        },
+        "declaredVersusDerivedConflict": {
+          "hasConflict": false,
+          "reasons": []
+        },
+        "resolvedInteractionType": "pourInto"
+      },
+      "atomicity": {
+        "realBenchVerb": "measureVolume",
+        "persistentStateTransition": [
+          "Measure titration analyte: The titration analyte volume is measured."
+        ],
+        "prerequisites": [],
+        "distinctPausePoint": "Completion of node evidence for measure-curve-analyte; no un-authored microstep is introduced.",
+        "invalidUnsafeCases": [
+          {
+            "id": "wrong-order",
+            "when": "current node expects a different action",
+            "message": "That action is out of sequence for the current technique step.",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "id": "missing-source",
+            "when": "source equipment or contents are missing",
+            "message": "The selected source does not contain the material required for this action.",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "id": "overflow",
+            "when": "target capacity would be exceeded",
+            "message": "The target equipment cannot hold the requested volume.",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "recoveryBoundary": [
+          {
+            "caseId": "wrong-order",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "caseId": "missing-source",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "caseId": "overflow",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "evidenceBoundary": {
+          "actionEvidence": [
+            "measureVolume",
+            "measurement"
+          ],
+          "atomEvidence": "measured volume at the device's precision"
+        },
+        "flags": {
+          "multiVerb": false,
+          "positionVersusOperate": false,
+          "readVersusRecord": false,
+          "conditionVersusMeasure": false
+        },
+        "verdict": "keep",
+        "proposedChildOperations": [],
+        "publicIdDisposition": "Preserve measure-curve-analyte."
+      },
+      "sourceDisposition": {
+        "applicableSourceClaims": [
+          {
+            "sourceFile": "acid-base-titration-curves_2026-07-27.md",
+            "sourceTable": "phase",
+            "step": "T-03",
+            "basis": "M"
+          }
+        ],
+        "conflict": false,
+        "governingAuthorityAndRationale": "Exact dated source-trace row retained for the physical action; the formal trial remains the route authority for context-specific acquisition.",
+        "unresolvedConfirmationPoint": null
+      },
+      "techniqueMatchDecision": "exact-compatible-version",
+      "blockedReason": null,
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#transfer-curve-analyte",
+      "techniqueId": "titration-curve-analysis",
+      "techniqueVersion": "1.2.0",
+      "actionId": "transfer-curve-analyte",
+      "actionLabel": "Transfer the analyte into the titration beaker",
+      "actionVerb": "transfer",
+      "reachableTechniqueNodeConsumers": [
+        "transfer-curve-analyte-node"
+      ],
+      "coverage": {
+        "atomId": "atom.transfer.measured-liquid",
+        "atomRegistryEntryPresent": true,
+        "equipmentRoleBindings": {
+          "measured-solvent-source": "graduated-cylinder",
+          "receiving-vessel": "beaker-250ml"
+        },
+        "equipmentRoleRegistryEntriesPresent": true,
+        "missingRequiredRoles": [],
+        "sourceTraceCount": 1,
+        "sourceStatus": "source-traced"
+      },
+      "finalOwningCycle": "10",
+      "effect": {
+        "registryHandlerDerivedClasses": [
+          "apparatus-material-instrument-state"
+        ],
+        "typedTargetDomains": [
+          "equipment",
+          "material",
+          "instrument"
+        ],
+        "flags": {
+          "apparatusMaterialInstrumentState": true,
+          "measurementOrDirectObservation": false,
+          "evidenceRecording": false,
+          "calculationOrAnalysis": false,
+          "pedagogicalOrchestration": false
+        },
+        "declaredVersusDerivedConflict": {
+          "hasConflict": false,
+          "reasons": []
+        },
+        "resolvedInteractionType": "pourInto"
+      },
+      "atomicity": {
+        "realBenchVerb": "transfer",
+        "persistentStateTransition": [
+          "Transfer titration analyte: The analyte is in the titration beaker."
+        ],
+        "prerequisites": [],
+        "distinctPausePoint": "Completion of node evidence for transfer-curve-analyte; no un-authored microstep is introduced.",
+        "invalidUnsafeCases": [
+          {
+            "id": "wrong-order",
+            "when": "current node expects a different action",
+            "message": "That action is out of sequence for the current technique step.",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "id": "missing-source",
+            "when": "source equipment or contents are missing",
+            "message": "The selected source does not contain the material required for this action.",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "id": "overflow",
+            "when": "target capacity would be exceeded",
+            "message": "The target equipment cannot hold the requested volume.",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "recoveryBoundary": [
+          {
+            "caseId": "wrong-order",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "caseId": "missing-source",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "caseId": "overflow",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "evidenceBoundary": {
+          "actionEvidence": [
+            "transfer"
+          ],
+          "atomEvidence": "receiving vessel holding the transferred volume"
+        },
+        "flags": {
+          "multiVerb": false,
+          "positionVersusOperate": false,
+          "readVersusRecord": false,
+          "conditionVersusMeasure": false
+        },
+        "verdict": "keep",
+        "proposedChildOperations": [],
+        "publicIdDisposition": "Preserve transfer-curve-analyte."
+      },
+      "sourceDisposition": {
+        "applicableSourceClaims": [
+          {
+            "sourceFile": "acid-base-titration-curves_2026-07-27.md",
+            "sourceTable": "phase",
+            "step": "T-03",
+            "basis": "M"
+          }
+        ],
+        "conflict": false,
+        "governingAuthorityAndRationale": "Exact dated source-trace row retained for the physical action; the formal trial remains the route authority for context-specific acquisition.",
+        "unresolvedConfirmationPoint": null
+      },
+      "techniqueMatchDecision": "exact-compatible-version",
+      "blockedReason": null,
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#place-curve-ph-probe",
+      "techniqueId": "titration-curve-analysis",
+      "techniqueVersion": "1.2.0",
+      "actionId": "place-curve-ph-probe",
+      "actionLabel": "Insert the pH probe in the titration beaker",
+      "actionVerb": "place",
+      "reachableTechniqueNodeConsumers": [
+        "place-curve-ph-probe-node"
+      ],
+      "coverage": {
+        "atomId": "atom.place.immersed-ph-probe",
+        "atomRegistryEntryPresent": true,
+        "equipmentRoleBindings": {
+          "immersed-probe-instrument": "ph-meter",
+          "immersed-probe-vessel": "beaker-250ml"
+        },
+        "equipmentRoleRegistryEntriesPresent": true,
+        "missingRequiredRoles": [],
+        "sourceTraceCount": 1,
+        "sourceStatus": "source-traced"
+      },
+      "finalOwningCycle": "10",
+      "effect": {
+        "registryHandlerDerivedClasses": [
+          "apparatus-material-instrument-state"
+        ],
+        "typedTargetDomains": [
+          "equipment",
+          "material",
+          "instrument"
+        ],
+        "flags": {
+          "apparatusMaterialInstrumentState": true,
+          "measurementOrDirectObservation": false,
+          "evidenceRecording": false,
+          "calculationOrAnalysis": false,
+          "pedagogicalOrchestration": false
+        },
+        "declaredVersusDerivedConflict": {
+          "hasConflict": false,
+          "reasons": []
+        },
+        "resolvedInteractionType": "dragToZone"
+      },
+      "atomicity": {
+        "realBenchVerb": "place",
+        "persistentStateTransition": [
+          "Immerse the pH probe in the analyte."
+        ],
+        "prerequisites": [
+          {
+            "id": "analyte-required-for-probe",
+            "type": "actionEvidence",
+            "label": "The analyte is in the beaker.",
+            "actionId": "transfer-curve-analyte"
+          }
+        ],
+        "distinctPausePoint": "Completion of node evidence for place-curve-ph-probe; no un-authored microstep is introduced.",
+        "invalidUnsafeCases": [
+          {
+            "id": "dry-probe",
+            "when": "the vessel holds too little liquid to cover the bulb",
+            "message": "The probe bulb is not immersed.",
+            "recovery": "Charge the beaker with the approved aliquot first."
+          }
+        ],
+        "recoveryBoundary": [
+          {
+            "caseId": "dry-probe",
+            "recovery": "Charge the beaker with the approved aliquot first."
+          }
+        ],
+        "evidenceBoundary": {
+          "actionEvidence": [
+            "place",
+            "probe"
+          ],
+          "atomEvidence": "probe immersed in the analyte with the burette overhead"
+        },
+        "flags": {
+          "multiVerb": false,
+          "positionVersusOperate": false,
+          "readVersusRecord": false,
+          "conditionVersusMeasure": false
+        },
+        "verdict": "keep",
+        "proposedChildOperations": [],
+        "publicIdDisposition": "Preserve place-curve-ph-probe."
+      },
+      "sourceDisposition": {
+        "applicableSourceClaims": [
+          {
+            "sourceFile": "acid-base-titration-curves_2026-07-27.md",
+            "sourceTable": "phase",
+            "step": "T-04",
+            "basis": "M/R"
+          }
+        ],
+        "conflict": false,
+        "governingAuthorityAndRationale": "Exact dated source-trace row retained for the physical action; the formal trial remains the route authority for context-specific acquisition.",
+        "unresolvedConfirmationPoint": null
+      },
+      "techniqueMatchDecision": "exact-compatible-version",
+      "blockedReason": null,
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#read-initial-ph",
+      "techniqueId": "titration-curve-analysis",
+      "techniqueVersion": "1.2.0",
+      "actionId": "read-initial-ph",
+      "actionLabel": "Read the initial pH",
+      "actionVerb": "observe",
+      "reachableTechniqueNodeConsumers": [
+        "read-initial-ph-node"
+      ],
+      "coverage": {
+        "atomId": "atom.observe.read-titration-ph",
+        "atomRegistryEntryPresent": true,
+        "equipmentRoleBindings": {
+          "immersed-probe-instrument": "ph-meter",
+          "immersed-probe-vessel": "beaker-250ml"
+        },
+        "equipmentRoleRegistryEntriesPresent": true,
+        "missingRequiredRoles": [],
+        "sourceTraceCount": 1,
+        "sourceStatus": "source-traced"
+      },
+      "finalOwningCycle": "10",
+      "effect": {
+        "registryHandlerDerivedClasses": [
+          "measurement-direct-observation-acquisition"
+        ],
+        "typedTargetDomains": [
+          "instrument",
+          "measurement-observation",
+          "evidence"
+        ],
+        "flags": {
+          "apparatusMaterialInstrumentState": false,
+          "measurementOrDirectObservation": true,
+          "evidenceRecording": false,
+          "calculationOrAnalysis": false,
+          "pedagogicalOrchestration": false
+        },
+        "declaredVersusDerivedConflict": {
+          "hasConflict": false,
+          "reasons": []
+        },
+        "resolvedInteractionType": "readInstrument"
+      },
+      "atomicity": {
+        "realBenchVerb": "observe",
+        "persistentStateTransition": [
+          "Read the pH meter; reading and recording stay separate."
+        ],
+        "prerequisites": [
+          {
+            "id": "probe-required",
+            "type": "actionEvidence",
+            "label": "The probe is immersed.",
+            "actionId": "place-curve-ph-probe"
+          }
+        ],
+        "distinctPausePoint": "Completion of node evidence for read-initial-ph; no un-authored microstep is introduced.",
+        "invalidUnsafeCases": [
+          {
+            "id": "probe-not-immersed",
+            "when": "the probe is not in the analyte",
+            "message": "A probe out of solution reports nothing meaningful.",
+            "recovery": "Immerse the probe bulb, then read the meter."
+          }
+        ],
+        "recoveryBoundary": [
+          {
+            "caseId": "probe-not-immersed",
+            "recovery": "Immerse the probe bulb, then read the meter."
+          }
+        ],
+        "evidenceBoundary": {
+          "actionEvidence": [
+            "observe",
+            "measurement"
+          ],
+          "atomEvidence": "pH at a stated cumulative titrant volume, tagged live or stabilised"
+        },
+        "flags": {
+          "multiVerb": false,
+          "positionVersusOperate": false,
+          "readVersusRecord": false,
+          "conditionVersusMeasure": false
+        },
+        "verdict": "keep",
+        "proposedChildOperations": [],
+        "publicIdDisposition": "Preserve read-initial-ph."
+      },
+      "sourceDisposition": {
+        "applicableSourceClaims": [
+          {
+            "sourceFile": "acid-base-titration-curves_2026-07-27.md",
+            "sourceTable": "phase",
+            "step": "T-05",
+            "basis": "M"
+          }
+        ],
+        "conflict": false,
+        "governingAuthorityAndRationale": "Exact dated source-trace row retained for the physical action; the formal trial remains the route authority for context-specific acquisition.",
+        "unresolvedConfirmationPoint": null
+      },
+      "techniqueMatchDecision": "exact-compatible-version",
+      "blockedReason": null,
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#record-initial-ph",
+      "techniqueId": "titration-curve-analysis",
+      "techniqueVersion": "1.2.0",
+      "actionId": "record-initial-ph",
+      "actionLabel": "Record initial pH",
+      "actionVerb": "record",
+      "reachableTechniqueNodeConsumers": [
+        "record-initial-ph-node"
+      ],
+      "coverage": {
+        "atomId": null,
+        "atomRegistryEntryPresent": false,
+        "equipmentRoleBindings": {},
+        "equipmentRoleRegistryEntriesPresent": true,
+        "missingRequiredRoles": [],
+        "sourceTraceCount": 1,
+        "sourceStatus": "configuration-orchestration"
+      },
+      "finalOwningCycle": "10",
+      "effect": {
+        "registryHandlerDerivedClasses": [
+          "evidence-recording"
+        ],
+        "typedTargetDomains": [
+          "evidence"
+        ],
+        "flags": {
+          "apparatusMaterialInstrumentState": false,
+          "measurementOrDirectObservation": false,
+          "evidenceRecording": true,
+          "calculationOrAnalysis": false,
+          "pedagogicalOrchestration": false
+        },
+        "declaredVersusDerivedConflict": {
+          "hasConflict": false,
+          "reasons": []
+        },
+        "resolvedInteractionType": "recordNotebook"
+      },
+      "atomicity": {
+        "realBenchVerb": "record",
+        "persistentStateTransition": [
+          "Record initial pH: Initial pH is recorded."
+        ],
+        "prerequisites": [
+          {
+            "id": "ph-read-required",
+            "type": "notebookEntry",
+            "label": "The initial pH has been read.",
+            "notebookTag": "initial-ph-read"
+          }
+        ],
+        "distinctPausePoint": "Completion of node evidence for record-initial-ph; no un-authored microstep is introduced.",
+        "invalidUnsafeCases": [
+          {
+            "id": "wrong-order",
+            "when": "current node expects a different action",
+            "message": "That action is out of sequence for the current technique step.",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "id": "missing-source",
+            "when": "source equipment or contents are missing",
+            "message": "The selected source does not contain the material required for this action.",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "id": "overflow",
+            "when": "target capacity would be exceeded",
+            "message": "The target equipment cannot hold the requested volume.",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "recoveryBoundary": [
+          {
+            "caseId": "wrong-order",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "caseId": "missing-source",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "caseId": "overflow",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "evidenceBoundary": {
+          "actionEvidence": [
+            "record",
+            "measurement"
+          ],
+          "atomEvidence": null
+        },
+        "flags": {
+          "multiVerb": false,
+          "positionVersusOperate": false,
+          "readVersusRecord": false,
+          "conditionVersusMeasure": false
+        },
+        "verdict": "nonphysical",
+        "proposedChildOperations": [],
+        "publicIdDisposition": "Preserve record-initial-ph."
+      },
+      "sourceDisposition": {
+        "applicableSourceClaims": [],
+        "conflict": false,
+        "governingAuthorityAndRationale": "Nonphysical evidence/configuration carrier remains explicit and does not invent a source procedure or expected result.",
+        "unresolvedConfirmationPoint": null
+      },
+      "techniqueMatchDecision": "exact-compatible-version",
+      "blockedReason": null,
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#mount-curve-burette",
+      "techniqueId": "titration-curve-analysis",
+      "techniqueVersion": "1.2.0",
+      "actionId": "mount-curve-burette",
+      "actionLabel": "Mount the burette in the clamp",
+      "actionVerb": "place",
+      "reachableTechniqueNodeConsumers": [
+        "mount-curve-burette-node"
+      ],
+      "coverage": {
+        "atomId": "atom.place.mount-burette",
+        "atomRegistryEntryPresent": true,
+        "equipmentRoleBindings": {
+          "titrant-delivery-device": "burette-50ml",
+          "burette-support": "ring-stand-clamp"
+        },
+        "equipmentRoleRegistryEntriesPresent": true,
+        "missingRequiredRoles": [],
+        "sourceTraceCount": 1,
+        "sourceStatus": "source-traced"
+      },
+      "finalOwningCycle": "10",
+      "effect": {
+        "registryHandlerDerivedClasses": [
+          "apparatus-material-instrument-state"
+        ],
+        "typedTargetDomains": [
+          "equipment",
+          "material",
+          "instrument"
+        ],
+        "flags": {
+          "apparatusMaterialInstrumentState": true,
+          "measurementOrDirectObservation": false,
+          "evidenceRecording": false,
+          "calculationOrAnalysis": false,
+          "pedagogicalOrchestration": false
+        },
+        "declaredVersusDerivedConflict": {
+          "hasConflict": false,
+          "reasons": []
+        },
+        "resolvedInteractionType": "snapIntoTarget"
+      },
+      "atomicity": {
+        "realBenchVerb": "place",
+        "persistentStateTransition": [
+          "Clamp the burette to the ring stand."
+        ],
+        "prerequisites": [],
+        "distinctPausePoint": "Completion of node evidence for mount-curve-burette; no un-authored microstep is introduced.",
+        "invalidUnsafeCases": [
+          {
+            "id": "wrong-order",
+            "when": "current node expects a different action",
+            "message": "That action is out of sequence for this technique step.",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "id": "no-support",
+            "when": "no ring stand and clamp are on the workbench",
+            "message": "There is nothing to clamp the burette to.",
+            "recovery": "Place the ring stand and clamp, then seat the burette in it."
+          }
+        ],
+        "recoveryBoundary": [
+          {
+            "caseId": "wrong-order",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "caseId": "no-support",
+            "recovery": "Place the ring stand and clamp, then seat the burette in it."
+          }
+        ],
+        "evidenceBoundary": {
+          "actionEvidence": [
+            "place",
+            "titration-setup"
+          ],
+          "atomEvidence": "burette clamped above the receiver"
+        },
+        "flags": {
+          "multiVerb": false,
+          "positionVersusOperate": false,
+          "readVersusRecord": false,
+          "conditionVersusMeasure": false
+        },
+        "verdict": "keep",
+        "proposedChildOperations": [],
+        "publicIdDisposition": "Preserve mount-curve-burette."
+      },
+      "sourceDisposition": {
+        "applicableSourceClaims": [
+          {
+            "sourceFile": "acid-base-titration-curves_2026-07-27.md",
+            "sourceTable": "phase",
+            "step": "T-02",
+            "basis": "M/R"
+          }
+        ],
+        "conflict": false,
+        "governingAuthorityAndRationale": "Exact dated source-trace row retained for the physical action; the formal trial remains the route authority for context-specific acquisition.",
+        "unresolvedConfirmationPoint": null
+      },
+      "techniqueMatchDecision": "exact-compatible-version",
+      "blockedReason": null,
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#fill-curve-burette",
+      "techniqueId": "titration-curve-analysis",
+      "techniqueVersion": "1.2.0",
+      "actionId": "fill-curve-burette",
+      "actionLabel": "Fill the conditioned burette with titrant",
+      "actionVerb": "transfer",
+      "reachableTechniqueNodeConsumers": [
+        "fill-curve-burette-node"
+      ],
+      "coverage": {
+        "atomId": "atom.transfer.fill-burette",
+        "atomRegistryEntryPresent": true,
+        "equipmentRoleBindings": {
+          "titrant-source": "naoh-bottle",
+          "titrant-delivery-device": "burette-50ml"
+        },
+        "equipmentRoleRegistryEntriesPresent": true,
+        "missingRequiredRoles": [],
+        "sourceTraceCount": 1,
+        "sourceStatus": "source-traced"
+      },
+      "finalOwningCycle": "10",
+      "effect": {
+        "registryHandlerDerivedClasses": [
+          "apparatus-material-instrument-state"
+        ],
+        "typedTargetDomains": [
+          "equipment",
+          "material",
+          "instrument"
+        ],
+        "flags": {
+          "apparatusMaterialInstrumentState": true,
+          "measurementOrDirectObservation": false,
+          "evidenceRecording": false,
+          "calculationOrAnalysis": false,
+          "pedagogicalOrchestration": false
+        },
+        "declaredVersusDerivedConflict": {
+          "hasConflict": false,
+          "reasons": []
+        },
+        "resolvedInteractionType": "pourInto"
+      },
+      "atomicity": {
+        "realBenchVerb": "transfer",
+        "persistentStateTransition": [
+          "Fill curve burette: The burette is filled with titrant."
+        ],
+        "prerequisites": [
+          {
+            "id": "burette-mounted-required-for-fill",
+            "type": "actionEvidence",
+            "label": "The burette is clamped to the stand.",
+            "actionId": "mount-curve-burette"
+          }
+        ],
+        "distinctPausePoint": "Completion of node evidence for fill-curve-burette; no un-authored microstep is introduced.",
+        "invalidUnsafeCases": [
+          {
+            "id": "wrong-order",
+            "when": "current node expects a different action",
+            "message": "That action is out of sequence for the current technique step.",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "id": "missing-source",
+            "when": "source equipment or contents are missing",
+            "message": "The selected source does not contain the material required for this action.",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "id": "overflow",
+            "when": "target capacity would be exceeded",
+            "message": "The target equipment cannot hold the requested volume.",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "recoveryBoundary": [
+          {
+            "caseId": "wrong-order",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "caseId": "missing-source",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "caseId": "overflow",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "evidenceBoundary": {
+          "actionEvidence": [
+            "transfer"
+          ],
+          "atomEvidence": "burette holding titrant, ready to be read"
+        },
+        "flags": {
+          "multiVerb": false,
+          "positionVersusOperate": false,
+          "readVersusRecord": false,
+          "conditionVersusMeasure": false
+        },
+        "verdict": "keep",
+        "proposedChildOperations": [],
+        "publicIdDisposition": "Preserve fill-curve-burette."
+      },
+      "sourceDisposition": {
+        "applicableSourceClaims": [
+          {
+            "sourceFile": "acid-base-titration-curves_2026-07-27.md",
+            "sourceTable": "phase",
+            "step": "T-02",
+            "basis": "M/R"
+          }
+        ],
+        "conflict": false,
+        "governingAuthorityAndRationale": "Exact dated source-trace row retained for the physical action; the formal trial remains the route authority for context-specific acquisition.",
+        "unresolvedConfirmationPoint": null
+      },
+      "techniqueMatchDecision": "exact-compatible-version",
+      "blockedReason": null,
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#read-curve-initial-burette",
+      "techniqueId": "titration-curve-analysis",
+      "techniqueVersion": "1.2.0",
+      "actionId": "read-curve-initial-burette",
+      "actionLabel": "Read the initial burette level",
+      "actionVerb": "measureVolume",
+      "reachableTechniqueNodeConsumers": [
+        "read-curve-initial-burette-node"
+      ],
+      "coverage": {
+        "atomId": "atom.measure.read-burette",
+        "atomRegistryEntryPresent": true,
+        "equipmentRoleBindings": {
+          "titrant-delivery-device": "burette-50ml"
+        },
+        "equipmentRoleRegistryEntriesPresent": true,
+        "missingRequiredRoles": [],
+        "sourceTraceCount": 1,
+        "sourceStatus": "source-traced"
+      },
+      "finalOwningCycle": "10",
+      "effect": {
+        "registryHandlerDerivedClasses": [
+          "measurement-direct-observation-acquisition"
+        ],
+        "typedTargetDomains": [
+          "instrument",
+          "measurement-observation",
+          "evidence"
+        ],
+        "flags": {
+          "apparatusMaterialInstrumentState": false,
+          "measurementOrDirectObservation": true,
+          "evidenceRecording": false,
+          "calculationOrAnalysis": false,
+          "pedagogicalOrchestration": false
+        },
+        "declaredVersusDerivedConflict": {
+          "hasConflict": false,
+          "reasons": []
+        },
+        "resolvedInteractionType": "readInstrument"
+      },
+      "atomicity": {
+        "realBenchVerb": "measureVolume",
+        "persistentStateTransition": [
+          "Read the burette scale; a reading delivers nothing."
+        ],
+        "prerequisites": [
+          {
+            "id": "filled-required",
+            "type": "actionEvidence",
+            "label": "The burette has been filled.",
+            "actionId": "fill-curve-burette"
+          }
+        ],
+        "distinctPausePoint": "Completion of node evidence for read-curve-initial-burette; no un-authored microstep is introduced.",
+        "invalidUnsafeCases": [
+          {
+            "id": "empty-burette",
+            "when": "the burette holds no titrant",
+            "message": "There is no meniscus to read.",
+            "recovery": "Fill the burette, then read the scale."
+          }
+        ],
+        "recoveryBoundary": [
+          {
+            "caseId": "empty-burette",
+            "recovery": "Fill the burette, then read the scale."
+          }
+        ],
+        "evidenceBoundary": {
+          "actionEvidence": [
+            "measureVolume",
+            "measurement"
+          ],
+          "atomEvidence": "burette reading at the instrument's precision"
+        },
+        "flags": {
+          "multiVerb": false,
+          "positionVersusOperate": false,
+          "readVersusRecord": false,
+          "conditionVersusMeasure": false
+        },
+        "verdict": "keep",
+        "proposedChildOperations": [],
+        "publicIdDisposition": "Preserve read-curve-initial-burette."
+      },
+      "sourceDisposition": {
+        "applicableSourceClaims": [
+          {
+            "sourceFile": "acid-base-titration-curves_2026-07-27.md",
+            "sourceTable": "phase",
+            "step": "T-02",
+            "basis": "M/R"
+          }
+        ],
+        "conflict": false,
+        "governingAuthorityAndRationale": "Exact dated source-trace row retained for the physical action; the formal trial remains the route authority for context-specific acquisition.",
+        "unresolvedConfirmationPoint": null
+      },
+      "techniqueMatchDecision": "exact-compatible-version",
+      "blockedReason": null,
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#deliver-curve-titrant",
+      "techniqueId": "titration-curve-analysis",
+      "techniqueVersion": "1.2.0",
+      "actionId": "deliver-curve-titrant",
+      "actionLabel": "Deliver titrant through the steep region",
+      "actionVerb": "transfer",
+      "reachableTechniqueNodeConsumers": [
+        "deliver-curve-titrant-node"
+      ],
+      "coverage": {
+        "atomId": "atom.transfer.deliver-titrant",
+        "atomRegistryEntryPresent": true,
+        "equipmentRoleBindings": {
+          "titrant-delivery-device": "burette-50ml",
+          "analyte-receiver": "beaker-250ml"
+        },
+        "equipmentRoleRegistryEntriesPresent": true,
+        "missingRequiredRoles": [],
+        "sourceTraceCount": 1,
+        "sourceStatus": "source-traced"
+      },
+      "finalOwningCycle": "10",
+      "effect": {
+        "registryHandlerDerivedClasses": [
+          "apparatus-material-instrument-state"
+        ],
+        "typedTargetDomains": [
+          "equipment",
+          "material",
+          "instrument"
+        ],
+        "flags": {
+          "apparatusMaterialInstrumentState": true,
+          "measurementOrDirectObservation": false,
+          "evidenceRecording": false,
+          "calculationOrAnalysis": false,
+          "pedagogicalOrchestration": false
+        },
+        "declaredVersusDerivedConflict": {
+          "hasConflict": false,
+          "reasons": []
+        },
+        "resolvedInteractionType": "dispenseDrops"
+      },
+      "atomicity": {
+        "realBenchVerb": "transfer",
+        "persistentStateTransition": [
+          "Deliver curve titrant: Titrant is delivered while pH is monitored."
+        ],
+        "prerequisites": [
+          {
+            "id": "burette-mounted-required-for-delivery",
+            "type": "actionEvidence",
+            "label": "The burette is clamped to the stand.",
+            "actionId": "mount-curve-burette"
+          },
+          {
+            "id": "analyte-in-beaker-required",
+            "type": "actionEvidence",
+            "label": "The analyte is in the titration beaker.",
+            "actionId": "transfer-curve-analyte"
+          },
+          {
+            "id": "curve-initial-required",
+            "type": "measurementRecorded",
+            "label": "The initial burette reading is recorded.",
+            "measurementId": "curve-initial-burette"
+          }
+        ],
+        "distinctPausePoint": "Completion of node evidence for deliver-curve-titrant; no un-authored microstep is introduced.",
+        "invalidUnsafeCases": [
+          {
+            "id": "wrong-order",
+            "when": "current node expects a different action",
+            "message": "That action is out of sequence for the current technique step.",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "id": "missing-source",
+            "when": "source equipment or contents are missing",
+            "message": "The selected source does not contain the material required for this action.",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "id": "overflow",
+            "when": "target capacity would be exceeded",
+            "message": "The target equipment cannot hold the requested volume.",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "recoveryBoundary": [
+          {
+            "caseId": "wrong-order",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "caseId": "missing-source",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "caseId": "overflow",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "evidenceBoundary": {
+          "actionEvidence": [
+            "transfer"
+          ],
+          "atomEvidence": "delivered volume and the current colour state"
+        },
+        "flags": {
+          "multiVerb": false,
+          "positionVersusOperate": false,
+          "readVersusRecord": false,
+          "conditionVersusMeasure": false
+        },
+        "verdict": "keep",
+        "proposedChildOperations": [],
+        "publicIdDisposition": "Preserve deliver-curve-titrant."
+      },
+      "sourceDisposition": {
+        "applicableSourceClaims": [
+          {
+            "sourceFile": "acid-base-titration-curves_2026-07-27.md",
+            "sourceTable": "phase",
+            "step": "T-06",
+            "basis": "M/C"
+          }
+        ],
+        "conflict": false,
+        "governingAuthorityAndRationale": "Exact dated source-trace row retained for the physical action; the formal trial remains the route authority for context-specific acquisition.",
+        "unresolvedConfirmationPoint": null
+      },
+      "techniqueMatchDecision": "exact-compatible-version",
+      "blockedReason": null,
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#record-equivalence-volume",
+      "techniqueId": "titration-curve-analysis",
+      "techniqueVersion": "1.2.0",
+      "actionId": "record-equivalence-volume",
+      "actionLabel": "Record equivalence volume",
+      "actionVerb": "record",
+      "reachableTechniqueNodeConsumers": [
+        "record-equivalence-volume-node"
+      ],
+      "coverage": {
+        "atomId": null,
+        "atomRegistryEntryPresent": false,
+        "equipmentRoleBindings": {},
+        "equipmentRoleRegistryEntriesPresent": true,
+        "missingRequiredRoles": [],
+        "sourceTraceCount": 1,
+        "sourceStatus": "configuration-orchestration"
+      },
+      "finalOwningCycle": "10",
+      "effect": {
+        "registryHandlerDerivedClasses": [
+          "evidence-recording"
+        ],
+        "typedTargetDomains": [
+          "evidence"
+        ],
+        "flags": {
+          "apparatusMaterialInstrumentState": false,
+          "measurementOrDirectObservation": false,
+          "evidenceRecording": true,
+          "calculationOrAnalysis": false,
+          "pedagogicalOrchestration": false
+        },
+        "declaredVersusDerivedConflict": {
+          "hasConflict": false,
+          "reasons": []
+        },
+        "resolvedInteractionType": "recordNotebook"
+      },
+      "atomicity": {
+        "realBenchVerb": "record",
+        "persistentStateTransition": [
+          "Record equivalence volume: Equivalence volume is recorded."
+        ],
+        "prerequisites": [
+          {
+            "id": "curve-final-required",
+            "type": "measurementRecorded",
+            "label": "The titration has reached its final reading.",
+            "measurementId": "curve-final-burette"
+          }
+        ],
+        "distinctPausePoint": "Completion of node evidence for record-equivalence-volume; no un-authored microstep is introduced.",
+        "invalidUnsafeCases": [
+          {
+            "id": "wrong-order",
+            "when": "current node expects a different action",
+            "message": "That action is out of sequence for the current technique step.",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "id": "missing-source",
+            "when": "source equipment or contents are missing",
+            "message": "The selected source does not contain the material required for this action.",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "id": "overflow",
+            "when": "target capacity would be exceeded",
+            "message": "The target equipment cannot hold the requested volume.",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "recoveryBoundary": [
+          {
+            "caseId": "wrong-order",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "caseId": "missing-source",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "caseId": "overflow",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "evidenceBoundary": {
+          "actionEvidence": [
+            "record",
+            "measurement"
+          ],
+          "atomEvidence": null
+        },
+        "flags": {
+          "multiVerb": false,
+          "positionVersusOperate": false,
+          "readVersusRecord": false,
+          "conditionVersusMeasure": false
+        },
+        "verdict": "nonphysical",
+        "proposedChildOperations": [],
+        "publicIdDisposition": "Preserve record-equivalence-volume."
+      },
+      "sourceDisposition": {
+        "applicableSourceClaims": [],
+        "conflict": false,
+        "governingAuthorityAndRationale": "Nonphysical evidence/configuration carrier remains explicit and does not invent a source procedure or expected result.",
+        "unresolvedConfirmationPoint": null
+      },
+      "techniqueMatchDecision": "exact-compatible-version",
+      "blockedReason": null,
+      "evaluated": true
+    },
+    {
+      "rowId": "titration-curve-analysis@1.2.0#calculate-curve-molarity",
+      "techniqueId": "titration-curve-analysis",
+      "techniqueVersion": "1.2.0",
+      "actionId": "calculate-curve-molarity",
+      "actionLabel": "Calculate curve molarity",
+      "actionVerb": "calculate",
+      "reachableTechniqueNodeConsumers": [
+        "calculate-curve-molarity-node"
+      ],
+      "coverage": {
+        "atomId": null,
+        "atomRegistryEntryPresent": false,
+        "equipmentRoleBindings": {},
+        "equipmentRoleRegistryEntriesPresent": true,
+        "missingRequiredRoles": [],
+        "sourceTraceCount": 1,
+        "sourceStatus": "configuration-orchestration"
+      },
+      "finalOwningCycle": "10",
+      "effect": {
+        "registryHandlerDerivedClasses": [
+          "calculation-analysis"
+        ],
+        "typedTargetDomains": [
+          "analysis",
+          "evidence"
+        ],
+        "flags": {
+          "apparatusMaterialInstrumentState": false,
+          "measurementOrDirectObservation": false,
+          "evidenceRecording": false,
+          "calculationOrAnalysis": true,
+          "pedagogicalOrchestration": false
+        },
+        "declaredVersusDerivedConflict": {
+          "hasConflict": false,
+          "reasons": []
+        },
+        "resolvedInteractionType": null
+      },
+      "atomicity": {
+        "realBenchVerb": "calculate",
+        "persistentStateTransition": [
+          "Calculate curve molarity: Unknown molarity is calculated from the titration curve."
+        ],
+        "prerequisites": [
+          {
+            "id": "analyte-required-for-calculation",
+            "type": "measurementRecorded",
+            "label": "The analyte volume is recorded.",
+            "measurementId": "curve-analyte-volume"
+          },
+          {
+            "id": "equivalence-required",
+            "type": "measurementRecorded",
+            "label": "The equivalence volume is recorded.",
+            "measurementId": "equivalence-volume"
+          }
+        ],
+        "distinctPausePoint": "Completion of node evidence for calculate-curve-molarity; no un-authored microstep is introduced.",
+        "invalidUnsafeCases": [
+          {
+            "id": "wrong-order",
+            "when": "current node expects a different action",
+            "message": "That action is out of sequence for the current technique step.",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "id": "missing-source",
+            "when": "source equipment or contents are missing",
+            "message": "The selected source does not contain the material required for this action.",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "id": "overflow",
+            "when": "target capacity would be exceeded",
+            "message": "The target equipment cannot hold the requested volume.",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "recoveryBoundary": [
+          {
+            "caseId": "wrong-order",
+            "recovery": "Check the process map and perform the highlighted step first."
+          },
+          {
+            "caseId": "missing-source",
+            "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+          },
+          {
+            "caseId": "overflow",
+            "recovery": "Use a larger container or transfer a smaller measured amount."
+          }
+        ],
+        "evidenceBoundary": {
+          "actionEvidence": [
+            "calculate"
+          ],
+          "atomEvidence": null
+        },
+        "flags": {
+          "multiVerb": false,
+          "positionVersusOperate": false,
+          "readVersusRecord": false,
+          "conditionVersusMeasure": false
+        },
+        "verdict": "nonphysical",
+        "proposedChildOperations": [],
+        "publicIdDisposition": "Preserve calculate-curve-molarity."
+      },
+      "sourceDisposition": {
+        "applicableSourceClaims": [],
+        "conflict": false,
+        "governingAuthorityAndRationale": "Nonphysical evidence/configuration carrier remains explicit and does not invent a source procedure or expected result.",
+        "unresolvedConfirmationPoint": null
+      },
+      "techniqueMatchDecision": "exact-compatible-version",
+      "blockedReason": null,
+      "evaluated": true
+    }
+  ],
+  "ownerDispositions": [
+    {
+      "owner": "technique:titration-curve-analysis",
+      "disposition": "Composed as recorded-evidence analysis; no physical operation is duplicated in the route-local process."
+    }
+  ]
+}

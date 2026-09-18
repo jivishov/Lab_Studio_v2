@@ -1,0 +1,799 @@
+{
+  "schema": "lab-studio/route-control-map@1",
+  "lane": "10",
+  "baselineRevision": 9,
+  "baselineManifestPath": "planning/2026-08-30_lab-studio-technique-composition-remediation/evidence/CYCLE_08_PLUS_SHARED_CONTRACT_BASELINE_REVISION_9.json",
+  "baselineManifestSha256": "c7bf84a0593075edcb46c8d2effcfd15e23cffbee39a10b52084b00b048e5df2",
+  "baselineAggregateSha256": "a656bd064f8333c91a82011bf3af6444e9cbab2aafba0b5eb122d0c8969e7ee5",
+  "baselineSourceCommit": "1bfad0c56685baaff40c06cb58edc4b501387d8c",
+  "baselineLabStudioTree": "3c8539993e16a1c31cf214fe07b6b6c408c3ec3c",
+  "baselineGitTreeListingSha256": "a656bd064f8333c91a82011bf3af6444e9cbab2aafba0b5eb122d0c8969e7ee5",
+  "baselineDisposition": "Reviewed-frozen revision 9 worktree-ref identity; Cycle 10 is additive and does not mutate the manifest.",
+  "owners": [
+    "public/labs/acid-base-titration-curves.json",
+    "public/labs/acid-base-titration-curves-config.json",
+    "public/techniques/titration-curve-analysis.json",
+    "src/investigations/acidBaseTitrationCurves/AcidBaseTitrationCurvesInvestigation.tsx",
+    "src/investigations/acidBaseTitrationCurves/routeAdapter.ts",
+    "src/investigations/acidBaseTitrationCurves/compiledWitnesses.ts",
+    "src/investigations/acidBaseTitrationCurves/model.ts",
+    "scripts/verifyCycle10RouteExecution.mjs"
+  ],
+  "ownerSha256": {
+    "public/labs/acid-base-titration-curves.json": "0a15c2b118ed3ef64a352f33d76a218a6c09d913a07cbac2b8578bb3e92f87e9",
+    "public/labs/acid-base-titration-curves-config.json": "f3c3ea8f9fb63baf25ee6198f1bd9ec03a9e9755ce752c1b8442d980c269e8ea",
+    "public/techniques/titration-curve-analysis.json": "5c0b132ec58bd5b029e5191c188febc8c7d0f91d82ee05dc157b2a6db7b0c83c",
+    "public/techniques/ph-volume-formal-titration-trial.json": "99a67957eac5feed466d7a3795106a87768a1d429b87a5b6e53beef169019fad",
+    "src/investigations/acidBaseTitrationCurves/AcidBaseTitrationCurvesInvestigation.tsx": "f4a9aa8f4efe7003d4d122163f352f5e2e9978450e0f1181fd8519bd04ff38e8",
+    "src/investigations/acidBaseTitrationCurves/routeAdapter.ts": "9c4abac9c084fb1a662142df650c5e51e671cd221de95387bcac6abc1be9b77c",
+    "src/investigations/acidBaseTitrationCurves/compiledWitnesses.ts": "f985fab91c96d6a09a0b203ce12b3a18941ba14849b8a1e8779f481abddfcf3c",
+    "src/investigations/acidBaseTitrationCurves/model.ts": "9959da7fe24c2c51798fbf017f17b5c6abd8c9b68ed7902e8eb274ee5cc5437e",
+    "scripts/verifyCycle10RouteExecution.mjs": "55e8cba5c451f41de2802701bacfde0affb22b6a23d814f8180ec91675755bac"
+  },
+  "route": {
+    "labId": "acid-base-titration-curves",
+    "labVersion": "2.1.0",
+    "formalTechniqueId": "ph-volume-formal-titration-trial",
+    "formalTechniqueVersion": "1.0.0",
+    "formalInstanceId": "formal-trial",
+    "analysisTechniqueId": "titration-curve-analysis",
+    "analysisTechniqueVersion": "1.2.0",
+    "analysisInstanceId": null,
+    "analysisDisposition": "Composable in the catalog but not instantiated by this lab: its authored procedure repeats the exact Cycle 07 physical acquisition and its standalone model contradicts the teacher-configured unknown molarity.",
+    "expectedFormalNodeCount": 36,
+    "expectedAnalysisNodeCount": 0,
+    "expectedLocalNodeCount": 4,
+    "labOrchestrationInstanceId": "lab-orchestration",
+    "witnesses": [
+      "strong-acid-strong-base",
+      "weak-acid-strong-base",
+      "weak-base-strong-acid"
+    ],
+    "routeExecutionVerifier": "node --experimental-strip-types --experimental-loader ./scripts/tsCompositionLoader.mjs scripts/verifyCycle10RouteExecution.mjs"
+  },
+  "controls": [
+    {
+      "controlId": "reset-investigation",
+      "label": "Reset investigation",
+      "surface": "reset",
+      "handler": "routeAdapter.reset",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "routeAdapter.reset"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "ppe-1",
+      "label": "Acknowledge required PPE 1",
+      "surface": "safety",
+      "handler": "ppeAcknowledged[0]",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "ppeAcknowledged[0]"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "ppe-2",
+      "label": "Acknowledge required PPE 2",
+      "surface": "safety",
+      "handler": "ppeAcknowledged[1]",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "ppeAcknowledged[1]"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "hazard-acknowledgement",
+      "label": "Acknowledge hazard and spill response",
+      "surface": "safety",
+      "handler": "hazardsAcknowledged",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "hazardsAcknowledged"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "practice-litmus",
+      "label": "Complete qualitative practice step 1",
+      "surface": "practice",
+      "handler": "practiceStep=1",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "practiceStep"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "practice-paper-ph",
+      "label": "Complete qualitative practice step 2",
+      "surface": "practice",
+      "handler": "practiceStep=2",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "practiceStep"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "practice-measure-mix",
+      "label": "Complete qualitative practice step 3",
+      "surface": "practice",
+      "handler": "practiceStep=3",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "practiceStep"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "practice-indicator-endpoint",
+      "label": "Complete qualitative practice step 4",
+      "surface": "practice",
+      "handler": "practiceStep=4",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "practiceStep"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "practice-excess-base",
+      "label": "Complete qualitative practice step 5",
+      "surface": "practice",
+      "handler": "practiceStep=5",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "practiceStep"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "plan-question",
+      "label": "Assigned question",
+      "surface": "plan",
+      "handler": "question",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "question"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "plan-hypothesis",
+      "label": "Testable hypothesis",
+      "surface": "plan",
+      "handler": "hypothesis",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "hypothesis"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "plan-combinations",
+      "label": "Required combination selection",
+      "surface": "plan",
+      "handler": "selectedCombinationIds",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "selectedCombinationIds"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "plan-aliquot",
+      "label": "Analyte aliquot",
+      "surface": "plan",
+      "handler": "aliquotMl",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "formal-trial.aliquotMl"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "plan-coarse-increment",
+      "label": "Coarse increment",
+      "surface": "plan",
+      "handler": "coarseIncrementMl",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "formal-trial.maximumIncrementMl"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "plan-fine-increment",
+      "label": "Near-equivalence increment",
+      "surface": "plan",
+      "handler": "fineIncrementMl",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "formal-trial.increment"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "plan-replicates",
+      "label": "Replicates per combination",
+      "surface": "plan",
+      "handler": "replicates",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "replicates"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "plan-teacher-initials",
+      "label": "Teacher approval initials",
+      "surface": "plan",
+      "handler": "teacherInitials",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "teacherInitials"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "ACID-PLAN-01",
+      "label": "Validate and approve procedure",
+      "surface": "plan-submit",
+      "handler": "dispatchLabNodeToSelectedContexts",
+      "target": {
+        "kind": "compiled-lab-node",
+        "instanceId": "lab-orchestration",
+        "actionId": "ACID-PLAN-01",
+        "actionIds": [
+          "ACID-PLAN-01"
+        ],
+        "nodeIds": [
+          "ACID-PLAN-01-node"
+        ],
+        "validationRuleIds": [
+          "ACID-PLAN-01-complete"
+        ]
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "bench-place-ring-stand",
+      "label": "Place utility stand",
+      "surface": "assembly",
+      "handler": "dispatchRouteSequenceFor",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "ph-volume-formal-titration-trial",
+        "techniqueVersion": "1.0.0",
+        "instanceId": "formal-trial",
+        "actionId": "formal-trial-place-ring-stand",
+        "actionIds": [
+          "formal-trial-place-ring-stand"
+        ],
+        "nodeIds": [
+          "formal-trial-place-ring-stand-node"
+        ],
+        "evidenceOutputIds": []
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "bench-mount-burette",
+      "label": "Mount burette",
+      "surface": "assembly",
+      "handler": "dispatchRouteSequenceFor",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "ph-volume-formal-titration-trial",
+        "techniqueVersion": "1.0.0",
+        "instanceId": "formal-trial",
+        "actionId": "formal-trial-mount-burette",
+        "actionIds": [
+          "formal-trial-mount-burette"
+        ],
+        "nodeIds": [
+          "formal-trial-mount-burette-node"
+        ],
+        "evidenceOutputIds": []
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "bench-condition-burette",
+      "label": "Condition and rinse burette",
+      "surface": "assembly",
+      "handler": "dispatchRouteSequenceFor",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "ph-volume-formal-titration-trial",
+        "techniqueVersion": "1.0.0",
+        "instanceId": "formal-trial",
+        "actionId": "formal-trial-condition-burette-discard-rinsate",
+        "actionIds": [
+          "formal-trial-condition-burette-drain-residual",
+          "formal-trial-condition-burette",
+          "formal-trial-condition-burette-discard-rinsate"
+        ],
+        "nodeIds": [
+          "formal-trial-condition-burette-drain-residual-node",
+          "formal-trial-condition-burette-node",
+          "formal-trial-condition-burette-discard-rinsate-node"
+        ],
+        "evidenceOutputIds": []
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "formal-trial-initial-buret-reading",
+      "label": "Initial buret reading",
+      "surface": "formal-preflight",
+      "handler": "runs[*].initialBuretReadingMl",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "runs[*].initialBuretReadingMl"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "formal-trial-preflight",
+      "label": "Fill, read, transfer, immerse, and record the initial row",
+      "surface": "formal-preflight",
+      "handler": "dispatchRouteSequenceFor",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "ph-volume-formal-titration-trial",
+        "techniqueVersion": "1.0.0",
+        "instanceId": "formal-trial",
+        "actionId": "formal-trial-initial-row",
+        "actionIds": [
+          "formal-trial-seat-burette-funnel",
+          "formal-trial-fill-burette",
+          "formal-trial-fill-burette-purge-tip",
+          "formal-trial-fill-burette-check-tip",
+          "formal-trial-remove-burette-funnel",
+          "formal-trial-read-initial-burette",
+          "formal-trial-record-initial-burette",
+          "formal-trial-measure-analyte",
+          "formal-trial-transfer-analyte-to-receiver",
+          "formal-trial-position-flask-under-burette",
+          "formal-trial-probe-ready",
+          "formal-trial-place-ph-meter-on-workbench",
+          "formal-trial-immerse-endpoint-ph-probe",
+          "formal-trial-inspect-prepared-analyte",
+          "formal-trial-initial-ph",
+          "formal-trial-initial-row"
+        ],
+        "nodeIds": [
+          "formal-trial-seat-burette-funnel-node",
+          "formal-trial-fill-burette-node",
+          "formal-trial-fill-burette-purge-tip-node",
+          "formal-trial-fill-burette-check-tip-node",
+          "formal-trial-remove-burette-funnel-node",
+          "formal-trial-read-initial-burette-node",
+          "formal-trial-record-initial-burette-node",
+          "formal-trial-measure-analyte-node",
+          "formal-trial-transfer-analyte-to-receiver-node",
+          "formal-trial-position-flask-under-burette-node",
+          "formal-trial-probe-ready-node",
+          "formal-trial-place-ph-meter-on-workbench-node",
+          "formal-trial-immerse-endpoint-ph-probe-node",
+          "formal-trial-inspect-prepared-analyte-node",
+          "formal-trial-initial-ph-node",
+          "formal-trial-initial-row-node"
+        ],
+        "evidenceOutputIds": [
+          "formal-trial--formal-initial-point-evidence"
+        ]
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "formal-trial-record-curve-point",
+      "label": "Record stable pH-volume pair",
+      "surface": "formal-record",
+      "handler": "dispatchRouteSequenceFor",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "ph-volume-formal-titration-trial",
+        "techniqueVersion": "1.0.0",
+        "instanceId": "formal-trial",
+        "actionId": "formal-trial-deliver-titrant-record-point",
+        "actionIds": [
+          "formal-trial-deliver-titrant",
+          "formal-trial-deliver-titrant-mix",
+          "formal-trial-deliver-titrant-observe",
+          "formal-trial-deliver-titrant-read-ph",
+          "formal-trial-deliver-titrant-record-point",
+          "formal-trial-deliver-titrant-decide",
+          "formal-trial-deliver-titrant-read-final",
+          "formal-trial-record-final-burette",
+          "formal-trial-dispose",
+          "formal-trial-dispose-rinse",
+          "formal-trial-dispose-discard-rinse"
+        ],
+        "nodeIds": [
+          "formal-trial-deliver-titrant-node",
+          "formal-trial-deliver-titrant-mix-node",
+          "formal-trial-deliver-titrant-observe-node",
+          "formal-trial-deliver-titrant-read-ph-node",
+          "formal-trial-deliver-titrant-record-point-node",
+          "formal-trial-deliver-titrant-decide-node",
+          "formal-trial-deliver-titrant-read-final-node",
+          "formal-trial-record-final-burette-node",
+          "formal-trial-dispose-node",
+          "formal-trial-dispose-rinse-node",
+          "formal-trial-dispose-discard-rinse-node"
+        ],
+        "evidenceOutputIds": [
+          "formal-trial--formal-curve-point-evidence",
+          "formal-trial--formal-curve-stability-evidence",
+          "formal-trial--formal-final-burette-evidence"
+        ]
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "formal-trial-retry-trial",
+      "label": "Dispose and restart this trial",
+      "surface": "formal-recovery",
+      "handler": "dispatchRouteSequenceFor",
+      "target": {
+        "kind": "compiled-technique-action",
+        "techniqueId": "ph-volume-formal-titration-trial",
+        "techniqueVersion": "1.0.0",
+        "instanceId": "formal-trial",
+        "actionId": "formal-trial-deliver-titrant-retry-reset",
+        "actionIds": [
+          "formal-trial-deliver-titrant-decide",
+          "formal-trial-deliver-titrant-retry-dispose",
+          "formal-trial-deliver-titrant-retry-dispose-rinse",
+          "formal-trial-deliver-titrant-retry-dispose-discard-rinse",
+          "formal-trial-deliver-titrant-retry-reset"
+        ],
+        "nodeIds": [
+          "formal-trial-deliver-titrant-decide-node",
+          "formal-trial-deliver-titrant-retry-dispose-node",
+          "formal-trial-deliver-titrant-retry-dispose-rinse-node",
+          "formal-trial-deliver-titrant-retry-dispose-discard-rinse-node",
+          "formal-trial-deliver-titrant-retry-reset-node"
+        ],
+        "evidenceOutputIds": []
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "analysis-check-calculation",
+      "label": "Check landmark calculations",
+      "surface": "analysis-input",
+      "handler": "analysisChecked[*]",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "analysisChecked[*]"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "curve-analysis-calculation-input",
+      "label": "Landmark calculation inputs",
+      "surface": "analysis-input",
+      "handler": "analysisInputs[*]",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "analysisInputs[*]"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "analysis-explanation",
+      "label": "Particulate explanation",
+      "surface": "analysis-input",
+      "handler": "particulateExplanation",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "particulateExplanation"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "analysis-uncertainty",
+      "label": "Uncertainty and provenance reflection",
+      "surface": "analysis-input",
+      "handler": "uncertaintyReflection",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "uncertaintyReflection"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "record-analysis-interpretation",
+      "label": "Compare curve landmarks",
+      "surface": "analysis-submit",
+      "handler": "dispatchLabNodeToSelectedContexts",
+      "target": {
+        "kind": "compiled-lab-node",
+        "instanceId": "lab-orchestration",
+        "actionId": "ACID-ANALYSIS-01",
+        "actionIds": [
+          "ACID-ANALYSIS-01",
+          "ACID-UNCERTAINTY-01"
+        ],
+        "nodeIds": [
+          "ACID-ANALYSIS-01-node",
+          "ACID-UNCERTAINTY-01-node"
+        ],
+        "validationRuleIds": [
+          "ACID-ANALYSIS-01-complete",
+          "ACID-UNCERTAINTY-01-complete"
+        ]
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "class-source-group",
+      "label": "Independent class source group",
+      "surface": "class-data",
+      "handler": "classGroup",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "classGroup"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "class-combination",
+      "label": "Independent class combination",
+      "surface": "class-data",
+      "handler": "classCombination",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "classCombination"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "class-replicate",
+      "label": "Independent class replicate",
+      "surface": "class-data",
+      "handler": "classReplicate",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "classReplicate"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "class-equivalence",
+      "label": "Independent equivalence volume",
+      "surface": "class-data",
+      "handler": "classEquivalence",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "classEquivalence"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "class-curve",
+      "label": "Independent pH-volume curve",
+      "surface": "class-data",
+      "handler": "classCurveText",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "classCurveText"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "class-note",
+      "label": "Independent comparison note",
+      "surface": "class-data",
+      "handler": "classNote",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "classNote"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "add-class-record",
+      "label": "Add class record with provenance",
+      "surface": "class-submit",
+      "handler": "addClassDatum",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "classData"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "no-class-data",
+      "label": "Record that no independent class curve was available",
+      "surface": "class-data",
+      "handler": "noClassDataAvailable",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "noClassDataAvailable"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "waste-ph",
+      "label": "Measured waste pH",
+      "surface": "cleanup",
+      "handler": "wastePh",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "wastePh"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "waste-disposal-confirmation",
+      "label": "Instructor disposal confirmation",
+      "surface": "cleanup",
+      "handler": "disposalConfirmed",
+      "target": {
+        "kind": "typed-nonphysical-projection",
+        "routeState": "disposalConfirmed"
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    },
+    {
+      "controlId": "ACID-CLEANUP-01",
+      "label": "Record compiled cleanup evidence",
+      "surface": "cleanup-submit",
+      "handler": "dispatchLabNodeToSelectedContexts",
+      "target": {
+        "kind": "compiled-lab-node",
+        "instanceId": "lab-orchestration",
+        "actionId": "ACID-CLEANUP-01",
+        "actionIds": [
+          "ACID-CLEANUP-01"
+        ],
+        "nodeIds": [
+          "ACID-CLEANUP-01-node"
+        ],
+        "validationRuleIds": [
+          "ACID-CLEANUP-01-complete"
+        ]
+      },
+      "approval": "not-applicable",
+      "access": "pointer-keyboard-accessible-control",
+      "recovery": "Shared adapter rejection code, message, and recovery are surfaced in the route notice; reset-investigation clears route state.",
+      "evaluated": true
+    }
+  ],
+  "coverage": {
+    "controlCount": 41,
+    "uniqueControlIds": 41,
+    "duplicateControlIds": [],
+    "everyControlMappedExactlyOnce": true,
+    "noHiddenExpectedAnswersInRouteCopy": true
+  },
+  "validationBoundary": "Source review, all-witness composition compile identity, route-module static compile, node check, JSON checks, and git diff check only."
+}

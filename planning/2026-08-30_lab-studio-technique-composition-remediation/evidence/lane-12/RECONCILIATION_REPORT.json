@@ -1,0 +1,1395 @@
+{
+  "schema": "lab-studio/cycle-12-reconciliation-report@1",
+  "generatedAt": "2026-09-15T00:22:41.881Z",
+  "status": "accepted-source-static",
+  "validationBoundary": "Source/static evidence only; no runtime, browser, detailed test, build, deployment, physical, or classroom claim is made.",
+  "currentEvidence": {
+    "path": "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/verification-20260914-closure-r3/CURRENT_VERIFICATION_RUN.json",
+    "status": "current",
+    "capturedAt": "2026-09-15T00:22:41.881Z",
+    "sourceSnapshotPayloadSha256": "687ea4d58db591ef5e81f9abaa25ee5908fb5568dc5743fd96c8a6045269a459",
+    "reconciliationInputManifestSha256": null,
+    "reason": "Selected current-verification source snapshot is current; serialized reconciliation provenance is limited to its immutable source identity and fixed output boundary. Dynamic phase receipts remain in the current-verification ledger and CLI.",
+    "mismatches": [],
+    "contractErrors": [],
+    "missingRequiredPaths": [],
+    "stableDomainBoundary": [],
+    "evidenceRunProvenance": "selected-current-verification-run; only the immutable selected source snapshot and required prior phase receipt are read so later receipts cannot make reconciliation output self-referential",
+    "selection": "explicit-current-verification-run",
+    "runId": "verification-20260914-closure-r3",
+    "sourceSnapshotExcludes": "only fixed current phase outputs and fixed current-run artifacts; those paths are validated by phase receipts instead"
+  },
+  "repositoryHealthEvidence": {
+    "status": "unknown",
+    "reason": "A selected current-verification run records source and phase receipts only; repository-wide health still requires its own complete current run.",
+    "validation": "not-a-complete-current-repository-health-run"
+  },
+  "fixedReconciliationOrder": [
+    "05",
+    "06",
+    "07",
+    "08",
+    "09",
+    "11",
+    "10"
+  ],
+  "baseline": {
+    "revision": 9,
+    "state": "reviewed-frozen",
+    "manifestPath": "evidence/CYCLE_08_PLUS_SHARED_CONTRACT_BASELINE_REVISION_9.json",
+    "manifestSha256": "c7bf84a0593075edcb46c8d2effcfd15e23cffbee39a10b52084b00b048e5df2",
+    "aggregateSha256": "a656bd064f8333c91a82011bf3af6444e9cbab2aafba0b5eb122d0c8969e7ee5",
+    "sourceCommit": "1bfad0c56685baaff40c06cb58edc4b501387d8c",
+    "formalAmendment": {
+      "revision": 10,
+      "artifact": "planning/2026-08-30_lab-studio-technique-composition-remediation/evidence/CYCLE_10_SHARED_CONTRACT_BASELINE_REVISION_10.json",
+      "impactArtifact": "planning/2026-08-30_lab-studio-technique-composition-remediation/evidence/CYCLE_10_SHARED_CONTRACT_AMENDMENT_IMPACT.json",
+      "state": "candidate-not-frozen",
+      "predecessor": {
+        "baselineRevision": 9,
+        "state": "reviewed-frozen",
+        "manifestPath": "planning/2026-08-30_lab-studio-technique-composition-remediation/evidence/CYCLE_08_PLUS_SHARED_CONTRACT_BASELINE_REVISION_9.json",
+        "manifestSha256": "c7bf84a0593075edcb46c8d2effcfd15e23cffbee39a10b52084b00b048e5df2",
+        "sourceCommit": "1bfad0c56685baaff40c06cb58edc4b501387d8c"
+      },
+      "note": "Revision 10 remains candidate-not-frozen until the coordinator reissues the shared baseline; no historical checksum is invented here."
+    },
+    "frozenPredecessorSourceDisposition": {
+      "path": "planning/2026-08-30_lab-studio-technique-composition-remediation/evidence/lane-12/FROZEN_PREDECESSOR_SOURCE_DISPOSITION.json",
+      "sourceSha256": "af8f9e0ae6d5d2375644ca4a2a0e6a39ad5f683470958bcbfc87483cafe206dd",
+      "sourceCommit": "055d766",
+      "rowCount": 1122,
+      "note": "Immutable projection of the frozen audit the lanes pinned; reconciliation never reads back its own regenerated audit."
+    }
+  },
+  "lanes": [
+    {
+      "lane": "05",
+      "baselineRevision": 5,
+      "declaredBaselineRevisions": [
+        5
+      ],
+      "files": [
+        "source-trace-overlay.json",
+        "technique-atomicity-overlay.json",
+        "lab-composition-overlay.json"
+      ],
+      "rowCounts": {
+        "source-trace-overlay.json": 501,
+        "technique-atomicity-overlay.json": 464,
+        "lab-composition-overlay.json": 461
+      },
+      "semanticRowOrigins": {
+        "source-trace-overlay.json": "serialized-overlay",
+        "technique-atomicity-overlay.json": "serialized-overlay",
+        "lab-composition-overlay.json": "serialized-overlay"
+      },
+      "duplicateRowIds": [],
+      "unevaluatedRows": [],
+      "outOfScopeRows": [],
+      "historical": false
+    },
+    {
+      "lane": "06",
+      "baselineRevision": 8,
+      "declaredBaselineRevisions": [
+        8
+      ],
+      "files": [
+        "source-trace-overlay.json",
+        "technique-atomicity-overlay.json",
+        "lab-composition-overlay.json"
+      ],
+      "rowCounts": {
+        "source-trace-overlay.json": 949,
+        "technique-atomicity-overlay.json": 918,
+        "lab-composition-overlay.json": 1426
+      },
+      "semanticRowOrigins": {
+        "source-trace-overlay.json": "serialized-overlay",
+        "technique-atomicity-overlay.json": "serialized-overlay",
+        "lab-composition-overlay.json": "serialized-overlay"
+      },
+      "duplicateRowIds": [],
+      "unevaluatedRows": [],
+      "outOfScopeRows": [],
+      "historical": true,
+      "candidateStatus": "blocked-not-complete"
+    },
+    {
+      "lane": "07",
+      "baselineRevision": 8,
+      "declaredBaselineRevisions": [
+        8
+      ],
+      "files": [
+        "source-trace-overlay.json",
+        "technique-atomicity-overlay.json",
+        "lab-composition-overlay.json"
+      ],
+      "rowCounts": {
+        "source-trace-overlay.json": 574,
+        "technique-atomicity-overlay.json": 574,
+        "lab-composition-overlay.json": 526
+      },
+      "semanticRowOrigins": {
+        "source-trace-overlay.json": "serialized-overlay",
+        "technique-atomicity-overlay.json": "serialized-overlay",
+        "lab-composition-overlay.json": "serialized-overlay"
+      },
+      "duplicateRowIds": [],
+      "unevaluatedRows": [],
+      "outOfScopeRows": [],
+      "historical": true
+    },
+    {
+      "lane": "08",
+      "baselineRevision": 9,
+      "declaredBaselineRevisions": [
+        9
+      ],
+      "files": [
+        "source-trace-overlay.json",
+        "technique-atomicity-overlay.json",
+        "lab-composition-overlay.json"
+      ],
+      "rowCounts": {
+        "source-trace-overlay.json": 125,
+        "technique-atomicity-overlay.json": 102,
+        "lab-composition-overlay.json": 183
+      },
+      "semanticRowOrigins": {
+        "source-trace-overlay.json": "serialized-overlay",
+        "technique-atomicity-overlay.json": "serialized-overlay",
+        "lab-composition-overlay.json": "serialized-overlay"
+      },
+      "duplicateRowIds": [],
+      "unevaluatedRows": [],
+      "outOfScopeRows": [],
+      "historical": false
+    },
+    {
+      "lane": "09",
+      "baselineRevision": 9,
+      "declaredBaselineRevisions": [
+        9
+      ],
+      "files": [
+        "source-trace-overlay.json",
+        "technique-atomicity-overlay.json",
+        "lab-composition-overlay.json"
+      ],
+      "rowCounts": {
+        "source-trace-overlay.json": 475,
+        "technique-atomicity-overlay.json": 472,
+        "lab-composition-overlay.json": 475
+      },
+      "semanticRowOrigins": {
+        "source-trace-overlay.json": "current-source-projection",
+        "technique-atomicity-overlay.json": "current-source-projection",
+        "lab-composition-overlay.json": "current-source-projection"
+      },
+      "duplicateRowIds": [],
+      "unevaluatedRows": [],
+      "outOfScopeRows": [],
+      "historical": false
+    },
+    {
+      "lane": "11",
+      "baselineRevision": 9,
+      "declaredBaselineRevisions": [
+        9
+      ],
+      "files": [
+        "source-trace-overlay.json",
+        "technique-atomicity-overlay.json",
+        "lab-composition-overlay.json"
+      ],
+      "rowCounts": {
+        "source-trace-overlay.json": 29,
+        "technique-atomicity-overlay.json": 29,
+        "lab-composition-overlay.json": 32
+      },
+      "semanticRowOrigins": {
+        "source-trace-overlay.json": "serialized-overlay",
+        "technique-atomicity-overlay.json": "serialized-overlay",
+        "lab-composition-overlay.json": "serialized-overlay"
+      },
+      "duplicateRowIds": [],
+      "unevaluatedRows": [],
+      "outOfScopeRows": [],
+      "historical": false,
+      "routeControl": {
+        "route": {
+          "techniqueId": "thermal-decomposition-mass-loss",
+          "techniqueVersion": "1.1.0",
+          "instanceId": "thermal-decomposition",
+          "expectedNodeCount": 32,
+          "expectedEdgeCount": 31,
+          "expectedActionCount": 32,
+          "expectedTechniqueNodePrefix": "thermal-decomposition--",
+          "expectedTechniqueEvidencePrefix": "thermal-decomposition--",
+          "labOrchestrationInstanceId": "lab-orchestration",
+          "labOwnedActionIds": [
+            "review-assigned-green-chemistry-report",
+            "calculate-assigned-report-atom-economy",
+            "complete-green-chemistry-peer-review"
+          ],
+          "witnesses": [
+            "teacher-approved-route",
+            "approval-locked-static-witness"
+          ],
+          "witnessDisposition": "Neither witness carries an approval or configuration branch predicate, so both compile the same 32 nodes. Approval gates execution in the route adapter and the UI projection, not in the compiled node set."
+        },
+        "controlCount": 72,
+        "uniqueControlIds": 72,
+        "duplicateControlIds": [],
+        "unevaluatedControls": [],
+        "everyControlMappedExactlyOnce": true,
+        "noHiddenExpectedAnswers": true
+      }
+    },
+    {
+      "lane": "10",
+      "baselineRevision": 9,
+      "declaredBaselineRevisions": [
+        9
+      ],
+      "files": [
+        "source-trace-overlay.json",
+        "technique-atomicity-overlay.json",
+        "lab-composition-overlay.json"
+      ],
+      "rowCounts": {
+        "source-trace-overlay.json": 12,
+        "technique-atomicity-overlay.json": 12,
+        "lab-composition-overlay.json": 40
+      },
+      "semanticRowOrigins": {
+        "source-trace-overlay.json": "serialized-overlay",
+        "technique-atomicity-overlay.json": "serialized-overlay",
+        "lab-composition-overlay.json": "serialized-overlay"
+      },
+      "duplicateRowIds": [],
+      "unevaluatedRows": [],
+      "outOfScopeRows": [],
+      "historical": false,
+      "routeControl": {
+        "route": {
+          "labId": "acid-base-titration-curves",
+          "labVersion": "2.1.0",
+          "formalTechniqueId": "ph-volume-formal-titration-trial",
+          "formalTechniqueVersion": "1.0.0",
+          "formalInstanceId": "formal-trial",
+          "analysisTechniqueId": "titration-curve-analysis",
+          "analysisTechniqueVersion": "1.2.0",
+          "analysisInstanceId": null,
+          "analysisDisposition": "Composable in the catalog but not instantiated by this lab: its authored procedure repeats the exact Cycle 07 physical acquisition and its standalone model contradicts the teacher-configured unknown molarity.",
+          "expectedFormalNodeCount": 36,
+          "expectedAnalysisNodeCount": 0,
+          "expectedLocalNodeCount": 4,
+          "labOrchestrationInstanceId": "lab-orchestration",
+          "witnesses": [
+            "strong-acid-strong-base",
+            "weak-acid-strong-base",
+            "weak-base-strong-acid"
+          ],
+          "routeExecutionVerifier": "node --experimental-strip-types --experimental-loader ./scripts/tsCompositionLoader.mjs scripts/verifyCycle10RouteExecution.mjs"
+        },
+        "controlCount": 41,
+        "uniqueControlIds": 41,
+        "duplicateControlIds": [],
+        "unevaluatedControls": [],
+        "everyControlMappedExactlyOnce": true,
+        "noHiddenExpectedAnswers": true
+      }
+    }
+  ],
+  "catalog": {
+    "ownershipExpected": {
+      "techniques": 41,
+      "labs": 17
+    },
+    "indexedTechniqueCount": 42,
+    "ownedTechniqueCount": 41,
+    "routeOnlyTechniqueIds": [
+      "ph-volume-formal-titration-trial"
+    ],
+    "indexedLabCount": 17,
+    "techniqueDispositions": {
+      "weighing": {
+        "id": "weighing",
+        "version": "1.2.0",
+        "ownerCycle": "04",
+        "catalogDisposition": "composable",
+        "actionCount": 3,
+        "physicalActionCount": 2,
+        "nonphysicalActionCount": 1,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 0,
+        "configurationBoundaryActionCount": 3,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "measuring-volume": {
+        "id": "measuring-volume",
+        "version": "1.2.0",
+        "ownerCycle": "04",
+        "catalogDisposition": "composable",
+        "actionCount": 3,
+        "physicalActionCount": 2,
+        "nonphysicalActionCount": 1,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 0,
+        "configurationBoundaryActionCount": 3,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "making-solution": {
+        "id": "making-solution",
+        "version": "1.2.0",
+        "ownerCycle": "04",
+        "catalogDisposition": "composable",
+        "actionCount": 3,
+        "physicalActionCount": 2,
+        "nonphysicalActionCount": 1,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 0,
+        "configurationBoundaryActionCount": 3,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "dilution": {
+        "id": "dilution",
+        "version": "1.2.0",
+        "ownerCycle": "04",
+        "catalogDisposition": "composable",
+        "actionCount": 3,
+        "physicalActionCount": 2,
+        "nonphysicalActionCount": 1,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 0,
+        "configurationBoundaryActionCount": 3,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "transmittance-dilution": {
+        "id": "transmittance-dilution",
+        "version": "1.3.0",
+        "ownerCycle": "05",
+        "catalogDisposition": "composable",
+        "actionCount": 22,
+        "physicalActionCount": 19,
+        "nonphysicalActionCount": 3,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 22,
+        "configurationBoundaryActionCount": 0,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "transfer": {
+        "id": "transfer",
+        "version": "1.2.0",
+        "ownerCycle": "04",
+        "catalogDisposition": "composable",
+        "actionCount": 3,
+        "physicalActionCount": 2,
+        "nonphysicalActionCount": 1,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 0,
+        "configurationBoundaryActionCount": 3,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "hard-water-precipitation": {
+        "id": "hard-water-precipitation",
+        "version": "1.2.0",
+        "ownerCycle": "04",
+        "catalogDisposition": "lab-scoped",
+        "actionCount": 1,
+        "physicalActionCount": 1,
+        "nonphysicalActionCount": 0,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 1,
+        "configurationBoundaryActionCount": 0,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "lab-scoped"
+      },
+      "filtration": {
+        "id": "filtration",
+        "version": "1.2.0",
+        "ownerCycle": "04",
+        "catalogDisposition": "composable",
+        "actionCount": 6,
+        "physicalActionCount": 6,
+        "nonphysicalActionCount": 0,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 0,
+        "configurationBoundaryActionCount": 6,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "drying": {
+        "id": "drying",
+        "version": "1.2.0",
+        "ownerCycle": "04",
+        "catalogDisposition": "composable",
+        "actionCount": 7,
+        "physicalActionCount": 6,
+        "nonphysicalActionCount": 1,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 0,
+        "configurationBoundaryActionCount": 7,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "thermal-decomposition-mass-loss": {
+        "id": "thermal-decomposition-mass-loss",
+        "version": "2.0.1",
+        "ownerCycle": "11",
+        "catalogDisposition": "lab-scoped",
+        "actionCount": 31,
+        "physicalActionCount": 22,
+        "nonphysicalActionCount": 9,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 30,
+        "configurationBoundaryActionCount": 1,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "lab-scoped"
+      },
+      "paper-chromatography": {
+        "id": "paper-chromatography",
+        "version": "1.2.1",
+        "ownerCycle": "06",
+        "catalogDisposition": "composable",
+        "actionCount": 377,
+        "physicalActionCount": 257,
+        "nonphysicalActionCount": 120,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 377,
+        "configurationBoundaryActionCount": 0,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "hard-water-calculation": {
+        "id": "hard-water-calculation",
+        "version": "1.2.0",
+        "ownerCycle": "04",
+        "catalogDisposition": "composable",
+        "actionCount": 1,
+        "physicalActionCount": 0,
+        "nonphysicalActionCount": 1,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 0,
+        "configurationBoundaryActionCount": 1,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "beers-law-calibration": {
+        "id": "beers-law-calibration",
+        "version": "1.3.0",
+        "ownerCycle": "05",
+        "catalogDisposition": "composable",
+        "actionCount": 18,
+        "physicalActionCount": 17,
+        "nonphysicalActionCount": 1,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 18,
+        "configurationBoundaryActionCount": 0,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "brass-spectrophotometry": {
+        "id": "brass-spectrophotometry",
+        "version": "2.0.0",
+        "ownerCycle": "05",
+        "catalogDisposition": "composable",
+        "actionCount": 314,
+        "physicalActionCount": 306,
+        "nonphysicalActionCount": 8,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 313,
+        "configurationBoundaryActionCount": 1,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "hard-water-gravimetry": {
+        "id": "hard-water-gravimetry",
+        "version": "1.1.0",
+        "ownerCycle": "06",
+        "catalogDisposition": "composable",
+        "actionCount": 25,
+        "physicalActionCount": 18,
+        "nonphysicalActionCount": 7,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 25,
+        "configurationBoundaryActionCount": 0,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "titration-endpoint": {
+        "id": "titration-endpoint",
+        "version": "3.0.1",
+        "ownerCycle": "07",
+        "catalogDisposition": "lab-scoped",
+        "actionCount": 38,
+        "physicalActionCount": 33,
+        "nonphysicalActionCount": 5,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 0,
+        "configurationBoundaryActionCount": 38,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "lab-scoped"
+      },
+      "bonding-solids-tests": {
+        "id": "bonding-solids-tests",
+        "version": "1.2.0",
+        "ownerCycle": "06",
+        "catalogDisposition": "composable",
+        "actionCount": 40,
+        "physicalActionCount": 22,
+        "nonphysicalActionCount": 18,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 40,
+        "configurationBoundaryActionCount": 0,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "redox-titration": {
+        "id": "redox-titration",
+        "version": "3.0.1",
+        "ownerCycle": "07",
+        "catalogDisposition": "lab-scoped",
+        "actionCount": 254,
+        "physicalActionCount": 218,
+        "nonphysicalActionCount": 36,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 254,
+        "configurationBoundaryActionCount": 0,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "lab-scoped"
+      },
+      "tablet-separation": {
+        "id": "tablet-separation",
+        "version": "1.1.0",
+        "ownerCycle": "06",
+        "catalogDisposition": "composable",
+        "actionCount": 18,
+        "physicalActionCount": 13,
+        "nonphysicalActionCount": 5,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 18,
+        "configurationBoundaryActionCount": 0,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "crystal-violet-kinetics": {
+        "id": "crystal-violet-kinetics",
+        "version": "1.2.0",
+        "ownerCycle": "08",
+        "catalogDisposition": "lab-scoped",
+        "actionCount": 11,
+        "physicalActionCount": 9,
+        "nonphysicalActionCount": 2,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 0,
+        "configurationBoundaryActionCount": 11,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "lab-scoped"
+      },
+      "hand-warmer-calorimetry": {
+        "id": "hand-warmer-calorimetry",
+        "version": "2.5.1",
+        "ownerCycle": "09",
+        "catalogDisposition": "lab-scoped",
+        "actionCount": 310,
+        "physicalActionCount": 86,
+        "nonphysicalActionCount": 224,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 86,
+        "configurationBoundaryActionCount": 224,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "lab-scoped"
+      },
+      "titration-curve-analysis": {
+        "id": "titration-curve-analysis",
+        "version": "1.2.0",
+        "ownerCycle": "10",
+        "catalogDisposition": "composable",
+        "actionCount": 12,
+        "physicalActionCount": 8,
+        "nonphysicalActionCount": 4,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 8,
+        "configurationBoundaryActionCount": 4,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "blue1-standard-dilutions": {
+        "id": "blue1-standard-dilutions",
+        "version": "1.3.0",
+        "ownerCycle": "05",
+        "catalogDisposition": "composable",
+        "actionCount": 48,
+        "physicalActionCount": 29,
+        "nonphysicalActionCount": 19,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 48,
+        "configurationBoundaryActionCount": 0,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "blue1-percent-transmittance": {
+        "id": "blue1-percent-transmittance",
+        "version": "2.0.0",
+        "ownerCycle": "05",
+        "catalogDisposition": "composable",
+        "actionCount": 86,
+        "physicalActionCount": 77,
+        "nonphysicalActionCount": 9,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 86,
+        "configurationBoundaryActionCount": 0,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "blue1-class-calibration": {
+        "id": "blue1-class-calibration",
+        "version": "1.3.0",
+        "ownerCycle": "05",
+        "catalogDisposition": "composable",
+        "actionCount": 31,
+        "physicalActionCount": 0,
+        "nonphysicalActionCount": 31,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 31,
+        "configurationBoundaryActionCount": 0,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "hard-water-practice-preparation": {
+        "id": "hard-water-practice-preparation",
+        "version": "1.2.0",
+        "ownerCycle": "06",
+        "catalogDisposition": "composable",
+        "actionCount": 26,
+        "physicalActionCount": 15,
+        "nonphysicalActionCount": 11,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 26,
+        "configurationBoundaryActionCount": 0,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "gravimetric-vacuum-filtration": {
+        "id": "gravimetric-vacuum-filtration",
+        "version": "1.2.0",
+        "ownerCycle": "06",
+        "catalogDisposition": "composable",
+        "actionCount": 21,
+        "physicalActionCount": 16,
+        "nonphysicalActionCount": 5,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 21,
+        "configurationBoundaryActionCount": 0,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "two-stage-precipitate-drying": {
+        "id": "two-stage-precipitate-drying",
+        "version": "1.2.0",
+        "ownerCycle": "06",
+        "catalogDisposition": "composable",
+        "actionCount": 69,
+        "physicalActionCount": 37,
+        "nonphysicalActionCount": 32,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 69,
+        "configurationBoundaryActionCount": 0,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "inquiry-plan-approval": {
+        "id": "inquiry-plan-approval",
+        "version": "1.2.0",
+        "ownerCycle": "06",
+        "catalogDisposition": "composable",
+        "actionCount": 8,
+        "physicalActionCount": 0,
+        "nonphysicalActionCount": 8,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 8,
+        "configurationBoundaryActionCount": 0,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "hard-water-two-sample-inquiry": {
+        "id": "hard-water-two-sample-inquiry",
+        "version": "1.2.0",
+        "ownerCycle": "06",
+        "catalogDisposition": "composable",
+        "actionCount": 184,
+        "physicalActionCount": 114,
+        "nonphysicalActionCount": 70,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 184,
+        "configurationBoundaryActionCount": 0,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "beverage-ph-volume-titration": {
+        "id": "beverage-ph-volume-titration",
+        "version": "3.0.1",
+        "ownerCycle": "07",
+        "catalogDisposition": "lab-scoped",
+        "actionCount": 234,
+        "physicalActionCount": 212,
+        "nonphysicalActionCount": 22,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 234,
+        "configurationBoundaryActionCount": 0,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "lab-scoped"
+      },
+      "crystal-violet-micromolar-dilution-series": {
+        "id": "crystal-violet-micromolar-dilution-series",
+        "version": "1.2.0",
+        "ownerCycle": "08",
+        "catalogDisposition": "lab-scoped",
+        "actionCount": 21,
+        "physicalActionCount": 16,
+        "nonphysicalActionCount": 5,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 16,
+        "configurationBoundaryActionCount": 5,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "lab-scoped"
+      },
+      "crystal-violet-spectrophotometer-calibration": {
+        "id": "crystal-violet-spectrophotometer-calibration",
+        "version": "1.2.0",
+        "ownerCycle": "08",
+        "catalogDisposition": "lab-scoped",
+        "actionCount": 40,
+        "physicalActionCount": 36,
+        "nonphysicalActionCount": 4,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 36,
+        "configurationBoundaryActionCount": 4,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "lab-scoped"
+      },
+      "crystal-violet-integrated-rate-law-comparison": {
+        "id": "crystal-violet-integrated-rate-law-comparison",
+        "version": "2.0.0",
+        "ownerCycle": "08",
+        "catalogDisposition": "lab-scoped",
+        "actionCount": 11,
+        "physicalActionCount": 0,
+        "nonphysicalActionCount": 11,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 11,
+        "configurationBoundaryActionCount": 0,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "lab-scoped"
+      },
+      "crystal-violet-waste-treatment": {
+        "id": "crystal-violet-waste-treatment",
+        "version": "1.2.0",
+        "ownerCycle": "08",
+        "catalogDisposition": "lab-scoped",
+        "actionCount": 6,
+        "physicalActionCount": 4,
+        "nonphysicalActionCount": 2,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 4,
+        "configurationBoundaryActionCount": 2,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "lab-scoped"
+      },
+      "quick-ache-property-evidence": {
+        "id": "quick-ache-property-evidence",
+        "version": "1.2.1",
+        "ownerCycle": "06",
+        "catalogDisposition": "composable",
+        "actionCount": 15,
+        "physicalActionCount": 9,
+        "nonphysicalActionCount": 6,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 15,
+        "configurationBoundaryActionCount": 0,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "quick-ache-design-approval": {
+        "id": "quick-ache-design-approval",
+        "version": "1.2.0",
+        "ownerCycle": "06",
+        "catalogDisposition": "composable",
+        "actionCount": 3,
+        "physicalActionCount": 0,
+        "nonphysicalActionCount": 3,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 3,
+        "configurationBoundaryActionCount": 0,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "quick-ache-extraction-recovery": {
+        "id": "quick-ache-extraction-recovery",
+        "version": "1.3.1",
+        "ownerCycle": "06",
+        "catalogDisposition": "composable",
+        "actionCount": 123,
+        "physicalActionCount": 111,
+        "nonphysicalActionCount": 12,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 123,
+        "configurationBoundaryActionCount": 0,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "quick-ache-analysis-report": {
+        "id": "quick-ache-analysis-report",
+        "version": "1.2.0",
+        "ownerCycle": "06",
+        "catalogDisposition": "composable",
+        "actionCount": 9,
+        "physicalActionCount": 0,
+        "nonphysicalActionCount": 9,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 9,
+        "configurationBoundaryActionCount": 0,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "marble-gas-syringe-kinetics": {
+        "id": "marble-gas-syringe-kinetics",
+        "version": "2.1.0",
+        "ownerCycle": "08",
+        "catalogDisposition": "lab-scoped",
+        "actionCount": 13,
+        "physicalActionCount": 8,
+        "nonphysicalActionCount": 5,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 8,
+        "configurationBoundaryActionCount": 5,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "lab-scoped"
+      },
+      "equilibrium-rainbow-inquiry": {
+        "id": "equilibrium-rainbow-inquiry",
+        "version": "2.3.0",
+        "ownerCycle": "09",
+        "catalogDisposition": "composable",
+        "actionCount": 162,
+        "physicalActionCount": 100,
+        "nonphysicalActionCount": 62,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 100,
+        "configurationBoundaryActionCount": 62,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "composable"
+      },
+      "ph-volume-formal-titration-trial": {
+        "id": "ph-volume-formal-titration-trial",
+        "version": "1.0.0",
+        "ownerCycle": null,
+        "catalogDisposition": "lab-scoped",
+        "actionCount": 36,
+        "physicalActionCount": 35,
+        "nonphysicalActionCount": 1,
+        "atomlessPhysicalActionCount": 0,
+        "sourceTracedActionCount": 0,
+        "configurationBoundaryActionCount": 36,
+        "untracedAcquisitionActionCount": 0,
+        "finalDisposition": "route-only-carrier"
+      }
+    },
+    "labDispositions": {
+      "intro-filtration-demo": {
+        "id": "intro-filtration-demo",
+        "ownerCycle": "04",
+        "sourceTechniqueInstanceCount": 4,
+        "sourceLocalActionCount": 0,
+        "compiledActionCount": 13,
+        "compiledNodeCount": 13,
+        "compiledEdgeCount": 12,
+        "compiledOriginCount": 13,
+        "compiledManifestInstanceCount": 4,
+        "initialEquipmentCount": 10,
+        "reachabilityWitnessIds": [
+          "default"
+        ],
+        "witnessCompileCount": 1,
+        "auditedNodeCount": 13,
+        "unionTechniqueInstanceCount": 4,
+        "customRoute": false
+      },
+      "hard-water-demo": {
+        "id": "hard-water-demo",
+        "ownerCycle": "04",
+        "sourceTechniqueInstanceCount": 6,
+        "sourceLocalActionCount": 0,
+        "compiledActionCount": 21,
+        "compiledNodeCount": 21,
+        "compiledEdgeCount": 20,
+        "compiledOriginCount": 21,
+        "compiledManifestInstanceCount": 6,
+        "initialEquipmentCount": 15,
+        "reachabilityWitnessIds": [
+          "default"
+        ],
+        "witnessCompileCount": 1,
+        "auditedNodeCount": 21,
+        "unionTechniqueInstanceCount": 6,
+        "customRoute": false
+      },
+      "acid-base-titration": {
+        "id": "acid-base-titration",
+        "ownerCycle": "07",
+        "sourceTechniqueInstanceCount": 1,
+        "sourceLocalActionCount": 0,
+        "compiledActionCount": 38,
+        "compiledNodeCount": 38,
+        "compiledEdgeCount": 41,
+        "compiledOriginCount": 38,
+        "compiledManifestInstanceCount": 1,
+        "initialEquipmentCount": 11,
+        "reachabilityWitnessIds": [
+          "default"
+        ],
+        "witnessCompileCount": 1,
+        "auditedNodeCount": 38,
+        "unionTechniqueInstanceCount": 1,
+        "customRoute": false
+      },
+      "marble-statue-kinetics": {
+        "id": "marble-statue-kinetics",
+        "ownerCycle": "08",
+        "sourceTechniqueInstanceCount": 7,
+        "sourceLocalActionCount": 17,
+        "compiledActionCount": 67,
+        "compiledNodeCount": 67,
+        "compiledEdgeCount": 66,
+        "compiledOriginCount": 50,
+        "compiledManifestInstanceCount": 7,
+        "initialEquipmentCount": 26,
+        "reachabilityWitnessIds": [
+          "teacher-approved-guided-design"
+        ],
+        "witnessCompileCount": 1,
+        "auditedNodeCount": 67,
+        "unionTechniqueInstanceCount": 7,
+        "customRoute": false
+      },
+      "paper-chromatography": {
+        "id": "paper-chromatography",
+        "ownerCycle": "06",
+        "sourceTechniqueInstanceCount": 1,
+        "sourceLocalActionCount": 15,
+        "compiledActionCount": 62,
+        "compiledNodeCount": 62,
+        "compiledEdgeCount": 61,
+        "compiledOriginCount": 47,
+        "compiledManifestInstanceCount": 1,
+        "initialEquipmentCount": 60,
+        "reachabilityWitnessIds": [
+          "default"
+        ],
+        "witnessCompileCount": 1,
+        "auditedNodeCount": 62,
+        "unionTechniqueInstanceCount": 1,
+        "customRoute": false
+      },
+      "equilibrium-rainbow-display": {
+        "id": "equilibrium-rainbow-display",
+        "ownerCycle": "09",
+        "sourceTechniqueInstanceCount": 1,
+        "sourceLocalActionCount": 0,
+        "compiledActionCount": 162,
+        "compiledNodeCount": 162,
+        "compiledEdgeCount": 161,
+        "compiledOriginCount": 162,
+        "compiledManifestInstanceCount": 1,
+        "initialEquipmentCount": 58,
+        "reachabilityWitnessIds": [
+          "default"
+        ],
+        "witnessCompileCount": 1,
+        "auditedNodeCount": 162,
+        "unionTechniqueInstanceCount": 1,
+        "customRoute": false
+      },
+      "hand-warmer-calorimetry": {
+        "id": "hand-warmer-calorimetry",
+        "ownerCycle": "09",
+        "sourceTechniqueInstanceCount": 1,
+        "sourceLocalActionCount": 3,
+        "compiledActionCount": 313,
+        "compiledNodeCount": 313,
+        "compiledEdgeCount": 313,
+        "compiledOriginCount": 310,
+        "compiledManifestInstanceCount": 1,
+        "initialEquipmentCount": 22,
+        "reachabilityWitnessIds": [
+          "teacher-approved-open-inquiry"
+        ],
+        "witnessCompileCount": 1,
+        "auditedNodeCount": 313,
+        "unionTechniqueInstanceCount": 1,
+        "customRoute": false
+      },
+      "blue1-spectroscopy": {
+        "id": "blue1-spectroscopy",
+        "ownerCycle": "05",
+        "sourceTechniqueInstanceCount": 3,
+        "sourceLocalActionCount": 9,
+        "compiledActionCount": 174,
+        "compiledNodeCount": 174,
+        "compiledEdgeCount": 176,
+        "compiledOriginCount": 165,
+        "compiledManifestInstanceCount": 3,
+        "initialEquipmentCount": 30,
+        "reachabilityWitnessIds": [
+          "default"
+        ],
+        "witnessCompileCount": 1,
+        "auditedNodeCount": 174,
+        "unionTechniqueInstanceCount": 3,
+        "customRoute": false
+      },
+      "brass-colorimetry": {
+        "id": "brass-colorimetry",
+        "ownerCycle": "05",
+        "sourceTechniqueInstanceCount": 1,
+        "sourceLocalActionCount": 28,
+        "compiledActionCount": 342,
+        "compiledNodeCount": 342,
+        "compiledEdgeCount": 343,
+        "compiledOriginCount": 314,
+        "compiledManifestInstanceCount": 1,
+        "initialEquipmentCount": 33,
+        "reachabilityWitnessIds": [
+          "default"
+        ],
+        "witnessCompileCount": 1,
+        "auditedNodeCount": 342,
+        "unionTechniqueInstanceCount": 1,
+        "customRoute": false
+      },
+      "hard-water-analysis": {
+        "id": "hard-water-analysis",
+        "ownerCycle": "06",
+        "sourceTechniqueInstanceCount": 5,
+        "sourceLocalActionCount": 0,
+        "compiledActionCount": 308,
+        "compiledNodeCount": 308,
+        "compiledEdgeCount": 334,
+        "compiledOriginCount": 308,
+        "compiledManifestInstanceCount": 5,
+        "initialEquipmentCount": 64,
+        "reachabilityWitnessIds": [
+          "default"
+        ],
+        "witnessCompileCount": 1,
+        "auditedNodeCount": 308,
+        "unionTechniqueInstanceCount": 5,
+        "customRoute": false
+      },
+      "beverage-acidity": {
+        "id": "beverage-acidity",
+        "ownerCycle": "07",
+        "sourceTechniqueInstanceCount": 1,
+        "sourceLocalActionCount": 0,
+        "compiledActionCount": 234,
+        "compiledNodeCount": 234,
+        "compiledEdgeCount": 253,
+        "compiledOriginCount": 234,
+        "compiledManifestInstanceCount": 1,
+        "initialEquipmentCount": 23,
+        "reachabilityWitnessIds": [
+          "default"
+        ],
+        "witnessCompileCount": 1,
+        "auditedNodeCount": 234,
+        "unionTechniqueInstanceCount": 1,
+        "customRoute": false
+      },
+      "bonding-unknown-solids": {
+        "id": "bonding-unknown-solids",
+        "ownerCycle": "06",
+        "sourceTechniqueInstanceCount": 14,
+        "sourceLocalActionCount": 16,
+        "compiledActionCount": 336,
+        "compiledNodeCount": 336,
+        "compiledEdgeCount": 335,
+        "compiledOriginCount": 320,
+        "compiledManifestInstanceCount": 8,
+        "initialEquipmentCount": 113,
+        "reachabilityWitnessIds": [
+          "4-known-and-4-blind",
+          "4-known-and-5-blind",
+          "4-known-and-6-blind",
+          "5-known-and-4-blind",
+          "5-known-and-5-blind",
+          "5-known-and-6-blind",
+          "6-known-and-4-blind",
+          "6-known-and-5-blind",
+          "6-known-and-6-blind"
+        ],
+        "witnessCompileCount": 9,
+        "auditedNodeCount": 576,
+        "unionTechniqueInstanceCount": 14,
+        "customRoute": false
+      },
+      "green-chemistry-mixture-purification": {
+        "id": "green-chemistry-mixture-purification",
+        "ownerCycle": "11",
+        "sourceTechniqueInstanceCount": 1,
+        "sourceLocalActionCount": 3,
+        "compiledActionCount": 34,
+        "compiledNodeCount": 34,
+        "compiledEdgeCount": 33,
+        "compiledOriginCount": 31,
+        "compiledManifestInstanceCount": 1,
+        "initialEquipmentCount": 11,
+        "reachabilityWitnessIds": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "witnessCompileCount": 2,
+        "auditedNodeCount": 34,
+        "unionTechniqueInstanceCount": 1,
+        "customRoute": true
+      },
+      "hydrogen-peroxide-redox-titration": {
+        "id": "hydrogen-peroxide-redox-titration",
+        "ownerCycle": "07",
+        "sourceTechniqueInstanceCount": 1,
+        "sourceLocalActionCount": 0,
+        "compiledActionCount": 254,
+        "compiledNodeCount": 254,
+        "compiledEdgeCount": 289,
+        "compiledOriginCount": 254,
+        "compiledManifestInstanceCount": 1,
+        "initialEquipmentCount": 15,
+        "reachabilityWitnessIds": [
+          "default"
+        ],
+        "witnessCompileCount": 1,
+        "auditedNodeCount": 254,
+        "unionTechniqueInstanceCount": 1,
+        "customRoute": false
+      },
+      "quick-ache-relief-separation": {
+        "id": "quick-ache-relief-separation",
+        "ownerCycle": "06",
+        "sourceTechniqueInstanceCount": 4,
+        "sourceLocalActionCount": 0,
+        "compiledActionCount": 89,
+        "compiledNodeCount": 89,
+        "compiledEdgeCount": 88,
+        "compiledOriginCount": 89,
+        "compiledManifestInstanceCount": 4,
+        "initialEquipmentCount": 41,
+        "reachabilityWitnessIds": [
+          "default"
+        ],
+        "witnessCompileCount": 1,
+        "auditedNodeCount": 89,
+        "unionTechniqueInstanceCount": 4,
+        "customRoute": false
+      },
+      "crystal-violet-rate-law": {
+        "id": "crystal-violet-rate-law",
+        "ownerCycle": "08",
+        "sourceTechniqueInstanceCount": 14,
+        "sourceLocalActionCount": 6,
+        "compiledActionCount": 113,
+        "compiledNodeCount": 113,
+        "compiledEdgeCount": 112,
+        "compiledOriginCount": 107,
+        "compiledManifestInstanceCount": 13,
+        "initialEquipmentCount": 25,
+        "reachabilityWitnessIds": [
+          "mandatory-path",
+          "teacher-approved-extension"
+        ],
+        "witnessCompileCount": 2,
+        "auditedNodeCount": 116,
+        "unionTechniqueInstanceCount": 14,
+        "customRoute": false
+      },
+      "acid-base-titration-curves": {
+        "id": "acid-base-titration-curves",
+        "ownerCycle": "10",
+        "sourceTechniqueInstanceCount": 1,
+        "sourceLocalActionCount": 4,
+        "compiledActionCount": 40,
+        "compiledNodeCount": 40,
+        "compiledEdgeCount": 42,
+        "compiledOriginCount": 36,
+        "compiledManifestInstanceCount": 1,
+        "initialEquipmentCount": 10,
+        "reachabilityWitnessIds": [
+          "strong-acid-strong-base",
+          "weak-acid-strong-base",
+          "weak-base-strong-acid"
+        ],
+        "witnessCompileCount": 3,
+        "auditedNodeCount": 40,
+        "unionTechniqueInstanceCount": 1,
+        "customRoute": true
+      }
+    }
+  },
+  "compilerWitness": {
+    "path": "planning/2026-08-30_lab-studio-technique-composition-remediation/evidence/lane-12/COMPILED_LAB_WITNESS.json",
+    "freshness": "current",
+    "currentCountsAuthoritative": true,
+    "labCount": 17,
+    "totals": {
+      "sourceTechniqueInstanceCount": 66,
+      "sourceLocalActionCount": 101,
+      "sourceLocalNodeCount": 101,
+      "compiledActionCount": 2600,
+      "compiledNodeCount": 2600,
+      "compiledEdgeCount": 2679,
+      "compiledOriginCount": 2499,
+      "compiledManifestInstanceCount": 59,
+      "unionNodeCount": 2843,
+      "witnessCompileCount": 29
+    },
+    "allLabsEmitCompiledManifest": true,
+    "explicitInitialEquipment": true,
+    "witnessCompileCount": 29,
+    "auditedUnionNodeCount": 2843,
+    "everyDeclaredInstanceCompiledUnderSomeWitness": true
+  },
+  "audits": {
+    "technique": {
+      "path": "planning/2026-08-30_lab-studio-technique-composition-remediation/TECHNIQUE_ATOMICITY_AUDIT.json",
+      "rowCount": 2646,
+      "sha256": "9c16c4b4b0bf445245b8276de27acc568f87c4a09dd41402ca953874ec39d94e",
+      "effectConflictRows": 0,
+      "missingAtomOrEffectRows": 0
+    },
+    "lab": {
+      "path": "planning/2026-08-30_lab-studio-technique-composition-remediation/LAB_COMPOSITION_AUDIT.json",
+      "rowCount": 2843,
+      "sha256": "375a4e40943beaaa9b0e5903514d2a54d0d22232a2f6857b52498cbc3544808b",
+      "effectConflictRows": 0,
+      "anonymousLocalProcedureRows": 0,
+      "deadUnderWitnessRows": 0
+    }
+  },
+  "customRoutes": [
+    {
+      "lane": "11",
+      "route": {
+        "techniqueId": "thermal-decomposition-mass-loss",
+        "techniqueVersion": "1.1.0",
+        "instanceId": "thermal-decomposition",
+        "expectedNodeCount": 32,
+        "expectedEdgeCount": 31,
+        "expectedActionCount": 32,
+        "expectedTechniqueNodePrefix": "thermal-decomposition--",
+        "expectedTechniqueEvidencePrefix": "thermal-decomposition--",
+        "labOrchestrationInstanceId": "lab-orchestration",
+        "labOwnedActionIds": [
+          "review-assigned-green-chemistry-report",
+          "calculate-assigned-report-atom-economy",
+          "complete-green-chemistry-peer-review"
+        ],
+        "witnesses": [
+          "teacher-approved-route",
+          "approval-locked-static-witness"
+        ],
+        "witnessDisposition": "Neither witness carries an approval or configuration branch predicate, so both compile the same 32 nodes. Approval gates execution in the route adapter and the UI projection, not in the compiled node set."
+      },
+      "controlCount": 72,
+      "uniqueControlIds": 72,
+      "duplicateControlIds": [],
+      "unevaluatedControls": [],
+      "everyControlMappedExactlyOnce": true,
+      "noHiddenExpectedAnswers": true
+    },
+    {
+      "lane": "10",
+      "route": {
+        "labId": "acid-base-titration-curves",
+        "labVersion": "2.1.0",
+        "formalTechniqueId": "ph-volume-formal-titration-trial",
+        "formalTechniqueVersion": "1.0.0",
+        "formalInstanceId": "formal-trial",
+        "analysisTechniqueId": "titration-curve-analysis",
+        "analysisTechniqueVersion": "1.2.0",
+        "analysisInstanceId": null,
+        "analysisDisposition": "Composable in the catalog but not instantiated by this lab: its authored procedure repeats the exact Cycle 07 physical acquisition and its standalone model contradicts the teacher-configured unknown molarity.",
+        "expectedFormalNodeCount": 36,
+        "expectedAnalysisNodeCount": 0,
+        "expectedLocalNodeCount": 4,
+        "labOrchestrationInstanceId": "lab-orchestration",
+        "witnesses": [
+          "strong-acid-strong-base",
+          "weak-acid-strong-base",
+          "weak-base-strong-acid"
+        ],
+        "routeExecutionVerifier": "node --experimental-strip-types --experimental-loader ./scripts/tsCompositionLoader.mjs scripts/verifyCycle10RouteExecution.mjs"
+      },
+      "controlCount": 41,
+      "uniqueControlIds": 41,
+      "duplicateControlIds": [],
+      "unevaluatedControls": [],
+      "everyControlMappedExactlyOnce": true,
+      "noHiddenExpectedAnswers": true
+    }
+  ],
+  "consistency": {
+    "ownershipAndPublicIds": "pass",
+    "compositionSourceShape": "pass",
+    "techniqueAtomicityAndEffects": "pass",
+    "labOriginsAndReachability": "pass",
+    "atomicIdentityCoverage": "pass",
+    "sourceTraceCoverage": "pass",
+    "massOutputBinding": "pass",
+    "broadRepositoryBaseline": "unknown"
+  },
+  "evidenceRuns": [],
+  "evidenceRunProvenance": "selected-current-verification-run; only the immutable selected source snapshot and required prior phase receipt are read so later receipts cannot make reconciliation output self-referential",
+  "openSharedContractRequests": [
+    {
+      "id": "lane-11-green-chemistry-lab-setup",
+      "requestedBy": "11",
+      "target": "src/data/labSetup.ts",
+      "labId": "green-chemistry-mixture-purification",
+      "placeholderConfigurationSlots": [
+        "thermal-decomposition.coolingSurface",
+        "thermal-decomposition.heatingIntensity",
+        "thermal-decomposition.tareConvention"
+      ],
+      "request": "Register a green-chemistry setup so the lab can declare an empty bindings.configuration and loadBundledLab raises LabSetupRequired instead of compiling a labelled placeholder.",
+      "cycle12Disposition": "not-resolved-by-this-cycle: filed after Cycle 12 closed, outside the reviewed baseline-revision amendment protocol, and the loadBundledLab gate it needs can only be confirmed by the Vitest/build checks this cycle may not run.",
+      "currentMitigation": "The placeholder is explicit, the route refuses to execute an unconfigured compile, and the coordinator compile witness binds a teacher-approved fixture instead."
+    }
+  ],
+  "residualConfirmationPoints": [
+    "Expected-value literals and illustrative configuration defaults remain source/configuration review points; they are not learner answer keys or physical results.",
+    "The public index contains 42 technique entries: 41 ownership-map techniques plus the explicit route-only ph-volume-formal-titration-trial carrier. The roadmap's older '40 techniques' arithmetic is retained as historical wording and is not used to drop an indexed entry.",
+    "The five lab-local embedded technique carriers are nonphysical orchestration/approval records; they remain self-contained for import compatibility and are not promoted as standalone physical techniques.",
+    "0 technique action rows carry a physical or acquisitive composition-owned effect contract with no atom registry row (), and 0 compiled lab node rows inherit them. They are recorded as physical-without-atom / acquisition-without-atom residual debt, not as nonphysical. Closing them needs an amendment to the frozen atom registry, which is outside this cycle's touchpoints.",
+    "0 lane-recorded untraced-acquisition rows () acquire a measurement or direct observation without an exact source-registry row. Lane 09 escalated them to the coordinator because the shared source-trace registry is outside a lane's scope; they are carried here as an explicit closure block rather than relabelled as a configuration boundary.",
+    "Node-level reachability is established across 29 witness compiles of the 17 labs. It is a static compiler property; runtime traversal, timing, and instrument behavior remain unrun.",
+    "0 of 74 weighing actions () bind the learner mass to no declared output measurement and carry no approved unsupported-binding guard, so the lane 06 gravimetry verifier does not pass on the current catalog. Repair is lane-owned content authority; this cycle counts it rather than editing another owner's technique."
+  ],
+  "unrunChecks": [
+    "Detailed tests and full suites",
+    "Build and production bundle",
+    "Browser/E2E/WebMCP, gesture, visual, viewport, accessibility, or performance checks",
+    "Deployment/release/publication",
+    "Physical apparatus, safety, disposal, classroom, or hardware validation"
+  ],
+  "errors": [],
+  "warnings": []
+}

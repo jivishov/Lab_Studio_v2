@@ -1,0 +1,1144 @@
+{
+  "schema": "lab-studio/lab-composition-overlay@1",
+  "lane": "11",
+  "baselineRevision": 9,
+  "baselineManifestSha256": "c7bf84a0593075edcb46c8d2effcfd15e23cffbee39a10b52084b00b048e5df2",
+  "baselineAggregateSha256": "a656bd064f8333c91a82011bf3af6444e9cbab2aafba0b5eb122d0c8969e7ee5",
+  "frozenTechniqueAuditSha256": "af8f9e0ae6d5d2375644ca4a2a0e6a39ad5f683470958bcbfc87483cafe206dd",
+  "frozenLabAuditSha256": "7eadc66bf4005a109758acac04a1ee2c9dc86fb1a8bb40c1bcc024112fc143bd",
+  "owners": [
+    "public/labs/green-chemistry-mixture-purification.json",
+    "public/techniques/thermal-decomposition-mass-loss.json",
+    "src/investigations/purifyMixtureGreenChemistry/routeAdapter.ts",
+    "src/investigations/purifyMixtureGreenChemistry/configuredComposition.ts"
+  ],
+  "validationBoundary": "Source review, compile-output identity review, the narrow scripts/checkCycle11GreenChemistryRoute.mjs adapter/evidence walk, node check, typecheck, targeted generator comparison, JSON checks, and git diff check only. No runtime, browser, detailed test, build, deployment, physical-safety or classroom-disposal validation.",
+  "compiledManifestWitness": {
+    "techniqueId": "thermal-decomposition-mass-loss",
+    "techniqueVersion": "1.1.0",
+    "instanceId": "thermal-decomposition",
+    "expectedNodeCount": 32,
+    "expectedEdgeCount": 31,
+    "expectedActionCount": 32,
+    "expectedTechniqueNodePrefix": "thermal-decomposition--",
+    "expectedTechniqueEvidencePrefix": "thermal-decomposition--",
+    "labOrchestrationInstanceId": "lab-orchestration",
+    "labOwnedActionIds": [
+      "review-assigned-green-chemistry-report",
+      "calculate-assigned-report-atom-economy",
+      "complete-green-chemistry-peer-review"
+    ],
+    "witnesses": [
+      "teacher-approved-route",
+      "approval-locked-static-witness"
+    ],
+    "witnessDisposition": "Neither witness carries an approval or configuration branch predicate, so both compile the same 32 nodes. Approval gates execution in the route adapter and the UI projection, not in the compiled node set."
+  },
+  "rows": [
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "actionId": "approve-thermal-decomposition-plan",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-approved-entry",
+      "incoming": [],
+      "outgoing": [
+        "thermal-decomposition--place-balance-node"
+      ],
+      "effect": [
+        "evidence-recording"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--place-balance-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--place-balance-node",
+      "actionId": "place-balance",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-prior-technique-node",
+      "incoming": [
+        "thermal-decomposition--approve-thermal-decomposition-plan-node"
+      ],
+      "outgoing": [
+        "thermal-decomposition--place-empty-crucible-node"
+      ],
+      "effect": [
+        "apparatus-material-instrument-state"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--place-empty-crucible-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--place-empty-crucible-node",
+      "actionId": "place-empty-crucible",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-prior-technique-node",
+      "incoming": [
+        "thermal-decomposition--place-balance-node"
+      ],
+      "outgoing": [
+        "thermal-decomposition--read-empty-crucible-node"
+      ],
+      "effect": [
+        "apparatus-material-instrument-state"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--read-empty-crucible-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--read-empty-crucible-node",
+      "actionId": "read-empty-crucible",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-prior-technique-node",
+      "incoming": [
+        "thermal-decomposition--place-empty-crucible-node"
+      ],
+      "outgoing": [
+        "thermal-decomposition--record-empty-crucible-node"
+      ],
+      "effect": [
+        "measurement-direct-observation-acquisition"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--record-empty-crucible-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--record-empty-crucible-node",
+      "actionId": "record-empty-crucible",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-prior-technique-node",
+      "incoming": [
+        "thermal-decomposition--read-empty-crucible-node"
+      ],
+      "outgoing": [
+        "thermal-decomposition--add-carbonate-sample-node"
+      ],
+      "effect": [
+        "evidence-recording"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--add-carbonate-sample-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--add-carbonate-sample-node",
+      "actionId": "add-carbonate-sample",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-prior-technique-node",
+      "incoming": [
+        "thermal-decomposition--record-empty-crucible-node"
+      ],
+      "outgoing": [
+        "thermal-decomposition--weigh-initial-crucible-node"
+      ],
+      "effect": [
+        "apparatus-material-instrument-state"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--weigh-initial-crucible-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--weigh-initial-crucible-node",
+      "actionId": "weigh-initial-crucible",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-prior-technique-node",
+      "incoming": [
+        "thermal-decomposition--add-carbonate-sample-node"
+      ],
+      "outgoing": [
+        "thermal-decomposition--record-initial-crucible-mass-node"
+      ],
+      "effect": [
+        "measurement-direct-observation-acquisition"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--record-initial-crucible-mass-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--record-initial-crucible-mass-node",
+      "actionId": "record-initial-crucible-mass",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-prior-technique-node",
+      "incoming": [
+        "thermal-decomposition--weigh-initial-crucible-node"
+      ],
+      "outgoing": [
+        "thermal-decomposition--recover-unused-sample-node"
+      ],
+      "effect": [
+        "evidence-recording"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--recover-unused-sample-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--recover-unused-sample-node",
+      "actionId": "recover-unused-sample",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-prior-technique-node",
+      "incoming": [
+        "thermal-decomposition--record-initial-crucible-mass-node"
+      ],
+      "outgoing": [
+        "thermal-decomposition--place-ring-stand-node"
+      ],
+      "effect": [
+        "apparatus-material-instrument-state"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--place-ring-stand-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--place-ring-stand-node",
+      "actionId": "place-ring-stand",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-prior-technique-node",
+      "incoming": [
+        "thermal-decomposition--recover-unused-sample-node"
+      ],
+      "outgoing": [
+        "thermal-decomposition--add-clay-triangle-node"
+      ],
+      "effect": [
+        "apparatus-material-instrument-state"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--add-clay-triangle-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--add-clay-triangle-node",
+      "actionId": "add-clay-triangle",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-prior-technique-node",
+      "incoming": [
+        "thermal-decomposition--place-ring-stand-node"
+      ],
+      "outgoing": [
+        "thermal-decomposition--place-bunsen-burner-node"
+      ],
+      "effect": [
+        "apparatus-material-instrument-state"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--place-bunsen-burner-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--place-bunsen-burner-node",
+      "actionId": "place-bunsen-burner",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-prior-technique-node",
+      "incoming": [
+        "thermal-decomposition--add-clay-triangle-node"
+      ],
+      "outgoing": [
+        "thermal-decomposition--place-crucible-on-support-node"
+      ],
+      "effect": [
+        "apparatus-material-instrument-state"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--place-crucible-on-support-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--place-crucible-on-support-node",
+      "actionId": "place-crucible-on-support",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-prior-technique-node",
+      "incoming": [
+        "thermal-decomposition--place-bunsen-burner-node"
+      ],
+      "outgoing": [
+        "thermal-decomposition--set-crucible-lid-node"
+      ],
+      "effect": [
+        "apparatus-material-instrument-state"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--set-crucible-lid-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--set-crucible-lid-node",
+      "actionId": "set-crucible-lid",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-prior-technique-node",
+      "incoming": [
+        "thermal-decomposition--place-crucible-on-support-node"
+      ],
+      "outgoing": [
+        "thermal-decomposition--warm-gently-node"
+      ],
+      "effect": [
+        "apparatus-material-instrument-state"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--warm-gently-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--warm-gently-node",
+      "actionId": "warm-gently",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-prior-technique-node",
+      "incoming": [
+        "thermal-decomposition--set-crucible-lid-node"
+      ],
+      "outgoing": [
+        "thermal-decomposition--heat-carbonate-mixture-node"
+      ],
+      "effect": [
+        "apparatus-material-instrument-state"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--heat-carbonate-mixture-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--heat-carbonate-mixture-node",
+      "actionId": "heat-carbonate-mixture",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-prior-technique-node",
+      "incoming": [
+        "thermal-decomposition--warm-gently-node"
+      ],
+      "outgoing": [
+        "thermal-decomposition--turn-off-burner-node"
+      ],
+      "effect": [
+        "apparatus-material-instrument-state"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--turn-off-burner-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--turn-off-burner-node",
+      "actionId": "turn-off-burner",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-prior-technique-node",
+      "incoming": [
+        "thermal-decomposition--heat-carbonate-mixture-node"
+      ],
+      "outgoing": [
+        "thermal-decomposition--cool-crucible-node"
+      ],
+      "effect": [
+        "apparatus-material-instrument-state"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--cool-crucible-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--cool-crucible-node",
+      "actionId": "cool-crucible",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-prior-technique-node",
+      "incoming": [
+        "thermal-decomposition--turn-off-burner-node"
+      ],
+      "outgoing": [
+        "thermal-decomposition--weigh-preliminary-final-mass-node"
+      ],
+      "effect": [
+        "apparatus-material-instrument-state"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--weigh-preliminary-final-mass-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--weigh-preliminary-final-mass-node",
+      "actionId": "weigh-preliminary-final-mass",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-prior-technique-node",
+      "incoming": [
+        "thermal-decomposition--cool-crucible-node"
+      ],
+      "outgoing": [
+        "thermal-decomposition--record-cycle-mass-node"
+      ],
+      "effect": [
+        "measurement-direct-observation-acquisition"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--record-cycle-mass-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--record-cycle-mass-node",
+      "actionId": "record-cycle-mass",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-prior-technique-node",
+      "incoming": [
+        "thermal-decomposition--weigh-preliminary-final-mass-node"
+      ],
+      "outgoing": [
+        "thermal-decomposition--repeat-heat-to-constant-mass-node"
+      ],
+      "effect": [
+        "evidence-recording"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--repeat-heat-to-constant-mass-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--repeat-heat-to-constant-mass-node",
+      "actionId": "repeat-heat-to-constant-mass",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-prior-technique-node",
+      "incoming": [
+        "thermal-decomposition--record-cycle-mass-node"
+      ],
+      "outgoing": [
+        "thermal-decomposition--cool-constant-mass-crucible-node"
+      ],
+      "effect": [
+        "apparatus-material-instrument-state"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--cool-constant-mass-crucible-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--cool-constant-mass-crucible-node",
+      "actionId": "cool-constant-mass-crucible",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-prior-technique-node",
+      "incoming": [
+        "thermal-decomposition--repeat-heat-to-constant-mass-node"
+      ],
+      "outgoing": [
+        "thermal-decomposition--weigh-final-crucible-node"
+      ],
+      "effect": [
+        "apparatus-material-instrument-state"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--weigh-final-crucible-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--weigh-final-crucible-node",
+      "actionId": "weigh-final-crucible",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-prior-technique-node",
+      "incoming": [
+        "thermal-decomposition--cool-constant-mass-crucible-node"
+      ],
+      "outgoing": [
+        "thermal-decomposition--record-final-crucible-mass-node"
+      ],
+      "effect": [
+        "measurement-direct-observation-acquisition"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--record-final-crucible-mass-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--record-final-crucible-mass-node",
+      "actionId": "record-final-crucible-mass",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-prior-technique-node",
+      "incoming": [
+        "thermal-decomposition--weigh-final-crucible-node"
+      ],
+      "outgoing": [
+        "thermal-decomposition--recover-replicate-product-node"
+      ],
+      "effect": [
+        "evidence-recording"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--recover-replicate-product-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--recover-replicate-product-node",
+      "actionId": "recover-replicate-product",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-prior-technique-node",
+      "incoming": [
+        "thermal-decomposition--record-final-crucible-mass-node"
+      ],
+      "outgoing": [
+        "thermal-decomposition--complete-replicate-node"
+      ],
+      "effect": [
+        "evidence-recording"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--complete-replicate-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--complete-replicate-node",
+      "actionId": "complete-replicate",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-prior-technique-node",
+      "incoming": [
+        "thermal-decomposition--recover-replicate-product-node"
+      ],
+      "outgoing": [
+        "thermal-decomposition--calculate-carbonate-composition-node"
+      ],
+      "effect": [
+        "evidence-recording"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--calculate-carbonate-composition-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--calculate-carbonate-composition-node",
+      "actionId": "calculate-carbonate-composition",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-prior-technique-node",
+      "incoming": [
+        "thermal-decomposition--complete-replicate-node"
+      ],
+      "outgoing": [
+        "thermal-decomposition--record-composition-uncertainty-node"
+      ],
+      "effect": [
+        "calculation-analysis"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--record-composition-uncertainty-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--record-composition-uncertainty-node",
+      "actionId": "record-composition-uncertainty",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-prior-technique-node",
+      "incoming": [
+        "thermal-decomposition--calculate-carbonate-composition-node"
+      ],
+      "outgoing": [
+        "thermal-decomposition--recover-final-product-node"
+      ],
+      "effect": [
+        "evidence-recording"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--recover-final-product-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "thermal-decomposition--recover-final-product-node",
+      "actionId": "recover-final-product",
+      "techniqueId": "thermal-decomposition-mass-loss",
+      "techniqueVersion": "1.1.0",
+      "instanceId": "thermal-decomposition",
+      "reachability": "mandatory-after-prior-technique-node",
+      "incoming": [
+        "thermal-decomposition--record-composition-uncertainty-node"
+      ],
+      "outgoing": [
+        "review-assigned-green-chemistry-report-node"
+      ],
+      "effect": [
+        "evidence-recording"
+      ],
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#review-assigned-green-chemistry-report-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "review-assigned-green-chemistry-report-node",
+      "actionId": "review-assigned-green-chemistry-report",
+      "techniqueId": null,
+      "techniqueVersion": null,
+      "instanceId": null,
+      "reachability": "mandatory-after-technique-exit",
+      "incoming": [],
+      "outgoing": [
+        "calculate-assigned-report-atom-economy-node"
+      ],
+      "effect": "lab-local teacher-artifact review; no physical technique claim",
+      "dispatch": "route adapter, lab-orchestration scope",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#calculate-assigned-report-atom-economy-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "calculate-assigned-report-atom-economy-node",
+      "actionId": "calculate-assigned-report-atom-economy",
+      "techniqueId": null,
+      "techniqueVersion": null,
+      "instanceId": null,
+      "reachability": "mandatory-after-technique-exit",
+      "incoming": [
+        "review-assigned-green-chemistry-report-node"
+      ],
+      "outgoing": [
+        "complete-green-chemistry-peer-review-node"
+      ],
+      "effect": "lab-local teacher-artifact review; no physical technique claim",
+      "dispatch": "route adapter, lab-orchestration scope",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#complete-green-chemistry-peer-review-node",
+      "labId": "green-chemistry-mixture-purification",
+      "nodeId": "complete-green-chemistry-peer-review-node",
+      "actionId": "complete-green-chemistry-peer-review",
+      "techniqueId": null,
+      "techniqueVersion": null,
+      "instanceId": null,
+      "reachability": "mandatory-after-technique-exit",
+      "incoming": [
+        "calculate-assigned-report-atom-economy-node"
+      ],
+      "outgoing": [],
+      "effect": "lab-local teacher-artifact review; no physical technique claim",
+      "dispatch": "route adapter, lab-orchestration scope",
+      "evaluated": true
+    }
+  ],
+  "baselineRows": [
+    {
+      "rowId": "green-chemistry-mixture-purification#review-assigned-green-chemistry-report-node",
+      "priorNodeId": "review-assigned-green-chemistry-report-node",
+      "priorActionId": "review-assigned-green-chemistry-report",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#calculate-assigned-report-atom-economy-node",
+      "priorNodeId": "calculate-assigned-report-atom-economy-node",
+      "priorActionId": "calculate-assigned-report-atom-economy",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#complete-green-chemistry-peer-review-node",
+      "priorNodeId": "complete-green-chemistry-peer-review-node",
+      "priorActionId": "complete-green-chemistry-peer-review",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "priorNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "priorActionId": "approve-thermal-decomposition-plan",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--place-balance-node",
+      "priorNodeId": "thermal-decomposition--place-balance-node",
+      "priorActionId": "place-balance",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--place-empty-crucible-node",
+      "priorNodeId": "thermal-decomposition--place-empty-crucible-node",
+      "priorActionId": "place-empty-crucible",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--read-empty-crucible-node",
+      "priorNodeId": "thermal-decomposition--read-empty-crucible-node",
+      "priorActionId": "read-empty-crucible",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--record-empty-crucible-node",
+      "priorNodeId": "thermal-decomposition--record-empty-crucible-node",
+      "priorActionId": "record-empty-crucible",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--add-carbonate-sample-node",
+      "priorNodeId": "thermal-decomposition--add-carbonate-sample-node",
+      "priorActionId": "add-carbonate-sample",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--weigh-initial-crucible-node",
+      "priorNodeId": "thermal-decomposition--weigh-initial-crucible-node",
+      "priorActionId": "weigh-initial-crucible",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--record-initial-crucible-mass-node",
+      "priorNodeId": "thermal-decomposition--record-initial-crucible-mass-node",
+      "priorActionId": "record-initial-crucible-mass",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--recover-unused-sample-node",
+      "priorNodeId": "thermal-decomposition--recover-unused-sample-node",
+      "priorActionId": "recover-unused-sample",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--place-ring-stand-node",
+      "priorNodeId": "thermal-decomposition--place-ring-stand-node",
+      "priorActionId": "place-ring-stand",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--add-clay-triangle-node",
+      "priorNodeId": "thermal-decomposition--add-clay-triangle-node",
+      "priorActionId": "add-clay-triangle",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--place-bunsen-burner-node",
+      "priorNodeId": "thermal-decomposition--place-bunsen-burner-node",
+      "priorActionId": "place-bunsen-burner",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--place-crucible-on-support-node",
+      "priorNodeId": "thermal-decomposition--place-crucible-on-support-node",
+      "priorActionId": "place-crucible-on-support",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--set-crucible-lid-node",
+      "priorNodeId": "thermal-decomposition--set-crucible-lid-node",
+      "priorActionId": "set-crucible-lid",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--warm-gently-node",
+      "priorNodeId": "thermal-decomposition--warm-gently-node",
+      "priorActionId": "warm-gently",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--heat-carbonate-mixture-node",
+      "priorNodeId": "thermal-decomposition--heat-carbonate-mixture-node",
+      "priorActionId": "heat-carbonate-mixture",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--turn-off-burner-node",
+      "priorNodeId": "thermal-decomposition--turn-off-burner-node",
+      "priorActionId": "turn-off-burner",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--cool-crucible-node",
+      "priorNodeId": "thermal-decomposition--cool-crucible-node",
+      "priorActionId": "cool-crucible",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--weigh-preliminary-final-mass-node",
+      "priorNodeId": "thermal-decomposition--weigh-preliminary-final-mass-node",
+      "priorActionId": "weigh-preliminary-final-mass",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--record-cycle-mass-node",
+      "priorNodeId": "thermal-decomposition--record-cycle-mass-node",
+      "priorActionId": "record-cycle-mass",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--repeat-heat-to-constant-mass-node",
+      "priorNodeId": "thermal-decomposition--repeat-heat-to-constant-mass-node",
+      "priorActionId": "repeat-heat-to-constant-mass",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--cool-constant-mass-crucible-node",
+      "priorNodeId": "thermal-decomposition--cool-constant-mass-crucible-node",
+      "priorActionId": "cool-constant-mass-crucible",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--weigh-final-crucible-node",
+      "priorNodeId": "thermal-decomposition--weigh-final-crucible-node",
+      "priorActionId": "weigh-final-crucible",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--record-final-crucible-mass-node",
+      "priorNodeId": "thermal-decomposition--record-final-crucible-mass-node",
+      "priorActionId": "record-final-crucible-mass",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--recover-replicate-product-node",
+      "priorNodeId": "thermal-decomposition--recover-replicate-product-node",
+      "priorActionId": "recover-replicate-product",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--complete-replicate-node",
+      "priorNodeId": "thermal-decomposition--complete-replicate-node",
+      "priorActionId": "complete-replicate",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--calculate-carbonate-composition-node",
+      "priorNodeId": "thermal-decomposition--calculate-carbonate-composition-node",
+      "priorActionId": "calculate-carbonate-composition",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--record-composition-uncertainty-node",
+      "priorNodeId": "thermal-decomposition--record-composition-uncertainty-node",
+      "priorActionId": "record-composition-uncertainty",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    },
+    {
+      "rowId": "green-chemistry-mixture-purification#thermal-decomposition--recover-final-product-node",
+      "priorNodeId": "thermal-decomposition--recover-final-product-node",
+      "priorActionId": "recover-final-product",
+      "replacementEntryNodeId": "thermal-decomposition--approve-thermal-decomposition-plan-node",
+      "replacementExitNodeId": "thermal-decomposition--recover-final-product-node",
+      "disposition": "Replaced the one-node shim with the compiled thermal technique entry/exit and preserved local report-review nodes after the exit connection.",
+      "evaluated": true
+    }
+  ],
+  "carriers": {
+    "techniqueInstanceId": "thermal-decomposition",
+    "compositionStart": {
+      "kind": "technique-port",
+      "instanceId": "thermal-decomposition",
+      "portId": "entry"
+    },
+    "compositionConnections": [
+      {
+        "id": "thermal-decomposition-to-assigned-report",
+        "from": {
+          "kind": "technique-port",
+          "instanceId": "thermal-decomposition",
+          "portId": "exit"
+        },
+        "to": {
+          "kind": "lab-node",
+          "nodeId": "review-assigned-green-chemistry-report-node"
+        },
+        "label": "Recovered product and composition evidence ready for assigned-report review",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ],
+    "localActionIds": [
+      {
+        "id": "review-assigned-green-chemistry-report",
+        "verb": "record",
+        "label": "Review only the teacher-assigned report",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        },
+        "parameters": {
+          "tag": "assigned-report-review",
+          "inputMode": "text",
+          "inputRole": "studentResponse",
+          "inputRequired": true,
+          "teacherProvidedArtifactRequired": true
+        },
+        "interaction": {
+          "type": "recordNotebook",
+          "accessibleLabel": "Record an evidence-based review of only the teacher-assigned report."
+        },
+        "prerequisites": [],
+        "stateChanges": [
+          "The assigned report's investigation and communication quality are reviewed."
+        ],
+        "invalidCases": [
+          {
+            "id": "report-not-provided",
+            "when": "no teacher-assigned report is available",
+            "message": "Lab Studio does not generate or substitute a report.",
+            "recovery": "Ask the teacher to provide and assign one of the three report artifacts."
+          }
+        ],
+        "feedback": {
+          "success": "Assigned report review recorded.",
+          "invalid": "Use evidence from the assigned report only."
+        },
+        "evidence": [
+          "record",
+          "peer-review"
+        ]
+      },
+      {
+        "id": "calculate-assigned-report-atom-economy",
+        "verb": "calculate",
+        "label": "Calculate atom economy using the teacher-provided convention",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        },
+        "parameters": {
+          "calculationId": "assigned-report-atom-economy",
+          "template": "atomEconomy",
+          "requireStudentValue": true,
+          "teacherProvidedStoichiometricContributions": true
+        },
+        "interaction": {
+          "type": "submitCalculation",
+          "valueParameter": "calculationId",
+          "accessibleLabel": "Submit atom economy calculated with the teacher-provided desired-product convention."
+        },
+        "prerequisites": [
+          {
+            "id": "assigned-report-review-required",
+            "type": "actionEvidence",
+            "label": "The assigned report is reviewed.",
+            "actionId": "review-assigned-green-chemistry-report"
+          }
+        ],
+        "stateChanges": [
+          "Atom economy is calculated from the teacher-provided reaction convention."
+        ],
+        "invalidCases": [
+          {
+            "id": "missing-convention",
+            "when": "the teacher has not supplied the desired-product and total-reactant contributions",
+            "message": "The source does not choose an atom-economy convention for the report.",
+            "recovery": "Use the teacher-provided convention and stoichiometric contributions."
+          }
+        ],
+        "feedback": {
+          "success": "Assigned-report atom economy recorded.",
+          "invalid": "Recalculate with the supplied stoichiometric contributions."
+        },
+        "evidence": [
+          "calculate",
+          "atom-economy"
+        ]
+      },
+      {
+        "id": "complete-green-chemistry-peer-review",
+        "verb": "record",
+        "label": "Complete the green-chemistry peer review",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        },
+        "parameters": {
+          "tag": "green-chemistry-peer-review-complete",
+          "inputMode": "text",
+          "inputRole": "studentResponse",
+          "inputRequired": true,
+          "requiresAdditionalGreenPrinciple": true,
+          "requiresRecommendations": true
+        },
+        "interaction": {
+          "type": "recordNotebook",
+          "accessibleLabel": "Record the additional green principle and concise recommendations."
+        },
+        "prerequisites": [
+          {
+            "id": "assigned-report-atom-economy-required",
+            "type": "actionEvidence",
+            "label": "Assigned-report atom economy is calculated.",
+            "actionId": "calculate-assigned-report-atom-economy"
+          }
+        ],
+        "stateChanges": [
+          "The assigned report review is complete."
+        ],
+        "invalidCases": [
+          {
+            "id": "incomplete-review",
+            "when": "the review omits evidence, a green principle, or recommendations",
+            "message": "The peer review is incomplete.",
+            "recovery": "Complete every review section using evidence from the assigned report."
+          }
+        ],
+        "feedback": {
+          "success": "Green-chemistry peer review complete.",
+          "invalid": "Complete every assigned review section."
+        },
+        "evidence": [
+          "record",
+          "reflection"
+        ]
+      }
+    ]
+  }
+}

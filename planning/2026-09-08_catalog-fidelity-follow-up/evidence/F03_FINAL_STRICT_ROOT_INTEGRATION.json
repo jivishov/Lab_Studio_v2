@@ -1,0 +1,107 @@
+{
+  "at": "2026-09-12T20:12:06.409905+00:00",
+  "status": "integrated-source-final-strict-source-static-reviewed-execution-unverified",
+  "workerThreadId": "01a09667-fe19-7841-bb23-ace023e37142",
+  "workerIdleCursor": "9d630365-7e51-4c87-b00a-4985232a4881:7",
+  "parentThreadId": "01a09599-01b7-78d2-81c9-20260ded3564",
+  "manifestSha256": "bf627b9c0e43319f6ae26164a28bb6ec8b1d466aa429aa8ac3fa36c711120b08",
+  "authority": "C:\\Users\\EmilJivishov\\Projects\\Lab_studio",
+  "candidate": "C:\\Users\\EmilJivishov\\.codex\\orchestrated-candidates\\lab-studio-followup\\remaining-20260912\\F03-final-strict\\Lab_studio",
+  "backup": "C:\\Users\\EmilJivishov\\.codex\\orchestrated-candidates\\lab-studio-followup\\remaining-20260912\\before-f03-final-strict-integration\\Lab_studio",
+  "fileCount": 6,
+  "modified": 6,
+  "added": 0,
+  "removed": 0,
+  "files": [
+    {
+      "path": "scripts/checkContentConsistency.mjs",
+      "before": {
+        "sha256": "72846256ff276b4fc70d670691eaed7490fa606d69917a5f6422db26ab4efe57",
+        "bytes": 205355
+      },
+      "after": {
+        "sha256": "cca5627ca227a7fbc985e413a2b0b8448c545c6f02d8ecde0ef541ea6b6f922f",
+        "bytes": 205409
+      }
+    },
+    {
+      "path": "scripts/compiledContentDiagnostics.mjs",
+      "before": {
+        "sha256": "5b7e8845e745d8dbcc9a5f367dfd40cd1c74dab98169d550718f7c1b1cdeed55",
+        "bytes": 8991
+      },
+      "after": {
+        "sha256": "67667d4513f12477493979daff4bab4a502fce4f7488cef75cb3117020bacd03",
+        "bytes": 9128
+      }
+    },
+    {
+      "path": "src/data/__tests__/bundleFallback.test.ts",
+      "before": {
+        "sha256": "fe70931e6b54886d709f4b9941016063e1d5e8d4e959d9bb982a4db1074cb518",
+        "bytes": 6939
+      },
+      "after": {
+        "sha256": "fccf3e9f13aa5699f94b24ab3fefa5ecb5e5838a986175765cd0a0ee41ad51a0",
+        "bytes": 7002
+      }
+    },
+    {
+      "path": "src/data/bundledCatalogPolicyBoundary.ts",
+      "before": {
+        "sha256": "235f4afcb568469f2af78f505ba77a361a6982e113ce0a6c1ec79f776a706169",
+        "bytes": 4700
+      },
+      "after": {
+        "sha256": "ad0fe323a6423e923c8d20879ed34b84cedfaca73c2cc41fffda04d5dda2f76c",
+        "bytes": 5072
+      }
+    },
+    {
+      "path": "src/domain/__tests__/bundledCatalogPolicy.test.ts",
+      "before": {
+        "sha256": "56be174c92e0622c30525c3da6832918467d885549e701bb684383b768edb14a",
+        "bytes": 35247
+      },
+      "after": {
+        "sha256": "4328f3a62aabd23bf0f89ec94bba780930a1968b46a65cddc56e72b26e2d6529",
+        "bytes": 38731
+      }
+    },
+    {
+      "path": "src/domain/bundledCatalogPolicy.ts",
+      "before": {
+        "sha256": "b3d8ee4dc129223c26710f4b9891b27526ea4738c09ddb588451fcdf2276c637",
+        "bytes": 52067
+      },
+      "after": {
+        "sha256": "86e714f814e572413433e333d971945e4112475af3948f59c3d29680f7782dfe",
+        "bytes": 53207
+      }
+    }
+  ],
+  "evidence": {
+    "BASELINE_MANIFEST.json": {
+      "sha256": "f1bfcbdc4b7b76da7cbe075693c6b02d8c9b47d51635f92dd9e857407c1b7568",
+      "bytes": 309239
+    },
+    "HANDOFF.md": {
+      "sha256": "ad4beab5ea665e0182f59f7407824b63a05e4be26b2497637fa5d04115a702f8",
+      "bytes": 4431
+    },
+    "SCOPE.md": {
+      "sha256": "f1f2b33ff23330a5b456f36782583d02149ce8d0e52f9b736736dcdc939cad77",
+      "bytes": 2736
+    },
+    "IMPLEMENTATION_REPORT.md": {
+      "sha256": "4b05e00d857013881414422e6804257195b137ff6dcaf55b91f2274fd0f82cb6",
+      "bytes": 3891
+    },
+    "SELF_REVIEW.md": {
+      "sha256": "92a404894eaf4038a4d3a4405324748d0a2e495e45f31eec6c57456301e3ead4",
+      "bytes": 2286
+    }
+  },
+  "executionValidation": "intentionally-unrun",
+  "gitStageCommitPushDeploy": false
+}
