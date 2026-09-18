@@ -3900,5 +3900,39 @@
     "sourceLevelReconciliationClosure": "not-claimed",
     "currentEvidenceStatus": "pending-separate-authorization-and-repository-restoration",
     "fullItem2Status": "incomplete"
+  },
+  "nonCatalogHistoricalScopes": {
+    "unindexedGeneratedCarrier": {
+      "id": "technique:ph-volume-titration-trial",
+      "directHistoricalFindingCount": 45,
+      "rules": [
+        {
+          "rule": "action/source-trace-missing",
+          "count": 45,
+          "evaluation": "raw-template-rule",
+          "representativeScopes": [
+            "technique:ph-volume-titration-trial/beverage-a-sample-trial-1-add-indicator",
+            "technique:ph-volume-titration-trial/beverage-a-sample-trial-1-concentration",
+            "technique:ph-volume-titration-trial/beverage-a-sample-trial-1-concentration-approve-equivalence",
+            "technique:ph-volume-titration-trial/beverage-a-sample-trial-1-concentration-select-equivalence"
+          ],
+          "presentDisposition": "pending-fresh-source-trace-overlay-check"
+        }
+      ],
+      "boundary": "This generated carrier is not one of the 42 indexed techniques, but its historical findings remain relevant evidence and are not dropped from reconciliation."
+    },
+    "crossCatalogOrRegistryFindings": {
+      "directHistoricalFindingCount": 34,
+      "byRule": {
+        "asset/disposition-mismatch": 6,
+        "corpus/action-id-collision": 8,
+        "cycle06/hydroxide-extension-missing": 3,
+        "registry/atom-content-example-missing": 12,
+        "source-citation/basis-disagreement": 4,
+        "source-citation/sourceTable-disagreement": 1
+      },
+      "presentDisposition": "retained-for-fresh-repository-level-content-check",
+      "boundary": "These historical scopes are not attributable one-for-one to a single indexed activity and therefore are not silently assigned to one."
+    }
   }
 }
