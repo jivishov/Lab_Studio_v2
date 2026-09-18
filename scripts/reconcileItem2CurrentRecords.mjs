@@ -371,7 +371,7 @@ catalog.currentEvidence = {
     cycle12StaticVerifier: "passed",
     repositoryContentCheck: "exit 1; 21 explicit source-trace residuals",
   },
-  recorderCheck: "source current; integrity passed; complete-current-run-with-supplemental-failures",
+  recorderCheck: "exit 1; source current; integrity passed; core complete; supplemental-failures reports repository-content-check",
   contentCheck: {
     retainedFindings: residualCount,
     evaluatedSourceTraceFindings: transformedFindings.length,
@@ -421,7 +421,7 @@ ledger.acceptedRun = {
   runId: finalRunId,
   sourceCommit: "recorded in final CURRENT_VERIFICATION_RUN.json",
   sourceSnapshotPayloadSha256: "recorded in final CURRENT_VERIFICATION_RUN.json",
-  recorderCheck: "source current; integrity passed; complete-current-run-with-supplemental-failures",
+  recorderCheck: "exit 1; source current; integrity passed; core complete; supplemental-failures reports repository-content-check",
   integrity: "passed",
   corePhases: "5/5 required",
   supplemental: {
@@ -446,6 +446,7 @@ const finalEvidenceSection = `## Final current evidence — ${finalRunId}
 
 - Run ID: \`${finalRunId}\`; the final recorder receipt is under \`${runEvidenceRoot}/CURRENT_VERIFICATION_RUN.json\`.
 - Core chain: **5/5 passed** — compiler witness, reconciliation, Cycle 09 overlay refresh/check, and reconciliation check.
+- Recorder \`--check\`: **exit 1 is expected** because \`checkStatus=supplemental-failures\`; source is current, integrity passed, no core phase failed, and only repository-content-check is supplemental-failed.
 - Supplemental phases: **2 recorded** — the Cycle 12 static verifier passed; repository-content-check exited 1 only for 21 explicit source-trace residuals.
 - Source-trace reconciliation: **882 exact action members** are covered by 192 contextual groups; **21 residuals** remain (17 authored paper-drying operations and 4 teacher-configured inventory actions).
 - Crystal Violet: the prior three raw rows are resolved by current compiled static routing across 14 host instances, both approval witnesses and 229 Crystal Violet compiled contexts; compiled-context findings are zero.
@@ -471,9 +472,13 @@ report = report.replace(
   "At that earlier pre-evidence checkpoint, the scenario changes were source-only; the final current evidence section below supersedes its pending-evidence wording.",
 );
 const reportMarker = "## Fresh current evidence — Run B";
-report = report.includes(reportMarker)
-  ? `${report.slice(0, report.indexOf(reportMarker))}${finalEvidenceSection}`
-  : `${report.trimEnd()}\n\n${finalEvidenceSection}`;
+const existingFinalReportIndex = report.search(/^## Final current evidence — /m);
+const reportBase = report.includes(reportMarker)
+  ? report.slice(0, report.indexOf(reportMarker))
+  : existingFinalReportIndex >= 0
+    ? report.slice(0, existingFinalReportIndex)
+    : report;
+report = `${reportBase.trimEnd()}\n\n${finalEvidenceSection}`;
 writeFileSync(join(root, reportPath), report, "utf8");
 
 const criticalPath = "docs/item2/CRITICAL_REVIEW.md";
@@ -482,9 +487,13 @@ critical = critical.replace(/six core phases/g, "five core phases");
 critical = critical.replace(/pending current evidence\./g, "current static evidence recorded; runtime/scientific/browser/release acceptance remains unclaimed.");
 critical = critical.replace(/The current evidence phase is now complete[\s\S]*?release acceptance remain unclaimed\./, "The current evidence phase is complete for the authorized source/static scope. The final run records 882 grouped source-trace members, 21 explicit residuals, zero compiled-context findings, 37 fixed-role configuration resolutions and one not-applicable Crystal Violet approval row; runtime, scientific, browser, classroom, safety and release acceptance remain unclaimed.");
 const criticalMarker = "## Current-evidence challenge";
-critical = critical.includes(criticalMarker)
-  ? `${critical.slice(0, critical.indexOf(criticalMarker))}${finalEvidenceSection.replace("## Final current evidence", "## Current-evidence challenge and final receipt")}`
-  : `${critical.trimEnd()}\n\n${finalEvidenceSection}`;
+const existingFinalCriticalIndex = critical.search(/^## Current-evidence challenge and final receipt — /m);
+const criticalBase = critical.includes(criticalMarker) && !critical.includes("## Current-evidence challenge and final receipt")
+  ? critical.slice(0, critical.indexOf(criticalMarker))
+  : existingFinalCriticalIndex >= 0
+    ? critical.slice(0, existingFinalCriticalIndex)
+    : critical;
+critical = `${criticalBase.trimEnd()}\n\n${finalEvidenceSection.replace("## Final current evidence", "## Current-evidence challenge and final receipt")}`;
 writeFileSync(join(root, criticalPath), critical, "utf8");
 
 const executionPath = "docs/item2/EXECUTION_REQUEST.md";
@@ -497,7 +506,7 @@ const executionSection = `## Current execution result
 - Final run: \`${finalRunId}\`; source commit and source snapshot identity are recorded in its \`CURRENT_VERIFICATION_RUN.json\`.
 - Core chain: **5/5 passed**; supplemental static verifier passed; repository-content-check exited 1 and retained only 21 explicit source-trace residuals.
 - Complete current diagnostic: 882 grouped source-trace members, 21 residuals, three prior Crystal Violet rows resolved by compiled static routing, 30/30 compiled witnesses, 6,278 node contexts, zero compiled-context findings, and 37 fixed-role plus one not-applicable configuration resolutions.
-- The final recorder check must be read from the final receipt; the source/static boundary remains explicit and no runtime, scientific, browser, classroom, safety or release acceptance is claimed.
+- The final recorder receipt records the source/integrity result and exact command outcomes; the source/static boundary remains explicit and no runtime, scientific, browser, classroom, safety or release acceptance is claimed.
 `;
 execution = execution.includes(executionMarker)
   ? `${execution.slice(0, execution.indexOf(executionMarker))}${executionSection}`
@@ -508,6 +517,8 @@ const catalogMarkdownPath = "docs/item2/CATALOG_DISPOSITIONS.md";
 let catalogMarkdown = readFileSync(join(root, catalogMarkdownPath), "utf8");
 catalogMarkdown = catalogMarkdown.replace(/Run B static findings triaged/g, "final current static findings triaged");
 catalogMarkdown = catalogMarkdown.replace(/Run B static evidence current/g, "final current static evidence");
+const existingCatalogBoundaryIndex = catalogMarkdown.search(/^## Current evidence boundary$/m);
+if (existingCatalogBoundaryIndex >= 0) catalogMarkdown = catalogMarkdown.slice(0, existingCatalogBoundaryIndex);
 catalogMarkdown = `${catalogMarkdown.trimEnd()}\n\n## Current evidence boundary\n\nThe final run \`${finalRunId}\` records current source/static evidence. The raw provenance debt is partitioned into 882 contextual group members and 21 explicit residuals; runtime/scientific/browser/release acceptance is not claimed.\n`;
 writeFileSync(join(root, catalogMarkdownPath), catalogMarkdown, "utf8");
 

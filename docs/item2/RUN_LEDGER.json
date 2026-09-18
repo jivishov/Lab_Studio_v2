@@ -84,7 +84,7 @@
     },
     {
       "kind": "item2-final-current-evidence",
-      "detail": "Final current-evidence run item2-luna-final-20260918 is the authoritative receipt for the frozen tracked tree; five core phases and two supplemental phases are recorded."
+      "detail": "Final current-evidence run item2-luna-final2-20260918 is the authoritative receipt for the frozen tracked tree; five core phases and two supplemental phases are recorded."
     }
   ],
   "intentionallyUnrun": [
@@ -110,14 +110,14 @@
     }
   ],
   "evidencePipelineStatus": "complete-current-run-with-supplemental-failures",
-  "currentEvidenceStatus": "Final current-evidence run item2-luna-final-20260918 is authoritative for the frozen tree: five core phases passed, two supplemental phases were recorded, repository-content-check remains nonzero only for 21 explicit source-trace residuals, and the source/static boundary is preserved.",
+  "currentEvidenceStatus": "Final current-evidence run item2-luna-final2-20260918 is authoritative for the frozen tree: five core phases passed, two supplemental phases were recorded, repository-content-check remains nonzero only for 21 explicit source-trace residuals, and the source/static boundary is preserved.",
   "sourceLevelClosureClaim": "current source/static reconciliation and evidence recorded; 21 explicit source-trace residuals remain; runtime/scientific/browser/release closure not claimed",
   "modelAttestation": "The continuation task requested GPT-5.6 Luna with Max reasoning; this ledger records that setting without claiming a separate independent review.",
   "acceptedRun": {
-    "runId": "item2-luna-final-20260918",
+    "runId": "item2-luna-final2-20260918",
     "sourceCommit": "recorded in final CURRENT_VERIFICATION_RUN.json",
     "sourceSnapshotPayloadSha256": "recorded in final CURRENT_VERIFICATION_RUN.json",
-    "recorderCheck": "source current; integrity passed; complete-current-run-with-supplemental-failures",
+    "recorderCheck": "exit 1; source current; integrity passed; core complete; supplemental-failures reports repository-content-check",
     "integrity": "passed",
     "corePhases": "5/5 required",
     "supplemental": {

@@ -24,7 +24,7 @@ const commands = [
   { id: "06-cycle12-reconciliation-check", args: ["scripts/recordCurrentVerificationRun.mjs", "--run-phase", "cycle12-reconciliation-check", "--run-id", runId], expectedExitCode: 0 },
   { id: "07-cycle12-static-verifier", args: ["scripts/recordCurrentVerificationRun.mjs", "--run-phase", "cycle12-static-verifier", "--run-id", runId], expectedExitCode: 0 },
   { id: "08-repository-content-check", args: ["scripts/recordCurrentVerificationRun.mjs", "--run-phase", "repository-content-check", "--run-id", runId], expectedExitCode: 1 },
-  { id: "09-recorder-check", args: ["scripts/recordCurrentVerificationRun.mjs", "--check", "--run-id", runId], expectedExitCode: 0 },
+  { id: "09-recorder-check", args: ["scripts/recordCurrentVerificationRun.mjs", "--check", "--run-id", runId], expectedExitCode: 1 },
   {
     id: "10-content-check-compiled-json",
     args: ["--experimental-strip-types", "--experimental-loader", "./scripts/tsCompositionLoader.mjs", "scripts/checkContentConsistency.mjs", "--compiled", "--json"],

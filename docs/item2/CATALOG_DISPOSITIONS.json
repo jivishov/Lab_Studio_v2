@@ -3592,14 +3592,14 @@
     "quickAcheResetSemantics": "retry/recalculation may reuse still-valid measurements; upstream physical recovery reacquires invalidated measurements; full activity Reset clears measurements and calculations"
   },
   "currentEvidence": {
-    "runId": "item2-luna-final-20260918",
+    "runId": "item2-luna-final2-20260918",
     "sourceCommit": "recorded in final CURRENT_VERIFICATION_RUN.json",
     "corePhases": "5/5 passed",
     "supplementalPhases": {
       "cycle12StaticVerifier": "passed",
       "repositoryContentCheck": "exit 1; 21 explicit source-trace residuals"
     },
-    "recorderCheck": "source current; integrity passed; complete-current-run-with-supplemental-failures",
+    "recorderCheck": "exit 1; source current; integrity passed; core complete; supplemental-failures reports repository-content-check",
     "contentCheck": {
       "retainedFindings": 21,
       "evaluatedSourceTraceFindings": 903,
