@@ -2381,7 +2381,8 @@ for (const id of onlyIds) {
     }, "Equivalence volume is recorded.", ["record", "measurement"]),
     action("calculate-curve-molarity", "calculate", "Calculate curve molarity", {
       calculationId: "curve-molarity",
-      expected: 0.099,
+      template: "acidBaseMolarityFromEquivalenceVolume",
+      titrationModelId: "curve-unknown-acid",
       tolerance: 0.005,
       unit: "M",
     }, "Unknown molarity is calculated from the titration curve.", ["calculate"]),
