@@ -60,10 +60,8 @@ Do not merge to `main` unless separately requested.
 
 ## Current execution result
 
-- Run A: `item2-597c060-run-a`, retained as pre-repair discovery evidence.
-- Run B: `item2-f9c9229-run-b`, current against source commit `f9c9229`.
-- Run C: `item2-646169f-run-c`, final freshness receipt after the tracked triage/report updates.
-- Core static chain: 6/6 passed; recorder source status current; integrity passed.
-- Supplemental content check: exit 1, with 906 retained findings, 1 routed raw row, 0 compiled-context findings and 38 unrepresented static coverage configurations.
-- Complete JSON capture: `delivery/run-b-content-check-compiled-json.stdout.json`, SHA-256 `e5b849bfe6893b9cf7570aacab34a1737eeebc016d15cd4872ab92013b501e02`.
-- Per-finding dispositions: `FINDING_TRIAGE.json`; runtime, scientific, browser, classroom, safety and release acceptance remain outside this evidence scope.
+- Discovery runs remain historical: Run A `item2-597c060-run-a`, Run B `item2-f9c9229-run-b`, and Run C `item2-646169f-run-c` are not used as the final identity for this repaired tree.
+- Final run: `item2-luna-final-20260918`; source commit and source snapshot identity are recorded in its `CURRENT_VERIFICATION_RUN.json`.
+- Core chain: **5/5 passed**; supplemental static verifier passed; repository-content-check exited 1 and retained only 21 explicit source-trace residuals.
+- Complete current diagnostic: 882 grouped source-trace members, 21 residuals, three prior Crystal Violet rows resolved by compiled static routing, 30/30 compiled witnesses, 6,278 node contexts, zero compiled-context findings, and 37 fixed-role plus one not-applicable configuration resolutions.
+- The final recorder check must be read from the final receipt; the source/static boundary remains explicit and no runtime, scientific, browser, classroom, safety or release acceptance is claimed.

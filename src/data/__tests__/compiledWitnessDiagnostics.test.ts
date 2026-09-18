@@ -14,6 +14,7 @@ import { syntheticComposableTechnique, syntheticCompositionSource } from "../com
 import type {
   ActionDefinition,
   ActionInteractionSpec,
+  CompositionBranchPredicate,
   LabCompositionSourceDefinition,
   TechniqueConfigurationSlot,
   TechniqueDefinition,
@@ -408,6 +409,9 @@ const evaluateConfigurationCoverageFixture = async ({
   witnessConfigurations,
   instanceConfiguration = {},
   variantId,
+  sourceId,
+  techniqueId,
+  hostConnectionEnabledWhen,
 }: {
   id: string;
   configurationSlots: TechniqueConfigurationSlot[];
@@ -415,6 +419,9 @@ const evaluateConfigurationCoverageFixture = async ({
   witnessConfigurations: Array<Record<string, string | number | boolean>>;
   instanceConfiguration?: Record<string, string | number | boolean>;
   variantId?: string;
+  sourceId?: string;
+  techniqueId?: string;
+  hostConnectionEnabledWhen?: CompositionBranchPredicate;
 }) => {
   const fixture = makeProbeFixture({
     id,
@@ -423,12 +430,20 @@ const evaluateConfigurationCoverageFixture = async ({
   });
   fixture.technique.composition!.configurationSlots = configurationSlots;
   fixture.technique.composition!.variants = variants;
+  if (sourceId) fixture.source.id = sourceId;
+  if (techniqueId) {
+    fixture.technique.id = techniqueId;
+    fixture.source.techniqueInstances[0].techniqueId = techniqueId;
+  }
   fixture.source.techniqueInstances[0].bindings.configuration = {
     ...fixture.source.techniqueInstances[0].bindings.configuration,
     ...instanceConfiguration,
   };
   if (variantId) fixture.source.techniqueInstances[0].variantId = variantId;
   else delete fixture.source.techniqueInstances[0].variantId;
+  if (hostConnectionEnabledWhen) {
+    fixture.source.compositionConnections[0].enabledWhen = hostConnectionEnabledWhen;
+  }
   fixture.source.reachabilityWitnesses = witnessConfigurations.map((configuration, index) => ({
     id: `coverage-${index + 1}`,
     configuration,
@@ -834,6 +849,81 @@ describe("compiled witness diagnostics", () => {
     expect(result.coverage.unrepresentedConfigurations.filter((status) =>
       status.detail.includes("has no exact lab instance"),
     )).toHaveLength(2);
+  });
+
+  it("recognizes a host connection predicate as the authored variant boundary", async () => {
+    const result = await evaluateConfigurationCoverageFixture({
+      id: "f02-host-connection-variant",
+      configurationSlots: [{
+        id: "contextId",
+        valueType: "string",
+        required: true,
+        allowedValues: ["strong", "weak"],
+        defaultValue: "strong",
+      }],
+      variants: [
+        { id: "strong", label: "Strong route", enabledWhen: { kind: "configuration", slotId: "contextId", equals: "strong" } },
+        { id: "weak", label: "Weak route", enabledWhen: { kind: "configuration", slotId: "contextId", equals: "weak" } },
+      ],
+      instanceConfiguration: { contextId: "strong" },
+      witnessConfigurations: [
+        { "probe.contextId": "strong" },
+        { "probe.contextId": "weak" },
+      ],
+      hostConnectionEnabledWhen: { kind: "configuration", instanceId: "probe", slotId: "contextId", equals: "strong" },
+    });
+
+    expect(result.coverage.fixedRoleConfigurations).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        status: "fixed-role-configuration",
+        detail: expect.stringContaining("strong is represented by host connection predicates"),
+      }),
+    ]));
+    expect(result.coverage.unrepresentedConfigurations).toEqual(expect.arrayContaining([
+      expect.objectContaining({ detail: expect.stringContaining(".weak has no exact lab instance") }),
+    ]));
+  });
+
+  it("records an allowlisted fixed host role without relaxing generic finite coverage", async () => {
+    const fixedRole = await evaluateConfigurationCoverageFixture({
+      id: "f02-fixed-host-role",
+      sourceId: "bonding-unknown-solids",
+      techniqueId: "bonding-solids-tests",
+      configurationSlots: [{
+        id: "sampleMode",
+        valueType: "string",
+        required: true,
+        allowedValues: ["blind", "known"],
+        defaultValue: "blind",
+      }],
+      variants: [],
+      instanceConfiguration: { sampleMode: "blind" },
+      witnessConfigurations: [{ "probe.sampleMode": "blind" }],
+    });
+    const generic = await evaluateConfigurationCoverageFixture({
+      id: "f02-generic-finite-role",
+      configurationSlots: [{
+        id: "sampleMode",
+        valueType: "string",
+        required: true,
+        allowedValues: ["blind", "known"],
+        defaultValue: "blind",
+      }],
+      variants: [],
+      instanceConfiguration: { sampleMode: "blind" },
+      witnessConfigurations: [{ "probe.sampleMode": "blind" }],
+    });
+
+    expect(fixedRole.coverage.unrepresentedConfigurations).toEqual([]);
+    expect(fixedRole.coverage.fixedRoleConfigurations).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        status: "fixed-role-configuration",
+        detail: expect.stringContaining("blind.sampleMode is authored as the fixed host role value"),
+      }),
+    ]));
+    expect(generic.coverage.unrepresentedConfigurations).toEqual(expect.arrayContaining([
+      expect.objectContaining({ detail: expect.stringContaining("[\"known\"]") }),
+    ]));
   });
 
   it("labels finite continuous representatives as static-only while retaining missing numeric coverage as fatal", async () => {

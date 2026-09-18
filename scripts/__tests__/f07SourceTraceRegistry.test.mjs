@@ -19,10 +19,21 @@ const indexedTechniqueActions = new Map(readJson("public/techniques/index.json")
   const technique = readJson(`public/techniques/${file}`);
   return [technique.id, new Set(technique.actions.map((action) => action.id))];
 }));
+const indexedTechniqueActionRecords = new Map(readJson("public/techniques/index.json").map(({ file }) => {
+  const technique = readJson(`public/techniques/${file}`);
+  return [technique.id, new Map(technique.actions.map((action) => [action.id, action]))];
+}));
 
 const keyOf = (trace) => `${trace.ownerType}:${trace.ownerId}#${trace.actionId}`;
 const ownerOf = (trace) => `${trace.ownerType}:${trace.ownerId}`;
 const traceRows = new Map(sourceTraceRegistry.traces.map((trace) => [keyOf(trace), trace]));
+const traceGroups = sourceTraceRegistry.traceGroups ?? [];
+const groupedTraceRows = new Map();
+for (const group of traceGroups) {
+  for (const actionId of group.actionIds ?? []) {
+    groupedTraceRows.set(`${group.ownerType}:${group.ownerId}#${actionId}`, group);
+  }
+}
 const ownerRows = (ownerId) => sourceTraceRegistry.traces.filter(
   (trace) => trace.ownerType === "technique" && trace.ownerId === ownerId,
 );
@@ -49,6 +60,8 @@ const expectSourceExample = (atomId, expected) => {
 describe("F07 Phase 2 source-row coverage", () => {
   it("keeps active source rows indexed and reviewed historical rows distinct", () => {
     expect(sourceTraceRegistry.traces.length).toBeGreaterThan(0);
+    expect(traceGroups.length).toBeGreaterThan(0);
+    expect(groupedTraceRows.size).toBe(882);
     expect(sourceTraceRegistry.inlineTraceDebt).toEqual([]);
     for (const trace of sourceTraceRegistry.traces) {
       const owner = ownerOf(trace);
@@ -57,6 +70,26 @@ describe("F07 Phase 2 source-row coverage", () => {
       if (trace.ownerType === "technique") {
         expect(indexedTechniqueActions.has(trace.ownerId), owner).toBe(true);
         expect(indexedTechniqueActions.get(trace.ownerId)?.has(trace.actionId), keyOf(trace)).toBe(true);
+      }
+    }
+    const groupedMembers = new Set();
+    for (const group of traceGroups) {
+      const owner = `${group.ownerType}:${group.ownerId}`;
+      expect(sourceDerivedOwners.has(owner), owner).toBe(true);
+      expect(nonSourceDerivedOwners.has(owner), owner).toBe(false);
+      expect(group.traceDisposition, group.id).toBe("context");
+      expect(group.sourceBasis, group.id).toBe(group.basis);
+      expect(group.actionBasis, group.id).toEqual(expect.any(String));
+      expect(group.mappingRationale, group.id).toEqual(expect.any(String));
+      expect(group.sourceFile, group.id).toEqual(expect.any(String));
+      for (const actionId of group.actionIds) {
+        const key = `${owner}#${actionId}`;
+        expect(groupedMembers.has(key), key).toBe(false);
+        groupedMembers.add(key);
+        expect(traceRows.has(key), key).toBe(false);
+        const action = indexedTechniqueActionRecords.get(group.ownerId)?.get(actionId);
+        expect(action, key).toBeTruthy();
+        expect(action?.atomId, key).toBe(group.atomId);
       }
     }
 
@@ -299,6 +332,7 @@ describe("F07 Phase 2 source-row coverage", () => {
     expect(dryActions).toHaveLength(17);
     for (const action of dryActions) {
       expect(traceRows.has(`technique:paper-chromatography#${action.id}`), action.id).toBe(false);
+      expect(groupedTraceRows.has(`technique:paper-chromatography#${action.id}`), action.id).toBe(false);
     }
     const dryAtom = atomRegistry.atoms.find((atom) => atom.id === "atom.observe.dry-developed-chromatography-paper");
     expect(dryAtom.sourceExamples).toEqual([]);
@@ -467,11 +501,20 @@ describe("F07 configured Brass scan context", () => {
     expect(brassTraceRows.some((trace) => /^scan-remove-\d+-salt-[ab]-action$/.test(trace.actionId) && trace.step === "P-04")).toBe(false);
   });
 
-  it("records only the remaining source-review omission", () => {
-    const omitted = new Set(["transfer-prepared-unknown-to-original-tube-action"]);
-    for (const actionId of omitted) {
-      expect(traceRows.has(`technique:brass-spectrophotometry#${actionId}`), actionId).toBe(false);
-      expect(brassTechnique.actions.find((action) => action.id === actionId)?.atomId, actionId).toBeTruthy();
+  it("records the bounded residual source-trace omissions without inventing citations", () => {
+    const omitted = new Set([
+      "technique:blue1-percent-transmittance#i1-configure-unknown-operational-inventory",
+      "technique:blue1-percent-transmittance#i1-configure-unknown-dilution-water",
+      "technique:brass-spectrophotometry#scan-configure-salt-a-inventory-action",
+      "technique:brass-spectrophotometry#scan-configure-salt-b-inventory-action",
+      ...paperTechnique.actions
+        .filter((action) => action.atomId === "atom.observe.dry-developed-chromatography-paper")
+        .map((action) => `technique:paper-chromatography#${action.id}`),
+    ]);
+    expect(omitted.size).toBe(21);
+    for (const key of omitted) {
+      expect(traceRows.has(key), key).toBe(false);
+      expect(groupedTraceRows.has(key), key).toBe(false);
     }
     expect(traceRows.has("technique:brass-spectrophotometry#scan-place-photometer-action")).toBe(true);
   });

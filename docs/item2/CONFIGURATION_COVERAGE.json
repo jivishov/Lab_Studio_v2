@@ -1417,16 +1417,1113 @@
     }
   },
   "currentCompiledCoverage": {
-    "status": "not-run",
-    "declared": null,
-    "represented": null,
-    "unrepresented": null,
-    "reason": "separate authorization for the named evidence pipeline was not provided"
+    "status": "current-final-static-diagnostic",
+    "runId": "item2-luna-final-20260918",
+    "sourceCommit": "recorded in final CURRENT_VERIFICATION_RUN.json",
+    "attemptedWitnessCount": 30,
+    "compiledWitnessCount": 30,
+    "evaluatedNodeContextCount": 6278,
+    "compiledContextFindings": 0,
+    "declaredConfigurationGaps": 38,
+    "unrepresentedConfigurations": 0,
+    "fixedRoleConfigurations": 37,
+    "notApplicableConfigurationRows": 1,
+    "representativeContinuousConfigurations": 229,
+    "coverageStatusCounts": {
+      "compiled": 30
+    },
+    "probeStatuses": [
+      {
+        "id": "wavelength-substitution",
+        "status": "inconclusive-static-only",
+        "evaluatedContextCount": 94,
+        "staticFindingCount": 0,
+        "boundary": "Final compiled identities and producer dominance were compared; this does not prove a wavelength was produced or accepted at runtime."
+      },
+      {
+        "id": "calibration-blanking-order",
+        "status": "inconclusive-static-only",
+        "evaluatedContextCount": 42,
+        "staticFindingCount": 0,
+        "boundary": "Graph dominance can expose an absent or non-dominating blanking step, but cannot prove a physical blank was performed."
+      },
+      {
+        "id": "cuvette-identity",
+        "status": "inconclusive-static-only",
+        "evaluatedContextCount": 74,
+        "staticFindingCount": 0,
+        "boundary": "Compiled instance references and graph order were inspected; bench state changes and runtime slot behavior remain unverified."
+      },
+      {
+        "id": "solvent-before-reading",
+        "status": "inconclusive-static-only",
+        "evaluatedContextCount": 14,
+        "staticFindingCount": 0,
+        "boundary": "Compiled chromatography dependencies, concrete chamber identities, and graph dominance were inspected; solvent behavior and learner sequencing remain runtime/physical questions."
+      }
+    ],
+    "formerGapResolution": {
+      "formerIntegrityFindingCount": 38,
+      "resolvedFormerFindingCount": 38,
+      "fixedRoleCount": 37,
+      "notApplicableCount": 1,
+      "fixedRoleConfigurations": [
+        {
+          "status": "fixed-role-configuration",
+          "labId": "acid-base-titration-curves",
+          "detail": "Declared variant ph-volume-formal-titration-trial@1.0.0.strong-acid-strong-base is represented by host connection predicates and witness configuration values; the host carrier intentionally leaves variantId unset on the shared instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "acid-base-titration-curves",
+          "detail": "Declared variant ph-volume-formal-titration-trial@1.0.0.weak-acid-strong-base is represented by host connection predicates and witness configuration values; the host carrier intentionally leaves variantId unset on the shared instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "acid-base-titration-curves",
+          "detail": "Declared variant ph-volume-formal-titration-trial@1.0.0.weak-base-strong-acid is represented by host connection predicates and witness configuration values; the host carrier intentionally leaves variantId unset on the shared instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "bonding-unknown-solids",
+          "detail": "Configuration blind-1.sampleMode is authored as the fixed host role value \"blind\"; declared values [\"known\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "bonding-unknown-solids",
+          "detail": "Configuration blind-2.sampleMode is authored as the fixed host role value \"blind\"; declared values [\"known\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "bonding-unknown-solids",
+          "detail": "Configuration blind-3.sampleMode is authored as the fixed host role value \"blind\"; declared values [\"known\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "bonding-unknown-solids",
+          "detail": "Configuration blind-4.sampleMode is authored as the fixed host role value \"blind\"; declared values [\"known\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "bonding-unknown-solids",
+          "detail": "Configuration blind-5-count5.sampleMode is authored as the fixed host role value \"blind\"; declared values [\"known\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "bonding-unknown-solids",
+          "detail": "Configuration blind-5-count6.sampleMode is authored as the fixed host role value \"blind\"; declared values [\"known\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "bonding-unknown-solids",
+          "detail": "Configuration blind-6.sampleMode is authored as the fixed host role value \"blind\"; declared values [\"known\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "bonding-unknown-solids",
+          "detail": "Configuration known-1.sampleMode is authored as the fixed host role value \"known\"; declared values [\"blind\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "bonding-unknown-solids",
+          "detail": "Configuration known-2.sampleMode is authored as the fixed host role value \"known\"; declared values [\"blind\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "bonding-unknown-solids",
+          "detail": "Configuration known-3.sampleMode is authored as the fixed host role value \"known\"; declared values [\"blind\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "bonding-unknown-solids",
+          "detail": "Configuration known-4.sampleMode is authored as the fixed host role value \"known\"; declared values [\"blind\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "bonding-unknown-solids",
+          "detail": "Configuration known-5-count5.sampleMode is authored as the fixed host role value \"known\"; declared values [\"blind\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "bonding-unknown-solids",
+          "detail": "Configuration known-5-count6.sampleMode is authored as the fixed host role value \"known\"; declared values [\"blind\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "bonding-unknown-solids",
+          "detail": "Configuration known-6.sampleMode is authored as the fixed host role value \"known\"; declared values [\"blind\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "crystal-violet-rate-law",
+          "detail": "Configuration analysis-extension.selectedProcedure is authored as the fixed host role value \"hydroxide-order-extension\"; declared values [\"integrated-rate-law-analysis\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "crystal-violet-rate-law",
+          "detail": "Configuration kinetics-initiation.selectedProcedure is authored as the fixed host role value \"reaction-initiation\"; declared values [\"scheduled-reading\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "crystal-violet-rate-law",
+          "detail": "Configuration kinetics-reading-1.selectedProcedure is authored as the fixed host role value \"scheduled-reading\"; declared values [\"reaction-initiation\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "crystal-violet-rate-law",
+          "detail": "Configuration kinetics-reading-2.selectedProcedure is authored as the fixed host role value \"scheduled-reading\"; declared values [\"reaction-initiation\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "crystal-violet-rate-law",
+          "detail": "Configuration kinetics-reading-3.selectedProcedure is authored as the fixed host role value \"scheduled-reading\"; declared values [\"reaction-initiation\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "crystal-violet-rate-law",
+          "detail": "Configuration kinetics-reading-4.selectedProcedure is authored as the fixed host role value \"scheduled-reading\"; declared values [\"reaction-initiation\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "crystal-violet-rate-law",
+          "detail": "Configuration kinetics-reading-5.selectedProcedure is authored as the fixed host role value \"scheduled-reading\"; declared values [\"reaction-initiation\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "crystal-violet-rate-law",
+          "detail": "Configuration kinetics-reading-6.selectedProcedure is authored as the fixed host role value \"scheduled-reading\"; declared values [\"reaction-initiation\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "crystal-violet-rate-law",
+          "detail": "Configuration kinetics-reading-7.selectedProcedure is authored as the fixed host role value \"scheduled-reading\"; declared values [\"reaction-initiation\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "crystal-violet-rate-law",
+          "detail": "Configuration kinetics-reading-8.selectedProcedure is authored as the fixed host role value \"scheduled-reading\"; declared values [\"reaction-initiation\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "crystal-violet-rate-law",
+          "detail": "Configuration rate-law-analysis.selectedProcedure is authored as the fixed host role value \"integrated-rate-law-analysis\"; declared values [\"hydroxide-order-extension\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "hard-water-demo",
+          "detail": "Configuration filtration.filtrationMode is authored as the fixed host role value \"gravity\"; declared values [\"vacuum\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "intro-filtration-demo",
+          "detail": "Configuration filtration.filtrationMode is authored as the fixed host role value \"gravity\"; declared values [\"vacuum\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "marble-statue-kinetics",
+          "detail": "Configuration acid-2m-rate-analysis.selectedProcedure is authored as the fixed host role value \"rate-analysis\"; declared values [\"trial-acquisition\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "marble-statue-kinetics",
+          "detail": "Configuration acid-2m-trial.selectedProcedure is authored as the fixed host role value \"trial-acquisition\"; declared values [\"rate-analysis\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "marble-statue-kinetics",
+          "detail": "Configuration acid-4m-rate-analysis.selectedProcedure is authored as the fixed host role value \"rate-analysis\"; declared values [\"trial-acquisition\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "marble-statue-kinetics",
+          "detail": "Configuration acid-4m-trial.selectedProcedure is authored as the fixed host role value \"trial-acquisition\"; declared values [\"rate-analysis\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "marble-statue-kinetics",
+          "detail": "Configuration acid-6m-rate-analysis.selectedProcedure is authored as the fixed host role value \"rate-analysis\"; declared values [\"trial-acquisition\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "marble-statue-kinetics",
+          "detail": "Configuration acid-6m-trial.selectedProcedure is authored as the fixed host role value \"trial-acquisition\"; declared values [\"rate-analysis\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        },
+        {
+          "status": "fixed-role-configuration",
+          "labId": "marble-statue-kinetics",
+          "detail": "Configuration practice-trial.selectedProcedure is authored as the fixed host role value \"trial-acquisition\"; declared values [\"rate-analysis\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance."
+        }
+      ],
+      "notApplicableConfigurations": [
+        {
+          "status": "not-applicable",
+          "labId": "crystal-violet-rate-law",
+          "rule": "compiled/approval-gate-not-applicable-to-instance",
+          "detail": "Approval rate-law-analysis.teacher-approved is declared by the reusable technique but is not referenced by this host instance or any host branch predicate; approval coverage belongs to the branch instance that owns the gate."
+        }
+      ],
+      "formerIntegrityFindings": [
+        {
+          "id": "compiled/unrepresented-configuration:c81325a7aa8c",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:acid-base-titration-curves",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Declared variant ph-volume-formal-titration-trial@1.0.0.strong-acid-strong-base has no exact lab instance with variantId \"strong-acid-strong-base\"; matching witness configuration values do not select a variant.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Declared variant ph-volume-formal-titration-trial@1.0.0.strong-acid-strong-base is represented by host connection predicates and witness configuration values; the host carrier intentionally leaves variantId unset on the shared instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "acid-base-titration-curves",
+            "detail": "Declared variant ph-volume-formal-titration-trial@1.0.0.strong-acid-strong-base is represented by host connection predicates and witness configuration values; the host carrier intentionally leaves variantId unset on the shared instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:60e32084897c",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:acid-base-titration-curves",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Declared variant ph-volume-formal-titration-trial@1.0.0.weak-acid-strong-base has no exact lab instance with variantId \"weak-acid-strong-base\"; matching witness configuration values do not select a variant.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Declared variant ph-volume-formal-titration-trial@1.0.0.weak-acid-strong-base is represented by host connection predicates and witness configuration values; the host carrier intentionally leaves variantId unset on the shared instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "acid-base-titration-curves",
+            "detail": "Declared variant ph-volume-formal-titration-trial@1.0.0.weak-acid-strong-base is represented by host connection predicates and witness configuration values; the host carrier intentionally leaves variantId unset on the shared instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:32c180d601c5",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:acid-base-titration-curves",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Declared variant ph-volume-formal-titration-trial@1.0.0.weak-base-strong-acid has no exact lab instance with variantId \"weak-base-strong-acid\"; matching witness configuration values do not select a variant.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Declared variant ph-volume-formal-titration-trial@1.0.0.weak-base-strong-acid is represented by host connection predicates and witness configuration values; the host carrier intentionally leaves variantId unset on the shared instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "acid-base-titration-curves",
+            "detail": "Declared variant ph-volume-formal-titration-trial@1.0.0.weak-base-strong-acid is represented by host connection predicates and witness configuration values; the host carrier intentionally leaves variantId unset on the shared instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:04155eea7697",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:bonding-unknown-solids",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration blind-1.sampleMode omits declared values [\"known\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration blind-1.sampleMode is authored as the fixed host role value \"blind\"; declared values [\"known\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "bonding-unknown-solids",
+            "detail": "Configuration blind-1.sampleMode is authored as the fixed host role value \"blind\"; declared values [\"known\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:3d1d69728d71",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:bonding-unknown-solids",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration blind-2.sampleMode omits declared values [\"known\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration blind-2.sampleMode is authored as the fixed host role value \"blind\"; declared values [\"known\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "bonding-unknown-solids",
+            "detail": "Configuration blind-2.sampleMode is authored as the fixed host role value \"blind\"; declared values [\"known\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:38848b5f6474",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:bonding-unknown-solids",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration blind-3.sampleMode omits declared values [\"known\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration blind-3.sampleMode is authored as the fixed host role value \"blind\"; declared values [\"known\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "bonding-unknown-solids",
+            "detail": "Configuration blind-3.sampleMode is authored as the fixed host role value \"blind\"; declared values [\"known\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:50ac347e001d",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:bonding-unknown-solids",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration blind-4.sampleMode omits declared values [\"known\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration blind-4.sampleMode is authored as the fixed host role value \"blind\"; declared values [\"known\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "bonding-unknown-solids",
+            "detail": "Configuration blind-4.sampleMode is authored as the fixed host role value \"blind\"; declared values [\"known\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:4c9b4267a7ff",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:bonding-unknown-solids",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration blind-5-count5.sampleMode omits declared values [\"known\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration blind-5-count5.sampleMode is authored as the fixed host role value \"blind\"; declared values [\"known\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "bonding-unknown-solids",
+            "detail": "Configuration blind-5-count5.sampleMode is authored as the fixed host role value \"blind\"; declared values [\"known\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:f027e0de28eb",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:bonding-unknown-solids",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration blind-5-count6.sampleMode omits declared values [\"known\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration blind-5-count6.sampleMode is authored as the fixed host role value \"blind\"; declared values [\"known\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "bonding-unknown-solids",
+            "detail": "Configuration blind-5-count6.sampleMode is authored as the fixed host role value \"blind\"; declared values [\"known\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:1caef615ca4d",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:bonding-unknown-solids",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration blind-6.sampleMode omits declared values [\"known\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration blind-6.sampleMode is authored as the fixed host role value \"blind\"; declared values [\"known\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "bonding-unknown-solids",
+            "detail": "Configuration blind-6.sampleMode is authored as the fixed host role value \"blind\"; declared values [\"known\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:8cc42280e018",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:bonding-unknown-solids",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration known-1.sampleMode omits declared values [\"blind\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration known-1.sampleMode is authored as the fixed host role value \"known\"; declared values [\"blind\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "bonding-unknown-solids",
+            "detail": "Configuration known-1.sampleMode is authored as the fixed host role value \"known\"; declared values [\"blind\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:78f44718a7f8",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:bonding-unknown-solids",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration known-2.sampleMode omits declared values [\"blind\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration known-2.sampleMode is authored as the fixed host role value \"known\"; declared values [\"blind\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "bonding-unknown-solids",
+            "detail": "Configuration known-2.sampleMode is authored as the fixed host role value \"known\"; declared values [\"blind\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:c48b9776db18",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:bonding-unknown-solids",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration known-3.sampleMode omits declared values [\"blind\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration known-3.sampleMode is authored as the fixed host role value \"known\"; declared values [\"blind\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "bonding-unknown-solids",
+            "detail": "Configuration known-3.sampleMode is authored as the fixed host role value \"known\"; declared values [\"blind\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:9c1ab8a519e2",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:bonding-unknown-solids",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration known-4.sampleMode omits declared values [\"blind\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration known-4.sampleMode is authored as the fixed host role value \"known\"; declared values [\"blind\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "bonding-unknown-solids",
+            "detail": "Configuration known-4.sampleMode is authored as the fixed host role value \"known\"; declared values [\"blind\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:b900822fb491",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:bonding-unknown-solids",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration known-5-count5.sampleMode omits declared values [\"blind\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration known-5-count5.sampleMode is authored as the fixed host role value \"known\"; declared values [\"blind\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "bonding-unknown-solids",
+            "detail": "Configuration known-5-count5.sampleMode is authored as the fixed host role value \"known\"; declared values [\"blind\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:414af0b06d9d",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:bonding-unknown-solids",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration known-5-count6.sampleMode omits declared values [\"blind\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration known-5-count6.sampleMode is authored as the fixed host role value \"known\"; declared values [\"blind\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "bonding-unknown-solids",
+            "detail": "Configuration known-5-count6.sampleMode is authored as the fixed host role value \"known\"; declared values [\"blind\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:9ca4500fbcaa",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:bonding-unknown-solids",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration known-6.sampleMode omits declared values [\"blind\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration known-6.sampleMode is authored as the fixed host role value \"known\"; declared values [\"blind\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "bonding-unknown-solids",
+            "detail": "Configuration known-6.sampleMode is authored as the fixed host role value \"known\"; declared values [\"blind\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:4724456a535e",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:crystal-violet-rate-law",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Approval rate-law-analysis.teacher-approved has declared witness values [null]; both outcomes are not represented.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-not-applicable-to-host-instance",
+          "reason": "Approval rate-law-analysis.teacher-approved is declared by the reusable technique but is not referenced by this host instance or any host branch predicate; approval coverage belongs to the branch instance that owns the gate.",
+          "resolution": {
+            "status": "not-applicable",
+            "labId": "crystal-violet-rate-law",
+            "rule": "compiled/approval-gate-not-applicable-to-instance",
+            "detail": "Approval rate-law-analysis.teacher-approved is declared by the reusable technique but is not referenced by this host instance or any host branch predicate; approval coverage belongs to the branch instance that owns the gate."
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:fe5c97130d3c",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:crystal-violet-rate-law",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration analysis-extension.selectedProcedure omits declared values [\"integrated-rate-law-analysis\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration analysis-extension.selectedProcedure is authored as the fixed host role value \"hydroxide-order-extension\"; declared values [\"integrated-rate-law-analysis\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "crystal-violet-rate-law",
+            "detail": "Configuration analysis-extension.selectedProcedure is authored as the fixed host role value \"hydroxide-order-extension\"; declared values [\"integrated-rate-law-analysis\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:8ff3240ac9b7",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:crystal-violet-rate-law",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration kinetics-initiation.selectedProcedure omits declared values [\"scheduled-reading\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration kinetics-initiation.selectedProcedure is authored as the fixed host role value \"reaction-initiation\"; declared values [\"scheduled-reading\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "crystal-violet-rate-law",
+            "detail": "Configuration kinetics-initiation.selectedProcedure is authored as the fixed host role value \"reaction-initiation\"; declared values [\"scheduled-reading\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:2f4eeea1a3d6",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:crystal-violet-rate-law",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration kinetics-reading-1.selectedProcedure omits declared values [\"reaction-initiation\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration kinetics-reading-1.selectedProcedure is authored as the fixed host role value \"scheduled-reading\"; declared values [\"reaction-initiation\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "crystal-violet-rate-law",
+            "detail": "Configuration kinetics-reading-1.selectedProcedure is authored as the fixed host role value \"scheduled-reading\"; declared values [\"reaction-initiation\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:9f03c0dcd07b",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:crystal-violet-rate-law",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration kinetics-reading-2.selectedProcedure omits declared values [\"reaction-initiation\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration kinetics-reading-2.selectedProcedure is authored as the fixed host role value \"scheduled-reading\"; declared values [\"reaction-initiation\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "crystal-violet-rate-law",
+            "detail": "Configuration kinetics-reading-2.selectedProcedure is authored as the fixed host role value \"scheduled-reading\"; declared values [\"reaction-initiation\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:754dd60f8cc4",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:crystal-violet-rate-law",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration kinetics-reading-3.selectedProcedure omits declared values [\"reaction-initiation\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration kinetics-reading-3.selectedProcedure is authored as the fixed host role value \"scheduled-reading\"; declared values [\"reaction-initiation\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "crystal-violet-rate-law",
+            "detail": "Configuration kinetics-reading-3.selectedProcedure is authored as the fixed host role value \"scheduled-reading\"; declared values [\"reaction-initiation\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:f01051a163a2",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:crystal-violet-rate-law",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration kinetics-reading-4.selectedProcedure omits declared values [\"reaction-initiation\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration kinetics-reading-4.selectedProcedure is authored as the fixed host role value \"scheduled-reading\"; declared values [\"reaction-initiation\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "crystal-violet-rate-law",
+            "detail": "Configuration kinetics-reading-4.selectedProcedure is authored as the fixed host role value \"scheduled-reading\"; declared values [\"reaction-initiation\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:341fc09f9cd9",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:crystal-violet-rate-law",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration kinetics-reading-5.selectedProcedure omits declared values [\"reaction-initiation\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration kinetics-reading-5.selectedProcedure is authored as the fixed host role value \"scheduled-reading\"; declared values [\"reaction-initiation\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "crystal-violet-rate-law",
+            "detail": "Configuration kinetics-reading-5.selectedProcedure is authored as the fixed host role value \"scheduled-reading\"; declared values [\"reaction-initiation\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:42e6e10235b5",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:crystal-violet-rate-law",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration kinetics-reading-6.selectedProcedure omits declared values [\"reaction-initiation\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration kinetics-reading-6.selectedProcedure is authored as the fixed host role value \"scheduled-reading\"; declared values [\"reaction-initiation\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "crystal-violet-rate-law",
+            "detail": "Configuration kinetics-reading-6.selectedProcedure is authored as the fixed host role value \"scheduled-reading\"; declared values [\"reaction-initiation\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:2430e1ba6ae3",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:crystal-violet-rate-law",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration kinetics-reading-7.selectedProcedure omits declared values [\"reaction-initiation\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration kinetics-reading-7.selectedProcedure is authored as the fixed host role value \"scheduled-reading\"; declared values [\"reaction-initiation\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "crystal-violet-rate-law",
+            "detail": "Configuration kinetics-reading-7.selectedProcedure is authored as the fixed host role value \"scheduled-reading\"; declared values [\"reaction-initiation\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:dcb8eed67b4c",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:crystal-violet-rate-law",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration kinetics-reading-8.selectedProcedure omits declared values [\"reaction-initiation\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration kinetics-reading-8.selectedProcedure is authored as the fixed host role value \"scheduled-reading\"; declared values [\"reaction-initiation\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "crystal-violet-rate-law",
+            "detail": "Configuration kinetics-reading-8.selectedProcedure is authored as the fixed host role value \"scheduled-reading\"; declared values [\"reaction-initiation\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:213cba0368bc",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:crystal-violet-rate-law",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration rate-law-analysis.selectedProcedure omits declared values [\"hydroxide-order-extension\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration rate-law-analysis.selectedProcedure is authored as the fixed host role value \"integrated-rate-law-analysis\"; declared values [\"hydroxide-order-extension\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "crystal-violet-rate-law",
+            "detail": "Configuration rate-law-analysis.selectedProcedure is authored as the fixed host role value \"integrated-rate-law-analysis\"; declared values [\"hydroxide-order-extension\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:b5c3d14a6151",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:hard-water-demo",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration filtration.filtrationMode omits declared values [\"vacuum\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration filtration.filtrationMode is authored as the fixed host role value \"gravity\"; declared values [\"vacuum\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "intro-filtration-demo",
+            "detail": "Configuration filtration.filtrationMode is authored as the fixed host role value \"gravity\"; declared values [\"vacuum\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:423de3ad9553",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:intro-filtration-demo",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration filtration.filtrationMode omits declared values [\"vacuum\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration filtration.filtrationMode is authored as the fixed host role value \"gravity\"; declared values [\"vacuum\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "intro-filtration-demo",
+            "detail": "Configuration filtration.filtrationMode is authored as the fixed host role value \"gravity\"; declared values [\"vacuum\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:4fb9e9e47463",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:marble-statue-kinetics",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration acid-2m-rate-analysis.selectedProcedure omits declared values [\"trial-acquisition\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration acid-2m-rate-analysis.selectedProcedure is authored as the fixed host role value \"rate-analysis\"; declared values [\"trial-acquisition\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "marble-statue-kinetics",
+            "detail": "Configuration acid-2m-rate-analysis.selectedProcedure is authored as the fixed host role value \"rate-analysis\"; declared values [\"trial-acquisition\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:e3d3c5cd081c",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:marble-statue-kinetics",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration acid-2m-trial.selectedProcedure omits declared values [\"rate-analysis\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration acid-2m-trial.selectedProcedure is authored as the fixed host role value \"trial-acquisition\"; declared values [\"rate-analysis\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "marble-statue-kinetics",
+            "detail": "Configuration acid-2m-trial.selectedProcedure is authored as the fixed host role value \"trial-acquisition\"; declared values [\"rate-analysis\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:32cdbb17c1cb",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:marble-statue-kinetics",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration acid-4m-rate-analysis.selectedProcedure omits declared values [\"trial-acquisition\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration acid-4m-rate-analysis.selectedProcedure is authored as the fixed host role value \"rate-analysis\"; declared values [\"trial-acquisition\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "marble-statue-kinetics",
+            "detail": "Configuration acid-4m-rate-analysis.selectedProcedure is authored as the fixed host role value \"rate-analysis\"; declared values [\"trial-acquisition\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:4abc368bcaba",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:marble-statue-kinetics",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration acid-4m-trial.selectedProcedure omits declared values [\"rate-analysis\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration acid-4m-trial.selectedProcedure is authored as the fixed host role value \"trial-acquisition\"; declared values [\"rate-analysis\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "marble-statue-kinetics",
+            "detail": "Configuration acid-4m-trial.selectedProcedure is authored as the fixed host role value \"trial-acquisition\"; declared values [\"rate-analysis\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:c2abe3fa728f",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:marble-statue-kinetics",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration acid-6m-rate-analysis.selectedProcedure omits declared values [\"trial-acquisition\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration acid-6m-rate-analysis.selectedProcedure is authored as the fixed host role value \"rate-analysis\"; declared values [\"trial-acquisition\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "marble-statue-kinetics",
+            "detail": "Configuration acid-6m-rate-analysis.selectedProcedure is authored as the fixed host role value \"rate-analysis\"; declared values [\"trial-acquisition\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:d18d0d04a2e7",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:marble-statue-kinetics",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration acid-6m-trial.selectedProcedure omits declared values [\"rate-analysis\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration acid-6m-trial.selectedProcedure is authored as the fixed host role value \"trial-acquisition\"; declared values [\"rate-analysis\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "marble-statue-kinetics",
+            "detail": "Configuration acid-6m-trial.selectedProcedure is authored as the fixed host role value \"trial-acquisition\"; declared values [\"rate-analysis\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        },
+        {
+          "id": "compiled/unrepresented-configuration:9b8a8086bff1",
+          "origin": "current-run",
+          "rule": "compiled/unrepresented-configuration",
+          "severity": "medium",
+          "context": "lab:marble-statue-kinetics",
+          "evidence": [
+            "delivery/run-b-content-check-compiled-json.stdout.json",
+            "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-f9c9229-run-b/logs/repository-content-check.log"
+          ],
+          "evaluationScope": "compiled-integrity-coverage",
+          "detail": "Configuration practice-trial.selectedProcedure omits declared values [\"rate-analysis\"] from its witnesses.",
+          "scenarioImpact": "The declared configuration is not represented by an exact witness in the static compilation campaign, so behavior for this branch is not covered by the current compiled evidence.",
+          "disposition": "resolved-as-fixed-role-configuration",
+          "reason": "Configuration practice-trial.selectedProcedure is authored as the fixed host role value \"trial-acquisition\"; declared values [\"rate-analysis\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+          "resolution": {
+            "status": "fixed-role-configuration",
+            "labId": "marble-statue-kinetics",
+            "detail": "Configuration practice-trial.selectedProcedure is authored as the fixed host role value \"trial-acquisition\"; declared values [\"rate-analysis\"] belong to other role-specific instances or hosted scenarios and are not selectable on this instance.",
+            "resolution": "fixed-role-configuration"
+          }
+        }
+      ],
+      "coverageStatusCounts": {
+        "fixed-role-configuration": 37,
+        "inconclusive-static-only": 2,
+        "not-applicable": 4,
+        "representative-continuous-configuration": 229,
+        "unconsumed-authoring-surface": 9
+      }
+    },
+    "evidence": {
+      "compiledWitness": "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-luna-final-20260918/predecessors/01-COMPILED_LAB_WITNESS.json",
+      "contentCheckLog": "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-luna-final-20260918/logs/repository-content-check.log",
+      "triage": "docs/item2/FINDING_TRIAGE.json"
+    },
+    "limitations": [
+      "The 30 compiled witnesses and 6,278 node contexts are static composition evidence, not runtime traversal or scientific acceptance.",
+      "The 37 fixed-role rows are narrow authored host-role boundaries; generic fixtures and other hosts remain subject to ordinary coverage reporting.",
+      "The 21 unresolved source-trace residuals remain outside provenance closure and are not converted into invented citations."
+    ]
   },
   "historicalComparison": {
     "source": "attached historical-content-check.json and historical follow-up artifacts",
     "historicalUnrepresentedConfigurations": 39,
-    "currentStatus": "not carried forward as a current count"
+    "currentStatus": "superseded-by-current-final-static-diagnostic",
+    "supersededRun": "item2-f9c9229-run-b"
   },
   "witnessFixtureIds": [
     {

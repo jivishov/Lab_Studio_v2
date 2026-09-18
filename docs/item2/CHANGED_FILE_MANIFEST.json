@@ -2,17 +2,49 @@
   "schemaVersion": 6,
   "branch": "codex/item2-catalog-reconciliation",
   "baseline": "f7c2b863f641090d9abc5c08ee22da72702fdfd6",
-  "documentedHeadBeforeManifestUpdate": "0830a9ed284680fc069704d07c6d48e9067ff2a1",
+  "documentedHeadBeforeManifestUpdate": "dd483aac67b080c6909a742a9a2e349484d7e257",
   "selfExcluded": true,
   "selfExclusionReason": "The manifest update itself creates the next commit; its own final Git blob SHA cannot be recursively embedded.",
   "implementation": [
+    {
+      "path": "docs/architecture/source-trace-registry.json",
+      "blobSha": "d04de1d65752d261c44f490cf4a23cdac9bad964"
+    },
     {
       "path": "public/techniques/titration-curve-analysis.json",
       "blobSha": "ce492df1c2e5e1e27adc5641ea13cd70fc110954"
     },
     {
+      "path": "scripts/__tests__/f07SourceTraceRegistry.test.mjs",
+      "blobSha": "04a6302bda3c129454b12dd53a4404803428b5d2"
+    },
+    {
+      "path": "scripts/checkContentConsistency.mjs",
+      "blobSha": "ce4a37543bacb8b1e30a46ffd64fb8e42b7864fb"
+    },
+    {
       "path": "scripts/generateApChemTechniqueFragments.mjs",
       "blobSha": "762a777819ddb9f25af4503080efc48cdaa008f7"
+    },
+    {
+      "path": "scripts/generateItem2SourceTraceGroups.mjs",
+      "blobSha": "b6f3a680825929619cae0a1e1d671664e88267c0"
+    },
+    {
+      "path": "scripts/reconcileItem2CurrentRecords.mjs",
+      "blobSha": "38fbc78551f78bb86c1ae8bbdc7c824fccc945c1"
+    },
+    {
+      "path": "scripts/recordItem2FinalCommandSequence.mjs",
+      "blobSha": "9f3220fa6fd27ca3c10c2392c9f0cdd0c1091fe2"
+    },
+    {
+      "path": "src/data/__tests__/compiledWitnessDiagnostics.test.ts",
+      "blobSha": "8467678a32162db3760679204de62b8fd1f22b79"
+    },
+    {
+      "path": "src/data/compiledWitnessDiagnostics.ts",
+      "blobSha": "93e3f6c94d291136bb59ba89e8e4bdf70cf05cdd"
     },
     {
       "path": "src/runtime/__tests__/cycle09Titration.test.ts",
@@ -26,43 +58,43 @@
   "item2Records": [
     {
       "path": "docs/item2/CATALOG_DISPOSITIONS.json",
-      "blobSha": "3912630edbdb89cd88527715e58f986549646665"
+      "blobSha": "cf40144b8fec56b3454037c54bc6b78bc924c437"
     },
     {
       "path": "docs/item2/CATALOG_DISPOSITIONS.md",
-      "blobSha": "5277f60377afc9d51ed09ab9c833afb8b8ce29fa"
+      "blobSha": "6eccd392fc067273af031e7f4001cc97dd92e42d"
     },
     {
       "path": "docs/item2/CONFIGURATION_COVERAGE.json",
-      "blobSha": "47b89dd6d3a517f2e1d1c17e1528481af8275e56"
+      "blobSha": "bb2b83e841f15fceadbcd08654395ec6bc4ee043"
     },
     {
       "path": "docs/item2/CRITICAL_REVIEW.md",
-      "blobSha": "926a871c396d0018de6a3fe89984a269bbeb6280"
+      "blobSha": "dedd10ddac021c275624dd97d3613e1963ecacf2"
     },
     {
       "path": "docs/item2/EVIDENCE_DEPENDENCY_RESTORATION.json",
-      "blobSha": "3cc5cd56634a502742d4806ca95e077947827937"
+      "blobSha": "5f3b6084ed0cf1a76bac8a05156cb6317dd5cc1a"
     },
     {
       "path": "docs/item2/EXECUTION_REQUEST.md",
-      "blobSha": "864a30bc427a05e13b8b6328d512135d1c62e1d1"
+      "blobSha": "c496788d99330095a7214755bbedd47189fe9091"
     },
     {
       "path": "docs/item2/FINDING_TRIAGE.json",
-      "blobSha": "4a53e9e97f5a7bb51eda57e3ff7b98020a3bed62"
+      "blobSha": "001782e675ed61f64daaae26d49248f17ab9f7d2"
     },
     {
       "path": "docs/item2/ITEM2_REPORT.md",
-      "blobSha": "5bf5ecb228dfedc3cb138f98151ece88456aed34"
+      "blobSha": "5ff40d10d280b08c3e858bb89547dfa5cdb5bfe1"
     },
     {
       "path": "docs/item2/RUN_LEDGER.json",
-      "blobSha": "4330a035afe9b0bb7ea17449d06071682fb50f61"
+      "blobSha": "2bf5a18096b87776f993426ac01c9d2f688b9727"
     },
     {
       "path": "docs/item2/SCENARIO_AUDIT.json",
-      "blobSha": "0b7818a3494f7356362f8a619cd2d40199b6ca3c"
+      "blobSha": "35550cead7650250af53a9bb20d30f121aa97994"
     },
     {
       "path": "docs/item2/SCENARIO_MATRIX.md",
@@ -70,7 +102,7 @@
     },
     {
       "path": "docs/item2/SELF_REVIEW_AUDIT.json",
-      "blobSha": "c6b5ebb84c63720afa5e788f4af6e634f12e7d8f"
+      "blobSha": "584ea1d8b5f261ad8baea0baa21335423964b0f9"
     }
   ],
   "scenarioAudit": {
@@ -95,7 +127,7 @@
     "extras": 0,
     "githubBranchPresence": "absent; local verified artifact only"
   },
-  "evidenceStatus": "Run B complete diagnostics plus Run C final freshness receipt; no runtime/scientific/browser/release claim",
+  "evidenceStatus": "item2-luna-final-20260918 final current source/static evidence; no runtime/scientific/browser/release claim",
   "targetedScenarioCorrections": {
     "greenChemistry": {
       "heatedProductRecovery": "qualitative provenance only; no recovered-product mass measurement",
@@ -110,23 +142,19 @@
     }
   },
   "currentEvidence": {
-    "runId": "item2-f9c9229-run-b",
-    "sourceCommit": "f9c9229",
-    "sourceSnapshotPayloadSha256": "f14055d751a2bfbbe604d0c92f5995b4dabcc64942ed3b73a2fe5019731cedd0",
-    "recorderCheck": "complete-current-run-with-supplemental-failures",
-    "corePhasesPassed": 6,
+    "runId": "item2-luna-final-20260918",
+    "sourceCommit": "recorded in final CURRENT_VERIFICATION_RUN.json",
+    "corePhasesPassed": 5,
+    "supplementalPhasesRecorded": 2,
     "contentCheckExitCode": 1,
-    "contentJsonSha256": "e5b849bfe6893b9cf7570aacab34a1737eeebc016d15cd4872ab92013b501e02",
-    "retainedFindings": 906,
-    "routedRawFindings": 1,
+    "retainedFindings": 21,
+    "evaluatedSourceTraceFindings": 903,
+    "groupedSourceTraceMembers": 882,
+    "unresolvedSourceTraceResiduals": 21,
+    "resolvedPriorCrystalVioletRows": 3,
     "compiledContextFindings": 0,
-    "unrepresentedConfigurations": 38,
-    "triagePath": "docs/item2/FINDING_TRIAGE.json",
-    "finalFreshnessRun": {
-      "runId": "item2-646169f-run-c",
-      "sourceCommit": "recorded in final receipt",
-      "purpose": "freshness receipt after current triage/report changes"
-    }
+    "formerConfigurationGapsResolved": 38,
+    "triagePath": "docs/item2/FINDING_TRIAGE.json"
   },
   "sourceRepairs": [
     "scripts/checkContentConsistency.mjs",

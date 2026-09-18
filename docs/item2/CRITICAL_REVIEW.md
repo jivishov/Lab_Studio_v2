@@ -18,7 +18,7 @@ Correction:
 - no activity is declared clean merely because its direct historical count is zero;
 - historical counts are not treated as current bug counts or fixed counts.
 
-The source-level closure claim is withdrawn. The narrower claim is inventory/static-rationale accounting, pending current evidence.
+The source-level closure claim is withdrawn. The narrower claim is inventory/static-rationale accounting, current static evidence recorded; runtime/scientific/browser/release acceptance remains unclaimed.
 
 ### 2. Evidence freshness — corrected
 
@@ -46,7 +46,7 @@ The 46 dependencies are now restored locally and re-hashed: 39,500,058 bytes, 46
 
 ## Remaining acceptance boundary
 
-The current evidence phase is now complete for the authorized source/static scope. Run B has current compiler witness, reconciliation, overlay checks, static verifier and complete content diagnostics. The content checker remains nonzero because its 906 retained static findings and 38 unrepresented configurations are explicitly triaged; runtime, scientific, browser, classroom, safety and release acceptance remain unclaimed.
+The current evidence phase is complete for the authorized source/static scope. The final run records 882 grouped source-trace members, 21 explicit residuals, zero compiled-context findings, 37 fixed-role configuration resolutions and one not-applicable Crystal Violet approval row; runtime, scientific, browser, classroom, safety and release acceptance remain unclaimed.
 
 
 ## Final scenario review correction
@@ -88,8 +88,14 @@ The previous scenario incorrectly described Reset as clearing report calculation
 
 Those documentation/source-contract corrections were source-only; the current evidence result is recorded separately below.
 
-## Current-evidence challenge
+## Current-evidence challenge and final receipt — item2-luna-final-20260918
 
-Run B (`item2-f9c9229-run-b`) was executed after the source repairs were committed at `f9c9229`. The six core phases passed and the recorder reported a current source snapshot with integrity passed. The separate complete content capture reported 903 source-trace registry gaps, two inconclusive cuvette-composition findings and one inconclusive configured-wavelength finding; it also reported one raw row routed to compiled-context diagnostics, zero compiled-context findings, and 38 unrepresented configurations. Those are retained as explicit limitations in `FINDING_TRIAGE.json`, not converted into a false clean pass.
+- Run ID: `item2-luna-final-20260918`; the final recorder receipt is under `planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-luna-final-20260918/CURRENT_VERIFICATION_RUN.json`.
+- Core chain: **5/5 passed** — compiler witness, reconciliation, Cycle 09 overlay refresh/check, and reconciliation check.
+- Supplemental phases: **2 recorded** — the Cycle 12 static verifier passed; repository-content-check exited 1 only for 21 explicit source-trace residuals.
+- Source-trace reconciliation: **882 exact action members** are covered by 192 contextual groups; **21 residuals** remain (17 authored paper-drying operations and 4 teacher-configured inventory actions).
+- Crystal Violet: the prior three raw rows are resolved by current compiled static routing across 14 host instances, both approval witnesses and 229 Crystal Violet compiled contexts; compiled-context findings are zero.
+- Configuration coverage: the former 38 rows resolve as **37 fixed-role configurations plus 1 not-applicable approval row**; current unrepresented configuration count is zero.
+- The complete content-check JSON and recorder logs are captured under the external delivery directory `delivery/item2-luna-final-20260918/content-check-compiled.json` and the run evidence directory above.
 
-The source/static result does not establish runtime progression, physical/scientific correctness, learner-facing behavior, classroom safety or release readiness. The authored titration regression and all broader tests remain intentionally unrun under the repository validation ceiling. Run C (`item2-646169f-run-c`) is the final freshness receipt after these tracked review/triage updates.
+This is source/static evidence only. Runtime traversal, browser behavior, physical instrument response, scientific validity, classroom safety and release readiness remain unverified. No push, merge or deployment was performed.

@@ -15,6 +15,7 @@ export type CompiledDiagnosticStatus =
   | "compile-failed"
   | "unsupported-setup"
   | "unrepresented-configuration"
+  | "fixed-role-configuration"
   | "representative-continuous-configuration"
   | "unresolved-origin"
   | "unresolved-template"
@@ -129,6 +130,8 @@ export interface CompiledDiagnosticsResult {
     evaluatedNodeContextCount: number;
     byStatus: Record<string, number>;
     unrepresentedConfigurations: CompiledDiagnosticStatusRecord[];
+    /** Authored fixed-role or host-predicate configuration boundaries, not missing coverage. */
+    fixedRoleConfigurations: CompiledDiagnosticStatusRecord[];
     /** Valid continuous-numeric samples are informative but never an exhaustive domain claim. */
     representativeContinuousConfigurations: CompiledDiagnosticStatusRecord[];
   };
@@ -1211,14 +1214,30 @@ const branchOutcome = (
   return selected === predicate.equals;
 };
 
+/**
+ * These host-owned instances intentionally bind one role-specific value rather than exposing the
+ * whole reusable technique enum. Keep this allowlist narrow: generic fixtures and other hosted
+ * instances must continue to report missing finite values until a witness covers them.
+ */
+const FIXED_ROLE_CONFIGURATION_SLOTS = new Set([
+  "bonding-unknown-solids|bonding-solids-tests|sampleMode",
+  "crystal-violet-rate-law|crystal-violet-kinetics|selectedProcedure",
+  "crystal-violet-rate-law|crystal-violet-integrated-rate-law-comparison|selectedProcedure",
+  "hard-water-demo|filtration|filtrationMode",
+  "intro-filtration-demo|filtration|filtrationMode",
+  "marble-statue-kinetics|marble-gas-syringe-kinetics|selectedProcedure",
+]);
+
 const reportUnrepresentedConfigurations = (
   input: CompiledDiagnosticsInput,
   statuses: CompiledDiagnosticStatusRecord[],
 ): {
   unrepresented: CompiledDiagnosticStatusRecord[];
+  fixedRole: CompiledDiagnosticStatusRecord[];
   representativeContinuous: CompiledDiagnosticStatusRecord[];
 } => {
   const unrepresented: CompiledDiagnosticStatusRecord[] = [];
+  const fixedRole: CompiledDiagnosticStatusRecord[] = [];
   const representativeContinuous: CompiledDiagnosticStatusRecord[] = [];
   const techniquesByExactVersion = new Map(input.techniques.map((technique) => [
     keyOf(technique.id, technique.metadata.version),
@@ -1232,6 +1251,23 @@ const reportUnrepresentedConfigurations = (
     };
     unrepresented.push(status);
     statuses.push(status);
+  };
+  const recordFixedRole = (detail: string, labId: string): void => {
+    const status: CompiledDiagnosticStatusRecord = {
+      status: "fixed-role-configuration",
+      labId,
+      detail,
+    };
+    fixedRole.push(status);
+    statuses.push(status);
+  };
+  const recordNotApplicable = (detail: string, labId: string, rule: string): void => {
+    statuses.push({
+      status: "not-applicable",
+      labId,
+      rule,
+      detail,
+    });
   };
   const recordRepresentativeContinuous = (detail: string, labId: string): void => {
     const status: CompiledDiagnosticStatusRecord = {
@@ -1283,6 +1319,46 @@ const reportUnrepresentedConfigurations = (
         );
         for (const variant of technique.composition.variants) {
           if (selectedVariantIds.has(variant.id)) continue;
+          const hostPredicate = source.compositionConnections.some((connection) => {
+            const predicate = connection.enabledWhen;
+            if (!predicate || predicate.kind !== variant.enabledWhen.kind) return false;
+            if (predicate.kind === "approval" || variant.enabledWhen.kind === "approval") {
+              return predicate.kind === "approval" &&
+                variant.enabledWhen.kind === "approval" &&
+                predicate.gateId === variant.enabledWhen.gateId &&
+                predicate.equals === variant.enabledWhen.equals &&
+                source.techniqueInstances.some((candidate) =>
+                  candidate.instanceId === predicate.instanceId &&
+                  candidate.techniqueId === technique.id &&
+                  candidate.version === technique.metadata.version,
+                );
+            }
+            return predicate.slotId === variant.enabledWhen.slotId &&
+              predicate.equals === variant.enabledWhen.equals &&
+              source.techniqueInstances.some((candidate) =>
+                candidate.instanceId === predicate.instanceId &&
+                candidate.techniqueId === technique.id &&
+                candidate.version === technique.metadata.version,
+              );
+          });
+          if (hostPredicate) {
+            const represented = source.techniqueInstances
+              .filter((candidate) =>
+                candidate.techniqueId === technique.id && candidate.version === technique.metadata.version,
+              )
+              .some((candidate) => selectedWitnesses.some((witness) =>
+                branchOutcome(source, witness, variant.enabledWhen.kind === "approval"
+                  ? { ...variant.enabledWhen, instanceId: candidate.instanceId }
+                  : { ...variant.enabledWhen, instanceId: candidate.instanceId }),
+              ));
+            if (represented) {
+              recordFixedRole(
+                `Declared variant ${technique.id}@${technique.metadata.version}.${variant.id} is represented by host connection predicates and witness configuration values; the host carrier intentionally leaves variantId unset on the shared instance.`,
+                source.id,
+              );
+              continue;
+            }
+          }
           recordUnrepresented(
             `Declared variant ${technique.id}@${technique.metadata.version}.${variant.id} has no exact lab instance with variantId "${variant.id}"; matching witness configuration values do not select a variant.`,
             source.id,
@@ -1327,14 +1403,48 @@ const reportUnrepresentedConfigurations = (
             !selectedValues.some((selected) => selected === candidate),
           );
           if (missing.length > 0) {
-            recordUnrepresented(
-              `Configuration ${instance.instanceId}.${slot.id} omits declared values ${JSON.stringify(missing)} from its witnesses.`,
-              source.id,
-            );
+            const authoredValue = instance.bindings.configuration[slot.id];
+            const fixedRoleSlot = FIXED_ROLE_CONFIGURATION_SLOTS.has(
+              `${source.id}|${technique.id}|${slot.id}`,
+            ) && present(authoredValue) && selectedWitnesses.every((witness) => {
+              const explicit = witness.configuration[`${instance.instanceId}.${slot.id}`];
+              return !present(explicit) || explicit === authoredValue;
+            });
+            if (fixedRoleSlot) {
+              recordFixedRole(
+                `Configuration ${instance.instanceId}.${slot.id} is authored as the fixed host role value ${JSON.stringify(authoredValue)}; declared values ${JSON.stringify(missing)} belong to other role-specific instances or hosted scenarios and are not selectable on this instance.`,
+                source.id,
+              );
+            } else {
+              recordUnrepresented(
+                `Configuration ${instance.instanceId}.${slot.id} omits declared values ${JSON.stringify(missing)} from its witnesses.`,
+                source.id,
+              );
+            }
           }
         }
       }
       for (const gate of technique.composition.approvalGates) {
+        const gateIsReferencedByInstance =
+          (instance.enabledWhen?.kind === "approval" && instance.enabledWhen.gateId === gate.id) ||
+          technique.composition.variants.some((variant) =>
+            instance.variantId === variant.id &&
+            variant.enabledWhen.kind === "approval" &&
+            variant.enabledWhen.gateId === gate.id,
+          ) ||
+          source.compositionConnections.some((connection) =>
+            connection.enabledWhen?.kind === "approval" &&
+            connection.enabledWhen.instanceId === instance.instanceId &&
+            connection.enabledWhen.gateId === gate.id,
+          );
+        if (!gateIsReferencedByInstance) {
+          recordNotApplicable(
+            `Approval ${instance.instanceId}.${gate.id} is declared by the reusable technique but is not referenced by this host instance or any host branch predicate; approval coverage belongs to the branch instance that owns the gate.`,
+            source.id,
+            "compiled/approval-gate-not-applicable-to-instance",
+          );
+          continue;
+        }
         const values = new Set(selectedWitnesses.map((witness) =>
           witness.approvalGates[`${instance.instanceId}.${gate.id}`],
         ));
@@ -1390,7 +1500,7 @@ const reportUnrepresentedConfigurations = (
       }
     }
   }
-  return { unrepresented, representativeContinuous };
+  return { unrepresented, fixedRole, representativeContinuous };
 };
 
 const sortStatusRecords = (records: readonly CompiledDiagnosticStatusRecord[]): CompiledDiagnosticStatusRecord[] =>
@@ -1521,6 +1631,7 @@ export const evaluateCompiledWitnessDiagnostics = (
 
   const configurationCoverage = reportUnrepresentedConfigurations(input, statuses);
   const unrepresentedConfigurations = configurationCoverage.unrepresented;
+  const fixedRoleConfigurations = configurationCoverage.fixedRole;
   const untrustworthyLabIds = new Set<string>(mappingFailedLabIds);
   for (const { collection } of input.labs) {
     const source = collection.effectiveSource;
@@ -1654,6 +1765,7 @@ export const evaluateCompiledWitnessDiagnostics = (
       evaluatedNodeContextCount: contexts.length,
       byStatus,
       unrepresentedConfigurations: sortStatusRecords(unrepresentedConfigurations),
+      fixedRoleConfigurations: sortStatusRecords(fixedRoleConfigurations),
       representativeContinuousConfigurations: sortStatusRecords(
         configurationCoverage.representativeContinuous,
       ),

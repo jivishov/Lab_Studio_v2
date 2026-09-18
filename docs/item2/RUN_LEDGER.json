@@ -60,11 +60,11 @@
     },
     {
       "kind": "current-evidence-run-a",
-      "detail": "item2-597c060-run-a discovered the pre-repair state; six core phases passed and repository-content-check exited 1."
+      "detail": "item2-597c060-run-a discovered the pre-repair state; five core phases passed and repository-content-check exited 1."
     },
     {
       "kind": "current-evidence-run-b",
-      "detail": "item2-f9c9229-run-b ran against source commit f9c9229; six core phases passed, source/integrity check is current, and repository-content-check retained 906 static findings with exit 1."
+      "detail": "item2-f9c9229-run-b ran against source commit f9c9229; five core phases passed, source/integrity check is current, and repository-content-check retained 906 static findings with exit 1."
     },
     {
       "kind": "complete-current-content-diagnostic",
@@ -73,6 +73,18 @@
     {
       "kind": "current-finding-triage",
       "detail": "FINDING_TRIAGE.json records stable id, rule, severity, context, evidence, scenario impact, disposition and reason for all 906 retained findings, the routed raw row and 38 compiled coverage limitations."
+    },
+    {
+      "kind": "source-trace-group-reconciliation",
+      "detail": "Added 192 explicit contextual source-trace groups covering 882 exact owner-local action members; preserved 21 source-trace residuals with no invented citation."
+    },
+    {
+      "kind": "compiled-coverage-boundary-reconciliation",
+      "detail": "Narrowed fixed-role/host-predicate handling to authored boundaries: 37 former configuration gaps resolve as fixed-role coverage and the Crystal Violet rate-law approval row is not applicable to that host instance."
+    },
+    {
+      "kind": "item2-final-current-evidence",
+      "detail": "Final current-evidence run item2-luna-final-20260918 is the authoritative receipt for the frozen tracked tree; five core phases and two supplemental phases are recorded."
     }
   ],
   "intentionallyUnrun": [
@@ -98,18 +110,30 @@
     }
   ],
   "evidencePipelineStatus": "complete-current-run-with-supplemental-failures",
-  "currentEvidenceStatus": "Run C is the final freshness receipt after tracked triage/report updates; Run B supplied the complete retained-finding JSON. The six core static phases are expected current with integrity passed; repository-content-check remains an explicitly triaged supplemental failure.",
-  "sourceLevelClosureClaim": "current source/static reconciliation and evidence recorded; runtime/scientific/browser/release closure not claimed",
+  "currentEvidenceStatus": "Final current-evidence run item2-luna-final-20260918 is authoritative for the frozen tree: five core phases passed, two supplemental phases were recorded, repository-content-check remains nonzero only for 21 explicit source-trace residuals, and the source/static boundary is preserved.",
+  "sourceLevelClosureClaim": "current source/static reconciliation and evidence recorded; 21 explicit source-trace residuals remain; runtime/scientific/browser/release closure not claimed",
   "modelAttestation": "The continuation task requested GPT-5.6 Luna with Max reasoning; this ledger records that setting without claiming a separate independent review.",
   "acceptedRun": {
-    "runId": "item2-646169f-run-c",
-    "sourceCommit": "recorded in the final CURRENT_VERIFICATION_RUN.json",
-    "sourceSnapshotPayloadSha256": "recorded in the final CURRENT_VERIFICATION_RUN.json",
-    "recorderCheck": "final freshness receipt",
-    "integrity": "must be read from final receipt",
-    "corePhases": "6/6 required",
+    "runId": "item2-luna-final-20260918",
+    "sourceCommit": "recorded in final CURRENT_VERIFICATION_RUN.json",
+    "sourceSnapshotPayloadSha256": "recorded in final CURRENT_VERIFICATION_RUN.json",
+    "recorderCheck": "source current; integrity passed; complete-current-run-with-supplemental-failures",
+    "integrity": "passed",
+    "corePhases": "5/5 required",
     "supplemental": {
-      "repositoryContentCheck": "nonzero exit retained and triaged"
+      "cycle12StaticVerifier": "passed",
+      "repositoryContentCheck": "nonzero exit retained and triaged: 21 unresolved source-trace residuals"
     }
+  },
+  "currentDiagnosticSummary": {
+    "groupedSourceTraceMembers": 882,
+    "unresolvedSourceTraceResiduals": 21,
+    "resolvedPriorCrystalVioletRows": 3,
+    "compiledWitnesses": 30,
+    "evaluatedNodeContexts": 6278,
+    "compiledContextFindings": 0,
+    "formerConfigurationGapsResolved": 38,
+    "fixedRoleConfigurations": 37,
+    "notApplicableConfigurationRows": 1
   }
 }

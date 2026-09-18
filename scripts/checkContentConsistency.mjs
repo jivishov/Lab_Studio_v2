@@ -877,6 +877,84 @@ const checkSourceTrace = (world, report) => {
     }
   }
 
+  const traceGroups = registry.traceGroups ?? [];
+  if (!Array.isArray(traceGroups)) {
+    report(
+      "source-trace/group-registry-invalid",
+      "traceGroups",
+      `${SOURCE_TRACE_REGISTRY_PATH} traceGroups must be an array`,
+    );
+  } else {
+    const groupedActionKeys = new Set();
+    for (const [index, group] of traceGroups.entries()) {
+      const at = `traceGroups[${index}]`;
+      const owner = `${group?.ownerType}:${group?.ownerId}`;
+      const groupScope = `${owner}/${group?.id ?? index}`;
+      const actionIds = group?.actionIds;
+      if (!group || typeof group !== "object" || Array.isArray(group)) {
+        report("source-trace/group-invalid", at, `${SOURCE_TRACE_REGISTRY_PATH} group is not an object`);
+        continue;
+      }
+      if (!group.id || typeof group.id !== "string") {
+        report("source-trace/group-invalid", at, `${SOURCE_TRACE_REGISTRY_PATH} id must be a nonempty string`);
+      }
+      if (!knownOwners.has(owner)) {
+        report("source-trace/unknown-owner", groupScope, `${SOURCE_TRACE_REGISTRY_PATH} traceGroups`);
+      }
+      if (!Array.isArray(actionIds) || actionIds.length === 0 || actionIds.some((actionId) => typeof actionId !== "string" || !actionId)) {
+        report("source-trace/group-invalid", groupScope, `${SOURCE_TRACE_REGISTRY_PATH} actionIds must be a nonempty string array`);
+        continue;
+      }
+      if (new Set(actionIds).size !== actionIds.length) {
+        report("source-trace/group-duplicate-member", groupScope, `${SOURCE_TRACE_REGISTRY_PATH} actionIds repeat a member`);
+      }
+      if (group.traceDisposition !== "context") {
+        report("source-trace/group-invalid-disposition", groupScope, `${SOURCE_TRACE_REGISTRY_PATH} traceDisposition=${group.traceDisposition}`);
+      }
+      if (group.sourceBasis !== group.basis) {
+        report("source-trace/group-basis-mismatch", groupScope, `${SOURCE_TRACE_REGISTRY_PATH} sourceBasis=${group.sourceBasis} basis=${group.basis}`);
+      }
+      if (typeof group.actionBasis !== "string" || !group.actionBasis.trim()) {
+        report("source-trace/group-action-basis-missing", groupScope, `${SOURCE_TRACE_REGISTRY_PATH} actionBasis is required`);
+      }
+      if (typeof group.mappingRationale !== "string" || !group.mappingRationale.trim()) {
+        report("source-trace/group-rationale-missing", groupScope, `${SOURCE_TRACE_REGISTRY_PATH} mappingRationale is required`);
+      }
+      checkSourceCitation(group, "source-trace/group", groupScope, SOURCE_TRACE_REGISTRY_PATH, report);
+      if (!world.sourceFiles.has(group.sourceFile)) {
+        report(
+          "source-trace/unknown-source-file",
+          `${groupScope}/${group.sourceFile}`,
+          SOURCE_TRACE_REGISTRY_PATH,
+        );
+      }
+      if (world.nonSourceDerivedOwners.has(owner)) {
+        report("source-trace/non-source-derived-owner", groupScope, SOURCE_TRACE_REGISTRY_PATH);
+      }
+      for (const actionId of actionIds) {
+        const key = `${owner}#${actionId}`;
+        if (groupedActionKeys.has(key)) {
+          report("source-trace/group-member-repeated", key, SOURCE_TRACE_REGISTRY_PATH);
+        }
+        groupedActionKeys.add(key);
+        const action = world.actionIndex.get(key);
+        if (!action) {
+          report("source-trace/unknown-action", `${groupScope}/${actionId}`, SOURCE_TRACE_REGISTRY_PATH);
+        } else if (action.atomId !== group.atomId) {
+          report(
+            "source-trace/group-atom-mismatch",
+            `${groupScope}/${actionId}`,
+            `${SOURCE_TRACE_REGISTRY_PATH} group atomId=${group.atomId} action atomId=${action.atomId}`,
+          );
+        }
+        const directKey = key;
+        if (world.registries.sourceTrace.traces.some((trace) => `${trace.ownerType}:${trace.ownerId}#${trace.actionId}` === directKey)) {
+          report("source-trace/group-member-already-traced", directKey, SOURCE_TRACE_REGISTRY_PATH);
+        }
+      }
+    }
+  }
+
   // The basis and the table kind are properties of the source row, not of the citation. Two
   // citations of the same row that disagree mean at least one of them was transcribed wrong, which
   // no per-citation rule above can see.
@@ -969,6 +1047,9 @@ const checkSourceTrace = (world, report) => {
   }
   for (const trace of registry.traces) {
     noteCitation(trace, `${trace.ownerType}:${trace.ownerId}/${trace.actionId}`);
+  }
+  for (const group of registry.traceGroups ?? []) {
+    noteCitation(group, `${group.ownerType}:${group.ownerId}/${group.id}`);
   }
   for (const [key, group] of citations) {
     const tables = [...new Set(group.map((citation) => citation.sourceTable))];
@@ -3032,12 +3113,33 @@ const finalizeWorld = (world) => {
       world.actionIndex.set(`${entry.owner}#${action.id}`, action);
     }
   }
-  world.sourceTraceIndex = new Map(
-    world.registries.sourceTrace.traces.map((trace) => [
+  const groupedTraces = (world.registries.sourceTrace.traceGroups ?? []).flatMap((group) =>
+    (group.actionIds ?? []).map((actionId) => [
+      `${group.ownerType}:${group.ownerId}#${actionId}`,
+      {
+        ownerType: group.ownerType,
+        ownerId: group.ownerId,
+        actionId,
+        atomId: group.atomId,
+        sourceFile: group.sourceFile,
+        sourceTable: group.sourceTable,
+        step: group.step,
+        basis: group.basis,
+        traceDisposition: group.traceDisposition,
+        sourceBasis: group.sourceBasis,
+        actionBasis: group.actionBasis,
+        mappingRationale: group.mappingRationale,
+        traceGroupId: group.id,
+      },
+    ]),
+  );
+  world.sourceTraceIndex = new Map([
+    ...world.registries.sourceTrace.traces.map((trace) => [
       `${trace.ownerType}:${trace.ownerId}#${trace.actionId}`,
       trace,
     ]),
-  );
+    ...groupedTraces,
+  ]);
   world.nonSourceDerivedOwners = new Set(
     world.registries.sourceTrace.nonSourceDerivedOwners.map((entry) => entry.owner),
   );

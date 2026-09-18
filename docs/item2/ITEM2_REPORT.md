@@ -8,7 +8,7 @@
 - Hosted source configuration accounted: **66 / 66**
 - Historical dependency set locally restored: **46 / 46 files, 39,500,058 bytes, 46/46 SHA-256 matches**
 - Historical dependencies on GitHub branch: **not restored**
-- Fresh current evidence pipeline: **Run B diagnostic capture plus Run C final freshness receipt; six core phases passed; supplemental content check exited 1 and is fully triaged**
+- Fresh current evidence pipeline: **item2-luna-final-20260918; five core phases passed; two supplemental phases recorded; content check retains 21 explicit source-trace residuals**
 - Source-level reconciliation closure: **current static reconciliation recorded; runtime/scientific/release closure not claimed**
 - Full Item 2: **complete for the authorized source/current-evidence scope, with explicit static limitations**
 - Items 3–5: **not started**
@@ -62,7 +62,7 @@ Not run:
 - tests, including the new titration regression;
 - typecheck/build/browser/runtime/E2E/broad lint.
 
-The authorized item-2 evidence phase is now recorded in Run B. The remaining unrun checks are deliberately outside the repository validation policy and this scoped request.
+The authorized item-2 evidence phase is now recorded in the final current run. The remaining unrun checks are deliberately outside the repository validation policy and this scoped request.
 
 
 ## Final external-review scenario correction
@@ -105,7 +105,7 @@ A stricter consistency review found four remaining static-artifact defects and c
 
 Catalog schema version 5 now has 59/59 distinct ordinary, configuration/refusal, recovery/reset, and evidence cases. Lab and technique namespaces are explicitly included in scenario wording so the two duplicated ids remain distinct. `SCENARIO_AUDIT.json` schema version 2 records zero legacy scenario assignments, zero old generic refusal templates, and zero old generated ordinary-case grammar defects.
 
-These changes improve static specification fidelity only. Item 2 remains incomplete pending repository-workspace restoration and separately authorized fresh evidence.
+At that earlier pre-evidence checkpoint, the scenario changes were source-only; the final current evidence section below supersedes its pending-evidence wording.
 
 
 ## Final targeted scenario corrections
@@ -118,17 +118,50 @@ A subsequent source review corrected two remaining scenario-contract errors.
 
 No runtime/evidence pipeline was executed for those documentation corrections before the authorized current-evidence pass.
 
-## Fresh current evidence — Run B
+## Final current evidence — item2-luna-final-20260918
 
-- Run ID: `item2-f9c9229-run-b`
-- Source commit at initialization: `f9c9229`
-- Source snapshot payload SHA-256: `f14055d751a2bfbbe604d0c92f5995b4dabcc64942ed3b73a2fe5019731cedd0`
-- Core chain: **6/6 passed** — compiler witness, reconciliation, Cycle 09 overlay refresh/check, reconciliation check and static verifier.
-- Recorder `--check`: **source current; integrity passed; complete-current-run-with-supplemental-failures**.
-- Complete content JSON: `delivery/run-b-content-check-compiled-json.stdout.json` (SHA-256 `e5b849bfe6893b9cf7570aacab34a1737eeebc016d15cd4872ab92013b501e02`; exit 1).
+- Run ID: `item2-luna-final-20260918`; the final recorder receipt is under `planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-luna-final-20260918/CURRENT_VERIFICATION_RUN.json`.
+- Core chain: **5/5 passed** — compiler witness, reconciliation, Cycle 09 overlay refresh/check, and reconciliation check.
+- Supplemental phases: **2 recorded** — the Cycle 12 static verifier passed; repository-content-check exited 1 only for 21 explicit source-trace residuals.
+- Source-trace reconciliation: **882 exact action members** are covered by 192 contextual groups; **21 residuals** remain (17 authored paper-drying operations and 4 teacher-configured inventory actions).
+- Crystal Violet: the prior three raw rows are resolved by current compiled static routing across 14 host instances, both approval witnesses and 229 Crystal Violet compiled contexts; compiled-context findings are zero.
+- Configuration coverage: the former 38 rows resolve as **37 fixed-role configurations plus 1 not-applicable approval row**; current unrepresented configuration count is zero.
+- The complete content-check JSON and recorder logs are captured under the external delivery directory `delivery/item2-luna-final-20260918/content-check-compiled.json` and the run evidence directory above.
 
-The content result retains 906 static findings: 903 source-trace registry gaps, two inconclusive cuvette-composition rows and one inconclusive configured-wavelength row. One raw composition row was routed to compiled-context evaluation and produced no compiled finding. The compiled campaign covered 30/30 attempted witnesses and 6,278 node contexts, with zero compiled-context findings; 38 declared configurations remain unrepresented in the static witness set. Every retained finding, routed row and coverage limitation has a stable identity and explicit disposition in `docs/item2/FINDING_TRIAGE.json`.
+This is source/static evidence only. Runtime traversal, browser behavior, physical instrument response, scientific validity, classroom safety and release readiness remain unverified. No push, merge or deployment was performed.
 
-These results are source/static evidence only. No runtime, browser, scientific, classroom, safety or release acceptance is claimed, and no push/merge/deployment was performed.
+## Final current evidence — item2-luna-final-20260918
 
-The tracked triage and report updates were then frozen in the local final candidate. Run C (`item2-646169f-run-c`) is the final freshness receipt for that exact tree; its source snapshot and recorder `--check` are the authoritative final identity.
+- Run ID: `item2-luna-final-20260918`; the final recorder receipt is under `planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-luna-final-20260918/CURRENT_VERIFICATION_RUN.json`.
+- Core chain: **5/5 passed** — compiler witness, reconciliation, Cycle 09 overlay refresh/check, and reconciliation check.
+- Supplemental phases: **2 recorded** — the Cycle 12 static verifier passed; repository-content-check exited 1 only for 21 explicit source-trace residuals.
+- Source-trace reconciliation: **882 exact action members** are covered by 192 contextual groups; **21 residuals** remain (17 authored paper-drying operations and 4 teacher-configured inventory actions).
+- Crystal Violet: the prior three raw rows are resolved by current compiled static routing across 14 host instances, both approval witnesses and 229 Crystal Violet compiled contexts; compiled-context findings are zero.
+- Configuration coverage: the former 38 rows resolve as **37 fixed-role configurations plus 1 not-applicable approval row**; current unrepresented configuration count is zero.
+- The complete content-check JSON and recorder logs are captured under the external delivery directory `delivery/item2-luna-final-20260918/content-check-compiled.json` and the run evidence directory above.
+
+This is source/static evidence only. Runtime traversal, browser behavior, physical instrument response, scientific validity, classroom safety and release readiness remain unverified. No push, merge or deployment was performed.
+
+## Final current evidence — item2-luna-final-20260918
+
+- Run ID: `item2-luna-final-20260918`; the final recorder receipt is under `planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-luna-final-20260918/CURRENT_VERIFICATION_RUN.json`.
+- Core chain: **5/5 passed** — compiler witness, reconciliation, Cycle 09 overlay refresh/check, and reconciliation check.
+- Supplemental phases: **2 recorded** — the Cycle 12 static verifier passed; repository-content-check exited 1 only for 21 explicit source-trace residuals.
+- Source-trace reconciliation: **882 exact action members** are covered by 192 contextual groups; **21 residuals** remain (17 authored paper-drying operations and 4 teacher-configured inventory actions).
+- Crystal Violet: the prior three raw rows are resolved by current compiled static routing across 14 host instances, both approval witnesses and 229 Crystal Violet compiled contexts; compiled-context findings are zero.
+- Configuration coverage: the former 38 rows resolve as **37 fixed-role configurations plus 1 not-applicable approval row**; current unrepresented configuration count is zero.
+- The complete content-check JSON and recorder logs are captured under the external delivery directory `delivery/item2-luna-final-20260918/content-check-compiled.json` and the run evidence directory above.
+
+This is source/static evidence only. Runtime traversal, browser behavior, physical instrument response, scientific validity, classroom safety and release readiness remain unverified. No push, merge or deployment was performed.
+
+## Final current evidence — item2-luna-final-20260918
+
+- Run ID: `item2-luna-final-20260918`; the final recorder receipt is under `planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-luna-final-20260918/CURRENT_VERIFICATION_RUN.json`.
+- Core chain: **5/5 passed** — compiler witness, reconciliation, Cycle 09 overlay refresh/check, and reconciliation check.
+- Supplemental phases: **2 recorded** — the Cycle 12 static verifier passed; repository-content-check exited 1 only for 21 explicit source-trace residuals.
+- Source-trace reconciliation: **882 exact action members** are covered by 192 contextual groups; **21 residuals** remain (17 authored paper-drying operations and 4 teacher-configured inventory actions).
+- Crystal Violet: the prior three raw rows are resolved by current compiled static routing across 14 host instances, both approval witnesses and 229 Crystal Violet compiled contexts; compiled-context findings are zero.
+- Configuration coverage: the former 38 rows resolve as **37 fixed-role configurations plus 1 not-applicable approval row**; current unrepresented configuration count is zero.
+- The complete content-check JSON and recorder logs are captured under the external delivery directory `delivery/item2-luna-final-20260918/content-check-compiled.json` and the run evidence directory above.
+
+This is source/static evidence only. Runtime traversal, browser behavior, physical instrument response, scientific validity, classroom safety and release readiness remain unverified. No push, merge or deployment was performed.

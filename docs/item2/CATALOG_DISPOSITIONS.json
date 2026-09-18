@@ -3,7 +3,7 @@
   "scope": "item-2 complete indexed Lab Studio catalog",
   "branch": "codex/item2-catalog-reconciliation",
   "mainBaseline": "f7c2b863f641090d9abc5c08ee22da72702fdfd6",
-  "evidenceMode": "current source/static evidence recorded in Run B; repository-content-check supplemental failure explicitly triaged; runtime/scientific/browser/release acceptance not claimed",
+  "evidenceMode": "current source/static evidence recorded in the final item-2 run; 21 explicit source-trace residuals remain; runtime/scientific/browser/release acceptance not claimed",
   "counts": {
     "labs": 17,
     "techniques": 42,
@@ -12,7 +12,7 @@
   "notes": [
     "All 17 labs and 42 indexed techniques have activity-specific scientific focus, ordinary/refusal-or-configuration/recovery/evidence scenarios, and a per-activity historical finding disposition.",
     "Historical finding-bearing activities record rule families, representative scopes, historical evaluation scope, present source-review disposition, and the claim boundary; counts are no longer used as a substitute for disposition.",
-    "Source-level inventory/configuration accounting remains complete. Run B current evidence covers the core static chain; current content findings and coverage limitations are retained in FINDING_TRIAGE.json.",
+    "Source-level inventory/configuration accounting remains complete. The final current run covers the core static chain; current content findings and coverage limitations are retained in FINDING_TRIAGE.json.",
     "Historical findings remain preparation evidence only; current diagnostics are recorded separately and are not merged into historical counts."
   ],
   "labs": [
@@ -50,7 +50,7 @@
         "configurationOrRefusalCase": "Refusal case for lab Precipitate and Filter Calcium Carbonate: filtration is attempted before the funnel/filter paper and receiver are correctly staged, correct that apparatus state, repeat only the rejected transfer/filtration step, then restart the demo and verify the previous filtrate/precipitate records are gone. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If filtration is attempted before the funnel/filter paper and receiver are correctly staged, correct that apparatus state, repeat only the rejected transfer/filtration step, then restart the demo and verify the previous filtrate/precipitate records are gone.",
         "evidenceCase": "Require the recorded sample-volume evidence, successful calcium-carbonate precipitation, filtration completion, and distinct filtrate/precipitate state needed by the demo's terminal validations.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -96,7 +96,7 @@
         "configurationOrRefusalCase": "Refusal case for lab Hard-Water Reference Demo: the gravimetric path reaches weighing before the precipitate is properly filtered/dried, return to filtration or drying as indicated, cool and reweigh, then reset the demo and confirm prior mass/hardness records do not survive. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If the gravimetric path reaches weighing before the precipitate is properly filtered/dried, return to filtration or drying as indicated, cool and reweigh, then reset the demo and confirm prior mass/hardness records do not survive.",
         "evidenceCase": "Require sample-volume evidence, precipitate formation/filtration, final dry-mass evidence, and the hardness calculation tied to those named measurements.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -137,7 +137,7 @@
         "configurationOrRefusalCase": "Refusal case for lab Acid-Base Titration: titration is rejected for missing preparation/readings or an unacceptable endpoint path, correct the burette/analyte state, reacquire the required reading or restart the trial, then reset and verify no old endpoint or molarity calculation remains. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If titration is rejected for missing preparation/readings or an unacceptable endpoint path, correct the burette/analyte state, reacquire the required reading or restart the trial, then reset and verify no old endpoint or molarity calculation remains.",
         "evidenceCase": "Require preparation evidence, separate initial/final burette readings, accepted endpoint evidence, and the acid-molarity calculation derived from delivered volume rather than an authored result.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -188,7 +188,7 @@
         "configurationOrRefusalCase": "Refusal case for lab How Long Will That Marble Statue Last?: a kinetics trial is rejected because the marble mass, acid preparation, gas-syringe connection, or timed series is incomplete, repair that trial setup and reacquire its series. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If a kinetics trial is rejected because the marble mass, acid preparation, gas-syringe connection, or timed series is incomplete, repair that trial setup and reacquire its series; on restart, confirm the prior gas-volume series/rate is cleared.",
         "evidenceCase": "Require measured marble mass, configured acid trial identity, a recorded gas-volume time series for each selected trial, and initial-rate calculations/comparison from those series.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 11,
@@ -244,7 +244,7 @@
         "configurationOrRefusalCase": "Refusal case for lab Sticky Question: Paper Chromatography: the origin is not above the solvent, the selected solvent/data set is unsupported, or the chamber procedure is invalid, revise the instructor setup or prepare a fresh paper/chamber and rerun that trial. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If the origin is not above the solvent, the selected solvent/data set is unsupported, or the chamber procedure is invalid, revise the instructor setup or prepare a fresh paper/chamber and rerun that trial; reset must discard its old band/front/Rf evidence.",
         "evidenceCase": "Require selected-solvent/procedure records, solvent-front and band-distance measurements for each approved trial, Rf calculations from those distances, and the configured disposal record.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -285,7 +285,7 @@
         "configurationOrRefusalCase": "Refusal case for lab Equilibrium Rainbow Display: an unsupported or out-of-sequence stress is selected, restore the mixture to the supported baseline/previous node, apply one approved stress, rerecord the observation, and verify a reset removes the prior stressed-state evidence. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If an unsupported or out-of-sequence stress is selected, restore the mixture to the supported baseline/previous node, apply one approved stress, rerecord the observation, and verify a reset removes the prior stressed-state evidence.",
         "evidenceCase": "Require baseline/stress identity, qualitative before/after observation evidence for each approved stress, and the learner's equilibrium interpretation without substituting expected colors.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -328,7 +328,7 @@
         "configurationOrRefusalCase": "Refusal case for lab Designing an Effective Hand Warmer: required teacher configuration, mass, timer, or temperature evidence is missing, return to the exact acquisition/configuration step rather than substituting a value, repeat the affected calorimetry segment, and reset without carrying the old calibration/design calculations. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If required teacher configuration, mass, timer, or temperature evidence is missing, return to the exact acquisition/configuration step rather than substituting a value, repeat the affected calorimetry segment, and reset without carrying the old calibration/design calculations.",
         "evidenceCase": "Require balance/timing/temperature evidence, calorimeter calibration calculations, trial calorimetry calculations, teacher waste configuration, and the evidence-backed design decision.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -375,7 +375,7 @@
         "configurationOrRefusalCase": "Refusal case for lab Spectroscopy of Blue #1 Dye in a Sports Drink: a photometer reading is attempted before wavelength/zero/cuvette state is valid, complete the missing calibration/blank/insertion steps and reread the same sample. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If a photometer reading is attempted before wavelength/zero/cuvette state is valid, complete the missing calibration/blank/insertion steps and reread the same sample; restarting must clear the old %T/absorbance/calibration evidence.",
         "evidenceCase": "Require standard/dilution preparation evidence, valid instrument zero/wavelength/cuvette reads, recorded %T/absorbance values, accepted class calibration, and the unknown result derived from that calibration.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 2,
@@ -427,7 +427,7 @@
         "configurationOrRefusalCase": "Refusal case for lab How Can Color Determine the Copper Content of Brass?: a scan or unknown read is rejected for missing dark/blank zero, wavelength configuration, or cuvette state, restore the instrument sequence and reacquire that wavelength/sample. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If a scan or unknown read is rejected for missing dark/blank zero, wavelength configuration, or cuvette state, restore the instrument sequence and reacquire that wavelength/sample; reset must remove the old scan/calibration/unknown result.",
         "evidenceCase": "Require the wavelength-scan read/record series under valid zero state, approved-wavelength calibration evidence, prepared unknown absorbance, and the resulting concentration/copper calculation.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -474,7 +474,7 @@
         "configurationOrRefusalCase": "Refusal case for lab What Makes Hard Water Hard?: instructor drying/cooling settings are invalid or a sample lacks the required filtered/dried mass evidence, correct the setup or repeat the affected dry-cool-weigh stage for that sample, then restart without retaining either sample's prior hardness/uncertainty values. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If instructor drying/cooling settings are invalid or a sample lacks the required filtered/dried mass evidence, correct the setup or repeat the affected dry-cool-weigh stage for that sample, then restart without retaining either sample's prior hardness/uncertainty values.",
         "evidenceCase": "Require practice preparation, filtration/drying evidence under instructor settings, sample-specific volume and dry-mass evidence for both waters, and paired hardness/uncertainty calculations.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -515,7 +515,7 @@
         "configurationOrRefusalCase": "Refusal case for lab How Much Acid Is in Fruit Juice and Soft Drinks?: the teacher proxy concentrations/aliquot/NaOH setting is invalid or a pH-volume trial lacks required preparation/evidence, correct the setup and rerun that beverage trial from its valid start. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If the teacher proxy concentrations/aliquot/NaOH setting is invalid or a pH-volume trial lacks required preparation/evidence, correct the setup and rerun that beverage trial from its valid start; reset must clear its old curve/equivalence/acidity result.",
         "evidenceCase": "Require teacher configuration identity, beverage aliquot evidence, recorded pH-volume/burette rows, accepted equivalence/endpoint evidence, and acidity calculations from each selected beverage trial.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -571,7 +571,7 @@
         "configurationOrRefusalCase": "Refusal case for lab What's in That Bottle? Bonding in Unknown Solids: a selected test is outside the approved panel/order, lacks the required prepared test solution, or risks revealing a blind identity, return to the approved test step for that sample and rerecord it. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If a selected test is outside the approved panel/order, lacks the required prepared test solution, or risks revealing a blind identity, return to the approved test step for that sample and rerecord it; reset must preserve blindness while clearing prior test/classification evidence.",
         "evidenceCase": "Require the host-selected test panel evidence per known/blind sample, preserve blind-redacted identity in those records, and require classification reasoning to consume the recorded observations rather than hidden labels.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -612,7 +612,7 @@
         "configurationOrRefusalCase": "Refusal case for lab Purifying a Mixture with Green Chemistry: Use an unsupported tare convention, attempt composition before the recorded empty/loaded/constant-final thermal mass evidence is complete, attempt to enter a numerical mass for the heated-product recovery receiver, or attempt atom economy before the assigned report/convention is supplied. The invalid step should refuse and commit no completion evidence.",
         "recoveryOrResetCase": "If thermal mass or constant-mass evidence is incomplete, return to the required heat-cool-weigh step and continue under the same approved tare convention; if heated-product recovery provenance is missing, repeat the qualitative recovery record without inventing a product mass; if assigned-report atom economy is incomplete, return to the report review/calculation nodes. A full investigation reset starts a fresh run and must not mix measurements, recovery provenance, or tare-convention evidence from the prior run.",
         "evidenceCase": "Require approved setup and explicit tare-convention identity; recorded empty, loaded, cycle, and constant-final balance evidence supporting the composition calculation; quantitative accounting for unheated stock where the route records it; qualitative provenance for each heated-product recovery with no recovered-product mass assertion; assigned-report review; atom economy validated from the teacher-provided stoichiometric convention; and peer-review evidence. Exercise the two supported tare conventions as separate witnesses.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -653,7 +653,7 @@
         "configurationOrRefusalCase": "Refusal case for lab Determining Hydrogen Peroxide Concentration by Redox Titration: sample analysis is attempted before titrant standardization or replicate concordance fails, complete/repeat the standardization replicate set first, then rerun the affected sample titration. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If sample analysis is attempted before titrant standardization or replicate concordance fails, complete/repeat the standardization replicate set first, then rerun the affected sample titration; reset must clear stale standardized-titrant and sample-percent calculations.",
         "evidenceCase": "Require accepted standardization replicate calculations/concordance before sample work, sample aliquot and separate burette readings, and peroxide percent/concentration calculations using the standardized titrant record.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -699,7 +699,7 @@
         "configurationOrRefusalCase": "Refusal case for lab Separating the Components of Quick Ache Relief: the extraction count/recovery order, acidification endpoint, recovery method, or dryness state is invalid, revise the teacher setup or repeat that recovery stage before weighing. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If the extraction count/recovery order, acidification endpoint, recovery method, or dryness state is invalid, revise the teacher setup or repeat that recovery stage before weighing; reset must clear recovered-mass/composition evidence but not invent component identity.",
         "evidenceCase": "Require property-reference evidence, explicit plan approval, configured extraction/recovery execution, dried recovered-fraction masses, confirmed formula convention, and the final composition/recovery report calculations.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -757,7 +757,7 @@
         "configurationOrRefusalCase": "Refusal case for lab Rate Law of Crystal Violet Fading Using Beer's Law: a kinetics reading is attempted before wavelength/zero/calibration or at an invalid scheduled state, repair the instrument/reaction sequence and reacquire that time point. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If a kinetics reading is attempted before wavelength/zero/calibration or at an invalid scheduled state, repair the instrument/reaction sequence and reacquire that time point; restart must clear the old series/regressions/order selection before a new run.",
         "evidenceCase": "Require micromolar dilution evidence, spectrophotometer calibration, scheduled time-absorbance series, transformed regressions/order selection, any approved extension result, and completion of waste treatment.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 23,
@@ -811,7 +811,7 @@
         "configurationOrRefusalCase": "Refusal case for lab Exploring Acid-Base Titration Curves: the approved aliquot/increment/stability plan cannot produce a supported curve or a formal trial rejects a delivery/read branch, revise the plan or use the authored retry/disposal path and rerun that context. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If the approved aliquot/increment/stability plan cannot produce a supported curve or a formal trial rejects a delivery/read branch, revise the plan or use the authored retry/disposal path and rerun that context; reset must clear old curve rows/landmark calculations/reflections.",
         "evidenceCase": "Require approved-plan identity, recorded pH-volume rows for every selected context/replicate, equivalence/half-equivalence landmarks and unknown molarity/equilibrium calculations, plus particulate/uncertainty reflections and cleanup.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -856,7 +856,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Weigh a Solid: the mass cannot be acquired because the weighing vessel/balance state is wrong, place the correct vessel and repeat the balance read/record step. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If the mass cannot be acquired because the weighing vessel/balance state is wrong, place the correct vessel and repeat the balance read/record step; reset must remove the prior mass measurement and notebook record.",
         "evidenceCase": "Require a balance-produced mass measurement under the configured measurement id and a notebook record tied to the same reading; a static configured mass must not satisfy completion.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -912,7 +912,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Measure Liquid Volume: the requested volume is outside the source/cylinder capacity or the wrong device/source is used, correct the configured target or apparatus and remeasure. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If the requested volume is outside the source/cylinder capacity or the wrong device/source is used, correct the configured target or apparatus and remeasure; reset must clear the old volume reading under its configured measurement id.",
         "evidenceCase": "Require the measured cylinder volume under the configured measurement id, within the configured target/tolerance, plus the matching record step.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -958,7 +958,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Make a Solution: initial/final volumes are physically inconsistent or solvent/solute transfer cannot complete, correct the teacher values or container state, repeat the failed addition/dissolution step, and restart without retaining the old solution observation. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If initial/final volumes are physically inconsistent or solvent/solute transfer cannot complete, correct the teacher values or container state, repeat the failed addition/dissolution step, and restart without retaining the old solution observation.",
         "evidenceCase": "Require completion of solvent/solute/final-volume operations and the configured solution observation; configuration alone must not count as prepared-solution evidence.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -1004,7 +1004,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Dilute a Stock Solution: final volume is below aliquot volume or the configured factor disagrees with finalVolume/aliquot, correct the configuration before proceeding, remake the dilution, and reset the old dilution evidence/calculation. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If final volume is below aliquot volume or the configured factor disagrees with finalVolume/aliquot, correct the configuration before proceeding, remake the dilution, and reset the old dilution evidence/calculation.",
         "evidenceCase": "Require recorded aliquot/final-volume execution evidence and the dilution-factor result consistent with finalVolume/aliquot under the configured evidence id.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -1058,7 +1058,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Analyze Transmittance of a Dilution: %T/decimal-T/absorbance calculation is rejected for missing or invalid recorded operands, reacquire the photometer reading or preceding dilution evidence and recalculate in order. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If %T/decimal-T/absorbance calculation is rejected for missing or invalid recorded operands, reacquire the photometer reading or preceding dilution evidence and recalculate in order; reset must clear the dependent photometric calculation chain.",
         "evidenceCase": "Require recorded stock/dilution operands and an actual %T measurement, then require decimal-transmittance/absorbance calculations to consume the correct recorded operand type.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 2,
@@ -1124,7 +1124,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Transfer Liquid: transfer is rejected for missing source contents, receiver overflow, or wrong source/target, select a valid source/receiver or smaller configured amount and repeat only the transfer. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If transfer is rejected for missing source contents, receiver overflow, or wrong source/target, select a valid source/receiver or smaller configured amount and repeat only the transfer; reset must restore pre-transfer contents/evidence.",
         "evidenceCase": "Require a successful physical transfer that updates source/receiver contents plus the configured transfer observation; a notebook-only claim must not replace material movement.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -1179,7 +1179,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Hard-Water Calcium Carbonate Precipitation: reagent transfer/final-volume state cannot produce the declared precipitate path, correct the configured quantities or source state and repeat the precipitation sequence. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If reagent transfer/final-volume state cannot produce the declared precipitate path, correct the configured quantities or source state and repeat the precipitation sequence; reset must remove prior precipitate/final-volume evidence.",
         "evidenceCase": "Require reagent-transfer/precipitation evidence and the configured final-volume/precipitate evidence produced by the physical sequence.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -1234,7 +1234,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Filter a Precipitate: the filter assembly/receiver is missing, the target would overflow, or the mixture/rinse step is out of order, repair the apparatus and resume at that filtration step. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If the filter assembly/receiver is missing, the target would overflow, or the mixture/rinse step is out of order, repair the apparatus and resume at that filtration step; reset must clear prior filtrate/retentate transfer evidence.",
         "evidenceCase": "Require apparatus placement, mixture transfer through the filter path, configured rinse action, and resulting filtrate/retentate state/evidence before exit.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -1288,7 +1288,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Dry and Weigh a Precipitate: a mass is taken before the required dry/cool sequence or repeat-drying tolerance is not met, return to heating/cooling and reweigh until the configured criterion is satisfied. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If a mass is taken before the required dry/cool sequence or repeat-drying tolerance is not met, return to heating/cooling and reweigh until the configured criterion is satisfied; reset must discard previous dry-mass iterations.",
         "evidenceCase": "Require each authored dry/cool/weigh stage and the final mass/tolerance evidence under the configured measurement id before the technique can complete.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -1350,7 +1350,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Heat and Reweigh a Carbonate Mixture: tare/sample/heating/cooling evidence is incomplete or constant-mass criteria fail, repeat the bounded heat-cool-weigh cycle under the same tare convention. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If tare/sample/heating/cooling evidence is incomplete or constant-mass criteria fail, repeat the bounded heat-cool-weigh cycle under the same tare convention; reset must clear prior cycle masses/composition and not switch conventions implicitly.",
         "evidenceCase": "Require the selected tare-convention setup, initial/final mass readings across bounded heat-cool cycles, constant-mass satisfaction, and the composition calculation derived from measured mass loss.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 1,
@@ -1420,7 +1420,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Paper Chromatography: host-selected geometry/procedure is invalid or a paper/chamber step is out of order, correct the host setup or prepare a fresh selected trial and resume from its first valid node. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If host-selected geometry/procedure is invalid or a paper/chamber step is out of order, correct the host setup or prepare a fresh selected trial and resume from its first valid node; reset must clear that trial's front/band/Rf evidence.",
         "evidenceCase": "Require the host-selected procedure path, physical chamber/paper development sequence, recorded front/band distances, calculated Rf values, and disposal evidence for exactly the selected trials.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 188,
@@ -1485,7 +1485,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Calculate Hardness: named sample-volume or precipitate-mass evidence is missing, return to the producer step that owns that measurement/calculation, acquire it, and resubmit hardness. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If named sample-volume or precipitate-mass evidence is missing, return to the producer step that owns that measurement/calculation, acquire it, and resubmit hardness; reset must remove the old hardness calculation.",
         "evidenceCase": "Require the named sample-volume and precipitate-mass evidence records and a hardness calculation under the configured calculation id/tolerance that consumes those operands.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -1532,7 +1532,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Beer's Law Calibration: a standard pair is missing or the calibration regression cannot be formed, reacquire/record the missing concentration-absorbance pair and rebuild the fit. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If a standard pair is missing or the calibration regression cannot be formed, reacquire/record the missing concentration-absorbance pair and rebuild the fit; reset must clear the old regression before accepting a new standard set.",
         "evidenceCase": "Require the complete accepted concentration/absorbance standard pairs and the regression parameters calculated from those pairs; no authored slope/intercept may stand in for the fit.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -1587,7 +1587,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Brass Spectrophotometry: a scan/read is rejected because the photometer is not zeroed/configured or the proper cuvette is not inserted, complete that exact dark/blank/wavelength/insertion prerequisite and reread. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If a scan/read is rejected because the photometer is not zeroed/configured or the proper cuvette is not inserted, complete that exact dark/blank/wavelength/insertion prerequisite and reread; reset must clear stale scan/calibration/unknown evidence.",
         "evidenceCase": "Require valid zero/wavelength/cuvette state for every scan/calibration/unknown read, distinct read/record evidence, and concentration/copper calculations based on the accepted calibration/unknown measurements.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 35,
@@ -1657,7 +1657,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Hard Water Gravimetry: sample volume, precipitate mass, or drying evidence is incomplete, return to the named acquisition/derivation step, produce the missing evidence, and recalculate. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If sample volume, precipitate mass, or drying evidence is incomplete, return to the named acquisition/derivation step, produce the missing evidence, and recalculate; reset must remove the previous gravimetric mass/hardness chain.",
         "evidenceCase": "Require named sample-volume, precipitate mass/combined-tare derivation, and resulting hardness evidence, with every derivation consuming recorded upstream measurements.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -1728,7 +1728,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Acid-Base Titration to an Indicator Endpoint: the endpoint path is rejected for missing initial reading, preparation, or persistence/appearance requirement, restore the burette/analyte state and repeat delivery/read/record from the last valid node. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If the endpoint path is rejected for missing initial reading, preparation, or persistence/appearance requirement, restore the burette/analyte state and repeat delivery/read/record from the last valid node; reset must clear prior endpoint/trial calculations.",
         "evidenceCase": "Require mounted/conditioned burette state, separate initial/final readings, accepted persistent endpoint evidence, and the final titration calculation from those readings.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -1868,7 +1868,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Bonding Solids Tests: an aqueous/reagent/solvent/melting test is attempted without its required prepared sample state or outside the host-selected procedure, return to the preparation step for that test and repeat it without revealing blind identity. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If an aqueous/reagent/solvent/melting test is attempted without its required prepared sample state or outside the host-selected procedure, return to the preparation step for that test and repeat it without revealing blind identity; reset clears that sample's test evidence.",
         "evidenceCase": "Require evidence for every test selected by the host procedure—prepared portion, test application/read/record—and preserve blind-redaction metadata through the final classification evidence.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 19,
@@ -1965,7 +1965,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Redox Titration: standardization/sample calculation is attempted with missing burette/aliquot evidence or replicate spread exceeds the approved range, reacquire/repeat the affected trial and recompute the standardized titrant before sample analysis. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If standardization/sample calculation is attempted with missing burette/aliquot evidence or replicate spread exceeds the approved range, reacquire/repeat the affected trial and recompute the standardized titrant before sample analysis; reset clears both trial and derived records.",
         "evidenceCase": "Require standard aliquot and burette evidence for each standardization trial, accepted mean/concordance, sample aliquot/readings, and the final peroxide/redox calculation derived from the standardized concentration.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 163,
@@ -2019,7 +2019,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Tablet Separation: an extraction/filtration/recovery mass is missing or a component-percent calculation lacks its starting/recovered mass, return to the specific separation/recovery/weigh step, reacquire the mass, and recalculate. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If an extraction/filtration/recovery mass is missing or a component-percent calculation lacks its starting/recovered mass, return to the specific separation/recovery/weigh step, reacquire the mass, and recalculate; reset removes old recovered-fraction evidence.",
         "evidenceCase": "Require physical separation/recovery evidence, named starting/recovered masses, and component-percent/total-recovery calculations derived from those masses.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -2123,7 +2123,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Crystal Violet Kinetics: a scheduled absorbance read lacks wavelength/zero state, reaction initiation, or its paired time record, restore the instrument/reaction state and reacquire that point. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If a scheduled absorbance read lacks wavelength/zero state, reaction initiation, or its paired time record, restore the instrument/reaction state and reacquire that point; reset must clear the time-absorbance series used by later regressions.",
         "evidenceCase": "Require reaction initiation evidence plus paired recorded scheduled-time and absorbance values under valid instrument state, producing the series consumed downstream.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 2,
@@ -2196,7 +2196,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Hand-Warmer Calorimetry: the lab-scoped procedure lacks waste configuration, mass, timer, or temperature evidence, repair the exact configuration/acquisition step and repeat that branch. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If the lab-scoped procedure lacks waste configuration, mass, timer, or temperature evidence, repair the exact configuration/acquisition step and repeat that branch; reset must clear calorimetry measurements/calculations while preserving no hidden teacher result.",
         "evidenceCase": "Require lab-scoped teacher waste configuration, physical balance/timer/temperature evidence, calibration and trial calculations, and the final inquiry/design evidence outputs declared by the technique.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -2243,7 +2243,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Titration Curve Analysis: molarity calculation is attempted without recorded `curve-analyte-volume` or `equivalence-volume`, return to measurement/curve analysis to record those values and resubmit. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If molarity calculation is attempted without recorded `curve-analyte-volume` or `equivalence-volume`, return to measurement/curve analysis to record those values and resubmit; reset must clear the previous curve-molarity calculation. Omitting `analysisMode` alone is not a refusal because its approved `recorded-evidence-only` default is applied.",
         "evidenceCase": "Require recorded `curve-analyte-volume`, initial-pH/equivalence evidence, and `curve-molarity` computed from the recorded aliquot/equivalence plus model titrant/stoichiometry; the defaulted `analysisMode` is configuration, not completion evidence.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -2290,7 +2290,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Blue #1 Standard Dilutions: a standard's stock/final-volume evidence is missing or a dilution volume is invalid, correct/remake that standard and rerecord its dilution evidence. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If a standard's stock/final-volume evidence is missing or a dilution volume is invalid, correct/remake that standard and rerecord its dilution evidence; reset must clear only the old standard-preparation evidence.",
         "evidenceCase": "Require each standard's measured/configured stock/final-volume preparation evidence and its derived concentration/dilution record before that standard is available to calibration.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -2345,7 +2345,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Blue #1 Percent-Transmittance Measurement: %T is read/recorded before the photometer is configured/zeroed or the sample cuvette is properly inserted, perform those prerequisites and reacquire the instrument value. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If %T is read/recorded before the photometer is configured/zeroed or the sample cuvette is properly inserted, perform those prerequisites and reacquire the instrument value; reset clears old %T/derived photometric records.",
         "evidenceCase": "Require instrument configuration/zero/cuvette insertion, an actual %T read, a distinct recorded %T entry, and any downstream decimal-T/absorbance result consuming that record.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 21,
@@ -2439,7 +2439,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Class-Pooled Blue #1 Calibration: the class calibration lacks enough accepted standard pairs or includes an unconfirmed pair, correct the class evidence set and recompute the regression. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If the class calibration lacks enough accepted standard pairs or includes an unconfirmed pair, correct the class evidence set and recompute the regression; reset removes the prior fit without rewriting original standard evidence.",
         "evidenceCase": "Require the accepted set of class standard concentration/absorbance records and the regression derived from those accepted pairs, preserving source-pair provenance.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 1,
@@ -2496,7 +2496,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Hard-Water Practice Preparation: practice reagent/apparatus preparation is incomplete or out of order, return to the missing preparation step and complete it before the gravimetric handoff. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If practice reagent/apparatus preparation is incomplete or out of order, return to the missing preparation step and complete it before the gravimetric handoff; reset clears the practice setup evidence so the preparation can be repeated cleanly.",
         "evidenceCase": "Require completion/recording of the declared practice reagent/apparatus preparation outputs that gate the later hard-water gravimetric path.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -2547,7 +2547,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Gravimetric Vacuum Filtration: vacuum apparatus attachment, transfer, or rinse state is invalid, correct the flask/Büchner/filter/vacuum setup and repeat the affected filtration step. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If vacuum apparatus attachment, transfer, or rinse state is invalid, correct the flask/Büchner/filter/vacuum setup and repeat the affected filtration step; reset must clear collected filtrate/solid transfer evidence.",
         "evidenceCase": "Require assembled vacuum apparatus evidence, physical mixture/rinse transfers, and the filtered precipitate/receiver state needed by downstream drying.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 7,
@@ -2616,7 +2616,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Two-Stage Precipitate Drying: teacher oven/time/cooling values are absent/invalid or the second-stage mass criterion is not met, correct the setup or repeat dry-cool-weigh until valid. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If teacher oven/time/cooling values are absent/invalid or the second-stage mass criterion is not met, correct the setup or repeat dry-cool-weigh until valid; reset clears stage-specific masses/temperature evidence.",
         "evidenceCase": "Require instructor oven/time/cooling configuration plus first/second dry-cool-weigh records and the configured endpoint/mass criterion before exit.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 31,
@@ -2676,7 +2676,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Inquiry Plan Approval: the inquiry plan is incomplete or teacher approval has not been recorded, return to the design/safety fields, revise them, and resubmit for approval. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If the inquiry plan is incomplete or teacher approval has not been recorded, return to the design/safety fields, revise them, and resubmit for approval; reset clears the approval record so a changed plan cannot inherit an old approval.",
         "evidenceCase": "Require the learner's plan/safety evidence and a distinct teacher approval record bound to that plan version; approval is the completion gate.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -2732,7 +2732,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Two-Sample Hard-Water Inquiry: either sample lacks configured drying/cooling or named mass/volume evidence, repair/repeat only that sample's affected stage and recalculate it. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If either sample lacks configured drying/cooling or named mass/volume evidence, repair/repeat only that sample's affected stage and recalculate it; reset must clear both samples' derived hardness comparison while preserving sample identity separation.",
         "evidenceCase": "Require sample-specific volume/filtration/dry-mass evidence for both waters under the instructor setup and separate hardness results before comparative interpretation.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 76,
@@ -2822,7 +2822,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Beverage pH-Volume Titration: a beverage trial lacks configured preparation/aliquot, valid burette/pH evidence, or an accepted quantitative branch, repair that trial's setup/read sequence and rerun it. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If a beverage trial lacks configured preparation/aliquot, valid burette/pH evidence, or an accepted quantitative branch, repair that trial's setup/read sequence and rerun it; reset clears old curve/equivalence/calculation records for that trial.",
         "evidenceCase": "Require configured beverage trial identity, physical pH/burette row acquisition with read/record provenance, and the quantitative endpoint/equivalence/calculation evidence for the accepted trial.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 212,
@@ -2882,7 +2882,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Micromolar Crystal Violet Dilution Series: a micromolar standard has missing stock/final-volume inputs or an invalid dilution relationship, correct/remake that standard and recalculate its concentration. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If a micromolar standard has missing stock/final-volume inputs or an invalid dilution relationship, correct/remake that standard and recalculate its concentration; reset clears the old concentration-series preparation evidence.",
         "evidenceCase": "Require source/final-volume preparation records and derived micromolar concentration evidence for every standard used by calibration.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -2929,7 +2929,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Crystal Violet Spectrophotometer Calibration: calibration is attempted before the configured wavelength/blank/standard reads are complete, finish the missing zero/read step and rebuild the calibration. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If calibration is attempted before the configured wavelength/blank/standard reads are complete, finish the missing zero/read step and rebuild the calibration; reset clears the old instrument-calibration evidence before a new kinetics run.",
         "evidenceCase": "Require configured wavelength, zero/blank/standard instrument evidence and the resulting accepted calibration record before any kinetics read can count.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -2983,7 +2983,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Integrated Rate-Law Comparison: a regression/order calculation lacks the concentration-time series or one transformed fit, return to the missing upstream calculation/series, regenerate it, and rerun the comparison. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If a regression/order calculation lacks the concentration-time series or one transformed fit, return to the missing upstream calculation/series, regenerate it, and rerun the comparison; reset clears prior regressions/order/k values.",
         "evidenceCase": "Require the recorded concentration-time series, all configured transformed regressions, their R² evidence, evidence-backed order selection, and any rate-constant/extension calculation.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -3034,7 +3034,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Crystal Violet Waste Treatment: waste treatment is attempted before the kinetics material is in the declared cleanup state or the disposal sequence is out of order, restore the correct waste receiver/material state and repeat cleanup. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If waste treatment is attempted before the kinetics material is in the declared cleanup state or the disposal sequence is out of order, restore the correct waste receiver/material state and repeat cleanup; reset clears cleanup evidence without recreating analytical data.",
         "evidenceCase": "Require the physical cleanup/waste-transfer actions and destination evidence for the post-kinetics material before the treatment technique exits.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 1,
@@ -3095,7 +3095,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Quick Ache Component Property Evidence: a property test is attempted with the wrong reference portion/reagent or before the test portion is prepared, prepare the correct portion and repeat that test. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If a property test is attempted with the wrong reference portion/reagent or before the test portion is prepared, prepare the correct portion and repeat that test; reset clears the property observations while preserving no inferred recovered identity.",
         "evidenceCase": "Require the prepared reference test portions and recorded property-test results for each selected pure component; no recovered-fraction identity claim is an evidence substitute.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 6,
@@ -3155,7 +3155,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Quick Ache Separation Design and Approval: the separation flow/safety audit is incomplete or teacher approval is absent, revise the plan and obtain a new approval. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If the separation flow/safety audit is incomplete or teacher approval is absent, revise the plan and obtain a new approval; reset must revoke the old approval so a changed procedure cannot proceed under stale authorization.",
         "evidenceCase": "Require a recorded separation-flow design, safety audit, and explicit teacher approval tied to that design before extraction can proceed.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -3218,7 +3218,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Quick Ache Extraction, Recovery, and Gravimetry: extraction count/order, acidification endpoint, drying/recovery approval, or fraction state is invalid, correct the teacher configuration or repeat the affected extraction/recovery stage before weighing. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If extraction count/order, acidification endpoint, drying/recovery approval, or fraction state is invalid, correct the teacher configuration or repeat the affected extraction/recovery stage before weighing; reset clears fraction/recovered-mass evidence.",
         "evidenceCase": "Require configured recovery approval/procedure, physical extraction/fraction/recovery/drying actions, and recorded recovered masses for every required fraction.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 57,
@@ -3278,7 +3278,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Quick Ache Composition Analysis: composition/recovery calculations lack the confirmed formula convention or named starting/recovered masses, return to the confirmation/weighing producer, record the missing evidence, and recalculate. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "Retry/recalculation: if the composition convention or a named starting/recovered mass is missing or a calculation is rejected, return to the relevant confirmation/measurement producer, preserve still-valid recorded measurements, correct or acquire the missing evidence, and resubmit the calculation without using Reset. Physical recovery/reset: if an upstream extraction, drying, recovery, or weighing state is physically invalid, repeat the affected physical branch and reacquire any measurements invalidated by that physical recovery. Full activity Reset: the player calls `usePlayerRuntime.reset()`, which creates fresh runtime state; measurements and calculations are both empty afterward and must be reacquired/recomputed.",
         "evidenceCase": "Require confirmed calculation convention plus named starting/recovered-mass evidence and the component-percent/total-recovery calculations/report derived from those values.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -3375,7 +3375,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Gas-Syringe Kinetics with Marble Chips: marble mass, acid volume/concentration, gas-syringe connection, or 0/15-s gas readings are missing, repair/repeat that trial setup and reacquire the timed series. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If marble mass, acid volume/concentration, gas-syringe connection, or 0/15-s gas readings are missing, repair/repeat that trial setup and reacquire the timed series; reset clears the old series and initial-rate result.",
         "evidenceCase": "Require measured marble mass, prepared acid/trial identity, recorded gas-volume time series including required early points, and the initial-rate calculation from that series.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 1,
@@ -3432,7 +3432,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Equilibrium Rainbow Inquiry: an unsupported stress or unprepared equilibrium state is used, restore the declared baseline/sample condition and reapply one supported stress before rerecording. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If an unsupported stress or unprepared equilibrium state is used, restore the declared baseline/sample condition and reapply one supported stress before rerecording; reset clears the prior stressed observation/explanation.",
         "evidenceCase": "Require baseline identity, approved stress application, qualitative observation record, and the learner's interpretation/reflection for the selected inquiry path.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 0,
@@ -3513,7 +3513,7 @@
         "configurationOrRefusalCase": "Refusal case for technique Indicator-free formal pH-volume titration trial: an increment violates configured bounds, a pH/burette read is missing, or the retry branch is selected, follow the authored dispose-rinse-reset chain and restart that formal context from its valid trial state. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
         "recoveryOrResetCase": "If an increment violates configured bounds, a pH/burette read is missing, or the retry branch is selected, follow the authored dispose-rinse-reset chain and restart that formal context from its valid trial state; reset clears old row/reading evidence.",
         "evidenceCase": "Require apparatus/setup state, initial burette/pH row, every accepted delivery-mix-read-record decision row, final burette record, and required disposal/cleanup evidence for the selected context.",
-        "currentExecutionStatus": "Run B static evidence current; runtime/scientific/browser/release execution not performed"
+        "currentExecutionStatus": "final current static evidence recorded; runtime/scientific/browser/release execution not performed"
       },
       "historicalFindingDisposition": {
         "directHistoricalFindingCount": 35,
@@ -3539,9 +3539,9 @@
   ],
   "status": {
     "sourceInventoryAndStaticRationale": "complete",
-    "sourceLevelReconciliationClosure": "not-claimed",
-    "currentEvidenceStatus": "pending-separate-authorization-and-repository-restoration",
-    "fullItem2Status": "incomplete"
+    "sourceLevelReconciliationClosure": "current-static-with-21-explicit-source-trace-residuals",
+    "currentEvidenceStatus": "current final static evidence recorded; runtime/scientific/browser/release acceptance not claimed",
+    "fullItem2Status": "complete-for-authorized-source-current-evidence-scope"
   },
   "nonCatalogHistoricalScopes": {
     "unindexedGeneratedCarrier": {
@@ -3558,7 +3558,7 @@
             "technique:ph-volume-titration-trial/beverage-a-sample-trial-1-concentration-approve-equivalence",
             "technique:ph-volume-titration-trial/beverage-a-sample-trial-1-concentration-select-equivalence"
           ],
-          "presentDisposition": "Run B overlay current; retained source-trace debt is explicitly triaged"
+          "presentDisposition": "final current static overlay recorded; retained source-trace debt is explicitly triaged"
         }
       ],
       "boundary": "This generated carrier is not one of the 42 indexed techniques, but its historical findings remain relevant evidence and are not dropped from reconciliation."
@@ -3573,7 +3573,7 @@
         "source-citation/basis-disagreement": 4,
         "source-citation/sourceTable-disagreement": 1
       },
-      "presentDisposition": "Run B content check current; retained findings explicitly triaged",
+      "presentDisposition": "final current static content check recorded; retained findings explicitly triaged",
       "boundary": "These historical scopes are not attributable one-for-one to a single indexed activity and therefore are not silently assigned to one."
     }
   },
@@ -3592,21 +3592,26 @@
     "quickAcheResetSemantics": "retry/recalculation may reuse still-valid measurements; upstream physical recovery reacquires invalidated measurements; full activity Reset clears measurements and calculations"
   },
   "currentEvidence": {
-    "runId": "item2-f9c9229-run-b",
-    "sourceCommit": "f9c9229",
-    "corePhases": "6/6 passed",
-    "recorderCheck": "complete-current-run-with-supplemental-failures",
+    "runId": "item2-luna-final-20260918",
+    "sourceCommit": "recorded in final CURRENT_VERIFICATION_RUN.json",
+    "corePhases": "5/5 passed",
+    "supplementalPhases": {
+      "cycle12StaticVerifier": "passed",
+      "repositoryContentCheck": "exit 1; 21 explicit source-trace residuals"
+    },
+    "recorderCheck": "source current; integrity passed; complete-current-run-with-supplemental-failures",
     "contentCheck": {
-      "exitCode": 1,
-      "retainedFindings": 906,
-      "routedRawFindings": 1,
+      "retainedFindings": 21,
+      "evaluatedSourceTraceFindings": 903,
+      "groupedSourceTraceMembers": 882,
+      "unresolvedSourceTraceResiduals": 21,
+      "resolvedPriorCrystalVioletRows": 3,
       "compiledContextFindings": 0,
-      "unrepresentedConfigurations": 38
+      "formerConfigurationGapsResolved": 38,
+      "fixedRoleConfigurations": 37,
+      "notApplicableConfigurationRows": 1
     },
     "dispositionRecord": "docs/item2/FINDING_TRIAGE.json",
-    "finalFreshnessRun": {
-      "runId": "item2-646169f-run-c",
-      "purpose": "final source snapshot and recorder integrity after tracked report/triage updates"
-    }
+    "finalEvidenceBoundary": "Source/static evidence only; runtime, scientific, browser, classroom, safety and release acceptance remain unclaimed."
   }
 }
