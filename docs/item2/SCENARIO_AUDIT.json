@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "branch": "codex/item2-catalog-reconciliation",
   "catalogActivities": 59,
   "checks": {
@@ -16,12 +16,28 @@
     "uniqueOrdinaryScenarios": 59,
     "uniqueConfigurationOrRefusalScenarios": 59,
     "genericRefusalTemplateRemaining": 0,
-    "generatedOrdinaryGrammarDefectsRemaining": 0
+    "generatedOrdinaryGrammarDefectsRemaining": 0,
+    "greenChemistryNoHeatedRecoveredMassRequirement": true,
+    "greenChemistryThermalMassCompositionEvidence": true,
+    "greenChemistryReportBasedAtomEconomy": true,
+    "greenChemistryBothTareConventionsPreserved": true,
+    "quickAcheRetryVsPhysicalVsFullResetDistinguished": true,
+    "quickAcheFullResetClearsMeasurementsAndCalculations": true
   },
   "titrationCurveAnalysis": {
     "configurationOrRefusalCase": "Do not expect refusal when `analysisMode` is omitted: its approved `recorded-evidence-only` default is applied. Instead attempt `calculate-curve-molarity` without recorded `curve-analyte-volume` or `equivalence-volume` and verify the reducer refuses; after both measurements are recorded, the calculation may proceed.",
     "recoveryOrResetCase": "If molarity calculation is attempted without recorded `curve-analyte-volume` or `equivalence-volume`, return to measurement/curve analysis to record those values and resubmit; reset must clear the previous curve-molarity calculation. Omitting `analysisMode` alone is not a refusal because its approved `recorded-evidence-only` default is applied.",
     "evidenceCase": "Require recorded `curve-analyte-volume`, initial-pH/equivalence evidence, and `curve-molarity` computed from the recorded aliquot/equivalence plus model titrant/stoichiometry; the defaulted `analysisMode` is configuration, not completion evidence."
   },
-  "conclusion": "All 59 indexed activities have distinct ordinary, configuration/refusal, recovery/reset, and evidence scenarios; legacy generic fields/templates are absent. This is source-review scenario specification, not executed evidence."
+  "conclusion": "All 59 indexed activities have distinct ordinary, configuration/refusal, recovery/reset, and evidence scenarios; legacy generic fields/templates are absent. This is source-review scenario specification, not executed evidence.",
+  "targetedCorrections": {
+    "greenChemistry": {
+      "sourceContract": "Heated-product receiver carries qualitative provenance because the recovered product is not weighed; composition consumes thermal balance evidence; atom economy consumes teacher-provided report stoichiometric contributions.",
+      "status": "corrected"
+    },
+    "quickAcheAnalysis": {
+      "sourceContract": "Calculation retry is not full Reset; upstream physical recovery may require reacquisition; usePlayerRuntime.reset creates fresh runtime state with no prior measurements or calculations.",
+      "status": "corrected"
+    }
+  }
 }

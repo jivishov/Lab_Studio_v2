@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 5,
+  "schemaVersion": 6,
   "scope": "item-2 complete indexed Lab Studio catalog",
   "branch": "codex/item2-catalog-reconciliation",
   "mainBaseline": "f7c2b863f641090d9abc5c08ee22da72702fdfd6",
@@ -607,11 +607,11 @@
       "sourceReviewDisposition": "activity-specific-source-review-recorded; no direct historical row",
       "sourceScenarioStatus": "planned-not-executed",
       "activitySpecificReview": {
-        "scientificFocus": "run the custom separation/thermal workflow with the approved setup, preserve both supported tare conventions as separate cases, recover/weigh products, and calculate green-chemistry metrics from evidence",
-        "ordinarySupportedCase": "Supported lab case for Purifying a Mixture with Green Chemistry: Run the custom separation/thermal workflow with the approved setup, preserve both supported tare conventions as separate cases, recover/weigh products, and calculate green-chemistry metrics from evidence.",
-        "configurationOrRefusalCase": "Refusal case for lab Purifying a Mixture with Green Chemistry: the selected tare convention/setup is inconsistent or constant-mass/recovery evidence is incomplete, return to the appropriate tare/heating/cooling/recovery step under the same approved convention, reacquire masses, and restart without cross-contaminating the alternate tare witness. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
-        "recoveryOrResetCase": "If the selected tare convention/setup is inconsistent or constant-mass/recovery evidence is incomplete, return to the appropriate tare/heating/cooling/recovery step under the same approved convention, reacquire masses, and restart without cross-contaminating the alternate tare witness.",
-        "evidenceCase": "Require approved setup/tare-convention identity, starting/tare/heating-cooling mass evidence, recovered-fraction masses, and atom-economy/recovery/green-chemistry calculations tied to those records.",
+        "scientificFocus": "run the approved thermal-separation workflow under either supported tare convention, use balance evidence to determine thermal mass change and composition, preserve heated-product recovery as qualitative provenance rather than a measured recovered mass, and calculate atom economy from the teacher-assigned report convention",
+        "ordinarySupportedCase": "Supported lab case for Purifying a Mixture with Green Chemistry: Complete the approved thermal workflow under one supported tare convention, reach constant mass from recorded balance readings, validate the composition from those thermal measurements, record qualitative provenance that the heated product was recovered without assigning it a measured recovered-product mass, then review the assigned report and calculate atom economy from the teacher-provided stoichiometric convention. Repeat the scenario separately for the other supported tare convention.",
+        "configurationOrRefusalCase": "Refusal case for lab Purifying a Mixture with Green Chemistry: Use an unsupported tare convention, attempt composition before the recorded empty/loaded/constant-final thermal mass evidence is complete, attempt to enter a numerical mass for the heated-product recovery receiver, or attempt atom economy before the assigned report/convention is supplied. The invalid step should refuse and commit no completion evidence.",
+        "recoveryOrResetCase": "If thermal mass or constant-mass evidence is incomplete, return to the required heat-cool-weigh step and continue under the same approved tare convention; if heated-product recovery provenance is missing, repeat the qualitative recovery record without inventing a product mass; if assigned-report atom economy is incomplete, return to the report review/calculation nodes. A full investigation reset starts a fresh run and must not mix measurements, recovery provenance, or tare-convention evidence from the prior run.",
+        "evidenceCase": "Require approved setup and explicit tare-convention identity; recorded empty, loaded, cycle, and constant-final balance evidence supporting the composition calculation; quantitative accounting for unheated stock where the route records it; qualitative provenance for each heated-product recovery with no recovered-product mass assertion; assigned-report review; atom economy validated from the teacher-provided stoichiometric convention; and peer-review evidence. Exercise the two supported tare conventions as separate witnesses.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
       },
       "historicalFindingDisposition": {
@@ -3276,7 +3276,7 @@
         "scientificFocus": "confirm the composition formula convention, calculate each recovered component percentage/total recovery from recorded masses, and produce the evidence-backed report",
         "ordinarySupportedCase": "Supported technique case for Quick Ache Composition Analysis: Confirm the composition formula convention, calculate each recovered component percentage/total recovery from recorded masses, and produce the evidence-backed report.",
         "configurationOrRefusalCase": "Refusal case for technique Quick Ache Composition Analysis: composition/recovery calculations lack the confirmed formula convention or named starting/recovered masses, return to the confirmation/weighing producer, record the missing evidence, and recalculate. Before applying the documented recovery, verify that the invalid/incomplete step commits no new completion evidence.",
-        "recoveryOrResetCase": "If composition/recovery calculations lack the confirmed formula convention or named starting/recovered masses, return to the confirmation/weighing producer, record the missing evidence, and recalculate; reset removes old report calculations but not source measurements.",
+        "recoveryOrResetCase": "Retry/recalculation: if the composition convention or a named starting/recovered mass is missing or a calculation is rejected, return to the relevant confirmation/measurement producer, preserve still-valid recorded measurements, correct or acquire the missing evidence, and resubmit the calculation without using Reset. Physical recovery/reset: if an upstream extraction, drying, recovery, or weighing state is physically invalid, repeat the affected physical branch and reacquire any measurements invalidated by that physical recovery. Full activity Reset: the player calls `usePlayerRuntime.reset()`, which creates fresh runtime state; measurements and calculations are both empty afterward and must be reacquired/recomputed.",
         "evidenceCase": "Require confirmed calculation convention plus named starting/recovered-mass evidence and the component-percent/total-recovery calculations/report derived from those values.",
         "currentExecutionStatus": "not executed in item-2 source-review phase"
       },
@@ -3578,7 +3578,7 @@
     }
   },
   "scenarioReview": {
-    "status": "self-reviewed-and-refined",
+    "status": "externally-reviewed-and-corrected",
     "indexedActivities": 59,
     "legacyScenarioAssignmentsRemaining": 0,
     "uniqueOrdinaryScenarios": 59,
@@ -3587,6 +3587,8 @@
     "uniqueEvidenceScenarios": 59,
     "genericRefusalTemplateRemaining": 0,
     "generatedOrdinaryGrammarDefectsRemaining": 0,
-    "titrationCurveAnalysisRefusal": "missing curve-analyte-volume/equivalence-volume; analysisMode omission uses approved default"
+    "titrationCurveAnalysisRefusal": "missing curve-analyte-volume/equivalence-volume; analysisMode omission uses approved default",
+    "greenChemistryRecoveryMassSemantics": "heated-product recovery is qualitative provenance; no recovered-product mass; composition uses thermal balance evidence; atom economy uses teacher-assigned report convention; both tare conventions remain separate",
+    "quickAcheResetSemantics": "retry/recalculation may reuse still-valid measurements; upstream physical recovery reacquires invalidated measurements; full activity Reset clears measurements and calculations"
   }
 }

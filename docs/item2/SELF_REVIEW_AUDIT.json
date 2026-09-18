@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "branch": "codex/item2-catalog-reconciliation",
   "reviewedHead": "0f224c4f63614cb5316f17b83b266a342773f320",
   "findings": [
@@ -27,6 +27,16 @@
       "id": "SELF-005",
       "finding": "RUN_LEDGER did not distinguish verified local dependency restoration from repository-workspace restoration.",
       "disposition": "corrected"
+    },
+    {
+      "id": "SELF-006",
+      "finding": "Green Chemistry scenario incorrectly required heated recovered-product masses/recovery calculations despite qualitative heated-product recovery provenance.",
+      "disposition": "corrected"
+    },
+    {
+      "id": "SELF-007",
+      "finding": "Quick Ache analysis scenario incorrectly implied full Reset preserves source measurements.",
+      "disposition": "corrected"
     }
   ],
   "postCorrectionInvariants": {
@@ -38,6 +48,10 @@
     "legacyScenarioAssignmentsRemaining": 0,
     "historicalAccounting": "894 indexed + 45 generated carrier + 34 cross-catalog = 973",
     "sourceLevelReconciliationClosure": "not claimed",
-    "evidencePipeline": "not run"
+    "evidencePipeline": "not run",
+    "greenChemistryHeatedProductMassRequirement": "none",
+    "greenChemistryAtomEconomyBasis": "teacher-assigned report convention",
+    "greenChemistryTareWitnesses": "two supported conventions remain separate",
+    "quickAcheFullReset": "fresh runtime state; measurements and calculations cleared"
   }
 }

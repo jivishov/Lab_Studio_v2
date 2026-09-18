@@ -108,3 +108,14 @@ A stricter consistency review found four remaining static-artifact defects and c
 Catalog schema version 5 now has 59/59 distinct ordinary, configuration/refusal, recovery/reset, and evidence cases. Lab and technique namespaces are explicitly included in scenario wording so the two duplicated ids remain distinct. `SCENARIO_AUDIT.json` schema version 2 records zero legacy scenario assignments, zero old generic refusal templates, and zero old generated ordinary-case grammar defects.
 
 These changes improve static specification fidelity only. Item 2 remains incomplete pending repository-workspace restoration and separately authorized fresh evidence.
+
+
+## Final targeted scenario corrections
+
+A subsequent source review corrected two remaining scenario-contract errors.
+
+**Green Chemistry:** the scenario no longer requires a numerical recovered-product mass. Heated-product recovery is qualitative provenance; composition is supported by empty/loaded/thermal-cycle/constant-final balance evidence; atom economy is calculated from the teacher-assigned report convention. Both supported tare conventions remain separate cases.
+
+**Quick Ache analysis:** retry/recalculation may reuse still-valid source measurements; an upstream physical recovery requires reacquiring measurements invalidated by that physical branch; full player Reset creates fresh state and clears both measurements and calculations.
+
+No runtime/evidence pipeline was executed for these documentation corrections.

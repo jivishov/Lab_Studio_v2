@@ -69,3 +69,21 @@ The catalog now has:
 After the external-review fixes, an additional audit found contradictory top-level evidence wording, 20 residual generic refusal cases, 51 generated ordinary-case grammar defects, and ambiguous local-vs-repository dependency-restoration wording. It also confirmed that scenario identity must use kind + id because lab and technique namespaces share some ids.
 
 All are corrected in catalog schema version 5 / scenario-audit schema version 2. All four scenario dimensions are now 59/59 distinct and kind-scoped. This remains non-executed source review; it does not add a current-evidence acceptance claim.
+
+
+## External-review corrections: Green Chemistry and Quick Ache reset semantics
+
+Two remaining scenario defects were confirmed and corrected.
+
+### Green Chemistry
+
+The previous scenario incorrectly required recovered-product masses/recovery calculations. The route contract deliberately does **not** weigh the heated recovered product: heated-product recovery is provenance evidence, while composition is derived from recorded thermal balance evidence. Atom economy is validated from the teacher-assigned report's stoichiometric convention. Catalog schema version 6 now reflects those distinctions and preserves the two tare conventions as separate witnesses.
+
+### Quick Ache analysis reset
+
+The previous scenario incorrectly described Reset as clearing report calculations while preserving measurements. The corrected scenario distinguishes:
+- calculation retry/recalculation, which may reuse still-valid recorded measurements;
+- upstream physical recovery/reset, which requires reacquisition of any measurements invalidated by that physical recovery; and
+- full activity Reset through `usePlayerRuntime.reset()`, which creates fresh runtime state and therefore clears both measurements and calculations.
+
+These are documentation/source-contract corrections only; the evidence pipeline remains unrun.
