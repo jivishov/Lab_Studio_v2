@@ -353,5 +353,384 @@
       "currentEvidence": "pending-authorized-pipeline"
     }
   ],
-  "techniques": []
+  "techniques": [
+    {
+      "kind": "technique",
+      "id": "weighing",
+      "title": "Weigh a Solid",
+      "file": "public/techniques/weighing.json",
+      "version": "1.2.0",
+      "blob": "dbba072ef69a4f486e42b606aa6036291a9b2299",
+      "route": "#/technique/weighing",
+      "catalogDisposition": "composable",
+      "requiredConfigurationSlots": [
+        "massMeasurementId"
+      ],
+      "defaultedConfigurationSlots": [],
+      "configurationInspection": "full-source",
+      "hosts": [],
+      "specialRole": "indexed-technique",
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "technique",
+      "id": "measuring-volume",
+      "title": "Measure Liquid Volume",
+      "file": "public/techniques/measuring-volume.json",
+      "version": "1.2.0",
+      "blob": "2fd0c75bed68baed08a350af73291674b5b29734",
+      "route": "#/technique/measuring-volume",
+      "catalogDisposition": "composable",
+      "requiredConfigurationSlots": [
+        "targetVolumeMl",
+        "volumeToleranceMl",
+        "volumeMeasurementId"
+      ],
+      "defaultedConfigurationSlots": [],
+      "configurationInspection": "full-source",
+      "hosts": [
+        {
+          "labId": "intro-filtration-demo",
+          "instanceId": "measuring-volume",
+          "version": "1.2.0"
+        },
+        {
+          "labId": "hard-water-demo",
+          "instanceId": "measuring-volume",
+          "version": "1.2.0"
+        }
+      ],
+      "specialRole": "indexed-technique",
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "technique",
+      "id": "making-solution",
+      "title": "Make a Solution",
+      "file": "public/techniques/making-solution.json",
+      "version": "1.2.0",
+      "blob": "e15cf28d3a4204258f02b77bc6b9bf0a268c4d0b",
+      "route": "#/technique/making-solution",
+      "catalogDisposition": "composable",
+      "requiredConfigurationSlots": [
+        "initialSolventVolumeMl",
+        "soluteMassG",
+        "finalVolumeMl",
+        "solutionObservation"
+      ],
+      "defaultedConfigurationSlots": [],
+      "configurationInspection": "full-source",
+      "hosts": [],
+      "specialRole": "indexed-technique",
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "technique",
+      "id": "dilution",
+      "title": "Dilute a Stock Solution",
+      "file": "public/techniques/dilution.json",
+      "version": "1.2.0",
+      "blob": "933032629497dff015885b6679392f3c9cfd9295",
+      "route": "#/technique/dilution",
+      "catalogDisposition": "composable",
+      "requiredConfigurationSlots": [
+        "aliquotVolumeMl",
+        "finalVolumeMl",
+        "dilutionFactor",
+        "dilutionEvidenceId"
+      ],
+      "defaultedConfigurationSlots": [],
+      "configurationInspection": "full-source",
+      "hosts": [],
+      "specialRole": "indexed-technique",
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "technique",
+      "id": "transmittance-dilution",
+      "title": "Analyze Transmittance of a Dilution",
+      "file": "public/techniques/transmittance-dilution.json",
+      "version": "1.3.0",
+      "blob": "c624879a5cf675f5d7e941ba806d2d448e6c140a",
+      "route": "#/technique/transmittance-dilution",
+      "catalogDisposition": "composable",
+      "requiredConfigurationSlots": [
+        "stockConcentrationM",
+        "stockConcentrationMeasurementId",
+        "stockVolumeMeasurementId",
+        "waterVolumeMeasurementId",
+        "finalVolumeMeasurementId",
+        "wavelengthMeasurementId",
+        "wavelengthNm",
+        "blankRuleNotebookTag"
+      ],
+      "defaultedConfigurationSlots": [],
+      "configurationInspection": "full-source",
+      "hosts": [],
+      "specialRole": "indexed-technique",
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "technique",
+      "id": "transfer",
+      "title": "Transfer Liquid",
+      "file": "public/techniques/transfer.json",
+      "version": "1.2.0",
+      "blob": "f8906263d18678ddc677510ae5365348287792b4",
+      "route": "#/technique/transfer",
+      "catalogDisposition": "composable",
+      "requiredConfigurationSlots": [
+        "transferVolumeMl",
+        "transferObservation"
+      ],
+      "defaultedConfigurationSlots": [],
+      "configurationInspection": "full-source",
+      "hosts": [
+        {
+          "labId": "intro-filtration-demo",
+          "instanceId": "transfer",
+          "version": "1.2.0"
+        },
+        {
+          "labId": "hard-water-demo",
+          "instanceId": "transfer",
+          "version": "1.2.0"
+        }
+      ],
+      "specialRole": "indexed-technique",
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "technique",
+      "id": "hard-water-precipitation",
+      "title": "Hard-Water Calcium Carbonate Precipitation",
+      "file": "public/techniques/hard-water-precipitation.json",
+      "version": "1.2.0",
+      "blob": "dbd7705f7eb4977b838acf10373852622746548b",
+      "route": "#/technique/hard-water-precipitation",
+      "catalogDisposition": "lab-scoped",
+      "requiredConfigurationSlots": [
+        "precipitateMassG",
+        "finalVolumeMl"
+      ],
+      "defaultedConfigurationSlots": [],
+      "configurationInspection": "full-source",
+      "hosts": [
+        {
+          "labId": "intro-filtration-demo",
+          "instanceId": "hard-water-precipitation",
+          "version": "1.2.0"
+        },
+        {
+          "labId": "hard-water-demo",
+          "instanceId": "hard-water-precipitation",
+          "version": "1.2.0"
+        }
+      ],
+      "specialRole": "indexed-technique",
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "technique",
+      "id": "filtration",
+      "title": "Filter a Precipitate",
+      "file": "public/techniques/filtration.json",
+      "version": "1.2.0",
+      "blob": "0888b30d33b2db60bde6df1649448861bbab6ec4",
+      "route": "#/technique/filtration",
+      "catalogDisposition": "composable",
+      "requiredConfigurationSlots": [
+        "filtrationMode",
+        "rinseVolumeMl"
+      ],
+      "defaultedConfigurationSlots": [],
+      "configurationInspection": "full-source",
+      "hosts": [
+        {
+          "labId": "intro-filtration-demo",
+          "instanceId": "filtration",
+          "version": "1.2.0"
+        },
+        {
+          "labId": "hard-water-demo",
+          "instanceId": "filtration",
+          "version": "1.2.0"
+        }
+      ],
+      "specialRole": "indexed-technique",
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "technique",
+      "id": "drying",
+      "title": "Dry and Weigh a Precipitate",
+      "file": "public/techniques/drying.json",
+      "version": "1.2.0",
+      "blob": "fd20d8f9e456317df107286464c152376a77c96f",
+      "route": "#/technique/drying",
+      "catalogDisposition": "composable",
+      "requiredConfigurationSlots": [
+        "firstDryingMinutes",
+        "secondDryingMinutes",
+        "ovenTemperatureC",
+        "dryMassG",
+        "massToleranceG",
+        "dryMassMeasurementId"
+      ],
+      "defaultedConfigurationSlots": [],
+      "configurationInspection": "full-source",
+      "hosts": [
+        {
+          "labId": "hard-water-demo",
+          "instanceId": "drying",
+          "version": "1.2.0"
+        }
+      ],
+      "specialRole": "indexed-technique",
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "technique",
+      "id": "thermal-decomposition-mass-loss",
+      "title": "Heat and Reweigh a Carbonate Mixture",
+      "file": "public/techniques/thermal-decomposition-mass-loss.json",
+      "version": "2.0.1",
+      "blob": "8da6b9102ab453acc92b2e630f8efc977e873fcf",
+      "route": "#/technique/thermal-decomposition-mass-loss",
+      "catalogDisposition": "lab-scoped",
+      "requiredConfigurationSlots": [
+        "sampleMassG",
+        "warmDurationMin",
+        "heatingDurationMin",
+        "heatingIntensity",
+        "constantMassToleranceG",
+        "maximumHeatCycles",
+        "coolingEndpointC",
+        "coolingSurface",
+        "tareConvention",
+        "minimumReplicates"
+      ],
+      "defaultedConfigurationSlots": [],
+      "configurationInspection": "full-source",
+      "hosts": [
+        {
+          "labId": "green-chemistry-mixture-purification",
+          "instanceId": "thermal-decomposition",
+          "version": "2.0.1"
+        }
+      ],
+      "specialRole": "indexed-technique",
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "technique",
+      "id": "paper-chromatography",
+      "title": "Paper Chromatography",
+      "file": "public/techniques/paper-chromatography.json",
+      "version": "1.2.1",
+      "blob": "f6397bc466bebd4e5d4373b26d46dd1c66654d77",
+      "route": "#/technique/paper-chromatography",
+      "catalogDisposition": "source-not-fully-materialized",
+      "requiredConfigurationSlots": [],
+      "defaultedConfigurationSlots": [],
+      "configurationInspection": "large-source metadata/host fallback; detailed current execution coverage pending pipeline",
+      "hosts": [
+        {
+          "labId": "paper-chromatography",
+          "instanceId": "chromatography-trials",
+          "version": "1.2.1"
+        }
+      ],
+      "specialRole": "indexed-technique",
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "technique",
+      "id": "hard-water-calculation",
+      "title": "Calculate Hardness",
+      "file": "public/techniques/hard-water-calculation.json",
+      "version": "1.2.0",
+      "blob": "d4daf5be01788a2b7d482d6af555ce490050452f",
+      "route": "#/technique/hard-water-calculation",
+      "catalogDisposition": "composable",
+      "requiredConfigurationSlots": [
+        "sampleVolumeMeasurementId",
+        "precipitateMassMeasurementId",
+        "calculationId",
+        "calculationTolerance"
+      ],
+      "defaultedConfigurationSlots": [],
+      "configurationInspection": "full-source",
+      "hosts": [
+        {
+          "labId": "hard-water-demo",
+          "instanceId": "hard-water-calculation",
+          "version": "1.2.0"
+        }
+      ],
+      "specialRole": "indexed-technique",
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "technique",
+      "id": "beers-law-calibration",
+      "title": "Beer's Law Calibration",
+      "file": "public/techniques/beers-law-calibration.json",
+      "version": "1.3.0",
+      "blob": "75807148977f53a637b1695a9655b65f8570cb01",
+      "route": "#/technique/beers-law-calibration",
+      "catalogDisposition": "composable",
+      "requiredConfigurationSlots": [
+        "stockVolumeMeasurementId",
+        "finalVolumeMeasurementId",
+        "wavelengthMeasurementId",
+        "wavelengthNm",
+        "blankRuleNotebookTag"
+      ],
+      "defaultedConfigurationSlots": [],
+      "configurationInspection": "full-source",
+      "hosts": [],
+      "specialRole": "indexed-technique",
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    },
+    {
+      "kind": "technique",
+      "id": "brass-spectrophotometry",
+      "title": "Brass Spectrophotometry",
+      "file": "public/techniques/brass-spectrophotometry.json",
+      "version": "2.0.0",
+      "blob": "c212939281e0e7cba3dc216967adde8cd1ddf954",
+      "route": "#/technique/brass-spectrophotometry",
+      "catalogDisposition": "composable",
+      "requiredConfigurationSlots": [
+        "wavelengthMeasurementId",
+        "measurementCuvetteInstanceId"
+      ],
+      "defaultedConfigurationSlots": [],
+      "configurationInspection": "full-source",
+      "hosts": [
+        {
+          "labId": "brass-colorimetry",
+          "instanceId": "brass-spectrophotometry",
+          "version": "2.0.0"
+        }
+      ],
+      "specialRole": "indexed-technique",
+      "disposition": "accounted-source",
+      "currentEvidence": "pending-authorized-pipeline"
+    }
+  ]
 }
