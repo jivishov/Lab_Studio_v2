@@ -1,10 +1,7 @@
 import { randomBytes } from "node:crypto";
 import { appendFile, mkdir, readFile, stat, unlink, writeFile } from "node:fs/promises";
 import { createServer, request as httpRequest } from "node:http";
-import { fileURLToPath } from "node:url";
 import { dirname, extname, join, relative, resolve } from "node:path";
-
-const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 
 const parseArgs = (argv) => {
   const values = {};
@@ -27,7 +24,10 @@ const numberArgument = (value, fallback) => {
   return Number.isInteger(parsed) && parsed > 0 ? parsed : fallback;
 };
 
-const defaultRoot = resolve(scriptDirectory, "..");
+// The packaged launcher sets the working directory to the package root. Keeping
+// the default rooted in cwd avoids passing a space-containing package path
+// through another native command-line quoting layer.
+const defaultRoot = resolve(process.cwd());
 
 const pathsFor = (args) => {
   const root = resolve(typeof args.root === "string" ? args.root : defaultRoot);

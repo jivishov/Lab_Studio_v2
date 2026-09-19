@@ -5,10 +5,7 @@ set "PACKAGE_DIR=%~dp0"
 if "%PACKAGE_DIR:~-1%"=="\" set "PACKAGE_DIR=%PACKAGE_DIR:~0,-1%"
 set "BUILD_RECORD=%PACKAGE_DIR%\_lab-studio-build.json"
 set "SERVER_SCRIPT=%PACKAGE_DIR%\_lab-studio-preview-server.mjs"
-set "STATE_FILE=%PACKAGE_DIR%\logs\preview-state.json"
-set "LOG_FILE=%PACKAGE_DIR%\logs\preview.log"
-set "PROCESS_STDOUT_LOG=%PACKAGE_DIR%\logs\preview-process.stdout.log"
-set "PROCESS_STDERR_LOG=%PACKAGE_DIR%\logs\preview-process.stderr.log"
+set "LAUNCH_HELPER=%PACKAGE_DIR%\_lab-studio-preview-launcher.ps1"
 set "LAB_STUDIO_URL=http://127.0.0.1:4180/"
 
 if not exist "%BUILD_RECORD%" (
@@ -19,6 +16,10 @@ if not exist "%SERVER_SCRIPT%" (
   call :fail "The packaged preview server is missing. Rebuild the Item 3 package."
   exit /b 1
 )
+if not exist "%LAUNCH_HELPER%" (
+  call :fail "The packaged preview launcher is missing. Rebuild the Item 3 package."
+  exit /b 1
+)
 
 set "NODE_EXE="
 for /f "usebackq delims=" %%N in (`where node 2^>nul`) do if not defined NODE_EXE set "NODE_EXE=%%N"
@@ -27,16 +28,9 @@ if not defined NODE_EXE (
   exit /b 1
 )
 
-set "LAB_STUDIO_PACKAGE_DIR=%PACKAGE_DIR%"
 set "LAB_STUDIO_BUILD_RECORD=%BUILD_RECORD%"
-set "LAB_STUDIO_NODE=%NODE_EXE%"
-set "LAB_STUDIO_SERVER=%SERVER_SCRIPT%"
-set "LAB_STUDIO_STATE=%STATE_FILE%"
-set "LAB_STUDIO_LOG=%LOG_FILE%"
-set "LAB_STUDIO_PROCESS_STDOUT=%PROCESS_STDOUT_LOG%"
-set "LAB_STUDIO_PROCESS_STDERR=%PROCESS_STDERR_LOG%"
 
-powershell -NoProfile -ExecutionPolicy Bypass -Command "$ErrorActionPreference='Stop'; $record=Get-Content -Raw -LiteralPath $env:LAB_STUDIO_BUILD_RECORD | ConvertFrom-Json; if ($record.launch.url -ne 'http://127.0.0.1:4180/') { throw 'The build record does not target the required loopback URL.' }; New-Item -ItemType Directory -Force -Path (Split-Path -Parent $env:LAB_STUDIO_LOG) | Out-Null; $arguments='"' + $env:LAB_STUDIO_SERVER + '" --root "' + $env:LAB_STUDIO_PACKAGE_DIR + '" --port 4180 --expected-build-id "' + $record.buildId + '" --state-file "' + $env:LAB_STUDIO_STATE + '" --log-file "' + $env:LAB_STUDIO_LOG + '"'; Start-Process -FilePath $env:LAB_STUDIO_NODE -ArgumentList $arguments -WorkingDirectory $env:LAB_STUDIO_PACKAGE_DIR -WindowStyle Hidden -RedirectStandardOutput $env:LAB_STUDIO_PROCESS_STDOUT -RedirectStandardError $env:LAB_STUDIO_PROCESS_STDERR | Out-Null"
+powershell -NoProfile -ExecutionPolicy Bypass -File "%LAUNCH_HELPER%" -PackageDirectory "%PACKAGE_DIR%"
 if errorlevel 1 (
   call :fail "The preview process could not be started. Check logs\preview-process.stderr.log."
   exit /b 1

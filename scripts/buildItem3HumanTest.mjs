@@ -194,6 +194,7 @@ const main = async () => {
   const packageDirectory = await chooseOutputDirectory(outputRoot, buildId);
   await cp(join(repoRoot, "dist"), packageDirectory, { recursive: true });
   await copyFile(join(repoRoot, "scripts", "item3LocalPreviewServer.mjs"), join(packageDirectory, "_lab-studio-preview-server.mjs"));
+  await copyFile(join(repoRoot, "scripts", "item3LocalPreviewLauncher.ps1"), join(packageDirectory, "_lab-studio-preview-launcher.ps1"));
   await copyFile(join(repoRoot, "launch-lab-studio.bat"), join(packageDirectory, "launch-lab-studio.bat"));
   await copyFile(join(repoRoot, "stop-lab-studio.bat"), join(packageDirectory, "stop-lab-studio.bat"));
 

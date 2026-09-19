@@ -18,5 +18,8 @@ if not defined NODE_EXE (
   exit /b 1
 )
 
-"%NODE_EXE%" "%SERVER_SCRIPT%" --stop --root "%PACKAGE_DIR%" --state-file "%STATE_FILE%"
-exit /b %ERRORLEVEL%
+pushd "%PACKAGE_DIR%"
+"%NODE_EXE%" "_lab-studio-preview-server.mjs" --stop --state-file "logs\preview-state.json"
+set "STOP_CODE=%ERRORLEVEL%"
+popd
+exit /b %STOP_CODE%
