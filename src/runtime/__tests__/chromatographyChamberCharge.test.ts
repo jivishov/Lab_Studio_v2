@@ -148,6 +148,7 @@ describe("authored chromatography chamber charge", () => {
       label: string;
       sourceClosure: boolean;
       receiverClosure: boolean | undefined;
+      expectedSuccess: boolean;
       expectedReceiverClosure: boolean | undefined;
       receiverOwnsClosure: boolean;
     }> = [
@@ -155,6 +156,7 @@ describe("authored chromatography chamber charge", () => {
         label: "an explicitly open receiver",
         sourceClosure: true,
         receiverClosure: false,
+        expectedSuccess: true,
         expectedReceiverClosure: false,
         receiverOwnsClosure: true,
       },
@@ -162,6 +164,7 @@ describe("authored chromatography chamber charge", () => {
         label: "an explicitly closed receiver",
         sourceClosure: false,
         receiverClosure: true,
+        expectedSuccess: false,
         expectedReceiverClosure: true,
         receiverOwnsClosure: true,
       },
@@ -169,19 +172,34 @@ describe("authored chromatography chamber charge", () => {
         label: "a receiver with no lid state",
         sourceClosure: true,
         receiverClosure: undefined,
+        expectedSuccess: true,
         expectedReceiverClosure: undefined,
         receiverOwnsClosure: false,
       },
     ];
 
     for (const testCase of cases) {
+      const caseState = withChamberClosure(structuredClone(ready), testCase.sourceClosure, testCase.receiverClosure);
+      const beforeReceiver = instanceContents(caseState, "water-chamber");
+      const beforeSource = instanceContents(caseState, "water-solvent-bottle");
       const charged = performRuntimeAction(
         lab,
-        withChamberClosure(structuredClone(ready), testCase.sourceClosure, testCase.receiverClosure),
+        caseState,
         { actionId: "add-water-solvent", verb: "transfer" },
       );
       const receiver = instanceContents(charged, "water-chamber");
       const source = instanceContents(charged, "water-solvent-bottle");
+
+      if (!testCase.expectedSuccess) {
+        expect(charged.attemptHistory.at(-1), testCase.label).toMatchObject({
+          actionId: "add-water-solvent",
+          success: false,
+        });
+        expect(charged.currentNodeId, testCase.label).toBe(caseState.currentNodeId);
+        expect(receiver, testCase.label).toEqual(beforeReceiver);
+        expect(source, testCase.label).toEqual(beforeSource);
+        continue;
+      }
 
       expect(charged.attemptHistory.at(-1), testCase.label).toMatchObject({
         actionId: "add-water-solvent",
