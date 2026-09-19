@@ -1,45 +1,62 @@
 @echo off
-setlocal
+setlocal EnableExtensions
 
-cd /d "%~dp0"
-set "LAB_STUDIO_URL=http://127.0.0.1:5175"
-set "VITE_ASSAY_STUDIO_V1=true"
-set "VITE_CAUSALYST_LOCAL_V1=true"
+set "PACKAGE_DIR=%~dp0"
+if "%PACKAGE_DIR:~-1%"=="\" set "PACKAGE_DIR=%PACKAGE_DIR:~0,-1%"
+set "BUILD_RECORD=%PACKAGE_DIR%_lab-studio-build.json"
+set "SERVER_SCRIPT=%PACKAGE_DIR%_lab-studio-preview-server.mjs"
+set "STATE_FILE=%PACKAGE_DIR%logs\preview-state.json"
+set "LOG_FILE=%PACKAGE_DIR%logs\preview.log"
+set "LAB_STUDIO_URL=http://127.0.0.1:4180/"
 
-rem Reuse an existing server only when it already has the local feature flags.
-powershell -NoProfile -ExecutionPolicy Bypass -Command "$base='%LAB_STUDIO_URL%'; try { $source=(Invoke-WebRequest -UseBasicParsing -Uri ($base + '/src/platform/featureFlags.ts') -TimeoutSec 2).Content; $assay=$source -match '\"VITE_ASSAY_STUDIO_V1\"\s*:\s*\"true\"'; $causalyst=$source -match '\"VITE_CAUSALYST_LOCAL_V1\"\s*:\s*\"true\"'; if ($assay -and $causalyst) { exit 0 }; exit 2 } catch { exit 1 }"
-set "LAB_STUDIO_SERVER_STATUS=%ERRORLEVEL%"
-
-if "%LAB_STUDIO_SERVER_STATUS%"=="0" (
-  start "" "%LAB_STUDIO_URL%"
-  exit /b 0
+if not exist "%BUILD_RECORD%" (
+  call :fail "This is not a packaged Item 3 build. Run scripts\buildItem3HumanTest.mjs from the repository first."
+  exit /b 1
 )
-
-if "%LAB_STUDIO_SERVER_STATUS%"=="2" (
-  echo Lab Studio is already running without the Assay Studio and Causalyst flags.
-  echo Close the existing "Lab Studio Dev Server" window, then run this file again.
-  pause
+if not exist "%SERVER_SCRIPT%" (
+  call :fail "The packaged preview server is missing. Rebuild the Item 3 package."
   exit /b 1
 )
 
-where npm >nul 2>nul
+set "NODE_EXE="
+for /f "usebackq delims=" %%N in (`where node 2^>nul`) do if not defined NODE_EXE set "NODE_EXE=%%N"
+if not defined NODE_EXE (
+  call :fail "Node.js was not found on PATH. Install Node.js, open a new terminal, and run this launcher again."
+  exit /b 1
+)
+
+set "LAB_STUDIO_PACKAGE_DIR=%PACKAGE_DIR%"
+set "LAB_STUDIO_BUILD_RECORD=%BUILD_RECORD%"
+set "LAB_STUDIO_NODE=%NODE_EXE%"
+set "LAB_STUDIO_SERVER=%SERVER_SCRIPT%"
+set "LAB_STUDIO_STATE=%STATE_FILE%"
+set "LAB_STUDIO_LOG=%LOG_FILE%"
+
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$ErrorActionPreference='Stop'; $record=Get-Content -Raw -LiteralPath $env:LAB_STUDIO_BUILD_RECORD | ConvertFrom-Json; if ($record.launch.url -ne 'http://127.0.0.1:4180/') { throw 'The build record does not target the required loopback URL.' }; $arguments='"' + $env:LAB_STUDIO_SERVER + '" --root "' + $env:LAB_STUDIO_PACKAGE_DIR + '" --port 4180 --expected-build-id "' + $record.buildId + '" --state-file "' + $env:LAB_STUDIO_STATE + '" --log-file "' + $env:LAB_STUDIO_LOG + '"'; Start-Process -FilePath $env:LAB_STUDIO_NODE -ArgumentList $arguments -WorkingDirectory $env:LAB_STUDIO_PACKAGE_DIR -WindowStyle Hidden | Out-Null"
 if errorlevel 1 (
-  echo Lab Studio could not start because npm was not found.
-  echo Install Node.js and npm, then run this file again.
-  pause
+  call :fail "The preview process could not be started. Check logs\preview.log."
   exit /b 1
 )
 
-start "Lab Studio Dev Server" cmd /k "cd /d ""%~dp0"" && set ""VITE_ASSAY_STUDIO_V1=true"" && set ""VITE_CAUSALYST_LOCAL_V1=true"" && npm run dev"
-
-echo Starting Lab Studio...
-powershell -NoProfile -ExecutionPolicy Bypass -Command "$uri='%LAB_STUDIO_URL%'; for ($attempt=0; $attempt -lt 60; $attempt++) { try { Invoke-WebRequest -UseBasicParsing -Uri $uri -TimeoutSec 2 | Out-Null; Start-Process $uri; exit 0 } catch { Start-Sleep -Seconds 1 } }; Write-Error 'Lab Studio did not become available within 60 seconds.'; exit 1"
-
-if errorlevel 1 (
-  echo.
-  echo Check the "Lab Studio Dev Server" window for startup errors.
-  pause
-  exit /b 1
+echo Starting Lab Studio Item 3 production preview...
+for /L %%A in (1,1,45) do (
+  powershell -NoProfile -ExecutionPolicy Bypass -Command "$record=Get-Content -Raw -LiteralPath $env:LAB_STUDIO_BUILD_RECORD | ConvertFrom-Json; try { Invoke-WebRequest -UseBasicParsing -Uri $env:LAB_STUDIO_URL -TimeoutSec 2 | Out-Null } catch { exit 1 }; try { $health=Invoke-RestMethod -UseBasicParsing -Uri ($env:LAB_STUDIO_URL + '__lab-studio/health') -TimeoutSec 2 } catch { exit 3 }; if ($health.app -ne 'lab-studio' -or $health.buildId -ne $record.buildId) { exit 3 }; exit 0"
+  if not errorlevel 1 (
+    start "" "%LAB_STUDIO_URL%"
+    echo Lab Studio is ready at %LAB_STUDIO_URL%
+    exit /b 0
+  )
+  if errorlevel 3 (
+    call :fail "Port 4180 is occupied by an unrelated service or a different Lab Studio build. Nothing was stopped."
+    exit /b 1
+  )
+  timeout /t 1 /nobreak >nul
 )
 
-exit /b 0
+call :fail "Lab Studio did not become available at %LAB_STUDIO_URL%. Check logs\preview.log."
+exit /b 1
+
+:fail
+echo [Lab Studio] %~1
+if not defined LAB_STUDIO_NO_PAUSE pause
+exit /b 1

@@ -1479,6 +1479,29 @@ p {
   color: #ffffff;
 }
 
+.build-identity {
+  align-items: center;
+  border-left: 1px solid #315257;
+  color: #b9cecb;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 0.45rem;
+  margin-left: auto;
+  padding: 0.3rem 0 0.3rem 0.85rem;
+  white-space: nowrap;
+}
+
+.build-identity__label {
+  font-size: 0.7rem;
+  font-weight: 750;
+  letter-spacing: 0.02em;
+}
+
+.build-identity code {
+  color: #e0efed;
+  font-size: 0.68rem;
+}
+
 .surface-header,
 .home-intro {
   align-items: flex-start;

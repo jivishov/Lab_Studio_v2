@@ -27,6 +27,7 @@ import {
 } from "./data/loadBundledTechniques";
 import { parseHashRoute, type AppRoute } from "./routes";
 import { getStudioFeatureFlags } from "./platform/featureFlags";
+import { buildIdentityLabel, labStudioBuildInfo } from "./platform/buildInfo";
 import type { RuntimeDefinition } from "./runtime";
 import {
   AssayLibraryRoute,
@@ -166,6 +167,16 @@ const Nav = ({ route }: { route: AppRoute }) => {
           {item.icon} {item.label}
         </a>
       ))}
+      <div
+        aria-label={`Build ${labStudioBuildInfo.buildId}; source ${labStudioBuildInfo.sourceCommit}`}
+        className="build-identity"
+        data-build-id={labStudioBuildInfo.buildId}
+        data-source-commit={labStudioBuildInfo.sourceCommit}
+        title={`Source ${labStudioBuildInfo.sourceCommit} · ${labStudioBuildInfo.featureProfile}`}
+      >
+        <span className="build-identity__label">{buildIdentityLabel}</span>
+        <code>{labStudioBuildInfo.sourceCommit.slice(0, 12)}</code>
+      </div>
     </nav>
   );
 };
