@@ -7,6 +7,7 @@ const git = process.platform === "win32" ? "git.exe" : "git";
 const manifestPath = join(root, "docs/item2/CHANGED_FILE_MANIFEST.json");
 const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
 const head = execFileSync(git, ["rev-parse", "HEAD"], { cwd: root, encoding: "utf8" }).trim();
+const requiredImplementationPaths = ["scripts/item2EvidenceReadiness.mjs"];
 
 const blobFor = (relativePath) => {
   const output = execFileSync(git, ["ls-tree", "-r", head, "--", relativePath], {
@@ -24,7 +25,10 @@ const paths = (entries) => [...new Set((entries ?? []).map((entry) => typeof ent
   .sort()
   .map((path) => ({ path, blobSha: blobFor(path) }));
 
-manifest.implementation = paths(manifest.implementation);
+manifest.implementation = paths([
+  ...(manifest.implementation ?? []),
+  ...requiredImplementationPaths.map((path) => ({ path })),
+]);
 manifest.item2Records = paths(manifest.item2Records);
 manifest.documentedHeadBeforeManifestUpdate = head;
 manifest.blobVerification = {

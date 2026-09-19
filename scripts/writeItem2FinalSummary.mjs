@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
+import { deriveItem2FinalReadiness } from "./item2EvidenceReadiness.mjs";
 
 const root = process.cwd();
 const git = process.platform === "win32" ? "git.exe" : "git";
@@ -115,19 +116,6 @@ const semanticReview = (registry.traceGroups ?? []).reduce((summaryValue, group)
 const recorderCommand = commandById.get("09-recorder-check");
 const recorderContractErrors = Array.isArray(recorderCheck?.contractErrors) ? recorderCheck.contractErrors : [];
 const recorderMismatches = Array.isArray(recorderCheck?.mismatches) ? recorderCheck.mismatches : [];
-const recorderHasAcceptedSupplementalStatus = ["supplemental-failures", "no-supplemental-failures"].includes(recorderCheck?.supplementalRunStatus);
-const recorderCheckStatusAccepted = ["supplemental-failures", "passed"].includes(recorderCheck?.checkStatus);
-const recorderSourceCurrent = recorderCheck?.sourceStatus === "current";
-const recorderIntegrityPassed = recorderCheck?.integrityStatus === "passed";
-const recorderCoreComplete = recorderCheck?.coreRunStatus === "complete-current-run";
-const recorderStructuredResultValid = Boolean(recorderCheck)
-  && recorderSourceCurrent
-  && recorderIntegrityPassed
-  && recorderCoreComplete
-  && recorderHasAcceptedSupplementalStatus
-  && recorderCheckStatusAccepted
-  && recorderContractErrors.length === 0
-  && recorderMismatches.length === 0;
 const triageSourceReviewCount = Number(triage.currentRawDiagnostics?.unresolvedSourceTraceReviewCount ?? 0);
 const triageUnreviewedGroupCount = Number(triage.currentRawDiagnostics?.unreviewedSourceTraceGroupCount ?? 0);
 const sourceReviewIncomplete = triageSourceReviewCount > 0
@@ -136,28 +124,15 @@ const sourceReviewIncomplete = triageSourceReviewCount > 0
   || semanticReview.unreviewedGroups > 0;
 const sourceFreezeValid = manifestMismatches.length === 0;
 const sequenceContractValid = sequenceUnexpected.length === 0;
-const readinessStatus = !recorderCheck
-  || !recorderSourceCurrent
-  || !recorderIntegrityPassed
-  || recorderContractErrors.length > 0
-  || recorderMismatches.length > 0
-  ? "integrity-failed"
-  : !recorderCoreComplete
-    ? "core-incomplete"
-    : !recorderHasAcceptedSupplementalStatus || !recorderCheckStatusAccepted
-      ? "recorder-verdict-invalid"
-    : sourceReviewIncomplete
-      ? "incomplete-unresolved-source-review"
-      : !sourceFreezeValid || !evidencePointerValid || !sequenceContractValid
-        ? "source-or-sequence-contract-failed"
-        : recorderCheck.checkStatus === "supplemental-failures"
-          ? "current-integrity-passed-core-complete-with-supplemental-findings"
-          : "current-integrity-passed-core-complete";
-const finalAccepted = recorderStructuredResultValid
-  && !sourceReviewIncomplete
-  && sourceFreezeValid
-  && evidencePointerValid
-  && sequenceContractValid;
+const readinessDecision = deriveItem2FinalReadiness({
+  recorderCheck,
+  sourceReviewIncomplete,
+  sourceFreezeValid,
+  evidencePointerValid,
+  sequenceContractValid,
+});
+const readinessStatus = readinessDecision.status;
+const finalAccepted = readinessDecision.accepted;
 const placeholders = [];
 const scanPlaceholders = (value, path = "summary") => {
   if (typeof value === "string" && /recorded in final CURRENT_VERIFICATION_RUN|recorded in final delivery receipt|TODO|PLACEHOLDER/i.test(value)) placeholders.push(path);
@@ -291,7 +266,9 @@ const summary = {
       "physical instrument, scientific, classroom-safety, performance and release acceptance",
       "Items 3-5 implementation or acceptance",
     ],
-    item3Readiness: "Ready for parent review and Item-3 planning only; do not treat this source/static closure as runtime or release acceptance.",
+    item3Readiness: finalAccepted
+      ? "Ready for parent review and Item-3 planning only; do not treat this source/static closure as runtime or release acceptance."
+      : `Not ready for Item-3 planning because Item-2 final readiness is ${readinessStatus}; resolve the current source/recorder/review contract first.`,
   },
 };
 scanPlaceholders(summary);

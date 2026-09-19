@@ -7,6 +7,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { assertPreparationMode, deriveItem2FinalReadiness } from "../item2EvidenceReadiness.mjs";
 import { reviewedDecisionFor } from "../generatorInputs/item2SourceTraceMappings.mjs";
 
 const root = process.cwd();
@@ -480,14 +481,42 @@ describe("F07 Phase 2 source-row coverage", () => {
     });
   });
 
-  it("keeps final-evidence reporting gated on preparation and structured recorder status", () => {
-    const reconciliationSource = readFileSync(join(root, "scripts/reconcileItem2CurrentRecords.mjs"), "utf8");
-    const finalSummarySource = readFileSync(join(root, "scripts/writeItem2FinalSummary.mjs"), "utf8");
-    expect(reconciliationSource).toContain("--prepare");
-    expect(reconciliationSource).toContain("prepared-pending-final-run");
-    expect(finalSummarySource).toContain("recorder-check.json");
-    expect(finalSummarySource).toContain('"integrity-failed"');
-    expect(finalSummarySource).toContain("sourceReviewIncomplete");
+  it("requires preparation mode and gates final readiness on the structured recorder decision", () => {
+    expect(() => assertPreparationMode(["node", "reconcileItem2CurrentRecords.mjs"])).toThrow("preparation-only");
+    expect(assertPreparationMode(["node", "reconcileItem2CurrentRecords.mjs", "--prepare"])).toMatchObject({
+      accepted: true,
+      status: "preparation",
+    });
+
+    const acceptedSupplementalRun = {
+      sourceStatus: "current",
+      integrityStatus: "passed",
+      coreRunStatus: "complete-current-run",
+      supplementalRunStatus: "supplemental-failures",
+      checkStatus: "supplemental-failures",
+      contractErrors: [],
+      mismatches: [],
+    };
+    expect(deriveItem2FinalReadiness({ recorderCheck: acceptedSupplementalRun })).toMatchObject({
+      accepted: true,
+      status: "current-integrity-passed-core-complete-with-supplemental-findings",
+    });
+    for (const recorderCheck of [
+      undefined,
+      { ...acceptedSupplementalRun, sourceStatus: "stale", integrityStatus: "failed" },
+      { ...acceptedSupplementalRun, sourceStatus: "current", integrityStatus: "failed" },
+      { ...acceptedSupplementalRun, sourceStatus: "current", coreRunStatus: "incomplete-core-run" },
+    ]) {
+      expect(deriveItem2FinalReadiness({ recorderCheck }).accepted).toBe(false);
+    }
+    expect(deriveItem2FinalReadiness({
+      recorderCheck: acceptedSupplementalRun,
+      sourceReviewIncomplete: true,
+    })).toMatchObject({ accepted: false, status: "incomplete-unresolved-source-review" });
+    expect(deriveItem2FinalReadiness({
+      recorderCheck: acceptedSupplementalRun,
+      evidencePointerValid: false,
+    })).toMatchObject({ accepted: false, status: "source-or-sequence-contract-failed" });
   });
 
   it("keeps Quick E-12 direct evidence narrow and records Green apparatus inference", () => {

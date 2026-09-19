@@ -18,7 +18,7 @@ Correction:
 - no activity is declared clean merely because its direct historical count is zero;
 - historical counts are not treated as current bug counts or fixed counts.
 
-The source-level closure claim is withdrawn. The narrower claim is inventory/static-rationale accounting, current static evidence recorded; runtime/scientific/browser/release acceptance remains unclaimed.
+The source-level closure claim is withdrawn. The narrower claim is inventory/static-rationale accounting; final recorder/current/source-integrity/core evidence remains pending; runtime/scientific/browser/release acceptance remains unclaimed.
 
 ### 2. Evidence freshness — corrected
 
@@ -46,7 +46,7 @@ The 46 dependencies are now restored locally and re-hashed: 39,500,058 bytes, 46
 
 ## Remaining acceptance boundary
 
-The current evidence phase is complete for the authorized source/static scope. The final run records 882 grouped source-trace members, 21 explicit residuals, zero compiled-context findings, 37 fixed-role configuration resolutions and one not-applicable Crystal Violet approval row; runtime, scientific, browser, classroom, safety and release acceptance remain unclaimed.
+The current evidence phase is prepared for the authorized source/static scope; final recorder/current/source-integrity/core acceptance remains pending, and runtime, scientific, browser, classroom, safety and release acceptance remain unclaimed.
 
 
 ## Final scenario review correction
@@ -88,9 +88,9 @@ The previous scenario incorrectly described Reset as clearing report calculation
 
 Those documentation/source-contract corrections were source-only; the current evidence result is recorded separately below.
 
-## Current-evidence preparation — item2-luna-local-20260918-r1
+## Current-evidence preparation — item2-luna-local-20260918-r2
 
-- Run ID: `item2-luna-local-20260918-r1` is prepared for the new final sequence; the future recorder receipt is expected under `planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-luna-local-20260918-r1/CURRENT_VERIFICATION_RUN.json`, with the future summary at `../delivery/item2-luna-local-20260918-r1/FINAL_SUMMARY.json`.
+- Run ID: `item2-luna-local-20260918-r2` is prepared for the new final sequence; the future recorder receipt is expected under `planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-luna-local-20260918-r2/CURRENT_VERIFICATION_RUN.json`, with the future summary at `../delivery/item2-luna-local-20260918-r2/FINAL_SUMMARY.json`.
 - Current source/static preparation covers **882 exact action members** in **197 reviewed contextual groups** and retains **21 explicit residuals** (17 authored paper-drying operations and 4 teacher-configured inventory actions).
 - The final recorder/current/source-integrity/core result is **pending**. It must be read from the structured recorder result; it is not inferred from the content-check exit.
 - The tracked input tree must remain unchanged after the source-freeze manifest commit; only permitted generated evidence artifacts may be added after the final run.

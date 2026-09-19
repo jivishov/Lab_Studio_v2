@@ -2,7 +2,7 @@
 
 ## Status
 
-Item 2 is **complete for the authorized isolated source/current-evidence scope with explicit static limitations**. Catalog/source/configuration records were corrected, the 46 historical dependencies were restored into the isolated checkout with 46/46 SHA-256 matches, and the named evidence phase was executed as Run B. The branch was not pushed or merged.
+Item 2 is **prepared pending the final recorder/current/source-integrity/core result with explicit static limitations**. Catalog/source/configuration records were corrected, the 46 historical dependencies were restored into the isolated checkout with 46/46 SHA-256 matches, and no final acceptance is claimed before the new sequence.
 
 ## Preconditions
 
@@ -61,7 +61,7 @@ Do not merge to `main` unless separately requested.
 ## Current execution preparation
 
 - Discovery runs remain historical: Run A `item2-597c060-run-a`, Run B `item2-f9c9229-run-b`, and Run C `item2-646169f-run-c` are not used as the final identity for this repaired tree.
-- Prepared final run: `item2-luna-local-20260918-r1`; the source commit and source snapshot identity will be recorded only after the new sequence completes.
+- Prepared final run: `item2-luna-local-20260918-r2`; the source commit and source snapshot identity will be recorded only after the new sequence completes.
 - Source/static preflight: 882 grouped source-trace members, 21 explicit residuals, three prior Crystal Violet rows routed through compiled static coverage, 30 compiled witnesses, 6278 node contexts, 0 compiled-context findings, and 37 fixed-role plus 1 not-applicable configuration resolutions.
 - Recorder/current/source-integrity/core result: **pending**. The content-check exit is not a recorder verdict.
 

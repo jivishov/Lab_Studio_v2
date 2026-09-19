@@ -8,9 +8,9 @@
 - Hosted source configuration accounted: **66 / 66**
 - Historical dependency set locally restored: **46 / 46 files, 39,500,058 bytes, 46/46 SHA-256 matches**
 - Historical dependencies on GitHub branch: **not restored**
-- Prepared final evidence pipeline: **item2-luna-local-20260918-r1; recorder/current/source-integrity/core result pending; source/static preflight retains 21 justified nonblocking source-trace residuals**
-- Source-level reconciliation closure: **current static reconciliation recorded; runtime/scientific/release closure not claimed**
-- Full Item 2: **complete for the authorized source/current-evidence scope, with explicit static limitations**
+- Prepared final evidence pipeline: **item2-luna-local-20260918-r2; recorder/current/source-integrity/core result pending; source/static preflight retains 21 justified nonblocking source-trace residuals**
+- Source-level reconciliation closure: **source/static preparation recorded; final recorder/current/source-integrity/core result pending; runtime/scientific/release closure not claimed**
+- Full Item 2: **incomplete pending the final recorder/current/source-integrity/core result, with explicit static limitations**
 - Items 3–5: **not started**
 
 ## Record corrections after external review
@@ -62,7 +62,7 @@ Not run:
 - tests, including the new titration regression;
 - typecheck/build/browser/runtime/E2E/broad lint.
 
-The authorized item-2 evidence phase is now recorded in the final current run. The remaining unrun checks are deliberately outside the repository validation policy and this scoped request.
+The authorized item-2 evidence phase is prepared but not yet observed. The remaining unrun checks are deliberately outside the repository validation policy and this scoped request.
 
 
 ## Final external-review scenario correction
@@ -105,7 +105,7 @@ A stricter consistency review found four remaining static-artifact defects and c
 
 Catalog schema version 5 now has 59/59 distinct ordinary, configuration/refusal, recovery/reset, and evidence cases. Lab and technique namespaces are explicitly included in scenario wording so the two duplicated ids remain distinct. `SCENARIO_AUDIT.json` schema version 2 records zero legacy scenario assignments, zero old generic refusal templates, and zero old generated ordinary-case grammar defects.
 
-At that earlier pre-evidence checkpoint, the scenario changes were source-only; the final current evidence section below supersedes its pending-evidence wording.
+That earlier source-only checkpoint remains historical; the preparation section below does not claim final recorder/current/source-integrity/core acceptance.
 
 
 ## Final targeted scenario corrections
@@ -118,9 +118,9 @@ A subsequent source review corrected two remaining scenario-contract errors.
 
 No runtime/evidence pipeline was executed for those documentation corrections before the authorized current-evidence pass.
 
-## Pending final evidence — item2-luna-local-20260918-r1
+## Pending final evidence — item2-luna-local-20260918-r2
 
-- Run ID: `item2-luna-local-20260918-r1` is prepared for the new final sequence; the future recorder receipt is expected under `planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-luna-local-20260918-r1/CURRENT_VERIFICATION_RUN.json`, with the future summary at `../delivery/item2-luna-local-20260918-r1/FINAL_SUMMARY.json`.
+- Run ID: `item2-luna-local-20260918-r2` is prepared for the new final sequence; the future recorder receipt is expected under `planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-luna-local-20260918-r2/CURRENT_VERIFICATION_RUN.json`, with the future summary at `../delivery/item2-luna-local-20260918-r2/FINAL_SUMMARY.json`.
 - Current source/static preparation covers **882 exact action members** in **197 reviewed contextual groups** and retains **21 explicit residuals** (17 authored paper-drying operations and 4 teacher-configured inventory actions).
 - The final recorder/current/source-integrity/core result is **pending**. It must be read from the structured recorder result; it is not inferred from the content-check exit.
 - The tracked input tree must remain unchanged after the source-freeze manifest commit; only permitted generated evidence artifacts may be added after the final run.
