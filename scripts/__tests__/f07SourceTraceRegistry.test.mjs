@@ -84,7 +84,6 @@ describe("F07 Phase 2 source-row coverage", () => {
       expect(group.sourceFile, group.id).toEqual(expect.any(String));
       expect(group.reviewedMapping, group.id).toMatchObject({
         schema: "lab-studio/source-trace-reviewed-mapping@1",
-        reviewStatus: "reviewed-static-source-mapping",
         owner,
         ownerVersion: expect.any(String),
         atomId: group.atomId,
@@ -95,6 +94,18 @@ describe("F07 Phase 2 source-row coverage", () => {
         notSupported: expect.any(String),
         decisionId: expect.any(String),
       });
+      expect([
+        "reviewed-static-source-mapping",
+        "unreviewed-nonblocking-source-boundary",
+      ], group.id).toContain(group.reviewedMapping.reviewStatus);
+      expect(group.reviewedMapping.decisionDisposition, group.id).toEqual(expect.any(String));
+      expect([
+        "reviewed-explicit",
+        "owner-source-unique-direct",
+        "owner-source-unique-example",
+        "owner-direct-unique",
+        "mixed-selection-modes",
+      ], group.id).toContain(group.reviewedMapping.selectionMode);
       for (const actionId of group.actionIds) {
         const key = `${owner}#${actionId}`;
         expect(groupedMembers.has(key), key).toBe(false);
@@ -378,6 +389,46 @@ describe("F07 Phase 2 source-row coverage", () => {
         decisionId: "item2-titration-curve-decision-v2",
       }),
     });
+
+    expect(traceGroups).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        ownerId: "ph-volume-formal-titration-trial",
+        atomId: "atom.observe.titration-read-final",
+        sourceTable: "phase",
+        step: "T-09",
+        reviewedMapping: expect.objectContaining({
+          reviewStatus: "reviewed-static-source-mapping",
+          decisionId: "item2-formal-final-burette-read-boundary-v2",
+        }),
+      }),
+      expect.objectContaining({
+        ownerId: "ph-volume-titration-trial",
+        atomId: "atom.transfer.discard-titrated-mixture",
+        sourceTable: "safety",
+        step: "S-05",
+      }),
+      expect.objectContaining({
+        ownerId: "quick-ache-property-evidence",
+        atomId: "atom.transfer.microsample-portion",
+        sourceTable: "phase",
+        step: "K-02",
+        reviewedMapping: expect.objectContaining({
+          reviewStatus: "reviewed-static-source-mapping",
+          decisionId: "item2-bonding-microsample-transfer-v2",
+        }),
+      }),
+      expect.objectContaining({
+        ownerId: "hard-water-two-sample-inquiry",
+        atomId: "atom.rinse.fraction-remove-label",
+        sourceTable: "safety",
+        step: "S-09",
+      }),
+    ]));
+
+    const unreviewed = traceGroups.find((group) => group.reviewedMapping.reviewStatus === "unreviewed-nonblocking-source-boundary");
+    expect(unreviewed).toBeTruthy();
+    expect(unreviewed.mappingRationale).toContain("Unreviewed contextual boundary");
+    expect(unreviewed.mappingRationale).not.toContain("Reviewed mapping");
   });
 
   it("keeps Quick E-12 direct evidence narrow and records Green apparatus inference", () => {

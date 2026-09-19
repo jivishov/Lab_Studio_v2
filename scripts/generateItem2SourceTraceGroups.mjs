@@ -75,8 +75,8 @@ const uniqueLocators = (rows) => [...new Map(rows.map((row) => [locatorKey(row),
  * ambiguous same-owner atoms must be present in the reviewed mapping module.  A unique direct row
  * or a unique same-owner atom example is safe to reuse because it has no competing locator.
  */
-const reviewedSourceFor = ({ owner, atomId, actionBasis, sourceGroup, ownerRows, examples }) => {
-  const explicit = selectionFor({ owner, atomId, actionBasis });
+const reviewedSourceFor = ({ owner, atomId, actionId, actionBasis, sourceGroup, ownerRows, examples }) => {
+  const explicit = selectionFor({ owner, atomId, actionId, actionBasis });
   if (explicit.locator) {
     return {
       sourceTrace: explicit.locator,
@@ -179,6 +179,7 @@ for (const [owner, sourceGroup] of sourceOwnerGroups) {
       selection = reviewedSourceFor({
         owner,
         atomId: action.atomId,
+        actionId: action.id,
         actionBasis,
         sourceGroup,
         ownerRows,
@@ -210,12 +211,14 @@ for (const [owner, sourceGroup] of sourceOwnerGroups) {
       sourceBasis: selection.sourceTrace.basis,
       actionBasis,
       selectionKeys: new Set(),
+      selectionModes: new Set(),
       memberContracts: [],
       ownerVersion: definition.metadata?.version ?? definition.version ?? null,
       atomDocumentationLabel: atom?.documentationLabel ?? action.atomId,
     };
     entry.actionIds.push(action.id);
     entry.selectionKeys.add(selection.selectionKey);
+    entry.selectionModes.add(selection.selectionMode);
     entry.memberContracts.push(actionContract(action, actionBasis));
     groups.set(key, entry);
   }
@@ -231,17 +234,27 @@ const traceGroups = [...groups.entries()]
       documentationLabel: group.atomDocumentationLabel,
       proceduralConstraints: [],
     };
-    const decision = reviewedDecisionFor(atom);
+    const decision = reviewedDecisionFor({
+      atom,
+      owner,
+      sourceTrace: {
+        sourceFile: group.sourceFile,
+        sourceTable: group.sourceTable,
+        step: group.step,
+        basis: group.basis,
+      },
+    });
     const selectionKeys = [...group.selectionKeys].sort();
+    const selectionModes = [...group.selectionModes].sort();
     const sourceScope = sourceOwnerGroups.get(owner)?.sourceFile === group.sourceFile
       ? "owner-source-family"
       : "cross-activity-shared-operation";
     const reviewedMapping = {
       schema: "lab-studio/source-trace-reviewed-mapping@1",
-      reviewStatus: "reviewed-static-source-mapping",
-      selectionMode: selectionKeys.some((key) => key.startsWith(`${owner}|${group.atomId}|`))
-        ? "explicit-or-unique-reviewed"
-        : "reviewed-explicit",
+      reviewStatus: decision.reviewStatus,
+      decisionDisposition: decision.decisionDisposition,
+      selectionMode: selectionModes.length === 1 ? selectionModes[0] : "mixed-selection-modes",
+      selectionModes,
       selectionKeys,
       sourceScope,
       owner,
@@ -271,7 +284,7 @@ const traceGroups = [...groups.entries()]
       actionBasis: group.actionBasis,
       reviewedMapping,
       mappingRationale: [
-        `Reviewed mapping ${decision.reviewId} covers the exact owner-local members ${actionIds.join(", ")} for ${owner} (${group.ownerVersion ?? "version not declared"}) using ${group.atomId}.`,
+        `${decision.reviewStatus === "reviewed-static-source-mapping" ? "Reviewed mapping" : "Unreviewed contextual boundary"} ${decision.reviewId} covers the exact owner-local members ${actionIds.join(", ")} for ${owner} (${group.ownerVersion ?? "version not declared"}) using ${group.atomId}.`,
         `Selected source boundary: ${group.sourceFile} ${group.sourceTable} ${group.step} basis=${group.basis}; selection scope=${sourceScope}.`,
         `Source supports: ${decision.sourceSupports}`,
         `Transfer validity: ${decision.transferValidity}`,
@@ -286,8 +299,8 @@ registry.contextTracePolicy = {
   ...(registry.contextTracePolicy ?? {}),
   reviewedMappingField: "reviewedMapping",
   reviewedMappingSchema: "lab-studio/source-trace-reviewed-mapping@1",
-  reviewedSelectionPolicy: "Every ambiguous or cross-activity source choice is recorded in scripts/generatorInputs/item2SourceTraceMappings.mjs. Unique same-owner locators may be reused only when no competing locator exists; array order is never a selection rule.",
-  reviewedDecisionPolicy: "Each group records owner/version/member IDs, source support, transfer validity, quantity/configuration limits and unsupported claims. Context groups never turn generated actions into verbatim source prescriptions.",
+  reviewedSelectionPolicy: "Every action-specific, ambiguous or cross-activity source choice is recorded in scripts/generatorInputs/item2SourceTraceMappings.mjs. Unique same-owner locators may be reused only when no competing locator exists; array order is never a selection rule.",
+  reviewedDecisionPolicy: "Each group records owner/version/member IDs, selection mode, review status, source support, transfer validity, quantity/configuration limits and unsupported claims. Unreviewed groups are explicit nonblocking boundaries and never turn generated actions into verbatim source prescriptions.",
 };
 registry.traceGroups = traceGroups;
 writeJson(registryPath, registry);

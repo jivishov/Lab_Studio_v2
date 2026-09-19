@@ -14,7 +14,10 @@ if (!/^[a-z0-9][a-z0-9-]{2,63}$/.test(finalRunId)) {
 const followupRoot = "planning/2026-09-08_catalog-fidelity-follow-up";
 const runEvidenceRoot = `${followupRoot}/evidence/f08-current-runs/${finalRunId}`;
 const contentLog = `${runEvidenceRoot}/logs/repository-content-check.log`;
-const contentCapture = `delivery/${finalRunId}/content-check-compiled.json`;
+const externalDeliveryRoot = `../delivery/${finalRunId}`;
+const finalSummaryPath = `${externalDeliveryRoot}/FINAL_SUMMARY.json`;
+const finalSummaryRef = (pointer) => `${finalSummaryPath}#/${pointer}`;
+const contentCapture = `${externalDeliveryRoot}/content-check-compiled.json`;
 const readJson = (relativePath) => JSON.parse(readFileSync(join(root, relativePath), "utf8"));
 const writeJson = (relativePath, value) => writeFileSync(
   join(root, relativePath),
@@ -318,17 +321,18 @@ triage.status = "current-final-static-reconciliation-with-justified-source-resid
 triage.currentRawDiagnostics = {
   status: "current-run-complete-with-justified-source-residuals",
   runId: finalRunId,
-  sourceCommit: "recorded in final CURRENT_VERIFICATION_RUN.json",
+  finalSummaryPath,
+  sourceCommit: finalSummaryRef("sourceFreeze/commit"),
   sourceCommitAtRecordAuthoring: gitHead,
-  sourceSnapshotPayloadSha256: "recorded in final CURRENT_VERIFICATION_RUN.json",
+  sourceSnapshotPayloadSha256: finalSummaryRef("sourceSnapshot/payloadSha256"),
   contentCheck: {
     command: "node --experimental-strip-types --experimental-loader ./scripts/tsCompositionLoader.mjs scripts/checkContentConsistency.mjs --compiled --json",
     exitCode: 1,
     stdoutPath: contentCapture,
-    stdoutSha256: "recorded in final delivery receipt",
-    stdoutBytes: null,
+    stdoutSha256: finalSummaryRef("diagnostic/sha256"),
+    stdoutBytes: finalSummaryRef("diagnostic/bytes"),
     recorderLog: contentLog,
-    recorderLogSha256: "recorded in final CURRENT_VERIFICATION_RUN.json",
+    recorderLogSha256: finalSummaryRef("recorderReceipt/sha256"),
   },
   evaluationScope: "raw/template findings after conservative compiled-context routing and explicit source-trace group expansion",
   retainedFindingCount: residualCount,
@@ -365,7 +369,8 @@ const configurationCoverage = readJson(coveragePath);
 configurationCoverage.currentCompiledCoverage = {
   status: "current-final-static-diagnostic",
   runId: finalRunId,
-  sourceCommit: "recorded in final CURRENT_VERIFICATION_RUN.json",
+  finalSummaryPath,
+  sourceCommit: finalSummaryRef("sourceFreeze/commit"),
   attemptedWitnessCount: coverage.attemptedContextCount,
   compiledWitnessCount,
   evaluatedNodeContextCount: coverage.evaluatedNodeContextCount,
@@ -408,7 +413,8 @@ catalog.status = {
 };
 catalog.currentEvidence = {
   runId: finalRunId,
-  sourceCommit: "recorded in final CURRENT_VERIFICATION_RUN.json",
+  finalSummaryPath,
+  sourceCommit: finalSummaryRef("sourceFreeze/commit"),
   corePhases: "5/5 passed",
   supplementalPhases: {
     cycle12StaticVerifier: "passed",
@@ -463,8 +469,9 @@ ledger.currentEvidenceStatus = `Final current-evidence run ${finalRunId} is auth
 ledger.sourceLevelClosureClaim = `current source/static reconciliation and evidence recorded; ${residualCount} explicit source-trace residuals remain with justified nonblocking dispositions; runtime/scientific/browser/release closure not claimed`;
 ledger.acceptedRun = {
   runId: finalRunId,
-  sourceCommit: "recorded in final CURRENT_VERIFICATION_RUN.json",
-  sourceSnapshotPayloadSha256: "recorded in final CURRENT_VERIFICATION_RUN.json",
+  finalSummaryPath,
+  sourceCommit: finalSummaryRef("sourceFreeze/commit"),
+  sourceSnapshotPayloadSha256: finalSummaryRef("sourceSnapshot/payloadSha256"),
   recorderCheck: `exit ${checker.status}; source current; integrity passed; core complete; supplemental-failures reports repository-content-check`,
   integrity: "passed",
   corePhases: "5/5 required",
@@ -488,7 +495,7 @@ writeJson(ledgerPath, ledger);
 
 const finalEvidenceSection = `## Final current evidence — ${finalRunId}
 
-- Run ID: \`${finalRunId}\`; the final recorder receipt is under \`${runEvidenceRoot}/CURRENT_VERIFICATION_RUN.json\`.
+- Run ID: \`${finalRunId}\`; the final recorder receipt is under \`${runEvidenceRoot}/CURRENT_VERIFICATION_RUN.json\`, and the concrete identity/digest summary is \`${finalSummaryPath}\`.
 - Core chain: **5/5 passed** — compiler witness, reconciliation, Cycle 09 overlay refresh/check, and reconciliation check.
 - Recorder \`--check\`: **exit 1 is expected** because \`checkStatus=supplemental-failures\`; source is current, integrity passed, no core phase failed, and only repository-content-check is supplemental-failed.
 - Supplemental phases: **2 recorded** — the Cycle 12 static verifier passed; repository-content-check exited 1 only for ${residualCount} explicit source-trace residuals with justified nonblocking dispositions.
@@ -573,11 +580,15 @@ const changedImplementationPaths = [
   "scripts/checkContentConsistency.mjs",
   "scripts/generateItem2SourceTraceGroups.mjs",
   "scripts/generatorInputs/item2SourceTraceMappings.mjs",
+  "scripts/registerCycle07TitrationAtoms.mjs",
   "scripts/reconcileItem2CurrentRecords.mjs",
   "scripts/recordItem2FinalCommandSequence.mjs",
+  "scripts/refreshItem2Manifest.mjs",
+  "scripts/writeItem2FinalSummary.mjs",
   "scripts/__tests__/f07SourceTraceRegistry.test.mjs",
   "src/data/compiledWitnessDiagnostics.ts",
   "src/data/__tests__/compiledWitnessDiagnostics.test.ts",
+  "src/domain/atomRegistry.json",
 ];
 manifest.implementation = unique([
   ...(manifest.implementation ?? []).map((entry) => entry.path ?? entry),
@@ -594,7 +605,8 @@ manifest.documentedHeadBeforeManifestUpdate = gitHead;
 manifest.evidenceStatus = `${finalRunId} final current source/static evidence; no runtime/scientific/browser/release claim`;
 manifest.currentEvidence = {
   runId: finalRunId,
-  sourceCommit: "recorded in final CURRENT_VERIFICATION_RUN.json",
+  finalSummaryPath,
+  sourceCommit: finalSummaryRef("sourceFreeze/commit"),
   corePhasesPassed: 5,
   supplementalPhasesRecorded: 2,
   contentCheckExitCode: checker.status,
