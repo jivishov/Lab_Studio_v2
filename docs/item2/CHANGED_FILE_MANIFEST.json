@@ -2,13 +2,13 @@
   "schemaVersion": 6,
   "branch": "codex/item2-catalog-reconciliation",
   "baseline": "f7c2b863f641090d9abc5c08ee22da72702fdfd6",
-  "documentedHeadBeforeManifestUpdate": "4663b2307f09c4d3e25e69cb9cde7b75fee29e9f",
+  "documentedHeadBeforeManifestUpdate": "5392309262a93f02a2ea757bfa10037817fe009c",
   "selfExcluded": true,
   "selfExclusionReason": "The manifest update itself creates the next commit; its own final Git blob SHA cannot be recursively embedded.",
   "implementation": [
     {
       "path": "docs/architecture/source-trace-registry.json",
-      "blobSha": "c046e26b152f7c8f3a529a58f868140ed0a1f6ff"
+      "blobSha": "bb674125f752a8caa428c2cbd83034fe2d6acf50"
     },
     {
       "path": "public/techniques/titration-curve-analysis.json",
@@ -16,7 +16,7 @@
     },
     {
       "path": "scripts/__tests__/f07SourceTraceRegistry.test.mjs",
-      "blobSha": "dbeae907dee92c04c02e643af59a92aaea6ba7bb"
+      "blobSha": "8e5cc39c81177b9e5872a8141a7c8f02f7b8d3e1"
     },
     {
       "path": "scripts/checkContentConsistency.mjs",
@@ -32,15 +32,15 @@
     },
     {
       "path": "scripts/generatorInputs/item2SourceTraceMappings.mjs",
-      "blobSha": "eaad08afb278285de777a0fbabb983e04921fbc5"
+      "blobSha": "15d46ab29118af295350b2059ec71f186595b683"
     },
     {
       "path": "scripts/reconcileItem2CurrentRecords.mjs",
-      "blobSha": "7279248d6f16ed11552326d4310e189a14a43008"
+      "blobSha": "7ad47ee329ec7016c496f88ccef1db83869df337"
     },
     {
       "path": "scripts/recordItem2FinalCommandSequence.mjs",
-      "blobSha": "85233b2cf175a00c8e6ab8030f2af58995a233f1"
+      "blobSha": "9c9097eb9aa3d1f2afa04091363b04af92ffeefa"
     },
     {
       "path": "scripts/refreshItem2Manifest.mjs",
@@ -52,7 +52,7 @@
     },
     {
       "path": "scripts/writeItem2FinalSummary.mjs",
-      "blobSha": "b4a07844d98413cbb1b0c2f4015d30593bb1b119"
+      "blobSha": "998600d9d3f6a9a131cc5642b97cf54d2288d2f9"
     },
     {
       "path": "src/data/__tests__/compiledWitnessDiagnostics.test.ts",
@@ -78,19 +78,19 @@
   "item2Records": [
     {
       "path": "docs/item2/CATALOG_DISPOSITIONS.json",
-      "blobSha": "0025908c78bafe5832fe82a9380353cd12a157a6"
+      "blobSha": "008911bb3026a182e5548dc1d0b18dcdd1a2013e"
     },
     {
       "path": "docs/item2/CATALOG_DISPOSITIONS.md",
-      "blobSha": "8f228aff76c4cb2aa4df860881515959da1c89ff"
+      "blobSha": "31e14a972b38aef0e408ca2df9dda0d0668ae014"
     },
     {
       "path": "docs/item2/CONFIGURATION_COVERAGE.json",
-      "blobSha": "a3d36c61ea5c3f3409634c800ec32ce2e7efa9db"
+      "blobSha": "96e92c30d5dce456ef37f90f81fd21670d4b5497"
     },
     {
       "path": "docs/item2/CRITICAL_REVIEW.md",
-      "blobSha": "745eae670b63fe84d1eeaead16615bd6953f203c"
+      "blobSha": "2e7a5573e8273a2f899ed3af724e078cb8fc8bf6"
     },
     {
       "path": "docs/item2/EVIDENCE_DEPENDENCY_RESTORATION.json",
@@ -98,23 +98,23 @@
     },
     {
       "path": "docs/item2/EXECUTION_REQUEST.md",
-      "blobSha": "9e8a3880b1b94f18aa072de3e5f048d5f65cf0e0"
+      "blobSha": "2a4c26657b903235355b585028765e13cb7e4d50"
     },
     {
       "path": "docs/item2/FINDING_TRIAGE.json",
-      "blobSha": "6f5ac47f0bf8b2da4afc8101c0ce40ae02fc3b54"
+      "blobSha": "dea2993ce9d856d93c5ec3ab78e76560766ebc47"
     },
     {
       "path": "docs/item2/ITEM2_REPORT.md",
-      "blobSha": "b0b327b7d1fddb5b7e67273c37352ae75da85978"
+      "blobSha": "e1d1a345922095ba4536d197d922f2a48871b909"
     },
     {
       "path": "docs/item2/RUN_LEDGER.json",
-      "blobSha": "3b83afde016a323d609120d55aaf6531c1ca900c"
+      "blobSha": "76c4517e27e6eaf09e97a7355680a16e82af2b8f"
     },
     {
       "path": "docs/item2/SCENARIO_AUDIT.json",
-      "blobSha": "6005cfbddd344fa5cac89963355ec8600120ec78"
+      "blobSha": "968a62b0380fd60f292081bca9a58a4d1673a4d8"
     },
     {
       "path": "docs/item2/SCENARIO_MATRIX.md",
@@ -122,7 +122,7 @@
     },
     {
       "path": "docs/item2/SELF_REVIEW_AUDIT.json",
-      "blobSha": "ff8931209ac835cf070857310136f04f4218fe06"
+      "blobSha": "99c440829c4b84f66a8bce8281b188763d84ec14"
     }
   ],
   "scenarioAudit": {
@@ -191,7 +191,7 @@
     "docs/architecture/source-trace-registry.json"
   ],
   "blobVerification": {
-    "sourceFreezeCommit": "4663b2307f09c4d3e25e69cb9cde7b75fee29e9f",
+    "sourceFreezeCommit": "5392309262a93f02a2ea757bfa10037817fe009c",
     "verifiedEntries": 29,
     "selfExcluded": true
   }
