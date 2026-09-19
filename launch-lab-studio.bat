@@ -3,10 +3,10 @@ setlocal EnableExtensions
 
 set "PACKAGE_DIR=%~dp0"
 if "%PACKAGE_DIR:~-1%"=="\" set "PACKAGE_DIR=%PACKAGE_DIR:~0,-1%"
-set "BUILD_RECORD=%PACKAGE_DIR%_lab-studio-build.json"
-set "SERVER_SCRIPT=%PACKAGE_DIR%_lab-studio-preview-server.mjs"
-set "STATE_FILE=%PACKAGE_DIR%logs\preview-state.json"
-set "LOG_FILE=%PACKAGE_DIR%logs\preview.log"
+set "BUILD_RECORD=%PACKAGE_DIR%\_lab-studio-build.json"
+set "SERVER_SCRIPT=%PACKAGE_DIR%\_lab-studio-preview-server.mjs"
+set "STATE_FILE=%PACKAGE_DIR%\logs\preview-state.json"
+set "LOG_FILE=%PACKAGE_DIR%\logs\preview.log"
 set "LAB_STUDIO_URL=http://127.0.0.1:4180/"
 
 if not exist "%BUILD_RECORD%" (

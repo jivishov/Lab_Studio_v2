@@ -3,8 +3,8 @@ setlocal EnableExtensions
 
 set "PACKAGE_DIR=%~dp0"
 if "%PACKAGE_DIR:~-1%"=="\" set "PACKAGE_DIR=%PACKAGE_DIR:~0,-1%"
-set "SERVER_SCRIPT=%PACKAGE_DIR%_lab-studio-preview-server.mjs"
-set "STATE_FILE=%PACKAGE_DIR%logs\preview-state.json"
+set "SERVER_SCRIPT=%PACKAGE_DIR%\_lab-studio-preview-server.mjs"
+set "STATE_FILE=%PACKAGE_DIR%\logs\preview-state.json"
 
 if not exist "%SERVER_SCRIPT%" (
   echo [Lab Studio] The packaged preview server is missing.
