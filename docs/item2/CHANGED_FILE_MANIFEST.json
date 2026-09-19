@@ -2,7 +2,7 @@
   "schemaVersion": 6,
   "branch": "codex/item2-catalog-reconciliation",
   "baseline": "f7c2b863f641090d9abc5c08ee22da72702fdfd6",
-  "documentedHeadBeforeManifestUpdate": "8568d6dd055ab0d291c67e87da0db348f6d89111",
+  "documentedHeadBeforeManifestUpdate": "1f006308c29aa6169fb6c31dfa7f3b7535215c14",
   "selfExcluded": true,
   "selfExclusionReason": "The manifest update itself creates the next commit; its own final Git blob SHA cannot be recursively embedded.",
   "implementation": [
@@ -147,7 +147,7 @@
     "extras": 0,
     "githubBranchPresence": "absent; local verified artifact only"
   },
-  "evidenceStatus": "item2-luna-final4-20260918 final current source/static evidence; no runtime/scientific/browser/release claim",
+  "evidenceStatus": "item2-luna-local-20260918-final final current source/static evidence; no runtime/scientific/browser/release claim",
   "targetedScenarioCorrections": {
     "greenChemistry": {
       "heatedProductRecovery": "qualitative provenance only; no recovered-product mass measurement",
@@ -162,9 +162,9 @@
     }
   },
   "currentEvidence": {
-    "runId": "item2-luna-final4-20260918",
-    "finalSummaryPath": "../delivery/item2-luna-final4-20260918/FINAL_SUMMARY.json",
-    "sourceCommit": "../delivery/item2-luna-final4-20260918/FINAL_SUMMARY.json#/sourceFreeze/commit",
+    "runId": "item2-luna-local-20260918-final",
+    "finalSummaryPath": "../delivery/item2-luna-local-20260918-final/FINAL_SUMMARY.json",
+    "sourceCommit": "../delivery/item2-luna-local-20260918-final/FINAL_SUMMARY.json#/sourceFreeze/commit",
     "corePhasesPassed": 5,
     "supplementalPhasesRecorded": 2,
     "contentCheckExitCode": 1,
@@ -191,7 +191,7 @@
     "docs/architecture/source-trace-registry.json"
   ],
   "blobVerification": {
-    "sourceFreezeCommit": "8568d6dd055ab0d291c67e87da0db348f6d89111",
+    "sourceFreezeCommit": "1f006308c29aa6169fb6c31dfa7f3b7535215c14",
     "verifiedEntries": 29,
     "selfExcluded": true
   }

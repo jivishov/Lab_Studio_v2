@@ -88,15 +88,15 @@ The previous scenario incorrectly described Reset as clearing report calculation
 
 Those documentation/source-contract corrections were source-only; the current evidence result is recorded separately below.
 
-## Current-evidence challenge and final receipt — item2-luna-final4-20260918
+## Current-evidence challenge and final receipt — item2-luna-local-20260918-final
 
-- Run ID: `item2-luna-final4-20260918`; the final recorder receipt is under `planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-luna-final4-20260918/CURRENT_VERIFICATION_RUN.json`, and the concrete identity/digest summary is `../delivery/item2-luna-final4-20260918/FINAL_SUMMARY.json`.
+- Run ID: `item2-luna-local-20260918-final`; the final recorder receipt is under `planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-luna-local-20260918-final/CURRENT_VERIFICATION_RUN.json`, and the concrete identity/digest summary is `../delivery/item2-luna-local-20260918-final/FINAL_SUMMARY.json`.
 - Core chain: **5/5 passed** — compiler witness, reconciliation, Cycle 09 overlay refresh/check, and reconciliation check.
 - Recorder `--check`: **exit 1 is expected** because `checkStatus=supplemental-failures`; source is current, integrity passed, no core phase failed, and only repository-content-check is supplemental-failed.
 - Supplemental phases: **2 recorded** — the Cycle 12 static verifier passed; repository-content-check exited 1 only for 21 explicit source-trace residuals with justified nonblocking dispositions.
-- Source-trace reconciliation: **882 exact action members** are covered by 194 contextual groups; **21 residuals** remain (17 authored paper-drying operations and 4 teacher-configured inventory actions).
+- Source-trace reconciliation: **882 exact action members** are covered by 196 contextual groups; **21 residuals** remain (17 authored paper-drying operations and 4 teacher-configured inventory actions).
 - Crystal Violet: the prior three raw rows are resolved by current compiled static routing; compiled-context findings are zero.
 - Configuration coverage: the former 38 rows resolve as **37 fixed-role configurations plus 1 not-applicable approval row(s)**; current unrepresented configuration count is zero.
-- The complete content-check JSON and recorder logs are captured under the external delivery directory `../delivery/item2-luna-final4-20260918/content-check-compiled.json` and the run evidence directory above.
+- The complete content-check JSON and recorder logs are captured under the external delivery directory `../delivery/item2-luna-local-20260918-final/content-check-compiled.json` and the run evidence directory above.
 
 This is source/static evidence only. Runtime traversal, browser behavior, physical instrument response, scientific validity, classroom safety and release readiness remain unverified. No push, merge or deployment was performed.
