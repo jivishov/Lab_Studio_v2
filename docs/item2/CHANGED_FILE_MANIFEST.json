@@ -2,13 +2,13 @@
   "schemaVersion": 6,
   "branch": "codex/item2-catalog-reconciliation",
   "baseline": "f7c2b863f641090d9abc5c08ee22da72702fdfd6",
-  "documentedHeadBeforeManifestUpdate": "3cf0e73cd35bcfab7f727ca22234141f85c6741b",
+  "documentedHeadBeforeManifestUpdate": "21006aa23d067be1cdca531509bf2f4c17c04896",
   "selfExcluded": true,
   "selfExclusionReason": "The manifest update itself creates the next commit; its own final Git blob SHA cannot be recursively embedded.",
   "implementation": [
     {
       "path": "docs/architecture/source-trace-registry.json",
-      "blobSha": "84622a64f133f567ffd5085e388e3fb837720c9c"
+      "blobSha": "8ed2e1d28d59684b9881d88c7212ea931ffa5b90"
     },
     {
       "path": "public/techniques/titration-curve-analysis.json",
@@ -16,7 +16,7 @@
     },
     {
       "path": "scripts/__tests__/f07SourceTraceRegistry.test.mjs",
-      "blobSha": "dcfef39abd955dddaec1ffe1793a596f46e52fed"
+      "blobSha": "12f01c860f5e47e1933ee81a91096d037fd96ba3"
     },
     {
       "path": "scripts/checkContentConsistency.mjs",
@@ -28,19 +28,31 @@
     },
     {
       "path": "scripts/generateItem2SourceTraceGroups.mjs",
-      "blobSha": "7c55a1ba99844a6f82e631bd42f28402e2dce3d2"
+      "blobSha": "8c201653adabee28d099b16d4ffb5c4bcc31c3d6"
     },
     {
       "path": "scripts/generatorInputs/item2SourceTraceMappings.mjs",
-      "blobSha": "5ffb0123c6d7d6fce3f163589cfc958f452148f8"
+      "blobSha": "bcf4a18f5f7b00c2c8487b63db262470db6be60d"
     },
     {
       "path": "scripts/reconcileItem2CurrentRecords.mjs",
-      "blobSha": "28bb1290afc0879bba6b7a07afa2ccf3eea810b1"
+      "blobSha": "0febd0b82fc809e7ece2f18cfcb21bd9eca4a8d2"
     },
     {
       "path": "scripts/recordItem2FinalCommandSequence.mjs",
       "blobSha": "85233b2cf175a00c8e6ab8030f2af58995a233f1"
+    },
+    {
+      "path": "scripts/refreshItem2Manifest.mjs",
+      "blobSha": "0e540b53710b48aed3d901c1007d6dc787727aa2"
+    },
+    {
+      "path": "scripts/registerCycle07TitrationAtoms.mjs",
+      "blobSha": "e1183b04bdfa1cb708984287a964f5eac0a7d42b"
+    },
+    {
+      "path": "scripts/writeItem2FinalSummary.mjs",
+      "blobSha": "05cda47045b99196fb7c0889364c149e320317cc"
     },
     {
       "path": "src/data/__tests__/compiledWitnessDiagnostics.test.ts",
@@ -49,6 +61,10 @@
     {
       "path": "src/data/compiledWitnessDiagnostics.ts",
       "blobSha": "93e3f6c94d291136bb59ba89e8e4bdf70cf05cdd"
+    },
+    {
+      "path": "src/domain/atomRegistry.json",
+      "blobSha": "620e290135d7c49a46f1b408490639302e5acd14"
     },
     {
       "path": "src/runtime/__tests__/cycle09Titration.test.ts",
@@ -62,19 +78,19 @@
   "item2Records": [
     {
       "path": "docs/item2/CATALOG_DISPOSITIONS.json",
-      "blobSha": "e9581377fdf2b11e09eba27fdaa46dba0a665d94"
+      "blobSha": "59baef671ca06f1e1841fcd7136e4a85ba580aea"
     },
     {
       "path": "docs/item2/CATALOG_DISPOSITIONS.md",
-      "blobSha": "71b724b31829a1e89b214e329ede3db17debe2b8"
+      "blobSha": "63faee973d992e14694ba16991b87ec6fb4f579d"
     },
     {
       "path": "docs/item2/CONFIGURATION_COVERAGE.json",
-      "blobSha": "7072e6546f5d5f732c0680629ebbb90d22ed0c62"
+      "blobSha": "faa04ab2c11e2e6cca7ad8853fea74766daaf547"
     },
     {
       "path": "docs/item2/CRITICAL_REVIEW.md",
-      "blobSha": "96c4e728d8047ee4a154cd7257e8bbef246fca67"
+      "blobSha": "3ead8b8863ef1e09d1cbc03fa1223b7c63440945"
     },
     {
       "path": "docs/item2/EVIDENCE_DEPENDENCY_RESTORATION.json",
@@ -82,23 +98,23 @@
     },
     {
       "path": "docs/item2/EXECUTION_REQUEST.md",
-      "blobSha": "833f41dc70f5ba908c5e8a9de6cc9e5557ff3362"
+      "blobSha": "848103aa6fb1effe8037dff2c2f41e6123ad2d79"
     },
     {
       "path": "docs/item2/FINDING_TRIAGE.json",
-      "blobSha": "e8a132f8c3140a8d919bef0796252d7f7b378245"
+      "blobSha": "1712e97cadc3d8ef68cdd72a88a36e826a1a7c4a"
     },
     {
       "path": "docs/item2/ITEM2_REPORT.md",
-      "blobSha": "7aa02302b0c759ac350aa7f7694a799d5597a5cf"
+      "blobSha": "39a0bbb3ef91a1d8ac98d1dbabce17a693dae4e0"
     },
     {
       "path": "docs/item2/RUN_LEDGER.json",
-      "blobSha": "2cbe1d599a6b36fa5504eb1641515eedd904f1ea"
+      "blobSha": "3f933801384488a8a0094c1e0a345e24d93bffd9"
     },
     {
       "path": "docs/item2/SCENARIO_AUDIT.json",
-      "blobSha": "4128119372874ad36cc20dc269a2ff58fbb54d7a"
+      "blobSha": "4ac76a8d203256ae52447d3be2ffd0ef324a269a"
     },
     {
       "path": "docs/item2/SCENARIO_MATRIX.md",
@@ -106,7 +122,7 @@
     },
     {
       "path": "docs/item2/SELF_REVIEW_AUDIT.json",
-      "blobSha": "78c64d3c13a00590796077e02dee86710e1021fc"
+      "blobSha": "ff8931209ac835cf070857310136f04f4218fe06"
     }
   ],
   "scenarioAudit": {
@@ -131,7 +147,7 @@
     "extras": 0,
     "githubBranchPresence": "absent; local verified artifact only"
   },
-  "evidenceStatus": "item2-luna-final3-20260918 final current source/static evidence; no runtime/scientific/browser/release claim",
+  "evidenceStatus": "item2-luna-final4-20260918 final current source/static evidence; no runtime/scientific/browser/release claim",
   "targetedScenarioCorrections": {
     "greenChemistry": {
       "heatedProductRecovery": "qualitative provenance only; no recovered-product mass measurement",
@@ -146,8 +162,9 @@
     }
   },
   "currentEvidence": {
-    "runId": "item2-luna-final3-20260918",
-    "sourceCommit": "recorded in final CURRENT_VERIFICATION_RUN.json",
+    "runId": "item2-luna-final4-20260918",
+    "finalSummaryPath": "../delivery/item2-luna-final4-20260918/FINAL_SUMMARY.json",
+    "sourceCommit": "../delivery/item2-luna-final4-20260918/FINAL_SUMMARY.json#/sourceFreeze/commit",
     "corePhasesPassed": 5,
     "supplementalPhasesRecorded": 2,
     "contentCheckExitCode": 1,
@@ -172,5 +189,10 @@
     "public/techniques/transmittance-dilution.json",
     "src/domain/atomRegistry.json",
     "docs/architecture/source-trace-registry.json"
-  ]
+  ],
+  "blobVerification": {
+    "sourceFreezeCommit": "21006aa23d067be1cdca531509bf2f4c17c04896",
+    "verifiedEntries": 29,
+    "selfExcluded": true
+  }
 }
