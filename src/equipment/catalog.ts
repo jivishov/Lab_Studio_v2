@@ -888,6 +888,7 @@ for (const [id, baseId] of Object.entries(stockBottleVariants)) {
     ...base,
     id,
     label: `${base.label} (${capacityLabel})`,
+    accessibleName: `${base.accessibleName} (${capacityLabel})`,
     capacity: { amount: capacityMl, unit: "mL" },
     snapZones: base.snapZones.map((zone) => ({
       ...zone,
