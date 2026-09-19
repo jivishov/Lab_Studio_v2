@@ -7,6 +7,8 @@ set "BUILD_RECORD=%PACKAGE_DIR%\_lab-studio-build.json"
 set "SERVER_SCRIPT=%PACKAGE_DIR%\_lab-studio-preview-server.mjs"
 set "STATE_FILE=%PACKAGE_DIR%\logs\preview-state.json"
 set "LOG_FILE=%PACKAGE_DIR%\logs\preview.log"
+set "PROCESS_STDOUT_LOG=%PACKAGE_DIR%\logs\preview-process.stdout.log"
+set "PROCESS_STDERR_LOG=%PACKAGE_DIR%\logs\preview-process.stderr.log"
 set "LAB_STUDIO_URL=http://127.0.0.1:4180/"
 
 if not exist "%BUILD_RECORD%" (
@@ -31,10 +33,12 @@ set "LAB_STUDIO_NODE=%NODE_EXE%"
 set "LAB_STUDIO_SERVER=%SERVER_SCRIPT%"
 set "LAB_STUDIO_STATE=%STATE_FILE%"
 set "LAB_STUDIO_LOG=%LOG_FILE%"
+set "LAB_STUDIO_PROCESS_STDOUT=%PROCESS_STDOUT_LOG%"
+set "LAB_STUDIO_PROCESS_STDERR=%PROCESS_STDERR_LOG%"
 
-powershell -NoProfile -ExecutionPolicy Bypass -Command "$ErrorActionPreference='Stop'; $record=Get-Content -Raw -LiteralPath $env:LAB_STUDIO_BUILD_RECORD | ConvertFrom-Json; if ($record.launch.url -ne 'http://127.0.0.1:4180/') { throw 'The build record does not target the required loopback URL.' }; $arguments='"' + $env:LAB_STUDIO_SERVER + '" --root "' + $env:LAB_STUDIO_PACKAGE_DIR + '" --port 4180 --expected-build-id "' + $record.buildId + '" --state-file "' + $env:LAB_STUDIO_STATE + '" --log-file "' + $env:LAB_STUDIO_LOG + '"'; Start-Process -FilePath $env:LAB_STUDIO_NODE -ArgumentList $arguments -WorkingDirectory $env:LAB_STUDIO_PACKAGE_DIR -WindowStyle Hidden | Out-Null"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$ErrorActionPreference='Stop'; $record=Get-Content -Raw -LiteralPath $env:LAB_STUDIO_BUILD_RECORD | ConvertFrom-Json; if ($record.launch.url -ne 'http://127.0.0.1:4180/') { throw 'The build record does not target the required loopback URL.' }; New-Item -ItemType Directory -Force -Path (Split-Path -Parent $env:LAB_STUDIO_LOG) | Out-Null; $arguments='"' + $env:LAB_STUDIO_SERVER + '" --root "' + $env:LAB_STUDIO_PACKAGE_DIR + '" --port 4180 --expected-build-id "' + $record.buildId + '" --state-file "' + $env:LAB_STUDIO_STATE + '" --log-file "' + $env:LAB_STUDIO_LOG + '"'; Start-Process -FilePath $env:LAB_STUDIO_NODE -ArgumentList $arguments -WorkingDirectory $env:LAB_STUDIO_PACKAGE_DIR -WindowStyle Hidden -RedirectStandardOutput $env:LAB_STUDIO_PROCESS_STDOUT -RedirectStandardError $env:LAB_STUDIO_PROCESS_STDERR | Out-Null"
 if errorlevel 1 (
-  call :fail "The preview process could not be started. Check logs\preview.log."
+  call :fail "The preview process could not be started. Check logs\preview-process.stderr.log."
   exit /b 1
 )
 
@@ -50,10 +54,10 @@ for /L %%A in (1,1,45) do (
     call :fail "Port 4180 is occupied by an unrelated service or a different Lab Studio build. Nothing was stopped."
     exit /b 1
   )
-  timeout /t 1 /nobreak >nul
+  powershell -NoProfile -Command "Start-Sleep -Seconds 1"
 )
 
-call :fail "Lab Studio did not become available at %LAB_STUDIO_URL%. Check logs\preview.log."
+call :fail "Lab Studio did not become available at %LAB_STUDIO_URL%. Check logs\preview.log and logs\preview-process.stderr.log."
 exit /b 1
 
 :fail
