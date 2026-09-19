@@ -428,6 +428,34 @@ describe("F07 Phase 2 source-row coverage", () => {
       }),
     ]));
 
+    expect(traceGroups.find((group) => group.ownerId === "beverage-ph-volume-titration" && group.actionIds.includes("practice-hcl-indicator"))).toMatchObject({
+      sourceTable: "phase",
+      step: "PR-02",
+      reviewedMapping: expect.objectContaining({
+        decisionId: "item2-practice-hcl-indicator-v3",
+        reviewStatus: "reviewed-authored-simulator-boundary",
+      }),
+    });
+    expect(traceGroups.find((group) => group.ownerId === "beverage-ph-volume-titration" && group.actionIds.includes("practice-acetic-indicator"))).toMatchObject({
+      sourceTable: "phase",
+      step: "PR-04",
+      reviewedMapping: expect.objectContaining({
+        decisionId: "item2-practice-acetic-indicator-v3",
+        reviewStatus: "reviewed-authored-simulator-boundary",
+      }),
+    });
+    const quickSolidCleanup = traceGroups.find((group) => group.ownerId === "quick-ache-extraction-recovery" && group.actionIds.includes("cleanup-qar-acidic-recovery-watch-glass-dispose-contents"));
+    expect(quickSolidCleanup).toMatchObject({
+      sourceTable: "phase",
+      step: "E-13",
+      reviewedMapping: expect.objectContaining({
+        decisionId: "item2-quick-solid-waste-authored-boundary-v4",
+        reviewStatus: "reviewed-authored-simulator-boundary",
+        quantityAndConfigurationLimits: expect.stringContaining("S-05 only establishes liquid waste"),
+        notSupported: expect.stringContaining("physical disposal acceptance"),
+      }),
+    });
+
     expect(traceGroups.every((group) => [
       "reviewed-static-source-mapping",
       "reviewed-authored-simulator-boundary",
@@ -450,6 +478,16 @@ describe("F07 Phase 2 source-row coverage", () => {
       reviewStatus: "unresolved-source-review",
       decisionDisposition: "unresolved-source-review",
     });
+  });
+
+  it("keeps final-evidence reporting gated on preparation and structured recorder status", () => {
+    const reconciliationSource = readFileSync(join(root, "scripts/reconcileItem2CurrentRecords.mjs"), "utf8");
+    const finalSummarySource = readFileSync(join(root, "scripts/writeItem2FinalSummary.mjs"), "utf8");
+    expect(reconciliationSource).toContain("--prepare");
+    expect(reconciliationSource).toContain("prepared-pending-final-run");
+    expect(finalSummarySource).toContain("recorder-check.json");
+    expect(finalSummarySource).toContain('"integrity-failed"');
+    expect(finalSummarySource).toContain("sourceReviewIncomplete");
   });
 
   it("keeps Quick E-12 direct evidence narrow and records Green apparatus inference", () => {

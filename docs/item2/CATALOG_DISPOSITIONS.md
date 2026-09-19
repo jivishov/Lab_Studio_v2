@@ -66,4 +66,4 @@ Activity-specific source-review projection of `CATALOG_DISPOSITIONS.json`. Histo
 
 ## Current evidence boundary
 
-The final run `item2-luna-local-20260918-final` records current source/static evidence. The raw provenance debt is partitioned into 882 contextual group members and 21 explicit residuals with justified nonblocking dispositions; runtime/scientific/browser/release acceptance is not claimed.
+The final run `item2-luna-local-20260918-r1` is prepared but not yet observed. Source/static preflight partitions 882 contextual group members and 21 explicit residuals with justified nonblocking dispositions; recorder/current/source-integrity/core results are pending, and runtime/scientific/browser/release acceptance is not claimed.

@@ -7,6 +7,7 @@ const root = resolve(join(fileURLToPath(new URL(".", import.meta.url)), ".."));
 const finalRunId = process.argv.includes("--run-id")
   ? process.argv[process.argv.indexOf("--run-id") + 1]
   : "item2-luna-final-20260918";
+const isPreparation = process.argv.includes("--prepare");
 if (!/^[a-z0-9][a-z0-9-]{2,63}$/.test(finalRunId)) {
   throw new Error(`Unsafe final run id: ${finalRunId}`);
 }
@@ -253,6 +254,15 @@ const sourceTraceReviewSummary = Object.fromEntries((registry.traceGroups ?? [])
   counts.set(status, entry);
   return counts;
 }, new Map()));
+const unreviewedSourceTraceGroups = (registry.traceGroups ?? []).filter((group) => !isAffirmativeReviewedMapping(group));
+const unreviewedSourceTraceGroupCount = unreviewedSourceTraceGroups.length;
+const sourceReviewIncomplete = unresolvedReviewCount > 0 || unreviewedSourceTraceGroupCount > 0;
+const preparationStatus = sourceReviewIncomplete
+  ? "prepared-with-unresolved-source-review"
+  : "prepared-pending-final-run";
+const currentEvidenceStatus = sourceReviewIncomplete
+  ? "incomplete-unresolved-source-review"
+  : "current-final-static-reconciliation-with-justified-source-residuals";
 
 const priorCrystalVioletFindings = unique(previousFindings
   .filter((finding) => finding.rule === "cycle06/cuvette-slot-unbalanced" || finding.rule === "cycle06/photometer-wavelength-unproduced")
@@ -362,29 +372,39 @@ const configurationResolution = {
   }, new Map())),
 };
 
-triage.status = "current-final-static-reconciliation-with-justified-source-residuals";
+triage.status = isPreparation
+  ? preparationStatus
+  : currentEvidenceStatus;
 triage.currentRawDiagnostics = {
-  status: "current-run-complete-with-justified-source-residuals",
+  status: isPreparation
+    ? preparationStatus
+    : sourceReviewIncomplete
+      ? "current-run-incomplete-unresolved-source-review"
+      : "current-run-complete-with-justified-source-residuals",
+  verificationStatus: isPreparation ? "pending-final-run" : sourceReviewIncomplete ? "blocked-unresolved-source-review" : "current-final-static-evidence",
   runId: finalRunId,
   finalSummaryPath,
   sourceCommit: finalSummaryRef("sourceFreeze/commit"),
   sourceCommitAtRecordAuthoring: gitHead,
-  sourceSnapshotPayloadSha256: finalSummaryRef("sourceSnapshot/payloadSha256"),
+  sourceSnapshotPayloadSha256: isPreparation ? null : finalSummaryRef("sourceSnapshot/payloadSha256"),
   contentCheck: {
     command: "node --experimental-strip-types --experimental-loader ./scripts/tsCompositionLoader.mjs scripts/checkContentConsistency.mjs --compiled --json",
-    exitCode: 1,
+    phase: isPreparation ? "pre-final-run-static-preflight" : "final-run-recorded-diagnostic",
+    exitCode: checker.status,
     stdoutPath: contentCapture,
-    stdoutSha256: finalSummaryRef("diagnostic/sha256"),
-    stdoutBytes: finalSummaryRef("diagnostic/bytes"),
+    stdoutSha256: isPreparation ? null : finalSummaryRef("diagnostic/sha256"),
+    stdoutBytes: isPreparation ? null : finalSummaryRef("diagnostic/bytes"),
     recorderLog: contentLog,
-    recorderLogBytes: finalSummaryRef("contentCheckLog/bytes"),
-    recorderLogSha256: finalSummaryRef("contentCheckLog/sha256"),
+    recorderLogBytes: isPreparation ? null : finalSummaryRef("contentCheckLog/bytes"),
+    recorderLogSha256: isPreparation ? null : finalSummaryRef("contentCheckLog/sha256"),
   },
   evaluationScope: "raw/template findings after conservative compiled-context routing and explicit source-trace group expansion",
   retainedFindingCount: residualCount,
   evaluatedSourceTraceFindingCount: transformedFindings.length,
   groupedContextFindingCount: groupedCount,
   unresolvedSourceTraceReviewCount: unresolvedReviewCount,
+  unreviewedSourceTraceGroupCount,
+  sourceReviewIncomplete,
   unresolvedSourceTraceResidualCount: residualCount,
   justifiedNonblockingSourceTraceResidualCount: residualCount,
   sourceTraceReviewSummary,
@@ -398,7 +418,7 @@ triage.currentRawDiagnostics = {
     compiledContextCount: compiledWitnessCount,
     evaluatedNodeContextCount: coverage.evaluatedNodeContextCount,
     uniqueCompiledContextFindings: composition.findings?.counts?.uniqueCompiledContextFindings ?? 0,
-    integrityFailureCount: 0,
+    integrityFailureCount: isPreparation ? null : 0,
     integrityFindings: [],
     coverageStatusCounts: coverage.byStatus ?? {},
     configurationCoverageResolution: configurationResolution,
@@ -408,14 +428,16 @@ triage.currentRawDiagnostics = {
     path: "docs/atomic-steps.md",
     upToDate: true,
   },
-  finalEvidenceBoundary: "Source/static evidence only. Runtime, browser, physical, scientific, classroom, safety, performance and release acceptance remain unclaimed.",
+  finalEvidenceBoundary: isPreparation
+    ? "Prepared source/static reconciliation only. The new final recorder/current/integrity/core result is pending; runtime, browser, physical, scientific, classroom, safety, performance and release acceptance remain unclaimed."
+    : "Source/static evidence only. Runtime, browser, physical, scientific, classroom, safety, performance and release acceptance remain unclaimed.",
 };
 writeJson(triagePath, triage);
 
 const coveragePath = "docs/item2/CONFIGURATION_COVERAGE.json";
 const configurationCoverage = readJson(coveragePath);
 configurationCoverage.currentCompiledCoverage = {
-  status: "current-final-static-diagnostic",
+  status: isPreparation ? "pre-final-run-static-preflight" : currentEvidenceStatus,
   runId: finalRunId,
   finalSummaryPath,
   sourceCommit: finalSummaryRef("sourceFreeze/commit"),
@@ -444,36 +466,59 @@ configurationCoverage.currentCompiledCoverage = {
 };
 configurationCoverage.historicalComparison = {
   ...(configurationCoverage.historicalComparison ?? {}),
-  currentStatus: "superseded-by-current-final-static-diagnostic",
+  currentStatus: isPreparation ? "superseded-by-pre-final-run-static-preflight" : "superseded-by-current-final-static-diagnostic",
   supersededRun: "item2-f9c9229-run-b",
 };
 writeJson(coveragePath, configurationCoverage);
 
 const catalogPath = "docs/item2/CATALOG_DISPOSITIONS.json";
 const catalog = replaceText(readJson(catalogPath));
-catalog.evidenceMode = `current source/static evidence recorded in the final item-2 run; ${residualCount} explicit source-trace residuals remain with justified nonblocking dispositions; runtime/scientific/browser/release acceptance not claimed`;
+catalog.evidenceMode = isPreparation
+  ? `source/static reconciliation prepared for final run ${finalRunId}; current recorder, source-integrity and core-completion results are pending; ${residualCount} explicit source-trace residuals remain with justified nonblocking dispositions; runtime/scientific/browser/release acceptance not claimed`
+  : `current source/static evidence recorded in the final item-2 run; ${residualCount} explicit source-trace residuals remain with justified nonblocking dispositions; runtime/scientific/browser/release acceptance not claimed`;
 catalog.status = {
   ...(catalog.status ?? {}),
-  sourceInventoryAndStaticRationale: "complete",
-  sourceLevelReconciliationClosure: `current-static-with-${residualCount}-justified-source-trace-residuals`,
-  currentEvidenceStatus: "current final static evidence recorded; runtime/scientific/browser/release acceptance not claimed",
-  fullItem2Status: "complete-for-authorized-source-current-evidence-scope",
+  sourceInventoryAndStaticRationale: sourceReviewIncomplete ? "incomplete-unresolved-source-review" : isPreparation ? "prepared" : "complete",
+  sourceLevelReconciliationClosure: sourceReviewIncomplete
+    ? `incomplete-with-${unreviewedSourceTraceGroupCount || unresolvedReviewCount}-unresolved-source-review-groups`
+    : isPreparation
+      ? "prepared-pending-final-run"
+      : `current-static-with-${residualCount}-justified-source-trace-residuals`,
+  currentEvidenceStatus: sourceReviewIncomplete
+    ? "unresolved source-trace review prevents current closure; final run not accepted"
+    : isPreparation
+      ? "final recorder/current/integrity/core result pending; no current acceptance claim"
+      : "current final static evidence recorded; runtime/scientific/browser/release acceptance not claimed",
+  fullItem2Status: sourceReviewIncomplete
+    ? "incomplete-unresolved-source-review"
+    : isPreparation
+      ? "incomplete-pending-final-run"
+      : "complete-for-authorized-source-current-evidence-scope",
 };
 catalog.currentEvidence = {
   runId: finalRunId,
   finalSummaryPath,
   sourceCommit: finalSummaryRef("sourceFreeze/commit"),
-  corePhases: "5/5 passed",
+  status: sourceReviewIncomplete ? "incomplete-unresolved-source-review" : isPreparation ? "pending-final-run" : "current-final-static-evidence",
+  corePhases: isPreparation ? "pending" : "5/5 passed",
   supplementalPhases: {
-    cycle12StaticVerifier: "passed",
-    repositoryContentCheck: `exit ${checker.status}; ${residualCount} explicit source-trace residuals with justified nonblocking dispositions`,
+    cycle12StaticVerifier: isPreparation ? "pending" : "passed",
+    repositoryContentCheck: isPreparation
+      ? "pending-final-run; pre-final static preflight is not a supplemental run result"
+      : `exit ${checker.status}; ${residualCount} explicit source-trace residuals with justified nonblocking dispositions`,
   },
-  recorderCheck: `exit ${checker.status}; source current; integrity passed; core complete; supplemental-failures reports repository-content-check`,
+  recorderCheck: isPreparation
+    ? "pending-final-run; do not infer recorder verdict from the content-check exit"
+    : sourceReviewIncomplete
+      ? "not accepted; unresolved source-trace review remains"
+      : `recorded separately by the final run; content-check exit ${checker.status} is not the recorder verdict`,
   contentCheck: {
     retainedFindings: residualCount,
     evaluatedSourceTraceFindings: transformedFindings.length,
     groupedSourceTraceMembers: groupedCount,
     unresolvedSourceTraceResiduals: residualCount,
+    unresolvedSourceTraceReviewCount: unresolvedReviewCount,
+    unreviewedSourceTraceGroupCount,
     justifiedNonblockingSourceTraceResiduals: residualCount,
     resolvedPriorCrystalVioletRows: cvResolvedRows.length,
     compiledContextFindings: compiledContextFindingCount,
@@ -482,7 +527,9 @@ catalog.currentEvidence = {
     notApplicableConfigurationRows: currentNotApplicable.length,
   },
   dispositionRecord: triagePath,
-  finalEvidenceBoundary: "Source/static evidence only; runtime, scientific, browser, classroom, safety and release acceptance remain unclaimed.",
+  finalEvidenceBoundary: isPreparation
+    ? "Prepared source/static reconciliation only; the new final recorder/current/integrity/core result is pending. Runtime, scientific, browser, classroom, safety and release acceptance remain unclaimed."
+    : "Source/static evidence only; runtime, scientific, browser, classroom, safety and release acceptance remain unclaimed.",
 };
 writeJson(catalogPath, catalog);
 
@@ -490,7 +537,11 @@ const scenarioAuditPath = "docs/item2/SCENARIO_AUDIT.json";
 const scenarioAudit = readJson(scenarioAuditPath);
 scenarioAudit.evidenceStatus = {
   runId: finalRunId,
-  status: "static evidence current; scenario execution and runtime acceptance unrun",
+  status: sourceReviewIncomplete
+    ? "unresolved source-trace review prevents current closure; scenario execution and runtime acceptance unrun"
+    : isPreparation
+      ? "static preparation recorded; final recorder/current result pending; scenario execution and runtime acceptance unrun"
+      : "static evidence current; scenario execution and runtime acceptance unrun",
   disposition: "not conflated with current content diagnostics",
 };
 writeJson(scenarioAuditPath, scenarioAudit);
@@ -498,7 +549,7 @@ writeJson(scenarioAuditPath, scenarioAudit);
 const ledgerPath = "docs/item2/RUN_LEDGER.json";
 const ledger = replaceText(readJson(ledgerPath));
 ledger.performed = [
-  ...(ledger.performed ?? []).filter((entry) => !["source-trace-group-reconciliation", "compiled-coverage-boundary-reconciliation", "item2-final-current-evidence"].includes(entry.kind)),
+  ...(ledger.performed ?? []).filter((entry) => !["source-trace-group-reconciliation", "compiled-coverage-boundary-reconciliation", "item2-final-current-evidence", "item2-final-evidence-preparation"].includes(entry.kind)),
   {
     kind: "source-trace-group-reconciliation",
     detail: `Added ${traceGroupsByAction.size ? registry.traceGroups.length : 0} explicit contextual source-trace groups covering ${groupedCount} exact owner-local action members; preserved ${residualCount} source-trace residuals with justified nonblocking dispositions and no invented citation.`,
@@ -508,14 +559,30 @@ ledger.performed = [
     detail: `Narrowed fixed-role/host-predicate handling to authored boundaries: ${fixedRoleConfigurations.length} former configuration gaps resolve as fixed-role coverage and ${currentNotApplicable.length} Crystal Violet rate-law approval row(s) are not applicable to the host instance.`,
   },
   {
-    kind: "item2-final-current-evidence",
-    detail: `Final current-evidence run ${finalRunId} is the authoritative receipt for the frozen tracked tree; five core phases and two supplemental phases are recorded.`,
+    kind: isPreparation ? "item2-final-evidence-preparation" : "item2-final-current-evidence",
+    detail: isPreparation
+      ? `Source/static records are prepared for final-evidence run ${finalRunId}; recorder, source-integrity and core-completion results are pending and no acceptance is claimed.`
+      : sourceReviewIncomplete
+        ? `Run ${finalRunId} is not accepted because ${unreviewedSourceTraceGroupCount || unresolvedReviewCount} source-trace review group/action result(s) remain unresolved.`
+        : `Final current-evidence run ${finalRunId} is the authoritative receipt for the frozen tracked tree; five core phases and two supplemental phases are recorded.`,
   },
 ];
-ledger.evidencePipelineStatus = "complete-current-run-with-supplemental-failures";
-ledger.currentEvidenceStatus = `Final current-evidence run ${finalRunId} is authoritative for the frozen tree: five core phases passed, two supplemental phases were recorded, repository-content-check remains nonzero only for ${residualCount} explicit source-trace residuals with justified nonblocking dispositions, and the source/static boundary is preserved.`;
-ledger.sourceLevelClosureClaim = `current source/static reconciliation and evidence recorded; ${residualCount} explicit source-trace residuals remain with justified nonblocking dispositions; runtime/scientific/browser/release closure not claimed`;
-ledger.acceptedRun = {
+ledger.evidencePipelineStatus = sourceReviewIncomplete
+  ? "incomplete-unresolved-source-review"
+  : isPreparation
+    ? "prepared-pending-final-run"
+    : "complete-current-run-with-supplemental-failures";
+ledger.currentEvidenceStatus = sourceReviewIncomplete
+  ? `Run ${finalRunId} is not accepted because source-trace review is unresolved; no current closure is claimed.`
+  : isPreparation
+    ? `Final current-evidence run ${finalRunId} is prepared but not yet observed; recorder/current/integrity/core results are pending.`
+    : `Final current-evidence run ${finalRunId} is authoritative for the frozen tree: five core phases passed, two supplemental phases were recorded, repository-content-check remains nonzero only for ${residualCount} explicit source-trace residuals with justified nonblocking dispositions, and the source/static boundary is preserved.`;
+ledger.sourceLevelClosureClaim = sourceReviewIncomplete
+  ? "source-level closure is incomplete until every contextual source group/action has an affirmative reviewed mapping"
+  : isPreparation
+    ? `source/static reconciliation prepared with ${residualCount} explicit residuals; final recorder/current/integrity/core result pending; runtime/scientific/browser/release closure not claimed`
+    : `current source/static reconciliation and evidence recorded; ${residualCount} explicit source-trace residuals remain with justified nonblocking dispositions; runtime/scientific/browser/release closure not claimed`;
+if (!isPreparation && !sourceReviewIncomplete) ledger.acceptedRun = {
   runId: finalRunId,
   finalSummaryPath,
   sourceCommit: finalSummaryRef("sourceFreeze/commit"),
@@ -528,9 +595,22 @@ ledger.acceptedRun = {
     repositoryContentCheck: `nonzero exit retained and triaged: ${residualCount} justified nonblocking source-trace residuals`,
   },
 };
+else {
+  delete ledger.acceptedRun;
+  ledger.pendingRun = {
+    runId: finalRunId,
+    finalSummaryPath,
+    sourceCommit: finalSummaryRef("sourceFreeze/commit"),
+    recorderCheck: "pending-final-run; not inferred from content-check exit",
+    sourceReviewStatus: sourceReviewIncomplete ? "unresolved-source-review" : "reviewed",
+  };
+}
 ledger.currentDiagnosticSummary = {
   groupedSourceTraceMembers: groupedCount,
   unresolvedSourceTraceResiduals: residualCount,
+  unresolvedSourceTraceReviewCount: unresolvedReviewCount,
+  unreviewedSourceTraceGroupCount,
+  sourceReviewIncomplete,
   resolvedPriorCrystalVioletRows: cvResolvedRows.length,
   compiledWitnesses: compiledWitnessCount,
   evaluatedNodeContexts: evaluatedNodeContextCount,
@@ -541,7 +621,17 @@ ledger.currentDiagnosticSummary = {
 };
 writeJson(ledgerPath, ledger);
 
-const finalEvidenceSection = `## Final current evidence — ${finalRunId}
+const finalEvidenceSection = isPreparation
+  ? `## Pending final evidence — ${finalRunId}
+
+- Run ID: \`${finalRunId}\` is prepared for the new final sequence; the future recorder receipt is expected under \`${runEvidenceRoot}/CURRENT_VERIFICATION_RUN.json\`, with the future summary at \`${finalSummaryPath}\`.
+- Current source/static preparation covers **${groupedCount} exact action members** in **${registry.traceGroups.length} reviewed contextual groups** and retains **${residualCount} explicit residuals** (${paperDryingResidualCount} authored paper-drying operations and ${inventoryResidualCount} teacher-configured inventory actions).
+- The final recorder/current/source-integrity/core result is **pending**. It must be read from the structured recorder result; it is not inferred from the content-check exit.
+- The tracked input tree must remain unchanged after the source-freeze manifest commit; only permitted generated evidence artifacts may be added after the final run.
+
+This is preparation evidence only. It does not claim a current run, source integrity, core completion, runtime behavior, scientific validity, classroom safety or release readiness.
+`
+  : `## Final current evidence — ${finalRunId}
 
 - Run ID: \`${finalRunId}\`; the final recorder receipt is under \`${runEvidenceRoot}/CURRENT_VERIFICATION_RUN.json\`, and the concrete identity/digest summary is \`${finalSummaryPath}\`.
 - Core chain: **5/5 passed** — compiler witness, reconciliation, Cycle 09 overlay refresh/check, and reconciliation check.
@@ -559,17 +649,21 @@ const reportPath = "docs/item2/ITEM2_REPORT.md";
 let report = readFileSync(join(root, reportPath), "utf8");
 report = report.replace(
   /- Fresh current evidence pipeline: .*\n/,
-  `- Fresh current evidence pipeline: **${finalRunId}; five core phases passed; two supplemental phases recorded; content check retains ${residualCount} justified nonblocking source-trace residuals**\n`,
+  isPreparation
+    ? `- Prepared final evidence pipeline: **${finalRunId}; recorder/current/source-integrity/core result pending; source/static preflight retains ${residualCount} justified nonblocking source-trace residuals**\n`
+    : `- Fresh current evidence pipeline: **${finalRunId}; five core phases passed; two supplemental phases recorded; content check retains ${residualCount} justified nonblocking source-trace residuals**\n`,
 );
-report = report.replace(/Run B static findings triaged/g, "final current static findings triaged");
-report = report.replace(
-  "The authorized item-2 evidence phase is now recorded in Run B. The remaining unrun checks are deliberately outside the repository validation policy and this scoped request.",
-  "The authorized item-2 evidence phase is now recorded in the final current run. The remaining unrun checks are deliberately outside the repository validation policy and this scoped request.",
-);
-report = report.replace(
-  "These changes improve static specification fidelity only. Item 2 remains incomplete pending repository-workspace restoration and separately authorized fresh evidence.",
-  "At that earlier pre-evidence checkpoint, the scenario changes were source-only; the final current evidence section below supersedes its pending-evidence wording.",
-);
+report = report.replace(/Run B static findings triaged/g, isPreparation ? "current static findings prepared" : "final current static findings triaged");
+if (!isPreparation) {
+  report = report.replace(
+    "The authorized item-2 evidence phase is now recorded in Run B. The remaining unrun checks are deliberately outside the repository validation policy and this scoped request.",
+    "The authorized item-2 evidence phase is now recorded in the final current run. The remaining unrun checks are deliberately outside the repository validation policy and this scoped request.",
+  );
+  report = report.replace(
+    "These changes improve static specification fidelity only. Item 2 remains incomplete pending repository-workspace restoration and separately authorized fresh evidence.",
+    "At that earlier pre-evidence checkpoint, the scenario changes were source-only; the final current evidence section below supersedes its pending-evidence wording.",
+  );
+}
 const reportMarker = "## Fresh current evidence — Run B";
 const existingFinalReportIndex = report.search(/^## Final current evidence — /m);
 const reportBase = report.includes(reportMarker)
@@ -583,8 +677,10 @@ writeFileSync(join(root, reportPath), report, "utf8");
 const criticalPath = "docs/item2/CRITICAL_REVIEW.md";
 let critical = readFileSync(join(root, criticalPath), "utf8");
 critical = critical.replace(/six core phases/g, "five core phases");
-critical = critical.replace(/pending current evidence\./g, "current static evidence recorded; runtime/scientific/browser/release acceptance remains unclaimed.");
-critical = critical.replace(/The current evidence phase is now complete[\s\S]*?release acceptance remain unclaimed\./, `The current evidence phase is complete for the authorized source/static scope. The final run records ${groupedCount} grouped source-trace members, ${residualCount} justified nonblocking residuals, ${compiledContextFindingCount} compiled-context findings, ${fixedRoleConfigurations.length} fixed-role configuration resolutions and ${currentNotApplicable.length} not-applicable Crystal Violet approval row(s); runtime, scientific, browser, classroom, safety and release acceptance remain unclaimed.`);
+if (!isPreparation) {
+  critical = critical.replace(/pending current evidence\./g, "current static evidence recorded; runtime/scientific/browser/release acceptance remains unclaimed.");
+  critical = critical.replace(/The current evidence phase is now complete[\s\S]*?release acceptance remain unclaimed\./, `The current evidence phase is complete for the authorized source/static scope. The final run records ${groupedCount} grouped source-trace members, ${residualCount} justified nonblocking residuals, ${compiledContextFindingCount} compiled-context findings, ${fixedRoleConfigurations.length} fixed-role configuration resolutions and ${currentNotApplicable.length} not-applicable Crystal Violet approval row(s); runtime, scientific, browser, classroom, safety and release acceptance remain unclaimed.`);
+}
 const criticalMarker = "## Current-evidence challenge";
 const existingFinalCriticalIndex = critical.search(/^## Current-evidence challenge and final receipt — /m);
 const criticalBase = critical.includes(criticalMarker) && !critical.includes("## Current-evidence challenge and final receipt")
@@ -592,14 +688,27 @@ const criticalBase = critical.includes(criticalMarker) && !critical.includes("##
   : existingFinalCriticalIndex >= 0
     ? critical.slice(0, existingFinalCriticalIndex)
     : critical;
-critical = `${criticalBase.trimEnd()}\n\n${finalEvidenceSection.replace("## Final current evidence", "## Current-evidence challenge and final receipt")}`;
+critical = `${criticalBase.trimEnd()}\n\n${finalEvidenceSection.replace(
+  isPreparation ? "## Pending final evidence" : "## Final current evidence",
+  isPreparation ? "## Current-evidence preparation" : "## Current-evidence challenge and final receipt",
+)}`;
 writeFileSync(join(root, criticalPath), critical, "utf8");
 
 const executionPath = "docs/item2/EXECUTION_REQUEST.md";
 let execution = readFileSync(join(root, executionPath), "utf8");
 execution = execution.replace(/six core/g, "five core");
 const executionMarker = "## Current execution result";
-const executionSection = `## Current execution result
+const executionSection = isPreparation
+  ? `## Current execution preparation
+
+- Discovery runs remain historical: Run A \`item2-597c060-run-a\`, Run B \`item2-f9c9229-run-b\`, and Run C \`item2-646169f-run-c\` are not used as the final identity for this repaired tree.
+- Prepared final run: \`${finalRunId}\`; the source commit and source snapshot identity will be recorded only after the new sequence completes.
+- Source/static preflight: ${groupedCount} grouped source-trace members, ${residualCount} explicit residuals, three prior Crystal Violet rows routed through compiled static coverage, ${compiledWitnessCount} compiled witnesses, ${evaluatedNodeContextCount} node contexts, ${compiledContextFindingCount} compiled-context findings, and ${fixedRoleConfigurations.length} fixed-role plus ${currentNotApplicable.length} not-applicable configuration resolutions.
+- Recorder/current/source-integrity/core result: **pending**. The content-check exit is not a recorder verdict.
+
+No runtime, scientific, browser, classroom, safety or release acceptance is claimed by this preparation record.
+`
+  : `## Current execution result
 
 - Discovery runs remain historical: Run A \`item2-597c060-run-a\`, Run B \`item2-f9c9229-run-b\`, and Run C \`item2-646169f-run-c\` are not used as the final identity for this repaired tree.
 - Final run: \`${finalRunId}\`; source commit and source snapshot identity are recorded in its \`CURRENT_VERIFICATION_RUN.json\`.
@@ -614,63 +723,67 @@ writeFileSync(join(root, executionPath), execution, "utf8");
 
 const catalogMarkdownPath = "docs/item2/CATALOG_DISPOSITIONS.md";
 let catalogMarkdown = readFileSync(join(root, catalogMarkdownPath), "utf8");
-catalogMarkdown = catalogMarkdown.replace(/Run B static findings triaged/g, "final current static findings triaged");
-catalogMarkdown = catalogMarkdown.replace(/Run B static evidence current/g, "final current static evidence");
+catalogMarkdown = catalogMarkdown.replace(/Run B static findings triaged/g, isPreparation ? "current static findings prepared" : "final current static findings triaged");
+catalogMarkdown = catalogMarkdown.replace(/Run B static evidence current/g, isPreparation ? "pre-final-run static evidence prepared" : "final current static evidence");
 const existingCatalogBoundaryIndex = catalogMarkdown.search(/^## Current evidence boundary$/m);
 if (existingCatalogBoundaryIndex >= 0) catalogMarkdown = catalogMarkdown.slice(0, existingCatalogBoundaryIndex);
-catalogMarkdown = `${catalogMarkdown.trimEnd()}\n\n## Current evidence boundary\n\nThe final run \`${finalRunId}\` records current source/static evidence. The raw provenance debt is partitioned into ${groupedCount} contextual group members and ${residualCount} explicit residuals with justified nonblocking dispositions; runtime/scientific/browser/release acceptance is not claimed.\n`;
+catalogMarkdown = `${catalogMarkdown.trimEnd()}\n\n## Current evidence boundary\n\n${isPreparation ? `The final run \`${finalRunId}\` is prepared but not yet observed. Source/static preflight partitions ${groupedCount} contextual group members and ${residualCount} explicit residuals with justified nonblocking dispositions; recorder/current/source-integrity/core results are pending, and runtime/scientific/browser/release acceptance is not claimed.` : `The final run \`${finalRunId}\` records current source/static evidence. The raw provenance debt is partitioned into ${groupedCount} contextual group members and ${residualCount} explicit residuals with justified nonblocking dispositions; runtime/scientific/browser/release acceptance is not claimed.`}\n`;
 writeFileSync(join(root, catalogMarkdownPath), catalogMarkdown, "utf8");
 
-const manifestPath = "docs/item2/CHANGED_FILE_MANIFEST.json";
-const manifest = readJson(manifestPath);
-const changedImplementationPaths = [
-  "docs/architecture/source-trace-registry.json",
-  "scripts/checkContentConsistency.mjs",
-  "scripts/generateItem2SourceTraceGroups.mjs",
-  "scripts/generatorInputs/item2SourceTraceMappings.mjs",
-  "scripts/registerCycle07TitrationAtoms.mjs",
-  "scripts/reconcileItem2CurrentRecords.mjs",
-  "scripts/recordItem2FinalCommandSequence.mjs",
-  "scripts/refreshItem2Manifest.mjs",
-  "scripts/writeItem2FinalSummary.mjs",
-  "scripts/__tests__/f07SourceTraceRegistry.test.mjs",
-  "src/data/compiledWitnessDiagnostics.ts",
-  "src/data/__tests__/compiledWitnessDiagnostics.test.ts",
-  "src/domain/atomRegistry.json",
-];
-manifest.implementation = unique([
-  ...(manifest.implementation ?? []).map((entry) => entry.path ?? entry),
-  ...changedImplementationPaths,
-]).sort().map((path) => ({
-  path,
-  blobSha: execFileSync(gitExecutable, ["hash-object", path], { cwd: root, encoding: "utf8" }).trim(),
-}));
-manifest.item2Records = (manifest.item2Records ?? []).map((entry) => ({
-  ...entry,
-  blobSha: execFileSync(gitExecutable, ["hash-object", entry.path], { cwd: root, encoding: "utf8" }).trim(),
-}));
-manifest.documentedHeadBeforeManifestUpdate = gitHead;
-manifest.evidenceStatus = `${finalRunId} final current source/static evidence; no runtime/scientific/browser/release claim`;
-manifest.currentEvidence = {
-  runId: finalRunId,
-  finalSummaryPath,
-  sourceCommit: finalSummaryRef("sourceFreeze/commit"),
-  corePhasesPassed: 5,
-  supplementalPhasesRecorded: 2,
-  contentCheckExitCode: checker.status,
-  retainedFindings: residualCount,
-  evaluatedSourceTraceFindings: transformedFindings.length,
-  groupedSourceTraceMembers: groupedCount,
-  unresolvedSourceTraceResiduals: residualCount,
-  resolvedPriorCrystalVioletRows: cvResolvedRows.length,
-  compiledContextFindings: compiledContextFindingCount,
-  formerConfigurationGapsResolved: formerConfigurationResolutions.length,
-  triagePath: triagePath,
-};
-writeJson(manifestPath, manifest);
+if (!isPreparation) {
+  const manifestPath = "docs/item2/CHANGED_FILE_MANIFEST.json";
+  const manifest = readJson(manifestPath);
+  const changedImplementationPaths = [
+    "docs/architecture/source-trace-registry.json",
+    "scripts/checkContentConsistency.mjs",
+    "scripts/generateItem2SourceTraceGroups.mjs",
+    "scripts/generatorInputs/item2SourceTraceMappings.mjs",
+    "scripts/registerCycle07TitrationAtoms.mjs",
+    "scripts/reconcileItem2CurrentRecords.mjs",
+    "scripts/recordItem2FinalCommandSequence.mjs",
+    "scripts/refreshItem2Manifest.mjs",
+    "scripts/writeItem2FinalSummary.mjs",
+    "scripts/__tests__/f07SourceTraceRegistry.test.mjs",
+    "src/data/compiledWitnessDiagnostics.ts",
+    "src/data/__tests__/compiledWitnessDiagnostics.test.ts",
+    "src/domain/atomRegistry.json",
+  ];
+  manifest.implementation = unique([
+    ...(manifest.implementation ?? []).map((entry) => entry.path ?? entry),
+    ...changedImplementationPaths,
+  ]).sort().map((path) => ({
+    path,
+    blobSha: execFileSync(gitExecutable, ["hash-object", path], { cwd: root, encoding: "utf8" }).trim(),
+  }));
+  manifest.item2Records = (manifest.item2Records ?? []).map((entry) => ({
+    ...entry,
+    blobSha: execFileSync(gitExecutable, ["hash-object", entry.path], { cwd: root, encoding: "utf8" }).trim(),
+  }));
+  manifest.documentedHeadBeforeManifestUpdate = gitHead;
+  manifest.evidenceStatus = `${finalRunId} final current source/static evidence; no runtime/scientific/browser/release claim`;
+  manifest.currentEvidence = {
+    runId: finalRunId,
+    finalSummaryPath,
+    sourceCommit: finalSummaryRef("sourceFreeze/commit"),
+    corePhasesPassed: 5,
+    supplementalPhasesRecorded: 2,
+    contentCheckExitCode: checker.status,
+    retainedFindings: residualCount,
+    evaluatedSourceTraceFindings: transformedFindings.length,
+    groupedSourceTraceMembers: groupedCount,
+    unresolvedSourceTraceResiduals: residualCount,
+    resolvedPriorCrystalVioletRows: cvResolvedRows.length,
+    compiledContextFindings: compiledContextFindingCount,
+    formerConfigurationGapsResolved: formerConfigurationResolutions.length,
+    triagePath: triagePath,
+  };
+  writeJson(manifestPath, manifest);
+}
 
 console.log(JSON.stringify({
   finalRunId,
+  preparation: isPreparation,
+  evidenceStatus: isPreparation ? preparationStatus : currentEvidenceStatus,
   sourceCommitAtRecordAuthoring: gitHead,
   retainedFindings: residualCount,
   evaluatedSourceTraceFindings: transformedFindings.length,

@@ -8,7 +8,7 @@
 - Hosted source configuration accounted: **66 / 66**
 - Historical dependency set locally restored: **46 / 46 files, 39,500,058 bytes, 46/46 SHA-256 matches**
 - Historical dependencies on GitHub branch: **not restored**
-- Fresh current evidence pipeline: **item2-luna-local-20260918-final; five core phases passed; two supplemental phases recorded; content check retains 21 justified nonblocking source-trace residuals**
+- Prepared final evidence pipeline: **item2-luna-local-20260918-r1; recorder/current/source-integrity/core result pending; source/static preflight retains 21 justified nonblocking source-trace residuals**
 - Source-level reconciliation closure: **current static reconciliation recorded; runtime/scientific/release closure not claimed**
 - Full Item 2: **complete for the authorized source/current-evidence scope, with explicit static limitations**
 - Items 3–5: **not started**
@@ -118,15 +118,11 @@ A subsequent source review corrected two remaining scenario-contract errors.
 
 No runtime/evidence pipeline was executed for those documentation corrections before the authorized current-evidence pass.
 
-## Final current evidence — item2-luna-local-20260918-final
+## Pending final evidence — item2-luna-local-20260918-r1
 
-- Run ID: `item2-luna-local-20260918-final`; the final recorder receipt is under `planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-luna-local-20260918-final/CURRENT_VERIFICATION_RUN.json`, and the concrete identity/digest summary is `../delivery/item2-luna-local-20260918-final/FINAL_SUMMARY.json`.
-- Core chain: **5/5 passed** — compiler witness, reconciliation, Cycle 09 overlay refresh/check, and reconciliation check.
-- Recorder `--check`: **exit 1 is expected** because `checkStatus=supplemental-failures`; source is current, integrity passed, no core phase failed, and only repository-content-check is supplemental-failed.
-- Supplemental phases: **2 recorded** — the Cycle 12 static verifier passed; repository-content-check exited 1 only for 21 explicit source-trace residuals with justified nonblocking dispositions.
-- Source-trace reconciliation: **882 exact action members** are covered by 196 contextual groups; **21 residuals** remain (17 authored paper-drying operations and 4 teacher-configured inventory actions).
-- Crystal Violet: the prior three raw rows are resolved by current compiled static routing; compiled-context findings are zero.
-- Configuration coverage: the former 38 rows resolve as **37 fixed-role configurations plus 1 not-applicable approval row(s)**; current unrepresented configuration count is zero.
-- The complete content-check JSON and recorder logs are captured under the external delivery directory `../delivery/item2-luna-local-20260918-final/content-check-compiled.json` and the run evidence directory above.
+- Run ID: `item2-luna-local-20260918-r1` is prepared for the new final sequence; the future recorder receipt is expected under `planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-luna-local-20260918-r1/CURRENT_VERIFICATION_RUN.json`, with the future summary at `../delivery/item2-luna-local-20260918-r1/FINAL_SUMMARY.json`.
+- Current source/static preparation covers **882 exact action members** in **197 reviewed contextual groups** and retains **21 explicit residuals** (17 authored paper-drying operations and 4 teacher-configured inventory actions).
+- The final recorder/current/source-integrity/core result is **pending**. It must be read from the structured recorder result; it is not inferred from the content-check exit.
+- The tracked input tree must remain unchanged after the source-freeze manifest commit; only permitted generated evidence artifacts may be added after the final run.
 
-This is source/static evidence only. Runtime traversal, browser behavior, physical instrument response, scientific validity, classroom safety and release readiness remain unverified. No push, merge or deployment was performed.
+This is preparation evidence only. It does not claim a current run, source integrity, core completion, runtime behavior, scientific validity, classroom safety or release readiness.

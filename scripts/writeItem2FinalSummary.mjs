@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
-import { readFileSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 
 const root = process.cwd();
@@ -22,6 +22,8 @@ const deliveryDirectory = resolve(deliveryRoot, runId);
 const runReceiptPath = `planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/${runId}/CURRENT_VERIFICATION_RUN.json`;
 const sequenceReceiptPath = join(deliveryDirectory, "FINAL_SEQUENCE_RECEIPT.json");
 const diagnosticPath = join(deliveryDirectory, "content-check-compiled.json");
+const recorderCheckPath = join(deliveryDirectory, "recorder-check.json");
+const recorderCheckRelativePath = `../delivery/${runId}/recorder-check.json`;
 const contentCheckLogRelativePath = `planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/${runId}/logs/repository-content-check.log`;
 const contentCheckLogPath = join(root, contentCheckLogRelativePath);
 const readJson = (file) => JSON.parse(readFileSync(file, "utf8"));
@@ -38,6 +40,7 @@ const blobFor = (commit, relativePath) => {
 const receipt = readJson(join(root, runReceiptPath));
 const sequence = readJson(sequenceReceiptPath);
 const diagnostic = readJson(diagnosticPath);
+const recorderCheck = existsSync(recorderCheckPath) ? readJson(recorderCheckPath) : null;
 const manifest = readJson(join(root, "docs/item2/CHANGED_FILE_MANIFEST.json"));
 const registry = readJson(join(root, "docs/architecture/source-trace-registry.json"));
 const triage = readJson(join(root, "docs/item2/FINDING_TRIAGE.json"));
@@ -54,6 +57,10 @@ const manifestMismatches = manifestEntries.map((entry) => ({
   actual: blobFor(sourceFreezeCommit, entry.path),
 })).filter((entry) => entry.recorded !== entry.actual);
 if (manifestMismatches.length) throw new Error(`Manifest blob mismatch: ${JSON.stringify(manifestMismatches.slice(0, 10))}`);
+const evidenceRunReceiptBlob = blobFor(evidenceCommit, runReceiptPath);
+const workingRunReceiptBlob = gitText(["hash-object", runReceiptPath]);
+const evidencePointerValid = Boolean(evidenceRunReceiptBlob)
+  && evidenceRunReceiptBlob === workingRunReceiptBlob;
 
 const phaseSnapshotHashes = [...new Set((receipt.phases ?? []).map((phase) => phase.sourceSnapshotPayloadSha256).filter(Boolean))];
 const sequenceUnexpected = (sequence.commands ?? []).filter((command) => command.outcome !== "expected");
@@ -105,6 +112,52 @@ const semanticReview = (registry.traceGroups ?? []).reduce((summaryValue, group)
   byStatus: {},
   byDisposition: {},
 });
+const recorderCommand = commandById.get("09-recorder-check");
+const recorderContractErrors = Array.isArray(recorderCheck?.contractErrors) ? recorderCheck.contractErrors : [];
+const recorderMismatches = Array.isArray(recorderCheck?.mismatches) ? recorderCheck.mismatches : [];
+const recorderHasAcceptedSupplementalStatus = ["supplemental-failures", "no-supplemental-failures"].includes(recorderCheck?.supplementalRunStatus);
+const recorderCheckStatusAccepted = ["supplemental-failures", "passed"].includes(recorderCheck?.checkStatus);
+const recorderSourceCurrent = recorderCheck?.sourceStatus === "current";
+const recorderIntegrityPassed = recorderCheck?.integrityStatus === "passed";
+const recorderCoreComplete = recorderCheck?.coreRunStatus === "complete-current-run";
+const recorderStructuredResultValid = Boolean(recorderCheck)
+  && recorderSourceCurrent
+  && recorderIntegrityPassed
+  && recorderCoreComplete
+  && recorderHasAcceptedSupplementalStatus
+  && recorderCheckStatusAccepted
+  && recorderContractErrors.length === 0
+  && recorderMismatches.length === 0;
+const triageSourceReviewCount = Number(triage.currentRawDiagnostics?.unresolvedSourceTraceReviewCount ?? 0);
+const triageUnreviewedGroupCount = Number(triage.currentRawDiagnostics?.unreviewedSourceTraceGroupCount ?? 0);
+const sourceReviewIncomplete = triageSourceReviewCount > 0
+  || triageUnreviewedGroupCount > 0
+  || semanticReview.unresolvedGroups > 0
+  || semanticReview.unreviewedGroups > 0;
+const sourceFreezeValid = manifestMismatches.length === 0;
+const sequenceContractValid = sequenceUnexpected.length === 0;
+const readinessStatus = !recorderCheck
+  || !recorderSourceCurrent
+  || !recorderIntegrityPassed
+  || recorderContractErrors.length > 0
+  || recorderMismatches.length > 0
+  ? "integrity-failed"
+  : !recorderCoreComplete
+    ? "core-incomplete"
+    : !recorderHasAcceptedSupplementalStatus || !recorderCheckStatusAccepted
+      ? "recorder-verdict-invalid"
+    : sourceReviewIncomplete
+      ? "incomplete-unresolved-source-review"
+      : !sourceFreezeValid || !evidencePointerValid || !sequenceContractValid
+        ? "source-or-sequence-contract-failed"
+        : recorderCheck.checkStatus === "supplemental-failures"
+          ? "current-integrity-passed-core-complete-with-supplemental-findings"
+          : "current-integrity-passed-core-complete";
+const finalAccepted = recorderStructuredResultValid
+  && !sourceReviewIncomplete
+  && sourceFreezeValid
+  && evidencePointerValid
+  && sequenceContractValid;
 const placeholders = [];
 const scanPlaceholders = (value, path = "summary") => {
   if (typeof value === "string" && /recorded in final CURRENT_VERIFICATION_RUN|recorded in final delivery receipt|TODO|PLACEHOLDER/i.test(value)) placeholders.push(path);
@@ -126,6 +179,10 @@ const summary = {
   evidenceCommit: {
     commit: evidenceCommit,
     tree: gitText(["rev-parse", `${evidenceCommit}^{tree}`]),
+    runReceiptPath,
+    runReceiptBlob: evidenceRunReceiptBlob,
+    workingRunReceiptBlob,
+    pointerValid: evidencePointerValid,
   },
   sourceSnapshot: {
     fileCount: receipt.sourceSnapshot?.fileCount ?? null,
@@ -133,6 +190,26 @@ const summary = {
     identitySealPayloadSha256: receipt.identitySeal?.payloadSha256 ?? null,
     phasePayloadHashes: phaseSnapshotHashes,
     allRecordedPhasesUseSamePayload: phaseSnapshotHashes.length === 1 && phaseSnapshotHashes[0] === receipt.sourceSnapshot?.payloadSha256,
+  },
+  readiness: {
+    status: readinessStatus,
+    accepted: finalAccepted,
+    sourceStatus: recorderCheck?.sourceStatus ?? "unknown",
+    integrityStatus: recorderCheck?.integrityStatus ?? "failed",
+    coreRunStatus: recorderCheck?.coreRunStatus ?? "unknown",
+    supplementalRunStatus: recorderCheck?.supplementalRunStatus ?? "unknown",
+    checkStatus: recorderCheck?.checkStatus ?? "integrity-failed",
+    failedCorePhaseIds: recorderCheck?.failedCorePhaseIds ?? [],
+    incompleteCorePhaseIds: recorderCheck?.incompleteCorePhaseIds ?? [],
+    supplementalFailures: recorderCheck?.supplementalFailures ?? [],
+    contractErrors: recorderContractErrors,
+    mismatches: recorderMismatches,
+    sourceReviewIncomplete,
+    unresolvedSourceTraceReviewCount: triageSourceReviewCount,
+    unreviewedSourceTraceGroupCount: triageUnreviewedGroupCount || semanticReview.unresolvedGroups + semanticReview.unreviewedGroups,
+    sourceFreezeValid,
+    evidencePointerValid,
+    sequenceContractValid,
   },
   diagnostic: {
     path: `../delivery/${runId}/content-check-compiled.json`,
@@ -147,8 +224,22 @@ const summary = {
   recorderReceipt: {
     path: runReceiptPath,
     sha256: sha256File(join(root, runReceiptPath)),
-    checkExitCode: commandById.get("09-recorder-check")?.exitCode ?? null,
-    checkOutcome: commandById.get("09-recorder-check")?.outcome ?? null,
+    checkExitCode: recorderCommand?.exitCode ?? null,
+    checkOutcome: recorderCommand?.outcome ?? null,
+    structuredCheck: {
+      path: recorderCheckRelativePath,
+      sha256: existsSync(recorderCheckPath) ? sha256File(recorderCheckPath) : null,
+      bytes: existsSync(recorderCheckPath) ? fileBytes(recorderCheckPath) : null,
+      present: Boolean(recorderCheck),
+    },
+    verdict: recorderCheck ?? {
+      sourceStatus: "unknown",
+      integrityStatus: "failed",
+      coreRunStatus: "unknown",
+      checkStatus: "integrity-failed",
+      contractErrors: ["Structured recorder check result is missing."],
+      mismatches: [],
+    },
   },
   contentCheckLog: {
     path: contentCheckLogRelativePath,
@@ -177,12 +268,15 @@ const summary = {
     fixedRoleConfigurations: coverage.currentCompiledCoverage?.fixedRoleConfigurations ?? null,
     notApplicableConfigurationRows: coverage.currentCompiledCoverage?.notApplicableConfigurationRows ?? null,
     semanticReview,
+    sourceReviewIncomplete,
+    readinessStatus,
   },
   residualDispositions: {
     retainedCount: residuals.length,
     categories: residualCategoryCounts,
     dispositionRecord: "docs/item2/FINDING_TRIAGE.json",
-    allRetainedAsExplicitNonblocking: (triage.currentRawDiagnostics?.justifiedNonblockingSourceTraceResidualCount ?? residuals.length) === residuals.length,
+    allRetainedAsExplicitNonblocking: !sourceReviewIncomplete
+      && (triage.currentRawDiagnostics?.justifiedNonblockingSourceTraceResidualCount ?? residuals.length) === residuals.length,
   },
   selfReview: {
     reviewedHeadReference: selfReview.reviewedHead,
@@ -203,10 +297,19 @@ const summary = {
 scanPlaceholders(summary);
 if (placeholders.length) throw new Error(`Unresolved placeholder text in final summary: ${placeholders.join(", ")}`);
 writeFileSync(join(deliveryDirectory, "FINAL_SUMMARY.json"), `${JSON.stringify(summary, null, 2)}\n`, "utf8");
+if (!finalAccepted) {
+  console.error(JSON.stringify({
+    error: "Final summary is not accepted because the structured recorder/source/review contract is not green.",
+    readiness: summary.readiness,
+  }, null, 2));
+  process.exitCode = 1;
+}
 console.log(JSON.stringify({
   path: join(deliveryDirectory, "FINAL_SUMMARY.json"),
   sourceFreezeCommit,
   evidenceCommit,
   manifestMismatches: summary.sourceFreeze.manifestMismatches,
   retainedResiduals: summary.diagnostic.retainedFindingCount,
+  readinessStatus: summary.readiness.status,
+  accepted: summary.readiness.accepted,
 }, null, 2));

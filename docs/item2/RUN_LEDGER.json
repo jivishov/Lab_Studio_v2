@@ -76,15 +76,15 @@
     },
     {
       "kind": "source-trace-group-reconciliation",
-      "detail": "Added 196 explicit contextual source-trace groups covering 882 exact owner-local action members; preserved 21 source-trace residuals with justified nonblocking dispositions and no invented citation."
+      "detail": "Added 197 explicit contextual source-trace groups covering 882 exact owner-local action members; preserved 21 source-trace residuals with justified nonblocking dispositions and no invented citation."
     },
     {
       "kind": "compiled-coverage-boundary-reconciliation",
       "detail": "Narrowed fixed-role/host-predicate handling to authored boundaries: 37 former configuration gaps resolve as fixed-role coverage and 1 Crystal Violet rate-law approval row(s) are not applicable to the host instance."
     },
     {
-      "kind": "item2-final-current-evidence",
-      "detail": "Final current-evidence run item2-luna-local-20260918-final is the authoritative receipt for the frozen tracked tree; five core phases and two supplemental phases are recorded."
+      "kind": "item2-final-evidence-preparation",
+      "detail": "Source/static records are prepared for final-evidence run item2-luna-local-20260918-r1; recorder, source-integrity and core-completion results are pending and no acceptance is claimed."
     }
   ],
   "intentionallyUnrun": [
@@ -109,26 +109,16 @@
       "reason": "outside the authorized source/current-evidence item-2 scope"
     }
   ],
-  "evidencePipelineStatus": "complete-current-run-with-supplemental-failures",
-  "currentEvidenceStatus": "Final current-evidence run item2-luna-local-20260918-final is authoritative for the frozen tree: five core phases passed, two supplemental phases were recorded, repository-content-check remains nonzero only for 21 explicit source-trace residuals with justified nonblocking dispositions, and the source/static boundary is preserved.",
-  "sourceLevelClosureClaim": "current source/static reconciliation and evidence recorded; 21 explicit source-trace residuals remain with justified nonblocking dispositions; runtime/scientific/browser/release closure not claimed",
+  "evidencePipelineStatus": "prepared-pending-final-run",
+  "currentEvidenceStatus": "Final current-evidence run item2-luna-local-20260918-r1 is prepared but not yet observed; recorder/current/integrity/core results are pending.",
+  "sourceLevelClosureClaim": "source/static reconciliation prepared with 21 explicit residuals; final recorder/current/integrity/core result pending; runtime/scientific/browser/release closure not claimed",
   "modelAttestation": "The continuation task requested GPT-5.6 Luna with Max reasoning; this ledger records that setting without claiming a separate independent review.",
-  "acceptedRun": {
-    "runId": "item2-luna-local-20260918-final",
-    "finalSummaryPath": "../delivery/item2-luna-local-20260918-final/FINAL_SUMMARY.json",
-    "sourceCommit": "../delivery/item2-luna-local-20260918-final/FINAL_SUMMARY.json#/sourceFreeze/commit",
-    "sourceSnapshotPayloadSha256": "../delivery/item2-luna-local-20260918-final/FINAL_SUMMARY.json#/sourceSnapshot/payloadSha256",
-    "recorderCheck": "exit 1; source current; integrity passed; core complete; supplemental-failures reports repository-content-check",
-    "integrity": "passed",
-    "corePhases": "5/5 required",
-    "supplemental": {
-      "cycle12StaticVerifier": "passed",
-      "repositoryContentCheck": "nonzero exit retained and triaged: 21 justified nonblocking source-trace residuals"
-    }
-  },
   "currentDiagnosticSummary": {
     "groupedSourceTraceMembers": 882,
     "unresolvedSourceTraceResiduals": 21,
+    "unresolvedSourceTraceReviewCount": 0,
+    "unreviewedSourceTraceGroupCount": 0,
+    "sourceReviewIncomplete": false,
     "resolvedPriorCrystalVioletRows": 3,
     "compiledWitnesses": 30,
     "evaluatedNodeContexts": 6278,
@@ -136,5 +126,12 @@
     "formerConfigurationGapsResolved": 38,
     "fixedRoleConfigurations": 37,
     "notApplicableConfigurationRows": 1
+  },
+  "pendingRun": {
+    "runId": "item2-luna-local-20260918-r1",
+    "finalSummaryPath": "../delivery/item2-luna-local-20260918-r1/FINAL_SUMMARY.json",
+    "sourceCommit": "../delivery/item2-luna-local-20260918-r1/FINAL_SUMMARY.json#/sourceFreeze/commit",
+    "recorderCheck": "pending-final-run; not inferred from content-check exit",
+    "sourceReviewStatus": "reviewed"
   }
 }

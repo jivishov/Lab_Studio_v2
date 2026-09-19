@@ -3,7 +3,7 @@
   "scope": "item-2 complete indexed Lab Studio catalog",
   "branch": "codex/item2-catalog-reconciliation",
   "mainBaseline": "f7c2b863f641090d9abc5c08ee22da72702fdfd6",
-  "evidenceMode": "current source/static evidence recorded in the final item-2 run; 21 explicit source-trace residuals remain with justified nonblocking dispositions; runtime/scientific/browser/release acceptance not claimed",
+  "evidenceMode": "source/static reconciliation prepared for final run item2-luna-local-20260918-r1; current recorder, source-integrity and core-completion results are pending; 21 explicit source-trace residuals remain with justified nonblocking dispositions; runtime/scientific/browser/release acceptance not claimed",
   "counts": {
     "labs": 17,
     "techniques": 42,
@@ -3538,10 +3538,10 @@
     }
   ],
   "status": {
-    "sourceInventoryAndStaticRationale": "complete",
-    "sourceLevelReconciliationClosure": "current-static-with-21-justified-source-trace-residuals",
-    "currentEvidenceStatus": "current final static evidence recorded; runtime/scientific/browser/release acceptance not claimed",
-    "fullItem2Status": "complete-for-authorized-source-current-evidence-scope"
+    "sourceInventoryAndStaticRationale": "prepared",
+    "sourceLevelReconciliationClosure": "prepared-pending-final-run",
+    "currentEvidenceStatus": "final recorder/current/integrity/core result pending; no current acceptance claim",
+    "fullItem2Status": "incomplete-pending-final-run"
   },
   "nonCatalogHistoricalScopes": {
     "unindexedGeneratedCarrier": {
@@ -3592,20 +3592,23 @@
     "quickAcheResetSemantics": "retry/recalculation may reuse still-valid measurements; upstream physical recovery reacquires invalidated measurements; full activity Reset clears measurements and calculations"
   },
   "currentEvidence": {
-    "runId": "item2-luna-local-20260918-final",
-    "finalSummaryPath": "../delivery/item2-luna-local-20260918-final/FINAL_SUMMARY.json",
-    "sourceCommit": "../delivery/item2-luna-local-20260918-final/FINAL_SUMMARY.json#/sourceFreeze/commit",
-    "corePhases": "5/5 passed",
+    "runId": "item2-luna-local-20260918-r1",
+    "finalSummaryPath": "../delivery/item2-luna-local-20260918-r1/FINAL_SUMMARY.json",
+    "sourceCommit": "../delivery/item2-luna-local-20260918-r1/FINAL_SUMMARY.json#/sourceFreeze/commit",
+    "status": "pending-final-run",
+    "corePhases": "pending",
     "supplementalPhases": {
-      "cycle12StaticVerifier": "passed",
-      "repositoryContentCheck": "exit 1; 21 explicit source-trace residuals with justified nonblocking dispositions"
+      "cycle12StaticVerifier": "pending",
+      "repositoryContentCheck": "pending-final-run; pre-final static preflight is not a supplemental run result"
     },
-    "recorderCheck": "exit 1; source current; integrity passed; core complete; supplemental-failures reports repository-content-check",
+    "recorderCheck": "pending-final-run; do not infer recorder verdict from the content-check exit",
     "contentCheck": {
       "retainedFindings": 21,
       "evaluatedSourceTraceFindings": 903,
       "groupedSourceTraceMembers": 882,
       "unresolvedSourceTraceResiduals": 21,
+      "unresolvedSourceTraceReviewCount": 0,
+      "unreviewedSourceTraceGroupCount": 0,
       "justifiedNonblockingSourceTraceResiduals": 21,
       "resolvedPriorCrystalVioletRows": 3,
       "compiledContextFindings": 0,
@@ -3614,6 +3617,6 @@
       "notApplicableConfigurationRows": 1
     },
     "dispositionRecord": "docs/item2/FINDING_TRIAGE.json",
-    "finalEvidenceBoundary": "Source/static evidence only; runtime, scientific, browser, classroom, safety and release acceptance remain unclaimed."
+    "finalEvidenceBoundary": "Prepared source/static reconciliation only; the new final recorder/current/integrity/core result is pending. Runtime, scientific, browser, classroom, safety and release acceptance remain unclaimed."
   }
 }
