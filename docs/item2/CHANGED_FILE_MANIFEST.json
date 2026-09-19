@@ -2,13 +2,13 @@
   "schemaVersion": 6,
   "branch": "codex/item2-catalog-reconciliation",
   "baseline": "f7c2b863f641090d9abc5c08ee22da72702fdfd6",
-  "documentedHeadBeforeManifestUpdate": "21006aa23d067be1cdca531509bf2f4c17c04896",
+  "documentedHeadBeforeManifestUpdate": "8568d6dd055ab0d291c67e87da0db348f6d89111",
   "selfExcluded": true,
   "selfExclusionReason": "The manifest update itself creates the next commit; its own final Git blob SHA cannot be recursively embedded.",
   "implementation": [
     {
       "path": "docs/architecture/source-trace-registry.json",
-      "blobSha": "8ed2e1d28d59684b9881d88c7212ea931ffa5b90"
+      "blobSha": "c046e26b152f7c8f3a529a58f868140ed0a1f6ff"
     },
     {
       "path": "public/techniques/titration-curve-analysis.json",
@@ -16,11 +16,11 @@
     },
     {
       "path": "scripts/__tests__/f07SourceTraceRegistry.test.mjs",
-      "blobSha": "12f01c860f5e47e1933ee81a91096d037fd96ba3"
+      "blobSha": "dbeae907dee92c04c02e643af59a92aaea6ba7bb"
     },
     {
       "path": "scripts/checkContentConsistency.mjs",
-      "blobSha": "ce4a37543bacb8b1e30a46ffd64fb8e42b7864fb"
+      "blobSha": "225632cf44cd8edd1e35fbd18b300ada05ad6f48"
     },
     {
       "path": "scripts/generateApChemTechniqueFragments.mjs",
@@ -28,15 +28,15 @@
     },
     {
       "path": "scripts/generateItem2SourceTraceGroups.mjs",
-      "blobSha": "8c201653adabee28d099b16d4ffb5c4bcc31c3d6"
+      "blobSha": "9a22013b59868c82adea90eaf0d2422d593d6955"
     },
     {
       "path": "scripts/generatorInputs/item2SourceTraceMappings.mjs",
-      "blobSha": "bcf4a18f5f7b00c2c8487b63db262470db6be60d"
+      "blobSha": "eaad08afb278285de777a0fbabb983e04921fbc5"
     },
     {
       "path": "scripts/reconcileItem2CurrentRecords.mjs",
-      "blobSha": "0febd0b82fc809e7ece2f18cfcb21bd9eca4a8d2"
+      "blobSha": "7279248d6f16ed11552326d4310e189a14a43008"
     },
     {
       "path": "scripts/recordItem2FinalCommandSequence.mjs",
@@ -52,7 +52,7 @@
     },
     {
       "path": "scripts/writeItem2FinalSummary.mjs",
-      "blobSha": "05cda47045b99196fb7c0889364c149e320317cc"
+      "blobSha": "b4a07844d98413cbb1b0c2f4015d30593bb1b119"
     },
     {
       "path": "src/data/__tests__/compiledWitnessDiagnostics.test.ts",
@@ -191,7 +191,7 @@
     "docs/architecture/source-trace-registry.json"
   ],
   "blobVerification": {
-    "sourceFreezeCommit": "21006aa23d067be1cdca531509bf2f4c17c04896",
+    "sourceFreezeCommit": "8568d6dd055ab0d291c67e87da0db348f6d89111",
     "verifiedEntries": 29,
     "selfExcluded": true
   }
