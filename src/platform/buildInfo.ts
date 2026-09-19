@@ -24,4 +24,4 @@ export const labStudioBuildInfo = Object.freeze({
 
 export const buildIdentityLabel = labStudioBuildInfo.buildId === "development-unbuilt"
   ? "Development build"
-  : `Item 3 local · ${labStudioBuildInfo.buildId}`;
+  : "Item 3 local";
