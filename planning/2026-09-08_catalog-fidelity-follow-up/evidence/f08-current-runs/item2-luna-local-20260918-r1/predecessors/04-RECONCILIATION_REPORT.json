@@ -1,13 +1,13 @@
 {
   "schema": "lab-studio/cycle-12-reconciliation-report@1",
-  "generatedAt": "2026-09-19T01:33:23.212Z",
+  "generatedAt": "2026-09-19T00:57:23.332Z",
   "status": "accepted-source-static",
   "validationBoundary": "Source/static evidence only; no runtime, browser, detailed test, build, deployment, physical, or classroom claim is made.",
   "currentEvidence": {
-    "path": "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-luna-local-20260918-r1/CURRENT_VERIFICATION_RUN.json",
+    "path": "planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/item2-luna-local-20260918-final/CURRENT_VERIFICATION_RUN.json",
     "status": "current",
-    "capturedAt": "2026-09-19T01:33:23.212Z",
-    "sourceSnapshotPayloadSha256": "e9213842afe8013ad1b12c20b3cbc319d56373aa1eca2f15286b431f8e8d9493",
+    "capturedAt": "2026-09-19T00:57:23.332Z",
+    "sourceSnapshotPayloadSha256": "108bfa776b6bb7d7195b9a31f0e158f2582bfb5b191dba28fea31023d3ad7160",
     "reconciliationInputManifestSha256": null,
     "reason": "Selected current-verification source snapshot is current; serialized reconciliation provenance is limited to its immutable source identity and fixed output boundary. Dynamic phase receipts remain in the current-verification ledger and CLI.",
     "mismatches": [],
@@ -16,7 +16,7 @@
     "stableDomainBoundary": [],
     "evidenceRunProvenance": "selected-current-verification-run; only the immutable selected source snapshot and required prior phase receipt are read so later receipts cannot make reconciliation output self-referential",
     "selection": "explicit-current-verification-run",
-    "runId": "item2-luna-local-20260918-r1",
+    "runId": "item2-luna-local-20260918-final",
     "sourceSnapshotExcludes": "only fixed current phase outputs and fixed current-run artifacts; those paths are validated by phase receipts instead"
   },
   "repositoryHealthEvidence": {
@@ -1272,14 +1272,14 @@
     "technique": {
       "path": "planning/2026-08-30_lab-studio-technique-composition-remediation/TECHNIQUE_ATOMICITY_AUDIT.json",
       "rowCount": 2698,
-      "sha256": "10c91dbdc2a6a42b44fce374abcda8363f6ecd34ab6cd94a7374554d7446535d",
+      "sha256": "783c157bfd39c79f519ce049d048e4e046544aacc9f680eae0d644d161e47eab",
       "effectConflictRows": 0,
       "missingAtomOrEffectRows": 0
     },
     "lab": {
       "path": "planning/2026-08-30_lab-studio-technique-composition-remediation/LAB_COMPOSITION_AUDIT.json",
       "rowCount": 2849,
-      "sha256": "28a018ae3eb602559a3faaa2d918b8feb37c51ae157ddb3d6415f027909e4ae4",
+      "sha256": "46c2db7d643d0588425af72059478ba2819566a45f5ddac6604fb0bbcf98ec66",
       "effectConflictRows": 0,
       "anonymousLocalProcedureRows": 0,
       "deadUnderWitnessRows": 0

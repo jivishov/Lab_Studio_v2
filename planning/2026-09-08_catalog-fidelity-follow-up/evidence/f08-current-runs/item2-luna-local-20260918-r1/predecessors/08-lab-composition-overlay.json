@@ -28,25 +28,25 @@
     "labCompositionAuditSha256": "7eadc66bf4005a109758acac04a1ee2c9dc86fb1a8bb40c1bcc024112fc143bd"
   },
   "observedContractDependencies": {
-    "techniqueAtomicityAuditSha256": "4c1264aad2303788add952d4ab7b2baa286363e9631e70555ba558483451ed48",
-    "labCompositionAuditSha256": "ec5159aa08f9db676079ba9e8b7f9e2587279d2938346a3d7bcf0356140147c2",
-    "sourceTraceRegistrySha256": "8b9e8284e284404682e06f32028edb611957deb6b385e792c6d403ae44908d22"
+    "techniqueAtomicityAuditSha256": "93cef8438c97a82223d03a9f838fb58305d77208b23b30d87d69b9f952ff66f2",
+    "labCompositionAuditSha256": "ee06d0c473696c2c98b65f5fba754837be4dec175af81ccd05167ff873e18142",
+    "sourceTraceRegistrySha256": "4679105575a30c370d53f68f37c27244f94b284a048617e549d138d2d165dbfe"
   },
   "contractDrift": [
     {
       "dependency": "techniqueAtomicityAuditSha256",
       "frozen": "af8f9e0ae6d5d2375644ca4a2a0e6a39ad5f683470958bcbfc87483cafe206dd",
-      "observed": "4c1264aad2303788add952d4ab7b2baa286363e9631e70555ba558483451ed48"
+      "observed": "93cef8438c97a82223d03a9f838fb58305d77208b23b30d87d69b9f952ff66f2"
     },
     {
       "dependency": "labCompositionAuditSha256",
       "frozen": "7eadc66bf4005a109758acac04a1ee2c9dc86fb1a8bb40c1bcc024112fc143bd",
-      "observed": "ec5159aa08f9db676079ba9e8b7f9e2587279d2938346a3d7bcf0356140147c2"
+      "observed": "ee06d0c473696c2c98b65f5fba754837be4dec175af81ccd05167ff873e18142"
     },
     {
       "dependency": "sourceTraceRegistrySha256",
       "frozen": "f2297d2eb0c15382306bd0a645ba4cc2f4330855349dd4ddc686737384494a48",
-      "observed": "8b9e8284e284404682e06f32028edb611957deb6b385e792c6d403ae44908d22"
+      "observed": "4679105575a30c370d53f68f37c27244f94b284a048617e549d138d2d165dbfe"
     }
   ],
   "contractDriftDisposition": "A coordinator-owned matrix moved after this lane was frozen. Reconciliation rows below are derived from the matrix actually on disk, not from the frozen copy; the coordinator owns closing the drift.",
