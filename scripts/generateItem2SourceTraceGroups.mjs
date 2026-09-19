@@ -25,6 +25,12 @@ const groupKey = (owner, atomId, trace, actionBasis) => [
 ].join("|");
 const slug = (value) => String(value).replace(/[^a-zA-Z0-9]+/g, "-").replace(/^-|-$/g, "").toLowerCase();
 const locatorKey = (trace) => [trace.sourceFile, trace.sourceTable, trace.step, trace.basis].join("|");
+const reviewedStatuses = new Set([
+  "reviewed-static-source-mapping",
+  "reviewed-authored-simulator-boundary",
+]);
+const isReviewedDecision = (decision) => reviewedStatuses.has(decision?.reviewStatus)
+  && String(decision?.decisionDisposition ?? "").startsWith("reviewed-");
 
 const registry = readJson(registryPath);
 const atoms = readJson(atomRegistryPath).atoms;
@@ -284,7 +290,7 @@ const traceGroups = [...groups.entries()]
       actionBasis: group.actionBasis,
       reviewedMapping,
       mappingRationale: [
-        `${decision.reviewStatus === "reviewed-static-source-mapping" ? "Reviewed mapping" : "Unreviewed contextual boundary"} ${decision.reviewId} covers the exact owner-local members ${actionIds.join(", ")} for ${owner} (${group.ownerVersion ?? "version not declared"}) using ${group.atomId}.`,
+        `${isReviewedDecision(decision) ? "Reviewed mapping" : decision.reviewStatus === "unresolved-source-review" ? "Unresolved mapping" : "Unreviewed contextual boundary"} ${decision.reviewId} covers the exact owner-local members ${actionIds.join(", ")} for ${owner} (${group.ownerVersion ?? "version not declared"}) using ${group.atomId}.`,
         `Selected source boundary: ${group.sourceFile} ${group.sourceTable} ${group.step} basis=${group.basis}; selection scope=${sourceScope}.`,
         `Source supports: ${decision.sourceSupports}`,
         `Transfer validity: ${decision.transferValidity}`,
@@ -300,7 +306,7 @@ registry.contextTracePolicy = {
   reviewedMappingField: "reviewedMapping",
   reviewedMappingSchema: "lab-studio/source-trace-reviewed-mapping@1",
   reviewedSelectionPolicy: "Every action-specific, ambiguous or cross-activity source choice is recorded in scripts/generatorInputs/item2SourceTraceMappings.mjs. Unique same-owner locators may be reused only when no competing locator exists; array order is never a selection rule.",
-  reviewedDecisionPolicy: "Each group records owner/version/member IDs, selection mode, review status, source support, transfer validity, quantity/configuration limits and unsupported claims. Unreviewed groups are explicit nonblocking boundaries and never turn generated actions into verbatim source prescriptions.",
+  reviewedDecisionPolicy: "Each group records owner/version/member IDs, selection mode, review status, source support, transfer validity, quantity/configuration limits and unsupported claims. Only explicit reviewed owner/atom/source decisions are affirmative; unresolved or unreviewed groups remain visible and never turn generated actions into verbatim source prescriptions.",
 };
 registry.traceGroups = traceGroups;
 writeJson(registryPath, registry);
@@ -309,6 +315,8 @@ console.log(JSON.stringify({
   missingActionCount,
   traceGroupCount: traceGroups.length,
   coveredActionCount: traceGroups.reduce((total, group) => total + group.actionIds.length, 0),
+  reviewedGroupCount: traceGroups.filter((group) => isReviewedDecision(group.reviewedMapping)).length,
+  unresolvedGroupCount: traceGroups.filter((group) => !isReviewedDecision(group.reviewedMapping)).length,
   unresolvedCount: unresolved.length,
   unresolved,
 }, null, 2));

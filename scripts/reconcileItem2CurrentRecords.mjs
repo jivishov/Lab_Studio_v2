@@ -25,6 +25,13 @@ const writeJson = (relativePath, value) => writeFileSync(
   "utf8",
 );
 const unique = (values) => [...new Set(values)];
+const isAffirmativeReviewedMapping = (group) => {
+  const mapping = group?.reviewedMapping;
+  return [
+    "reviewed-static-source-mapping",
+    "reviewed-authored-simulator-boundary",
+  ].includes(mapping?.reviewStatus) && String(mapping?.decisionDisposition ?? "").startsWith("reviewed-");
+};
 const replaceText = (value) => {
   if (typeof value === "string") {
     return value
@@ -63,11 +70,13 @@ try {
 
 const violationTotal = diagnostic.violations?.total ?? 0;
 const violationByRule = diagnostic.violations?.byRule ?? {};
+const unresolvedReviewViolationCount = violationByRule["source-trace/group-review-unresolved"] ?? 0;
 const composition = diagnostic.compositionDiagnostics?.result ?? {};
 const coverage = composition.coverage ?? {};
 const statuses = composition.statuses ?? [];
 const fixedRoleConfigurations = coverage.fixedRoleConfigurations ?? [];
-if (violationTotal === 0 || Object.keys(violationByRule).some((rule) => rule !== "action/source-trace-missing")) {
+const allowedContentRules = new Set(["action/source-trace-missing", "source-trace/group-review-unresolved"]);
+if (violationTotal === 0 || Object.keys(violationByRule).some((rule) => !allowedContentRules.has(rule))) {
   throw new Error(`Unexpected current content diagnostic result: ${JSON.stringify({ violationTotal, violationByRule })}`);
 }
 if (coverage.unrepresentedConfigurations?.length !== 0 || fixedRoleConfigurations.length === 0) {
@@ -147,6 +156,29 @@ const transformedFindings = previousActionFindings.map((finding) => {
     evaluationScope: "raw-template-rule; current-source-trace-reconciliation",
   };
   if (group) {
+    if (!isAffirmativeReviewedMapping(group)) {
+      const review = group.reviewedMapping ?? {};
+      base.detail = `The exact action is present in contextual source-trace group ${group.id}, but its owner/atom/source review is unresolved.`;
+      base.scenarioImpact = `The current source registry keeps ${ownerId}/${actionId} visible as unresolved source review (${review.reviewStatus ?? "missing status"}); no affirmative contextual transfer or closure is recorded.`;
+      base.disposition = "source-trace-unresolved-review";
+      base.reason = `Group ${group.id} has reviewStatus=${review.reviewStatus ?? "absent"} and decisionDisposition=${review.decisionDisposition ?? "absent"}. Resolve the exact owner/atom/source mapping before treating this action as contextual provenance; do not copy source quantities, identity, configuration or acceptance criteria.`;
+      base.sourceTraceReview = {
+        id: group.id,
+        owner: `${group.ownerType}:${group.ownerId}`,
+        actionId,
+        memberCount: group.actionIds.length,
+        atomId: group.atomId,
+        sourceFile: group.sourceFile,
+        sourceTable: group.sourceTable,
+        step: group.step,
+        basis: group.basis,
+        reviewStatus: review.reviewStatus ?? null,
+        decisionDisposition: review.decisionDisposition ?? null,
+      };
+      delete base.sourceTraceGroup;
+      delete base.sourceTraceResidual;
+      return base;
+    }
     base.detail = `The exact action is covered by contextual source-trace group ${group.id}; the group expands one source boundary to its finite owner-local action members without claiming verbatim source prescription.`;
     base.scenarioImpact = `The current source registry now provides contextual provenance for ${ownerId}/${actionId} through group ${group.id}. The source row remains contextual rather than an exact prescription for this generated/decomposed action; compiled static evidence found zero compiled-context findings, and no runtime or scientific acceptance is implied.`;
     base.disposition = "source-trace-grouped-context";
@@ -192,9 +224,14 @@ const transformedFindings = previousActionFindings.map((finding) => {
 });
 
 const groupedCount = transformedFindings.filter((finding) => finding.sourceTraceGroup).length;
+const unresolvedReviewCount = transformedFindings.filter((finding) => finding.sourceTraceReview).length;
 const residualCount = transformedFindings.filter((finding) => finding.sourceTraceResidual).length;
-if (groupedCount + residualCount !== previousActionFindings.length || violationTotal !== residualCount) {
-  throw new Error(`Unexpected source-trace reconciliation counts: ${JSON.stringify({ groupedCount, residualCount })}`);
+if (
+  groupedCount + unresolvedReviewCount + residualCount !== previousActionFindings.length
+  || (violationByRule["action/source-trace-missing"] ?? 0) !== residualCount
+  || (unresolvedReviewViolationCount > 0 && unresolvedReviewCount === 0)
+) {
+  throw new Error(`Unexpected source-trace reconciliation counts: ${JSON.stringify({ groupedCount, unresolvedReviewCount, residualCount, violationByRule })}`);
 }
 const residualCategoryCounts = Object.fromEntries(transformedFindings
   .filter((finding) => finding.sourceTraceResidual)
@@ -208,6 +245,14 @@ const inventoryResidualCount = residualCategoryCounts["teacher-configured-operat
 const compiledContextFindingCount = composition.findings?.counts?.uniqueCompiledContextFindings ?? 0;
 const compiledWitnessCount = coverage.attemptedContextCount ?? 0;
 const evaluatedNodeContextCount = coverage.evaluatedNodeContextCount ?? 0;
+const sourceTraceReviewSummary = Object.fromEntries((registry.traceGroups ?? []).reduce((counts, group) => {
+  const status = group.reviewedMapping?.reviewStatus ?? "missing-review-status";
+  const entry = counts.get(status) ?? { groups: 0, members: 0 };
+  entry.groups += 1;
+  entry.members += group.actionIds?.length ?? 0;
+  counts.set(status, entry);
+  return counts;
+}, new Map()));
 
 const priorCrystalVioletFindings = unique(previousFindings
   .filter((finding) => finding.rule === "cycle06/cuvette-slot-unbalanced" || finding.rule === "cycle06/photometer-wavelength-unproduced")
@@ -332,14 +377,17 @@ triage.currentRawDiagnostics = {
     stdoutSha256: finalSummaryRef("diagnostic/sha256"),
     stdoutBytes: finalSummaryRef("diagnostic/bytes"),
     recorderLog: contentLog,
-    recorderLogSha256: finalSummaryRef("recorderReceipt/sha256"),
+    recorderLogBytes: finalSummaryRef("contentCheckLog/bytes"),
+    recorderLogSha256: finalSummaryRef("contentCheckLog/sha256"),
   },
   evaluationScope: "raw/template findings after conservative compiled-context routing and explicit source-trace group expansion",
   retainedFindingCount: residualCount,
   evaluatedSourceTraceFindingCount: transformedFindings.length,
   groupedContextFindingCount: groupedCount,
+  unresolvedSourceTraceReviewCount: unresolvedReviewCount,
   unresolvedSourceTraceResidualCount: residualCount,
   justifiedNonblockingSourceTraceResidualCount: residualCount,
+  sourceTraceReviewSummary,
   residualCategoryCounts,
   byRule: violationByRule,
   rawCompositionFindingsRouted: routed,

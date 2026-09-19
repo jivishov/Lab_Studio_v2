@@ -7,6 +7,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { reviewedDecisionFor } from "../generatorInputs/item2SourceTraceMappings.mjs";
 
 const root = process.cwd();
 const readJson = (relativePath) => JSON.parse(readFileSync(join(root, relativePath), "utf8"));
@@ -96,8 +97,10 @@ describe("F07 Phase 2 source-row coverage", () => {
       });
       expect([
         "reviewed-static-source-mapping",
-        "unreviewed-nonblocking-source-boundary",
+        "reviewed-authored-simulator-boundary",
       ], group.id).toContain(group.reviewedMapping.reviewStatus);
+      expect(String(group.reviewedMapping.decisionDisposition), group.id).toMatch(/^reviewed-/);
+      expect(group.reviewedMapping.selectionModes, group.id).toContain("reviewed-explicit");
       expect(group.reviewedMapping.decisionDisposition, group.id).toEqual(expect.any(String));
       expect([
         "reviewed-explicit",
@@ -372,7 +375,7 @@ describe("F07 Phase 2 source-row coverage", () => {
       step: "ST-06",
       basis: "M/C",
       reviewedMapping: expect.objectContaining({
-        decisionId: "item2-redox-standardization-review-v2",
+        decisionId: "item2-redox-standardization-review-v3",
         sourceScope: "owner-source-family",
       }),
     });
@@ -386,7 +389,7 @@ describe("F07 Phase 2 source-row coverage", () => {
       step: "T-10",
       basis: "M/C",
       reviewedMapping: expect.objectContaining({
-        decisionId: "item2-titration-curve-decision-v2",
+        decisionId: "item2-formal-curve-decision-v3",
       }),
     });
 
@@ -425,10 +428,28 @@ describe("F07 Phase 2 source-row coverage", () => {
       }),
     ]));
 
-    const unreviewed = traceGroups.find((group) => group.reviewedMapping.reviewStatus === "unreviewed-nonblocking-source-boundary");
-    expect(unreviewed).toBeTruthy();
-    expect(unreviewed.mappingRationale).toContain("Unreviewed contextual boundary");
-    expect(unreviewed.mappingRationale).not.toContain("Reviewed mapping");
+    expect(traceGroups.every((group) => [
+      "reviewed-static-source-mapping",
+      "reviewed-authored-simulator-boundary",
+    ].includes(group.reviewedMapping.reviewStatus))).toBe(true);
+    expect(traceGroups.some((group) => group.reviewedMapping.reviewStatus === "reviewed-authored-simulator-boundary")).toBe(true);
+  });
+
+  it("does not affirm an unknown owner/atom/source combination", () => {
+    const decision = reviewedDecisionFor({
+      owner: "technique:future-owner",
+      atom: { id: "atom.future-operation", documentationLabel: "Future operation" },
+      sourceTrace: {
+        sourceFile: "future-plan.md",
+        sourceTable: "phase",
+        step: "F-01",
+        basis: "M",
+      },
+    });
+    expect(decision).toMatchObject({
+      reviewStatus: "unresolved-source-review",
+      decisionDisposition: "unresolved-source-review",
+    });
   });
 
   it("keeps Quick E-12 direct evidence narrow and records Green apparatus inference", () => {

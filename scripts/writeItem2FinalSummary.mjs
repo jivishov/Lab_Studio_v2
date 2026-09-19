@@ -22,6 +22,8 @@ const deliveryDirectory = resolve(deliveryRoot, runId);
 const runReceiptPath = `planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/${runId}/CURRENT_VERIFICATION_RUN.json`;
 const sequenceReceiptPath = join(deliveryDirectory, "FINAL_SEQUENCE_RECEIPT.json");
 const diagnosticPath = join(deliveryDirectory, "content-check-compiled.json");
+const contentCheckLogRelativePath = `planning/2026-09-08_catalog-fidelity-follow-up/evidence/f08-current-runs/${runId}/logs/repository-content-check.log`;
+const contentCheckLogPath = join(root, contentCheckLogRelativePath);
 const readJson = (file) => JSON.parse(readFileSync(file, "utf8"));
 const sha256File = (file) => createHash("sha256").update(readFileSync(file)).digest("hex");
 const fileBytes = (file) => statSync(file).size;
@@ -66,6 +68,43 @@ const coreCommandIds = [
 const supplementalCommandIds = ["07-cycle12-static-verifier", "08-repository-content-check"];
 const residuals = diagnostic.violations?.retainedFindings ?? [];
 const residualCategoryCounts = triage.currentRawDiagnostics?.residualCategoryCounts ?? {};
+const reviewedStatuses = new Set([
+  "reviewed-static-source-mapping",
+  "reviewed-authored-simulator-boundary",
+]);
+const semanticReview = (registry.traceGroups ?? []).reduce((summaryValue, group) => {
+  const status = group.reviewedMapping?.reviewStatus ?? "missing-review-status";
+  const disposition = group.reviewedMapping?.decisionDisposition ?? "missing-disposition";
+  const members = group.actionIds?.length ?? 0;
+  summaryValue.byStatus[status] = {
+    groups: (summaryValue.byStatus[status]?.groups ?? 0) + 1,
+    members: (summaryValue.byStatus[status]?.members ?? 0) + members,
+  };
+  summaryValue.byDisposition[disposition] = {
+    groups: (summaryValue.byDisposition[disposition]?.groups ?? 0) + 1,
+    members: (summaryValue.byDisposition[disposition]?.members ?? 0) + members,
+  };
+  if (reviewedStatuses.has(status) && String(disposition).startsWith("reviewed-")) {
+    summaryValue.reviewedGroups += 1;
+    summaryValue.reviewedMembers += members;
+  } else if (status === "unresolved-source-review") {
+    summaryValue.unresolvedGroups += 1;
+    summaryValue.unresolvedMembers += members;
+  } else {
+    summaryValue.unreviewedGroups += 1;
+    summaryValue.unreviewedMembers += members;
+  }
+  return summaryValue;
+}, {
+  reviewedGroups: 0,
+  reviewedMembers: 0,
+  unresolvedGroups: 0,
+  unresolvedMembers: 0,
+  unreviewedGroups: 0,
+  unreviewedMembers: 0,
+  byStatus: {},
+  byDisposition: {},
+});
 const placeholders = [];
 const scanPlaceholders = (value, path = "summary") => {
   if (typeof value === "string" && /recorded in final CURRENT_VERIFICATION_RUN|recorded in final delivery receipt|TODO|PLACEHOLDER/i.test(value)) placeholders.push(path);
@@ -99,6 +138,7 @@ const summary = {
     path: `../delivery/${runId}/content-check-compiled.json`,
     sha256: sha256File(diagnosticPath),
     bytes: fileBytes(diagnosticPath),
+    contentCheckLog: contentCheckLogRelativePath,
     exitCode: commandById.get("10-content-check-compiled-json")?.exitCode ?? null,
     retainedFindingCount: diagnostic.violations?.total ?? null,
     byRule: diagnostic.violations?.byRule ?? {},
@@ -109,6 +149,11 @@ const summary = {
     sha256: sha256File(join(root, runReceiptPath)),
     checkExitCode: commandById.get("09-recorder-check")?.exitCode ?? null,
     checkOutcome: commandById.get("09-recorder-check")?.outcome ?? null,
+  },
+  contentCheckLog: {
+    path: contentCheckLogRelativePath,
+    sha256: sha256File(contentCheckLogPath),
+    bytes: fileBytes(contentCheckLogPath),
   },
   sequenceReceipt: {
     path: `../delivery/${runId}/FINAL_SEQUENCE_RECEIPT.json`,
@@ -131,6 +176,7 @@ const summary = {
     compiledContextFindings: coverage.currentCompiledCoverage?.compiledContextFindings ?? null,
     fixedRoleConfigurations: coverage.currentCompiledCoverage?.fixedRoleConfigurations ?? null,
     notApplicableConfigurationRows: coverage.currentCompiledCoverage?.notApplicableConfigurationRows ?? null,
+    semanticReview,
   },
   residualDispositions: {
     retainedCount: residuals.length,

@@ -920,6 +920,34 @@ const checkSourceTrace = (world, report) => {
       if (typeof group.mappingRationale !== "string" || !group.mappingRationale.trim()) {
         report("source-trace/group-rationale-missing", groupScope, `${SOURCE_TRACE_REGISTRY_PATH} mappingRationale is required`);
       }
+      const reviewedMapping = group.reviewedMapping;
+      const reviewedStatus = reviewedMapping?.reviewStatus;
+      const reviewedDisposition = reviewedMapping?.decisionDisposition;
+      const hasReviewedDecision = [
+        "reviewed-static-source-mapping",
+        "reviewed-authored-simulator-boundary",
+      ].includes(reviewedStatus) && String(reviewedDisposition ?? "").startsWith("reviewed-");
+      if (reviewedMapping?.schema !== "lab-studio/source-trace-reviewed-mapping@1") {
+        report(
+          "source-trace/group-review-state-missing",
+          groupScope,
+          `${SOURCE_TRACE_REGISTRY_PATH} reviewedMapping.schema must be lab-studio/source-trace-reviewed-mapping@1`,
+        );
+      } else if (!hasReviewedDecision) {
+        report(
+          "source-trace/group-review-unresolved",
+          groupScope,
+          `${SOURCE_TRACE_REGISTRY_PATH} reviewStatus=${reviewedStatus ?? "absent"} decisionDisposition=${reviewedDisposition ?? "absent"}`,
+        );
+      }
+      const selectionModes = reviewedMapping?.selectionModes ?? [];
+      if (hasReviewedDecision && !selectionModes.includes("reviewed-explicit")) {
+        report(
+          "source-trace/group-review-selection-not-explicit",
+          groupScope,
+          `${SOURCE_TRACE_REGISTRY_PATH} selectionModes=${selectionModes.join(",") || "absent"}`,
+        );
+      }
       checkSourceCitation(group, "source-trace/group", groupScope, SOURCE_TRACE_REGISTRY_PATH, report);
       if (!world.sourceFiles.has(group.sourceFile)) {
         report(
