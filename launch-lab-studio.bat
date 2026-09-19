@@ -37,22 +37,30 @@ if errorlevel 1 (
 )
 
 echo Starting Lab Studio Item 3 production preview...
+set "LAUNCH_FAILURE="
 for /L %%A in (1,1,45) do (
   powershell -NoProfile -ExecutionPolicy Bypass -Command "$record=Get-Content -Raw -LiteralPath $env:LAB_STUDIO_BUILD_RECORD | ConvertFrom-Json; try { Invoke-WebRequest -UseBasicParsing -Uri $env:LAB_STUDIO_URL -TimeoutSec 2 | Out-Null } catch { exit 1 }; try { $health=Invoke-RestMethod -UseBasicParsing -Uri ($env:LAB_STUDIO_URL + '__lab-studio/health') -TimeoutSec 2 } catch { exit 3 }; if ($health.app -ne 'lab-studio' -or $health.buildId -ne $record.buildId) { exit 3 }; exit 0"
   if not errorlevel 1 (
-    start "" "%LAB_STUDIO_URL%"
-    echo Lab Studio is ready at %LAB_STUDIO_URL%
-    exit /b 0
+    set "LAUNCH_FAILURE="
+    goto :preview_ready
   )
   if errorlevel 3 (
-    call :fail "Port 4180 is occupied by an unrelated service or a different Lab Studio build. Nothing was stopped."
-    exit /b 1
+    set "LAUNCH_FAILURE=Port 4180 is occupied by an unrelated service or a different Lab Studio build. Nothing was stopped."
+    goto :preview_failed
   )
   powershell -NoProfile -Command "Start-Sleep -Seconds 1"
 )
 
-call :fail "Lab Studio did not become available at %LAB_STUDIO_URL%. Check logs\preview.log and logs\preview-process.stderr.log."
+set "LAUNCH_FAILURE=Lab Studio did not become available at %LAB_STUDIO_URL%. Check logs\preview.log and logs\preview-process.stderr.log."
+
+:preview_failed
+call :fail "%LAUNCH_FAILURE%"
 exit /b 1
+
+:preview_ready
+start "" "%LAB_STUDIO_URL%"
+echo Lab Studio is ready at %LAB_STUDIO_URL%
+exit /b 0
 
 :fail
 echo [Lab Studio] %~1

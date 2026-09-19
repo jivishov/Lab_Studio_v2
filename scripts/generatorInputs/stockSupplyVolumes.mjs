@@ -1,7 +1,11 @@
 import { readFileSync } from "node:fs";
 
 const variants = JSON.parse(readFileSync(new URL("../../src/equipment/stockBottleVariants.json", import.meta.url), "utf8"));
-const variantFor = Object.fromEntries(Object.entries(variants).map(([id, base]) => [base, id]));
+const variantFor = Object.fromEntries(
+  Object.entries(variants)
+    .filter(([id]) => id.endsWith("-1l"))
+    .map(([id, base]) => [base, id]),
+);
 const targets = {
   "blue1-spectroscopy": ["i1-unknown-sample", "i1-unknown-dilution-water"],
   "blue1-percent-transmittance": ["i1-unknown-sample", "i1-unknown-dilution-water"],
@@ -9,8 +13,20 @@ const targets = {
   "beers-law-calibration": ["sample-bottle-1", "blank-source-1"],
   "quick-ache-relief-separation": ["qar-property-reagent"],
   "quick-ache-property-evidence": ["qar-property-reagent"],
+  "hand-warmer-calorimetry": ["distilled-water-bottle-1"],
   "brass-colorimetry": ["assigned-salt-a-solution", "assigned-salt-b-solution"],
   "brass-spectrophotometry": ["assigned-salt-a-solution", "assigned-salt-b-solution"],
+};
+const variantOverrides = {
+  "hand-warmer-calorimetry": { "distilled-water-bottle-1": "distilled-water-bottle-2l" },
+};
+const volumeOverrides = {
+  "hand-warmer-calorimetry": { "distilled-water-bottle-1": 2000 },
+};
+const actionDefinitionOverrides = {
+  // The hand-warmer practice and retry actions identify this source by definition only;
+  // keep those actions bound to the explicitly stocked 2 L bottle as well.
+  "hand-warmer-calorimetry": { "distilled-water-bottle": "distilled-water-bottle-2l" },
 };
 const visit = (value, fn) => {
   if (!value || typeof value !== "object") return;
@@ -40,15 +56,17 @@ export const applyStockSupplyVolumes = (definition) => {
       continue;
     }
     const base = variants[item.definitionId] ?? item.definitionId;
-    const next = variantFor[base];
+    const next = variantOverrides[definition.id]?.[id] ?? variantFor[base];
     if (!next) throw new Error(`Unsupported stock container ${item.definitionId}`);
     changed.set(id, { base, next });
     item.definitionId = next;
-    item.contents.volumeMl = 1000;
-    if (!item.label.endsWith(" (1 L stock)")) item.label += " (1 L stock)";
+    const volumeMl = volumeOverrides[definition.id]?.[id] ?? 1000;
+    item.contents.volumeMl = volumeMl;
+    const volumeLabel = volumeMl % 1000 === 0 ? `${volumeMl / 1000} L` : `${volumeMl} mL`;
+    if (!item.label.endsWith(` (${volumeLabel} stock)`)) item.label += ` (${volumeLabel} stock)`;
   }
   for (const action of definition.actions ?? []) {
-    const replacements = {};
+    const replacements = { ...(actionDefinitionOverrides[definition.id] ?? {}) };
     visit(action, (node) => {
       for (const value of Object.values(node)) {
         const change = changed.get(value);

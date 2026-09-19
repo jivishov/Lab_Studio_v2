@@ -108,7 +108,7 @@ describe("hand-warmer calorimetry generated definitions", () => {
     expect(byId.get("VOL-02")).toMatchObject({
       verb: "measureVolume",
       parameters: {
-        sourceDefinitionId: "distilled-water-bottle",
+        sourceDefinitionId: "distilled-water-bottle-2l",
         targetDefinitionId: "graduated-cylinder",
         volumeMl: 95,
       },
@@ -116,13 +116,13 @@ describe("hand-warmer calorimetry generated definitions", () => {
     expect(byId.get("VOL-03")).toMatchObject({
       verb: "measureVolume",
       parameters: {
-        sourceDefinitionId: "distilled-water-bottle",
+        sourceDefinitionId: "distilled-water-bottle-2l",
         targetDefinitionId: "graduated-cylinder",
         targetVolumeMl: 99,
       },
       interaction: {
         type: "pourInto",
-        sourceDefinitionId: "distilled-water-bottle",
+        sourceDefinitionId: "distilled-water-bottle-2l",
         targetDefinitionId: "graduated-cylinder",
       },
     });
@@ -131,7 +131,7 @@ describe("hand-warmer calorimetry generated definitions", () => {
       parameters: { targetVolumeMl: 100 },
       interaction: {
         type: "pourInto",
-        sourceDefinitionId: "distilled-water-bottle",
+        sourceDefinitionId: "distilled-water-bottle-2l",
         targetDefinitionId: "graduated-cylinder",
       },
     });

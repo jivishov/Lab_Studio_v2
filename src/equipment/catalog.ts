@@ -6,6 +6,11 @@ import {
 } from "../domain/types";
 import stockBottleVariants from "./stockBottleVariants.json";
 
+const stockBottleCapacityMl: Record<string, number> = {
+  ...Object.fromEntries(Object.keys(stockBottleVariants).map((id) => [id, 1000])),
+  "distilled-water-bottle-2l": 2000,
+};
+
 const realisticAssetById: Record<string, string> = {
   "brass-color-depth-comparison": "brass-color-depth-comparison",
   "brass-fume-hood-digestion": "brass-fume-hood-digestion",
@@ -877,11 +882,13 @@ export const v1EquipmentCatalog: EquipmentDefinition[] = [
 // Explicit stock sizes preserve the original bottle capacities used by other activities.
 for (const [id, baseId] of Object.entries(stockBottleVariants)) {
   const base = v1EquipmentCatalog.find((item) => item.id === baseId)!;
+  const capacityMl = stockBottleCapacityMl[id] ?? 1000;
+  const capacityLabel = capacityMl % 1000 === 0 ? `${capacityMl / 1000} L` : `${capacityMl} mL`;
   v1EquipmentCatalog.push({
     ...base,
     id,
-    label: `${base.label} (1 L)`,
-    capacity: { amount: 1000, unit: "mL" },
+    label: `${base.label} (${capacityLabel})`,
+    capacity: { amount: capacityMl, unit: "mL" },
     snapZones: base.snapZones.map((zone) => ({
       ...zone,
       id: zone.id.replace(baseId, id),

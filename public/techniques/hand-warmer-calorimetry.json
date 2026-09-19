@@ -18,7 +18,7 @@
     "spatula",
     "wash-bottle",
     "waste-beaker",
-    "distilled-water-bottle",
+    "distilled-water-bottle-2l",
     "reagent-bottle",
     "stopwatch"
   ],
@@ -252,8 +252,8 @@
       },
       {
         "id": "distilled-water-bottle-1",
-        "definitionId": "distilled-water-bottle",
-        "label": "Distilled water",
+        "definitionId": "distilled-water-bottle-2l",
+        "label": "Distilled water (2 L stock)",
         "location": "shelf",
         "contents": {
           "kind": "liquid",
@@ -1057,7 +1057,7 @@
       "parameters": {
         "tag": "VOL-02",
         "note": "Pour water toward the 100.0 mL line.",
-        "sourceDefinitionId": "distilled-water-bottle",
+        "sourceDefinitionId": "distilled-water-bottle-2l",
         "targetDefinitionId": "graduated-cylinder",
         "measurementId": "scope-water-volume",
         "volumeMl": 95,
@@ -1065,7 +1065,7 @@
       },
       "interaction": {
         "type": "pourInto",
-        "sourceDefinitionId": "distilled-water-bottle",
+        "sourceDefinitionId": "distilled-water-bottle-2l",
         "targetDefinitionId": "graduated-cylinder",
         "valueParameter": "volumeMl",
         "accessibleLabel": "Pour water into the graduated cylinder toward 100.0 mL."
@@ -1104,7 +1104,7 @@
       "atomId": "atom.measure.variable-volume",
       "equipmentRoleBindings": {
         "variable-volume-measuring-device": "graduated-cylinder",
-        "liquid-source": "distilled-water-bottle"
+        "liquid-source": "distilled-water-bottle-2l"
       }
     },
     {
@@ -1114,7 +1114,7 @@
       "parameters": {
         "tag": "VOL-03",
         "note": "Reduce the pouring rate near the line.",
-        "sourceDefinitionId": "distilled-water-bottle",
+        "sourceDefinitionId": "distilled-water-bottle-2l",
         "targetDefinitionId": "graduated-cylinder",
         "measurementId": "scope-water-volume",
         "targetVolumeMl": 99,
@@ -1122,7 +1122,7 @@
       },
       "interaction": {
         "type": "pourInto",
-        "sourceDefinitionId": "distilled-water-bottle",
+        "sourceDefinitionId": "distilled-water-bottle-2l",
         "targetDefinitionId": "graduated-cylinder",
         "accessibleLabel": "Pour slowly from the distilled-water bottle into the graduated cylinder near the line."
       },
@@ -1160,7 +1160,7 @@
       "atomId": "atom.measure.variable-volume",
       "equipmentRoleBindings": {
         "variable-volume-measuring-device": "graduated-cylinder",
-        "liquid-source": "distilled-water-bottle"
+        "liquid-source": "distilled-water-bottle-2l"
       }
     },
     {
@@ -1216,7 +1216,7 @@
       "parameters": {
         "tag": "VOL-05",
         "note": "Stop at 100.0 mL at the bottom of the meniscus.",
-        "sourceDefinitionId": "distilled-water-bottle",
+        "sourceDefinitionId": "distilled-water-bottle-2l",
         "targetDefinitionId": "graduated-cylinder",
         "measurementId": "scope-water-volume",
         "targetVolumeMl": 100,
@@ -1224,7 +1224,7 @@
       },
       "interaction": {
         "type": "pourInto",
-        "sourceDefinitionId": "distilled-water-bottle",
+        "sourceDefinitionId": "distilled-water-bottle-2l",
         "targetDefinitionId": "graduated-cylinder",
         "accessibleLabel": "Pour to the 100.0 milliliter mark at the bottom of the meniscus."
       },
@@ -1262,7 +1262,7 @@
       "atomId": "atom.measure.variable-volume",
       "equipmentRoleBindings": {
         "variable-volume-measuring-device": "graduated-cylinder",
-        "liquid-source": "distilled-water-bottle"
+        "liquid-source": "distilled-water-bottle-2l"
       }
     },
     {
@@ -3423,7 +3423,7 @@
       "parameters": {
         "tag": "P1-02-T2",
         "note": "Measure exactly 100.0 mL of water.",
-        "sourceDefinitionId": "distilled-water-bottle",
+        "sourceDefinitionId": "distilled-water-bottle-2l",
         "targetDefinitionId": "graduated-cylinder",
         "measurementId": "part1-trial-2-water-volume",
         "volumeMl": 100,
@@ -3431,7 +3431,7 @@
       },
       "interaction": {
         "type": "pourInto",
-        "sourceDefinitionId": "distilled-water-bottle",
+        "sourceDefinitionId": "distilled-water-bottle-2l",
         "targetDefinitionId": "graduated-cylinder",
         "valueParameter": "volumeMl",
         "accessibleLabel": "Measure a fresh 100.0 milliliter water sample for Part 1 Trial 2."
@@ -3471,7 +3471,7 @@
       "atomId": "atom.measure.variable-volume",
       "equipmentRoleBindings": {
         "variable-volume-measuring-device": "graduated-cylinder",
-        "liquid-source": "distilled-water-bottle"
+        "liquid-source": "distilled-water-bottle-2l"
       }
     },
     {
@@ -6228,7 +6228,7 @@
       "parameters": {
         "tag": "P1-02-R1",
         "note": "Measure exactly 100.0 mL of water.",
-        "sourceDefinitionId": "distilled-water-bottle",
+        "sourceDefinitionId": "distilled-water-bottle-2l",
         "targetDefinitionId": "graduated-cylinder",
         "measurementId": "part1-retry-1-water-volume",
         "volumeMl": 100,
@@ -6237,7 +6237,7 @@
       },
       "interaction": {
         "type": "pourInto",
-        "sourceDefinitionId": "distilled-water-bottle",
+        "sourceDefinitionId": "distilled-water-bottle-2l",
         "targetDefinitionId": "graduated-cylinder",
         "valueParameter": "volumeMl",
         "accessibleLabel": "Measure a fresh 100.0 milliliter water sample for Part 1 Trial 2."
@@ -6284,7 +6284,7 @@
       "atomId": "atom.measure.variable-volume",
       "equipmentRoleBindings": {
         "variable-volume-measuring-device": "graduated-cylinder",
-        "liquid-source": "distilled-water-bottle"
+        "liquid-source": "distilled-water-bottle-2l"
       }
     },
     {
@@ -8675,7 +8675,7 @@
         "note": "Measure exactly 100.0 mL of water.",
         "sourceInstanceId": "distilled-water-bottle-1",
         "targetInstanceId": "graduated-cylinder-1",
-        "sourceDefinitionId": "distilled-water-bottle",
+        "sourceDefinitionId": "distilled-water-bottle-2l",
         "targetDefinitionId": "graduated-cylinder",
         "measurementId": "calibration-hot-water-volume",
         "volumeMl": 100,
@@ -8683,7 +8683,7 @@
       },
       "interaction": {
         "type": "pourInto",
-        "sourceDefinitionId": "distilled-water-bottle",
+        "sourceDefinitionId": "distilled-water-bottle-2l",
         "targetDefinitionId": "graduated-cylinder",
         "valueParameter": "volumeMl",
         "accessibleLabel": "Measure exactly 100.0 milliliters of water for heating."
@@ -8722,7 +8722,7 @@
       "atomId": "atom.measure.variable-volume",
       "equipmentRoleBindings": {
         "variable-volume-measuring-device": "graduated-cylinder",
-        "liquid-source": "distilled-water-bottle"
+        "liquid-source": "distilled-water-bottle-2l"
       }
     },
     {
@@ -9296,7 +9296,7 @@
         "note": "Measure exactly 100.0 mL of cool water.",
         "sourceInstanceId": "distilled-water-bottle-1",
         "targetInstanceId": "graduated-cylinder-1",
-        "sourceDefinitionId": "distilled-water-bottle",
+        "sourceDefinitionId": "distilled-water-bottle-2l",
         "targetDefinitionId": "graduated-cylinder",
         "measurementId": "calibration-cool-water-volume",
         "volumeMl": 100,
@@ -9304,7 +9304,7 @@
       },
       "interaction": {
         "type": "pourInto",
-        "sourceDefinitionId": "distilled-water-bottle",
+        "sourceDefinitionId": "distilled-water-bottle-2l",
         "targetDefinitionId": "graduated-cylinder",
         "valueParameter": "volumeMl",
         "accessibleLabel": "Measure exactly 100.0 milliliters of cool water."
@@ -9343,7 +9343,7 @@
       "atomId": "atom.measure.variable-volume",
       "equipmentRoleBindings": {
         "variable-volume-measuring-device": "graduated-cylinder",
-        "liquid-source": "distilled-water-bottle"
+        "liquid-source": "distilled-water-bottle-2l"
       }
     },
     {
@@ -10376,7 +10376,7 @@
         "note": "Measure exactly 100.0 mL of water.",
         "sourceInstanceId": "distilled-water-bottle-1",
         "targetInstanceId": "graduated-cylinder-1",
-        "sourceDefinitionId": "distilled-water-bottle",
+        "sourceDefinitionId": "distilled-water-bottle-2l",
         "targetDefinitionId": "graduated-cylinder",
         "measurementId": "calibration-d2-hot-water-volume",
         "volumeMl": 100,
@@ -10384,7 +10384,7 @@
       },
       "interaction": {
         "type": "pourInto",
-        "sourceDefinitionId": "distilled-water-bottle",
+        "sourceDefinitionId": "distilled-water-bottle-2l",
         "targetDefinitionId": "graduated-cylinder",
         "valueParameter": "volumeMl",
         "accessibleLabel": "Measure exactly 100.0 milliliters of water for heating."
@@ -10424,7 +10424,7 @@
       "atomId": "atom.measure.variable-volume",
       "equipmentRoleBindings": {
         "variable-volume-measuring-device": "graduated-cylinder",
-        "liquid-source": "distilled-water-bottle"
+        "liquid-source": "distilled-water-bottle-2l"
       }
     },
     {
@@ -11006,7 +11006,7 @@
         "note": "Measure exactly 100.0 mL of cool water.",
         "sourceInstanceId": "distilled-water-bottle-1",
         "targetInstanceId": "graduated-cylinder-1",
-        "sourceDefinitionId": "distilled-water-bottle",
+        "sourceDefinitionId": "distilled-water-bottle-2l",
         "targetDefinitionId": "graduated-cylinder",
         "measurementId": "calibration-d2-cool-water-volume",
         "volumeMl": 100,
@@ -11014,7 +11014,7 @@
       },
       "interaction": {
         "type": "pourInto",
-        "sourceDefinitionId": "distilled-water-bottle",
+        "sourceDefinitionId": "distilled-water-bottle-2l",
         "targetDefinitionId": "graduated-cylinder",
         "valueParameter": "volumeMl",
         "accessibleLabel": "Measure exactly 100.0 milliliters of cool water."
@@ -11054,7 +11054,7 @@
       "atomId": "atom.measure.variable-volume",
       "equipmentRoleBindings": {
         "variable-volume-measuring-device": "graduated-cylinder",
-        "liquid-source": "distilled-water-bottle"
+        "liquid-source": "distilled-water-bottle-2l"
       }
     },
     {
@@ -12106,7 +12106,7 @@
         "note": "Measure exactly 100.0 mL of water.",
         "sourceInstanceId": "distilled-water-bottle-1",
         "targetInstanceId": "graduated-cylinder-1",
-        "sourceDefinitionId": "distilled-water-bottle",
+        "sourceDefinitionId": "distilled-water-bottle-2l",
         "targetDefinitionId": "graduated-cylinder",
         "measurementId": "calibration-d3-hot-water-volume",
         "volumeMl": 100,
@@ -12114,7 +12114,7 @@
       },
       "interaction": {
         "type": "pourInto",
-        "sourceDefinitionId": "distilled-water-bottle",
+        "sourceDefinitionId": "distilled-water-bottle-2l",
         "targetDefinitionId": "graduated-cylinder",
         "valueParameter": "volumeMl",
         "accessibleLabel": "Measure exactly 100.0 milliliters of water for heating."
@@ -12154,7 +12154,7 @@
       "atomId": "atom.measure.variable-volume",
       "equipmentRoleBindings": {
         "variable-volume-measuring-device": "graduated-cylinder",
-        "liquid-source": "distilled-water-bottle"
+        "liquid-source": "distilled-water-bottle-2l"
       }
     },
     {
@@ -12736,7 +12736,7 @@
         "note": "Measure exactly 100.0 mL of cool water.",
         "sourceInstanceId": "distilled-water-bottle-1",
         "targetInstanceId": "graduated-cylinder-1",
-        "sourceDefinitionId": "distilled-water-bottle",
+        "sourceDefinitionId": "distilled-water-bottle-2l",
         "targetDefinitionId": "graduated-cylinder",
         "measurementId": "calibration-d3-cool-water-volume",
         "volumeMl": 100,
@@ -12744,7 +12744,7 @@
       },
       "interaction": {
         "type": "pourInto",
-        "sourceDefinitionId": "distilled-water-bottle",
+        "sourceDefinitionId": "distilled-water-bottle-2l",
         "targetDefinitionId": "graduated-cylinder",
         "valueParameter": "volumeMl",
         "accessibleLabel": "Measure exactly 100.0 milliliters of cool water."
@@ -12784,7 +12784,7 @@
       "atomId": "atom.measure.variable-volume",
       "equipmentRoleBindings": {
         "variable-volume-measuring-device": "graduated-cylinder",
-        "liquid-source": "distilled-water-bottle"
+        "liquid-source": "distilled-water-bottle-2l"
       }
     },
     {
@@ -28972,7 +28972,7 @@
         "roleId": "liquid-source",
         "required": true,
         "allowedDefinitionIds": [
-          "distilled-water-bottle",
+          "distilled-water-bottle-2l",
           "wash-bottle"
         ],
         "sourceInstanceIds": [

@@ -5,6 +5,7 @@ import {
   refineHandWarmerLab,
   refineHandWarmerTechnique,
 } from "./generatorInputs/handWarmerCalorimetry.mjs";
+import { applyStockSupplyVolumes } from "./generatorInputs/stockSupplyVolumes.mjs";
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const traceabilityPath = join(
@@ -1719,7 +1720,7 @@ const requiredEquipment = [
   "spatula",
   "wash-bottle",
   "waste-beaker",
-  "distilled-water-bottle",
+  "distilled-water-bottle-2l",
   "reagent-bottle",
 ];
 
@@ -1750,7 +1751,7 @@ const initialEquipment = [
   equipment("sodium-acetate-1", "reagent-bottle", "Sodium acetate", solid("sodium-acetate", "Sodium acetate", 30)),
 ];
 
-const technique = refineHandWarmerTechnique({
+const technique = refineHandWarmerTechnique(applyStockSupplyVolumes({
   id: "hand-warmer-calorimetry",
   title: "Hand-Warmer Calorimetry",
   learningGoal: "Calibrate a nested-cup calorimeter, compare candidate salts, and defend an evidence-based hand-warmer design.",
@@ -1785,9 +1786,9 @@ const technique = refineHandWarmerTechnique({
       "student-entered-evidence",
     ],
   },
-});
+}));
 
-const lab = refineHandWarmerLab({
+const lab = refineHandWarmerLab(applyStockSupplyVolumes({
   id: "hand-warmer-calorimetry",
   title: "Designing an Effective Hand Warmer",
   // Matches the wording already published in public/labs/index.json, which the generator also
@@ -1826,7 +1827,7 @@ const lab = refineHandWarmerLab({
     ...technique.metadata,
     tags: ["lab", ...technique.metadata.tags],
   },
-});
+}));
 
 const uniqueActionIds = new Set(actions.map((action) => action.id));
 const uniqueNodeIds = new Set(nodes.map((node) => node.id));

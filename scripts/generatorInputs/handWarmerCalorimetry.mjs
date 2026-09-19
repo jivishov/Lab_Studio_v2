@@ -414,7 +414,7 @@ export const refineHandWarmerLab = (definition) => {
     "immersed-probe-instrument": ["probe-thermometer"],
     "immersed-probe-vessel": ["hand-warmer-calorimeter", "beaker-150ml"],
     "variable-volume-measuring-device": ["graduated-cylinder"],
-    "liquid-source": ["wash-bottle", "distilled-water-bottle"],
+    "liquid-source": ["wash-bottle", "distilled-water-bottle-2l"],
     "measured-solvent-source": ["beaker-150ml", "graduated-cylinder"],
     "receiving-vessel": ["hand-warmer-calorimeter", "beaker-150ml"],
     "balance-instrument": ["analytical-balance"],
