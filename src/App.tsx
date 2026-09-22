@@ -36,6 +36,7 @@ import {
 } from "./assay/AssayRoutes";
 import "@xyflow/react/dist/style.css";
 import "./styles/app.css";
+import "./styles/teacher-setup.css";
 
 const AcidBaseTitrationCaseRoute = lazy(() =>
   import("./cases/AcidBaseTitrationCase").then(({ AcidBaseTitrationCase }) => ({
@@ -594,7 +595,19 @@ const DefinitionRoute = ({
     let active = true;
     setDefinition(undefined);
     setError(undefined);
-    if (kind === "lab" && ["paper-chromatography", "bonding-unknown-solids", "hard-water-analysis", "quick-ache-relief-separation"].includes(id) && !setup) return;
+    if (
+      kind === "lab"
+      && [
+        "acid-base-titration",
+        "beverage-acidity",
+        "hydrogen-peroxide-redox-titration",
+        "paper-chromatography",
+        "bonding-unknown-solids",
+        "hard-water-analysis",
+        "quick-ache-relief-separation",
+      ].includes(id)
+      && !setup
+    ) return;
     const loader = kind === "lab" ? loadBundledLab(id, setup) : loadBundledTechnique(id);
     void loader
       .then((loaded) => {
