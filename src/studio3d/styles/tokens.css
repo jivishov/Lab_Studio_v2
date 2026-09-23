@@ -1,0 +1,58 @@
+/*
+ * Lab Studio 3D design tokens (UI_UX_HANDOFF.md §3). One token set for Studio 3D and Player3D;
+ * the two apps differ in layout, not in vocabulary. Contrast pairs are verified by
+ * scripts/studio3d/checkTokenContrast.mjs; do not change a colour without re-running it.
+ *
+ * Liquid colours never come from here: they come from resolveLiquidStyle (handoff G-9).
+ */
+:root {
+  /* Foundation, after the Photoreal Bench, with the greys darkened to reach AA */
+  --bg: #f5f6f1;  --panel: #fdfefb;  --panel-solid: #ffffff;
+  --line: #e0e5db;  --line-strong: #cad5c7;
+  --ink: #233934;  --ink-2: #44574f;  --muted: #5d6b64;
+  /* Brand: selection, primary buttons, active states */
+  --brand: #2a5a49;  --brand-hover: #224838;  --brand-tint: #ecf3ed;
+  /* Guidance: next action, beacon, Show me, progress */
+  --guide: #197b7b;  --guide-strong: #126767;  --guide-tint: #e3f1ec;  --guide-band: #eef6f1;
+  /* Semantics */
+  --ok: #2d7960;     --ok-tint: #e5f2ec;
+  --error: #9a4b37;  --error-tint: #fbeee8;
+  --warn: #7d5a12;   --warn-tint: #fbf3df;
+  --focus: #a8791a;  /* 3 px outline with a 3 px offset */
+  /* Over the 3D stage */
+  --glass: #f7faf2cc;   --glass-line: #ffffff6b;
+  --float: #fafdfaf2;   --float-line: #cfe0d6;
+  --toolbar: linear-gradient(160deg, #283b32f2, #1c3027eb);  --toolbar-ink: #f0f4ed;
+  --label-bg: #183c43e6; --label-ink: #ffffff;
+  --canvas: #f7f8f4;    --canvas-dot: #dfe4da;
+
+  /* Value provenance chips (§3.2): background / ink */
+  --prov-teacher-bg: #e8eef6;  --prov-teacher-ink: #2f4a6e;
+  --prov-entry-bg: #f4efe4;    --prov-entry-ink: #5b4a24;
+  --prov-bench-bg: #edf1ec;    --prov-bench-ink: #44574f;
+  --prov-sim-bg: #eee9f6;      --prov-sim-ink: #4f3d78;
+  --prov-calc-bg: #e3f0ee;     --prov-calc-ink: #1f5a57;
+
+  /* Type (§3.3); IBM Plex is bundled locally (decision U1) */
+  --font-sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+
+  /* Space, shape, depth (§3.4) */
+  --space: 4px;  --pad-panel: 12px;  --pad-panel-lg: 16px;  --gap-region: 11px;
+  --radius-input: 6px;  --radius-button: 8px;  --radius-panel: 12px;
+  --shadow-docked: 0 4px 18px #20342608;
+  --shadow-float: 0 10px 30px #1b3a3322, 0 2px 6px #1b3a3314;
+  --shadow-toolbar: 0 7px 28px #111e1860;
+  --z-scene: 0;  --z-scene-label: 10;  --z-panel: 20;  --z-bar: 30;  --z-toast: 40;  --z-dialog: 50;  --z-ghost: 60;
+
+  /* Motion (§3.5) */
+  --ease-standard: cubic-bezier(.2, .7, .2, 1);
+  --dur-hover: 120ms;  --dur-panel: 200ms;  --dur-snap: 150ms;  --dur-settle: 120ms;
+  --dur-camera: 650ms;  --dur-step: 400ms;  --dur-toast-in: 160ms;  --dur-beacon: 1.6s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-panel: 0ms;  --dur-snap: 0ms;  --dur-settle: 0ms;  --dur-camera: 0ms;
+  }
+}
