@@ -13,6 +13,8 @@ Governing documents: `IMPLEMENTATION_PLAN.md` (revision 2.1) and `UI_UX_HANDOFF.
 | M0 | Mock-ups | **Approved** (2026-09-23): all 22 frames at https://claude.ai/artifact/FPmL37sYkDDKWkwypmkhFp (`mockups/lab-studio-3d-mockups.html`, commit `c68ae2a`). This closes M0; M3 and later presentation work may start. | `evidence/M0_EVIDENCE.md` |
 | U9 | Catalogue precision units | **Show capacity and precision only when the unit matches the item's measure:** mL for volumetric ware, g for a balance. Values that don't match are omitted from Examine and the library cards. The catalogue itself is never changed. | `evidence/M0_EVIDENCE.md`, finding 2 |
 | U10 | Setup slot labels | **Show friendlier teacher-facing labels**, from a label map in the 3D presentation layer keyed by slot id. The core slot id stays visible to the Studio author, in a tooltip or in mono text; the core itself is unchanged. | `evidence/M0_EVIDENCE.md`, finding 4 |
+| G1 | Browser checks while building | **Spot visual checks authorised** (2026-09-23): one built-in-browser look per change while building M3–M5; no test suites or matrices. Full G1 playthroughs remain for M8 acceptance. | — |
+| — | AGENTS.md 3D asset rules | **Adopted** (2026-09-23), commit `399c86f`. | `proposals/AGENTS_3D_ASSETS_SECTION.md` |
 
 ## Open decisions, with the plan's recommendation used provisionally
 
@@ -34,4 +36,4 @@ Work that depends on these stays reversible until you confirm.
 
 ## Gates that remain closed
 
-- **G1–G4.** Browser playthroughs, performance, webcam and publishing. None is exercised without your go-ahead.
+- **G1 playthroughs, G2–G4.** Full browser playthroughs, performance, webcam and publishing. None is exercised without your go-ahead; only G1 spot checks are authorised.
