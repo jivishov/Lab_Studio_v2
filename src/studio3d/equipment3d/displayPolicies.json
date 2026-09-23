@@ -1,0 +1,21 @@
+{
+  "schema": "lab-studio-3d/display-policies@1",
+  "policy": "Instrument displays are measurement-neutral (plan §2.4, D7; handoff G-1). A display may show configured settings, status, a readout whose provenance is \"simulator-generated\" where the runtime produces one, and, after entry, the learner's own value labelled \"Your entry\". It never shows an invented reading. src/studio3d/adapters/instrumentDisplay.ts implements these policies (M3).",
+  "policies": {
+    "balance-status-and-entry": {
+      "shows": ["status", "learner-entry"],
+      "never": ["mass-reading"],
+      "note": "The runtime does not simulate balance mass; weighing's input is a studentResponse (decision U4)."
+    },
+    "photometer-settings-status-and-entry": {
+      "shows": ["configured-mode", "configured-wavelength", "blank-status", "learner-entry"],
+      "never": ["percent-transmittance-reading", "absorbance-reading"],
+      "note": "The runtime tracks photometer calibration and blank readiness, not %T; %T is a studentResponse."
+    },
+    "simulator-readout": {
+      "shows": ["simulator-generated-readout", "status"],
+      "never": ["invented-reading"],
+      "note": "For instruments whose readout carries provenance \"simulator-generated\" (the pH meter, in later packs)."
+    }
+  }
+}

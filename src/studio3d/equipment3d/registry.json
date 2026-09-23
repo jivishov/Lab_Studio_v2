@@ -1,0 +1,73 @@
+{
+  "schema": "lab-studio-3d/equipment3d-registry@1",
+  "generatedBy": "tools/blender/pack_models.py",
+  "coordinates": "Model-local millimetres: x right, y away from the default viewer, z up; origin at the footprint centre on the bench plane. Anchors are keyed by semantic zone id (src/domain/interactionZones.ts).",
+  "assetBase": "assets/equipment-3d/v1/",
+  "entries": [
+    {
+      "definitionId": "wash-bottle",
+      "model": "wash-bottle.glb",
+      "thumbnail": "thumbs/wash-bottle.png",
+      "footprintMm": {
+        "shape": "circle",
+        "radius": 40.0
+      },
+      "grip": {
+        "heightMm": 70.0
+      },
+      "pour": {
+        "lipMm": [
+          -101.42,
+          0.0,
+          238.32
+        ],
+        "tiltDeg": 45.0,
+        "style": "squeeze-jet",
+        "tipDirection": [
+          -0.8099,
+          0.0,
+          -0.5866
+        ]
+      },
+      "fill": {
+        "innerProfileMm": [
+          [
+            0.0,
+            1.3
+          ],
+          [
+            36.6,
+            1.3
+          ],
+          [
+            38.7,
+            3.4
+          ],
+          [
+            38.7,
+            140.6
+          ],
+          [
+            20.7,
+            156.6
+          ],
+          [
+            20.7,
+            164.0
+          ]
+        ],
+        "capacityMl": 500,
+        "meniscus": "flat"
+      },
+      "graduations": null,
+      "anchors": {},
+      "displays": [],
+      "states": {},
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/wash_bottle.py",
+        "sourceHash": "94d6aa4154f0a7078823e7422e9917606affa8cc60cba73cb177f912c1bca8dd"
+      }
+    }
+  ]
+}

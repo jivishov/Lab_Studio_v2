@@ -193,6 +193,8 @@ const equipment = packDefinitionIds.map((definitionId) => {
     category: definition?.category ?? null,
     capacity: definition ? `${definition.capacity.amount} ${definition.capacity.unit}` : null,
     precision: definition ? `${definition.precision.amount} ${definition.precision.unit}` : null,
+    capacitySpec: definition ? { amount: definition.capacity.amount, unit: definition.capacity.unit } : null,
+    precisionSpec: definition ? { amount: definition.precision.amount, unit: definition.precision.unit } : null,
     catalogSnapZones: definition?.snapZones.map((zone) => zone.id) ?? [],
     semanticZonesOwned: v1InteractionZones
       .filter((zone) => zone.ownerDefinitionId === definitionId)

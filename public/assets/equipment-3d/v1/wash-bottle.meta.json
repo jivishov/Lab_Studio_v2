@@ -1,0 +1,96 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "wash-bottle",
+  "model": "wash-bottle.glb",
+  "thumbnail": "thumbs/wash-bottle.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "circle",
+      "radius": 40.0
+    },
+    "grip": {
+      "heightMm": 70.0
+    },
+    "pour": {
+      "lipMm": [
+        -101.42,
+        0.0,
+        238.32
+      ],
+      "tiltDeg": 45.0,
+      "style": "squeeze-jet",
+      "tipDirection": [
+        -0.8099,
+        0.0,
+        -0.5866
+      ]
+    },
+    "fill": {
+      "innerProfileMm": [
+        [
+          0.0,
+          1.3
+        ],
+        [
+          36.6,
+          1.3
+        ],
+        [
+          38.7,
+          3.4
+        ],
+        [
+          38.7,
+          140.6
+        ],
+        [
+          20.7,
+          156.6
+        ],
+        [
+          20.7,
+          164.0
+        ]
+      ],
+      "capacityMl": 500,
+      "meniscus": "flat"
+    },
+    "graduations": null,
+    "anchors": {},
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -102.13,
+        -40.08,
+        0.0
+      ],
+      "max": [
+        40.0,
+        40.0,
+        259.99
+      ]
+    },
+    "triangles": 43631,
+    "materials": [
+      "Blue print ink",
+      "LDPE delivery tube",
+      "LDPE natural",
+      "PP cap"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/wash_bottle.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "94d6aa4154f0a7078823e7422e9917606affa8cc60cba73cb177f912c1bca8dd",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

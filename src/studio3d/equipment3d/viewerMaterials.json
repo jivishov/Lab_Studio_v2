@@ -1,0 +1,20 @@
+{
+  "schema": "lab-studio-3d/viewer-materials@1",
+  "policy": "Every material name in an equipment GLB must appear here. The viewer assigns its three.js material by role: glass roles are front-sided and do not write depth (plan §6.2). No liquid, powder or other contents material may appear in a model: contents are drawn from runtime state (plan §4.4, handoff G-3).",
+  "materials": {
+    "Borosilicate glass": { "role": "glass-thin" },
+    "Borosilicate glass thick": { "role": "glass-thick" },
+    "Frosted marking spot": { "role": "frosted" },
+    "Blue print ink": { "role": "print" },
+    "White enamel print": { "role": "print" },
+    "Brushed stainless": { "role": "metal-brushed" },
+    "Cast clamp chrome": { "role": "metal" },
+    "Black powder coat": { "role": "coating" },
+    "Black rubber": { "role": "rubber" },
+    "Black phenolic knob": { "role": "plastic-opaque" },
+    "LDPE natural": { "role": "plastic-translucent" },
+    "PP cap": { "role": "plastic-translucent" },
+    "LDPE delivery tube": { "role": "plastic-translucent" },
+    "Filter paper": { "role": "paper" }
+  }
+}
