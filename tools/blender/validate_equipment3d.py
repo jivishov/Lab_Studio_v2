@@ -69,6 +69,13 @@ def glb_json(path):
     return json.loads(data[20:20 + chunk_len])
 
 
+def fill_volume_ml(fill):
+    if 'innerBoxMm' in fill:
+        b = fill['innerBoxMm']
+        return b['width'] * b['depth'] * (b['topZ'] - b['floorZ']) / 1000.0
+    return profile_volume_ml(fill['innerProfileMm'])
+
+
 def profile_volume_ml(profile):
     vol = 0.0
     for (r0, z0), (r1, z1) in zip(profile, profile[1:]):
@@ -76,6 +83,25 @@ def profile_volume_ml(profile):
         if h > 0:
             vol += math.pi * h * (r0 * r0 + r0 * r1 + r1 * r1) / 3.0
     return vol / 1000.0
+
+
+def level_for_volume_mm(profile, ml):
+    target, vol = ml * 1000.0, 0.0
+    for (r0, z0), (r1, z1) in zip(profile, profile[1:]):
+        h = z1 - z0
+        if h <= 0:
+            continue
+        seg = math.pi * h * (r0 * r0 + r0 * r1 + r1 * r1) / 3.0
+        if vol + seg >= target:
+            lo, hi = 0.0, h
+            for _ in range(60):
+                mid = (lo + hi) / 2
+                rm = r0 + (r1 - r0) * mid / h
+                part = math.pi * mid * (r0 * r0 + r0 * rm + rm * rm) / 3.0
+                lo, hi = (mid, hi) if vol + part < target else (lo, mid)
+            return z0 + lo
+        vol += seg
+    return None
 
 
 def main():
@@ -127,7 +153,7 @@ def main():
             if not fill:
                 errors.append(f'{where} catalogue capacity {cap["amount"]} mL but no fill profile')
             else:
-                vol = profile_volume_ml(fill['innerProfileMm'])
+                vol = fill_volume_ml(fill)
                 if vol + 1e-6 < cap['amount']:
                     errors.append(f'{where} fill profile holds {vol:.1f} mL, below catalogue capacity {cap["amount"]} mL')
                 if fill.get('capacityMl') != cap['amount']:
@@ -145,6 +171,14 @@ def main():
                 errors.append(f'{where} graduations top out at {grads.get("maxMl")}, capacity is {cap.get("amount")} mL')
             if prec.get('unit') == 'mL' and prec.get('amount', 0) > 0 and grads.get('minor') != prec['amount']:
                 errors.append(f'{where} minor graduation {grads.get("minor")} != catalogue precision {prec["amount"]} mL')
+        calib = entry.get('calibration')
+        if calib and cap.get('unit') == 'mL' and calib.get('ml') != cap.get('amount'):
+            errors.append(f'{where} calibration mark at {calib.get("ml")} mL, capacity is {cap.get("amount")} mL')
+        if calib and fill and 'innerProfileMm' in fill:
+            level = level_for_volume_mm(fill['innerProfileMm'], calib['ml'])
+            if level is None or abs(level - calib['heightMm']) > 0.5:
+                errors.append(f'{where} calibration ring at {calib["heightMm"]} mm, but the fill profile reaches '
+                              f'{calib["ml"]} mL at {level if level is None else round(level, 2)} mm')
         if prec.get('unit') not in (None, 'mL', 'none') and prec.get('amount', 0) > 0:
             notes.append(f'{where} catalogue precision {prec["amount"]} {prec["unit"]} is not a volume precision; '
                          'not used for graduations or shown (decision U9)')
@@ -186,10 +220,31 @@ def main():
             if meta['provenance']['sourceHash'] != entry.get('provenance', {}).get('sourceHash'):
                 errors.append(f'{where} registry provenance hash differs from meta.json')
 
+    for def_id in required:
+        support = (entries.get(def_id) or {}).get('requiresSupport')
+        if support and not (entries.get(support) or {}).get('scenery'):
+            errors.append(f'[{def_id}] requiresSupport "{support}" is not a scenery entry')
     for def_id, entry in entries.items():
         if entry.get('scenery'):
+            where = f'[{def_id}]'
             if def_id in catalogue:
-                errors.append(f'[{def_id}] scenery entry uses a catalogue definition id (decision D9)')
+                errors.append(f'{where} scenery entry uses a catalogue definition id (decision D9)')
+            target = (entry.get('sceneryFor') or {}).get('definitionId')
+            if target and target not in catalogue:
+                notes.append(f'{where} scenery supports "{target}", outside Pack {args.pack}')
+            glb = ASSETS / entry['model']
+            if not glb.is_file() or not (ASSETS / entry['thumbnail']).is_file():
+                errors.append(f'{where} scenery GLB or thumbnail missing')
+            else:
+                size = glb.stat().st_size
+                pack_bytes += size
+                if size > BUDGET_ITEM:
+                    errors.append(f'{where} scenery GLB is {size:,} bytes, over {BUDGET_ITEM:,}')
+                gltf = glb_json(glb)
+                for m in gltf.get('materials', []):
+                    if m.get('name') not in viewer_materials:
+                        errors.append(f'{where} material "{m.get("name")}" is not in viewerMaterials.json')
+                notes.append(f'{where} scenery GLB {size:,} bytes')
         elif def_id not in catalogue and not only:
             notes.append(f'[{def_id}] registry entry is outside Pack {args.pack}')
     if not only and pack_bytes > BUDGET_PACK:

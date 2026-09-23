@@ -40,8 +40,14 @@ export const parseEquipment3DRegistry = (json: unknown): Equipment3DRegistry => 
     }
     if (isRecord(entry.fill)) {
       oneOf(entry.fill.meniscus, ["concave", "convex", "flat"] as const, `${at}.fill.meniscus`);
-      if (!Array.isArray(entry.fill.innerProfileMm)) fail(`${at}.fill.innerProfileMm`, "[radius, height] pairs");
-      (entry.fill.innerProfileMm as unknown[]).forEach((pair, k) => numbers(pair, `${at}.fill.innerProfileMm[${k}]`, 2));
+      if (Array.isArray(entry.fill.innerProfileMm)) {
+        (entry.fill.innerProfileMm as unknown[]).forEach((pair, k) => numbers(pair, `${at}.fill.innerProfileMm[${k}]`, 2));
+      } else if (isRecord(entry.fill.innerBoxMm)) {
+        const box = entry.fill.innerBoxMm;
+        numbers([box.width, box.depth, box.floorZ, box.topZ], `${at}.fill.innerBoxMm`, 4);
+      } else {
+        fail(`${at}.fill`, "innerProfileMm pairs or innerBoxMm");
+      }
     }
     if (entry.graduations !== null && !isRecord(entry.graduations)) fail(`${at}.graduations`, "an object or null");
     if (isRecord(entry.graduations)) oneOf(entry.graduations.unit, ["mL"] as const, `${at}.graduations.unit`);

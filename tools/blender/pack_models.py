@@ -16,8 +16,10 @@ public/assets/equipment-3d/v1/<id>.meta.json, so it can never drift from the gen
 """
 import argparse
 import json
+import struct
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 TOOLS = Path(__file__).resolve().parent
@@ -29,11 +31,35 @@ GLTFPACK = REPO / 'node_modules' / 'gltfpack' / 'cli.js'
 FLAGS = ['-cc', '-kn', '-km', '-kv', '-vn', '12', '-vtf', '-vpf']
 
 
+def complete_glb(path, not_before):
+    """True when `path` is a whole GLB written during this run: magic, declared length equal to
+    the file size, and a JSON chunk that parses with at least one mesh."""
+    try:
+        if path.stat().st_mtime < not_before:
+            return False
+        data = path.read_bytes()
+        magic, _v, length = struct.unpack_from('<4sII', data, 0)
+        chunk_len, chunk_type = struct.unpack_from('<II', data, 12)
+        doc = json.loads(data[20:20 + chunk_len])
+        return magic == b'glTF' and length == len(data) and chunk_type == 0x4E4F534A and bool(doc.get('meshes'))
+    except (OSError, struct.error, ValueError):
+        return False
+
+
 def pack(def_id):
     src, dst = BUILD / f'{def_id}.glb', ASSETS / f'{def_id}.glb'
     if not src.is_file():
         raise SystemExit(f'{src} is missing: run build_equipment3d.py first')
-    subprocess.run(['node', str(GLTFPACK), '-i', str(src), '-o', str(dst), *FLAGS], check=True)
+    started = time.time() - 1
+    result = subprocess.run(['node', str(GLTFPACK), '-i', str(src), '-o', str(dst), *FLAGS])
+    if result.returncode != 0:
+        # Node 23 on Windows can abort in libuv teardown (async.c UV_HANDLE_CLOSING assertion)
+        # after gltfpack has already written its output, typically on very small inputs. Accept
+        # the run only when the output provably finished; anything else still fails.
+        if not complete_glb(dst, started):
+            raise SystemExit(f'gltfpack failed for {def_id} (exit {result.returncode})')
+        print(f'warning: gltfpack exited {result.returncode} after writing a complete {dst.name} '
+              '(Node teardown assertion); output verified')
     print(f'{def_id}: {src.stat().st_size:,} -> {dst.stat().st_size:,} bytes')
 
 

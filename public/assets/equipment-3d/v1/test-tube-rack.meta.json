@@ -1,0 +1,76 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "test-tube-rack",
+  "model": "test-tube-rack.glb",
+  "thumbnail": "thumbs/test-tube-rack.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "rect",
+      "width": 100.0,
+      "depth": 32.0
+    },
+    "grip": {
+      "heightMm": 62.0
+    },
+    "graduations": null,
+    "sceneryFor": {
+      "definitionId": "test-tube",
+      "seatsMm": [
+        [
+          -33.0,
+          0.0,
+          6.0
+        ],
+        [
+          -11.0,
+          0.0,
+          6.0
+        ],
+        [
+          11.0,
+          0.0,
+          6.0
+        ],
+        [
+          33.0,
+          0.0,
+          6.0
+        ]
+      ]
+    },
+    "anchors": {},
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -50.0,
+        -16.0,
+        0.0
+      ],
+      "max": [
+        50.0,
+        16.0,
+        65.05
+      ]
+    },
+    "triangles": 584,
+    "materials": [
+      "Instrument housing dark grey",
+      "Polypropylene rack white"
+    ],
+    "scenery": true
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/test_tube_rack.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "736729907165be429a8440a9cb4898ff18f09083093e556b6f31325f4a376e96",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

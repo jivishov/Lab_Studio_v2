@@ -17,7 +17,7 @@ describe("equipment3d registry", () => {
 
   it("keeps contents out of models: the wash bottle declares a fill profile, not baked liquid", () => {
     const entry = equipment3dEntry("wash-bottle");
-    expect(entry?.fill?.innerProfileMm.length).toBeGreaterThan(2);
+    expect(entry?.fill?.innerProfileMm?.length).toBeGreaterThan(2);
     expect(entry?.displays).toEqual([]);
   });
 

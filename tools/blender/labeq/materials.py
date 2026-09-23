@@ -94,7 +94,13 @@ def _paper(name):
     return m
 
 
-# name -> factory; values are the prototype's, unchanged
+def _housing_light(name):
+    m = principled(name, **{'Base Color': (0.8, 0.805, 0.8, 1), 'Roughness': 0.38, 'Specular IOR Level': 0.45})
+    add_noise(m, 'Normal', scale=(1800, 1800, 1800), bump=0.05)
+    return m
+
+
+# name -> factory; the prototype's values are unchanged
 _FACTORIES = {
     'Borosilicate glass': lambda n: _glass(n, (0.985, 0.995, 0.99, 1)),
     # rims, bases and stems: the same glass in a separate slot, so the viewer can give it the
@@ -116,6 +122,20 @@ _FACTORIES = {
                                                      'Transmission Weight': 0.55, 'Subsurface Weight': 0.6,
                                                      'Subsurface Scale': 0.002}),
     'Filter paper': _paper,
+    # Pack 1 instruments, cuvette and scenery (M2)
+    'Instrument housing light grey': _housing_light,
+    'Instrument housing dark grey': lambda n: principled(n, **{'Base Color': (0.06, 0.063, 0.066, 1), 'Roughness': 0.5,
+                                                              'Specular IOR Level': 0.3}),
+    'Keypad membrane': lambda n: principled(n, **{'Base Color': (0.2, 0.21, 0.22, 1), 'Roughness': 0.6}),
+    # a blank, dark display face: the viewer draws only what its display policy allows (G-1)
+    'Display glass': lambda n: principled(n, **{'Base Color': (0.012, 0.015, 0.017, 1), 'Roughness': 0.12,
+                                                'Specular IOR Level': 0.22}),
+    'Polystyrene clear': lambda n: principled(n, **{'Base Color': (0.99, 0.99, 0.99, 1), 'Roughness': 0.02,
+                                                    'IOR': 1.59, 'Transmission Weight': 1.0}),
+    'Polystyrene frosted': lambda n: principled(n, **{'Base Color': (0.93, 0.93, 0.92, 1), 'Roughness': 0.55,
+                                                      'IOR': 1.59, 'Transmission Weight': 0.6}),
+    'Polypropylene rack white': lambda n: principled(n, **{'Base Color': (0.9, 0.9, 0.88, 1), 'Roughness': 0.42,
+                                                           'Subsurface Weight': 0.3, 'Subsurface Scale': 0.003}),
 }
 
 

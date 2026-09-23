@@ -1,0 +1,122 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "test-tube",
+  "model": "test-tube.glb",
+  "thumbnail": "thumbs/test-tube.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "circle",
+      "radius": 8.0
+    },
+    "grip": {
+      "heightMm": 110.0
+    },
+    "pour": {
+      "lipMm": [
+        -7.8,
+        0.0,
+        150.3
+      ],
+      "tiltDeg": 110.0,
+      "style": "pour"
+    },
+    "fill": {
+      "innerProfileMm": [
+        [
+          0.0,
+          1.2
+        ],
+        [
+          0.888,
+          1.258
+        ],
+        [
+          1.76,
+          1.432
+        ],
+        [
+          2.602,
+          1.718
+        ],
+        [
+          3.4,
+          2.111
+        ],
+        [
+          4.14,
+          2.605
+        ],
+        [
+          4.808,
+          3.192
+        ],
+        [
+          5.395,
+          3.86
+        ],
+        [
+          5.889,
+          4.6
+        ],
+        [
+          6.282,
+          5.398
+        ],
+        [
+          6.568,
+          6.24
+        ],
+        [
+          6.742,
+          7.112
+        ],
+        [
+          6.8,
+          8.0
+        ],
+        [
+          6.8,
+          149.0
+        ]
+      ],
+      "capacityMl": 20,
+      "meniscus": "concave"
+    },
+    "graduations": null,
+    "requiresSupport": "test-tube-rack",
+    "anchors": {},
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -8.51,
+        -8.51,
+        0.0
+      ],
+      "max": [
+        8.51,
+        8.51,
+        150.08
+      ]
+    },
+    "triangles": 7680,
+    "materials": [
+      "Borosilicate glass",
+      "Borosilicate glass thick"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/test_tube.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "6d19ef1188eeab022d25ba24c2d82aa32d8d02a8e221bf2da042222c6a3f4883",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

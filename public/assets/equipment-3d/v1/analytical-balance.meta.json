@@ -1,0 +1,80 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "analytical-balance",
+  "model": "analytical-balance.glb",
+  "thumbnail": "thumbs/analytical-balance.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "rect",
+      "width": 220.0,
+      "depth": 330.0
+    },
+    "grip": {
+      "heightMm": 50.0
+    },
+    "graduations": null,
+    "anchors": {
+      "analytical-balance-pan": {
+        "positionMm": [
+          0.0,
+          40.0,
+          90.0
+        ]
+      }
+    },
+    "displays": [
+      {
+        "id": "main",
+        "policy": "balance-status-and-entry",
+        "centreMm": [
+          -35.0,
+          -167.35,
+          42.0
+        ],
+        "sizeMm": [
+          86.0,
+          22.0
+        ]
+      }
+    ],
+    "states": {
+      "draftShieldRightDoor": "open"
+    }
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -110.0,
+        -168.1,
+        0.0
+      ],
+      "max": [
+        110.0,
+        280.0,
+        297.0
+      ]
+    },
+    "triangles": 5132,
+    "materials": [
+      "Black rubber",
+      "Borosilicate glass",
+      "Brushed stainless",
+      "Display glass",
+      "Instrument housing dark grey",
+      "Instrument housing light grey",
+      "Keypad membrane"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/analytical_balance.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "b0e2f11bc10eaad1eb700ebb5b2e827f093d12df1ad91b5b9b6bbd1fd4d6620d",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

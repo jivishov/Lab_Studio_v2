@@ -1,0 +1,101 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "sample-bottle",
+  "model": "sample-bottle.glb",
+  "thumbnail": "thumbs/sample-bottle.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "circle",
+      "radius": 28.0
+    },
+    "grip": {
+      "heightMm": 35.2
+    },
+    "pour": {
+      "lipMm": [
+        -15.8,
+        0.0,
+        96.0
+      ],
+      "tiltDeg": 110.0,
+      "style": "pour"
+    },
+    "fill": {
+      "innerProfileMm": [
+        [
+          0.0,
+          2.8
+        ],
+        [
+          23.2,
+          2.8
+        ],
+        [
+          26.2,
+          4.8
+        ],
+        [
+          26.2,
+          65.2
+        ],
+        [
+          14.2,
+          80.8
+        ],
+        [
+          14.2,
+          96.0
+        ]
+      ],
+      "capacityMl": 125,
+      "meniscus": "concave"
+    },
+    "graduations": null,
+    "solidRest": {
+      "centreMm": [
+        0.0,
+        0.0,
+        2.8
+      ],
+      "radiusMm": 21.0
+    },
+    "anchors": {},
+    "displays": [],
+    "states": {
+      "closure": "open"
+    }
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -28.0,
+        -28.1,
+        0.04
+      ],
+      "max": [
+        28.0,
+        28.0,
+        96.0
+      ]
+    },
+    "triangles": 44517,
+    "materials": [
+      "Borosilicate glass",
+      "Borosilicate glass thick",
+      "Frosted marking spot",
+      "White enamel print"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/sample_bottle.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "406934bfa9e9b55f8067ce7059813e10476d4551fe4256e3d3c84a3629f7f0ec",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

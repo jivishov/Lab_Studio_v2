@@ -1,0 +1,66 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "watch-glass",
+  "model": "watch-glass.glb",
+  "thumbnail": "thumbs/watch-glass.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "circle",
+      "radius": 50.0
+    },
+    "grip": {
+      "heightMm": 6.0
+    },
+    "graduations": null,
+    "solidRest": {
+      "centreMm": [
+        0.0,
+        0.0,
+        1.6
+      ],
+      "radiusMm": 18.0
+    },
+    "anchors": {
+      "watch-glass-paper-seat": {
+        "positionMm": [
+          0.0,
+          0.0,
+          1.6
+        ]
+      }
+    },
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -50.35,
+        -50.35,
+        0.0
+      ],
+      "max": [
+        50.35,
+        50.35,
+        11.4
+      ]
+    },
+    "triangles": 20800,
+    "materials": [
+      "Borosilicate glass",
+      "Borosilicate glass thick"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/watch_glass.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "4109d350003a434ce61bc9865ce71c2e1f9f588292ed5e630b43af4ae3caae59",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

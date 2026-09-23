@@ -1,0 +1,87 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "graduated-cylinder",
+  "model": "graduated-cylinder.glb",
+  "thumbnail": "thumbs/graduated-cylinder.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "circle",
+      "radius": 38.0
+    },
+    "grip": {
+      "heightMm": 130.0
+    },
+    "pour": {
+      "lipMm": [
+        -20.0,
+        0.0,
+        213.0
+      ],
+      "tiltDeg": 105.0,
+      "style": "pour"
+    },
+    "fill": {
+      "innerProfileMm": [
+        [
+          0.0,
+          9.0
+        ],
+        [
+          11.9,
+          9.0
+        ],
+        [
+          13.4,
+          10.5
+        ],
+        [
+          13.4,
+          212.0
+        ]
+      ],
+      "capacityMl": 100,
+      "meniscus": "concave"
+    },
+    "graduations": {
+      "unit": "mL",
+      "minor": 1,
+      "major": 10,
+      "maxMl": 100
+    },
+    "anchors": {},
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -32.91,
+        -37.4,
+        0.0
+      ],
+      "max": [
+        32.91,
+        37.4,
+        213.3
+      ]
+    },
+    "triangles": 22388,
+    "materials": [
+      "Blue print ink",
+      "Borosilicate glass",
+      "Borosilicate glass thick"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/graduated_cylinder.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "5a3d0e12a6ae6e943b74b120d6f6dd0faf8d7062d449f19f2d8064a453bbb912",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

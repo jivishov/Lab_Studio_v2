@@ -1,0 +1,64 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "cuvette",
+  "model": "cuvette.glb",
+  "thumbnail": "thumbs/cuvette.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "rect",
+      "width": 12.5,
+      "depth": 12.5
+    },
+    "grip": {
+      "heightMm": 37.0
+    },
+    "fill": {
+      "innerBoxMm": {
+        "width": 10.0,
+        "depth": 10.0,
+        "floorZ": 1.5,
+        "topZ": 45.0
+      },
+      "capacityMl": 4,
+      "meniscus": "concave"
+    },
+    "graduations": null,
+    "anchors": {},
+    "displays": [],
+    "states": {
+      "opticalFaces": "+y/-y",
+      "frostedFaces": "+x/-x"
+    }
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -6.25,
+        -6.25,
+        0.0
+      ],
+      "max": [
+        6.25,
+        6.25,
+        45.0
+      ]
+    },
+    "triangles": 220,
+    "materials": [
+      "Polystyrene clear",
+      "Polystyrene frosted"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/cuvette.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "2c17dc128896ea3e6bd7c66e6999395432f1bf69837f1e0e1d39be2a13124d3f",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

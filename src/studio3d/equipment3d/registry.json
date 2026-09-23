@@ -5,6 +5,780 @@
   "assetBase": "assets/equipment-3d/v1/",
   "entries": [
     {
+      "definitionId": "analytical-balance",
+      "model": "analytical-balance.glb",
+      "thumbnail": "thumbs/analytical-balance.png",
+      "footprintMm": {
+        "shape": "rect",
+        "width": 220.0,
+        "depth": 330.0
+      },
+      "grip": {
+        "heightMm": 50.0
+      },
+      "graduations": null,
+      "anchors": {
+        "analytical-balance-pan": {
+          "positionMm": [
+            0.0,
+            40.0,
+            90.0
+          ]
+        }
+      },
+      "displays": [
+        {
+          "id": "main",
+          "policy": "balance-status-and-entry",
+          "centreMm": [
+            -35.0,
+            -167.35,
+            42.0
+          ],
+          "sizeMm": [
+            86.0,
+            22.0
+          ]
+        }
+      ],
+      "states": {
+        "draftShieldRightDoor": "open"
+      },
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/analytical_balance.py",
+        "sourceHash": "b0e2f11bc10eaad1eb700ebb5b2e827f093d12df1ad91b5b9b6bbd1fd4d6620d"
+      }
+    },
+    {
+      "definitionId": "cuvette",
+      "model": "cuvette.glb",
+      "thumbnail": "thumbs/cuvette.png",
+      "footprintMm": {
+        "shape": "rect",
+        "width": 12.5,
+        "depth": 12.5
+      },
+      "grip": {
+        "heightMm": 37.0
+      },
+      "fill": {
+        "innerBoxMm": {
+          "width": 10.0,
+          "depth": 10.0,
+          "floorZ": 1.5,
+          "topZ": 45.0
+        },
+        "capacityMl": 4,
+        "meniscus": "concave"
+      },
+      "graduations": null,
+      "anchors": {},
+      "displays": [],
+      "states": {
+        "opticalFaces": "+y/-y",
+        "frostedFaces": "+x/-x"
+      },
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/cuvette.py",
+        "sourceHash": "2c17dc128896ea3e6bd7c66e6999395432f1bf69837f1e0e1d39be2a13124d3f"
+      }
+    },
+    {
+      "definitionId": "graduated-cylinder",
+      "model": "graduated-cylinder.glb",
+      "thumbnail": "thumbs/graduated-cylinder.png",
+      "footprintMm": {
+        "shape": "circle",
+        "radius": 38.0
+      },
+      "grip": {
+        "heightMm": 130.0
+      },
+      "pour": {
+        "lipMm": [
+          -20.0,
+          0.0,
+          213.0
+        ],
+        "tiltDeg": 105.0,
+        "style": "pour"
+      },
+      "fill": {
+        "innerProfileMm": [
+          [
+            0.0,
+            9.0
+          ],
+          [
+            11.9,
+            9.0
+          ],
+          [
+            13.4,
+            10.5
+          ],
+          [
+            13.4,
+            212.0
+          ]
+        ],
+        "capacityMl": 100,
+        "meniscus": "concave"
+      },
+      "graduations": {
+        "unit": "mL",
+        "minor": 1,
+        "major": 10,
+        "maxMl": 100
+      },
+      "anchors": {},
+      "displays": [],
+      "states": {},
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/graduated_cylinder.py",
+        "sourceHash": "5a3d0e12a6ae6e943b74b120d6f6dd0faf8d7062d449f19f2d8064a453bbb912"
+      }
+    },
+    {
+      "definitionId": "reagent-bottle",
+      "model": "reagent-bottle.glb",
+      "thumbnail": "thumbs/reagent-bottle.png",
+      "footprintMm": {
+        "shape": "circle",
+        "radius": 35.0
+      },
+      "grip": {
+        "heightMm": 44.0
+      },
+      "pour": {
+        "lipMm": [
+          -28.3,
+          0.0,
+          110.0
+        ],
+        "tiltDeg": 110.0,
+        "style": "pour"
+      },
+      "fill": {
+        "innerProfileMm": [
+          [
+            0.0,
+            3.0
+          ],
+          [
+            30.0,
+            3.0
+          ],
+          [
+            33.0,
+            5.0
+          ],
+          [
+            33.0,
+            81.2
+          ],
+          [
+            26.5,
+            94.8
+          ],
+          [
+            26.5,
+            110.0
+          ]
+        ],
+        "capacityMl": 250,
+        "meniscus": "concave"
+      },
+      "graduations": null,
+      "solidRest": {
+        "centreMm": [
+          0.0,
+          0.0,
+          3.0
+        ],
+        "radiusMm": 26.4
+      },
+      "anchors": {},
+      "displays": [],
+      "states": {
+        "closure": "open"
+      },
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/reagent_bottle.py",
+        "sourceHash": "02dacf39593891c045e41e8fc6f7c715f3efe47b3ac2ba7b02ae36c56fa09da3"
+      }
+    },
+    {
+      "definitionId": "rubber-stopper-set",
+      "model": "rubber-stopper-set.glb",
+      "thumbnail": "thumbs/rubber-stopper-set.png",
+      "footprintMm": {
+        "shape": "circle",
+        "radius": 8.5
+      },
+      "grip": {
+        "heightMm": 17.5
+      },
+      "graduations": null,
+      "anchors": {},
+      "displays": [],
+      "states": {},
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/rubber_stopper_set.py",
+        "sourceHash": "8f97a321aed986245a7ab5eb5f56afb835141ab7e7c4a3dbd09ef8425c822771"
+      }
+    },
+    {
+      "definitionId": "sample-bottle",
+      "model": "sample-bottle.glb",
+      "thumbnail": "thumbs/sample-bottle.png",
+      "footprintMm": {
+        "shape": "circle",
+        "radius": 28.0
+      },
+      "grip": {
+        "heightMm": 35.2
+      },
+      "pour": {
+        "lipMm": [
+          -15.8,
+          0.0,
+          96.0
+        ],
+        "tiltDeg": 110.0,
+        "style": "pour"
+      },
+      "fill": {
+        "innerProfileMm": [
+          [
+            0.0,
+            2.8
+          ],
+          [
+            23.2,
+            2.8
+          ],
+          [
+            26.2,
+            4.8
+          ],
+          [
+            26.2,
+            65.2
+          ],
+          [
+            14.2,
+            80.8
+          ],
+          [
+            14.2,
+            96.0
+          ]
+        ],
+        "capacityMl": 125,
+        "meniscus": "concave"
+      },
+      "graduations": null,
+      "solidRest": {
+        "centreMm": [
+          0.0,
+          0.0,
+          2.8
+        ],
+        "radiusMm": 21.0
+      },
+      "anchors": {},
+      "displays": [],
+      "states": {
+        "closure": "open"
+      },
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/sample_bottle.py",
+        "sourceHash": "406934bfa9e9b55f8067ce7059813e10476d4551fe4256e3d3c84a3629f7f0ec"
+      }
+    },
+    {
+      "definitionId": "sample-bottle-1l",
+      "model": "sample-bottle-1l.glb",
+      "thumbnail": "thumbs/sample-bottle-1l.png",
+      "footprintMm": {
+        "shape": "circle",
+        "radius": 50.5
+      },
+      "grip": {
+        "heightMm": 83.6
+      },
+      "pour": {
+        "lipMm": [
+          -22.3,
+          0.0,
+          204.0
+        ],
+        "tiltDeg": 105.0,
+        "style": "pour"
+      },
+      "fill": {
+        "innerProfileMm": [
+          [
+            0.0,
+            3.5
+          ],
+          [
+            44.9,
+            3.5
+          ],
+          [
+            47.9,
+            5.5
+          ],
+          [
+            47.9,
+            153.2
+          ],
+          [
+            19.9,
+            186.8
+          ],
+          [
+            19.9,
+            204.0
+          ]
+        ],
+        "capacityMl": 1000,
+        "meniscus": "concave"
+      },
+      "graduations": null,
+      "solidRest": {
+        "centreMm": [
+          0.0,
+          0.0,
+          3.5
+        ],
+        "radiusMm": 38.3
+      },
+      "anchors": {},
+      "displays": [],
+      "states": {
+        "closure": "open"
+      },
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/sample_bottle_1l.py",
+        "sourceHash": "cb945f90491eeca67f70ed672a1355965ed88befd92e34f6268a884cd61b7e4c"
+      }
+    },
+    {
+      "definitionId": "spatula",
+      "model": "spatula.glb",
+      "thumbnail": "thumbs/spatula.png",
+      "footprintMm": {
+        "shape": "rect",
+        "width": 180.0,
+        "depth": 13.0
+      },
+      "grip": {
+        "heightMm": 1.5
+      },
+      "graduations": null,
+      "anchors": {},
+      "displays": [],
+      "states": {},
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/spatula.py",
+        "sourceHash": "a9af03ffaf4699321c86ad6b0565f5f9b27e733a87368d5a69c0a53b8c4a7b4d"
+      }
+    },
+    {
+      "definitionId": "spectrophotometer",
+      "model": "spectrophotometer.glb",
+      "thumbnail": "thumbs/spectrophotometer.png",
+      "footprintMm": {
+        "shape": "rect",
+        "width": 320.0,
+        "depth": 300.0
+      },
+      "grip": {
+        "heightMm": 60.0
+      },
+      "graduations": null,
+      "anchors": {
+        "spectrophotometer-cuvette-slot": {
+          "positionMm": [
+            -80.0,
+            45.0,
+            94.0
+          ],
+          "yawDeg": 90.0
+        }
+      },
+      "displays": [
+        {
+          "id": "main",
+          "policy": "photometer-settings-status-and-entry",
+          "centreMm": [
+            -30.0,
+            -92.94,
+            72.1
+          ],
+          "sizeMm": [
+            130.0,
+            52.0
+          ]
+        }
+      ],
+      "states": {
+        "sampleLid": "raised",
+        "beamAxis": "x"
+      },
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/spectrophotometer.py",
+        "sourceHash": "ce75e13278690c0c88edb004bf1bd9eec60acd7e1505d9b28f7b66e7b9c996ee"
+      }
+    },
+    {
+      "definitionId": "stirring-rod",
+      "model": "stirring-rod.glb",
+      "thumbnail": "thumbs/stirring-rod.png",
+      "footprintMm": {
+        "shape": "rect",
+        "width": 200.0,
+        "depth": 6.0
+      },
+      "grip": {
+        "heightMm": 3.0
+      },
+      "graduations": null,
+      "anchors": {},
+      "displays": [],
+      "states": {},
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/stirring_rod.py",
+        "sourceHash": "b456108334504aecd9ebfb2440b260b0e6389f22a4926a213981cf552c3c044b"
+      }
+    },
+    {
+      "definitionId": "test-tube",
+      "model": "test-tube.glb",
+      "thumbnail": "thumbs/test-tube.png",
+      "footprintMm": {
+        "shape": "circle",
+        "radius": 8.0
+      },
+      "grip": {
+        "heightMm": 110.0
+      },
+      "pour": {
+        "lipMm": [
+          -7.8,
+          0.0,
+          150.3
+        ],
+        "tiltDeg": 110.0,
+        "style": "pour"
+      },
+      "fill": {
+        "innerProfileMm": [
+          [
+            0.0,
+            1.2
+          ],
+          [
+            0.888,
+            1.258
+          ],
+          [
+            1.76,
+            1.432
+          ],
+          [
+            2.602,
+            1.718
+          ],
+          [
+            3.4,
+            2.111
+          ],
+          [
+            4.14,
+            2.605
+          ],
+          [
+            4.808,
+            3.192
+          ],
+          [
+            5.395,
+            3.86
+          ],
+          [
+            5.889,
+            4.6
+          ],
+          [
+            6.282,
+            5.398
+          ],
+          [
+            6.568,
+            6.24
+          ],
+          [
+            6.742,
+            7.112
+          ],
+          [
+            6.8,
+            8.0
+          ],
+          [
+            6.8,
+            149.0
+          ]
+        ],
+        "capacityMl": 20,
+        "meniscus": "concave"
+      },
+      "graduations": null,
+      "requiresSupport": "test-tube-rack",
+      "anchors": {},
+      "displays": [],
+      "states": {},
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/test_tube.py",
+        "sourceHash": "6d19ef1188eeab022d25ba24c2d82aa32d8d02a8e221bf2da042222c6a3f4883"
+      }
+    },
+    {
+      "definitionId": "test-tube-rack",
+      "model": "test-tube-rack.glb",
+      "thumbnail": "thumbs/test-tube-rack.png",
+      "footprintMm": {
+        "shape": "rect",
+        "width": 100.0,
+        "depth": 32.0
+      },
+      "grip": {
+        "heightMm": 62.0
+      },
+      "graduations": null,
+      "sceneryFor": {
+        "definitionId": "test-tube",
+        "seatsMm": [
+          [
+            -33.0,
+            0.0,
+            6.0
+          ],
+          [
+            -11.0,
+            0.0,
+            6.0
+          ],
+          [
+            11.0,
+            0.0,
+            6.0
+          ],
+          [
+            33.0,
+            0.0,
+            6.0
+          ]
+        ]
+      },
+      "anchors": {},
+      "displays": [],
+      "states": {},
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/test_tube_rack.py",
+        "sourceHash": "736729907165be429a8440a9cb4898ff18f09083093e556b6f31325f4a376e96"
+      },
+      "scenery": true
+    },
+    {
+      "definitionId": "volumetric-flask",
+      "model": "volumetric-flask.glb",
+      "thumbnail": "thumbs/volumetric-flask.png",
+      "footprintMm": {
+        "shape": "circle",
+        "radius": 29.3
+      },
+      "grip": {
+        "heightMm": 125.0
+      },
+      "pour": {
+        "lipMm": [
+          -8.45,
+          0.0,
+          170.0
+        ],
+        "tiltDeg": 110.0,
+        "style": "pour"
+      },
+      "fill": {
+        "innerProfileMm": [
+          [
+            0.0,
+            2.2
+          ],
+          [
+            17.0,
+            2.2
+          ],
+          [
+            18.701,
+            3.618
+          ],
+          [
+            20.285,
+            5.167
+          ],
+          [
+            21.741,
+            6.837
+          ],
+          [
+            23.059,
+            8.616
+          ],
+          [
+            24.232,
+            10.495
+          ],
+          [
+            25.253,
+            12.461
+          ],
+          [
+            26.114,
+            14.502
+          ],
+          [
+            26.811,
+            16.604
+          ],
+          [
+            27.339,
+            18.755
+          ],
+          [
+            27.694,
+            20.942
+          ],
+          [
+            27.875,
+            23.149
+          ],
+          [
+            27.881,
+            25.364
+          ],
+          [
+            27.71,
+            27.573
+          ],
+          [
+            27.365,
+            29.761
+          ],
+          [
+            26.847,
+            31.914
+          ],
+          [
+            26.16,
+            34.02
+          ],
+          [
+            25.309,
+            36.065
+          ],
+          [
+            24.298,
+            38.035
+          ],
+          [
+            23.133,
+            39.92
+          ],
+          [
+            21.823,
+            41.706
+          ],
+          [
+            20.375,
+            43.382
+          ],
+          [
+            18.799,
+            44.938
+          ],
+          [
+            17.104,
+            46.365
+          ],
+          [
+            15.302,
+            47.652
+          ],
+          [
+            13.403,
+            48.792
+          ],
+          [
+            11.42,
+            49.778
+          ],
+          [
+            9.364,
+            50.604
+          ],
+          [
+            7.25,
+            51.264
+          ],
+          [
+            7.25,
+            170.0
+          ]
+        ],
+        "capacityMl": 100,
+        "meniscus": "concave"
+      },
+      "graduations": null,
+      "calibration": {
+        "ml": 100,
+        "heightMm": 123.69
+      },
+      "anchors": {
+        "volumetric-flask-stopper-seat": {
+          "positionMm": [
+            0.0,
+            0.0,
+            160.625
+          ]
+        }
+      },
+      "displays": [],
+      "states": {},
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/volumetric_flask.py",
+        "sourceHash": "cf7b94196fcf97ed72ec90f166ed7d12add30a8f4bbcb4645bbec9ce302d35b2"
+      }
+    },
+    {
       "definitionId": "wash-bottle",
       "model": "wash-bottle.glb",
       "thumbnail": "thumbs/wash-bottle.png",
@@ -66,7 +840,44 @@
       "provenance": {
         "blender": "5.2.2",
         "generator": "tools/blender/equipment/wash_bottle.py",
-        "sourceHash": "94d6aa4154f0a7078823e7422e9917606affa8cc60cba73cb177f912c1bca8dd"
+        "sourceHash": "aebcc52c640bcc48383b9bfad90bf2521c427486c7a8d45f2054d2c6cf47b51a"
+      }
+    },
+    {
+      "definitionId": "watch-glass",
+      "model": "watch-glass.glb",
+      "thumbnail": "thumbs/watch-glass.png",
+      "footprintMm": {
+        "shape": "circle",
+        "radius": 50.0
+      },
+      "grip": {
+        "heightMm": 6.0
+      },
+      "graduations": null,
+      "solidRest": {
+        "centreMm": [
+          0.0,
+          0.0,
+          1.6
+        ],
+        "radiusMm": 18.0
+      },
+      "anchors": {
+        "watch-glass-paper-seat": {
+          "positionMm": [
+            0.0,
+            0.0,
+            1.6
+          ]
+        }
+      },
+      "displays": [],
+      "states": {},
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/watch_glass.py",
+        "sourceHash": "4109d350003a434ce61bc9865ce71c2e1f9f588292ed5e630b43af4ae3caae59"
       }
     }
   ]

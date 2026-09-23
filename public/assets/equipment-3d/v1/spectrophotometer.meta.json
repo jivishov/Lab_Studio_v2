@@ -1,0 +1,80 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "spectrophotometer",
+  "model": "spectrophotometer.glb",
+  "thumbnail": "thumbs/spectrophotometer.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "rect",
+      "width": 320.0,
+      "depth": 300.0
+    },
+    "grip": {
+      "heightMm": 60.0
+    },
+    "graduations": null,
+    "anchors": {
+      "spectrophotometer-cuvette-slot": {
+        "positionMm": [
+          -80.0,
+          45.0,
+          94.0
+        ],
+        "yawDeg": 90.0
+      }
+    },
+    "displays": [
+      {
+        "id": "main",
+        "policy": "photometer-settings-status-and-entry",
+        "centreMm": [
+          -30.0,
+          -92.94,
+          72.1
+        ],
+        "sizeMm": [
+          130.0,
+          52.0
+        ]
+      }
+    ],
+    "states": {
+      "sampleLid": "raised",
+      "beamAxis": "x"
+    }
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -160.0,
+        -150.0,
+        0.0
+      ],
+      "max": [
+        160.0,
+        150.0,
+        170.0
+      ]
+    },
+    "triangles": 1126,
+    "materials": [
+      "Black rubber",
+      "Display glass",
+      "Instrument housing dark grey",
+      "Instrument housing light grey",
+      "Keypad membrane"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/spectrophotometer.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "ce75e13278690c0c88edb004bf1bd9eec60acd7e1505d9b28f7b66e7b9c996ee",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

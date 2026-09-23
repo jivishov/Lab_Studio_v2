@@ -126,6 +126,53 @@ def build_one(def_id, mod, args):
                     (1200, 1500), elev, 64 if args.preview else 384)
 
 
+# Composite review states (M2 exit): a child seated at its parent's anchor, or a tube in its
+# scenery rack. Anchor positions come from the registry the parent module derives, so these
+# renders check the anchors themselves.
+COMPOSITES = [
+    ('balance-with-watch-glass', 'analytical-balance', 'analytical-balance-pan', 'watch-glass'),
+    ('spectrophotometer-with-cuvette', 'spectrophotometer', 'spectrophotometer-cuvette-slot', 'cuvette'),
+    ('volumetric-flask-with-stopper', 'volumetric-flask', 'volumetric-flask-stopper-seat', 'rubber-stopper-set'),
+    ('test-tube-in-rack', 'test-tube-rack', 'seat:1', 'test-tube'),
+]
+
+
+def build_composite(name, parent_id, anchor, child_id, mods, args):
+    from mathutils import Euler
+    scene = fresh_scene()
+    colls = {}
+    registries = {}
+    for def_id in (parent_id, child_id):
+        coll = bpy.data.collections.new(def_id)
+        scene.collection.children.link(coll)
+        root, registry = mods[def_id].build(coll, Materials())
+        colls[def_id], registries[def_id] = (coll, root), registry
+    if anchor.startswith('seat:'):
+        pos = registries[parent_id]['sceneryFor']['seatsMm'][int(anchor.split(':')[1])]
+        yaw = 0.0
+    else:
+        a = registries[parent_id]['anchors'][anchor]
+        pos, yaw = a['positionMm'], a.get('yawDeg', 0.0)
+    child_root = colls[child_id][1]
+    child_root.location = [v * MM for v in pos]
+    child_root.rotation_euler = Euler((0.0, 0.0, yaw * 3.141592653589793 / 180.0))
+    bpy.context.view_layer.update()
+    objs = list(colls[parent_id][0].all_objects) + list(colls[child_id][0].all_objects)
+    lo, hi = bounds_mm(objs)
+    studio = bpy.data.collections.new('studio')
+    scene.collection.children.link(studio)
+    build_studio(studio)
+    studio_world(scene, strength=0.3)
+    scene.view_settings.exposure = -0.75
+    cam = bpy.data.objects.new('Camera', bpy.data.cameras.new('Camera'))
+    scene.collection.objects.link(cam)
+    scene.camera = cam
+    render_item(scene, cam, [v * MM for v in lo], [v * MM for v in hi],
+                os.path.join(BUILD, 'review', f'composite-{name}.png'), (1200, 1200), 16,
+                64 if args.preview else 256)
+    print(f'composite {name}: {child_id} at {anchor} of {parent_id}, position {pos}, yaw {yaw}')
+
+
 def main():
     argv = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else []
     ap = argparse.ArgumentParser()
@@ -133,6 +180,7 @@ def main():
     ap.add_argument('--no-render', action='store_true')
     ap.add_argument('--review', action='store_true')
     ap.add_argument('--preview', action='store_true')
+    ap.add_argument('--composites', action='store_true', help='also render the composite review states')
     args = ap.parse_args(argv)
     only = set(filter(None, args.only.split(',')))
     mods = equipment_modules()
@@ -143,6 +191,9 @@ def main():
         if only and def_id not in only:
             continue
         build_one(def_id, mod, args)
+    if args.composites:
+        for name, parent_id, anchor, child_id in COMPOSITES:
+            build_composite(name, parent_id, anchor, child_id, mods, args)
 
 
 if __name__ == '__main__':

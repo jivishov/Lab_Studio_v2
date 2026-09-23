@@ -1,0 +1,50 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "spatula",
+  "model": "spatula.glb",
+  "thumbnail": "thumbs/spatula.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "rect",
+      "width": 180.0,
+      "depth": 13.0
+    },
+    "grip": {
+      "heightMm": 1.5
+    },
+    "graduations": null,
+    "anchors": {},
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -90.33,
+        -6.44,
+        0.0
+      ],
+      "max": [
+        90.0,
+        6.44,
+        2.94
+      ]
+    },
+    "triangles": 3672,
+    "materials": [
+      "Brushed stainless"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/spatula.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "a9af03ffaf4699321c86ad6b0565f5f9b27e733a87368d5a69c0a53b8c4a7b4d",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

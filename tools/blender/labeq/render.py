@@ -154,6 +154,7 @@ def render_item(scene, cam, lo, hi, path, res, elev_deg, samples):
     scene.render.resolution_x, scene.render.resolution_y = res
     scene.render.resolution_percentage = 100
     cam.data.lens = 85
+    cam.data.clip_start = 0.002  # small items (a 25 mm stopper) sit inside the default 0.1 m
     frame_camera(cam, lo, hi, elev_deg, res)
     os.makedirs(os.path.dirname(path), exist_ok=True)
     scene.render.filepath = path

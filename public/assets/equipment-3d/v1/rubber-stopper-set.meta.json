@@ -1,0 +1,49 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "rubber-stopper-set",
+  "model": "rubber-stopper-set.glb",
+  "thumbnail": "thumbs/rubber-stopper-set.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "circle",
+      "radius": 8.5
+    },
+    "grip": {
+      "heightMm": 17.5
+    },
+    "graduations": null,
+    "anchors": {},
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -8.39,
+        -8.39,
+        0.0
+      ],
+      "max": [
+        8.39,
+        8.39,
+        25.0
+      ]
+    },
+    "triangles": 2304,
+    "materials": [
+      "Black rubber"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/rubber_stopper_set.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "8f97a321aed986245a7ab5eb5f56afb835141ab7e7c4a3dbd09ef8425c822771",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

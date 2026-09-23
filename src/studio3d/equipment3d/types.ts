@@ -25,7 +25,9 @@ export interface Equipment3DPour {
 
 export interface Equipment3DFill {
   /** Inner surface-of-revolution profile, [radius, height] pairs in mm, height increasing. */
-  innerProfileMm: number[][];
+  innerProfileMm?: number[][];
+  /** Rectangular inner cavity (a cuvette), used instead of a profile. */
+  innerBoxMm?: { width: number; depth: number; floorZ: number; topZ: number };
   /** Equals the catalogue capacity; the profile must hold at least this much. */
   capacityMl: number;
   meniscus: "concave" | "convex" | "flat";
@@ -36,6 +38,18 @@ export interface Equipment3DGraduations {
   minor: number;
   major: number;
   maxMl: number;
+}
+
+/** Where a powder or other solid heap rests inside or on the item (plan §2.6: powder when solid). */
+export interface Equipment3DSolidRest {
+  centreMm: Vec3Mm;
+  radiusMm: number;
+}
+
+/** A calibration ring (a volumetric flask): the height at which the item holds `ml`. */
+export interface Equipment3DCalibration {
+  ml: number;
+  heightMm: number;
 }
 
 /** A zone anchor, keyed by semantic zone id from src/domain/interactionZones.ts. */
@@ -69,12 +83,18 @@ export interface Equipment3DEntry {
   pour?: Equipment3DPour;
   fill?: Equipment3DFill;
   graduations: Equipment3DGraduations | null;
+  calibration?: Equipment3DCalibration;
+  /** The scenery id that holds this item upright when it stands on the bench (decision D9). */
+  requiresSupport?: string;
+  solidRest?: Equipment3DSolidRest;
   anchors: Record<string, Equipment3DAnchor>;
   displays: Equipment3DDisplay[];
   /** Named visual states (for example a stopper seated or removed); presentation only. */
   states: Record<string, unknown>;
   /** Visual-only bench scenery (decision D9): never an equipment instance, never selectable. */
   scenery?: boolean;
+  /** For scenery: the catalogue definition it supports, and where that item's origin sits. */
+  sceneryFor?: { definitionId: string; seatsMm: Vec3Mm[] };
   provenance: Equipment3DProvenance;
 }
 
