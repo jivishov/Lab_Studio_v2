@@ -1,0 +1,1174 @@
+{
+  "schema": "lab-studio-3d/pack-inventory@1",
+  "pack": 1,
+  "techniqueCatalogSize": 42,
+  "techniques": [
+    {
+      "id": "weighing",
+      "title": "Weigh a Solid",
+      "catalogPosition": 1,
+      "steps": 3,
+      "nodeTypes": [
+        "action",
+        "observation"
+      ],
+      "interactionCounts": {
+        "dragToZone": 1,
+        "readInstrument": 1,
+        "recordNotebook": 1
+      },
+      "standaloneBlocker": null,
+      "compositionBlocker": null,
+      "hostLabs": [],
+      "configurationSlots": {
+        "classroomQuantity": 0,
+        "internalIdentifier": 1,
+        "hostCompositionOnly": 0,
+        "ids": [
+          "massMeasurementId (internal-identifier)"
+        ]
+      },
+      "hasCompositionContract": true,
+      "equipmentDefinitions": [
+        "analytical-balance",
+        "reagent-bottle",
+        "spatula",
+        "watch-glass"
+      ],
+      "visualStates": [
+        {
+          "id": "empty",
+          "disposition": "nonvisual",
+          "quantitativeClaim": "none"
+        },
+        {
+          "id": "powder",
+          "disposition": "solid-style",
+          "quantitativeClaim": "none"
+        }
+      ],
+      "stepDetail": [
+        {
+          "nodeId": "place-watch-glass-node",
+          "type": "action",
+          "action": {
+            "actionId": "place-watch-glass",
+            "verb": "place",
+            "interaction": "dragToZone",
+            "interactionOrigin": "derived-from-verb",
+            "sourceDefinitionId": "watch-glass",
+            "stationId": "workbench",
+            "valueSource": "none"
+          }
+        },
+        {
+          "nodeId": "weigh-solid-node",
+          "type": "action",
+          "action": {
+            "actionId": "weigh-solid",
+            "verb": "weigh",
+            "interaction": "readInstrument",
+            "interactionOrigin": "authored",
+            "sourceDefinitionId": "watch-glass",
+            "targetDefinitionId": "analytical-balance",
+            "stationId": "analytical-balance",
+            "input": {
+              "label": "Balance display for the sodium carbonate watch glass (g)",
+              "role": "studentResponse",
+              "mode": "numeric",
+              "unit": "g"
+            },
+            "valueSource": "learner-observation",
+            "massContract": "action-input"
+          }
+        },
+        {
+          "nodeId": "record-mass-node",
+          "type": "observation",
+          "action": {
+            "actionId": "record-solid-mass",
+            "verb": "record",
+            "interaction": "recordNotebook",
+            "interactionOrigin": "derived-from-verb",
+            "valueSource": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "measuring-volume",
+      "title": "Measure Liquid Volume",
+      "catalogPosition": 2,
+      "steps": 3,
+      "nodeTypes": [
+        "action",
+        "observation"
+      ],
+      "interactionCounts": {
+        "dragToZone": 1,
+        "pourInto": 1,
+        "recordNotebook": 1
+      },
+      "standaloneBlocker": "This technique has a supported composed lab route (Precipitate and Filter Calcium Carbonate, Hard-Water Reference Demo). Use that route so procedure selection, datasets, validation and evidence bindings are materialized together.",
+      "compositionBlocker": "This technique has a supported composed lab route (Precipitate and Filter Calcium Carbonate, Hard-Water Reference Demo); use that route so procedure selection and evidence bindings are materialized together.",
+      "hostLabs": [
+        "intro-filtration-demo",
+        "hard-water-demo"
+      ],
+      "configurationSlots": {
+        "classroomQuantity": 2,
+        "internalIdentifier": 1,
+        "hostCompositionOnly": 0,
+        "ids": [
+          "targetVolumeMl (classroom-quantity)",
+          "volumeToleranceMl (classroom-quantity)",
+          "volumeMeasurementId (internal-identifier)"
+        ]
+      },
+      "hasCompositionContract": true,
+      "equipmentDefinitions": [
+        "graduated-cylinder",
+        "sample-bottle"
+      ],
+      "visualStates": [
+        {
+          "id": "clear-liquid",
+          "disposition": "liquid-style",
+          "quantitativeClaim": "none"
+        },
+        {
+          "id": "empty",
+          "disposition": "nonvisual",
+          "quantitativeClaim": "none"
+        }
+      ],
+      "stepDetail": [
+        {
+          "nodeId": "place-cylinder-node",
+          "type": "action",
+          "action": {
+            "actionId": "place-cylinder",
+            "verb": "place",
+            "interaction": "dragToZone",
+            "interactionOrigin": "derived-from-verb",
+            "sourceDefinitionId": "graduated-cylinder",
+            "stationId": "workbench",
+            "valueSource": "none"
+          }
+        },
+        {
+          "nodeId": "measure-sample-node",
+          "type": "action",
+          "action": {
+            "actionId": "measure-20ml",
+            "verb": "measureVolume",
+            "interaction": "pourInto",
+            "interactionOrigin": "authored",
+            "sourceDefinitionId": "sample-bottle",
+            "targetDefinitionId": "graduated-cylinder",
+            "valueSource": "none"
+          }
+        },
+        {
+          "nodeId": "record-volume-node",
+          "type": "observation",
+          "action": {
+            "actionId": "record-volume",
+            "verb": "record",
+            "interaction": "recordNotebook",
+            "interactionOrigin": "derived-from-verb",
+            "valueSource": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "making-solution",
+      "title": "Make a Solution",
+      "catalogPosition": 3,
+      "steps": 3,
+      "nodeTypes": [
+        "action",
+        "observation"
+      ],
+      "interactionCounts": {
+        "pourInto": 2,
+        "recordNotebook": 1
+      },
+      "standaloneBlocker": null,
+      "compositionBlocker": null,
+      "hostLabs": [],
+      "configurationSlots": {
+        "classroomQuantity": 4,
+        "internalIdentifier": 0,
+        "hostCompositionOnly": 0,
+        "ids": [
+          "finalVolumeMl (classroom-quantity)",
+          "initialSolventVolumeMl (classroom-quantity)",
+          "soluteMassG (classroom-quantity)",
+          "solutionObservation (classroom-quantity)"
+        ]
+      },
+      "hasCompositionContract": true,
+      "equipmentDefinitions": [
+        "reagent-bottle",
+        "stirring-rod",
+        "volumetric-flask",
+        "wash-bottle"
+      ],
+      "visualStates": [
+        {
+          "id": "clear-liquid",
+          "disposition": "liquid-style",
+          "quantitativeClaim": "none"
+        },
+        {
+          "id": "empty",
+          "disposition": "nonvisual",
+          "quantitativeClaim": "none"
+        }
+      ],
+      "stepDetail": [
+        {
+          "nodeId": "add-solvent-node",
+          "type": "action",
+          "action": {
+            "actionId": "add-solvent",
+            "verb": "transfer",
+            "interaction": "pourInto",
+            "interactionOrigin": "derived-from-verb",
+            "sourceDefinitionId": "wash-bottle",
+            "targetDefinitionId": "volumetric-flask",
+            "valueSource": "none"
+          }
+        },
+        {
+          "nodeId": "dissolve-solid-node",
+          "type": "action",
+          "action": {
+            "actionId": "dissolve-solid",
+            "verb": "dissolve",
+            "interaction": "pourInto",
+            "interactionOrigin": "derived-from-verb",
+            "sourceDefinitionId": "reagent-bottle",
+            "targetDefinitionId": "volumetric-flask",
+            "valueSource": "none"
+          }
+        },
+        {
+          "nodeId": "observe-solution-node",
+          "type": "observation",
+          "action": {
+            "actionId": "observe-solution",
+            "verb": "observe",
+            "interaction": "recordNotebook",
+            "interactionOrigin": "derived-from-verb",
+            "valueSource": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "dilution",
+      "title": "Dilute a Stock Solution",
+      "catalogPosition": 4,
+      "steps": 3,
+      "nodeTypes": [
+        "action",
+        "observation"
+      ],
+      "interactionCounts": {
+        "pourInto": 2,
+        "recordNotebook": 1
+      },
+      "standaloneBlocker": null,
+      "compositionBlocker": null,
+      "hostLabs": [],
+      "configurationSlots": {
+        "classroomQuantity": 3,
+        "internalIdentifier": 1,
+        "hostCompositionOnly": 0,
+        "ids": [
+          "aliquotVolumeMl (classroom-quantity)",
+          "dilutionFactor (classroom-quantity)",
+          "finalVolumeMl (classroom-quantity)",
+          "dilutionEvidenceId (internal-identifier)"
+        ]
+      },
+      "hasCompositionContract": true,
+      "equipmentDefinitions": [
+        "graduated-cylinder",
+        "volumetric-flask",
+        "wash-bottle"
+      ],
+      "visualStates": [
+        {
+          "id": "clear-liquid",
+          "disposition": "liquid-style",
+          "quantitativeClaim": "none"
+        },
+        {
+          "id": "clear-solution",
+          "disposition": "liquid-style",
+          "quantitativeClaim": "none"
+        },
+        {
+          "id": "empty",
+          "disposition": "nonvisual",
+          "quantitativeClaim": "none"
+        }
+      ],
+      "stepDetail": [
+        {
+          "nodeId": "transfer-aliquot-node",
+          "type": "action",
+          "action": {
+            "actionId": "transfer-aliquot",
+            "verb": "transfer",
+            "interaction": "pourInto",
+            "interactionOrigin": "derived-from-verb",
+            "sourceDefinitionId": "graduated-cylinder",
+            "targetDefinitionId": "volumetric-flask",
+            "valueSource": "none"
+          }
+        },
+        {
+          "nodeId": "dilute-to-mark-node",
+          "type": "action",
+          "action": {
+            "actionId": "dilute-to-mark",
+            "verb": "dilute",
+            "interaction": "pourInto",
+            "interactionOrigin": "derived-from-verb",
+            "sourceDefinitionId": "wash-bottle",
+            "targetDefinitionId": "volumetric-flask",
+            "valueSource": "none"
+          }
+        },
+        {
+          "nodeId": "record-dilution-node",
+          "type": "observation",
+          "action": {
+            "actionId": "record-dilution",
+            "verb": "record",
+            "interaction": "recordNotebook",
+            "interactionOrigin": "derived-from-verb",
+            "valueSource": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "transmittance-dilution",
+      "title": "Analyze Transmittance of a Dilution",
+      "catalogPosition": 5,
+      "steps": 23,
+      "nodeTypes": [
+        "action",
+        "calculation"
+      ],
+      "interactionCounts": {
+        "recordNotebook": 4,
+        "dragToZone": 5,
+        "pourInto": 6,
+        "readInstrument": 3,
+        "snapIntoTarget": 2,
+        "submitCalculation": 3
+      },
+      "standaloneBlocker": null,
+      "compositionBlocker": null,
+      "hostLabs": [],
+      "configurationSlots": {
+        "classroomQuantity": 2,
+        "internalIdentifier": 6,
+        "hostCompositionOnly": 0,
+        "ids": [
+          "stockConcentrationM (classroom-quantity)",
+          "wavelengthNm (classroom-quantity)",
+          "blankRuleNotebookTag (internal-identifier)",
+          "finalVolumeMeasurementId (internal-identifier)",
+          "stockConcentrationMeasurementId (internal-identifier)",
+          "stockVolumeMeasurementId (internal-identifier)",
+          "waterVolumeMeasurementId (internal-identifier)",
+          "wavelengthMeasurementId (internal-identifier)"
+        ]
+      },
+      "hasCompositionContract": true,
+      "equipmentDefinitions": [
+        "cuvette",
+        "graduated-cylinder",
+        "rubber-stopper-set",
+        "sample-bottle",
+        "sample-bottle-1l",
+        "spectrophotometer",
+        "test-tube",
+        "wash-bottle"
+      ],
+      "visualStates": [
+        {
+          "id": "blue-dye-solution",
+          "disposition": "liquid-style",
+          "quantitativeClaim": "none"
+        },
+        {
+          "id": "clear-liquid",
+          "disposition": "liquid-style",
+          "quantitativeClaim": "none"
+        },
+        {
+          "id": "empty",
+          "disposition": "nonvisual",
+          "quantitativeClaim": "none"
+        }
+      ],
+      "stepDetail": [
+        {
+          "nodeId": "transmittance-dilution-record-stock-concentration-node",
+          "type": "action",
+          "action": {
+            "actionId": "transmittance-dilution-record-stock-concentration",
+            "verb": "observe",
+            "interaction": "recordNotebook",
+            "interactionOrigin": "authored",
+            "input": {
+              "label": "Instructor-approved stock solution concentration (M)",
+              "role": "teacherConfiguration",
+              "mode": "numeric",
+              "unit": "M"
+            },
+            "valueSource": "teacher-configuration"
+          }
+        },
+        {
+          "nodeId": "transmittance-dilution-place-volumetric-flask-node",
+          "type": "action",
+          "action": {
+            "actionId": "transmittance-dilution-place-volumetric-flask",
+            "verb": "place",
+            "interaction": "dragToZone",
+            "interactionOrigin": "authored",
+            "sourceDefinitionId": "test-tube",
+            "stationId": "workbench",
+            "valueSource": "none"
+          }
+        },
+        {
+          "nodeId": "transmittance-dilution-place-graduated-cylinder-node",
+          "type": "action",
+          "action": {
+            "actionId": "transmittance-dilution-place-graduated-cylinder",
+            "verb": "place",
+            "interaction": "dragToZone",
+            "interactionOrigin": "authored",
+            "sourceDefinitionId": "graduated-cylinder",
+            "stationId": "workbench",
+            "valueSource": "none"
+          }
+        },
+        {
+          "nodeId": "transmittance-dilution-measure-stock-dye-node",
+          "type": "action",
+          "action": {
+            "actionId": "transmittance-dilution-measure-stock-dye",
+            "verb": "measureVolume",
+            "interaction": "pourInto",
+            "interactionOrigin": "authored",
+            "sourceDefinitionId": "sample-bottle-1l",
+            "targetDefinitionId": "graduated-cylinder",
+            "input": {
+              "label": "Measure the configured stock-dye aliquot (mL)",
+              "role": "teacherConfiguration",
+              "mode": "numeric",
+              "unit": "mL"
+            },
+            "valueSource": "teacher-configuration",
+            "volumeContract": "action-input"
+          }
+        },
+        {
+          "nodeId": "transmittance-dilution-transfer-dye-aliquot-node",
+          "type": "action",
+          "action": {
+            "actionId": "transmittance-dilution-transfer-dye-aliquot",
+            "verb": "transfer",
+            "interaction": "pourInto",
+            "interactionOrigin": "authored",
+            "sourceDefinitionId": "graduated-cylinder",
+            "targetDefinitionId": "test-tube",
+            "valueSource": "runtime-state",
+            "volumeContract": "measurement"
+          }
+        },
+        {
+          "nodeId": "transmittance-dilution-measure-water-volume-node",
+          "type": "action",
+          "action": {
+            "actionId": "transmittance-dilution-measure-water-volume",
+            "verb": "measureVolume",
+            "interaction": "pourInto",
+            "interactionOrigin": "authored",
+            "sourceDefinitionId": "wash-bottle",
+            "targetDefinitionId": "graduated-cylinder",
+            "input": {
+              "label": "Measure the configured water volume (mL)",
+              "role": "teacherConfiguration",
+              "mode": "numeric",
+              "unit": "mL"
+            },
+            "valueSource": "teacher-configuration",
+            "volumeContract": "action-input"
+          }
+        },
+        {
+          "nodeId": "transmittance-dilution-add-water-below-mark-node",
+          "type": "action",
+          "action": {
+            "actionId": "transmittance-dilution-add-water-below-mark",
+            "verb": "dilute",
+            "interaction": "pourInto",
+            "interactionOrigin": "authored",
+            "sourceDefinitionId": "graduated-cylinder",
+            "targetDefinitionId": "test-tube",
+            "input": {
+              "label": "Dilute and mix to the configured final volume: final volume (mL)",
+              "role": "teacherConfiguration",
+              "mode": "numeric",
+              "unit": "mL"
+            },
+            "valueSource": "teacher-configuration",
+            "volumeContract": "action-input"
+          }
+        },
+        {
+          "nodeId": "transmittance-dilution-place-spectrophotometer-node",
+          "type": "action",
+          "action": {
+            "actionId": "transmittance-dilution-place-spectrophotometer",
+            "verb": "place",
+            "interaction": "dragToZone",
+            "interactionOrigin": "authored",
+            "sourceDefinitionId": "spectrophotometer",
+            "stationId": "workbench",
+            "valueSource": "none"
+          }
+        },
+        {
+          "nodeId": "transmittance-dilution-configure-photometer-node",
+          "type": "action",
+          "action": {
+            "actionId": "transmittance-dilution-configure-photometer",
+            "verb": "observe",
+            "interaction": "readInstrument",
+            "interactionOrigin": "authored",
+            "sourceDefinitionId": "spectrophotometer",
+            "stationId": "spectrophotometer",
+            "input": {
+              "label": "Approved measurement wavelength (nm)",
+              "role": "teacherConfiguration",
+              "mode": "numeric",
+              "unit": "nm"
+            },
+            "valueSource": "teacher-configuration"
+          }
+        },
+        {
+          "nodeId": "transmittance-dilution-fill-blank-cuvette-node",
+          "type": "action",
+          "action": {
+            "actionId": "transmittance-dilution-fill-blank-cuvette",
+            "verb": "transfer",
+            "interaction": "pourInto",
+            "interactionOrigin": "authored",
+            "sourceDefinitionId": "sample-bottle-1l",
+            "targetDefinitionId": "cuvette",
+            "valueSource": "runtime-state",
+            "volumeContract": "target-fill-fraction"
+          }
+        },
+        {
+          "nodeId": "transmittance-dilution-wipe-blank-cuvette-node",
+          "type": "action",
+          "action": {
+            "actionId": "transmittance-dilution-wipe-blank-cuvette",
+            "verb": "observe",
+            "interaction": "recordNotebook",
+            "interactionOrigin": "authored",
+            "input": {
+              "label": "Describe the optical-face rule used for the blank cuvette",
+              "role": "studentResponse",
+              "mode": "text"
+            },
+            "valueSource": "learner-observation"
+          }
+        },
+        {
+          "nodeId": "transmittance-dilution-insert-blank-cuvette-node",
+          "type": "action",
+          "action": {
+            "actionId": "transmittance-dilution-insert-blank-cuvette",
+            "verb": "place",
+            "interaction": "snapIntoTarget",
+            "interactionOrigin": "authored",
+            "sourceDefinitionId": "cuvette",
+            "targetDefinitionId": "spectrophotometer",
+            "valueSource": "none"
+          }
+        },
+        {
+          "nodeId": "transmittance-dilution-zero-with-blank-node",
+          "type": "action",
+          "action": {
+            "actionId": "transmittance-dilution-zero-with-blank",
+            "verb": "observe",
+            "interaction": "readInstrument",
+            "interactionOrigin": "authored",
+            "sourceDefinitionId": "spectrophotometer",
+            "stationId": "spectrophotometer",
+            "valueSource": "none"
+          }
+        },
+        {
+          "nodeId": "transmittance-dilution-remove-blank-cuvette-node",
+          "type": "action",
+          "action": {
+            "actionId": "transmittance-dilution-remove-blank-cuvette",
+            "verb": "place",
+            "interaction": "dragToZone",
+            "interactionOrigin": "authored",
+            "sourceDefinitionId": "spectrophotometer",
+            "stationId": "workbench",
+            "valueSource": "none"
+          }
+        },
+        {
+          "nodeId": "transmittance-dilution-fill-sample-cuvette-node",
+          "type": "action",
+          "action": {
+            "actionId": "transmittance-dilution-fill-sample-cuvette",
+            "verb": "transfer",
+            "interaction": "pourInto",
+            "interactionOrigin": "authored",
+            "sourceDefinitionId": "test-tube",
+            "targetDefinitionId": "cuvette",
+            "valueSource": "runtime-state",
+            "volumeContract": "target-fill-fraction"
+          }
+        },
+        {
+          "nodeId": "transmittance-dilution-wipe-orient-sample-cuvette-node",
+          "type": "action",
+          "action": {
+            "actionId": "transmittance-dilution-wipe-orient-sample-cuvette",
+            "verb": "observe",
+            "interaction": "recordNotebook",
+            "interactionOrigin": "authored",
+            "input": {
+              "label": "Describe the optical-face rule used for the sample cuvette",
+              "role": "studentResponse",
+              "mode": "text"
+            },
+            "valueSource": "learner-observation"
+          }
+        },
+        {
+          "nodeId": "transmittance-dilution-insert-sample-cuvette-node",
+          "type": "action",
+          "action": {
+            "actionId": "transmittance-dilution-insert-sample-cuvette",
+            "verb": "place",
+            "interaction": "snapIntoTarget",
+            "interactionOrigin": "authored",
+            "sourceDefinitionId": "cuvette",
+            "targetDefinitionId": "spectrophotometer",
+            "valueSource": "none"
+          }
+        },
+        {
+          "nodeId": "transmittance-dilution-read-percent-transmittance-node",
+          "type": "action",
+          "action": {
+            "actionId": "transmittance-dilution-read-percent-transmittance",
+            "verb": "observe",
+            "interaction": "readInstrument",
+            "interactionOrigin": "authored",
+            "sourceDefinitionId": "spectrophotometer",
+            "stationId": "spectrophotometer",
+            "input": {
+              "label": "Percent transmittance shown by the photometer (%T)",
+              "role": "studentResponse",
+              "mode": "numeric",
+              "unit": "%T"
+            },
+            "valueSource": "learner-observation"
+          }
+        },
+        {
+          "nodeId": "transmittance-dilution-record-percent-transmittance-node",
+          "type": "calculation",
+          "action": {
+            "actionId": "transmittance-dilution-record-percent-transmittance",
+            "verb": "record",
+            "interaction": "recordNotebook",
+            "interactionOrigin": "authored",
+            "valueSource": "none"
+          }
+        },
+        {
+          "nodeId": "transmittance-dilution-remove-sample-cuvette-node",
+          "type": "action",
+          "action": {
+            "actionId": "transmittance-dilution-remove-sample-cuvette",
+            "verb": "place",
+            "interaction": "dragToZone",
+            "interactionOrigin": "authored",
+            "sourceDefinitionId": "spectrophotometer",
+            "stationId": "workbench",
+            "valueSource": "none"
+          }
+        },
+        {
+          "nodeId": "transmittance-dilution-calculate-decimal-transmittance-node",
+          "type": "calculation",
+          "action": {
+            "actionId": "transmittance-dilution-calculate-decimal-transmittance",
+            "verb": "calculate",
+            "interaction": "submitCalculation",
+            "interactionOrigin": "authored",
+            "valueSource": "none"
+          }
+        },
+        {
+          "nodeId": "transmittance-dilution-calculate-absorbance-node",
+          "type": "calculation",
+          "action": {
+            "actionId": "transmittance-dilution-calculate-absorbance",
+            "verb": "calculate",
+            "interaction": "submitCalculation",
+            "interactionOrigin": "authored",
+            "valueSource": "none"
+          }
+        },
+        {
+          "nodeId": "transmittance-dilution-calculate-diluted-concentration-node",
+          "type": "calculation",
+          "action": {
+            "actionId": "transmittance-dilution-calculate-diluted-concentration",
+            "verb": "calculate",
+            "interaction": "submitCalculation",
+            "interactionOrigin": "authored",
+            "valueSource": "none"
+          }
+        }
+      ]
+    }
+  ],
+  "equipment": [
+    {
+      "definitionId": "analytical-balance",
+      "inCatalog": true,
+      "label": "Analytical balance",
+      "category": "measurement",
+      "capacity": "0 none",
+      "precision": "0.001 mL",
+      "catalogSnapZones": [
+        "analytical-balance-bench-zone",
+        "analytical-balance-pan"
+      ],
+      "semanticZonesOwned": [
+        {
+          "id": "analytical-balance-pan",
+          "relationType": "placedOn",
+          "accepts": [
+            "watch-glass",
+            "weigh-boat",
+            "beaker-250ml",
+            "crucible-with-lid"
+          ],
+          "maxOccupancy": 1
+        }
+      ],
+      "usedBy": [
+        "weighing"
+      ]
+    },
+    {
+      "definitionId": "cuvette",
+      "inCatalog": true,
+      "label": "Cuvette",
+      "category": "measurement",
+      "capacity": "4 mL",
+      "precision": "0.1 mL",
+      "catalogSnapZones": [
+        "cuvette-bench-zone"
+      ],
+      "semanticZonesOwned": [],
+      "usedBy": [
+        "transmittance-dilution"
+      ]
+    },
+    {
+      "definitionId": "graduated-cylinder",
+      "inCatalog": true,
+      "label": "Graduated cylinder",
+      "category": "measurement",
+      "capacity": "100 mL",
+      "precision": "1 mL",
+      "catalogSnapZones": [
+        "graduated-cylinder-bench-zone"
+      ],
+      "semanticZonesOwned": [],
+      "usedBy": [
+        "measuring-volume",
+        "dilution",
+        "transmittance-dilution"
+      ]
+    },
+    {
+      "definitionId": "reagent-bottle",
+      "inCatalog": true,
+      "label": "Reagent bottle",
+      "category": "reagent",
+      "capacity": "250 mL",
+      "precision": "1 g",
+      "catalogSnapZones": [
+        "reagent-bottle-bench-zone"
+      ],
+      "semanticZonesOwned": [],
+      "usedBy": [
+        "weighing",
+        "making-solution"
+      ]
+    },
+    {
+      "definitionId": "rubber-stopper-set",
+      "inCatalog": true,
+      "label": "Rubber stopper",
+      "category": "tool",
+      "capacity": "0 none",
+      "precision": "0 none",
+      "catalogSnapZones": [
+        "rubber-stopper-set-bench-zone"
+      ],
+      "semanticZonesOwned": [],
+      "usedBy": [
+        "transmittance-dilution"
+      ]
+    },
+    {
+      "definitionId": "sample-bottle",
+      "inCatalog": true,
+      "label": "Sample bottle",
+      "category": "sample",
+      "capacity": "125 mL",
+      "precision": "0 none",
+      "catalogSnapZones": [
+        "sample-bottle-bench-zone"
+      ],
+      "semanticZonesOwned": [],
+      "usedBy": [
+        "measuring-volume",
+        "transmittance-dilution"
+      ]
+    },
+    {
+      "definitionId": "sample-bottle-1l",
+      "inCatalog": true,
+      "label": "Sample bottle (1 L)",
+      "category": "sample",
+      "capacity": "1000 mL",
+      "precision": "0 none",
+      "catalogSnapZones": [
+        "sample-bottle-1l-bench-zone"
+      ],
+      "semanticZonesOwned": [],
+      "usedBy": [
+        "transmittance-dilution"
+      ]
+    },
+    {
+      "definitionId": "spatula",
+      "inCatalog": true,
+      "label": "Spatula",
+      "category": "tool",
+      "capacity": "0 none",
+      "precision": "0 none",
+      "catalogSnapZones": [
+        "spatula-bench-zone"
+      ],
+      "semanticZonesOwned": [],
+      "usedBy": [
+        "weighing"
+      ]
+    },
+    {
+      "definitionId": "spectrophotometer",
+      "inCatalog": true,
+      "label": "Spectrophotometer",
+      "category": "measurement",
+      "capacity": "0 none",
+      "precision": "0 none",
+      "catalogSnapZones": [
+        "spectrophotometer-bench-zone",
+        "spectrophotometer-cuvette-slot"
+      ],
+      "semanticZonesOwned": [
+        {
+          "id": "spectrophotometer-cuvette-slot",
+          "relationType": "inserted",
+          "accepts": [
+            "cuvette"
+          ],
+          "maxOccupancy": 1
+        }
+      ],
+      "usedBy": [
+        "transmittance-dilution"
+      ]
+    },
+    {
+      "definitionId": "stirring-rod",
+      "inCatalog": true,
+      "label": "Stirring rod",
+      "category": "tool",
+      "capacity": "0 none",
+      "precision": "0 none",
+      "catalogSnapZones": [
+        "stirring-rod-bench-zone"
+      ],
+      "semanticZonesOwned": [],
+      "usedBy": [
+        "making-solution"
+      ]
+    },
+    {
+      "definitionId": "test-tube",
+      "inCatalog": true,
+      "label": "Test tube",
+      "category": "container",
+      "capacity": "20 mL",
+      "precision": "0.5 g",
+      "catalogSnapZones": [
+        "test-tube-bench-zone"
+      ],
+      "semanticZonesOwned": [],
+      "usedBy": [
+        "transmittance-dilution"
+      ]
+    },
+    {
+      "definitionId": "volumetric-flask",
+      "inCatalog": true,
+      "label": "Volumetric flask",
+      "category": "container",
+      "capacity": "100 mL",
+      "precision": "0.1 g",
+      "catalogSnapZones": [
+        "volumetric-flask-bench-zone",
+        "volumetric-flask-stopper-seat"
+      ],
+      "semanticZonesOwned": [
+        {
+          "id": "volumetric-flask-stopper-seat",
+          "relationType": "inserted",
+          "accepts": [
+            "rubber-stopper-set"
+          ],
+          "maxOccupancy": 1
+        }
+      ],
+      "usedBy": [
+        "making-solution",
+        "dilution"
+      ]
+    },
+    {
+      "definitionId": "wash-bottle",
+      "inCatalog": true,
+      "label": "Wash bottle",
+      "category": "reagent",
+      "capacity": "500 mL",
+      "precision": "5 g",
+      "catalogSnapZones": [
+        "wash-bottle-bench-zone"
+      ],
+      "semanticZonesOwned": [],
+      "usedBy": [
+        "making-solution",
+        "dilution",
+        "transmittance-dilution"
+      ]
+    },
+    {
+      "definitionId": "watch-glass",
+      "inCatalog": true,
+      "label": "Watch glass",
+      "category": "container",
+      "capacity": "0 none",
+      "precision": "0.001 g",
+      "catalogSnapZones": [
+        "watch-glass-bench-zone",
+        "watch-glass-paper-seat"
+      ],
+      "semanticZonesOwned": [
+        {
+          "id": "watch-glass-paper-seat",
+          "relationType": "placedOn",
+          "accepts": [
+            "filter-paper"
+          ],
+          "maxOccupancy": 1
+        }
+      ],
+      "usedBy": [
+        "weighing"
+      ]
+    }
+  ],
+  "interactionHandlersNeeded": [
+    "dragToZone",
+    "pourInto",
+    "readInstrument",
+    "recordNotebook",
+    "snapIntoTarget",
+    "submitCalculation"
+  ],
+  "experimentsWithAllTechniquesDelivered": [],
+  "experiments": [
+    {
+      "id": "intro-filtration-demo",
+      "composed": true,
+      "techniques": 4,
+      "allTechniquesDeliveredAtPack": 2,
+      "notInTechniqueCatalog": [],
+      "customRoute": false
+    },
+    {
+      "id": "hard-water-demo",
+      "composed": true,
+      "techniques": 6,
+      "allTechniquesDeliveredAtPack": 3,
+      "notInTechniqueCatalog": [],
+      "customRoute": false
+    },
+    {
+      "id": "acid-base-titration",
+      "composed": true,
+      "techniques": 1,
+      "allTechniquesDeliveredAtPack": 4,
+      "notInTechniqueCatalog": [],
+      "customRoute": false
+    },
+    {
+      "id": "marble-statue-kinetics",
+      "composed": true,
+      "techniques": 1,
+      "allTechniquesDeliveredAtPack": 8,
+      "notInTechniqueCatalog": [],
+      "customRoute": false
+    },
+    {
+      "id": "paper-chromatography",
+      "composed": true,
+      "techniques": 1,
+      "allTechniquesDeliveredAtPack": 3,
+      "notInTechniqueCatalog": [],
+      "customRoute": false
+    },
+    {
+      "id": "equilibrium-rainbow-display",
+      "composed": true,
+      "techniques": 1,
+      "allTechniquesDeliveredAtPack": 9,
+      "notInTechniqueCatalog": [],
+      "customRoute": false
+    },
+    {
+      "id": "hand-warmer-calorimetry",
+      "composed": true,
+      "techniques": 1,
+      "allTechniquesDeliveredAtPack": 5,
+      "notInTechniqueCatalog": [],
+      "customRoute": false
+    },
+    {
+      "id": "blue1-spectroscopy",
+      "composed": true,
+      "techniques": 3,
+      "allTechniquesDeliveredAtPack": 5,
+      "notInTechniqueCatalog": [],
+      "customRoute": false
+    },
+    {
+      "id": "brass-colorimetry",
+      "composed": true,
+      "techniques": 1,
+      "allTechniquesDeliveredAtPack": 3,
+      "notInTechniqueCatalog": [],
+      "customRoute": false
+    },
+    {
+      "id": "hard-water-analysis",
+      "composed": true,
+      "techniques": 5,
+      "allTechniquesDeliveredAtPack": 6,
+      "notInTechniqueCatalog": [],
+      "customRoute": false
+    },
+    {
+      "id": "beverage-acidity",
+      "composed": true,
+      "techniques": 1,
+      "allTechniquesDeliveredAtPack": 7,
+      "notInTechniqueCatalog": [],
+      "customRoute": false
+    },
+    {
+      "id": "bonding-unknown-solids",
+      "composed": true,
+      "techniques": 1,
+      "allTechniquesDeliveredAtPack": 4,
+      "notInTechniqueCatalog": [],
+      "customRoute": false
+    },
+    {
+      "id": "green-chemistry-mixture-purification",
+      "composed": true,
+      "techniques": 1,
+      "allTechniquesDeliveredAtPack": 2,
+      "notInTechniqueCatalog": [],
+      "customRoute": true
+    },
+    {
+      "id": "hydrogen-peroxide-redox-titration",
+      "composed": true,
+      "techniques": 1,
+      "allTechniquesDeliveredAtPack": 4,
+      "notInTechniqueCatalog": [],
+      "customRoute": false
+    },
+    {
+      "id": "quick-ache-relief-separation",
+      "composed": true,
+      "techniques": 4,
+      "allTechniquesDeliveredAtPack": 8,
+      "notInTechniqueCatalog": [],
+      "customRoute": false
+    },
+    {
+      "id": "crystal-violet-rate-law",
+      "composed": true,
+      "techniques": 5,
+      "allTechniquesDeliveredAtPack": 7,
+      "notInTechniqueCatalog": [],
+      "customRoute": false
+    },
+    {
+      "id": "acid-base-titration-curves",
+      "composed": true,
+      "techniques": 1,
+      "allTechniquesDeliveredAtPack": 9,
+      "notInTechniqueCatalog": [],
+      "customRoute": true
+    }
+  ]
+}
