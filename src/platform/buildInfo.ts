@@ -12,6 +12,7 @@ const buildFlags = Object.freeze({
   causalystLtiV1: import.meta.env.VITE_CAUSALYST_LTI_V1 === "true",
   causalystAgsV1: import.meta.env.VITE_CAUSALYST_AGS_V1 === "true",
   causalystQtiExportV1: import.meta.env.VITE_CAUSALYST_QTI_EXPORT_V1 === "true",
+  studio3dV1: import.meta.env.VITE_STUDIO_3D_V1 === "true",
 });
 
 export const labStudioBuildInfo = Object.freeze({

@@ -7,6 +7,7 @@ export const studioFeatureFlagDefaults = Object.freeze({
   causalystLtiV1: false,
   causalystAgsV1: false,
   causalystQtiExportV1: false,
+  studio3dV1: false,
 } as const);
 
 export type StudioFeatureFlag = keyof typeof studioFeatureFlagDefaults;
@@ -21,6 +22,7 @@ export const studioFeatureFlagEnvVariables = Object.freeze({
   causalystLtiV1: "VITE_CAUSALYST_LTI_V1",
   causalystAgsV1: "VITE_CAUSALYST_AGS_V1",
   causalystQtiExportV1: "VITE_CAUSALYST_QTI_EXPORT_V1",
+  studio3dV1: "VITE_STUDIO_3D_V1",
 } as const satisfies Readonly<Record<StudioFeatureFlag, string>>);
 
 let testOverrides: Partial<StudioFeatureFlags> | undefined;
@@ -36,6 +38,7 @@ const readBuildTimeFeatureFlags = (): StudioFeatureFlags => ({
   causalystLtiV1: import.meta.env.VITE_CAUSALYST_LTI_V1 === "true",
   causalystAgsV1: import.meta.env.VITE_CAUSALYST_AGS_V1 === "true",
   causalystQtiExportV1: import.meta.env.VITE_CAUSALYST_QTI_EXPORT_V1 === "true",
+  studio3dV1: import.meta.env.VITE_STUDIO_3D_V1 === "true",
 });
 
 export const getStudioFeatureFlags = (): StudioFeatureFlags =>

@@ -18,6 +18,7 @@ const intendedFeatureFlags = Object.freeze({
   causalystLtiV1: false,
   causalystAgsV1: false,
   causalystQtiExportV1: false,
+  studio3dV1: false,
 });
 
 const featureFlagEnvironment = Object.freeze({
@@ -29,6 +30,7 @@ const featureFlagEnvironment = Object.freeze({
   VITE_CAUSALYST_LTI_V1: "false",
   VITE_CAUSALYST_AGS_V1: "false",
   VITE_CAUSALYST_QTI_EXPORT_V1: "false",
+  VITE_STUDIO_3D_V1: "false",
 });
 
 const exists = async (path) => {

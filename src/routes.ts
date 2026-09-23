@@ -2,6 +2,7 @@ import {
   getStudioFeatureFlags,
   type StudioFeatureFlags,
 } from "./platform/featureFlags";
+import { parseStudio3DRoute, type Studio3DRoute } from "./studio3d/routes3d";
 
 export type AppRoute =
   | { name: "home" }
@@ -21,9 +22,11 @@ export type AppRoute =
   | { name: "play"; labId: string }
   | { name: "technique"; techniqueId: string }
   | { name: "case"; caseId: string }
-  | { name: "trial"; trialId: string };
+  | { name: "trial"; trialId: string }
+  | { name: "studio3d"; route: Studio3DRoute };
 
-type RouteFeatureFlags = Pick<StudioFeatureFlags, "assayStudioV1" | "causalystLocalV1" | "causalystLtiV1">;
+type RouteFeatureFlags = Pick<StudioFeatureFlags, "assayStudioV1" | "causalystLocalV1" | "causalystLtiV1">
+  & Partial<Pick<StudioFeatureFlags, "studio3dV1">>;
 
 export const parseHashRoute = (
   hash: string,
@@ -56,5 +59,8 @@ export const parseHashRoute = (
   if (section === "technique" && id) return { name: "technique", techniqueId: id };
   if (section === "case" && id) return { name: "case", caseId: id };
   if (section === "trial" && id) return { name: "trial", trialId: id };
+  if (featureFlags.studio3dV1 && section === "3d") {
+    return { name: "studio3d", route: parseStudio3DRoute(clean.split("/").slice(1)) };
+  }
   return { name: "home" };
 };

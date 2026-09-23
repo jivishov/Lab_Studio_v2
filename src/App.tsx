@@ -63,6 +63,9 @@ const StudentPlayerRoute = lazy(() =>
 const TeacherStudioRoute = lazy(() =>
   import("./studio/TeacherStudio").then(({ TeacherStudio }) => ({ default: TeacherStudio })),
 );
+const Studio3DRoute = lazy(() =>
+  import("./studio3d/Studio3DApp").then(({ Studio3DApp }) => ({ default: Studio3DApp })),
+);
 const BunsenBurner4dgsTrialRoute = lazy(() =>
   import("./trials/BunsenBurner4dgsTrial").then(({ BunsenBurner4dgsTrial }) => ({
     default: BunsenBurner4dgsTrial,
@@ -763,6 +766,15 @@ export const App = () => {
   }
   if (route.name === "causalyst-lti") {
     content = <CausalystLtiRoute />;
+  }
+
+  if (route.name === "studio3d") {
+    // Lab Studio 3D owns its full-window frame and top bar (UI/UX handoff §4.1, §5.1).
+    return (
+      <Suspense fallback={<RouteLoading label="Loading Lab Studio 3D" />}>
+        <Studio3DRoute route={route.route} />
+      </Suspense>
+    );
   }
 
   if (route.name === "case" && route.caseId === "acid-base-titration") {

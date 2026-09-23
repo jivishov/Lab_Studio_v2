@@ -37,12 +37,14 @@ describe("Studio extension feature flags", () => {
       causalystLtiV1: false,
       causalystAgsV1: false,
       causalystQtiExportV1: false,
+      studio3dV1: false,
     });
-    expect(Object.values(getStudioFeatureFlags())).toEqual(Array(8).fill(false));
+    expect(Object.values(getStudioFeatureFlags())).toEqual(Array(9).fill(false));
   });
 
   it("reads only explicit true values from centralized Vite build-time variables", () => {
     expect(studioFeatureFlagEnvVariables.assayStudioV1).toBe("VITE_ASSAY_STUDIO_V1");
+    expect(studioFeatureFlagEnvVariables.studio3dV1).toBe("VITE_STUDIO_3D_V1");
     vi.stubEnv("VITE_ASSAY_STUDIO_V1", "true");
     vi.stubEnv("VITE_CAUSALYST_LOCAL_V1", "1");
 
@@ -81,7 +83,7 @@ describe("Studio extension feature flags", () => {
       ]);
     expect(screen.queryByText("Assay Studio")).not.toBeInTheDocument();
     expect(screen.queryByText("Causalyst")).not.toBeInTheDocument();
-    expect(Object.values(getStudioFeatureFlags())).toEqual(Array(8).fill(false));
+    expect(Object.values(getStudioFeatureFlags())).toEqual(Array(9).fill(false));
     expect(storageSnapshot()).toEqual(before);
   });
 

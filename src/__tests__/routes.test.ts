@@ -85,4 +85,30 @@ describe("parseHashRoute", () => {
       name: "causalyst-lti",
     });
   });
+
+  it("keeps every Lab Studio 3D route unavailable while the studio3dV1 flag is off", () => {
+    const flags = { assayStudioV1: false, causalystLocalV1: false, causalystLtiV1: false, studio3dV1: false };
+    expect(parseHashRoute("#/3d", flags)).toEqual({ name: "home" });
+    expect(parseHashRoute("#/3d/studio", flags)).toEqual({ name: "home" });
+    expect(parseHashRoute("#/3d/technique/weighing", flags)).toEqual({ name: "home" });
+    expect(parseHashRoute("#/3d/play/intro-filtration-demo", flags)).toEqual({ name: "home" });
+    expect(parseHashRoute("#/3d", { assayStudioV1: false, causalystLocalV1: false, causalystLtiV1: false }))
+      .toEqual({ name: "home" });
+  });
+
+  it("parses the Lab Studio 3D routes when studio3dV1 is on", () => {
+    const flags = { assayStudioV1: false, causalystLocalV1: false, causalystLtiV1: false, studio3dV1: true };
+    expect(parseHashRoute("#/3d", flags)).toEqual({ name: "studio3d", route: { view: "home" } });
+    expect(parseHashRoute("#/3d/studio", flags)).toEqual({ name: "studio3d", route: { view: "studio" } });
+    expect(parseHashRoute("#/3d/technique/weighing?step=2", flags)).toEqual({
+      name: "studio3d",
+      route: { view: "technique", techniqueId: "weighing" },
+    });
+    expect(parseHashRoute("#/3d/play/intro-filtration-demo", flags)).toEqual({
+      name: "studio3d",
+      route: { view: "play", labId: "intro-filtration-demo" },
+    });
+    expect(parseHashRoute("#/3d/technique", flags)).toEqual({ name: "studio3d", route: { view: "home" } });
+    expect(parseHashRoute("#/technique/weighing", flags)).toEqual({ name: "technique", techniqueId: "weighing" });
+  });
 });
