@@ -1,4 +1,6 @@
+import { BenchPreview } from "./bench/BenchPreview";
 import { studio3DFallbackHash, type Studio3DRoute } from "./routes3d";
+import "./styles/studio3d.css";
 
 const viewTitles: Record<Studio3DRoute["view"], string> = {
   home: "Lab Studio 3D",
@@ -9,13 +11,18 @@ const viewTitles: Record<Studio3DRoute["view"], string> = {
 
 /**
  * Entry point of the additive Lab Studio 3D app (plan §4.2), mounted by the shell only while
- * `studio3dV1` is on. The Studio 3D and Player3D layouts are built after the M0 mock-ups are
- * approved (plan §5, §7), so for now each route says what it will host and links to the
- * existing 2D route for the same content.
+ * `studio3dV1` is on. `#/3d/technique/:id` shows the M3 bench preview; Player3D (M5) and Studio 3D
+ * (M6) replace the remaining placeholders, each linking to the existing 2D route meanwhile.
  */
 export const Studio3DApp = ({ route }: { route: Studio3DRoute }) => {
-  const subject =
-    route.view === "technique" ? route.techniqueId : route.view === "play" ? route.labId : undefined;
+  if (route.view === "technique") {
+    return (
+      <div className="s3d">
+        <BenchPreview techniqueId={route.techniqueId} />
+      </div>
+    );
+  }
+  const subject = route.view === "play" ? route.labId : undefined;
   return (
     <main className="route-status" data-studio3d-view={route.view}>
       <h1>{viewTitles[route.view]}</h1>

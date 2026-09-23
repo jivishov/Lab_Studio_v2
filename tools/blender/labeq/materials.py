@@ -95,7 +95,8 @@ def _paper(name):
 
 
 def _housing_light(name):
-    m = principled(name, **{'Base Color': (0.8, 0.805, 0.8, 1), 'Roughness': 0.38, 'Specular IOR Level': 0.45})
+    # light-grey instrument plastic (about sRGB 205): 0.8 linear read as blown-out white on the bench
+    m = principled(name, **{'Base Color': (0.62, 0.625, 0.62, 1), 'Roughness': 0.4, 'Specular IOR Level': 0.45})
     add_noise(m, 'Normal', scale=(1800, 1800, 1800), bump=0.05)
     return m
 

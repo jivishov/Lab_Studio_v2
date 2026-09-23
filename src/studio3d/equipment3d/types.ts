@@ -66,6 +66,8 @@ export interface Equipment3DDisplay {
   /** Centre of the display face, model-local. */
   centreMm: Vec3Mm;
   sizeMm: number[];
+  /** Unit outward normal of the display face, model-local. */
+  normalMm: Vec3Mm;
 }
 
 export interface Equipment3DProvenance {

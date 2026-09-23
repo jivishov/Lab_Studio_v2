@@ -58,6 +58,11 @@ def build(coll, M):
     panel('Shield_right_door', s['t'], s['d'], s['h'], s['w'] / 2 + 4.0, s['y'] + 140.0, zc)
     panel('Shield_top', s['w'], s['d'], s['t'], 0, s['y'], top_z)
     panel('Shield_frame_top', s['w'] + 8, s['d'] + 8, 8.0, 0, s['y'], top_z + 5.0, housing)
+    # corner posts: the light frame real draft shields have, which also keeps the glass box legible
+    for px in (-1, 1):
+        for py in (-1, 1):
+            panel('Shield_post', 6.0, 6.0, s['h'], px * (s['w'] / 2 + 1.5), s['y'] + py * (s['d'] / 2 + 1.5), zc, housing)
+    panel('Shield_door_rail', 6.0, s['d'] + 150.0, 5.0, s['w'] / 2 + 4.0, s['y'] + 75.0, top_z + 3.5, housing)
     for sx in (-1, 1):
         for sy in (-1, 1):
             foot = lathe([(0, -3), (8, -3), (8, 0.5), (0, 0.5)], segs=32)
@@ -69,7 +74,7 @@ def build(coll, M):
         'graduations': None,
         'anchors': {'analytical-balance-pan': {'positionMm': [0.0, SHIELD['y'], PAN_Z]}},
         'displays': [{'id': 'main', 'policy': 'balance-status-and-entry',
-                      'centreMm': [-35.0, -D / 2 - 2.35, 42.0], 'sizeMm': [86.0, 22.0]}],
+                      'centreMm': [-35.0, -D / 2 - 2.35, 42.0], 'sizeMm': [86.0, 22.0], 'normalMm': [0.0, -1.0, 0.0]}],
         'states': {'draftShieldRightDoor': 'open'},
     }
     return root, registry

@@ -91,6 +91,8 @@ def build(coll, M):
                      loc=(sx * (W / 2 - 25), sy * (D / 2 - 25), 3.0))
 
     centre = _on_slope(-30.0, 0.52, 0.6)
+    ny, nz = -(H_FRONT_HI - H_FRONT_LO), SPLIT_Y + D / 2
+    ln = math.hypot(ny, nz)
     registry = {
         'footprintMm': {'shape': 'rect', 'width': W, 'depth': D},
         'grip': {'heightMm': 60.0},
@@ -98,7 +100,8 @@ def build(coll, M):
         'anchors': {'spectrophotometer-cuvette-slot': {
             'positionMm': [WELL_X, WELL_Y, H_BACK + 4.0 - CUVETTE_WELL['depth']], 'yawDeg': 90.0}},
         'displays': [{'id': 'main', 'policy': 'photometer-settings-status-and-entry',
-                      'centreMm': [round(c, 2) for c in centre], 'sizeMm': [130.0, 52.0]}],
+                      'centreMm': [round(c, 2) for c in centre], 'sizeMm': [130.0, 52.0],
+                      'normalMm': [0.0, round(ny / ln, 4), round(nz / ln, 4)]}],
         'states': {'sampleLid': 'raised', 'beamAxis': 'x'},
     }
     return root, registry

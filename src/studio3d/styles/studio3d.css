@@ -1,0 +1,57 @@
+@import "./fonts.css";
+@import "./tokens.css";
+
+/* Lab Studio 3D shell (UI_UX_HANDOFF.md §3–§5). Scoped under .s3d so the 2D app is untouched. */
+.s3d {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 14px/1.45 var(--font-sans);
+  font-variant-numeric: tabular-nums;
+}
+
+.s3d :focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.bench3d {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #c9cfc7;
+}
+
+.bench3d__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+.s3d-preview {
+  position: absolute;
+  inset: 0;
+}
+
+.s3d-preview__tag {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  z-index: var(--z-panel);
+  padding: 6px 10px;
+  border-radius: var(--radius-button);
+  background: var(--glass);
+  backdrop-filter: blur(15px);
+  border: 1px solid var(--glass-line);
+  font-size: 12px;
+  color: var(--ink-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .s3d * {
+    transition-duration: 0ms !important;
+    animation-duration: 0ms !important;
+  }
+}
