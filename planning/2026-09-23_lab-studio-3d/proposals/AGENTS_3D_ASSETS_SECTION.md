@@ -1,6 +1,6 @@
 # Proposed AGENTS.md section: Lab Studio 3D equipment assets
 
-Status: **proposal (M1 deliverable, plan §7).** Nothing has been added to `AGENTS.md`. On approval, the section below is appended to it as written.
+Status: **adopted on 2026-09-23.** The section below was appended to `AGENTS.md` on `claude/lab-studio-3d` as written.
 
 ---
 
