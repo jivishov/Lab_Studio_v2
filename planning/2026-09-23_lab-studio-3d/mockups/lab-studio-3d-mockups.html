@@ -1,0 +1,939 @@
+<meta charset="utf-8">
+<title>Lab Studio 3D Mock-ups</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* ---------- Review chrome (theme-aware) ---------- */
+:root {
+  --r-bg: #eef0ea; --r-surface: #fbfcf8; --r-ink: #1f302b; --r-ink-2: #4a5b54; --r-line: #d6ddd2;
+  --r-accent: #2a5a49; --r-accent-ink: #ffffff; --r-warn-bg: #fbf3df; --r-warn-ink: #6b4d0f;
+  --r-frame-well: #dfe3da;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --r-bg: #141a17; --r-surface: #1c2420; --r-ink: #e6ece6; --r-ink-2: #a9b6ae; --r-line: #2f3a34;
+    --r-accent: #7cc2a4; --r-accent-ink: #0f1f18; --r-warn-bg: #3a3017; --r-warn-ink: #f1d59a;
+    --r-frame-well: #0e1311;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --r-bg: #141a17; --r-surface: #1c2420; --r-ink: #e6ece6; --r-ink-2: #a9b6ae; --r-line: #2f3a34;
+  --r-accent: #7cc2a4; --r-accent-ink: #0f1f18; --r-warn-bg: #3a3017; --r-warn-ink: #f1d59a;
+  --r-frame-well: #0e1311;
+}
+html, body { height: 100%; }
+body { background: var(--r-bg); color: var(--r-ink); font: 14px/1.5 "IBM Plex Sans", system-ui, "Segoe UI", sans-serif; }
+.review { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 20px; padding-block: 20px; padding-inline: 20px; max-width: 1900px; margin: 0 auto; }
+.r-head { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px; }
+.r-head h1 { margin: 0; font-size: 24px; font-weight: 600; letter-spacing: -0.4px; text-wrap: balance; }
+.r-head p { margin: 4px 0 0; color: var(--r-ink-2); max-width: 70ch; }
+.r-meta { display: flex; flex-wrap: wrap; gap: 8px; font: 12px "IBM Plex Mono", ui-monospace, monospace; }
+.r-meta span { border: 1px solid var(--r-line); border-radius: 6px; padding: 3px 8px; background: var(--r-surface); }
+.r-meta .await { background: var(--r-warn-bg); color: var(--r-warn-ink); border-color: transparent; }
+.r-nav { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); align-self: start; display: grid; gap: 14px; }
+.r-nav h2 { margin: 0 0 6px; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--r-ink-2); }
+.r-nav ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.r-nav button { all: unset; box-sizing: border-box; width: 100%; cursor: pointer; display: grid; grid-template-columns: 34px 1fr; gap: 6px; padding: 6px 8px; border-radius: 6px; color: var(--r-ink); font-size: 13px; line-height: 1.35; }
+.r-nav button b { font: 500 12px "IBM Plex Mono", monospace; color: var(--r-ink-2); }
+.r-nav button:hover { background: var(--r-surface); }
+.r-nav button[aria-current="true"] { background: var(--r-accent); color: var(--r-accent-ink); }
+.r-nav button[aria-current="true"] b { color: inherit; }
+.r-nav button:focus-visible, .r-pager button:focus-visible { outline: 3px solid #a8791a; outline-offset: 2px; }
+.r-main { display: grid; gap: 14px; min-width: 0; }
+.r-well { background: var(--r-frame-well); border-radius: 12px; padding: 14px; }
+.r-scaler { position: relative; width: 100%; overflow: hidden; border-radius: 6px; box-shadow: 0 10px 40px #0000002a; }
+.r-scaler > .frame { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
+.r-notes { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 20px; background: var(--r-surface); border: 1px solid var(--r-line); border-radius: 12px; padding: 16px 18px; }
+.r-notes h3 { margin: 0 0 6px; font-size: 16px; font-weight: 600; }
+.r-notes h4 { margin: 0 0 6px; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--r-ink-2); }
+.r-notes p, .r-notes li { color: var(--r-ink-2); max-width: 70ch; }
+.r-notes ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.r-notes code { font: 12px "IBM Plex Mono", monospace; }
+.r-pager { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.r-pager button { font: 500 13px "IBM Plex Sans", sans-serif; border: 1px solid var(--r-line); background: var(--r-surface); color: var(--r-ink); border-radius: 8px; padding: 7px 14px; cursor: pointer; }
+.r-pager span { color: var(--r-ink-2); font-size: 13px; }
+@media (max-width: 900px) {
+  .review { grid-template-columns: minmax(0, 1fr); padding-inline: 16px; }
+  .r-nav { position: static; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .r-notes { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---------- The mocked application (light only, tokens from UI_UX_HANDOFF.md §3.1) ---------- */
+.frame {
+  --bg: #f5f6f1; --panel: #fdfefb; --panel-solid: #ffffff; --line: #e0e5db; --line-strong: #cad5c7;
+  --ink: #233934; --ink-2: #44574f; --muted: #5d6b64;
+  --brand: #2a5a49; --brand-hover: #224838; --brand-tint: #ecf3ed;
+  --guide: #197b7b; --guide-strong: #126767; --guide-tint: #e3f1ec; --guide-band: #eef6f1;
+  --ok: #2d7960; --ok-tint: #e5f2ec; --error: #9a4b37; --error-tint: #fbeee8; --warn: #7d5a12; --warn-tint: #fbf3df;
+  --focus: #a8791a; --glass: #f7faf2cc; --glass-line: #ffffff6b; --float: #fafdfaf2; --float-line: #cfe0d6;
+  --toolbar: linear-gradient(160deg, #283b32f2, #1c3027eb); --toolbar-ink: #f0f4ed;
+  --label-bg: #183c43e6; --label-ink: #ffffff; --canvas: #f7f8f4; --canvas-dot: #dfe4da;
+  --shadow-docked: 0 4px 18px #20342608; --shadow-float: 0 10px 30px #1b3a3322, 0 2px 6px #1b3a3314; --shadow-toolbar: 0 7px 28px #111e1860;
+  color-scheme: light; background: var(--bg); color: var(--ink);
+  font: 14px/1.45 "IBM Plex Sans", system-ui, "Segoe UI", sans-serif; font-variant-numeric: tabular-nums;
+  overflow: hidden; isolation: isolate;
+}
+.frame * { box-sizing: border-box; }
+.frame .mono { font-family: "IBM Plex Mono", ui-monospace, Consolas, monospace; }
+.frame .i { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.frame .eyebrow { font-size: 10px; line-height: 1.5; font-weight: 600; letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); }
+.frame .small { font-size: 12px; line-height: 1.5; color: var(--muted); }
+.frame .btn { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--line-strong); background: var(--panel-solid); color: var(--ink); font: 500 13px/1 "IBM Plex Sans", sans-serif; white-space: nowrap; }
+.frame .btn.primary { background: var(--brand); border-color: var(--brand); color: #fff; }
+.frame .btn.guide { border-color: transparent; background: var(--guide-tint); color: var(--guide-strong); }
+.frame .btn.quiet { border-color: transparent; background: transparent; }
+.frame .btn.icon { width: 32px; padding: 0; justify-content: center; }
+.frame .btn[disabled] { opacity: .5; }
+.frame .chip { display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 8px; border-radius: 6px; font: 500 11px/1 "IBM Plex Sans", sans-serif; background: var(--brand-tint); color: var(--brand); white-space: nowrap; }
+.frame .chip .i { width: 12px; height: 12px; }
+.frame .chip.ok { background: var(--ok-tint); color: var(--ok); }
+.frame .chip.warn { background: var(--warn-tint); color: var(--warn); }
+.frame .chip.err { background: var(--error-tint); color: var(--error); }
+.frame .chip.neutral { background: #edf1ec; color: var(--ink-2); }
+.frame .chip.outline { background: transparent; border: 1px solid var(--line-strong); color: var(--ink-2); }
+.frame .prov-teacher { background: #e8eef6; color: #2f4a6e; }
+.frame .prov-entry { background: #f4efe4; color: #5b4a24; }
+.frame .prov-bench { background: #edf1ec; color: #44574f; }
+.frame .prov-sim { background: #eee9f6; color: #4f3d78; }
+.frame .prov-calc { background: #e3f0ee; color: #1f5a57; }
+.frame .focus-ring { outline: 3px solid var(--focus); outline-offset: 3px; }
+.frame .kbd { font: 500 11px "IBM Plex Mono", monospace; border: 1px solid var(--line-strong); border-bottom-width: 2px; border-radius: 4px; padding: 1px 5px; background: var(--panel-solid); color: var(--ink-2); }
+.frame .field { display: grid; gap: 4px; }
+.frame .field label { font-size: 12px; font-weight: 500; color: var(--ink-2); }
+.frame .input { display: flex; align-items: center; height: 34px; border: 1px solid var(--line-strong); border-radius: 6px; background: var(--panel-solid); padding: 0 10px; gap: 8px; font-size: 14px; color: var(--muted); }
+.frame .input .unit { margin-left: auto; font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--ink-2); }
+.frame .input.filled { color: var(--ink); }
+.frame .select { display: flex; align-items: center; justify-content: space-between; height: 32px; border: 1px solid var(--line-strong); border-radius: 6px; padding: 0 8px 0 10px; background: var(--panel-solid); font-size: 13px; gap: 6px; min-width: 0; }
+.frame .select span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.frame .note { font-size: 12px; line-height: 1.5; color: var(--ink-2); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; }
+.frame .note b { color: var(--ink); font-weight: 600; }
+.frame .placeholder { font-style: italic; color: var(--muted); }
+
+/* Studio frame */
+.s-top { height: 60px; display: flex; align-items: center; gap: 14px; padding: 0 20px; border-bottom: 1px solid var(--line); background: var(--panel); }
+.s-brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 17px; letter-spacing: -0.3px; }
+.s-mark { width: 30px; height: 30px; border-radius: 8px; background: var(--brand); color: #fff; display: grid; place-items: center; }
+.s-mark .i { width: 18px; height: 18px; }
+.s-divider { width: 1px; height: 24px; background: var(--line-strong); }
+.s-context { color: var(--ink-2); font-size: 14px; }
+.s-top .spacer { flex: 1; }
+.s-save { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+.s-save::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--ok); }
+.s-head { height: 88px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; gap: 20px; }
+.s-head h1 { margin: 2px 0 2px; font-size: 26px; line-height: 1.25; font-weight: 600; letter-spacing: -0.9px; display: flex; align-items: center; gap: 12px; }
+.s-head p { margin: 0; font-size: 13px; color: var(--ink-2); }
+.s-work { display: grid; grid-template-columns: 248px minmax(560px, 1fr) 320px; gap: 11px; padding: 0 20px; height: calc(100% - 204px); min-height: 520px; }
+.s-foot { height: 28px; display: flex; align-items: center; justify-content: space-between; padding: 0 22px; font-size: 11px; color: var(--muted); margin-top: 28px; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow-docked); display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+.lib-h { padding: 14px 12px 10px; display: grid; gap: 10px; border-bottom: 1px solid var(--line); }
+.lib-title { display: flex; align-items: center; justify-content: space-between; font-weight: 600; font-size: 16px; }
+.count { font: 500 11px "IBM Plex Mono", monospace; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 1px 7px; color: var(--ink-2); }
+.search { display: flex; align-items: center; gap: 8px; height: 32px; border: 1px solid var(--line-strong); border-radius: 6px; padding: 0 10px; font-size: 13px; color: var(--muted); background: var(--panel-solid); }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chips .chip { background: transparent; border: 1px solid var(--line-strong); color: var(--ink-2); }
+.chips .chip.on { background: var(--brand); border-color: var(--brand); color: #fff; }
+.lib-body { flex: 1; overflow: hidden; padding: 10px; display: grid; gap: 10px; align-content: start; }
+.lib-group { font-size: 10px; font-weight: 600; letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); padding: 2px 2px 0; display: flex; align-items: center; gap: 6px; }
+.cards2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.card { position: relative; border: 1px solid var(--line); border-radius: 8px; background: var(--panel-solid); padding: 6px 6px 8px; display: grid; gap: 4px; }
+.card .thumb { height: 64px; border-radius: 6px; background: linear-gradient(180deg, #f3f5ef, #e8ebe3); display: grid; place-items: center; overflow: hidden; }
+.card .thumb svg { width: 60px; height: 60px; }
+.card .nm { font-size: 12px; font-weight: 600; line-height: 1.3; }
+.card .dt { font-size: 11px; color: var(--muted); line-height: 1.35; }
+.card .plus { position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; border-radius: 6px; background: var(--brand); color: #fff; display: grid; place-items: center; }
+.card .plus .i { width: 13px; height: 13px; }
+.card.tech { grid-template-columns: 64px 1fr; align-items: center; gap: 8px; padding: 6px; }
+.card.tech .thumb { width: 64px; height: 56px; }
+.card.tech .chip { justify-self: start; height: 20px; }
+.card.lifted { box-shadow: 0 14px 30px #1b3a3333; border-color: var(--brand); transform: rotate(-1.5deg); }
+.tpl { display: flex; align-items: center; gap: 8px; padding: 7px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel-solid); font-size: 13px; font-weight: 500; }
+.tpl .ico { width: 26px; height: 26px; border-radius: 6px; background: var(--brand-tint); color: var(--brand); display: grid; place-items: center; }
+.lib-f { border-top: 1px solid var(--line); padding: 10px 12px; font-size: 12px; color: var(--muted); display: flex; gap: 8px; align-items: flex-start; }
+.stage { position: relative; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background-color: var(--canvas); background-image: radial-gradient(var(--canvas-dot) 1.2px, transparent 1.3px); background-size: 24px 24px; }
+.stage.dark { background: #1e2723; border-color: #1e2723; }
+.gbadge { position: absolute; top: 14px; left: 14px; z-index: 3; background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--glass-line); border-radius: 10px; padding: 7px 12px; box-shadow: 0 2px 10px #1b3a3314; }
+.gbadge .t { font-size: 10px; font-weight: 600; letter-spacing: 1.4px; text-transform: uppercase; display: flex; align-items: center; gap: 6px; color: var(--ink); }
+.gbadge .t::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--ok); }
+.gbadge .t.warn::before { background: var(--warn); }
+.seg { position: absolute; top: 14px; left: 50%; transform: translateX(-50%); z-index: 3; display: flex; background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--line); border-radius: 9px; padding: 3px; gap: 2px; }
+.seg span { font-size: 12px; font-weight: 500; padding: 5px 12px; border-radius: 6px; color: var(--ink-2); }
+.seg span.on { background: var(--panel-solid); color: var(--ink); box-shadow: 0 1px 3px #1b3a3322; }
+.expand { position: absolute; top: 14px; right: 14px; z-index: 3; width: 32px; height: 32px; border-radius: 8px; background: var(--glass); border: 1px solid var(--line); display: grid; place-items: center; color: var(--ink-2); }
+.tbar { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); z-index: 3; display: flex; align-items: center; gap: 4px; padding: 5px; border-radius: 11px; background: var(--toolbar); color: var(--toolbar-ink); box-shadow: var(--shadow-toolbar); white-space: nowrap; }
+.tbar span { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; padding: 6px 9px; border-radius: 7px; }
+.tbar span.on { background: #ffffff1f; box-shadow: inset 0 0 0 1px #ffffff2e; }
+.tbar i { width: 1px; height: 20px; background: #ffffff2a; margin: 0 3px; }
+.minimap { position: absolute; right: 14px; bottom: 66px; z-index: 3; width: 150px; height: 92px; border-radius: 8px; background: #fdfefbe6; border: 1px solid var(--line-strong); }
+.flow { position: absolute; inset: 0; }
+.node { position: absolute; width: 232px; background: var(--panel-solid); border: 1px solid var(--line-strong); border-radius: 10px; padding: 10px 12px 11px; display: grid; gap: 7px; box-shadow: 0 2px 8px #1b3a330f; }
+.node .nh { display: flex; align-items: center; gap: 7px; }
+.node .nh .ic { width: 24px; height: 24px; border-radius: 6px; background: var(--brand-tint); color: var(--brand); display: grid; place-items: center; }
+.node .nh .ic .i { width: 14px; height: 14px; }
+.node .nh .eyebrow { flex: 1; }
+.node .ttl { font-size: 14px; font-weight: 600; line-height: 1.3; }
+.node .eqs { display: flex; gap: 4px; align-items: center; }
+.node .eqs .th { width: 28px; height: 28px; border-radius: 6px; background: #eef1ea; display: grid; place-items: center; }
+.node .eqs .th svg { width: 26px; height: 26px; }
+.node .cs { display: flex; gap: 4px; flex-wrap: wrap; }
+.node .cs .chip { height: 20px; font-size: 11px; }
+.node.sel { border: 2px solid var(--brand); box-shadow: 0 0 0 4px #2a5a491f, 0 6px 16px #1b3a331f; padding: 9px 11px 10px; }
+.node.issue { box-shadow: inset 3px 0 0 var(--error), 0 2px 8px #1b3a330f; }
+.node .start { position: absolute; left: -9px; top: 12px; transform: translateX(-100%); font: 600 10px/1 "IBM Plex Sans"; letter-spacing: 1.2px; background: var(--brand); color: #fff; padding: 4px 6px; border-radius: 5px; display: flex; align-items: center; gap: 4px; }
+.node .handle { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: var(--panel-solid); border: 2px solid var(--ink-2); top: 38px; }
+.node .handle.in { left: -6px; } .node .handle.out { right: -6px; }
+.node .handle.ring { box-shadow: 0 0 0 4px #197b7b55; border-color: var(--guide); }
+.node.note-card { background: #fbfbf3; border: 1.5px dashed var(--line-strong); }
+.node.decision .outs { display: grid; gap: 4px; }
+.node.decision .outs div { display: flex; justify-content: space-between; font-size: 11px; color: var(--ink-2); border-top: 1px dashed var(--line); padding-top: 4px; }
+.edge-pill { position: absolute; z-index: 2; font: 500 11px "IBM Plex Sans"; background: var(--panel-solid); border: 1px solid var(--line-strong); border-radius: 999px; padding: 2px 8px; display: flex; gap: 4px; align-items: center; color: var(--ink-2); transform: translate(-50%, -50%); }
+.insert-marker { position: absolute; z-index: 4; width: 28px; height: 28px; border-radius: 50%; background: var(--guide); color: #fff; display: grid; place-items: center; transform: translate(-50%, -50%); box-shadow: 0 0 0 6px #197b7b2e; }
+.ghost-card { position: absolute; z-index: 5; width: 180px; opacity: .92; }
+.cursor { position: absolute; z-index: 6; width: 18px; height: 18px; }
+.banner { position: absolute; top: 58px; left: 14px; right: 14px; z-index: 3; display: flex; align-items: center; gap: 10px; background: var(--warn-tint); color: var(--warn); border: 1px solid #ecdcb0; border-radius: 8px; padding: 8px 12px; font-size: 13px; }
+.banner b { color: var(--ink); }
+.group-frame { position: absolute; border: 1.5px dashed #9fb2a6; border-radius: 14px; background: #eef3ec66; }
+.group-frame span { position: absolute; top: -10px; left: 14px; background: var(--canvas); padding: 0 6px; font-size: 11px; font-weight: 600; color: var(--ink-2); letter-spacing: .3px; }
+.tabs { display: flex; gap: 2px; padding: 0 12px; border-bottom: 1px solid var(--line); }
+.tabs span { font-size: 13px; font-weight: 500; padding: 12px 10px 10px; color: var(--muted); border-bottom: 2px solid transparent; }
+.tabs span.on { color: var(--ink); border-color: var(--brand); }
+.ins-body { flex: 1; overflow: hidden; padding: 14px; display: grid; gap: 12px; align-content: start; }
+.ins-sec { border-top: 1px solid var(--line); padding-top: 10px; display: grid; gap: 8px; }
+.ins-sec > .hd { display: flex; align-items: center; justify-content: space-between; font-size: 13px; font-weight: 600; }
+.ins-sec > .hd .i { color: var(--muted); }
+.kv { display: grid; grid-template-columns: 110px 1fr; gap: 6px 10px; font-size: 12px; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; color: var(--ink); }
+.ins-foot { border-top: 1px solid var(--line); padding: 8px 12px; display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+.ins-foot .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); flex: none; }
+.ins-foot .grow { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.diag { display: grid; grid-template-columns: 18px 1fr; gap: 8px; font-size: 12.5px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel-solid); }
+.diag .i { width: 16px; height: 16px; margin-top: 1px; }
+.diag.fail { border-color: #efd5ca; background: var(--error-tint); } .diag.fail .i { color: var(--error); }
+.diag.warning { border-color: #ecdcb0; background: var(--warn-tint); } .diag.warning .i { color: var(--warn); }
+.diag a { color: var(--brand); font-weight: 500; text-decoration: none; font-size: 12px; }
+.shelf-strip { position: absolute; left: 14px; right: 14px; bottom: 66px; height: 92px; z-index: 3; border-radius: 10px; background: #f3f4efe8; border: 1px solid var(--line-strong); display: flex; align-items: center; gap: 10px; padding: 8px 12px; }
+.shelf-strip .lbl { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 10px; font-weight: 600; letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); }
+.shelf-strip .it { width: 84px; height: 74px; border-radius: 8px; background: var(--panel-solid); border: 1px solid var(--line); display: grid; justify-items: center; align-content: center; font-size: 11px; gap: 2px; }
+.shelf-strip .it svg { width: 44px; height: 44px; }
+.dialog-back { position: absolute; inset: 0; z-index: 8; background: #1d2b2566; display: grid; place-items: center; }
+.dialog { width: 520px; background: var(--panel-solid); border-radius: 12px; box-shadow: 0 20px 60px #0d1a1440; display: grid; }
+.dialog .dh { padding: 18px 20px 12px; display: grid; gap: 4px; border-bottom: 1px solid var(--line); }
+.dialog .dh h2 { margin: 0; font-size: 20px; font-weight: 600; line-height: 1.3; }
+.dialog .db { padding: 16px 20px; display: grid; gap: 12px; }
+.dialog .df { padding: 12px 20px 16px; display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid var(--line); }
+.check { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; }
+.check .box { width: 16px; height: 16px; border: 1.5px solid var(--ink-2); border-radius: 4px; flex: none; margin-top: 1px; display: grid; place-items: center; }
+.check .box.on { background: var(--brand); border-color: var(--brand); color: #fff; }
+.blocker { display: grid; grid-template-columns: 18px 1fr; gap: 8px; background: var(--warn-tint); border: 1px solid #ecdcb0; color: var(--ink); border-radius: 8px; padding: 10px 12px; font-size: 13px; }
+.blocker .i { color: var(--warn); margin-top: 2px; }
+.blocker a { color: var(--brand); font-weight: 600; }
+
+/* Player frame */
+.p-top { position: absolute; top: 0; left: 0; right: 0; height: 52px; z-index: 30; display: flex; align-items: center; gap: 12px; padding: 0 14px; background: #fbfcf8f0; backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+.p-top .ttl { font-weight: 600; font-size: 15px; }
+.p-top .src { font-size: 10px; font-weight: 600; letter-spacing: 1.2px; color: var(--muted); border: 1px solid var(--line-strong); border-radius: 5px; padding: 2px 6px; }
+.p-top .ctr { position: absolute; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--ink-2); }
+.p-top .ctr b { color: var(--ink); font-weight: 600; }
+.p-top .right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+.p-top .dotted { position: relative; }
+.p-top .dotted::after { content: ""; position: absolute; top: 5px; right: 6px; width: 7px; height: 7px; border-radius: 50%; background: var(--guide); box-shadow: 0 0 0 2px #fff; }
+.mode { display: inline-flex; align-items: center; gap: 5px; height: 24px; padding: 0 9px; border-radius: 999px; font-size: 12px; font-weight: 500; background: var(--guide-tint); color: var(--guide-strong); }
+.mode.assess { background: #ecebf3; color: #3f3d63; }
+.bench { position: absolute; inset: 0; }
+.bench svg { width: 100%; height: 100%; display: block; }
+.float { position: absolute; z-index: 20; background: var(--float); backdrop-filter: blur(6px); border: 1px solid var(--float-line); border-radius: 12px; box-shadow: var(--shadow-float); }
+.fl-h { display: flex; align-items: center; gap: 8px; padding: 8px 10px 6px 12px; cursor: grab; }
+.fl-h .grip { width: 14px; height: 14px; color: var(--muted); }
+.step { top: 66px; left: 14px; width: 372px; padding-bottom: 12px; }
+.step .badge { width: 26px; height: 26px; border-radius: 50%; background: var(--guide); color: #fff; font-weight: 600; font-size: 13px; display: grid; place-items: center; }
+.step .badge.assess { background: #4b4a6e; }
+.step .body { padding: 0 14px; display: grid; gap: 10px; }
+.step h2 { margin: 0; font-size: 16px; line-height: 1.4; font-weight: 600; }
+.prog { display: flex; gap: 3px; }
+.prog i { flex: 1; height: 5px; border-radius: 3px; background: #dde3da; }
+.prog i.done { background: var(--guide); }
+.prog i.cur { background: linear-gradient(90deg, var(--guide) 0 35%, #bfdcd4 35%); }
+.nab { background: var(--guide-band); border-left: 3px solid var(--guide); border-radius: 0 8px 8px 0; padding: 9px 12px; font-size: 17px; line-height: 1.4; font-weight: 600; color: var(--ink); }
+.flow-row { display: grid; grid-template-columns: 1fr 14px 1fr; gap: 6px; align-items: end; }
+.flow-row .field label { font-size: 11px; }
+.flow-row .arrow { padding-bottom: 8px; color: var(--muted); }
+.step-links { display: flex; gap: 8px; align-items: center; }
+.step-links a { font-size: 13px; color: var(--ink-2); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-strong); }
+.corr { border-left: 3px solid var(--error); background: var(--error-tint); border-radius: 0 8px 8px 0; padding: 9px 12px; display: grid; gap: 6px; font-size: 13px; }
+.corr .row { display: grid; grid-template-columns: 96px 1fr; gap: 8px; }
+.corr .k { font-size: 11px; font-weight: 600; letter-spacing: .6px; text-transform: uppercase; color: var(--error); padding-top: 2px; }
+.corr .x { position: absolute; }
+.corr .att { font-size: 12px; color: var(--ink-2); border-top: 1px solid #efd5ca; padding-top: 6px; }
+.dock { position: absolute; z-index: 30; left: 50%; bottom: 14px; transform: translateX(-50%); display: flex; align-items: stretch; gap: 4px; padding: 6px; border-radius: 14px; background: var(--float); border: 1px solid var(--float-line); box-shadow: var(--shadow-float); }
+.dock .db { width: 76px; height: 56px; border-radius: 10px; display: grid; justify-items: center; align-content: center; gap: 4px; font-size: 11px; color: var(--ink-2); }
+.dock .db .i { width: 20px; height: 20px; }
+.dock .db.on { background: var(--brand); color: #fff; }
+.dock .sep { width: 1px; background: var(--line); margin: 8px 2px; }
+.hint { position: absolute; z-index: 30; left: 50%; bottom: 84px; transform: translateX(-50%); font-size: 12.5px; color: var(--ink-2); background: #fafdfae6; border: 1px solid var(--float-line); border-radius: 8px; padding: 5px 12px; white-space: nowrap; }
+.tray { left: 14px; bottom: 14px; width: 300px; }
+.tray .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 0 10px 10px; }
+.tray .tile { position: relative; background: var(--panel-solid); border: 1px solid var(--line); border-radius: 8px; padding: 4px 4px 6px; display: grid; justify-items: center; gap: 2px; font-size: 11px; text-align: center; line-height: 1.25; }
+.tray .tile svg { width: 46px; height: 46px; }
+.tray .tile .need { position: absolute; top: 5px; right: 5px; width: 8px; height: 8px; border-radius: 50%; background: var(--guide); box-shadow: 0 0 0 2px #fff; }
+.tray .tile .cnt { position: absolute; top: 3px; left: 5px; font: 500 10px "IBM Plex Mono"; color: var(--muted); }
+.benchlist { top: 66px; right: 14px; width: 340px; }
+.bl-group { padding: 4px 12px 2px; font-size: 10px; font-weight: 600; letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); }
+.bl-row { display: grid; grid-template-columns: 34px 1fr; gap: 8px; padding: 7px 12px; border-top: 1px solid var(--line); }
+.bl-row svg { width: 32px; height: 32px; }
+.bl-row .n { font-size: 13px; font-weight: 600; }
+.bl-row .m { font-size: 11.5px; color: var(--muted); }
+.bl-row .acts { display: flex; gap: 4px; margin-top: 5px; flex-wrap: wrap; }
+.bl-row .acts span { font-size: 11px; border: 1px solid var(--line-strong); border-radius: 6px; padding: 2px 6px; color: var(--ink-2); background: var(--panel-solid); }
+.bl-row.sel { background: var(--brand-tint); box-shadow: inset 3px 0 0 var(--brand); }
+.bl-foot { padding: 8px 12px 10px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); }
+.callout { position: absolute; z-index: 25; background: var(--label-bg); color: var(--label-ink); border-radius: 999px; padding: 5px 12px; font-size: 12.5px; font-weight: 500; white-space: nowrap; transform: translateX(-50%); display: flex; align-items: center; gap: 6px; }
+.callout .i { width: 14px; height: 14px; }
+.sheet { position: absolute; z-index: 22; top: 52px; right: 0; bottom: 0; width: 420px; background: var(--panel-solid); border-left: 1px solid var(--line); box-shadow: -10px 0 30px #1b3a331a; display: flex; flex-direction: column; }
+.sheet .sh { padding: 14px 16px 10px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--line); }
+.sheet .sh h2 { margin: 0; font-size: 16px; font-weight: 600; flex: 1; }
+.sheet .sb { padding: 12px 16px; display: grid; gap: 14px; overflow: hidden; align-content: start; }
+.nb-sec { display: grid; gap: 6px; }
+.nb-row { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; align-items: center; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; }
+.nb-row .lab { font-size: 13px; }
+.nb-row .val { font-family: "IBM Plex Mono", monospace; font-size: 14px; font-weight: 500; }
+.nb-row .meta { grid-column: 1 / -1; display: flex; gap: 6px; align-items: center; font-size: 11px; color: var(--muted); }
+.nb-row.cur { border-color: var(--guide); box-shadow: 0 0 0 3px #197b7b1f; }
+.center-card { position: absolute; z-index: 40; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 460px; background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--glass-line); border-radius: 12px; box-shadow: var(--shadow-float); padding: 22px 24px; display: grid; gap: 12px; }
+.gate { position: absolute; z-index: 40; top: 66px; width: 520px; background: #fbfcf8f5; backdrop-filter: blur(15px); border: 1px solid var(--float-line); border-radius: 12px; box-shadow: var(--shadow-float); padding: 18px 20px; display: grid; gap: 12px; }
+.gate h2 { margin: 0; font-size: 20px; font-weight: 600; line-height: 1.3; }
+.journey { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.journey div { background: var(--guide-band); border-radius: 8px; padding: 8px; text-align: center; font-size: 12px; color: var(--ink-2); line-height: 1.35; }
+.journey b { display: block; color: var(--guide-strong); font-size: 15px; font-weight: 600; }
+.pager-tag { position: absolute; z-index: 41; font: 600 10px "IBM Plex Sans"; letter-spacing: 1.2px; text-transform: uppercase; color: #fff; background: #233934; padding: 3px 8px; border-radius: 5px; }
+.illus-tag { position: absolute; z-index: 29; right: 14px; bottom: 14px; font-size: 10.5px; color: #eef2ec; background: #1d2b25b3; padding: 3px 8px; border-radius: 5px; letter-spacing: .2px; }
+.toast { position: absolute; z-index: 40; left: 50%; bottom: 84px; transform: translateX(-50%); background: var(--panel-solid); border: 1px solid var(--line); border-left: 3px solid var(--ok); border-radius: 8px; padding: 8px 14px; font-size: 13px; box-shadow: var(--shadow-float); display: flex; gap: 8px; align-items: center; }
+.toast .i { color: var(--ok); }
+.examine-card { position: absolute; z-index: 25; right: 14px; top: 66px; width: 340px; padding: 14px; display: grid; gap: 10px; }
+.results { position: absolute; z-index: 40; inset: 52px 0 0 0; background: #1d2b2559; display: grid; place-items: center; }
+.results .sheetc { width: 760px; background: var(--panel-solid); border-radius: 12px; box-shadow: 0 20px 60px #0d1a1440; display: grid; }
+.table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.table th { text-align: left; font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: .5px; text-transform: uppercase; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+.table td { padding: 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.inset-lbl { position: absolute; z-index: 30; top: 12px; left: 12px; font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; background: var(--panel-solid); border: 1px solid var(--line); border-radius: 6px; padding: 3px 8px; color: var(--ink-2); }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- UI icons: 24 px grid, 1.7 px stroke (handoff §3.6) -->
+    <symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3"/><path d="M7.5 15h9"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-move" viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M12 3l-3 3M12 3l3 3M12 21l-3-3M12 21l3-3M3 12l3-3M3 12l3 3M21 12l-3-3M21 12l-3 3"/></symbol>
+    <symbol id="i-seat" viewBox="0 0 24 24"><path d="M9 3h6v9H9z"/><path d="M5 14h14v6H5z"/><path d="M12 12v2"/></symbol>
+    <symbol id="i-pour" viewBox="0 0 24 24"><path d="M4 7l6-3 4 7-6 3z"/><path d="M13 10c2 2 3 4 3 6"/><path d="M13 16h7v5h-7z"/></symbol>
+    <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M4 16a8 8 0 1 1 16 0"/><path d="m12 16 4-5"/><path d="M3 20h18"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M15 4l5 5L9 20H4v-5z"/><path d="M13 6l5 5"/></symbol>
+    <symbol id="i-calc" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M14 12h2M8 16h2M14 16h2"/></symbol>
+    <symbol id="i-cards" viewBox="0 0 24 24"><rect x="4" y="8" width="13" height="12" rx="2"/><path d="M7 5h11a2 2 0 0 1 2 2v10"/></symbol>
+    <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></symbol>
+    <symbol id="i-split" viewBox="0 0 24 24"><path d="M4 12h6l4-6h6M10 12l4 6h6M17 3l3 3-3 3M17 15l3 3-3 3"/></symbol>
+    <symbol id="i-equals" viewBox="0 0 24 24"><path d="M5 9h14M5 15h14"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-note" viewBox="0 0 24 24"><path d="M5 4h14v11l-5 5H5z"/><path d="M14 20v-5h5M8 9h8M8 13h4"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 7 4 12l5 5"/><path d="M4 12h11a5 5 0 0 1 0 10h-3"/></symbol>
+    <symbol id="i-redo" viewBox="0 0 24 24"><path d="m15 7 5 5-5 5"/><path d="M20 12H9a5 5 0 0 0 0 10h3"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.7M12 17h.01"/></symbol>
+    <symbol id="i-dots" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M19 12h.01"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24"><path d="m6 15 6-6 6 6"/></symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+    <symbol id="i-hand" viewBox="0 0 24 24"><path d="M8 13V6a1.5 1.5 0 0 1 3 0v6M11 11V4.5a1.5 1.5 0 0 1 3 0V11M14 11V6a1.5 1.5 0 0 1 3 0v8a7 7 0 0 1-7 7h-.5A6.5 6.5 0 0 1 4 15l-1-3a1.5 1.5 0 0 1 2.7-1.2L8 13"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/></symbol>
+    <symbol id="i-tray" viewBox="0 0 24 24"><path d="M3 13l3-8h12l3 8v6H3z"/><path d="M3 13h5l1 2h6l1-2h5"/></symbol>
+    <symbol id="i-examine" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></symbol>
+    <symbol id="i-reset" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.6"/><path d="M4 4v4h4"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><path d="M4 4h16v16H4zM4 12h16M12 4v16"/></symbol>
+    <symbol id="i-layout" viewBox="0 0 24 24"><rect x="3" y="4" width="7" height="6" rx="1"/><rect x="14" y="14" width="7" height="6" rx="1"/><path d="M10 7h4v10"/></symbol>
+    <symbol id="i-map" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><rect x="12" y="11" width="6" height="5" rx="1"/></symbol>
+    <symbol id="i-details" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h4"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-fit" viewBox="0 0 24 24"><path d="M9 4H4v5M15 4h5v5M9 20H4v-5M15 20h5v-5"/><rect x="9" y="9" width="6" height="6"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/></symbol>
+    <symbol id="i-clip" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="16" rx="2"/><path d="M9 3h6v4H9zM8.5 12h7M8.5 16h5"/></symbol>
+    <symbol id="i-beaker" viewBox="0 0 24 24"><path d="M6 3h12M7 3v15a3 3 0 0 0 3 3h4a3 3 0 0 0 3-3V3"/><path d="M7 12h10"/></symbol>
+    <symbol id="i-chip" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></symbol>
+    <symbol id="i-retry" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4h-4"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M14 7l5 5-5 5"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 5v14l11-7z"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5h.01"/></symbol>
+    <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 4 2.5 20h19z"/><path d="M12 10v4M12 17h.01"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></symbol>
+    <symbol id="i-grip" viewBox="0 0 24 24"><path d="M9 6h.01M15 6h.01M9 12h.01M15 12h.01M9 18h.01M15 18h.01"/></symbol>
+    <symbol id="i-cursor" viewBox="0 0 24 24"><path d="M5 3l14 7-6 2-2 6z" fill="#233934" stroke="#fff" stroke-width="1.3"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></symbol>
+
+    <!-- Equipment illustrations (placeholders for Blender thumbnails; 100 x 100, base at y 96) -->
+    <linearGradient id="g-glass" x1="0" x2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".55"/><stop offset=".35" stop-color="#dde9ea" stop-opacity=".35"/><stop offset=".8" stop-color="#c9d9dc" stop-opacity=".45"/><stop offset="1" stop-color="#ffffff" stop-opacity=".6"/></linearGradient>
+    <linearGradient id="g-metal" x1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4f5f2"/><stop offset="1" stop-color="#c9cdc6"/></linearGradient>
+    <linearGradient id="g-ldpe" x1="0" x2="1"><stop offset="0" stop-color="#f7f8f6" stop-opacity=".92"/><stop offset=".5" stop-color="#e9eeec" stop-opacity=".7"/><stop offset="1" stop-color="#f4f6f4" stop-opacity=".9"/></linearGradient>
+    <linearGradient id="g-dark" x1="0" x2="0" y2="1"><stop offset="0" stop-color="#4b5752"/><stop offset="1" stop-color="#2d3632"/></linearGradient>
+    <symbol id="eq-analytical-balance" viewBox="0 0 100 100"><rect x="6" y="62" width="88" height="34" rx="5" fill="url(#g-metal)" stroke="#9aa39b"/><rect x="16" y="68" width="30" height="10" rx="2" fill="#2f3a36"/><rect x="60" y="70" width="8" height="5" rx="1.5" fill="#b8bfb6"/><rect x="72" y="70" width="8" height="5" rx="1.5" fill="#b8bfb6"/><path d="M14 62V16h72v46" fill="url(#g-glass)" stroke="#a8b8b6" stroke-width="1.2"/><path d="M14 16h72" stroke="#8fa19e" stroke-width="2"/><ellipse cx="50" cy="57" rx="20" ry="3.2" fill="#d9ddd6" stroke="#9aa39b"/><rect x="47" y="58" width="6" height="4" fill="#b3b9b1"/></symbol>
+    <symbol id="eq-watch-glass" viewBox="0 0 100 100"><path d="M18 86q32 12 64 0" fill="url(#g-glass)" stroke="#9fb3b3" stroke-width="1.5"/><path d="M18 86q32 6 64 0" fill="none" stroke="#ffffff" stroke-opacity=".8"/></symbol>
+    <symbol id="eq-reagent-bottle" viewBox="0 0 100 100"><path d="M34 44q0-8 8-10h16q8 2 8 10v48q0 4-4 4H38q-4 0-4-4z" fill="url(#g-glass)" stroke="#9fb3b3" stroke-width="1.4"/><rect x="42" y="18" width="16" height="16" rx="2" fill="url(#g-glass)" stroke="#9fb3b3"/><rect x="40" y="12" width="20" height="9" rx="2" fill="#2f3a36"/><rect x="37" y="58" width="26" height="20" rx="2" fill="#f7f6f0" stroke="#d4d4c8"/><path d="M41 64h18M41 70h12" stroke="#9aa39b" stroke-width="1.2"/></symbol>
+    <symbol id="eq-spatula" viewBox="0 0 100 100"><path d="M16 88 78 26" stroke="#b7bcb4" stroke-width="3.5" stroke-linecap="round"/><path d="M74 30 86 18q4-3 2 2L78 32z" fill="url(#g-metal)" stroke="#9aa39b"/><path d="M16 88l6-6" stroke="#8b918a" stroke-width="5" stroke-linecap="round"/></symbol>
+    <symbol id="eq-graduated-cylinder" viewBox="0 0 100 100"><path d="M40 8h20v80H40z" fill="url(#g-glass)" stroke="#9fb3b3" stroke-width="1.4"/><path d="M38 8h24" stroke="#9fb3b3" stroke-width="2"/><path d="M30 88h40l-4 8H34z" fill="url(#g-glass)" stroke="#9fb3b3"/><g stroke="#4f625d" stroke-width=".9"><path d="M41 20h7M41 30h5M41 40h7M41 50h5M41 60h7M41 70h5M41 80h7"/></g></symbol>
+    <symbol id="eq-sample-bottle" viewBox="0 0 100 100"><path d="M36 50q0-8 7-10h14q7 2 7 10v42q0 4-4 4H40q-4 0-4-4z" fill="url(#g-glass)" stroke="#9fb3b3" stroke-width="1.4"/><rect x="43" y="28" width="14" height="12" fill="url(#g-glass)" stroke="#9fb3b3"/><rect x="41" y="20" width="18" height="10" rx="2" fill="#3b5d7a"/><rect x="39" y="62" width="22" height="16" rx="2" fill="#f7f6f0" stroke="#d4d4c8"/></symbol>
+    <symbol id="eq-sample-bottle-1l" viewBox="0 0 100 100"><path d="M28 42q0-9 9-11h26q9 2 9 11v50q0 4-4 4H32q-4 0-4-4z" fill="url(#g-glass)" stroke="#9fb3b3" stroke-width="1.4"/><rect x="42" y="18" width="16" height="13" fill="url(#g-glass)" stroke="#9fb3b3"/><rect x="40" y="10" width="20" height="10" rx="2" fill="#3b5d7a"/><rect x="33" y="56" width="34" height="20" rx="2" fill="#f7f6f0" stroke="#d4d4c8"/></symbol>
+    <symbol id="eq-volumetric-flask" viewBox="0 0 100 100"><circle cx="50" cy="74" r="21" fill="url(#g-glass)" stroke="#9fb3b3" stroke-width="1.4"/><path d="M46 54V12h8v42" fill="url(#g-glass)" stroke="#9fb3b3" stroke-width="1.4"/><path d="M45 30h10" stroke="#3e524d" stroke-width="1.3"/><rect x="44.5" y="6" width="11" height="7" rx="2" fill="#dfe3dc" stroke="#9aa39b"/><path d="M32 95h36" stroke="#9fb3b3" stroke-width="1.4"/></symbol>
+    <symbol id="eq-wash-bottle" viewBox="0 0 100 100"><path d="M32 46q0-8 8-10h20q8 2 8 10v46q0 4-4 4H36q-4 0-4-4z" fill="url(#g-ldpe)" stroke="#b5bfbc" stroke-width="1.4"/><rect x="41" y="26" width="18" height="11" rx="2" fill="#2f6f9c"/><path d="M50 26V16q0-6 8-8l18-4" fill="none" stroke="#dfe6e8" stroke-width="3.2" stroke-linecap="round"/><path d="M50 26V16q0-6 8-8l18-4" fill="none" stroke="#a9b6b9" stroke-width="1" stroke-linecap="round"/></symbol>
+    <symbol id="eq-stirring-rod" viewBox="0 0 100 100"><path d="M22 90 76 14" stroke="#cfdcdc" stroke-width="4" stroke-linecap="round"/><path d="M22 90 76 14" stroke="#9fb3b3" stroke-width="1" stroke-linecap="round"/></symbol>
+    <symbol id="eq-test-tube" viewBox="0 0 100 100"><path d="M43 14h14v66a7 7 0 0 1-14 0z" fill="url(#g-glass)" stroke="#9fb3b3" stroke-width="1.4"/><path d="M41 14h18" stroke="#9fb3b3" stroke-width="2"/></symbol>
+    <symbol id="eq-cuvette" viewBox="0 0 100 100"><rect x="41" y="52" width="18" height="44" rx="1.5" fill="url(#g-glass)" stroke="#9fb3b3" stroke-width="1.4"/><rect x="41" y="52" width="5" height="44" fill="#e6e9e3" opacity=".85"/><rect x="54" y="52" width="5" height="44" fill="#e6e9e3" opacity=".85"/></symbol>
+    <symbol id="eq-spectrophotometer" viewBox="0 0 100 100"><path d="M6 56h88v38a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3z" fill="#e9ebe5" stroke="#9aa39b"/><path d="M6 56l6-14h76l6 14z" fill="#f4f5f1" stroke="#9aa39b"/><rect x="58" y="44" width="16" height="9" rx="1.5" fill="#2f3a36"/><rect x="14" y="64" width="40" height="18" rx="2" fill="#2f3a36"/><rect x="62" y="68" width="8" height="6" rx="1.5" fill="#b8bfb6"/><rect x="74" y="68" width="8" height="6" rx="1.5" fill="#b8bfb6"/></symbol>
+    <symbol id="eq-rubber-stopper-set" viewBox="0 0 100 100"><path d="M24 80h18l-3 14H27z" fill="#6f4a3b"/><path d="M50 74h22l-3 20H53z" fill="#7d5443"/><path d="M26 80h14" stroke="#9b6f5c"/><path d="M52 74h18" stroke="#9b6f5c"/></symbol>
+    <symbol id="eq-rack" viewBox="0 0 100 100"><rect x="8" y="46" width="84" height="8" rx="2" fill="#d7d2c4" stroke="#aca693"/><rect x="8" y="84" width="84" height="8" rx="2" fill="#d7d2c4" stroke="#aca693"/><path d="M12 54v30M88 54v30" stroke="#aca693" stroke-width="3"/><g fill="#f3f0e6" stroke="#aca693"><ellipse cx="30" cy="50" rx="6" ry="2.2"/><ellipse cx="50" cy="50" rx="6" ry="2.2"/><ellipse cx="70" cy="50" rx="6" ry="2.2"/></g></symbol>
+  </defs>
+</svg>
+
+<div class="review">
+  <header class="r-head">
+    <div>
+      <h1>Lab Studio 3D mock-ups</h1>
+      <p>The M0 mock-up set from <code>UI_UX_HANDOFF.md</code> §10, for review and approval before M3 builds presentation. Step text, input labels and runtime messages are copied from the Pack 1 content and runtime at <code>1d28429</code>. Values that a learner or teacher would supply are shown as ‹placeholders›. The bench and equipment drawings are flat illustrations standing in for the live three.js bench and Blender models.</p>
+    </div>
+    <div class="r-meta"><span>branch claude/lab-studio-3d</span><span>baseline 1d28429</span><span class="await">Awaiting your approval</span></div>
+  </header>
+  <nav class="r-nav" aria-label="Mock-up frames">
+    <div><h2>Studio 3D</h2><ol id="nav-s"></ol></div>
+    <div><h2>Player3D</h2><ol id="nav-p"></ol></div>
+  </nav>
+  <main class="r-main">
+    <div class="r-well"><div class="r-scaler" id="scaler"></div></div>
+    <div class="r-pager"><button type="button" id="prev">← Previous</button><span id="pos"></span><button type="button" id="next">Next →</button></div>
+    <section class="r-notes" id="notes" aria-live="polite"></section>
+  </main>
+</div>
+
+<script>
+(() => {
+"use strict";
+const I = (n, cls = "") => `<svg class="i ${cls}" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+const EQ = (id, w = 60, h = 60, extra = "") => `<svg viewBox="0 0 100 100" width="${w}" height="${h}" aria-hidden="true" ${extra}><use href="#eq-${id}"/></svg>`;
+const PROV = {
+  teacher: ["prov-teacher", "clip", "Teacher setting"],
+  entry: ["prov-entry", "pencil", "Your entry"],
+  bench: ["prov-bench", "beaker", "From the bench"],
+  sim: ["prov-sim", "chip", "Simulated"],
+  calc: ["prov-calc", "equals", "Calculated"],
+};
+const prov = (k) => `<span class="chip ${PROV[k][0]}">${I(PROV[k][1])}${PROV[k][2]}</span>`;
+const ph = (t) => `<span class="placeholder">‹${t}›</span>`;
+const LIQ = { clear: "rgba(86, 174, 206, 0.46)", clearStroke: "rgba(38, 108, 136, 0.58)", blue: "rgba(36, 99, 220, 0.5)", blueStroke: "rgba(30, 64, 175, 0.62)", powder: "rgba(222, 214, 170, 0.94)", meniscus: "rgba(232, 250, 255, 0.92)" };
+
+/* ---------------- Bench illustration (stands in for the live three.js bench) ---------------- */
+/* items: { eq, x, y (base, px), s (size px), label?, sel?, beacon?, ring?: "valid"|"invalid"|"zone", ghost?, lift?, liquid?, tilt?, dim? } */
+const liquidFor = (item) => {
+  if (!item.liquid) return "";
+  const { eq, x, y, s } = item; const k = s / 100; const L = item.liquid;
+  const fill = LIQ[L.kind]; const stroke = LIQ[L.kind + "Stroke"] || "none";
+  const X = (v) => x - s / 2 + v * k, Y = (v) => y - s + v * k;
+  if (eq === "volumetric-flask") { const top = 74 + 21 - L.level * 42; return `<clipPath id="c${x}${y}"><circle cx="${X(50)}" cy="${Y(74)}" r="${20 * k}"/></clipPath><rect x="${X(28)}" y="${Y(top)}" width="${44 * k}" height="${(95 - top) * k}" fill="${fill}" stroke="${stroke}" clip-path="url(#c${x}${y})"/><path d="M${X(31)} ${Y(top)}h${38 * k}" stroke="${LIQ.meniscus}" stroke-width="1.5"/>`; }
+  if (eq === "graduated-cylinder") { const top = 88 - L.level * 78; return `<rect x="${X(41)}" y="${Y(top)}" width="${18 * k}" height="${(88 - top) * k}" fill="${fill}" stroke="${stroke}"/><path d="M${X(41)} ${Y(top)}q${9 * k} ${3 * k} ${18 * k} 0" fill="none" stroke="${LIQ.meniscus}" stroke-width="1.5"/>`; }
+  if (eq === "cuvette") { const top = 96 - L.level * 42; return `<rect x="${X(46)}" y="${Y(top)}" width="${8 * k}" height="${(96 - top) * k}" fill="${fill}"/>`; }
+  if (eq === "sample-bottle-1l") { const top = 94 - L.level * 56; return `<rect x="${X(30)}" y="${Y(top)}" width="${40 * k}" height="${(94 - top) * k}" rx="${3 * k}" fill="${fill}"/>`; }
+  if (eq === "wash-bottle") { const top = 94 - L.level * 52; return `<rect x="${X(34)}" y="${Y(top)}" width="${32 * k}" height="${(94 - top) * k}" rx="${3 * k}" fill="${fill}" opacity=".7"/>`; }
+  if (eq === "reagent-bottle" && L.kind === "powder") { return `<path d="M${X(36)} ${Y(94)}h${28 * k}v${-12 * k}q${-14 * k} ${-6 * k} ${-28 * k} 0z" fill="${fill}"/>`; }
+  if (eq === "watch-glass" && L.kind === "powder") { return `<ellipse cx="${X(50)}" cy="${Y(86)}" rx="${12 * k}" ry="${4 * k}" fill="${fill}" stroke="rgba(106,94,54,.34)"/>`; }
+  if (eq === "test-tube") { const top = 86 - L.level * 60; return `<path d="M${X(44)} ${Y(top)}h${12 * k}v${(80 - top) * k}a${6 * k} ${6 * k} 0 0 1 ${-12 * k} 0z" fill="${fill}"/>`; }
+  return "";
+};
+const benchItem = (it) => {
+  const { eq, x, y, s } = it;
+  const lift = it.lift || 0;
+  const shadow = `<ellipse cx="${x}" cy="${y + 2}" rx="${s * (lift ? 0.36 : 0.3)}" ry="${s * (lift ? 0.06 : 0.045)}" fill="#1b2a23" opacity="${lift ? 0.12 : 0.22}" filter="url(#blur)"/>`;
+  const ringR = s * 0.42;
+  let ring = "";
+  if (it.beacon) ring += `<ellipse cx="${x}" cy="${y + 2}" rx="${ringR + 12}" ry="${(ringR + 12) * 0.28}" fill="none" stroke="#ffffff" stroke-width="3" opacity=".9"/><ellipse cx="${x}" cy="${y + 2}" rx="${ringR + 12}" ry="${(ringR + 12) * 0.28}" fill="none" stroke="#197b7b" stroke-width="1.5"/><ellipse cx="${x}" cy="${y + 2}" rx="${ringR + 24}" ry="${(ringR + 24) * 0.28}" fill="none" stroke="#ffffff" stroke-width="2" opacity=".55"/>`;
+  if (it.sel) ring += `<ellipse cx="${x}" cy="${y + 2}" rx="${ringR}" ry="${ringR * 0.28}" fill="none" stroke="#2a5a49" stroke-width="2.5"/>`;
+  if (it.ring === "valid") ring += `<ellipse cx="${x}" cy="${it.ringY ?? y + 2}" rx="${ringR + 6}" ry="${(ringR + 6) * 0.3}" fill="#197b7b22" stroke="#197b7b" stroke-width="2.5"/><circle cx="${x + ringR + 6}" cy="${it.ringY ?? y + 2}" r="10" fill="#197b7b"/><path d="M${x + ringR + 1} ${(it.ringY ?? y + 2)}l3.5 3.5 6.5-7" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>`;
+  if (it.ring === "invalid") ring += `<ellipse cx="${x}" cy="${it.ringY ?? y + 2}" rx="${ringR + 6}" ry="${(ringR + 6) * 0.3}" fill="#9a4b3718" stroke="#9a4b37" stroke-width="2.5"/><circle cx="${x + ringR + 6}" cy="${it.ringY ?? y + 2}" r="10" fill="#9a4b37"/><path d="M${x + ringR + 2} ${(it.ringY ?? y + 2) - 4}l8 8M${x + ringR + 10} ${(it.ringY ?? y + 2) - 4}l-8 8" stroke="#fff" stroke-width="2" stroke-linecap="round"/>`;
+  if (it.ring === "zone") ring += `<rect x="${x - s * 0.7}" y="${y - s * 0.16}" width="${s * 1.4}" height="${s * 0.32}" rx="12" fill="#197b7b14" stroke="#197b7b" stroke-width="2" stroke-dasharray="7 5"/>`;
+  if (it.footprint) ring += `<ellipse cx="${it.footprint[0]}" cy="${it.footprint[1]}" rx="${ringR}" ry="${ringR * 0.28}" fill="none" stroke="#233934" stroke-width="1" stroke-dasharray="3 3" opacity=".7"/>`;
+  const rot = it.tilt ? ` transform="rotate(${it.tilt} ${x} ${y - s / 2})"` : "";
+  const op = it.ghost ? ' opacity=".42"' : it.dim ? ' opacity=".55"' : "";
+  return `${ring}${lift ? "" : shadow}<g${rot}${op}>${lift ? `<ellipse cx="${x}" cy="${y + lift + 2}" rx="${s * 0.36}" ry="${s * 0.06}" fill="#1b2a23" opacity=".12" filter="url(#blur)"/>` : ""}${liquidFor(it)}<use href="#eq-${eq}" x="${x - s / 2}" y="${y - s}" width="${s}" height="${s}"/></g>`;
+};
+const bench = (W, H, items = [], opts = {}) => {
+  const horizon = opts.horizon ?? H * 0.4;
+  const extra = opts.extra ?? "";
+  return `<div class="bench"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Illustration of the lab bench">
+    <defs>
+      <linearGradient id="wall${W}${H}" x1="0" x2="0" y2="1"><stop offset="0" stop-color="#d7ddd6"/><stop offset="1" stop-color="#c6cdc4"/></linearGradient>
+      <linearGradient id="top${W}${H}" x1="0" x2="0" y2="1"><stop offset="0" stop-color="#8e948c"/><stop offset=".25" stop-color="#9aa097"/><stop offset="1" stop-color="#7c827a"/></linearGradient>
+      <radialGradient id="vig${W}${H}" cx=".5" cy=".55" r=".75"><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></radialGradient>
+      <filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
+      <filter id="soft" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="6"/></filter>
+    </defs>
+    <rect width="${W}" height="${horizon + 6}" fill="url(#wall${W}${H})"/>
+    <g filter="url(#soft)" opacity=".5"><rect x="${W * 0.08}" y="${horizon * 0.25}" width="${W * 0.22}" height="${horizon * 0.5}" rx="6" fill="#e9ede6"/><rect x="${W * 0.62}" y="${horizon * 0.18}" width="${W * 0.28}" height="${horizon * 0.62}" rx="6" fill="#e3e8e1"/><rect x="${W * 0.66}" y="${horizon * 0.3}" width="${W * 0.08}" height="${horizon * 0.35}" fill="#b9c3b8"/></g>
+    <rect y="${horizon - 4}" width="${W}" height="10" fill="#b4bab1"/>
+    <path d="M0 ${horizon + 6}H${W}V${H}H0z" fill="url(#top${W}${H})"/>
+    <path d="M0 ${horizon + 6}H${W}" stroke="#c9cec6" stroke-width="2"/>
+    ${extra}
+    ${items.map(benchItem).join("")}
+    <rect width="${W}" height="${H}" fill="url(#vig${W}${H})"/>
+  </svg></div>`;
+};
+
+/* ---------------- Shared frame parts ---------------- */
+const sTop = (o = {}) => `<div class="s-top">
+  <div class="s-brand"><div class="s-mark">${I("flask")}</div>Lab Studio</div><div class="s-divider"></div><div class="s-context">Studio 3D</div>
+  <div class="spacer"></div>
+  <div class="s-save">${o.save ?? "Saved in this browser"}</div>
+  ${o.ready ?? `<span class="chip ok">${I("check")}Ready</span>`}
+  <span class="btn primary">${I("play")}Preview</span>
+  <span class="btn">Export</span>
+  <span class="btn icon quiet">${I("help")}</span>
+  <span class="btn icon quiet">${I("dots")}</span>
+</div>`;
+const sHead = (o) => `<div class="s-head"><div>
+  <div class="eyebrow">${o.eyebrow}</div>
+  <h1>${o.title} ${o.pill}</h1>
+  <p>${o.desc}</p></div>
+  <div style="display:flex;gap:8px"><span class="btn">Open…</span><span class="btn">New ${I("chev")}</span></div></div>`;
+const pill = (t, tone = "ok", icon = "check") => `<span class="chip ${tone}" style="height:24px;font-size:12px">${I(icon)}${t}</span>`;
+const libTech = (id, name, detail, status) => `<div class="card tech"><div class="thumb">${EQ(id, 52, 52)}</div><div style="display:grid;gap:3px"><div class="nm">${name}</div><div class="dt">${detail}</div>${status}</div></div>`;
+const libEq = (id, name, detail, chip = `<span class="chip neutral" style="height:18px">3D</span>`, extra = "") => `<div class="card${extra}"><div class="thumb">${EQ(id)}</div><div class="nm">${name}</div><div class="dt">${detail}</div>${chip}</div>`;
+const tpl = (icon, name) => `<div class="tpl"><div class="ico">${I(icon)}</div>${name}</div>`;
+const library = (o) => `<div class="panel">
+  <div class="lib-h"><div class="lib-title">Library <span class="count">${o.count}</span></div>
+  <div class="search">${I("search")}Find a step or equipment…</div>
+  <div class="chips">${o.chips}</div></div>
+  <div class="lib-body">${o.body}</div>
+  <div class="lib-f">${I("info")}<span>${o.tip}</span></div></div>`;
+const libSteps = () => `<div class="lib-group">${I("move")} Place and move</div>${tpl("gauge", "Weigh item")}${tpl("pour", "Measure volume")}${tpl("pour", "Make solution")}${tpl("pour", "Dilution")}
+  <div class="lib-group">${I("cards")} Published technique</div>${libTech("spectrophotometer", "Transmittance dilution", "23 steps", `<span class="chip ok" style="height:18px">${I("check")}3D-ready</span>`)}`;
+const inspectorFoot = (last) => `<div class="ins-foot"><span class="dot"></span><span class="grow">${last}</span><span class="btn icon quiet">${I("undo")}</span><span class="btn icon quiet">${I("redo")}</span></div>`;
+const inspector = (tab, body, last) => `<div class="panel"><div class="tabs">${["Selected", "Setup", "Checks"].map((t) => `<span class="${t === tab ? "on" : ""}">${t}</span>`).join("")}</div><div class="ins-body">${body}</div>${inspectorFoot(last)}</div>`;
+const flowToolbar = (mode = "Select") => `<div class="tbar"><span class="${mode === "Select" ? "on" : ""}">${I("cursor")}Select</span><span class="${mode === "Connect" ? "on" : ""}">${I("link")}Connect</span><i></i><span class="on">${I("grid")}Snap to grid</span><span>${I("layout")}Auto-layout</span><span class="on">${I("map")}Minimap</span><span>${I("details")}Details</span><i></i><span>${I("minus")}</span><span class="mono">100%</span><span>${I("plus")}</span><i></i><span>${I("fit")}Fit</span></div>`;
+const seg = (on) => `<div class="seg">${["Flow", "Starting bench", "Preview"].map((t) => `<span class="${t === on ? "on" : ""}">${t}</span>`).join("")}</div>`;
+const badge = (t, warn) => `<div class="gbadge"><div class="t${warn ? " warn" : ""}">${t}</div></div>`;
+const minimap = () => `<div class="minimap"><svg viewBox="0 0 150 92" width="150" height="92"><rect x="14" y="34" width="30" height="16" rx="3" fill="#cad5c7"/><rect x="60" y="34" width="30" height="16" rx="3" fill="#2a5a49"/><rect x="106" y="34" width="30" height="16" rx="3" fill="#cad5c7"/><rect x="8" y="22" width="134" height="44" rx="4" fill="none" stroke="#197b7b" stroke-width="1.5"/></svg></div>`;
+const studioFrame = (o) => `${sTop(o.top)}${sHead(o.head)}<div class="s-work" style="${o.workStyle ?? ""}">${o.library}${o.stage}${o.inspector}</div><div class="s-foot"><span>Lab Studio 3D · Studio · Pack 1</span><span>Positions are stored in the 2D player's units.</span></div>`;
+
+/* Flow nodes and edges */
+const NODE_ICON = { technique: "cards", action: null, checkpoint: "flag", decision: "split", calculation: "equals", observation: "eye", teacherNote: "note" };
+const INTER_ICON = { dragToZone: "move", snapIntoTarget: "seat", pourInto: "pour", readInstrument: "gauge", recordNotebook: "pencil", submitCalculation: "calc" };
+const node = (n) => {
+  const icon = n.type === "action" ? INTER_ICON[n.interaction] : NODE_ICON[n.type];
+  const cls = ["node", n.sel ? "sel" : "", n.issues ? "issue" : "", n.type === "teacherNote" ? "note-card" : "", n.type === "decision" ? "decision" : ""].join(" ");
+  return `<div class="${cls}" style="left:${n.x}px;top:${n.y}px">
+    ${n.start ? `<div class="start">${I("flag")}START</div>` : ""}
+    <span class="handle in${n.ringIn ? " ring" : ""}"></span><span class="handle out"></span>
+    <div class="nh"><div class="ic">${I(icon)}</div><div class="eyebrow">${n.eyebrow}</div>${n.issues ? `<span class="chip err" style="height:18px">${I("warn")}${n.issues}</span>` : ""}${n.hint ? `<span title="Has hint text">${I("info")}</span>` : ""}</div>
+    <div class="ttl">${n.title}</div>
+    ${n.eq?.length ? `<div class="eqs">${n.eq.slice(0, 3).map((e) => `<div class="th">${EQ(e, 26, 26)}</div>`).join("")}${n.eq.length > 3 ? `<span class="small">+${n.eq.length - 3}</span>` : ""}</div>` : ""}
+    ${n.outs ? `<div class="outs">${n.outs.map((o) => `<div><span>${o}</span><span>●</span></div>`).join("")}</div>` : ""}
+    ${n.chips ? `<div class="cs">${n.chips}</div>` : ""}
+  </div>`;
+};
+const EDGE_STYLE = { always: 'stroke="#233934" stroke-opacity=".45"', validationPassed: 'stroke="#2a5a49"', retry: 'stroke="#7d5a12" stroke-dasharray="6 4"', calculationResult: 'stroke="#5b6b80" stroke-dasharray="2 3"' };
+const EDGE_BADGE = { validationPassed: "check", retry: "retry", calculationResult: "equals" };
+const edgePath = (a, b, kind, back, vertical) => {
+  if (vertical) return `M${a[0]} ${a[1]} L${b[0]} ${b[1]}`;
+  if (back) { const dy = back; return `M${a[0]} ${a[1]} C${a[0] + 60} ${a[1] + dy}, ${b[0] - 60} ${b[1] + dy}, ${b[0]} ${b[1]}`; }
+  const mx = (a[0] + b[0]) / 2; return `M${a[0]} ${a[1]} C${mx} ${a[1]}, ${mx} ${b[1]}, ${b[0]} ${b[1]}`;
+};
+const edges = (list, w, h) => `<svg class="flow" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" style="position:absolute;inset:0;z-index:1" aria-hidden="true">
+  <defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#44574f"/></marker></defs>
+  ${list.map((e) => `<path d="${edgePath(e.a, e.b, e.cond, e.back, e.vertical)}" fill="none" stroke-width="${e.hot ? 3 : 1.5}" ${e.hot ? 'stroke="#197b7b"' : EDGE_STYLE[e.cond]} marker-end="url(#arr)"/>`).join("")}
+</svg>${list.filter((e) => EDGE_BADGE[e.cond] && !e.hideBadge).map((e) => { const m = e.vertical ? [e.a[0] + 26, (e.a[1] + e.b[1]) / 2] : e.back ? [(e.a[0] + e.b[0]) / 2, Math.max(e.a[1], e.b[1]) + e.back * 0.75] : [(e.a[0] + e.b[0]) / 2, (e.a[1] + e.b[1]) / 2]; return `<span class="edge-pill" style="left:${m[0]}px;top:${m[1]}px">${I(EDGE_BADGE[e.cond])}${e.label ?? ""}</span>`; }).join("")}`;
+const OUT = (n) => [n.x + 232 + 6, n.y + 43], IN = (n) => [n.x - 6, n.y + 43];
+
+/* Weighing flow nodes (content from public/techniques/weighing.json) */
+const weighNodes = (o = {}) => [
+  { x: o.x0 ?? 40, y: o.y ?? 150, type: "action", interaction: "dragToZone", eyebrow: "Action · Place", title: "Place watch glass", eq: ["watch-glass"], chips: `<span class="chip neutral">actionEvidence</span>`, start: true },
+  { x: (o.x0 ?? 40) + (o.gap ?? 260), y: o.y ?? 150, type: "action", interaction: "readInstrument", eyebrow: "Action · Weigh", title: "Weigh solid", eq: ["analytical-balance", "watch-glass", "reagent-bottle"], chips: `${prov("entry")}<span class="chip neutral">measurementRecorded</span>`, sel: o.sel === 1 },
+  { x: (o.x0 ?? 40) + 2 * (o.gap ?? 260), y: o.y ?? 150, type: "observation", eyebrow: "Observation · Record", title: "Record mass", chips: `<span class="chip neutral">${I("book")}Notebook</span><span class="chip neutral">notebookEntry</span>` },
+];
+
+/* ---------------- Player parts ---------------- */
+const pTop = (o) => `<div class="p-top"><div class="s-mark" style="width:28px;height:28px">${I("flask")}</div><span class="ttl">${o.title}</span><span class="src">TECHNIQUE · PACK 1</span>
+  <div class="ctr"><span>Step <b>${o.n}</b> of <b>${o.N}</b></span><span class="mode${o.assess ? " assess" : ""}">${o.assess ? I("clip") + "Assessment" : I("eye") + "Guided"}</span></div>
+  <div class="right"><span class="btn quiet${o.nbDot ? " dotted" : ""}">${I("book")}Notebook</span><span class="btn quiet">${I("help")}Controls &amp; model</span><span class="btn">${I("menu")}Menu</span></div></div>`;
+const progress = (done, cur, N) => `<div class="prog">${Array.from({ length: N }, (_, i) => `<i class="${i < done ? "done" : i === cur ? "cur" : ""}"></i>`).join("")}</div>`;
+const stepCard = (o) => `<div class="float step" style="${o.style ?? ""}">
+  <div class="fl-h"><span class="badge${o.assess ? " assess" : ""}">${o.n}</span><span class="eyebrow" style="flex:1">Step ${o.n} of ${o.N}</span>${o.typeChip ?? ""}<span class="btn icon quiet" style="height:26px;width:26px">${I("up")}</span></div>
+  <div class="body"><h2>${o.title}</h2>${progress(o.done ?? o.n - 1, o.n - 1, o.N)}
+  <div class="nab" aria-live="polite">${o.instruction}</div>
+  ${o.input ?? ""}
+  ${o.corr ?? ""}
+  <div class="flow-row"><div class="field"><label>Source</label><div class="select"><span>${o.source}</span>${I("chev")}</div></div><span class="arrow">${I("arrow")}</span><div class="field"><label>Target</label><div class="select"><span>${o.target}</span>${I("chev")}</div></div></div>
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div class="step-links">${o.assess ? "" : `<span class="btn guide">${I("play")}Show me</span>`}<a>About this step</a></div><span class="btn primary"${o.confirmDisabled ? " disabled" : ""}>Confirm</span></div>
+  </div></div>`;
+const dock = (active = "Tray") => `<div class="dock">${[["tray", "Tray"], ["list", "Bench list"], ["examine", "Examine"]].map(([i, t]) => `<div class="db${t === active ? " on" : ""}">${I(i)}${t}</div>`).join("")}<div class="sep"></div><div class="db">${I("hand")}Hand control</div><div class="sep"></div><div class="db">${I("camera")}Auto view</div><div class="db">${I("reset")}Reset view</div></div>`;
+const tray = (tiles, collapsed) => collapsed ? `<div class="float tray" style="width:auto;padding:8px 14px;font-size:13px;font-weight:500;display:flex;gap:8px;align-items:center">${I("tray")}Tray · ${tiles}</div>` : `<div class="float tray"><div class="fl-h">${I("grip", "grip")}<b style="font-size:13px;flex:1">Tray <span class="count">${tiles.length}</span></b>${I("chev")}</div><div class="tiles">${tiles.map((t) => `<div class="tile">${t.need ? '<span class="need" title="Needed now"></span>' : ""}${t.count ? `<span class="cnt">× ${t.count}</span>` : ""}${EQ(t.eq, 46, 46)}${t.name}</div>`).join("")}</div></div>`;
+const playerFrame = (W, H, o) => `${bench(W, H, o.items, { horizon: o.horizon ?? H * 0.42, extra: o.benchExtra })}${pTop(o.top)}${o.panels ?? ""}${o.dock === false ? "" : dock(o.dockActive)}${o.hint ? `<div class="hint">${o.hint}</div>` : ""}<div class="illus-tag">Illustration · the live 3D bench and Blender models replace this in M2–M3</div>`;
+
+/* ---------------- Frames ---------------- */
+const F = [];
+const add = (f) => F.push(f);
+
+/* S1 */
+add({ id: "S1", group: "s", title: "Flow view, weighing, nothing selected", w: 1440, h: 900, html: () => {
+  const n = weighNodes();
+  const stage = `<div class="stage">${badge("Process · 3 steps · 0 issues")}${seg("Flow")}<div class="expand">${I("expand")}</div>
+    ${edges([{ a: OUT(n[0]), b: IN(n[1]), cond: "validationPassed" }, { a: OUT(n[1]), b: IN(n[2]), cond: "validationPassed" }], 1000, 700)}
+    ${n.map(node).join("")}${minimap()}${flowToolbar()}</div>`;
+  const ins = inspector("Selected", `<div class="eyebrow">Step outline</div>
+    ${n.map((x, i) => `<div style="display:flex;gap:10px;align-items:center;font-size:13px"><span class="count">${i + 1}</span>${I(x.type === "action" ? INTER_ICON[x.interaction] : NODE_ICON[x.type])}<span style="flex:1">${x.title}</span>${i === 0 ? '<span class="chip">Start</span>' : ""}</div>`).join("")}
+    <div class="note">Select a step to edit it here. <b>Enter</b> opens the selected step; arrow keys move along the connections.</div>`, "Opened Weigh a Solid for editing");
+  return studioFrame({ head: { eyebrow: "Technique / Pack 1", title: "Weigh a Solid", pill: pill("3D-ready"), desc: "Use an analytical balance to collect reproducible mass evidence." },
+    library: library({ count: 18, chips: `<span class="chip on">Steps</span><span class="chip">Equipment</span>`, body: libSteps(), tip: "Drag onto the flow. Click or Enter adds after the selected step." }), stage, inspector: ins });
+} , refs: "§4.1–4.4, §4.7; clarity rules 1–8 (§2.1)", notes: ["Three columns, 248 | 1fr | 320, with the stage the only high-contrast region.", "The glass badge and the inspector footer both carry status (rule 4).", "Start flag, validation-passed edges (✓ badge), a provenance chip for the learner-entered mass, and the step outline when nothing is selected.", "Edge label pills appear on hover or selection only; the ✓ glyph here is the condition badge."] });
+
+/* S2 */
+add({ id: "S2", group: "s", title: "Inserting a library step on an edge", w: 1440, h: 900, html: () => {
+  const n = weighNodes({ gap: 270, x0: 24 });
+  const a = OUT(n[0]), b = IN(n[1]); const mid = [(a[0] + b[0]) / 2, a[1]];
+  const stage = `<div class="stage">${badge("Process · 3 steps · 0 issues")}${seg("Flow")}<div class="expand">${I("expand")}</div>
+    ${edges([{ a, b, cond: "validationPassed", hot: true, hideBadge: true }, { a: OUT(n[1]), b: IN(n[2]), cond: "validationPassed" }], 1000, 700)}
+    ${n.map(node).join("")}
+    <span class="insert-marker" style="left:${mid[0]}px;top:${mid[1]}px">${I("plus")}</span>
+    <div class="ghost-card" style="left:${mid[0] + 18}px;top:${mid[1] + 20}px"><div class="tpl lifted" style="box-shadow:0 14px 30px #1b3a3333;border-color:#2a5a49"><div class="ico">${I("pour")}</div>Measure volume</div></div>
+    <div class="callout" style="left:${mid[0]}px;top:${mid[1] - 52}px">${I("plus")}Release to insert between “Place watch glass” and “Weigh solid”</div>
+    ${minimap()}${flowToolbar()}</div>`;
+  const ins = inspector("Selected", `<div class="eyebrow">Adding a step</div><div style="font-size:14px;font-weight:600">Measure volume</div><div class="small">Generic step template (verb <span class="mono">measureVolume</span>). It is not the published <span class="mono">measuring-volume</span> technique.</div>
+    <div class="ins-sec"><div class="hd">On release</div><dl class="kv"><dt>Operation</dt><dd class="mono">appendTemplateStep</dd><dt>Anchor</dt><dd>Place watch glass</dd><dt>Placement</dt><dd>after</dd></dl></div>
+    <div class="note">One change, one transaction. It will read “Insert Measure volume” in the activity list and undo in one step.</div>`, "Dragging a step from the library");
+  return studioFrame({ head: { eyebrow: "Technique / Pack 1", title: "Weigh a Solid", pill: pill("3D-ready"), desc: "Use an analytical balance to collect reproducible mass evidence." },
+    library: library({ count: 18, chips: `<span class="chip on">Steps</span><span class="chip">Equipment</span>`, body: libSteps(), tip: "Drag onto an edge to insert it there. Alt bypasses grid snapping." }), stage, inspector: ins });
+}, refs: "§4.4 magnetic editing; §4.6 plan mapping (appendTemplateStep with anchor and placement)", notes: ["The edge under the dragged card brightens and shows a ‘+’ insertion marker, so the result is visible before release (clarity rule 5).", "The inspector names the operation that will run, which keeps the new UI tied to the existing transaction model.", "The library labels the templates as generic, following plan §2.1: Pack 1 techniques other than transmittance are not offered as whole workflows."] });
+
+/* S3 */
+add({ id: "S3", group: "s", title: "Decision node with a retry edge; inspector on Connections", w: 1440, h: 900, html: () => {
+  const n0 = { x: 30, y: 120, type: "action", interaction: "readInstrument", eyebrow: "Action · Weigh", title: "Weigh solid", eq: ["analytical-balance", "watch-glass"], chips: prov("entry"), start: true };
+  const n1 = { x: 300, y: 120, type: "decision", eyebrow: "Decision", title: ph("decision title"), outs: ["validationPassed ✓", "retry ↺"], sel: true };
+  const n2 = { x: 560, y: 60, type: "observation", eyebrow: "Observation · Record", title: "Record mass", chips: `<span class="chip neutral">${I("book")}Notebook</span>` };
+  const n3 = { x: 560, y: 360, type: "teacherNote", eyebrow: "Teacher note · not played", title: ph("teacher note") };
+  const stage = `<div class="stage">${badge("Process · 4 steps · 0 issues")}${seg("Flow")}<div class="expand">${I("expand")}</div>
+    ${edges([{ a: OUT(n0), b: IN(n1), cond: "always" }, { a: OUT(n1), b: IN(n2), cond: "validationPassed", label: "passed" }, { a: [n1.x + 120, n1.y + 150], b: [n0.x + 120, n0.y + 150], cond: "retry", back: 110, label: "Retry" }], 1000, 700)}
+    ${[n0, n1, n2, n3].map(node).join("")}${minimap()}${flowToolbar("Connect")}</div>`;
+  const ins = inspector("Selected", `<div class="eyebrow">Decision</div><div style="font-size:15px;font-weight:600">${ph("decision title")}</div>
+    <div class="ins-sec"><div class="hd">Step ${I("chev")}</div></div><div class="ins-sec"><div class="hd">Validation ${I("chev")}</div></div>
+    <div class="ins-sec"><div class="hd">Connections ${I("up")}</div>
+      <div class="diag" style="grid-template-columns:18px 1fr auto"><span style="color:#2a5a49">${I("check")}</span><span>To <b>Record mass</b><br><span class="small">validationPassed</span></span><span class="btn icon quiet">${I("dots")}</span></div>
+      <div class="diag" style="grid-template-columns:18px 1fr auto"><span style="color:#7d5a12">${I("retry")}</span><span>Back to <b>Weigh solid</b><br><span class="small">retry</span></span><span class="btn icon quiet">${I("dots")}</span></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="btn">${I("split")}Add branch</span><span class="btn">${I("retry")}Add retry</span><span class="btn">${I("flag")}Set as start</span></div></div>
+    <div style="display:flex;gap:8px"><span class="btn">${I("play")}Preview from here</span><span class="btn quiet" style="color:#9a4b37">Delete step</span></div>`, "Added retry edge: Decision → Weigh solid");
+  return studioFrame({ head: { eyebrow: "Technique / Draft copy", title: "Weigh a Solid (copy)", pill: pill("Edited", "neutral", "pencil"), desc: "Use an analytical balance to collect reproducible mass evidence." },
+    library: library({ count: 18, chips: `<span class="chip on">Steps</span><span class="chip">Equipment</span>`, body: libSteps(), tip: "In Connect mode, drag from an out-handle to an in-handle." }), stage, inspector: ins });
+}, refs: "§4.4 node cues and edge styles; §4.7 Connections section; plan §4.6 (addBranchEdge, addRetryEdge, setStartNode)", notes: ["Pack 1 techniques contain no decision nodes, so the decision and the teacher note here are an author's additions, shown with ‹placeholder› titles.", "Each edge condition has a distinct line and a glyph: solid ✓ for validationPassed, dashed ↺ for retry, dotted = for calculationResult. Colour is never the only signal.", "The teacher note is a dashed, pale card whose eyebrow says ‘not played’."] });
+
+/* S4 */
+add({ id: "S4", group: "s", title: "Starting bench view with the shelf strip", w: 1440, h: 900, html: () => {
+  const items = [{ eq: "analytical-balance", x: 330, y: 420, s: 190, sel: true }, { eq: "watch-glass", x: 610, y: 440, s: 110 }];
+  const stage = `<div class="stage dark">${bench(860, 696, items, { horizon: 250 })}${badge("Starting bench · 2 on bench · 2 on shelf")}${seg("Starting bench")}<div class="expand">${I("expand")}</div>
+    <div class="callout" style="left:330px;top:440px">Analytical balance</div>
+    <div class="shelf-strip"><span class="lbl">Shelf</span>${[["reagent-bottle", "Reagent bottle"], ["spatula", "Spatula"]].map(([e, t]) => `<div class="it">${EQ(e, 44, 44)}${t}</div>`).join("")}<span class="small" style="margin-left:auto;max-width:260px">Drag between the bench and this shelf. The runtime starts shelf items in the learner's tray.</span></div>
+    <div class="tbar"><span class="on">${I("move")}Arrange</span><i></i><span>${I("seat")}Snap to zones</span><span class="on">Labels</span><i></i><span>Front</span><span>Top</span><span>${I("reset")}Reset</span></div></div>`;
+  const ins = inspector("Selected", `<div class="eyebrow">Starting equipment</div>
+    <div style="height:120px;border-radius:8px;background:linear-gradient(180deg,#f3f5ef,#e6e9e1);display:grid;place-items:center">${EQ("analytical-balance", 110, 110)}</div>
+    <div style="font-size:16px;font-weight:600">Analytical balance</div>
+    <dl class="kv"><dt>Instance</dt><dd class="mono">analytical-balance-1</dd><dt>Location</dt><dd>workbench</dd><dt>Owned zones</dt><dd class="mono">analytical-balance-pan</dd><dt>Contents</dt><dd>empty</dd></dl>
+    <div class="ins-sec"><div class="hd">Placement</div><div style="display:flex;gap:10px;align-items:center"><div style="display:grid;grid-template-columns:repeat(3,30px);gap:3px">${["", "up", "", "arrow", "move", "arrow", "", "chev", ""].map((x, i) => x ? `<span class="btn icon" style="width:30px;height:30px;${i === 3 ? "transform:scaleX(-1)" : ""}">${I(x)}</span>` : "<span></span>").join("")}</div><span class="small">Arrows move 10 mm; Shift moves 50 mm.</span></div></div>
+    <div style="display:flex;gap:8px"><span class="btn">${I("tray")}Return to shelf</span><span class="btn quiet" style="color:#9a4b37">Remove</span></div>
+    <div class="note"><b>Positions note.</b> Positions are stored in the units the 2D player uses, so this draft still plays there.</div>`, "Moved Analytical balance on the starting bench");
+  return studioFrame({ head: { eyebrow: "Technique / Draft copy", title: "Weigh a Solid (copy)", pill: pill("3D-ready"), desc: "Use an analytical balance to collect reproducible mass evidence." },
+    library: library({ count: 14, chips: `<span class="chip">Steps</span><span class="chip on">Equipment</span>`, body: `<div class="cards2">${libEq("analytical-balance", "Analytical balance", "Instrument")}${libEq("watch-glass", "Watch glass", "Glass")}${libEq("reagent-bottle", "Reagent bottle", "250 mL")}${libEq("spatula", "Spatula", "Tool")}${libEq("graduated-cylinder", "Graduated cylinder", "100 mL · 1 mL")}${libEq("volumetric-flask", "Volumetric flask", "100 mL")}</div>`, tip: "Drag onto the bench. Drag back to the shelf to return." }), stage, inspector: ins });
+}, refs: "§4.5 (decision U3); §4.7 Equipment; plan §4.6 upsertInitialEquipment / removeInitialEquipment", notes: ["The bench is the real 3D bench in M6; the drawing stands in for it.", "‘Snap to zones’ is off here. Seating a starting item on a zone stays disabled until M6 verifies that resolveAttachments builds the relation from a starting instance (§4.5).", "Capacity text on the cards comes from the catalogue. The volumetric flask's catalogue precision is recorded in grams, so the card shows only its capacity. See open question U9."] });
+
+/* S5 (1600 split) */
+add({ id: "S5", group: "s", title: "Preview view, split at 1600 px", w: 1600, h: 900, html: () => {
+  const n = weighNodes({ sel: 1 }).map((x, i) => ({ ...x, x: 110, y: 70 + i * 190 }));
+  const items = [{ eq: "analytical-balance", x: 250, y: 420, s: 170, beacon: true }, { eq: "watch-glass", x: 470, y: 440, s: 96 }];
+  const flowStage = `<div class="stage">${badge("Process · 3 steps")}${edges([{ a: [226, 216], b: [226, 254], cond: "validationPassed", vertical: true }, { a: [226, 406], b: [226, 444], cond: "validationPassed", vertical: true }], 560, 700)}${n.map(node).join("")}</div>`;
+  const previewStage = `<div class="stage dark" style="position:relative">${bench(560, 696, items, { horizon: 250 })}
+    <div class="float step" style="top:14px;left:14px;width:330px">${stepCard({ n: 2, N: 3, title: "Weigh solid", instruction: "Read and record the balance display for the sodium carbonate on the watch glass.", source: "Analytical balance", target: "—", input: `<div class="field"><label>Balance display for the sodium carbonate watch glass (g)</label><div class="input">${ph("your entry")}<span class="unit">g</span></div><div>${prov("entry")}</div></div>` }).replace('<div class="float step" style="">', "").replace(/<\/div>$/, "")}</div>
+    <div class="tbar"><span>${I("reset")}Restart</span><i></i><span class="on">Guided</span><span>Assessment</span><i></i><span>◂ Step ▸</span><i></i><span>Open full player</span></div></div>`;
+  const stage = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;min-height:0">${flowStage}${previewStage}</div>`;
+  const ins = inspector("Selected", `<div class="eyebrow">Action · Weigh</div><div style="font-size:15px;font-weight:600">Weigh solid</div>
+    <div class="ins-sec"><div class="hd">Action &amp; interaction</div><dl class="kv"><dt>Verb</dt><dd class="mono">weigh</dd><dt>Interaction</dt><dd><span class="mono">readInstrument</span><br><span class="small">derived from the verb</span></dd><dt>Input</dt><dd>Balance display for the sodium carbonate watch glass (g)<br>${prov("entry")}</dd></dl></div>
+    <div class="note">Preview runs are not saved. Selecting a step moves the preview to it.</div>`, "Preview started at Weigh solid");
+  return studioFrame({ head: { eyebrow: "Technique / Pack 1", title: "Weigh a Solid", pill: pill("3D-ready"), desc: "Use an analytical balance to collect reproducible mass evidence." },
+    workStyle: "grid-template-columns: 248px minmax(0,1fr) 320px",
+    library: library({ count: 18, chips: `<span class="chip on">Steps</span><span class="chip">Equipment</span>`, body: libSteps(), tip: "Selecting a step starts the preview there." }), stage, inspector: ins });
+}, refs: "§4.6; plan §4.6 (Player3D with focusNodeId / focusVersion)", notes: ["From 1600 px the stage splits: Flow on the left, Preview on the right. Below 1600 px, Preview fills the stage and the segmented control switches back.", "The preview's step card is the real Player3D step card, so the input field and its ‘Your entry’ chip appear above the action (G-2).", "The balance display in the drawing is blank on purpose: the runtime generates no balance reading (G-1)."] });
+
+/* S6 */
+add({ id: "S6", group: "s", title: "Configure before append: making-solution allowed, measuring-volume blocked", w: 1440, h: 900, html: () => {
+  const slot = (label, unit) => `<div class="field"><label>${label}</label><div class="input">${ph("teacher value")}<span class="unit">${unit}</span></div></div>`;
+  const dlgA = `<div class="dialog"><div class="dh"><div class="eyebrow">Add workflow · Pack 1</div><h2 style="display:flex;gap:10px;align-items:center">${EQ("volumetric-flask", 40, 40)}Make a Solution</h2><div class="small">Dissolve a weighed solid in solvent and track concentration state.</div></div>
+    <div class="db"><div style="display:flex;gap:6px;align-items:center">${prov("teacher")}<span class="small">Classroom quantities. Nothing is defaulted.</span></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">${slot("finalVolumeMl", "mL")}${slot("initialSolventVolumeMl", "mL")}${slot("soluteMassG", "g")}<div class="field"><label>solutionObservation</label><div class="input">${ph("teacher text")}</div></div></div>
+    <div class="check"><span class="box"></span><span>I approve these values for my classroom.</span></div></div>
+    <div class="df"><span class="btn">Cancel</span><span class="btn primary" disabled>Add workflow</span></div></div>`;
+  const dlgB = `<div class="dialog"><div class="dh"><div class="eyebrow">Add workflow · Pack 1</div><h2 style="display:flex;gap:10px;align-items:center">${EQ("graduated-cylinder", 40, 40)}Measure Liquid Volume</h2><div class="small">Measure a fixed liquid volume using a calibrated cylinder.</div></div>
+    <div class="db"><div class="blocker">${I("lock")}<div>This technique has a supported composed lab route (Precipitate and Filter Calcium Carbonate, Hard-Water Reference Demo); use that route so procedure selection and evidence bindings are materialized together.<div style="margin-top:8px;display:flex;gap:12px"><a>intro-filtration-demo</a><a>hard-water-demo</a></div></div></div>
+    <div class="small">These experiments become available in 3D after Packs 2 and 3.</div></div>
+    <div class="df"><span class="btn">Close</span><span class="btn primary" disabled>Add workflow</span></div></div>`;
+  return `${sTop()}${sHead({ eyebrow: "Experiment / Draft", title: "Untitled experiment", pill: pill("Flattened", "neutral", "cards"), desc: "Techniques added here are copied into one draft." })}
+    <div class="s-work">${library({ count: 5, chips: `<span class="chip on">Techniques</span><span class="chip">Steps</span><span class="chip">Equipment</span>`, body: `${libTech("analytical-balance", "Weigh a Solid", "3 steps", `<span class="chip ok" style="height:18px">${I("check")}3D-ready</span>`)}${libTech("graduated-cylinder", "Measure Liquid Volume", "3 steps · hosts: 2 labs", `<span class="chip warn" style="height:18px">${I("lock")}Host-bound</span>`)}${libTech("volumetric-flask", "Make a Solution", "3 steps", `<span class="chip warn" style="height:18px">${I("clip")}Needs setup</span>`)}${libTech("volumetric-flask", "Dilution", "3 steps", `<span class="chip warn" style="height:18px">${I("clip")}Needs setup</span>`)}${libTech("spectrophotometer", "Transmittance dilution", "23 steps", `<span class="chip warn" style="height:18px">${I("clip")}Needs setup</span>`)}`, tip: "Click a technique to configure it, then add it." })}
+    <div class="stage" style="position:relative">${badge("Experiment · Flattened · 0 steps")}${seg("Flow")}</div>
+    ${inspector("Setup", `<div class="eyebrow">Experiment settings</div><div class="small">Title, audience and learning goals.</div>`, "New experiment draft")}</div>
+    <div class="dialog-back" style="grid-template-columns:520px 520px;gap:24px;align-content:center;justify-content:center">
+      <div style="display:grid;gap:8px"><span class="pager-tag" style="position:static;justify-self:start">Allowed</span>${dlgA}</div>
+      <div style="display:grid;gap:8px"><span class="pager-tag" style="position:static;justify-self:start">Blocked</span>${dlgB}</div></div>`;
+}, refs: "§4.8 configure before append; plan §2.6, §4.6 (appendConfiguredWorkflow, compositionTechniqueConfigurationBlocker)", notes: ["Two dialogs are shown side by side for review. In the product only one opens at a time.", "Making a Solution: its four classroom-quantity slots come from configurationSlots(). ‘Add workflow’ stays disabled until every value is present and the approval box is ticked.", "Measuring Liquid Volume: the blocker text is the core's own message, verbatim, with links to the two host experiments and no way to add.", "Slot ids appear as the core names them. Friendlier teacher-facing labels would be new copy; U10 in the notes asks whether you want them."] });
+
+/* S7 */
+add({ id: "S7", group: "s", title: "Checks tab with blockers", w: 1440, h: 900, html: () => {
+  const n = [
+    { x: 30, y: 140, type: "action", interaction: "pourInto", eyebrow: "Action · Transfer", title: "Add solvent", eq: ["wash-bottle", "volumetric-flask"], chips: prov("teacher"), start: true, issues: 1 },
+    { x: 290, y: 140, type: "action", interaction: "pourInto", eyebrow: "Action · Dissolve", title: "Dissolve solid", eq: ["reagent-bottle", "volumetric-flask", "stirring-rod"], chips: prov("teacher"), issues: 1, sel: true },
+    { x: 550, y: 140, type: "observation", eyebrow: "Observation · Observe", title: "Record solution appearance", chips: `<span class="chip neutral">${I("book")}Notebook</span>` },
+  ];
+  const stage = `<div class="stage">${badge("Process · 3 steps · 3 issues", true)}${seg("Flow")}${edges([{ a: OUT(n[0]), b: IN(n[1]), cond: "validationPassed" }, { a: OUT(n[1]), b: IN(n[2]), cond: "validationPassed" }], 1000, 700)}${n.map(node).join("")}${minimap()}${flowToolbar()}</div>`;
+  const d = (sev, icon, msg, link) => `<div class="diag ${sev}">${I(icon)}<div>${msg}${link ? `<div><a>${link}</a></div>` : ""}</div></div>`;
+  const ins = inspector("Checks", `
+    <div style="display:flex;gap:6px"><span class="chip err">${I("x")}2 blockers</span><span class="chip warn">${I("warn")}1 warning</span><span class="chip neutral">0 notes</span></div>
+    <div class="eyebrow">Blockers</div>
+    ${d("fail", "x", 'Bind teacher configuration "soluteMassG" before preview or export. Saving this incomplete draft is still allowed.', "Go to Dissolve solid →")}
+    ${d("fail", "x", "Live preview is blocked until every teacher configuration binding has a concrete approved value or evidence identifier.")}
+    <div class="eyebrow">Warnings</div>
+    ${d("warning", "warn", 'Bind teacher configuration "initialSolventVolumeMl" before preview or export. Saving this incomplete draft is still allowed.', "Go to Add solvent →")}
+    <div class="ins-sec"><div class="hd">3D readiness</div><div class="small" style="display:flex;gap:6px;align-items:center">${I("check")}A 3D model exists for all 4 pieces of equipment.</div></div>
+    <div class="ins-sec"><div class="hd">Activity</div><div class="small">Append workflow · Make a Solution<br>Auto-layout</div></div>`, "Append workflow");
+  return studioFrame({ top: { ready: `<span class="chip err">${I("x")}3 issues</span>` }, head: { eyebrow: "Experiment / Draft", title: "Solutions practice", pill: pill("Needs setup", "warn", "clip"), desc: ph("learning goal") },
+    library: library({ count: 5, chips: `<span class="chip on">Techniques</span><span class="chip">Steps</span><span class="chip">Equipment</span>`, body: `${libTech("volumetric-flask", "Make a Solution", "3 steps", `<span class="chip warn" style="height:18px">${I("clip")}Needs setup</span>`)}`, tip: "Blocked checks link to the step they concern." }), stage, inspector: ins });
+}, refs: "§4.7 Checks; plan §4.6 (studioReadiness / studioValidation)", notes: ["Every message is the Studio's own text from studioReadiness.ts, grouped as blockers, warnings and notes, and each links to its node.", "The severity grouping here is illustrative. Which slot is a blocker and which a warning depends on the draft's state.", "Issue nodes carry a terracotta left rule and a count, and the top-bar chip reads ‘3 issues’. That is status in two places (clarity rule 4)."] });
+
+/* S8 */
+add({ id: "S8", group: "s", title: "Flattened experiment draft (D8 a)", w: 1440, h: 900, html: () => {
+  const w = weighNodes({ gap: 250, y: 130 }).map((x, i) => ({ ...x, x: 40 + i * 250, start: i === 0 }));
+  const m = [
+    { x: 40, y: 380, type: "action", interaction: "pourInto", eyebrow: "Action · Transfer", title: "Add solvent", eq: ["wash-bottle", "volumetric-flask"], chips: prov("teacher") },
+    { x: 290, y: 380, type: "action", interaction: "pourInto", eyebrow: "Action · Dissolve", title: "Dissolve solid", eq: ["reagent-bottle", "volumetric-flask"], chips: prov("teacher") },
+    { x: 540, y: 380, type: "observation", eyebrow: "Observation · Observe", title: "Record solution appearance" },
+  ].map((x) => ({ ...x, x: x.x }));
+  const conn = { a: OUT(w[2]), b: IN(m[0]), cond: "always", label: "Next", back: 0 };
+  const stage = `<div class="stage">${badge("Experiment · Flattened · 6 steps")}${seg("Flow")}
+    <div class="group-frame" style="left:20px;top:108px;width:760px;height:190px"><span>From: Weigh a Solid</span></div>
+    <div class="group-frame" style="left:20px;top:358px;width:760px;height:190px"><span>From: Make a Solution</span></div>
+    ${edges([{ a: OUT(w[0]), b: IN(w[1]), cond: "validationPassed" }, { a: OUT(w[1]), b: IN(w[2]), cond: "validationPassed" }, { a: OUT(m[0]), b: IN(m[1]), cond: "validationPassed" }, { a: OUT(m[1]), b: IN(m[2]), cond: "validationPassed" }, { a: [w[2].x + 116, w[2].y + 150], b: [m[0].x + 116, m[0].y - 6], cond: "always" }], 1000, 700)}
+    ${[...w, ...m].map(node).join("")}
+    <span class="edge-pill" style="left:440px;top:330px">Next</span>
+    ${minimap()}${flowToolbar()}</div>`;
+  const ins = inspector("Selected", `<div class="eyebrow">Experiment draft</div><div style="font-size:15px;font-weight:600">Flattened from 2 techniques</div>
+    <div class="note"><b>Techniques are copied with their own equipment.</b> A vessel does not carry across techniques. The compiled path in Phase B does this.</div>
+    <dl class="kv"><dt>Weigh a Solid</dt><dd>3 steps · own reagent bottle</dd><dt>Make a Solution</dt><dd>3 steps · own reagent bottle</dd><dt>Joined by</dt><dd>one “Next” connector</dd></dl>
+    <div class="small">Group frames show where each step came from. They cannot be edited.</div>`, "Append workflow · Make a Solution");
+  return studioFrame({ head: { eyebrow: "Experiment / Draft", title: "Solutions practice", pill: pill("Flattened", "neutral", "cards"), desc: ph("learning goal") },
+    library: library({ count: 5, chips: `<span class="chip on">Techniques</span><span class="chip">Steps</span><span class="chip">Equipment</span>`, body: `${libTech("analytical-balance", "Weigh a Solid", "3 steps", `<span class="chip ok" style="height:18px">${I("check")}3D-ready</span>`)}${libTech("volumetric-flask", "Make a Solution", "3 steps", `<span class="chip warn" style="height:18px">${I("clip")}Needs setup</span>`)}`, tip: "Adding a technique copies it after the last step." }), stage, inspector: ins });
+}, refs: "§4.4 flattened experiment draft; plan §2.2, D8 (a)", notes: ["The badge says FLATTENED, and the note states the honest consequence: each technique brings its own reagent bottle, and no vessel carries across.", "Group frames appear only where the draft records each step's source technique (the prefixed ids). The frames are read-only.", "The single grey ‘Next’ edge is the one connector appendTechniqueToDraft adds between techniques."] });
+
+/* S9 tablet */
+add({ id: "S9", group: "s", title: "Studio on a tablet, 1024 × 768", w: 1024, h: 768, html: () => {
+  const n = weighNodes({ gap: 290, y: 90 }).map((x, i) => ({ ...x, x: 30 + i * 290, sel: i === 1 }));
+  return `<div class="s-top" style="padding:0 14px;gap:10px"><span class="btn icon">${I("menu")}</span><div class="s-brand"><div class="s-mark">${I("flask")}</div>Lab Studio</div><div class="s-divider"></div><div class="s-context">Studio 3D</div><div class="spacer"></div><span class="chip ok">${I("check")}Ready</span><span class="btn primary">${I("play")}Preview</span><span class="btn icon quiet">${I("dots")}</span></div>
+    <div class="s-head" style="height:72px;padding:0 14px"><div><div class="eyebrow">Technique / Pack 1</div><h1 style="font-size:22px">Weigh a Solid ${pill("3D-ready")}</h1></div><span class="btn">${I("book")}Library</span></div>
+    <div style="position:absolute;left:14px;right:14px;top:132px;height:${768 - 132 - 14}px"><div class="stage" style="position:absolute;inset:0">${badge("Process · 3 steps · 0 issues")}${seg("Flow")}
+      ${edges([{ a: OUT(n[0]), b: IN(n[1]), cond: "validationPassed" }, { a: OUT(n[1]), b: IN(n[2]), cond: "validationPassed" }], 1000, 400)}${n.map(node).join("")}</div>
+      <div style="position:absolute;left:0;right:0;bottom:0;height:${Math.round(768 * 0.4)}px;background:var(--panel-solid);border-radius:12px 12px 0 0;box-shadow:0 -10px 30px #1b3a3322;display:flex;flex-direction:column;z-index:10">
+        <div style="display:grid;place-items:center;padding-top:6px"><span style="width:40px;height:4px;border-radius:2px;background:var(--line-strong)"></span></div>
+        <div class="tabs"><span class="on">Selected</span><span>Setup</span><span>Checks</span></div>
+        <div class="ins-body" style="grid-template-columns:1fr 1fr;gap:16px"><div><div class="eyebrow">Action · Weigh</div><div style="font-size:15px;font-weight:600">Weigh solid</div><dl class="kv" style="margin-top:8px"><dt>Interaction</dt><dd class="mono">readInstrument</dd><dt>Input</dt><dd>Balance display for the sodium carbonate watch glass (g) ${prov("entry")}</dd></dl></div>
+        <div style="display:grid;gap:8px;align-content:start"><div class="ins-sec" style="border:0;padding:0"><div class="hd">Validation ${I("chev")}</div></div><div class="ins-sec"><div class="hd">Connections ${I("chev")}</div></div><span class="btn" style="justify-self:start">${I("play")}Preview from here</span></div></div>
+        ${inspectorFoot("Opened Weigh a Solid for editing")}</div></div>`;
+}, refs: "§4.10, §7 (768–1023 px band); AGENTS.md tablet and laptop rule", notes: ["The library becomes a drawer, opened from ‘Library’ in the heading or the menu button. The inspector becomes a draggable bottom sheet at 40 % of the height.", "The stage keeps the full width. At 1024–1279 px the library is a 56 px icon rail with a flyout instead (not drawn).", "There is no phone layout (G-12)."] });
+
+/* ---------- Player frames ---------- */
+const weighTray = (needWatch = true) => [{ eq: "analytical-balance", name: "Analytical balance" }, { eq: "watch-glass", name: "Watch glass", need: needWatch }, { eq: "reagent-bottle", name: "Reagent bottle" }, { eq: "spatula", name: "Spatula" }];
+
+add({ id: "P1", group: "p", title: "Loader with the 2D fallback link", w: 1440, h: 900, html: () => `${bench(1440, 900, [], { horizon: 380 })}
+  <div class="center-card"><div class="eyebrow">Technique · Pack 1</div><div style="font-size:20px;font-weight:600">Weigh a Solid</div><div style="color:var(--ink-2)">Preparing the bench…</div>
+  <div style="height:6px;border-radius:3px;background:#dde3da;overflow:hidden"><div style="width:62%;height:100%;background:var(--guide)"></div></div>
+  <div class="small mono" style="display:flex;justify-content:space-between"><span>3 of 4 models</span><span>${ph("bytes")} of ${ph("total")} KB</span></div>
+  <div style="border-top:1px solid var(--line);padding-top:10px;display:flex;justify-content:space-between;align-items:center"><span class="small">The 2D version runs the same technique.</span><a style="color:var(--brand);font-weight:600;font-size:13px">Open the 2D version →</a></div></div>
+  <div class="center-card" style="top:auto;bottom:40px;transform:translateX(-50%);width:560px;padding:14px 18px;background:#fbfcf8f2"><div style="display:flex;gap:10px;align-items:flex-start">${I("info")}<div style="font-size:13px"><b>Without WebGL 2</b> the card reads: “This browser cannot draw the 3D bench. The 2D version runs the same steps and checks.” It offers the same link, which navigates to <span class="mono">#/technique/weighing</span>.</div></div></div>`,
+  refs: "§5.2; plan D3 (fallback by navigation)", notes: ["The progress bar counts the bytes of the technique's GLBs, taken from the registry. Numbers are placeholders here.", "‘Open the 2D version’ is always visible and navigates. The 3D app never imports the 2D player.", "The lower card only documents the no-WebGL variant for review; the product shows one card."] });
+
+add({ id: "P2", group: "p", title: "Setup gate, both pages (making-solution)", w: 1440, h: 900, html: () => {
+  const slot = (label, unit) => `<div class="field"><label>${label}</label><div class="input">${ph("teacher value")}<span class="unit">${unit}</span></div></div>`;
+  return `${bench(1440, 900, [{ eq: "volumetric-flask", x: 520, y: 600, s: 150, dim: true }], { horizon: 380 })}${pTop({ title: "Make a Solution", n: 1, N: 3 })}
+  <span class="pager-tag" style="top:66px;left:170px">Page 1 of 2</span>
+  <div class="gate" style="left:170px;top:92px"><div class="eyebrow">Before you start</div><h2>Make a Solution</h2><div style="color:var(--ink-2);font-size:13px">Dissolve a weighed solid in solvent and track concentration state.</div>
+    <div class="journey"><div><b>1</b>Add solvent</div><div><b>2</b>Dissolve solid</div><div><b>3</b>Record solution appearance</div></div>
+    <div class="blocker" style="background:var(--guide-band);border-color:#cfe4dc">${I("clip")}<div>A teacher sets four classroom values before this technique can start.</div></div>
+    <div style="display:flex;justify-content:flex-end"><span class="btn primary">Next: setup →</span></div></div>
+  <span class="pager-tag" style="top:66px;left:750px">Page 2 of 2</span>
+  <div class="gate" style="left:750px;top:92px"><div class="eyebrow">Setup</div><h2>Classroom values</h2><div style="display:flex;gap:6px;align-items:center">${prov("teacher")}<span class="small">Nothing is filled in for you.</span></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">${slot("finalVolumeMl", "mL")}${slot("initialSolventVolumeMl", "mL")}${slot("soluteMassG", "g")}<div class="field"><label>solutionObservation</label><div class="input">${ph("teacher text")}</div></div></div>
+    <div class="check"><span class="box"></span><span>I approve these values for my classroom.</span></div>
+    <div style="display:flex;justify-content:space-between"><span class="btn">← Back</span><span class="btn primary" disabled>Save setup and start</span></div></div>`;
+}, refs: "§5.3; plan §5.2 setup gate (same behaviour as #/technique/:id)", notes: ["Both pages are shown for review. In the product the gate is one glass dialog that pages.", "Page 2 appears only when standalone configuration is needed. Weighing's single identifier is derived automatically, so weighing goes from page 1 straight to Start.", "No safety checklist appears, because Pack 1 definitions carry none."] });
+
+add({ id: "P3", group: "p", title: "Bench, guided, weighing step 1", w: 1440, h: 900, html: () => playerFrame(1440, 900, {
+  top: { title: "Weigh a Solid", n: 1, N: 3 },
+  items: [{ eq: "analytical-balance", x: 860, y: 560, s: 250 }],
+  panels: `${stepCard({ n: 1, N: 3, title: "Place watch glass", instruction: "Place the watch glass on the workbench.", source: "Watch glass", target: "Workbench" })}${tray(weighTray())}
+    <div class="callout" style="left:520px;top:612px;background:#197b7bea">${I("move")}Bench station for the watch glass</div>`,
+  benchExtra: `<rect x="410" y="560" width="220" height="80" rx="14" fill="#197b7b14" stroke="#197b7b" stroke-width="2" stroke-dasharray="7 5"/>`,
+  hint: "Drag the watch glass from the tray onto the bench. Right-drag to look around.", dockActive: "Tray" }),
+  refs: "§5.1, §5.5, §5.9 beacon, §5.10 tray; G-7", notes: ["The step card follows the microarray pattern: badge, ‘Step 1 of 3’, title, progress strip, and the next-action band with the instruction verbatim at 17/600 on the guide band.", "Guided mode pre-fills Source and Target and shows the teal ‘needed now’ dot on the watch-glass tray tile.", "The analytical balance appears on the bench only to show the look. In weighing's starting state every item is on the shelf, so the real first frame shows an empty bench."] });
+
+add({ id: "P4", group: "p", title: "Carrying: valid target, invalid target, free spot", w: 1440, h: 900, html: () => {
+  const col = (x, title, items, callout, cy, extra = "") => `<div style="position:absolute;left:${x}px;top:52px;width:476px;height:848px;overflow:hidden;border-right:2px solid #1d2b25">${bench(476, 848, items, { horizon: 300 })}<span class="inset-lbl">${title}</span>${callout ? `<div class="callout" style="left:238px;top:${cy}px">${callout}</div>` : ""}${extra}</div>`;
+  return `${pTop({ title: "Transmittance dilution", n: 12, N: 23 })}
+    ${col(0, "Valid target", [{ eq: "spectrophotometer", x: 238, y: 640, s: 260, ring: "valid", ringY: 540 }, { eq: "cuvette", x: 262, y: 520, s: 90, lift: 16, liquid: { kind: "clear", level: .8 } }], `${I("check")}Release to Insert the blank cuvette`, 380)}
+    ${col(478, "Invalid target", [{ eq: "sample-bottle-1l", x: 238, y: 650, s: 170, ring: "invalid", liquid: { kind: "blue", level: .7 } }, { eq: "cuvette", x: 250, y: 500, s: 90, lift: 16, liquid: { kind: "clear", level: .8 } }], `${I("x")}Not the target for this step`, 360)}
+    ${col(956, "Free spot", [{ eq: "cuvette", x: 238, y: 560, s: 90, lift: 18, liquid: { kind: "clear", level: .8 }, footprint: [238, 600] }], `${I("move")}Release to set down`, 430)}`;
+}, refs: "§5.6 while carrying; §3.7 signals; decision U7", notes: ["Three states of one carry, side by side. Rings pair colour with a glyph (✓ or ✕) and show in both modes (G-7).", "The carried cuvette is lifted and its shadow softens and widens. The dashed footprint marks where it would stand.", "‘Insert the blank cuvette’ is the step's authored accessible label, so the valid callout names it. In assessment mode all three callouts read ‘Release to try this’ (P11)."] });
+
+add({ id: "P5", group: "p", title: "Refusal with the correction block", w: 1440, h: 900, html: () => playerFrame(1440, 900, {
+  top: { title: "Make a Solution", n: 1, N: 3 },
+  items: [{ eq: "volumetric-flask", x: 760, y: 600, s: 170 }, { eq: "reagent-bottle", x: 1000, y: 610, s: 150, liquid: { kind: "powder" } }, { eq: "wash-bottle", x: 560, y: 610, s: 150, liquid: { kind: "clear", level: .7 } }],
+  panels: stepCard({ n: 1, N: 3, title: "Add solvent", instruction: "Add the configured initial solvent volume of deionized water from the wash bottle to the volumetric flask.", source: "Wash bottle", target: "Volumetric flask",
+    input: `<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"><span class="small">Initial solvent volume</span><span class="mono" style="font-size:13px">${ph("teacher value")} mL</span>${prov("teacher")}</div>`,
+    corr: `<div class="corr" role="status"><div class="row"><span class="k">What happened</span><span>The selected target does not match the expected equipment.</span></div><div class="row"><span class="k">Try this</span><span>Select the target equipment named by the current step.</span></div></div>` }),
+  hint: "The wash bottle is back where it was. Nothing changed on the bench." }),
+  refs: "§5.13; G-4 (a refusal changes nothing); plan §4.5", notes: ["Both lines are the runtime's own message and recovery for invalidTarget, verbatim from interactionIntents.ts.", "The block stays until the next successful action or until it is dismissed. The source item springs back.", "In assessment mode the block adds ‘Recorded as an attempt.’ (P11)."] });
+
+add({ id: "P6", group: "p", title: "A pour mid-animation", w: 1440, h: 900, html: () => {
+  const stream = `<path d="M 700 404 C 712 440, 716 470, 718 512" stroke="${LIQ.clear}" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+  return playerFrame(1440, 900, {
+    top: { title: "Make a Solution", n: 1, N: 3 },
+    items: [{ eq: "volumetric-flask", x: 720, y: 640, s: 190, liquid: { kind: "clear", level: .35 } }, { eq: "wash-bottle", x: 610, y: 470, s: 150, tilt: 62, lift: 1, liquid: { kind: "clear", level: .55 } }, { eq: "reagent-bottle", x: 1010, y: 620, s: 150, liquid: { kind: "powder" } }],
+    benchExtra: stream,
+    panels: stepCard({ n: 1, N: 3, title: "Add solvent", instruction: "Add the configured initial solvent volume of deionized water from the wash bottle to the volumetric flask.", source: "Wash bottle", target: "Volumetric flask", confirmDisabled: true,
+      input: `<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"><span class="small">Initial solvent volume</span><span class="mono" style="font-size:13px">${ph("teacher value")} mL</span>${prov("teacher")}</div>` }),
+    hint: "Pouring… The flask fills to the volume the runtime has already recorded." });
+}, refs: "§5.7 pourInto; §3.5 motion (600–1400 ms, skipped under reduced motion); G-3", notes: ["The animation plays after the runtime has accepted the pour. The level animates from the before state to the after state using the flask's 3D fill profile.", "The stream and the liquid use the registry colour for ‘clear-liquid’ from resolveLiquidStyle (G-9). The UI chrome uses no liquid hues.", "After the pour, the wash bottle is parked beside the flask with a free move, so the resting scene equals runtime state."] });
+
+add({ id: "P7", group: "p", title: "Examine the balance, with the display policy", w: 1440, h: 900, html: () => playerFrame(1440, 900, {
+  top: { title: "Weigh a Solid", n: 2, N: 3 },
+  horizon: 320,
+  items: [{ eq: "analytical-balance", x: 600, y: 780, s: 560, sel: true }],
+  panels: `<div class="float examine-card"><div style="display:flex;align-items:center;gap:8px"><span class="eyebrow" style="flex:1">Examine</span><span class="btn icon quiet" style="height:26px;width:26px">${I("x")}</span></div>
+    <div style="font-size:16px;font-weight:600">Analytical balance</div>
+    <dl class="kv"><dt>Owned zone</dt><dd class="mono">analytical-balance-pan</dd><dt>Contents</dt><dd>empty</dd><dt>Seated</dt><dd>Nothing is on the pan</dd></dl>
+    <div class="note"><b>Display policy.</b> This display shows settings and status. Readings you record are your own entries.</div>
+    <div class="small" style="display:flex;gap:6px">${I("info")}<span>This simulation does not generate balance readings. (Decision U4)</span></div>
+    <div class="small" style="border-top:1px solid var(--line);padding-top:8px">3D model built in Blender · <span class="mono">tools/blender/equipment/analytical_balance.py</span></div>
+    <div style="display:flex;gap:6px"><span class="btn">${I("reset")}Orbit</span><span class="btn quiet">Close <span class="kbd">Esc</span></span></div></div>
+    <div class="callout" style="left:460px;top:720px">Display: ready · no reading shown</div>`,
+  dock: false }),
+  refs: "§5.8 Examine; G-1; plan §2.4, D7; decision U4", notes: ["The camera moves and the balance does not. Close returns the camera.", "The display is blank apart from status. The card states the policy in plain words.", "Capacity and precision are left off this card. The catalogue records the balance's precision as ‘0.001 mL’ and its capacity as none, so showing catalogue values verbatim would mislead. Open question U9 asks how to handle that."] });
+
+add({ id: "P8", group: "p", title: "Bench list and the accessible action flow", w: 1440, h: 900, html: () => {
+  const row = (eq, n, m, pos, chips, sel) => `<div class="bl-row${sel ? " sel" : ""}">${EQ(eq, 32, 32)}<div><div class="n">${n}</div><div class="m">${m} · ${pos}</div>${chips ? `<div class="acts">${chips}</div>` : ""}<div class="acts"><span>Examine</span><span>Use as source</span><span>Use as target</span><span>Move…</span></div></div></div>`;
+  return playerFrame(1440, 900, {
+    top: { title: "Transmittance dilution", n: 12, N: 23 },
+    items: [{ eq: "spectrophotometer", x: 760, y: 610, s: 260, beacon: true }, { eq: "cuvette", x: 1010, y: 600, s: 90, sel: true, liquid: { kind: "clear", level: .8 } }, { eq: "test-tube", x: 560, y: 610, s: 130, liquid: { kind: "blue", level: .6 } }, { eq: "rack", x: 560, y: 626, s: 150 }],
+    panels: `${stepCard({ n: 12, N: 23, done: 11, title: "Insert the blank cuvette", instruction: "Insert the blank cuvette", source: "Blank cuvette", target: "Spectrophotometer" })}
+      <div class="float benchlist"><div class="fl-h">${I("grip", "grip")}<b style="font-size:13px;flex:1">Bench list</b>${I("x")}</div>
+      <div class="bl-group">On the bench</div>
+      ${row("cuvette", "Blank cuvette", "configured blank", "front right", `<span class="chip prov-bench" style="height:18px">${I("beaker")}From the bench</span>`, true)}
+      ${row("spectrophotometer", "Spectrophotometer", "empty", "middle centre")}
+      ${row("test-tube", "Clean labelled prepared-sample receiver", "diluted dye", "middle left")}
+      <div class="bl-group" style="padding-top:8px">On the shelf · 5</div>
+      <div class="bl-foot">The same checks apply here as on the bench.</div></div>`,
+    hint: "Keyboard: Enter picks up, arrows move, [ and ] step through targets, Enter sets down." });
+}, refs: "§5.5 item 6; §5.11; G-6; plan §2.3 (ProcessSidebar accessible action flow)", notes: ["Every step can be finished from these two panels without touching the canvas. Source, Target and Confirm follow ProcessSidebar's enabling rules.", "The receiver is a test tube, which cannot stand unsupported. It stands in a scenery rack (D9): the rack is not listed in the Bench list and cannot be selected.", "Positions are given in words (back, middle or front; left, centre or right)."] });
+
+add({ id: "P9", group: "p", title: "Notebook open, with provenance chips", w: 1440, h: 900, html: () => playerFrame(1440, 900, {
+  top: { title: "Transmittance dilution", n: 21, N: 23, nbDot: true },
+  items: [{ eq: "spectrophotometer", x: 480, y: 610, s: 250 }, { eq: "cuvette", x: 740, y: 610, s: 90, liquid: { kind: "blue", level: .8 } }],
+  panels: `${stepCard({ n: 21, N: 23, done: 20, title: "Calculate decimal transmittance", typeChip: `<span class="chip neutral" style="height:20px">${I("equals")}Calculation</span>`, instruction: "Calculate decimal transmittance", source: "—", target: "—", style: "width:340px" })}
+  <div class="sheet"><div class="sh">${I("book")}<h2>Notebook</h2><span class="btn icon quiet">${I("x")}</span></div><div class="sb">
+    <div class="nb-sec"><div class="eyebrow">Measurements</div>
+      <div class="nb-row"><span class="lab">Instructor-approved stock solution concentration</span><span class="val">${ph("value")}&thinsp;M</span><div class="meta">${prov("teacher")}Step 1</div></div>
+      <div class="nb-row"><span class="lab">Approved measurement wavelength</span><span class="val">${ph("value")}&thinsp;nm</span><div class="meta">${prov("teacher")}Step 9</div></div>
+      <div class="nb-row"><span class="lab">Percent transmittance shown by the photometer</span><span class="val">${ph("value")}&thinsp;%T</span><div class="meta">${prov("entry")}Step 18</div></div></div>
+    <div class="nb-sec"><div class="eyebrow">Calculations</div>
+      <div class="nb-row cur"><span class="lab">Decimal transmittance</span><span class="val">—</span><div class="meta">${prov("calc")}Step 21 · now</div>
+        <div style="grid-column:1/-1;display:flex;gap:8px;align-items:end"><div class="field" style="flex:1"><label>Your result</label><div class="input">${ph("your entry")}</div></div><span class="btn primary">Submit</span></div></div></div>
+    <div class="nb-sec"><div class="eyebrow">Notebook entries</div>
+      <div class="nb-row"><span class="lab">Describe the optical-face rule used for the blank cuvette</span><span class="val" style="font-family:inherit;font-size:12px">✓ recorded</span><div class="meta">${prov("entry")}Step 11</div></div></div>
+  </div></div>`, dock: false }),
+  refs: "§5.12; §3.2 provenance chips; §9 copy (never “measured” for learner entries)", notes: ["Every value carries its chip. The learner's %T is ‘Your entry’, never ‘measured’.", "Values are mono with a thin space before the unit, and that space is set in the Sans face (see the font README).", "The current step's entry area is emphasised in guided mode, and the Notebook button in the top bar shows a dot."] });
+
+add({ id: "P10", group: "p", title: "Results, assessment mode", w: 1440, h: 900, html: () => `${bench(1440, 900, [], { horizon: 380 })}${pTop({ title: "Weigh a Solid", n: 3, N: 3, assess: true })}
+  <div class="results"><div class="sheetc"><div class="dialog" style="width:auto;box-shadow:none"><div class="dh"><div class="eyebrow">Results · Assessment</div><h2>Weigh a Solid · complete</h2>
+    <div style="display:flex;gap:8px;margin-top:4px"><span class="chip ok">${I("check")}3 of 3 steps</span><span class="chip neutral">2 of 3 at the first try</span></div></div>
+    <div class="db"><table class="table"><thead><tr><th>Step</th><th>Attempts</th><th>Refused attempts (runtime messages)</th></tr></thead><tbody>
+      <tr><td>1 · Place watch glass</td><td class="mono">1</td><td class="small">—</td></tr>
+      <tr><td>2 · Weigh solid</td><td class="mono">2</td><td class="small">Enter the finite non-negative mass displayed by the balance</td></tr>
+      <tr><td>3 · Record mass</td><td class="mono">1</td><td class="small">—</td></tr></tbody></table>
+    <div class="eyebrow">Evidence</div>
+    <div class="nb-row"><span class="lab">Balance display for the sodium carbonate watch glass</span><span class="val mono">${ph("value")}&thinsp;g</span><div class="meta">${prov("entry")}Step 2</div></div></div>
+    <div class="df"><span class="btn quiet">Back to techniques</span><span class="btn">Play again</span></div></div></div></div>`,
+  refs: "§5.14; plan §4.5 (recordAssessmentFailure, attemptHistory)", notes: ["Attempts per step and the first-try count come from attemptHistory. The refusal text is the runtime's own message.", "The artifact frame blocks printing, so ‘Print’ from the handoff is shown in the product only and is left out of this frame.", "‘Play again’ calls reset after a confirmation."] });
+
+add({ id: "P11", group: "p", title: "Assessment bench: no beacon, neutral callouts", w: 1440, h: 900, html: () => playerFrame(1440, 900, {
+  top: { title: "Weigh a Solid", n: 1, N: 3, assess: true },
+  items: [{ eq: "analytical-balance", x: 860, y: 560, s: 250, ring: "invalid", ringY: 505 }, { eq: "watch-glass", x: 880, y: 470, s: 110, lift: 14 }],
+  panels: `${stepCard({ n: 1, N: 3, title: "Place watch glass", instruction: "Place the watch glass on the workbench.", source: "Choose…", target: "Choose…", assess: true, confirmDisabled: true,
+    corr: `<div class="corr"><div class="row"><span class="k">What happened</span><span>The selected target does not match the expected equipment.</span></div><div class="row"><span class="k">Try this</span><span>Select the target equipment named by the current step.</span></div><div class="att">Recorded as an attempt.</div></div>` })}${tray(weighTray(false).slice(1))}
+    <div class="callout" style="left:880px;top:392px">Release to try this</div>`,
+  hint: "Drag items onto the bench. Right-drag to look around." }),
+  refs: "§5.17; G-7; decision U7", notes: ["No beacon, no Show me, no ‘needed now’ dots, and Source and Target read ‘Choose…’.", "The ring state still shows (parity with the 2D workbench), but the callout text is neutral: ‘Release to try this’.", "The correction block adds ‘Recorded as an attempt.’ Framing covers the whole bench, so it gives no hint."] });
+
+add({ id: "P12", group: "p", title: "Host-bound gate for measuring-volume", w: 1440, h: 900, html: () => `${bench(1440, 900, [{ eq: "graduated-cylinder", x: 560, y: 640, s: 190, dim: true }], { horizon: 380 })}${pTop({ title: "Measure Liquid Volume", n: 1, N: 3 })}
+  <div class="gate" style="right:40px;top:92px"><div class="eyebrow">Before you start</div><h2>Measure Liquid Volume</h2><div style="color:var(--ink-2);font-size:13px">Measure a fixed liquid volume using a calibrated cylinder.</div>
+    <div class="journey"><div><b>1</b>Place cylinder</div><div><b>2</b>Measure sample</div><div><b>3</b>Record volume</div></div>
+    <div class="blocker">${I("lock")}<div>This technique has a supported composed lab route (Precipitate and Filter Calcium Carbonate, Hard-Water Reference Demo). Use that route so procedure selection, datasets, validation and evidence bindings are materialized together.</div></div>
+    <div style="display:grid;gap:6px"><div class="eyebrow">Plays inside</div>
+      <div class="nb-row"><span class="lab">Precipitate and Filter Calcium Carbonate</span><span class="chip neutral">In 3D after Pack 2</span></div>
+      <div class="nb-row"><span class="lab">Hard-Water Reference Demo</span><span class="chip neutral">In 3D after Pack 3</span></div></div>
+    <div style="display:flex;justify-content:space-between;align-items:center"><a style="color:var(--brand);font-weight:600;font-size:13px">Open these in the 2D player →</a><span class="small">No start button: this technique does not run on its own.</span></div></div>`,
+  refs: "§5.3 blocked setup; plan §1, §2.6, E3", notes: ["The blocker is standaloneTechniqueConfigurationBlocker's own message, verbatim.", "There is no Start button. The host experiments are named with when they arrive in 3D, and the 2D route stays reachable.", "The pack numbers come from the evaluated inventory (evidence/M0_PACK1_INVENTORY.md)."] });
+
+add({ id: "P13", group: "p", title: "Player on a tablet, 1024 × 768", w: 1024, h: 768, html: () => `${bench(1024, 768, [{ eq: "analytical-balance", x: 620, y: 380, s: 200 }, { eq: "watch-glass", x: 380, y: 400, s: 100, beacon: true }], { horizon: 230 })}
+  <div class="p-top"><div class="s-mark" style="width:28px;height:28px">${I("flask")}</div><span class="ttl">Weigh a Solid</span><div class="ctr"><span>Step <b>2</b> of <b>3</b></span><span class="mode">${I("eye")}Guided</span></div><div class="right"><span class="btn icon quiet">${I("book")}</span><span class="btn icon quiet">${I("help")}</span><span class="btn icon">${I("menu")}</span></div></div>
+  <div class="dock" style="bottom:${Math.round(768 * 0.4) + 12}px">${[["tray", ""], ["list", ""], ["examine", ""], ["hand", ""], ["camera", ""], ["reset", ""]].map(([i], k) => `<div class="db${k === 0 ? " on" : ""}" style="width:52px;height:48px" title="${["Tray", "Bench list", "Examine", "Hand control", "Auto view", "Reset view"][k]}">${I(i)}</div>`).join("")}</div>
+  <div style="position:absolute;left:0;right:0;bottom:0;height:${Math.round(768 * 0.4)}px;z-index:25;background:var(--float);backdrop-filter:blur(6px);border-top:1px solid var(--float-line);border-radius:14px 14px 0 0;box-shadow:0 -10px 30px #1b3a3322;padding:6px 18px 14px;display:grid;grid-template-columns:1fr 1fr;gap:10px 20px;align-content:start">
+    <div style="grid-column:1/-1;display:grid;place-items:center"><span style="width:40px;height:4px;border-radius:2px;background:var(--line-strong)"></span></div>
+    <div style="display:grid;gap:8px"><div style="display:flex;gap:8px;align-items:center"><span class="step"><span class="badge" style="width:24px;height:24px;border-radius:50%;background:var(--guide);color:#fff;display:grid;place-items:center;font-weight:600;font-size:12px">2</span></span><span class="eyebrow">Step 2 of 3</span></div><div style="font-size:16px;font-weight:600">Weigh solid</div>${progress(1, 1, 3)}<div class="nab">Read and record the balance display for the sodium carbonate on the watch glass.</div></div>
+    <div style="display:grid;gap:8px;align-content:start"><div class="field"><label>Balance display for the sodium carbonate watch glass (g)</label><div class="input">${ph("your entry")}<span class="unit">g</span></div></div><div style="display:flex;gap:6px;align-items:center">${prov("entry")}<span class="small">This simulation does not generate balance readings.</span></div><div class="flow-row"><div class="field"><label>Source</label><div class="select"><span>Analytical balance</span>${I("chev")}</div></div><span class="arrow">${I("arrow")}</span><div class="field"><label>Target</label><div class="select"><span>—</span>${I("chev")}</div></div></div><div style="display:flex;justify-content:space-between"><span class="btn guide">${I("play")}Show me</span><span class="btn primary">Confirm</span></div></div></div>
+  <div class="illus-tag" style="bottom:auto;top:62px">Illustration</div>`,
+  refs: "§7 (768–1023 px band); §5.19 touch", notes: ["The step card becomes a collapsible bottom sheet at 40 % of the height. Dock labels hide below 1100 px and become tooltips.", "Touch: tap selects; hold for 300 ms then drag carries; double-tap examines.", "The input field and its ‘Your entry’ chip sit above the action, with the U4 neutral line beneath them."] });
+
+/* ---------------- Viewer ---------------- */
+const scaler = document.getElementById("scaler");
+const notes = document.getElementById("notes");
+const pos = document.getElementById("pos");
+let current = 0;
+const navItem = (f, i) => `<li><button type="button" data-i="${i}"><b>${f.id}</b><span>${f.title}</span></button></li>`;
+document.getElementById("nav-s").innerHTML = F.map((f, i) => f.group === "s" ? navItem(f, i) : "").join("");
+document.getElementById("nav-p").innerHTML = F.map((f, i) => f.group === "p" ? navItem(f, i) : "").join("");
+const fit = () => {
+  const f = F[current]; const el = scaler.firstElementChild; if (!el) return;
+  const k = scaler.clientWidth / f.w; el.style.transform = `scale(${k})`; scaler.style.height = `${f.h * k}px`;
+};
+const OPEN = [
+  ["U9", "Catalogue precision units", "Several catalogue precisions carry a unit that does not match the item: the balance ‘0.001 mL’, volumetric flask ‘0.1 g’, wash bottle ‘5 g’. The runtime uses precision only when the unit is mL. Proposal: Examine and library cards show catalogue capacity and precision only when the unit matches the item's measure, and never alter the catalogue (that would be a scientific change)."],
+  ["U10", "Teacher-facing slot labels", "Setup fields show the core's slot ids (for example finalVolumeMl) with units. Friendlier labels would be new copy, kept in the 3D presentation layer. Proposal: keep ids now, and add a label map only if you want one."],
+];
+const show = (i) => {
+  current = (i + F.length) % F.length; const f = F[current];
+  scaler.innerHTML = `<div class="frame" style="width:${f.w}px;height:${f.h}px" role="img" aria-label="Mock-up ${f.id}: ${f.title}">${f.html()}</div>`;
+  fit();
+  document.querySelectorAll(".r-nav button").forEach((b) => b.setAttribute("aria-current", String(Number(b.dataset.i) === current)));
+  pos.textContent = `${f.id} · ${current + 1} of ${F.length} · ${f.w} × ${f.h}`;
+  notes.innerHTML = `<div><h3>${f.id} · ${f.title}</h3><h4>Check in this frame</h4><ul>${f.notes.map((n) => `<li>${n}</li>`).join("")}</ul></div>
+    <div><h4>Implements</h4><p>${f.refs}</p><h4 style="margin-top:12px">Open UI questions raised by the mock-ups</h4><ul>${OPEN.map(([id, t, d]) => `<li><b>${id} · ${t}.</b> ${d}</li>`).join("")}</ul></div>`;
+  try { history.replaceState(null, "", `#${f.id}`); } catch (e) { /* hash not writable in some frames */ }
+};
+document.querySelector(".r-nav").addEventListener("click", (e) => { const b = e.target.closest("button[data-i]"); if (b) show(Number(b.dataset.i)); });
+document.getElementById("prev").addEventListener("click", () => show(current - 1));
+document.getElementById("next").addEventListener("click", () => show(current + 1));
+document.addEventListener("keydown", (e) => { if (e.target.closest("input,textarea")) return; if (e.key === "ArrowRight") show(current + 1); if (e.key === "ArrowLeft") show(current - 1); });
+new ResizeObserver(fit).observe(scaler);
+const start = F.findIndex((f) => `#${f.id}` === location.hash);
+show(start >= 0 ? start : 0);
+})();
+</script>
