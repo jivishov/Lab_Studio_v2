@@ -22,7 +22,7 @@ Branch `claude/lab-studio-3d`, created from `1d28429`. Worktree `Lab_studio\tmp\
 | Typecheck with the flag on and off | `npx tsc -b` exits 0. The flag is read at runtime from `import.meta.env`, so the typecheck cannot differ between on and off. Both paths are typed by `AppRoute` and covered by the route tests. |
 | Pack 1 inventory run against the baseline | Done. It confirms plan §2.6 and §2.7 (`M0_PACK1_INVENTORY.md`). |
 | Design tokens and contrast | All 34 pairs pass (`M0_TOKEN_CONTRAST.md`). |
-| Mock-ups approved | **Pending your review.** M3 and later presentation work waits for this. |
+| Mock-ups approved | **Approved on 2026-09-23** (see `DECISIONS.md`). |
 
 ## Written but not run (AGENTS.md validation policy)
 
