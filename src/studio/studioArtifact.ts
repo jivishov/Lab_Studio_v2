@@ -93,6 +93,10 @@ export const deriveTechniqueFromLabDraft = (draft: LabDefinition): TechniqueDefi
     ...(draft.techniques[0]?.metadata ?? draft.metadata),
     tags: [...draft.metadata.tags],
   },
+  // A technique opened for editing keeps its build-time interface (ports, equipment roles,
+  // configuration slots, evidence outputs, model slots), so an exported copy is still composable.
+  // It is carried as authored; validateTechniqueDefinition checks it against the edited graph.
+  ...(draft.techniques[0]?.composition ? { composition: draft.techniques[0].composition } : {}),
 });
 
 export const labDraftFromTechnique = (technique: TechniqueDefinition): LabDefinition => ({

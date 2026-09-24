@@ -270,6 +270,8 @@ const firstTechniqueForDraft = (draft: LabDefinition): TechniqueDefinition => {
       ...(existing?.metadata ?? draft.metadata),
       tags: existing?.metadata.tags ?? draft.metadata.tags,
     },
+    // Settings edits keep the technique's build-time interface (D10), as the export does.
+    ...(existing?.composition ? { composition: existing.composition } : {}),
   };
 };
 

@@ -17,15 +17,19 @@ export interface SavedStudioDraft {
   artifactKind: StudioArtifactKind;
 }
 
-export const saveDraft = (draft: LabDefinition, artifactKind: StudioArtifactKind = "lab"): void => {
+/**
+ * `key` lets another Studio keep its draft apart (Lab Studio 3D uses `lab-studio:3d:v1:draft`);
+ * every caller that omits it reads and writes the original Studio's draft, as before.
+ */
+export const saveDraft = (draft: LabDefinition, artifactKind: StudioArtifactKind = "lab", key = DRAFT_STORAGE_KEY): void => {
   window.localStorage.setItem(
-    DRAFT_STORAGE_KEY,
+    key,
     JSON.stringify({ version: 2, savedAt: new Date().toISOString(), artifactKind, draft: stripRuntimeOnlyFields(draft) }),
   );
 };
 
-export const loadDraftArtifact = (): SavedStudioDraft | undefined => {
-  const raw = window.localStorage.getItem(DRAFT_STORAGE_KEY);
+export const loadDraftArtifact = (key = DRAFT_STORAGE_KEY): SavedStudioDraft | undefined => {
+  const raw = window.localStorage.getItem(key);
   if (!raw) return undefined;
   try {
     const parsed = JSON.parse(raw) as { draft?: unknown; artifactKind?: unknown };
@@ -41,8 +45,8 @@ export const loadDraftArtifact = (): SavedStudioDraft | undefined => {
   }
 };
 
-export const loadDraft = (): LabDefinition | undefined => loadDraftArtifact()?.draft;
+export const loadDraft = (key = DRAFT_STORAGE_KEY): LabDefinition | undefined => loadDraftArtifact(key)?.draft;
 
-export const clearDraft = (): void => {
-  window.localStorage.removeItem(DRAFT_STORAGE_KEY);
+export const clearDraft = (key = DRAFT_STORAGE_KEY): void => {
+  window.localStorage.removeItem(key);
 };
