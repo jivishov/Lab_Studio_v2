@@ -21,15 +21,20 @@ export const hasIncompleteInboundStep = (process: LabDefinition["process"], node
   return process.edges.some((edge) => edge.to === nodeId && edge.condition.type !== "retry" && !completed.has(edge.from));
 };
 
-export const PreviewView = ({ studio, focusNodeId, focusVersion, onFocus, expanded, onExpand }: {
+export const PreviewView = ({ studio, lastRunnable, focusNodeId, focusVersion, onFocus, expanded, onExpand }: {
   studio: Studio3DController;
+  /** The last runnable draft, shown while the current one is not runnable (2D PreviewPanel parity). */
+  lastRunnable?: LabDefinition;
   focusNodeId?: string;
   focusVersion: number;
   onFocus: (nodeId: string) => void;
   expanded: boolean;
   onExpand: (expanded: boolean) => void;
 }) => {
-  const { draft, readiness } = studio;
+  const { readiness } = studio;
+  const runnable = isRunnableReadiness(readiness);
+  const draft = runnable ? studio.draft : lastRunnable;
+  const stale = !runnable && Boolean(lastRunnable);
   // The controller is a new object on every render, so it is kept in a ref; the toolbar re-renders
   // only when the step, the mode or the progress changes.
   const playerRef = useRef<Player3DController | undefined>(undefined);
@@ -41,8 +46,8 @@ export const PreviewView = ({ studio, focusNodeId, focusVersion, onFocus, expand
     const key = `${p.runtime.currentNode.id}|${p.showGuidance}|${p.runtime.state.completedNodes.length}`;
     if (key !== keyRef.current) { keyRef.current = key; setTick((t) => t + 1); }
   };
-  const models = equipment3dReadiness(collectStudioEquipmentIds(draft));
-  if (!isRunnableReadiness(readiness)) {
+  const models = equipment3dReadiness(draft ? collectStudioEquipmentIds(draft) : []);
+  if (!draft) {
     return (
       <div className="s3d-stage-empty">
         <div className="s3d-glass-card">
@@ -72,6 +77,7 @@ export const PreviewView = ({ studio, focusNodeId, focusVersion, onFocus, expand
     : undefined;
   return (
     <div className="s3d-preview">
+      {stale ? <div className="s3d-preview__notice s3d-preview__notice--stale" role="status"><Icon name="warn" />Showing the last runnable preview while the current draft is {readiness.label.toLowerCase()}.</div> : null}
       <Player3D definition={draft} title={draft.title} sourceTag="PREVIEW" fallbackHash="#/studio" backHref="#/3d/studio"
         variant="preview" focusNodeId={focusNodeId} focusVersion={focusVersion} onPlayer={onPlayer} />
       {notice ? <div className="s3d-preview__notice" role="status"><Icon name="info" />{notice}</div> : null}

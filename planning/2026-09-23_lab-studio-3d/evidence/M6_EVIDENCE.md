@@ -137,6 +137,43 @@ You asked to see the Studio, so a spot check was taken under the M3–M5 terms.
   - the Starting bench camera (it now frames the bench);
   - the stage badge overlapping the view switcher.
 
+## Fidelity review (second pass, 2026-09-24)
+
+A critical re-read of the M6 code, and of the pour fix, against the handoff and the plan. What changed:
+
+| Finding | Handoff / plan | Fix |
+|---|---|---|
+| The setup form did not follow `TeacherSetupLayout`. It had no Required/Optional marks and no hints, and boolean slots got a text box. | §4.8 ("the layout follows `TeacherSetupLayout`") | Numbered sections (1 Classroom values, 2 Instructor approval). Each field is marked Required or Optional with `TechniqueSetupForm.fieldHint`'s wording, and booleans get a select. "Required" means required with no published default, as in 2D. |
+| Edge labels never opened on hover: the CSS sibling selector could not match React Flow's label portal. | §4.4 (label pill on hover or selection) | Edge hover is tracked through `onEdgeMouseEnter` / `onEdgeMouseLeave`. |
+| No teal rings while dragging from an out-handle. | §4.4 Connect | `onConnectStart` / `onConnectEnd` light the compatible in-handles. |
+| Connect mode could branch a step to itself. | — (correctness) | A connection back to the same step offers Retry only (`addRetryEdge`). |
+| Equipment dropped on the Flow was accepted. | §4.3 (equipment goes onto the Starting bench) | The Flow accepts step and technique drags only. |
+| The dot grid did not pan or zoom with the canvas. | §4.4 (24 px dot grid) | React Flow's `Background` (dots, 24 px). |
+| The minimap was blank. The nodes are controlled, but their `dimensions` changes were dropped, so the minimap saw every card as unmeasured. Fitting ran before measurement and could clip the last card. | §4.4 (minimap) | Measured sizes are kept and given back to the nodes; fitting waits for `useNodesInitialized`. Verified from React Flow's source (`updateNodeInternals` → `triggerNodeChanges`). A live look was not possible because the app window was minimised. |
+| The full title had only a native tooltip. | §4.4 (full text in a hover callout) | A styled callout for titles longer than about two card lines. |
+| The calculation card's tolerance chip had no value. | §4.4 (tolerance chip) | It shows `± <tolerance>` from the step's `calculationWithinTolerance` rule, or the action's `tolerance`. |
+| The flattened-experiment note sat in the footer. | §4.4 ("the inspector note reads …") | The inspector shows the note, the copied techniques and the group-frame sentence (frame S8). The footer keeps the positions note (§4.1). |
+| No technique-instance view. | §4.7 ("Technique instance (experiments)") | Source technique, instance, steps, state, unset settings and ports, opened from the experiment summary. |
+| No "Adding a step" inspector during a library drag. | Frame S2 | The inspector names `appendTemplateStep`, the anchor, the placement and the step it will come before. |
+| New, Open and Import replaced a draft with content without asking. | §4.8; clarity rule 6 (short honest notes) | A confirmation says the draft is the one kept in this browser, with Export first / Cancel / Replace; undo still restores it. |
+| Preview showed nothing while the draft was not runnable. The 2D `PreviewPanel` keeps the last runnable draft with a stale banner. | Plan §4.6 (parity) | The last runnable draft keeps playing, under the 2D banner wording. |
+| The 1600 px split did not follow window resizes. | §4.6 | It reads a live window width. |
+| Esc did not cancel a Starting-bench carry. | §4.9 | Esc drops the preview and redraws the draft. |
+| Front used the player's close home pose. | §4.5 toolbar | Front, Reset and Home frame the whole bench from the front direction (`frameBench(insets, true)`). |
+| The bench badge counted only authored items. | §4.5 | It counts the runtime's starting state, including items the runtime adds. |
+| Toggles were not remembered. | §3.8 (`studio-ui` holds "stage view, column widths, toggles") | Flow Snap / Minimap / Details, bench Snap to zones / Labels, and the tablet sheet height are remembered in `studioUi.ts`. Column widths are fixed by §4.1, so there is nothing to store. |
+| Open listed no drafts. | §4.8 ("lists published techniques by pack, and drafts") | A Drafts section: the draft kept in this browser, and Import a draft file. |
+| Dialogs had no focus trap. | Accessibility (§8) | Tab cycles inside the dialog; focus returns on close. |
+| The 1024–1279 px rail had no icons, and the tablet sheet was not draggable. | §4.10 | An icon rail (Techniques, Steps, Equipment) opens the flyout. The sheet has a grip (pointer, or arrow keys). |
+| Technique cards used one item thumbnail. | §4.3 ("Blender composite thumbnail") | The first three model thumbnails composed. No per-technique composite render exists (the M2 composites are review states); rendering one is an asset task. |
+| A new validation rule's id could collide. | — (correctness) | It comes from `createStudioIdAllocator`. |
+| Under reduced motion a shelf source flashed beside the target for a frame. | §3.5 ("skipped: levels jump to the committed state") | Nothing is staged under reduced motion. |
+| The pour's carry in and out took about 2 s around the pour. The pour was linear. | §3.5 (pour 600–1400 ms, ease-in-out) | The carry motions are shortened (0.3 s from a drag's drop point); the pour and its levels ease in and out. The tilt goes up to `pour.tiltDeg`, which an emptied source reaches (documented in `planPour`). |
+
+Still a deviation, stated honestly: the equipment inspector shows the Blender thumbnail, not a
+live 3D preview. The equipment dialog has the live turntable; a third WebGL view in the inspector
+was not added.
+
 ## Open issues found
 
 1. **Weighing cannot be configured in Studio 3D either.** Applying its setup returns the core's

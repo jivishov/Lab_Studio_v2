@@ -22,6 +22,8 @@ export type Studio3DSelection =
   | { kind: "node"; id: string }
   | { kind: "edge"; index: number }
   | { kind: "equipment"; id: string }
+  /** A technique instance in an experiment draft (§4.7): an entry of `draft.techniques`. */
+  | { kind: "technique"; id: string }
   | undefined;
 
 /** A published technique opened to look at: nothing is edited until "Edit a copy". */

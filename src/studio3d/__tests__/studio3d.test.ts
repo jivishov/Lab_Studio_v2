@@ -9,6 +9,8 @@ import { commitStudioTransaction, createInitialStudioRevision, type StudioOperat
 import { neighbourAlongEdges, nodeCards } from "../studio/flowModel";
 import { seatingZonesFor, startingState } from "../studio/BenchSetupView";
 import { hasIncompleteInboundStep } from "../studio/PreviewView";
+import { initialSetupValues, setupComplete, setupSlots } from "../studio/SetupSlotsForm";
+import { readStudioUi, STUDIO_UI_KEY } from "../studio/studioUi";
 import { describeTechnique, needsTeacherSetup } from "../studio/techniqueCatalog";
 
 const readTechnique = (id: string): TechniqueDefinition =>
@@ -102,6 +104,28 @@ describe("the Starting bench seats a starting item the way the runtime will (§4
     const seated = { ...glass, location: "snapZone" as const, snapZoneId: "analytical-balance-pan" };
     const state = createRuntimeState(withBench([balance, seated]));
     expect(state.attachments).toEqual(expect.arrayContaining([expect.objectContaining({ parentInstanceId: balance.id, childInstanceId: glass.id, zoneId: "analytical-balance-pan" })]));
+  });
+});
+
+describe("the setup form follows the 2D TechniqueSetupForm rules", () => {
+  it("does not require a classroom value that has a published default", () => {
+    const technique = readTechnique("making-solution");
+    const values = initialSetupValues(technique);
+    // Every slot with a published default is pre-filled; the rest must be entered.
+    expect(setupComplete(technique, {})).toBe(Object.keys(values).length === setupSlots(technique).filter((s) => s.kind === "classroom-quantity").length);
+    const all = Object.fromEntries(setupSlots(technique).filter((s) => s.kind === "classroom-quantity").map((s) => [s.id, "1"]));
+    expect(setupComplete(technique, all)).toBe(true);
+  });
+});
+
+describe("Studio UI preferences (§3.8)", () => {
+  it("fall back to defaults field by field when storage holds something stale", () => {
+    window.localStorage.setItem(STUDIO_UI_KEY, JSON.stringify({ view: "nonsense", flow: { snap: "yes" }, sheet: 5 }));
+    const ui = readStudioUi();
+    expect(ui.view).toBe("flow");
+    expect(ui.flow.snap).toBe(true);
+    expect(ui.sheet).toBe(0.4);
+    window.localStorage.removeItem(STUDIO_UI_KEY);
   });
 });
 

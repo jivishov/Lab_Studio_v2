@@ -115,10 +115,14 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
 
   // While a committed pour animates, the bench shows the committed layout with the pour's contents
   // not yet moved (pourStagingScene); when it ends, the committed scene (G-3).
-  const displayScene = player.pour ? player.pour.staging : scene;
+  // Under reduced motion the pour is skipped (§3.5: levels jump to the committed state), so nothing
+  // is staged: a shelf source must not appear beside the target for a frame.
+  const displayScene = player.pour && !reducedMotion ? player.pour.staging : scene;
   useEffect(() => {
     const pour = player.pour;
-    if (!pour || !engine) return;
+    if (!pour) return;
+    if (reducedMotion) { player.finishPour(pour.id); return; }
+    if (!engine) return;
     const staged = (id: string) => pour.staging.bench.find((i) => i.instanceId === id);
     const committed = (id: string) => scene.bench.find((i) => i.instanceId === id);
     const source = staged(pour.sourceId);

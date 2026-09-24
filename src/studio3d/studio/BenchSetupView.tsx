@@ -16,6 +16,7 @@ import { catalogueSpecs } from "../player/panels";
 import { Icon } from "../ui/Icon";
 import { Thumbnail } from "./LibraryPanel";
 import { LIBRARY_DRAG_TYPE, readLibraryDrag } from "./libraryDrag";
+import { readStudioUi, updateStudioUi } from "./studioUi";
 import type { Studio3DController } from "./useStudio3DDraft";
 
 /**
@@ -79,8 +80,8 @@ export const BenchSetupView = ({ studio, onToast, onInspectEquipment }: {
 }) => {
   const { draft, commit, selection, setSelection, readOnly } = studio;
   const [engine, setEngine] = useState<BenchEngine>();
-  const [snapZones, setSnapZones] = useState(true);
-  const [labels, setLabels] = useState(true);
+  const [snapZones, setSnapZones] = useState(() => readStudioUi().bench.snapZones);
+  const [labels, setLabels] = useState(() => readStudioUi().bench.labels);
   const [, bump] = useState(0);
   const [overShelf, setOverShelf] = useState(false);
   const [callout, setCallout] = useState<{ x: number; y: number; text: string; kind: "valid" | "free" | "detach" }>();
@@ -99,10 +100,11 @@ export const BenchSetupView = ({ studio, onToast, onInspectEquipment }: {
     engine.onChange = () => bump((v) => v + 1);
     // The stage is narrower than the player's window: start on the whole bench (§4.5 "Reset").
     let active = true;
-    void engine.settled().then(() => { if (active) engine.frameBench({}); });
+    void engine.settled().then(() => { if (active) engine.frameBench({}, true); });
     return () => { active = false; engine.onChange = undefined; };
   }, [engine]);
   useEffect(() => { engine?.setSelected(selectedId ?? null); }, [engine, selectedId, scene]);
+  useEffect(() => { updateStudioUi({ bench: { snapZones, labels } }); }, [snapZones, labels]);
 
   const newInstance = (definitionId: string): EquipmentInstance => newStartingInstance(draft, state!, definitionId);
 
@@ -209,10 +211,22 @@ export const BenchSetupView = ({ studio, onToast, onInspectEquipment }: {
     window.addEventListener("pointermove", move);
     window.addEventListener("pointerup", up);
     canvas.addEventListener("dblclick", dbl);
+    // Esc cancels a carry (§4.9): the preview is dropped and the bench shows the draft again.
+    const key = (event: KeyboardEvent) => {
+      if (event.key !== "Escape" || !carryRef.current) return;
+      carryRef.current = undefined;
+      engine.holdCameraInput(false);
+      engine.endCarryPreview();
+      setCallout(undefined);
+      setOverShelf(false);
+      if (scene) void engine.sync(scene);
+    };
+    window.addEventListener("keydown", key);
     return () => {
       canvas.removeEventListener("pointerdown", down);
       window.removeEventListener("pointermove", move);
       window.removeEventListener("pointerup", up);
+      window.removeEventListener("keydown", key);
       canvas.removeEventListener("dblclick", dbl);
       engine.holdCameraInput(false);
     };
@@ -249,7 +263,7 @@ export const BenchSetupView = ({ studio, onToast, onInspectEquipment }: {
   const onKeyDown = (event: React.KeyboardEvent) => {
     if (!engine) return;
     const instance = selectedId ? instanceFor(selectedId) : undefined;
-    if (event.key === "Home") { event.preventDefault(); engine.resetView(); return; }
+    if (event.key === "Home") { event.preventDefault(); engine.frameBench({}, true); return; }
     if ((event.key === "f" || event.key === "F") && selectedId) { event.preventDefault(); engine.frameItems([selectedId], 2.2); return; }
     if (!instance || readOnly) return;
     if (event.key === "Delete" || event.key === "Backspace") { event.preventDefault(); remove(instance.id); return; }
@@ -306,9 +320,9 @@ export const BenchSetupView = ({ studio, onToast, onInspectEquipment }: {
         <button type="button" className={snapZones ? "is-on" : ""} aria-pressed={snapZones} onClick={() => setSnapZones((v) => !v)} title="Alt bypasses snapping"><Icon name="seat" />Snap to zones</button>
         <button type="button" className={labels ? "is-on" : ""} aria-pressed={labels} onClick={() => setLabels((v) => !v)}>Labels</button>
         <i />
-        <button type="button" onClick={() => engine?.resetView()}>Front</button>
+        <button type="button" onClick={() => engine?.frameBench({}, true)}>Front</button>
         <button type="button" onClick={() => engine?.overhead()}>Top</button>
-        <button type="button" onClick={() => engine?.frameBench()}><Icon name="reset" />Reset</button>
+        <button type="button" onClick={() => engine?.frameBench({}, true)}><Icon name="reset" />Reset</button>
       </div>
       <span className="s3d-sr" aria-live="polite">{onBench} on bench, {shelf.length} on shelf</span>
     </div>

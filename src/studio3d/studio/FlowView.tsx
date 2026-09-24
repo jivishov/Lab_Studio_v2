@@ -1,15 +1,16 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type DragEvent, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import {
-  BaseEdge, EdgeLabelRenderer, Handle, MiniMap, Panel, Position, ReactFlow, ReactFlowProvider, getBezierPath, useReactFlow,
+  Background, BackgroundVariant, BaseEdge, EdgeLabelRenderer, Handle, MiniMap, Panel, Position, ReactFlow, ReactFlowProvider, getBezierPath, useNodesInitialized, useReactFlow,
   type Connection, type Edge, type EdgeProps, type Node, type NodeProps, type OnNodeDrag, type Viewport,
 } from "@xyflow/react";
 import type { EdgeConditionType, ProcessNode } from "../../domain/types";
-import { removeConnection } from "./draftEdits";
 import { equipment3dAssetUrl, equipment3dEntry } from "../equipment3d/readiness";
 import { Icon } from "../ui/Icon";
 import { ProvenanceChip } from "../ui/ProvenanceChip";
+import { removeConnection } from "./draftEdits";
 import { CONDITION_GLYPH, CONDITION_LABEL, NODE_WIDTH, neighbourAlongEdges, nodeCards, type NodeCard } from "./flowModel";
 import { LIBRARY_DRAG_TYPE, readLibraryDrag, type LibraryDrag } from "./libraryDrag";
+import { readStudioUi, updateStudioUi } from "./studioUi";
 import type { Studio3DController } from "./useStudio3DDraft";
 
 /**
@@ -27,11 +28,13 @@ const GRID = 24;
 const FLOW_SCALE = Object.freeze({ x: 1.3, y: 1.7 });
 const toView = (p: { x: number; y: number }) => ({ x: p.x * FLOW_SCALE.x, y: p.y * FLOW_SCALE.y });
 const toStored = (p: { x: number; y: number }) => ({ x: p.x / FLOW_SCALE.x, y: p.y / FLOW_SCALE.y });
+/** A title longer than about two card lines gets its full text in a hover callout (§4.4). */
+const LONG_TITLE = 44;
 
 type CardNode = Node<{ card: NodeCard; compact: boolean; ringIn: boolean }, "card">;
 type FrameNode = Node<{ label: string; width: number; height: number }, "frame">;
 type FlowNode = CardNode | FrameNode;
-type CondEdge = Edge<{ condition: EdgeConditionType; label: string; hot: boolean; insertText?: string; selfLoop: boolean }, "condition">;
+type CondEdge = Edge<{ condition: EdgeConditionType; label: string; hot: boolean; hovered: boolean; insertText?: string; selfLoop: boolean }, "condition">;
 
 const Thumb = ({ definitionId, size = 28 }: { definitionId: string; size?: number }) => {
   const entry = equipment3dEntry(definitionId);
@@ -56,7 +59,8 @@ const CardNodeView = ({ data, selected }: NodeProps<CardNode>) => {
         {card.issues ? <span className="s3d-chip s3d-chip--err" title={`${card.issues} issue${card.issues === 1 ? "" : "s"}`}><Icon name="warn" size={12} />{card.issues}</span> : null}
         {card.hasHint ? <span title="Has hint text" className="s3d-node__hint"><Icon name="info" size={14} /></span> : null}
       </div>
-      <div className="s3d-node__title" title={card.title}>{card.title}</div>
+      <div className="s3d-node__title">{card.title}</div>
+      {card.title.length > LONG_TITLE ? <span className="s3d-node__callout" role="tooltip">{card.title}</span> : null}
       {!compact && card.equipment.length ? (
         <div className="s3d-node__eq">
           {card.equipment.slice(0, 3).map((id) => <Thumb key={id} definitionId={id} />)}
@@ -67,7 +71,7 @@ const CardNodeView = ({ data, selected }: NodeProps<CardNode>) => {
         <div className="s3d-node__outs">
           {outs.map((condition, i) => (
             <div key={`${condition}-${i}`}>
-              <span>{CONDITION_LABEL[condition]}</span>
+              <span>{CONDITION_LABEL[condition]}{CONDITION_GLYPH[condition] ? <Icon name={CONDITION_GLYPH[condition]!} size={11} /> : null}</span>
               <Handle type="source" id={`out-${i}`} position={Position.Right} className="s3d-handle s3d-handle--out" style={{ top: "auto", right: -18 }} />
             </div>
           ))}
@@ -77,7 +81,9 @@ const CardNodeView = ({ data, selected }: NodeProps<CardNode>) => {
         <div className="s3d-node__chips">
           {card.inputRole ? <ProvenanceChip kind={card.inputRole === "teacherConfiguration" ? "teacher" : "entry"} studio /> : null}
           {card.type === "observation" ? <span className="s3d-chip s3d-chip--neutral"><Icon name="book" size={12} />Notebook</span> : null}
-          {card.type === "calculation" ? <span className="s3d-chip s3d-chip--neutral"><Icon name="equals" size={12} />Tolerance</span> : null}
+          {card.type === "calculation" ? (
+            <span className="s3d-chip s3d-chip--neutral"><Icon name="equals" size={12} />{card.tolerance !== undefined ? <>Tolerance <span className="s3d-mono">±&#8201;{card.tolerance}</span></> : "Tolerance"}</span>
+          ) : null}
           {card.validation.map((type) => <span key={type} className="s3d-chip s3d-chip--neutral s3d-mono">{type}</span>)}
           {card.evidence.length ? <span className="s3d-chip s3d-chip--outline" title={card.evidence.join(", ")}>Evidence · {card.evidence.length}</span> : null}
         </div>
@@ -113,6 +119,8 @@ const ConditionEdge = ({ id, sourceX, sourceY, targetX, targetY, sourcePosition,
     [path, labelX, labelY] = getBezierPath({ sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition });
   }
   const glyph = CONDITION_GLYPH[condition];
+  // The label pill opens on hover or selection (§4.4); the condition glyph is always shown.
+  const open = Boolean(selected || data?.hovered);
   return (
     <>
       <BaseEdge id={id} path={path} markerEnd={markerEnd} className={`s3d-edge s3d-edge--${condition}${data?.hot ? " is-hot" : ""}${selected ? " is-selected" : ""}`} interactionWidth={18} />
@@ -123,10 +131,10 @@ const ConditionEdge = ({ id, sourceX, sourceY, targetX, targetY, sourcePosition,
               <span className="s3d-insert-marker"><Icon name="plus" size={16} /></span>
               {data.insertText ? <span className="s3d-callout s3d-callout--insert">{data.insertText}</span> : null}
             </>
-          ) : glyph || selected ? (
-            <span className={`s3d-edge-pill${selected ? " is-open" : ""}`}>
+          ) : glyph || open ? (
+            <span className={`s3d-edge-pill${open ? " is-open" : ""}`}>
               {glyph ? <Icon name={glyph} size={12} /> : null}
-              <span className="s3d-edge-pill__text">{data?.label || CONDITION_LABEL[condition]}</span>
+              {open ? <span>{data?.label || CONDITION_LABEL[condition]}</span> : null}
             </span>
           ) : null}
         </div>
@@ -143,23 +151,43 @@ export interface FlowViewProps {
   onInspect: () => void;
   onAddFromLibrary: (item: LibraryDrag, anchor?: { anchorNodeId: string; placement: "after" }) => void;
   onToast: (text: string, action?: { label: string; run: () => void }) => void;
-  onDraggingLibrary?: boolean;
+  /** The edge a library step is over while it is dragged, for the inspector's "Adding a step" (frame S2). */
+  onHotEdge?: (edgeIndex: number | undefined) => void;
   focusVersion: number;
 }
 
-const FlowCanvas = ({ studio, onInspect, onAddFromLibrary, onToast, focusVersion }: FlowViewProps) => {
+/** Only steps and techniques go on the Flow; equipment belongs on the Starting bench (§4.3). */
+const acceptsDrag = (types: readonly string[]) =>
+  types.includes(`${LIBRARY_DRAG_TYPE}+step`) || types.includes(`${LIBRARY_DRAG_TYPE}+technique`);
+
+const FlowCanvas = ({ studio, onInspect, onAddFromLibrary, onToast, onHotEdge, focusVersion }: FlowViewProps) => {
   const { draft, readiness, selection, setSelection, readOnly, commit } = studio;
   const flow = useReactFlow<FlowNode, CondEdge>();
   const wrapRef = useRef<HTMLDivElement>(null);
+  const initialUi = useMemo(() => readStudioUi().flow, []);
   const [mode, setMode] = useState<"select" | "connect">("select");
-  const [snap, setSnap] = useState(true);
-  const [minimap, setMinimap] = useState(true);
-  const [compact, setCompact] = useState(false);
+  const [snap, setSnap] = useState(initialUi.snap);
+  const [minimap, setMinimap] = useState(initialUi.minimap);
+  const [compact, setCompact] = useState(initialUi.compact);
   const [zoom, setZoom] = useState(1);
-  const [hotEdge, setHotEdge] = useState<number>();
+  const [hotEdge, setHotEdgeState] = useState<number>();
+  const [hoveredEdge, setHoveredEdge] = useState<string>();
   const [connectFrom, setConnectFrom] = useState<string>();
   const [connectMenu, setConnectMenu] = useState<{ from: string; to: string; x: number; y: number }>();
   const [dragPositions, setDragPositions] = useState<Record<string, { x: number; y: number }>>({});
+  // The nodes are controlled, so React Flow's measured sizes are kept here and given back to them;
+  // without them the minimap and fitting treat every card as unmeasured.
+  const [sizes, setSizes] = useState<Record<string, { width: number; height: number }>>({});
+  const handleDrag = useRef(false);
+
+  useEffect(() => { updateStudioUi({ flow: { snap, minimap, compact } }); }, [snap, minimap, compact]);
+  const hotRef = useRef<number | undefined>(undefined);
+  const setHotEdge = (index: number | undefined) => {
+    if (hotRef.current === index) return;
+    hotRef.current = index;
+    setHotEdgeState(index);
+    onHotEdge?.(index);
+  };
 
   const cards = useMemo(() => nodeCards(draft, readiness.diagnostics), [draft, readiness.diagnostics]);
   const selectedNodeId = selection?.kind === "node" ? selection.id : undefined;
@@ -170,6 +198,7 @@ const FlowCanvas = ({ studio, onInspect, onAddFromLibrary, onToast, focusVersion
       id: card.id,
       type: "card",
       position: dragPositions[card.id] ?? toView(card.position),
+      ...(sizes[card.id] ? { measured: sizes[card.id] } : {}),
       data: { card, compact, ringIn: Boolean(connectFrom && connectFrom !== card.id) },
       selected: selectedNodeId === card.id,
       draggable: !readOnly,
@@ -189,16 +218,18 @@ const FlowCanvas = ({ studio, onInspect, onAddFromLibrary, onToast, focusVersion
       frames.push({
         id: `frame:${techniqueId}`, type: "frame", position: { x, y }, draggable: false, selectable: false, connectable: false, focusable: false, zIndex: -1,
         data: { label: technique?.title ?? techniqueId, width: Math.max(...xs) - x + NODE_WIDTH + 20, height: Math.max(...ys) - y + 170 },
+        measured: { width: Math.max(...xs) - x + NODE_WIDTH + 20, height: Math.max(...ys) - y + 170 },
       });
     }
     return [...frames, ...cardNodes];
-  }, [cards, compact, connectFrom, dragPositions, draft.techniques, readOnly, selectedNodeId]);
+  }, [cards, compact, connectFrom, dragPositions, draft.techniques, readOnly, selectedNodeId, sizes]);
 
   const edges = useMemo<CondEdge[]>(() => draft.process.edges.map((edge, index) => {
     const decisionOuts = draft.process.nodes.find((n) => n.id === edge.from)?.type === "decision"
       ? draft.process.edges.filter((e) => e.from === edge.from) : undefined;
+    const id = `edge-${index}`;
     return {
-      id: `edge-${index}`,
+      id,
       source: edge.from,
       target: edge.to,
       ...(decisionOuts ? { sourceHandle: `out-${decisionOuts.indexOf(edge)}` } : {}),
@@ -209,14 +240,17 @@ const FlowCanvas = ({ studio, onInspect, onAddFromLibrary, onToast, focusVersion
         condition: edge.condition.type,
         label: edge.label,
         hot: hotEdge === index,
+        hovered: hoveredEdge === id,
         selfLoop: edge.from === edge.to,
         ...(hotEdge === index ? { insertText: `Release to insert between “${titleOf(edge.from)}” and “${titleOf(edge.to)}”` } : {}),
       },
     };
-  }), [draft.process.edges, draft.process.nodes, hotEdge, selection, titleOf]);
+  }), [draft.process.edges, draft.process.nodes, hotEdge, hoveredEdge, selection, titleOf]);
 
   const fit = useCallback(() => window.requestAnimationFrame(() => flow.fitView({ padding: 0.2, duration: 200 })), [flow]);
-  useEffect(() => { fit(); }, [draft.process.nodes.length, fit, focusVersion]);
+  // Fit once React Flow has measured the cards, and again when steps are added or the draft changes.
+  const measured = useNodesInitialized();
+  useEffect(() => { if (measured) fit(); }, [draft.process.nodes.length, fit, focusVersion, measured]);
 
   const frameSelection = () => {
     if (!selectedNodeId) { fit(); return; }
@@ -241,20 +275,21 @@ const FlowCanvas = ({ studio, onInspect, onAddFromLibrary, onToast, focusVersion
     setLayout(processNode, stored.x, stored.y, `Move ${processNode.title}`);
   };
 
-  const connectionEnds = (from: string, to: string, x: number, y: number) => {
+  const openConnectMenu = (from: string, to: string, x: number, y: number) => {
     if (readOnly) return;
     setConnectMenu({ from, to, x, y });
   };
   const onConnect = (connection: Connection) => {
+    handleDrag.current = false;
     const rect = wrapRef.current?.getBoundingClientRect();
     const target = flow.getInternalNode(connection.target);
     const at = target ? flow.flowToScreenPosition({ x: target.internals.positionAbsolute.x, y: target.internals.positionAbsolute.y }) : { x: 0, y: 0 };
-    connectionEnds(connection.source, connection.target, at.x - (rect?.left ?? 0), at.y - (rect?.top ?? 0) + 20);
+    openConnectMenu(connection.source, connection.target, at.x - (rect?.left ?? 0), at.y - (rect?.top ?? 0) + 20);
   };
+  const endConnection = () => { setConnectMenu(undefined); setConnectFrom(undefined); };
   const addBranch = (from: string, to: string) => {
     commit(`Add branch: ${titleOf(from)} → ${titleOf(to)}`, [{ type: "addBranchEdge", from, to }], { selection: { kind: "edge", index: draft.process.edges.length } });
-    setConnectMenu(undefined);
-    setConnectFrom(undefined);
+    endConnection();
   };
   const addRetry = (from: string, to: string) => {
     const index = draft.process.edges.length;
@@ -263,17 +298,17 @@ const FlowCanvas = ({ studio, onInspect, onAddFromLibrary, onToast, focusVersion
       : [{ type: "addBranchEdge" as const, from, to },
          { type: "updateProcessEdge" as const, index, edge: { from, to, label: "Retry", condition: { type: "retry" as const } } }];
     commit(from === to ? `Add retry on ${titleOf(from)}` : `Add retry: ${titleOf(from)} → ${titleOf(to)}`, operations, { selection: { kind: "edge", index } });
-    setConnectMenu(undefined);
-    setConnectFrom(undefined);
+    endConnection();
   };
 
   const onNodeClick = (event: React.MouseEvent, node: FlowNode) => {
     if (node.type !== "card") return;
     if ((mode === "connect" || connectFrom) && !readOnly) {
       const from = connectFrom ?? selectedNodeId;
-      if (!from) { setConnectFrom(node.id); setSelection({ kind: "node", id: node.id }); return; }
+      // The first click (or a click on the source again) chooses where the connection starts.
+      if (!from || (!connectFrom && from === node.id)) { setConnectFrom(node.id); setSelection({ kind: "node", id: node.id }); return; }
       const rect = wrapRef.current?.getBoundingClientRect();
-      connectionEnds(from, node.id, event.clientX - (rect?.left ?? 0), event.clientY - (rect?.top ?? 0));
+      openConnectMenu(from, node.id, event.clientX - (rect?.left ?? 0), event.clientY - (rect?.top ?? 0));
       return;
     }
     setSelection({ kind: "node", id: node.id });
@@ -294,7 +329,7 @@ const FlowCanvas = ({ studio, onInspect, onAddFromLibrary, onToast, focusVersion
   const onKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
     if ((event.target as HTMLElement).closest("input, textarea, select")) return;
     const key = event.key;
-    if (key === "Escape") { setConnectFrom(undefined); setConnectMenu(undefined); setHotEdge(undefined); return; }
+    if (key === "Escape") { endConnection(); setHotEdge(undefined); return; }
     if (key === "Home") { event.preventDefault(); fit(); return; }
     if (key === "f" || key === "F") { event.preventDefault(); frameSelection(); return; }
     if (key === "Delete" || key === "Backspace") {
@@ -334,7 +369,7 @@ const FlowCanvas = ({ studio, onInspect, onAddFromLibrary, onToast, focusVersion
     return index !== undefined && Number.isInteger(index) ? index : undefined;
   };
   const onDragOver = (event: DragEvent<HTMLDivElement>) => {
-    if (readOnly || !event.dataTransfer.types.includes(LIBRARY_DRAG_TYPE)) return;
+    if (readOnly || !acceptsDrag(event.dataTransfer.types)) return;
     event.preventDefault();
     event.dataTransfer.dropEffect = "copy";
     setHotEdge(event.dataTransfer.types.includes(`${LIBRARY_DRAG_TYPE}+step`) ? edgeUnder(event.clientX, event.clientY) : undefined);
@@ -343,7 +378,7 @@ const FlowCanvas = ({ studio, onInspect, onAddFromLibrary, onToast, focusVersion
     const item = readLibraryDrag(event.dataTransfer);
     const edgeIndex = hotEdge;
     setHotEdge(undefined);
-    if (!item || readOnly) return;
+    if (!item || readOnly || item.kind === "equipment") return;
     event.preventDefault();
     const edge = edgeIndex !== undefined ? draft.process.edges[edgeIndex] : undefined;
     if (edge && item.kind === "template") onAddFromLibrary(item, { anchorNodeId: edge.from, placement: "after" });
@@ -351,9 +386,11 @@ const FlowCanvas = ({ studio, onInspect, onAddFromLibrary, onToast, focusVersion
   };
 
   const onMove = (_: unknown, viewport: Viewport) => setZoom(viewport.zoom);
+  const menuSelf = connectMenu ? connectMenu.from === connectMenu.to : false;
 
   return (
-    <div className="s3d-flowview" ref={wrapRef} onKeyDown={onKeyDown} onDragOver={onDragOver} onDragLeave={() => setHotEdge(undefined)} onDrop={onDrop}
+    <div className="s3d-flowview" ref={wrapRef} onKeyDown={onKeyDown} onDragOver={onDragOver}
+      onDragLeave={(e) => { if (!wrapRef.current?.contains(e.relatedTarget as globalThis.Node | null)) setHotEdge(undefined); }} onDrop={onDrop}
       tabIndex={0} role="application" aria-roledescription="process flow" aria-label="Process flow. Arrow keys move along the connections; Enter opens the step.">
       <ReactFlow<FlowNode, CondEdge>
         nodes={nodes}
@@ -362,13 +399,27 @@ const FlowCanvas = ({ studio, onInspect, onAddFromLibrary, onToast, focusVersion
         edgeTypes={edgeTypes}
         onNodesChange={(changes) => {
           const moved: Record<string, { x: number; y: number }> = {};
+          const measuredNow: Record<string, { width: number; height: number }> = {};
+          for (const change of changes) if (change.type === "dimensions" && change.dimensions) measuredNow[change.id] = change.dimensions;
+          if (Object.keys(measuredNow).length) setSizes((current) => ({ ...current, ...measuredNow }));
           for (const change of changes) if (change.type === "position" && change.position) moved[change.id] = change.position;
           if (Object.keys(moved).length) setDragPositions((current) => ({ ...current, ...moved }));
         }}
         onNodeDragStop={onNodeDragStop}
         onNodeClick={onNodeClick}
         onEdgeClick={(_, edge) => setSelection({ kind: "edge", index: Number(edge.id.slice(5)) })}
-        onPaneClick={() => { setSelection(undefined); setConnectFrom(undefined); setConnectMenu(undefined); }}
+        onEdgeMouseEnter={(_, edge) => setHoveredEdge(edge.id)}
+        onEdgeMouseLeave={() => setHoveredEdge(undefined)}
+        onPaneClick={() => { setSelection(undefined); endConnection(); }}
+        onConnectStart={(_, params) => {
+          // Dragging from an out-handle lights the compatible in-handles (§4.4).
+          if (readOnly || !params.nodeId) return;
+          handleDrag.current = true;
+          setConnectFrom(params.nodeId);
+        }}
+        onConnectEnd={() => {
+          if (handleDrag.current) { handleDrag.current = false; setConnectFrom(undefined); }
+        }}
         onConnect={onConnect}
         onMove={onMove}
         nodesDraggable={!readOnly}
@@ -387,13 +438,15 @@ const FlowCanvas = ({ studio, onInspect, onAddFromLibrary, onToast, focusVersion
         proOptions={{ hideAttribution: true }}
         fitView
       >
-        {minimap ? <MiniMap className="s3d-minimap" pannable zoomable nodeColor={(n) => (n.type === "frame" ? "transparent" : n.selected ? "#2a5a49" : "#cad5c7")} nodeStrokeWidth={0} maskColor="#f7f8f499" /> : null}
+        {/* The 24 px dot grid moves with the canvas (§4.4). */}
+        <Background variant={BackgroundVariant.Dots} gap={GRID} size={1.2} color="#dfe4da" bgColor="#f7f8f4" />
+        {minimap ? <MiniMap className="s3d-minimap" style={{ width: 150, height: 92 }} pannable zoomable nodeColor={(n) => (n.type === "frame" ? "transparent" : n.selected ? "#2a5a49" : "#cad5c7")} nodeStrokeWidth={0} maskColor="#f7f8f499" /> : null}
         <Panel position="bottom-center" className="s3d-tbar-panel">
           <div className="s3d-tbar" role="toolbar" aria-label="Flow tools">
-            <button type="button" className={mode === "select" ? "is-on" : ""} aria-pressed={mode === "select"} onClick={() => { setMode("select"); setConnectFrom(undefined); }}><Icon name="cursor" />Select</button>
+            <button type="button" className={mode === "select" ? "is-on" : ""} aria-pressed={mode === "select"} onClick={() => { setMode("select"); endConnection(); }}><Icon name="cursor" />Select</button>
             <button type="button" className={mode === "connect" ? "is-on" : ""} aria-pressed={mode === "connect"} disabled={Boolean(readOnly)} onClick={() => setMode("connect")}><Icon name="link" />Connect</button>
             <i />
-            <button type="button" className={snap ? "is-on" : ""} aria-pressed={snap} onClick={() => setSnap((v) => !v)}><Icon name="grid" />Snap to grid</button>
+            <button type="button" className={snap ? "is-on" : ""} aria-pressed={snap} onClick={() => setSnap((v) => !v)} title="Alt bypasses snapping"><Icon name="grid" />Snap to grid</button>
             <button type="button" disabled={Boolean(readOnly)} onClick={() => { commit("Auto-layout", [{ type: "autoLayoutProcess" }]); fit(); }}><Icon name="layout" />Auto-layout</button>
             <button type="button" className={minimap ? "is-on" : ""} aria-pressed={minimap} onClick={() => setMinimap((v) => !v)}><Icon name="map" />Minimap</button>
             <button type="button" className={compact ? "" : "is-on"} aria-pressed={!compact} onClick={() => setCompact((v) => !v)} title={compact ? "Show full details" : "Show compact cards"}><Icon name="details" />Details</button>
@@ -408,11 +461,12 @@ const FlowCanvas = ({ studio, onInspect, onAddFromLibrary, onToast, focusVersion
       </ReactFlow>
       {connectMenu ? (
         <div className="s3d-popmenu s3d-connect-menu" role="menu" style={{ left: connectMenu.x, top: connectMenu.y }} aria-label="Connection type">
-          <button type="button" role="menuitem" onClick={() => addBranch(connectMenu.from, connectMenu.to)}><Icon name="split" />Branch</button>
+          {/* A step never branches to itself; a connection back to the same step can only be a retry. */}
+          {menuSelf ? null : <button type="button" role="menuitem" onClick={() => addBranch(connectMenu.from, connectMenu.to)}><Icon name="split" />Branch</button>}
           <button type="button" role="menuitem" onClick={() => addRetry(connectMenu.from, connectMenu.to)}><Icon name="retry" />Retry</button>
         </div>
       ) : null}
-      {connectFrom && !connectMenu ? <div className="s3d-callout s3d-callout--status">Connecting from “{titleOf(connectFrom)}”. Choose a step, or press Esc.</div> : null}
+      {connectFrom && !connectMenu && !handleDrag.current ? <div className="s3d-callout s3d-callout--status">Connecting from “{titleOf(connectFrom)}”. Choose a step, or press Esc.</div> : null}
     </div>
   );
 };

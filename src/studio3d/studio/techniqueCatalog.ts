@@ -3,7 +3,7 @@ import { loadBundledTechnique, loadBundledTechniqueSummaries } from "../../data/
 import { configurationSlots } from "../../data/techniqueConfiguration";
 import type { TechniqueDefinition } from "../../domain/types";
 import { workflowConfigurationBlocker, workflowHostLabs, workflowNeedsConfiguration } from "../../studio/workflowConfiguration";
-import { equipment3dReadiness } from "../equipment3d/readiness";
+import { equipment3dEntry, equipment3dReadiness } from "../equipment3d/readiness";
 import { packNumber } from "../packs";
 
 /**
@@ -30,8 +30,10 @@ export interface CatalogueTechnique {
   blocker?: string;
   hosts: Array<{ id: string; title: string; href: string }>;
   missingModels: string[];
-  /** The first model in the technique, for its card thumbnail. */
+  /** The first model in the technique, for small thumbnails. */
   thumbnailId?: string;
+  /** Up to three modelled definitions, composed into the card image (§4.3 composite thumbnail). */
+  compositeIds: string[];
   error?: string;
 }
 
@@ -45,7 +47,7 @@ export const techniqueDefinitionIds = (technique: TechniqueDefinition): string[]
 export const needsTeacherSetup = (technique: TechniqueDefinition): boolean =>
   workflowNeedsConfiguration(technique) && configurationSlots(technique).some((slot) => slot.kind === "classroom-quantity");
 
-export const describeTechnique = (technique: TechniqueDefinition): Pick<CatalogueTechnique, "status" | "blocker" | "hosts" | "missingModels" | "thumbnailId"> => {
+export const describeTechnique = (technique: TechniqueDefinition): Pick<CatalogueTechnique, "status" | "blocker" | "hosts" | "missingModels" | "thumbnailId" | "compositeIds"> => {
   const blocker = workflowConfigurationBlocker(technique);
   const readiness = equipment3dReadiness(techniqueDefinitionIds(technique));
   const status: TechniqueStatus = blocker ? "host" : !readiness.ready ? "no3d" : needsTeacherSetup(technique) ? "setup" : "ready";
@@ -55,6 +57,7 @@ export const describeTechnique = (technique: TechniqueDefinition): Pick<Catalogu
     hosts: workflowHostLabs(technique).map((host) => ({ id: host.id, title: host.title, href: host.href })),
     missingModels: readiness.missing,
     thumbnailId: technique.initialState.equipment[0]?.definitionId ?? technique.requiredEquipment[0],
+    compositeIds: techniqueDefinitionIds(technique).filter((id) => equipment3dEntry(id)).slice(0, 3),
   };
 };
 
@@ -64,7 +67,7 @@ const loadCatalogue = (): Promise<CatalogueTechnique[]> => {
   catalogue ??= loadBundledTechniqueSummaries().then(async (summaries) => {
     const ids = summaries.map((s) => s.id);
     return Promise.all(summaries.map(async (summary): Promise<CatalogueTechnique> => {
-      const base = { id: summary.id, title: summary.title, description: summary.description, pack: packNumber(ids, summary.id), hosts: [], missingModels: [] };
+      const base = { id: summary.id, title: summary.title, description: summary.description, pack: packNumber(ids, summary.id), hosts: [], missingModels: [], compositeIds: [] };
       try {
         const definition = await loadBundledTechnique(summary.id);
         return { ...base, definition, ...describeTechnique(definition) };

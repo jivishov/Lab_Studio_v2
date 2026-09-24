@@ -7,6 +7,7 @@ import { catalogueSpecs } from "../player/panels";
 import { Icon } from "../ui/Icon";
 import { INTERACTION_ICON } from "./flowModel";
 import { writeLibraryDrag, type LibraryDrag } from "./libraryDrag";
+import type { StageView } from "./studioUi";
 import { TECHNIQUE_STATUS, type CatalogueTechnique } from "./techniqueCatalog";
 
 /**
@@ -16,7 +17,7 @@ import { TECHNIQUE_STATUS, type CatalogueTechnique } from "./techniqueCatalog";
  * card can be dragged onto the stage, or clicked (or Enter) to add it at the default place.
  */
 export type LibraryTab = "techniques" | "steps" | "equipment";
-export type StageView = "flow" | "bench" | "preview";
+export type { StageView };
 
 const TIPS: Record<StageView, Record<LibraryTab, string>> = {
   flow: {
@@ -78,19 +79,42 @@ export const Thumbnail = ({ definitionId, size = 60 }: { definitionId?: string; 
     : <span className="s3d-lib-thumb s3d-lib-thumb--none" aria-hidden="true"><Icon name="cube" size={20} /></span>;
 };
 
+/**
+ * A technique's card image (§4.3): its first three Blender thumbnails composed together. No
+ * per-technique composite render exists yet (the M2 composites are review states), so the card is
+ * composed from the published item thumbnails; nothing is drawn that the models do not show.
+ */
+export const CompositeThumbnail = ({ ids, size = 60 }: { ids: string[]; size?: number }) => {
+  if (ids.length === 0) return <Thumbnail size={size} />;
+  const small = Math.round(size * 0.62);
+  return (
+    <span className="s3d-composite" style={{ width: size, height: size }} aria-hidden="true">
+      {ids.slice(0, 3).map((id, i) => {
+        const entry = equipment3dEntry(id);
+        return entry ? <img key={id} src={equipment3dAssetUrl(entry.thumbnail)} alt="" width={i === 0 ? size * 0.8 : small} height={i === 0 ? size * 0.8 : small}
+          className={`s3d-composite__img s3d-composite__img--${i}`} draggable={false} /> : null;
+      })}
+    </span>
+  );
+};
+
 export const StatusChip = ({ status }: { status: CatalogueTechnique["status"] }) => {
   if (!status) return null;
   const s = TECHNIQUE_STATUS[status];
   return <span className={`s3d-chip s3d-chip--${s.tone}`}><Icon name={s.icon} size={12} />{s.label}</span>;
 };
 
-export const LibraryPanel = ({ artifactKind, view, techniques, loading, readOnly, onAdd }: {
+export const LibraryPanel = ({ artifactKind, view, techniques, loading, readOnly, onAdd, onDragItem, onRailOpen }: {
   artifactKind: StudioArtifactKind;
   view: StageView;
   techniques: CatalogueTechnique[];
   loading: boolean;
   readOnly: boolean;
   onAdd: (item: LibraryDrag) => void;
+  /** The card being dragged, so the inspector can name the operation that will run (frame S2). */
+  onDragItem?: (item: LibraryDrag | undefined) => void;
+  /** At 1024–1279 px the library is a 56 px rail; a rail button opens it as a flyout (§4.10). */
+  onRailOpen?: () => void;
 }) => {
   const experiment = artifactKind === "lab";
   const [tab, setTab] = useState<LibraryTab>(experiment ? "techniques" : "steps");
@@ -113,7 +137,8 @@ export const LibraryPanel = ({ artifactKind, view, techniques, loading, readOnly
       aria-disabled={readOnly}
       aria-label={`Add ${label}`}
       draggable={!readOnly}
-      onDragStart={(event) => writeLibraryDrag(event.dataTransfer, item)}
+      onDragStart={(event) => { writeLibraryDrag(event.dataTransfer, item); onDragItem?.(item); }}
+      onDragEnd={() => onDragItem?.(undefined)}
       onClick={() => { if (!readOnly) onAdd(item); }}
       onKeyDown={(event) => activate(event, () => { if (!readOnly) onAdd(item); })}
     >
@@ -124,6 +149,13 @@ export const LibraryPanel = ({ artifactKind, view, techniques, loading, readOnly
 
   return (
     <aside className="s3d-panel s3d-library" aria-label="Library">
+      <nav className="s3d-lib-rail" aria-label="Library sections">
+        {(experiment ? ["techniques", "steps", "equipment"] as const : ["steps", "equipment"] as const).map((id) => (
+          <button key={id} type="button" className="s3d-button s3d-button--icon s3d-button--quiet" title={id === "techniques" ? "Techniques" : id === "steps" ? "Steps" : "Equipment"}
+            aria-label={`Open the library: ${id === "techniques" ? "Techniques" : id === "steps" ? "Steps" : "Equipment"}`}
+            onClick={() => { setTab(id); onRailOpen?.(); }}><Icon name={id === "techniques" ? "cards" : id === "steps" ? "move" : "flask"} size={18} /></button>
+        ))}
+      </nav>
       <div className="s3d-lib-head">
         <div className="s3d-lib-title">Library <span className="s3d-count">{count}</span></div>
         <label className="s3d-search">
@@ -142,7 +174,7 @@ export const LibraryPanel = ({ artifactKind, view, techniques, loading, readOnly
         {shownTab === "techniques" ? (
           loading ? <p className="s3d-small">Loading published techniques…</p> : techniqueList.map((t) => card({ kind: "technique", id: t.id }, t.title, (
             <>
-              <Thumbnail definitionId={t.thumbnailId} size={52} />
+              <CompositeThumbnail ids={t.compositeIds} size={56} />
               <div className="s3d-lib-card__text">
                 <div className="s3d-lib-card__name">{t.title}</div>
                 <div className="s3d-lib-card__detail">
@@ -180,7 +212,7 @@ export const LibraryPanel = ({ artifactKind, view, techniques, loading, readOnly
                   const t = techniques.find((c) => c.id === template.techniqueId);
                   return card({ kind: "technique", id: template.techniqueId! }, template.title, (
                     <>
-                      <Thumbnail definitionId={t?.thumbnailId} size={52} />
+                      <CompositeThumbnail ids={t?.compositeIds ?? []} size={56} />
                       <div className="s3d-lib-card__text">
                         <div className="s3d-lib-card__name">{t?.title ?? template.title}</div>
                         <div className="s3d-lib-card__detail">{t?.definition ? `${t.definition.process.nodes.length} steps` : "Loading…"}</div>

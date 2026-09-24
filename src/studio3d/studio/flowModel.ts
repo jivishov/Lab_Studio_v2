@@ -87,6 +87,8 @@ export interface NodeCard {
   /** The technique a flattened step came from (its id prefix), for group frames (§4.4, D8 a). */
   sourceTechniqueId?: string;
   outConditions: EdgeConditionType[];
+  /** A calculation step's tolerance, as authored on its rule or its action (§4.4 tolerance chip). */
+  tolerance?: number;
   position: { x: number; y: number };
 }
 
@@ -120,6 +122,8 @@ export const nodeCards = (draft: LabDefinition, diagnostics: StudioDiagnostic[])
     const input = actionInputField(action);
     const icon = node.type === "action" && interaction ? INTERACTION_ICON[interaction.type] ?? "move" : NODE_TYPE_ICON[node.type];
     const layout = getProcessNodeLayout(node, index);
+    const ruleTolerance = node.validation.find((rule) => rule.type === "calculationWithinTolerance" && typeof rule.tolerance === "number")?.tolerance;
+    const tolerance = node.type === "calculation" ? ruleTolerance ?? (typeof action?.parameters.tolerance === "number" ? action.parameters.tolerance : undefined) : undefined;
     const eyebrow = node.type === "teacherNote"
       ? "Teacher note · not played"
       : action ? `${NODE_TYPE_LABEL[node.type]} · ${verbWords(action.verb)}` : NODE_TYPE_LABEL[node.type];
@@ -140,6 +144,7 @@ export const nodeCards = (draft: LabDefinition, diagnostics: StudioDiagnostic[])
       interactionAuthored: Boolean(action?.interaction),
       ...(sourceTechniqueOf(draft, node) ? { sourceTechniqueId: sourceTechniqueOf(draft, node) } : {}),
       outConditions: draft.process.edges.filter((e) => e.from === node.id).map((e) => e.condition.type),
+      ...(tolerance !== undefined ? { tolerance } : {}),
       position: { x: layout.x, y: layout.y },
     };
   });

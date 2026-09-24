@@ -667,7 +667,9 @@ export class BenchEngine {
       : mouth.clone().addScaledVector(away, mouthR * 0.4).add(new THREE.Vector3(0, 0.004, 0));
 
     // Tilts: where the liquid first reaches the lip, and where it is when the runtime's volume has
-    // left; never so upright that the source's body would stand over the target.
+    // left, up to the registry's `pour.tiltDeg` (§5.7), which a source emptied by the pour reaches.
+    // Tipping further while liquid remains would show it gone before the runtime says so. Never so
+    // upright that the source's body would stand over the target.
     const vessel = vesselSlices(sourceEntry.fill);
     const vBefore = liquidOf(args.sourceBefore);
     const vAfter = liquidOf(args.sourceAfter);
@@ -696,7 +698,9 @@ export class BenchEngine {
     // Durations, seconds: the pour itself is 600–1400 ms scaled by the volume moved (§3.5).
     const moved = Math.max(Math.abs(liquidOf(args.targetAfter) - liquidOf(args.targetBefore)), Math.abs(vBefore - vAfter));
     const flow = Math.min(1.4, Math.max(0.6, 0.6 + moved / 125));
-    const T = { approach: 0.55, tilt: 0.45, flow, untilt: 0.4, back: 0.55 };
+    // The carry in and out stays short, so the pour itself keeps most of the time: from a drag's drop
+    // point the source is already over the target.
+    const T = { approach: released ? 0.3 : 0.45, tilt: 0.35, flow, untilt: 0.3, back: 0.45 };
     const at = { tilt: T.approach, flow: T.approach + T.tilt, untilt: T.approach + T.tilt + flow, back: T.approach + T.tilt + flow + T.untilt };
     const total = at.back + T.back;
 
@@ -750,7 +754,7 @@ export class BenchEngine {
         const tipping = t < at.flow;
         const u = tipping ? span(t, at.tilt, T.tilt) : t < at.untilt ? span(t, at.flow, flow) : span(t, at.untilt, T.untilt);
         // The tilt leads the lip's travel on the way in, so the body swings up and away first.
-        const tilt = tipping ? tiltStart * (1 - Math.pow(1 - u, 2)) : t < at.untilt ? tiltStart + (tiltEnd - tiltStart) * u : tiltEnd * (1 - ease(u));
+        const tilt = tipping ? tiltStart * (1 - Math.pow(1 - u, 2)) : t < at.untilt ? tiltStart + (tiltEnd - tiltStart) * ease(u) : tiltEnd * (1 - ease(u));
         const lipU = tipping ? ease(u) : t < at.untilt ? 1 : 1 - ease(u);
         q = pourQuaternion(geometry, toward, tilt);
         pos = rootForLip(geometry, q, standLip.clone().lerp(lipAt, lipU));
@@ -767,8 +771,9 @@ export class BenchEngine {
 
       // Volumes: the source's leaves as the pour runs; the target's follows once the stream lands.
       const flowT = t - at.flow;
-      const sourceU = span(flowT, 0, flow);
-      const targetU = span(flowT, Math.min(0.12, flow * 0.2), flow - Math.min(0.12, flow * 0.2));
+      // The pour eases in and out (§3.5), and so do the levels it moves.
+      const sourceU = ease(span(flowT, 0, flow));
+      const targetU = ease(span(flowT, Math.min(0.12, flow * 0.2), flow - Math.min(0.12, flow * 0.2)));
       const axis = UP.clone().applyQuaternion(q);
       if (vessel && args.sourceBefore.kind === "liquid") {
         const ml = vBefore + (vAfter - vBefore) * sourceU;
@@ -860,11 +865,15 @@ export class BenchEngine {
     this.frameBox(box, marginFactor, insets);
   }
 
-  /** "Whole bench" (§5.9): the bench surface itself, not only what stands on it. */
-  frameBench(insets: { left?: number; right?: number } = this.panelInsets): void {
+  /**
+   * "Whole bench" (§5.9): the bench surface itself, not only what stands on it. `fromFront` looks
+   * from the default front direction, whatever the camera is doing (the Studio's Front and Reset).
+   */
+  frameBench(insets: { left?: number; right?: number } = this.panelInsets, fromFront = false): void {
     const w = (BENCH_MM.width * MM) / 2;
     const d = (BENCH_MM.depth * MM) / 2;
-    this.frameBox(new THREE.Box3(new THREE.Vector3(-w, 0, -d), new THREE.Vector3(w, 0.12, d)), 0.9, insets);
+    const front = fromFront ? this.home.position.clone().sub(this.home.target).normalize() : undefined;
+    this.frameBox(new THREE.Box3(new THREE.Vector3(-w, 0, -d), new THREE.Vector3(w, 0.12, d)), 0.9, insets, front);
   }
 
   /** "Overhead" (§5.9): the steepest view the orbit limits allow, over the bench centre. */
@@ -904,11 +913,11 @@ export class BenchEngine {
     this.tweenTo(target.clone().add(across), target);
   }
 
-  private frameBox(box: THREE.Box3, marginFactor: number, insets: { left?: number; right?: number }): void {
+  private frameBox(box: THREE.Box3, marginFactor: number, insets: { left?: number; right?: number }, direction?: THREE.Vector3): void {
     this.controls.maxPolarAngle = MAX_POLAR;
     const centre = box.getCenter(new THREE.Vector3());
     const radius = Math.max(0.12, box.getSize(new THREE.Vector3()).length() / 2) * marginFactor;
-    const dir = this.camera.position.clone().sub(this.controls.target).normalize();
+    const dir = direction ?? this.camera.position.clone().sub(this.controls.target).normalize();
     const width = Math.max(1, this.canvas.clientWidth);
     const free = Math.max(0.3, 1 - ((insets.left ?? 0) + (insets.right ?? 0)) / width);
     const distance = Math.min(this.controls.maxDistance, Math.max(this.controls.minDistance, radius / Math.sin((this.camera.fov * DEG) / 2) / Math.sqrt(free)));

@@ -6,7 +6,8 @@ import { actionInputField } from "../../runtime/actionInputs";
 import type { StudioDiagnostic } from "../../studio/studioReadiness";
 import { collectStudioEquipmentIds } from "../../studio/studioValidation";
 import { configurationSlots } from "../../data/techniqueConfiguration";
-import { currentWorkflowInstance, workflowConfigurationBlocker, workflowNeedsConfiguration } from "../../studio/workflowConfiguration";
+import { createStudioIdAllocator } from "../../studio/studioTransactions";
+import { currentWorkflowInstance, workflowConfigurationBlocker, workflowNeedsConfiguration, workflowSourceId } from "../../studio/workflowConfiguration";
 import { equipment3dReadiness } from "../equipment3d/readiness";
 import { Icon } from "../ui/Icon";
 import { ProvenanceChip } from "../ui/ProvenanceChip";
@@ -126,13 +127,16 @@ const ValidationEditor = ({ studio, node }: { studio: Studio3DController; node: 
         </div>
       ))}
       <button type="button" className="s3d-button" disabled={disabled} onClick={() => replace([...node.validation, {
-        id: `${node.id}-rule-${node.validation.length + 1}`, type: "actionEvidence", label: "Action completed", ...(node.actionId ? { actionId: node.actionId } : {}),
+        // A fresh id from the Studio's allocator, so it cannot collide with any id in the draft.
+        id: createStudioIdAllocator(studio.draft).next(`${node.id}-rule`), type: "actionEvidence", label: "Action completed", ...(node.actionId ? { actionId: node.actionId } : {}),
       }], `Add validation to ${node.title}`)}><Icon name="plus" />Add rule</button>
     </>
   );
 };
 
-const StepInspector = ({ studio, node, onPreview }: { studio: Studio3DController; node: ProcessNode; onPreview: (nodeId: string) => void }) => {
+const StepInspector = ({ studio, node, onPreview, onToast }: {
+  studio: Studio3DController; node: ProcessNode; onPreview: (nodeId: string) => void; onToast: (text: string, action?: { label: string; run: () => void }) => void;
+}) => {
   const { draft, commit, readOnly } = studio;
   const disabled = Boolean(readOnly);
   const action = node.actionId ? draft.actions.find((a) => a.id === node.actionId) : undefined;
@@ -232,7 +236,10 @@ const StepInspector = ({ studio, node, onPreview }: { studio: Studio3DController
       <div className="s3d-row s3d-ins-actions">
         <button type="button" className="s3d-button" onClick={() => onPreview(node.id)}><Icon name="play" />Preview from here</button>
         <button type="button" className="s3d-button s3d-button--danger-quiet" disabled={disabled}
-          onClick={() => commit(`Delete ${node.title}`, [{ type: "removeProcessNode", nodeId: node.id }], { selection: undefined })}>Delete step</button>
+          onClick={() => {
+            // As on the canvas (§4.9): removal comes with an undo toast.
+            if (commit(`Delete ${node.title}`, [{ type: "removeProcessNode", nodeId: node.id }], { selection: undefined }).ok) onToast(`Deleted ${node.title}.`, { label: "Undo", run: studio.undo });
+          }}>Delete step</button>
       </div>
     </>
   );
@@ -276,8 +283,96 @@ const EdgeInspector = ({ studio, index, edge, onDelete }: { studio: Studio3DCont
   );
 };
 
+/**
+ * A flattened experiment draft (§4.4, D8 a): the honest note, and each technique the draft copied,
+ * which opens its technique-instance view.
+ */
+const ExperimentSummary = ({ studio }: { studio: Studio3DController }) => {
+  const { draft } = studio;
+  if (studio.artifactKind !== "lab" || draft.techniques.length === 0 || draft.compositionManifest) return null;
+  return (
+    <>
+      <div className="s3d-eyebrow">Experiment draft</div>
+      <div className="s3d-ins-title">Flattened from {draft.techniques.length} technique{draft.techniques.length === 1 ? "" : "s"}</div>
+      <div className="s3d-note"><b>Techniques are copied with their own equipment.</b> A vessel does not carry across techniques. The compiled path in Phase B does this.</div>
+      <ul className="s3d-eq-list">
+        {draft.techniques.map((t) => (
+          <li key={t.id}>
+            <button type="button" className="s3d-eq-list__button" onClick={() => studio.setSelection({ kind: "technique", id: t.id })}>
+              <Icon name="cards" /><span>{t.title}</span>
+              <span className="s3d-small">{t.process.nodes.length} steps · {t.initialState.equipment.length} own items</span>
+            </button>
+          </li>
+        ))}
+      </ul>
+      <div className="s3d-small">Group frames on the flow show where each step came from. They cannot be edited.</div>
+    </>
+  );
+};
+
+/** A technique instance in an experiment (§4.7): its source, configuration, ports and state. */
+const TechniqueInstanceInspector = ({ studio, instanceId }: { studio: Studio3DController; instanceId: string }) => {
+  const stored = studio.draft.techniques.find((t) => t.id === instanceId);
+  const current = useMemo(() => {
+    try { return currentWorkflowInstance(studio.draft, instanceId); } catch { return stored; }
+  }, [instanceId, stored, studio.draft]);
+  if (!stored || !current) return <p className="s3d-small">This technique is no longer in the draft.</p>;
+  const slots = configurationSlots(current);
+  const blocker = workflowConfigurationBlocker(current);
+  const needs = workflowNeedsConfiguration(current);
+  const state = blocker ? "Host-bound: cannot be configured here" : needs ? "Needs setup" : "Configured";
+  return (
+    <>
+      <div className="s3d-eyebrow">Technique instance</div>
+      <div className="s3d-ins-title">{stored.title}</div>
+      <dl className="s3d-kv">
+        <dt>Source technique</dt><dd className="s3d-mono">{workflowSourceId(stored)}</dd>
+        <dt>Instance</dt><dd className="s3d-mono">{stored.id}</dd>
+        <dt>Steps</dt><dd>{stored.process.nodes.length}</dd>
+        <dt>State</dt><dd>{state}</dd>
+        <dt>Unset settings</dt>
+        <dd>{slots.length === 0 ? "none: every setting has an approved value" : [
+          `${slots.filter((s) => s.kind === "classroom-quantity").length} classroom values`,
+          `${slots.filter((s) => s.kind === "internal-identifier").length} derived record names`,
+          `${slots.filter((s) => s.kind === "host-composition-only").length} host-only`,
+        ].join(" · ")}</dd>
+        <dt>Ports</dt><dd>{stored.composition?.ports.length ? stored.composition.ports.map((p) => <div key={p.id}><span className="s3d-mono">{p.kind}</span> {p.label}</div>) : "none declared"}</dd>
+      </dl>
+      {blocker ? <div className="s3d-blocker" role="alert"><Icon name="lock" /><div>{blocker}</div></div> : null}
+      <div className="s3d-note">Setup changes go through the Setup tab (<span className="s3d-mono">configureWorkflow</span>). In a flattened draft the ports are recorded but not connected; the compiled path in Phase B connects them.</div>
+    </>
+  );
+};
+
+/** Frame S2: while a library step is dragged over the Flow, the operation that will run. */
+export interface DragPreview {
+  title: string;
+  verb?: string;
+  anchorTitle?: string;
+  nextTitle?: string;
+}
+
+const DragPreviewPanel = ({ preview }: { preview: DragPreview }) => (
+  <>
+    <div className="s3d-eyebrow">Adding a step</div>
+    <div className="s3d-ins-title">{preview.title}</div>
+    <div className="s3d-small">Generic step template{preview.verb ? <> (verb <span className="s3d-mono">{preview.verb}</span>)</> : null}. It is not a published technique.</div>
+    <section className="s3d-ins-sec">
+      <div className="s3d-ins-sec__head is-static">On release</div>
+      <dl className="s3d-kv">
+        <dt>Operation</dt><dd className="s3d-mono">appendTemplateStep</dd>
+        <dt>Anchor</dt><dd>{preview.anchorTitle ?? "the last step"}</dd>
+        <dt>Placement</dt><dd>{preview.anchorTitle ? "after" : "append"}</dd>
+        {preview.nextTitle ? <><dt>Before</dt><dd>{preview.nextTitle}</dd></> : null}
+      </dl>
+    </section>
+    <div className="s3d-note">One change, one transaction. It will read “{preview.anchorTitle ? "Insert" : "Add"} {preview.title}” in the activity list and undo in one step.</div>
+  </>
+);
+
 const StepOutline = ({ studio }: { studio: Studio3DController }) => (
   <>
+    <ExperimentSummary studio={studio} />
     <div className="s3d-eyebrow">Step outline</div>
     {studio.draft.process.nodes.length === 0 ? <p className="s3d-small">No steps yet.</p> : null}
     <ol className="s3d-outline">
@@ -460,7 +555,7 @@ const ChecksTab = ({ studio, onGoTo, onImport, onExport }: { studio: Studio3DCon
 
 // ------------------------------------------------------------------ Shell
 
-export const Inspector = ({ studio, tab, onTab, onPreview, onImport, onExport, onDeleteEdge, benchSelected, benchNothing }: {
+export const Inspector = ({ studio, tab, onTab, onPreview, onImport, onExport, onDeleteEdge, onToast, benchSelected, benchNothing, dragPreview, onSheetHeight }: {
   studio: Studio3DController;
   tab: InspectorTab;
   onTab: (tab: InspectorTab) => void;
@@ -468,22 +563,46 @@ export const Inspector = ({ studio, tab, onTab, onPreview, onImport, onExport, o
   onImport: () => void;
   onExport: () => void;
   onDeleteEdge: (index: number) => void;
+  onToast: (text: string, action?: { label: string; run: () => void }) => void;
   /** The Starting bench view supplies its own equipment inspector and bench list. */
   benchSelected?: ReactNode;
   benchNothing?: ReactNode;
+  /** A library step being dragged over the Flow (frame S2). */
+  dragPreview?: DragPreview;
+  /** On a tablet the inspector is a bottom sheet; its grip resizes it (§4.10). */
+  onSheetHeight?: (share: number) => void;
 }) => {
   const { draft, selection } = studio;
   const node = selection?.kind === "node" ? draft.process.nodes.find((n) => n.id === selection.id) : undefined;
   const edge = selection?.kind === "edge" ? draft.process.edges[selection.index] : undefined;
   const goTo = (nodeId: string) => { studio.setSelection({ kind: "node", id: nodeId }); onTab("selected"); };
-  // In the Starting bench view the selection is equipment; with none, the bench inventory (§4.7).
-  const selected = selection?.kind === "equipment" && benchSelected ? benchSelected
-    : benchNothing ? benchNothing
-    : node ? <StepInspector studio={studio} node={node} onPreview={onPreview} />
-      : edge && selection?.kind === "edge" ? <EdgeInspector studio={studio} index={selection.index} edge={edge} onDelete={onDeleteEdge} />
-        : benchNothing ?? <StepOutline studio={studio} />;
+  // A drag in progress names its operation (S2). In the Starting bench view the selection is
+  // equipment; with none, the bench inventory (§4.7).
+  const selected = dragPreview ? <DragPreviewPanel preview={dragPreview} />
+    : selection?.kind === "equipment" && benchSelected ? benchSelected
+      : benchNothing ? benchNothing
+        : node ? <StepInspector studio={studio} node={node} onPreview={onPreview} onToast={onToast} />
+          : edge && selection?.kind === "edge" ? <EdgeInspector studio={studio} index={selection.index} edge={edge} onDelete={onDeleteEdge} />
+            : selection?.kind === "technique" ? <TechniqueInstanceInspector studio={studio} instanceId={selection.id} />
+              : <StepOutline studio={studio} />;
+  const startSheetDrag = (event: React.PointerEvent<HTMLButtonElement>) => {
+    if (!onSheetHeight) return;
+    const grip = event.currentTarget;
+    grip.setPointerCapture(event.pointerId);
+    const move = (e: PointerEvent) => onSheetHeight(Math.min(0.8, Math.max(0.2, (window.innerHeight - e.clientY) / window.innerHeight)));
+    const up = () => { grip.removeEventListener("pointermove", move); grip.removeEventListener("pointerup", up); };
+    grip.addEventListener("pointermove", move);
+    grip.addEventListener("pointerup", up);
+  };
   return (
     <aside className="s3d-panel s3d-inspector" aria-label="Inspector">
+      <button type="button" className="s3d-sheet-grip" aria-label="Resize the inspector" onPointerDown={startSheetDrag}
+        onKeyDown={(e) => {
+          if (!onSheetHeight) return;
+          const current = (e.currentTarget.parentElement?.getBoundingClientRect().height ?? 0) / window.innerHeight;
+          if (e.key === "ArrowUp") { e.preventDefault(); onSheetHeight(Math.min(0.8, current + 0.05)); }
+          if (e.key === "ArrowDown") { e.preventDefault(); onSheetHeight(Math.max(0.2, current - 0.05)); }
+        }}><span /></button>
       <div className="s3d-tabs" role="tablist">
         {(["selected", "setup", "checks"] as const).map((id) => (
           <button key={id} type="button" role="tab" aria-selected={tab === id} className={tab === id ? "is-on" : ""} onClick={() => onTab(id)}>
