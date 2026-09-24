@@ -227,6 +227,10 @@ export class BenchEngine {
       if (this.pour.tick(dt)) animating = true;
       else this.stopPour();
     }
+    if (this.controls.autoRotate) {
+      this.controls.update(dt);
+      animating = true;
+    }
     if (this.tween) {
       const tw = this.tween;
       tw.t = Math.min(1, tw.t + (tw.duration > 0 ? dt / tw.duration : 1));
@@ -914,6 +918,19 @@ export class BenchEngine {
     const right = new THREE.Vector3().crossVectors(dir, new THREE.Vector3(0, 1, 0)).normalize().negate();
     const target = centre.clone().addScaledVector(right, -(shiftPx / (width / 2)) * halfWidthWorld);
     this.tweenTo(target.clone().addScaledVector(dir, distance), target);
+  }
+
+  /**
+   * The Studio's equipment inspection (handoff §4.8): the camera turns slowly around what it
+   * frames, all the way round (the ±70° azimuth limit is lifted while it turns). Under reduced
+   * motion it does not turn; the item can still be orbited by hand.
+   */
+  setTurntable(on: boolean): void {
+    this.controls.minAzimuthAngle = on ? -Infinity : -70 * DEG;
+    this.controls.maxAzimuthAngle = on ? Infinity : 70 * DEG;
+    this.controls.autoRotate = on && !this.options.reducedMotion;
+    this.controls.autoRotateSpeed = 1.6;
+    this.requestRender();
   }
 
   resetView(): void {

@@ -52,8 +52,10 @@ const nodeCompletedIn = (state: RuntimeState, nodeId: string) => state.completed
  * `authoredDefinition` is the definition as written, before teacher setup; it tells a value the
  * setup supplied (a `{{config.x}}` binding) from one the bench recorded, for provenance chips.
  */
-export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeState["mode"] = "guided", authoredDefinition?: RuntimeDefinition) => {
-  const runtime = usePlayerRuntime(definition, initialMode);
+export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeState["mode"] = "guided", authoredDefinition?: RuntimeDefinition,
+  /** The Studio preview starts at a step (plan §4.6: `focusNodeId`, `focusVersion`), as the 2D preview does. */
+  focus?: { nodeId?: string; version?: number }) => {
+  const runtime = usePlayerRuntime(definition, initialMode, focus?.nodeId, focus?.version ?? 0);
   const [inputValues, setInputValues] = useState<Record<string, string>>({});
   const [selectedSource, setSelectedSource] = useState<string>();
   const [selectedTarget, setSelectedTarget] = useState<string>();

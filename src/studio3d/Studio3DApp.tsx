@@ -1,6 +1,8 @@
 import { Technique3DRoute } from "./player/Technique3DRoute";
 import { studio3DFallbackHash, type Studio3DRoute } from "./routes3d";
+import { Studio3D } from "./studio/Studio3D";
 import "./styles/studio3d.css";
+import "./styles/studio3d-studio.css";
 
 const viewTitles: Record<Studio3DRoute["view"], string> = {
   home: "Lab Studio 3D",
@@ -11,10 +13,17 @@ const viewTitles: Record<Studio3DRoute["view"], string> = {
 
 /**
  * Entry point of the additive Lab Studio 3D app (plan §4.2), mounted by the shell only while
- * `studio3dV1` is on. `#/3d/technique/:id` runs Player3D; Studio 3D (M6) and experiments (Phase B)
- * replace the remaining placeholders, each linking to the existing 2D route meanwhile.
+ * `studio3dV1` is on. `#/3d/technique/:id` runs Player3D and `#/3d/studio` runs Studio 3D (M6);
+ * experiments (Phase B) replace the remaining placeholders, linking to the 2D route meanwhile.
  */
 export const Studio3DApp = ({ route }: { route: Studio3DRoute }) => {
+  if (route.view === "studio") {
+    return (
+      <div className="s3d">
+        <Studio3D />
+      </div>
+    );
+  }
   if (route.view === "technique") {
     return (
       <div className="s3d">

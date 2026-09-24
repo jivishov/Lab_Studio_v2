@@ -8,7 +8,7 @@ import { Icon } from "../ui/Icon";
 import { coveredSides, MOVABLE_FROM_WIDTH, sanitizeLayout, type PanelId, type PanelLayout, type PanelState } from "./panelLayout";
 import { BenchList, EquipmentTray, ExamineCard, HelpDialog, NOTEBOOK_WIDTH, NotebookSheet, ResultsSheet, type PanelControls } from "./panels";
 import { StepCard } from "./StepCard";
-import { usePlayer3D } from "./usePlayer3D";
+import { usePlayer3D, type Player3DController } from "./usePlayer3D";
 
 /**
  * Player3D (handoff §5): the live bench full-bleed, with floating panels. It commits only through
@@ -40,7 +40,7 @@ const writePrefs = (prefs: Prefs) => {
 const systemReducedMotion = () => typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 const windowSize = () => ({ width: window.innerWidth, height: window.innerHeight });
 
-export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fallbackHash, backHref }: {
+export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fallbackHash, backHref, variant = "full", focusNodeId, focusVersion, onPlayer }: {
   definition: RuntimeDefinition;
   /** The definition before teacher setup, for provenance chips (see usePlayer3D). */
   authoredDefinition?: RuntimeDefinition;
@@ -48,8 +48,15 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   sourceTag: string;
   fallbackHash: string;
   backHref: string;
+  /** "preview": inside the Studio's stage (handoff §4.6), which supplies its own toolbar. */
+  variant?: "full" | "preview";
+  focusNodeId?: string;
+  focusVersion?: number;
+  /** The Studio's preview toolbar drives restart, mode and step through the controller. */
+  onPlayer?: (player: Player3DController) => void;
 }) => {
-  const player = usePlayer3D(definition, "guided", authoredDefinition);
+  const player = usePlayer3D(definition, "guided", authoredDefinition, { nodeId: focusNodeId, version: focusVersion });
+  useEffect(() => { onPlayer?.(player); });
   const { runtime, scene, flow, showGuidance } = player;
   const [engine, setEngine] = useState<BenchEngine>();
   const [prefs, setPrefs] = useState(readPrefs);
@@ -334,7 +341,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
       : "Fill in the step card, then record. Right-drag to look around.";
 
   return (
-    <div className={`s3d-player${reducedMotion ? " is-reduced-motion" : ""}`} ref={playerRef}>
+    <div className={`s3d-player${reducedMotion ? " is-reduced-motion" : ""}${variant === "preview" ? " s3d-player--preview" : ""}`} ref={playerRef}>
       <header className="s3d-topbar">
         <span className="s3d-mark"><Icon name="flask" size={18} /></span>
         <span className="s3d-topbar__title">{title}</span>
