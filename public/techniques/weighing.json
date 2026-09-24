@@ -199,10 +199,18 @@
       "id": "record-solid-mass",
       "verb": "record",
       "label": "Record mass",
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "measurementId",
+        "accessibleLabel": "Record evidence for Record mass.",
+        "successCue": "Mass evidence recorded in the notebook.",
+        "invalidCue": "The simulator could not complete that action. Review the step requirements."
+      },
       "parameters": {
         "measurementId": "{{config.massMeasurementId}}",
         "label": "Solid mass",
-        "unit": "g"
+        "unit": "g",
+        "copyExistingMeasurementOnly": true
       },
       "prerequisites": [],
       "stateChanges": [

@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { deriveActionEffectContract } from "../../domain/atomRegistry";
+import { defaultInteractionForAction } from "../../domain/interactions";
 import type { TechniqueDefinition } from "../../domain/types";
 import { validateTechniqueDefinition } from "../../domain/validation";
 import { auditStandaloneEvidence } from "../standaloneEvidenceAudit";
@@ -86,6 +87,23 @@ describe("declared standalone configuration contracts", () => {
     expect(mass?.source).toBe("action-input");
     expect(mass?.source === "action-input" ? mass.outputMeasurementId : undefined)
       .toBe("standalone-mass-measurement-id");
+  });
+
+  it("validates configured weighing because its notebook step copies the balance reading, not a second producer", async () => {
+    // Before the fix, `record-solid-mass` named the same measurement as `weigh-solid`'s typed mass
+    // output, so a configured weighing failed validation with "repeats structured output". It is now
+    // a measurement copy (`copyExistingMeasurementOnly`, authored `recordNotebook`), as other
+    // techniques' record-after-weigh steps are.
+    const weighing = await readTechnique("weighing");
+    const configured = applyTechniqueConfiguration(weighing, {});
+    const validation = validateTechniqueDefinition(configured);
+    expect(validation.ok, validation.errors.join("\n")).toBe(true);
+    const record = configured.actions.find((action) => action.id === "record-solid-mass")!;
+    expect(record.parameters.copyExistingMeasurementOnly).toBe(true);
+    expect(record.parameters.measurementId).toBe("standalone-mass-measurement-id");
+    // The authored interaction is the one the verb already derived, so nothing learner-facing changed.
+    const { interaction, ...withoutInteraction } = weighing.actions.find((action) => action.id === "record-solid-mass")!;
+    expect(interaction).toEqual(defaultInteractionForAction(withoutInteraction));
   });
 
   it("binds an unhosted standalone technique using declared values and validates the result", async () => {

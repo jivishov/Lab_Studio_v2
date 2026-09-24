@@ -180,11 +180,40 @@ was not added.
 
 ## Open issues found
 
-1. **Weighing cannot be configured in Studio 3D either.** Applying its setup returns the core's
-   refusal: "Configured technique is not valid: technique.actions repeats structured output
-   `weighing-copy-standalone-mass-measurement-id`." This is the content defect already reported in
-   M5 (`record-solid-mass` lacks `parameters.copyExistingMeasurementOnly: true`). The fix is a
-   content change and needs your decision.
+1. **Weighing could not be configured anywhere. Fixed on 2026-09-24 by decision** (DECISIONS.md, D4
+   exception). Applying its setup returned the core's refusal: "Configured technique is not valid:
+   technique.actions repeats structured output `…standalone-mass-measurement-id`."
+
+   **Cause.** `weigh-solid` declares the balance reading as a typed output
+   (`mass.outputMeasurementId`). `record-solid-mass` named the same measurement as a second
+   producer. The validator skips `{{config.…}}` names, so the published file passed; setup made
+   the two names equal.
+
+   **Review of the first recommendation.** Before implementing, the recommendation was checked
+   against the source and narrowed:
+   - Don't copy the built-in fixture's label: it belongs to a different weighing variant.
+   - Don't bump the version: `checkCycle04Foundations.mjs` requires `1.2.0`.
+   - Don't edit the cycle-04 transform: it is a one-time in-place migration.
+
+   **The fix.** `record-solid-mass` gains `copyExistingMeasurementOnly: true` and an authored
+   `recordNotebook` interaction identical to the derived default. At runtime the step already
+   took the weigh reading (`reducer.ts:5794`); it now also refuses a replacement value
+   (`reducer.ts:5755`).
+
+   **Checks.**
+   - A narrow validator script (static, on the one file): the published file valid, standalone
+     configured valid, two configured Studio workflows valid, and the interaction equal to the
+     derived default.
+   - Type check.
+   - Browser: `#/3d/technique/weighing` starts and plays through. The record step copied 2.505 g,
+     and the results show it as "Your entry".
+   - `checkCycle04Foundations.mjs` cannot run in this export: it needs the missing
+     `CYCLE_01_BASELINE.json`.
+
+   **Tests.** The existing core tests that call weighing's setup
+   (`techniqueConfiguration.test.ts` "keeps weighing bound…" and `workflowConfiguration.test.ts`
+   "keeps typed mass output…") threw on main before this fix. A new case, written and not run,
+   asserts the configured technique validates and the interaction is unchanged.
 2. **Preview crowding.** On a stage narrower than a full window, Player3D's floating tray can
    crowd its dock. It is usable; a compact preview layout is a follow-up.
 3. **Not exercised in the browser:** HTML drag and drop (library → edge insertion, bench and shelf

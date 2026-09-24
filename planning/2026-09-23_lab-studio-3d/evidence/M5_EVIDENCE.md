@@ -177,6 +177,11 @@ and is left for your decision. Until then, three of the four standalone techniqu
 `dilution` and `transmittance-dilution` were not opened in this session. The weighing tests in
 `__tests__/adapters.test.ts` call the same setup and will fail on this baseline when run.
 
+**Update, 2026-09-24: fixed by decision** (DECISIONS.md, D4 exception). `record-solid-mass` is now a
+measurement copy (`copyExistingMeasurementOnly: true`, with an authored `recordNotebook`
+interaction identical to the derived one). `#/3d/technique/weighing` starts and plays through. See
+`M6_EVIDENCE.md`, open issue 1, for the review, the checks and the tests.
+
 ## Static exit
 
 - `npx tsc -b`: exit 0 after the last edit of this session.
