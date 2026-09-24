@@ -50,7 +50,7 @@ The user asked for **the highest fidelity** to the plan and the handoff.
 | M6: Studio 3D | Done, plus one critical fidelity review pass | `c97c812`, `de872b4` |
 | Starting contents in Studio 3D (decision b) | Done | `049e471` |
 | Weighing content fix (D4 exception) | Done | `e8d1d26` |
-| M7: gesture bridge and hand-control panel | Done (static exit); G3 not run | `e60293d`; `evidence/M7_EVIDENCE.md` |
+| M7: gesture bridge and hand-control panel | Done (static exit), with a second fidelity pass; G3 not run | `e60293d`, `d03e754`; `evidence/M7_EVIDENCE.md` |
 | **M8: Pack 1 acceptance** | **Next** | — |
 
 ## M7 (delivered 2026-09-24)
