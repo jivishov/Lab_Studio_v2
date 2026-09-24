@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { GestureCursor } from "../../player/gesture/gestureMath";
 import { gestureActionButtonSelector } from "../../player/gesture/bridge/gestureBridge";
-import { createBenchGestureTargetResolver, player3DHoverSelector, trayTileSelector, type BenchGestureTargets } from "../bench/input/targetResolver";
+import { benchCanvasUnder, createBenchGestureTargetResolver, player3DHoverSelector, trayTileSelector, type BenchGestureTargets } from "../bench/input/targetResolver";
 import { handControlSetupSteps } from "../player/HandControlPanel";
 import { sanitizeLayout } from "../player/panelLayout";
 
@@ -128,11 +128,19 @@ describe("Player3D's gesture target resolver (raycast behind the canvas)", () =>
     const f = fixture({ pick: () => undefined });
     expect(f.resolver.hoverAt(cursor())).toBeUndefined();
   });
+
+  it("counts a point as over the bench only where the canvas itself is the element, not a panel over it", () => {
+    const f = fixture();
+    expect(benchCanvasUnder(f.canvas, 10, 10)).toBe(true);
+    f.setUnder(f.tileImage);
+    expect(benchCanvasUnder(f.canvas, 10, 10)).toBe(false);
+    expect(benchCanvasUnder(undefined, 10, 10)).toBe(false);
+  });
 });
 
-describe("the hand-control panel's set-up state (engine state only)", () => {
-  const states = (supported: boolean, status: Parameters<typeof handControlSetupSteps>[1]) =>
-    handControlSetupSteps(supported, status).map((step) => step.state);
+describe("the hand-control panel's set-up state (the secure context and the engine's status)", () => {
+  const states = (secureContext: boolean, status: Parameters<typeof handControlSetupSteps>[1]) =>
+    handControlSetupSteps(secureContext, status).map((step) => step.state);
 
   it("uses the 2D requirements wording, one requirement per line", () => {
     expect(handControlSetupSteps(true, "off").map((step) => step.text)).toEqual([
@@ -143,8 +151,9 @@ describe("the hand-control panel's set-up state (engine state only)", () => {
     ]);
   });
 
-  it("marks each requirement from the engine's status", () => {
+  it("marks each requirement from the secure context and the engine's status", () => {
     expect(states(false, "off")).toEqual(["problem", "pending", "pending", undefined]);
+    expect(states(true, "off")).toEqual(["done", "pending", "pending", undefined]);
     expect(states(true, "starting")).toEqual(["done", "now", "pending", undefined]);
     expect(states(true, "permissionDenied")).toEqual(["done", "problem", "pending", undefined]);
     expect(states(true, "noHand")).toEqual(["done", "done", "now", undefined]);

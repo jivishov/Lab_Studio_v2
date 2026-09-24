@@ -369,11 +369,15 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     gestureBridge.cancel(true);
     gestureBridge.cancelScroll();
   }, [gestureBridge, gestureBlocked]);
-  /** As the 2D Reset does, stopping cancels an unfinished gesture and stops the camera tracks. */
+  /**
+   * As the 2D Reset does, stopping cancels an unfinished gesture and stops the camera tracks. The
+   * engine is stopped only when it is not already off: stopping an unsupported engine reports
+   * "Unavailable", which would open the panel after a Restart.
+   */
   const stopHandControl = () => {
     gestureBridge.cancelScroll();
     gestureBridge.cancel(true);
-    gesture.stop();
+    if (gesture.status !== "off") gesture.stop();
   };
   const toggleHandControl = () => {
     if (gesture.enabled) {

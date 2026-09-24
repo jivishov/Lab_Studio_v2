@@ -43,6 +43,14 @@ export interface BenchGestureTargets {
 
 const clamp01 = (value: number): number => Math.min(Math.max(value, 0), 1);
 
+/**
+ * Whether the bench canvas itself is under a client point. The canvas fills the player and the
+ * floating panels sit over it, so "over the bench" (the 2D bridge's "over the workbench") means the
+ * canvas is the element there, not only that the point is inside its rectangle.
+ */
+export const benchCanvasUnder = (canvas: HTMLCanvasElement | undefined, clientX: number, clientY: number): boolean =>
+  Boolean(canvas) && typeof document.elementFromPoint === "function" && document.elementFromPoint(clientX, clientY) === canvas;
+
 export const createBenchGestureTargetResolver = (targets: BenchGestureTargets): GestureTargetResolver<BenchGestureGrab> => {
   const grabTrayTile = (element: Element, cursor: GestureCursor): GestureGrabResolution<BenchGestureGrab> | undefined => {
     const tile = element.closest<HTMLElement>(trayTileSelector);

@@ -7,7 +7,9 @@ import { FloatPanel, type PanelControls } from "./panels";
  * Hand control (handoff §5.15): a floating panel with the camera preview, the set-up state, gesture
  * cards and cursor response, the 2D player's existing control. Its wording is the 2D player's camera
  * help and privacy text, with only the control names changed to Player3D's (Hand control, Restart,
- * tray). Its behaviour comes entirely from the shared gesture bridge (plan D6): the panel presents
+ * tray). One 2D sentence is left out because it is not true here: Player3D has no edge-hover
+ * scrolling (the shared scroll engine edge-scrolls only 2D regions and a scrolling document).
+ * Its behaviour comes entirely from the shared gesture bridge (plan D6): the panel presents
  * the engine's state and adds no gesture meaning of its own (G-10). It shows while hand control is on,
  * as the 2D camera status panel does, and stays mounted when collapsed so the camera keeps its video.
  */
@@ -28,12 +30,13 @@ export interface SetupStep {
 /**
  * The 2D requirements sentence ("Use localhost or HTTPS, allow webcam permission, keep one hand
  * visible, and use steady lighting with enough contrast."), one requirement per line, each marked
- * from the engine's own state. Lighting cannot be checked, so it carries no mark.
+ * from what the browser and the engine report: the secure context (which the engine also requires)
+ * and the engine's status. Lighting cannot be checked, so it carries no mark.
  */
-export const handControlSetupSteps = (supported: boolean, status: GestureCameraStatus): SetupStep[] => {
+export const handControlSetupSteps = (secureContext: boolean, status: GestureCameraStatus): SetupStep[] => {
   const tracking = status === "ready" || status === "noHand" || status === "unstable";
   return [
-    { key: "secure", text: "Use localhost or HTTPS", state: supported ? "done" : "problem" },
+    { key: "secure", text: "Use localhost or HTTPS", state: secureContext ? "done" : "problem" },
     {
       key: "permission",
       text: "Allow webcam permission",
@@ -76,7 +79,7 @@ export const HandControlPanel = ({ gesture, rearmRequired, controls }: {
 }) => {
   const collapsed = Boolean(controls.layout.hand?.collapsed);
   const status = statusLabelForGesture(gesture.status);
-  const steps = handControlSetupSteps(gesture.supported, gesture.status);
+  const steps = handControlSetupSteps(typeof window !== "undefined" && window.isSecureContext, gesture.status);
   return (
     <FloatPanel id="hand" label="Hand control" className="s3d-hand" controls={controls} keepMounted
       head={<>
@@ -115,7 +118,6 @@ export const HandControlPanel = ({ gesture, rearmRequired, controls }: {
               </li>
             ))}
           </ul>
-          <p className="s3d-small s3d-hand__fallback">Edge-hover scrolling remains available as a fallback.</p>
         </section>
 
         <label className="s3d-hand__speed">

@@ -7,6 +7,7 @@ import type { SceneItem } from "../../adapters/runtimeToScene";
 import type { Player3DController } from "../../player/usePlayer3D";
 import type { BenchEngine } from "../BenchEngine";
 import { arrowDirection, cycleIndex, nudgePoint, spatialOrder, type BenchPoint } from "./keyboard";
+import { benchCanvasUnder } from "./targetResolver";
 
 /**
  * Picking up and setting down on the 3D bench (handoff §5.6). A press becomes a carry after 4 px
@@ -16,8 +17,9 @@ import { arrowDirection, cycleIndex, nudgePoint, spatialOrder, type BenchPoint }
  * 2D rule; nothing commits until release or Enter (G-5). Both ways in release through the same
  * `resolveRelease`, in the 2D order. Esc cancels. Tray tiles start a carry of an item that is not
  * yet on the bench. Hand control (the shared gesture bridge, plan D6) carries through the same path:
- * a pinch lifts the item, the pinch point moves it, and releasing over the bench commits through the
- * pointer's release; releasing anywhere else changes nothing.
+ * a pinch lifts the item, the pinch point moves it over the bench, and releasing over the bench
+ * commits through the pointer's release, tagged "vision" as the 2D player tags its camera releases.
+ * Releasing over a panel, the tray or the dock changes nothing, as releasing off the 2D workbench does.
  */
 export interface CarryCallout {
   x: number;
@@ -148,9 +150,10 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       return;
     }
     const point = carry.point;
+    const origin = carry.via === "gesture" ? "vision" : "pointer";
     engine.endCarryPreview(true);
     if (carry.kind === "tray") {
-      player.dropFromTray(carry.definitionId, point);
+      player.dropFromTray(carry.definitionId, point, origin);
       return;
     }
     const overlap = overlapAt(carry.instanceId, carry.definitionId, point);
@@ -173,6 +176,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
         ? { snapPoint: snapReleasePoint({ instanceId: snapTarget.id, definitionId: snapTarget.definitionId, ...snapTargetPoint }, carry.definitionId, interaction?.snapZoneId) }
         : {}),
       nextZIndex: player.nextZIndex(),
+      origin,
     });
     const releasePoint = fromBench(carry.definitionId, point.xMm, point.yMm);
     // Any release the runtime does not accept changes nothing, so the item springs back to where
@@ -332,13 +336,14 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     return Boolean(engine && item && !pouringRef.current && !getVisualProfile(item.definitionId)?.probePresentation);
   }, [engine, scene]);
 
-  /** Whether a client point is over the bench canvas, where a gesture carry follows and can commit. */
-  const overBench = useCallback((clientX: number, clientY: number): boolean => {
-    if (!engine) return false;
-    const rect = engine.canvasElement.getBoundingClientRect();
-    return clientX >= rect.left && clientX <= rect.right && clientY >= rect.top && clientY <= rect.bottom
-      && Boolean(engine.benchPointAt(clientX, clientY));
-  }, [engine]);
+  /**
+   * Whether a client point is over the bench, where a gesture carry follows and can commit: the
+   * canvas itself is the element there (no panel, tray or dock covers it) and the ray meets the bench.
+   * This is the 3D form of the 2D bridge's "release over the workbench".
+   */
+  const overBench = useCallback((clientX: number, clientY: number): boolean =>
+    Boolean(engine && benchCanvasUnder(engine.canvasElement, clientX, clientY) && engine.benchPointAt(clientX, clientY)),
+  [engine]);
 
   /** Hand control: a pinch on a bench item lifts it at once, as a pointer carry does after 4 px. */
   const startGestureCarry = useCallback((instanceId: string): boolean => {
@@ -361,11 +366,22 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     return true;
   }, [cancel]);
 
-  /** The pinch point moved: over the bench, the gesture carry follows it as the pointer's does. Never commits. */
+  /**
+   * The pinch point moved: over the bench, the gesture carry follows it as the pointer's does. Off the
+   * bench a release would change nothing, so the item waits where it last was and no target is cued,
+   * as the 2D preview shows no overlap off the workbench. Never commits.
+   */
   const gestureCarryTo = useCallback((clientX: number, clientY: number) => {
-    if (carryRef.current?.via !== "gesture" || !overBench(clientX, clientY)) return;
-    carryToPointer(clientX, clientY);
-  }, [carryToPointer, overBench]);
+    const carry = carryRef.current;
+    if (carry?.via !== "gesture" || !engine) return;
+    if (overBench(clientX, clientY)) {
+      carryToPointer(clientX, clientY);
+      return;
+    }
+    if (carry.kind === "bench" && carry.point) engine.previewCarry(carry.instanceId, carry.point.xMm, carry.point.yMm, LIFT_MM);
+    engine.setTargetRing(null);
+    setCallout(undefined);
+  }, [carryToPointer, engine, overBench]);
 
   /** The pinch was released: over the bench it commits through the pointer's release; elsewhere nothing changes. */
   const releaseGesture = useCallback((clientX: number, clientY: number) => {

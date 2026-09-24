@@ -8,7 +8,7 @@ import { resolveInteractionIntent, type InteractionInvalidFeedback, type Runtime
 import { fromBench, benchPositionWords, runtimeBenchPointsMm, toBench } from "../adapters/benchCoordinates";
 import { footprintOf, nearestFreeSpot, type FootprintMm } from "../adapters/footprints";
 import { pourStagingScene, runtimeToScene, sceneContents, type SceneContents, type SceneDescription } from "../adapters/runtimeToScene";
-import { benchMoveRequest, intentTypeForInteraction, mergeActionInput, resolveTrayDrop } from "../adapters/sceneToIntent";
+import { benchMoveRequest, intentTypeForInteraction, mergeActionInput, resolveTrayDrop, type ReleaseOrigin } from "../adapters/sceneToIntent";
 import { nextPlacementPoint, parkPointAfterInteraction } from "../adapters/twoDPlacement";
 import { equipment3dEntry } from "../equipment3d/readiness";
 import { stepFlow, type StepFlow } from "./stepRules";
@@ -192,14 +192,14 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
   /**
    * A tray item onto the bench: the step's placement when expected, else a free move. Dropped at a
    * point, it slides to the nearest free spot; clicked or chosen with Enter, it takes the slot the
-   * 2D `placeEquipment` would give it.
+   * 2D `placeEquipment` would give it. A hand-control drop is tagged "vision", as in 2D.
    */
-  const dropFromTray = useCallback((definitionId: string, at?: { xMm: number; yMm: number }) => {
+  const dropFromTray = useCallback((definitionId: string, at?: { xMm: number; yMm: number }, origin: ReleaseOrigin = "pointer") => {
     const spot = at ? nearestFreeSpot(footprintOf(equipment3dEntry(definitionId), at.xMm, at.yMm), occupiedFootprints()) : undefined;
     const point = spot ? fromBench(definitionId, spot.xMm, spot.yMm) : nextPlacementPoint(runtime.getState().equipmentInstances, definitionId);
     const actionDefinitionId = runtime.expectedAction?.parameters.equipmentDefinitionId;
     const resolution = resolveTrayDrop(interaction, nodeCompletedIn(runtime.getState(), runtime.currentNode.id),
-      typeof actionDefinitionId === "string" ? actionDefinitionId : undefined, definitionId, point, nextZIndex());
+      typeof actionDefinitionId === "string" ? actionDefinitionId : undefined, definitionId, point, nextZIndex(), origin);
     if (resolution.kind === "intent") {
       runIntent(resolution.intent);
       return;

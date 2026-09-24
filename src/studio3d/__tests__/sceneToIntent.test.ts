@@ -183,6 +183,31 @@ describe("tray drops (placeShelfEquipment)", () => {
   });
 });
 
+describe("hand-control releases (plan D6)", () => {
+  it("carry origin \"vision\", as the 2D player tags its camera releases, and default to \"pointer\"", () => {
+    const zone = spec({ type: "dragToZone", sourceDefinitionId: "sample-bottle", stationId: "workbench" });
+    expect(resolveRelease(context({ expectedInteraction: zone, releaseStation: "workbench", origin: "vision" })))
+      .toEqual({ kind: "dragToZone", intent: { type: "placeIntent", origin: "vision", sourceInstanceId: "bottle-1", stationId: "workbench" } });
+    const pour = resolveRelease(context({
+      expectedInteraction: spec({ type: "pourInto", sourceDefinitionId: "sample-bottle", targetDefinitionId: "graduated-cylinder" }),
+      overlap: { kind: "valid", target: target("cyl-1", "graduated-cylinder"), overlapRatio: 0.5 },
+      origin: "vision",
+    }));
+    expect(pour.kind === "interaction" && pour.intent.origin).toBe("vision");
+    const pointer = resolveRelease(context({
+      expectedInteraction: spec({ type: "pourInto", sourceDefinitionId: "sample-bottle", targetDefinitionId: "graduated-cylinder" }),
+      overlap: { kind: "valid", target: target("cyl-1", "graduated-cylinder"), overlapRatio: 0.5 },
+    }));
+    expect(pointer.kind === "interaction" && pointer.intent.origin).toBe("pointer");
+  });
+
+  it("tag a tray drop the step expects the same way", () => {
+    const drag = spec({ type: "dragToZone", sourceDefinitionId: "watch-glass", stationId: "workbench" });
+    const result = resolveTrayDrop(drag, false, undefined, "watch-glass", { x: 10, y: 20 }, 4, "vision");
+    expect(result.kind === "intent" && result.intent.origin).toBe("vision");
+  });
+});
+
 describe("mergeActionInput mirrors runIntent", () => {
   const intent = { type: "pourIntent" as const, sourceInstanceId: "a", targetInstanceId: "b" };
   const field = (role: "teacherConfiguration" | "studentResponse") => ({

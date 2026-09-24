@@ -203,6 +203,8 @@
 .s3d-preview { position: absolute; inset: 0; }
 .s3d-preview .s3d-player--preview .s3d-topbar { display: none; }
 .s3d-preview .s3d-player--preview .s3d-dock { bottom: 70px; }
+/* The hand-control panel stays above the raised dock (M7). */
+.s3d-preview .s3d-player--preview .s3d-hand { bottom: 146px; }
 .s3d-preview .s3d-player--preview .s3d-hint { display: none; }
 .s3d-preview .s3d-player--preview .s3d-dialog-back, .s3d-preview .s3d-player--preview .s3d-results { inset: 0; }
 .s3d-preview__notice { position: absolute; z-index: 6; left: 50%; top: 58px; transform: translateX(-50%); display: flex; gap: 8px; align-items: center; background: var(--warn-tint); color: var(--warn); border: 1px solid #ecdcb0; border-radius: var(--radius-button); padding: 6px 12px; font-size: 12px; }

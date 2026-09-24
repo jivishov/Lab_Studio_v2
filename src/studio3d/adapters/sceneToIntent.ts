@@ -70,7 +70,14 @@ export interface ReleaseContext {
   releasePoint: { x: number; y: number };
   snapPoint?: { x: number; y: number };
   nextZIndex: number;
+  /**
+   * Where the release came from: a bench carry ("pointer", the default) or hand control ("vision"),
+   * which the 2D player gives its camera releases (StudentPlayer `origin: "vision"`).
+   */
+  origin?: ReleaseOrigin;
 }
+
+export type ReleaseOrigin = "pointer" | "vision";
 
 export type ReleaseResolution =
   | { kind: "dragToZone"; intent: RuntimeInteractionIntent }
@@ -110,10 +117,11 @@ export const invalidOverlapFeedback = (
 
 export const resolveRelease = (context: ReleaseContext): ReleaseResolution => {
   const { expectedInteraction: expected, carried, overlap } = context;
+  const origin = context.origin ?? "pointer";
   const expectedDragToZone =
     expected?.type === "dragToZone" && expected.sourceDefinitionId === carried.definitionId ? expected.stationId : undefined;
   if (expectedDragToZone && context.releaseStation === expectedDragToZone) {
-    return { kind: "dragToZone", intent: { type: "placeIntent", origin: "pointer", sourceInstanceId: carried.instanceId, stationId: expectedDragToZone } };
+    return { kind: "dragToZone", intent: { type: "placeIntent", origin, sourceInstanceId: carried.instanceId, stationId: expectedDragToZone } };
   }
   if (overlap.kind === "valid" && overlap.target && expected) {
     const target = context.instances.find((instance) => instance.id === overlap.target!.id);
@@ -122,7 +130,7 @@ export const resolveRelease = (context: ReleaseContext): ReleaseResolution => {
       kind: "interaction",
       intent: {
         type: intentTypeForInteraction[expected.type],
-        origin: "pointer",
+        origin,
         sourceInstanceId: carried.instanceId,
         targetInstanceId: overlap.target.id,
         sourceDefinitionId: carried.definitionId,
@@ -170,6 +178,7 @@ export const resolveTrayDrop = (
   definitionId: string,
   point: { x: number; y: number },
   nextZIndex: number,
+  origin: ReleaseOrigin = "pointer",
 ): { kind: "intent"; intent: RuntimeInteractionIntent } | { kind: "freeMove"; request: RuntimeActionRequest } => {
   const expectedSource = expected?.sourceDefinitionId ?? expectedActionEquipmentDefinitionId;
   const station = (zone: string) => (zone === "shelf" ? "shelf" : zone === "heating" || zone === "oven" || zone === "drying-oven" ? "oven" : "workbench");
@@ -178,7 +187,7 @@ export const resolveTrayDrop = (
   if (matches) {
     return {
       kind: "intent",
-      intent: { type: "placeIntent", origin: "pointer", sourceDefinitionId: definitionId, stationId: expected?.stationId ?? "workbench", x: point.x, y: point.y },
+      intent: { type: "placeIntent", origin, sourceDefinitionId: definitionId, stationId: expected?.stationId ?? "workbench", x: point.x, y: point.y },
     };
   }
   return {
