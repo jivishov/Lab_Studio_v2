@@ -15,7 +15,9 @@ import { arrowDirection, cycleIndex, nudgePoint, spatialOrder, type BenchPoint }
  * carrying, the item is drawn lifted with its footprint, and overlap is classified by the shared
  * 2D rule; nothing commits until release or Enter (G-5). Both ways in release through the same
  * `resolveRelease`, in the 2D order. Esc cancels. Tray tiles start a carry of an item that is not
- * yet on the bench.
+ * yet on the bench. Hand control (the shared gesture bridge, plan D6) carries through the same path:
+ * a pinch lifts the item, the pinch point moves it, and releasing over the bench commits through the
+ * pointer's release; releasing anywhere else changes nothing.
  */
 export interface CarryCallout {
   x: number;
@@ -25,9 +27,9 @@ export interface CarryCallout {
 }
 
 type Carry =
-  | { kind: "bench"; via: "pointer" | "keyboard"; instanceId: string; definitionId: string; label: string; startX: number; startY: number;
+  | { kind: "bench"; via: "pointer" | "keyboard" | "gesture"; instanceId: string; definitionId: string; label: string; startX: number; startY: number;
       active: boolean; pointerType: string; point?: BenchPoint; targetIndex?: number }
-  | { kind: "tray"; definitionId: string; point?: BenchPoint };
+  | { kind: "tray"; via: "pointer" | "gesture"; definitionId: string; point?: BenchPoint };
 
 const LIFT_MM = 16;
 const MM = 0.001;
@@ -268,7 +270,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     };
     const move = (event: PointerEvent) => {
       const carry = carryRef.current;
-      if (!carry || (carry.kind === "bench" && carry.via === "keyboard")) {
+      if (!carry || carry.via !== "pointer") {
         if (!carry) onHover(engine.pick(event.clientX, event.clientY));
         return;
       }
@@ -283,7 +285,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       window.clearTimeout(holdTimer);
       engine.holdCameraInput(false);
       const carry = carryRef.current;
-      if (!carry || (carry.kind === "bench" && carry.via === "keyboard")) return;
+      if (!carry || carry.via !== "pointer") return;
       if (carry.kind === "bench" && !carry.active) {
         carryRef.current = undefined;
         onTap?.(carry.instanceId, carry.pointerType, event.clientX, event.clientY);
@@ -320,11 +322,69 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
   /** Start carrying a tray item (pointer down on its tile). */
   const startTrayCarry = useCallback((definitionId: string) => {
     if (pouringRef.current) return;
-    carryRef.current = { kind: "tray", definitionId };
+    carryRef.current = { kind: "tray", via: "pointer", definitionId };
     setCarrying(true);
   }, []);
 
-  return { callout, carrying, keyCarrying, startTrayCarry, startKeyCarry, handleCarryKey, cancel };
+  /** Whether a bench item can be carried now: probes move only as part of their interaction (parity). */
+  const canCarry = useCallback((instanceId: string): boolean => {
+    const item = scene.bench.find((i) => i.instanceId === instanceId);
+    return Boolean(engine && item && !pouringRef.current && !getVisualProfile(item.definitionId)?.probePresentation);
+  }, [engine, scene]);
+
+  /** Whether a client point is over the bench canvas, where a gesture carry follows and can commit. */
+  const overBench = useCallback((clientX: number, clientY: number): boolean => {
+    if (!engine) return false;
+    const rect = engine.canvasElement.getBoundingClientRect();
+    return clientX >= rect.left && clientX <= rect.right && clientY >= rect.top && clientY <= rect.bottom
+      && Boolean(engine.benchPointAt(clientX, clientY));
+  }, [engine]);
+
+  /** Hand control: a pinch on a bench item lifts it at once, as a pointer carry does after 4 px. */
+  const startGestureCarry = useCallback((instanceId: string): boolean => {
+    const item = scene.bench.find((i) => i.instanceId === instanceId);
+    if (!item || !canCarry(instanceId)) return false;
+    // A keyboard carry gives way, as it does to the pointer.
+    if (carryRef.current) cancel();
+    carryRef.current = { kind: "bench", via: "gesture", instanceId, definitionId: item.definitionId, label: item.label,
+      startX: 0, startY: 0, active: true, pointerType: "gesture" };
+    setCarrying(true);
+    return true;
+  }, [canCarry, cancel, scene]);
+
+  /** Hand control: a pinch on a tray tile starts the same tray carry a pointer press does. */
+  const startGestureTrayCarry = useCallback((definitionId: string): boolean => {
+    if (pouringRef.current) return false;
+    if (carryRef.current) cancel();
+    carryRef.current = { kind: "tray", via: "gesture", definitionId };
+    setCarrying(true);
+    return true;
+  }, [cancel]);
+
+  /** The pinch point moved: over the bench, the gesture carry follows it as the pointer's does. Never commits. */
+  const gestureCarryTo = useCallback((clientX: number, clientY: number) => {
+    if (carryRef.current?.via !== "gesture" || !overBench(clientX, clientY)) return;
+    carryToPointer(clientX, clientY);
+  }, [carryToPointer, overBench]);
+
+  /** The pinch was released: over the bench it commits through the pointer's release; elsewhere nothing changes. */
+  const releaseGesture = useCallback((clientX: number, clientY: number) => {
+    if (carryRef.current?.via !== "gesture") return;
+    if (!overBench(clientX, clientY)) {
+      cancel();
+      return;
+    }
+    carryToPointer(clientX, clientY);
+    release();
+  }, [cancel, carryToPointer, overBench, release]);
+
+  /** Drop an unfinished gesture carry without committing (the bridge cancelled it). */
+  const cancelGesture = useCallback(() => {
+    if (carryRef.current?.via === "gesture") cancel();
+  }, [cancel]);
+
+  return { callout, carrying, keyCarrying, startTrayCarry, startKeyCarry, handleCarryKey, cancel,
+    canCarry, startGestureCarry, startGestureTrayCarry, gestureCarryTo, releaseGesture, cancelGesture };
 };
 
 const lowerFirst = (text: string) => (text ? text.charAt(0).toLowerCase() + text.slice(1) : text);

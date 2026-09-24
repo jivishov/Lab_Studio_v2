@@ -3,8 +3,8 @@
  * corner and collapse, and the layout is remembered under the player's UI key (§3.8), never with
  * run state (G-13). Pure, so the rules can be tested without a browser.
  */
-export type PanelId = "step" | "tray" | "list";
-export const PANEL_IDS: readonly PanelId[] = ["step", "tray", "list"];
+export type PanelId = "step" | "tray" | "list" | "hand";
+export const PANEL_IDS: readonly PanelId[] = ["step", "tray", "list", "hand"];
 
 export interface PanelBox {
   /** Offset from the player's top-left corner, px. */

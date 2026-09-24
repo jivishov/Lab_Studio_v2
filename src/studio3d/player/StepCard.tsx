@@ -32,7 +32,7 @@ export const StepCard = ({ player, controls, onShowMe }: { player: Player3DContr
       </>}
       collapsedHead={<>{badge}<span className="s3d-step__line s3d-grow">Step {n} · {runtime.currentNode.title}</span></>}
     >
-      <div className="s3d-step__body">
+      <div className="s3d-step__body" data-gesture-scroll-region="vertical">
         <h2 className="s3d-step__title">{runtime.currentNode.title}</h2>
         <ol className="s3d-progress" aria-label={`${runtime.state.completedNodes.length} of ${N} steps complete`}>
           {nodes.map((node) => (
@@ -106,13 +106,13 @@ export const StepCard = ({ player, controls, onShowMe }: { player: Player3DContr
             </details>
           </div>
           {flow.canConfirm ? (
-            <button type="button" className="s3d-button s3d-button--primary" disabled={!flow.confirmEnabled} onClick={player.confirm}>Confirm</button>
+            <button type="button" className="s3d-button s3d-button--primary" data-gesture-action="confirm-accessible-action" disabled={!flow.confirmEnabled} onClick={player.confirm}>Confirm</button>
           ) : flow.canSubmitCalculation || (runtime.expectedAction?.verb === "calculate" && !flow.nodeCompleted) ? (
-            <button type="button" className="s3d-button s3d-button--primary" disabled={!flow.canSubmitCalculation} onClick={player.submitCalculation}>
+            <button type="button" className="s3d-button s3d-button--primary" data-gesture-action="submit-calculation" disabled={!flow.canSubmitCalculation} onClick={player.submitCalculation}>
               {submitCalculationLabel(runtime.expectedAction?.label ?? "calculation")}
             </button>
           ) : flow.interaction?.type === "recordNotebook" ? (
-            <button type="button" className="s3d-button s3d-button--primary" disabled={!(flow.canRecord || flow.canRecordObservation)} onClick={player.recordEvidence}>
+            <button type="button" className="s3d-button s3d-button--primary" data-gesture-action="record-evidence" disabled={!(flow.canRecord || flow.canRecordObservation)} onClick={player.recordEvidence}>
               Record
             </button>
           ) : null}

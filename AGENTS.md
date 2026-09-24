@@ -63,6 +63,7 @@ Source-of-truth files:
 - `src/player/gesture/useGestureRecognition.ts`
 - `src/player/gesture/gestureWorker.ts`
 - `src/player/gesture/gestureMath.ts`
+- `src/player/gesture/bridge/`
 - `src/player/StudentPlayer.tsx`
 - `src/player/Workbench.tsx`
 - `src/player/EquipmentShelf.tsx`
@@ -85,7 +86,7 @@ Source-of-truth files:
 - Index tip landmark: `8`.
 - Open-hand cursor uses the index tip.
 - Pinching cursor uses the midpoint between thumb tip and index tip.
-- Current thresholds live in `gestureMath.ts`: pinch start `0.055`, pinch release `0.085`, minimum confidence `0.35`.
+- Current pinch thresholds live in `gestureMath.ts`: pinch start ratio `0.3` and pinch release ratio `0.5` (thumb-to-index distance over the median wrist-to-MCP palm span), minimum palm span `32` source pixels, and tracking grace `160` ms. The minimum hand detection, presence and tracking confidences are `0.5`, set in `gestureWorker.ts`; its Gesture Recognizer fallback also uses a canned-gesture score threshold of `0.3`.
 - Mirror the X axis for natural camera movement.
 - Current edge margins are `0.08` horizontal and `0.06` vertical.
 - Cursor speed is the only gesture preference stored in localStorage, under `lab-studio:v1:camera-cursor-speed`.

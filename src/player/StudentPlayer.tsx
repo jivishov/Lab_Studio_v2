@@ -53,28 +53,19 @@ import {
 } from "./benchTargeting";
 import { EquipmentView } from "./EquipmentView";
 import { PhProbeArt, probeLeadPathData } from "./PhProbePresentation";
-import {
-  statusLabelForGesture,
-  type GestureController,
-  type GestureFrameSnapshot,
-  type GestureFrameSource,
-} from "./gesture/gestureTypes";
+import { statusLabelForGesture, type GestureController } from "./gesture/gestureTypes";
 import { useGestureRecognition } from "./gesture/useGestureRecognition";
+import { labelForGestureCursorSpeed, type GestureCursor } from "./gesture/gestureMath";
+import type { GestureGrabResolution } from "./gesture/bridge/gestureBridge";
 import {
-  labelForGestureCursorSpeed,
-  maximumCommittableSampleAgeMs,
-  type GestureCursor,
-} from "./gesture/gestureMath";
-import {
-  applyGestureScrollIntent,
-  gestureScrollIntentFromSignal,
-  gestureScrollDwellMs,
-  gestureScrollReleasePauseMs,
-  resolveGestureScrollIntent,
-  resolveGestureScrollTarget,
-  type GestureScrollIntent,
-  type GestureScrollTarget,
-} from "./gesture/gestureScroll";
+  attachedChildHandleSelector,
+  createDomGestureTargetResolver,
+  probeHandleSelector,
+  shelfEquipmentSelector,
+  studentPlayerHoverSelector,
+  workbenchItemSelector,
+} from "./gesture/bridge/domTargetResolver";
+import { GestureCursorOverlay, useGestureBridge } from "./gesture/bridge/useGestureBridge";
 import {
   GOBLIN_MODE_STEP_DELAY_MS,
   isGoblinModeComplete,
@@ -252,7 +243,7 @@ interface VisionEquipmentGrab {
   width: number;
 }
 
-type VisionGestureTarget =
+type VisionEquipmentTarget =
   | ({
       definitionId: string;
       kind: "shelf";
@@ -269,13 +260,7 @@ type VisionGestureTarget =
       instanceId: string;
       kind: "probe";
       presentation: ProbePresentation;
-    } & VisionEquipmentGrab)
-  | {
-      button: HTMLButtonElement;
-      kind: "button";
-      startClientX: number;
-      startClientY: number;
-    };
+    } & VisionEquipmentGrab);
 
 interface VisionDragPreview extends VisionEquipmentGrab {
   benchPoint?: BenchPoint;
@@ -290,8 +275,6 @@ interface VisionDragPreview extends VisionEquipmentGrab {
 
 const clampValue = (value: number, min: number, max: number): number =>
   Math.min(Math.max(value, min), Math.max(min, max));
-
-const gestureRearmOpenMs = 120;
 
 type PlayerLayoutBand = "desktop" | "mobile" | "tablet";
 
@@ -321,56 +304,6 @@ const clampCameraPanelPosition = (
   };
 };
 
-const GestureCursorOverlay = ({
-  blocked,
-  enabled,
-  frames,
-  grabbingRef,
-  handlerRef,
-  rearmRef,
-}: {
-  blocked: boolean;
-  enabled: boolean;
-  frames: GestureFrameSource;
-  grabbingRef: { current: boolean };
-  handlerRef: { current: (snapshot: GestureFrameSnapshot) => void };
-  rearmRef: { current: boolean };
-}) => {
-  const cursorElementRef = useRef<HTMLSpanElement | null>(null);
-  const metricFrameRef = useRef<number | undefined>(undefined);
-
-  useEffect(() => {
-    const renderSnapshot = (snapshot: GestureFrameSnapshot) => {
-      const element = cursorElementRef.current;
-      const cursor = snapshot.cursor;
-      handlerRef.current(snapshot);
-      if (!element || !enabled || blocked || !cursor) {
-        if (element) element.hidden = true;
-        return;
-      }
-      element.hidden = false;
-      element.style.transform = `translate3d(${cursor.clientX}px, ${cursor.clientY}px, 0) translate(-50%, -50%)`;
-      element.classList.toggle("is-pinching", cursor.pinching);
-      element.classList.toggle("is-grabbing", grabbingRef.current);
-      element.classList.toggle("is-tracking-held", cursor.tracking === "held");
-      element.classList.toggle("is-rearm-required", rearmRef.current);
-      if (metricFrameRef.current !== undefined) window.cancelAnimationFrame(metricFrameRef.current);
-      metricFrameRef.current = window.requestAnimationFrame(() => {
-        metricFrameRef.current = undefined;
-        frames.markCursorRendered(snapshot.frameId, performance.now());
-      });
-    };
-    const unsubscribe = frames.subscribe(renderSnapshot);
-    renderSnapshot(frames.getSnapshot());
-    return () => {
-      unsubscribe();
-      if (metricFrameRef.current !== undefined) window.cancelAnimationFrame(metricFrameRef.current);
-    };
-  }, [blocked, enabled, frames, grabbingRef, handlerRef, rearmRef]);
-
-  return <span ref={cursorElementRef} aria-hidden="true" className="gesture-cursor" hidden />;
-};
-
 export const StudentPlayer = ({
   definition,
   chrome = "full",
@@ -386,51 +319,22 @@ export const StudentPlayer = ({
   );
   const cameraPanelRef = useRef<HTMLElement | null>(null);
   const cameraPanelDragRef = useRef<CameraPanelDragState | undefined>(undefined);
-  const activeVisionGestureRef = useRef<VisionGestureTarget | undefined>(undefined);
-  const activeVisionGestureBooleanRef = useRef(false);
   const gesturePreviewElementRef = useRef<HTMLSpanElement | null>(null);
   const gestureProbeLeadElementRef = useRef<SVGSVGElement | undefined>(undefined);
   const visionDragPreviewRef = useRef<VisionDragPreview | undefined>(undefined);
-  const gestureButtonCueRef = useRef<HTMLButtonElement | undefined>(undefined);
-  const gestureHoverCueRef = useRef<Element | undefined>(undefined);
-  const previousVisionCursorRef = useRef<GestureCursor | undefined>(undefined);
-  const gestureFrameHandlerRef = useRef<(snapshot: GestureFrameSnapshot) => void>(() => undefined);
-  const gestureCancelRef = useRef<(requireRearm?: boolean) => void>(() => undefined);
-  const gestureScrollCancelRef = useRef<() => void>(() => undefined);
   const lastActionSurfaceRef = useRef<"inspector" | "workbench" | undefined>(undefined);
   const previousNodeIdRef = useRef<string | undefined>(undefined);
-  const gestureRearmRequiredRef = useRef(false);
-  const gestureRearmOpenSinceRef = useRef<number | undefined>(undefined);
   const aboutButtonRef = useRef<HTMLButtonElement | null>(null);
   const aboutCloseButtonRef = useRef<HTMLButtonElement | null>(null);
   const cameraHelpButtonRef = useRef<HTMLButtonElement | null>(null);
   const cameraHelpCloseButtonRef = useRef<HTMLButtonElement | null>(null);
-  const lastVisionButtonClickRef = useRef(0);
-  const lastVisionPinchReleaseAtRef = useRef(Number.NEGATIVE_INFINITY);
-  const gestureScrollFrameRef = useRef<number | undefined>(undefined);
-  const gestureScrollEdgeRef = useRef<
-    | {
-        firstSeenAt: number;
-        intent: GestureScrollIntent;
-        key: string;
-      }
-    | undefined
-  >(undefined);
-  const gestureScrollCueRef = useRef<
-    | {
-        className: string;
-        target: Element;
-      }
-    | undefined
-  >(undefined);
-  const gestureWaveScrollRef = useRef<
-    | {
-        target: GestureScrollTarget;
-      }
-    | undefined
-  >(undefined);
   const realGestureController = useGestureRecognition();
   const gesture = gestureController ?? realGestureController;
+  const gestureBridge = useGestureBridge<VisionEquipmentTarget>({
+    enabled: gesture.enabled,
+    root: playerRootRef,
+    stop: gesture.stop,
+  });
   const runtime = usePlayerRuntime(definition, "guided", focusNodeId, focusVersion);
   const onRehearsalControllerChange = guidedRehearsal?.onControllerChange;
   const renderNodes = useMemo(() => resolveWorkbenchScene(runtime.state), [runtime.state]);
@@ -757,8 +661,8 @@ export const StudentPlayer = ({
 
   useEffect(() => {
     if (!aboutOpen) return undefined;
-    gestureCancelRef.current(true);
-    gestureScrollCancelRef.current();
+    gestureBridge.cancel(true);
+    gestureBridge.cancelScroll();
     const focusFrame = window.requestAnimationFrame(() => aboutCloseButtonRef.current?.focus());
     const handleDialogKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -779,8 +683,8 @@ export const StudentPlayer = ({
 
   useEffect(() => {
     if (!cameraHelpOpen) return undefined;
-    gestureCancelRef.current(true);
-    gestureScrollCancelRef.current();
+    gestureBridge.cancel(true);
+    gestureBridge.cancelScroll();
     const focusFrame = window.requestAnimationFrame(() => cameraHelpCloseButtonRef.current?.focus());
     const handleDialogKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -1059,11 +963,6 @@ export const StudentPlayer = ({
     setGoblinModeEnabled((current) => !current);
   };
 
-  const elementFromGestureCursor = (cursor: GestureCursor): Element | undefined => {
-    if (typeof document.elementFromPoint !== "function") return undefined;
-    return document.elementFromPoint(cursor.clientX, cursor.clientY) ?? undefined;
-  };
-
   const benchSurfaceRect = (): DOMRect | undefined => {
     const surface = playerRootRef.current?.querySelector<HTMLElement>(".bench-surface");
     const rect = surface?.getBoundingClientRect();
@@ -1116,7 +1015,7 @@ export const StudentPlayer = ({
   };
 
   const benchDragPointForVisionTarget = (
-    active: Exclude<VisionGestureTarget, { kind: "button" }>,
+    active: VisionEquipmentTarget,
     cursor: GestureCursor,
   ): BenchPoint | undefined => {
     const point = benchPointFromGestureCursor(cursor);
@@ -1177,7 +1076,7 @@ export const StudentPlayer = ({
   };
 
   const resolveVisionBenchOverlapAtPoint = (
-    active: Extract<VisionGestureTarget, { kind: "bench" | "attachedChild" | "probe" }>,
+    active: Extract<VisionEquipmentTarget, { kind: "bench" | "attachedChild" | "probe" }>,
     dragPoint: BenchPoint,
   ): BenchOverlapResult | undefined => {
     const sourceNode = nodeForBenchInstance(active.instanceId);
@@ -1210,10 +1109,10 @@ export const StudentPlayer = ({
   };
 
   const buildVisionDragPreview = (
-    active: VisionGestureTarget | undefined,
+    active: VisionEquipmentTarget | undefined,
     cursor: GestureCursor,
   ): VisionDragPreview | undefined => {
-    if (!active || active.kind === "button") return undefined;
+    if (!active) return undefined;
     const benchPoint = benchDragPointForVisionTarget(active, cursor);
     const rect = benchPoint ? benchSurfaceRect() : undefined;
     const transform = workbenchViewTransformRef.current;
@@ -1250,40 +1149,8 @@ export const StudentPlayer = ({
     };
   };
 
-  const clearVisionButtonCue = () => {
-    gestureButtonCueRef.current?.classList.remove("is-gesture-armed");
-    gestureButtonCueRef.current = undefined;
-  };
-
-  const clearGestureHoverCue = () => {
-    gestureHoverCueRef.current?.classList.remove("is-gesture-hovered");
-    gestureHoverCueRef.current = undefined;
-  };
-
-  const updateGestureHoverCue = (cursor: GestureCursor): boolean => {
-    const element = elementFromGestureCursor(cursor);
-    const target = element?.closest(
-      ".equipment-shelf .equipment-view[data-definition-id], [data-gesture-drag-kind], .bench-item[data-instance-id], button[data-gesture-action]",
-    );
-    if (!target || !playerRootRef.current?.contains(target)) {
-      clearGestureHoverCue();
-      return false;
-    }
-    if (gestureHoverCueRef.current === target) return true;
-    clearGestureHoverCue();
-    target.classList.add("is-gesture-hovered");
-    gestureHoverCueRef.current = target;
-    return true;
-  };
-
-  const armVisionButtonCue = (button: HTMLButtonElement) => {
-    clearVisionButtonCue();
-    button.classList.add("is-gesture-armed");
-    gestureButtonCueRef.current = button;
-  };
-
   const resolveVisionBenchOverlap = (
-    active: Extract<VisionGestureTarget, { kind: "bench" | "attachedChild" | "probe" }>,
+    active: Extract<VisionEquipmentTarget, { kind: "bench" | "attachedChild" | "probe" }>,
     cursor: GestureCursor,
   ):
     | {
@@ -1302,33 +1169,22 @@ export const StudentPlayer = ({
     };
   };
 
-  const startVisionGesture = (cursor: GestureCursor) => {
-    const element = elementFromGestureCursor(cursor);
-    activeVisionGestureRef.current = undefined;
-    activeVisionGestureBooleanRef.current = false;
-    clearVisionButtonCue();
-    if (!element || !playerRootRef.current?.contains(element)) {
-      activeVisionGestureRef.current = undefined;
-      setVisionDragPreview(undefined);
-      return;
-    }
-
-    const shelfButton = element.closest<HTMLButtonElement>(".equipment-shelf .equipment-view[data-definition-id]");
+  const resolveVisionGrab = (
+    element: Element,
+    cursor: GestureCursor,
+  ): GestureGrabResolution<VisionEquipmentTarget> | undefined => {
+    const shelfButton = element.closest<HTMLButtonElement>(shelfEquipmentSelector);
     if (shelfButton && !shelfButton.disabled) {
       const definitionId = shelfButton.dataset.definitionId;
       const definition = definitionId ? equipmentById.get(definitionId) : undefined;
       const rect = shelfButton.getBoundingClientRect();
-      if (!definitionId || !definition) {
-        activeVisionGestureRef.current = undefined;
-        setVisionDragPreview(undefined);
-        return;
-      }
+      if (!definitionId || !definition) return { kind: "blocked" };
       const size = getBenchSize(definitionId);
       const grabRatioX =
         rect.width > 0 ? clampValue((cursor.clientX - rect.left) / rect.width, 0, 1) : 0.5;
       const grabRatioY =
         rect.height > 0 ? clampValue((cursor.clientY - rect.top) / rect.height, 0, 1) : 0.5;
-      const active: VisionGestureTarget = {
+      const active: VisionEquipmentTarget = {
         definitionId,
         grabOffsetX: grabRatioX * size.width,
         grabOffsetY: grabRatioY * size.height,
@@ -1337,13 +1193,10 @@ export const StudentPlayer = ({
         label: definition.label,
         width: size.width,
       };
-      activeVisionGestureRef.current = active;
-      activeVisionGestureBooleanRef.current = true;
-      setVisionDragPreview(buildVisionDragPreview(active, cursor));
-      return;
+      return { grab: active, kind: "grab" };
     }
 
-    const probeHandle = element.closest<HTMLElement>("[data-gesture-drag-kind=\"probe\"][data-instance-id]");
+    const probeHandle = element.closest<HTMLElement>(probeHandleSelector);
     const probeInstanceId = probeHandle?.dataset.instanceId;
     if (probeHandle && probeInstanceId) {
       const presentation = getVisualProfile(probeHandle.dataset.definitionId)?.probePresentation;
@@ -1355,15 +1208,12 @@ export const StudentPlayer = ({
           )
         : undefined;
       const position = node ? (placedPositions.get(node.primaryInstanceId) ?? node.transform) : undefined;
-      if (!presentation || !point || !node || !layer || !position) {
-        setVisionDragPreview(undefined);
-        return;
-      }
+      if (!presentation || !point || !node || !layer || !position) return { kind: "blocked" };
       const sourceTop = {
         x: position.x + layer.x + layer.width * presentation.sourceGripAnchor.x - presentation.probeSize.width * presentation.probeLeadPort.x,
         y: position.y + layer.y + layer.height * presentation.sourceGripAnchor.y - presentation.probeSize.height * presentation.probeLeadPort.y,
       };
-      const active: VisionGestureTarget = {
+      const active: VisionEquipmentTarget = {
         grabOffsetX: point.x - sourceTop.x,
         grabOffsetY: point.y - sourceTop.y,
         height: presentation.probeSize.height,
@@ -1373,15 +1223,10 @@ export const StudentPlayer = ({
         presentation,
         width: presentation.probeSize.width,
       };
-      activeVisionGestureRef.current = active;
-      activeVisionGestureBooleanRef.current = true;
-      setVisionDragPreview(buildVisionDragPreview(active, cursor));
-      return;
+      return { grab: active, kind: "grab" };
     }
 
-    const attachedChildHandle = element.closest<HTMLElement>(
-      "[data-gesture-drag-kind=\"attached-child\"][data-instance-id]",
-    );
+    const attachedChildHandle = element.closest<HTMLElement>(attachedChildHandleSelector);
     const attachedChildInstanceId = attachedChildHandle?.dataset.instanceId;
     if (attachedChildHandle && attachedChildInstanceId) {
       const point = benchPointFromGestureCursor(cursor);
@@ -1392,14 +1237,13 @@ export const StudentPlayer = ({
         (candidate) => candidate.id === attachedChildInstanceId,
       );
       if (!point || !node || !layer || !position || node.primaryInstanceId === attachedChildInstanceId) {
-        setVisionDragPreview(undefined);
-        return;
+        return { kind: "blocked" };
       }
       const sourceTop = {
         x: position.x + layer.x,
         y: position.y + layer.y,
       };
-      const active: VisionGestureTarget = {
+      const active: VisionEquipmentTarget = {
         grabOffsetX: point.x - sourceTop.x,
         grabOffsetY: point.y - sourceTop.y,
         height: layer.height,
@@ -1408,24 +1252,17 @@ export const StudentPlayer = ({
         label: instance?.label ?? attachedChildHandle.getAttribute("aria-label") ?? node.accessibleLabel,
         width: layer.width,
       };
-      activeVisionGestureRef.current = active;
-      activeVisionGestureBooleanRef.current = true;
-      setVisionDragPreview(buildVisionDragPreview(active, cursor));
-      return;
+      return { grab: active, kind: "grab" };
     }
 
-    const benchItem = element.closest<HTMLElement>(".bench-item[data-instance-id]");
+    const benchItem = element.closest<HTMLElement>(workbenchItemSelector);
     const instanceId = benchItem?.dataset.instanceId;
     if (instanceId) {
       const point = benchPointFromGestureCursor(cursor);
       const node = nodeForBenchInstance(instanceId);
       const position = node ? (placedPositions.get(node.primaryInstanceId) ?? node.transform) : undefined;
-      if (!point || !node || !position) {
-        activeVisionGestureRef.current = undefined;
-        setVisionDragPreview(undefined);
-        return;
-      }
-      const active: VisionGestureTarget = {
+      if (!point || !node || !position) return { kind: "blocked" };
+      const active: VisionEquipmentTarget = {
         grabOffsetX: point.x - position.x,
         grabOffsetY: point.y - position.y,
         height: node.bounds.height,
@@ -1434,62 +1271,16 @@ export const StudentPlayer = ({
         label: node.accessibleLabel,
         width: node.bounds.width,
       };
-      activeVisionGestureRef.current = active;
-      activeVisionGestureBooleanRef.current = true;
-      setVisionDragPreview(buildVisionDragPreview(active, cursor));
-      return;
+      return { grab: active, kind: "grab" };
     }
 
-    const button = element.closest<HTMLButtonElement>("button[data-gesture-action]");
-    if (button && playerRootRef.current.contains(button) && !button.disabled) {
-      activeVisionGestureRef.current = {
-        button,
-        kind: "button",
-        startClientX: cursor.clientX,
-        startClientY: cursor.clientY,
-      };
-      activeVisionGestureBooleanRef.current = true;
-      armVisionButtonCue(button);
-    } else {
-      activeVisionGestureRef.current = undefined;
-      activeVisionGestureBooleanRef.current = false;
-    }
-    setVisionDragPreview(undefined);
+    return undefined;
   };
 
-  const activateVisionButton = (
-    active: Extract<VisionGestureTarget, { kind: "button" }>,
-    cursor: GestureCursor,
-    element: Element | undefined,
-  ): boolean => {
-    const button = active.button;
-    if (!button || !playerRootRef.current?.contains(button) || button.disabled) return false;
-    const releaseButton = element?.closest<HTMLButtonElement>("button[data-gesture-action]");
-    const rect = button.getBoundingClientRect();
-    const releaseTolerancePx = 8;
-    const releaseNearOriginalButton =
-      cursor.clientX >= rect.left - releaseTolerancePx &&
-      cursor.clientX <= rect.right + releaseTolerancePx &&
-      cursor.clientY >= rect.top - releaseTolerancePx &&
-      cursor.clientY <= rect.bottom + releaseTolerancePx;
-    if (releaseButton !== button && !releaseNearOriginalButton) return false;
-    const now = performance.now();
-    if (now - lastVisionButtonClickRef.current < 450) return false;
-    lastVisionButtonClickRef.current = now;
-    button.click();
-    return true;
-  };
-
-  const completeVisionGesture = (cursor: GestureCursor) => {
-    lastVisionPinchReleaseAtRef.current = performance.now();
-    const active = activeVisionGestureRef.current;
-    activeVisionGestureRef.current = undefined;
-    activeVisionGestureBooleanRef.current = false;
-    clearVisionButtonCue();
+  const releaseVisionGrab = (active: VisionEquipmentTarget, cursor: GestureCursor) => {
     setVisionDragPreview(undefined);
-    const element = elementFromGestureCursor(cursor);
 
-    if (active?.kind === "shelf") {
+    if (active.kind === "shelf") {
       const point = benchDragPointForVisionTarget(active, cursor);
       if (point) {
         dropEquipment(active.definitionId, "workbench", point, "vision");
@@ -1497,7 +1288,7 @@ export const StudentPlayer = ({
       return;
     }
 
-    if (active?.kind === "bench" || active?.kind === "attachedChild" || active?.kind === "probe") {
+    if (active.kind === "bench" || active.kind === "attachedChild" || active.kind === "probe") {
       const resolved = resolveVisionBenchOverlap(active, cursor);
       const sourceDefinitionId = runtime.state.equipmentInstances.find(
         (instance) => instance.id === active.instanceId,
@@ -1538,14 +1329,11 @@ export const StudentPlayer = ({
         return;
       }
       if (resolved && active.kind !== "probe") movePlacedEquipment(active.instanceId, resolved.dragPoint);
-      return;
     }
-
-    if (active?.kind === "button") activateVisionButton(active, cursor, element);
   };
 
   const updateVisionProbeLead = (
-    active: Extract<VisionGestureTarget, { kind: "probe" }>,
+    active: Extract<VisionEquipmentTarget, { kind: "probe" }>,
     preview: VisionDragPreview,
   ) => {
     if (!preview.benchPoint) return;
@@ -1572,8 +1360,8 @@ export const StudentPlayer = ({
     lead.querySelectorAll<SVGPathElement>("path").forEach((path) => path.setAttribute("d", pathData));
   };
 
-  const updateVisionDragPreviewPosition = (cursor: GestureCursor) => {
-    const preview = buildVisionDragPreview(activeVisionGestureRef.current, cursor);
+  const moveVisionGrab = (active: VisionEquipmentTarget, cursor: GestureCursor) => {
+    const preview = buildVisionDragPreview(active, cursor);
     const element = gesturePreviewElementRef.current;
     if (!preview || !element) return;
     element.style.transform = `translate3d(${preview.viewportPoint.x}px, ${preview.viewportPoint.y}px, 0)`;
@@ -1584,27 +1372,11 @@ export const StudentPlayer = ({
       preview.overlap?.kind !== previousPreview?.overlap?.kind ||
       preview.overlap?.target?.id !== previousPreview?.overlap?.target?.id;
     visionDragPreviewRef.current = preview;
-    const active = activeVisionGestureRef.current;
-    if (active?.kind === "probe") updateVisionProbeLead(active, preview);
+    if (active.kind === "probe") updateVisionProbeLead(active, preview);
     // Continuous cursor, equipment, and probe-lead motion stays on direct DOM transforms. React
     // only needs to reconcile when the overlap target changes and its semantic cue must update.
     if (semanticTargetChanged) setVisionDragPreviewState(preview);
   };
-
-  const cancelVisionGesture = (requireRearm = true) => {
-    activeVisionGestureRef.current = undefined;
-    activeVisionGestureBooleanRef.current = false;
-    previousVisionCursorRef.current = undefined;
-    clearVisionButtonCue();
-    clearGestureHoverCue();
-    setVisionDragPreview(undefined);
-    if (requireRearm) {
-      gestureRearmRequiredRef.current = true;
-      gestureRearmOpenSinceRef.current = undefined;
-      setGestureArbitrationMessage("Open your hand briefly to re-arm camera control.");
-    }
-  };
-  gestureCancelRef.current = cancelVisionGesture;
 
   const gestureEngineDetail =
     gesture.delegate === "none" ? "Starting" : `${gesture.engine} / ${gesture.delegate}`;
@@ -1618,46 +1390,9 @@ export const StudentPlayer = ({
     `${Math.round(gestureMetrics.skipRate * 100)}% skipped`,
   ].join(" | ");
 
-  const clearGestureScrollCue = () => {
-    const cue = gestureScrollCueRef.current;
-    if (!cue) return;
-    cue.target.classList.remove(cue.className);
-    gestureScrollCueRef.current = undefined;
-  };
-
-  const setGestureScrollCue = (intent: GestureScrollIntent) => {
-    const current = gestureScrollCueRef.current;
-    if (current?.target === intent.target && current.className === intent.className) return;
-    clearGestureScrollCue();
-    intent.target.classList.add(intent.className);
-    gestureScrollCueRef.current = {
-      className: intent.className,
-      target: intent.target,
-    };
-  };
-
-  const cancelGestureScroll = () => {
-    if (gestureScrollFrameRef.current !== undefined) {
-      window.cancelAnimationFrame(gestureScrollFrameRef.current);
-      gestureScrollFrameRef.current = undefined;
-    }
-    gestureScrollEdgeRef.current = undefined;
-    gestureWaveScrollRef.current = undefined;
-    clearGestureScrollCue();
-  };
-  gestureScrollCancelRef.current = cancelGestureScroll;
-
-  const cancelGestureEdgeScroll = () => {
-    if (gestureScrollFrameRef.current !== undefined) {
-      window.cancelAnimationFrame(gestureScrollFrameRef.current);
-      gestureScrollFrameRef.current = undefined;
-    }
-    gestureScrollEdgeRef.current = undefined;
-  };
-
   const resetPlayer = () => {
-    cancelGestureScroll();
-    cancelVisionGesture(true);
+    gestureBridge.cancelScroll();
+    gestureBridge.cancel(true);
     gesture.stop();
     setGoblinModeEnabled(false);
     setGoblinModeStatus(undefined);
@@ -1671,250 +1406,32 @@ export const StudentPlayer = ({
 
   const toggleGestureControl = () => {
     if (gesture.enabled) {
-      cancelGestureScroll();
-      cancelVisionGesture(true);
+      gestureBridge.cancelScroll();
+      gestureBridge.cancel(true);
       gesture.stop();
       return;
     }
-    gestureRearmRequiredRef.current = false;
-    gestureRearmOpenSinceRef.current = undefined;
-    setGestureArbitrationMessage(undefined);
+    gestureBridge.resetRearm();
     void gesture.start();
   };
 
-  const runGestureScrollFrame = () => {
-    const edge = gestureScrollEdgeRef.current;
-    if (!edge) {
-      gestureScrollFrameRef.current = undefined;
-      clearGestureScrollCue();
-      return;
-    }
-    setGestureScrollCue(edge.intent);
-    if (performance.now() - edge.firstSeenAt >= gestureScrollDwellMs) {
-      if (!applyGestureScrollIntent(edge.intent)) {
-        cancelGestureScroll();
-        return;
-      }
-    }
-    gestureScrollFrameRef.current = window.requestAnimationFrame(runGestureScrollFrame);
-  };
-
-  const handleGestureScroll = (cursor: GestureCursor | undefined) => {
-    const now = performance.now();
-    const scrollDisabled =
-      !cursor ||
-      cursor.pinching ||
-      Boolean(activeVisionGestureRef.current) ||
-      aboutOpen ||
-      cameraHelpOpen ||
-      now - lastVisionPinchReleaseAtRef.current < gestureScrollReleasePauseMs;
-    if (scrollDisabled) {
-      cancelGestureScroll();
-      return;
-    }
-
-    const waveScroll = cursor.fourFingerScroll;
-    if (waveScroll) {
-      cancelGestureEdgeScroll();
-      if (!waveScroll.active || !waveScroll.axis) {
-        gestureWaveScrollRef.current = undefined;
-        clearGestureScrollCue();
-        return;
-      }
-
-      if (!waveScroll.pose) {
-        clearGestureScrollCue();
-        return;
-      }
-
-      const currentTarget = gestureWaveScrollRef.current?.target;
-      const waveTargetCursor: GestureCursor = {
-        ...cursor,
-        clientX: waveScroll.centroid.clientX,
-        clientY: waveScroll.centroid.clientY,
-        normalizedX: waveScroll.centroid.normalizedX,
-        normalizedY: waveScroll.centroid.normalizedY,
-      };
-      const target =
-        currentTarget && currentTarget.axis === waveScroll.axis && document.contains(currentTarget.target)
-          ? currentTarget
-          : resolveGestureScrollTarget({
-              axis: waveScroll.axis,
-              cursor: waveTargetCursor,
-              dialogOpen: aboutOpen || cameraHelpOpen,
-              pinching: cursor.pinching,
-              root: playerRootRef.current,
-            });
-      if (!target) {
-        gestureWaveScrollRef.current = undefined;
-        clearGestureScrollCue();
-        return;
-      }
-
-      gestureWaveScrollRef.current = { target };
-      const intent = gestureScrollIntentFromSignal({
-        signal: waveScroll,
-        target,
-      });
-      if (!intent) {
-        clearGestureScrollCue();
-        return;
-      }
-      if (applyGestureScrollIntent(intent)) {
-        setGestureScrollCue(intent);
-        return;
-      }
-      clearGestureScrollCue();
-      return;
-    }
-
-    gestureWaveScrollRef.current = undefined;
-
-    const intent = resolveGestureScrollIntent({
-      cursor,
-      dialogOpen: aboutOpen || cameraHelpOpen,
-      pinching: cursor.pinching,
-      root: playerRootRef.current,
-    });
-    if (!intent) {
-      cancelGestureScroll();
-      return;
-    }
-
-    const existing = gestureScrollEdgeRef.current;
-    if (!existing || existing.key !== intent.key || existing.intent.target !== intent.target) {
-      gestureScrollEdgeRef.current = {
-        firstSeenAt: now,
-        intent,
-        key: intent.key,
-      };
-    } else {
-      existing.intent = intent;
-    }
-    setGestureScrollCue(intent);
-    if (gestureScrollFrameRef.current === undefined) {
-      gestureScrollFrameRef.current = window.requestAnimationFrame(runGestureScrollFrame);
-    }
-  };
-
-  gestureFrameHandlerRef.current = (snapshot: GestureFrameSnapshot) => {
-    const current = snapshot.cursor;
-    const previous = previousVisionCursorRef.current;
-    const blocked = aboutOpen || cameraHelpOpen;
-    if (blocked) {
-      if (activeVisionGestureRef.current || previous?.pinching) cancelVisionGesture(true);
-      cancelGestureScroll();
-      return;
-    }
-
-    if (gestureRearmRequiredRef.current) {
-      cancelGestureScroll();
-      clearGestureHoverCue();
-      if (current?.tracking === "tracked" && !current.pinching) {
-        const openSince = gestureRearmOpenSinceRef.current ?? snapshot.frameTimeMs;
-        gestureRearmOpenSinceRef.current = openSince;
-        if (snapshot.frameTimeMs - openSince >= gestureRearmOpenMs) {
-          gestureRearmRequiredRef.current = false;
-          gestureRearmOpenSinceRef.current = undefined;
-          setGestureArbitrationMessage(undefined);
-        }
-      } else {
-        gestureRearmOpenSinceRef.current = undefined;
-      }
-      previousVisionCursorRef.current = current;
-      return;
-    }
-
-    if (!current) {
-      if (previous?.pinching || activeVisionGestureRef.current) cancelVisionGesture(true);
-      clearGestureHoverCue();
-      previousVisionCursorRef.current = undefined;
-      handleGestureScroll(undefined);
-      return;
-    }
-
-    if (current.tracking === "held") {
-      previousVisionCursorRef.current = current;
-      clearGestureHoverCue();
-      cancelGestureScroll();
-      return;
-    }
-
-    if (performance.now() - snapshot.sampleStartedAtMs > maximumCommittableSampleAgeMs) {
-      const stalePinchWasActive = Boolean(
-        current.pinching || previous?.pinching || activeVisionGestureRef.current,
-      );
-      if (stalePinchWasActive) {
-        cancelVisionGesture(true);
-      } else {
-        previousVisionCursorRef.current = undefined;
-        clearGestureHoverCue();
-      }
-      cancelGestureScroll();
-      return;
-    }
-
-    if (!previous?.pinching && current.pinching) {
-      clearGestureHoverCue();
-      startVisionGesture(current);
-      previousVisionCursorRef.current = current;
-      cancelGestureScroll();
-      return;
-    }
-    if (current.pinching) {
-      clearGestureHoverCue();
-      updateVisionDragPreviewPosition(current);
-      previousVisionCursorRef.current = current;
-      cancelGestureScroll();
-      return;
-    }
-    if (previous?.pinching && !current.pinching) completeVisionGesture(current);
-    previousVisionCursorRef.current = current;
-    if (updateGestureHoverCue(current)) cancelGestureScroll();
-    else handleGestureScroll(current);
-  };
-
-  useEffect(() => {
-    const root = playerRootRef.current;
-    if (!root || !gesture.enabled) return undefined;
-    const interruptGestureMode = () => {
-      gestureCancelRef.current(true);
-      gestureScrollCancelRef.current();
-    };
-    root.addEventListener("pointerdown", interruptGestureMode, true);
-    root.addEventListener("touchstart", interruptGestureMode, true);
-    root.addEventListener("keydown", interruptGestureMode, true);
-    return () => {
-      root.removeEventListener("pointerdown", interruptGestureMode, true);
-      root.removeEventListener("touchstart", interruptGestureMode, true);
-      root.removeEventListener("keydown", interruptGestureMode, true);
-    };
-  }, [gesture.enabled]);
-
-  const gestureStopRef = useRef(gesture.stop);
-  useEffect(() => {
-    gestureStopRef.current = gesture.stop;
-  }, [gesture.stop]);
-
-  useEffect(
-    () => () => {
-      activeVisionGestureRef.current = undefined;
-      activeVisionGestureBooleanRef.current = false;
-      previousVisionCursorRef.current = undefined;
-      gestureButtonCueRef.current?.classList.remove("is-gesture-armed");
-      gestureHoverCueRef.current?.classList.remove("is-gesture-hovered");
-      gestureScrollCancelRef.current();
-      gestureStopRef.current();
+  gestureBridge.host = {
+    blocked: aboutOpen || cameraHelpOpen,
+    grabs: {
+      begin: (active, cursor) => setVisionDragPreview(buildVisionDragPreview(active, cursor)),
+      clear: () => setVisionDragPreview(undefined),
+      move: moveVisionGrab,
+      release: releaseVisionGrab,
     },
-    [],
-  );
-
-  useEffect(
-    () => () => {
-      cancelGestureScroll();
-    },
-    [],
-  );
+    onRearmChange: (required) =>
+      setGestureArbitrationMessage(required ? "Open your hand briefly to re-arm camera control." : undefined),
+    resolver: createDomGestureTargetResolver({
+      grabAt: resolveVisionGrab,
+      hoverSelector: studentPlayerHoverSelector,
+      root: () => playerRootRef.current,
+    }),
+    scrollRoot: () => playerRootRef.current,
+  };
 
   const renderedVisionDragPreview = visionDragPreview
     ? visionDragPreviewRef.current ?? visionDragPreview
@@ -2276,11 +1793,9 @@ export const StudentPlayer = ({
       ) : null}
       <GestureCursorOverlay
         blocked={aboutOpen || cameraHelpOpen}
+        bridge={gestureBridge}
         enabled={gesture.enabled}
         frames={gesture.frames}
-        grabbingRef={activeVisionGestureBooleanRef}
-        handlerRef={gestureFrameHandlerRef}
-        rearmRef={gestureRearmRequiredRef}
       />
       {renderedVisionDragPreview ? (
         <span

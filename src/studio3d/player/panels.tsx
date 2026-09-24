@@ -19,13 +19,14 @@ const evidenceValue = (value: number, unit?: string): string => {
   return unit && text.endsWith(` ${unit}`) ? `${text.slice(0, -unit.length - 1)} ${unit}` : text;
 };
 
-const thumb = (definitionId: string): string | undefined => {
+/** The Blender thumbnail of a definition's 3D model, if it has one. */
+export const thumbnailUrl = (definitionId: string): string | undefined => {
   const entry = equipment3dEntry(definitionId);
   return entry ? `${equipment3dAssetUrl(entry.thumbnail)}?v=${entry.provenance.sourceHash.slice(0, 12)}` : undefined;
 };
 
 const Thumb = ({ definitionId, size = 44 }: { definitionId: string; size?: number }) => {
-  const src = thumb(definitionId);
+  const src = thumbnailUrl(definitionId);
   return src ? <img className="s3d-thumb" src={src} width={size} height={size} alt="" draggable={false} /> : <span className="s3d-thumb s3d-thumb--missing" style={{ width: size, height: size }} />;
 };
 
@@ -47,7 +48,7 @@ const KEY_MOVE_LARGE_PX = 50;
  * layout is kept through `controls` and applied only where panels float. The grip is a button, so
  * a panel can also be moved with the arrow keys. Nothing here touches runtime state.
  */
-export const FloatPanel = ({ id, label, className, controls, head, collapsedHead, onClose, children }: {
+export const FloatPanel = ({ id, label, className, controls, head, collapsedHead, onClose, keepMounted = false, children }: {
   id: PanelId;
   label: string;
   className: string;
@@ -57,6 +58,8 @@ export const FloatPanel = ({ id, label, className, controls, head, collapsedHead
   /** The one-line header shown while collapsed; defaults to `head`. */
   collapsedHead?: ReactNode;
   onClose?: () => void;
+  /** Keep the children mounted while collapsed (they hide themselves), as a live camera video needs. */
+  keepMounted?: boolean;
   children: ReactNode;
 }) => {
   const ref = useRef<HTMLElement>(null);
@@ -129,7 +132,7 @@ export const FloatPanel = ({ id, label, className, controls, head, collapsedHead
         </button>
         {onClose ? <button type="button" className="s3d-icon-button" aria-label={`Close ${label}`} onClick={onClose}><Icon name="x" /></button> : null}
       </header>
-      {collapsed ? null : children}
+      {collapsed && !keepMounted ? null : children}
       {controls.movable && !collapsed
         ? CORNERS.map((corner) => (
           <span key={corner} className={`s3d-float__corner s3d-float__corner--${corner}`} aria-hidden="true" onPointerDown={(e) => startGesture(e, corner)} />
@@ -140,10 +143,12 @@ export const FloatPanel = ({ id, label, className, controls, head, collapsedHead
 };
 
 /** Tray (§5.10): shelf items only; guided mode marks what the current step needs, as the 2D shelf does. */
-export const EquipmentTray = ({ player, controls, onPointerDownTile }: {
+export const EquipmentTray = ({ player, controls, onPointerDownTile, gestureGrabbedDefinitionId }: {
   player: Player3DController;
   controls: PanelControls;
   onPointerDownTile: (definitionId: string) => void;
+  /** The tile a hand-control pinch is carrying from, dimmed while its preview follows the pinch. */
+  gestureGrabbedDefinitionId?: string;
 }) => {
   const groups = new Map<string, { definitionId: string; label: string; count: number }>();
   for (const item of player.scene.tray) {
@@ -156,12 +161,13 @@ export const EquipmentTray = ({ player, controls, onPointerDownTile }: {
   return (
     <FloatPanel id="tray" label="Tray" className="s3d-tray" controls={controls}
       head={<h2 className="s3d-float__title">Tray · {player.scene.tray.length}</h2>}>
-      <ul className="s3d-tray__tiles">
+      <ul className="s3d-tray__tiles" data-gesture-scroll-region="vertical">
         {[...groups.values()].map((g) => (
           <li key={g.definitionId}>
             <button
               type="button"
-              className="s3d-tile"
+              className={`s3d-tile${gestureGrabbedDefinitionId === g.definitionId ? " is-gesture-grabbed" : ""}`}
+              data-definition-id={g.definitionId}
               onPointerDown={(e) => { if (e.button === 0) { e.preventDefault(); onPointerDownTile(g.definitionId); } }}
               onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); player.dropFromTray(g.definitionId); } }}
               aria-label={`${g.label}${g.count > 1 ? `, ${g.count}` : ""}${needed.has(g.definitionId) ? ", needed now" : ""}. Drag onto the bench, or press Enter to place it.`}
@@ -213,7 +219,7 @@ export const BenchList = ({ player, controls, selected, onSelect, onExamine, onM
   return (
     <FloatPanel id="list" label="Bench list" className="s3d-benchlist" controls={controls} onClose={onClose}
       head={<h2 className="s3d-float__title">Bench list</h2>}>
-      <div className="s3d-bl-scroll">
+      <div className="s3d-bl-scroll" data-gesture-scroll-region="vertical">
         <h3 className="s3d-bl-group">On the bench</h3>
         <ul>{onBench.map(row)}</ul>
         {seated.length ? <><h3 className="s3d-bl-group">Seated</h3><ul>{seated.map(row)}</ul></> : null}
@@ -385,7 +391,7 @@ export const NotebookSheet = ({ player, width, onResize, onClose }: {
         <h2>Notebook</h2>
         <button type="button" className="s3d-icon-button" aria-label="Close the notebook" onClick={onClose}><Icon name="x" /></button>
       </header>
-      <div className="s3d-sheet__body">
+      <div className="s3d-sheet__body" data-gesture-scroll-region="vertical">
         <h3 className="s3d-eyebrow">Measurements</h3>
         {state.measurements.length === 0 ? <p className="s3d-small">No measurements yet.</p> : null}
         {state.measurements.map((m) => (

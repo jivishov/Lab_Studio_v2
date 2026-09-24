@@ -80,6 +80,12 @@ const pairs = [
   ["From the bench chip", "prov-bench-ink", ["prov-bench-bg"], 4.5, "text"],
   ["Simulated chip", "prov-sim-ink", ["prov-sim-bg"], 4.5, "text"],
   ["Calculated chip", "prov-calc-ink", ["prov-calc-bg"], 4.5, "text"],
+  // Hand control (§5.15, M7): the set-up marks and the gesture cues on Player3D's own targets.
+  ["White on OK (set-up step done)", "#ffffff", ["ok"], 4.5, "text"],
+  ["White on guide (set-up step now)", "#ffffff", ["guide"], 4.5, "text"],
+  ["White on error (set-up step needs attention)", "#ffffff", ["error"], 4.5, "text"],
+  ["Guide cue on panel (gesture hover and armed)", "guide", ["panel"], 3, "ui"],
+  ["Guide cue on floating panel (over stage)", "guide", ["float@stage"], 3, "ui"],
 ];
 
 const surfaces = (name) => {
