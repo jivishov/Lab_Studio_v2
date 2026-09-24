@@ -334,6 +334,10 @@
 .s3d-preview__notice--stale { top: 58px; }
 .s3d-preview__notice--stale ~ .s3d-preview__notice:not(.s3d-preview__notice--stale) { top: 96px; }
 
+.s3d-raw-json { display: grid; gap: 6px; font-size: 12px; }
+.s3d-raw-json summary { cursor: pointer; color: var(--ink-2); font-weight: 500; }
+.s3d-raw-json textarea { width: 100%; min-height: 160px; border: 1px solid var(--line-strong); border-radius: var(--radius-input); padding: 6px 8px; font-size: 11px; resize: vertical; background: var(--panel-solid); color: var(--ink); }
+
 /* ------------------------------------------------------------------ smaller widths (§4.10) */
 @media (max-width: 1439px) {
   .s3d-studio-work { grid-template-columns: 224px minmax(0, 1fr) 296px; }

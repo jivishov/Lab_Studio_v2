@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type DragEvent } from "react";
-import type { EquipmentInstance, LabDefinition, RuntimeState } from "../../domain/types";
+import { emptyContents, type ContentState, type EquipmentInstance, type LabDefinition, type RuntimeState } from "../../domain/types";
 import { getInteractionZone, v1InteractionZones } from "../../domain/interactionZones";
 import { createEquipmentInstance, equipmentById } from "../../equipment/catalog";
 import { resolveLiquidStyle } from "../../equipment/liquidRendering";
@@ -14,6 +14,7 @@ import { BenchView } from "../bench/BenchView";
 import { equipment3dEntry } from "../equipment3d/readiness";
 import { catalogueSpecs } from "../player/panels";
 import { Icon } from "../ui/Icon";
+import { CommitField, Section } from "./Inspector";
 import { Thumbnail } from "./LibraryPanel";
 import { LIBRARY_DRAG_TYPE, readLibraryDrag } from "./libraryDrag";
 import { readStudioUi, updateStudioUi } from "./studioUi";
@@ -331,6 +332,89 @@ export const BenchSetupView = ({ studio, onToast, onInspectEquipment }: {
 
 // ------------------------------------------------------------ the inspector's Equipment views
 
+/** The original Studio's content kinds and wet states (TeacherStudio `contentKinds`), in its order. */
+const CONTENT_KINDS: ContentState["kind"][] = ["empty", "liquid", "solid", "solution", "mixture", "precipitate"];
+const WET_STATES: ContentState["wetState"][] = ["dry", "wet", "rinsed"];
+
+const optionalNumber = (value: string): number | undefined => {
+  if (!value.trim()) return undefined;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : undefined;
+};
+
+/** TeacherStudio's `updateContents`, as written: a patch over the contents, solutes and contamination kept. */
+const updateContents = (
+  contents: ContentState,
+  patch: Partial<Pick<ContentState, "kind" | "label" | "volumeMl" | "massG" | "temperatureC" | "wetState">>,
+): ContentState => ({
+  ...contents,
+  ...patch,
+  label: patch.label ?? contents.label,
+  solutes: contents.solutes ?? [],
+  contamination: contents.contamination ?? [],
+});
+
+/**
+ * Starting contents (handoff §4.5, decision recorded 2026-09-24): the original Studio's inspector
+ * fields for a starting item's contents — kind, label, volume, mass, temperature and wet state —
+ * and its advanced raw JSON, each committed as `upsertInitialEquipment` exactly as TeacherStudio
+ * commits them. The bench keeps showing the read-only summary; colours still come only from the
+ * liquid palette. A runtime-added item joins the starting setup when its contents are edited.
+ */
+const ContentsEditor = ({ studio, instance }: { studio: Studio3DController; instance: EquipmentInstance }) => {
+  const disabled = Boolean(studio.readOnly);
+  const contents = instance.contents ?? emptyContents();
+  const commitContents = (patch: Parameters<typeof updateContents>[1], what: string) =>
+    studio.commit(`Change ${what} of ${instance.label}`, [{ type: "upsertInitialEquipment", instance: { ...instance, contents: updateContents(contents, patch) } }]);
+  const [json, setJson] = useState(() => JSON.stringify(instance, null, 2));
+  const [jsonError, setJsonError] = useState<string>();
+  useEffect(() => { setJson(JSON.stringify(instance, null, 2)); setJsonError(undefined); }, [instance]);
+  const applyJson = () => {
+    try {
+      const parsed = JSON.parse(json) as EquipmentInstance;
+      // TeacherStudio's merge rule for the raw JSON, unchanged.
+      studio.commit(`Edit ${instance.label} as JSON`, [{ type: "upsertInitialEquipment", instance: {
+        ...instance,
+        ...parsed,
+        id: parsed.id || instance.id,
+        definitionId: parsed.definitionId || instance.definitionId,
+        label: parsed.label || instance.label,
+        location: parsed.location || instance.location,
+        contents: parsed.contents ?? instance.contents ?? emptyContents(),
+      } }]);
+      setJsonError(undefined);
+    } catch {
+      setJsonError("Starting equipment JSON must parse before it can be committed.");
+    }
+  };
+  return (
+    <Section title="Starting contents" defaultOpen={false}>
+      <label className="s3d-field"><span>Contents</span>
+        <select disabled={disabled} value={contents.kind} onChange={(e) => commitContents({ kind: e.target.value as ContentState["kind"] }, "contents kind")}>
+          {CONTENT_KINDS.map((kind) => <option key={kind} value={kind}>{kind}</option>)}
+        </select>
+      </label>
+      <CommitField label="Contents label" disabled={disabled} value={contents.label} onCommit={(label) => commitContents({ label }, "contents label")} />
+      <CommitField label="Volume mL" mono disabled={disabled} value={contents.volumeMl === undefined ? "" : String(contents.volumeMl)}
+        onCommit={(v) => commitContents({ volumeMl: optionalNumber(v) }, "volume")} />
+      <CommitField label="Mass g" mono disabled={disabled} value={contents.massG === undefined ? "" : String(contents.massG)}
+        onCommit={(v) => commitContents({ massG: optionalNumber(v) }, "mass")} />
+      <CommitField label="Temperature C" mono disabled={disabled} value={contents.temperatureC === undefined ? "" : String(contents.temperatureC)}
+        onCommit={(v) => commitContents({ temperatureC: optionalNumber(v) }, "temperature")} />
+      <label className="s3d-field"><span>Wet state</span>
+        <select disabled={disabled} value={contents.wetState} onChange={(e) => commitContents({ wetState: e.target.value as ContentState["wetState"] }, "wet state")}>
+          {WET_STATES.map((state) => <option key={state} value={state}>{state}</option>)}
+        </select>
+      </label>
+      <details className="s3d-raw-json">
+        <summary>Advanced raw equipment JSON</summary>
+        <textarea className="s3d-mono" rows={10} disabled={disabled} value={json} onChange={(e) => setJson(e.target.value)} onBlur={() => { if (json !== JSON.stringify(instance, null, 2)) applyJson(); }} />
+        {jsonError ? <p className="s3d-field__error" role="alert">{jsonError}</p> : null}
+      </details>
+    </Section>
+  );
+};
+
 export const EquipmentInspector = ({ studio, instanceId, onNudge, onToShelf, onRemove }: {
   studio: Studio3DController;
   instanceId: string;
@@ -365,7 +449,8 @@ export const EquipmentInspector = ({ studio, instanceId, onNudge, onToShelf, onR
         <dt>Contents</dt>
         <dd>{style && instance.contents.kind !== "empty" ? <span className="s3d-swatch" style={{ background: style.fill }} aria-hidden="true" /> : null}{formatContentLabel(instance.contents)}</dd>
       </dl>
-      {!authored ? <div className="s3d-note">Added by the runtime because the draft requires it. Placing it adds it to the starting setup.</div> : null}
+      {!authored ? <div className="s3d-note">Added by the runtime because the draft requires it. Placing it or editing its contents adds it to the starting setup.</div> : null}
+      <ContentsEditor studio={studio} instance={authoredInstance(draft, instance.id) ?? instance} />
       <section className="s3d-ins-sec">
         <div className="s3d-ins-sec__head is-static">Placement</div>
         <div className="s3d-nudge">
@@ -382,7 +467,6 @@ export const EquipmentInspector = ({ studio, instanceId, onNudge, onToShelf, onR
         <button type="button" className="s3d-button s3d-button--danger-quiet" disabled={disabled} onClick={onRemove}>Remove</button>
       </div>
       <div className="s3d-note"><b>Positions note.</b> Positions are stored in the units the 2D player uses, so this draft still plays there.</div>
-      <div className="s3d-note">Contents are edited in the original Studio's inspector fields.</div>
     </>
   );
 };

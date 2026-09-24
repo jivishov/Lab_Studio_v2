@@ -112,9 +112,13 @@ construction. With D10, a technique exported from either Studio keeps its contra
   for, as the 2D setup treats them.
 - **"Open full player".** Drafts have no player route, so it expands the stage to the full window
   (Esc returns).
-- **Starting contents** show read-only, with a swatch in the palette colour. The handoff says
-  starting contents are "edited in the existing inspector fields"; Studio 3D points to the original
-  Studio's fields for that, since M6 adds no contents editor. Please confirm this reading.
+- **Starting contents** (decided 2026-09-24, option b). The bench shows a read-only summary with
+  a swatch in the palette colour. The equipment inspector's "Starting contents" section offers the
+  original Studio's fields: contents kind, label, volume mL, mass g, temperature °C, wet state, and
+  the advanced raw equipment JSON with `TeacherStudio`'s merge rule. Each field commits one
+  `upsertInitialEquipment`; TeacherStudio's `updateContents` is copied as written. A runtime-added
+  item joins the starting setup when its contents are edited. Checked in the browser: the wash
+  bottle's 500 mL changed to 250 mL as one transaction, the summary followed, and undo restored it.
 
 ## Spot check (built-in browser, 1440 × 900, one look)
 

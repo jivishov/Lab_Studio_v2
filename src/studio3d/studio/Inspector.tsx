@@ -27,7 +27,7 @@ const NODE_TYPES: ProcessNodeType[] = ["action", "checkpoint", "decision", "calc
 const VALIDATION_TYPES: ValidationType[] = ["actionEvidence", "measurementRecorded", "dataSeriesRecorded", "notebookEntry", "calculationWithinTolerance", "statePath", "processCompleted"];
 const CONDITIONS: EdgeConditionType[] = ["always", "validationPassed", "retry", "calculationResult"];
 
-const Section = ({ title, children, defaultOpen = true }: { title: string; children: ReactNode; defaultOpen?: boolean }) => {
+export const Section = ({ title, children, defaultOpen = true }: { title: string; children: ReactNode; defaultOpen?: boolean }) => {
   const [open, setOpen] = useState(defaultOpen);
   return (
     <section className="s3d-ins-sec">
@@ -40,7 +40,7 @@ const Section = ({ title, children, defaultOpen = true }: { title: string; child
 };
 
 /** A text field that commits once, when it is left. */
-const CommitField = ({ label, value, onCommit, multiline, disabled, mono }: {
+export const CommitField = ({ label, value, onCommit, multiline, disabled, mono }: {
   label: string; value: string; onCommit: (value: string) => void; multiline?: boolean; disabled?: boolean; mono?: boolean;
 }) => {
   const [draft, setDraft] = useState(value);
