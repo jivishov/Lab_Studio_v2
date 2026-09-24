@@ -1,5 +1,7 @@
 import type { ActionDefinition, ActionInteractionSpec, EquipmentInstance, RuntimeActionRequest } from "../../domain/types";
+import { getBenchSize } from "../../equipment/visualCatalog";
 import type { BenchOverlapResult } from "../../player/benchOverlap";
+import { snapPointAligningSourceAnchor } from "../../player/benchTargeting";
 import type { ActionInputField, ActionInputResolution } from "../../runtime/actionInputs";
 import type { InteractionInvalidFeedback, RuntimeInteractionIntent } from "../../runtime/interactionIntents";
 
@@ -138,6 +140,26 @@ export const resolveRelease = (context: ReleaseContext): ReleaseResolution => {
   }
   if (carried.kind === "probe") return { kind: "none" };
   return { kind: "freeMove", request: benchMoveRequest(carried.instanceId, context.releasePoint, context.nextZIndex) };
+};
+
+/**
+ * Where a snap is sent (Workbench.snapPointForTarget): the runtime point that lines the carried
+ * item's snap anchor up with the target zone's anchor, from the 2D shared helper, so both players
+ * record the same seat. `target` is in runtime bench units. Without a zone, or without an anchor
+ * for it, the target's own point is sent, as in 2D. Never negative.
+ */
+export const snapReleasePoint = (
+  target: { instanceId: string; definitionId: string; x: number; y: number },
+  draggedDefinitionId: string,
+  snapZoneId?: string,
+): { x: number; y: number } => {
+  const size = getBenchSize(target.definitionId);
+  const aligned = snapZoneId
+    ? snapPointAligningSourceAnchor({ id: target.instanceId, definitionId: target.definitionId, x: target.x, y: target.y, width: size.width, height: size.height },
+      draggedDefinitionId, snapZoneId)
+    : undefined;
+  const point = aligned ?? { x: target.x, y: target.y };
+  return { x: Math.max(0, point.x), y: Math.max(0, point.y) };
 };
 
 /** A tray item dropped on the bench: the step's placeIntent when it expects it, else a free move (placeShelfEquipment). */

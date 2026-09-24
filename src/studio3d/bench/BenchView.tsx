@@ -63,7 +63,9 @@ export const BenchView = ({ scene, options, label, fallback, onEngine, onSynced,
   if (!supported || failed) return <>{fallback}</>;
   return (
     <div className="bench3d">
-      <canvas ref={canvasRef} className="bench3d__canvas" aria-label={label} role="img" tabIndex={0} />
+      {/* Focusable and driven by keys (arrows, Enter, E, S, T...), so it is an application region,
+          not an image; items are named through the Bench list (handoff §8). */}
+      <canvas ref={canvasRef} className="bench3d__canvas" aria-label={label} aria-roledescription="3D bench" role="application" tabIndex={0} />
       {children}
     </div>
   );

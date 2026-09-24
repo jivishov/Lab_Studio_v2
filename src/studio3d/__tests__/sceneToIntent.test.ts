@@ -1,15 +1,21 @@
 import { describe, expect, it } from "vitest";
 import type { ActionDefinition, ActionInteractionSpec, EquipmentInstance } from "../../domain/types";
+import { getBenchSize } from "../../equipment/visualCatalog";
 import { resolveBenchOverlap } from "../../player/benchOverlap";
-import { classifyOverlap, footprintOf, nearestFreeSpot, parkBeside, FREE_OVERLAP_RATIO } from "../adapters/footprints";
+import { snapPointAligningSourceAnchor } from "../../player/benchTargeting";
+import { classifyOverlap, footprintOf, nearestFreeSpot, snapClassification, snapZoneFootprint, FREE_OVERLAP_RATIO, SNAP_SOURCE_MM } from "../adapters/footprints";
 import {
   benchMoveRequest,
   intentTypeForInteraction,
   mergeActionInput,
   resolveRelease,
   resolveTrayDrop,
+  snapReleasePoint,
   type ReleaseContext,
 } from "../adapters/sceneToIntent";
+import { nextPlacementPoint, parkPointAfterInteraction } from "../adapters/twoDPlacement";
+import { benchOccupiedBoundsFromNodes } from "../../player/benchTargeting";
+import { resolveWorkbenchScene } from "../../player/resolveWorkbenchScene";
 import { equipment3dEntry } from "../equipment3d/readiness";
 
 const empty = { kind: "empty" as const, label: "empty", solutes: [], contamination: [], wetState: "dry" as const, visualState: "empty" };
@@ -130,6 +136,40 @@ describe("release order (Workbench.finishMove)", () => {
   });
 });
 
+describe("snap release point (Workbench.snapPointForTarget)", () => {
+  const photometer = { instanceId: "spec-1", definitionId: "spectrophotometer", x: 300, y: 120 };
+
+  it("lines the carried item's anchor up with the zone anchor, exactly as the 2D helper does", () => {
+    const size = getBenchSize("spectrophotometer");
+    const twoD = snapPointAligningSourceAnchor({ id: "spec-1", definitionId: "spectrophotometer", x: 300, y: 120, width: size.width, height: size.height },
+      "cuvette", "spectrophotometer-cuvette-slot");
+    expect(twoD).toBeDefined();
+    expect(snapReleasePoint(photometer, "cuvette", "spectrophotometer-cuvette-slot")).toEqual({ x: Math.max(0, twoD!.x), y: Math.max(0, twoD!.y) });
+  });
+
+  it("falls back to the target's own point without a zone, as in 2D", () => {
+    expect(snapReleasePoint(photometer, "cuvette")).toEqual({ x: 300, y: 120 });
+    expect(snapReleasePoint(photometer, "cuvette", "no-such-zone")).toEqual({ x: 300, y: 120 });
+  });
+});
+
+describe("tray click placement (StudentPlayer.nextPlacementPoint)", () => {
+  const onShelf = (id: string, definitionId: string): EquipmentInstance => ({ ...inst(id, definitionId, id), location: "shelf", x: undefined, y: undefined });
+
+  it("takes the first default slot on an empty bench", () => {
+    expect(nextPlacementPoint([onShelf("a", "wash-bottle")], "wash-bottle")).toEqual({ x: 34, y: 86 });
+  });
+
+  it("skips a slot an item already stands in, counting an unplaced bench item at its default slot", () => {
+    const standing = { ...onShelf("flask-1", "volumetric-flask"), location: "workbench" as const };
+    expect(nextPlacementPoint([standing], "wash-bottle")).toEqual({ x: 182, y: 86 });
+  });
+
+  it("stands a ring stand at its own spot", () => {
+    expect(nextPlacementPoint([], "ring-stand")).toEqual({ x: 270, y: 36 });
+  });
+});
+
 describe("tray drops (placeShelfEquipment)", () => {
   const drag = spec({ type: "dragToZone", sourceDefinitionId: "watch-glass", stationId: "workbench" });
   it("places the item the current step expects", () => {
@@ -189,9 +229,71 @@ describe("footprints", () => {
     expect(Math.hypot(spot.xMm - 5, spot.yMm)).toBeGreaterThan(0);
   });
 
-  it("parks a pour source beside its target, on the bench", () => {
-    const parked = parkBeside(footprintOf(bottle, 0, 0), footprintOf(cylinder, 0, 0), [footprintOf(cylinder, 0, 0)]);
-    expect(parked.xMm).toBeGreaterThan(0);
-    expect(Math.abs(parked.xMm)).toBeLessThan(700);
+});
+
+describe("snaps are judged at the zone, as in 2D (benchTargeting)", () => {
+  const snapSpec = (snapZoneId?: string): ActionInteractionSpec =>
+    ({ type: "snapIntoTarget", accessibleLabel: "seat", sourceDefinitionId: "rubber-stopper-set", targetDefinitionId: "volumetric-flask", ...(snapZoneId ? { snapZoneId } : {}) });
+  const flaskEntry = equipment3dEntry("volumetric-flask");
+  const flaskAt = { instanceId: "flask-1", definitionId: "volumetric-flask", entry: flaskEntry, xMm: 100, yMm: 50, yawDeg: 0 };
+
+  it("is not a snap rule for other steps", () => {
+    expect(snapClassification(spec({}), "sample-bottle", [flaskAt])).toBeUndefined();
+  });
+
+  it("puts the zone on the model's anchor, turned with the target", () => {
+    const [ax, ay] = flaskEntry!.anchors["volumetric-flask-stopper-seat"].positionMm;
+    const zone = snapZoneFootprint(flaskEntry, "volumetric-flask", "volumetric-flask-stopper-seat", flaskAt)!;
+    expect(zone.xMm).toBeCloseTo(100 + ax, 6);
+    expect(zone.yMm).toBeCloseTo(50 + ay, 6);
+    const turned = snapZoneFootprint(flaskEntry, "volumetric-flask", "volumetric-flask-stopper-seat", { ...flaskAt, yawDeg: 90 })!;
+    expect(turned.xMm).toBeCloseTo(100 - ay, 6);
+    expect(turned.yMm).toBeCloseTo(50 + ax, 6);
+    expect(snapZoneFootprint(flaskEntry, "volumetric-flask", "no-such-zone", flaskAt)).toBeUndefined();
+  });
+
+  it("with a zone, counts only the zone of the expected target", () => {
+    const interaction = snapSpec("volumetric-flask-stopper-seat");
+    const snap = snapClassification(interaction, "rubber-stopper-set", [flaskAt])!;
+    expect(snap.zones.has("flask-1")).toBe(true);
+    const flask = { instanceId: "flask-1", definitionId: "volumetric-flask", footprint: footprintOf(flaskEntry, 100, 50) };
+    const zone = snap.zones.get("flask-1")!;
+    const width = snap.sourceAsPoint ? SNAP_SOURCE_MM : footprintOf(equipment3dEntry("rubber-stopper-set"), 0, 0).widthMm;
+    const carriedAt = (xMm: number, yMm: number) => ({ instanceId: "stopper-1", definitionId: "rubber-stopper-set",
+      footprint: { ...footprintOf(equipment3dEntry("rubber-stopper-set"), xMm, yMm), widthMm: width, depthMm: width } });
+    expect(classifyOverlap(carriedAt(zone.xMm, zone.yMm), [flask], interaction, snap).kind).toBe("valid");
+    // Over the flask's body but well away from its seat is no longer over the target.
+    const offSeat = carriedAt(zone.xMm + zone.widthMm + 30, zone.yMm);
+    expect(classifyOverlap(offSeat, [flask], interaction, snap).kind).not.toBe("valid");
+  });
+
+  it("without a zone (every Pack 1 snap), keeps the full bounds, as 2D does", () => {
+    const snap = snapClassification(snapSpec(), "cuvette", [flaskAt])!;
+    expect(snap.sourceAsPoint).toBe(false);
+    expect(snap.zones.size).toBe(0);
+  });
+});
+
+describe("2D placement rules (twoDPlacement)", () => {
+  const flaskAt = (x: number, y: number): EquipmentInstance => ({ ...inst("flask-1", "volumetric-flask", "Volumetric flask"), x, y });
+
+  it("parks a pour source clear of every other item's hit box, near the release point", () => {
+    const state = { equipmentInstances: [inst("bottle-1", "sample-bottle", "Sample bottle"), flaskAt(300, 60)], attachments: [] };
+    const parked = parkPointAfterInteraction(state, "bottle-1", { x: 320, y: 40 });
+    const size = getBenchSize("sample-bottle");
+    const [flask] = benchOccupiedBoundsFromNodes(resolveWorkbenchScene(state), new Map(), "bottle-1", state.equipmentInstances);
+    const w = Math.max(0, Math.min(parked.x + size.width, flask.x + flask.width) - Math.max(parked.x, flask.x));
+    const h = Math.max(0, Math.min(parked.y + size.height, flask.y + flask.height) - Math.max(parked.y, flask.y));
+    expect((w * h) / (size.width * size.height)).toBeLessThan(0.05);
+    expect(parked).not.toEqual({ x: 320, y: 40 });
+  });
+
+  it("keeps a parked item on the 2D bench surface", () => {
+    const state = { equipmentInstances: [inst("bottle-1", "sample-bottle", "Sample bottle")], attachments: [] };
+    const parked = parkPointAfterInteraction(state, "bottle-1", { x: 740, y: 500 });
+    expect(parked.x).toBeGreaterThanOrEqual(8);
+    expect(parked.y).toBeGreaterThanOrEqual(8);
+    expect(parked.x).toBeLessThanOrEqual(760);
+    expect(parked.y).toBeLessThanOrEqual(520);
   });
 });

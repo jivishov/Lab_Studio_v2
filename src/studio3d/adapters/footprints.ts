@@ -1,4 +1,5 @@
 import type { ActionInteractionSpec } from "../../domain/types";
+import { getSnapSourceAnchor, getVisualProfile } from "../../equipment/visualCatalog";
 import { resolveBenchOverlap, type BenchBounds, type BenchOverlapResult } from "../../player/benchOverlap";
 import type { Equipment3DEntry } from "../equipment3d/types";
 import { BENCH_MM, MM_PER_PX_DEPTH, MM_PER_PX_X } from "./benchCoordinates";
@@ -47,19 +48,84 @@ export interface FootprintCandidate {
   footprint: FootprintMm;
 }
 
+/**
+ * How a snap is judged (2D `benchBoundsForInteractionSource` and `benchTargetBoundsForInteraction`):
+ * while the step is a snap, the carried item counts as a 4-unit box at its snap anchor when the
+ * catalogue gives it one (here, the point it would stand on), and the expected target counts as
+ * its zone only. So a cuvette dropped anywhere on the photometer's body is not seated; it must
+ * reach the slot.
+ */
+export interface SnapClassification {
+  sourceAsPoint: boolean;
+  /** Zone footprints standing in for the expected target's own, by instance id. */
+  zones: ReadonlyMap<string, FootprintMm>;
+}
+
+/** The 2D anchor box is 4 runtime units wide. */
+export const SNAP_SOURCE_MM = 4 * MM_PER_PX_X;
+const DEFAULT_ZONE_MM = 40;
+
+/**
+ * The zone as a top-down square: centred on the model's registry anchor for that zone (turned
+ * with the target's yaw), as wide as the zone's 2D art (converted by benchCoordinates' scale).
+ */
+export const snapZoneFootprint = (
+  entry: Equipment3DEntry | undefined,
+  definitionId: string,
+  snapZoneId: string,
+  at: { xMm: number; yMm: number; yawDeg: number },
+): FootprintMm | undefined => {
+  const anchor = entry?.anchors[snapZoneId];
+  if (!anchor) return undefined;
+  const [ax, ay] = anchor.positionMm;
+  const yaw = (at.yawDeg * Math.PI) / 180;
+  const zone = getVisualProfile(definitionId)?.visualZones.find((candidate) => candidate.id === snapZoneId);
+  const side = zone ? zone.bounds.width * MM_PER_PX_X : DEFAULT_ZONE_MM;
+  return {
+    xMm: at.xMm + ax * Math.cos(yaw) - ay * Math.sin(yaw),
+    yMm: at.yMm + ax * Math.sin(yaw) + ay * Math.cos(yaw),
+    widthMm: side,
+    depthMm: side,
+  };
+};
+
+/** The snap rule for the current step, or undefined when the step is not a snap. */
+export const snapClassification = (
+  interaction: ActionInteractionSpec | undefined,
+  carriedDefinitionId: string,
+  targets: ReadonlyArray<{ instanceId: string; definitionId: string; entry?: Equipment3DEntry; xMm: number; yMm: number; yawDeg: number }>,
+): SnapClassification | undefined => {
+  if (interaction?.type !== "snapIntoTarget") return undefined;
+  const zones = new Map<string, FootprintMm>();
+  if (interaction.snapZoneId) {
+    for (const target of targets) {
+      if (target.definitionId !== interaction.targetDefinitionId) continue;
+      const zone = snapZoneFootprint(target.entry, target.definitionId, interaction.snapZoneId, target);
+      if (zone) zones.set(target.instanceId, zone);
+    }
+  }
+  return {
+    sourceAsPoint: Boolean(getSnapSourceAnchor(carriedDefinitionId, interaction.targetDefinitionId, interaction.snapZoneId)),
+    zones,
+  };
+};
+
 /** Classify a carried footprint against the bench items, exactly as the 2D workbench does. */
 export const classifyOverlap = (
   carried: FootprintCandidate,
   others: readonly FootprintCandidate[],
   interaction?: ActionInteractionSpec,
-): BenchOverlapResult =>
-  resolveBenchOverlap(
-    footprintBounds(carried.instanceId, carried.definitionId, carried.footprint),
+  snap?: SnapClassification,
+): BenchOverlapResult => {
+  const source = snap?.sourceAsPoint ? { ...carried.footprint, widthMm: SNAP_SOURCE_MM, depthMm: SNAP_SOURCE_MM } : carried.footprint;
+  return resolveBenchOverlap(
+    footprintBounds(carried.instanceId, carried.definitionId, source),
     others
       .filter((other) => other.instanceId !== carried.instanceId)
-      .map((other) => footprintBounds(other.instanceId, other.definitionId, other.footprint)),
+      .map((other) => footprintBounds(other.instanceId, other.definitionId, snap?.zones.get(other.instanceId) ?? other.footprint)),
     interaction,
   );
+};
 
 /** The 2D rule for automatic placement: a spot is free below 5 % overlap (StudentPlayer). */
 export const FREE_OVERLAP_RATIO = 0.05;
@@ -104,10 +170,3 @@ export const nearestFreeSpot = (wanted: FootprintMm, others: readonly FootprintM
   }
   return start;
 };
-
-/** Where a pour source is set down after an accepted pour: beside the target, then the nearest free spot. */
-export const parkBeside = (source: FootprintMm, target: FootprintMm, others: readonly FootprintMm[]): FootprintMm =>
-  nearestFreeSpot(
-    { ...source, xMm: target.xMm + target.widthMm / 2 + source.widthMm / 2 + 20, yMm: target.yMm - 30 },
-    others,
-  );

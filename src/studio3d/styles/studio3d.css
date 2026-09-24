@@ -30,28 +30,247 @@
   touch-action: none;
 }
 
-.s3d-preview {
-  position: absolute;
-  inset: 0;
-}
-
-.s3d-preview__tag {
-  position: absolute;
-  left: 14px;
-  bottom: 14px;
-  z-index: var(--z-panel);
-  padding: 6px 10px;
-  border-radius: var(--radius-button);
-  background: var(--glass);
-  backdrop-filter: blur(15px);
-  border: 1px solid var(--glass-line);
-  font-size: 12px;
-  color: var(--ink-2);
-}
-
 @media (prefers-reduced-motion: reduce) {
   .s3d * {
     transition-duration: 0ms !important;
     animation-duration: 0ms !important;
   }
+}
+/* The Player's Menu can switch reduced motion on regardless of the system setting (§3.5). */
+.s3d-player.is-reduced-motion * {
+  transition-duration: 0ms !important;
+  animation-duration: 0ms !important;
+}
+
+/* ---------------------------------------------------------------- shared controls (handoff §3) */
+.s3d-icon { flex: none; }
+.s3d-muted { color: var(--muted); }
+.s3d-grow { flex: 1; }
+.s3d-eyebrow { margin: 0; font-size: 10px; line-height: 1.5; font-weight: 600; letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); }
+.s3d-small { font-size: 12px; line-height: 1.5; color: var(--muted); }
+.s3d-mono { font-family: var(--font-mono); }
+.s3d-button { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 12px; border-radius: var(--radius-button);
+  border: 1px solid var(--line-strong); background: var(--panel-solid); color: var(--ink); font: 500 13px/1 var(--font-sans);
+  cursor: pointer; text-decoration: none; transition: background var(--dur-hover) ease-out; }
+.s3d-button:hover { background: var(--bg); }
+.s3d-button:disabled { opacity: .5; cursor: not-allowed; }
+.s3d-button--primary { background: var(--brand); border-color: var(--brand); color: #fff; }
+.s3d-button--primary:hover { background: var(--brand-hover); }
+.s3d-button--guide { background: var(--guide-tint); border-color: transparent; color: var(--guide-strong); }
+.s3d-button--quiet { background: transparent; border-color: transparent; }
+.s3d-button.has-dot { position: relative; }
+.s3d-button.has-dot::after { content: ""; position: absolute; top: 5px; right: 6px; width: 7px; height: 7px; border-radius: 50%; background: var(--guide); box-shadow: 0 0 0 2px #fff; }
+.s3d-icon-button { display: inline-grid; place-items: center; width: 28px; height: 28px; border: 0; border-radius: var(--radius-input); background: transparent; color: var(--ink-2); cursor: pointer; }
+.s3d-icon-button:hover { background: var(--bg); }
+.s3d-link { border: 0; background: none; color: var(--ink-2); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font: inherit; font-size: 12px; padding: 0; justify-self: start; }
+.s3d-chip { display: inline-flex; align-items: center; gap: 4px; min-height: 22px; padding: 0 8px; border-radius: var(--radius-input); font: 500 11px/1 var(--font-sans); white-space: nowrap; }
+.s3d-chip--neutral { background: #edf1ec; color: var(--ink-2); }
+.s3d-chip--ok { background: var(--ok-tint); color: var(--ok); }
+.s3d-prov--teacher { background: var(--prov-teacher-bg); color: var(--prov-teacher-ink); }
+.s3d-prov--entry { background: var(--prov-entry-bg); color: var(--prov-entry-ink); }
+.s3d-prov--bench { background: var(--prov-bench-bg); color: var(--prov-bench-ink); }
+.s3d-prov--simulated { background: var(--prov-sim-bg); color: var(--prov-sim-ink); }
+.s3d-prov--calculated { background: var(--prov-calc-bg); color: var(--prov-calc-ink); }
+.s3d-note { margin: 0; font-size: 12px; line-height: 1.5; color: var(--ink-2); background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-button); padding: 8px 10px; }
+.s3d-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.s3d-field { display: grid; gap: 4px; min-width: 0; }
+.s3d-field label { font-size: 12px; font-weight: 500; color: var(--ink-2); }
+.s3d-field select, .s3d-input { min-height: 34px; border: 1px solid var(--line-strong); border-radius: var(--radius-input); background: var(--panel-solid); font: 14px var(--font-sans); color: var(--ink); }
+.s3d-field select { padding: 0 8px; width: 100%; min-width: 0; text-overflow: ellipsis; }
+.s3d-field select.is-missing { color: var(--muted); }
+.s3d-input { display: flex; align-items: center; gap: 8px; padding: 0 10px; }
+.s3d-input input, .s3d-input select { flex: 1; min-width: 0; border: 0; outline: none; background: transparent; font: 14px var(--font-mono); color: var(--ink); min-height: 32px; }
+.s3d-input:focus-within { outline: 3px solid var(--focus); outline-offset: 2px; }
+.s3d-input__unit { font: 12px var(--font-mono); color: var(--ink-2); }
+.s3d-field__meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 0; }
+.s3d-field__error { margin: 0; font-size: 12px; color: var(--error); }
+.s3d-field--compact label { font-size: 11px; }
+.s3d-kv { display: grid; gap: 6px; margin: 0; font-size: 12px; }
+.s3d-kv > div { display: grid; grid-template-columns: 96px 1fr; gap: 10px; }
+.s3d-kv dt { color: var(--muted); }
+.s3d-kv dd { margin: 0; }
+.s3d-check { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; }
+
+/* ---------------------------------------------------------------- player frame (handoff §5) */
+.s3d-player { position: absolute; inset: 0; }
+.s3d-topbar { position: absolute; top: 0; left: 0; right: 0; z-index: var(--z-bar); height: 52px; display: flex; align-items: center; gap: 12px; padding: 0 14px;
+  background: #fbfcf8f0; backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+.s3d-mark { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: var(--radius-button); background: var(--brand); color: #fff; }
+.s3d-topbar__title { font-weight: 600; font-size: 15px; }
+.s3d-source { font-size: 10px; font-weight: 600; letter-spacing: 1.2px; color: var(--muted); border: 1px solid var(--line-strong); border-radius: 5px; padding: 2px 6px; }
+.s3d-topbar__centre { position: absolute; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--ink-2); }
+.s3d-topbar__centre b { color: var(--ink); }
+.s3d-topbar__right { margin-left: auto; display: flex; gap: 8px; }
+.s3d-mode { display: inline-flex; align-items: center; gap: 5px; height: 24px; padding: 0 9px; border-radius: 999px; font-size: 12px; font-weight: 500; background: var(--guide-tint); color: var(--guide-strong); }
+.s3d-mode.is-assess { background: #ecebf3; color: #3f3d63; }
+.s3d-float { position: absolute; z-index: var(--z-panel); display: flex; flex-direction: column; background: var(--float); backdrop-filter: blur(6px); border: 1px solid var(--float-line); border-radius: var(--radius-panel); box-shadow: var(--shadow-float); }
+.s3d-float__head { flex: none; display: flex; align-items: center; gap: 8px; padding: 8px 10px 6px 8px; touch-action: none; }
+.s3d-float__title { flex: 1; margin: 0; font-size: 13px; font-weight: 600; }
+.s3d-float__grip { display: inline-grid; place-items: center; width: 24px; height: 24px; border: 0; border-radius: 6px; background: none; color: var(--muted); cursor: grab; padding: 0; }
+.s3d-float__grip:hover { background: var(--bg); color: var(--ink-2); }
+.s3d-float.is-moving { box-shadow: 0 16px 40px #1b3a3330, 0 2px 6px #1b3a3314; user-select: none; }
+.s3d-float.is-moving .s3d-float__grip { cursor: grabbing; }
+.s3d-float.is-collapsed { width: auto; height: auto; max-height: none; padding-bottom: 0; }
+.s3d-float.is-collapsed .s3d-float__head { padding-bottom: 8px; }
+/* Resize from any corner (§5.1); the corners sit over the rounded edge and never cover content. */
+.s3d-float__corner { position: absolute; width: 14px; height: 14px; touch-action: none; }
+.s3d-float__corner--nw { top: -4px; left: -4px; cursor: nwse-resize; }
+.s3d-float__corner--ne { top: -4px; right: -4px; cursor: nesw-resize; }
+.s3d-float__corner--sw { bottom: -4px; left: -4px; cursor: nesw-resize; }
+.s3d-float__corner--se { bottom: -4px; right: -4px; cursor: nwse-resize; }
+
+.s3d-step { top: 66px; left: 14px; width: 372px; max-height: calc(100% - 180px); overflow: hidden; }
+.s3d-step__line { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
+.s3d-step__badge { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--guide); color: #fff; font-weight: 600; font-size: 13px; }
+.s3d-step__badge.is-assess { background: #4b4a6e; }
+.s3d-step__body { display: grid; gap: 10px; padding: 0 14px 12px; min-height: 0; overflow-x: hidden; overflow-y: auto; }
+.s3d-step__title { margin: 0; font-size: 16px; line-height: 1.4; font-weight: 600; }
+.s3d-progress { display: flex; gap: 3px; margin: 0; padding: 0; list-style: none; }
+.s3d-progress li { flex: 1; height: 5px; border-radius: 3px; background: #dde3da; transition: background var(--dur-step) var(--ease-standard); }
+.s3d-progress li.is-done { background: var(--guide); }
+.s3d-progress li.is-current { background: linear-gradient(90deg, var(--guide) 0 35%, #bfdcd4 35%); }
+.s3d-next-action { margin: 0; background: var(--guide-band); border-left: 3px solid var(--guide); border-radius: 0 8px 8px 0; padding: 9px 12px; font-size: 17px; line-height: 1.4; font-weight: 600; color: var(--ink); }
+.s3d-flow { display: grid; grid-template-columns: minmax(0, 1fr) 14px minmax(0, 1fr); gap: 6px; align-items: end; }
+.s3d-flow__arrow { margin-bottom: 9px; color: var(--muted); }
+.s3d-step__actions { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.s3d-step__links { display: grid; gap: 6px; justify-items: start; }
+.s3d-about summary { font-size: 13px; color: var(--ink-2); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-strong); }
+.s3d-about p { margin: 6px 0 0; font-size: 12px; color: var(--ink-2); }
+.s3d-correction { display: grid; gap: 6px; border-left: 3px solid var(--error); background: var(--error-tint); border-radius: 0 8px 8px 0; padding: 9px 12px; font-size: 13px; }
+.s3d-correction p { margin: 0; }
+.s3d-correction__row { display: grid; grid-template-columns: 96px 1fr; gap: 8px; }
+.s3d-correction__k { font-size: 11px; font-weight: 600; letter-spacing: .6px; text-transform: uppercase; color: var(--error); padding-top: 2px; }
+.s3d-correction__attempt { font-size: 12px; color: var(--ink-2); border-top: 1px solid #efd5ca; padding-top: 6px; }
+
+.s3d-tray { left: 14px; bottom: 14px; width: 300px; }
+.s3d-tray__tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 6px; margin: 0; padding: 0 10px 10px; list-style: none; min-height: 0; overflow: auto; }
+.s3d-tile { position: relative; display: grid; justify-items: center; gap: 2px; width: 100%; border: 1px solid var(--line); border-radius: var(--radius-button); background: var(--panel-solid);
+  padding: 4px 4px 6px; font: 11px/1.25 var(--font-sans); color: var(--ink); text-align: center; cursor: grab; touch-action: none; }
+.s3d-tile:hover { border-color: var(--line-strong); }
+.s3d-tile__need { position: absolute; top: 5px; right: 5px; width: 8px; height: 8px; border-radius: 50%; background: var(--guide); box-shadow: 0 0 0 2px #fff; }
+.s3d-tile__count { position: absolute; top: 3px; left: 5px; font: 500 10px var(--font-mono); color: var(--muted); }
+.s3d-thumb { display: block; border-radius: 6px; background: #eef1ea; object-fit: contain; }
+
+.s3d-benchlist { top: 66px; right: 14px; width: 340px; max-height: calc(100% - 180px); display: flex; flex-direction: column; }
+.s3d-bl-scroll { flex: 1; min-height: 0; overflow: auto; }
+.s3d-bl-group { margin: 4px 12px 2px; font-size: 10px; font-weight: 600; letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); }
+.s3d-benchlist ul { margin: 0; padding: 0; list-style: none; }
+.s3d-bl-row { border-top: 1px solid var(--line); padding: 6px 12px; }
+.s3d-bl-row.is-selected { background: var(--brand-tint); box-shadow: inset 3px 0 0 var(--brand); }
+.s3d-bl-row__main { display: grid; grid-template-columns: 34px 1fr; gap: 8px; width: 100%; border: 0; background: none; padding: 0; text-align: left; cursor: pointer; color: var(--ink); font: inherit; }
+.s3d-bl-row__name { display: block; font-size: 13px; font-weight: 600; }
+.s3d-bl-row__meta { display: block; font-size: 11.5px; color: var(--muted); }
+.s3d-bl-row__actions { display: flex; flex-wrap: wrap; gap: 4px; margin: 5px 0 0 42px; }
+.s3d-bl-row__actions button { font: 11px var(--font-sans); border: 1px solid var(--line-strong); border-radius: 6px; padding: 2px 6px; background: var(--panel-solid); color: var(--ink-2); cursor: pointer; }
+.s3d-bl-shelf li { padding: 3px 12px; font-size: 12px; color: var(--ink-2); }
+.s3d-bl-foot { margin: 0; padding: 8px 12px 10px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); }
+
+.s3d-examine { right: 14px; top: 66px; width: 340px; }
+.s3d-examine__body { display: grid; gap: 10px; padding: 0 14px 14px; }
+.s3d-examine__body h2 { margin: 0; font-size: 16px; }
+.s3d-examine__prov { border-top: 1px solid var(--line); padding-top: 8px; margin: 0; }
+.s3d-display-lines { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 13px; }
+
+.s3d-sheet { position: absolute; z-index: calc(var(--z-panel) + 2); top: 52px; right: 0; bottom: 0; width: 420px; min-width: 320px; max-width: 50vw; overflow: hidden;
+  display: flex; flex-direction: column; background: var(--panel-solid); border-left: 1px solid var(--line); box-shadow: -10px 0 30px #1b3a331a; }
+.s3d-sheet__head { flex: none; display: flex; align-items: center; gap: 10px; padding: 14px 16px 10px; border-bottom: 1px solid var(--line); }
+.s3d-sheet__head h2 { flex: 1; margin: 0; font-size: 16px; }
+.s3d-sheet__body { flex: 1; min-height: 0; overflow: auto; display: grid; align-content: start; gap: 8px; padding: 12px 16px; }
+/* Resize the notebook from its left edge (§5.12); the edge is also a focusable separator. */
+.s3d-sheet__edge { position: absolute; z-index: 1; top: 0; bottom: 0; left: 0; width: 8px; cursor: ew-resize; touch-action: none; }
+.s3d-sheet__edge:hover, .s3d-sheet__edge:focus-visible { background: var(--line-strong); }
+.s3d-nb-row { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; align-items: center; padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--radius-button); }
+.s3d-nb-row__label { font-size: 13px; }
+.s3d-nb-row__value { font-size: 14px; font-weight: 500; }
+.s3d-nb-row__meta { grid-column: 1 / -1; display: flex; gap: 6px; }
+
+.s3d-hint { position: absolute; z-index: var(--z-bar); left: 50%; bottom: 84px; transform: translateX(-50%); margin: 0; font-size: 12.5px; color: var(--ink-2);
+  background: #fafdfae6; border: 1px solid var(--float-line); border-radius: var(--radius-button); padding: 5px 12px; white-space: nowrap; }
+.s3d-dock { position: absolute; z-index: var(--z-bar); left: 50%; bottom: 14px; transform: translateX(-50%); display: flex; gap: 4px; padding: 6px; border-radius: 14px;
+  background: var(--float); border: 1px solid var(--float-line); box-shadow: var(--shadow-float); }
+.s3d-dock button { display: grid; justify-items: center; align-content: center; gap: 4px; width: 76px; height: 56px; border: 0; border-radius: 10px; background: transparent;
+  font: 11px var(--font-sans); color: var(--ink-2); cursor: pointer; }
+.s3d-dock button:hover { background: var(--bg); }
+.s3d-dock button.is-on { background: var(--brand); color: #fff; }
+.s3d-dock button:disabled { opacity: .45; cursor: not-allowed; }
+.s3d-dock__sep { width: 1px; background: var(--line); margin: 8px 2px; }
+.s3d-dock .s3d-dock__caret { width: 28px; margin-left: -3px; }
+/* Camera views (§5.9), opened from the caret beside Auto view. */
+.s3d-viewmenu { position: absolute; right: 70px; bottom: calc(100% + 8px); display: grid; min-width: 210px; padding: 6px; background: var(--panel-solid);
+  border: 1px solid var(--line); border-radius: var(--radius-button); box-shadow: var(--shadow-float); }
+.s3d-dock .s3d-viewmenu button { display: block; width: auto; height: auto; padding: 8px 10px; border-radius: var(--radius-input); text-align: left; font-size: 13px; color: var(--ink); }
+.s3d-dock .s3d-viewmenu button:disabled { color: var(--muted); cursor: default; background: none; }
+.s3d-icon-button--bar { width: 34px; height: 34px; }
+/* Help, "Controls & model" (§5.16). */
+.s3d-dialog.s3d-help { width: min(640px, calc(100% - 32px)); max-height: calc(100% - 48px); overflow: auto; }
+.s3d-help__head { display: flex; align-items: center; justify-content: space-between; }
+.s3d-help__head h2 { margin: 0; font-size: 20px; line-height: 1.3; }
+.s3d-help__body { display: grid; gap: 16px; }
+.s3d-help__body p { margin: 6px 0 0; font-size: 13px; color: var(--ink-2); }
+.s3d-help .s3d-table th[scope="row"] { width: 44%; font-size: 13px; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--ink); }
+
+.s3d-label, .s3d-callout { position: absolute; z-index: var(--z-scene-label); transform: translateX(-50%); pointer-events: none; white-space: nowrap;
+  background: var(--label-bg); color: var(--label-ink); border-radius: 999px; padding: 5px 12px; font-size: 12.5px; font-weight: 500; }
+.s3d-callout { display: flex; align-items: center; gap: 6px; }
+.s3d-callout--invalid { box-shadow: 0 0 0 2px var(--error); }
+.s3d-callout--valid { box-shadow: 0 0 0 2px var(--guide); }
+.s3d-toast { position: absolute; z-index: var(--z-toast); left: 50%; bottom: 120px; transform: translateX(-50%); display: flex; gap: 8px; align-items: center;
+  background: var(--panel-solid); border: 1px solid var(--line); border-left: 3px solid var(--ok); border-radius: var(--radius-button); padding: 8px 14px; font-size: 13px; box-shadow: var(--shadow-float); }
+.s3d-toast .s3d-icon { color: var(--ok); }
+.s3d-menu { position: absolute; z-index: var(--z-dialog); top: 56px; right: 14px; display: grid; gap: 8px; min-width: 240px; padding: 12px; background: var(--panel-solid);
+  border: 1px solid var(--line); border-radius: var(--radius-panel); box-shadow: var(--shadow-float); font-size: 13px; }
+.s3d-menu button, .s3d-menu a { text-align: left; border: 0; background: none; padding: 4px 0; font: inherit; color: var(--ink); cursor: pointer; text-decoration: none; }
+.s3d-menu label { display: flex; gap: 8px; align-items: center; }
+.s3d-dialog-back, .s3d-results { position: absolute; z-index: var(--z-dialog); inset: 52px 0 0 0; display: grid; place-items: center; background: #1d2b2559; }
+.s3d-dialog { width: min(440px, calc(100% - 32px)); background: var(--panel-solid); border-radius: var(--radius-panel); padding: 18px 20px; box-shadow: 0 20px 60px #0d1a1440; display: grid; gap: 14px; }
+.s3d-dialog p { margin: 0; }
+.s3d-dialog__actions { display: flex; justify-content: flex-end; gap: 8px; }
+.s3d-results__card { width: min(760px, calc(100% - 32px)); max-height: calc(100% - 40px); overflow: auto; background: var(--panel-solid); border-radius: var(--radius-panel); padding: 20px 22px; display: grid; gap: 12px; box-shadow: 0 20px 60px #0d1a1440; }
+.s3d-results__card h2 { margin: 0; font-size: 20px; }
+.s3d-results__card p { margin: 0; display: flex; gap: 8px; flex-wrap: wrap; }
+.s3d-results__actions { display: flex; justify-content: flex-end; gap: 8px; }
+.s3d-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.s3d-table th { text-align: left; font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: .5px; text-transform: uppercase; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+.s3d-table td { padding: 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+/* Touch item menu (§5.19): opened by a second tap on the selected item. */
+.s3d-itemmenu { position: absolute; z-index: var(--z-panel); display: grid; min-width: 168px; padding: 6px; transform: translate(-50%, 12px);
+  background: var(--panel-solid); border: 1px solid var(--line); border-radius: var(--radius-button); box-shadow: var(--shadow-float); }
+.s3d-itemmenu button { min-height: 40px; padding: 8px 12px; border: 0; border-radius: var(--radius-input); background: none; text-align: left; font: 14px var(--font-sans); color: var(--ink); cursor: pointer; }
+.s3d-itemmenu button:hover { background: var(--bg); }
+/* Loader (§5.2): a glass card over the bench backdrop while the equipment models download. */
+.s3d-loader { position: absolute; z-index: var(--z-dialog); inset: 0; display: grid; place-items: center; background: #d7ddd6b3; }
+.s3d-loader__card { width: min(360px, calc(100% - 32px)); display: grid; gap: 10px; padding: 18px 20px; background: var(--glass); backdrop-filter: blur(15px);
+  border: 1px solid var(--glass-line); border-radius: var(--radius-panel); box-shadow: var(--shadow-float); }
+.s3d-loader__card p { margin: 0; }
+.s3d-loader__bar { height: 6px; border-radius: 3px; background: #dde3da; overflow: hidden; }
+.s3d-loader__bar span { display: block; height: 100%; background: var(--guide); transition: width 120ms ease-out; }
+.s3d-fallback { position: absolute; inset: 0; display: grid; place-content: center; gap: 12px; text-align: center; padding: 16px; }
+
+/* ---------------------------------------------------------------- gate (handoff §5.3) */
+.s3d-gate-page { position: absolute; inset: 0; display: grid; place-items: center; padding: 16px; background: linear-gradient(180deg, #d7ddd6, #c6cdc4 45%, #8e948c 45.2%, #7c827a); overflow: auto; }
+.s3d-gate { width: min(560px, 100%); display: grid; gap: 12px; padding: 20px 22px; background: #fbfcf8f5; backdrop-filter: blur(15px); border: 1px solid var(--float-line); border-radius: var(--radius-panel); box-shadow: var(--shadow-float); }
+.s3d-gate h1 { margin: 0; font-size: 20px; line-height: 1.3; }
+.s3d-gate p { margin: 0; }
+.s3d-journey { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 6px; margin: 0; padding: 0; list-style: none; }
+.s3d-journey li { background: var(--guide-band); border-radius: var(--radius-button); padding: 8px; text-align: center; font-size: 12px; color: var(--ink-2); line-height: 1.35; }
+.s3d-journey b { display: block; color: var(--guide-strong); font-size: 15px; }
+.s3d-journey__more { font-style: italic; }
+.s3d-blocker { background: var(--warn-tint); border: 1px solid #ecdcb0; border-radius: var(--radius-button); padding: 10px 12px; font-size: 13px; }
+.s3d-hosts ul { margin: 6px 0 0; padding-left: 18px; }
+.s3d-hosts a, .s3d-gate a { color: var(--brand); font-weight: 600; }
+.s3d-gate__actions { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.s3d-setup-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+
+/* ---------------------------------------------------------------- tablet (handoff §7) */
+@media (max-width: 1100px) {
+  .s3d-dock button { width: 52px; font-size: 0; gap: 0; }
+}
+@media (max-width: 1023px) {
+  .s3d-step { top: auto; left: 0; right: 0; bottom: 0; width: auto; max-height: 40%; border-radius: 14px 14px 0 0; }
+  .s3d-dock { bottom: calc(40% + 12px); }
+  .s3d-hint { display: none; }
+  .s3d-tray { bottom: calc(40% + 84px); }
+  .s3d-sheet { width: 100% !important; max-width: none; }
+  .s3d-sheet__edge { display: none; }
+  .s3d-topbar__centre { position: static; transform: none; }
 }

@@ -11,12 +11,12 @@ Branch `claude/lab-studio-3d`. three.js 0.184, rendering with Khronos PBR Neutra
 | BenchEngine and BenchView | `src/studio3d/bench/BenchEngine.ts` (imperative; renders on demand; syncs from `runtimeToScene`) and `BenchView.tsx` (a thin React wrapper; falls back to navigation when WebGL 2 is missing) |
 | Scene builders | `bench/scene/contents.ts` (liquids lathed from the model's fill profile, coloured only by `resolveLiquidStyle`; powder heaps at `solidRest`), `displays.ts` (a canvas face drawn only from `instrumentDisplay` lines, with a learner's value labelled "Your entry"), `signals.ts` (beacon, selection, valid and invalid rings with stroked ✓ and ✕, dashed footprint) |
 | Model loading | `equipment3d/loadModels.ts`: GLTFLoader with the bundled MeshoptDecoder; one load per definition; the URL versioned by source hash |
-| Bench preview | `#/3d/technique/:id` (`bench/BenchPreview.tsx`) draws the technique's real runtime state, with tray items free-moved onto the bench through the runtime's own `benchMove`. Player3D (M5) replaces it. |
+| Bench preview | `#/3d/technique/:id` (`bench/BenchPreview.tsx`) draws the technique's real runtime state, with tray items free-moved onto the bench through the runtime's own `benchMove`. Player3D (M5) replaces it. **Superseded:** the preview was deleted in the uncommitted M5 work; `#/3d/technique/:id` now runs Player3D (see `M5_EVIDENCE.md`). |
 
 ## Static exit
 
 - `npx tsc -b`: exit 0.
-- Adapter tests for each technique's initial state, weighing's final state through the real runtime, and the display-policy tests (`src/studio3d/__tests__/adapters.test.ts`): written, **not run**.
+- Adapter tests for each technique's initial state, weighing's final state through the real runtime, and the display-policy tests (`src/studio3d/__tests__/adapters.test.ts`): written, **not run**. The weighing cases call the standalone setup, which the baseline core refuses (see `M5_EVIDENCE.md`), so they will fail when run until that is fixed.
 
 ## G1 spot checks (authorised 2026-09-23: one look per change in the built-in browser)
 

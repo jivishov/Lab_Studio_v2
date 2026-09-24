@@ -1,4 +1,6 @@
+import type { RuntimeState } from "../../domain/types";
 import { getBenchSize } from "../../equipment/visualCatalog";
+import { resolveWorkbenchScene } from "../../player/resolveWorkbenchScene";
 
 /**
  * The one conversion between runtime bench units and the 3D bench (plan §2.3, §4.1, §11).
@@ -33,7 +35,11 @@ export const MM_PER_PX_DEPTH = usableDepthMm / RUNTIME_BENCH_PX.height;
 export interface BenchPointMm {
   xMm: number;
   yMm: number;
-  /** Rotation about the vertical axis, degrees; from `EquipmentInstance.rotation` (read only). */
+  /**
+   * Turn about the vertical axis, degrees. Always 0 from runtime state: `EquipmentInstance.rotation`
+   * is set by no runtime action and drawn by no 2D view, so neither player gives it a meaning
+   * (decision U6: turning stays in Examine). Seated items take their anchor's yaw instead.
+   */
   yawDeg: number;
 }
 
@@ -48,7 +54,7 @@ const clamp = (value: number, lo: number, hi: number): number => Math.min(hi, Ma
 /** Runtime bench units -> bench millimetres for an item of `definitionId`. */
 export const toBench = (
   definitionId: string,
-  point: { x?: number; y?: number; rotation?: number },
+  point: { x?: number; y?: number },
 ): BenchPointMm => {
   const size = getBenchSize(definitionId);
   const centreXPx = (point.x ?? 0) + size.width / 2;
@@ -58,8 +64,33 @@ export const toBench = (
   return {
     xMm: round1(clamp(xMm, -BENCH_MM.width / 2, BENCH_MM.width / 2)),
     yMm: round1(clamp(yMm, -BENCH_MM.depth / 2, BENCH_MM.depth / 2)),
-    yawDeg: point.rotation ?? 0,
+    yawDeg: 0,
   };
+};
+
+/**
+ * Where each bench item stands, in bench millimetres, read from the same scene resolver the 2D
+ * workbench draws with. The runtime moves some items onto the bench without coordinates (a pour's
+ * target leaves the shelf with no `x` or `y`); the 2D player then stands each one at its default
+ * slot for its render order. Reading positions from the resolver, rather than from `x ?? 0`, keeps
+ * both players showing the same bench, and copies no placement rule (G-3).
+ */
+export const runtimeBenchPoints = (
+  state: Pick<RuntimeState, "equipmentInstances" | "attachments">,
+): Map<string, RuntimeBenchPoint> =>
+  new Map(resolveWorkbenchScene(state).map((node) => [node.primaryInstanceId, { x: node.transform.x, y: node.transform.y }]));
+
+/** `runtimeBenchPoints` in bench millimetres. */
+export const runtimeBenchPointsMm = (
+  state: Pick<RuntimeState, "equipmentInstances" | "attachments">,
+): Map<string, BenchPointMm> => {
+  const byId = new Map(state.equipmentInstances.map((instance) => [instance.id, instance]));
+  const points = new Map<string, BenchPointMm>();
+  for (const [id, point] of runtimeBenchPoints(state)) {
+    const instance = byId.get(id);
+    if (instance) points.set(id, toBench(instance.definitionId, point));
+  }
+  return points;
 };
 
 /**

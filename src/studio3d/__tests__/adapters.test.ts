@@ -7,7 +7,7 @@ import { equipmentById } from "../../equipment/catalog";
 import { resolveLiquidStyle } from "../../equipment/liquidRendering";
 import { createRuntimeState, performRuntimeAction } from "../../runtime";
 import { resolveInteractionIntent, type RuntimeInteractionIntent } from "../../runtime/interactionIntents";
-import { BENCH_MM, fromBench, RUNTIME_BENCH_PX, toBench, benchPositionWords } from "../adapters/benchCoordinates";
+import { BENCH_MM, fromBench, RUNTIME_BENCH_PX, runtimeBenchPointsMm, toBench, benchPositionWords } from "../adapters/benchCoordinates";
 import { instrumentDisplay } from "../adapters/instrumentDisplay";
 import { fillLevelMm, runtimeToScene } from "../adapters/runtimeToScene";
 import { equipment3dEntry } from "../equipment3d/readiness";
@@ -32,8 +32,8 @@ describe("benchCoordinates", () => {
     }
   });
 
-  it("keeps runtime rotation as read-only yaw and clamps to the bench surface", () => {
-    expect(toBench("wash-bottle", { x: 34, y: 86, rotation: 15 }).yawDeg).toBe(15);
+  it("gives items no turn of their own, as the 2D workbench draws none, and clamps to the bench surface", () => {
+    expect(toBench("wash-bottle", { x: 34, y: 86 }).yawDeg).toBe(0);
     const far = toBench("wash-bottle", { x: 100_000, y: 100_000 });
     expect(Math.abs(far.xMm)).toBeLessThanOrEqual(BENCH_MM.width / 2);
     expect(Math.abs(far.yMm)).toBeLessThanOrEqual(BENCH_MM.depth / 2);
@@ -145,6 +145,38 @@ describe("weighing through the real runtime: the balance display stays measureme
     // The runtime's weigh neither seats nor moves the watch glass (plan §2.4): the resting scene
     // keeps it on the bench, not on the pan.
     expect(final.bench.find((item) => item.definitionId === "watch-glass")?.placement.kind).toBe("bench");
+  });
+});
+
+describe("bench positions follow the 2D workbench (G-3)", () => {
+  const making = applyTechniqueConfiguration(readTechnique("making-solution"), {
+    initialSolventVolumeMl: "50", soluteMassG: "1.06", finalVolumeMl: "100", solutionObservation: "clear colourless solution",
+  });
+
+  it("stands an item the runtime moved onto the bench without coordinates at the 2D default slot", () => {
+    // Step 1 by the accessible flow's Confirm: the runtime resolves the source and target itself,
+    // and its transfer takes the flask off the shelf with no x or y.
+    const start = createRuntimeState(making);
+    const result = resolveInteractionIntent(making, start, { type: "pourIntent", origin: "keyboard" });
+    expect(result.ok, result.ok ? "" : result.feedback.message).toBe(true);
+    const state = result.ok ? performRuntimeAction(making, start, result.request) : start;
+    const flask = state.equipmentInstances.find((instance) => instance.definitionId === "volumetric-flask")!;
+    expect(flask.location).toBe("workbench");
+    expect(flask.x).toBeUndefined();
+    // The 2D workbench (resolveWorkbenchScene) draws the first bench item at x 34, y 86.
+    const expected = toBench("volumetric-flask", { x: 34, y: 86 });
+    expect(runtimeBenchPointsMm(state).get(flask.id)).toEqual(expected);
+    const item = runtimeToScene(state, making).bench.find((i) => i.instanceId === flask.id)!;
+    expect(item.placement).toEqual({ kind: "bench", point: expected });
+    expect(item.contents.kind).toBe("liquid");
+  });
+
+  it("keeps the coordinates the runtime has for a placed item", () => {
+    const state = performRuntimeAction(making, createRuntimeState(making), {
+      verb: "place", equipmentDefinitionId: "volumetric-flask", location: "workbench", parameters: { benchMove: true, x: 330, y: 246, zIndex: 1 },
+    });
+    const flask = state.equipmentInstances.find((instance) => instance.definitionId === "volumetric-flask")!;
+    expect(runtimeBenchPointsMm(state).get(flask.id)).toEqual(toBench("volumetric-flask", { x: 330, y: 246 }));
   });
 });
 

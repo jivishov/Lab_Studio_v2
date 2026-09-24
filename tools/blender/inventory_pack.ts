@@ -30,9 +30,9 @@ import type { ActionDefinition, EquipmentInstance, LabDefinition, TechniqueDefin
 import { validateTechniqueDefinition } from "../../src/domain/validation.ts";
 import { equipmentById } from "../../src/equipment/catalog.ts";
 import { actionInputField } from "../../src/runtime/actionInputs.ts";
+import { PACK_SIZE } from "../../src/studio3d/packs.ts";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
-const PACK_SIZE = 5;
 
 /** Labs with a custom route in `src/App.tsx` (`customPlayerRoutes`); never flattened (plan E4). */
 const CUSTOM_ROUTE_LABS = new Set(["acid-base-titration-curves", "green-chemistry-mixture-purification"]);

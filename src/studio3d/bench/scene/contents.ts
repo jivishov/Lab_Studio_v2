@@ -22,7 +22,7 @@ export const parseCssColour = (value: string): { colour: THREE.Color; alpha: num
   return { colour: new THREE.Color(value), alpha: 1 };
 };
 
-const radiusAt = (profile: number[][], z: number): number => {
+export const radiusAt = (profile: number[][], z: number): number => {
   for (let i = 0; i + 1 < profile.length; i += 1) {
     const [r0, z0] = profile[i];
     const [r1, z1] = profile[i + 1];
@@ -30,6 +30,15 @@ const radiusAt = (profile: number[][], z: number): number => {
   }
   return profile[profile.length - 1]?.[0] ?? 0;
 };
+
+/**
+ * The 2D player draws a liquid at its fill colour's alpha times `style.opacity`. A 3D volume seen
+ * through glass needs a little more body to read at all, so that value is mapped onto 0.25–1 by a
+ * strictly increasing line: any two states the palette draws differently stay different and in
+ * the same order, which keeps the registry's ordinal claims (a stronger colour means more).
+ */
+export const liquidOpacity3D = (alpha: number, opacity: number): number =>
+  0.25 + 0.75 * Math.min(1, Math.max(0, alpha * opacity));
 
 const liquidMaterial = (fill: string, opacity: number): THREE.MeshPhysicalMaterial => {
   const { colour, alpha } = parseCssColour(fill);
@@ -39,7 +48,7 @@ const liquidMaterial = (fill: string, opacity: number): THREE.MeshPhysicalMateri
     roughness: 0.05,
     metalness: 0,
     transparent: true,
-    opacity: Math.min(1, Math.max(0.3, alpha * opacity + 0.25)),
+    opacity: liquidOpacity3D(alpha, opacity),
     depthWrite: false,
     envMapIntensity: 1.3,
     side: THREE.DoubleSide,
@@ -87,6 +96,39 @@ export const buildLiquid = (entry: Equipment3DEntry, contents: Extract<SceneCont
   ring.renderOrder = 3;
   group.add(ring);
   return group;
+};
+
+/**
+ * A source vessel's liquid while it tilts to pour (handoff §5.7): the whole inner volume, cut by a
+ * world-horizontal clipping plane at the surface, so the liquid stays level however the vessel
+ * turns. The open cut shows the body's back faces, which read as the surface. The caller moves
+ * the plane; the colour is the same palette colour as at rest.
+ */
+export const buildTiltingLiquid = (
+  entry: Equipment3DEntry,
+  contents: Extract<SceneContents, { kind: "liquid" }>,
+  surface: THREE.Plane,
+): THREE.Mesh | undefined => {
+  const fill = entry.fill;
+  if (!fill) return undefined;
+  const material = liquidMaterial(contents.style.fill, contents.style.opacity);
+  material.clippingPlanes = [surface];
+  let geometry: THREE.BufferGeometry;
+  if (fill.innerBoxMm) {
+    const { width, depth, floorZ, topZ } = fill.innerBoxMm;
+    geometry = new THREE.BoxGeometry((width - 2 * WALL_INSET_MM) * MM, (topZ - floorZ) * MM, (depth - 2 * WALL_INSET_MM) * MM)
+      .translate(0, ((floorZ + topZ) / 2) * MM, 0);
+  } else {
+    const profile = fill.innerProfileMm ?? [];
+    if (profile.length < 2) return undefined;
+    const points = profile.map(([r, z]) => new THREE.Vector2(Math.max(0, r - WALL_INSET_MM) * MM, z * MM));
+    points.push(new THREE.Vector2(0, profile[profile.length - 1][1] * MM));
+    geometry = new THREE.LatheGeometry(points, 64);
+  }
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.name = "contents:liquid";
+  mesh.renderOrder = 2;
+  return mesh;
 };
 
 /** A low powder heap resting where the model says solids rest. */

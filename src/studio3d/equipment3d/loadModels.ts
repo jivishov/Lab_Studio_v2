@@ -15,19 +15,42 @@ export class ModelLibrary {
   private readonly loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
   private readonly sources = new Map<string, Promise<THREE.Object3D>>();
   private readonly materialCache = new Map<THREE.Material, THREE.Material>();
+  private readonly bytes = new Map<string, { loaded: number; total: number; done: boolean }>();
+  /** Bytes of GLB downloaded so far across every model requested, for the loader (handoff §5.2). */
+  onProgress?: (loaded: number, total: number, pending: number) => void;
 
   constructor(private readonly textures: BenchTextures) {}
+
+  private report(definitionId: string, loaded: number, total: number, done = false): void {
+    this.bytes.set(definitionId, { loaded, total: Math.max(total, loaded), done });
+    let sumLoaded = 0;
+    let sumTotal = 0;
+    let pending = 0;
+    this.bytes.forEach((entry) => {
+      sumLoaded += entry.loaded;
+      sumTotal += entry.total;
+      if (!entry.done) pending += 1;
+    });
+    this.onProgress?.(sumLoaded, sumTotal, pending);
+  }
 
   private source(entry: Equipment3DEntry): Promise<THREE.Object3D> {
     let pending = this.sources.get(entry.definitionId);
     if (!pending) {
       // The source hash versions the URL, so a regenerated model is never served from a stale cache.
       const url = `${equipment3dAssetUrl(entry.model)}?v=${entry.provenance.sourceHash.slice(0, 12)}`;
-      pending = this.loader.loadAsync(url).then((gltf) => {
-        const root = gltf.scene;
-        tuneMaterials(root, this.textures, this.materialCache);
-        return root;
-      });
+      this.report(entry.definitionId, 0, 0);
+      pending = this.loader.loadAsync(url, (event) => this.report(entry.definitionId, event.loaded, event.lengthComputable ? event.total : event.loaded))
+        .then((gltf) => {
+          const root = gltf.scene;
+          tuneMaterials(root, this.textures, this.materialCache);
+          const seen = this.bytes.get(entry.definitionId);
+          this.report(entry.definitionId, seen?.total ?? 0, seen?.total ?? 0, true);
+          return root;
+        }, (failure: unknown) => {
+          this.report(entry.definitionId, 0, 0, true);
+          throw failure;
+        });
       this.sources.set(entry.definitionId, pending);
     }
     return pending;
@@ -38,16 +61,6 @@ export class ModelLibrary {
     const root = (await this.source(entry)).clone(true);
     root.name = `model:${entry.definitionId}`;
     return root;
-  }
-
-  /** Loads every model for `entries`, reporting models loaded of total for the loader (handoff §5.2). */
-  static preload(entries: Equipment3DEntry[], library: ModelLibrary, onProgress?: (loaded: number, total: number) => void): Promise<void> {
-    let loaded = 0;
-    const total = entries.length;
-    return Promise.all(entries.map((entry) => library.source(entry).then(() => {
-      loaded += 1;
-      onProgress?.(loaded, total);
-    }))).then(() => undefined);
   }
 
   dispose(): void {

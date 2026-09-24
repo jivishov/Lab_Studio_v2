@@ -6,7 +6,7 @@ import { resolveSolidStyle, type SolidRenderStyle } from "../../equipment/solidR
 import { formatContentLabel, isVisibleLiquid, isVisibleSolidContent } from "../../player/contentDisplay";
 import { equipment3dEntry, equipment3dRegistry } from "../equipment3d/readiness";
 import type { Equipment3DEntry, Equipment3DFill } from "../equipment3d/types";
-import { toBench, type BenchPointMm } from "./benchCoordinates";
+import { BENCH_MM, runtimeBenchPointsMm, toBench, type BenchPointMm } from "./benchCoordinates";
 import { instrumentDisplay, type InstrumentDisplayModel } from "./instrumentDisplay";
 
 /**
@@ -143,6 +143,7 @@ const sceneryEntry = (id: string): Equipment3DEntry | undefined =>
 export const runtimeToScene = (state: RuntimeState, definition: SceneDefinition): SceneDescription => {
   const byId = new Map(state.equipmentInstances.map((instance) => [instance.id, instance]));
   const relationByChild = new Map(state.attachments.map((relation) => [relation.childInstanceId, relation]));
+  const benchPoints = runtimeBenchPointsMm(state);
   const bench: SceneItem[] = [];
   const tray: SceneTrayItem[] = [];
   const hidden: string[] = [];
@@ -173,7 +174,7 @@ export const runtimeToScene = (state: RuntimeState, definition: SceneDefinition)
           renderMode: relation.renderMode,
           locked: Boolean(relation.locked),
         }
-      : { kind: "bench", point: toBench(instance.definitionId, instance) };
+      : { kind: "bench", point: benchPoints.get(instance.id) ?? toBench(instance.definitionId, instance) };
     const item: SceneItem = {
       instanceId: instance.id,
       definitionId: instance.definitionId,
@@ -192,4 +193,60 @@ export const runtimeToScene = (state: RuntimeState, definition: SceneDefinition)
     bench.push(item);
   }
   return { bench, tray, hidden, missingModels: [...missing].sort() };
+};
+
+/**
+ * The bench a committed pour animates on (handoff §5.7): the committed layout, with the pour's
+ * source and target still holding what they held before it. A pour often brings its source or
+ * target off the tray, so the scene from before the pour may not have them on the bench at all;
+ * staging on the committed layout lets the animation run from where the runtime put them. Only
+ * contents are taken from `before`; once the animation ends the bench syncs to `after` (G-3).
+ *
+ * A source the runtime pours from where it stands on the shelf (a wash bottle) stays in the tray.
+ * For the animation only, it is stood beside the target, and the sync after the animation takes it
+ * away again. No runtime position is invented: the placement exists in this description alone.
+ */
+export const pourStagingScene = (
+  before: RuntimeState,
+  after: RuntimeState,
+  definition: SceneDefinition,
+  pour: { sourceId: string; targetId: string },
+): SceneDescription => {
+  const scene = runtimeToScene(after, definition);
+  const prior = new Map(before.equipmentInstances.map((instance) => [instance.id, instance]));
+  const bench = scene.bench.map((item) => {
+    const instance = item.instanceId === pour.sourceId || item.instanceId === pour.targetId ? prior.get(item.instanceId) : undefined;
+    return instance
+      ? { ...item, contents: sceneContents(instance, item.model), contentsText: formatContentLabel(instance.contents) }
+      : item;
+  });
+  const source = prior.get(pour.sourceId);
+  const standing = benchStandPoint(bench, pour.targetId);
+  const model = source ? equipment3dEntry(source.definitionId) : undefined;
+  if (source && model && standing && !bench.some((item) => item.instanceId === pour.sourceId)) {
+    const offset = standing.halfWidthMm + halfWidthMm(model) + 40;
+    const leftX = standing.point.xMm - offset;
+    const xMm = leftX - halfWidthMm(model) >= -BENCH_MM.width / 2 + BENCH_MM.edgeMargin ? leftX : standing.point.xMm + offset;
+    bench.push({
+      instanceId: source.id,
+      definitionId: source.definitionId,
+      label: source.label,
+      placement: { kind: "bench", point: { xMm, yMm: standing.point.yMm, yawDeg: 0 } },
+      contents: sceneContents(source, model),
+      contentsText: formatContentLabel(source.contents),
+      model,
+    });
+  }
+  return { ...scene, bench };
+};
+
+const halfWidthMm = (entry: Equipment3DEntry | undefined): number =>
+  entry?.footprintMm.shape === "rect" ? entry.footprintMm.width / 2 : entry?.footprintMm.shape === "circle" ? entry.footprintMm.radius : 40;
+
+/** Where an item stands on the bench: its own point, or that of what it is seated in. */
+const benchStandPoint = (bench: SceneItem[], instanceId: string, depth = 0): { point: BenchPointMm; halfWidthMm: number } | undefined => {
+  const item = bench.find((i) => i.instanceId === instanceId);
+  if (!item || depth > 6) return undefined;
+  if (item.placement.kind === "bench") return { point: item.placement.point, halfWidthMm: halfWidthMm(item.model) };
+  return benchStandPoint(bench, item.placement.parentInstanceId, depth + 1);
 };
