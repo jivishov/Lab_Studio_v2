@@ -50,10 +50,14 @@ The user asked for **the highest fidelity** to the plan and the handoff.
 | M6: Studio 3D | Done, plus one critical fidelity review pass | `c97c812`, `de872b4` |
 | Starting contents in Studio 3D (decision b) | Done | `049e471` |
 | Weighing content fix (D4 exception) | Done | `e8d1d26` |
-| **M7: gesture bridge and hand-control panel** | **Next** | — |
-| M8: Pack 1 acceptance | After M7 | — |
+| M7: gesture bridge and hand-control panel | Done (static exit); G3 not run | `e60293d`; `evidence/M7_EVIDENCE.md` |
+| **M8: Pack 1 acceptance** | **Next** | — |
 
-## Next: M7
+## M7 (delivered 2026-09-24)
+
+M7 is done at its static exit: see `evidence/M7_EVIDENCE.md` for what was built, the review showing the
+2D selectors and rules unchanged, the interpretations to confirm, and what was not run (G3 needs the
+user's authorisation). The scope below is kept as the record it was built against.
 
 The plan (D6, §4.2, §4.7, §7 M7 row) and the UI handoff (§1 G-10, §2.2, §5.15, build-order table)
 together define it.
