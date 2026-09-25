@@ -30,7 +30,7 @@ const toPhysical = (m: THREE.Material): THREE.MeshPhysicalMaterial => {
   return p;
 };
 
-const tune = (src: THREE.Material, T: BenchTextures): THREE.Material => {
+const tune = (src: THREE.Material, T: BenchTextures, enclosureGlass: boolean): THREE.Material => {
   const name = src.name ?? "";
   const role = materialRole(name);
   switch (role) {
@@ -38,6 +38,18 @@ const tune = (src: THREE.Material, T: BenchTextures): THREE.Material => {
     case "glass-thick": {
       const thick = role === "glass-thick";
       const m = toPhysical(src);
+      if (enclosureGlass) {
+        // An instrument's glass is its enclosure, such as a balance's draft shield. three.js draws a
+        // transmissive surface from a buffer of the opaque scene only, so glassware inside, itself
+        // transmissive, would vanish behind transmissive panes: a watch glass on the pan could not
+        // be seen. Enclosure panes are therefore blended, and drawn after the glassware.
+        Object.assign(m, {
+          transmission: 0, transparent: true, opacity: 0.12, roughness: 0.015, metalness: 0, ior: 1.473,
+          specularIntensity: 1, envMapIntensity: 1.15, side: THREE.FrontSide, depthWrite: false,
+        });
+        m.color.setRGB(1, 1, 1);
+        return m;
+      }
       Object.assign(m, {
         transmission: 1, roughness: 0.015, metalness: 0, ior: 1.473, specularIntensity: 1, envMapIntensity: 1.15,
         thickness: thick ? 0.007 : 0.0022, attenuationDistance: thick ? 0.045 : 0.3, dispersion: thick ? 0.12 : 0.04,
@@ -135,20 +147,27 @@ const tune = (src: THREE.Material, T: BenchTextures): THREE.Material => {
   }
 };
 
-/** Tune every mesh material under `root` once; glass neither casts nor blocks contact shadows. */
-export const tuneMaterials = (root: THREE.Object3D, T: BenchTextures, cache: Map<THREE.Material, THREE.Material>): void => {
+/**
+ * Tune every mesh material under `root` once; glass neither casts nor blocks contact shadows.
+ * `enclosureGlass` is set for an instrument (an entry with a display), whose glass encloses
+ * glassware rather than holding contents.
+ */
+export const tuneMaterials = (root: THREE.Object3D, T: BenchTextures, cache: Map<THREE.Material, THREE.Material>,
+  options: { enclosureGlass?: boolean } = {}): void => {
   root.traverse((object) => {
     const mesh = object as THREE.Mesh;
     if (!mesh.isMesh) return;
     const src = mesh.material as THREE.Material;
     let tuned = cache.get(src);
     if (!tuned) {
-      tuned = tune(src, T);
+      tuned = tune(src, T, Boolean(options.enclosureGlass));
       tuned.needsUpdate = true;
       cache.set(src, tuned);
     }
     mesh.material = tuned;
     const role = materialRole(tuned.name);
+    // Marked for picking: an instrument's enclosure glass is seen through (BenchEngine.pick).
+    if (options.enclosureGlass && (role === "glass-thin" || role === "glass-thick")) mesh.userData.enclosureGlass = true;
     mesh.castShadow = role !== "glass-thin" && role !== "glass-thick" && role !== "plastic-clear";
     mesh.receiveShadow = true;
   });

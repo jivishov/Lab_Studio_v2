@@ -333,6 +333,9 @@ export class BenchEngine {
       this.restPositions.set(id, view.root.position.clone());
       this.restQuaternions.set(id, view.root.quaternion.clone());
     });
+    // The beacon follows its item to where this sync put it: an item that has just arrived is
+    // placed only now, after the beacon was set for it.
+    if (!this.demo) this.placeBeacon(this.beaconId);
     this.shadowsDirty = true;
     this.requestRender();
     this.onChange?.();
@@ -402,11 +405,33 @@ export class BenchEngine {
     return new THREE.Vector2(((clientX - rect.left) / rect.width) * 2 - 1, -((clientY - rect.top) / rect.height) * 2 + 1);
   }
 
-  /** The instance under a client point, if any (scenery and signals are never picked). */
+  /**
+   * The instance under a client point, if any (scenery and signals are never picked). An
+   * instrument's enclosure glass is seen through: an item seated inside it, such as a watch glass on
+   * a balance's pan behind the draft shield, is picked; the instrument is picked when nothing is.
+   */
   pick(clientX: number, clientY: number): string | undefined {
     this.raycaster.setFromCamera(this.ndc(clientX, clientY), this.camera);
-    const hit = this.raycaster.intersectObject(this.itemLayer, true).find((h) => h.object.userData.instanceId);
-    return hit?.object.userData.instanceId as string | undefined;
+    const hits = this.raycaster.intersectObject(this.itemLayer, true).filter((h) => h.object.userData.instanceId);
+    const idOf = (hit: THREE.Intersection) => hit.object.userData.instanceId as string;
+    const first = hits[0];
+    if (!first || !first.object.userData.enclosureGlass) return first ? idOf(first) : undefined;
+    const owner = idOf(first);
+    const inside = hits.find((h) => !h.object.userData.enclosureGlass && (idOf(h) === owner || this.seatedWithin(idOf(h), owner)));
+    return inside ? idOf(inside) : owner;
+  }
+
+  /** Whether `instanceId` is seated on `holderId`, directly or through other seated items. */
+  private seatedWithin(instanceId: string, holderId: string): boolean {
+    const seen = new Set<string>();
+    let current = this.lastScene?.bench.find((item) => item.instanceId === instanceId);
+    while (current && current.placement.kind === "seated" && !seen.has(current.instanceId)) {
+      seen.add(current.instanceId);
+      const parentId = current.placement.parentInstanceId;
+      if (parentId === holderId) return true;
+      current = this.lastScene?.bench.find((item) => item.instanceId === parentId);
+    }
+    return false;
   }
 
   /** The bench-plane point under a client point, in bench millimetres (at `heightMm` above it). */
@@ -415,6 +440,27 @@ export class BenchEngine {
     this.benchPlane.constant = -heightMm * MM;
     const hit = this.raycaster.ray.intersectPlane(this.benchPlane, new THREE.Vector3());
     return hit ? { xMm: hit.x / MM, yMm: -hit.z / MM } : undefined;
+  }
+
+  /**
+   * Where a carry is aimed (handoff §5.6: the bench plane, plus a lift for targets above bench
+   * height). The pointer's ray first meeting another item gives the point straight below the hit,
+   * with the height of the surface it met, so pointing at a raised target such as a balance's pan
+   * aims at that target, not at the bench behind it; targets are still resolved by footprints
+   * (plan §4.1). Otherwise it is the bench-plane point, at height 0. The carried item and whatever
+   * is locked to it are never aimed at. `instanceId` names the item met, if any.
+   */
+  carryPointAt(clientX: number, clientY: number, carriedId?: string): { xMm: number; yMm: number; surfaceMm: number; instanceId?: string } | undefined {
+    this.raycaster.setFromCamera(this.ndc(clientX, clientY), this.camera);
+    const skip = new Set(carriedId ? [carriedId, ...this.lockedDescendants(carriedId)] : []);
+    const hit = this.raycaster.intersectObject(this.itemLayer, true)
+      .find((h) => h.object.userData.instanceId && !skip.has(h.object.userData.instanceId as string));
+    if (hit) {
+      return { xMm: hit.point.x / MM, yMm: -hit.point.z / MM, surfaceMm: Math.max(0, hit.point.y / MM),
+        instanceId: hit.object.userData.instanceId as string };
+    }
+    const bench = this.benchPointAt(clientX, clientY);
+    return bench ? { ...bench, surfaceMm: 0 } : undefined;
   }
 
   /** Where an item's top (or `fraction` of its height) appears on the canvas, for labels. */

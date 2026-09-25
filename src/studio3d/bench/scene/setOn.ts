@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { v1InteractionZones } from "../../../domain/interactionZones";
+import type { AttachmentRelation } from "../../../domain/types";
 import { localPoint } from "./pour";
 
 /**
@@ -14,6 +15,15 @@ import { localPoint } from "./pour";
 export const readingSeatZone = (sourceDefinitionId: string, targetDefinitionId: string): string | undefined =>
   v1InteractionZones.find((zone) => zone.ownerDefinitionId === targetDefinitionId && zone.relationType === "placedOn"
     && zone.accepts.includes(sourceDefinitionId))?.id;
+
+/**
+ * Whether the runtime already holds the vessel on that seat, as weighing's placement does (its
+ * place step seats the watch glass on the pan). The resting scene then shows it there, so a
+ * reading needs no set-on animation.
+ */
+export const heldOnSeat = (attachments: readonly AttachmentRelation[], sourceId: string, targetId: string, zoneId: string): boolean =>
+  attachments.some((relation) => relation.childInstanceId === sourceId && relation.parentInstanceId === targetId
+    && relation.zoneId === zoneId);
 
 /**
  * Phase lengths in seconds. The vessel is lifted, carried level, and lowered onto the seat; it rests;

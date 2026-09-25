@@ -43,7 +43,7 @@ export class ModelLibrary {
       pending = this.loader.loadAsync(url, (event) => this.report(entry.definitionId, event.loaded, event.lengthComputable ? event.total : event.loaded))
         .then((gltf) => {
           const root = gltf.scene;
-          tuneMaterials(root, this.textures, this.materialCache);
+          tuneMaterials(root, this.textures, this.materialCache, { enclosureGlass: entry.displays.length > 0 });
           const seen = this.bytes.get(entry.definitionId);
           this.report(entry.definitionId, seen?.total ?? 0, seen?.total ?? 0, true);
           return root;

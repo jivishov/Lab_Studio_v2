@@ -1,7 +1,10 @@
 import * as THREE from "three";
 import { describe, expect, it } from "vitest";
 import { acceptedDropCallout } from "../bench/input/useBenchCarry";
-import { readingSeatZone, seatPoint, SET_ON_CLEARANCE_M, SET_ON_PHASES, SET_ON_SECONDS, setOnPosition } from "../bench/scene/setOn";
+import type { AttachmentRelation } from "../../domain/types";
+import { tuneMaterials } from "../bench/look/materials";
+import type { BenchTextures } from "../bench/look/textures";
+import { heldOnSeat, readingSeatZone, seatPoint, SET_ON_CLEARANCE_M, SET_ON_PHASES, SET_ON_SECONDS, setOnPosition } from "../bench/scene/setOn";
 import { equipment3dEntry } from "../equipment3d/readiness";
 
 /**
@@ -22,6 +25,17 @@ describe("where a reading's vessel is shown (the semantic zone registry)", () =>
     expect(readingSeatZone("watch-glass", "analytical-balance")).toBe("analytical-balance-pan");
     expect(readingSeatZone("spatula", "analytical-balance")).toBeUndefined();
     expect(readingSeatZone("watch-glass", "volumetric-flask")).toBeUndefined();
+  });
+
+  it("animates nothing when the runtime already holds the vessel on that seat, as weighing's placement does", () => {
+    const onPan: AttachmentRelation = {
+      id: "watch-glass-1-on-pan", parentInstanceId: "analytical-balance-1", childInstanceId: "watch-glass-1",
+      zoneId: "analytical-balance-pan", relationType: "placedOn", renderMode: "independent",
+    };
+    expect(heldOnSeat([onPan], "watch-glass-1", "analytical-balance-1", "analytical-balance-pan")).toBe(true);
+    expect(heldOnSeat([], "watch-glass-1", "analytical-balance-1", "analytical-balance-pan")).toBe(false);
+    expect(heldOnSeat([onPan], "watch-glass-2", "analytical-balance-1", "analytical-balance-pan")).toBe(false);
+    expect(heldOnSeat([{ ...onPan, parentInstanceId: "analytical-balance-2" }], "watch-glass-1", "analytical-balance-1", "analytical-balance-pan")).toBe(false);
   });
 
   it("places the seat at the balance's registry anchor, turned with the balance", () => {
@@ -70,6 +84,33 @@ describe("the set-on path", () => {
     const released = v(-0.21, 0.016, -0.23);
     const end = setOnPosition(released, seat, rest, SET_ON_SECONDS + 0.01);
     close(end.position, rest);
+  });
+});
+
+describe("a vessel on the pan is seen through the draft shield", () => {
+  const glassPane = () => new THREE.Mesh(new THREE.PlaneGeometry(0.1, 0.1), new THREE.MeshStandardMaterial({ name: "Borosilicate glass" }));
+  const textures = {} as BenchTextures;
+
+  it("blends an instrument's glass, so transmissive glassware inside it still draws", () => {
+    const pane = glassPane();
+    tuneMaterials(pane, textures, new Map(), { enclosureGlass: true });
+    const m = pane.material as THREE.MeshPhysicalMaterial;
+    expect(m.transmission).toBe(0);
+    expect(m.transparent).toBe(true);
+    expect(m.opacity).toBeLessThan(0.2);
+    expect(m.depthWrite).toBe(false);
+    expect(pane.castShadow).toBe(false);
+    // Picking sees through it to an item seated inside (BenchEngine.pick).
+    expect(pane.userData.enclosureGlass).toBe(true);
+  });
+
+  it("keeps glassware itself transmissive", () => {
+    const vessel = glassPane();
+    tuneMaterials(vessel, textures, new Map());
+    const m = vessel.material as THREE.MeshPhysicalMaterial;
+    expect(m.transmission).toBe(1);
+    expect(m.transparent).toBe(false);
+    expect(vessel.userData.enclosureGlass).toBeUndefined();
   });
 });
 

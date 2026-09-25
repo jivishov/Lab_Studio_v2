@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { v1InteractionZones } from "../../../domain/interactionZones";
 import { getVisualProfile } from "../../../equipment/visualCatalog";
 import { fromBench, runtimeBenchPoints } from "../../adapters/benchCoordinates";
-import { classifyOverlap, footprintOf, snapClassification, type FootprintCandidate } from "../../adapters/footprints";
+import { classifyOverlap, footprintOf, snapClassification, snapZoneFootprint, type FootprintCandidate } from "../../adapters/footprints";
 import { resolveRelease, snapReleasePoint } from "../../adapters/sceneToIntent";
 import type { SceneItem } from "../../adapters/runtimeToScene";
 import type { Player3DController } from "../../player/usePlayer3D";
@@ -41,7 +42,7 @@ export const acceptedDropCallout = (showGuidance: boolean, inputReady: boolean, 
 
 type Carry =
   | { kind: "bench"; via: "pointer" | "keyboard" | "gesture"; instanceId: string; definitionId: string; label: string; startX: number; startY: number;
-      active: boolean; pointerType: string; point?: BenchPoint; targetIndex?: number }
+      active: boolean; pointerType: string; point?: BenchPoint; liftMm?: number; targetIndex?: number }
   | { kind: "tray"; via: "pointer" | "gesture"; definitionId: string; point?: BenchPoint };
 
 const LIFT_MM = 16;
@@ -99,8 +100,11 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     if (engine) void engine.sync(scene);
   }, [endCarry, engine, scene]);
 
-  /** Draw the carried item at `point` and classify what it is over; returns the callout shown. */
-  const carryTo = useCallback((point: BenchPoint, screenAt?: { x: number; y: number }): CarryCallout | undefined => {
+  /**
+   * Draw the carried item at `point`, lifted above the surface it is aimed at (`surfaceMm`, 0 for
+   * the bench), and classify what it is over; returns the callout shown.
+   */
+  const carryTo = useCallback((point: BenchPoint, screenAt?: { x: number; y: number }, surfaceMm = 0): CarryCallout | undefined => {
     const carry = carryRef.current;
     if (!engine || !carry) return undefined;
     carry.point = point;
@@ -116,7 +120,8 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     const overlap = overlapAt(carry.instanceId, carry.definitionId, point);
     // The pour cue shows in both modes, as the 2D workbench's overlap feedback does (G-7).
     const pourCue = interaction?.type === "pourInto" && overlap.kind === "valid" && overlap.target ? overlap.target.id : undefined;
-    engine.previewCarry(carry.instanceId, point.xMm, point.yMm, LIFT_MM, pourCue);
+    carry.liftMm = surfaceMm + LIFT_MM;
+    engine.previewCarry(carry.instanceId, point.xMm, point.yMm, carry.liftMm, pourCue);
     const top = screenAt ? undefined : engine.screenPoint(carry.instanceId, 1);
     const screen = screenAt ?? (top ? { x: top.x, y: top.y - 30 } : { x: 0, y: 0 });
     const item = scene.bench.find((i) => i.instanceId === carry.instanceId);
@@ -141,13 +146,35 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     return shown;
   }, [engine, flow.inputReady, interaction, overlapAt, placesForStep, scene, showGuidance]);
 
+  /**
+   * Pointing at an item with a seat for the carried item (a registry zone that accepts it, with a 3D
+   * anchor) aims at that seat, at its height (handoff §5.6: the lift for targets above bench height;
+   * "Magnetic seating", §5.7 and §5.18). A watch glass pointed anywhere at a balance, its draft shield
+   * included, goes to the pan, as a hand reaches in through the door. It follows the equipment, not
+   * the step, so it coaches nothing (G-7); footprints still decide the target (plan §4.1).
+   */
+  const seatAim = useCallback((targetId: string, carriedDefinitionId: string) => {
+    const target = scene.bench.find((item) => item.instanceId === targetId);
+    if (!target || target.placement.kind !== "bench") return undefined;
+    for (const zone of v1InteractionZones) {
+      if (zone.ownerDefinitionId !== target.definitionId || !zone.accepts.includes(carriedDefinitionId)) continue;
+      const anchor = target.model?.anchors[zone.id];
+      const seat = anchor ? snapZoneFootprint(target.model, target.definitionId, zone.id, target.placement.point) : undefined;
+      if (anchor && seat) return { xMm: seat.xMm, yMm: seat.yMm, surfaceMm: anchor.positionMm[2] ?? 0 };
+    }
+    return undefined;
+  }, [scene]);
+
   const carryToPointer = useCallback((clientX: number, clientY: number) => {
-    if (!engine || !carryRef.current) return;
-    const point = engine.benchPointAt(clientX, clientY);
-    if (!point) return;
+    const carry = carryRef.current;
+    if (!engine || !carry) return;
+    // Aimed at the surface under the pointer, so a raised target is reached by pointing at it.
+    const hit = engine.carryPointAt(clientX, clientY, carry.kind === "bench" ? carry.instanceId : undefined);
+    if (!hit) return;
+    const aim = (hit.instanceId ? seatAim(hit.instanceId, carry.definitionId) : undefined) ?? hit;
     const rect = engine.canvasElement.getBoundingClientRect();
-    carryTo(point, { x: clientX - rect.left, y: clientY - rect.top - 44 });
-  }, [carryTo, engine]);
+    carryTo({ xMm: aim.xMm, yMm: aim.yMm }, { x: clientX - rect.left, y: clientY - rect.top - 44 }, aim.surfaceMm);
+  }, [carryTo, engine, seatAim]);
 
   const release = useCallback(() => {
     const carry = carryRef.current;
@@ -390,7 +417,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       carryToPointer(clientX, clientY);
       return;
     }
-    if (carry.kind === "bench" && carry.point) engine.previewCarry(carry.instanceId, carry.point.xMm, carry.point.yMm, LIFT_MM);
+    if (carry.kind === "bench" && carry.point) engine.previewCarry(carry.instanceId, carry.point.xMm, carry.point.yMm, carry.liftMm ?? LIFT_MM);
     engine.setTargetRing(null);
     setCallout(undefined);
   }, [carryToPointer, engine, overBench]);

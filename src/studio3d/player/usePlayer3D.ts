@@ -8,7 +8,7 @@ import { resolveInteractionIntent, type InteractionInvalidFeedback, type Runtime
 import { fromBench, benchPositionWords, runtimeBenchPointsMm, toBench } from "../adapters/benchCoordinates";
 import { footprintOf, nearestFreeSpot, type FootprintMm } from "../adapters/footprints";
 import { pourStagingScene, runtimeToScene, sceneContents, type SceneContents, type SceneDescription } from "../adapters/runtimeToScene";
-import { readingSeatZone } from "../bench/scene/setOn";
+import { heldOnSeat, readingSeatZone } from "../bench/scene/setOn";
 import { benchMoveRequest, intentTypeForInteraction, mergeActionInput, resolveTrayDrop, type ReleaseOrigin } from "../adapters/sceneToIntent";
 import { nextPlacementPoint, parkPointAfterInteraction } from "../adapters/twoDPlacement";
 import { equipment3dEntry } from "../equipment3d/readiness";
@@ -169,13 +169,14 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
         sourceAfter: contentsIn(next, sourceId), targetAfter: contentsIn(next, targetId), id: pourSeq.current });
     }
     // A committed weighing is shown with the vessel on the balance's pan, then back where the
-    // runtime keeps it: the runtime's `weigh` neither seats nor moves it (plan §2.4).
+    // runtime keeps it: the runtime's `weigh` neither seats nor moves it (plan §2.4). A vessel the
+    // runtime already holds on the pan is shown there at rest, and nothing is animated.
     if (!failed && result.request.verb === "weigh" && result.request.sourceInstanceId && result.request.targetInstanceId) {
       const { sourceInstanceId: sourceId, targetInstanceId: targetId } = result.request;
       const source = before.equipmentInstances.find((i) => i.id === sourceId);
       const target = before.equipmentInstances.find((i) => i.id === targetId);
       const zoneId = source && target ? readingSeatZone(source.definitionId, target.definitionId) : undefined;
-      if (zoneId) {
+      if (zoneId && !heldOnSeat(next.attachments, sourceId, targetId, zoneId)) {
         pourSeq.current += 1;
         setWeighing({ sourceId, targetId, zoneId, id: pourSeq.current });
       }

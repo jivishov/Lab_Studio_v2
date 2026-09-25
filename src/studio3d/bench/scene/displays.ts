@@ -10,6 +10,8 @@ import type { Equipment3DDisplay } from "../../equipment3d/types";
 const MM = 0.001;
 const PX_PER_MM = 6;
 
+const monoFont = (px: number): string => `500 ${px}px "IBM Plex Mono", ui-monospace, Consolas, monospace`;
+
 const drawFace = (canvas: HTMLCanvasElement, model: InstrumentDisplayModel): void => {
   const g = canvas.getContext("2d")!;
   const { width, height } = canvas;
@@ -21,6 +23,26 @@ const drawFace = (canvas: HTMLCanvasElement, model: InstrumentDisplayModel): voi
   const entries = lines.filter((line) => line.source === "entry");
   const pad = height * 0.12;
   g.textBaseline = "middle";
+  if (settings.length === 0) {
+    // Only the learner's entry (the balance, decision U4): its digits fill the face so they read at
+    // bench distance, under a small "Your entry" label that keeps them from passing as a reading.
+    g.font = `500 ${Math.round(height * 0.2)}px "IBM Plex Sans", system-ui, sans-serif`;
+    g.fillStyle = "#e8d9b0";
+    g.textAlign = "left";
+    g.fillText("Your entry", pad, height * 0.24);
+    const text = entries.map((line) => line.text).join("  ");
+    const room = width - 2 * pad;
+    let size = Math.round(height * 0.52);
+    g.font = monoFont(size);
+    const measured = g.measureText(text).width;
+    if (measured > room) {
+      size = Math.floor((size * room) / measured);
+      g.font = monoFont(size);
+    }
+    g.textAlign = "right";
+    g.fillText(text, width - pad, height * 0.64);
+    return;
+  }
   g.fillStyle = "#b8e3d4";
   g.font = `500 ${Math.round(height * 0.2)}px "IBM Plex Mono", ui-monospace, Consolas, monospace`;
   g.textAlign = "left";

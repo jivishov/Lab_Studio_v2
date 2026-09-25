@@ -89,14 +89,15 @@ export class Signals {
   setBeacon(at: THREE.Vector3 | null, radius = 0.05): void {
     this.beacon.visible = Boolean(at);
     if (!at) return;
-    this.beacon.position.set(at.x, 0.0012, at.z);
+    // At the item's foot, which is above the bench when it is seated (a watch glass on a pan).
+    this.beacon.position.set(at.x, at.y + 0.0012, at.z);
     this.beacon.scale.setScalar(radius + 0.012);
   }
 
   setSelected(at: THREE.Vector3 | null, radius = 0.05): void {
     this.selection.visible = Boolean(at);
     if (!at) return;
-    this.selection.position.set(at.x, 0.001, at.z);
+    this.selection.position.set(at.x, at.y + 0.001, at.z);
     this.selection.scale.setScalar(radius);
   }
 
