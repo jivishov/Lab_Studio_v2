@@ -8,6 +8,7 @@ import { resolveInteractionIntent, type InteractionInvalidFeedback, type Runtime
 import { fromBench, benchPositionWords, runtimeBenchPointsMm, toBench } from "../adapters/benchCoordinates";
 import { footprintOf, nearestFreeSpot, type FootprintMm } from "../adapters/footprints";
 import { pourStagingScene, runtimeToScene, sceneContents, type SceneContents, type SceneDescription } from "../adapters/runtimeToScene";
+import { readingSeatZone } from "../bench/scene/setOn";
 import { benchMoveRequest, intentTypeForInteraction, mergeActionInput, resolveTrayDrop, type ReleaseOrigin } from "../adapters/sceneToIntent";
 import { nextPlacementPoint, parkPointAfterInteraction } from "../adapters/twoDPlacement";
 import { equipment3dEntry } from "../equipment3d/readiness";
@@ -41,6 +42,14 @@ export interface PourAnimation {
   id: number;
 }
 
+/** A committed reading shown with the vessel set on the instrument's seat (setOn.ts; handoff §5.7). */
+export interface WeighAnimation {
+  sourceId: string;
+  targetId: string;
+  zoneId: string;
+  id: number;
+}
+
 const contentsIn = (state: RuntimeState, instanceId: string): SceneContents => {
   const instance = state.equipmentInstances.find((i) => i.id === instanceId);
   return instance ? sceneContents(instance, equipment3dEntry(instance.definitionId)) : { kind: "none" };
@@ -63,6 +72,7 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
   const [toast, setToast] = useState<string>();
   const [announcement, setAnnouncement] = useState("");
   const [pour, setPour] = useState<PourAnimation>();
+  const [weighing, setWeighing] = useState<WeighAnimation>();
   const pourSeq = useRef(0);
 
   const showGuidance = runtime.mode === "guided";
@@ -158,6 +168,18 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
       setPour({ sourceId, targetId, staging: pourStagingScene(before, next, definition, { sourceId, targetId }),
         sourceAfter: contentsIn(next, sourceId), targetAfter: contentsIn(next, targetId), id: pourSeq.current });
     }
+    // A committed weighing is shown with the vessel on the balance's pan, then back where the
+    // runtime keeps it: the runtime's `weigh` neither seats nor moves it (plan §2.4).
+    if (!failed && result.request.verb === "weigh" && result.request.sourceInstanceId && result.request.targetInstanceId) {
+      const { sourceInstanceId: sourceId, targetInstanceId: targetId } = result.request;
+      const source = before.equipmentInstances.find((i) => i.id === sourceId);
+      const target = before.equipmentInstances.find((i) => i.id === targetId);
+      const zoneId = source && target ? readingSeatZone(source.definitionId, target.definitionId) : undefined;
+      if (zoneId) {
+        pourSeq.current += 1;
+        setWeighing({ sourceId, targetId, zoneId, id: pourSeq.current });
+      }
+    }
     return failed ? undefined : next;
   }, [definition, flow.inputResolution, refuse, reportCommit, runtime]);
 
@@ -240,6 +262,7 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
   const restart = useCallback(() => {
     runtime.reset();
     setPour(undefined);
+    setWeighing(undefined);
     setInputValues({});
     setCorrection(undefined);
     setSelectedSource(undefined);
@@ -271,6 +294,9 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     pour,
     /** Ends pour `id`'s animation; a later pour that has already replaced it is left running. */
     finishPour: (id: number) => setPour((current) => (current?.id === id ? undefined : current)),
+    weighing,
+    /** Ends weighing `id`'s animation; a later one that has already replaced it is left running. */
+    finishWeighing: (id: number) => setWeighing((current) => (current?.id === id ? undefined : current)),
     runIntent,
     refuse,
     freeMove,

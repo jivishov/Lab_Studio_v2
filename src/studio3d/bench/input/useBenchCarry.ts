@@ -25,8 +25,19 @@ export interface CarryCallout {
   x: number;
   y: number;
   text: string;
-  kind: "valid" | "invalid" | "free" | "detach";
+  /** "input": over the right target, but the step card's entry is still missing. */
+  kind: "valid" | "invalid" | "free" | "detach" | "input";
 }
+
+/**
+ * The callout over a target or station the step accepts (§5.6). The step's entry comes first (G-2),
+ * and a release without it is refused, so in guided mode the callout says to fill in the step card
+ * instead of promising the action. Assessment mode stays neutral, as it does for every target.
+ */
+export const acceptedDropCallout = (showGuidance: boolean, inputReady: boolean, releaseText: string): Pick<CarryCallout, "text" | "kind"> =>
+  !showGuidance ? { text: "Release to try this", kind: "valid" }
+    : inputReady ? { text: releaseText, kind: "valid" }
+      : { text: "Fill in the step card first", kind: "input" };
 
 type Carry =
   | { kind: "bench"; via: "pointer" | "keyboard" | "gesture"; instanceId: string; definitionId: string; label: string; startX: number; startY: number;
@@ -45,8 +56,9 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
   const [carrying, setCarrying] = useState(false);
   const [keyCarrying, setKeyCarrying] = useState(false);
   const { scene, interaction, showGuidance, flow } = player;
+  // Nothing is picked up while a committed pour or weighing is being drawn.
   const pouringRef = useRef(false);
-  pouringRef.current = Boolean(player.pour);
+  pouringRef.current = Boolean(player.pour || player.weighing);
 
   const candidates = useCallback((exceptId?: string): Array<FootprintCandidate & { label: string }> =>
     scene.bench.flatMap((item) => item.instanceId !== exceptId && item.placement.kind === "bench"
@@ -93,10 +105,10 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     if (!engine || !carry) return undefined;
     carry.point = point;
     // Over the expected station (§5.6): "Release to place" in guided mode, neutral in assessment.
-    const placing: CarryCallout["text"] = showGuidance ? "Release to place" : "Release to try this";
+    const placing = acceptedDropCallout(showGuidance, flow.inputReady, "Release to place");
     if (carry.kind === "tray") {
       const shown: CarryCallout = placesForStep(carry.definitionId)
-        ? { ...(screenAt ?? { x: 0, y: 0 }), text: placing, kind: "valid" }
+        ? { ...(screenAt ?? { x: 0, y: 0 }), ...placing }
         : { ...(screenAt ?? { x: 0, y: 0 }), text: "Release to set down", kind: "free" };
       setCallout(shown);
       return shown;
@@ -111,12 +123,12 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     let shown: CarryCallout;
     if (placesForStep(carry.definitionId)) {
       engine.setTargetRing(null);
-      shown = { ...screen, text: placing, kind: "valid" };
+      shown = { ...screen, ...placing };
     } else if (overlap.kind === "valid" && overlap.target) {
       const targetItem = scene.bench.find((i) => i.instanceId === overlap.target!.id);
       const anchor = interaction?.type === "snapIntoTarget" && interaction.snapZoneId ? targetItem?.model?.anchors[interaction.snapZoneId]?.positionMm : undefined;
       engine.setTargetRing(overlap.target.id, "valid", anchor);
-      shown = { ...screen, text: showGuidance ? `Release to ${lowerFirst(interaction?.accessibleLabel ?? "act")}` : "Release to try this", kind: "valid" };
+      shown = { ...screen, ...acceptedDropCallout(showGuidance, flow.inputReady, `Release to ${lowerFirst(interaction?.accessibleLabel ?? "act")}`) };
     } else if (overlap.kind === "invalid" && overlap.target) {
       engine.setTargetRing(overlap.target.id, "invalid");
       shown = { ...screen, text: showGuidance ? "Not the target for this step" : "Release to try this", kind: "invalid" };
@@ -127,7 +139,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     }
     setCallout(shown);
     return shown;
-  }, [engine, interaction, overlapAt, placesForStep, scene, showGuidance]);
+  }, [engine, flow.inputReady, interaction, overlapAt, placesForStep, scene, showGuidance]);
 
   const carryToPointer = useCallback((clientX: number, clientY: number) => {
     if (!engine || !carryRef.current) return;

@@ -12,6 +12,7 @@ import { disposeTextures, makeTextures, type BenchTextures } from "./look/textur
 import { buildContents, buildTiltingLiquid, disposeObject, liquidOpacity3D, parseCssColour } from "./scene/contents";
 import { buildDisplayFace, type DisplayFace } from "./scene/displays";
 import { onsetTilt, pourGeometry, pourQuaternion, rootForLip, streamGeometry, surfaceHeight, UP, vesselSlices } from "./scene/pour";
+import { seatPoint, setOnPosition } from "./scene/setOn";
 import { Signals, type TargetRingKind } from "./scene/signals";
 
 /**
@@ -47,6 +48,12 @@ interface PourRun {
   tick: (dt: number) => boolean;
   cleanup: () => void;
   resolve: () => void;
+}
+
+/** A vessel shown on an instrument's seat for a committed reading; `finish` returns it to its rest. */
+interface SetOnRun {
+  tick: (dt: number) => boolean;
+  finish: () => void;
 }
 
 const MM = 0.001;
@@ -107,6 +114,7 @@ export class BenchEngine {
   private readonly restPositions = new Map<string, THREE.Vector3>();
   private readonly restQuaternions = new Map<string, THREE.Quaternion>();
   private pour?: PourRun;
+  private setOn?: SetOnRun;
   /** Where a carried item was drawn when it was released, so a pour it starts carries on from there. */
   private releasedCarry?: { instanceId: string; position: THREE.Vector3; quaternion: THREE.Quaternion; at: number };
   private disposed = false;
@@ -226,6 +234,10 @@ export class BenchEngine {
     if (this.pour) {
       if (this.pour.tick(dt)) animating = true;
       else this.stopPour();
+    }
+    if (this.setOn) {
+      if (this.setOn.tick(dt)) animating = true;
+      else this.stopSetOn();
     }
     if (this.controls.autoRotate) {
       this.controls.update(dt);
@@ -828,6 +840,62 @@ export class BenchEngine {
     return { tick, cleanup };
   }
 
+  /**
+   * Show a vessel set on an instrument's seat for a reading the runtime has accepted (handoff §5.7:
+   * "The weighing animation may set the vessel on the pan", then return it where the runtime keeps
+   * it; plan §2.4). It is lifted from where it stands, or from where a drag released it, carried
+   * level onto the seat, rests, and is carried back to its rest position (setOn.ts). The runtime
+   * never moves it, so the resting scene is unchanged (G-3). A sync does not cut it short: the
+   * sync's new rest position is where it returns. Resolves when done, or at once under reduced
+   * motion or when the instrument has no anchor for the zone.
+   */
+  animateSetOn(args: { sourceId: string; targetId: string; zoneId: string }): Promise<void> {
+    this.stopSetOn();
+    const released = this.releasedCarry?.instanceId === args.sourceId && performance.now() - this.releasedCarry.at < 2000
+      ? this.releasedCarry : undefined;
+    this.releasedCarry = undefined;
+    const source = this.items.get(args.sourceId);
+    const target = this.items.get(args.targetId);
+    const anchor = target?.entry?.anchors[args.zoneId]?.positionMm;
+    if (this.options.reducedMotion || !source || !target || !anchor || source === target) return Promise.resolve();
+    const start = (released?.position ?? source.root.position).clone();
+    let elapsed = 0;
+    return new Promise((resolve) => {
+      const finish = () => {
+        const rest = this.restPositions.get(args.sourceId);
+        const restQuaternion = this.restQuaternions.get(args.sourceId);
+        if (rest) source.root.position.copy(rest);
+        if (restQuaternion) source.root.quaternion.copy(restQuaternion);
+        this.shadowsDirty = true;
+        this.requestRender();
+        resolve();
+      };
+      const tick = (dt: number): boolean => {
+        // A sync that took either item off the bench ends it.
+        if (this.items.get(args.sourceId) !== source || this.items.get(args.targetId) !== target) return false;
+        elapsed += dt;
+        const seat = seatPoint(anchor, target.root.position, target.root.rotation);
+        const rest = this.restPositions.get(args.sourceId) ?? start;
+        const { position, done } = setOnPosition(start, seat, rest, elapsed);
+        source.root.position.copy(position);
+        const restQuaternion = this.restQuaternions.get(args.sourceId);
+        if (restQuaternion) source.root.quaternion.copy(restQuaternion);
+        this.shadowsDirty = true;
+        return !done;
+      };
+      this.setOn = { tick, finish };
+      this.requestRender();
+    });
+  }
+
+  /** End a running set-on now (a new one, or disposal): the vessel goes back to its rest. */
+  private stopSetOn(): void {
+    const run = this.setOn;
+    if (!run) return;
+    this.setOn = undefined;
+    run.finish();
+  }
+
   /** End a running pour now (a new sync, or disposal): nothing it drew is kept. */
   private stopPour(): void {
     const run = this.pour;
@@ -956,6 +1024,7 @@ export class BenchEngine {
   dispose(): void {
     this.endDemo();
     this.stopPour();
+    this.stopSetOn();
     this.disposed = true;
     if (this.frame) cancelAnimationFrame(this.frame);
     this.controls.dispose();

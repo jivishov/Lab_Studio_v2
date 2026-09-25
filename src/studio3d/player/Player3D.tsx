@@ -172,6 +172,16 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [player.pour?.id, engine]);
 
+  // A committed weighing (handoff §5.7): the vessel is shown on the pan, then back where the runtime
+  // keeps it. Under reduced motion the end state is shown at once (§3.5).
+  useEffect(() => {
+    const weighing = player.weighing;
+    if (!weighing) return;
+    if (reducedMotion || !engine) { player.finishWeighing(weighing.id); return; }
+    void engine.animateSetOn(weighing).then(() => player.finishWeighing(weighing.id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [player.weighing?.id, engine]);
+
   // Guidance in the world (guided only, G-7): the beacon marks the expected source, then the
   // expected target while something is being carried (§5.9).
   const expectedSourceId = useMemo(() => {
@@ -214,7 +224,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   // exist only once its model has loaded. While a committed pour animates, the bench still shows
   // the scene from before it, so framing also waits for the pour to finish. A new step also ends a
   // manual-camera suspension (§5.9).
-  const pouring = Boolean(player.pour);
+  // A committed pour or weighing being drawn holds the framing back, as a carry does (§5.9).
+  const pouring = Boolean(player.pour || player.weighing);
   const frameRef = useRef(frame);
   frameRef.current = frame;
   const autoViewRef = useRef(autoView);
@@ -435,7 +446,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     onRearmChange: setHandRearm,
     resolver: createBenchGestureTargetResolver({
       canCarry: carry.canCarry,
-      canPickUp: () => !player.pour,
+      canPickUp: () => !player.pour && !player.weighing,
       canvas: () => engine?.canvasElement,
       hoverBenchItem: setHovered,
       pick: (clientX, clientY) => engine?.pick(clientX, clientY),
@@ -490,7 +501,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
         ) : null}
         {carry.callout ? (
           <div className={`s3d-callout s3d-callout--${carry.callout.kind}`} style={{ left: carry.callout.x, top: carry.callout.y }}>
-            <Icon name={carry.callout.kind === "valid" ? "check" : carry.callout.kind === "invalid" ? "x" : "tray"} size={14} />{carry.callout.text}
+            <Icon name={carry.callout.kind === "valid" ? "check" : carry.callout.kind === "invalid" ? "x" : carry.callout.kind === "input" ? "pencil" : "tray"} size={14} />{carry.callout.text}
           </div>
         ) : null}
       </BenchView>
