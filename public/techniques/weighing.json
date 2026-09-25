@@ -83,7 +83,11 @@
       "label": "Place watch glass",
       "parameters": {
         "equipmentDefinitionId": "watch-glass",
-        "location": "workbench"
+        "equipmentInstanceId": "watch-glass-1",
+        "targetDefinitionId": "analytical-balance",
+        "targetInstanceId": "analytical-balance-1",
+        "location": "snapZone",
+        "snapZoneId": "analytical-balance-pan"
       },
       "prerequisites": [],
       "stateChanges": [
@@ -110,7 +114,7 @@
         }
       ],
       "feedback": {
-        "success": "The watch glass is on the workbench.",
+        "success": "The watch glass is on the balance pan.",
         "invalid": "The simulator could not complete that action. Review the step requirements."
       },
       "evidence": [
@@ -119,6 +123,15 @@
       "atomId": "atom.place.weighed-vessel",
       "equipmentRoleBindings": {
         "weighed-vessel": "watch-glass"
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "watch-glass",
+        "targetDefinitionId": "analytical-balance",
+        "snapZoneId": "analytical-balance-pan",
+        "successCue": "The watch glass is on the balance pan.",
+        "invalidCue": "The simulator could not complete that action. Review the step requirements.",
+        "accessibleLabel": "Place the watch glass on the balance pan."
       }
     },
     {
@@ -253,7 +266,7 @@
         "id": "place-watch-glass-node",
         "type": "action",
         "title": "Place watch glass",
-        "description": "Place the watch glass on the workbench.",
+        "description": "Place the watch glass on the balance pan.",
         "actionId": "place-watch-glass",
         "config": {},
         "validation": [

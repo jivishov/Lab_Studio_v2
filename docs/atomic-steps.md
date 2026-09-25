@@ -152,7 +152,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 | `atom.transfer.equilibrium-mixture-portion` | equilibrium | `transfer` | `pourInto` | `equilibrium-mixture-source`, `equilibrium-mixture-receiver` |
 | `atom.stressEquilibrium.syringe-manipulation` | equilibrium | `stressEquilibrium` | `recordNotebook` | `equilibrium-vessel` |
 | `atom.weigh.solid-source-vial` | equilibrium | `weigh` | `readInstrument` | `balance-instrument`, `solid-reagent-source` |
-| `atom.place.weighed-vessel` | foundational | `place` | `dragToZone` | `weighed-vessel` |
+| `atom.place.weighed-vessel` | foundational | `place` | `dragToZone`, `snapIntoTarget` | `weighed-vessel` |
 | `atom.place.variable-volume-device` | foundational | `place` | `dragToZone` | `variable-volume-measuring-device` |
 | `atom.transfer.unmeasured-solvent` | foundational | `transfer` | `pourInto` | `liquid-source`, `receiving-vessel` |
 | `atom.place.precipitation-vessel` | foundational | `place` | `dragToZone` | `precipitation-vessel` |
@@ -1131,7 +1131,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 **Position the clean, dry weighing vessel before taking a mass.**
 
 - Verb: `place`
-- Allowed interaction types: `dragToZone`
+- Allowed interaction types: `dragToZone`, `snapIntoTarget`
 - Required roles: `weighed-vessel`
 - Optional roles: none
 - Evidence: Position the clean, dry weighing vessel before taking a mass.

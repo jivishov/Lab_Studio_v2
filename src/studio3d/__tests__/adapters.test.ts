@@ -112,7 +112,7 @@ describe("runtimeToScene: contents and scenery", () => {
   });
 });
 
-describe("weighing through the real runtime: the balance display stays measurement-neutral", () => {
+describe("weighing through the real runtime: the glass sits on the pan and the display stays measurement-neutral", () => {
   const weighing = applyTechniqueConfiguration(readTechnique("weighing"), {});
   const act = (state: RuntimeState, intent: RuntimeInteractionIntent): RuntimeState => {
     const result = resolveInteractionIntent(weighing, state, intent);
@@ -128,8 +128,21 @@ describe("weighing through the real runtime: the balance display stays measureme
 
   it("shows nothing before the learner's entry and only the entry after it", () => {
     let state = createRuntimeState(weighing);
-    state = act(state, { type: "placeIntent", sourceDefinitionId: "watch-glass", stationId: "workbench", x: 200, y: 120 });
     state = moveToBench(state, "analytical-balance", 420, 60);
+    // Weighing's placement seats the watch glass on the balance pan (DECISIONS.md, second D4 exception).
+    state = act(state, {
+      type: "snapIntent",
+      sourceInstanceId: "watch-glass-1",
+      targetInstanceId: "analytical-balance-1",
+      sourceDefinitionId: "watch-glass",
+      targetDefinitionId: "analytical-balance",
+      snapZoneId: "analytical-balance-pan",
+      x: 420,
+      y: 60,
+    });
+    expect(state.attachments).toEqual(expect.arrayContaining([
+      expect.objectContaining({ parentInstanceId: "analytical-balance-1", childInstanceId: "watch-glass-1", zoneId: "analytical-balance-pan" }),
+    ]));
     expect(balanceLines(state)).toEqual([]);
     state = act(state, {
       type: "instrumentReadIntent",
@@ -142,9 +155,11 @@ describe("weighing through the real runtime: the balance display stays measureme
     const final = runtimeToScene(state, weighing);
     expect(final.bench.map((item) => item.definitionId).sort()).toEqual(["analytical-balance", "watch-glass"]);
     expect(final.missingModels).toEqual([]);
-    // The runtime's weigh neither seats nor moves the watch glass (plan §2.4): the resting scene
-    // keeps it on the bench, not on the pan.
-    expect(final.bench.find((item) => item.definitionId === "watch-glass")?.placement.kind).toBe("bench");
+    // The runtime holds the watch glass on the pan, and its weigh does not move it (plan §2.4): the
+    // resting scene shows it seated at the balance's pan anchor.
+    expect(final.bench.find((item) => item.definitionId === "watch-glass")?.placement).toMatchObject({
+      kind: "seated", parentInstanceId: "analytical-balance-1", zoneId: "analytical-balance-pan",
+    });
   });
 });
 
