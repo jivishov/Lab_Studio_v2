@@ -124,8 +124,9 @@ The plan's exit:
 - model size budgets;
 - an evidence note.
 
-G1 and G2 run only as the user authorises. Content parity must expect the one recorded D4 exception, the
-weighing fix. `npm run content:check` runs the content rule engine with `--compiled`, which adds
+G1 and G2 run only as the user authorises. Content parity must expect the two recorded D4 exceptions in
+weighing: the record-step fix (M6) and the seated placement (2026-09-25), which also adds `snapIntoTarget`
+to `atom.place.weighed-vessel` in `src/domain/atomRegistry.json`. `npm run content:check` runs the content rule engine with `--compiled`, which adds
 compiled-context diagnostics through the TypeScript composition loader. It is broader than a basic
 static check, so ask before running it, given the validation policy. Its baseline covers only the raw
 and template rules. `scripts/checkCycle04Foundations.mjs` can't run in this export: it needs

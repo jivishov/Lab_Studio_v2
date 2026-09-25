@@ -196,9 +196,54 @@ While we tried, you used Player3D in the pane with the mouse. Three things were 
 | You could not get the watch glass onto the balance. With the mass field empty, the callout promised "Release to read the balance display…", but the runtime refuses the drop, and the glass sprang back. | In guided mode the callout now says "Fill in the step card first" (`acceptedDropCallout`). Assessment mode stays neutral. Checked in the pane. | `3ecc602` |
 | Even an accepted weighing never showed the glass on the pan. The runtime's `weigh` neither seats nor moves the vessel, so the resting scene keeps it on the bench. | The handoff's weighing animation (§5.7, §6; plan §2.4, item 3), your choice. The glass is lifted, carried level onto the `analytical-balance-pan` anchor, rests about 0.9 s, and is set back where the runtime keeps it (`bench/scene/setOn.ts`, `BenchEngine.animateSetOn`). It is skipped under reduced motion; picking and auto-framing wait for it, as for a pour. Checked in the pane by sampling the glass's position, for both a drag and Confirm. The clear glass on the pale pan reads faintly on screen (the M3 note on flat glass). | `3ecc602` |
 
-You chose not to change weighing's content so that the glass stays on the pan. That would be a second D4 exception, and it would also change the 2D player.
+You chose not to change weighing's content so that the glass stays on the pan. That would be a second D4 exception, and it would also change the 2D player. (Superseded on 2026-09-25: see the next section.)
 
 Tests written, not run: `src/studio3d/__tests__/weighAnimation.test.ts` covers the seat zone, the seat point, the path's phases, its level carry, its return to the latest rest, and the callout rule.
+
+## Weighing, second pass (decided 2026-09-25)
+
+You reported that the watch glass still would not go onto the balance, and asked to place it there, see it there, and see the weight as numbers on the display. Both requests conflicted with the plan, so they were put to you first:
+- **Glass on the pan: change weighing's content** (your choice). This is a second D4 exception (DECISIONS.md).
+- **The display: show your entry, readable** (your choice). This stays within G-1; no reading is simulated.
+
+**The content change.** `place-watch-glass` in `public/techniques/weighing.json` now seats the watch glass on the `analytical-balance-pan` zone. It follows the runtime's existing seating, which `hand-warmer-calorimetry.json` already uses for its weighing boat (`P1-15`):
+- parameters: `equipmentInstanceId`, `targetDefinitionId`, `targetInstanceId`, `location: "snapZone"` and `snapZoneId`;
+- an authored `snapIntoTarget` interaction, equal to the derived one except for its accessible label, "Place the watch glass on the balance pan.";
+- the node's description and the success feedback say "on the balance pan" instead of "on the workbench".
+
+Nothing else in the file changes: the version stays `1.2.0`, and no generator is edited. The step's building block, `atom.place.weighed-vessel` ("Position the clean, dry weighing vessel before taking a mass"), allowed only `dragToZone`. It now also allows `snapIntoTarget`, as the filtration placement atoms do (`src/domain/atomRegistry.json` and its two lines in `docs/atomic-steps.md`). This small core change was chosen over borrowing the calorimetry atom, whose constraints name a disposable vessel and a taring step that weighing does not have. `thermal-decomposition-mass-loss`, the atom's other user, still resolves to `dragToZone`. No published experiment is compiled from `weighing`, so only the standalone technique and Studio drafts built from it change. The 2D player now seats the glass too.
+
+**Found while checking in the pane, and fixed:**
+
+| Found | Fix |
+|---|---|
+| Pointing at the pan dropped the glass behind the balance ("Watch glass moved to the back centre"). A carry followed only the bench plane, so a ray through a pan 90 mm up met the bench well behind it. The handoff asks for "the bench plane, plus the prototype's lift plane for targets above bench height" (§5.6), which M4 had not built. | A carry is aimed at the first item surface under the pointer (`BenchEngine.carryPointAt`), taking the point straight below the hit and drawing the carried item lifted above that surface. Targets are still resolved by footprints (plan §4.1). |
+| Still refused: the ray met the draft shield's front pane, 60 mm in front of the pan's seat zone. | Pointing at an item that has a seat for the carried item (a registry zone that accepts it, with a 3D anchor) aims at that seat, at its height (`seatAim`). This is the carry-time side of "magnetic seating" (§5.7, §5.18) and of the prototype's pointer-to-seat targeting. It follows the equipment, not the step, so it coaches nothing in assessment mode (G-7). |
+| The seated glass could not be seen at all, even close up. It sat exactly on the pan, but three.js draws transmissive glass from a buffer of opaque objects only, so a transmissive watch glass behind the transmissive shield panes vanished. | An instrument's glass (an entry with a display; in Pack 1 only the balance has glass) is drawn as blended thin glass, after the glassware (`tuneMaterials`, `enclosureGlass`). Glassware keeps transmission. The model is unchanged. |
+| Pressing on the seated glass picked up the balance, because the shield pane is the first thing hit. | Picking sees through enclosure glass to an item seated inside it. It picks the instrument when nothing is there (`BenchEngine.pick`). |
+| After Confirm, the guided beacon ringed the middle of the bench. It was placed before the sync moved the newly arrived glass, and was never placed again. Beacon and selection rings were also pinned to bench height, under the balance. | Each sync places the beacon again. Beacon and selection rings sit at the item's own height, as the target ring already did (`signals.ts`). |
+| After a reading the set-on animation would lift and lower a glass already on the pan. | It runs only when the runtime does not already hold the vessel on that seat (`heldOnSeat`). |
+| The entry on the balance display was too small to read. | With no settings to show, the face gives the learner's value large digits, shrunk to fit, under a small "Your entry" label (`displays.ts`). The photometer's face is unchanged. |
+
+**Checked in the pane** (G1 spot checks), on `#/3d/technique/weighing`:
+- Drag. The balance goes from the tray to the bench, then the glass. Aiming the glass at the balance seats it: "The watch glass is on the balance pan." With `12.345` typed, dragging the seated glass (picked through the shield) onto the balance weighs it: "Mass recorded from the analytical balance." The glass stays on the pan, and the display reads "12.345 g" under "Your entry". Record completes the run.
+- Step card. Source, Target and Confirm seat the glass, with the beacon on it at pan height. `32.1045` and Confirm weigh it, and Record completes the run.
+- A clean tab logged no console errors on either path. Earlier errors in the first tab were Fast Refresh artefacts from editing hooks while the page was open; a fresh load did not repeat them.
+- 2D, `#/technique/weighing`: "Place watch glass" seats the glass on the pan in the workbench, and the step moves to Weigh solid. No console errors.
+
+**Static checks.**
+- A narrow validator on the one file: 18 of 18. It covers the published and configured technique, the resolved interaction, the effect contract, the atom rules the content check applies, the zone, the other atom user, two configured Studio workflows, and the learner text.
+- `npx tsc -p tsconfig.app.json --noEmit`: exit 0.
+- `validate_equipment3d.py` was not needed: no asset changed.
+
+**Tests written, not run.**
+- `src/studio3d/__tests__/adapters.test.ts`: the weighing run now seats the glass by `snapIntent`, and expects the attachment and a seated resting placement.
+- `src/studio3d/__tests__/weighAnimation.test.ts` adds `heldOnSeat`, enclosure glass blended and marked for picking, and glassware left transmissive.
+
+**Notes, not changed.**
+- A tray item dropped over the balance is set down beside it, and is not seated: the 2D shelf drop never seats either (`placeShelfEquipment`). Seating from the tray in one move would be a design change.
+- The keyboard carry, and the Studio's Starting bench carry (`BenchSetupView`), still use the bench plane.
+- The results list the same entry twice: "32.105 g" under the measurement and "32.1045 g" under the notebook record. The runtime accepted four decimals although the input's step is 0.001. This predates this change and was not investigated.
 
 ## Static design review (UI handoff, after the build order)
 
