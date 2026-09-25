@@ -48,7 +48,7 @@ const KEY_MOVE_LARGE_PX = 50;
  * layout is kept through `controls` and applied only where panels float. The grip is a button, so
  * a panel can also be moved with the arrow keys. Nothing here touches runtime state.
  */
-export const FloatPanel = ({ id, label, className, controls, head, collapsedHead, onClose, keepMounted = false, children }: {
+export const FloatPanel = ({ id, label, className, controls, head, collapsedHead, onClose, closeLabel, keepMounted = false, children }: {
   id: PanelId;
   label: string;
   className: string;
@@ -58,6 +58,8 @@ export const FloatPanel = ({ id, label, className, controls, head, collapsedHead
   /** The one-line header shown while collapsed; defaults to `head`. */
   collapsedHead?: ReactNode;
   onClose?: () => void;
+  /** The close button's name, when closing does more than hide the panel. */
+  closeLabel?: string;
   /** Keep the children mounted while collapsed (they hide themselves), as a live camera video needs. */
   keepMounted?: boolean;
   children: ReactNode;
@@ -130,7 +132,7 @@ export const FloatPanel = ({ id, label, className, controls, head, collapsedHead
           onClick={() => controls.setCollapsed(id, !collapsed)}>
           <Icon name={collapsed ? "chevron-down" : "chevron-up"} />
         </button>
-        {onClose ? <button type="button" className="s3d-icon-button" aria-label={`Close ${label}`} onClick={onClose}><Icon name="x" /></button> : null}
+        {onClose ? <button type="button" className="s3d-icon-button" aria-label={closeLabel ?? `Close ${label}`} onClick={onClose}><Icon name="x" /></button> : null}
       </header>
       {collapsed && !keepMounted ? null : children}
       {controls.movable && !collapsed

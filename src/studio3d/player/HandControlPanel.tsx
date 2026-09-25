@@ -10,14 +10,20 @@ import { FloatPanel, type PanelControls } from "./panels";
  * tray). One 2D sentence is left out because it is not true here: Player3D has no edge-hover
  * scrolling (the shared scroll engine edge-scrolls only 2D regions and a scrolling document).
  * Its behaviour comes entirely from the shared gesture bridge (plan D6): the panel presents
- * the engine's state and adds no gesture meaning of its own (G-10). It shows while hand control is on,
- * as the 2D camera status panel does, and stays mounted when collapsed so the camera keeps its video.
+ * the engine's state and adds no gesture meaning of its own (G-10).
+ *
+ * The dock's Hand control button opens it. The camera starts only from its Start camera button, so a
+ * learner reads the privacy note and the set-up steps before the browser asks for the camera
+ * (decided 2026-09-24). While the camera runs the panel stays open, and it stays mounted when
+ * collapsed so the camera keeps its video. Closing it stops the camera.
  */
 
 /** The bridge's re-arm prompt, with Player3D's control name. */
 export const HAND_CONTROL_REARM_MESSAGE = "Open your hand briefly to re-arm hand control.";
-/** The dock button's title when the page cannot use the camera. */
+/** Why Start camera is unavailable when the page cannot use the camera (the 2D button title, renamed). */
 export const HAND_CONTROL_UNSUPPORTED_TITLE = "Hand control requires localhost or HTTPS.";
+/** Closing the panel also stops the camera. */
+export const HAND_CONTROL_CLOSE_LABEL = "Close hand control and stop the camera";
 
 export type SetupStepState = "done" | "now" | "problem" | "pending";
 
@@ -71,17 +77,22 @@ const stepStateLabel: Record<SetupStepState, string> = {
   problem: "needs attention",
 };
 
-export const HandControlPanel = ({ gesture, rearmRequired, controls }: {
+export const HandControlPanel = ({ gesture, rearmRequired, controls, onStart, onStop, onClose }: {
   gesture: GestureController;
   /** The bridge is waiting for an open hand after a cancel. */
   rearmRequired: boolean;
   controls: PanelControls;
+  onStart: () => void;
+  onStop: () => void;
+  /** Close the panel, stopping the camera. */
+  onClose: () => void;
 }) => {
   const collapsed = Boolean(controls.layout.hand?.collapsed);
   const status = statusLabelForGesture(gesture.status);
   const steps = handControlSetupSteps(typeof window !== "undefined" && window.isSecureContext, gesture.status);
   return (
     <FloatPanel id="hand" label="Hand control" className="s3d-hand" controls={controls} keepMounted
+      onClose={onClose} closeLabel={HAND_CONTROL_CLOSE_LABEL}
       head={<>
         <h2 className="s3d-float__title">Hand control</h2>
         <span className={`s3d-chip s3d-hand__state is-${gesture.status}`}>{status}</span>
@@ -96,6 +107,17 @@ export const HandControlPanel = ({ gesture, rearmRequired, controls }: {
             <span className="s3d-eyebrow">Tracking state</span>
             <strong>{status}</strong>
             <span className="s3d-small">{rearmRequired ? HAND_CONTROL_REARM_MESSAGE : gesture.message}</span>
+          </div>
+          <div className="s3d-hand__start">
+            {gesture.enabled ? (
+              <button type="button" className="s3d-button" onClick={onStop}><Icon name="x" />Stop camera</button>
+            ) : (
+              <button type="button" className="s3d-button s3d-button--primary" disabled={!gesture.supported}
+                title={gesture.supported ? undefined : HAND_CONTROL_UNSUPPORTED_TITLE} onClick={onStart}>
+                <Icon name="camera" />Start camera
+              </button>
+            )}
+            {gesture.supported ? null : <span className="s3d-small">{HAND_CONTROL_UNSUPPORTED_TITLE}</span>}
           </div>
           <ol className="s3d-hand__steps">
             {steps.map((step, index) => (
@@ -141,7 +163,7 @@ export const HandControlPanel = ({ gesture, rearmRequired, controls }: {
 
         <details className="s3d-about">
           <summary>More about hand control</summary>
-          <p><strong>Controls.</strong> Click Hand control to start or stop. Use Cursor response to balance precision and speed. Restart and leaving the player both stop the camera tracks.</p>
+          <p><strong>Controls.</strong> Click Start camera to start, and Stop camera to stop. Use Cursor response to balance precision and speed. Restart and leaving the player both stop the camera tracks.</p>
           <p><strong>Where it works.</strong> Hand control is limited to tray placement, bench item movement or interactions, and whitelisted current-step controls.</p>
           <p><strong>Fallbacks.</strong> Mouse, touch, and keyboard stay available. No-hand and unstable-tracking frames do not count as assessment failures. Switching input modes safely cancels an unfinished camera gesture.</p>
         </details>

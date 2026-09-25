@@ -25,7 +25,7 @@ are recorded in `DECISIONS.md`:
 | | `src/player/StudentPlayer.tsx` | Now keeps only what is 2D: what each selector's element picks up (`resolveVisionGrab`, line 1172), the preview (`moveVisionGrab`, 1363) and the commit through the existing paths (`releaseVisionGrab`, 1280). It assigns the bridge's host each render (1418), where it used to assign its frame handler. |
 | 2. Raycast resolver | `src/studio3d/bench/input/targetResolver.ts` | The DOM resolver for the page (tray tiles, whitelisted buttons). When the element under the cursor is the bench canvas, a raycast through `BenchEngine.pick` finds the item. It only resolves targets. `benchCanvasUnder` says whether the canvas itself, not a panel over it, is under a point. |
 | | `src/studio3d/bench/input/useBenchCarry.ts` | A gesture carry on the existing carry: `startGestureCarry`, `startGestureTrayCarry`, `gestureCarryTo`, `releaseGesture`, `cancelGesture`, `canCarry`. Over the bench (the canvas is the element under the pinch point) the carry follows; a release there runs the pointer's own `release()` (`resolveRelease` in the 2D order, then `runIntent`, `refuse`, `freeMove` or `dropFromTray`), with the intents tagged `origin: "vision"` as in 2D. Off the bench, the item waits where it last was with no ring, callout or pour cue, and a release changes nothing. Pointer handlers now drive only pointer carries, so a mouse move cannot steer a hand carry. |
-| 3. Hand-control panel | `src/studio3d/player/HandControlPanel.tsx`, `Player3D.tsx`, `studio3d.css` | The "Hand control" dock button (between Examine and Auto view, as in the mock-up dock), and a floating panel with the four §5.15 items: camera preview (mirrored, as in 2D), set-up state, gesture cards, and Cursor response. Also: the privacy note and a "More about hand control" disclosure with the rest of the 2D help. See below. |
+| 3. Hand-control panel | `src/studio3d/player/HandControlPanel.tsx`, `Player3D.tsx`, `studio3d.css` | The "Hand control" dock button (between Examine and Auto view, as in the mock-up dock) opens and closes a floating panel with the four §5.15 items: camera preview (mirrored, as in 2D), set-up state, gesture cards, and Cursor response. Also: the privacy note and a "More about hand control" disclosure with the rest of the 2D help. The camera starts only from the panel's Start camera button, and closing the panel stops it (your decision, interpretation 4). See below. |
 | 4. `AGENTS.md` | line 89 (was 88) and the source-of-truth list | Corrected against the source; see below. |
 
 ### What Player3D adds, in full
@@ -35,9 +35,9 @@ is listed here, so you can check that nothing gives a gesture its own meaning:
 - the raycast resolver above;
 - grab handlers that call the bench's existing carry;
 - a decorative `.gesture-drag-preview` thumbnail for tray items (see interpretation 1);
-- the dock button and panel;
+- the dock button, the panel, and its Start camera and Stop camera buttons;
 - the blocking-dialog rule (help, the confirm dialog, results), as the 2D About and Camera Help dialogs block;
-- Restart stopping the camera, as 2D Reset does;
+- Restart stopping the camera, as 2D Reset does: Player3D's own Restart, and the Studio preview's Restart through the controller Player3D hands the Studio;
 - opt-ins that `AGENTS.md` requires:
   - `data-gesture-action` on the step card's Confirm (`confirm-accessible-action`), Record (`record-evidence`) and calculation submit (`submit-calculation`), the same names as `ProcessSidebar`;
   - `data-gesture-scroll-region="vertical"` on the step card body, the tray tiles, the Bench list, the notebook body and the panel body;
@@ -118,19 +118,19 @@ They were not run (validation policy).
 |---|---|
 | Requirements: "Use localhost or HTTPS, allow webcam permission, keep one hand visible, and use steady lighting with enough contrast." | The four set-up lines, the same words, one per line. The first is marked from the browser's secure context; the next two from the engine's `status` (done, now, needs attention, not yet). Lighting cannot be checked, so it has no mark. |
 | Gestures: "Steer with your index fingertip. Pinch thumb and index finger to grab or activate, then release over the target. Hold four fingers extended together and wave over a panel to scroll it. Edge-hover scrolling remains available as a fallback." | Three cards (Steer, Pinch, Scroll) carrying the first three sentences. The card titles are UI chrome. **The fallback sentence is not shown**, because it is not true in Player3D (interpretation 8). |
-| Controls: "Click **Camera control** to start or stop. Use Cursor response to balance precision and speed. **Reset** and leaving the player both stop the camera tracks." | "Click **Hand control** to start or stop. … **Restart** and leaving the player both stop the camera tracks." Both are true: the dock button toggles, and Restart (Menu or Play again, after confirmation) and unmount stop the camera. |
+| Controls: "Click **Camera control** to start or stop. Use Cursor response to balance precision and speed. **Reset** and leaving the player both stop the camera tracks." | "Click **Start camera** to start, and **Stop camera** to stop. … **Restart** and leaving the player both stop the camera tracks." The first sentence names the panel's buttons, because the camera now starts from the panel (interpretation 4). Restart (Menu or Play again, after confirmation; or the Studio preview's Restart) and unmount stop the camera. |
 | Where it works: "**Camera control** is limited to **shelf** placement, bench item movement or interactions, and whitelisted current-step controls." | "**Hand control** is limited to **tray** placement, …" |
 | Privacy: "Frames are processed locally in the browser. They are not saved, exported, serialized to lab state, or sent to the backend." | Verbatim |
 | Fallbacks: "Mouse, touch, and keyboard stay available. No-hand and unstable-tracking frames do not count as assessment failures. Switching input modes safely cancels an unfinished camera gesture." | Verbatim |
 | Status panel: "Tracking state", status label, engine message, "Open your hand briefly to re-arm **camera control**." | The same, with "…re-arm **hand control**." The engine's own messages (for example "Camera cursor ready.") come from the shared hook and are shown as they are. |
 | "Cursor response" slider, 1–5, value label | The same control, the same `setCursorSpeed`, and the same single stored preference `lab-studio:v1:camera-cursor-speed`. |
-| Button title when unsupported: "Camera control requires localhost or HTTPS." | "Hand control requires localhost or HTTPS." |
+| Button title when unsupported: "Camera control requires localhost or HTTPS." | "Hand control requires localhost or HTTPS.", as Start camera's title and as a line beside it. The dock button stays enabled, so the panel can explain. |
 
 The runtime metrics (FPS, inference time, frames skipped) are not shown, by your decision.
 
 ## Interpretations and possible conflicts, reported rather than designed around
 
-1. **The drag preview in 3D.** `AGENTS.md` asks for a fixed `.gesture-drag-preview` that follows the cursor "using the original grab offset", with "bench-sized dimensions". That rule is written for the 2D DOM.
+1. **The drag preview in 3D.** `AGENTS.md` asks for a fixed `.gesture-drag-preview` that follows the cursor "using the original grab offset", with "bench-sized dimensions". That rule is written for the 2D DOM. **Settled (2026-09-24): centre under the hand**, the same as the 3D mouse carry.
    - **Tray items** get a decorative, non-focusable `.gesture-drag-preview` with the model's Blender thumbnail (label fallback), the grip offset from the tile, and the tile dimmed with `is-gesture-grabbed`. It is a fixed 72 px, not bench-sized: a tray item has no model on the bench to measure until it is placed.
    - **Bench items** are carried as the objects themselves, as handoff §5.6 asks, not as a copy. The lifted model follows the pinch exactly as the 3D pointer carry follows the pointer: its footprint centres on the bench point under the cursor, with no grab offset. Keeping the offset would make hand carries differ from pointer carries in 3D.
 2. **Where a release counts.** A hand release commits only where the bench canvas itself is under the pinch point: the 3D form of the 2D bridge's "release over the workbench". The canvas fills the player and the floating panels sit over it, so its rectangle alone would count a release over the tray as a release on the bench.
@@ -141,18 +141,21 @@ The runtime metrics (FPS, inference time, frames skipped) are not shown, by your
    - Handoff §5.1 lists hand control among the floating panels with a remembered layout, so its box and collapsed state are stored with the other panels under `lab-studio:3d:v1:player-ui`.
    - `AGENTS.md` says cursor speed is "the only gesture preference stored in localStorage".
    - I read the panel's position as a UI layout preference, not a gesture preference. Nothing about the camera, landmarks or tracking is stored. If you read the rule more strictly, the hand panel can be left out of the stored layout.
-4. **Opening the panel starts the camera.**
-   - The dock button works as the 2D Camera control toggle: it starts or stops hand control, and the panel shows while it is on (the 2D status panel shows while the status is not `off`).
-   - This satisfies "opened from the dock" and makes "Click Hand control to start or stop" true.
-   - As a result, the panel cannot be opened to read the privacy text before the browser asks for the camera. In 2D that text is in a separate Help dialog.
-5. **The Studio's preview Restart does not stop the camera.** The Studio's preview toolbar calls `player.restart()` directly, so it does not stop the camera. Only Player3D's own Restart and leaving the player do.
+   - **Settled (2026-09-24): remembered**, like every other floating panel.
+4. **Opening the panel versus starting the camera.**
+   - As first built, the dock button worked as the 2D Camera control toggle: one click started the camera and showed the panel. The privacy text then appeared at the same moment the browser asked for the camera.
+   - **Settled (2026-09-24): open the panel first.** The dock button opens and closes the panel. The camera starts only from the panel's Start camera button, so a learner reads the privacy note and the set-up steps before the browser asks. This matches the microarray reference, where Start camera is the panel's first set-up step.
+   - Stop camera stops it. Closing the panel (its ✕, "Close hand control and stop the camera", or the dock button) also stops it, so the camera never runs without its panel. While the camera runs, or while the engine reports a problem, the panel stays shown.
+   - The help sentence names the new buttons (the wording table above).
+5. **The Studio's preview Restart.** The Studio's preview toolbar calls `restart()` on the controller Player3D hands it, which used to leave the camera running. **Fixed (2026-09-24):** that controller's `restart` now stops the camera first, as the player's own Restart does.
 6. **Cue colours.** Player3D's hover and armed cues use `--guide`, so they reach 3:1. The 2D cues are a 55 % teal (about 2.3:1 on white) and stay as they were. The gesture cursor itself is the shared 2D cursor.
-7. **Parking after a hand pour.** A hand release goes through the 3D pointer release, which parks the source after a pour, as handoff §5.6 asks and as `AGENTS.md` asks ("the same object interaction path as pointer drag"). The 2D camera path does not park: parking lives in `Workbench.finishMove`, which only the 2D pointer uses. So after a hand pour the source rests where the 2D pointer would leave it, not where the 2D camera path leaves it.
+7. **Parking after a hand pour.** **Settled (2026-09-24): set down beside the target**, as the 3D mouse does. A hand release goes through the 3D pointer release, which parks the source after a pour, as handoff §5.6 asks and as `AGENTS.md` asks ("the same object interaction path as pointer drag"). The 2D camera path does not park: parking lives in `Workbench.finishMove`, which only the 2D pointer uses. So after a hand pour the source rests where the 2D pointer would leave it, not where the 2D camera path leaves it.
 8. **A reused sentence that is not true in Player3D (a conflict with the wording decision).**
    - You decided to keep the 2D sentences verbatim. One of them, "Edge-hover scrolling remains available as a fallback.", is false in Player3D.
    - The shared engine's edge scrolling (`gestureScroll.resolveGestureScrollIntent`) knows only the 2D `.bench-viewport`, `.workbench` and `.equipment-shelf-scroll` and a scrolling document. Player3D's page does not scroll, and its panels scroll only by the four-finger wave.
    - I withheld the sentence rather than show a false instruction.
    - The options are to keep it withheld, or to make edge-hover scrolling reach explicit `data-gesture-scroll-region` elements. That would be a reviewed change to the shared engine, and it would also change the 2D player, whose process and status regions do not edge-scroll today.
+   - **Settled (2026-09-24): withheld**, as the better UI/UX. Edge zones in Player3D's small floating panels would fire while a learner steers to a control inside them, and the 2D player keeps its own panel regions wave-only. See `DECISIONS.md`.
 9. **Restart and an engine that is off.** Player3D's Restart stops the engine only when it is not already off. In a browser that cannot run the camera, stopping an idle engine reports "Unavailable", which would open the panel after every Restart. The 2D Reset calls `stop()` unconditionally and shows its status panel in that case. It is unchanged (no 2D behaviour change).
 
 ## Fidelity review (second pass, same day)
@@ -257,7 +260,7 @@ describes, because e2e is outside the validation policy (available on request). 
 - G3, when you authorise it:
   - the 2D technique routes in `docs/gesture-control.md` (Manual QA);
   - `#/3d/technique/<id>` for a tray pinch onto the bench, a tray pinch released back over the tray (nothing happens), a bench pinch onto a pour target, a refusal, Confirm by pinch, open-hand scrolling of the Bench list, the re-arm after a mouse takeover, and Restart stopping the camera.
-- Interpretations 1–5 and 7–9 above, for your confirmation. Interpretation 8 is a conflict with your wording decision.
+- The interpretations are settled (2026-09-24): 1, 3 and 7 as built; 4 changed to open the panel first; 5 fixed; 8 withheld. 2, 6 and 9 are notes, not decisions.
 - Possible follow-ups:
   - add `src/studio3d/bench/input/targetResolver.ts` to the `AGENTS.md` source-of-truth list, if you want Player3D's resolver named there;
   - dock tooltips below 1100 px (§7), which none of the dock buttons have yet.

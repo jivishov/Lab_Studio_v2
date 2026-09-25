@@ -9,7 +9,7 @@ import { arrowDirection, spatialNeighbour } from "../bench/input/keyboard";
 import { createBenchGestureTargetResolver, type BenchGestureGrab } from "../bench/input/targetResolver";
 import { useBenchCarry } from "../bench/input/useBenchCarry";
 import { Icon } from "../ui/Icon";
-import { HAND_CONTROL_UNSUPPORTED_TITLE, HandControlPanel } from "./HandControlPanel";
+import { HandControlPanel } from "./HandControlPanel";
 import { coveredSides, MOVABLE_FROM_WIDTH, sanitizeLayout, type PanelId, type PanelLayout, type PanelState } from "./panelLayout";
 import { BenchList, EquipmentTray, ExamineCard, HelpDialog, NOTEBOOK_WIDTH, NotebookSheet, ResultsSheet, thumbnailUrl, type PanelControls } from "./panels";
 import { StepCard } from "./StepCard";
@@ -67,7 +67,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   gestureController?: GestureController;
 }) => {
   const player = usePlayer3D(definition, "guided", authoredDefinition, { nodeId: focusNodeId, version: focusVersion });
-  useEffect(() => { onPlayer?.(player); });
+  // The Studio's preview Restart also stops the camera tracks, as the player's own Restart does.
+  useEffect(() => { onPlayer?.({ ...player, restart: () => { stopHandControl(); player.restart(); } }); });
   const { runtime, scene, flow, showGuidance } = player;
   const [engine, setEngine] = useState<BenchEngine>();
   const [prefs, setPrefs] = useState(readPrefs);
@@ -133,7 +134,10 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   const [trayGrab, setTrayGrab] = useState<TrayGrabPreview>();
   const trayGrabRef = useRef<TrayGrabPreview | undefined>(undefined);
   const trayPreviewRef = useRef<HTMLSpanElement | null>(null);
-  const handPanelOpen = gesture.status !== "off";
+  // The dock button opens the panel; the camera starts only from the panel. While it runs, or while
+  // the engine reports a problem, the panel stays shown.
+  const [handPanelOpen, setHandPanelOpen] = useState(false);
+  const handPanelShown = handPanelOpen || gesture.status !== "off";
 
   // While a committed pour animates, the bench shows the committed layout with the pour's contents
   // not yet moved (pourStagingScene); when it ends, the committed scene (G-3).
@@ -228,7 +232,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   // view refits (§5.9).
   useEffect(() => {
     if (engine && !pouring && autoViewRef.current) void engine.settled().then(() => { if (autoViewRef.current) frameRef.current(); });
-  }, [engine, panel, notebookOpen, handPanelOpen, pouring, prefs.panels, prefs.notebookWidth, viewport]);
+  }, [engine, panel, notebookOpen, handPanelShown, pouring, prefs.panels, prefs.notebookWidth, viewport]);
 
   // Keyboard map (§5.19); single-letter keys only while the bench has focus (WCAG 2.1.4).
   const benchFocused = () => document.activeElement === engine?.canvasElement;
@@ -379,13 +383,18 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     gestureBridge.cancel(true);
     if (gesture.status !== "off") gesture.stop();
   };
-  const toggleHandControl = () => {
-    if (gesture.enabled) {
-      stopHandControl();
-      return;
-    }
+  const startHandControl = () => {
     gestureBridge.resetRearm();
     void gesture.start();
+  };
+  /** Closing the panel stops the camera, so the camera never runs without its panel. */
+  const closeHandPanel = () => {
+    setHandPanelOpen(false);
+    stopHandControl();
+  };
+  const toggleHandPanel = () => {
+    if (handPanelShown) closeHandPanel();
+    else setHandPanelOpen(true);
   };
   const clearTrayPreview = () => {
     trayGrabRef.current = undefined;
@@ -513,7 +522,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
       ) : null}
       {notebookOpen ? <NotebookSheet player={player} width={prefs.notebookWidth} onResize={(w) => updatePrefs({ notebookWidth: w })}
         onClose={() => setNotebookOpen(false)} /> : null}
-      {handPanelOpen ? <HandControlPanel gesture={gesture} rearmRequired={handRearm} controls={panelControls} /> : null}
+      {handPanelShown ? <HandControlPanel gesture={gesture} rearmRequired={handRearm} controls={panelControls}
+        onStart={startHandControl} onStop={stopHandControl} onClose={closeHandPanel} /> : null}
 
       <p className="s3d-hint">{hint}</p>
       <nav className="s3d-dock" aria-label="Player tools">
@@ -521,8 +531,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
         <button type="button" className={panel === "list" ? "is-on" : ""} onClick={() => setPanel(panel === "list" ? "none" : "list")}><Icon name="list" size={20} />Bench list</button>
         <button type="button" disabled={!selected} onClick={() => selected && examine(selected)}><Icon name="examine" size={20} />Examine</button>
         <span className="s3d-dock__sep" />
-        <button type="button" className={gesture.enabled ? "is-on" : ""} aria-pressed={gesture.enabled} disabled={!gesture.supported}
-          title={gesture.supported ? undefined : HAND_CONTROL_UNSUPPORTED_TITLE} onClick={toggleHandControl}><Icon name="hand" size={20} />Hand control</button>
+        <button type="button" className={handPanelShown ? "is-on" : ""} aria-expanded={handPanelShown} onClick={toggleHandPanel}><Icon name="hand" size={20} />Hand control</button>
         <span className="s3d-dock__sep" />
         <button type="button" className={autoView ? "is-on" : ""} onClick={() => chooseView("auto")}><Icon name="camera" size={20} />Auto view</button>
         <button type="button" className="s3d-dock__caret" aria-label="Camera views" aria-haspopup="menu" aria-expanded={viewsOpen} onClick={() => setViewsOpen((v) => !v)}>

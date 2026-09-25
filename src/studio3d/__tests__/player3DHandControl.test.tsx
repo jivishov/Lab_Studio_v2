@@ -1,9 +1,10 @@
 import { createRef } from "react";
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { filtrationTechnique } from "../../domain/fixtures";
 import type { GestureController } from "../../player/gesture/gestureTypes";
 import { Player3D } from "../player/Player3D";
+import type { Player3DController } from "../player/usePlayer3D";
 
 /**
  * Player3D's hand control (handoff §5.15) with a fake recognition engine, as the 2D player's tests
@@ -53,37 +54,54 @@ const gestureController = (overrides: Partial<GestureController> = {}): GestureC
 const off = (overrides: Partial<GestureController> = {}) =>
   gestureController({ enabled: false, message: "Camera control is off.", status: "off", ...overrides });
 
-const player = (controller: GestureController) => (
+const player = (controller: GestureController, onPlayer?: (player: Player3DController) => void) => (
   <Player3D definition={filtrationTechnique} title="Filter a Precipitate" sourceTag="TECHNIQUE · PACK 1"
-    fallbackHash="#/technique/filtration" backHref="#/3d" gestureController={controller} />
+    fallbackHash="#/technique/filtration" backHref="#/3d" gestureController={controller} onPlayer={onPlayer} />
 );
 
 describe("Player3D hand control (handoff §5.15)", () => {
   // The panel layout (a collapse, say) is remembered under the player's UI key; start each case clean.
   beforeEach(() => localStorage.clear());
 
-  it("starts and stops from the dock, as the 2D Camera control does, and shows the panel only while on", () => {
+  it("opens the panel from the dock; the camera starts only from Start camera, and closing the panel stops it", () => {
     const start = vi.fn(() => Promise.resolve());
     const { rerender } = render(player(off({ start })));
-    const toggle = screen.getByRole("button", { name: "Hand control" });
-    expect(toggle).toHaveAttribute("aria-pressed", "false");
+    const dock = screen.getByRole("button", { name: "Hand control" });
+    expect(dock).toHaveAttribute("aria-expanded", "false");
     expect(screen.queryByRole("region", { name: "Hand control" })).not.toBeInTheDocument();
-    fireEvent.click(toggle);
+    fireEvent.click(dock);
+    // Opening shows the privacy note and set-up steps first; nothing asks for the camera yet.
+    expect(start).not.toHaveBeenCalled();
+    expect(dock).toHaveAttribute("aria-expanded", "true");
+    const panel = screen.getByRole("region", { name: "Hand control" });
+    expect(panel).toHaveTextContent("Frames are processed locally in the browser.");
+    expect(within(panel).getByText("Allow webcam permission")).toBeInTheDocument();
+    fireEvent.click(within(panel).getByRole("button", { name: "Start camera" }));
     expect(start).toHaveBeenCalledTimes(1);
 
     const stop = vi.fn();
     rerender(player(gestureController({ stop })));
-    expect(screen.getByRole("button", { name: "Hand control" })).toHaveAttribute("aria-pressed", "true");
-    expect(screen.getByRole("region", { name: "Hand control" })).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Hand control" }));
+    const running = screen.getByRole("region", { name: "Hand control" });
+    fireEvent.click(within(running).getByRole("button", { name: "Stop camera" }));
     expect(stop).toHaveBeenCalledTimes(1);
+    fireEvent.click(within(running).getByRole("button", { name: "Close hand control and stop the camera" }));
+    expect(stop).toHaveBeenCalledTimes(2);
   });
 
-  it("is disabled, with the reason, where the camera cannot run", () => {
+  it("keeps the panel shown while the camera runs, even if the dock did not open it", () => {
+    render(player(gestureController()));
+    expect(screen.getByRole("button", { name: "Hand control" })).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getByRole("region", { name: "Hand control" })).toBeInTheDocument();
+  });
+
+  it("explains, and disables Start camera, where the camera cannot run", () => {
     render(player(off({ supported: false })));
-    const toggle = screen.getByRole("button", { name: "Hand control" });
-    expect(toggle).toBeDisabled();
-    expect(toggle).toHaveAttribute("title", "Hand control requires localhost or HTTPS.");
+    fireEvent.click(screen.getByRole("button", { name: "Hand control" }));
+    const panel = screen.getByRole("region", { name: "Hand control" });
+    const startButton = within(panel).getByRole("button", { name: "Start camera" });
+    expect(startButton).toBeDisabled();
+    expect(startButton).toHaveAttribute("title", "Hand control requires localhost or HTTPS.");
+    expect(panel).toHaveTextContent("Hand control requires localhost or HTTPS.");
   });
 
   it("holds the camera preview, the set-up state, gesture cards and cursor response, in the 2D wording", () => {
@@ -100,7 +118,7 @@ describe("Player3D hand control (handoff §5.15)", () => {
     expect(within(panel).getByText("Pinch thumb and index finger to grab or activate, then release over the target.")).toBeInTheDocument();
     expect(within(panel).getByText("Hold four fingers extended together and wave over a panel to scroll it.")).toBeInTheDocument();
     expect(panel).toHaveTextContent("Frames are processed locally in the browser. They are not saved, exported, serialized to lab state, or sent to the backend.");
-    expect(panel).toHaveTextContent("Click Hand control to start or stop. Use Cursor response to balance precision and speed. Restart and leaving the player both stop the camera tracks.");
+    expect(panel).toHaveTextContent("Click Start camera to start, and Stop camera to stop. Use Cursor response to balance precision and speed. Restart and leaving the player both stop the camera tracks.");
     expect(panel).toHaveTextContent("Hand control is limited to tray placement, bench item movement or interactions, and whitelisted current-step controls.");
     expect(panel).toHaveTextContent("Mouse, touch, and keyboard stay available. No-hand and unstable-tracking frames do not count as assessment failures. Switching input modes safely cancels an unfinished camera gesture.");
     // Player3D has no edge-hover scrolling, so the 2D sentence claiming it is not shown.
@@ -151,6 +169,14 @@ describe("Player3D hand control (handoff §5.15)", () => {
     restart();
     expect(idleStop).not.toHaveBeenCalled();
     expect(screen.queryByRole("region", { name: "Hand control" })).not.toBeInTheDocument();
+  });
+
+  it("stops the camera when the Studio preview restarts the run", () => {
+    const stop = vi.fn();
+    let controller: Player3DController | undefined;
+    render(player(gestureController({ stop }), (p) => { controller = p; }));
+    act(() => controller?.restart());
+    expect(stop).toHaveBeenCalledTimes(1);
   });
 
   it("opts the step card's Confirm in to hand control, under the 2D ProcessSidebar name", () => {
