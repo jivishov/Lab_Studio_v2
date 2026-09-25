@@ -180,6 +180,26 @@ Reviewed and kept, with the reason:
 - The dock button starting the camera (interpretation 4).
 - The engine's own messages, shown as the shared hook writes them. Changing them would change the 2D player.
 
+## G3 attempt (authorised 2026-09-24) and what it found
+
+You authorised G3. It has not been completed, because no browser here can both use the webcam and be read by me:
+- The built-in browser pane blocks camera access (the page's `getUserMedia` request is refused).
+- Claude in Chrome was not connected.
+
+G3 stays open until you connect Claude in Chrome, or run the gesture list yourself.
+
+While we tried, you used Player3D in the pane with the mouse. Three things were found and fixed:
+
+| Found | Fix | Commit |
+|---|---|---|
+| The hand panel's video box overlapped the status text and Start camera. The panel body is a grid that shrinks to the panel's maximum height, so its rows shrank below the video's aspect height. | Rows keep their content height and the body scrolls. Checked in the pane; the "Permission denied" state reads correctly. | `2eac8a4` |
+| You could not get the watch glass onto the balance. With the mass field empty, the callout promised "Release to read the balance display…", but the runtime refuses the drop, and the glass sprang back. | In guided mode the callout now says "Fill in the step card first" (`acceptedDropCallout`). Assessment mode stays neutral. Checked in the pane. | `3ecc602` |
+| Even an accepted weighing never showed the glass on the pan. The runtime's `weigh` neither seats nor moves the vessel, so the resting scene keeps it on the bench. | The handoff's weighing animation (§5.7, §6; plan §2.4, item 3), your choice. The glass is lifted, carried level onto the `analytical-balance-pan` anchor, rests about 0.9 s, and is set back where the runtime keeps it (`bench/scene/setOn.ts`, `BenchEngine.animateSetOn`). It is skipped under reduced motion; picking and auto-framing wait for it, as for a pour. Checked in the pane by sampling the glass's position, for both a drag and Confirm. The clear glass on the pale pan reads faintly on screen (the M3 note on flat glass). | `3ecc602` |
+
+You chose not to change weighing's content so that the glass stays on the pan. That would be a second D4 exception, and it would also change the 2D player.
+
+Tests written, not run: `src/studio3d/__tests__/weighAnimation.test.ts` covers the seat zone, the seat point, the path's phases, its level carry, its return to the latest rest, and the callout rule.
+
 ## Static design review (UI handoff, after the build order)
 
 | # | Item | M7 result |
