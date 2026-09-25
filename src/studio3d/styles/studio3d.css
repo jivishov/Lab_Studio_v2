@@ -186,7 +186,8 @@
 
 /* Hand control (handoff §5.15): the shared gesture bridge's panel, at bottom right above the dock. */
 .s3d-hand { right: 14px; bottom: 84px; width: 320px; max-height: calc(100% - 200px); }
-.s3d-hand__body { display: grid; gap: 10px; padding: 0 12px 12px; min-height: 0; overflow-x: hidden; overflow-y: auto; }
+/* Rows keep their content height (the video box has an aspect ratio), so a short panel scrolls rather than overlapping. */
+.s3d-hand__body { display: grid; grid-auto-rows: max-content; align-content: start; gap: 10px; padding: 0 12px 12px; min-height: 0; overflow-x: hidden; overflow-y: auto; }
 /* Collapsed, the body stays mounted (the camera keeps its video) and is hidden. */
 .s3d-hand__body[hidden] { display: none; }
 .s3d-hand__state { background: #edf1ec; color: var(--ink-2); }
