@@ -15,7 +15,8 @@ Checks, per required definition:
   4. declared graduations are in mL and top out at the capacity, and their minor step equals the
      catalogue precision when that precision is in mL (decision U9: a precision recorded in
      another unit is not treated as a volume precision);
-  5. every display declares a policy from src/studio3d/equipment3d/displayPolicies.json;
+  5. every display declares a policy from src/studio3d/equipment3d/displayPolicies.json, and every
+     control names an operation the viewer knows and objects present in the GLB;
   6. every GLB material is in src/studio3d/equipment3d/viewerMaterials.json;
   7. sizes are within budget (an item with a display is an instrument), and positions are float;
   8. the registry entry equals what the generator wrote into meta.json.
@@ -45,6 +46,8 @@ BUDGET_ITEM = 250_000
 BUDGET_INSTRUMENT = 600_000
 BUDGET_PACK = 4_000_000
 FLOAT = 5126
+# Operations a model control may declare; the viewer maps each to a technique step (src/studio3d).
+CONTROL_OPERATIONS = {'zero'}
 
 
 def load_inventory(pack, path):
@@ -200,6 +203,13 @@ def main():
             except ValueError as exc:
                 errors.append(f'{where} {exc}')
                 continue
+            node_names = {n.get('name') for n in gltf.get('nodes', [])}
+            for i, control in enumerate(entry.get('controls', [])):
+                if control.get('operation') not in CONTROL_OPERATIONS:
+                    errors.append(f'{where} control {i} operation "{control.get("operation")}" is not one the viewer performs')
+                for name in control.get('objects', []):
+                    if name not in node_names:
+                        errors.append(f'{where} control "{control.get("id")}" names object "{name}", which the GLB lacks')
             for m in gltf.get('materials', []):
                 if m.get('name') not in viewer_materials:
                     errors.append(f'{where} material "{m.get("name")}" is not in viewerMaterials.json')

@@ -122,7 +122,7 @@ export const StepCard = ({ player, controls, onShowMe }: { player: Player3DContr
             </button>
           ) : flow.interaction?.type === "recordNotebook" ? (
             <button type="button" className="s3d-button s3d-button--primary" data-gesture-action="record-evidence" disabled={!(flow.canRecord || flow.canRecordObservation)} onClick={player.recordEvidence}>
-              {runtime.expectedAction?.parameters.balanceOperation === "zero" ? "Zero" : "Record"}
+              {runtime.expectedAction?.parameters.balanceOperation === "zero" ? "Tare" : "Record"}
             </button>
           ) : null}
         </div>

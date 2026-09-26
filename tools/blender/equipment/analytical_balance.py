@@ -1,13 +1,15 @@
 """`analytical-balance`: generic milligram balance with a glass draft shield.
 
 The catalogue records its precision as 0.001 with the unit mL, which is a volume unit, so the
-model claims no readability and prints nothing (decision U9). The display face is blank glass:
-the runtime does not simulate mass, and the viewer draws only what `balance-status-and-entry`
-allows, meaning status and, after entry, the learner's own value (plan §2.4, D7, decision U4).
-The right-hand draft-shield door is shown slid back, so a vessel can plausibly reach the pan.
-Not a particular manufacturer's product.
+model claims no readability and prints no specification (decision U9). The display face is blank
+glass: the viewer draws only what `balance-status-and-entry` allows, the teacher-prepared mass on
+the pan (decided 2026-09-25). The front panel has three plain keys and a wider TARE key, the one
+control the viewer operates (`controls`: pressing it performs the technique's zero step). Its
+legend is true of any balance. The right-hand draft-shield door is shown slid back, so a vessel
+can plausibly reach the pan. Not a particular manufacturer's product.
 """
 from labeq.geometry import MM, Matrix, box_mesh, lathe, make_obj, new_root, rounded, transform_mesh
+from labeq.markings import text_mesh
 
 DEFINITION_ID = 'analytical-balance'
 THUMB_ELEVATION_DEG = 14
@@ -15,6 +17,8 @@ THUMB_ELEVATION_DEG = 14
 W, D, BASE_H = 220.0, 330.0, 78.0
 SHIELD = dict(w=196.0, d=200.0, h=210.0, y=40.0, t=3.0)
 PAN_R, PAN_Z = 45.0, BASE_H + 12.0
+KEY_Z = 42.0
+TARE_W, TARE_X = 20.0, 81.0  # right of the three plain keys, inside the bezel
 
 
 def build(coll, M):
@@ -24,17 +28,25 @@ def build(coll, M):
     transform_mesh(base, Matrix.Translation((0, 0, BASE_H / 2 * MM)))
     make_obj('Balance_base', base, coll, housing, root, uv='box', sharp_deg=30)
 
-    # front panel: dark bezel, blank display face, four keys
+    # front panel: dark bezel, blank display face, three plain keys and the TARE key
     bezel = box_mesh('Balance_bezel', W - 30, 2.0, 40.0, bevel=0.8, segs=2)
     transform_mesh(bezel, Matrix.Translation((0, (-D / 2 - 0.6) * MM, 40.0 * MM)))
     make_obj('Balance_bezel', bezel, coll, dark, root, uv='box')
     disp = box_mesh('Balance_display', 86.0, 1.0, 22.0, bevel=0.3, segs=1)
     transform_mesh(disp, Matrix.Translation((-35.0 * MM, (-D / 2 - 1.8) * MM, 42.0 * MM)))
     make_obj('Balance_display', disp, coll, M['Display glass'], root, uv='box')
-    for k in range(4):
+    for k in range(3):
         key = box_mesh('Balance_key', 13.0, 2.2, 9.0, bevel=0.8, segs=2)
-        transform_mesh(key, Matrix.Translation(((28.0 + k * 17.0) * MM, (-D / 2 - 2.0) * MM, 42.0 * MM)))
+        transform_mesh(key, Matrix.Translation(((28.0 + k * 17.0) * MM, (-D / 2 - 2.0) * MM, KEY_Z * MM)))
         make_obj(f'Balance_key_{k}', key, coll, M['Keypad membrane'], root, uv='box')
+    tare = box_mesh('Balance_key_tare', TARE_W, 2.2, 9.0, bevel=0.8, segs=2)
+    transform_mesh(tare, Matrix.Translation((TARE_X * MM, (-D / 2 - 2.0) * MM, KEY_Z * MM)))
+    # A dark bar, as balances often set the tare key apart; its white legend then reads clearly.
+    make_obj('Balance_key_tare', tare, coll, dark, root, uv='box')
+    # The legend lies on the key's front face (y = -D/2 - 3.1 mm), facing the viewer.
+    legend = text_mesh('TARE', 4.2, TARE_X, KEY_Z, align='CENTER')
+    transform_mesh(legend, Matrix.Translation((0, (-D / 2 - 3.15) * MM, 0)))
+    make_obj('Balance_key_tare_legend', legend, coll, M['White enamel print'], root, sharp_deg=0)
 
     # weighing pan on its stem, inside the draft shield
     stem = lathe([(0, BASE_H), (6, BASE_H), (6, PAN_Z - 2), (0, PAN_Z - 2)], segs=32)
@@ -75,6 +87,11 @@ def build(coll, M):
         'anchors': {'analytical-balance-pan': {'positionMm': [0.0, SHIELD['y'], PAN_Z]}},
         'displays': [{'id': 'main', 'policy': 'balance-status-and-entry',
                       'centreMm': [-35.0, -D / 2 - 2.35, 42.0], 'sizeMm': [86.0, 22.0], 'normalMm': [0.0, -1.0, 0.0]}],
+        # Controls the viewer operates, by object name: pressing performs the technique's
+        # `balanceOperation: "zero"` step for this balance.
+        'controls': [{'id': 'tare', 'operation': 'zero', 'label': 'TARE',
+                      'objects': ['Balance_key_tare', 'Balance_key_tare_legend'],
+                      'centreMm': [TARE_X, -D / 2 - 3.1, KEY_Z], 'sizeMm': [TARE_W, 9.0], 'normalMm': [0.0, -1.0, 0.0]}],
         'states': {'draftShieldRightDoor': 'open'},
     }
     return root, registry

@@ -121,7 +121,10 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   const [itemMenu, setItemMenu] = useState<{ id: string; x: number; y: number }>();
   const tapRef = useRef<(id: string, pointerType: string, x: number, y: number) => void>(() => undefined);
   const onTap = useCallback((id: string, pointerType: string, x: number, y: number) => tapRef.current(id, pointerType, x, y), []);
-  const carry = useBenchCarry(engine, player, setHovered, onTap);
+  // A control on an instrument, the balance's TARE key (decided 2026-09-25): see controlRef below.
+  const controlRef = useRef<(instanceId: string, controlId: string) => void>(() => undefined);
+  const onControl = useCallback((instanceId: string, controlId: string) => controlRef.current(instanceId, controlId), []);
+  const carry = useBenchCarry(engine, player, setHovered, onTap, onControl);
   const carryingRef = useRef(carry.carrying);
   carryingRef.current = carry.carrying;
 
@@ -182,8 +185,19 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [player.weighing?.id, engine]);
 
+  // A committed tool transfer (decided 2026-09-25): the spatula tips its scoop onto the target where
+  // it was released, then goes back where the runtime keeps it. Skipped under reduced motion (§3.5).
+  useEffect(() => {
+    const deposit = player.toolDeposit;
+    if (!deposit) return;
+    if (reducedMotion || !engine) { player.finishToolDeposit(deposit.id); return; }
+    void engine.animateToolDeposit(deposit).then(() => player.finishToolDeposit(deposit.id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [player.toolDeposit?.id, engine]);
+
   // Guidance in the world (guided only, G-7): the beacon marks the expected source, then the
-  // expected target while something is being carried (§5.9).
+  // expected target while something is being carried (§5.9). A step done with a tool (the spatula,
+  // decided 2026-09-25) marks the tool, then the source to dip it into, then the target.
   const expectedSourceId = useMemo(() => {
     const def = flow.source.definitionId;
     return def ? scene.bench.find((i) => i.definitionId === def)?.instanceId : undefined;
@@ -192,11 +206,45 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     const def = flow.target.definitionId;
     return def ? scene.bench.find((i) => i.definitionId === def && i.instanceId !== expectedSourceId)?.instanceId : undefined;
   }, [expectedSourceId, flow.target.definitionId, scene]);
+  const tool = player.toolTransfer;
+  const toolId = useMemo(
+    () => (tool ? scene.bench.find((i) => i.definitionId === tool.toolDefinitionId)?.instanceId : undefined),
+    [scene, tool],
+  );
+  const beaconId = !tool ? (carry.carrying ? expectedTargetId : expectedSourceId)
+    : !carry.carrying ? toolId
+      : carry.carriedDefinitionId !== tool.toolDefinitionId ? undefined
+        : carry.toolLoaded ? expectedTargetId : expectedSourceId;
   useEffect(() => {
     const guiding = showGuidance && prefs.beacon && !flow.nodeCompleted;
-    engine?.setBeacon(guiding ? (carry.carrying ? expectedTargetId : expectedSourceId) ?? null : null);
-  }, [carry.carrying, engine, expectedSourceId, expectedTargetId, flow.nodeCompleted, prefs.beacon, showGuidance, displayScene]);
-  useEffect(() => { engine?.setSelected(selected ?? null); }, [engine, selected, displayScene]);
+    engine?.setBeacon(guiding ? beaconId ?? null : null);
+  }, [beaconId, engine, flow.nodeCompleted, prefs.beacon, showGuidance, displayScene]);
+
+  // The control a step asks for: the zero step's balance and its "zero" control (the TARE key).
+  const expectedControl = useMemo(() => {
+    const parameters = runtime.expectedAction?.parameters;
+    const instanceId = parameters?.instrumentInstanceId;
+    if (flow.nodeCompleted || parameters?.balanceOperation !== "zero" || typeof instanceId !== "string") return undefined;
+    const control = scene.bench.find((item) => item.instanceId === instanceId)?.model?.controls?.find((c) => c.operation === "zero");
+    return control ? { instanceId, controlId: control.id } : undefined;
+  }, [flow.nodeCompleted, runtime.expectedAction, scene]);
+  // Guided only (G-7): the key the step asks for is lit.
+  useEffect(() => {
+    engine?.setControlCue(showGuidance && expectedControl ? expectedControl : null);
+  }, [engine, expectedControl, showGuidance, displayScene]);
+  // Pressing the key performs the step it is for, exactly as the step card's Tare button does
+  // (both stay: G-6). At any other step nothing changes, and a neutral notice says so.
+  controlRef.current = (instanceId, controlId) => {
+    engine?.pressControl(instanceId, controlId);
+    if (expectedControl?.instanceId === instanceId && expectedControl.controlId === controlId && (flow.canRecord || flow.canRecordObservation)) {
+      player.recordEvidence();
+      return;
+    }
+    const label = scene.bench.find((item) => item.instanceId === instanceId)?.model?.controls?.find((c) => c.id === controlId)?.label ?? "Key";
+    player.notify(`${label} pressed. Nothing is zeroed at this step.`);
+  };
+  // A tool deposit ends with the tool back where the runtime keeps it, so the ring follows it there.
+  useEffect(() => { engine?.setSelected(selected ?? null); }, [engine, selected, displayScene, player.toolDeposit]);
 
   // Auto-framing on a new step: the working set in guided mode, the whole bench in assessment (§5.9).
   // It fits the free area left by the open panels, wherever they have been moved, and never moves
@@ -206,14 +254,15 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     const panels = [...(playerRef.current?.querySelectorAll<HTMLElement>("[data-panel], .s3d-examine, .s3d-sheet") ?? [])];
     engine.panelInsets = coveredSides(engine.canvasElement.getBoundingClientRect(), panels.map((el) => el.getBoundingClientRect()));
     const targetDef = flow.target.definitionId;
+    const toolDef = player.toolTransfer?.toolDefinitionId;
     const working = new Set(showGuidance
-      ? scene.bench.filter((i) => i.definitionId === flow.source.definitionId || i.definitionId === targetDef).map((i) => i.instanceId)
+      ? scene.bench.filter((i) => i.definitionId === flow.source.definitionId || i.definitionId === targetDef || i.definitionId === toolDef).map((i) => i.instanceId)
       : []);
     for (const item of scene.bench) {
       if (working.has(item.instanceId) && item.placement.kind === "seated") working.add(item.placement.parentInstanceId);
     }
     engine.frameItems(working.size ? [...working] : "all", working.size ? 1.9 : 1.2);
-  }, [engine, flow.source.definitionId, flow.target.definitionId, scene, showGuidance]);
+  }, [engine, flow.source.definitionId, flow.target.definitionId, player.toolTransfer, scene, showGuidance]);
   useEffect(() => {
     if (runtime.currentNode.id !== lastNode.current) {
       lastNode.current = runtime.currentNode.id;
@@ -224,8 +273,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   // exist only once its model has loaded. While a committed pour animates, the bench still shows
   // the scene from before it, so framing also waits for the pour to finish. A new step also ends a
   // manual-camera suspension (§5.9).
-  // A committed pour or weighing being drawn holds the framing back, as a carry does (§5.9).
-  const pouring = Boolean(player.pour || player.weighing);
+  // A committed pour, weighing or tool transfer being drawn holds the framing back, as a carry does (§5.9).
+  const pouring = Boolean(player.pour || player.weighing || player.toolDeposit);
   const frameRef = useRef(frame);
   frameRef.current = frame;
   const autoViewRef = useRef(autoView);
@@ -343,11 +392,13 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     }
     examinePose.current = undefined;
   };
-  // Show me (§5.9, guided only): frame the working set, then the engine's pulse-and-ghost demo.
+  // Show me (§5.9, guided only): frame the working set, then the engine's pulse-and-ghost demo. A
+  // step done with a tool shows the tool going to the source, then to the target.
   const showMe = () => {
     setAutoView(true);
     frame();
-    engine?.showMe(expectedSourceId, expectedTargetId);
+    if (tool) engine?.showMe(toolId, expectedTargetId, expectedSourceId);
+    else engine?.showMe(expectedSourceId, expectedTargetId);
   };
   tapRef.current = (id, pointerType, x, y) => {
     const rect = engine?.canvasElement.getBoundingClientRect();
@@ -446,7 +497,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     onRearmChange: setHandRearm,
     resolver: createBenchGestureTargetResolver({
       canCarry: carry.canCarry,
-      canPickUp: () => !player.pour && !player.weighing,
+      canPickUp: () => !player.pour && !player.weighing && !player.toolDeposit,
       canvas: () => engine?.canvasElement,
       hoverBenchItem: setHovered,
       pick: (clientX, clientY) => engine?.pick(clientX, clientY),
@@ -460,8 +511,9 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
 
   const hint = carry.keyCarrying ? "Arrows move it (Shift: further). [ ] step through targets. Enter sets it down; Esc cancels."
     : carry.carrying ? "Release to set down. Esc cancels."
+    : tool && flow.canConfirm ? "Dip the spatula into the source, then release it over the target; or use Source, Target and Confirm. Right-drag to look around."
     : flow.canConfirm ? "Drag items on the bench, or use Source, Target and Confirm. Right-drag to look around."
-      : player.runtime.expectedAction?.parameters.balanceOperation === "zero" ? "Press Zero in the step card. Right-drag to look around."
+      : player.runtime.expectedAction?.parameters.balanceOperation === "zero" ? "Press TARE on the balance, or Tare in the step card. Right-drag to look around."
       : "Fill in the step card, then record. Right-drag to look around.";
 
   return (
@@ -560,7 +612,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
         <button type="button" onClick={() => { setAutoView(false); engine?.resetView(); }}><Icon name="reset" size={20} />Reset view</button>
       </nav>
 
-      {player.toast ? <div className="s3d-toast" role="status"><Icon name="check" />{player.toast}</div> : null}
+      {player.toast ? <div className="s3d-toast" role="status"><Icon name={player.toastKind === "info" ? "info" : "check"} />{player.toast}</div> : null}
       <div className="s3d-sr" aria-live="polite">{player.announcement}</div>
 
       {menuOpen ? (

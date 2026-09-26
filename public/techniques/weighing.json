@@ -175,7 +175,7 @@
       "interaction": {
         "type": "recordNotebook",
         "valueParameter": "tag",
-        "accessibleLabel": "Zero the balance with the empty watch glass on the pan."
+        "accessibleLabel": "Press TARE to zero the balance with the empty watch glass on the pan."
       }
     },
     {
@@ -228,7 +228,7 @@
         "targetDefinitionId": "watch-glass",
         "successCue": "Sodium carbonate is on the watch glass, ready to weigh.",
         "invalidCue": "The simulator could not complete that action. Review the step requirements.",
-        "accessibleLabel": "Transfer the sodium carbonate portion from the reagent bottle onto the watch glass."
+        "accessibleLabel": "Use the spatula to transfer the sodium carbonate portion from the reagent bottle onto the watch glass."
       }
     },
     {
@@ -390,7 +390,7 @@
         "id": "zero-balance-node",
         "type": "action",
         "title": "Zero the balance",
-        "description": "With the empty watch glass on the pan, zero the balance.",
+        "description": "With the empty watch glass on the pan, press TARE to zero the balance.",
         "actionId": "zero-balance",
         "config": {},
         "validation": [
@@ -411,7 +411,7 @@
         "id": "transfer-sodium-carbonate-node",
         "type": "action",
         "title": "Transfer sodium carbonate",
-        "description": "Transfer {{config.solidMassG}} g of sodium carbonate from the reagent bottle onto the watch glass.",
+        "description": "Use the spatula to transfer {{config.solidMassG}} g of sodium carbonate from the reagent bottle onto the watch glass.",
         "actionId": "transfer-sodium-carbonate-to-watch-glass",
         "config": {},
         "validation": [

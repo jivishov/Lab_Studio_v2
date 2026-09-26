@@ -5,7 +5,7 @@ import * as THREE from "three";
  * as strokes (the bundled font subset has neither glyph), the footprint is dashed, and the
  * beacon is a double ring. Colours are the design tokens, never liquid hues (G-9).
  */
-const TOKENS = {
+export const TOKENS = {
   guide: new THREE.Color("#197b7b"),
   brand: new THREE.Color("#2a5a49"),
   error: new THREE.Color("#9a4b37"),

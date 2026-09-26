@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { v1InteractionZones } from "../../../domain/interactionZones";
+import { equipmentById } from "../../../equipment/catalog";
 import { getVisualProfile } from "../../../equipment/visualCatalog";
 import { fromBench, runtimeBenchPoints } from "../../adapters/benchCoordinates";
 import { classifyOverlap, footprintOf, snapClassification, snapZoneFootprint, type FootprintCandidate } from "../../adapters/footprints";
-import { resolveRelease, snapReleasePoint } from "../../adapters/sceneToIntent";
-import type { SceneItem } from "../../adapters/runtimeToScene";
+import { pointInFootprint, resolveRelease, resolveToolRelease, snapReleasePoint, type ToolTransfer } from "../../adapters/sceneToIntent";
+import type { SceneContents, SceneItem } from "../../adapters/runtimeToScene";
 import type { Player3DController } from "../../player/usePlayer3D";
 import type { BenchEngine } from "../BenchEngine";
 import { arrowDirection, cycleIndex, nudgePoint, spatialOrder, type BenchPoint } from "./keyboard";
@@ -42,24 +43,49 @@ export const acceptedDropCallout = (showGuidance: boolean, inputReady: boolean, 
 
 type Carry =
   | { kind: "bench"; via: "pointer" | "keyboard" | "gesture"; instanceId: string; definitionId: string; label: string; startX: number; startY: number;
-      active: boolean; pointerType: string; point?: BenchPoint; liftMm?: number; targetIndex?: number }
+      active: boolean; pointerType: string; point?: BenchPoint; liftMm?: number; targetIndex?: number;
+      /** A tool (the spatula) that has been dipped into the step's solid source during this carry. */
+      toolLoaded?: boolean;
+      /** Where a tool's working end (the spoon) is aimed; `point` is then where the tool's centre is. */
+      tipPoint?: BenchPoint }
   | { kind: "tray"; via: "pointer" | "gesture"; definitionId: string; point?: BenchPoint };
 
 const LIFT_MM = 16;
+/** A tool's working end, judged as a small square over the source and the target. */
+const TIP_MM = 12;
 const MM = 0.001;
 
 /** A press released without carrying: a tap on an item (§5.19 "Touch: tap · Select"). */
 export type TapHandler = (instanceId: string, pointerType: string, clientX: number, clientY: number) => void;
 
-export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DController, onHover: (instanceId?: string) => void, onTap?: TapHandler) => {
+/** A control on an instrument (the balance's TARE key) pressed and released without moving. */
+export type ControlHandler = (instanceId: string, controlId: string) => void;
+
+export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DController, onHover: (instanceId?: string) => void,
+  onTap?: TapHandler, onControl?: ControlHandler) => {
   const carryRef = useRef<Carry | undefined>(undefined);
   const [callout, setCallout] = useState<CarryCallout>();
-  const [carrying, setCarrying] = useState(false);
+  // What is being carried, by definition (the tool's guidance follows it); undefined when nothing is.
+  const [carriedDefinitionId, setCarriedDefinitionId] = useState<string>();
+  const carrying = Boolean(carriedDefinitionId);
+  const setCarrying = useCallback((on: boolean) => setCarriedDefinitionId(on ? carryRef.current?.definitionId : undefined), []);
   const [keyCarrying, setKeyCarrying] = useState(false);
+  const [toolLoaded, setToolLoaded] = useState(false);
   const { scene, interaction, showGuidance, flow } = player;
-  // Nothing is picked up while a committed pour or weighing is being drawn.
+  // Nothing is picked up while a committed pour, weighing or tool transfer is being drawn.
   const pouringRef = useRef(false);
-  pouringRef.current = Boolean(player.pour || player.weighing);
+  pouringRef.current = Boolean(player.pour || player.weighing || player.toolDeposit);
+
+  // A solid transfer this step makes with a tool (the spatula), decided 2026-09-25.
+  const toolTransfer = player.toolTransfer;
+  const labelOf = useCallback((definitionId: string) =>
+    lowerFirst(scene.bench.find((item) => item.definitionId === definitionId)?.label ?? equipmentById.get(definitionId)?.label ?? definitionId),
+  [scene]);
+  /** The scoop a dipped tool carries: the source's own solid, drawn at the tool's solid rest. */
+  const scoopFor = useCallback((tool: ToolTransfer): SceneContents | undefined => {
+    const source = scene.bench.find((item) => item.instanceId === tool.sourceInstanceId);
+    return source?.contents.kind === "solid" ? { kind: "solid", style: source.contents.style } : undefined;
+  }, [scene]);
 
   /**
    * Drop targets for a carry: items standing on the bench, and items seated on one of them at their
@@ -91,14 +117,17 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     });
   }, [scene]);
 
-  /** The 2D overlap judgement for the carried item at `point`, snaps included (footprints.snapClassification). */
-  const overlapAt = useCallback((instanceId: string, definitionId: string, point: BenchPoint) => {
+  /**
+   * The 2D overlap judgement for the carried item at `point`, snaps included (footprints.snapClassification).
+   * `asTip`: only a tool's working end at `point` is judged, not the whole tool.
+   */
+  const overlapAt = useCallback((instanceId: string, definitionId: string, point: BenchPoint, asTip = false) => {
     const item = scene.bench.find((i) => i.instanceId === instanceId);
     const snap = snapClassification(interaction, definitionId, scene.bench.flatMap((other) => other.placement.kind === "bench"
       ? [{ instanceId: other.instanceId, definitionId: other.definitionId, entry: other.model, ...other.placement.point }]
       : []));
-    return classifyOverlap({ instanceId, definitionId, footprint: footprintOf(item?.model, point.xMm, point.yMm) },
-      candidates(instanceId), interaction, snap);
+    const footprint = asTip ? { xMm: point.xMm, yMm: point.yMm, widthMm: TIP_MM, depthMm: TIP_MM } : footprintOf(item?.model, point.xMm, point.yMm);
+    return classifyOverlap({ instanceId, definitionId, footprint }, candidates(instanceId), interaction, snap);
   }, [candidates, interaction, scene]);
 
   /**
@@ -116,7 +145,9 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     setCarrying(false);
     setKeyCarrying(false);
     setCallout(undefined);
-  }, []);
+    setToolLoaded(false);
+    engine?.setToolLoad(null);
+  }, [engine]);
 
   const cancel = useCallback(() => {
     endCarry();
@@ -128,7 +159,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
    * Draw the carried item at `point`, lifted above the surface it is aimed at (`surfaceMm`, 0 for
    * the bench), and classify what it is over; returns the callout shown.
    */
-  const carryTo = useCallback((point: BenchPoint, screenAt?: { x: number; y: number }, surfaceMm = 0): CarryCallout | undefined => {
+  const carryTo = useCallback((point: BenchPoint, screenAt?: { x: number; y: number }, surfaceMm = 0, hitId?: string): CarryCallout | undefined => {
     const carry = carryRef.current;
     if (!engine || !carry) return undefined;
     carry.point = point;
@@ -141,16 +172,70 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       setCallout(shown);
       return shown;
     }
+    const tool = toolTransfer;
+    if (tool && carry.definitionId === tool.toolDefinitionId) {
+      // The tool: dipped into the source it takes a scoop, which it can then tip onto the target.
+      // It is held by its working end: the spoon follows the pointer, and the tool's centre, where
+      // the runtime would set it down, lies behind it.
+      const offset = engine.solidRestOffsetMm(carry.instanceId);
+      carry.tipPoint = point;
+      carry.point = offset ? { xMm: point.xMm - offset.xMm, yMm: point.yMm - offset.yMm } : point;
+      const source = scene.bench.find((item) => item.instanceId === tool.sourceInstanceId);
+      const sourceFootprint = source?.placement.kind === "bench"
+        ? footprintOf(source.model, source.placement.point.xMm, source.placement.point.yMm) : undefined;
+      const overSource = hitId === tool.sourceInstanceId || Boolean(sourceFootprint && pointInFootprint(sourceFootprint, point));
+      if (overSource && !carry.toolLoaded) {
+        carry.toolLoaded = true;
+        setToolLoaded(true);
+        engine.setToolLoad(carry.instanceId, scoopFor(tool));
+      }
+      carry.liftMm = surfaceMm + LIFT_MM;
+      engine.previewCarry(carry.instanceId, carry.point.xMm, carry.point.yMm, carry.liftMm);
+      const top = screenAt ? undefined : engine.screenPoint(carry.instanceId, 1);
+      const screen = screenAt ?? (top ? { x: top.x, y: top.y - 30 } : { x: 0, y: 0 });
+      const sourceLabel = labelOf(tool.sourceDefinitionId);
+      const targetLabel = labelOf(tool.targetDefinitionId);
+      let shown: CarryCallout;
+      if (overSource) {
+        engine.setTargetRing(tool.sourceInstanceId, "valid");
+        // What happened, not coaching, so it reads the same in both modes.
+        shown = { ...screen, text: `Scooped from the ${sourceLabel}`, kind: "valid" };
+      } else {
+        const overlap = overlapAt(carry.instanceId, tool.sourceDefinitionId, point, true);
+        const overTarget = overlap.target?.definitionId === tool.targetDefinitionId ? overlap.target : undefined;
+        if (carry.toolLoaded && overlap.kind === "valid" && overTarget) {
+          engine.setTargetRing(overTarget.id, "valid");
+          shown = { ...screen, ...acceptedDropCallout(showGuidance, flow.inputReady, `Release to tip the scoop onto the ${targetLabel}`) };
+        } else if (overlap.kind === "invalid" && overlap.target) {
+          engine.setTargetRing(overlap.target.id, "invalid");
+          shown = { ...screen, text: showGuidance ? "Not the target for this step" : "Release to try this", kind: "invalid" };
+        } else {
+          engine.setTargetRing(null);
+          shown = !showGuidance ? { ...screen, text: "Release to set down", kind: "free" }
+            : carry.toolLoaded ? { ...screen, text: `Carry the scoop to the ${targetLabel}`, kind: "free" }
+              : overTarget ? { ...screen, text: `Scoop from the ${sourceLabel} first`, kind: "input" }
+                : { ...screen, text: "Release to set down", kind: "free" };
+        }
+      }
+      setCallout(shown);
+      return shown;
+    }
     const overlap = overlapAt(carry.instanceId, carry.definitionId, point);
+    // Tipping a solid's source onto the target while the step names a tool is refused (decided 2026-09-25).
+    const tipsSource = Boolean(tool && carry.definitionId === tool.sourceDefinitionId && overlap.target?.definitionId === tool.targetDefinitionId);
     // The pour cue shows in both modes, as the 2D workbench's overlap feedback does (G-7).
-    const pourCue = interaction?.type === "pourInto" && overlap.kind === "valid" && overlap.target ? overlap.target.id : undefined;
+    const pourCue = !tipsSource && interaction?.type === "pourInto" && overlap.kind === "valid" && overlap.target ? overlap.target.id : undefined;
     carry.liftMm = surfaceMm + LIFT_MM;
     engine.previewCarry(carry.instanceId, point.xMm, point.yMm, carry.liftMm, pourCue);
     const top = screenAt ? undefined : engine.screenPoint(carry.instanceId, 1);
     const screen = screenAt ?? (top ? { x: top.x, y: top.y - 30 } : { x: 0, y: 0 });
     const item = scene.bench.find((i) => i.instanceId === carry.instanceId);
     let shown: CarryCallout;
-    if (placesForStep(carry.definitionId)) {
+    if (tool && tipsSource && overlap.target) {
+      engine.setTargetRing(overlap.target.id, "invalid");
+      // Coaching toward the tool shows only in guided mode (G-7); the release is refused in both.
+      shown = { ...screen, text: showGuidance ? `Use the ${labelOf(tool.toolDefinitionId)} to add a solid` : "Release to try this", kind: "invalid" };
+    } else if (placesForStep(carry.definitionId)) {
       engine.setTargetRing(null);
       shown = { ...screen, ...placing };
     } else if (overlap.kind === "valid" && overlap.target) {
@@ -168,7 +253,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     }
     setCallout(shown);
     return shown;
-  }, [engine, flow.inputReady, interaction, overlapAt, placesForStep, scene, showGuidance]);
+  }, [engine, flow.inputReady, interaction, labelOf, overlapAt, placesForStep, scene, scoopFor, showGuidance, toolTransfer]);
 
   /**
    * Pointing at an item with a seat for the carried item (a registry zone that accepts it, with a 3D
@@ -197,7 +282,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     if (!hit) return;
     const aim = (hit.instanceId ? seatAim(hit.instanceId, carry.definitionId) : undefined) ?? hit;
     const rect = engine.canvasElement.getBoundingClientRect();
-    carryTo({ xMm: aim.xMm, yMm: aim.yMm }, { x: clientX - rect.left, y: clientY - rect.top - 44 }, aim.surfaceMm);
+    carryTo({ xMm: aim.xMm, yMm: aim.yMm }, { x: clientX - rect.left, y: clientY - rect.top - 44 }, aim.surfaceMm, hit.instanceId);
   }, [carryTo, engine, seatAim]);
 
   const release = useCallback(() => {
@@ -218,6 +303,29 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     if (carry.kind === "tray") {
       player.dropFromTray(carry.definitionId, point, origin);
       return;
+    }
+    if (toolTransfer) {
+      // A tool transfer: the dipped tool over the target sends the step's own pour; the source
+      // tipped onto the target is refused with a correction, not a runtime attempt.
+      const tool = toolTransfer;
+      const isTool = carry.definitionId === tool.toolDefinitionId;
+      const toolOverlap = isTool
+        ? overlapAt(carry.instanceId, tool.sourceDefinitionId, carry.tipPoint ?? point, true)
+        : overlapAt(carry.instanceId, carry.definitionId, point);
+      const toolRelease = resolveToolRelease(tool, { definitionId: carry.definitionId, loaded: Boolean(carry.toolLoaded) }, toolOverlap, origin);
+      if (toolRelease.kind === "transfer") {
+        const accepted = Boolean(player.runIntent(toolRelease.intent, { instanceId: carry.instanceId, scoop: scoopFor(tool) }));
+        if (!accepted) void engine.sync(scene);
+        return;
+      }
+      if (toolRelease.kind === "useTool") {
+        const toolLabel = labelOf(tool.toolDefinitionId);
+        const targetLabel = labelOf(tool.targetDefinitionId);
+        player.correct(`Use the ${toolLabel} to add a solid to the ${targetLabel}.`,
+          `Pick up the ${toolLabel}, dip it into the ${labelOf(tool.sourceDefinitionId)}, then carry it to the ${targetLabel}.`);
+        void engine.sync(scene);
+        return;
+      }
     }
     const overlap = overlapAt(carry.instanceId, carry.definitionId, point);
     const state = player.runtime.getState();
@@ -257,7 +365,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       accepted = true;
     }
     if (!accepted) void engine.sync(scene);
-  }, [cancel, endCarry, engine, interaction, overlapAt, player, scene]);
+  }, [cancel, endCarry, engine, interaction, labelOf, overlapAt, player, scene, scoopFor, toolTransfer]);
 
   /**
    * Keyboard carry (§5.6): the item lifts where it stands. Probes do not free-move (parity), so
@@ -272,10 +380,12 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       startX: 0, startY: 0, active: true, pointerType: "keyboard" };
     setCarrying(true);
     setKeyCarrying(true);
-    carryTo({ xMm: base.x / MM, yMm: -base.z / MM });
+    // A tool is held by its working end, so the carry starts from where that end lies.
+    const offset = toolTransfer?.toolDefinitionId === item.definitionId ? engine.solidRestOffsetMm(instanceId) : undefined;
+    carryTo({ xMm: base.x / MM + (offset?.xMm ?? 0), yMm: -base.z / MM + (offset?.yMm ?? 0) });
     player.announce(`Carrying ${item.label}. Arrow keys move it, Shift moves further, [ and ] step through targets. Enter sets it down; Escape cancels.`);
     return true;
-  }, [cancel, carryTo, engine, player, scene]);
+  }, [cancel, carryTo, engine, player, scene, toolTransfer]);
 
   /** Keys while a keyboard carry is under way; returns whether the key was used. */
   const handleCarryKey = useCallback((event: KeyboardEvent): boolean => {
@@ -283,7 +393,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     if (!carry || carry.kind !== "bench" || carry.via !== "keyboard" || !carry.point) return false;
     const direction = arrowDirection(event.key);
     if (direction) {
-      carryTo(nudgePoint(carry.point, direction, event.shiftKey));
+      carryTo(nudgePoint(carry.tipPoint ?? carry.point, direction, event.shiftKey));
       return true;
     }
     if (event.key === "[" || event.key === "]") {
@@ -294,8 +404,8 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       // As with the pointer: a target with a seat for the carried item is reached at its seat.
       const seat = seatAim(target.id, carry.definitionId);
       const shown = seat
-        ? carryTo({ xMm: seat.xMm, yMm: seat.yMm }, undefined, seat.surfaceMm)
-        : carryTo({ xMm: target.xMm, yMm: target.yMm }, undefined, target.surfaceMm ?? 0);
+        ? carryTo({ xMm: seat.xMm, yMm: seat.yMm }, undefined, seat.surfaceMm, target.id)
+        : carryTo({ xMm: target.xMm, yMm: target.yMm }, undefined, target.surfaceMm ?? 0, target.id);
       player.announce(`${target.label}. ${shown?.text ?? ""}`);
       return true;
     }
@@ -316,10 +426,17 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     if (!engine) return undefined;
     const canvas = engine.canvasElement;
     let holdTimer = 0;
+    // A control (the TARE key) pressed: it acts on release without moving, and is never carried.
+    let pressed: { instanceId: string; controlId: string; x: number; y: number } | undefined;
     const down = (event: PointerEvent) => {
       // Nothing is picked up while a committed pour is still being drawn.
       if (event.button !== 0 || pouringRef.current) return;
       if (carryRef.current?.kind === "bench" && carryRef.current.via === "keyboard") cancel();
+      const control = onControl ? engine.pickControl(event.clientX, event.clientY) : undefined;
+      if (control) {
+        pressed = { ...control, x: event.clientX, y: event.clientY };
+        return;
+      }
       const id = engine.pick(event.clientX, event.clientY);
       const item = id ? scene.bench.find((i) => i.instanceId === id) : undefined;
       if (!item) return;
@@ -342,7 +459,10 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     const move = (event: PointerEvent) => {
       const carry = carryRef.current;
       if (!carry || carry.via !== "pointer") {
-        if (!carry) onHover(engine.pick(event.clientX, event.clientY));
+        if (!carry) {
+          onHover(engine.pick(event.clientX, event.clientY));
+          canvas.style.cursor = onControl && engine.pickControl(event.clientX, event.clientY) ? "pointer" : "";
+        }
         return;
       }
       if (carry.kind === "bench" && !carry.active) {
@@ -355,6 +475,12 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     const up = (event: PointerEvent) => {
       window.clearTimeout(holdTimer);
       engine.holdCameraInput(false);
+      if (pressed) {
+        const control = pressed;
+        pressed = undefined;
+        if (Math.hypot(event.clientX - control.x, event.clientY - control.y) < 8) onControl?.(control.instanceId, control.controlId);
+        return;
+      }
       const carry = carryRef.current;
       if (!carry || carry.via !== "pointer") return;
       if (carry.kind === "bench" && !carry.active) {
@@ -388,7 +514,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       window.removeEventListener("pointercancel", up);
       window.removeEventListener("keydown", key);
     };
-  }, [cancel, carryToPointer, engine, onHover, onTap, release, scene]);
+  }, [cancel, carryToPointer, engine, onControl, onHover, onTap, release, scene]);
 
   /** Start carrying a tray item (pointer down on its tile). */
   const startTrayCarry = useCallback((definitionId: string) => {
@@ -466,7 +592,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     if (carryRef.current?.via === "gesture") cancel();
   }, [cancel]);
 
-  return { callout, carrying, keyCarrying, startTrayCarry, startKeyCarry, handleCarryKey, cancel,
+  return { callout, carrying, carriedDefinitionId, keyCarrying, toolTransfer, toolLoaded, startTrayCarry, startKeyCarry, handleCarryKey, cancel,
     canCarry, startGestureCarry, startGestureTrayCarry, gestureCarryTo, releaseGesture, cancelGesture };
 };
 

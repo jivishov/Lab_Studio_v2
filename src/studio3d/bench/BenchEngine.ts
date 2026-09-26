@@ -13,7 +13,7 @@ import { buildContents, buildTiltingLiquid, disposeObject, liquidOpacity3D, pars
 import { buildDisplayFace, type DisplayFace } from "./scene/displays";
 import { onsetTilt, pourGeometry, pourQuaternion, rootForLip, streamGeometry, surfaceHeight, UP, vesselSlices } from "./scene/pour";
 import { seatPoint, setOnPosition } from "./scene/setOn";
-import { Signals, type TargetRingKind } from "./scene/signals";
+import { Signals, TOKENS, type TargetRingKind } from "./scene/signals";
 
 /**
  * The live 3D bench (plan D3, D5): an imperative three.js engine inside a thin React component,
@@ -70,6 +70,12 @@ export interface CameraPose {
 
 /** Show me's timeline (§5.9), seconds: pulse the source, carry the ghost, pulse the target. */
 const DEMO = { source: 0.7, travel: 1.2, target: 0.8 };
+/**
+ * A slender item lying on the bench (a spatula, a stirring rod) is a few pixels tall on screen, so
+ * an invisible box over it takes the pick: at least this tall and this wide, in millimetres.
+ */
+const PICK_PROXY = { belowHeightMm: 10, heightMm: 16, minWidthMm: 24 };
+const PICK_PROXY_MATERIAL = new THREE.MeshBasicMaterial();
 
 const QUALITY: Record<GraphicsQuality, { pixelRatio: number; samples: number; contact: number; keyShadow: boolean; textures: "full" | "reduced" }> = {
   high: { pixelRatio: 2, samples: 4, contact: 1024, keyShadow: true, textures: "full" },
@@ -106,7 +112,8 @@ export class BenchEngine {
   private tween?: { from: THREE.Vector3; to: THREE.Vector3; fromTarget: THREE.Vector3; toTarget: THREE.Vector3; t: number; duration: number };
   private carried?: { instanceId: string; position: THREE.Vector3; lift: number };
   private beaconId: string | null = null;
-  private demo?: { sourceId: string; targetId?: string; t: number; ghost?: THREE.Object3D; material?: THREE.Material; from?: THREE.Vector3; to?: THREE.Vector3 };
+  private demo?: { sourceId: string; targetId?: string; viaId?: string; t: number; ghost?: THREE.Object3D; material?: THREE.Material;
+    from?: THREE.Vector3; via?: THREE.Vector3; to?: THREE.Vector3 };
   private syncGeneration = 0;
   private syncing: Promise<void> = Promise.resolve();
   /** The last scene drawn, and where each item rests in it, for carry previews. */
@@ -115,6 +122,14 @@ export class BenchEngine {
   private readonly restQuaternions = new Map<string, THREE.Quaternion>();
   private pour?: PourRun;
   private setOn?: SetOnRun;
+  /** A control being pressed: its objects move into the panel and back (presentation only). */
+  private controlPress?: { objects: THREE.Object3D[]; rest: THREE.Vector3[]; offset: THREE.Vector3; t: number };
+  /** The control the guided cue lights, if any. */
+  private controlCue?: { instanceId: string; controlId: string };
+  /** A scoop drawn on a carried tool (a spatula dipped into a solid): a carry cue only (G-3). */
+  private toolLoad?: { instanceId: string; object: THREE.Object3D };
+  /** A committed tool transfer being drawn: the tool tips its scoop onto the target. */
+  private toolRun?: SetOnRun;
   /** Where a carried item was drawn when it was released, so a pour it starts carries on from there. */
   private releasedCarry?: { instanceId: string; position: THREE.Vector3; quaternion: THREE.Quaternion; at: number };
   private disposed = false;
@@ -239,6 +254,19 @@ export class BenchEngine {
       if (this.setOn.tick(dt)) animating = true;
       else this.stopSetOn();
     }
+    if (this.toolRun) {
+      if (this.toolRun.tick(dt)) animating = true;
+      else this.stopToolRun();
+    }
+    if (this.controlPress) {
+      const press = this.controlPress;
+      press.t += dt;
+      // In over 80 ms, back over 80 ms.
+      const depth = press.t < 0.08 ? press.t / 0.08 : Math.max(0, 1 - (press.t - 0.08) / 0.08);
+      press.objects.forEach((object, i) => object.position.copy(press.rest[i]).addScaledVector(press.offset, depth));
+      if (press.t >= 0.16) this.controlPress = undefined;
+      animating = true;
+    }
     if (this.controls.autoRotate) {
       this.controls.update(dt);
       animating = true;
@@ -355,6 +383,29 @@ export class BenchEngine {
       const model = await this.models.instance(item.model);
       if (this.disposed || this.items.get(item.instanceId) !== view) return;
       model.traverse((object) => { object.userData.instanceId = item.instanceId; });
+      // An instrument's controls (a TARE key): tagged for picking, each mesh with its own material
+      // so a press or a cue on this key never changes another part or another instance.
+      for (const control of item.model.controls ?? []) {
+        model.traverse((object) => {
+          if (!control.objects.includes(object.name)) return;
+          object.userData.controlId = control.id;
+          const mesh = object as THREE.Mesh;
+          if (mesh.isMesh) mesh.material = (mesh.material as THREE.Material).clone();
+        });
+      }
+      const bounds = new THREE.Box3().setFromObject(model);
+      const size = bounds.getSize(new THREE.Vector3());
+      if (!bounds.isEmpty() && size.y < PICK_PROXY.belowHeightMm * MM) {
+        // Never drawn (raycasts do not check visibility), and not a shadow caster.
+        const proxy = new THREE.Mesh(new THREE.BoxGeometry(Math.max(size.x, PICK_PROXY.minWidthMm * MM), PICK_PROXY.heightMm * MM,
+          Math.max(size.z, PICK_PROXY.minWidthMm * MM)), PICK_PROXY_MATERIAL);
+        const centre = bounds.getCenter(new THREE.Vector3());
+        proxy.position.set(centre.x, bounds.min.y + (PICK_PROXY.heightMm * MM) / 2, centre.z);
+        proxy.visible = false;
+        proxy.name = "pick-proxy";
+        proxy.userData.instanceId = item.instanceId;
+        model.add(proxy);
+      }
       view.model = model;
       view.root.add(model);
     }
@@ -443,6 +494,144 @@ export class BenchEngine {
     return false;
   }
 
+  /**
+   * Where a tool's solid rest (a spatula's spoon) lies from the tool's centre, in bench millimetres,
+   * as the tool lies now; undefined for an item without one.
+   */
+  solidRestOffsetMm(instanceId: string): { xMm: number; yMm: number } | undefined {
+    const view = this.items.get(instanceId);
+    const rest = view?.entry?.solidRest?.centreMm;
+    if (!view || !rest) return undefined;
+    const offset = new THREE.Vector3(rest[0] * MM, 0, -rest[1] * MM).applyEuler(view.root.rotation);
+    return { xMm: offset.x / MM, yMm: -offset.z / MM };
+  }
+
+  /** The control (a TARE key) under a client point, if the first item surface there is one. */
+  pickControl(clientX: number, clientY: number): { instanceId: string; controlId: string } | undefined {
+    this.raycaster.setFromCamera(this.ndc(clientX, clientY), this.camera);
+    const hit = this.firstItemHit(this.raycaster.intersectObject(this.itemLayer, true));
+    const controlId = hit?.object.userData.controlId as string | undefined;
+    return hit && controlId ? { instanceId: hit.object.userData.instanceId as string, controlId } : undefined;
+  }
+
+  private controlObjects(instanceId: string, controlId: string): THREE.Object3D[] {
+    const found: THREE.Object3D[] = [];
+    this.items.get(instanceId)?.model?.traverse((object) => { if (object.userData.controlId === controlId) found.push(object); });
+    return found;
+  }
+
+  /** Show a control pressed: it moves 1.2 mm into the panel and back. Nothing under reduced motion. */
+  pressControl(instanceId: string, controlId: string): void {
+    const view = this.items.get(instanceId);
+    const control = view?.entry?.controls?.find((candidate) => candidate.id === controlId);
+    const objects = this.controlObjects(instanceId, controlId);
+    if (!control || objects.length === 0 || this.options.reducedMotion || this.controlPress) return;
+    const [nx, ny, nz] = control.normalMm;
+    const offset = new THREE.Vector3(nx, nz, -ny).normalize().multiplyScalar(-1.2 * MM);
+    this.controlPress = { objects, rest: objects.map((object) => object.position.clone()), offset, t: 0 };
+    this.requestRender();
+  }
+
+  /** Light one control for the guided cue (G-7), or none; a static tint, so no motion to reduce. */
+  setControlCue(cue: { instanceId: string; controlId: string } | null): void {
+    const tint = (target: { instanceId: string; controlId: string }, on: boolean) => {
+      for (const object of this.controlObjects(target.instanceId, target.controlId)) {
+        const material = (object as THREE.Mesh).material as THREE.MeshStandardMaterial | undefined;
+        if (!material?.emissive) continue;
+        material.emissive.copy(on ? TOKENS.guide : new THREE.Color(0, 0, 0));
+        material.emissiveIntensity = on ? 0.55 : 1;
+      }
+    };
+    if (this.controlCue) tint(this.controlCue, false);
+    this.controlCue = cue ?? undefined;
+    if (cue) tint(cue, true);
+    this.requestRender();
+  }
+
+  /**
+   * Draw a scoop on a carried tool (the solid's own colour, at the tool's `solidRest`), or clear
+   * it. A carry cue: the runtime records the transfer only when the tool is released over its
+   * target, and the scoop is gone once the carry ends (G-3).
+   */
+  setToolLoad(instanceId: string | null, contents?: SceneContents): void {
+    if (this.toolLoad) {
+      this.toolLoad.object.parent?.remove(this.toolLoad.object);
+      disposeObject(this.toolLoad.object);
+      this.toolLoad = undefined;
+    }
+    const view = instanceId ? this.items.get(instanceId) : undefined;
+    const scoop = view?.entry && contents ? buildContents(view.entry, contents) : undefined;
+    if (view && scoop) {
+      view.root.add(scoop);
+      this.toolLoad = { instanceId: view.instanceId, object: scoop };
+    }
+    this.requestRender();
+  }
+
+  /**
+   * Draw a committed tool transfer (decided 2026-09-25): where the carry was released, the tool
+   * rolls about its length so the scoop drops onto the target, then returns to where the runtime
+   * keeps it. Presentation only; the target already holds the solid, and a target that was empty
+   * (`revealIn`) shows it only as the scoop lands. Resolves at once under reduced motion or when
+   * the release is not known.
+   */
+  animateToolDeposit(args: { toolId: string; scoop?: SceneContents; revealIn?: string }): Promise<void> {
+    this.stopToolRun();
+    const tool = this.items.get(args.toolId);
+    const released = this.releasedCarry?.instanceId === args.toolId && performance.now() - this.releasedCarry.at < 2000
+      ? this.releasedCarry : undefined;
+    this.releasedCarry = undefined;
+    if (this.options.reducedMotion || !tool || !released) return Promise.resolve();
+    const start = released.position.clone();
+    const startQuaternion = released.quaternion.clone();
+    const scoop = args.scoop && tool.entry ? buildContents(tool.entry, args.scoop) : undefined;
+    if (scoop) tool.root.add(scoop);
+    const TIP = 0.28, HOLD = 0.18, BACK = 0.22, ROLL = 1.35;
+    // The target's contents may be built by a sync after this starts, so they are hidden each frame.
+    const reveal = (shown: boolean) => {
+      const target = args.revealIn ? this.items.get(args.revealIn) : undefined;
+      if (target?.contents) target.contents.visible = shown;
+    };
+    const ease = (u: number): number => (u < 0.5 ? 2 * u * u : 1 - (-2 * u + 2) ** 2 / 2);
+    const roll = new THREE.Quaternion();
+    let elapsed = 0;
+    return new Promise((resolve) => {
+      const finish = () => {
+        if (scoop) { tool.root.remove(scoop); disposeObject(scoop); }
+        reveal(true);
+        const rest = this.restPositions.get(args.toolId);
+        const restQuaternion = this.restQuaternions.get(args.toolId);
+        if (rest) tool.root.position.copy(rest);
+        if (restQuaternion) tool.root.quaternion.copy(restQuaternion);
+        this.shadowsDirty = true;
+        this.requestRender();
+        resolve();
+      };
+      const tick = (dt: number): boolean => {
+        if (this.items.get(args.toolId) !== tool) return false;
+        elapsed += dt;
+        const u = elapsed < TIP ? ease(elapsed / TIP)
+          : elapsed < TIP + HOLD ? 1
+            : Math.max(0, 1 - ease((elapsed - TIP - HOLD) / BACK));
+        tool.root.position.copy(start);
+        tool.root.quaternion.copy(startQuaternion).multiply(roll.setFromAxisAngle(new THREE.Vector3(1, 0, 0), u * ROLL));
+        if (scoop && elapsed > TIP * 0.7) scoop.visible = false;
+        reveal(elapsed > TIP * 0.7);
+        this.shadowsDirty = true;
+        return elapsed < TIP + HOLD + BACK;
+      };
+      this.toolRun = { tick, finish };
+      this.requestRender();
+    });
+  }
+
+  private stopToolRun(): void {
+    const run = this.toolRun;
+    if (!run) return;
+    this.toolRun = undefined;
+    run.finish();
+  }
+
   /** The bench-plane point under a client point, in bench millimetres (at `heightMm` above it). */
   benchPointAt(clientX: number, clientY: number, heightMm = 0): { xMm: number; yMm: number } | undefined {
     this.raycaster.setFromCamera(this.ndc(clientX, clientY), this.camera);
@@ -511,15 +700,18 @@ export class BenchEngine {
    * Show me (handoff §5.9): the source pulses, a translucent copy of it travels to the target along
    * a lifted carry path and fades, then the target pulses. The ghost is decorative and commits
    * nothing; the source itself never moves (G-3). Under reduced motion only the pulses play.
+   * With `viaId` (a tool, decided 2026-09-25) the ghost first goes to the top of that item (the
+   * solid's source, which pulses), then on to the target.
    */
-  showMe(sourceId: string | undefined, targetId: string | undefined): void {
+  showMe(sourceId: string | undefined, targetId: string | undefined, viaId?: string): void {
     this.endDemo();
     const source = sourceId ? this.items.get(sourceId) : undefined;
     const target = targetId ? this.items.get(targetId) : undefined;
+    const via = viaId && source ? this.items.get(viaId) : undefined;
     if (!source && !target) return;
     // With no source on the bench (it is still in the tray), only the target pulses.
     const demo: NonNullable<BenchEngine["demo"]> = source
-      ? { sourceId: source.instanceId, targetId: target?.instanceId, t: 0 }
+      ? { sourceId: source.instanceId, targetId: target?.instanceId, viaId: via?.instanceId, t: 0 }
       : { sourceId: target!.instanceId, t: 0 };
     if (source?.model && target && !this.options.reducedMotion) {
       const material = new THREE.MeshBasicMaterial({ color: "#197b7b", transparent: true, opacity: 0.32, depthWrite: false, toneMapped: false });
@@ -532,7 +724,8 @@ export class BenchEngine {
       ghost.visible = false;
       ghost.rotation.copy(source.root.rotation);
       this.scene.add(ghost);
-      Object.assign(demo, { ghost, material, from: source.root.position.clone(), to: target.root.position.clone() });
+      const viaTop = via ? via.root.position.clone().setY(new THREE.Box3().setFromObject(via.root).max.y) : undefined;
+      Object.assign(demo, { ghost, material, from: source.root.position.clone(), via: viaTop, to: target.root.position.clone() });
     }
     this.demo = demo;
     this.placeBeacon(demo.sourceId);
@@ -542,15 +735,23 @@ export class BenchEngine {
   private tickDemo(dt: number): boolean {
     const demo = this.demo!;
     demo.t += dt;
-    const travelEnd = DEMO.source + (demo.ghost ? DEMO.travel : 0);
+    const legs = demo.ghost ? (demo.via ? 2 : 1) : 0;
+    const travelEnd = DEMO.source + legs * DEMO.travel;
     if (demo.ghost && demo.from && demo.to) {
-      const u = Math.min(1, Math.max(0, (demo.t - DEMO.source) / DEMO.travel));
+      // Leg 0 runs from the source (to the via point, if any), the last leg to the target.
+      const s = (demo.t - DEMO.source) / DEMO.travel;
+      const leg = Math.min(legs - 1, Math.max(0, Math.floor(s)));
+      const u = Math.min(1, Math.max(0, s - leg));
       const e = u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
-      demo.ghost.visible = demo.t >= DEMO.source && u < 1;
-      demo.ghost.position.lerpVectors(demo.from, demo.to, e);
+      const from = leg === 1 && demo.via ? demo.via : demo.from;
+      const to = leg === 0 && demo.via ? demo.via : demo.to;
+      const last = leg === legs - 1;
+      demo.ghost.visible = demo.t >= DEMO.source && !(last && u >= 1);
+      demo.ghost.position.lerpVectors(from, to, e);
       demo.ghost.position.y += Math.sin(u * Math.PI) * 0.06;
-      (demo.material as THREE.MeshBasicMaterial).opacity = 0.32 * (u < 0.8 ? 1 : (1 - u) / 0.2);
+      (demo.material as THREE.MeshBasicMaterial).opacity = 0.32 * (!last || u < 0.8 ? 1 : (1 - u) / 0.2);
     }
+    if (demo.viaId && demo.t >= DEMO.source + DEMO.travel && demo.t < travelEnd) this.placeBeacon(demo.viaId);
     if (demo.targetId && demo.t >= travelEnd) this.placeBeacon(demo.targetId);
     if (demo.t < travelEnd + (demo.targetId ? DEMO.target : 0)) return true;
     this.endDemo();
@@ -1079,6 +1280,8 @@ export class BenchEngine {
     this.endDemo();
     this.stopPour();
     this.stopSetOn();
+    this.stopToolRun();
+    this.setToolLoad(null);
     this.disposed = true;
     if (this.frame) cancelAnimationFrame(this.frame);
     this.controls.dispose();

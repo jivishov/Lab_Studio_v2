@@ -1,6 +1,8 @@
 """`spatula`: 180 mm stainless double-ended spatula (flat blade and spoon), lying on the bench.
 
-Pack 1 binds it by role only; no step manipulates it (plan §2.6)."""
+Weighing's transfer uses it as its tool (decided 2026-09-25): dipped into the reagent bottle, it
+carries a scoop of powder in the spoon (`solidRest`) to the watch glass. The powder is drawn by
+the viewer, never built into the model."""
 import math
 
 from labeq.geometry import box_mesh, lathe, make_obj, new_root, rounded, transform_mesh, Matrix
@@ -28,6 +30,8 @@ def build(coll, M):
         'grip': {'heightMm': 1.5},
         'graduations': None,
         'anchors': {},
+        # The spoon's bowl, where a scoop of solid rests while the spatula is carried.
+        'solidRest': {'centreMm': [-(L / 2 - 9), 0.0, 1.2], 'radiusMm': 4.0},
         'displays': [],
         'states': {},
     }

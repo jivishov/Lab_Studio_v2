@@ -195,3 +195,72 @@ export const resolveTrayDrop = (
     request: { verb: "place", equipmentDefinitionId: definitionId, location: "workbench", parameters: { benchMove: true, x: point.x, y: point.y, zIndex: nextZIndex } },
   };
 };
+
+/**
+ * A solid transfer done with a tool (decided 2026-09-25): the step moves a solid from its source
+ * to its target (`pourInto`) and binds a `solid-transfer-tool`, as `atom.transfer.solid-portion`
+ * allows. The learner carries the tool, dips it into the source, and releases it over the target;
+ * the runtime records the same source-to-target transfer, so nothing new is committed. Tipping
+ * the source itself onto the target is refused. Undefined for any other step.
+ */
+export interface ToolTransfer {
+  toolDefinitionId: string;
+  sourceInstanceId: string;
+  sourceDefinitionId: string;
+  targetDefinitionId: string;
+}
+
+export const toolTransferFor = (
+  action: ActionDefinition | undefined,
+  interaction: ActionInteractionSpec | undefined,
+  instances: readonly EquipmentInstance[],
+  nodeCompleted: boolean,
+): ToolTransfer | undefined => {
+  const tool = action?.equipmentRoleBindings?.["solid-transfer-tool"];
+  if (!action || !tool || nodeCompleted || interaction?.type !== "pourInto" || !interaction.sourceDefinitionId || !interaction.targetDefinitionId) {
+    return undefined;
+  }
+  const namedSource = typeof action.parameters.sourceInstanceId === "string" ? action.parameters.sourceInstanceId : undefined;
+  const source = instances.find((instance) => (namedSource ? instance.id === namedSource : instance.definitionId === interaction.sourceDefinitionId));
+  if (!source || source.contents.kind !== "solid") return undefined;
+  return { toolDefinitionId: tool, sourceInstanceId: source.id, sourceDefinitionId: source.definitionId, targetDefinitionId: interaction.targetDefinitionId };
+};
+
+export type ToolRelease =
+  | { kind: "transfer"; intent: RuntimeInteractionIntent }
+  | { kind: "useTool" }
+  | { kind: "none" };
+
+/**
+ * A release during a tool transfer. The loaded tool over the target sends the step's own pour
+ * (source to target), exactly the intent the source's drag would have sent; the source released
+ * over the target is refused in favour of the tool; anything else falls through to the ordinary
+ * release (a tool set down unloaded is a free move).
+ */
+export const resolveToolRelease = (
+  tool: ToolTransfer,
+  carried: { definitionId: string; loaded: boolean },
+  overlap: BenchOverlapResult,
+  origin: ReleaseOrigin,
+): ToolRelease => {
+  const overTarget = overlap.kind === "valid" && overlap.target?.definitionId === tool.targetDefinitionId ? overlap.target : undefined;
+  if (carried.definitionId === tool.toolDefinitionId && carried.loaded && overTarget) {
+    return {
+      kind: "transfer",
+      intent: {
+        type: "pourIntent",
+        origin,
+        sourceInstanceId: tool.sourceInstanceId,
+        targetInstanceId: overTarget.id,
+        sourceDefinitionId: tool.sourceDefinitionId,
+        targetDefinitionId: tool.targetDefinitionId,
+      } as RuntimeInteractionIntent,
+    };
+  }
+  if (carried.definitionId === tool.sourceDefinitionId && overTarget) return { kind: "useTool" };
+  return { kind: "none" };
+};
+
+/** Whether a bench point lies within a footprint (a dip into a source's mouth). */
+export const pointInFootprint = (footprint: { xMm: number; yMm: number; widthMm: number; depthMm: number }, point: { xMm: number; yMm: number }): boolean =>
+  Math.abs(point.xMm - footprint.xMm) <= footprint.widthMm / 2 && Math.abs(point.yMm - footprint.yMm) <= footprint.depthMm / 2;

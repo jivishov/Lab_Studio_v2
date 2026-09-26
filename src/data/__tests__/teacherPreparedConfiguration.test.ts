@@ -42,7 +42,7 @@ describe("weighing's setup", () => {
     expect(configured.actions.find((a) => a.id === "transfer-sodium-carbonate-to-watch-glass")?.parameters.massG).toBe(2.037);
     expect(configured.actions.find((a) => a.id === "place-watch-glass")?.parameters.supportEmptyMassG).toBe(30);
     expect(configured.process.nodes.find((n) => n.id === "transfer-sodium-carbonate-node")?.description)
-      .toBe("Transfer 2.037 g of sodium carbonate from the reagent bottle onto the watch glass.");
+      .toBe("Use the spatula to transfer 2.037 g of sodium carbonate from the reagent bottle onto the watch glass.");
     expect(configured.process.nodes.map((n) => n.actionId)).toEqual([
       "place-watch-glass", "zero-balance", "transfer-sodium-carbonate-to-watch-glass", "weigh-solid", "record-solid-mass",
     ]);

@@ -158,7 +158,7 @@ export const EquipmentTray = ({ player, controls, onPointerDownTile, gestureGrab
     if (g) g.count += 1;
     else groups.set(item.definitionId, { definitionId: item.definitionId, label: item.label, count: 1 });
   }
-  const needed = new Set(player.showGuidance ? currentStepEquipmentIds(player.interaction) : []);
+  const needed = new Set(player.showGuidance ? currentStepEquipmentIds(player.interaction, player.toolTransfer?.toolDefinitionId) : []);
   if (groups.size === 0) return null;
   return (
     <FloatPanel id="tray" label="Tray" className="s3d-tray" controls={controls}

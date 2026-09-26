@@ -42,6 +42,31 @@
         ]
       }
     ],
+    "controls": [
+      {
+        "id": "tare",
+        "operation": "zero",
+        "label": "TARE",
+        "objects": [
+          "Balance_key_tare",
+          "Balance_key_tare_legend"
+        ],
+        "centreMm": [
+          81.0,
+          -168.1,
+          42.0
+        ],
+        "sizeMm": [
+          20.0,
+          9.0
+        ],
+        "normalMm": [
+          0.0,
+          -1.0,
+          0.0
+        ]
+      }
+    ],
     "states": {
       "draftShieldRightDoor": "open"
     }
@@ -50,7 +75,7 @@
     "boundsMm": {
       "min": [
         -110.0,
-        -168.1,
+        -168.15,
         0.0
       ],
       "max": [
@@ -59,7 +84,7 @@
         297.0
       ]
     },
-    "triangles": 5352,
+    "triangles": 5615,
     "materials": [
       "Black rubber",
       "Borosilicate glass",
@@ -67,7 +92,8 @@
       "Display glass",
       "Instrument housing dark grey",
       "Instrument housing light grey",
-      "Keypad membrane"
+      "Keypad membrane",
+      "White enamel print"
     ],
     "scenery": false
   },
@@ -75,7 +101,7 @@
     "blender": "5.2.2",
     "generator": "tools/blender/equipment/analytical_balance.py",
     "library": "tools/blender/labeq",
-    "sourceHash": "9b86885688d84f68602236495d2a848d1268a5df959bfcf45f563f8fc2d6b30e",
+    "sourceHash": "a686ed27ccf58d56cf54ee07b70e0474a257cd6174e354ab5bce00372ee05156",
     "markingFont": {
       "family": "Inter",
       "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",

@@ -10,7 +10,7 @@ import { footprintOf, nearestFreeSpot, type FootprintMm } from "../adapters/foot
 import { readingShownFor } from "../adapters/instrumentDisplay";
 import { pourStagingScene, runtimeToScene, sceneContents, type SceneContents, type SceneDescription } from "../adapters/runtimeToScene";
 import { heldOnSeat, readingSeatZone } from "../bench/scene/setOn";
-import { benchMoveRequest, intentTypeForInteraction, mergeActionInput, resolveTrayDrop, type ReleaseOrigin } from "../adapters/sceneToIntent";
+import { benchMoveRequest, intentTypeForInteraction, mergeActionInput, resolveTrayDrop, toolTransferFor, type ReleaseOrigin } from "../adapters/sceneToIntent";
 import { nextPlacementPoint, parkPointAfterInteraction } from "../adapters/twoDPlacement";
 import { equipment3dEntry } from "../equipment3d/readiness";
 import { stepFlow, type StepFlow } from "./stepRules";
@@ -51,6 +51,15 @@ export interface WeighAnimation {
   id: number;
 }
 
+/** A committed tool transfer being drawn: the tool tips its scoop onto the target (decided 2026-09-25). */
+export interface ToolDeposit {
+  toolId: string;
+  scoop?: SceneContents;
+  /** A target that was empty: its new contents are shown only as the scoop lands. */
+  revealIn?: string;
+  id: number;
+}
+
 const contentsIn = (state: RuntimeState, instanceId: string): SceneContents => {
   const instance = state.equipmentInstances.find((i) => i.id === instanceId);
   return instance ? sceneContents(instance, equipment3dEntry(instance.definitionId)) : { kind: "none" };
@@ -71,9 +80,12 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
   const [selectedTarget, setSelectedTarget] = useState<string>();
   const [correction, setCorrection] = useState<Correction>();
   const [toast, setToast] = useState<string>();
+  // "done" for what a commit reported, "info" for a notice that nothing changed (a key pressed out of step).
+  const [toastKind, setToastKind] = useState<"done" | "info">("done");
   const [announcement, setAnnouncement] = useState("");
   const [pour, setPour] = useState<PourAnimation>();
   const [weighing, setWeighing] = useState<WeighAnimation>();
+  const [toolDeposit, setToolDeposit] = useState<ToolDeposit>();
   // What each instrument showed when a reading was recorded, by measurement id (results only).
   const [displayedReadings, setDisplayedReadings] = useState<Record<string, string>>({});
   const pourSeq = useRef(0);
@@ -92,6 +104,12 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     showGuidance,
   });
   const scene = useMemo(() => runtimeToScene(runtime.state, definition), [runtime.state, definition]);
+  // A solid transfer this step makes with a tool, the spatula (decided 2026-09-25).
+  const toolTransfer = useMemo(
+    () => toolTransferFor(runtime.expectedAction, runtime.expectedAction ? resolveActionInteraction(runtime.expectedAction) : undefined,
+      runtime.state.equipmentInstances, flow.nodeCompleted),
+    [flow.nodeCompleted, runtime.expectedAction, runtime.state],
+  );
   // The run is complete when the current node is done and nothing follows it.
   const complete = useMemo(
     () => runtime.state.completedNodes.includes(runtime.currentNode.id)
@@ -123,7 +141,10 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     }
     setCorrection(undefined);
     const latest = added.at(-1);
-    if (latest && !spoken) setToast(latest.message);
+    if (latest && !spoken) {
+      setToast(latest.message);
+      setToastKind("done");
+    }
     announce(spoken ?? latest?.message ?? "");
     return false;
   }, [announce]);
@@ -152,8 +173,12 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
       });
   }, [runtime]);
 
-  /** StudentPlayer.runIntent: merge the step input, resolve, then refuse (and record) or commit. */
-  const runIntent = useCallback((intent: RuntimeInteractionIntent): RuntimeState | undefined => {
+  /**
+   * StudentPlayer.runIntent: merge the step input, resolve, then refuse (and record) or commit.
+   * `tool` names the tool a solid transfer was made with (the spatula): the runtime records the
+   * same source-to-target transfer, and the tool, not the source, is drawn tipping its scoop.
+   */
+  const runIntent = useCallback((intent: RuntimeInteractionIntent, tool?: { instanceId: string; scoop?: SceneContents }): RuntimeState | undefined => {
     const merged = mergeActionInput(intent, flow.inputResolution, runtime.expectedAction);
     const before = runtime.getState();
     const result = resolveInteractionIntent(definition, before, merged);
@@ -169,7 +194,12 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     const next = runtime.performAction(result.request);
     const failed = reportCommit(before, next);
     if (!failed && shown) setDisplayedReadings((current) => ({ ...current, [shown.measurementId]: shown.text }));
-    if (!failed && result.interaction.type === "pourInto" && result.request.sourceInstanceId && result.request.targetInstanceId) {
+    if (!failed && tool) {
+      pourSeq.current += 1;
+      const targetId = result.request.targetInstanceId;
+      const wasEmpty = before.equipmentInstances.find((instance) => instance.id === targetId)?.contents.kind === "empty";
+      setToolDeposit({ toolId: tool.instanceId, scoop: tool.scoop, id: pourSeq.current, ...(targetId && wasEmpty ? { revealIn: targetId } : {}) });
+    } else if (!failed && result.interaction.type === "pourInto" && result.request.sourceInstanceId && result.request.targetInstanceId) {
       pourSeq.current += 1;
       const { sourceInstanceId: sourceId, targetInstanceId: targetId } = result.request;
       setPour({ sourceId, targetId, staging: pourStagingScene(before, next, definition, { sourceId, targetId }),
@@ -250,8 +280,13 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
    */
   const confirm = useCallback(() => {
     if (!interaction || flow.nodeCompleted) return;
-    runIntent({ type: intentTypeForInteraction[interaction.type], origin: "keyboard", sourceInstanceId: selectedSource, targetInstanceId: selectedTarget } as RuntimeInteractionIntent);
-  }, [flow.nodeCompleted, interaction, runIntent, selectedSource, selectedTarget]);
+    // A step done with a tool records the same transfer; the source is not drawn pouring. With no
+    // carry to draw from, the tool's deposit shows at once.
+    const toolId = toolTransfer
+      ? runtime.state.equipmentInstances.find((instance) => instance.definitionId === toolTransfer.toolDefinitionId)?.id : undefined;
+    runIntent({ type: intentTypeForInteraction[interaction.type], origin: "keyboard", sourceInstanceId: selectedSource, targetInstanceId: selectedTarget } as RuntimeInteractionIntent,
+      toolTransfer ? { instanceId: toolId ?? toolTransfer.toolDefinitionId } : undefined);
+  }, [flow.nodeCompleted, interaction, runIntent, runtime.state, selectedSource, selectedTarget, toolTransfer]);
 
   const recordEvidence = useCallback(() => {
     if (!flow.nodeCompleted) runIntent({ type: "notebookRecordIntent", origin: "programmatic" });
@@ -271,6 +306,7 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     runtime.reset();
     setPour(undefined);
     setWeighing(undefined);
+    setToolDeposit(undefined);
     setDisplayedReadings({});
     setInputValues({});
     setCorrection(undefined);
@@ -297,13 +333,32 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     correction,
     dismissCorrection: () => setCorrection(undefined),
     toast,
+    toastKind,
     clearToast: () => setToast(undefined),
+    /** A neutral notice that nothing changed (not a runtime attempt): shown briefly and announced. */
+    notify: (message: string) => {
+      setToast(message);
+      setToastKind("info");
+      announce(message);
+    },
+    toolTransfer,
     announcement,
     announce,
     pour,
     /** Ends pour `id`'s animation; a later pour that has already replaced it is left running. */
     finishPour: (id: number) => setPour((current) => (current?.id === id ? undefined : current)),
     weighing,
+    toolDeposit,
+    /** Ends tool deposit `id`'s animation; a later one that has already replaced it is left running. */
+    finishToolDeposit: (id: number) => setToolDeposit((current) => (current?.id === id ? undefined : current)),
+    /**
+     * A correction for a 3D rule on top of the runtime (a solid is added with its tool): shown and
+     * announced, but not a runtime attempt and not an assessment failure.
+     */
+    correct: (message: string, recovery: string) => {
+      setCorrection({ message, recovery, attempt: false });
+      announce(message);
+    },
     displayedReadings,
     /** Ends weighing `id`'s animation; a later one that has already replaced it is left running. */
     finishWeighing: (id: number) => setWeighing((current) => (current?.id === id ? undefined : current)),

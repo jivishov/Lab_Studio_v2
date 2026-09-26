@@ -70,10 +70,11 @@ export const interactionRequiresTarget = (interaction?: ActionInteractionSpec): 
 
 /**
  * StudentPlayer.currentStepEquipmentIds: the definitions the shelf marks "Needed now" in guided
- * mode, the step's source, target and station, where each is a catalogue item.
+ * mode, the step's source, target and station, where each is a catalogue item. The 3D player also
+ * marks a step's solid-transfer tool, which it asks the learner to use (decided 2026-09-25).
  */
-export const currentStepEquipmentIds = (interaction?: ActionInteractionSpec): string[] =>
-  [interaction?.sourceDefinitionId, interaction?.targetDefinitionId, interaction?.stationId]
+export const currentStepEquipmentIds = (interaction?: ActionInteractionSpec, toolDefinitionId?: string): string[] =>
+  [interaction?.sourceDefinitionId, interaction?.targetDefinitionId, interaction?.stationId, toolDefinitionId]
     .filter((definitionId): definitionId is string => Boolean(definitionId && equipmentById.has(definitionId)));
 
 /** ProcessSidebar.stationLabel: what an optional target shows when the step names no equipment. */

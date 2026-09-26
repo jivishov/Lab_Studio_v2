@@ -70,6 +70,20 @@ export interface Equipment3DDisplay {
   normalMm: Vec3Mm;
 }
 
+/**
+ * A control on an instrument that the viewer operates, such as a balance's TARE key. `objects` are
+ * the model's node names that form it; pressing it performs the technique step for `operation`.
+ */
+export interface Equipment3DControl {
+  id: string;
+  operation: "zero";
+  label: string;
+  objects: string[];
+  centreMm: Vec3Mm;
+  sizeMm: number[];
+  normalMm: Vec3Mm;
+}
+
 export interface Equipment3DProvenance {
   blender: string;
   generator: string;
@@ -91,6 +105,7 @@ export interface Equipment3DEntry {
   solidRest?: Equipment3DSolidRest;
   anchors: Record<string, Equipment3DAnchor>;
   displays: Equipment3DDisplay[];
+  controls?: Equipment3DControl[];
   /** Named visual states (for example a stopper seated or removed); presentation only. */
   states: Record<string, unknown>;
   /** Visual-only bench scenery (decision D9): never an equipment instance, never selectable. */
