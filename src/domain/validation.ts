@@ -415,8 +415,11 @@ const validateActionVolumeContract = (
     return;
   }
   if (source === "literal") {
-    if (!isNumber(input.volume.valueMl) || input.volume.valueMl <= 0) {
-      errors.push(`${volumePath}.valueMl must be a positive finite number.`);
+    // A teacher-set volume stays a slot reference until setup substitutes it, as `massG` may
+    // (solid transfers, below); the substituted definition is validated again with its number.
+    const configuredVolume = isString(input.volume.valueMl) && configuredSlotReference.test(input.volume.valueMl);
+    if (!configuredVolume && (!isNumber(input.volume.valueMl) || input.volume.valueMl <= 0)) {
+      errors.push(`${volumePath}.valueMl must be a positive finite number or a "{{config.<slot>}}" reference.`);
     }
   } else if (input.volume.valueMl !== undefined) {
     errors.push(`${volumePath}.valueMl is legal only for a literal source.`);

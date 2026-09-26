@@ -22,6 +22,29 @@ const numeric = (
 const directConfigSlot = (value: unknown): string | undefined =>
   typeof value === "string" ? value.match(CONFIGURATION_TEMPLATE)?.[1] : undefined;
 
+/** An instance's definition, from its id in the starting equipment. */
+const initialDefinitionOf = (definition: TechniqueDefinition, instanceId: unknown): string | undefined =>
+  typeof instanceId === "string"
+    ? definition.initialState.equipment.find((instance) => instance.id === instanceId)?.definitionId
+    : undefined;
+
+/** The solid a named source starts with: an authored number, or a teacher-set slot. */
+const initialAvailableMass = (
+  definition: TechniqueDefinition,
+  values: ReadonlyMap<string, TechniqueConfigurationValue>,
+  params: Record<string, unknown>,
+): number | undefined => {
+  const instances = definition.initialState.equipment.filter((instance) =>
+    typeof params.sourceInstanceId === "string"
+      ? instance.id === params.sourceInstanceId
+      : instance.definitionId === params.sourceDefinitionId);
+  if (instances.length !== 1) return undefined;
+  const massG: unknown = instances[0].contents.massG;
+  if (typeof massG === "number" && Number.isFinite(massG)) return massG;
+  const slotId = directConfigSlot(massG);
+  return slotId ? numeric(values, slotId) : undefined;
+};
+
 const initialAvailableVolume = (
   definition: TechniqueDefinition,
   definitionId: string,
@@ -73,8 +96,12 @@ export const validateStandaloneConfigurationSemantics = (
 
   for (const [slotId, value] of values) {
     if (typeof value !== "number" || !Number.isFinite(value)) continue;
-    if (/(?:VolumeMl|MassG|DurationMinutes|Factor|WavelengthNm)$/i.test(slotId) && value <= 0) {
+    if (/(?:VolumeMl|MassG|DurationMinutes|Factor|WavelengthNm|PercentTransmittance)$/i.test(slotId) && value <= 0) {
       add([slotId], `${slotId} must be greater than zero.`);
+    }
+    // A prepared transmittance is a reading a photometer can show: greater than 0 and at most 100 %T.
+    if (/PercentTransmittance$/i.test(slotId) && value > 100) {
+      add([slotId], `${slotId} must be at most 100 %T.`);
     }
   }
 
@@ -115,6 +142,35 @@ export const validateStandaloneConfigurationSemantics = (
       }
     }
 
+    // A literal volume contract (a teacher-set volume) must fit its receiving container.
+    const literalSlot = action.volume?.source === "literal" ? directConfigSlot(action.volume.valueMl) : undefined;
+    const literalValue = literalSlot ? numeric(values, literalSlot) : undefined;
+    if (literalSlot && literalValue !== undefined && literalValue > 0) {
+      const targetDefinitionId = typeof params.targetDefinitionId === "string"
+        ? params.targetDefinitionId
+        : initialDefinitionOf(definition, params.targetInstanceId);
+      const targetCapacity = targetDefinitionId ? equipmentById.get(targetDefinitionId)?.capacity : undefined;
+      if (targetCapacity?.unit === "mL" && targetCapacity.amount > 0 && literalValue > targetCapacity.amount) {
+        add(
+          [literalSlot],
+          `${literalSlot} (${literalValue} mL) exceeds the ${targetDefinitionId} capacity of ${targetCapacity.amount} mL.`,
+        );
+      }
+    }
+
+    // A teacher-set solid portion cannot exceed what its source starts with.
+    const massSlot = action.verb === "transfer" ? directConfigSlot(params.massG) : undefined;
+    const massValue = massSlot ? numeric(values, massSlot) : undefined;
+    if (massSlot && massValue !== undefined && massValue > 0) {
+      const available = initialAvailableMass(definition, values, params);
+      if (available !== undefined && massValue > available) {
+        add(
+          [massSlot],
+          `${massSlot} (${massValue} g) exceeds the ${String(params.sourceInstanceId ?? params.sourceDefinitionId)} starting mass of ${available} g.`,
+        );
+      }
+    }
+
     const temperatureSlot = directConfigSlot(params.temperatureC);
     const temperatureRange = sourceAuthoredRange(params.temperatureProvenance, "C");
     if (temperatureSlot && temperatureRange) {
@@ -146,6 +202,23 @@ export const validateStandaloneConfigurationSemantics = (
       add(
         ["stockConcentrationM"],
         "stockConcentrationM must be greater than zero so the instructor-approved concentration is usable in the dilution calculation.",
+      );
+    }
+    // The dilution fills the receiver from the aliquot to the final volume with the measured water,
+    // so the final volume must exceed the aliquot and the water must cover the difference.
+    const aliquot = numeric(values, "stockAliquotVolumeMl");
+    const water = numeric(values, "waterVolumeMl");
+    const finalVolume = numeric(values, "finalVolumeMl");
+    if (aliquot !== undefined && finalVolume !== undefined && finalVolume <= aliquot) {
+      add(
+        ["stockAliquotVolumeMl", "finalVolumeMl"],
+        "finalVolumeMl must be greater than the stock aliquot volume.",
+      );
+    }
+    if (aliquot !== undefined && water !== undefined && finalVolume !== undefined && finalVolume > aliquot + water) {
+      add(
+        ["stockAliquotVolumeMl", "waterVolumeMl", "finalVolumeMl"],
+        `waterVolumeMl must cover the dilution from the aliquot to the final volume (at least ${finalVolume - aliquot} mL).`,
       );
     }
   }

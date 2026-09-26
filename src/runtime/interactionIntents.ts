@@ -282,6 +282,39 @@ const requiresTarget = (interaction: ActionInteractionSpec): boolean =>
   interaction.type === "placeInInstrument" ||
   (interaction.type === "readInstrument" && Boolean(interaction.targetDefinitionId));
 
+/**
+ * The volume a typed volume contract will deliver, read as the reducer's `resolveContractedVolume`
+ * reads it (a dilution, a fill fraction or the remaining capacity states a final level; the other
+ * sources state the delivered volume). Without it the pre-check judged a contracted pour by the
+ * whole source: a 4 mL cuvette filled to 75 % from a 1 L bottle, or a teacher-set aliquot, was
+ * refused as an overflow before the reducer could perform it.
+ */
+const contractedDeliveryMl = (
+  action: ActionDefinition,
+  state: RuntimeState,
+  target: EquipmentInstance,
+  currentTargetVolumeMl: number,
+  value: number | undefined,
+): number | undefined => {
+  const contract = action.volume;
+  if (!contract) return undefined;
+  const capacity = equipmentById.get(target.definitionId)?.capacity;
+  const capacityMl = capacity?.unit === "mL" && capacity.amount > 0 ? capacity.amount : undefined;
+  let stated: number | undefined;
+  if (contract.source === "action-input") stated = value;
+  else if (contract.source === "literal") stated = typeof contract.valueMl === "number" ? contract.valueMl : undefined;
+  else if (contract.source === "measurement") {
+    stated = state.measurements.find((entry) => entry.id === contract.referenceId && entry.unit === "mL")?.value;
+  } else if (contract.source === "calculation") {
+    stated = state.calculations.find((entry) => entry.id === contract.referenceId && entry.unit === "mL")?.value;
+  } else if (capacityMl !== undefined) {
+    stated = contract.source === "target-fill-fraction" ? capacityMl * contract.fraction : capacityMl;
+  }
+  if (stated === undefined || !Number.isFinite(stated)) return undefined;
+  const finalLevel = action.verb === "dilute" || contract.source === "target-fill-fraction" || contract.source === "target-remaining-capacity";
+  return Math.max(0, finalLevel ? stated - currentTargetVolumeMl : stated);
+};
+
 const preflightPour = (
   action: ActionDefinition,
   state: RuntimeState,
@@ -311,6 +344,7 @@ const preflightPour = (
       : undefined;
   const volumeMl =
     value ??
+    contractedDeliveryMl(action, state, target, currentTargetVolumeMl, value) ??
     numberParam(action, "volumeMl") ??
     configuredTopUpVolumeMl ??
     (action.verb === "dilute" && finalVolumeMl !== undefined

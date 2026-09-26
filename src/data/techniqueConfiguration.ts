@@ -57,6 +57,8 @@ export const unresolvedConfigurationSlots = (
   collect(definition.process, found);
   collect((definition as TechniqueDefinition).successCriteria, found);
   collect((definition as LabDefinition).assessments, found);
+  // Starting contents may be teacher-set too, such as how much solid a reagent bottle holds.
+  collect(definition.initialState, found);
 
   // Declaration-only slots are unresolved only when they are required and have no approved default.
   // A bound template remains unresolved until substitution even when its declaration has a default;
@@ -107,6 +109,7 @@ const isIdentifierBinding = (key: string): boolean => {
 };
 
 const UNIT_BY_SUFFIX: ReadonlyArray<readonly [string, string]> = [
+  ["PercentTransmittance", "%T"],
   ["Ml", "mL"],
   ["Mm", "mm"],
   ["Nm", "nm"],
@@ -205,6 +208,8 @@ export const configurationSlots = (
   collectBindings(definition.process, "process", found);
   collectBindings((definition as TechniqueDefinition).successCriteria, "successCriteria", found);
   collectBindings((definition as LabDefinition).assessments, "assessments", found);
+  // A slot in the starting contents (a teacher-set stock) is a classroom quantity like any other.
+  collectBindings(definition.initialState, "initialState", found);
 
   const declarations = declaredSlots(definition);
   const slots = [...found].map(([id, bindings]): ConfigurationSlot => {
