@@ -13,6 +13,7 @@ import type { BenchEngine } from "../bench/BenchEngine";
 import { BenchView } from "../bench/BenchView";
 import { equipment3dEntry } from "../equipment3d/readiness";
 import { catalogueSpecs } from "../player/panels";
+import { slotLabel } from "../copy/slotLabels";
 import { Icon } from "../ui/Icon";
 import { CommitField, Section } from "./Inspector";
 import { Thumbnail } from "./LibraryPanel";
@@ -361,6 +362,18 @@ const updateContents = (
  * commits them. The bench keeps showing the read-only summary; colours still come only from the
  * liquid palette. A runtime-added item joins the starting setup when its contents are edited.
  */
+/** The setup slot a starting value names (`{{config.<slot>}}`), if it is a teacher setting. */
+const setupSlotOf = (value: unknown): string | undefined =>
+  typeof value === "string" ? value.match(/^\{\{config\.([A-Za-z0-9_-]+)\}\}$/)?.[1] : undefined;
+
+/** A starting value the teacher sets in Setup: named there, not edited here as a raw placeholder. */
+const SetupSetting = ({ label, slotId }: { label: string; slotId: string }) => (
+  <div className="s3d-field">
+    <span>{label}</span>
+    <p className="s3d-small">Set in Setup: {slotLabel(slotId).label} <span className="s3d-mono">{slotId}</span></p>
+  </div>
+);
+
 const ContentsEditor = ({ studio, instance }: { studio: Studio3DController; instance: EquipmentInstance }) => {
   const disabled = Boolean(studio.readOnly);
   const contents = instance.contents ?? emptyContents();
@@ -395,10 +408,14 @@ const ContentsEditor = ({ studio, instance }: { studio: Studio3DController; inst
         </select>
       </label>
       <CommitField label="Contents label" disabled={disabled} value={contents.label} onCommit={(label) => commitContents({ label }, "contents label")} />
-      <CommitField label="Volume mL" mono disabled={disabled} value={contents.volumeMl === undefined ? "" : String(contents.volumeMl)}
-        onCommit={(v) => commitContents({ volumeMl: optionalNumber(v) }, "volume")} />
-      <CommitField label="Mass g" mono disabled={disabled} value={contents.massG === undefined ? "" : String(contents.massG)}
-        onCommit={(v) => commitContents({ massG: optionalNumber(v) }, "mass")} />
+      {setupSlotOf(contents.volumeMl) ? <SetupSetting label="Volume mL" slotId={setupSlotOf(contents.volumeMl)!} /> : (
+        <CommitField label="Volume mL" mono disabled={disabled} value={contents.volumeMl === undefined ? "" : String(contents.volumeMl)}
+          onCommit={(v) => commitContents({ volumeMl: optionalNumber(v) }, "volume")} />
+      )}
+      {setupSlotOf(contents.massG) ? <SetupSetting label="Mass g" slotId={setupSlotOf(contents.massG)!} /> : (
+        <CommitField label="Mass g" mono disabled={disabled} value={contents.massG === undefined ? "" : String(contents.massG)}
+          onCommit={(v) => commitContents({ massG: optionalNumber(v) }, "mass")} />
+      )}
       <CommitField label="Temperature C" mono disabled={disabled} value={contents.temperatureC === undefined ? "" : String(contents.temperatureC)}
         onCommit={(v) => commitContents({ temperatureC: optionalNumber(v) }, "temperature")} />
       <label className="s3d-field"><span>Wet state</span>

@@ -461,6 +461,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   const hint = carry.keyCarrying ? "Arrows move it (Shift: further). [ ] step through targets. Enter sets it down; Esc cancels."
     : carry.carrying ? "Release to set down. Esc cancels."
     : flow.canConfirm ? "Drag items on the bench, or use Source, Target and Confirm. Right-drag to look around."
+      : player.runtime.expectedAction?.parameters.balanceOperation === "zero" ? "Press Zero in the step card. Right-drag to look around."
       : "Fill in the step card, then record. Right-drag to look around.";
 
   return (

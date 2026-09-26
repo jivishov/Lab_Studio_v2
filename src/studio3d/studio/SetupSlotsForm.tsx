@@ -69,7 +69,9 @@ export const SetupSlotsForm = ({ technique, values, approved, onChange, onApprov
     <div className="s3d-setup-form">
       {quantities.length ? (
         <fieldset className="s3d-setup-section">
-          <legend><span className="s3d-setup-section__number">1</span><span><b>Classroom values</b><small>Enter the approved classroom values. Nothing is defaulted.</small></span></legend>
+          <legend><span className="s3d-setup-section__number">1</span><span><b>Classroom values</b><small>{quantities.some((slot) => slot.defaultValue !== undefined)
+            ? "Enter the approved classroom values. Published defaults are filled in; change any you need."
+            : "Enter the approved classroom values. Nothing is defaulted."}</small></span></legend>
           <div className="s3d-setup-form__lead"><ProvenanceChip kind="teacher" studio /></div>
           <div className="s3d-setup-form__grid">
             {quantities.map((slot) => {

@@ -66,7 +66,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
    * seat (a watch glass on a balance's pan receives a transfer there). The carried item, and
    * whatever is seated on it, are never targets.
    */
-  const candidates = useCallback((exceptId?: string): Array<FootprintCandidate & { label: string }> => {
+  const candidates = useCallback((exceptId?: string): Array<FootprintCandidate & { label: string; surfaceMm?: number }> => {
     const byId = new Map(scene.bench.map((item) => [item.instanceId, item]));
     const carriedWith = (item: SceneItem): boolean => {
       for (let current: SceneItem | undefined = item, depth = 0; current && depth < 8; depth += 1) {
@@ -85,8 +85,9 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       const seat = holder?.placement.kind === "bench"
         ? snapZoneFootprint(holder.model, holder.definitionId, item.placement.zoneId, holder.placement.point)
         : undefined;
+      // `surfaceMm`: the seat's height, so a keyboard carry to it is drawn above it, not in its holder.
       return seat ? [{ instanceId: item.instanceId, definitionId: item.definitionId, label: item.label,
-        footprint: footprintOf(item.model, seat.xMm, seat.yMm) }] : [];
+        footprint: footprintOf(item.model, seat.xMm, seat.yMm), surfaceMm: item.placement.anchorMm[2] ?? 0 }] : [];
     });
   }, [scene]);
 
@@ -290,7 +291,11 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       if (targets.length === 0) return true;
       carry.targetIndex = cycleIndex(targets.length, carry.targetIndex, event.key === "]" ? 1 : -1);
       const target = targets[carry.targetIndex];
-      const shown = carryTo({ xMm: target.xMm, yMm: target.yMm });
+      // As with the pointer: a target with a seat for the carried item is reached at its seat.
+      const seat = seatAim(target.id, carry.definitionId);
+      const shown = seat
+        ? carryTo({ xMm: seat.xMm, yMm: seat.yMm }, undefined, seat.surfaceMm)
+        : carryTo({ xMm: target.xMm, yMm: target.yMm }, undefined, target.surfaceMm ?? 0);
       player.announce(`${target.label}. ${shown?.text ?? ""}`);
       return true;
     }
@@ -304,7 +309,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       return true;
     }
     return false;
-  }, [cancel, candidates, carryTo, player, release]);
+  }, [cancel, candidates, carryTo, player, release, seatAim]);
 
   // Pointer handling on the canvas.
   useEffect(() => {
