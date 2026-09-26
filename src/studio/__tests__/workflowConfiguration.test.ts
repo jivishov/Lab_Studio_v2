@@ -92,8 +92,8 @@ describe("Studio workflow configuration", () => {
     const once = appendTechniqueToDraft(createDraftFromDemo(), source).lab;
     const raw = appendTechniqueToDraft(once, source).lab;
     const configured = configureWorkflowInDraft(
-      configureWorkflowInDraft(raw, "weighing-1", {}, true),
-      "weighing-2", {}, true,
+      configureWorkflowInDraft(raw, "weighing-1", { solidMassG: "2.037" }, true),
+      "weighing-2", { solidMassG: "1.5" }, true,
     );
     for (const id of ["weighing-1", "weighing-2"]) {
       const instance = configured.techniques.find((technique) => technique.id === id)!;

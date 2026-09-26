@@ -46,12 +46,12 @@
         "contents": {
           "kind": "solid",
           "label": "Sodium carbonate",
-          "massG": 2.5,
+          "massG": "{{config.reagentStockMassG}}",
           "solutes": [
             {
               "id": "sodium-carbonate",
               "label": "Sodium carbonate",
-              "amount": 2.5,
+              "amount": "{{config.reagentStockMassG}}",
               "unit": "g"
             }
           ],
@@ -87,7 +87,8 @@
         "targetDefinitionId": "analytical-balance",
         "targetInstanceId": "analytical-balance-1",
         "location": "snapZone",
-        "snapZoneId": "analytical-balance-pan"
+        "snapZoneId": "analytical-balance-pan",
+        "supportEmptyMassG": "{{config.supportEmptyMassG}}"
       },
       "prerequisites": [],
       "stateChanges": [
@@ -135,6 +136,102 @@
       }
     },
     {
+      "id": "zero-balance",
+      "verb": "observe",
+      "label": "Zero the balance",
+      "parameters": {
+        "sourceInstanceId": "watch-glass-1",
+        "sourceDefinitionId": "watch-glass",
+        "instrumentInstanceId": "analytical-balance-1",
+        "instrumentDefinitionId": "analytical-balance",
+        "balanceOperation": "zero",
+        "tag": "balance-zeroed-with-watch-glass",
+        "note": "The balance was zeroed with the empty watch glass on the pan."
+      },
+      "prerequisites": [
+        {
+          "id": "watch-glass-on-pan-before-zero",
+          "type": "actionEvidence",
+          "label": "The watch glass is on the balance pan",
+          "actionId": "place-watch-glass"
+        }
+      ],
+      "stateChanges": [
+        "Zero the balance: the zeroing is recorded in the notebook; no material or measurement state changes."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        }
+      ],
+      "feedback": {
+        "success": "The balance is zeroed with the empty watch glass on the pan.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [],
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "tag",
+        "accessibleLabel": "Zero the balance with the empty watch glass on the pan."
+      }
+    },
+    {
+      "id": "transfer-sodium-carbonate-to-watch-glass",
+      "verb": "transfer",
+      "label": "Transfer sodium carbonate to the watch glass",
+      "parameters": {
+        "sourceDefinitionId": "reagent-bottle",
+        "sourceInstanceId": "reagent-bottle-1",
+        "targetDefinitionId": "watch-glass",
+        "targetInstanceId": "watch-glass-1",
+        "massG": "{{config.solidMassG}}",
+        "massIsPlanTargetNotMeasurement": true
+      },
+      "prerequisites": [
+        {
+          "id": "balance-zeroed-before-transfer",
+          "type": "actionEvidence",
+          "label": "The balance was zeroed with the empty watch glass",
+          "actionId": "zero-balance"
+        }
+      ],
+      "stateChanges": [
+        "transfer moves the teacher-set sodium carbonate portion from the reagent bottle onto the watch glass."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        }
+      ],
+      "feedback": {
+        "success": "Sodium carbonate is on the watch glass, ready to weigh.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "transfer"
+      ],
+      "atomId": "atom.transfer.solid-portion",
+      "equipmentRoleBindings": {
+        "solid-reagent-source": "reagent-bottle",
+        "receiving-vessel": "watch-glass",
+        "solid-transfer-tool": "spatula"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "reagent-bottle",
+        "targetDefinitionId": "watch-glass",
+        "successCue": "Sodium carbonate is on the watch glass, ready to weigh.",
+        "invalidCue": "The simulator could not complete that action. Review the step requirements.",
+        "accessibleLabel": "Transfer the sodium carbonate portion from the reagent bottle onto the watch glass."
+      }
+    },
+    {
       "id": "weigh-solid",
       "verb": "weigh",
       "label": "Weigh sodium carbonate",
@@ -153,7 +250,14 @@
         "inputRequired": true,
         "unit": "g"
       },
-      "prerequisites": [],
+      "prerequisites": [
+        {
+          "id": "sodium-carbonate-on-watch-glass",
+          "type": "actionEvidence",
+          "label": "Sodium carbonate was transferred to the watch glass",
+          "actionId": "transfer-sodium-carbonate-to-watch-glass"
+        }
+      ],
       "stateChanges": [
         "weigh updates runtime state through structured equipment contents."
       ],
@@ -185,11 +289,10 @@
         "weigh",
         "measurement"
       ],
-      "atomId": "atom.weigh.solid-portion",
+      "atomId": "atom.weigh.vessel-supported-balance-display",
       "equipmentRoleBindings": {
         "balance-instrument": "analytical-balance",
-        "weighed-vessel": "watch-glass",
-        "solid-transfer-tool": "spatula"
+        "weighed-vessel": "watch-glass"
       },
       "interaction": {
         "type": "readInstrument",
@@ -284,6 +387,48 @@
         }
       },
       {
+        "id": "zero-balance-node",
+        "type": "action",
+        "title": "Zero the balance",
+        "description": "With the empty watch glass on the pan, zero the balance.",
+        "actionId": "zero-balance",
+        "config": {},
+        "validation": [
+          {
+            "id": "zeroed-balance",
+            "type": "actionEvidence",
+            "label": "Action zero-balance was completed.",
+            "actionId": "zero-balance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Zero the balance complete.",
+          "retry": "Review Zero the balance and try again."
+        }
+      },
+      {
+        "id": "transfer-sodium-carbonate-node",
+        "type": "action",
+        "title": "Transfer sodium carbonate",
+        "description": "Transfer {{config.solidMassG}} g of sodium carbonate from the reagent bottle onto the watch glass.",
+        "actionId": "transfer-sodium-carbonate-to-watch-glass",
+        "config": {},
+        "validation": [
+          {
+            "id": "transferred-sodium-carbonate",
+            "type": "actionEvidence",
+            "label": "Action transfer-sodium-carbonate-to-watch-glass was completed.",
+            "actionId": "transfer-sodium-carbonate-to-watch-glass"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Transfer sodium carbonate complete.",
+          "retry": "Review Transfer sodium carbonate and try again."
+        }
+      },
+      {
         "id": "weigh-solid-node",
         "type": "action",
         "title": "Weigh solid",
@@ -335,6 +480,22 @@
     "edges": [
       {
         "from": "place-watch-glass-node",
+        "to": "zero-balance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "zero-balance-node",
+        "to": "transfer-sodium-carbonate-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "transfer-sodium-carbonate-node",
         "to": "weigh-solid-node",
         "label": "Next",
         "condition": {
@@ -435,6 +596,26 @@
         "sourceInstanceIds": [
           "spatula-1"
         ]
+      },
+      {
+        "roleId": "solid-reagent-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "reagent-bottle"
+        ],
+        "sourceInstanceIds": [
+          "reagent-bottle-1"
+        ]
+      },
+      {
+        "roleId": "receiving-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "watch-glass"
+        ],
+        "sourceInstanceIds": [
+          "watch-glass-1"
+        ]
       }
     ],
     "modelSlots": [],
@@ -443,6 +624,23 @@
         "id": "massMeasurementId",
         "valueType": "string",
         "required": true
+      },
+      {
+        "id": "solidMassG",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "supportEmptyMassG",
+        "valueType": "number",
+        "required": true,
+        "defaultValue": 30
+      },
+      {
+        "id": "reagentStockMassG",
+        "valueType": "number",
+        "required": true,
+        "defaultValue": 10
       }
     ],
     "approvalGates": [],
@@ -475,6 +673,19 @@
     },
     "catalogDisposition": "composable",
     "legacyActionEffects": [
+      {
+        "actionId": "zero-balance",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
       {
         "actionId": "record-solid-mass",
         "effect": {

@@ -74,14 +74,15 @@ describe("declared standalone configuration contracts", () => {
   it("keeps weighing bound to the actual acquired mass identifier without a stale target", async () => {
     const weighing = await readTechnique("weighing");
     expect(hostLabsForTechnique(weighing.id)).toEqual([]);
-    expect(configurationSlots(weighing).map((slot) => slot.id)).toEqual(["massMeasurementId"]);
+    // Classroom quantities first (the stock is found in the starting contents), then the record name.
+    expect(configurationSlots(weighing).map((slot) => slot.id)).toEqual(["reagentStockMassG", "solidMassG", "supportEmptyMassG", "massMeasurementId"]);
     expect(slotById(weighing, "massMeasurementId")).toMatchObject({
       kind: "internal-identifier",
       required: true,
       valueType: "string",
     });
     expect(standaloneTechniqueConfigurationBlocker(weighing)).toBeNull();
-    const configured = applyTechniqueConfiguration(weighing, {});
+    const configured = applyTechniqueConfiguration(weighing, { solidMassG: "2.037" });
     expect(unresolvedConfigurationSlots(configured)).toEqual([]);
     const mass = configured.actions.find((action) => action.id === "weigh-solid")?.mass;
     expect(mass?.source).toBe("action-input");
@@ -95,7 +96,7 @@ describe("declared standalone configuration contracts", () => {
     // a measurement copy (`copyExistingMeasurementOnly`, authored `recordNotebook`), as other
     // techniques' record-after-weigh steps are.
     const weighing = await readTechnique("weighing");
-    const configured = applyTechniqueConfiguration(weighing, {});
+    const configured = applyTechniqueConfiguration(weighing, { solidMassG: "2.037" });
     const validation = validateTechniqueDefinition(configured);
     expect(validation.ok, validation.errors.join("\n")).toBe(true);
     const record = configured.actions.find((action) => action.id === "record-solid-mass")!;

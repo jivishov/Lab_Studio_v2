@@ -270,13 +270,7 @@ const definition = {
       "parameters": {
         "sourceInstanceId": "sample-bottle-1",
         "targetInstanceId": "graduated-cylinder-1",
-        "concentrationMeasurementId": "{{config.stockConcentrationMeasurementId}}",
-        "inputMode": "numeric",
-        "inputRole": "teacherConfiguration",
-        "inputLabel": "Measure the configured stock-dye aliquot (mL)",
-        "inputMin": 0,
-        "inputMinExclusive": true,
-        "unit": "mL"
+        "concentrationMeasurementId": "{{config.stockConcentrationMeasurementId}}"
       },
       "prerequisites": [],
       "stateChanges": [
@@ -307,7 +301,8 @@ const definition = {
         "accessibleLabel": "Measure the configured stock-dye aliquot"
       },
       "volume": {
-        "source": "action-input",
+        "source": "literal",
+        "valueMl": "{{config.stockAliquotVolumeMl}}",
         "outputMeasurementId": "{{config.stockVolumeMeasurementId}}"
       }
     },
@@ -358,13 +353,7 @@ const definition = {
       "label": "Measure the configured water addition",
       "parameters": {
         "sourceInstanceId": "wash-bottle-1",
-        "targetInstanceId": "graduated-cylinder-1",
-        "inputMode": "numeric",
-        "inputRole": "teacherConfiguration",
-        "inputLabel": "Measure the configured water volume (mL)",
-        "inputMin": 0,
-        "inputMinExclusive": true,
-        "unit": "mL"
+        "targetInstanceId": "graduated-cylinder-1"
       },
       "prerequisites": [],
       "stateChanges": [
@@ -395,7 +384,8 @@ const definition = {
         "accessibleLabel": "Measure the configured water addition"
       },
       "volume": {
-        "source": "action-input",
+        "source": "literal",
+        "valueMl": "{{config.waterVolumeMl}}",
         "outputMeasurementId": "{{config.waterVolumeMeasurementId}}"
       }
     },
@@ -406,13 +396,7 @@ const definition = {
       "parameters": {
         "sourceInstanceId": "graduated-cylinder-1",
         "targetInstanceId": "prepared-receiver-1",
-        "sourceDefinitionId": "graduated-cylinder",
-        "inputMode": "numeric",
-        "inputRole": "teacherConfiguration",
-        "inputLabel": "Dilute and mix to the configured final volume: final volume (mL)",
-        "inputMin": 0,
-        "inputMinExclusive": true,
-        "unit": "mL"
+        "sourceDefinitionId": "graduated-cylinder"
       },
       "prerequisites": [],
       "stateChanges": [
@@ -443,7 +427,8 @@ const definition = {
         "accessibleLabel": "Dilute and mix to the configured final volume"
       },
       "volume": {
-        "source": "action-input",
+        "source": "literal",
+        "valueMl": "{{config.finalVolumeMl}}",
         "outputMeasurementId": "{{config.finalVolumeMeasurementId}}"
       }
     },
@@ -853,6 +838,7 @@ const definition = {
         "photometerOperation": "read",
         "measurementId": "percent-transmittance",
         "photometricQuantity": "percentTransmittance",
+        "teacherPreparedReading": "{{config.samplePercentTransmittance}}",
         "inputMode": "numeric",
         "inputRole": "studentResponse",
         "inputRequired": true,
@@ -1077,7 +1063,7 @@ const definition = {
         "id": "transmittance-dilution-record-stock-concentration-node",
         "type": "action",
         "title": "Record the instructor-approved stock concentration",
-        "description": "Record the instructor-approved stock concentration",
+        "description": "Record the instructor-approved stock concentration, {{config.stockConcentrationM}} M.",
         "actionId": "transmittance-dilution-record-stock-concentration",
         "config": {},
         "validation": [
@@ -1140,7 +1126,7 @@ const definition = {
         "id": "transmittance-dilution-measure-stock-dye-node",
         "type": "action",
         "title": "Measure the configured stock-dye aliquot",
-        "description": "Measure the configured stock-dye aliquot",
+        "description": "Measure {{config.stockAliquotVolumeMl}} mL of the stock dye in the graduated cylinder.",
         "actionId": "transmittance-dilution-measure-stock-dye",
         "config": {},
         "validation": [
@@ -1182,7 +1168,7 @@ const definition = {
         "id": "transmittance-dilution-measure-water-volume-node",
         "type": "action",
         "title": "Measure the configured water volume",
-        "description": "Measure the configured water volume",
+        "description": "Measure {{config.waterVolumeMl}} mL of water in the graduated cylinder.",
         "actionId": "transmittance-dilution-measure-water-volume",
         "config": {},
         "validation": [
@@ -1203,7 +1189,7 @@ const definition = {
         "id": "transmittance-dilution-add-water-below-mark-node",
         "type": "action",
         "title": "Dilute and mix to the configured final volume",
-        "description": "Dilute and mix to the configured final volume",
+        "description": "Add the measured water to the receiver and mix to a final volume of {{config.finalVolumeMl}} mL.",
         "actionId": "transmittance-dilution-add-water-below-mark",
         "config": {},
         "validation": [
@@ -1245,7 +1231,7 @@ const definition = {
         "id": "transmittance-dilution-configure-photometer-node",
         "type": "action",
         "title": "Apply the configured wavelength and percent-transmittance mode",
-        "description": "Apply the configured wavelength and percent-transmittance mode",
+        "description": "Set the photometer to {{config.wavelengthNm}} nm in percent-transmittance mode.",
         "actionId": "transmittance-dilution-configure-photometer",
         "config": {},
         "validation": [
@@ -1885,6 +1871,26 @@ const definition = {
       {
         "id": "blankRuleNotebookTag",
         "valueType": "string",
+        "required": true
+      },
+      {
+        "id": "stockAliquotVolumeMl",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "waterVolumeMl",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "finalVolumeMl",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "samplePercentTransmittance",
+        "valueType": "number",
         "required": true
       }
     ],
