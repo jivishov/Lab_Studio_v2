@@ -146,9 +146,23 @@ The remaining edge case is milder and is recorded here. If the glass is moved of
 - **The 2D player and 2D Studio** would show the placeholder stock raw in their contents fields. 2D is out of scope.
 - **Stale 2D tests.** `StudentPlayer.test.tsx`'s transmittance tests expect a volumetric flask and 20 steps, and `runtime.test.ts`'s two unconfigured-transmittance stall tests contradict each other and the node order. Both predate this work and are left as they were.
 
+## The photometer, seen (2026-09-26)
+
+You reached step 13 and could not go on: "The instrument's sample compartment is empty." A probe that runs the runtime step by step, as Confirm does, reproduced it without either player. After "Insert the blank cuvette" the cuvette was at `snapZone` with no attachment, because the step named no zone and the runtime seats only into a named one. The remove steps also named the photometer as the item to move. Both are fixed in the content (D4 exception 6), after which the probe completes all 23 steps. The narrow validator passes 28 of 28, including byte parity with the generator.
+
+**In the pane**, run to the end with the step card:
+- the blank cuvette carried into the photometer ("Release to insert the blank cuvette") seats, and is no longer drawn on the bench;
+- after blanking the display reads **100 %T**, and "Zeroed" shows;
+- the blank carried back out of the photometer completes "Remove the blank cuvette";
+- the sample cuvette carried in seats, the read step takes 42.5, and the calculations complete;
+- the results show "Read percent transmittance 42.5 %T · Your entry · Display showed 42.5 %T", then 0.425 T, absorbance 0.3716 and 0.066667 M;
+- no console errors.
+
+This clears the earlier "not exercised" items: the photometer readouts and the cuvette fills, and M4's unobserved snap into the photometer. The sample's prepared %T on the display before the entry was not photographed.
+
 ## Notes, not changed
 
 - The results still round a measurement ("2.070 g") but not the notebook copy ("2.07 g"). This predates the work, as noted on 2026-09-25.
-- At 1024 px, transmittance-dilution's long title overlaps the "Step n of 23" counter in the top bar. This predates the work.
+- At 1024 px, transmittance-dilution's long title overlaps the "Step n of 23" counter in the top bar. This predates the work, and the simulation switcher's chevron (2026-09-26) makes it slightly worse: at an 800 px-wide pane the pack badge runs under the counter.
 - The 2D player plays the new steps with nothing to read, because 2D is out of scope (your decision).
 - `AGENTS.md`'s 3D rule "Measurement-neutral instruments… never an invented reading" still holds in substance (nothing is invented), but its heading is now dated. It is left for you to reword.

@@ -601,7 +601,8 @@ const definition = {
       "label": "Insert the blank cuvette",
       "parameters": {
         "equipmentInstanceId": "blank-cuvette-1",
-        "targetInstanceId": "spectrophotometer-1"
+        "targetInstanceId": "spectrophotometer-1",
+        "snapZoneId": "spectrophotometer-cuvette-slot"
       },
       "prerequisites": [],
       "stateChanges": [
@@ -629,6 +630,7 @@ const definition = {
         "type": "snapIntoTarget",
         "sourceDefinitionId": "cuvette",
         "targetDefinitionId": "spectrophotometer",
+        "snapZoneId": "spectrophotometer-cuvette-slot",
         "accessibleLabel": "Insert the blank cuvette"
       }
     },
@@ -677,7 +679,9 @@ const definition = {
       "verb": "place",
       "label": "Remove the blank cuvette",
       "parameters": {
-        "equipmentInstanceId": "blank-cuvette-1"
+        "equipmentInstanceId": "blank-cuvette-1",
+        "equipmentDefinitionId": "cuvette",
+        "location": "workbench"
       },
       "prerequisites": [],
       "stateChanges": [
@@ -703,7 +707,7 @@ const definition = {
       },
       "interaction": {
         "type": "dragToZone",
-        "sourceDefinitionId": "spectrophotometer",
+        "sourceDefinitionId": "cuvette",
         "stationId": "workbench",
         "accessibleLabel": "Remove the blank cuvette"
       }
@@ -795,7 +799,8 @@ const definition = {
       "label": "Insert the sample cuvette",
       "parameters": {
         "equipmentInstanceId": "sample-cuvette-1",
-        "targetInstanceId": "spectrophotometer-1"
+        "targetInstanceId": "spectrophotometer-1",
+        "snapZoneId": "spectrophotometer-cuvette-slot"
       },
       "prerequisites": [],
       "stateChanges": [
@@ -823,6 +828,7 @@ const definition = {
         "type": "snapIntoTarget",
         "sourceDefinitionId": "cuvette",
         "targetDefinitionId": "spectrophotometer",
+        "snapZoneId": "spectrophotometer-cuvette-slot",
         "accessibleLabel": "Insert the sample cuvette"
       }
     },
@@ -925,7 +931,9 @@ const definition = {
       "verb": "place",
       "label": "Remove the sample cuvette",
       "parameters": {
-        "equipmentInstanceId": "sample-cuvette-1"
+        "equipmentInstanceId": "sample-cuvette-1",
+        "equipmentDefinitionId": "cuvette",
+        "location": "workbench"
       },
       "prerequisites": [],
       "stateChanges": [
@@ -951,7 +959,7 @@ const definition = {
       },
       "interaction": {
         "type": "dragToZone",
-        "sourceDefinitionId": "spectrophotometer",
+        "sourceDefinitionId": "cuvette",
         "stationId": "workbench",
         "accessibleLabel": "Remove the sample cuvette"
       }
