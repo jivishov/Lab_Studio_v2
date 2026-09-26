@@ -422,7 +422,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     return item?.placement.kind === "seated" ? scene.bench.find((i) => i.instanceId === (item.placement as { parentInstanceId: string }).parentInstanceId)?.label : undefined;
   })();
   const hoverItem = hovered && !carry.carrying ? scene.bench.find((i) => i.instanceId === hovered) : undefined;
-  const hoverPoint = hoverItem && engine ? engine.screenPoint(hoverItem.instanceId, 0) : undefined;
+  const hoverPoint = hoverItem && engine ? engine.labelPoint(hoverItem.instanceId) : undefined;
   const examinedItem = examined ? scene.bench.find((i) => i.instanceId === examined) : undefined;
   const n = Math.max(0, runtime.process.nodes.findIndex((node) => node.id === runtime.currentNode.id)) + 1;
   const N = runtime.process.nodes.length;
@@ -542,7 +542,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
         fallback={<div className="s3d-fallback"><p>This browser cannot draw the 3D bench. The 2D version runs the same steps and checks.</p><a className="s3d-button s3d-button--primary" href={fallbackHash}>Open the 2D version</a></div>}
       >
         {hoverItem && hoverPoint?.visible ? (
-          <div className="s3d-label" style={{ left: hoverPoint.x, top: hoverPoint.y + 12 }}>{hoverItem.label} · {hoverItem.contentsText}</div>
+          <div className="s3d-label" style={{ left: hoverPoint.x, top: hoverPoint.y + 8 }}>{hoverItem.label} · {hoverItem.contentsText}</div>
         ) : null}
         {menuItem && itemMenu ? (
           <div className="s3d-itemmenu" role="menu" aria-label={menuItem.label} style={{ left: itemMenu.x, top: itemMenu.y }}>

@@ -673,6 +673,28 @@ export class BenchEngine {
     return { x: ((p.x + 1) / 2) * rect.width, y: ((1 - p.y) / 2) * rect.height, visible: p.z < 1 };
   }
 
+  /**
+   * Where an item's hover label goes: centred under the item, below the lowest point on screen of
+   * its bottom edge, so the label never covers the item's front (a balance's TARE key).
+   */
+  labelPoint(instanceId: string): { x: number; y: number; visible: boolean } | undefined {
+    const view = this.items.get(instanceId);
+    if (!view) return undefined;
+    view.root.updateWorldMatrix(true, true);
+    const box = new THREE.Box3().setFromObject(view.model ?? view.root);
+    if (box.isEmpty()) return undefined;
+    const rect = this.canvas.getBoundingClientRect();
+    const centre = new THREE.Vector3((box.min.x + box.max.x) / 2, box.min.y, (box.min.z + box.max.z) / 2).project(this.camera);
+    let bottom = -Infinity;
+    for (const x of [box.min.x, box.max.x]) {
+      for (const z of [box.min.z, box.max.z]) {
+        const p = new THREE.Vector3(x, box.min.y, z).project(this.camera);
+        bottom = Math.max(bottom, ((1 - p.y) / 2) * rect.height);
+      }
+    }
+    return { x: ((centre.x + 1) / 2) * rect.width, y: bottom, visible: centre.z < 1 };
+  }
+
   basePosition(instanceId: string): THREE.Vector3 | undefined {
     return this.items.get(instanceId)?.root.position.clone();
   }

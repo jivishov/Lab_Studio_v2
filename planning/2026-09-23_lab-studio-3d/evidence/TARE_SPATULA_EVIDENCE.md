@@ -69,6 +69,8 @@ Nothing new is committed to the runtime. The TARE key sends the zero step's note
 
 No step, setting, rule, binding or version changes. The 2D player shows the same words and has no TARE key; 2D is out of scope (your decision).
 
+**Hover labels** (found after the build: the balance's label covered the TARE key). A hover label was anchored at the item's base centre, which for a tall instrument projects onto its front panel. It now hangs below the lowest on-screen point of the item's bottom edge (`BenchEngine.labelPoint`), so it never covers the item's front. Seen in the pane: the balance's label sits under the balance, with the display and TARE clear.
+
 ## Checks
 
 - `npx tsc -p tsconfig.app.json --noEmit`: exit 0, tests included.
