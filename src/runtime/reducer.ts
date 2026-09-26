@@ -384,7 +384,13 @@ const resolveContractedVolume = (
     : undefined;
   let statedVolumeMl: number | undefined;
   if (contract.source === "action-input") statedVolumeMl = request.value;
-  else if (contract.source === "literal") statedVolumeMl = contract.valueMl;
+  else if (contract.source === "literal") {
+    // A `{{config.<slot>}}` left in place: the technique is running without its setup.
+    if (typeof contract.valueMl !== "number") {
+      return { ok: false, message: "A teacher-set volume is required but has not been set up.", recovery: "Complete the technique's setup before starting it." };
+    }
+    statedVolumeMl = contract.valueMl;
+  }
   else if (contract.source === "measurement") {
     const evidence = state.measurements.find((entry) => entry.id === contract.referenceId);
     if (!evidence || evidence.unit !== "mL") {

@@ -596,6 +596,18 @@ export const resolveInteractionIntent = (
     );
   }
 
+  // A teacher-set volume that setup has not resolved: the published technique is being played
+  // without its setup. Say so, rather than judging the pour by whatever the source holds.
+  if (action.volume?.source === "literal" && !(typeof action.volume.valueMl === "number" && Number.isFinite(action.volume.valueMl))) {
+    return fail(
+      "missingPrerequisite",
+      "This step's volume is a teacher setting that has not been set up.",
+      "Complete the technique's setup before starting it.",
+      currentNode.id,
+      action.id,
+    );
+  }
+
   const pourFailure =
     interaction.type === "pourInto"
       ? preflightPour(action, state, source.instance, target.instance, intent.value, currentNode.id)

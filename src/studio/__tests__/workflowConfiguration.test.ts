@@ -14,8 +14,10 @@ import { appendConfiguredWorkflow, configureWorkflowInDraft, workflowConfigurati
 const readTechnique = async (id: string): Promise<TechniqueDefinition> =>
   JSON.parse(await readFile(join(process.cwd(), "public", "techniques", `${id}.json`), "utf8")) as TechniqueDefinition;
 const teacherApprovedWavelengthNm = "600";
-const transmittanceValues = { stockConcentrationM: "0.20", wavelengthNm: teacherApprovedWavelengthNm };
-const secondTransmittanceValues = { stockConcentrationM: "0.10", wavelengthNm: teacherApprovedWavelengthNm };
+// Teacher-prepared volumes and the sample's %T are set up too (decided 2026-09-25).
+const preparedValues = { stockAliquotVolumeMl: "5", waterVolumeMl: "10", finalVolumeMl: "15", samplePercentTransmittance: "42.5" };
+const transmittanceValues = { stockConcentrationM: "0.20", wavelengthNm: teacherApprovedWavelengthNm, ...preparedValues };
+const secondTransmittanceValues = { stockConcentrationM: "0.10", wavelengthNm: teacherApprovedWavelengthNm, ...preparedValues };
 
 describe("Studio workflow configuration", () => {
   it("appends a configured published workflow into the same draft and recomputes readiness", async () => {
@@ -130,7 +132,7 @@ describe("Studio workflow configuration", () => {
     }
     const raw = appendTechniqueToDraft(draft, source).lab;
     expect(() => configureWorkflowInDraft(raw, "transmittance-dilution-1", {
-      stockConcentrationM: "0", wavelengthNm: teacherApprovedWavelengthNm,
+      stockConcentrationM: "0", wavelengthNm: teacherApprovedWavelengthNm, ...preparedValues,
     }, true))
       .toThrow(/stockConcentrationM/);
   });

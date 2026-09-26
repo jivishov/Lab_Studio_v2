@@ -524,14 +524,19 @@ describe("runtime reducer", () => {
   });
 
   it("records the shipped opt-in dilution final-volume evidence after conserving added diluent", () => {
+    // The volumes are teacher-prepared (decided 2026-09-25): literal contracts filled in by setup.
     const configured = applyTechniqueConfiguration(transmittanceDilutionTechnique, {
       stockConcentrationM: "0.25",
       wavelengthNm: "600",
+      stockAliquotVolumeMl: "5",
+      waterVolumeMl: "5",
+      finalVolumeMl: "10",
+      samplePercentTransmittance: "42",
     });
     const finalVolumeAction = configured.actions.find(
       (candidate) => candidate.id === "transmittance-dilution-add-water-below-mark",
     );
-    if (!finalVolumeAction || finalVolumeAction.volume?.source !== "action-input") {
+    if (!finalVolumeAction || finalVolumeAction.volume?.source !== "literal") {
       throw new Error("Missing shipped transmittance final-volume action contract.");
     }
     const finalVolumeMeasurementId = finalVolumeAction.volume.outputMeasurementId;
@@ -551,7 +556,6 @@ describe("runtime reducer", () => {
     state = performRuntimeAction(configured, state, {
       actionId: "transmittance-dilution-measure-stock-dye",
       verb: "measureVolume",
-      value: 5,
     });
     state = performRuntimeAction(configured, state, {
       actionId: "transmittance-dilution-transfer-dye-aliquot",
@@ -560,12 +564,10 @@ describe("runtime reducer", () => {
     state = performRuntimeAction(configured, state, {
       actionId: "transmittance-dilution-measure-water-volume",
       verb: "measureVolume",
-      value: 5,
     });
     state = performRuntimeAction(configured, state, {
       actionId: finalVolumeAction.id,
       verb: finalVolumeAction.verb,
-      value: 10,
     });
 
     expect(state.contents["prepared-receiver-1"]).toMatchObject({ volumeMl: 10, finalVolumeMl: 10 });
@@ -585,6 +587,7 @@ describe("runtime reducer", () => {
     const configured = applyTechniqueConfiguration(transmittanceDilutionTechnique, {
       stockConcentrationM: "0.25",
       wavelengthNm: "600",
+      stockAliquotVolumeMl: "5", waterVolumeMl: "10", finalVolumeMl: "15", samplePercentTransmittance: "42.5",
     });
     const action = configured.actions.find(
       (candidate) => candidate.id === "transmittance-dilution-record-stock-concentration",

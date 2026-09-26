@@ -261,6 +261,7 @@ describe("standalone evidence is produced, not invented from identifiers", () =>
     expect(() => applyTechniqueConfiguration(technique, {
       stockConcentrationM: "0.25",
       wavelengthNm: "0",
+      stockAliquotVolumeMl: "5", waterVolumeMl: "10", finalVolumeMl: "15", samplePercentTransmittance: "42.5",
     })).toThrow(/wavelengthNm.*greater than zero/i);
   });
 

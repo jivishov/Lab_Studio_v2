@@ -498,7 +498,7 @@ describe("runtime interaction intent bridge", () => {
     }
   });
 
-  it("maps current dilution setup and preserves its explicit configuration inputs", async () => {
+  it("maps current dilution setup and refuses its teacher-set volume steps until setup", async () => {
     const technique = await loadTechnique("transmittance-dilution.json");
 
     expect(expectRequest(resolveAtAuthoredAction(technique, "transmittance-dilution-place-volumetric-flask", {

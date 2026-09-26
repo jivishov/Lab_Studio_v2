@@ -56,6 +56,7 @@ describe("action inputs", () => {
       {
         stockConcentrationM: "0.25",
         wavelengthNm: "600",
+        stockAliquotVolumeMl: "5", waterVolumeMl: "10", finalVolumeMl: "15", samplePercentTransmittance: "42.5",
       },
     );
     const definition = configured.actions.find(
