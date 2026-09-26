@@ -14,6 +14,9 @@ export interface SlotLabel {
 const LABELS: Record<string, SlotLabel> = {
   // weighing
   massMeasurementId: { label: "Mass record name", help: "The name the recorded mass is filed under." },
+  solidMassG: { label: "Solid mass to weigh", unit: "g", help: "The portion the student transfers onto the weighing vessel. The balance shows this mass." },
+  supportEmptyMassG: { label: "Empty weighing vessel mass", unit: "g", help: "What the balance shows with the empty vessel on the pan, before it is zeroed." },
+  reagentStockMassG: { label: "Solid in the reagent bottle", unit: "g", help: "How much the stock bottle holds at the start." },
   // measuring-volume
   targetVolumeMl: { label: "Target volume", unit: "mL" },
   volumeToleranceMl: { label: "Volume tolerance", unit: "mL" },
@@ -36,9 +39,12 @@ const LABELS: Record<string, SlotLabel> = {
   stockVolumeMeasurementId: { label: "Stock aliquot record name" },
   waterVolumeMeasurementId: { label: "Water volume record name" },
   wavelengthMeasurementId: { label: "Wavelength record name" },
+  stockAliquotVolumeMl: { label: "Stock aliquot volume", unit: "mL" },
+  waterVolumeMl: { label: "Water volume", unit: "mL" },
+  samplePercentTransmittance: { label: "Sample transmittance", unit: "%T", help: "What the photometer shows for the diluted sample once it is zeroed on the blank." },
 };
 
-const UNIT_SUFFIXES: Array<[RegExp, string]> = [[/Ml$/, "mL"], [/Nm$/, "nm"], [/G$/, "g"], [/M$/, "M"], [/C$/, "°C"], [/Min$/, "min"], [/S$/, "s"]];
+const UNIT_SUFFIXES: Array<[RegExp, string]> = [[/PercentTransmittance$/, "%T"], [/Ml$/, "mL"], [/Nm$/, "nm"], [/G$/, "g"], [/M$/, "M"], [/C$/, "°C"], [/Min$/, "min"], [/S$/, "s"]];
 
 /** Readable fallback: "rinseVolumeMl" -> "Rinse volume" with unit "mL"; "...Id" -> "... record name". */
 export const fallbackSlotLabel = (slotId: string): SlotLabel => {

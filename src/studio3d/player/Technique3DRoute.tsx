@@ -142,7 +142,8 @@ export const Technique3DRoute = ({ techniqueId }: { techniqueId: string }) => {
         <form className="s3d-gate" onSubmit={submit} aria-labelledby="s3d-setup-title">
           <p className="s3d-eyebrow">Setup</p>
           <h1 id="s3d-setup-title">Classroom values</h1>
-          <p className="s3d-field__meta"><ProvenanceChip kind="teacher" /> <span className="s3d-small">Nothing is filled in for you.</span></p>
+          <p className="s3d-field__meta"><ProvenanceChip kind="teacher" /> <span className="s3d-small">{quantities.some((slot) => slot.defaultValue !== undefined)
+            ? "Approved defaults are filled in; change any value you need." : "Nothing is filled in for you."}</span></p>
           <div className="s3d-setup-grid">
             {quantities.map((slot) => {
               const label = slotLabel(slot.id);

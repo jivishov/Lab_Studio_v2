@@ -59,7 +59,7 @@ export interface Equipment3DAnchor {
   yawDeg?: number;
 }
 
-/** A display surface; `policy` names an entry in displayPolicies.json (measurement-neutral). */
+/** A display surface; `policy` names an entry in displayPolicies.json. */
 export interface Equipment3DDisplay {
   id: string;
   policy: string;

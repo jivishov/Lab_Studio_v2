@@ -112,8 +112,10 @@ describe("runtimeToScene: contents and scenery", () => {
   });
 });
 
-describe("weighing through the real runtime: the glass sits on the pan and the display stays measurement-neutral", () => {
-  const weighing = applyTechniqueConfiguration(readTechnique("weighing"), {});
+describe("weighing through the real runtime: the balance shows the teacher-prepared mass", () => {
+  // The teacher's setup (decided 2026-09-25): 2.037 g to weigh; the glass's 30 g and the bottle's
+  // 10 g are the approved defaults.
+  const weighing = applyTechniqueConfiguration(readTechnique("weighing"), { solidMassG: "2.037" });
   const act = (state: RuntimeState, intent: RuntimeInteractionIntent): RuntimeState => {
     const result = resolveInteractionIntent(weighing, state, intent);
     expect(result.ok, result.ok ? "" : result.feedback.message).toBe(true);
@@ -125,11 +127,14 @@ describe("weighing through the real runtime: the glass sits on the pan and the d
     });
   const balanceLines = (state: RuntimeState) =>
     runtimeToScene(state, weighing).bench.find((item) => item.definitionId === "analytical-balance")?.display?.lines;
+  const reading = (text: string) => [{ key: "readout", text, source: "teacher" }];
 
-  it("shows nothing before the learner's entry and only the entry after it", () => {
+  it("reads 0.000 g empty, the glass's mass on the pan, zero after zeroing, then the prepared amount", () => {
     let state = createRuntimeState(weighing);
     state = moveToBench(state, "analytical-balance", 420, 60);
-    // Weighing's placement seats the watch glass on the balance pan (DECISIONS.md, second D4 exception).
+    state = moveToBench(state, "reagent-bottle", 200, 120);
+    expect(balanceLines(state)).toEqual(reading("0.000\u2009g"));
+    // 1. Weighing's placement seats the watch glass on the balance pan.
     state = act(state, {
       type: "snapIntent",
       sourceInstanceId: "watch-glass-1",
@@ -143,20 +148,28 @@ describe("weighing through the real runtime: the glass sits on the pan and the d
     expect(state.attachments).toEqual(expect.arrayContaining([
       expect.objectContaining({ parentInstanceId: "analytical-balance-1", childInstanceId: "watch-glass-1", zoneId: "analytical-balance-pan" }),
     ]));
-    expect(balanceLines(state)).toEqual([]);
+    expect(balanceLines(state)).toEqual(reading("30.000\u2009g"));
+    // 2. Zero the balance (a notebook step; the display reads against it).
+    state = act(state, { type: "notebookRecordIntent" });
+    expect(balanceLines(state)).toEqual(reading("0.000\u2009g"));
+    // 3. The teacher's amount goes from the bottle onto the glass.
+    state = act(state, { type: "pourIntent", sourceInstanceId: "reagent-bottle-1", targetInstanceId: "watch-glass-1" });
+    expect(state.equipmentInstances.find((i) => i.id === "watch-glass-1")?.contents.massG).toBeCloseTo(2.037, 9);
+    expect(state.equipmentInstances.find((i) => i.id === "reagent-bottle-1")?.contents.massG).toBeCloseTo(7.963, 9);
+    expect(balanceLines(state)).toEqual(reading("2.037\u2009g"));
+    // 4. The student reads it; their entry is recorded as typed, even when it differs.
     state = act(state, {
       type: "instrumentReadIntent",
       sourceInstanceId: "watch-glass-1",
       targetInstanceId: "analytical-balance-1",
-      value: 12.345,
+      value: 2.07,
     });
-    expect(balanceLines(state)).toEqual([{ key: "entry:standalone-mass-measurement-id", text: "12.345 g", source: "entry" }]);
+    expect(state.measurements.find((m) => m.id === "standalone-mass-measurement-id")?.value).toBe(2.07);
+    expect(balanceLines(state)).toEqual(reading("2.037\u2009g"));
+    // 5. Record.
     state = act(state, { type: "notebookRecordIntent" });
     const final = runtimeToScene(state, weighing);
-    expect(final.bench.map((item) => item.definitionId).sort()).toEqual(["analytical-balance", "watch-glass"]);
     expect(final.missingModels).toEqual([]);
-    // The runtime holds the watch glass on the pan, and its weigh does not move it (plan §2.4): the
-    // resting scene shows it seated at the balance's pan anchor.
     expect(final.bench.find((item) => item.definitionId === "watch-glass")?.placement).toMatchObject({
       kind: "seated", parentInstanceId: "analytical-balance-1", zoneId: "analytical-balance-pan",
     });

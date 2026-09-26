@@ -30,7 +30,7 @@ describe("provenance chips (handoff §3.2)", () => {
 
   it("marks the balance mass the learner types as their entry", () => {
     const authored = readTechnique("weighing");
-    const configured = applyTechniqueConfiguration(authored, {});
+    const configured = applyTechniqueConfiguration(authored, { solidMassG: "2.037" });
     const weigh = configured.actions.find((a) => a.verb === "weigh")!;
     const measurementId = (weigh.mass as { outputMeasurementId: string }).outputMeasurementId;
     expect(measurementId).toMatch(/^[^{]+$/);

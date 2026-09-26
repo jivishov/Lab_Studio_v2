@@ -1,16 +1,16 @@
 {
   "schema": "lab-studio-3d/display-policies@1",
-  "policy": "Instrument displays are measurement-neutral (plan §2.4, D7; handoff G-1). A display may show configured settings, status, a readout whose provenance is \"simulator-generated\" where the runtime produces one, and, after entry, the learner's own value labelled \"Your entry\". It never shows an invented reading. src/studio3d/adapters/instrumentDisplay.ts implements these policies (M3).",
+  "policy": "Instrument displays show runtime-backed settings and status, the readings the teacher prepared for the lab (decided 2026-09-25, replacing the measurement-neutral rule of plan §2.4 item 1, D7 and handoff G-1), a readout whose provenance is \"simulator-generated\" where the runtime produces one, and, where no reading exists, the learner's own value labelled \"Your entry\". Nothing is simulated or invented: a reading is the teacher's value, reached through the steps the learner performed. src/studio3d/adapters/instrumentDisplay.ts implements these policies.",
   "policies": {
     "balance-status-and-entry": {
-      "shows": ["status", "learner-entry"],
-      "never": ["mass-reading"],
-      "note": "The runtime does not simulate balance mass; weighing's input is a studentResponse (decision U4)."
+      "shows": ["teacher-prepared-mass-reading", "learner-entry"],
+      "never": ["invented-reading"],
+      "note": "The mass on the pan from the teacher's setup: each vessel's empty mass (a setting, or the approved default) and its solid contents, less the zero taken with the empty support. The precision is the weighing step's input step. The learner's entry shows only where no reading can be known. The id is kept because the models' metadata names it."
     },
     "photometer-settings-status-and-entry": {
-      "shows": ["configured-mode", "configured-wavelength", "blank-status", "learner-entry"],
-      "never": ["percent-transmittance-reading", "absorbance-reading"],
-      "note": "The runtime tracks photometer calibration and blank readiness, not %T; %T is a studentResponse."
+      "shows": ["configured-mode", "configured-wavelength", "blank-status", "teacher-prepared-reading", "learner-entry"],
+      "never": ["invented-reading"],
+      "note": "After zeroing on the blank: 100 %T with the blank in the slot, and a sample's teacher-prepared reading (teacherPreparedReading on its read step) in the quantity that step declares. The learner's entry shows only where no reading exists. The id is kept because the models' metadata names it."
     },
     "simulator-readout": {
       "shows": ["simulator-generated-readout", "status"],

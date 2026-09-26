@@ -41,7 +41,17 @@ export const StepCard = ({ player, controls, onShowMe }: { player: Player3DContr
         </ol>
         <p className="s3d-next-action" aria-live="polite">{instruction}</p>
 
-        {field ? (
+        {field && field.role === "teacherConfiguration" && typeof runtime.expectedAction?.parameters.configuredValue === "number" ? (
+          // A value the teacher set up is shown, not asked for; the runtime takes it from the setup.
+          <div className="s3d-field">
+            <span className="s3d-field__caption">{field.label}</span>
+            <div className="s3d-input s3d-input--readonly">
+              <span className="s3d-input__value">{runtime.expectedAction.parameters.configuredValue}</span>
+              {field.unit ? <span className="s3d-input__unit">{field.unit}</span> : null}
+            </div>
+            <div className="s3d-field__meta"><ProvenanceChip kind="teacher" /></div>
+          </div>
+        ) : field ? (
           <div className="s3d-field">
             <label htmlFor={inputId}>{field.label}</label>
             <div className="s3d-input">
@@ -64,7 +74,6 @@ export const StepCard = ({ player, controls, onShowMe }: { player: Player3DContr
             </div>
             <div className="s3d-field__meta">
               <ProvenanceChip kind={field.role === "teacherConfiguration" ? "teacher" : "entry"} />
-              {runtime.expectedAction?.verb === "weigh" ? <span className="s3d-small">This simulation does not generate balance readings.</span> : null}
             </div>
             {player.inputValue !== "" && flow.inputResolution.error ? <p id={errorId} className="s3d-field__error">{flow.inputResolution.error}</p> : null}
           </div>
@@ -113,7 +122,7 @@ export const StepCard = ({ player, controls, onShowMe }: { player: Player3DContr
             </button>
           ) : flow.interaction?.type === "recordNotebook" ? (
             <button type="button" className="s3d-button s3d-button--primary" data-gesture-action="record-evidence" disabled={!(flow.canRecord || flow.canRecordObservation)} onClick={player.recordEvidence}>
-              Record
+              {runtime.expectedAction?.parameters.balanceOperation === "zero" ? "Zero" : "Record"}
             </button>
           ) : null}
         </div>

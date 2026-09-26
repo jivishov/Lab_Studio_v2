@@ -268,7 +268,7 @@ export const ExamineCard = ({ item, holderLabel, onClose, onEyeLevel }: {
           <div><dt>Contents</dt><dd>{item.contentsText}</dd></div>
           {item.placement.kind === "seated" ? <div><dt>Seated</dt><dd>on {holderLabel ?? "its holder"}</dd></div> : null}
         </dl>
-        {hasDisplay ? <p className="s3d-note"><strong>Display policy.</strong> This display shows settings and status. Readings you record are your own entries.</p> : null}
+        {hasDisplay ? <p className="s3d-note"><strong>Display policy.</strong> This display shows its settings and status, and the readings your teacher prepared. Readings you record are your own entries.</p> : null}
         {item.display?.lines.length ? (
           <ul className="s3d-display-lines">
             {item.display.lines.map((line) => <li key={line.key}><span className="s3d-mono">{line.text}</span> <span className="s3d-small">{displaySourceLabel[line.source]}</span></li>)}
@@ -331,7 +331,7 @@ export const HelpDialog = ({ onClose }: { onClose: () => void }) => (
         <section>
           <h3 className="s3d-eyebrow">What the bench shows</h3>
           <p>The same runtime as the 2D version checks every step. Things change only when it accepts an action; when it refuses one, nothing moves and it says why.</p>
-          <p>Instrument displays show settings and status. The balance shows no mass and the photometer shows no transmittance: the values you record are your own entries, labelled “Your entry”.</p>
+          <p>Instrument displays show their settings and status, and the readings your teacher prepared for this lab: the balance shows the mass on its pan, and the photometer shows a sample’s transmittance once it is zeroed on the blank. Nothing is simulated. The values you record are your own entries, labelled “Your entry”.</p>
           <p>Volumes come from the step’s input field or the teacher’s setting, never from how far you tilt something.</p>
         </section>
         <section>
@@ -466,7 +466,11 @@ export const ResultsSheet = ({ player, onPlayAgain, backHref }: { player: Player
           <div key={m.id} className="s3d-nb-row">
             <span className="s3d-nb-row__label">{m.label}</span>
             <span className="s3d-nb-row__value s3d-mono">{evidenceValue(m.value, m.unit)}</span>
-            <span className="s3d-nb-row__meta"><ProvenanceChip kind={provenanceForMeasurement(player, m.id)} /></span>
+            <span className="s3d-nb-row__meta">
+              <ProvenanceChip kind={provenanceForMeasurement(player, m.id)} />
+              {/* What the instrument showed, beside the entry; neither is judged (decided 2026-09-25). */}
+              {player.displayedReadings[m.id] ? <span className="s3d-small">Display showed <span className="s3d-mono">{player.displayedReadings[m.id]}</span></span> : null}
+            </span>
           </div>
         ))}
         {state.calculations.map((c) => (

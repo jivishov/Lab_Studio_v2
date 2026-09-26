@@ -1,11 +1,12 @@
 import * as THREE from "three";
-import type { InstrumentDisplayModel } from "../../adapters/instrumentDisplay";
+import { READOUT_KEY, type InstrumentDisplayModel } from "../../adapters/instrumentDisplay";
 import type { Equipment3DDisplay } from "../../equipment3d/types";
 
 /**
- * An instrument's display face, drawn only from `instrumentDisplay` lines (plan §2.4; G-1). An
- * empty model draws a dark, blank face. A learner's own value is labelled "Your entry" on the
- * face itself, so a recorded number never reads as a simulated reading.
+ * An instrument's display face, drawn only from `instrumentDisplay` lines. An empty model draws a
+ * dark, blank face. A reading (the teacher-prepared mass or %T) is a plain number, as on a real
+ * instrument; its source is named in Examine. A learner's own value, shown only where no reading
+ * exists, is labelled "Your entry" on the face itself.
  */
 const MM = 0.001;
 const PX_PER_MM = 6;
@@ -19,10 +20,32 @@ const drawFace = (canvas: HTMLCanvasElement, model: InstrumentDisplayModel): voi
   g.fillRect(0, 0, width, height);
   const lines = model.lines;
   if (lines.length === 0) return;
-  const settings = lines.filter((line) => line.source !== "entry");
+  const readout = lines.find((line) => line.key === READOUT_KEY);
+  const settings = lines.filter((line) => line.source !== "entry" && line.key !== READOUT_KEY);
   const entries = lines.filter((line) => line.source === "entry");
   const pad = height * 0.12;
   g.textBaseline = "middle";
+  if (readout) {
+    // The reading fills the face below any settings, right-aligned, shrunk to fit.
+    if (settings.length > 0) {
+      g.fillStyle = "#b8e3d4";
+      g.font = monoFont(Math.round(height * 0.18));
+      g.textAlign = "left";
+      g.fillText(settings.map((line) => line.text).join("   "), pad, height * 0.2);
+    }
+    const room = width - 2 * pad;
+    let size = Math.round(height * (settings.length > 0 ? 0.46 : 0.58));
+    g.font = monoFont(size);
+    const measured = g.measureText(readout.text).width;
+    if (measured > room) {
+      size = Math.floor((size * room) / measured);
+      g.font = monoFont(size);
+    }
+    g.fillStyle = "#b8e3d4";
+    g.textAlign = "right";
+    g.fillText(readout.text, width - pad, height * (settings.length > 0 ? 0.64 : 0.55));
+    return;
+  }
   if (settings.length === 0) {
     // Only the learner's entry (the balance, decision U4): its digits fill the face so they read at
     // bench distance, under a small "Your entry" label that keeps them from passing as a reading.

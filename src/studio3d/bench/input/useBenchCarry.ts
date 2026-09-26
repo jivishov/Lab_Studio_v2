@@ -61,11 +61,34 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
   const pouringRef = useRef(false);
   pouringRef.current = Boolean(player.pour || player.weighing);
 
-  const candidates = useCallback((exceptId?: string): Array<FootprintCandidate & { label: string }> =>
-    scene.bench.flatMap((item) => item.instanceId !== exceptId && item.placement.kind === "bench"
-      ? [{ instanceId: item.instanceId, definitionId: item.definitionId, label: item.label,
-          footprint: footprintOf(item.model, item.placement.point.xMm, item.placement.point.yMm) }]
-      : []), [scene]);
+  /**
+   * Drop targets for a carry: items standing on the bench, and items seated on one of them at their
+   * seat (a watch glass on a balance's pan receives a transfer there). The carried item, and
+   * whatever is seated on it, are never targets.
+   */
+  const candidates = useCallback((exceptId?: string): Array<FootprintCandidate & { label: string }> => {
+    const byId = new Map(scene.bench.map((item) => [item.instanceId, item]));
+    const carriedWith = (item: SceneItem): boolean => {
+      for (let current: SceneItem | undefined = item, depth = 0; current && depth < 8; depth += 1) {
+        if (current.instanceId === exceptId) return true;
+        current = current.placement.kind === "seated" ? byId.get(current.placement.parentInstanceId) : undefined;
+      }
+      return false;
+    };
+    return scene.bench.flatMap((item) => {
+      if (carriedWith(item)) return [];
+      if (item.placement.kind === "bench") {
+        return [{ instanceId: item.instanceId, definitionId: item.definitionId, label: item.label,
+          footprint: footprintOf(item.model, item.placement.point.xMm, item.placement.point.yMm) }];
+      }
+      const holder = byId.get(item.placement.parentInstanceId);
+      const seat = holder?.placement.kind === "bench"
+        ? snapZoneFootprint(holder.model, holder.definitionId, item.placement.zoneId, holder.placement.point)
+        : undefined;
+      return seat ? [{ instanceId: item.instanceId, definitionId: item.definitionId, label: item.label,
+        footprint: footprintOf(item.model, seat.xMm, seat.yMm) }] : [];
+    });
+  }, [scene]);
 
   /** The 2D overlap judgement for the carried item at `point`, snaps included (footprints.snapClassification). */
   const overlapAt = useCallback((instanceId: string, definitionId: string, point: BenchPoint) => {

@@ -7,6 +7,7 @@ import type { RuntimeDefinition } from "../../runtime";
 import { resolveInteractionIntent, type InteractionInvalidFeedback, type RuntimeInteractionIntent } from "../../runtime/interactionIntents";
 import { fromBench, benchPositionWords, runtimeBenchPointsMm, toBench } from "../adapters/benchCoordinates";
 import { footprintOf, nearestFreeSpot, type FootprintMm } from "../adapters/footprints";
+import { readingShownFor } from "../adapters/instrumentDisplay";
 import { pourStagingScene, runtimeToScene, sceneContents, type SceneContents, type SceneDescription } from "../adapters/runtimeToScene";
 import { heldOnSeat, readingSeatZone } from "../bench/scene/setOn";
 import { benchMoveRequest, intentTypeForInteraction, mergeActionInput, resolveTrayDrop, type ReleaseOrigin } from "../adapters/sceneToIntent";
@@ -73,6 +74,8 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
   const [announcement, setAnnouncement] = useState("");
   const [pour, setPour] = useState<PourAnimation>();
   const [weighing, setWeighing] = useState<WeighAnimation>();
+  // What each instrument showed when a reading was recorded, by measurement id (results only).
+  const [displayedReadings, setDisplayedReadings] = useState<Record<string, string>>({});
   const pourSeq = useRef(0);
 
   const showGuidance = runtime.mode === "guided";
@@ -160,8 +163,12 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     }
     setSelectedSource(undefined);
     setSelectedTarget(undefined);
+    const shown = runtime.expectedAction
+      ? readingShownFor(definition, before, runtime.expectedAction, (id) => equipment3dEntry(id)?.displays[0]?.policy)
+      : undefined;
     const next = runtime.performAction(result.request);
     const failed = reportCommit(before, next);
+    if (!failed && shown) setDisplayedReadings((current) => ({ ...current, [shown.measurementId]: shown.text }));
     if (!failed && result.interaction.type === "pourInto" && result.request.sourceInstanceId && result.request.targetInstanceId) {
       pourSeq.current += 1;
       const { sourceInstanceId: sourceId, targetInstanceId: targetId } = result.request;
@@ -264,6 +271,7 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     runtime.reset();
     setPour(undefined);
     setWeighing(undefined);
+    setDisplayedReadings({});
     setInputValues({});
     setCorrection(undefined);
     setSelectedSource(undefined);
@@ -296,6 +304,7 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     /** Ends pour `id`'s animation; a later pour that has already replaced it is left running. */
     finishPour: (id: number) => setPour((current) => (current?.id === id ? undefined : current)),
     weighing,
+    displayedReadings,
     /** Ends weighing `id`'s animation; a later one that has already replaced it is left running. */
     finishWeighing: (id: number) => setWeighing((current) => (current?.id === id ? undefined : current)),
     runIntent,

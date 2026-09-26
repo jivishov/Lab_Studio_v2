@@ -412,13 +412,22 @@ export class BenchEngine {
    */
   pick(clientX: number, clientY: number): string | undefined {
     this.raycaster.setFromCamera(this.ndc(clientX, clientY), this.camera);
-    const hits = this.raycaster.intersectObject(this.itemLayer, true).filter((h) => h.object.userData.instanceId);
+    const hit = this.firstItemHit(this.raycaster.intersectObject(this.itemLayer, true));
+    return hit?.object.userData.instanceId as string | undefined;
+  }
+
+  /**
+   * The first item surface a ray meets, seeing through an instrument's enclosure glass to an item
+   * seated inside it (or to the instrument's own parts behind the pane). `skip` names items the ray
+   * passes through, such as the one being carried.
+   */
+  private firstItemHit(intersections: THREE.Intersection[], skip: ReadonlySet<string> = new Set()): THREE.Intersection | undefined {
     const idOf = (hit: THREE.Intersection) => hit.object.userData.instanceId as string;
+    const hits = intersections.filter((h) => h.object.userData.instanceId && !skip.has(idOf(h)));
     const first = hits[0];
-    if (!first || !first.object.userData.enclosureGlass) return first ? idOf(first) : undefined;
+    if (!first || !first.object.userData.enclosureGlass) return first;
     const owner = idOf(first);
-    const inside = hits.find((h) => !h.object.userData.enclosureGlass && (idOf(h) === owner || this.seatedWithin(idOf(h), owner)));
-    return inside ? idOf(inside) : owner;
+    return hits.find((h) => !h.object.userData.enclosureGlass && (idOf(h) === owner || this.seatedWithin(idOf(h), owner))) ?? first;
   }
 
   /** Whether `instanceId` is seated on `holderId`, directly or through other seated items. */
@@ -453,8 +462,7 @@ export class BenchEngine {
   carryPointAt(clientX: number, clientY: number, carriedId?: string): { xMm: number; yMm: number; surfaceMm: number; instanceId?: string } | undefined {
     this.raycaster.setFromCamera(this.ndc(clientX, clientY), this.camera);
     const skip = new Set(carriedId ? [carriedId, ...this.lockedDescendants(carriedId)] : []);
-    const hit = this.raycaster.intersectObject(this.itemLayer, true)
-      .find((h) => h.object.userData.instanceId && !skip.has(h.object.userData.instanceId as string));
+    const hit = this.firstItemHit(this.raycaster.intersectObject(this.itemLayer, true), skip);
     if (hit) {
       return { xMm: hit.point.x / MM, yMm: -hit.point.z / MM, surfaceMm: Math.max(0, hit.point.y / MM),
         instanceId: hit.object.userData.instanceId as string };

@@ -12,6 +12,7 @@ import { hasIncompleteInboundStep } from "../studio/PreviewView";
 import { initialSetupValues, setupComplete, setupSlots } from "../studio/SetupSlotsForm";
 import { readStudioUi, STUDIO_UI_KEY } from "../studio/studioUi";
 import { describeTechnique, needsTeacherSetup } from "../studio/techniqueCatalog";
+import { configurationSlots } from "../../data/techniqueConfiguration";
 
 const readTechnique = (id: string): TechniqueDefinition =>
   JSON.parse(readFileSync(join(process.cwd(), "public", "techniques", `${id}.json`), "utf8")) as TechniqueDefinition;
@@ -56,9 +57,13 @@ describe("library statuses come from the core's checks (§4.3)", () => {
     expect(describeTechnique(readTechnique("making-solution")).status).toBe("setup");
   });
 
-  it("does not ask a teacher to set a derived record name", () => {
+  it("asks a teacher for weighing's amount, never for a derived record name", () => {
     const weighing = readTechnique("weighing");
-    expect(needsTeacherSetup(weighing)).toBe(false);
+    // The amount of solid has no default (decided 2026-09-25), so weighing needs setup.
+    expect(needsTeacherSetup(weighing)).toBe(true);
+    expect(describeTechnique(weighing).status).toBe("setup");
+    const asked = configurationSlots(weighing).filter((slot) => slot.kind === "classroom-quantity").map((slot) => slot.id);
+    expect(asked).toEqual(["reagentStockMassG", "solidMassG", "supportEmptyMassG"]);
   });
 });
 
