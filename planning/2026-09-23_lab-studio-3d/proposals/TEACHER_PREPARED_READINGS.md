@@ -1,6 +1,6 @@
 # Proposal: teacher-prepared instrument readings
 
-Status: **proposal, revision 2 (2026-09-25)**, after your answers and a fidelity review against the code and the governing documents. Nothing described here is built.
+Status: **approved and built (2026-09-25)**, revision 2, with "Sodium carbonate amount with no default". What was built, the corrections found while building (the balance precision comes from the weighing step, not the catalogue; the policy file had no garbled text; a core pour pre-check bug), and the checks are in `evidence/READINGS_EVIDENCE.md`.
 
 ## What you asked for
 

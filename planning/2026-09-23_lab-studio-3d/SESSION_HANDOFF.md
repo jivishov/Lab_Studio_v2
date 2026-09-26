@@ -51,6 +51,7 @@ The user asked for **the highest fidelity** to the plan and the handoff.
 | Starting contents in Studio 3D (decision b) | Done | `049e471` |
 | Weighing content fix (D4 exception) | Done | `e8d1d26` |
 | M7: gesture bridge and hand-control panel | Done (static exit), with a second fidelity pass; G3 not run | `e60293d`, `d03e754`; `evidence/M7_EVIDENCE.md` |
+| Teacher-prepared readings (balance and photometer; weighing in five steps) | Done; photometer readouts and cuvette fills not seen in the pane | `evidence/READINGS_EVIDENCE.md` |
 | **M8: Pack 1 acceptance** | **Next** | — |
 
 ## M7 (delivered 2026-09-24)
@@ -124,9 +125,11 @@ The plan's exit:
 - model size budgets;
 - an evidence note.
 
-G1 and G2 run only as the user authorises. Content parity must expect the two recorded D4 exceptions in
-weighing: the record-step fix (M6) and the seated placement (2026-09-25), which also adds `snapIntoTarget`
-to `atom.place.weighed-vessel` in `src/domain/atomRegistry.json`. `npm run content:check` runs the content rule engine with `--compiled`, which adds
+G1 and G2 run only as the user authorises. Content parity must expect the four recorded D4 exceptions:
+in weighing, the record-step fix (M6), the seated placement (2026-09-25, which also adds `snapIntoTarget`
+to `atom.place.weighed-vessel` in `src/domain/atomRegistry.json`) and the five teacher-prepared steps; in
+transmittance-dilution, the teacher-set volumes and %T, made through its generator input. The core changes
+behind them are listed in `evidence/READINGS_EVIDENCE.md`. `npm run content:check` runs the content rule engine with `--compiled`, which adds
 compiled-context diagnostics through the TypeScript composition loader. It is broader than a basic
 static check, so ask before running it, given the validation policy. Its baseline covers only the raw
 and template rules. `scripts/checkCycle04Foundations.mjs` can't run in this export: it needs
