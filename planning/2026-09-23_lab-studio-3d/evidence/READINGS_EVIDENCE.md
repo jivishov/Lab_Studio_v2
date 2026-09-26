@@ -115,6 +115,37 @@ Reaching them is most of a full playthrough, which needs your go-ahead. Both are
   - `techniqueConfiguration.test.ts`, `workflowConfiguration.test.ts` and `provenance.test.ts`: weighing now needs `solidMassG`;
   - `studio3d.test.ts`: weighing now needs setup.
 
+## Fidelity review (same day)
+
+A critical pass over the build. An independent reviewer agent was started, but it stopped when the usage limit was reached, so its checklist was finished by hand.
+
+| Found | Fixed |
+|---|---|
+| **Shared tests broke.** Seven existing tests configured transmittance-dilution with only the concentration and wavelength, and now hit "Supply the approved classroom values". One also expected the old `action-input` volume contract. The files: `workflowConfiguration.test.ts`, `techniqueConfiguration.test.ts`, `actionInputs.test.ts` and `runtime.test.ts` (two tests). | Each now supplies the new values. The final-volume test expects the `literal` contract and passes no typed volumes. |
+| **A misleading refusal.** Played without its setup, a teacher-set volume step was refused as an **overflow**: the pre-check fell back to the 1 L source. `interactionIntents.test.ts` expects "missingPrerequisite" there. | The intent resolver refuses an unresolved literal volume as a missing prerequisite: "This step's volume is a teacher setting that has not been set up." The reducer's `resolveContractedVolume` says the same, instead of "not a positive finite value". Test written. |
+| **The keyboard carry.** `[` `]` now step through seated items, since `candidates()` includes them. But the preview was drawn at bench height, inside the balance, and the pointer's seat aim did not apply. | Seated candidates carry their seat height. The keyboard steps a carry to a target's seat, as the pointer does. Checked in the pane: the glass is drawn at 106 mm over the pan, the callout reads "Release to place the watch glass on the balance pan.", and Enter seats it. |
+| **A raw placeholder in Studio 3D.** The starting-contents inspector showed `{{config.reagentStockMassG}}` in the Mass g field. | A value bound to setup reads "Set in Setup: Solid in the reagent bottle `reagentStockMassG`" (`BenchSetupView.tsx`). Checked in the pane. |
+| **An untrue sentence.** Studio 3D's setup section said "Nothing is defaulted." beside published defaults. | It is conditional, as on the 3D setup page. |
+| **The zero step's hint.** It read "Fill in the step card, then record." beside a Zero button. | It now reads "Press Zero in the step card." Checked in the pane. |
+
+**Tried and reverted.** I made the zero and weigh steps require the glass seated on the pan (`requiredAttachmentState`). Then I found the runtime cannot re-seat an item outside its placement step: a free move into a seat keeps an existing attachment but never creates one. So a glass moved off the pan after step 1 would have left the student stuck until Restart.
+
+The remaining edge case is milder and is recorded here. If the glass is moved off the pan **before** the zero, the display treats the zero as taken with the glass, and reads −30.000 g. The principled fix needs your decision: let a free move onto a seat that accepts the item re-seat it (a core change to the free-move branch).
+
+**Checked and found sound:**
+- The measure and dilute paths record their measurements in mL with a `literal` contract. The pane run's later steps consumed them.
+- No configuration gate depends on the removed `teacherConfiguration` inputs. The one reducer check that reads them belongs to extraction steps.
+- No published experiment composes either technique.
+- `checkCycle05SpectroscopyComposition.mjs`'s transmittance invariants still hold: the version, the receiver ids, `legacyActionEffects` and the initial state are unchanged.
+- The Confirm-only weighing run completes, with the bottle left in the tray.
+- The Bench list names the glass's contents ("Sodium carbonate · seated").
+
+**Fidelity notes, for you:**
+- **The zero step is atomless**, recorded with `legacyActionEffects`, as brass's zero is. The cycle-05 spectroscopy invariant would call an atomless "zero" step physical work filed as evidence, although that invariant is not applied to weighing. The principled home is a registry building block for "zero the balance with the named support" (a core change).
+- **Plan §2.4 item 2 and handoff G-2** say pours take values from the step's input field. The teacher-set volumes follow the precedent the plan itself names (measuring-volume pours its configured volume). No value ever comes from how far something is tilted.
+- **The 2D player and 2D Studio** would show the placeholder stock raw in their contents fields. 2D is out of scope.
+- **Stale 2D tests.** `StudentPlayer.test.tsx`'s transmittance tests expect a volumetric flask and 20 steps, and `runtime.test.ts`'s two unconfigured-transmittance stall tests contradict each other and the node order. Both predate this work and are left as they were.
+
 ## Notes, not changed
 
 - The results still round a measurement ("2.070 g") but not the notebook copy ("2.07 g"). This predates the work, as noted on 2026-09-25.
