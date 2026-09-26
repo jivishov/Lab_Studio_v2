@@ -15,6 +15,8 @@ import { packNumber } from "../packs";
 import { studio3DFallbackHash } from "../routes3d";
 import { ProvenanceChip } from "../ui/ProvenanceChip";
 import { Player3D } from "./Player3D";
+import { SimulationSwitcher } from "./SimulationSwitcher";
+import { Icon } from "../ui/Icon";
 
 /**
  * `#/3d/technique/:id` (handoff §5.2–§5.3): the same setup behaviour as the 2D technique route
@@ -66,7 +68,8 @@ export const Technique3DRoute = ({ techniqueId }: { techniqueId: string }) => {
 
   if (page === "play" && (configured ?? (missing.length === 0 ? definition : undefined))) {
     return <Player3D definition={configured ?? definition} authoredDefinition={definition} title={definition.title}
-      sourceTag={pack ? `TECHNIQUE · PACK ${pack}` : "TECHNIQUE"} fallbackHash={fallbackHash} backHref="#/techniques" />;
+      sourceTag={pack ? `TECHNIQUE · PACK ${pack}` : "TECHNIQUE"} fallbackHash={fallbackHash} backHref="#/techniques"
+      simulationId={techniqueId} />;
   }
 
   const journey = definition.process.nodes.slice(0, 8);
@@ -101,6 +104,10 @@ export const Technique3DRoute = ({ techniqueId }: { techniqueId: string }) => {
 
   return (
     <main className="s3d-gate-page">
+      <header className="s3d-gatebar">
+        <span className="s3d-mark"><Icon name="flask" size={18} /></span>
+        <SimulationSwitcher currentId={techniqueId} title={definition.title} hasProgress={false} />
+      </header>
       {page === "intro" ? (
         <section className="s3d-gate" aria-labelledby="s3d-gate-title">
           <p className="s3d-eyebrow">Before you start</p>

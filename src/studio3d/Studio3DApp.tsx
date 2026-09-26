@@ -27,7 +27,7 @@ export const Studio3DApp = ({ route }: { route: Studio3DRoute }) => {
   if (route.view === "technique") {
     return (
       <div className="s3d">
-        <Technique3DRoute techniqueId={route.techniqueId} />
+        <Technique3DRoute key={route.techniqueId} techniqueId={route.techniqueId} />
       </div>
     );
   }

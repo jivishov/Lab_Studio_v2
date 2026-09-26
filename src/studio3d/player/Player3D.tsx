@@ -12,6 +12,7 @@ import { Icon } from "../ui/Icon";
 import { HandControlPanel } from "./HandControlPanel";
 import { coveredSides, MOVABLE_FROM_WIDTH, sanitizeLayout, type PanelId, type PanelLayout, type PanelState } from "./panelLayout";
 import { BenchList, EquipmentTray, ExamineCard, HelpDialog, NOTEBOOK_WIDTH, NotebookSheet, ResultsSheet, thumbnailUrl, type PanelControls } from "./panels";
+import { SimulationSwitcher } from "./SimulationSwitcher";
 import { StepCard } from "./StepCard";
 import { usePlayer3D, type Player3DController } from "./usePlayer3D";
 
@@ -49,7 +50,7 @@ const windowSize = () => ({ width: window.innerWidth, height: window.innerHeight
 interface TrayGrabPreview { definitionId: string; label: string; offsetX: number; offsetY: number; x: number; y: number }
 const TRAY_PREVIEW_PX = 72;
 
-export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fallbackHash, backHref, variant = "full", focusNodeId, focusVersion, onPlayer, gestureController }: {
+export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fallbackHash, backHref, variant = "full", focusNodeId, focusVersion, onPlayer, gestureController, simulationId }: {
   definition: RuntimeDefinition;
   /** The definition before teacher setup, for provenance chips (see usePlayer3D). */
   authoredDefinition?: RuntimeDefinition;
@@ -65,6 +66,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   onPlayer?: (player: Player3DController) => void;
   /** Replaces the camera recognition engine, as the 2D player allows (tests). */
   gestureController?: GestureController;
+  /** A standalone technique: its title opens the switcher between the 3D simulations. */
+  simulationId?: string;
 }) => {
   const player = usePlayer3D(definition, "guided", authoredDefinition, { nodeId: focusNodeId, version: focusVersion });
   // The Studio's preview Restart also stops the camera tracks, as the player's own Restart does.
@@ -520,7 +523,10 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     <div className={`s3d-player${reducedMotion ? " is-reduced-motion" : ""}${variant === "preview" ? " s3d-player--preview" : ""}`} ref={playerRef}>
       <header className="s3d-topbar">
         <span className="s3d-mark"><Icon name="flask" size={18} /></span>
-        <span className="s3d-topbar__title">{title}</span>
+        {simulationId && variant === "full" ? (
+          <SimulationSwitcher currentId={simulationId} title={title} hasProgress={runtime.state.completedNodes.length > 0 && !player.complete}
+            onLeave={stopHandControl} />
+        ) : <span className="s3d-topbar__title">{title}</span>}
         <span className="s3d-source">{sourceTag}</span>
         <span className="s3d-topbar__centre">Step <b>{n}</b> of <b>{N}</b>
           <span className={`s3d-mode${showGuidance ? "" : " is-assess"}`}><Icon name={showGuidance ? "eye" : "clip"} size={13} />{showGuidance ? "Guided" : "Assessment"}</span>
