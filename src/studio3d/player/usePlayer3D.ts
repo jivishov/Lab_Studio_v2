@@ -10,7 +10,7 @@ import { footprintOf, nearestFreeSpot, type FootprintMm } from "../adapters/foot
 import { readingShownFor } from "../adapters/instrumentDisplay";
 import { pourStagingScene, runtimeToScene, sceneContents, type SceneContents, type SceneDescription } from "../adapters/runtimeToScene";
 import { heldOnSeat, readingSeatZone } from "../bench/scene/setOn";
-import { benchMoveRequest, intentTypeForInteraction, mergeActionInput, resolveTrayDrop, toolTransferFor, type ReleaseOrigin } from "../adapters/sceneToIntent";
+import { benchMoveRequest, intentTypeForInteraction, mergeActionInput, pipetteStepFor, resolveTrayDrop, toolTransferFor, type ReleaseOrigin } from "../adapters/sceneToIntent";
 import { nextPlacementPoint, parkPointAfterInteraction } from "../adapters/twoDPlacement";
 import { equipment3dEntry } from "../equipment3d/readiness";
 import { stepFlow, type StepFlow } from "./stepRules";
@@ -57,6 +57,8 @@ export interface ToolDeposit {
   scoop?: SceneContents;
   /** A target that was empty: its new contents are shown only as the scoop lands. */
   revealIn?: string;
+  /** How the tool is drawn: a spatula rolls its scoop off; a pipette dips its tip. */
+  motion?: "roll" | "dip";
   id: number;
 }
 
@@ -107,6 +109,12 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
   // A solid transfer this step makes with a tool, the spatula (decided 2026-09-25).
   const toolTransfer = useMemo(
     () => toolTransferFor(runtime.expectedAction, runtime.expectedAction ? resolveActionInteraction(runtime.expectedAction) : undefined,
+      runtime.state.equipmentInstances, flow.nodeCompleted),
+    [flow.nodeCompleted, runtime.expectedAction, runtime.state],
+  );
+  // A step done with a pipette: drawing into it, or delivering from it (decided 2026-09-26).
+  const pipetteStep = useMemo(
+    () => pipetteStepFor(runtime.expectedAction, runtime.expectedAction ? resolveActionInteraction(runtime.expectedAction) : undefined,
       runtime.state.equipmentInstances, flow.nodeCompleted),
     [flow.nodeCompleted, runtime.expectedAction, runtime.state],
   );
@@ -178,7 +186,7 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
    * `tool` names the tool a solid transfer was made with (the spatula): the runtime records the
    * same source-to-target transfer, and the tool, not the source, is drawn tipping its scoop.
    */
-  const runIntent = useCallback((intent: RuntimeInteractionIntent, tool?: { instanceId: string; scoop?: SceneContents }): RuntimeState | undefined => {
+  const runIntent = useCallback((intent: RuntimeInteractionIntent, tool?: { instanceId: string; scoop?: SceneContents; motion?: "roll" | "dip" }): RuntimeState | undefined => {
     const merged = mergeActionInput(intent, flow.inputResolution, runtime.expectedAction);
     const before = runtime.getState();
     const result = resolveInteractionIntent(definition, before, merged);
@@ -198,7 +206,7 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
       pourSeq.current += 1;
       const targetId = result.request.targetInstanceId;
       const wasEmpty = before.equipmentInstances.find((instance) => instance.id === targetId)?.contents.kind === "empty";
-      setToolDeposit({ toolId: tool.instanceId, scoop: tool.scoop, id: pourSeq.current, ...(targetId && wasEmpty ? { revealIn: targetId } : {}) });
+      setToolDeposit({ toolId: tool.instanceId, scoop: tool.scoop, motion: tool.motion, id: pourSeq.current, ...(targetId && wasEmpty ? { revealIn: targetId } : {}) });
     } else if (!failed && result.interaction.type === "pourInto" && result.request.sourceInstanceId && result.request.targetInstanceId) {
       pourSeq.current += 1;
       const { sourceInstanceId: sourceId, targetInstanceId: targetId } = result.request;
@@ -285,8 +293,9 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     const toolId = toolTransfer
       ? runtime.state.equipmentInstances.find((instance) => instance.definitionId === toolTransfer.toolDefinitionId)?.id : undefined;
     runIntent({ type: intentTypeForInteraction[interaction.type], origin: "keyboard", sourceInstanceId: selectedSource, targetInstanceId: selectedTarget } as RuntimeInteractionIntent,
-      toolTransfer ? { instanceId: toolId ?? toolTransfer.toolDefinitionId } : undefined);
-  }, [flow.nodeCompleted, interaction, runIntent, runtime.state, selectedSource, selectedTarget, toolTransfer]);
+      toolTransfer ? { instanceId: toolId ?? toolTransfer.toolDefinitionId }
+        : pipetteStep ? { instanceId: pipetteStep.toolInstanceId, motion: "dip" } : undefined);
+  }, [flow.nodeCompleted, interaction, pipetteStep, runIntent, runtime.state, selectedSource, selectedTarget, toolTransfer]);
 
   const recordEvidence = useCallback(() => {
     if (!flow.nodeCompleted) runIntent({ type: "notebookRecordIntent", origin: "programmatic" });
@@ -342,6 +351,7 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
       announce(message);
     },
     toolTransfer,
+    pipetteStep,
     announcement,
     announce,
     pour,

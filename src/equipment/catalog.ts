@@ -203,7 +203,16 @@ export const v1EquipmentCatalog: EquipmentDefinition[] = [
     "fillable",
     "pourable",
     "measurable",
-  ], 25, 0.5, ["empty", "liquid", "solution"]),
+  ], 25, 0.5, ["empty", "liquid", "solution"], [
+    // A temporary filling funnel in the mouth, removed before the volume is read (decided 2026-09-26).
+    {
+      id: "graduated-cylinder-funnel-seat",
+      label: "Graduated cylinder filling funnel seat",
+      accepts: ["funnel"],
+      x: 39,
+      y: 14,
+    },
+  ]),
   // `solid` because Investigation 6's K-02 puts a dry microsample into the tube before K-03 adds any
   // solvent, so the tube legitimately holds a solid on its own for one step.
   equipment("test-tube", "Test tube", "container", [

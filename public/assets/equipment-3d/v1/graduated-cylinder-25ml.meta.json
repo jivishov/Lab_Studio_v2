@@ -1,0 +1,95 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "graduated-cylinder-25ml",
+  "model": "graduated-cylinder-25ml.glb",
+  "thumbnail": "thumbs/graduated-cylinder-25ml.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "circle",
+      "radius": 26.0
+    },
+    "grip": {
+      "heightMm": 95.0
+    },
+    "pour": {
+      "lipMm": [
+        -14.0,
+        0.0,
+        150.8
+      ],
+      "tiltDeg": 105.0,
+      "style": "pour"
+    },
+    "fill": {
+      "innerProfileMm": [
+        [
+          0.0,
+          8.0
+        ],
+        [
+          7.999999999999999,
+          8.0
+        ],
+        [
+          9.2,
+          9.2
+        ],
+        [
+          9.2,
+          150.0
+        ]
+      ],
+      "capacityMl": 25,
+      "meniscus": "concave"
+    },
+    "graduations": {
+      "unit": "mL",
+      "minor": 0.5,
+      "major": 5,
+      "maxMl": 25
+    },
+    "anchors": {
+      "graduated-cylinder-funnel-seat": {
+        "positionMm": [
+          0.0,
+          0.0,
+          95.127
+        ]
+      }
+    },
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -22.52,
+        -25.5,
+        0.0
+      ],
+      "max": [
+        22.52,
+        25.5,
+        151.0
+      ]
+    },
+    "triangles": 16837,
+    "materials": [
+      "Blue print ink",
+      "Borosilicate glass",
+      "Borosilicate glass thick"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/graduated_cylinder_25ml.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "27b7b58568b76cdea01bad073563e7d9aacb073fe84dd946555b22696b5a4ef4",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

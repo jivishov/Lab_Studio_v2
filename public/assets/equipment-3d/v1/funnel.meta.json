@@ -1,0 +1,58 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "funnel",
+  "model": "funnel.glb",
+  "thumbnail": "thumbs/funnel.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "circle",
+      "radius": 28.1
+    },
+    "grip": {
+      "heightMm": 53.0
+    },
+    "graduations": null,
+    "benchRest": {
+      "rollDeg": 180.0,
+      "liftMm": 86.97,
+      "shiftMm": [
+        0.0,
+        0.0
+      ]
+    },
+    "anchors": {},
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -27.94,
+        -27.94,
+        0.0
+      ],
+      "max": [
+        27.94,
+        27.94,
+        86.94
+      ]
+    },
+    "triangles": 14080,
+    "materials": [
+      "Borosilicate glass",
+      "Borosilicate glass thick"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/funnel.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "91e407aa50412b9da5c634552402799b2d111c518626aba82be32171aa2a7bc9",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

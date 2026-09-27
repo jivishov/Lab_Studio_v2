@@ -41,6 +41,11 @@ interface ItemView {
   display?: DisplayFace;
   scenery?: THREE.Object3D;
   entry?: Equipment3DEntry;
+  /** Resting per `benchRest`: the origin's offset from the footprint centre on the bench, and its lift. */
+  benchShift?: THREE.Vector3;
+  benchLift?: number;
+  /** The item's yaw on the bench, for carrying a `benchRest` item upright. */
+  restYaw?: number;
 }
 
 /** A committed pour being drawn: advanced by the render loop, cleaned up when it ends or is cut short. */
@@ -330,9 +335,24 @@ export class BenchEngine {
       if (placed.has(item.instanceId) || depth > 6) return;
       const view = this.items.get(item.instanceId);
       if (!view) return;
+      view.benchShift = undefined;
+      view.benchLift = undefined;
       if (item.placement.kind === "bench") {
+        const yaw = item.placement.point.yawDeg * DEG;
         view.root.position.copy(toWorld(item.placement.point.xMm, item.placement.point.yMm));
-        view.root.rotation.set(0, item.placement.point.yawDeg * DEG, 0);
+        view.root.rotation.set(0, yaw, 0);
+        view.restYaw = yaw;
+        // A model authored in its working pose rests as the real object does (a funnel mouth-down,
+        // a pipette lying flat): turned, lifted, and moved so its footprint centres on its point.
+        const rest = item.model?.benchRest;
+        if (rest) {
+          view.root.rotation.set(rest.rollDeg * DEG, yaw, 0, "YXZ");
+          const shift = new THREE.Vector3(rest.shiftMm[0] * MM, 0, -rest.shiftMm[1] * MM).applyAxisAngle(new THREE.Vector3(0, 1, 0), yaw);
+          view.root.position.add(shift);
+          view.root.position.y = rest.liftMm * MM;
+          view.benchShift = shift;
+          view.benchLift = rest.liftMm * MM;
+        }
         // An item standing in scenery (a tube in its rack) rests on the seat, above the bench.
         const seat = item.scenery?.model.sceneryFor?.seatsMm[item.scenery.seatIndex];
         if (seat) view.root.position.y = seat[2] * MM;
@@ -575,7 +595,7 @@ export class BenchEngine {
    * (`revealIn`) shows it only as the scoop lands. Resolves at once under reduced motion or when
    * the release is not known.
    */
-  animateToolDeposit(args: { toolId: string; scoop?: SceneContents; revealIn?: string }): Promise<void> {
+  animateToolDeposit(args: { toolId: string; scoop?: SceneContents; revealIn?: string; motion?: "roll" | "dip" }): Promise<void> {
     this.stopToolRun();
     const tool = this.items.get(args.toolId);
     const released = this.releasedCarry?.instanceId === args.toolId && performance.now() - this.releasedCarry.at < 2000
@@ -614,7 +634,13 @@ export class BenchEngine {
           : elapsed < TIP + HOLD ? 1
             : Math.max(0, 1 - ease((elapsed - TIP - HOLD) / BACK));
         tool.root.position.copy(start);
-        tool.root.quaternion.copy(startQuaternion).multiply(roll.setFromAxisAngle(new THREE.Vector3(1, 0, 0), u * ROLL));
+        if (args.motion === "dip") {
+          // A pipette: its tip goes 12 mm down into the liquid (or the cuvette) and back, upright.
+          tool.root.position.y -= u * 12 * MM;
+          tool.root.quaternion.copy(startQuaternion);
+        } else {
+          tool.root.quaternion.copy(startQuaternion).multiply(roll.setFromAxisAngle(new THREE.Vector3(1, 0, 0), u * ROLL));
+        }
         if (scoop && elapsed > TIP * 0.7) scoop.visible = false;
         reveal(elapsed > TIP * 0.7);
         this.shadowsDirty = true;
@@ -695,8 +721,16 @@ export class BenchEngine {
     return { x: ((centre.x + 1) / 2) * rect.width, y: bottom, visible: centre.z < 1 };
   }
 
+  /** Where an item stands: its root, or for a `benchRest` item at rest its footprint centre on the bench. */
   basePosition(instanceId: string): THREE.Vector3 | undefined {
-    return this.items.get(instanceId)?.root.position.clone();
+    const view = this.items.get(instanceId);
+    if (!view) return undefined;
+    const at = view.root.position.clone();
+    if (view.benchShift) {
+      at.sub(view.benchShift);
+      at.y -= view.benchLift ?? 0;
+    }
+    return at;
   }
 
   private footprintRadius(instanceId: string): number {
@@ -837,8 +871,15 @@ export class BenchEngine {
       const lip = geometry.lip.clone().applyQuaternion(upright).add(view.root.position);
       view.root.quaternion.copy(tilted);
       view.root.position.copy(rootForLip(geometry, tilted, lip));
+    } else if (view.entry?.benchRest) {
+      // Carried in its working pose: a funnel upright, a pipette tip-down.
+      view.root.quaternion.setFromEuler(new THREE.Euler(0, view.restYaw ?? 0, 0));
     } else {
       view.root.quaternion.copy(this.restQuaternions.get(instanceId) ?? view.root.quaternion);
+    }
+    if (view.benchShift) {
+      view.benchShift = undefined;
+      view.benchLift = undefined;
     }
     if (rest) {
       const delta = view.root.position.clone().sub(rest);

@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { v1InteractionZones } from "../../../domain/interactionZones";
 import { equipmentById } from "../../../equipment/catalog";
 import { getVisualProfile } from "../../../equipment/visualCatalog";
 import { fromBench, runtimeBenchPoints } from "../../adapters/benchCoordinates";
 import { classifyOverlap, footprintOf, snapClassification, snapZoneFootprint, type FootprintCandidate } from "../../adapters/footprints";
-import { pointInFootprint, resolveRelease, resolveToolRelease, snapReleasePoint, type ToolTransfer } from "../../adapters/sceneToIntent";
+import { pointInFootprint, resolvePipetteRelease, resolveRelease, resolveToolRelease, snapReleasePoint, type ToolTransfer } from "../../adapters/sceneToIntent";
+import type { ActionInteractionSpec } from "../../../domain/types";
 import type { SceneContents, SceneItem } from "../../adapters/runtimeToScene";
 import type { Player3DController } from "../../player/usePlayer3D";
 import type { BenchEngine } from "../BenchEngine";
@@ -119,16 +120,26 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
 
   /**
    * The 2D overlap judgement for the carried item at `point`, snaps included (footprints.snapClassification).
-   * `asTip`: only a tool's working end at `point` is judged, not the whole tool.
+   * `asTip`: only a tool's working end at `point` is judged, not the whole tool. `spec` judges it
+   * against another reading of the step (a pipette carried to the liquid it draws from).
    */
-  const overlapAt = useCallback((instanceId: string, definitionId: string, point: BenchPoint, asTip = false) => {
+  const overlapAt = useCallback((instanceId: string, definitionId: string, point: BenchPoint, asTip = false, spec?: ActionInteractionSpec) => {
+    const judged = spec ?? interaction;
     const item = scene.bench.find((i) => i.instanceId === instanceId);
-    const snap = snapClassification(interaction, definitionId, scene.bench.flatMap((other) => other.placement.kind === "bench"
+    const snap = snapClassification(judged, definitionId, scene.bench.flatMap((other) => other.placement.kind === "bench"
       ? [{ instanceId: other.instanceId, definitionId: other.definitionId, entry: other.model, ...other.placement.point }]
       : []));
     const footprint = asTip ? { xMm: point.xMm, yMm: point.yMm, widthMm: TIP_MM, depthMm: TIP_MM } : footprintOf(item?.model, point.xMm, point.yMm);
-    return classifyOverlap({ instanceId, definitionId, footprint }, candidates(instanceId), interaction, snap);
+    return classifyOverlap({ instanceId, definitionId, footprint }, candidates(instanceId), judged, snap);
   }, [candidates, interaction, scene]);
+
+  // A step done with a pipette (decided 2026-09-26): the pipette is carried, upright by its tip, to
+  // the liquid it draws from or the vessel it empties into. Judged as the pipette being the pour's
+  // source, which it is for a delivery; for a draw the step's reading is turned round.
+  const pipette = player.pipetteStep;
+  const pipetteSpec = useMemo((): ActionInteractionSpec | undefined => (pipette && interaction
+    ? { ...interaction, sourceDefinitionId: pipette.toolDefinitionId, targetDefinitionId: pipette.otherDefinitionId } : undefined),
+  [interaction, pipette]);
 
   /**
    * Whether releasing `definitionId` on the bench lands in the step's expected drag-to-zone station
@@ -220,9 +231,40 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       setCallout(shown);
       return shown;
     }
+    if (pipette && carry.instanceId === pipette.toolInstanceId) {
+      // The pipette, upright, is judged by its tip (its origin), so the tip goes where the pointer is.
+      carry.tipPoint = point;
+      carry.liftMm = surfaceMm + LIFT_MM;
+      engine.previewCarry(carry.instanceId, point.xMm, point.yMm, carry.liftMm);
+      const top = screenAt ? undefined : engine.screenPoint(carry.instanceId, 1);
+      const screen = screenAt ?? (top ? { x: top.x, y: top.y - 30 } : { x: 0, y: 0 });
+      // The step names one vessel (the blank cuvette, not the sample cuvette): its own label.
+      const otherItem = pipette.otherInstanceId ? scene.bench.find((i) => i.instanceId === pipette.otherInstanceId) : undefined;
+      const otherLabel = otherItem ? lowerFirst(otherItem.label) : labelOf(pipette.otherDefinitionId);
+      const overlap = overlapAt(carry.instanceId, pipette.toolDefinitionId, point, true, pipetteSpec);
+      const over = overlap.kind === "valid" && overlap.target?.definitionId === pipette.otherDefinitionId
+        && (!pipette.otherInstanceId || overlap.target.id === pipette.otherInstanceId) ? overlap.target : undefined;
+      let shown: CarryCallout;
+      if (over) {
+        engine.setTargetRing(over.id, "valid");
+        shown = { ...screen, ...acceptedDropCallout(showGuidance, flow.inputReady,
+          pipette.kind === "draw" ? `Release to draw up from the ${otherLabel}` : `Release to empty the pipette into the ${otherLabel}`) };
+      } else if (overlap.target && overlap.kind !== "moveOnly") {
+        engine.setTargetRing(overlap.target.id, "invalid");
+        shown = { ...screen, text: showGuidance ? "Not the target for this step" : "Release to try this", kind: "invalid" };
+      } else {
+        engine.setTargetRing(null);
+        shown = showGuidance ? { ...screen, text: `Carry the pipette to the ${otherLabel}`, kind: "free" } : { ...screen, text: "Release to set down", kind: "free" };
+      }
+      setCallout(shown);
+      return shown;
+    }
     const overlap = overlapAt(carry.instanceId, carry.definitionId, point);
-    // Tipping a solid's source onto the target while the step names a tool is refused (decided 2026-09-25).
-    const tipsSource = Boolean(tool && carry.definitionId === tool.sourceDefinitionId && overlap.target?.definitionId === tool.targetDefinitionId);
+    // Tipping a solid's source onto the target while the step names a tool is refused (decided 2026-09-25),
+    // as is pouring a liquid onto the pipette that should draw it up (decided 2026-09-26).
+    const pouredOntoPipette = Boolean(pipette?.kind === "draw" && carry.definitionId === pipette.otherDefinitionId && overlap.target?.id === pipette.toolInstanceId);
+    const tipsSource = pouredOntoPipette
+      || Boolean(tool && carry.definitionId === tool.sourceDefinitionId && overlap.target?.definitionId === tool.targetDefinitionId);
     // The pour cue shows in both modes, as the 2D workbench's overlap feedback does (G-7).
     const pourCue = !tipsSource && interaction?.type === "pourInto" && overlap.kind === "valid" && overlap.target ? overlap.target.id : undefined;
     carry.liftMm = surfaceMm + LIFT_MM;
@@ -231,10 +273,11 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     const screen = screenAt ?? (top ? { x: top.x, y: top.y - 30 } : { x: 0, y: 0 });
     const item = scene.bench.find((i) => i.instanceId === carry.instanceId);
     let shown: CarryCallout;
-    if (tool && tipsSource && overlap.target) {
+    if (tipsSource && overlap.target) {
       engine.setTargetRing(overlap.target.id, "invalid");
       // Coaching toward the tool shows only in guided mode (G-7); the release is refused in both.
-      shown = { ...screen, text: showGuidance ? `Use the ${labelOf(tool.toolDefinitionId)} to add a solid` : "Release to try this", kind: "invalid" };
+      const coaching = pouredOntoPipette ? "Draw it up with the pipette" : `Use the ${labelOf(tool!.toolDefinitionId)} to add a solid`;
+      shown = { ...screen, text: showGuidance ? coaching : "Release to try this", kind: "invalid" };
     } else if (placesForStep(carry.definitionId)) {
       engine.setTargetRing(null);
       shown = { ...screen, ...placing };
@@ -253,7 +296,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     }
     setCallout(shown);
     return shown;
-  }, [engine, flow.inputReady, interaction, labelOf, overlapAt, placesForStep, scene, scoopFor, showGuidance, toolTransfer]);
+  }, [engine, flow.inputReady, interaction, labelOf, overlapAt, pipette, pipetteSpec, placesForStep, scene, scoopFor, showGuidance, toolTransfer]);
 
   /**
    * Pointing at an item with a seat for the carried item (a registry zone that accepts it, with a 3D
@@ -327,6 +370,28 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
         return;
       }
     }
+    if (pipette) {
+      // A pipette step: the pipette released over the liquid or the receiver sends the step's own
+      // pour and is drawn dipping; a liquid poured onto the pipette is refused with a correction.
+      const isPipette = carry.instanceId === pipette.toolInstanceId;
+      const pipetteOverlap = isPipette
+        ? overlapAt(carry.instanceId, pipette.toolDefinitionId, carry.tipPoint ?? point, true, pipetteSpec)
+        : overlapAt(carry.instanceId, carry.definitionId, point);
+      const pipetteRelease = resolvePipetteRelease(pipette, { instanceId: carry.instanceId, definitionId: carry.definitionId }, pipetteOverlap, origin);
+      if (pipetteRelease.kind === "transfer") {
+        const accepted = Boolean(player.runIntent(pipetteRelease.intent, { instanceId: carry.instanceId, motion: "dip" }));
+        if (!accepted) void engine.sync(scene);
+        return;
+      }
+      if (pipetteRelease.kind === "usePipette") {
+        const otherItem = pipette.otherInstanceId ? scene.bench.find((i) => i.instanceId === pipette.otherInstanceId) : undefined;
+        const otherLabel = otherItem ? lowerFirst(otherItem.label) : labelOf(pipette.otherDefinitionId);
+        player.correct(`Draw the liquid up with the pipette; do not pour it onto the pipette.`,
+          `Pick up the pipette, dip its tip into the ${otherLabel}, and release.`);
+        void engine.sync(scene);
+        return;
+      }
+    }
     const overlap = overlapAt(carry.instanceId, carry.definitionId, point);
     const state = player.runtime.getState();
     const snapTarget = interaction?.type === "snapIntoTarget" && overlap.kind === "valid" && overlap.target
@@ -365,7 +430,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       accepted = true;
     }
     if (!accepted) void engine.sync(scene);
-  }, [cancel, endCarry, engine, interaction, labelOf, overlapAt, player, scene, scoopFor, toolTransfer]);
+  }, [cancel, endCarry, engine, interaction, labelOf, overlapAt, pipette, pipetteSpec, player, scene, scoopFor, toolTransfer]);
 
   /**
    * Keyboard carry (§5.6): the item lifts where it stands. Probes do not free-move (parity), so

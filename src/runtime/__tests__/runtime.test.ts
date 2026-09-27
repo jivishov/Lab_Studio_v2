@@ -553,9 +553,18 @@ describe("runtime reducer", () => {
       actionId: "transmittance-dilution-place-graduated-cylinder",
       verb: "place",
     });
+    // The dye is poured through a filling funnel, removed before the volume is read (decided 2026-09-26).
+    state = performRuntimeAction(configured, state, {
+      actionId: "transmittance-dilution-seat-cylinder-funnel",
+      verb: "place",
+    });
     state = performRuntimeAction(configured, state, {
       actionId: "transmittance-dilution-measure-stock-dye",
       verb: "measureVolume",
+    });
+    state = performRuntimeAction(configured, state, {
+      actionId: "transmittance-dilution-remove-cylinder-funnel",
+      verb: "place",
     });
     state = performRuntimeAction(configured, state, {
       actionId: "transmittance-dilution-transfer-dye-aliquot",

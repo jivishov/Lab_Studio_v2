@@ -20,7 +20,7 @@
     "safety": "A numbered safety-prerequisite row (`S-NN`) whose inline M/F/R/C marker is copied verbatim. Safety IDs are a separate namespace from procedure-phase IDs with the same text."
   },
   "seedScope": "Cycle 02 seeds the families the plan names: filtration, weighing, measurement, spectrophotometry, titration, chromatography, kinetics, equilibrium, and calorimetry. It deliberately does not backfill every authored action; existing unannotated physical actions are carried as stable baseline identifiers in scripts/content-consistency-lint-baseline.json.",
-  "extensionScope": "An activity cycle adds an atom only when the operation its dated plan states has no existing identity, and records the source row that demanded it. Cycle 06 added five spectrophotometry atoms for instrument configuration, cuvette optical preparation/removal, reading records, and photometric aliquots; it also placed quantitative final-volume dilution in measurement, timed liquid reaction initiation in kinetics, and two endpoint-based treatment operations in a new waste-treatment family. Cycle 07 distinguishes a source-measured vessel rinse from an unmeasured rinse and identifies the transfer of its quantitative washings. Cycle 08 added seven atoms for Investigation 3's gravimetric preparation, filtration, and drying, and corrected atom.place.filtration-funnel so its role contract does not silently decide gravity versus vacuum configuration. Cycle 09 extended titration with support/receiver placement, burette filling, analyte acidification, immersed pH-probe placement and reading, and trial-mixture disposal. Cycle 10 extended chromatography with chamber, strip, spotting-tool, removal, ruler, and solvent-waste operations; opened separation for extraction, phase recovery, washing, and drying-agent work; and corrected atom.transfer.charge-developing-chamber so an unresolved solvent-volume choice stays open. Cycle 11 extended kinetics with delivery-train assembly, instrument zeroing, reactant weighing, and reaction initiation; separated collection-apparatus placement from train assembly; and opened qualitative-analysis for microsample transfer, solvent application, instrument reads, sample staging, and waste routing. Cycle 12 adds the locking-pin placement that makes the source-stated sealed syringe state visible, plus clean-vessel selection, dilution, and disposal identities that preserve the assembled calorimeter as one runtime object. Cycle 07 adds brass-specific final-volume, measured-stock, blank-preparation, and qualitative-comparison identities where the source requires apparatus that the shared spectroscopy atoms do not express. Cycle 12 adds calorimetry identities for staging measuring and weighing vessels, dispensing the weighed solid, heating the water sample, and removing it safely. The Cycle 05 coordinator amendment adds generic contracts for source-stated cuvette conditioning and optical preparation, two-stage photometer calibration, provenance-matched cuvette return, one-sided color-depth matching and acquisition, and incremental solid waste treatment with a pH-paper endpoint.",
+  "extensionScope": "An activity cycle adds an atom only when the operation its dated plan states has no existing identity, and records the source row that demanded it. Cycle 06 added five spectrophotometry atoms for instrument configuration, cuvette optical preparation/removal, reading records, and photometric aliquots; it also placed quantitative final-volume dilution in measurement, timed liquid reaction initiation in kinetics, and two endpoint-based treatment operations in a new waste-treatment family. Cycle 07 distinguishes a source-measured vessel rinse from an unmeasured rinse and identifies the transfer of its quantitative washings. Cycle 08 added seven atoms for Investigation 3's gravimetric preparation, filtration, and drying, and corrected atom.place.filtration-funnel so its role contract does not silently decide gravity versus vacuum configuration. Cycle 09 extended titration with support/receiver placement, burette filling, analyte acidification, immersed pH-probe placement and reading, and trial-mixture disposal. Cycle 10 extended chromatography with chamber, strip, spotting-tool, removal, ruler, and solvent-waste operations; opened separation for extraction, phase recovery, washing, and drying-agent work; and corrected atom.transfer.charge-developing-chamber so an unresolved solvent-volume choice stays open. Cycle 11 extended kinetics with delivery-train assembly, instrument zeroing, reactant weighing, and reaction initiation; separated collection-apparatus placement from train assembly; and opened qualitative-analysis for microsample transfer, solvent application, instrument reads, sample staging, and waste routing. Cycle 12 adds the locking-pin placement that makes the source-stated sealed syringe state visible, plus clean-vessel selection, dilution, and disposal identities that preserve the assembled calorimeter as one runtime object. Cycle 07 adds brass-specific final-volume, measured-stock, blank-preparation, and qualitative-comparison identities where the source requires apparatus that the shared spectroscopy atoms do not express. Cycle 12 adds calorimetry identities for staging measuring and weighing vessels, dispensing the weighed solid, heating the water sample, and removing it safely. The Cycle 05 coordinator amendment adds generic contracts for source-stated cuvette conditioning and optical preparation, two-stage photometer calibration, provenance-matched cuvette return, one-sided color-depth matching and acquisition, and incremental solid waste treatment with a pH-paper endpoint. The Lab Studio 3D work adds four identities decided by the teacher on 2026-09-26 for transmittance-dilution (seating and removing a cylinder filling funnel, pouring a working portion, and drawing into a transfer pipette); they cite no dated plan.",
   "atoms": [
     {
       "id": "atom.weigh.tare-vessel",
@@ -10631,6 +10631,180 @@
         }
       ],
       "contentExamples": []
+    },
+    {
+      "id": "atom.place.cylinder-filling-funnel",
+      "family": "measurement",
+      "documentationLabel": "Seat a filling funnel in a graduated cylinder",
+      "verb": "place",
+      "allowedInteractionTypes": [
+        "snapIntoTarget"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "instrument"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "variable-volume-measuring-device",
+        "cylinder-filling-funnel"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "The funnel is a temporary aid for pouring from a wide bottle; it is seated before the pour and removed before the volume is read.",
+        "Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited."
+      ],
+      "evidence": "filling funnel seated in the graduated cylinder's mouth",
+      "sourceExamples": [],
+      "contentExamples": [
+        {
+          "owner": "technique:transmittance-dilution",
+          "actionId": "transmittance-dilution-seat-cylinder-funnel"
+        }
+      ]
+    },
+    {
+      "id": "atom.place.remove-cylinder-filling-funnel",
+      "family": "measurement",
+      "documentationLabel": "Remove the filling funnel before reading the cylinder",
+      "verb": "place",
+      "allowedInteractionTypes": [
+        "dragToZone"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "instrument"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "variable-volume-measuring-device",
+        "cylinder-filling-funnel"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "The funnel is lifted out and set on the workbench so it neither drains into nor hides the meniscus when the volume is read.",
+        "Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited."
+      ],
+      "evidence": "filling funnel detached from the graduated cylinder and placed on the workbench",
+      "sourceExamples": [],
+      "contentExamples": [
+        {
+          "owner": "technique:transmittance-dilution",
+          "actionId": "transmittance-dilution-remove-cylinder-funnel"
+        }
+      ]
+    },
+    {
+      "id": "atom.transfer.working-portion",
+      "family": "foundational",
+      "documentationLabel": "Pour a working portion from a stock into a clean vessel",
+      "verb": "transfer",
+      "allowedInteractionTypes": [
+        "pourInto"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "instrument"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "liquid-source",
+        "working-portion-vessel"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "The portion is unmeasured; it only has to cover what the following steps draw from it.",
+        "No pipette or other tool enters the stock bottle; tools draw from the working portion.",
+        "Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited."
+      ],
+      "evidence": "a working portion of the named liquid in the clean vessel",
+      "sourceExamples": [],
+      "contentExamples": [
+        {
+          "owner": "technique:transmittance-dilution",
+          "actionId": "transmittance-dilution-pour-blank-into-beaker"
+        }
+      ]
+    },
+    {
+      "id": "atom.transfer.draw-into-transfer-pipette",
+      "family": "foundational",
+      "documentationLabel": "Draw a liquid up into a transfer pipette",
+      "verb": "transfer",
+      "allowedInteractionTypes": [
+        "pourInto"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "instrument"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "pipette-liquid-source",
+        "transfer-pipette"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "The pipette draws from an open vessel (a working portion or a prepared sample), never from a stock bottle.",
+        "A fresh pipette is used for each liquid, so the blank and the sample never share one.",
+        "Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited."
+      ],
+      "evidence": "the named liquid held in the transfer pipette",
+      "sourceExamples": [],
+      "contentExamples": [
+        {
+          "owner": "technique:transmittance-dilution",
+          "actionId": "transmittance-dilution-draw-blank-into-pipette"
+        },
+        {
+          "owner": "technique:transmittance-dilution",
+          "actionId": "transmittance-dilution-draw-sample-into-pipette"
+        }
+      ]
     }
   ]
 }

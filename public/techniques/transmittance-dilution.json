@@ -4,12 +4,15 @@
   "learningGoal": "Prepare one assigned dye dilution, blank and read a spectrophotometer, then relate transmittance, absorbance, and concentration evidence.",
   "requiredEquipment": [
     "sample-bottle",
-    "graduated-cylinder",
+    "graduated-cylinder-25ml",
     "test-tube",
     "wash-bottle",
     "rubber-stopper-set",
     "cuvette",
     "spectrophotometer",
+    "funnel",
+    "beaker-150ml",
+    "beral-pipette",
     "sample-bottle-1l"
   ],
   "initialState": {
@@ -36,8 +39,8 @@
       },
       {
         "id": "graduated-cylinder-1",
-        "definitionId": "graduated-cylinder",
-        "label": "Graduated cylinder",
+        "definitionId": "graduated-cylinder-25ml",
+        "label": "25 mL graduated cylinder",
         "location": "shelf",
         "contents": {
           "kind": "empty",
@@ -147,6 +150,62 @@
           "wetState": "dry",
           "visualState": "empty"
         }
+      },
+      {
+        "id": "funnel-1",
+        "definitionId": "funnel",
+        "label": "Filling funnel",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "blank-beaker-1",
+        "definitionId": "beaker-150ml",
+        "label": "Blank beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "blank-pipette-1",
+        "definitionId": "beral-pipette",
+        "label": "Blank pipette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "sample-pipette-1",
+        "definitionId": "beral-pipette",
+        "label": "Sample pipette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
       }
     ]
   },
@@ -233,7 +292,7 @@
       "verb": "place",
       "label": "Place the approved variable-volume device",
       "parameters": {
-        "equipmentDefinitionId": "graduated-cylinder",
+        "equipmentDefinitionId": "graduated-cylinder-25ml",
         "equipmentInstanceId": "graduated-cylinder-1"
       },
       "prerequisites": [],
@@ -255,13 +314,58 @@
       "evidence": [],
       "atomId": "atom.place.variable-volume-device",
       "equipmentRoleBindings": {
-        "variable-volume-measuring-device": "graduated-cylinder"
+        "variable-volume-measuring-device": "graduated-cylinder-25ml"
       },
       "interaction": {
         "type": "dragToZone",
-        "sourceDefinitionId": "graduated-cylinder",
+        "sourceDefinitionId": "graduated-cylinder-25ml",
         "stationId": "workbench",
         "accessibleLabel": "Place the approved variable-volume device"
+      }
+    },
+    {
+      "id": "transmittance-dilution-seat-cylinder-funnel",
+      "verb": "place",
+      "label": "Seat the filling funnel in the graduated cylinder",
+      "parameters": {
+        "equipmentDefinitionId": "funnel",
+        "sourceDefinitionId": "funnel",
+        "targetDefinitionId": "graduated-cylinder-25ml",
+        "snapZoneId": "graduated-cylinder-funnel-seat",
+        "enforceInstanceIdentity": true,
+        "sourceInstanceId": "funnel-1",
+        "targetInstanceId": "graduated-cylinder-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Seat the filling funnel in the graduated cylinder: completed with the named sample and configuration provenance preserved."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the required predecessor evidence or named equipment is unavailable",
+          "message": "This operation is not ready or the selected sample does not match the authored provenance.",
+          "recovery": "Restore the named sample and equipment state, then complete the immediately preceding operation."
+        }
+      ],
+      "feedback": {
+        "success": "The filling funnel is seated in the mouth of the graduated cylinder.",
+        "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.cylinder-filling-funnel",
+      "equipmentRoleBindings": {
+        "variable-volume-measuring-device": "graduated-cylinder-25ml",
+        "cylinder-filling-funnel": "funnel"
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "funnel",
+        "targetDefinitionId": "graduated-cylinder-25ml",
+        "snapZoneId": "graduated-cylinder-funnel-seat",
+        "accessibleLabel": "Seat the filling funnel in the graduated cylinder"
       }
     },
     {
@@ -292,19 +396,65 @@
       "evidence": [],
       "atomId": "atom.measure.variable-volume",
       "equipmentRoleBindings": {
-        "variable-volume-measuring-device": "graduated-cylinder",
+        "variable-volume-measuring-device": "graduated-cylinder-25ml",
         "liquid-source": "sample-bottle-1l"
       },
       "interaction": {
         "type": "pourInto",
         "sourceDefinitionId": "sample-bottle-1l",
-        "targetDefinitionId": "graduated-cylinder",
+        "targetDefinitionId": "graduated-cylinder-25ml",
         "accessibleLabel": "Measure the configured stock-dye aliquot"
       },
       "volume": {
         "source": "literal",
         "valueMl": "{{config.stockAliquotVolumeMl}}",
         "outputMeasurementId": "{{config.stockVolumeMeasurementId}}"
+      }
+    },
+    {
+      "id": "transmittance-dilution-remove-cylinder-funnel",
+      "verb": "place",
+      "label": "Remove the filling funnel",
+      "parameters": {
+        "equipmentDefinitionId": "funnel",
+        "sourceDefinitionId": "funnel",
+        "location": "workbench",
+        "requiredAttachmentState": "attached",
+        "attachmentParentDefinitionId": "graduated-cylinder-25ml",
+        "attachmentChildDefinitionId": "funnel",
+        "attachmentSnapZoneId": "graduated-cylinder-funnel-seat",
+        "enforceInstanceIdentity": true,
+        "sourceInstanceId": "funnel-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Remove the filling funnel: completed with the named sample and configuration provenance preserved."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the required predecessor evidence or named equipment is unavailable",
+          "message": "This operation is not ready or the selected sample does not match the authored provenance.",
+          "recovery": "Restore the named sample and equipment state, then complete the immediately preceding operation."
+        }
+      ],
+      "feedback": {
+        "success": "The filling funnel is out of the cylinder and on the bench.",
+        "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.remove-cylinder-filling-funnel",
+      "equipmentRoleBindings": {
+        "variable-volume-measuring-device": "graduated-cylinder-25ml",
+        "cylinder-filling-funnel": "funnel"
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "funnel",
+        "stationId": "workbench",
+        "accessibleLabel": "Remove the filling funnel"
       }
     },
     {
@@ -334,12 +484,12 @@
       "evidence": [],
       "atomId": "atom.transfer.measured-liquid",
       "equipmentRoleBindings": {
-        "measured-solvent-source": "graduated-cylinder",
+        "measured-solvent-source": "graduated-cylinder-25ml",
         "receiving-vessel": "test-tube"
       },
       "interaction": {
         "type": "pourInto",
-        "sourceDefinitionId": "graduated-cylinder",
+        "sourceDefinitionId": "graduated-cylinder-25ml",
         "targetDefinitionId": "test-tube",
         "accessibleLabel": "Transfer the measured stock aliquot"
       },
@@ -375,13 +525,13 @@
       "evidence": [],
       "atomId": "atom.measure.variable-volume",
       "equipmentRoleBindings": {
-        "variable-volume-measuring-device": "graduated-cylinder",
+        "variable-volume-measuring-device": "graduated-cylinder-25ml",
         "liquid-source": "wash-bottle"
       },
       "interaction": {
         "type": "pourInto",
         "sourceDefinitionId": "wash-bottle",
-        "targetDefinitionId": "graduated-cylinder",
+        "targetDefinitionId": "graduated-cylinder-25ml",
         "accessibleLabel": "Measure the configured water addition"
       },
       "volume": {
@@ -397,7 +547,7 @@
       "parameters": {
         "sourceInstanceId": "graduated-cylinder-1",
         "targetInstanceId": "prepared-receiver-1",
-        "sourceDefinitionId": "graduated-cylinder"
+        "sourceDefinitionId": "graduated-cylinder-25ml"
       },
       "prerequisites": [],
       "stateChanges": [
@@ -418,12 +568,12 @@
       "evidence": [],
       "atomId": "atom.dilute.record-resulting-final-volume",
       "equipmentRoleBindings": {
-        "measured-solvent-source": "graduated-cylinder",
+        "measured-solvent-source": "graduated-cylinder-25ml",
         "receiving-vessel": "test-tube"
       },
       "interaction": {
         "type": "pourInto",
-        "sourceDefinitionId": "graduated-cylinder",
+        "sourceDefinitionId": "graduated-cylinder-25ml",
         "targetDefinitionId": "test-tube",
         "accessibleLabel": "Dilute and mix to the configured final volume"
       },
@@ -516,11 +666,93 @@
       }
     },
     {
+      "id": "transmittance-dilution-pour-blank-into-beaker",
+      "verb": "transfer",
+      "label": "Pour a working portion of the blank into a beaker",
+      "parameters": {
+        "sourceInstanceId": "blank-source-1",
+        "targetInstanceId": "blank-beaker-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Pour a working portion of the blank into a beaker: completed with the named sample and configuration provenance preserved."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the required predecessor evidence or named equipment is unavailable",
+          "message": "This operation is not ready or the selected sample does not match the authored provenance.",
+          "recovery": "Restore the named sample and equipment state, then complete the immediately preceding operation."
+        }
+      ],
+      "feedback": {
+        "success": "A working portion of the blank is in the beaker.",
+        "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
+      },
+      "evidence": [],
+      "atomId": "atom.transfer.working-portion",
+      "equipmentRoleBindings": {
+        "liquid-source": "sample-bottle-1l",
+        "working-portion-vessel": "beaker-150ml"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "sample-bottle-1l",
+        "targetDefinitionId": "beaker-150ml",
+        "accessibleLabel": "Pour a working portion of the blank into a beaker"
+      },
+      "volume": {
+        "source": "literal",
+        "valueMl": 20
+      }
+    },
+    {
+      "id": "transmittance-dilution-draw-blank-into-pipette",
+      "verb": "transfer",
+      "label": "Draw the blank into a Beral pipette",
+      "parameters": {
+        "sourceInstanceId": "blank-beaker-1",
+        "targetInstanceId": "blank-pipette-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Draw the blank into a Beral pipette: completed with the named sample and configuration provenance preserved."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the required predecessor evidence or named equipment is unavailable",
+          "message": "This operation is not ready or the selected sample does not match the authored provenance.",
+          "recovery": "Restore the named sample and equipment state, then complete the immediately preceding operation."
+        }
+      ],
+      "feedback": {
+        "success": "The blank pipette is filled from the beaker.",
+        "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
+      },
+      "evidence": [],
+      "atomId": "atom.transfer.draw-into-transfer-pipette",
+      "equipmentRoleBindings": {
+        "pipette-liquid-source": "beaker-150ml",
+        "transfer-pipette": "beral-pipette"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "beaker-150ml",
+        "targetDefinitionId": "beral-pipette",
+        "accessibleLabel": "Draw the blank into a Beral pipette"
+      },
+      "volume": {
+        "source": "target-fill-fraction",
+        "fraction": 1
+      }
+    },
+    {
       "id": "transmittance-dilution-fill-blank-cuvette",
       "verb": "transfer",
       "label": "Fill the teacher-approved blank cuvette",
       "parameters": {
-        "sourceInstanceId": "blank-source-1",
+        "sourceInstanceId": "blank-pipette-1",
         "targetInstanceId": "blank-cuvette-1"
       },
       "prerequisites": [],
@@ -542,12 +774,12 @@
       "evidence": [],
       "atomId": "atom.transfer.fill-cuvette",
       "equipmentRoleBindings": {
-        "sample-source": "sample-bottle-1l",
+        "sample-source": "beral-pipette",
         "photometer-sample-holder": "cuvette"
       },
       "interaction": {
         "type": "pourInto",
-        "sourceDefinitionId": "sample-bottle-1l",
+        "sourceDefinitionId": "beral-pipette",
         "targetDefinitionId": "cuvette",
         "accessibleLabel": "Fill the teacher-approved blank cuvette"
       },
@@ -714,11 +946,52 @@
       }
     },
     {
+      "id": "transmittance-dilution-draw-sample-into-pipette",
+      "verb": "transfer",
+      "label": "Draw the diluted sample into a fresh Beral pipette",
+      "parameters": {
+        "sourceInstanceId": "prepared-receiver-1",
+        "targetInstanceId": "sample-pipette-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Draw the diluted sample into a fresh Beral pipette: completed with the named sample and configuration provenance preserved."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the required predecessor evidence or named equipment is unavailable",
+          "message": "This operation is not ready or the selected sample does not match the authored provenance.",
+          "recovery": "Restore the named sample and equipment state, then complete the immediately preceding operation."
+        }
+      ],
+      "feedback": {
+        "success": "The sample pipette is filled from the diluted sample.",
+        "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
+      },
+      "evidence": [],
+      "atomId": "atom.transfer.draw-into-transfer-pipette",
+      "equipmentRoleBindings": {
+        "pipette-liquid-source": "test-tube",
+        "transfer-pipette": "beral-pipette"
+      },
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "test-tube",
+        "targetDefinitionId": "beral-pipette",
+        "accessibleLabel": "Draw the diluted sample into a fresh Beral pipette"
+      },
+      "volume": {
+        "source": "target-fill-fraction",
+        "fraction": 1
+      }
+    },
+    {
       "id": "transmittance-dilution-fill-sample-cuvette",
       "verb": "transfer",
       "label": "Fill the sample cuvette from the labelled dilution receiver",
       "parameters": {
-        "sourceInstanceId": "prepared-receiver-1",
+        "sourceInstanceId": "sample-pipette-1",
         "targetInstanceId": "sample-cuvette-1"
       },
       "prerequisites": [],
@@ -740,12 +1013,12 @@
       "evidence": [],
       "atomId": "atom.transfer.fill-cuvette",
       "equipmentRoleBindings": {
-        "sample-source": "test-tube",
+        "sample-source": "beral-pipette",
         "photometer-sample-holder": "cuvette"
       },
       "interaction": {
         "type": "pourInto",
-        "sourceDefinitionId": "test-tube",
+        "sourceDefinitionId": "beral-pipette",
         "targetDefinitionId": "cuvette",
         "accessibleLabel": "Fill the sample cuvette from the labelled dilution receiver"
       },
@@ -1132,10 +1405,31 @@
         }
       },
       {
+        "id": "transmittance-dilution-seat-cylinder-funnel-node",
+        "type": "action",
+        "title": "Seat the filling funnel",
+        "description": "Seat the filling funnel in the mouth of the graduated cylinder.",
+        "actionId": "transmittance-dilution-seat-cylinder-funnel",
+        "config": {},
+        "validation": [
+          {
+            "id": "transmittance-dilution-seat-cylinder-funnel-node-done",
+            "type": "actionEvidence",
+            "label": "Seat the filling funnel was completed.",
+            "actionId": "transmittance-dilution-seat-cylinder-funnel"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Seat the filling funnel complete.",
+          "retry": "Review Seat the filling funnel and try again."
+        }
+      },
+      {
         "id": "transmittance-dilution-measure-stock-dye-node",
         "type": "action",
         "title": "Measure the configured stock-dye aliquot",
-        "description": "Measure {{config.stockAliquotVolumeMl}} mL of the stock dye in the graduated cylinder.",
+        "description": "Pour {{config.stockAliquotVolumeMl}} mL of the stock dye through the funnel into the graduated cylinder.",
         "actionId": "transmittance-dilution-measure-stock-dye",
         "config": {},
         "validation": [
@@ -1150,6 +1444,27 @@
         "feedback": {
           "success": "Measure the configured stock-dye aliquot complete.",
           "retry": "Review Measure the configured stock-dye aliquot and try again."
+        }
+      },
+      {
+        "id": "transmittance-dilution-remove-cylinder-funnel-node",
+        "type": "action",
+        "title": "Remove the filling funnel",
+        "description": "Lift the funnel out of the graduated cylinder and set it on the bench before you read the volume.",
+        "actionId": "transmittance-dilution-remove-cylinder-funnel",
+        "config": {},
+        "validation": [
+          {
+            "id": "transmittance-dilution-remove-cylinder-funnel-node-done",
+            "type": "actionEvidence",
+            "label": "Remove the filling funnel was completed.",
+            "actionId": "transmittance-dilution-remove-cylinder-funnel"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Remove the filling funnel complete.",
+          "retry": "Review Remove the filling funnel and try again."
         }
       },
       {
@@ -1258,10 +1573,52 @@
         }
       },
       {
+        "id": "transmittance-dilution-pour-blank-into-beaker-node",
+        "type": "action",
+        "title": "Pour the blank into a beaker",
+        "description": "Pour about 20 mL of the blank from the stock bottle into the 150 mL beaker. Never put a pipette into the stock bottle.",
+        "actionId": "transmittance-dilution-pour-blank-into-beaker",
+        "config": {},
+        "validation": [
+          {
+            "id": "transmittance-dilution-pour-blank-into-beaker-node-done",
+            "type": "actionEvidence",
+            "label": "Pour the blank into a beaker was completed.",
+            "actionId": "transmittance-dilution-pour-blank-into-beaker"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Pour the blank into a beaker complete.",
+          "retry": "Review Pour the blank into a beaker and try again."
+        }
+      },
+      {
+        "id": "transmittance-dilution-draw-blank-into-pipette-node",
+        "type": "action",
+        "title": "Draw the blank into a pipette",
+        "description": "Squeeze the blank pipette, dip its tip into the beaker, and release to draw up the blank.",
+        "actionId": "transmittance-dilution-draw-blank-into-pipette",
+        "config": {},
+        "validation": [
+          {
+            "id": "transmittance-dilution-draw-blank-into-pipette-node-done",
+            "type": "actionEvidence",
+            "label": "Draw the blank into a pipette was completed.",
+            "actionId": "transmittance-dilution-draw-blank-into-pipette"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Draw the blank into a pipette complete.",
+          "retry": "Review Draw the blank into a pipette and try again."
+        }
+      },
+      {
         "id": "transmittance-dilution-fill-blank-cuvette-node",
         "type": "action",
         "title": "Fill the teacher-approved blank cuvette",
-        "description": "Fill the teacher-approved blank cuvette",
+        "description": "Deliver the blank from its pipette into the blank cuvette, about three-quarters full.",
         "actionId": "transmittance-dilution-fill-blank-cuvette",
         "config": {},
         "validation": [
@@ -1363,10 +1720,31 @@
         }
       },
       {
+        "id": "transmittance-dilution-draw-sample-into-pipette-node",
+        "type": "action",
+        "title": "Draw the sample into a pipette",
+        "description": "With a fresh Beral pipette, draw up the diluted sample from the test tube.",
+        "actionId": "transmittance-dilution-draw-sample-into-pipette",
+        "config": {},
+        "validation": [
+          {
+            "id": "transmittance-dilution-draw-sample-into-pipette-node-done",
+            "type": "actionEvidence",
+            "label": "Draw the sample into a pipette was completed.",
+            "actionId": "transmittance-dilution-draw-sample-into-pipette"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Draw the sample into a pipette complete.",
+          "retry": "Review Draw the sample into a pipette and try again."
+        }
+      },
+      {
         "id": "transmittance-dilution-fill-sample-cuvette-node",
         "type": "action",
         "title": "Fill the sample cuvette from the labelled dilution receiver",
-        "description": "Fill the sample cuvette from the labelled dilution receiver",
+        "description": "Deliver the sample from its pipette into the sample cuvette, about three-quarters full.",
         "actionId": "transmittance-dilution-fill-sample-cuvette",
         "config": {},
         "validation": [
@@ -1571,6 +1949,14 @@
       },
       {
         "from": "transmittance-dilution-place-graduated-cylinder-node",
+        "to": "transmittance-dilution-seat-cylinder-funnel-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "transmittance-dilution-seat-cylinder-funnel-node",
         "to": "transmittance-dilution-measure-stock-dye-node",
         "label": "Next",
         "condition": {
@@ -1579,6 +1965,14 @@
       },
       {
         "from": "transmittance-dilution-measure-stock-dye-node",
+        "to": "transmittance-dilution-remove-cylinder-funnel-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "transmittance-dilution-remove-cylinder-funnel-node",
         "to": "transmittance-dilution-transfer-dye-aliquot-node",
         "label": "Next",
         "condition": {
@@ -1619,6 +2013,22 @@
       },
       {
         "from": "transmittance-dilution-configure-photometer-node",
+        "to": "transmittance-dilution-pour-blank-into-beaker-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "transmittance-dilution-pour-blank-into-beaker-node",
+        "to": "transmittance-dilution-draw-blank-into-pipette-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "transmittance-dilution-draw-blank-into-pipette-node",
         "to": "transmittance-dilution-fill-blank-cuvette-node",
         "label": "Next",
         "condition": {
@@ -1659,6 +2069,14 @@
       },
       {
         "from": "transmittance-dilution-remove-blank-cuvette-node",
+        "to": "transmittance-dilution-draw-sample-into-pipette-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "transmittance-dilution-draw-sample-into-pipette-node",
         "to": "transmittance-dilution-fill-sample-cuvette-node",
         "label": "Next",
         "condition": {
@@ -1793,7 +2211,7 @@
         "roleId": "variable-volume-measuring-device",
         "required": true,
         "allowedDefinitionIds": [
-          "graduated-cylinder"
+          "graduated-cylinder-25ml"
         ],
         "sourceInstanceIds": []
       },
@@ -1810,7 +2228,7 @@
         "roleId": "measured-solvent-source",
         "required": true,
         "allowedDefinitionIds": [
-          "graduated-cylinder"
+          "graduated-cylinder-25ml"
         ],
         "sourceInstanceIds": []
       },
@@ -1827,7 +2245,8 @@
         "required": true,
         "allowedDefinitionIds": [
           "sample-bottle",
-          "test-tube"
+          "test-tube",
+          "beral-pipette"
         ],
         "sourceInstanceIds": []
       },
@@ -1836,6 +2255,39 @@
         "required": true,
         "allowedDefinitionIds": [
           "cuvette"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "cylinder-filling-funnel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "funnel"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "working-portion-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beaker-150ml"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "pipette-liquid-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beaker-150ml",
+          "test-tube"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "transfer-pipette",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beral-pipette"
         ],
         "sourceInstanceIds": []
       }

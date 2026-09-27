@@ -626,6 +626,13 @@ export const v1VisualCatalog: VisualCatalog = {
       shelfSize: rect(0, 0, 62, 132),
       footprint: rect(14, 158, 50, 18),
       hitBox: rect(-8, 0, 94, 184),
+      visualZones: [
+        {
+          id: "graduated-cylinder-funnel-seat",
+          bounds: rect(4, -44, 70, 72),
+          anchor: { x: 39, y: 14 },
+        },
+      ],
       contentRegions: [liquidRect(rect(30, 40, 18, 104), "narrow-neck")],
       liquidVisualProfile: liquidProfile(
         "graduated-cylinder-25ml-v1",

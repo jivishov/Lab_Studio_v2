@@ -28,18 +28,18 @@ const atNode = (nodeSuffix: string): RuntimeState => {
 };
 
 describe("the pour pre-check for contracted volumes", () => {
-  it("lets a teacher-set 5 mL aliquot into the 100 mL cylinder (it used to judge the 1 L stock)", () => {
+  it("lets a teacher-set 5 mL aliquot into the 25 mL cylinder (it used to judge the 1 L stock)", () => {
     const result = resolveInteractionIntent(technique, atNode("measure-stock-dye"), {
       type: "pourIntent", sourceInstanceId: "sample-bottle-1", targetInstanceId: "graduated-cylinder-1",
     });
     expect(result.ok, result.ok ? "" : result.feedback.message).toBe(true);
   });
 
-  it("lets a 4 mL cuvette be filled to 75 % from a 1 L bottle", () => {
-    const result = resolveInteractionIntent(technique, atNode("fill-blank-cuvette"), {
-      type: "pourIntent", sourceInstanceId: "blank-source-1", targetInstanceId: "blank-cuvette-1",
+  it("lets a 20 mL working portion of the blank into the 150 mL beaker from a 1 L bottle", () => {
+    const result = resolveInteractionIntent(technique, atNode("pour-blank-into-beaker"), {
+      type: "pourIntent", sourceInstanceId: "blank-source-1", targetInstanceId: "blank-beaker-1",
     });
-    if (!result.ok) expect(result.feedback.reason).not.toBe("overflowRisk");
+    expect(result.ok, result.ok ? "" : result.feedback.message).toBe(true);
   });
 
   it("says a teacher-set volume is missing when the technique runs without its setup", () => {

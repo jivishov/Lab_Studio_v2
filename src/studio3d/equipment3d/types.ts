@@ -103,6 +103,14 @@ export interface Equipment3DEntry {
   /** The scenery id that holds this item upright when it stands on the bench (decision D9). */
   requiresSupport?: string;
   solidRest?: Equipment3DSolidRest;
+  /**
+   * How the item rests on the bench when its model is authored in its working pose (decided
+   * 2026-09-26): a funnel, modelled upright to seat by its stem tip, rests mouth-down; a pipette,
+   * modelled tip-down, lies flat. Turned `rollDeg` about its x axis, lifted `liftMm`, and moved so its
+   * footprint centres on its bench point (`shiftMm`, where its origin lies from that point). It is
+   * carried and seated upright.
+   */
+  benchRest?: { rollDeg: number; liftMm: number; shiftMm: number[] };
   anchors: Record<string, Equipment3DAnchor>;
   displays: Equipment3DDisplay[];
   controls?: Equipment3DControl[];

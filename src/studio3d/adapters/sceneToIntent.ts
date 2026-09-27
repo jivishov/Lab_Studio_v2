@@ -1,4 +1,5 @@
 import type { ActionDefinition, ActionInteractionSpec, EquipmentInstance, RuntimeActionRequest } from "../../domain/types";
+import { equipmentById } from "../../equipment/catalog";
 import { getBenchSize } from "../../equipment/visualCatalog";
 import type { BenchOverlapResult } from "../../player/benchOverlap";
 import { snapPointAligningSourceAnchor } from "../../player/benchTargeting";
@@ -264,3 +265,71 @@ export const resolveToolRelease = (
 /** Whether a bench point lies within a footprint (a dip into a source's mouth). */
 export const pointInFootprint = (footprint: { xMm: number; yMm: number; widthMm: number; depthMm: number }, point: { xMm: number; yMm: number }): boolean =>
   Math.abs(point.xMm - footprint.xMm) <= footprint.widthMm / 2 && Math.abs(point.yMm - footprint.yMm) <= footprint.depthMm / 2;
+
+/**
+ * A step done with a pipette (decided 2026-09-26): a `pourInto` whose target is a fillable tool is a
+ * draw (the pipette is carried to the liquid and draws it up), and one whose source is a fillable
+ * tool is a delivery (the pipette is carried to the receiver and emptied into it). The runtime
+ * records the step's own pour either way; only which item is carried, and how it is drawn, differ.
+ */
+export interface PipetteStep {
+  kind: "draw" | "deliver";
+  toolDefinitionId: string;
+  toolInstanceId: string;
+  /** The liquid drawn from (draw), or the vessel delivered to (deliver). */
+  otherDefinitionId: string;
+  otherInstanceId?: string;
+}
+
+export const isFillableTool = (definitionId: string | undefined): boolean => {
+  const definition = definitionId ? equipmentById.get(definitionId) : undefined;
+  return Boolean(definition && definition.category === "tool" && definition.affordances.includes("fillable"));
+};
+
+export const pipetteStepFor = (
+  action: ActionDefinition | undefined,
+  interaction: ActionInteractionSpec | undefined,
+  instances: readonly EquipmentInstance[],
+  nodeCompleted: boolean,
+): PipetteStep | undefined => {
+  if (!action || nodeCompleted || interaction?.type !== "pourInto" || !interaction.sourceDefinitionId || !interaction.targetDefinitionId) return undefined;
+  const named = (key: string) => (typeof action.parameters[key] === "string" ? action.parameters[key] as string : undefined);
+  const find = (instanceId: string | undefined, definitionId: string) =>
+    instances.find((instance) => (instanceId ? instance.id === instanceId : instance.definitionId === definitionId));
+  const draw = isFillableTool(interaction.targetDefinitionId);
+  if (!draw && !isFillableTool(interaction.sourceDefinitionId)) return undefined;
+  const toolDefinitionId = draw ? interaction.targetDefinitionId : interaction.sourceDefinitionId;
+  const otherDefinitionId = draw ? interaction.sourceDefinitionId : interaction.targetDefinitionId;
+  const tool = find(named(draw ? "targetInstanceId" : "sourceInstanceId"), toolDefinitionId);
+  if (!tool) return undefined;
+  const other = find(named(draw ? "sourceInstanceId" : "targetInstanceId"), otherDefinitionId);
+  return { kind: draw ? "draw" : "deliver", toolDefinitionId, toolInstanceId: tool.id, otherDefinitionId, ...(other ? { otherInstanceId: other.id } : {}) };
+};
+
+export type PipetteRelease =
+  | { kind: "transfer"; intent: RuntimeInteractionIntent }
+  | { kind: "usePipette" }
+  | { kind: "none" };
+
+/**
+ * A release during a pipette step. The pipette released over the liquid (draw) or the receiver
+ * (deliver) sends the step's own pour; the liquid's vessel carried onto the pipette is refused in
+ * favour of the pipette; anything else falls through to the ordinary release.
+ */
+export const resolvePipetteRelease = (
+  step: PipetteStep,
+  carried: { instanceId: string; definitionId: string },
+  overlap: BenchOverlapResult,
+  origin: ReleaseOrigin,
+): PipetteRelease => {
+  const over = overlap.kind === "valid" && overlap.target?.definitionId === step.otherDefinitionId
+    && (!step.otherInstanceId || overlap.target.id === step.otherInstanceId) ? overlap.target : undefined;
+  if (carried.instanceId === step.toolInstanceId && over) {
+    const [sourceInstanceId, targetInstanceId] = step.kind === "draw" ? [over.id, carried.instanceId] : [carried.instanceId, over.id];
+    const [sourceDefinitionId, targetDefinitionId] = step.kind === "draw"
+      ? [step.otherDefinitionId, step.toolDefinitionId] : [step.toolDefinitionId, step.otherDefinitionId];
+    return { kind: "transfer", intent: { type: "pourIntent", origin, sourceInstanceId, targetInstanceId, sourceDefinitionId, targetDefinitionId } as RuntimeInteractionIntent };
+  }
+  if (step.kind === "draw" && carried.definitionId === step.otherDefinitionId && overlap.target?.id === step.toolInstanceId) return { kind: "usePipette" };
+  return { kind: "none" };
+};

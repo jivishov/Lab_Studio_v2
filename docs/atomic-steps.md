@@ -29,7 +29,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 
 ## Atoms
 
-204 atoms across 15 families.
+208 atoms across 15 families.
 
 | Atom | Family | Verb | Interactions | Required roles |
 |---|---|---|---|---|
@@ -237,6 +237,10 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 | `atom.place.thermal-crucible-assembly` | thermal-decomposition | `place` | `dragToZone`, `snapIntoTarget` | `weighed-vessel` |
 | `atom.heat.thermal-decomposition-stage` | thermal-decomposition | `dry` | `placeInInstrument` | `thermal-heating-instrument`, `weighed-vessel` |
 | `atom.control.thermal-burner` | thermal-decomposition | `reset` | `dragToZone` | `thermal-heating-instrument` |
+| `atom.place.cylinder-filling-funnel` | measurement | `place` | `snapIntoTarget` | `variable-volume-measuring-device`, `cylinder-filling-funnel` |
+| `atom.place.remove-cylinder-filling-funnel` | measurement | `place` | `dragToZone` | `variable-volume-measuring-device`, `cylinder-filling-funnel` |
+| `atom.transfer.working-portion` | foundational | `transfer` | `pourInto` | `liquid-source`, `working-portion-vessel` |
+| `atom.transfer.draw-into-transfer-pipette` | foundational | `transfer` | `pourInto` | `pipette-liquid-source`, `transfer-pipette` |
 
 ### Family: calorimetry
 
@@ -1329,6 +1333,39 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 - Content examples:
   - `technique:brass-spectrophotometry` action `confirm-diluted-digest-material-action`
 
+#### `atom.transfer.working-portion`
+
+**Pour a working portion from a stock into a clean vessel**
+
+- Verb: `transfer`
+- Allowed interaction types: `pourInto`
+- Required roles: `liquid-source`, `working-portion-vessel`
+- Optional roles: none
+- Evidence: a working portion of the named liquid in the clean vessel
+- Procedural constraints:
+  - The portion is unmeasured; it only has to cover what the following steps draw from it.
+  - No pipette or other tool enters the stock bottle; tools draw from the working portion.
+  - Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited.
+- Content examples:
+  - `technique:transmittance-dilution` action `transmittance-dilution-pour-blank-into-beaker`
+
+#### `atom.transfer.draw-into-transfer-pipette`
+
+**Draw a liquid up into a transfer pipette**
+
+- Verb: `transfer`
+- Allowed interaction types: `pourInto`
+- Required roles: `pipette-liquid-source`, `transfer-pipette`
+- Optional roles: none
+- Evidence: the named liquid held in the transfer pipette
+- Procedural constraints:
+  - The pipette draws from an open vessel (a working portion or a prepared sample), never from a stock bottle.
+  - A fresh pipette is used for each liquid, so the blank and the sample never share one.
+  - Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited.
+- Content examples:
+  - `technique:transmittance-dilution` action `transmittance-dilution-draw-blank-into-pipette`
+  - `technique:transmittance-dilution` action `transmittance-dilution-draw-sample-into-pipette`
+
 ### Family: gravimetry
 
 #### `atom.weigh.dry-assembly`
@@ -1813,7 +1850,9 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
   - The rinse volume is deliberately unstated in the source; do not attach a measured quantity to it.
   - A rinse-water source must never be a calibrated delivery device.
 - Source examples:
-  - `what-makes-hard-water-hard_2026-07-27.md` phase step `FD-07` (M)
+  - `acid-in-fruit-juice-and-soft-drinks_2026-07-27.md` safety step `S-05` (M/C)
+  - `acid-base-titration-curves_2026-07-27.md` safety step `S-07` (M/C)
+  - `hydrogen-peroxide-redox-titration_2026-07-27.md` safety step `S-08` (M/C)
 - Content examples:
   - `technique:titration-endpoint` action `dispose-reference-mixture-rinse`
   - `technique:beverage-ph-volume-titration` action `practice-hcl-dispose-rinse`
@@ -1832,6 +1871,36 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 - Procedural constraints:
   - The source volume has already been read by a calibrated device; this operation transfers that aliquot and does not relabel it as solvent.
   - Measuring and transferring remain distinct authored operations.
+
+#### `atom.place.cylinder-filling-funnel`
+
+**Seat a filling funnel in a graduated cylinder**
+
+- Verb: `place`
+- Allowed interaction types: `snapIntoTarget`
+- Required roles: `variable-volume-measuring-device`, `cylinder-filling-funnel`
+- Optional roles: none
+- Evidence: filling funnel seated in the graduated cylinder's mouth
+- Procedural constraints:
+  - The funnel is a temporary aid for pouring from a wide bottle; it is seated before the pour and removed before the volume is read.
+  - Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited.
+- Content examples:
+  - `technique:transmittance-dilution` action `transmittance-dilution-seat-cylinder-funnel`
+
+#### `atom.place.remove-cylinder-filling-funnel`
+
+**Remove the filling funnel before reading the cylinder**
+
+- Verb: `place`
+- Allowed interaction types: `dragToZone`
+- Required roles: `variable-volume-measuring-device`, `cylinder-filling-funnel`
+- Optional roles: none
+- Evidence: filling funnel detached from the graduated cylinder and placed on the workbench
+- Procedural constraints:
+  - The funnel is lifted out and set on the workbench so it neither drains into nor hides the meniscus when the volume is read.
+  - Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited.
+- Content examples:
+  - `technique:transmittance-dilution` action `transmittance-dilution-remove-cylinder-funnel`
 
 ### Family: qualitative-analysis
 
@@ -2231,7 +2300,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 - Procedural constraints:
   - Requires typed fractionHandling, a named vessel, and actual classroom observations. No predicted identity, distribution or yield. No heating model.
 - Source examples:
-  - `quick-ache-relief-component-separation_2026-07-27.md` phase step `E-09 to E-13` (R/C)
+  - `quick-ache-relief-component-separation_2026-07-27.md` safety step `S-05` (M/C)
 
 #### `atom.rinse.fraction-remove-label`
 
@@ -2245,7 +2314,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 - Procedural constraints:
   - Requires typed fractionHandling, a named vessel, and actual classroom observations. No predicted identity, distribution or yield. No heating model.
 - Source examples:
-  - `quick-ache-relief-component-separation_2026-07-27.md` phase step `E-09 to E-13` (R/C)
+  - `what-makes-hard-water-hard_2026-07-27.md` safety step `S-09` (M)
 
 #### `atom.transfer.fraction-remove-drying-agent`
 
@@ -2990,7 +3059,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
   - The destination stays teacher-configured. Investigation 8 finding 9 and S-08 route waste through local and instructor procedure, and Investigation 14 S-07 additionally requires neutralisation and a pH test. The atom enforces that a named receiver is used, never which stream is correct.
   - The trial's own evidence is recorded before the mixture is discarded.
 - Source examples:
-  - `hydrogen-peroxide-redox-titration_2026-07-27.md` phase step `ST-06` (M/C)
+  - `hydrogen-peroxide-redox-titration_2026-07-27.md` safety step `S-08` (M/C)
 - Content examples:
   - `technique:titration-endpoint` action `dispose-reference-mixture`
   - `technique:beverage-ph-volume-titration` action `beverage-a-sample-trial-1-dispose`
@@ -3368,7 +3437,9 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
   - Use only the named trial and its current physical equipment and recorded evidence.
   - Teacher-approved quantities, persistence, and disposal remain configuration.
 - Source examples:
-  - `acid-in-fruit-juice-and-soft-drinks_2026-07-27.md` phase step `T-03 through T-09` (R)
+  - `acid-in-fruit-juice-and-soft-drinks_2026-07-27.md` phase step `T-08` (M)
+  - `acid-base-titration-curves_2026-07-27.md` phase step `T-09` (M)
+  - `hydrogen-peroxide-redox-titration_2026-07-27.md` phase step `ST-04` (M)
 - Content examples:
   - `technique:titration-endpoint` action `deliver-titrant-read-final`
   - `technique:beverage-ph-volume-titration` action `beverage-a-sample-trial-1-deliver-titrant-read-final`
@@ -3508,7 +3579,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
   - The destination stays teacher-configured. Investigation 8 finding 9 and S-08 route waste through local and instructor procedure, and Investigation 14 S-07 additionally requires neutralisation and a pH test. The atom enforces that a named receiver is used, never which stream is correct.
   - The trial's own evidence is recorded before the mixture is discarded.
 - Source examples:
-  - `acid-in-fruit-juice-and-soft-drinks_2026-07-27.md` phase step `PR-01 through PR-04` (M/R)
+  - `acid-in-fruit-juice-and-soft-drinks_2026-07-27.md` safety step `S-05` (M/C)
 - Content examples:
   - `technique:beverage-ph-volume-titration` action `practice-hcl-dispose`
 
@@ -3560,7 +3631,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
   - The destination stays teacher-configured. Investigation 8 finding 9 and S-08 route waste through local and instructor procedure, and Investigation 14 S-07 additionally requires neutralisation and a pH test. The atom enforces that a named receiver is used, never which stream is correct.
   - The trial's own evidence is recorded before the mixture is discarded.
 - Source examples:
-  - `hydrogen-peroxide-redox-titration_2026-07-27.md` phase step `ST-06` (M/C)
+  - `hydrogen-peroxide-redox-titration_2026-07-27.md` safety step `S-08` (M/C)
 - Content examples:
   - `technique:titration-endpoint` action `condition-burette-drain-residual`
   - `technique:beverage-ph-volume-titration` action `beverage-a-sample-trial-1-condition-burette-drain-residual`
@@ -3846,7 +3917,7 @@ A role is a constraint, not a synonym for one apparatus id. Capacity, tolerance,
 | `fixed-volume-delivery-device` | delivery | `volumetric-flask` | `graduated-cylinder`, `graduated-cylinder-25ml`, `burette-50ml` | A single calibration mark defines the volume, so the student fills to the mark instead of reading a scale. Substituting a graduated device changes the measurement claim the source makes. |
 | `measured-solvent-source` | delivery | `beaker-150ml`, `burette-50ml`, `graduated-cylinder`, `graduated-cylinder-25ml`, `graduated-pipette-10ml`, `volumetric-flask` | `wash-bottle`, `distilled-water-bottle` | Investigation 5 states an approved solvent amount for the developing chamber and Investigation 3 states about 20 mL of distilled water. Investigation 12 CA-07 transfers the already measured 100.0 mL hot-water sample from its 150 mL beaker into the calorimeter, so that beaker may carry measured-volume provenance forward. Delivering any of these from a wash bottle would present an unmeasured stream as a stated volume. |
 | `rinse-water-source` | delivery | `distilled-water-bottle`, `wash-bottle` | `burette-50ml`, `graduated-cylinder`, `graduated-cylinder-25ml`, `volumetric-flask` | The manual rinses with small quantities of water and never assigns the rinse a volume. Using a calibrated device here would invent a quantity the source does not state. |
-| `liquid-source` | delivery | `distilled-water-bottle`, `dropper-bottle`, `naoh-bottle`, `propanol-bottle`, `reagent-bottle`, `rubbing-alcohol-bottle`, `sample-bottle`, `unknown-acid-bottle`, `wash-bottle`, `sample-bottle-1l` | — | Stock containers and droppers from which a graduated device measures a stated volume. They originate the liquid but do not establish the measurement precision. The user-configured 1 L stock variant retains the permitted bottle delivery mode; only its stock capacity changes, not measurement precision. |
+| `liquid-source` | delivery | `distilled-water-bottle`, `dropper-bottle`, `naoh-bottle`, `propanol-bottle`, `reagent-bottle`, `rubbing-alcohol-bottle`, `sample-bottle`, `unknown-acid-bottle`, `wash-bottle`, `sample-bottle-1l`, `distilled-water-bottle-2l` | — | Stock containers and droppers from which a graduated device measures a stated volume. They originate the liquid but do not establish the measurement precision. The user-configured stock variants retain the permitted bottle delivery mode; only their stock capacities change, not measurement precision. |
 | `solid-reagent-source` | delivery | `reagent-bottle`, `sample-bottle`, `small-vial` | — | Named solids may be supplied in a small vial or stock bottle. The source delivers the approximate portion; the balance produces the recorded mass. |
 | `precipitating-reagent-source` | delivery | `beaker-150ml`, `beaker-250ml`, `burette-50ml`, `graduated-cylinder`, `graduated-cylinder-25ml`, `reagent-bottle` | — | The two Investigation 3 phases deliver carbonate from different vessels: PR-11 pours prepared Na2CO3 solution out of the practice beaker, INQ-02 draws 0.50 M Na2CO3 from a reagent container. Finding 12 (R/C) leaves the excess to the student within teacher-approved constraints, so the role admits both and fixes neither the vessel nor the amount. |
 | `precipitation-vessel` | vessel | `beaker-150ml`, `beaker-250ml`, `erlenmeyer-flask-250ml` | — | PR-11 through PR-15 and INQ-06/INQ-07 form and age CaCO3 in the vessel that later feeds FD-06. It is distinct from reaction-vessel, whose gas-collection sealing constraint belongs to Investigation 10. |
@@ -3866,7 +3937,7 @@ A role is a constraint, not a synonym for one apparatus id. Capacity, tolerance,
 | `cooling-tool` | tool | `crucible-tongs` | — | S-05 and S-06 require heat-safe handling and full cooling before the assembly is weighed. |
 | `photometer-instrument` | instrument | `spectrophotometer` | — | Investigations 1, 2, and 11 all leave the wavelength a confirmation point, and all three blank the instrument before the first sample read. |
 | `photometer-sample-holder` | vessel | `cuvette` | — | SPEC-01 and SPEC-02 distinguish the blank cuvette from the sample cuvette; both are the same role filled at different times. |
-| `sample-source` | delivery | `beral-pipette`, `distilled-water-bottle`, `graduated-pipette-10ml`, `reagent-bottle`, `sample-bottle`, `small-vial`, `test-tube`, `sample-bottle-1l`, `distilled-water-bottle-1l` | — | The container or pipette a measured sample is drawn from when the source step does not constrain the delivery precision. A distilled-water bottle is included when the approved water volume is the measured source liquid. The user-configured 1 L stock variant retains the permitted bottle delivery mode; only its stock capacity changes, not measurement precision. |
+| `sample-source` | delivery | `beral-pipette`, `distilled-water-bottle`, `graduated-pipette-10ml`, `reagent-bottle`, `sample-bottle`, `small-vial`, `test-tube`, `sample-bottle-1l`, `distilled-water-bottle-1l`, `distilled-water-bottle-2l` | — | The container or pipette a measured sample is drawn from when the source step does not constrain the delivery precision. A distilled-water bottle is included when the approved water volume is the measured source liquid. The user-configured 1 L and 2 L stock variants retain the permitted bottle delivery mode; only their stock capacities change, not measurement precision. |
 | `burette-filling-funnel` | vessel | `funnel` | — | ST-01 identifies a funnel among the titration filling apparatus (R/C). This role is limited to temporarily filling a burette and cannot satisfy the separate filtration-funnel role. |
 | `titrant-delivery-device` | delivery | `burette-50ml` | — | ST-01 conditions and fills the burette and records an initial reading before any titrant is delivered. |
 | `burette-support` | support | `ring-stand`, `ring-stand-clamp` | — | IQ-04 sketches the burette clamped over the flask; the stand and clamp are the same support role. |
@@ -3916,6 +3987,10 @@ A role is a constraint, not a synonym for one apparatus id. Capacity, tolerance,
 | `thermal-support` | support | `ring-stand`, `clay-triangle` | — | The thermal route needs the ring stand and clay triangle as a stable support assembly before the crucible is heated. This role does not substitute for the burner or the weighed vessel. |
 | `thermal-heating-instrument` | instrument | `bunsen-burner` | — | The approved thermal decomposition route uses a Bunsen burner for gentle warming and repeated heating. The exact intensity and duration remain configuration values. |
 | `color-depth-comparison-vessel` | vessel | `test-tube` | — | Investigation 2 V-01 fills a dedicated comparison tube for each arm of the paired visual method, and V-02 then removes solution from the standard arm only. The receiving tube is a material endpoint distinct from the comparison apparatus that holds the pair over the white field, and distinct from the original labelled tube a measured cuvette portion is returned to at S-09. |
+| `cylinder-filling-funnel` | vessel | `funnel` | — | A funnel seated in a graduated cylinder's mouth while a liquid is poured in from a wide bottle, and removed before the volume is read. Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited. It cannot satisfy the filtration-funnel or burette-filling-funnel roles. |
+| `working-portion-vessel` | vessel | `beaker-150ml`, `beaker-250ml` | — | A clean vessel that holds an unmeasured working portion poured from a stock bottle, so that no pipette or other tool enters the stock. Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited. |
+| `pipette-liquid-source` | vessel | `beaker-150ml`, `beaker-250ml`, `test-tube` | — | An open vessel whose liquid a transfer pipette draws up: a working portion in a beaker, or a prepared sample in a test tube. A stock bottle is never one. Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited. |
+| `transfer-pipette` | delivery | `beral-pipette` | — | A disposable transfer pipette that carries a small unmeasured volume, as when filling a cuvette. Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited. |
 
 ### Deliberate distinctions
 
@@ -3933,3 +4008,5 @@ A role is a constraint, not a synonym for one apparatus id. Capacity, tolerance,
 - `provenance-matched-sample-receiver` must not be confused with `receiving-vessel`, `phase-receiver`.
 - `measured-liquid-source` must not be confused with `measured-solvent-source`, `liquid-source`.
 - `color-depth-comparison-vessel` must not be confused with `receiving-vessel`, `provenance-matched-sample-receiver`, `color-depth-comparison-apparatus`.
+- `cylinder-filling-funnel` must not be confused with `burette-filling-funnel`, `filtration-funnel`.
+- `transfer-pipette` must not be confused with `photometric-aliquot-tool`, `variable-volume-measuring-device`.

@@ -1,0 +1,82 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "beaker-150ml",
+  "model": "beaker-150ml.glb",
+  "thumbnail": "thumbs/beaker-150ml.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "circle",
+      "radius": 30.0
+    },
+    "grip": {
+      "heightMm": 45.0
+    },
+    "pour": {
+      "lipMm": [
+        -35.0,
+        0.0,
+        81.0
+      ],
+      "tiltDeg": 100.0,
+      "style": "pour"
+    },
+    "fill": {
+      "innerProfileMm": [
+        [
+          0.0,
+          2.0
+        ],
+        [
+          26.0,
+          2.0
+        ],
+        [
+          28.5,
+          4.5
+        ],
+        [
+          28.5,
+          80.0
+        ]
+      ],
+      "capacityMl": 150,
+      "meniscus": "concave"
+    },
+    "graduations": null,
+    "anchors": {},
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -35.28,
+        -30.57,
+        0.0
+      ],
+      "max": [
+        30.57,
+        30.57,
+        81.11
+      ]
+    },
+    "triangles": 19295,
+    "materials": [
+      "Borosilicate glass",
+      "Borosilicate glass thick",
+      "White enamel print"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/beaker_150ml.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "3a0dd4ff37a6e03c9719f7c9e4db2ce690d978803cf5854b3de00c3c1c411528",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

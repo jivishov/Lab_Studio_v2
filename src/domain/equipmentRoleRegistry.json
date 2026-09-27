@@ -1248,6 +1248,64 @@
         "provenance-matched-sample-receiver",
         "color-depth-comparison-apparatus"
       ]
+    },
+    {
+      "id": "cylinder-filling-funnel",
+      "label": "Cylinder filling funnel",
+      "kind": "vessel",
+      "constraints": {
+        "use": "temporary filling aid",
+        "mustBeRemovedBeforeReading": true,
+        "distinctFromFiltration": true
+      },
+      "allowedEquipmentIds": [
+        "funnel"
+      ],
+      "rationale": "A funnel seated in a graduated cylinder's mouth while a liquid is poured in from a wide bottle, and removed before the volume is read. Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited. It cannot satisfy the filtration-funnel or burette-filling-funnel roles.",
+      "distinguishedFrom": [
+        "burette-filling-funnel",
+        "filtration-funnel"
+      ]
+    },
+    {
+      "id": "working-portion-vessel",
+      "label": "Working-portion vessel",
+      "kind": "vessel",
+      "constraints": {},
+      "allowedEquipmentIds": [
+        "beaker-150ml",
+        "beaker-250ml"
+      ],
+      "rationale": "A clean vessel that holds an unmeasured working portion poured from a stock bottle, so that no pipette or other tool enters the stock. Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited."
+    },
+    {
+      "id": "pipette-liquid-source",
+      "label": "Liquid drawn by a pipette",
+      "kind": "vessel",
+      "constraints": {},
+      "allowedEquipmentIds": [
+        "beaker-150ml",
+        "beaker-250ml",
+        "test-tube"
+      ],
+      "rationale": "An open vessel whose liquid a transfer pipette draws up: a working portion in a beaker, or a prepared sample in a test tube. A stock bottle is never one. Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited."
+    },
+    {
+      "id": "transfer-pipette",
+      "label": "Transfer pipette",
+      "kind": "delivery",
+      "constraints": {
+        "deliveryMode": "unmeasured",
+        "readsQuantity": "none"
+      },
+      "allowedEquipmentIds": [
+        "beral-pipette"
+      ],
+      "rationale": "A disposable transfer pipette that carries a small unmeasured volume, as when filling a cuvette. Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited.",
+      "distinguishedFrom": [
+        "photometric-aliquot-tool",
+        "variable-volume-measuring-device"
+      ]
     }
   ]
 }

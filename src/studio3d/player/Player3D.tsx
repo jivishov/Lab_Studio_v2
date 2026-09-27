@@ -214,7 +214,12 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     () => (tool ? scene.bench.find((i) => i.definitionId === tool.toolDefinitionId)?.instanceId : undefined),
     [scene, tool],
   );
-  const beaconId = !tool ? (carry.carrying ? expectedTargetId : expectedSourceId)
+  // A draw into a pipette (decided 2026-09-26): the pipette first, then the liquid it draws from.
+  const pipette = player.pipetteStep;
+  const onBench = (id?: string) => (id && scene.bench.some((i) => i.instanceId === id) ? id : undefined);
+  const drawIds = pipette?.kind === "draw" ? { tool: onBench(pipette.toolInstanceId), liquid: onBench(pipette.otherInstanceId) } : undefined;
+  const beaconId = drawIds ? (!carry.carrying ? drawIds.tool : carry.carriedDefinitionId === pipette!.toolDefinitionId ? drawIds.liquid : undefined)
+    : !tool ? (carry.carrying ? expectedTargetId : expectedSourceId)
     : !carry.carrying ? toolId
       : carry.carriedDefinitionId !== tool.toolDefinitionId ? undefined
         : carry.toolLoaded ? expectedTargetId : expectedSourceId;
@@ -401,6 +406,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     setAutoView(true);
     frame();
     if (tool) engine?.showMe(toolId, expectedTargetId, expectedSourceId);
+    else if (drawIds) engine?.showMe(drawIds.tool, drawIds.liquid);
     else engine?.showMe(expectedSourceId, expectedTargetId);
   };
   tapRef.current = (id, pointerType, x, y) => {
@@ -515,6 +521,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   const hint = carry.keyCarrying ? "Arrows move it (Shift: further). [ ] step through targets. Enter sets it down; Esc cancels."
     : carry.carrying ? "Release to set down. Esc cancels."
     : tool && flow.canConfirm ? "Dip the spatula into the source, then release it over the target; or use Source, Target and Confirm. Right-drag to look around."
+    : pipette && flow.canConfirm ? "Carry the pipette by its tip and release it over the liquid or the cuvette; or use Source, Target and Confirm. Right-drag to look around."
     : flow.canConfirm ? "Drag items on the bench, or use Source, Target and Confirm. Right-drag to look around."
       : player.runtime.expectedAction?.parameters.balanceOperation === "zero" ? "Press TARE on the balance, or Tare in the step card. Right-drag to look around."
       : "Fill in the step card, then record. Right-drag to look around.";
