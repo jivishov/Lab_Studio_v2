@@ -20,7 +20,7 @@
     "safety": "A numbered safety-prerequisite row (`S-NN`) whose inline M/F/R/C marker is copied verbatim. Safety IDs are a separate namespace from procedure-phase IDs with the same text."
   },
   "seedScope": "Cycle 02 seeds the families the plan names: filtration, weighing, measurement, spectrophotometry, titration, chromatography, kinetics, equilibrium, and calorimetry. It deliberately does not backfill every authored action; existing unannotated physical actions are carried as stable baseline identifiers in scripts/content-consistency-lint-baseline.json.",
-  "extensionScope": "An activity cycle adds an atom only when the operation its dated plan states has no existing identity, and records the source row that demanded it. Cycle 06 added five spectrophotometry atoms for instrument configuration, cuvette optical preparation/removal, reading records, and photometric aliquots; it also placed quantitative final-volume dilution in measurement, timed liquid reaction initiation in kinetics, and two endpoint-based treatment operations in a new waste-treatment family. Cycle 07 distinguishes a source-measured vessel rinse from an unmeasured rinse and identifies the transfer of its quantitative washings. Cycle 08 added seven atoms for Investigation 3's gravimetric preparation, filtration, and drying, and corrected atom.place.filtration-funnel so its role contract does not silently decide gravity versus vacuum configuration. Cycle 09 extended titration with support/receiver placement, burette filling, analyte acidification, immersed pH-probe placement and reading, and trial-mixture disposal. Cycle 10 extended chromatography with chamber, strip, spotting-tool, removal, ruler, and solvent-waste operations; opened separation for extraction, phase recovery, washing, and drying-agent work; and corrected atom.transfer.charge-developing-chamber so an unresolved solvent-volume choice stays open. Cycle 11 extended kinetics with delivery-train assembly, instrument zeroing, reactant weighing, and reaction initiation; separated collection-apparatus placement from train assembly; and opened qualitative-analysis for microsample transfer, solvent application, instrument reads, sample staging, and waste routing. Cycle 12 adds the locking-pin placement that makes the source-stated sealed syringe state visible, plus clean-vessel selection, dilution, and disposal identities that preserve the assembled calorimeter as one runtime object. Cycle 07 adds brass-specific final-volume, measured-stock, blank-preparation, and qualitative-comparison identities where the source requires apparatus that the shared spectroscopy atoms do not express. Cycle 12 adds calorimetry identities for staging measuring and weighing vessels, dispensing the weighed solid, heating the water sample, and removing it safely. The Cycle 05 coordinator amendment adds generic contracts for source-stated cuvette conditioning and optical preparation, two-stage photometer calibration, provenance-matched cuvette return, one-sided color-depth matching and acquisition, and incremental solid waste treatment with a pH-paper endpoint. The Lab Studio 3D work adds four identities decided by the teacher on 2026-09-26 for transmittance-dilution (seating and removing a cylinder filling funnel, pouring a working portion, and drawing into a transfer pipette); they cite no dated plan.",
+  "extensionScope": "An activity cycle adds an atom only when the operation its dated plan states has no existing identity, and records the source row that demanded it. Cycle 06 added five spectrophotometry atoms for instrument configuration, cuvette optical preparation/removal, reading records, and photometric aliquots; it also placed quantitative final-volume dilution in measurement, timed liquid reaction initiation in kinetics, and two endpoint-based treatment operations in a new waste-treatment family. Cycle 07 distinguishes a source-measured vessel rinse from an unmeasured rinse and identifies the transfer of its quantitative washings. Cycle 08 added seven atoms for Investigation 3's gravimetric preparation, filtration, and drying, and corrected atom.place.filtration-funnel so its role contract does not silently decide gravity versus vacuum configuration. Cycle 09 extended titration with support/receiver placement, burette filling, analyte acidification, immersed pH-probe placement and reading, and trial-mixture disposal. Cycle 10 extended chromatography with chamber, strip, spotting-tool, removal, ruler, and solvent-waste operations; opened separation for extraction, phase recovery, washing, and drying-agent work; and corrected atom.transfer.charge-developing-chamber so an unresolved solvent-volume choice stays open. Cycle 11 extended kinetics with delivery-train assembly, instrument zeroing, reactant weighing, and reaction initiation; separated collection-apparatus placement from train assembly; and opened qualitative-analysis for microsample transfer, solvent application, instrument reads, sample staging, and waste routing. Cycle 12 adds the locking-pin placement that makes the source-stated sealed syringe state visible, plus clean-vessel selection, dilution, and disposal identities that preserve the assembled calorimeter as one runtime object. Cycle 07 adds brass-specific final-volume, measured-stock, blank-preparation, and qualitative-comparison identities where the source requires apparatus that the shared spectroscopy atoms do not express. Cycle 12 adds calorimetry identities for staging measuring and weighing vessels, dispensing the weighed solid, heating the water sample, and removing it safely. The Cycle 05 coordinator amendment adds generic contracts for source-stated cuvette conditioning and optical preparation, two-stage photometer calibration, provenance-matched cuvette return, one-sided color-depth matching and acquisition, and incremental solid waste treatment with a pH-paper endpoint. The Lab Studio 3D work adds four identities decided by the teacher on 2026-09-26 for transmittance-dilution (seating and removing a cylinder filling funnel, pouring a working portion, and drawing into a transfer pipette); they cite no dated plan. It also adds six for Dilute a Stock Solution decided on 2026-10-02 (fitting a pipette filler, filling a graduated pipette to zero, delivering down to a line, bringing a flask to its mark drop by drop, stoppering, and inverting to mix).",
   "atoms": [
     {
       "id": "atom.weigh.tare-vessel",
@@ -10803,6 +10803,263 @@
         {
           "owner": "technique:transmittance-dilution",
           "actionId": "transmittance-dilution-draw-sample-into-pipette"
+        }
+      ]
+    },
+    {
+      "id": "atom.place.pipette-filler",
+      "family": "measurement",
+      "documentationLabel": "Fit the pipette filler to a measuring pipette",
+      "verb": "place",
+      "allowedInteractionTypes": [
+        "snapIntoTarget"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "instrument"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "variable-volume-measuring-device",
+        "pipette-filler"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "The filler is fitted before any liquid is drawn; a pipette is never filled by mouth.",
+        "Decided by the teacher on 2026-10-02 (Pack 1 atomization); no dated plan states this step, so no source example is cited."
+      ],
+      "evidence": "pipette pump fitted on the measuring pipette",
+      "sourceExamples": [],
+      "contentExamples": [
+        {
+          "owner": "technique:dilution",
+          "actionId": "fit-pipette-pump"
+        }
+      ]
+    },
+    {
+      "id": "atom.transfer.fill-pipette-to-zero-mark",
+      "family": "measurement",
+      "documentationLabel": "Fill a graduated pipette to its zero mark",
+      "verb": "transfer",
+      "allowedInteractionTypes": [
+        "pourInto"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "instrument"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "pipette-liquid-source",
+        "variable-volume-measuring-device"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "The pipette draws from an open working portion through its fitted filler, never from the stock bottle.",
+        "Filling to the zero mark is what lets the delivered volume be read from the graduations.",
+        "Decided by the teacher on 2026-10-02 (Pack 1 atomization); no dated plan states this step, so no source example is cited."
+      ],
+      "evidence": "the measuring pipette filled to its zero mark",
+      "sourceExamples": [],
+      "contentExamples": [
+        {
+          "owner": "technique:dilution",
+          "actionId": "fill-pipette-to-zero"
+        }
+      ]
+    },
+    {
+      "id": "atom.transfer.deliver-pipette-to-line",
+      "family": "measurement",
+      "documentationLabel": "Deliver from a graduated pipette down to a line",
+      "verb": "transfer",
+      "allowedInteractionTypes": [
+        "dispenseDrops"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "instrument"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "variable-volume-measuring-device",
+        "receiving-vessel"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "The liquid runs freely and then drop by drop as the meniscus nears the line; delivery stops when the bottom of the meniscus touches it.",
+        "The delivered volume is the graduation reached; going past the line cannot be undone.",
+        "Decided by the teacher on 2026-10-02 (Pack 1 atomization); no dated plan states this step, so no source example is cited."
+      ],
+      "evidence": "the aliquot delivered down to the pipette's line",
+      "sourceExamples": [],
+      "contentExamples": [
+        {
+          "owner": "technique:dilution",
+          "actionId": "deliver-aliquot-to-line"
+        }
+      ]
+    },
+    {
+      "id": "atom.dilute.dropwise-to-mark",
+      "family": "measurement",
+      "documentationLabel": "Bring a volumetric flask to its mark drop by drop",
+      "verb": "transfer",
+      "allowedInteractionTypes": [
+        "dispenseDrops"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "instrument"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "transfer-pipette",
+        "final-volume-vessel"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "The last of the solvent is added from a dropping pipette, one drop at a time, until the bottom of the meniscus touches the mark at eye level.",
+        "Going past the mark cannot be undone: the solution is remade.",
+        "Decided by the teacher on 2026-10-02 (Pack 1 atomization); no dated plan states this step, so no source example is cited."
+      ],
+      "evidence": "the volumetric flask filled exactly to its mark",
+      "sourceExamples": [],
+      "contentExamples": [
+        {
+          "owner": "technique:dilution",
+          "actionId": "bring-to-mark-dropwise"
+        }
+      ]
+    },
+    {
+      "id": "atom.place.stopper-vessel",
+      "family": "foundational",
+      "documentationLabel": "Stopper a vessel",
+      "verb": "place",
+      "allowedInteractionTypes": [
+        "snapIntoTarget"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "instrument"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "vessel-stopper",
+        "final-volume-vessel"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "The stopper is seated before the vessel is inverted to mix.",
+        "Decided by the teacher on 2026-10-02 (Pack 1 atomization); no dated plan states this step, so no source example is cited."
+      ],
+      "evidence": "stopper seated in the vessel's neck",
+      "sourceExamples": [],
+      "contentExamples": [
+        {
+          "owner": "technique:dilution",
+          "actionId": "stopper-flask"
+        }
+      ]
+    },
+    {
+      "id": "atom.mix.invert-stoppered-vessel",
+      "family": "foundational",
+      "documentationLabel": "Invert a stoppered vessel to mix",
+      "verb": "mix",
+      "allowedInteractionTypes": [
+        "recordNotebook"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state",
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "final-volume-vessel",
+        "vessel-stopper"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "The stopper is held in place while the vessel is turned over and back about ten times, so the solution is uniform.",
+        "Mixing is refused while the stopper is not seated.",
+        "Decided by the teacher on 2026-10-02 (Pack 1 atomization); no dated plan states this step, so no source example is cited."
+      ],
+      "evidence": "the solution mixed by repeated inversion",
+      "sourceExamples": [],
+      "contentExamples": [
+        {
+          "owner": "technique:dilution",
+          "actionId": "invert-to-mix"
         }
       ]
     }

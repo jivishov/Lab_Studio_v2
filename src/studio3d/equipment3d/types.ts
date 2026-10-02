@@ -111,6 +111,8 @@ export interface Equipment3DEntry {
    * carried and seated upright.
    */
   benchRest?: { rollDeg: number; liftMm: number; shiftMm: number[] };
+  /** A pipette, carried upright and judged by its tip (its origin): it draws up and delivers liquid. */
+  carriedByTip?: boolean;
   anchors: Record<string, Equipment3DAnchor>;
   displays: Equipment3DDisplay[];
   controls?: Equipment3DControl[];

@@ -1,5 +1,6 @@
 import type { ActionDefinition, ActionInteractionSpec, EquipmentInstance, RuntimeActionRequest } from "../../domain/types";
 import { equipmentById } from "../../equipment/catalog";
+import { equipment3dEntry } from "../equipment3d/readiness";
 import { getBenchSize } from "../../equipment/visualCatalog";
 import type { BenchOverlapResult } from "../../player/benchOverlap";
 import { snapPointAligningSourceAnchor } from "../../player/benchTargeting";
@@ -281,9 +282,10 @@ export interface PipetteStep {
   otherInstanceId?: string;
 }
 
+/** A pipette (a Beral or a graduated pipette): its 3D model is carried upright by its tip. */
 export const isFillableTool = (definitionId: string | undefined): boolean => {
   const definition = definitionId ? equipmentById.get(definitionId) : undefined;
-  return Boolean(definition && definition.category === "tool" && definition.affordances.includes("fillable"));
+  return Boolean(definition && definition.affordances.includes("fillable") && definitionId && equipment3dEntry(definitionId)?.carriedByTip);
 };
 
 export const pipetteStepFor = (
@@ -332,4 +334,40 @@ export const resolvePipetteRelease = (
   }
   if (step.kind === "draw" && carried.definitionId === step.otherDefinitionId && overlap.target?.id === step.toolInstanceId) return { kind: "usePipette" };
   return { kind: "none" };
+};
+
+/**
+ * A step that brings a level to a line drop by drop (decided 2026-10-02): a graduated pipette
+ * delivering down to a line (`bySource`) or a dropping pipette bringing a flask to its mark. The
+ * pipette is held over the vessel; then each drop, a short run of drops, or "at the line" is sent
+ * as the step's own drop intents.
+ */
+export interface MarkStep {
+  pipetteInstanceId: string;
+  pipetteDefinitionId: string;
+  vesselInstanceId: string;
+  vesselDefinitionId: string;
+  bySource: boolean;
+  /** The volume delivered (by source) or the vessel's volume at the mark (by target), in mL. */
+  goalMl: number;
+}
+
+export const markStepFor = (
+  action: ActionDefinition | undefined,
+  interaction: ActionInteractionSpec | undefined,
+  instances: readonly EquipmentInstance[],
+  nodeCompleted: boolean,
+): MarkStep | undefined => {
+  if (!action || nodeCompleted || interaction?.type !== "dispenseDrops" || typeof action.parameters.markDispense !== "string") return undefined;
+  const named = (key: string) => (typeof action.parameters[key] === "string" ? action.parameters[key] as string : undefined);
+  const pipette = instances.find((instance) => instance.id === named("sourceInstanceId"))
+    ?? instances.find((instance) => instance.definitionId === interaction.sourceDefinitionId);
+  const vessel = instances.find((instance) => instance.id === named("targetInstanceId"))
+    ?? instances.find((instance) => instance.definitionId === interaction.targetDefinitionId);
+  if (!pipette || !vessel) return undefined;
+  const bySource = action.parameters.markDispense === "source";
+  const goalMl = Number(action.parameters[bySource ? "deliverMl" : "markVolumeMl"]);
+  if (!Number.isFinite(goalMl)) return undefined;
+  return { pipetteInstanceId: pipette.id, pipetteDefinitionId: pipette.definitionId, vesselInstanceId: vessel.id,
+    vesselDefinitionId: vessel.definitionId, bySource, goalMl };
 };

@@ -1,0 +1,93 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "graduated-pipette-10ml",
+  "model": "graduated-pipette-10ml.glb",
+  "thumbnail": "thumbs/graduated-pipette-10ml.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "rect",
+      "width": 9.6,
+      "depth": 330.0
+    },
+    "grip": {
+      "heightMm": 210.0
+    },
+    "fill": {
+      "innerProfileMm": [
+        [
+          0.45,
+          0.6
+        ],
+        [
+          3.5,
+          12.8
+        ],
+        [
+          3.5,
+          330.0
+        ]
+      ],
+      "capacityMl": 10,
+      "meniscus": "concave"
+    },
+    "graduations": {
+      "unit": "mL",
+      "minor": 0.1,
+      "major": 1,
+      "maxMl": 10,
+      "direction": "delivered-from-top"
+    },
+    "carriedByTip": true,
+    "benchRest": {
+      "rollDeg": -90.0,
+      "liftMm": 4.3,
+      "shiftMm": [
+        0.0,
+        -165.0
+      ]
+    },
+    "anchors": {
+      "graduated-pipette-pump-seat": {
+        "positionMm": [
+          0.0,
+          0.0,
+          316.0
+        ]
+      }
+    },
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -4.3,
+        -4.35,
+        0.0
+      ],
+      "max": [
+        4.3,
+        4.3,
+        330.0
+      ]
+    },
+    "triangles": 7028,
+    "materials": [
+      "Blue print ink",
+      "Borosilicate glass",
+      "Borosilicate glass thick"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/graduated_pipette_10ml.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "7d92736639cb7fa81680e61cdadea76e70ce472475aae942ba9288bfabbd1465",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

@@ -10,6 +10,7 @@ import {
   type DataSeriesRecord,
   type DropDispenseColorState,
   type DropDispenseRecord,
+  type MarkDispenseRecord,
   type EquipmentInstance,
   type KineticsModelDefinition,
   type PrecipitateState,
@@ -1350,6 +1351,157 @@ const executeStressEquilibrium = (
   };
 };
 
+/**
+ * Bringing a level to a line drop by drop (decided 2026-10-02). A Beral pipette brings a volumetric
+ * flask to its mark (`markDispense: "target"`, judged by the flask's volume against
+ * `markVolumeMl`); a graduated pipette delivers down to a line (`markDispense: "source"`, judged by
+ * the volume delivered against `deliverMl`). Each request moves one drop, or a short run of drops
+ * while the pipette is squeezed (`dropCount`); `acceptEndpoint` judges the level within one drop.
+ * Going past the line cannot be undone: it is kept, and accepting is refused, as a real solution
+ * would be remade. On acceptance the line's value is recorded (`outputMeasurementId`) and the
+ * node's notebook tag is written, which is what completes the step.
+ */
+const MARK_DROP_ML = 0.05;
+const MARK_MAX_RUN_DROPS = 40;
+
+const executeMarkDispense = (
+  state: RuntimeState,
+  action: RuntimeActionRequest,
+  actionDefinition: ActionDefinition,
+  nodeId: string,
+  params: Record<string, string | number | boolean | string[] | undefined>,
+): ActionResult => {
+  const source = findInstance(state, action.sourceInstanceId, String(params.sourceDefinitionId ?? ""));
+  const target = findInstance(state, action.targetInstanceId, String(params.targetDefinitionId ?? ""));
+  if (!source || !target) {
+    return fail(state, "The pipette or the receiving vessel was not found.", "Hold the pipette over the vessel this step names.", nodeId);
+  }
+  const bySource = params.markDispense === "source";
+  const goal = numberSetting(params, bySource ? "deliverMl" : "markVolumeMl", Number.NaN);
+  if (!Number.isFinite(goal) || goal <= 0) {
+    return fail(state, "This step's line is not set up.", "Ask your teacher to set up this technique before running it.", nodeId);
+  }
+  const dropMl = numberSetting(params, "dropVolumeMl", MARK_DROP_ML);
+  const toleranceMl = numberSetting(params, "markToleranceMl", dropMl);
+  const record: MarkDispenseRecord = state.markDispenses?.[actionDefinition.id]
+    ?? { actionId: actionDefinition.id, deliveredMl: 0, overshot: false, accepted: false };
+  const levelFor = (deliveredMl: number, targetVolumeMl: number) => (bySource ? deliveredMl : targetVolumeMl);
+  const withRecord = (next: RuntimeState, nextRecord: MarkDispenseRecord): RuntimeState => ({
+    ...next,
+    markDispenses: { ...next.markDispenses, [nextRecord.actionId]: nextRecord },
+  });
+
+  if (params.dispenseMode === "acceptEndpoint") {
+    if (record.accepted) {
+      return fail(state, "The level is already at the line.", "Go on to the next step.", nodeId);
+    }
+    const level = levelFor(record.deliveredMl, target.contents.volumeMl ?? 0);
+    if (record.overshot || level > goal + toleranceMl + 1e-9) {
+      return fail(
+        state,
+        "The meniscus is past the line.",
+        "In the lab this solution would be remade. Restart the technique, and stop adding when the bottom of the meniscus touches the line.",
+        nodeId,
+      );
+    }
+    if (level < goal - toleranceMl - 1e-9) {
+      return fail(
+        state,
+        "The meniscus has not reached the line yet.",
+        "Keep going a drop at a time until the bottom of the meniscus touches the line.",
+        nodeId,
+      );
+    }
+    let next = withRecord(state, { ...record, accepted: true });
+    const measurementId = stringSetting(params, "outputMeasurementId");
+    if (measurementId) {
+      next = upsertMeasurement(next, measurementId, stringSetting(params, "outputLabel") ?? actionDefinition.label, goal, "mL",
+        bySource ? source.id : target.id, nodeId);
+    }
+    const tag = stringSetting(params, "tag");
+    if (tag) next = addNotebook(next, nodeId, actionDefinition.label, `${goal} mL`, [tag], "measurement");
+    return { ok: true, state: next, message: actionDefinition.feedback.success };
+  }
+
+  if (record.accepted) {
+    return fail(state, "The level is already at the line.", "Go on to the next step.", nodeId);
+  }
+  const drops = Math.max(1, Math.min(MARK_MAX_RUN_DROPS, Math.round(numberSetting(params, "dropCount", 1))));
+  const volumeMl = roundToRuntimeMl(Math.min(source.contents.volumeMl ?? 0, drops * dropMl));
+  if (source.contents.kind === "empty" || volumeMl <= 0) {
+    return fail(state, `The ${source.label} is empty.`, "Draw more liquid into the pipette first.", nodeId);
+  }
+  const targetDefinition = equipmentById.get(target.definitionId);
+  if (targetDefinition?.capacity.unit === "mL" && (target.contents.volumeMl ?? 0) + volumeMl > targetDefinition.capacity.amount * 1.1) {
+    return fail(state, `The ${target.label} would overflow.`, "Restart the technique and stop at the line.", nodeId);
+  }
+  let next: RuntimeState;
+  if (canConserveOrdinaryContent(source.contents, target.contents, actionDefinition)) {
+    const { transferredContents, remainingContents } = splitContentForVolume(source.contents, volumeMl);
+    const merged = mergeTransferredContents(target.contents, transferredContents);
+    // Drops of a material the vessel already holds do not add to its name each time, and water
+    // dropped into a solution leaves a solution.
+    const named = target.contents.kind !== "empty" && target.contents.label.split(" + ").includes(source.contents.label);
+    const kind = merged.kind === "mixture" && !merged.precipitate && ["liquid", "solution"].includes(target.contents.kind)
+      && ["liquid", "solution"].includes(source.contents.kind) ? "solution" : merged.kind;
+    next = updateInstance(state, target.id, (instance) => ({
+      ...instance,
+      contents: { ...merged, kind, label: named ? target.contents.label : merged.label,
+        volumeMl: roundToRuntimeMl((target.contents.volumeMl ?? 0) + volumeMl), wetState: "wet" },
+    }));
+    next = updateInstance(next, source.id, (instance) => ({
+      ...instance,
+      contents: remainingContents.kind === "empty" ? remainingContents : { ...remainingContents, volumeMl: roundToRuntimeMl(remainingContents.volumeMl ?? 0) },
+    }));
+  } else {
+    next = updateInstance(state, target.id, (instance) => ({
+      ...instance,
+      contents: { ...mergeContents(source.contents, instance.contents, volumeMl), volumeMl: roundToRuntimeMl((instance.contents.volumeMl ?? 0) + volumeMl) },
+    }));
+    next = updateInstance(next, source.id, (instance) => {
+      const remaining = Math.max(0, roundToRuntimeMl((instance.contents.volumeMl ?? 0) - volumeMl));
+      return { ...instance, contents: remaining === 0 ? emptyContents() : { ...instance.contents, volumeMl: remaining } };
+    });
+  }
+  const deliveredMl = roundToRuntimeMl(record.deliveredMl + volumeMl);
+  const level = levelFor(deliveredMl, roundToRuntimeMl((target.contents.volumeMl ?? 0) + volumeMl));
+  const overshot = record.overshot || level > goal + toleranceMl + 1e-9;
+  return {
+    ok: true,
+    state: withRecord(next, { ...record, deliveredMl, overshot }),
+    message: drops === 1 ? "One drop added." : `${drops} drops added.`,
+  };
+};
+
+/**
+ * Mixing a stoppered vessel by inversion (decided 2026-10-02): each request is one inversion, and
+ * `inversions` of them (10 by default) complete the mix and write the node's notebook tag. The
+ * stopper is required through the action's attachment gate (`requiredAttachmentState`).
+ */
+const executeInversion = (
+  state: RuntimeState,
+  action: RuntimeActionRequest,
+  actionDefinition: ActionDefinition,
+  nodeId: string,
+  params: Record<string, string | number | boolean | string[] | undefined>,
+): ActionResult => {
+  const vessel = findInstance(state, stringSetting(params, "vesselInstanceId") ?? action.sourceInstanceId, String(params.vesselDefinitionId ?? params.sourceDefinitionId ?? ""));
+  if (!vessel) return fail(state, "The vessel to mix was not found.", "Pick up the stoppered flask this step names.", nodeId);
+  if ((vessel.contents.volumeMl ?? 0) <= 0) {
+    return fail(state, `The ${vessel.label} is empty.`, "Fill the flask before mixing it.", nodeId);
+  }
+  const required = Math.max(1, Math.round(numberSetting(params, "inversions", 10)));
+  const done = state.mixInversions?.[actionDefinition.id] ?? 0;
+  if (done >= required) return fail(state, "The flask is already mixed.", "Go on to the next step.", nodeId);
+  const count = done + 1;
+  let next: RuntimeState = { ...state, mixInversions: { ...state.mixInversions, [actionDefinition.id]: count } };
+  if (count >= required) {
+    next = addNotebook(next, nodeId, actionDefinition.label, `Inverted ${count} times with the stopper held in place.`,
+      [stringSetting(params, "tag") ?? "mixed-by-inversion"]);
+  }
+  return { ok: true, state: next, message: count >= required ? actionDefinition.feedback.success : `Inversion ${count} of ${required}.` };
+};
+
 const executeAction = (
   definition: RuntimeDefinition,
   state: RuntimeState,
@@ -1397,6 +1549,13 @@ const executeAction = (
   if (actionDefinition.parameters.titrationOperation) {
     const result = executeTitrationStep(definition, state, actionDefinition, action, nodeId);
     return result.ok ? result : fail(state, result.message, result.recovery, nodeId);
+  }
+
+  if (actionDefinition.parameters.markDispense && actionDefinition.interaction?.type === "dispenseDrops") {
+    return executeMarkDispense(state, action, actionDefinition, nodeId, params);
+  }
+  if (actionDefinition.verb === "mix" && actionDefinition.parameters.mixOperation === "invert") {
+    return executeInversion(state, action, actionDefinition, nodeId, params);
   }
 
   if (actionDefinition.parameters.tipInspectionOperation === true && action.note === "Bubbles remain: purge again") {
@@ -7560,10 +7719,12 @@ export const performRuntimeAction = (
   const nextId = requestedNext && passed && process.edges.some(edge => edge.from === currentNode.id && edge.to === requestedNext)
     ? requestedNext
     : runtimeRepeatComplete ? nextNodeId(currentNode.id, process.edges, result.state, passed) : currentNode.id;
+  // A drop, or an inversion short of the count, is progress within the step: no retry feedback.
   const pendingDispenseDrop =
     !passed &&
-    actionDefinition.interaction?.type === "dispenseDrops" &&
-    normalizedRequest.parameters?.dispenseMode === "drop";
+    ((actionDefinition.interaction?.type === "dispenseDrops" &&
+      normalizedRequest.parameters?.dispenseMode === "drop") ||
+      (actionDefinition.verb === "mix" && actionDefinition.parameters.mixOperation === "invert"));
   const repeatProgress = { ...result.state.repeatProgress };
   if (passed && runtimeRepeat && runtimeRepeatIteration !== undefined && runtimeRepeatExpected !== undefined) {
     const completedIterations = Array.from(new Set([

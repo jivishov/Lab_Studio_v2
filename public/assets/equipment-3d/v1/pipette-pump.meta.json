@@ -1,0 +1,60 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "pipette-pump",
+  "model": "pipette-pump.glb",
+  "thumbnail": "thumbs/pipette-pump.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "rect",
+      "width": 28.0,
+      "depth": 112.0
+    },
+    "grip": {
+      "heightMm": 70.0
+    },
+    "graduations": null,
+    "benchRest": {
+      "rollDeg": -90.0,
+      "liftMm": 12.0,
+      "shiftMm": [
+        0.0,
+        -56.0
+      ]
+    },
+    "anchors": {},
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -12.0,
+        -13.5,
+        -0.5
+      ],
+      "max": [
+        12.0,
+        13.5,
+        112.0
+      ]
+    },
+    "triangles": 8928,
+    "materials": [
+      "Black phenolic knob",
+      "Black rubber",
+      "Pipette pump green"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/pipette_pump.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "057abb8f2eb18022a5827cd8f767578bb0b51027173dee373116e7bba29ae10f",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

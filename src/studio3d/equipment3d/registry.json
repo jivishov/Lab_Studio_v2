@@ -179,6 +179,7 @@
         "meniscus": "concave"
       },
       "graduations": null,
+      "carriedByTip": true,
       "benchRest": {
         "rollDeg": -90.0,
         "liftMm": 7.5,
@@ -193,7 +194,7 @@
       "provenance": {
         "blender": "5.2.2",
         "generator": "tools/blender/equipment/beral_pipette.py",
-        "sourceHash": "942bc96546aee48b724b180d6ff0cb1973ef77423c148729dc9dc614f54c45aa"
+        "sourceHash": "9c4455a7764db3d3d11bdc7d4970f3ba752e0c8aff7d2b0c417bb2631f6c3322"
       }
     },
     {
@@ -380,6 +381,99 @@
         "blender": "5.2.2",
         "generator": "tools/blender/equipment/graduated_cylinder_25ml.py",
         "sourceHash": "27b7b58568b76cdea01bad073563e7d9aacb073fe84dd946555b22696b5a4ef4"
+      }
+    },
+    {
+      "definitionId": "graduated-pipette-10ml",
+      "model": "graduated-pipette-10ml.glb",
+      "thumbnail": "thumbs/graduated-pipette-10ml.png",
+      "footprintMm": {
+        "shape": "rect",
+        "width": 9.6,
+        "depth": 330.0
+      },
+      "grip": {
+        "heightMm": 210.0
+      },
+      "fill": {
+        "innerProfileMm": [
+          [
+            0.45,
+            0.6
+          ],
+          [
+            3.5,
+            12.8
+          ],
+          [
+            3.5,
+            330.0
+          ]
+        ],
+        "capacityMl": 10,
+        "meniscus": "concave"
+      },
+      "graduations": {
+        "unit": "mL",
+        "minor": 0.1,
+        "major": 1,
+        "maxMl": 10,
+        "direction": "delivered-from-top"
+      },
+      "carriedByTip": true,
+      "benchRest": {
+        "rollDeg": -90.0,
+        "liftMm": 4.3,
+        "shiftMm": [
+          0.0,
+          -165.0
+        ]
+      },
+      "anchors": {
+        "graduated-pipette-pump-seat": {
+          "positionMm": [
+            0.0,
+            0.0,
+            316.0
+          ]
+        }
+      },
+      "displays": [],
+      "states": {},
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/graduated_pipette_10ml.py",
+        "sourceHash": "7d92736639cb7fa81680e61cdadea76e70ce472475aae942ba9288bfabbd1465"
+      }
+    },
+    {
+      "definitionId": "pipette-pump",
+      "model": "pipette-pump.glb",
+      "thumbnail": "thumbs/pipette-pump.png",
+      "footprintMm": {
+        "shape": "rect",
+        "width": 28.0,
+        "depth": 112.0
+      },
+      "grip": {
+        "heightMm": 70.0
+      },
+      "graduations": null,
+      "benchRest": {
+        "rollDeg": -90.0,
+        "liftMm": 12.0,
+        "shiftMm": [
+          0.0,
+          -56.0
+        ]
+      },
+      "anchors": {},
+      "displays": [],
+      "states": {},
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/pipette_pump.py",
+        "sourceHash": "057abb8f2eb18022a5827cd8f767578bb0b51027173dee373116e7bba29ae10f"
       }
     },
     {

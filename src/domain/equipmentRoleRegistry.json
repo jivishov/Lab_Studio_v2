@@ -1306,6 +1306,30 @@
         "photometric-aliquot-tool",
         "variable-volume-measuring-device"
       ]
+    },
+    {
+      "id": "pipette-filler",
+      "label": "Pipette filler",
+      "kind": "tool",
+      "constraints": {
+        "use": "draws and releases liquid in a measuring pipette; never pipette by mouth"
+      },
+      "allowedEquipmentIds": [
+        "pipette-pump"
+      ],
+      "rationale": "The pump fitted to a graduated pipette, which fills it and lets it down to a line. Decided by the teacher on 2026-10-02 (Pack 1 atomization); no dated plan states this step, so no source example is cited."
+    },
+    {
+      "id": "vessel-stopper",
+      "label": "Vessel stopper",
+      "kind": "tool",
+      "constraints": {
+        "use": "closes a vessel so it can be inverted to mix"
+      },
+      "allowedEquipmentIds": [
+        "rubber-stopper-set"
+      ],
+      "rationale": "A stopper seated in a volumetric flask or test tube before its contents are mixed by inversion. Decided by the teacher on 2026-10-02 (Pack 1 atomization); no dated plan states this step, so no source example is cited."
     }
   ]
 }

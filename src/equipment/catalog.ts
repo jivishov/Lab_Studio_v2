@@ -876,7 +876,16 @@ export const v1EquipmentCatalog: EquipmentDefinition[] = [
     "fillable",
     "pourable",
     "measurable",
-  ], 10, 0.1, ["empty", "liquid", "solution"]),
+  ], 10, 0.1, ["empty", "liquid", "solution"], [
+    // A pipette pump fitted on the top end; liquid is never drawn by mouth (decided 2026-10-02).
+    {
+      id: "graduated-pipette-pump-seat",
+      label: "Graduated pipette pump seat",
+      accepts: ["pipette-pump"],
+      x: 21,
+      y: 4,
+    },
+  ]),
   equipment("beral-pipette", "Beral pipette", "tool", [
     "draggable",
     "fillable",

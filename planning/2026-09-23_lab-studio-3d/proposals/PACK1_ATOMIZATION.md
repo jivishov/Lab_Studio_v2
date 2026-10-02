@@ -1,5 +1,7 @@
 # Pack 1 atomization: the remaining techniques (proposal, 2026-10-02)
 
+**Status:** Dilute a Stock Solution is built (`evidence/DILUTION_ATOMIZATION_EVIDENCE.md`). Make a Solution and the two additions are next.
+
 **Decided 2026-10-02:** drop by drop to the mark; a 10 mL graduated pipette with a pipette pump for the aliquot; Make a Solution starts from a pre-weighed boat; the solid is dissolved by swirling in the flask. The remaining recommendations stand, as no change was asked for.
 
 This applies the policy decided on 2026-10-02 to the three Pack 1 techniques not yet reviewed: steps are broken down to the real physical actions a student performs, with new atoms where needed. Nothing here is built yet. The choices marked **(you)** are yours; the rest are my recommendations, which I will follow unless you say otherwise.

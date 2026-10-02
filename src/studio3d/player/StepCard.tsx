@@ -10,7 +10,14 @@ import type { Player3DController } from "./usePlayer3D";
  * enabling rules (G-6), Show me in guided mode only (G-7), and the correction block (§5.13).
  * It is a floating panel; collapsed, it is one line: "Step n · <title>" (§5.5.9).
  */
-export const StepCard = ({ player, controls, onShowMe }: { player: Player3DController; controls: PanelControls; onShowMe: () => void }) => {
+export const StepCard = ({ player, controls, onShowMe, onHoldOver, holdOverReady }: {
+  player: Player3DController;
+  controls: PanelControls;
+  onShowMe: () => void;
+  /** A drop-to-the-line step: hold the pipette over the vessel, as releasing it there on the bench does. */
+  onHoldOver?: () => void;
+  holdOverReady?: boolean;
+}) => {
   const { runtime, flow, showGuidance, correction } = player;
   const nodes = runtime.process.nodes;
   const index = Math.max(0, nodes.findIndex((node) => node.id === runtime.currentNode.id));
@@ -114,7 +121,12 @@ export const StepCard = ({ player, controls, onShowMe }: { player: Player3DContr
               {runtime.currentNode.hints.map((hint) => <p key={hint}>{hint}</p>)}
             </details>
           </div>
-          {flow.canConfirm ? (
+          {player.markStep ? (
+            onHoldOver ? (
+              <button type="button" className="s3d-button s3d-button--primary" disabled={!holdOverReady} onClick={onHoldOver}
+                title={holdOverReady ? undefined : "Put the pipette and the vessel on the bench first."}>Hold the pipette over it</button>
+            ) : null
+          ) : flow.canConfirm ? (
             <button type="button" className="s3d-button s3d-button--primary" data-gesture-action="confirm-accessible-action" disabled={!flow.confirmEnabled} onClick={player.confirm}>Confirm</button>
           ) : flow.canSubmitCalculation || (runtime.expectedAction?.verb === "calculate" && !flow.nodeCompleted) ? (
             <button type="button" className="s3d-button s3d-button--primary" data-gesture-action="submit-calculation" disabled={!flow.canSubmitCalculation} onClick={player.submitCalculation}>
@@ -122,7 +134,10 @@ export const StepCard = ({ player, controls, onShowMe }: { player: Player3DContr
             </button>
           ) : flow.interaction?.type === "recordNotebook" ? (
             <button type="button" className="s3d-button s3d-button--primary" data-gesture-action="record-evidence" disabled={!(flow.canRecord || flow.canRecordObservation)} onClick={player.recordEvidence}>
-              {runtime.expectedAction?.parameters.balanceOperation === "zero" ? "Tare" : "Record"}
+              {runtime.expectedAction?.parameters.balanceOperation === "zero" ? "Tare"
+                : runtime.expectedAction?.parameters.mixOperation === "invert"
+                  ? `Invert (${runtime.state.mixInversions?.[runtime.expectedAction.id] ?? 0} of ${Number(runtime.expectedAction.parameters.inversions ?? 10)})`
+                  : "Record"}
             </button>
           ) : null}
         </div>

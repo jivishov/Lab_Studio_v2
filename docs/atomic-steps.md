@@ -29,7 +29,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 
 ## Atoms
 
-208 atoms across 15 families.
+214 atoms across 15 families.
 
 | Atom | Family | Verb | Interactions | Required roles |
 |---|---|---|---|---|
@@ -241,6 +241,12 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 | `atom.place.remove-cylinder-filling-funnel` | measurement | `place` | `dragToZone` | `variable-volume-measuring-device`, `cylinder-filling-funnel` |
 | `atom.transfer.working-portion` | foundational | `transfer` | `pourInto` | `liquid-source`, `working-portion-vessel` |
 | `atom.transfer.draw-into-transfer-pipette` | foundational | `transfer` | `pourInto` | `pipette-liquid-source`, `transfer-pipette` |
+| `atom.place.pipette-filler` | measurement | `place` | `snapIntoTarget` | `variable-volume-measuring-device`, `pipette-filler` |
+| `atom.transfer.fill-pipette-to-zero-mark` | measurement | `transfer` | `pourInto` | `pipette-liquid-source`, `variable-volume-measuring-device` |
+| `atom.transfer.deliver-pipette-to-line` | measurement | `transfer` | `dispenseDrops` | `variable-volume-measuring-device`, `receiving-vessel` |
+| `atom.dilute.dropwise-to-mark` | measurement | `transfer` | `dispenseDrops` | `transfer-pipette`, `final-volume-vessel` |
+| `atom.place.stopper-vessel` | foundational | `place` | `snapIntoTarget` | `vessel-stopper`, `final-volume-vessel` |
+| `atom.mix.invert-stoppered-vessel` | foundational | `mix` | `recordNotebook` | `final-volume-vessel`, `vessel-stopper` |
 
 ### Family: calorimetry
 
@@ -1366,6 +1372,37 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
   - `technique:transmittance-dilution` action `transmittance-dilution-draw-blank-into-pipette`
   - `technique:transmittance-dilution` action `transmittance-dilution-draw-sample-into-pipette`
 
+#### `atom.place.stopper-vessel`
+
+**Stopper a vessel**
+
+- Verb: `place`
+- Allowed interaction types: `snapIntoTarget`
+- Required roles: `vessel-stopper`, `final-volume-vessel`
+- Optional roles: none
+- Evidence: stopper seated in the vessel's neck
+- Procedural constraints:
+  - The stopper is seated before the vessel is inverted to mix.
+  - Decided by the teacher on 2026-10-02 (Pack 1 atomization); no dated plan states this step, so no source example is cited.
+- Content examples:
+  - `technique:dilution` action `stopper-flask`
+
+#### `atom.mix.invert-stoppered-vessel`
+
+**Invert a stoppered vessel to mix**
+
+- Verb: `mix`
+- Allowed interaction types: `recordNotebook`
+- Required roles: `final-volume-vessel`, `vessel-stopper`
+- Optional roles: none
+- Evidence: the solution mixed by repeated inversion
+- Procedural constraints:
+  - The stopper is held in place while the vessel is turned over and back about ten times, so the solution is uniform.
+  - Mixing is refused while the stopper is not seated.
+  - Decided by the teacher on 2026-10-02 (Pack 1 atomization); no dated plan states this step, so no source example is cited.
+- Content examples:
+  - `technique:dilution` action `invert-to-mix`
+
 ### Family: gravimetry
 
 #### `atom.weigh.dry-assembly`
@@ -1901,6 +1938,69 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
   - Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited.
 - Content examples:
   - `technique:transmittance-dilution` action `transmittance-dilution-remove-cylinder-funnel`
+
+#### `atom.place.pipette-filler`
+
+**Fit the pipette filler to a measuring pipette**
+
+- Verb: `place`
+- Allowed interaction types: `snapIntoTarget`
+- Required roles: `variable-volume-measuring-device`, `pipette-filler`
+- Optional roles: none
+- Evidence: pipette pump fitted on the measuring pipette
+- Procedural constraints:
+  - The filler is fitted before any liquid is drawn; a pipette is never filled by mouth.
+  - Decided by the teacher on 2026-10-02 (Pack 1 atomization); no dated plan states this step, so no source example is cited.
+- Content examples:
+  - `technique:dilution` action `fit-pipette-pump`
+
+#### `atom.transfer.fill-pipette-to-zero-mark`
+
+**Fill a graduated pipette to its zero mark**
+
+- Verb: `transfer`
+- Allowed interaction types: `pourInto`
+- Required roles: `pipette-liquid-source`, `variable-volume-measuring-device`
+- Optional roles: none
+- Evidence: the measuring pipette filled to its zero mark
+- Procedural constraints:
+  - The pipette draws from an open working portion through its fitted filler, never from the stock bottle.
+  - Filling to the zero mark is what lets the delivered volume be read from the graduations.
+  - Decided by the teacher on 2026-10-02 (Pack 1 atomization); no dated plan states this step, so no source example is cited.
+- Content examples:
+  - `technique:dilution` action `fill-pipette-to-zero`
+
+#### `atom.transfer.deliver-pipette-to-line`
+
+**Deliver from a graduated pipette down to a line**
+
+- Verb: `transfer`
+- Allowed interaction types: `dispenseDrops`
+- Required roles: `variable-volume-measuring-device`, `receiving-vessel`
+- Optional roles: none
+- Evidence: the aliquot delivered down to the pipette's line
+- Procedural constraints:
+  - The liquid runs freely and then drop by drop as the meniscus nears the line; delivery stops when the bottom of the meniscus touches it.
+  - The delivered volume is the graduation reached; going past the line cannot be undone.
+  - Decided by the teacher on 2026-10-02 (Pack 1 atomization); no dated plan states this step, so no source example is cited.
+- Content examples:
+  - `technique:dilution` action `deliver-aliquot-to-line`
+
+#### `atom.dilute.dropwise-to-mark`
+
+**Bring a volumetric flask to its mark drop by drop**
+
+- Verb: `transfer`
+- Allowed interaction types: `dispenseDrops`
+- Required roles: `transfer-pipette`, `final-volume-vessel`
+- Optional roles: none
+- Evidence: the volumetric flask filled exactly to its mark
+- Procedural constraints:
+  - The last of the solvent is added from a dropping pipette, one drop at a time, until the bottom of the meniscus touches the mark at eye level.
+  - Going past the mark cannot be undone: the solution is remade.
+  - Decided by the teacher on 2026-10-02 (Pack 1 atomization); no dated plan states this step, so no source example is cited.
+- Content examples:
+  - `technique:dilution` action `bring-to-mark-dropwise`
 
 ### Family: qualitative-analysis
 
@@ -3991,6 +4091,8 @@ A role is a constraint, not a synonym for one apparatus id. Capacity, tolerance,
 | `working-portion-vessel` | vessel | `beaker-150ml`, `beaker-250ml` | — | A clean vessel that holds an unmeasured working portion poured from a stock bottle, so that no pipette or other tool enters the stock. Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited. |
 | `pipette-liquid-source` | vessel | `beaker-150ml`, `beaker-250ml`, `test-tube` | — | An open vessel whose liquid a transfer pipette draws up: a working portion in a beaker, or a prepared sample in a test tube. A stock bottle is never one. Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited. |
 | `transfer-pipette` | delivery | `beral-pipette` | — | A disposable transfer pipette that carries a small unmeasured volume, as when filling a cuvette. Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited. |
+| `pipette-filler` | tool | `pipette-pump` | — | The pump fitted to a graduated pipette, which fills it and lets it down to a line. Decided by the teacher on 2026-10-02 (Pack 1 atomization); no dated plan states this step, so no source example is cited. |
+| `vessel-stopper` | tool | `rubber-stopper-set` | — | A stopper seated in a volumetric flask or test tube before its contents are mixed by inversion. Decided by the teacher on 2026-10-02 (Pack 1 atomization); no dated plan states this step, so no source example is cited. |
 
 ### Deliberate distinctions
 

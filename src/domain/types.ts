@@ -1231,6 +1231,17 @@ export interface ThermalControlState {
 
 export type DropDispenseColorState = "clear" | "palePink" | "darkPink";
 
+/**
+ * A level brought to a line drop by drop (decided 2026-10-02): what has been delivered, whether the
+ * level has gone past the line (which cannot be undone), and whether the level was accepted.
+ */
+export interface MarkDispenseRecord {
+  actionId: string;
+  deliveredMl: number;
+  overshot: boolean;
+  accepted: boolean;
+}
+
 export interface DropDispenseRecord {
   actionId: string;
   dropsDispensed: number;
@@ -1382,6 +1393,10 @@ export interface RuntimeState {
   photometerCalibrationEpoch?: number;
   calculations: CalculationRecord[];
   dropDispenses: Record<string, DropDispenseRecord>;
+  /** Levels brought to a line drop by drop, keyed by action id. Absent in state built before them. */
+  markDispenses?: Record<string, MarkDispenseRecord>;
+  /** Inversions made so far by a stoppered-vessel mix, keyed by action id. */
+  mixInversions?: Record<string, number>;
   repeatProgress: Record<string, {
     groupId: string;
     completedIterations: number[];

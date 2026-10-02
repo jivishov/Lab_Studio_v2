@@ -118,6 +118,7 @@ export const v1InteractionZones: InteractionZone[] = [
   zone("ring-stand-burette-receiver", "ring-stand-clamp", ["erlenmeyer-flask-250ml"], "receiving"),
   zone("burette-funnel-seat", "burette-50ml", ["funnel"], "mounted"),
   zone("graduated-cylinder-funnel-seat", "graduated-cylinder-25ml", ["funnel"], "mounted"),
+  zone("graduated-pipette-pump-seat", "graduated-pipette-10ml", ["pipette-pump"], "mounted"),
   zone("chromatography-chamber-paper-slot", "chromatography-chamber", ["chromatography-paper"], "developing"),
   zone("volumetric-flask-stopper-seat", "volumetric-flask", ["rubber-stopper-set"], "inserted"),
   zone("spectrophotometer-cuvette-slot", "spectrophotometer", ["cuvette"], "inserted"),

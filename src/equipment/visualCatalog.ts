@@ -1477,6 +1477,13 @@ export const v1VisualCatalog: VisualCatalog = {
       footprint: rect(16, 112, 10, 8),
       hitBox: rect(0, 0, 44, 126),
       noLiquidRender: true,
+      visualZones: [
+        {
+          id: "graduated-pipette-pump-seat",
+          bounds: rect(0, -60, 42, 70),
+          anchor: { x: 21, y: 4 },
+        },
+      ],
     },
   ),
   "beral-pipette": profile("beral-pipette", asset("beral-pipette"), rect(0, 0, 54, 122), {

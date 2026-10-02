@@ -62,8 +62,11 @@ export type TapHandler = (instanceId: string, pointerType: string, clientX: numb
 /** A control on an instrument (the balance's TARE key) pressed and released without moving. */
 export type ControlHandler = (instanceId: string, controlId: string) => void;
 
+/** A pipette released over the vessel of a drop-to-the-line step: it is held there (decided 2026-10-02). */
+export type HoldOverHandler = (pipetteId: string, vesselId: string) => void;
+
 export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DController, onHover: (instanceId?: string) => void,
-  onTap?: TapHandler, onControl?: ControlHandler) => {
+  onTap?: TapHandler, onControl?: ControlHandler, onHoldOver?: HoldOverHandler) => {
   const carryRef = useRef<Carry | undefined>(undefined);
   const [callout, setCallout] = useState<CarryCallout>();
   // What is being carried, by definition (the tool's guidance follows it); undefined when nothing is.
@@ -137,6 +140,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
   // the liquid it draws from or the vessel it empties into. Judged as the pipette being the pour's
   // source, which it is for a delivery; for a draw the step's reading is turned round.
   const pipette = player.pipetteStep;
+  const markStep = player.markStep;
   const pipetteSpec = useMemo((): ActionInteractionSpec | undefined => (pipette && interaction
     ? { ...interaction, sourceDefinitionId: pipette.toolDefinitionId, targetDefinitionId: pipette.otherDefinitionId } : undefined),
   [interaction, pipette]);
@@ -231,6 +235,31 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       setCallout(shown);
       return shown;
     }
+    const mark = markStep;
+    if (mark && carry.instanceId === mark.pipetteInstanceId) {
+      // A drop-to-the-line step: the pipette, upright by its tip, is held over the vessel on release.
+      carry.tipPoint = point;
+      carry.liftMm = surfaceMm + LIFT_MM;
+      engine.previewCarry(carry.instanceId, point.xMm, point.yMm, carry.liftMm);
+      const top = screenAt ? undefined : engine.screenPoint(carry.instanceId, 1);
+      const screen = screenAt ?? (top ? { x: top.x, y: top.y - 30 } : { x: 0, y: 0 });
+      const vessel = scene.bench.find((i) => i.instanceId === mark.vesselInstanceId);
+      const vesselLabel = vessel ? lowerFirst(vessel.label) : labelOf(mark.vesselDefinitionId);
+      const overlap = overlapAt(carry.instanceId, mark.pipetteDefinitionId, point, true);
+      let shown: CarryCallout;
+      if (overlap.kind === "valid" && overlap.target?.id === mark.vesselInstanceId) {
+        engine.setTargetRing(mark.vesselInstanceId, "valid");
+        shown = { ...screen, text: `Release to hold the pipette over the ${vesselLabel}`, kind: "valid" };
+      } else if (overlap.target && overlap.kind !== "moveOnly") {
+        engine.setTargetRing(overlap.target.id, "invalid");
+        shown = { ...screen, text: showGuidance ? "Not the target for this step" : "Release to try this", kind: "invalid" };
+      } else {
+        engine.setTargetRing(null);
+        shown = showGuidance ? { ...screen, text: `Carry the pipette to the ${vesselLabel}`, kind: "free" } : { ...screen, text: "Release to set down", kind: "free" };
+      }
+      setCallout(shown);
+      return shown;
+    }
     if (pipette && carry.instanceId === pipette.toolInstanceId) {
       // The pipette, upright, is judged by its tip (its origin), so the tip goes where the pointer is.
       carry.tipPoint = point;
@@ -296,7 +325,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     }
     setCallout(shown);
     return shown;
-  }, [engine, flow.inputReady, interaction, labelOf, overlapAt, pipette, pipetteSpec, placesForStep, scene, scoopFor, showGuidance, toolTransfer]);
+  }, [engine, flow.inputReady, interaction, labelOf, markStep, overlapAt, pipette, pipetteSpec, placesForStep, scene, scoopFor, showGuidance, toolTransfer]);
 
   /**
    * Pointing at an item with a seat for the carried item (a registry zone that accepts it, with a 3D
@@ -370,6 +399,15 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
         return;
       }
     }
+    const mark = markStep;
+    if (mark && carry.instanceId === mark.pipetteInstanceId) {
+      const markOverlap = overlapAt(carry.instanceId, mark.pipetteDefinitionId, carry.tipPoint ?? point, true);
+      if (markOverlap.kind === "valid" && markOverlap.target?.id === mark.vesselInstanceId) {
+        void engine.sync(scene);
+        onHoldOver?.(mark.pipetteInstanceId, mark.vesselInstanceId);
+        return;
+      }
+    }
     if (pipette) {
       // A pipette step: the pipette released over the liquid or the receiver sends the step's own
       // pour and is drawn dipping; a liquid poured onto the pipette is refused with a correction.
@@ -430,7 +468,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       accepted = true;
     }
     if (!accepted) void engine.sync(scene);
-  }, [cancel, endCarry, engine, interaction, labelOf, overlapAt, pipette, pipetteSpec, player, scene, scoopFor, toolTransfer]);
+  }, [cancel, endCarry, engine, interaction, labelOf, markStep, onHoldOver, overlapAt, pipette, pipetteSpec, player, scene, scoopFor, toolTransfer]);
 
   /**
    * Keyboard carry (§5.6): the item lifts where it stands. Probes do not free-move (parity), so

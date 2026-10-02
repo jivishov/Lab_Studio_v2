@@ -769,7 +769,8 @@ const validateActionContract15 = (
       for (const key of Object.keys(input.sourceInventory)) if (!inventoryKeys.includes(key)) errors.push(`${p} contains unsupported field "${key}".`);
     }
   }
-  if (["mix", "vent", "settle"].includes(String(actionVerb)) && input.extractionOperation === undefined && !["mix", "practice-mix"].includes(stringRecordField(input.parameters, "titrationOperation") ?? "")) errors.push(`${path} requires extractionOperation for this verb.`);
+  if (["mix", "vent", "settle"].includes(String(actionVerb)) && input.extractionOperation === undefined && !["mix", "practice-mix"].includes(stringRecordField(input.parameters, "titrationOperation") ?? "")
+    && !(actionVerb === "mix" && stringRecordField(input.parameters, "mixOperation") === "invert")) errors.push(`${path} requires extractionOperation for this verb.`);
   for (const field of ["extractionOperation", "extractionObservation", "extractionDrain"] as const) {
     if (input[field] === undefined) continue;
     const contract = input[field]; const p = `${path}.${field}`;

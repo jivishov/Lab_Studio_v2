@@ -10,7 +10,7 @@ import { footprintOf, nearestFreeSpot, type FootprintMm } from "../adapters/foot
 import { readingShownFor } from "../adapters/instrumentDisplay";
 import { pourStagingScene, runtimeToScene, sceneContents, type SceneContents, type SceneDescription } from "../adapters/runtimeToScene";
 import { heldOnSeat, readingSeatZone } from "../bench/scene/setOn";
-import { benchMoveRequest, intentTypeForInteraction, mergeActionInput, pipetteStepFor, resolveTrayDrop, toolTransferFor, type ReleaseOrigin } from "../adapters/sceneToIntent";
+import { benchMoveRequest, intentTypeForInteraction, markStepFor, mergeActionInput, pipetteStepFor, resolveTrayDrop, toolTransferFor, type ReleaseOrigin } from "../adapters/sceneToIntent";
 import { nextPlacementPoint, parkPointAfterInteraction } from "../adapters/twoDPlacement";
 import { equipment3dEntry } from "../equipment3d/readiness";
 import { stepFlow, type StepFlow } from "./stepRules";
@@ -109,6 +109,12 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
   // A solid transfer this step makes with a tool, the spatula (decided 2026-09-25).
   const toolTransfer = useMemo(
     () => toolTransferFor(runtime.expectedAction, runtime.expectedAction ? resolveActionInteraction(runtime.expectedAction) : undefined,
+      runtime.state.equipmentInstances, flow.nodeCompleted),
+    [flow.nodeCompleted, runtime.expectedAction, runtime.state],
+  );
+  // A level brought to a line drop by drop: the pipette is held over the vessel (decided 2026-10-02).
+  const markStep = useMemo(
+    () => markStepFor(runtime.expectedAction, runtime.expectedAction ? resolveActionInteraction(runtime.expectedAction) : undefined,
       runtime.state.equipmentInstances, flow.nodeCompleted),
     [flow.nodeCompleted, runtime.expectedAction, runtime.state],
   );
@@ -297,6 +303,17 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
         : pipetteStep ? { instanceId: pipetteStep.toolInstanceId, motion: "dip" } : undefined);
   }, [flow.nodeCompleted, interaction, pipetteStep, runIntent, runtime.state, selectedSource, selectedTarget, toolTransfer]);
 
+  /** One drop, or a short run of drops while the pipette is squeezed, at a drop-to-the-line step. */
+  const addDrops = useCallback((dropCount: number, origin: ReleaseOrigin | "keyboard" = "pointer") => {
+    if (!markStep) return undefined;
+    return runIntent({ type: "dispenseDropIntent", origin, runtimeParameters: { dropCount } } as RuntimeInteractionIntent);
+  }, [markStep, runIntent]);
+  /** The student says the meniscus is at the line; the runtime judges it within one drop. */
+  const acceptMark = useCallback((origin: ReleaseOrigin | "keyboard" = "pointer") => {
+    if (!markStep) return undefined;
+    return runIntent({ type: "dispenseCompleteIntent", origin } as RuntimeInteractionIntent);
+  }, [markStep, runIntent]);
+
   const recordEvidence = useCallback(() => {
     if (!flow.nodeCompleted) runIntent({ type: "notebookRecordIntent", origin: "programmatic" });
   }, [flow.nodeCompleted, runIntent]);
@@ -352,6 +369,9 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     },
     toolTransfer,
     pipetteStep,
+    markStep,
+    addDrops,
+    acceptMark,
     announcement,
     announce,
     pour,

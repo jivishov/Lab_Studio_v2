@@ -351,3 +351,11 @@
 .s3d-switcher__confirm strong { color: var(--ink); }
 .s3d-switcher__actions { display: flex; justify-content: flex-end; gap: 8px; }
 .s3d-gatebar { position: absolute; top: 0; left: 0; right: 0; height: 52px; display: flex; align-items: center; gap: 12px; padding: 0 14px; z-index: var(--z-bar); }
+/* Drop mode (decided 2026-10-02): adding liquid to a line a drop at a time. */
+.s3d-drop { position: absolute; z-index: var(--z-panel); left: 50%; bottom: 128px; transform: translateX(-50%); width: min(520px, calc(100% - 32px)); padding: 12px 14px;
+  background: var(--float); backdrop-filter: blur(6px); border: 1px solid var(--float-line); border-radius: var(--radius-panel); box-shadow: var(--shadow-float); }
+.s3d-drop__title { margin: 0 0 4px; display: flex; align-items: center; gap: 6px; font-weight: 600; font-size: 14px; color: var(--ink); }
+.s3d-drop__help { margin: 0 0 10px; font-size: 12.5px; line-height: 1.45; color: var(--ink-2); }
+.s3d-drop__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.s3d-drop__actions .s3d-link { margin-left: auto; }
+.s3d-drop__keys { margin: 8px 0 0; font-size: 11.5px; color: var(--muted); }

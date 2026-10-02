@@ -137,6 +137,9 @@ _FACTORIES = {
                                                       'IOR': 1.59, 'Transmission Weight': 0.6}),
     'Polypropylene rack white': lambda n: principled(n, **{'Base Color': (0.9, 0.9, 0.88, 1), 'Roughness': 0.42,
                                                            'Subsurface Weight': 0.3, 'Subsurface Scale': 0.003}),
+    # the moulded body of a 10 mL pipette pump (decided 2026-10-02)
+    'Pipette pump green': lambda n: principled(n, **{'Base Color': (0.03, 0.28, 0.1, 1), 'Roughness': 0.38,
+                                                     'Specular IOR Level': 0.4}),
 }
 
 

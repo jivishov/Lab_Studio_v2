@@ -102,6 +102,13 @@ const dropDispenseFinalReadingIsProduced = (action: ActionDefinition): boolean =
   && action.interaction?.type === "dispenseDrops"
   && action.parameters.finalBuretteMeasurementId !== undefined;
 
+/** A level brought to a line drop by drop records the line's value on acceptance (decided 2026-10-02). */
+const markDispenseOutputIsProduced = (action: ActionDefinition): boolean =>
+  action.verb === "transfer"
+  && action.interaction?.type === "dispenseDrops"
+  && action.parameters.markDispense !== undefined
+  && action.parameters.outputMeasurementId !== undefined;
+
 const producedParameterKeys = (
   action: ActionDefinition,
   numericConfigurationSlots: ReadonlySet<string>,
@@ -109,6 +116,7 @@ const producedParameterKeys = (
   const keys = new Set<string>();
   if (measurementParameterIsProduced(action, numericConfigurationSlots)) keys.add("measurementId");
   if (dropDispenseFinalReadingIsProduced(action)) keys.add("finalBuretteMeasurementId");
+  if (markDispenseOutputIsProduced(action)) keys.add("outputMeasurementId");
   return keys;
 };
 
@@ -135,6 +143,7 @@ const producedMeasurements = (
   if (action.sourceInventory) add(action.sourceInventory.outputMeasurementId);
   if (measurementParameterIsProduced(action, numericConfigurationSlots)) add(action.parameters.measurementId);
   if (dropDispenseFinalReadingIsProduced(action)) add(action.parameters.finalBuretteMeasurementId);
+  if (markDispenseOutputIsProduced(action)) add(action.parameters.outputMeasurementId);
   if (action.runtimeRepeat && measurementParameterIsProduced(action, numericConfigurationSlots)) {
     add(action.runtimeRepeat.outputMeasurementId);
   }

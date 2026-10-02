@@ -6,7 +6,7 @@ import { resolveActionInteraction } from "../../domain/interactions";
 import type { TechniqueDefinition } from "../../domain/types";
 import type { BenchOverlapResult } from "../../player/benchOverlap";
 import { createRuntimeState } from "../../runtime";
-import { pointInFootprint, resolveToolRelease, toolTransferFor, type ToolTransfer } from "../adapters/sceneToIntent";
+import { isFillableTool, markStepFor, pipetteStepFor, pointInFootprint, resolveToolRelease, toolTransferFor, type ToolTransfer } from "../adapters/sceneToIntent";
 import { equipment3dEntry } from "../equipment3d/readiness";
 import { currentStepEquipmentIds } from "../player/stepRules";
 
@@ -95,5 +95,40 @@ describe("the balance's TARE key and the spatula's scoop", () => {
     const tare = equipment3dEntry("analytical-balance")?.controls?.find((control) => control.id === "tare");
     expect(tare).toMatchObject({ operation: "zero", label: "TARE", objects: ["Balance_key_tare", "Balance_key_tare_legend"] });
     expect(equipment3dEntry("spatula")?.solidRest).toMatchObject({ radiusMm: 4 });
+  });
+});
+
+describe("drop-to-the-line steps and pipettes (decided 2026-10-02)", () => {
+  const dilution = applyTechniqueConfiguration(
+    JSON.parse(readFileSync(join(process.cwd(), "public", "techniques", "dilution.json"), "utf8")) as TechniqueDefinition,
+    { aliquotVolumeMl: "5", stockConcentrationM: "0.2" },
+  );
+  const dilutionInstances = createRuntimeState(dilution).equipmentInstances;
+  const step = (id: string) => {
+    const action = dilution.actions.find((candidate) => candidate.id === id)!;
+    return markStepFor(action, resolveActionInteraction(action), dilutionInstances, false);
+  };
+
+  it("describes the graduated pipette's delivery to its line, and the flask's mark", () => {
+    expect(step("deliver-aliquot-to-line")).toEqual({
+      pipetteInstanceId: "graduated-pipette-1", pipetteDefinitionId: "graduated-pipette-10ml",
+      vesselInstanceId: "volumetric-flask-1", vesselDefinitionId: "volumetric-flask", bySource: true, goalMl: 5,
+    });
+    expect(step("bring-to-mark-dropwise")).toMatchObject({ pipetteInstanceId: "water-pipette-1", bySource: false, goalMl: 100 });
+    expect(step("fill-water-below-mark")).toBeUndefined();
+  });
+
+  it("treats both pipettes as carried by their tip, and nothing else", () => {
+    expect(isFillableTool("beral-pipette")).toBe(true);
+    expect(isFillableTool("graduated-pipette-10ml")).toBe(true);
+    expect(isFillableTool("beaker-150ml")).toBe(false);
+    expect(isFillableTool("spatula")).toBe(false);
+  });
+
+  it("lets the graduated pipette draw its stock from the beaker", () => {
+    const action = dilution.actions.find((candidate) => candidate.id === "fill-pipette-to-zero")!;
+    expect(pipetteStepFor(action, resolveActionInteraction(action), dilutionInstances, false)).toMatchObject({
+      kind: "draw", toolInstanceId: "graduated-pipette-1", otherInstanceId: "stock-beaker-1",
+    });
   });
 });

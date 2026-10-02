@@ -17,32 +17,25 @@ const values = (entries: Record<string, TechniqueConfigurationValue>) =>
   new Map<string, TechniqueConfigurationValue>(Object.entries(entries));
 
 describe("standalone configuration physical semantics", () => {
-  it("accepts a physically consistent dilution and rejects inconsistent factor/capacity/source volume", async () => {
+  it("accepts a physically consistent dilution and rejects an aliquot the pipette cannot deliver", async () => {
+    // Dilute a Stock Solution delivers its aliquot from a 10 mL graduated pipette into a 100 mL
+    // volumetric flask (decided 2026-10-02): the factor is calculated, not set.
     const definition = await readTechnique("dilution");
 
     expect(validateStandaloneConfigurationSemantics(definition, values({
       aliquotVolumeMl: 5,
-      finalVolumeMl: 50,
-      dilutionFactor: 10,
+      stockConcentrationM: 0.2,
     }))).toEqual([]);
 
     expect(validateStandaloneConfigurationSemantics(definition, values({
-      aliquotVolumeMl: 5,
-      finalVolumeMl: 50,
-      dilutionFactor: 8,
-    })).some((issue) => issue.message.includes("finalVolumeMl / aliquotVolumeMl"))).toBe(true);
-
-    expect(validateStandaloneConfigurationSemantics(definition, values({
       aliquotVolumeMl: 11,
-      finalVolumeMl: 55,
-      dilutionFactor: 5,
-    })).some((issue) => issue.message.includes("starting volume of 10 mL"))).toBe(true);
+      stockConcentrationM: 0.2,
+    })).some((issue) => issue.message.includes("at most 10 mL"))).toBe(true);
 
     expect(validateStandaloneConfigurationSemantics(definition, values({
       aliquotVolumeMl: 5,
-      finalVolumeMl: 120,
-      dilutionFactor: 24,
-    })).some((issue) => issue.message.includes("capacity of 100 mL"))).toBe(true);
+      stockConcentrationM: 0,
+    })).some((issue) => issue.message.includes("stockConcentrationM must be greater than zero"))).toBe(true);
   });
 
   it("rejects non-positive solution quantities and final volume below initial solvent", async () => {

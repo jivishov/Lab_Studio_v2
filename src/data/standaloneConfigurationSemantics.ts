@@ -224,24 +224,15 @@ export const validateStandaloneConfigurationSemantics = (
   }
 
   if (definition.id === "dilution") {
+    // The aliquot is delivered from a 10 mL graduated pipette into a 100 mL volumetric flask
+    // (decided 2026-10-02), so the final volume is the flask's and the factor is calculated.
     const aliquot = numeric(values, "aliquotVolumeMl");
-    const finalVolume = numeric(values, "finalVolumeMl");
-    const factor = numeric(values, "dilutionFactor");
-    if (aliquot !== undefined && finalVolume !== undefined && finalVolume < aliquot) {
-      add(
-        ["aliquotVolumeMl", "finalVolumeMl"],
-        "finalVolumeMl must be at least the transferred aliquot volume.",
-      );
+    if (aliquot !== undefined && (aliquot <= 0 || aliquot > 10)) {
+      add(["aliquotVolumeMl"], "aliquotVolumeMl must be greater than 0 and at most 10 mL, the graduated pipette's capacity.");
     }
-    if (aliquot && finalVolume && factor) {
-      const expected = finalVolume / aliquot;
-      const tolerance = Math.max(1e-9, Math.abs(expected) * 1e-9);
-      if (Math.abs(factor - expected) > tolerance) {
-        add(
-          ["aliquotVolumeMl", "finalVolumeMl", "dilutionFactor"],
-          `dilutionFactor must equal finalVolumeMl / aliquotVolumeMl (${expected}).`,
-        );
-      }
+    const stock = numeric(values, "stockConcentrationM");
+    if (stock !== undefined && stock <= 0) {
+      add(["stockConcentrationM"], "stockConcentrationM must be greater than zero.");
     }
   }
 

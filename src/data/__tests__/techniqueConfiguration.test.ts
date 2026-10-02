@@ -114,8 +114,7 @@ describe("declared standalone configuration contracts", () => {
 
     const configured = applyTechniqueConfiguration(dilution, {
       aliquotVolumeMl: "5",
-      finalVolumeMl: "50",
-      dilutionFactor: "10",
+      stockConcentrationM: "0.2",
     });
     expect(unresolvedConfigurationSlots(configured)).toEqual([]);
 
@@ -129,8 +128,7 @@ describe("declared standalone configuration contracts", () => {
     const dilution = await readTechnique("dilution");
     expect(() => applyTechniqueConfiguration(dilution, {
       aliquotVolumeMl: "about five",
-      finalVolumeMl: "50",
-      dilutionFactor: "10",
+      stockConcentrationM: "0.2",
     })).toThrow(/finite number/i);
   });
 

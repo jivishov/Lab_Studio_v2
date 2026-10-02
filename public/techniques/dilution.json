@@ -3,42 +3,83 @@
   "title": "Dilute a Stock Solution",
   "learningGoal": "Create a target dilution from an aliquot and final volume.",
   "requiredEquipment": [
-    "graduated-cylinder",
     "volumetric-flask",
-    "wash-bottle"
+    "sample-bottle",
+    "beaker-150ml",
+    "graduated-pipette-10ml",
+    "pipette-pump",
+    "wash-bottle",
+    "beral-pipette",
+    "rubber-stopper-set"
   ],
   "initialState": {
     "equipment": [
       {
-        "id": "graduated-cylinder-1",
-        "definitionId": "graduated-cylinder",
-        "label": "Graduated cylinder",
+        "id": "volumetric-flask-1",
+        "definitionId": "volumetric-flask",
+        "label": "100 mL volumetric flask",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "stock-bottle-1",
+        "definitionId": "sample-bottle",
+        "label": "Blue dye stock ({{config.stockConcentrationM}} M)",
         "location": "shelf",
         "contents": {
           "kind": "solution",
-          "label": "Stock solution",
-          "volumeMl": 10,
+          "label": "Blue dye stock",
+          "volumeMl": 100,
           "solutes": [
             {
-              "id": "stock-solute",
-              "label": "Stock solute",
-              "amount": 10,
-              "unit": "mg"
+              "id": "blue-dye-1",
+              "label": "Blue dye #1"
             }
           ],
-          "concentration": {
-            "value": 1000,
-            "unit": "mg/L"
-          },
           "contamination": [],
           "wetState": "wet",
           "visualState": "clear-solution"
         }
       },
       {
-        "id": "volumetric-flask-1",
-        "definitionId": "volumetric-flask",
-        "label": "Volumetric flask",
+        "id": "stock-beaker-1",
+        "definitionId": "beaker-150ml",
+        "label": "Stock beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "graduated-pipette-1",
+        "definitionId": "graduated-pipette-10ml",
+        "label": "10 mL graduated pipette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "pipette-pump-1",
+        "definitionId": "pipette-pump",
+        "label": "Pipette pump",
         "location": "shelf",
         "contents": {
           "kind": "empty",
@@ -63,22 +104,103 @@
           "wetState": "wet",
           "visualState": "clear-liquid"
         }
+      },
+      {
+        "id": "water-beaker-1",
+        "definitionId": "beaker-150ml",
+        "label": "Deionized water beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Deionized water",
+          "volumeMl": 50,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "water-pipette-1",
+        "definitionId": "beral-pipette",
+        "label": "Water pipette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "flask-stopper-1",
+        "definitionId": "rubber-stopper-set",
+        "label": "Flask stopper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
       }
     ]
   },
   "actions": [
     {
-      "id": "transfer-aliquot",
-      "verb": "transfer",
-      "label": "Transfer aliquot",
+      "id": "place-flask",
+      "verb": "place",
+      "label": "Place the volumetric flask",
       "parameters": {
-        "sourceDefinitionId": "graduated-cylinder",
-        "targetDefinitionId": "volumetric-flask",
-        "volumeMl": "{{config.aliquotVolumeMl}}"
+        "equipmentDefinitionId": "volumetric-flask",
+        "equipmentInstanceId": "volumetric-flask-1",
+        "location": "workbench"
       },
       "prerequisites": [],
       "stateChanges": [
-        "transfer updates runtime state through structured equipment contents."
+        "Place the volumetric flask: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        }
+      ],
+      "feedback": {
+        "success": "The volumetric flask is on the bench.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "volumetric-flask",
+        "stationId": "workbench",
+        "accessibleLabel": "Place the volumetric flask"
+      },
+      "atomId": "atom.place.select-clean-dry-receiving-vessel",
+      "equipmentRoleBindings": {
+        "receiving-vessel": "volumetric-flask"
+      }
+    },
+    {
+      "id": "pour-stock-into-beaker",
+      "verb": "transfer",
+      "label": "Pour a working portion of the stock into a beaker",
+      "parameters": {
+        "sourceInstanceId": "stock-bottle-1",
+        "targetInstanceId": "stock-beaker-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Pour a working portion of the stock into a beaker: changes the named equipment and contents only."
       ],
       "invalidCases": [
         {
@@ -101,31 +223,88 @@
         }
       ],
       "feedback": {
-        "success": "Aliquot transferred.",
+        "success": "A working portion of the stock is in the beaker.",
         "invalid": "The simulator could not complete that action. Review the step requirements."
       },
       "evidence": [
         "transfer"
       ],
-      "atomId": "atom.transfer.measured-liquid",
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "sample-bottle",
+        "targetDefinitionId": "beaker-150ml",
+        "accessibleLabel": "Pour a working portion of the stock into a beaker"
+      },
+      "atomId": "atom.transfer.working-portion",
       "equipmentRoleBindings": {
-        "measured-solvent-source": "graduated-cylinder",
-        "receiving-vessel": "volumetric-flask"
+        "liquid-source": "sample-bottle",
+        "working-portion-vessel": "beaker-150ml"
+      },
+      "volume": {
+        "source": "literal",
+        "valueMl": 20
       }
     },
     {
-      "id": "dilute-to-mark",
-      "verb": "dilute",
-      "label": "Dilute to mark",
+      "id": "fit-pipette-pump",
+      "verb": "place",
+      "label": "Fit the pipette pump",
       "parameters": {
-        "sourceDefinitionId": "wash-bottle",
-        "targetDefinitionId": "volumetric-flask",
-        "finalVolumeMl": "{{config.finalVolumeMl}}",
-        "dilutionFactor": "{{config.dilutionFactor}}"
+        "equipmentDefinitionId": "pipette-pump",
+        "sourceDefinitionId": "pipette-pump",
+        "targetDefinitionId": "graduated-pipette-10ml",
+        "snapZoneId": "graduated-pipette-pump-seat",
+        "enforceInstanceIdentity": true,
+        "sourceInstanceId": "pipette-pump-1",
+        "targetInstanceId": "graduated-pipette-1"
       },
       "prerequisites": [],
       "stateChanges": [
-        "dilute updates runtime state through structured equipment contents."
+        "Fit the pipette pump: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        }
+      ],
+      "feedback": {
+        "success": "The pump is fitted on the pipette.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "pipette-pump",
+        "targetDefinitionId": "graduated-pipette-10ml",
+        "snapZoneId": "graduated-pipette-pump-seat",
+        "accessibleLabel": "Fit the pipette pump"
+      },
+      "atomId": "atom.place.pipette-filler",
+      "equipmentRoleBindings": {
+        "variable-volume-measuring-device": "graduated-pipette-10ml",
+        "pipette-filler": "pipette-pump"
+      }
+    },
+    {
+      "id": "fill-pipette-to-zero",
+      "verb": "transfer",
+      "label": "Fill the pipette to the zero mark",
+      "parameters": {
+        "sourceInstanceId": "stock-beaker-1",
+        "targetInstanceId": "graduated-pipette-1",
+        "requiredAttachmentState": "attached",
+        "attachmentParentDefinitionId": "graduated-pipette-10ml",
+        "attachmentChildDefinitionId": "pipette-pump",
+        "attachmentSnapZoneId": "graduated-pipette-pump-seat"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Fill the pipette to the zero mark: changes the named equipment and contents only."
       ],
       "invalidCases": [
         {
@@ -148,31 +327,152 @@
         }
       ],
       "feedback": {
-        "success": "Dilution factor recorded.",
+        "success": "The pipette is filled to the zero mark.",
         "invalid": "The simulator could not complete that action. Review the step requirements."
       },
       "evidence": [
-        "dilute"
+        "transfer"
       ],
-      "atomId": "atom.dilute.unmeasured-solvent-to-mark",
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "beaker-150ml",
+        "targetDefinitionId": "graduated-pipette-10ml",
+        "accessibleLabel": "Fill the pipette to the zero mark"
+      },
+      "atomId": "atom.transfer.fill-pipette-to-zero-mark",
+      "equipmentRoleBindings": {
+        "pipette-liquid-source": "beaker-150ml",
+        "variable-volume-measuring-device": "graduated-pipette-10ml"
+      },
+      "volume": {
+        "source": "target-fill-fraction",
+        "fraction": 1
+      }
+    },
+    {
+      "id": "deliver-aliquot-to-line",
+      "verb": "transfer",
+      "label": "Deliver the aliquot into the flask",
+      "parameters": {
+        "sourceInstanceId": "graduated-pipette-1",
+        "targetInstanceId": "volumetric-flask-1",
+        "sourceDefinitionId": "graduated-pipette-10ml",
+        "targetDefinitionId": "volumetric-flask",
+        "markDispense": "source",
+        "deliverMl": "{{config.aliquotVolumeMl}}",
+        "dropVolumeMl": 0.05,
+        "outputMeasurementId": "aliquot-volume",
+        "outputLabel": "Aliquot delivered"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Deliver the aliquot into the flask: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The aliquot is in the flask.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "transfer"
+      ],
+      "interaction": {
+        "type": "dispenseDrops",
+        "sourceDefinitionId": "graduated-pipette-10ml",
+        "targetDefinitionId": "volumetric-flask",
+        "accessibleLabel": "Deliver the aliquot into the flask"
+      },
+      "atomId": "atom.transfer.deliver-pipette-to-line",
+      "equipmentRoleBindings": {
+        "variable-volume-measuring-device": "graduated-pipette-10ml",
+        "receiving-vessel": "volumetric-flask"
+      }
+    },
+    {
+      "id": "fill-water-below-mark",
+      "verb": "transfer",
+      "label": "Fill with water to just below the mark",
+      "parameters": {
+        "sourceInstanceId": "wash-bottle-1",
+        "targetInstanceId": "volumetric-flask-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Fill with water to just below the mark: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The flask is filled to just below the mark.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "transfer"
+      ],
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "volumetric-flask",
+        "accessibleLabel": "Fill with water to just below the mark"
+      },
+      "atomId": "atom.transfer.unmeasured-solvent",
       "equipmentRoleBindings": {
         "liquid-source": "wash-bottle",
         "receiving-vessel": "volumetric-flask"
+      },
+      "volume": {
+        "source": "target-fill-fraction",
+        "fraction": 0.99
       }
     },
     {
-      "id": "record-dilution",
-      "verb": "record",
-      "label": "Record dilution",
+      "id": "draw-water-into-pipette",
+      "verb": "transfer",
+      "label": "Draw deionized water into a dropping pipette",
       "parameters": {
-        "measurementId": "{{config.dilutionEvidenceId}}",
-        "label": "Dilution factor",
-        "value": "{{config.dilutionFactor}}",
-        "unit": "x"
+        "sourceInstanceId": "water-beaker-1",
+        "targetInstanceId": "water-pipette-1"
       },
       "prerequisites": [],
       "stateChanges": [
-        "record updates runtime state through structured equipment contents."
+        "Draw deionized water into a dropping pipette: changes the named equipment and contents only."
       ],
       "invalidCases": [
         {
@@ -195,94 +495,586 @@
         }
       ],
       "feedback": {
-        "success": "Dilution evidence recorded.",
+        "success": "The dropping pipette holds deionized water.",
         "invalid": "The simulator could not complete that action. Review the step requirements."
       },
       "evidence": [
-        "record",
-        "notebook"
-      ]
+        "transfer"
+      ],
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "beaker-150ml",
+        "targetDefinitionId": "beral-pipette",
+        "accessibleLabel": "Draw deionized water into a dropping pipette"
+      },
+      "atomId": "atom.transfer.draw-into-transfer-pipette",
+      "equipmentRoleBindings": {
+        "pipette-liquid-source": "beaker-150ml",
+        "transfer-pipette": "beral-pipette"
+      },
+      "volume": {
+        "source": "target-fill-fraction",
+        "fraction": 1
+      }
+    },
+    {
+      "id": "bring-to-mark-dropwise",
+      "verb": "transfer",
+      "label": "Bring the flask to the mark drop by drop",
+      "parameters": {
+        "sourceInstanceId": "water-pipette-1",
+        "targetInstanceId": "volumetric-flask-1",
+        "sourceDefinitionId": "beral-pipette",
+        "targetDefinitionId": "volumetric-flask",
+        "markDispense": "target",
+        "markVolumeMl": 100,
+        "dropVolumeMl": 0.05,
+        "outputMeasurementId": "final-volume",
+        "outputLabel": "Final volume"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Bring the flask to the mark drop by drop: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The flask is at the mark.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "transfer"
+      ],
+      "interaction": {
+        "type": "dispenseDrops",
+        "sourceDefinitionId": "beral-pipette",
+        "targetDefinitionId": "volumetric-flask",
+        "accessibleLabel": "Bring the flask to the mark drop by drop"
+      },
+      "atomId": "atom.dilute.dropwise-to-mark",
+      "equipmentRoleBindings": {
+        "transfer-pipette": "beral-pipette",
+        "final-volume-vessel": "volumetric-flask"
+      }
+    },
+    {
+      "id": "stopper-flask",
+      "verb": "place",
+      "label": "Stopper the flask",
+      "parameters": {
+        "equipmentDefinitionId": "rubber-stopper-set",
+        "sourceDefinitionId": "rubber-stopper-set",
+        "targetDefinitionId": "volumetric-flask",
+        "snapZoneId": "volumetric-flask-stopper-seat",
+        "enforceInstanceIdentity": true,
+        "sourceInstanceId": "flask-stopper-1",
+        "targetInstanceId": "volumetric-flask-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Stopper the flask: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        }
+      ],
+      "feedback": {
+        "success": "The flask is stoppered.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "rubber-stopper-set",
+        "targetDefinitionId": "volumetric-flask",
+        "snapZoneId": "volumetric-flask-stopper-seat",
+        "accessibleLabel": "Stopper the flask"
+      },
+      "atomId": "atom.place.stopper-vessel",
+      "equipmentRoleBindings": {
+        "vessel-stopper": "rubber-stopper-set",
+        "final-volume-vessel": "volumetric-flask"
+      }
+    },
+    {
+      "id": "invert-to-mix",
+      "verb": "mix",
+      "label": "Invert the flask to mix",
+      "parameters": {
+        "mixOperation": "invert",
+        "vesselInstanceId": "volumetric-flask-1",
+        "sourceInstanceId": "volumetric-flask-1",
+        "vesselDefinitionId": "volumetric-flask",
+        "inversions": 10,
+        "tag": "mixed-by-inversion",
+        "requiredAttachmentState": "attached",
+        "attachmentParentDefinitionId": "volumetric-flask",
+        "attachmentChildDefinitionId": "rubber-stopper-set",
+        "attachmentSnapZoneId": "volumetric-flask-stopper-seat"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Invert the flask to mix: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        }
+      ],
+      "feedback": {
+        "success": "The solution is mixed.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "mix"
+      ],
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "tag",
+        "accessibleLabel": "Invert the flask to mix"
+      },
+      "atomId": "atom.mix.invert-stoppered-vessel",
+      "equipmentRoleBindings": {
+        "final-volume-vessel": "volumetric-flask",
+        "vessel-stopper": "rubber-stopper-set"
+      }
+    },
+    {
+      "id": "calculate-dilution-factor",
+      "verb": "calculate",
+      "label": "Calculate the dilution factor",
+      "parameters": {
+        "calculationId": "dilution-factor",
+        "template": "dilutionFactorFromVolumes",
+        "initialVolumeMeasurementId": "aliquot-volume",
+        "finalVolumeMeasurementId": "final-volume"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Calculate the dilution factor: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        }
+      ],
+      "feedback": {
+        "success": "The dilution factor is calculated.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [],
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Calculate the dilution factor"
+      }
+    },
+    {
+      "id": "calculate-diluted-concentration",
+      "verb": "calculate",
+      "label": "Calculate the diluted concentration",
+      "parameters": {
+        "calculationId": "diluted-concentration",
+        "template": "dilutedConcentration",
+        "unit": "M",
+        "stockConcentration": "{{config.stockConcentrationM}}",
+        "stockVolumeMeasurementId": "aliquot-volume",
+        "finalVolumeMeasurementId": "final-volume"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Calculate the diluted concentration: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        }
+      ],
+      "feedback": {
+        "success": "The diluted concentration is calculated.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [],
+      "interaction": {
+        "type": "submitCalculation",
+        "valueParameter": "calculationId",
+        "accessibleLabel": "Calculate the diluted concentration"
+      }
     }
   ],
   "process": {
-    "startNodeId": "transfer-aliquot-node",
+    "startNodeId": "place-flask-node",
     "nodes": [
       {
-        "id": "transfer-aliquot-node",
+        "id": "place-flask-node",
         "type": "action",
-        "title": "Transfer aliquot",
-        "description": "Pour the configured aliquot of stock solution from the graduated cylinder into the volumetric flask.",
-        "actionId": "transfer-aliquot",
+        "title": "Place the volumetric flask",
+        "description": "Place the clean 100 mL volumetric flask on the bench.",
+        "actionId": "place-flask",
         "config": {},
         "validation": [
           {
-            "id": "aliquot-transferred",
+            "id": "place-flask-node-done",
             "type": "actionEvidence",
-            "label": "Action transfer-aliquot was completed.",
-            "actionId": "transfer-aliquot"
+            "label": "Place the volumetric flask was completed.",
+            "actionId": "place-flask"
           }
         ],
         "hints": [],
         "feedback": {
-          "success": "Transfer aliquot complete.",
-          "retry": "Review Transfer aliquot and try again."
+          "success": "Place the volumetric flask complete.",
+          "retry": "Review Place the volumetric flask and try again."
         }
       },
       {
-        "id": "dilute-to-mark-node",
+        "id": "pour-stock-into-beaker-node",
         "type": "action",
-        "title": "Dilute to mark",
-        "description": "Add deionized water from the wash bottle to bring the volumetric flask to the configured final volume.",
-        "actionId": "dilute-to-mark",
+        "title": "Pour the stock into a beaker",
+        "description": "Pour about 20 mL of the blue dye stock into the stock beaker. Never put a pipette into the stock bottle.",
+        "actionId": "pour-stock-into-beaker",
         "config": {},
         "validation": [
           {
-            "id": "diluted-to-mark",
+            "id": "pour-stock-into-beaker-node-done",
             "type": "actionEvidence",
-            "label": "Action dilute-to-mark was completed.",
-            "actionId": "dilute-to-mark"
+            "label": "Pour the stock into a beaker was completed.",
+            "actionId": "pour-stock-into-beaker"
           }
         ],
         "hints": [],
         "feedback": {
-          "success": "Dilute to mark complete.",
-          "retry": "Review Dilute to mark and try again."
+          "success": "Pour the stock into a beaker complete.",
+          "retry": "Review Pour the stock into a beaker and try again."
         }
       },
       {
-        "id": "record-dilution-node",
-        "type": "observation",
-        "title": "Record dilution",
-        "description": "Record the the configured dilution factor in the notebook.",
-        "actionId": "record-dilution",
+        "id": "fit-pipette-pump-node",
+        "type": "action",
+        "title": "Fit the pipette pump",
+        "description": "Fit the pipette pump onto the top of the 10 mL graduated pipette. Never pipette by mouth.",
+        "actionId": "fit-pipette-pump",
         "config": {},
         "validation": [
           {
-            "id": "recorded-dilution",
+            "id": "fit-pipette-pump-node-done",
             "type": "actionEvidence",
-            "label": "Action record-dilution was completed.",
-            "actionId": "record-dilution"
+            "label": "Fit the pipette pump was completed.",
+            "actionId": "fit-pipette-pump"
           }
         ],
         "hints": [],
         "feedback": {
-          "success": "Record dilution complete.",
-          "retry": "Review Record dilution and try again."
+          "success": "Fit the pipette pump complete.",
+          "retry": "Review Fit the pipette pump and try again."
+        }
+      },
+      {
+        "id": "fill-pipette-to-zero-node",
+        "type": "action",
+        "title": "Fill the pipette to zero",
+        "description": "With the pump, draw the stock from the beaker up to the 0 mark of the pipette.",
+        "actionId": "fill-pipette-to-zero",
+        "config": {},
+        "validation": [
+          {
+            "id": "fill-pipette-to-zero-node-done",
+            "type": "actionEvidence",
+            "label": "Fill the pipette to zero was completed.",
+            "actionId": "fill-pipette-to-zero"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Fill the pipette to zero complete.",
+          "retry": "Review Fill the pipette to zero and try again."
+        }
+      },
+      {
+        "id": "deliver-aliquot-to-line-node",
+        "type": "action",
+        "title": "Deliver the aliquot",
+        "description": "Let the stock run into the flask, then drop by drop, until the meniscus reaches the {{config.aliquotVolumeMl}} mL line.",
+        "actionId": "deliver-aliquot-to-line",
+        "config": {},
+        "validation": [
+          {
+            "id": "deliver-aliquot-to-line-node-done",
+            "type": "measurementRecorded",
+            "label": "Deliver the aliquot was completed.",
+            "measurementId": "aliquot-volume"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Deliver the aliquot complete.",
+          "retry": "Review Deliver the aliquot and try again."
+        }
+      },
+      {
+        "id": "fill-water-below-mark-node",
+        "type": "action",
+        "title": "Fill to below the mark",
+        "description": "Add deionized water from the wash bottle until the level is just below the mark on the neck.",
+        "actionId": "fill-water-below-mark",
+        "config": {},
+        "validation": [
+          {
+            "id": "fill-water-below-mark-node-done",
+            "type": "actionEvidence",
+            "label": "Fill to below the mark was completed.",
+            "actionId": "fill-water-below-mark"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Fill to below the mark complete.",
+          "retry": "Review Fill to below the mark and try again."
+        }
+      },
+      {
+        "id": "draw-water-into-pipette-node",
+        "type": "action",
+        "title": "Fill a dropping pipette",
+        "description": "Draw deionized water from the beaker into the dropping pipette.",
+        "actionId": "draw-water-into-pipette",
+        "config": {},
+        "validation": [
+          {
+            "id": "draw-water-into-pipette-node-done",
+            "type": "actionEvidence",
+            "label": "Fill a dropping pipette was completed.",
+            "actionId": "draw-water-into-pipette"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Fill a dropping pipette complete.",
+          "retry": "Review Fill a dropping pipette and try again."
+        }
+      },
+      {
+        "id": "bring-to-mark-dropwise-node",
+        "type": "action",
+        "title": "Bring to the mark",
+        "description": "Add water one drop at a time until the bottom of the meniscus touches the mark at eye level.",
+        "actionId": "bring-to-mark-dropwise",
+        "config": {},
+        "validation": [
+          {
+            "id": "bring-to-mark-dropwise-node-done",
+            "type": "measurementRecorded",
+            "label": "Bring to the mark was completed.",
+            "measurementId": "final-volume"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Bring to the mark complete.",
+          "retry": "Review Bring to the mark and try again."
+        }
+      },
+      {
+        "id": "stopper-flask-node",
+        "type": "action",
+        "title": "Stopper the flask",
+        "description": "Seat the stopper firmly in the neck of the flask.",
+        "actionId": "stopper-flask",
+        "config": {},
+        "validation": [
+          {
+            "id": "stopper-flask-node-done",
+            "type": "actionEvidence",
+            "label": "Stopper the flask was completed.",
+            "actionId": "stopper-flask"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Stopper the flask complete.",
+          "retry": "Review Stopper the flask and try again."
+        }
+      },
+      {
+        "id": "invert-to-mix-node",
+        "type": "action",
+        "title": "Invert to mix",
+        "description": "Holding the stopper in place, turn the flask upside down and back about ten times.",
+        "actionId": "invert-to-mix",
+        "config": {},
+        "validation": [
+          {
+            "id": "invert-to-mix-node-done",
+            "type": "notebookEntry",
+            "label": "Invert to mix was completed.",
+            "notebookTag": "mixed-by-inversion"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Invert to mix complete.",
+          "retry": "Review Invert to mix and try again."
+        }
+      },
+      {
+        "id": "calculate-dilution-factor-node",
+        "type": "action",
+        "title": "Calculate the dilution factor",
+        "description": "Calculate the dilution factor: the final volume divided by the aliquot volume.",
+        "actionId": "calculate-dilution-factor",
+        "config": {},
+        "validation": [
+          {
+            "id": "calculate-dilution-factor-node-done",
+            "type": "actionEvidence",
+            "label": "Calculate the dilution factor was completed.",
+            "actionId": "calculate-dilution-factor"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Calculate the dilution factor complete.",
+          "retry": "Review Calculate the dilution factor and try again."
+        }
+      },
+      {
+        "id": "calculate-diluted-concentration-node",
+        "type": "action",
+        "title": "Calculate the diluted concentration",
+        "description": "Calculate the concentration of the diluted solution from the stock concentration and the dilution.",
+        "actionId": "calculate-diluted-concentration",
+        "config": {},
+        "validation": [
+          {
+            "id": "calculate-diluted-concentration-node-done",
+            "type": "actionEvidence",
+            "label": "Calculate the diluted concentration was completed.",
+            "actionId": "calculate-diluted-concentration"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Calculate the diluted concentration complete.",
+          "retry": "Review Calculate the diluted concentration and try again."
         }
       }
     ],
     "edges": [
       {
-        "from": "transfer-aliquot-node",
-        "to": "dilute-to-mark-node",
+        "from": "place-flask-node",
+        "to": "pour-stock-into-beaker-node",
         "label": "Next",
         "condition": {
           "type": "validationPassed"
         }
       },
       {
-        "from": "dilute-to-mark-node",
-        "to": "record-dilution-node",
+        "from": "pour-stock-into-beaker-node",
+        "to": "fit-pipette-pump-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "fit-pipette-pump-node",
+        "to": "fill-pipette-to-zero-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "fill-pipette-to-zero-node",
+        "to": "deliver-aliquot-to-line-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "deliver-aliquot-to-line-node",
+        "to": "fill-water-below-mark-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "fill-water-below-mark-node",
+        "to": "draw-water-into-pipette-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "draw-water-into-pipette-node",
+        "to": "bring-to-mark-dropwise-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "bring-to-mark-dropwise-node",
+        "to": "stopper-flask-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "stopper-flask-node",
+        "to": "invert-to-mix-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "invert-to-mix-node",
+        "to": "calculate-dilution-factor-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "calculate-dilution-factor-node",
+        "to": "calculate-diluted-concentration-node",
         "label": "Next",
         "condition": {
           "type": "validationPassed"
@@ -294,8 +1086,8 @@
     {
       "id": "dilution-success",
       "type": "actionEvidence",
-      "label": "Action dilute-to-mark was completed.",
-      "actionId": "dilute-to-mark"
+      "label": "The diluted concentration was calculated.",
+      "actionId": "calculate-diluted-concentration"
     }
   ],
   "commonMistakes": [
@@ -334,27 +1126,17 @@
       {
         "id": "entry",
         "kind": "entry",
-        "nodeId": "transfer-aliquot-node",
+        "nodeId": "place-flask-node",
         "label": "Entry"
       },
       {
         "id": "exit",
         "kind": "exit",
-        "nodeId": "record-dilution-node",
+        "nodeId": "calculate-diluted-concentration-node",
         "label": "Exit"
       }
     ],
     "equipmentRoles": [
-      {
-        "roleId": "measured-solvent-source",
-        "required": true,
-        "allowedDefinitionIds": [
-          "graduated-cylinder"
-        ],
-        "sourceInstanceIds": [
-          "graduated-cylinder-1"
-        ]
-      },
       {
         "roleId": "receiving-vessel",
         "required": true,
@@ -369,10 +1151,84 @@
         "roleId": "liquid-source",
         "required": true,
         "allowedDefinitionIds": [
+          "sample-bottle",
           "wash-bottle"
         ],
         "sourceInstanceIds": [
+          "stock-bottle-1",
           "wash-bottle-1"
+        ]
+      },
+      {
+        "roleId": "working-portion-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beaker-150ml"
+        ],
+        "sourceInstanceIds": [
+          "stock-beaker-1",
+          "water-beaker-1"
+        ]
+      },
+      {
+        "roleId": "variable-volume-measuring-device",
+        "required": true,
+        "allowedDefinitionIds": [
+          "graduated-pipette-10ml"
+        ],
+        "sourceInstanceIds": [
+          "graduated-pipette-1"
+        ]
+      },
+      {
+        "roleId": "pipette-filler",
+        "required": true,
+        "allowedDefinitionIds": [
+          "pipette-pump"
+        ],
+        "sourceInstanceIds": [
+          "pipette-pump-1"
+        ]
+      },
+      {
+        "roleId": "pipette-liquid-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beaker-150ml"
+        ],
+        "sourceInstanceIds": [
+          "stock-beaker-1",
+          "water-beaker-1"
+        ]
+      },
+      {
+        "roleId": "transfer-pipette",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beral-pipette"
+        ],
+        "sourceInstanceIds": [
+          "water-pipette-1"
+        ]
+      },
+      {
+        "roleId": "final-volume-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "volumetric-flask"
+        ],
+        "sourceInstanceIds": [
+          "volumetric-flask-1"
+        ]
+      },
+      {
+        "roleId": "vessel-stopper",
+        "required": true,
+        "allowedDefinitionIds": [
+          "rubber-stopper-set"
+        ],
+        "sourceInstanceIds": [
+          "flask-stopper-1"
         ]
       }
     ],
@@ -384,38 +1240,19 @@
         "required": true
       },
       {
-        "id": "finalVolumeMl",
+        "id": "stockConcentrationM",
         "valueType": "number",
-        "required": true
-      },
-      {
-        "id": "dilutionFactor",
-        "valueType": "number",
-        "required": true
-      },
-      {
-        "id": "dilutionEvidenceId",
-        "valueType": "string",
         "required": true
       }
     ],
     "approvalGates": [],
     "variants": [],
-    "evidenceOutputs": [
-      {
-        "id": "dilution-record",
-        "kind": "notebook",
-        "actionId": "record-dilution",
-        "referenceId": "{{config.dilutionEvidenceId}}"
-      }
-    ],
+    "evidenceOutputs": [],
     "completion": {
       "exitPortIds": [
         "exit"
       ],
-      "requiredEvidenceOutputIds": [
-        "dilution-record"
-      ],
+      "requiredEvidenceOutputIds": [],
       "requiredValidationRuleIds": [
         "dilution-success"
       ]
@@ -423,12 +1260,31 @@
     "catalogDisposition": "composable",
     "legacyActionEffects": [
       {
-        "actionId": "record-dilution",
+        "actionId": "calculate-dilution-factor",
         "effect": {
           "classes": [
-            "evidence-recording"
+            "calculation-analysis"
           ],
           "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "calculate-diluted-concentration",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
             {
               "domain": "evidence"
             }

@@ -13,7 +13,9 @@ import { HandControlPanel } from "./HandControlPanel";
 import { coveredSides, MOVABLE_FROM_WIDTH, sanitizeLayout, type PanelId, type PanelLayout, type PanelState } from "./panelLayout";
 import { BenchList, EquipmentTray, ExamineCard, HelpDialog, NOTEBOOK_WIDTH, NotebookSheet, ResultsSheet, thumbnailUrl, type PanelControls } from "./panels";
 import { SimulationSwitcher } from "./SimulationSwitcher";
+import { DropPanel } from "./DropPanel";
 import { StepCard } from "./StepCard";
+import { fillLevelMm } from "../adapters/runtimeToScene";
 import { usePlayer3D, type Player3DController } from "./usePlayer3D";
 
 /**
@@ -43,6 +45,7 @@ const readPrefs = (): Prefs => {
 const writePrefs = (prefs: Prefs) => {
   try { localStorage.setItem(PREFS_KEY, JSON.stringify(prefs)); } catch { /* the player works without storage */ }
 };
+const lowerFirstLetter = (text: string) => (text ? text.charAt(0).toLowerCase() + text.slice(1) : text);
 const systemReducedMotion = () => typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 const windowSize = () => ({ width: window.innerWidth, height: window.innerHeight });
 
@@ -127,7 +130,10 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   // A control on an instrument, the balance's TARE key (decided 2026-09-25): see controlRef below.
   const controlRef = useRef<(instanceId: string, controlId: string) => void>(() => undefined);
   const onControl = useCallback((instanceId: string, controlId: string) => controlRef.current(instanceId, controlId), []);
-  const carry = useBenchCarry(engine, player, setHovered, onTap, onControl);
+  // Drop mode (decided 2026-10-02): a pipette held over a vessel while liquid goes in a drop at a time.
+  const holdOverRef = useRef<(pipetteId: string, vesselId: string) => void>(() => undefined);
+  const onHoldOver = useCallback((pipetteId: string, vesselId: string) => holdOverRef.current(pipetteId, vesselId), []);
+  const carry = useBenchCarry(engine, player, setHovered, onTap, onControl, onHoldOver);
   const carryingRef = useRef(carry.carrying);
   carryingRef.current = carry.carrying;
 
@@ -240,6 +246,125 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   useEffect(() => {
     engine?.setControlCue(showGuidance && expectedControl ? expectedControl : null);
   }, [engine, expectedControl, showGuidance, displayScene]);
+  // Drop mode (decided 2026-10-02): the step's pipette is held over its vessel, the camera is level with
+  // the line, and each tap or run of drops goes to the runtime; nothing is judged until "At the line".
+  const [dropMode, setDropMode] = useState<{ pipetteId: string; vesselId: string }>();
+  const runTimer = useRef<number | undefined>(undefined);
+  const spaceHold = useRef<number | undefined>(undefined);
+  const onBenchNow = (id: string) => scene.bench.some((item) => item.instanceId === id);
+  const addDrop = (count: number) => {
+    if (player.addDrops(count)) engine?.dropFromHeld();
+  };
+  const endRun = () => {
+    if (runTimer.current !== undefined) window.clearInterval(runTimer.current);
+    runTimer.current = undefined;
+  };
+  const startRun = () => {
+    if (runTimer.current !== undefined) return;
+    addDrop(3);
+    runTimer.current = window.setInterval(() => addDropRef.current(3), 140);
+  };
+  const addDropRef = useRef(addDrop);
+  addDropRef.current = addDrop;
+  const exitDropMode = () => {
+    endRun();
+    setDropMode(undefined);
+    engine?.holdOver(null);
+    setAutoView(true);
+    void engine?.settled().then(() => frameRef.current());
+  };
+  const acceptAtLine = () => {
+    endRun();
+    player.acceptMark();
+  };
+  holdOverRef.current = (pipetteId, vesselId) => {
+    const mark = player.markStep;
+    if (!engine || !mark) return;
+    setDropMode({ pipetteId, vesselId });
+    engine.holdOver(pipetteId, vesselId);
+    setAutoView(false);
+    // Level with the line: the flask's calibration mark, or the pipette's line for the aliquot.
+    if (mark.bySource) {
+      const item = scene.bench.find((i) => i.instanceId === pipetteId);
+      const delivered = runtime.state.markDispenses?.[runtime.expectedAction?.id ?? ""]?.deliveredMl ?? 0;
+      const held = item?.contents.kind === "liquid" ? item.contents.volumeMl : 0;
+      if (item?.model?.fill) engine.eyeLevel(pipetteId, fillLevelMm(item.model.fill, Math.max(0, held + delivered - mark.goalMl)).levelMm, 0.16, [vesselId]);
+    } else {
+      const item = scene.bench.find((i) => i.instanceId === vesselId);
+      const level = item?.model?.calibration?.heightMm ?? (item?.model?.fill ? fillLevelMm(item.model.fill, mark.goalMl).levelMm : undefined);
+      if (level !== undefined) engine.eyeLevel(vesselId, level, 0.2, [pipetteId]);
+    }
+  };
+  const holdFromCard = () => {
+    const mark = player.markStep;
+    if (mark) holdOverRef.current(mark.pipetteInstanceId, mark.vesselInstanceId);
+  };
+  // Leaving the step (accepted at the line, or restarted) puts the pipette down.
+  useEffect(() => {
+    if (dropMode && (!player.markStep || player.markStep.pipetteInstanceId !== dropMode.pipetteId)) exitDropMode();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [player.markStep, dropMode]);
+  // Space released: a short press was one drop, a long one ended the run.
+  useEffect(() => {
+    if (!dropMode) return undefined;
+    const onUp = (e: KeyboardEvent) => {
+      if (e.key !== " ") return;
+      const pending = spaceHold.current;
+      spaceHold.current = undefined;
+      if (pending) { window.clearTimeout(pending); addDropRef.current(1); } else endRun();
+    };
+    window.addEventListener("keyup", onUp);
+    return () => window.removeEventListener("keyup", onUp);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dropMode]);
+  // On the bench, a press is one drop and a held press lets it run; nothing is carried or orbited.
+  useEffect(() => {
+    if (!dropMode || !engine) return undefined;
+    const canvas = engine.canvasElement;
+    let hold: number | undefined;
+    const down = (e: PointerEvent) => {
+      if (e.button !== 0) return;
+      e.stopImmediatePropagation();
+      e.preventDefault();
+      hold = window.setTimeout(() => { hold = 0; startRun(); }, 300);
+    };
+    const up = (e: PointerEvent) => {
+      if (e.button !== 0 || hold === undefined) return;
+      if (hold) { window.clearTimeout(hold); addDropRef.current(1); } else endRun();
+      hold = undefined;
+    };
+    canvas.addEventListener("pointerdown", down, { capture: true });
+    window.addEventListener("pointerup", up);
+    return () => {
+      canvas.removeEventListener("pointerdown", down, { capture: true });
+      window.removeEventListener("pointerup", up);
+      endRun();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dropMode, engine]);
+
+  // Inverting to mix (decided 2026-10-02): the vessel the step names, stoppered. Each inversion the
+  // runtime counts is drawn after it, so the step card's Invert and a tap on the flask look the same.
+  const invertParams = runtime.expectedAction?.parameters.mixOperation === "invert" && !flow.nodeCompleted ? runtime.expectedAction.parameters : undefined;
+  const invertVesselId = typeof invertParams?.vesselInstanceId === "string" ? invertParams.vesselInstanceId : undefined;
+  const isInvertTarget = (id: string): boolean => {
+    if (!invertVesselId) return false;
+    const item = scene.bench.find((i) => i.instanceId === id);
+    return id === invertVesselId || (item?.placement.kind === "seated" && item.placement.parentInstanceId === invertVesselId);
+  };
+  const inversions = runtime.state.mixInversions ?? {};
+  const inversionTotal = Object.values(inversions).reduce((sum, n) => sum + n, 0);
+  const lastInversions = useRef<Record<string, number>>({});
+  useEffect(() => {
+    const before = lastInversions.current;
+    lastInversions.current = { ...inversions };
+    const changed = Object.keys(inversions).find((id) => (inversions[id] ?? 0) > (before[id] ?? 0));
+    if (!changed || !engine) return;
+    const vessel = definition.actions.find((a) => a.id === changed)?.parameters.vesselInstanceId;
+    if (typeof vessel === "string") void engine.animateInversion(vessel);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inversionTotal, engine]);
+
   // Pressing the key performs the step it is for, exactly as the step card's Tare button does
   // (both stay: G-6). At any other step nothing changes, and a neutral notice says so.
   controlRef.current = (instanceId, controlId) => {
@@ -316,6 +441,21 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   };
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if (dropMode) {
+        // Space: tap for one drop, hold to let it run; Enter: at the line; Esc: put the pipette down.
+        const typing = e.target instanceof HTMLElement && (e.target.tagName === "INPUT" || e.target.tagName === "SELECT" || e.target.tagName === "BUTTON");
+        if (e.key === " " && !typing) {
+          e.preventDefault();
+          if (!e.repeat && spaceHold.current === undefined) spaceHold.current = window.setTimeout(() => { spaceHold.current = 0; startRun(); }, 300);
+        } else if (e.key === "Enter" && !typing) {
+          e.preventDefault();
+          acceptAtLine();
+        } else if (e.key === "Escape") {
+          e.preventDefault();
+          exitDropMode();
+        }
+        return;
+      }
       if (carry.keyCarrying) {
         if (benchFocused() && carry.handleCarryKey(e)) e.preventDefault();
         return;
@@ -335,7 +475,9 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
         if (next) setSelected(next);
         e.preventDefault();
       } else if (e.key === "Enter") {
-        if (selected && scene.bench.some((item) => item.instanceId === selected)) { startMove(selected); e.preventDefault(); }
+        // At an inversion step, Enter on the stoppered vessel inverts it once.
+        if (selected && isInvertTarget(selected)) { player.recordEvidence(); e.preventDefault(); }
+        else if (selected && scene.bench.some((item) => item.instanceId === selected)) { startMove(selected); e.preventDefault(); }
       } else if (e.key === "e" || e.key === "E") { if (selected) examine(selected); }
       else if (e.key === "s" || e.key === "S") { if (selected) player.setSelectedSource(selected); }
       else if (e.key === "t" || e.key === "T") { if (selected) player.setSelectedTarget(selected); }
@@ -410,6 +552,11 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     else engine?.showMe(expectedSourceId, expectedTargetId);
   };
   tapRef.current = (id, pointerType, x, y) => {
+    // At an inversion step, a tap on the stoppered vessel (or its stopper) inverts it once.
+    if (isInvertTarget(id)) {
+      player.recordEvidence();
+      return;
+    }
     const rect = engine?.canvasElement.getBoundingClientRect();
     if (pointerType === "touch" && selected === id && rect) setItemMenu({ id, x: x - rect.left, y: y - rect.top });
     else {
@@ -518,10 +665,15 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   const shownTrayGrab = trayGrab ? trayGrabRef.current ?? trayGrab : undefined;
   const shownTrayThumb = shownTrayGrab ? thumbnailUrl(shownTrayGrab.definitionId) : undefined;
 
-  const hint = carry.keyCarrying ? "Arrows move it (Shift: further). [ ] step through targets. Enter sets it down; Esc cancels."
+  const markStep = player.markStep;
+  const markVesselLabel = markStep ? lowerFirstLetter(scene.bench.find((i) => i.instanceId === markStep.vesselInstanceId)?.label ?? "vessel") : "";
+  const hint = dropMode ? "Space: tap for a drop, hold to let it run. Enter: at the line. Esc puts the pipette down."
+    : carry.keyCarrying ? "Arrows move it (Shift: further). [ ] step through targets. Enter sets it down; Esc cancels."
     : carry.carrying ? "Release to set down. Esc cancels."
     : tool && flow.canConfirm ? "Dip the spatula into the source, then release it over the target; or use Source, Target and Confirm. Right-drag to look around."
     : pipette && flow.canConfirm ? "Carry the pipette by its tip and release it over the liquid or the cuvette; or use Source, Target and Confirm. Right-drag to look around."
+    : markStep ? `Carry the pipette over the ${markVesselLabel} and release to hold it there, or use the step card. Right-drag to look around.`
+    : invertVesselId ? "Tap the stoppered flask to invert it, or use Invert in the step card. Right-drag to look around."
     : flow.canConfirm ? "Drag items on the bench, or use Source, Target and Confirm. Right-drag to look around."
       : player.runtime.expectedAction?.parameters.balanceOperation === "zero" ? "Press TARE on the balance, or Tare in the step card. Right-drag to look around."
       : "Fill in the step card, then record. Right-drag to look around.";
@@ -545,7 +697,12 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
         </span>
       </header>
 
-      <StepCard player={player} controls={panelControls} onShowMe={showMe} />
+      <StepCard player={player} controls={panelControls} onShowMe={showMe}
+        onHoldOver={markStep && !dropMode ? holdFromCard : undefined} holdOverReady={Boolean(markStep && onBenchNow(markStep.pipetteInstanceId) && onBenchNow(markStep.vesselInstanceId))} />
+      {dropMode ? (
+        <DropPanel title={`Pipette over the ${markVesselLabel || "vessel"}`} onDrop={() => addDrop(1)} onRunStart={startRun} onRunEnd={endRun}
+          onAccept={acceptAtLine} onPutDown={exitDropMode} />
+      ) : null}
 
       <BenchView
         scene={displayScene}

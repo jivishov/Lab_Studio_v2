@@ -32,6 +32,7 @@ def build(coll, M):
         'grip': {'heightMm': BULB_START + 20.0},
         'fill': {'innerProfileMm': fill, 'capacityMl': 3, 'meniscus': 'concave'},
         'graduations': None,
+        'carriedByTip': True,
         'benchRest': {'rollDeg': -90.0, 'liftMm': BULB_R, 'shiftMm': [0.0, -L / 2]},
         'anchors': {},
         'displays': [],

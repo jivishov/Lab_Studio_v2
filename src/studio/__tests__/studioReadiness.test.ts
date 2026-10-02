@@ -80,8 +80,7 @@ describe("studio readiness", () => {
     const technique = await readTechnique("dilution");
     const configured = applyTechniqueConfigurationForComposition(technique, {
       aliquotVolumeMl: "5",
-      finalVolumeMl: "50",
-      dilutionFactor: "10",
+      stockConcentrationM: "0.2",
     });
     const appended = appendTechniqueToDraft(createDraftFromDemo(), configured).lab;
     const readiness = assessStudioReadiness(appended);

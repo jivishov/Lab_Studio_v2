@@ -135,6 +135,12 @@ export class BenchEngine {
   private toolLoad?: { instanceId: string; object: THREE.Object3D };
   /** A committed tool transfer being drawn: the tool tips its scoop onto the target. */
   private toolRun?: SetOnRun;
+  /** A pipette held over a vessel while liquid is added a drop at a time (decided 2026-10-02). */
+  private held?: { itemId: string; overId: string };
+  /** Drops falling from a held pipette: presentation only. */
+  private droplets: Array<{ mesh: THREE.Mesh; from: number; to: number; t: number }> = [];
+  /** A stoppered vessel being drawn inverted to mix, after the runtime has counted the inversion. */
+  private mixRun?: SetOnRun;
   /** Where a carried item was drawn when it was released, so a pour it starts carries on from there. */
   private releasedCarry?: { instanceId: string; position: THREE.Vector3; quaternion: THREE.Quaternion; at: number };
   private disposed = false;
@@ -263,6 +269,22 @@ export class BenchEngine {
       if (this.toolRun.tick(dt)) animating = true;
       else this.stopToolRun();
     }
+    if (this.mixRun) {
+      if (this.mixRun.tick(dt)) animating = true;
+      else this.stopMixRun();
+    }
+    if (this.droplets.length) {
+      for (const drop of this.droplets) {
+        drop.t = Math.min(1, drop.t + dt / 0.22);
+        drop.mesh.position.y = drop.from + (drop.to - drop.from) * drop.t * drop.t;
+      }
+      for (const drop of this.droplets.filter((d) => d.t >= 1)) {
+        this.scene.remove(drop.mesh);
+        drop.mesh.geometry.dispose();
+      }
+      this.droplets = this.droplets.filter((d) => d.t < 1);
+      animating = true;
+    }
     if (this.controlPress) {
       const press = this.controlPress;
       press.t += dt;
@@ -361,15 +383,14 @@ export class BenchEngine {
         const parent = this.items.get(item.placement.parentInstanceId);
         if (parentItem) place(parentItem, depth + 1);
         if (parent) {
-          const [ax, ay, az] = item.placement.anchorMm;
-          const local = new THREE.Vector3(ax * MM, az * MM, -ay * MM).applyEuler(parent.root.rotation);
-          view.root.position.copy(parent.root.position).add(local);
-          view.root.rotation.set(0, parent.root.rotation.y + item.placement.yawDeg * DEG, 0);
+          // The parent's whole orientation, so a pump on a pipette lying on the bench lies with it.
+          this.poseOnParent(view, parent, item.placement.anchorMm, item.placement.yawDeg);
         }
       }
       placed.add(item.instanceId);
     };
     description.bench.forEach((item) => place(item));
+    if (this.held) this.poseHeld();
     for (const item of description.bench) this.updateItem(item);
     // World matrices normally refresh at the next render; picking, labels and framing can run
     // before it, so they are brought up to date with the scene now.
@@ -638,6 +659,7 @@ export class BenchEngine {
           // A pipette: its tip goes 12 mm down into the liquid (or the cuvette) and back, upright.
           tool.root.position.y -= u * 12 * MM;
           tool.root.quaternion.copy(startQuaternion);
+          this.poseSeatedChildren(args.toolId);
         } else {
           tool.root.quaternion.copy(startQuaternion).multiply(roll.setFromAxisAngle(new THREE.Vector3(1, 0, 0), u * ROLL));
         }
@@ -649,6 +671,128 @@ export class BenchEngine {
       this.toolRun = { tick, finish };
       this.requestRender();
     });
+  }
+
+  /** Pose an item on its parent's anchor, in the parent's whole orientation. */
+  private poseOnParent(view: ItemView, parent: ItemView, anchorMm: number[], yawDeg: number): void {
+    const [ax, ay, az] = anchorMm;
+    const local = new THREE.Vector3(ax * MM, az * MM, -ay * MM).applyQuaternion(parent.root.quaternion);
+    view.root.position.copy(parent.root.position).add(local);
+    view.root.quaternion.copy(parent.root.quaternion).multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), yawDeg * DEG));
+  }
+
+  /** Re-pose what is seated on `parentId` (and on that, in turn) from where the parent is now. */
+  private poseSeatedChildren(parentId: string, depth = 0): void {
+    const parent = this.items.get(parentId);
+    if (!parent || depth > 6) return;
+    for (const item of this.lastScene?.bench ?? []) {
+      if (item.placement.kind !== "seated" || item.placement.parentInstanceId !== parentId) continue;
+      const child = this.items.get(item.instanceId);
+      if (!child) continue;
+      this.poseOnParent(child, parent, item.placement.anchorMm, item.placement.yawDeg);
+      this.poseSeatedChildren(item.instanceId, depth + 1);
+    }
+  }
+
+  /**
+   * Hold a pipette upright over a vessel's mouth while liquid is added a drop at a time (decided
+   * 2026-10-02), or let it go (null). The hold outlasts each sync, since every drop changes the
+   * runtime; the pipette's place on the bench is unchanged, and it returns there when let go.
+   */
+  holdOver(itemId: string | null, overId?: string): void {
+    this.held = itemId && overId ? { itemId, overId } : undefined;
+    if (this.held) this.poseHeld();
+    else if (this.lastScene) void this.sync(this.lastScene);
+    this.requestRender();
+  }
+
+  private poseHeld(): void {
+    const held = this.held;
+    const view = held ? this.items.get(held.itemId) : undefined;
+    const over = held ? this.items.get(held.overId) : undefined;
+    if (!view || !over) return;
+    over.root.updateWorldMatrix(true, true);
+    const top = new THREE.Box3().setFromObject(over.model ?? over.root).max.y;
+    view.root.position.set(over.root.position.x, top + 6 * MM, over.root.position.z);
+    view.root.quaternion.setFromEuler(new THREE.Euler(0, view.restYaw ?? 0, 0));
+    view.benchShift = undefined;
+    view.benchLift = undefined;
+    this.poseSeatedChildren(view.instanceId);
+    this.itemLayer.updateMatrixWorld(true);
+    this.shadowsDirty = true;
+  }
+
+  /**
+   * One drop falling from the held pipette's tip to the liquid in the vessel below: presentation
+   * only, after the runtime has moved the drop. Nothing under reduced motion.
+   */
+  dropFromHeld(color = "#9cc6e0"): void {
+    const held = this.held;
+    const view = held ? this.items.get(held.itemId) : undefined;
+    const over = held ? this.items.get(held.overId) : undefined;
+    if (!view || !over || this.options.reducedMotion) return;
+    const contents = this.lastScene?.bench.find((item) => item.instanceId === over.instanceId)?.contents;
+    const surface = over.root.position.y + (contents?.kind === "liquid" ? contents.levelMm * MM : 0);
+    const material = this.dropMaterial ??= new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.85 });
+    const mesh = new THREE.Mesh(new THREE.SphereGeometry(1.6 * MM, 10, 8), material);
+    mesh.position.copy(view.root.position);
+    this.scene.add(mesh);
+    this.droplets.push({ mesh, from: view.root.position.y - 1.5 * MM, to: Math.min(view.root.position.y - 2 * MM, surface), t: 0 });
+    this.requestRender();
+  }
+  private dropMaterial?: THREE.MeshBasicMaterial;
+
+  /**
+   * A stoppered vessel turned over and back once, its stopper with it: presentation only, after
+   * the runtime has counted the inversion. Resolves at once under reduced motion.
+   */
+  animateInversion(vesselId: string): Promise<void> {
+    this.stopMixRun();
+    const view = this.items.get(vesselId);
+    if (!view || this.options.reducedMotion) return Promise.resolve();
+    const start = view.root.position.clone();
+    const startQuaternion = view.root.quaternion.clone();
+    const height = new THREE.Box3().setFromObject(view.model ?? view.root).getSize(new THREE.Vector3()).y;
+    const LIFT = 0.18, TURN = 0.32, BACK = 0.32, DOWN = 0.18;
+    const ease = (u: number): number => (u < 0.5 ? 2 * u * u : 1 - (-2 * u + 2) ** 2 / 2);
+    let elapsed = 0;
+    return new Promise((resolve) => {
+      const finish = () => {
+        const rest = this.restPositions.get(vesselId);
+        const restQuaternion = this.restQuaternions.get(vesselId);
+        view.root.position.copy(rest ?? start);
+        view.root.quaternion.copy(restQuaternion ?? startQuaternion);
+        this.poseSeatedChildren(vesselId);
+        this.shadowsDirty = true;
+        this.requestRender();
+        resolve();
+      };
+      const tick = (dt: number): boolean => {
+        if (this.items.get(vesselId) !== view) return false;
+        elapsed += dt;
+        const lift = elapsed < LIFT ? ease(elapsed / LIFT)
+          : elapsed < LIFT + TURN + BACK ? 1 : Math.max(0, 1 - ease((elapsed - LIFT - TURN - BACK) / DOWN));
+        const turn = elapsed < LIFT ? 0 : elapsed < LIFT + TURN ? ease((elapsed - LIFT) / TURN)
+          : elapsed < LIFT + TURN + BACK ? 1 - ease((elapsed - LIFT - TURN) / BACK) : 0;
+        // Turned about its own middle, held well clear of the bench.
+        const pivot = start.clone().add(new THREE.Vector3(0, height / 2 + lift * (height / 2 + 30 * MM), 0));
+        const q = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), turn * Math.PI);
+        view.root.quaternion.copy(q).multiply(startQuaternion);
+        view.root.position.copy(pivot).add(new THREE.Vector3(0, -height / 2, 0).applyQuaternion(q));
+        this.poseSeatedChildren(vesselId);
+        this.shadowsDirty = true;
+        return elapsed < LIFT + TURN + BACK + DOWN;
+      };
+      this.mixRun = { tick, finish };
+      this.requestRender();
+    });
+  }
+
+  private stopMixRun(): void {
+    const run = this.mixRun;
+    if (!run) return;
+    this.mixRun = undefined;
+    run.finish();
   }
 
   private stopToolRun(): void {
@@ -881,7 +1025,10 @@ export class BenchEngine {
       view.benchShift = undefined;
       view.benchLift = undefined;
     }
-    if (rest) {
+    if (view.entry?.benchRest) {
+      // Turned upright from its rest pose, so what is seated on it is re-posed, not just moved.
+      this.poseSeatedChildren(instanceId);
+    } else if (rest) {
       const delta = view.root.position.clone().sub(rest);
       for (const id of this.lockedDescendants(instanceId)) {
         const child = this.items.get(id);
@@ -1287,14 +1434,27 @@ export class BenchEngine {
    * profile; the item does not move. Level views sit below the normal 12° floor, so the limit is
    * relaxed until `restorePose`.
    */
-  eyeLevel(instanceId: string, levelMm: number): void {
+  eyeLevel(instanceId: string, levelMm: number, distanceM = 0.32, seeThrough: string[] = []): void {
     const view = this.items.get(instanceId);
     if (!view) return;
     const target = view.root.position.clone();
     target.y += levelMm * MM;
-    const across = this.camera.position.clone().sub(this.controls.target).setY(0);
-    if (across.lengthSq() < 1e-6) across.set(0, 0, 1);
-    across.normalize().multiplyScalar(0.32);
+    const current = this.camera.position.clone().sub(this.controls.target).setY(0);
+    if (current.lengthSq() < 1e-6) current.set(0, 0, 1);
+    current.normalize();
+    // The first direction, from the current one outward, with nothing else between the eye and the
+    // line: another item standing in front (a wash bottle beside the flask) would hide the meniscus.
+    const own = new Set([instanceId, ...seeThrough, ...this.lockedDescendants(instanceId)]);
+    const clear = (dir: THREE.Vector3): boolean => {
+      this.raycaster.set(target, dir);
+      this.raycaster.far = distanceM;
+      const hits = this.raycaster.intersectObject(this.itemLayer, true);
+      this.raycaster.far = Infinity;
+      return !hits.some((hit) => !own.has(hit.object.userData.instanceId as string));
+    };
+    const turns = [0, 35, -35, 70, -70, 110, -110, 180];
+    const chosen = turns.map((deg) => current.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), deg * DEG)).find(clear) ?? current;
+    const across = chosen.multiplyScalar(distanceM);
     this.controls.maxPolarAngle = 90 * DEG;
     this.tweenTo(target.clone().add(across), target);
   }
@@ -1344,7 +1504,11 @@ export class BenchEngine {
     this.stopPour();
     this.stopSetOn();
     this.stopToolRun();
+    this.stopMixRun();
     this.setToolLoad(null);
+    for (const drop of this.droplets) { this.scene.remove(drop.mesh); drop.mesh.geometry.dispose(); }
+    this.droplets = [];
+    this.dropMaterial?.dispose();
     this.disposed = true;
     if (this.frame) cancelAnimationFrame(this.frame);
     this.controls.dispose();

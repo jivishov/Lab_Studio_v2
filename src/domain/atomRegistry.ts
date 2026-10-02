@@ -461,6 +461,13 @@ export const deriveActionEffectContract = (
       classes: ["apparatus-material-instrument-state", "evidence-recording"],
       targets: [{ domain: "equipment" }, { domain: "material" }, { domain: "evidence" }],
     };
+  } else if (action.verb === "mix" && action.parameters.mixOperation === "invert") {
+    // A stoppered vessel inverted to mix (decided 2026-10-02): the reducer's inversion handler
+    // counts inversions on the vessel and records the mix once they are done.
+    handler = {
+      classes: ["apparatus-material-instrument-state", "evidence-recording"],
+      targets: [{ domain: "equipment" }, { domain: "material" }, { domain: "evidence" }],
+    };
   } else if (action.extractionObservation) {
     handler = {
       classes: ["measurement-direct-observation-acquisition", "evidence-recording"],
