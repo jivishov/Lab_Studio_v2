@@ -644,6 +644,8 @@ export class BenchEngine {
         const restQuaternion = this.restQuaternions.get(args.toolId);
         if (rest) tool.root.position.copy(rest);
         if (restQuaternion) tool.root.quaternion.copy(restQuaternion);
+        // What is seated on the tool (a pump on a pipette) goes back with it.
+        this.poseSeatedChildren(args.toolId);
         this.shadowsDirty = true;
         this.requestRender();
         resolve();
@@ -1331,6 +1333,7 @@ export class BenchEngine {
         const restQuaternion = this.restQuaternions.get(args.sourceId);
         if (rest) source.root.position.copy(rest);
         if (restQuaternion) source.root.quaternion.copy(restQuaternion);
+        this.poseSeatedChildren(args.sourceId);
         this.shadowsDirty = true;
         this.requestRender();
         resolve();

@@ -95,6 +95,10 @@ The Pack 1 validator passes: 20 definitions, 2.1 MB.
 - hand control;
 - the pane with normal motion.
 
+## Found after the build (2026-10-02)
+
+You saw the pump floating above the bench, detached from the pipette, at step 5. When a tool's draw or tip animation ended, the tool was put back where the runtime keeps it, but what was seated on it was not re-posed. The pump kept its last mid-dip position, upright above the beaker. Both "put back" points now re-pose seated parts: the tool deposit and, for safety, the set-on animation. A headless look after the step 4 draw shows the pump on the end of the filled pipette lying on the bench.
+
 ## Tests written, not run
 
 - `src/runtime/__tests__/markDispense.test.ts`: delivering to the line; an early refusal; an overshoot refused and not undoable; acceptance within one drop; inversions counted to ten; the whole dilution (20 x, 0.01 M).
