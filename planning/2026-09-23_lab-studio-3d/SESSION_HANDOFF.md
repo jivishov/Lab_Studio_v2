@@ -4,12 +4,91 @@ Written 2026-09-24 so a fresh session can continue the Pack 1 build without the 
 conversation, and checked claim by claim against the repository. Read this first, then the
 governing documents it names.
 
+## State on 2026-10-03 (read this first)
+
+This section supersedes anything older below where they differ. `DECISIONS.md` has every decision;
+the evidence notes have what was built and checked.
+
+**Branch.** `origin/claude/lab-studio-3d` is at `713c248`. **26 local commits** sit on top, from
+`39fdab8` (M7 hand-panel decisions) to `7a63d86` (pump stays on the pipette). Nothing has been pushed
+since; push only when the user asks.
+
+**Pack 1, technique by technique:**
+
+| Technique | State | Evidence |
+|---|---|---|
+| Weigh a Solid | 5 steps; teacher-prepared readings; the glass seats on the pan; TARE pressed on the balance; solid added with the spatula | `READINGS_EVIDENCE.md`, `TARE_SPATULA_EVIDENCE.md` |
+| Analyze Transmittance of a Dilution | 28 steps; 25 mL cylinder with a filling funnel; working beaker and Beral pipettes for the cuvettes; cuvettes seat in the photometer | `READINGS_EVIDENCE.md`, `PIPETTE_FUNNEL_EVIDENCE.md` |
+| Dilute a Stock Solution | 12 atomized steps: pipette pump, delivery to the line drop by drop, flask to the mark drop by drop, stopper, invert ×10, two calculations | `DILUTION_ATOMIZATION_EVIDENCE.md` |
+| Make a Solution | Still the old 3 steps (the reagent bottle starts empty; "dissolve" creates the solute). **Next to build**, decided | `proposals/PACK1_ATOMIZATION.md` |
+| Measure Liquid Volume | Unchanged; host-bound (plays only inside two 2D labs), so it waits for those labs | `proposals/PACK1_ATOMIZATION.md` |
+
+There is also a simulation switcher on the title (all five), and hover labels hang below items.
+
+**Standing policies (user decisions):**
+- **Atomization:** break each step down to the real physical actions, within reason, to build
+  "muscle memory". New atoms and roles not cited in the AP lab documents are expected; record the basis
+  as the teacher's decision. Content changes still go to the user first and become D4 exceptions (eight
+  so far).
+- **Teacher-prepared values:** the teacher sets quantities and readings before play; the student
+  follows the procedure and enters what they observe.
+- **3D is independent of 2D:** the 2D player is out of scope; some atomized steps (drop to the line,
+  invert) cannot be played in 2D, and that is accepted.
+
+**Next, in order (recommended):**
+1. **Study, and propose, adapting the microarray lab's bench design, camera movement and hand control**
+   (`virtual_lab\experiments\dnamicroarray_v2\microarray-3d.html` and `3d-v3\`; the user's local
+   mirror is `experiments\dna-microarray-3d`; six code files differ, and the published copy is the newer). This conflicts with
+   recorded rules: `UI_UX_HANDOFF.md` §0 says the microarray's "code, protocol model and MediaPipe hand
+   pipeline are not used", and G-10 / plan D6 make hand control the shared 2D gesture bridge. Its
+   thumb-plunger technique also post-dates the plan. The user must decide; build nothing until then.
+2. **Build Make a Solution** per `proposals/PACK1_ATOMIZATION.md` (decided: pre-weighed boat, swirl in
+   the flask, drop to the mark, stopper, invert). It needs a weigh boat model, a funnel seat in the
+   flask's neck (generalize the cylinder-funnel atoms), and the runtime's dissolve to use the solid
+   already in the flask.
+3. **Two small additions:** a stopper and inversion for transmittance-dilution's test tube; an atom
+   for weighing's zero step.
+4. **Open UI items:** per-item tray tiles (pairs are grouped, so a tap places the first), and the long
+   title overlapping the step counter at narrow widths.
+5. **M8 acceptance**, with the provisional decisions confirmed (D8, Q4, Q6, U2, U5–U8, `[` `]`, free
+   re-seat, results rounding, the `AGENTS.md` heading) and permission for the test suite and
+   `content:check`. G3 (webcam) was approved but needs the user or Claude in Chrome.
+
+**How the work has been checked** (the user's validation policy: source review, `npx tsc -p
+tsconfig.app.json --noEmit`, `python tools/blender/validate_equipment3d.py --pack 1`, and narrow
+static validators; tests are written but not run):
+- `probes/` holds the narrow validators and runtime probes; see `probes/README.md`.
+- G1 is one browser look per change in the app's pane. A hidden pane stops animation frames, so pours
+  never finish drawing and carries are blocked: switch on Menu → Reduced motion for logic, and switch it
+  back off; or take one headless look with `probes/look-dilution.cjs` (Playwright, SwiftShader).
+- Dev server: `preview_start` "lab-studio-3d-dev" (port 5182), configured in the session folder's
+  `C:\Users\EmilJivishov\Projects\virtual_lab\experiments\lab-studio\.claude\launch.json`, which
+  is temporary; remove it and stop the server when the work is done.
+
+**Practicalities:**
+- Models: `"C:/Program Files/Blender Foundation/Blender 5.2/blender.exe" -b --factory-startup -P
+  tools/blender/build_equipment3d.py -- --only <ids> --review`, then `python tools/blender/pack_models.py
+  --only <ids>`, then the validator. Review renders land in `tools/blender/.build/review/`. New materials
+  go in `labeq/materials.py` and `src/studio3d/equipment3d/viewerMaterials.json` (edit the latter as
+  text; it is CRLF).
+- Atom docs are generated: `node scripts/generateAtomicStepsDocs.mjs`. transmittance-dilution is
+  generated from `scripts/generatorInputs/simulator/transmittanceDilution.mjs` (`node
+  scripts/generateSimulatorTechniqueDefinitions.mjs --only transmittance-dilution`); weighing and dilution
+  are edited by hand.
+- CRLF files include `BenchEngine.ts`, `Player3D.tsx`, `usePlayer3D.ts`, `stepRules.ts`, `studio3d.css`,
+  `DECISIONS.md` and `viewerMaterials.json`. Edit them with a byte-aware script (normalize to LF, assert
+  one match, restore CRLF). Long bash heredocs fail; write scripts to a file first.
+- Physical-step rules found the hard way: every physical action needs a registry atom (the bundled
+  catalogue policy refuses atomless ones); a `legacyActionEffects` entry must equal the handler-derived
+  effect; a step that should finish only on acceptance must be validated by a recorded measurement or a
+  notebook tag, not by `actionEvidence`.
+
 ## Where the work is
 
 - **Our worktree:** `C:\Users\EmilJivishov\Projects\Lab_studio\tmp\lab-studio-3d`.
   - Branch `claude/lab-studio-3d`, tracking `origin/claude/lab-studio-3d`.
   - Remote `https://github.com/jivishov/Lab_Studio_v2.git`.
-  - It was pushed up to `e8d1d26`; the handoff commits after that are local only.
+  - It was pushed up to `713c248`; see "State on 2026-10-03" for what is local only.
 - **Its main checkout** is `C:\Users\EmilJivishov\Projects\Lab_studio\tmp\github-export\Lab_Studio_v2`
   (`git rev-parse --git-common-dir`). The main checkout and our worktree share branches and the stash.
   Don't work in it, and don't change its branch.
