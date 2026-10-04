@@ -127,13 +127,13 @@ export const StepCard = ({ player, controls, onShowMe, onHoldOver, holdOverReady
                 title={holdOverReady ? undefined : "Put the pipette and the vessel on the bench first."}>Hold the pipette over it</button>
             ) : null
           ) : flow.canConfirm ? (
-            <button type="button" className="s3d-button s3d-button--primary" data-gesture-action="confirm-accessible-action" disabled={!flow.confirmEnabled} onClick={player.confirm}>Confirm</button>
+            <button type="button" className="s3d-button s3d-button--primary" data-hand-press="confirm-accessible-action" disabled={!flow.confirmEnabled} onClick={player.confirm}>Confirm</button>
           ) : flow.canSubmitCalculation || (runtime.expectedAction?.verb === "calculate" && !flow.nodeCompleted) ? (
-            <button type="button" className="s3d-button s3d-button--primary" data-gesture-action="submit-calculation" disabled={!flow.canSubmitCalculation} onClick={player.submitCalculation}>
+            <button type="button" className="s3d-button s3d-button--primary" data-hand-press="submit-calculation" disabled={!flow.canSubmitCalculation} onClick={player.submitCalculation}>
               {submitCalculationLabel(runtime.expectedAction?.label ?? "calculation")}
             </button>
           ) : flow.interaction?.type === "recordNotebook" ? (
-            <button type="button" className="s3d-button s3d-button--primary" data-gesture-action="record-evidence" disabled={!(flow.canRecord || flow.canRecordObservation)} onClick={player.recordEvidence}>
+            <button type="button" className="s3d-button s3d-button--primary" data-hand-press="record-evidence" disabled={!(flow.canRecord || flow.canRecordObservation)} onClick={player.recordEvidence}>
               {runtime.expectedAction?.parameters.balanceOperation === "zero" ? "Tare"
                 : runtime.expectedAction?.parameters.mixOperation === "invert"
                   ? `Invert (${runtime.state.mixInversions?.[runtime.expectedAction.id] ?? 0} of ${Number(runtime.expectedAction.parameters.inversions ?? 10)})`

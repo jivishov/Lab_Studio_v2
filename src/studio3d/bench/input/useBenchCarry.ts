@@ -10,7 +10,6 @@ import type { SceneContents, SceneItem } from "../../adapters/runtimeToScene";
 import type { Player3DController } from "../../player/usePlayer3D";
 import type { BenchEngine } from "../BenchEngine";
 import { arrowDirection, cycleIndex, nudgePoint, spatialOrder, type BenchPoint } from "./keyboard";
-import { benchCanvasUnder } from "./targetResolver";
 
 /**
  * Picking up and setting down on the 3D bench (handoff §5.6). With a mouse it follows the DNA
@@ -22,8 +21,8 @@ import { benchCanvasUnder } from "./targetResolver";
  * carrying, the item is drawn lifted with its footprint, and overlap is classified by the shared
  * 2D rule; nothing commits until release or Enter (G-5). Both ways in release through the same
  * `resolveRelease`, in the 2D order. Esc cancels. Tray tiles start a carry of an item that is not
- * yet on the bench. Hand control (the shared gesture bridge, plan D6) carries through the same path:
- * a pinch lifts the item, the pinch point moves it over the bench, and releasing over the bench
+ * yet on the bench. Hand control (the microarray lab's controller, src/studio3d/hand/) carries through the same path:
+ * a closed grip lifts the item, the hand moves it over the bench, and letting go over the bench
  * commits through the pointer's release, tagged "vision" as the 2D player tags its camera releases.
  * Releasing over a panel, the tray or the dock changes nothing, as releasing off the 2D workbench does.
  */
@@ -81,11 +80,21 @@ type Carry =
       pressAction?: PressAction;
       stroke?: Stroke;
       /** The pour target under the carried item, for the tilt drawn during a pour stroke. */
-      pourToward?: string }
+      pourToward?: string;
+      /** The kind of the last callout: "valid" when over a target the step accepts. */
+      lastKind?: CarryCallout["kind"] }
   | { kind: "tray"; via: "pointer" | "gesture"; definitionId: string; point?: BenchPoint; click?: boolean; pressAction?: PressAction; stroke?: Stroke;
       pourToward?: string; liftMm?: number };
 
 interface Stroke { kind: Exclude<PressAction, "commit">; startY: number; depth: number }
+
+/**
+ * Whether the bench canvas itself is under a client point. The canvas fills the player and the
+ * floating panels sit over it, so "over the bench" means the canvas is the element there, not only
+ * that the point is inside its rectangle.
+ */
+export const benchCanvasUnder = (canvas: HTMLCanvasElement | undefined, clientX: number, clientY: number): boolean =>
+  Boolean(canvas) && typeof document.elementFromPoint === "function" && document.elementFromPoint(clientX, clientY) === canvas;
 
 const LIFT_MM = 16;
 /** A tool's working end, judged as a small square over the source and the target. */
@@ -221,6 +230,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     // What the next mouse press does here, and the callout worded for it (a click carry, decided 2026-10-04).
     const show = (shown: CarryCallout, action: PressAction): CarryCallout => {
       carry.pressAction = action;
+      if (carry.kind === "bench") carry.lastKind = shown.kind;
       const out = carry.click ? { ...shown, text: clickCallout(shown.text, action) } : shown;
       setCallout(out);
       return out;
@@ -245,9 +255,9 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       const sourceFootprint = source?.placement.kind === "bench"
         ? footprintOf(source.model, source.placement.point.xMm, source.placement.point.yMm) : undefined;
       const overSource = hitId === tool.sourceInstanceId || Boolean(sourceFootprint && pointInFootprint(sourceFootprint, point));
-      // A mouse carry takes its scoop by a press dragged down into the solid (the dip stroke); the
-      // other ways in take it as the spoon passes over the source.
-      if (overSource && !carry.toolLoaded && !carry.click) {
+      // A mouse or hand carry takes its scoop by lowering into the solid (the dip stroke); touch and
+      // the keyboard take it as the spoon passes over the source.
+      if (overSource && !carry.toolLoaded && !carry.click && carry.via !== "gesture") {
         carry.toolLoaded = true;
         setToolLoaded(true);
         engine.setToolLoad(carry.instanceId, scoopFor(tool));
@@ -581,6 +591,17 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     return false;
   }, [cancel, candidates, carryTo, player, release, seatAim]);
 
+  /** Draw a stroke's depth (0..1): the item lowered toward its target, a pour source tipped further. */
+  const drawDepth = useCallback((carry: Carry, depth: number, kind: Exclude<PressAction, "commit">) => {
+    if (!engine || carry.kind !== "bench" || !carry.point) return;
+    const at = carry.tipPoint ?? carry.point;
+    const lift = carry.liftMm ?? LIFT_MM;
+    const lowered = kind === "insert" && carry.pourToward ? lift : lift - LIFT_MM * depth;
+    // A tool is drawn by its centre; its working end is `tipPoint`.
+    const drawAt = toolTransfer && carry.definitionId === toolTransfer.toolDefinitionId ? carry.point : at;
+    engine.previewCarry(carry.instanceId, drawAt.xMm, drawAt.yMm, Math.max(0, lowered), carry.pourToward, 30 + 30 * depth);
+  }, [engine, toolTransfer]);
+
   // Pointer handling on the canvas. The mouse follows the DNA microarray lab's controller (decided
   // 2026-10-04; `3d-v3/app.js:111-131`, `interaction.js:209-210`): a press on an item picks it up at
   // once and it follows the pointer, no button held; the next press acts where it is (`pressAction`)
@@ -593,16 +614,6 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     // A control (the TARE key) pressed: it acts on release without moving, and is never carried.
     let pressed: { instanceId: string; controlId: string; x: number; y: number } | undefined;
     const isMouse = (event: PointerEvent) => event.pointerType !== "touch";
-
-    /** Draw a stroke's depth: the item lowered toward its target, a pour source tipped further. */
-    const drawStroke = (carry: Carry, stroke: Stroke) => {
-      if (carry.kind !== "bench" || !carry.point) return;
-      const at = carry.tipPoint ?? carry.point;
-      const lift = carry.liftMm ?? LIFT_MM;
-      const lowered = stroke.kind === "insert" && carry.pourToward ? lift : lift - LIFT_MM * stroke.depth;
-      const drawAt = carry.tipPoint && carry.tipPoint !== carry.point && stroke.kind === "dip" ? carry.point : at;
-      engine.previewCarry(carry.instanceId, drawAt.xMm, drawAt.yMm, Math.max(0, lowered), carry.pourToward, 30 + 30 * stroke.depth);
-    };
 
     /** A press with an item held by a mouse carry. */
     const pressWhileCarrying = (carry: Carry, event: PointerEvent) => {
@@ -632,7 +643,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
         return;
       }
       stroke.depth = strokeDepth(dy);
-      drawStroke(carry, stroke);
+      drawDepth(carry, stroke.depth, stroke.kind);
       if (stroke.depth < STROKE.act) return;
       if (stroke.kind === "insert") {
         carry.stroke = undefined;
@@ -790,7 +801,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       window.removeEventListener("pointercancel", up);
       window.removeEventListener("keydown", key);
     };
-  }, [cancel, carryTo, carryToPointer, engine, onControl, onHover, onTap, player, release, scene, scoopFor, toolTransfer]);
+  }, [cancel, carryTo, carryToPointer, drawDepth, engine, onControl, onHover, onTap, player, release, scene, scoopFor, toolTransfer]);
 
   /** Start carrying a tray item (pointer down on its tile): with a mouse it then follows the pointer until a press on the bench. */
   const startTrayCarry = useCallback((definitionId: string, pointerType = "mouse") => {
@@ -809,13 +820,13 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
   /**
    * Whether a client point is over the bench, where a gesture carry follows and can commit: the
    * canvas itself is the element there (no panel, tray or dock covers it) and the ray meets the bench.
-   * This is the 3D form of the 2D bridge's "release over the workbench".
+   * Letting go anywhere else changes nothing.
    */
   const overBench = useCallback((clientX: number, clientY: number): boolean =>
     Boolean(engine && benchCanvasUnder(engine.canvasElement, clientX, clientY) && engine.benchPointAt(clientX, clientY)),
   [engine]);
 
-  /** Hand control: a pinch on a bench item lifts it at once, as a pointer carry does after 4 px. */
+  /** Hand control: a closed grip held on a bench item lifts it. */
   const startGestureCarry = useCallback((instanceId: string): boolean => {
     const item = scene.bench.find((i) => i.instanceId === instanceId);
     if (!item || !canCarry(instanceId)) return false;
@@ -827,7 +838,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     return true;
   }, [canCarry, cancel, scene]);
 
-  /** Hand control: a pinch on a tray tile starts the same tray carry a pointer press does. */
+  /** Hand control: a closed grip held on a tray tile starts the same tray carry a pointer press does. */
   const startGestureTrayCarry = useCallback((definitionId: string): boolean => {
     if (pouringRef.current) return false;
     if (carryRef.current) cancel();
@@ -837,7 +848,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
   }, [cancel]);
 
   /**
-   * The pinch point moved: over the bench, the gesture carry follows it as the pointer's does. Off the
+   * The hand moved: over the bench, the gesture carry follows it as the pointer's does. Off the
    * bench a release would change nothing, so the item waits where it last was and no target is cued,
    * as the 2D preview shows no overlap off the workbench. Never commits.
    */
@@ -853,7 +864,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     setCallout(undefined);
   }, [carryToPointer, engine, overBench]);
 
-  /** The pinch was released: over the bench it commits through the pointer's release; elsewhere nothing changes. */
+  /** The hand let go: over the bench it commits through the pointer's release; elsewhere nothing changes. */
   const releaseGesture = useCallback((clientX: number, clientY: number) => {
     if (carryRef.current?.via !== "gesture") return;
     if (!overBench(clientX, clientY)) {
@@ -864,15 +875,47 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     release();
   }, [cancel, carryToPointer, overBench, release]);
 
-  /** Drop an unfinished gesture carry without committing (the bridge cancelled it). */
+  /** Drop an unfinished hand carry without committing. */
   const cancelGesture = useCallback(() => {
     if (carryRef.current?.via === "gesture") cancel();
   }, [cancel]);
 
+  /**
+   * Hand control (the microarray lab's controller, decided 2026-10-04): what the hand's carry would
+   * do where it is now. A pour, or a dipped tool over its target, acts on a turn of the palm.
+   */
+  const gestureAction = useCallback((): { action: PressAction; pour: boolean; tip: boolean } | undefined => {
+    const carry = carryRef.current;
+    if (carry?.via !== "gesture") return undefined;
+    const action = carry.pressAction ?? "commit";
+    if (carry.kind === "tray") return { action: "commit", pour: false, tip: false };
+    const tool = Boolean(toolTransfer && carry.definitionId === toolTransfer.toolDefinitionId);
+    return { action, pour: action === "insert" && Boolean(carry.pourToward), tip: tool && Boolean(carry.toolLoaded) && carry.lastKind === "valid" };
+  }, [toolTransfer]);
+
+  /** Hand control: draw the carried item at a stroke depth (0..1). */
+  const gestureDepth = useCallback((depth: number) => {
+    const carry = carryRef.current;
+    if (carry?.via !== "gesture" || carry.kind !== "bench") return;
+    const action = carry.pressAction ?? "commit";
+    if (depth <= 0 && carry.point) carryTo(carry.tipPoint ?? carry.point);
+    else drawDepth(carry, depth, action === "commit" ? "insert" : action);
+  }, [carryTo, drawDepth]);
+
+  /** Hand control: the spatula lowered into the solid takes its scoop. */
+  const loadGestureTool = useCallback(() => {
+    const carry = carryRef.current;
+    if (!engine || carry?.via !== "gesture" || carry.kind !== "bench" || !toolTransfer || carry.definitionId !== toolTransfer.toolDefinitionId) return;
+    carry.toolLoaded = true;
+    setToolLoaded(true);
+    engine.setToolLoad(carry.instanceId, scoopFor(toolTransfer));
+    if (carry.tipPoint) carryTo(carry.tipPoint);
+  }, [carryTo, engine, scoopFor, toolTransfer]);
+
   // A mouse carry in the microarray model (it follows the pointer until the next press).
   const clickCarrying = Boolean(carrying && carryRef.current?.click);
   return { callout, carrying, clickCarrying, carriedDefinitionId, keyCarrying, toolTransfer, toolLoaded, startTrayCarry, startKeyCarry, handleCarryKey, cancel,
-    canCarry, startGestureCarry, startGestureTrayCarry, gestureCarryTo, releaseGesture, cancelGesture };
+    canCarry, startGestureCarry, startGestureTrayCarry, gestureCarryTo, releaseGesture, cancelGesture, gestureAction, gestureDepth, loadGestureTool };
 };
 
 const lowerFirst = (text: string) => (text ? text.charAt(0).toLowerCase() + text.slice(1) : text);

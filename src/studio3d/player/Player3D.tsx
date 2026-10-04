@@ -1,16 +1,15 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { GestureCursorOverlay, useGestureBridge } from "../../player/gesture/bridge/useGestureBridge";
-import type { GestureController } from "../../player/gesture/gestureTypes";
-import { useGestureRecognition } from "../../player/gesture/useGestureRecognition";
 import type { RuntimeDefinition } from "../../runtime";
 import { BenchView } from "../bench/BenchView";
 import { safeRects } from "../bench/camera/benchCamera";
 import type { BenchEngine, CameraPose, GraphicsQuality } from "../bench/BenchEngine";
 import { arrowDirection, spatialNeighbour } from "../bench/input/keyboard";
-import { createBenchGestureTargetResolver, type BenchGestureGrab } from "../bench/input/targetResolver";
 import { useBenchCarry } from "../bench/input/useBenchCarry";
 import { Icon } from "../ui/Icon";
-import { HandControlPanel } from "./HandControlPanel";
+import type { HandTarget } from "../hand/handController";
+import { handSettings } from "../hand/handTuning";
+import { useHandControl } from "../hand/useHandControl";
+import { HandControlPanel, HandCursorRing, type HandGuideContext } from "./HandControlPanel";
 import { MOVABLE_FROM_WIDTH, sanitizeLayout, type PanelId, type PanelLayout, type PanelState } from "./panelLayout";
 import { BenchList, EquipmentTray, ExamineCard, HelpDialog, NOTEBOOK_WIDTH, NotebookSheet, ResultsSheet, thumbnailUrl, type PanelControls } from "./panels";
 import { SimulationSwitcher } from "./SimulationSwitcher";
@@ -50,11 +49,11 @@ const lowerFirstLetter = (text: string) => (text ? text.charAt(0).toLowerCase() 
 const systemReducedMotion = () => typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 const windowSize = () => ({ width: window.innerWidth, height: window.innerHeight });
 
-/** A tray item carried by hand control: its thumbnail follows the pinch, keeping the grip it was taken with. */
+/** A tray item carried by hand control: its thumbnail follows the hand, centred on it. */
 interface TrayGrabPreview { definitionId: string; label: string; offsetX: number; offsetY: number; x: number; y: number }
 const TRAY_PREVIEW_PX = 72;
 
-export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fallbackHash, backHref, variant = "full", focusNodeId, focusVersion, onPlayer, gestureController, simulationId }: {
+export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fallbackHash, backHref, variant = "full", focusNodeId, focusVersion, onPlayer, simulationId }: {
   definition: RuntimeDefinition;
   /** The definition before teacher setup, for provenance chips (see usePlayer3D). */
   authoredDefinition?: RuntimeDefinition;
@@ -68,8 +67,6 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   focusVersion?: number;
   /** The Studio's preview toolbar drives restart, mode and step through the controller. */
   onPlayer?: (player: Player3DController) => void;
-  /** Replaces the camera recognition engine, as the 2D player allows (tests). */
-  gestureController?: GestureController;
   /** A standalone technique: its title opens the switcher between the 3D simulations. */
   simulationId?: string;
 }) => {
@@ -140,19 +137,97 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   const carryingRef = useRef(carry.carrying);
   carryingRef.current = carry.carrying;
 
-  // Hand control (§5.15): the shared gesture bridge (plan D6), which this player gives a raycast
-  // resolver behind the bench canvas and the bench's own carry as its grab handlers (G-10).
-  const realGesture = useGestureRecognition();
-  const gesture = gestureController ?? realGesture;
-  const gestureBridge = useGestureBridge<BenchGestureGrab>({ enabled: gesture.enabled, root: playerRef, stop: gesture.stop });
-  const [handRearm, setHandRearm] = useState(false);
+  // Hand control (decided 2026-10-03/04, `proposals/MICROARRAY_ADOPTION.md` §7–8): the DNA microarray
+  // lab's webcam pipeline and controller (src/studio3d/hand/), carrying through the bench's own carry.
+  // The 2D player's gesture engine and bridge are not used in 3D.
   const [trayGrab, setTrayGrab] = useState<TrayGrabPreview>();
   const trayGrabRef = useRef<TrayGrabPreview | undefined>(undefined);
   const trayPreviewRef = useRef<HTMLSpanElement | null>(null);
-  // The dock button opens the panel; the camera starts only from the panel. While it runs, or while
-  // the engine reports a problem, the panel stays shown.
+  const lastHandClient = useRef({ x: 0, y: 0 });
+  const handButtons = useRef(new Map<string, HTMLElement>());
+  const handFocus = useRef<{ id?: string; locked: boolean }>({ locked: false });
+  const gestureBlockedRef = useRef(false);
+  // The dock button opens the panel; the camera starts only from the panel. While it runs the panel stays shown.
   const [handPanelOpen, setHandPanelOpen] = useState(false);
-  const handPanelShown = handPanelOpen || gesture.status !== "off";
+  const clearTrayPreview = () => {
+    trayGrabRef.current = undefined;
+    setTrayGrab(undefined);
+  };
+  /** Hand targets in canvas pixels: bench items and instrument keys (screen-space, as the microarray lab picks), tray tiles and hand buttons. */
+  const handTargets = (): HandTarget[] => {
+    const canvas = engine?.canvasElement;
+    if (!engine || !canvas) return [];
+    const rect = canvas.getBoundingClientRect();
+    const onBench = new Set(scene.bench.map((item) => item.instanceId));
+    const out: HandTarget[] = engine.screenTargets().filter((t) => onBench.has(t.instanceId)).map((t) => t.controlId
+      ? { id: `control:${t.instanceId}:${t.controlId}`, kind: "control", x: t.x, y: t.y, r: t.r, instanceId: t.instanceId, controlId: t.controlId }
+      : { id: t.instanceId, kind: "item", x: t.x, y: t.y, r: t.r, instanceId: t.instanceId });
+    const box = (el: HTMLElement) => {
+      const b = el.getBoundingClientRect();
+      return { x: b.left + b.width / 2 - rect.left, y: b.top + b.height / 2 - rect.top, r: Math.min(b.width, b.height) / 3 };
+    };
+    for (const tile of playerRef.current?.querySelectorAll<HTMLElement>(".s3d-tile[data-definition-id]") ?? []) {
+      out.push({ id: `tile:${tile.dataset.definitionId}`, kind: "tile", definitionId: tile.dataset.definitionId, ...box(tile) });
+    }
+    handButtons.current.clear();
+    for (const button of playerRef.current?.querySelectorAll<HTMLElement>("[data-hand-press]") ?? []) {
+      const id = `button:${button.dataset.handPress}`;
+      handButtons.current.set(id, button);
+      out.push({ id, kind: "button", ...box(button) });
+    }
+    return out;
+  };
+  const hand = useHandControl({
+    bounds: () => ({ width: engine?.canvasElement.clientWidth || 1, height: engine?.canvasElement.clientHeight || 1 }),
+    blocked: () => gestureBlockedRef.current,
+    targets: handTargets,
+    // Aim assist snaps to the step's next target: guidance, so guided mode only (G-7).
+    expectedId: () => (!showGuidance ? undefined : carryingRef.current ? expectedTargetId : tool ? toolId : expectedSourceId),
+    assist: () => showGuidance && handSettings().assist,
+    carrying: () => carryingRef.current,
+    pickUpItem: (instanceId) => carry.startGestureCarry(instanceId),
+    pickUpTile: (definitionId) => {
+      if (!carry.startGestureTrayCarry(definitionId)) return false;
+      const tile = playerRef.current?.querySelector<HTMLElement>(`.s3d-tile[data-definition-id="${definitionId}"]`)?.getBoundingClientRect();
+      const preview = { definitionId, label: scene.tray.find((item) => item.definitionId === definitionId)?.label ?? definitionId,
+        offsetX: TRAY_PREVIEW_PX / 2, offsetY: TRAY_PREVIEW_PX / 2, x: tile ? tile.left + tile.width / 2 : 0, y: tile ? tile.top + tile.height / 2 : 0 };
+      trayGrabRef.current = preview;
+      setTrayGrab(preview);
+      return true;
+    },
+    aimCarry: (x, y) => {
+      const rect = engine?.canvasElement.getBoundingClientRect();
+      if (!rect) return undefined;
+      const cx = rect.left + x, cy = rect.top + y;
+      lastHandClient.current = { x: cx, y: cy };
+      const preview = trayGrabRef.current;
+      if (preview) {
+        trayGrabRef.current = { ...preview, x: cx, y: cy };
+        if (trayPreviewRef.current) trayPreviewRef.current.style.transform = `translate3d(${cx - preview.offsetX}px, ${cy - preview.offsetY}px, 0)`;
+      }
+      carry.gestureCarryTo(cx, cy);
+      return carry.gestureAction();
+    },
+    carryDepth: (depth) => carry.gestureDepth(depth),
+    commitCarry: () => { clearTrayPreview(); carry.releaseGesture(lastHandClient.current.x, lastHandClient.current.y); },
+    cancelCarry: () => { clearTrayPreview(); carry.cancelGesture(); },
+    loadTool: () => carry.loadGestureTool(),
+    pressControl: (t) => { if (t.instanceId && t.controlId) onControl(t.instanceId, t.controlId); },
+    pressButton: (t) => handButtons.current.get(t.id)?.click(),
+    invertTarget: (instanceId) => isInvertTarget(instanceId),
+    invert: () => player.recordEvidence(),
+    dropMode: () => Boolean(dropMode),
+    drop: () => addDropRef.current(1),
+    runDrops: (on) => (on ? startRun() : endRun()),
+    focus: (t, locked) => {
+      if (handFocus.current.id === t?.id && handFocus.current.locked === locked) return;
+      handFocus.current = { id: t?.id, locked };
+      if (t?.kind === "item" && t.instanceId && !carryingRef.current) setHovered(t.instanceId);
+    },
+    say: (text, error) => (error ? player.correct(text, "") : player.notify(text)),
+  });
+  const handPanelShown = handPanelOpen || hand.state.running;
+  const handStopRef = useRef({ running: false, stop: () => undefined as void });
 
   // While a committed pour animates, the bench shows the committed layout with the pour's contents
   // not yet moved (pourStagingScene); when it ends, the committed scene (G-3).
@@ -508,7 +583,9 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     engine.onChange = () => bump((v) => v + 1);
     // A right click puts a held item back, as in the microarray lab (decided 2026-10-04).
     engine.onCameraClick = () => { if (carryCancelRef.current.carrying) carryCancelRef.current.cancel(); };
-    return () => { engine.onManualCamera = undefined; engine.onChange = undefined; engine.onCameraClick = undefined; };
+    // Mouse and hand exclude each other: a mouse press or the wheel stops the camera (decided 2026-10-04).
+    engine.onMouseInput = () => { if (handStopRef.current.running) handStopRef.current.stop(); };
+    return () => { engine.onManualCamera = undefined; engine.onChange = undefined; engine.onCameraClick = undefined; engine.onMouseInput = undefined; };
   }, [engine]);
 
   // The loader (§5.2): the bar counts the technique's GLB bytes until the first bench is drawn.
@@ -598,28 +675,25 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   const n = Math.max(0, runtime.process.nodes.findIndex((node) => node.id === runtime.currentNode.id)) + 1;
   const N = runtime.process.nodes.length;
   const nbDot = showGuidance && flow.interaction?.type === "recordNotebook";
-  // Blocking dialogs cancel an unfinished gesture and stop open-hand scrolling, as in 2D.
+  // Blocking dialogs cancel an unfinished hand motion and pause hand input.
   const resultsOpen = player.complete && !confirmMode;
   const gestureBlocked = helpOpen || Boolean(confirmMode) || resultsOpen;
+  gestureBlockedRef.current = gestureBlocked;
   useEffect(() => {
     if (!gestureBlocked) return;
-    gestureBridge.cancel(true);
-    gestureBridge.cancelScroll();
-  }, [gestureBridge, gestureBlocked]);
-  /**
-   * As the 2D Reset does, stopping cancels an unfinished gesture and stops the camera tracks. The
-   * engine is stopped only when it is not already off: stopping an unsupported engine reports
-   * "Unavailable", which would open the panel after a Restart.
-   */
+    if (carryingRef.current) carry.cancelGesture();
+    hand.controller.resetMotion();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gestureBlocked]);
+  /** Stopping the camera cancels an unfinished hand motion and stops the camera tracks. */
   const stopHandControl = () => {
-    gestureBridge.cancelScroll();
-    gestureBridge.cancel(true);
-    if (gesture.status !== "off") gesture.stop();
+    if (trayGrabRef.current) clearTrayPreview();
+    carry.cancelGesture();
+    hand.controller.resetMotion();
+    hand.stop();
   };
-  const startHandControl = () => {
-    gestureBridge.resetRearm();
-    void gesture.start();
-  };
+  const startHandControl = () => hand.start();
+  handStopRef.current = { running: hand.state.running, stop: stopHandControl };
   /** Closing the panel stops the camera, so the camera never runs without its panel. */
   const closeHandPanel = () => {
     setHandPanelOpen(false);
@@ -629,53 +703,11 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     if (handPanelShown) closeHandPanel();
     else setHandPanelOpen(true);
   };
-  const clearTrayPreview = () => {
-    trayGrabRef.current = undefined;
-    setTrayGrab(undefined);
-  };
-  gestureBridge.host = {
-    blocked: gestureBlocked,
-    grabs: {
-      begin: (grab, cursor) => {
-        if (grab.kind === "bench") {
-          carry.startGestureCarry(grab.instanceId);
-        } else if (carry.startGestureTrayCarry(grab.definitionId)) {
-          const preview = { definitionId: grab.definitionId, label: grab.label, offsetX: grab.gripX * TRAY_PREVIEW_PX,
-            offsetY: grab.gripY * TRAY_PREVIEW_PX, x: cursor.clientX, y: cursor.clientY };
-          trayGrabRef.current = preview;
-          setTrayGrab(preview);
-        }
-        carry.gestureCarryTo(cursor.clientX, cursor.clientY);
-      },
-      move: (grab, cursor) => {
-        const preview = trayGrabRef.current;
-        if (grab.kind === "tray" && preview) {
-          // The thumbnail follows by a direct transform; re-renders read the latest point.
-          trayGrabRef.current = { ...preview, x: cursor.clientX, y: cursor.clientY };
-          if (trayPreviewRef.current) trayPreviewRef.current.style.transform = `translate3d(${cursor.clientX - preview.offsetX}px, ${cursor.clientY - preview.offsetY}px, 0)`;
-        }
-        carry.gestureCarryTo(cursor.clientX, cursor.clientY);
-      },
-      release: (_grab, cursor) => {
-        clearTrayPreview();
-        carry.releaseGesture(cursor.clientX, cursor.clientY);
-      },
-      clear: () => {
-        if (trayGrabRef.current) clearTrayPreview();
-        carry.cancelGesture();
-      },
-    },
-    onRearmChange: setHandRearm,
-    resolver: createBenchGestureTargetResolver({
-      canCarry: carry.canCarry,
-      canPickUp: () => !player.pour && !player.weighing && !player.toolDeposit,
-      canvas: () => engine?.canvasElement,
-      hoverBenchItem: setHovered,
-      pick: (clientX, clientY) => engine?.pick(clientX, clientY),
-      root: () => playerRef.current,
-      trayItem: (definitionId) => scene.tray.find((item) => item.definitionId === definitionId),
-    }),
-    scrollRoot: () => playerRef.current,
+  const handContact = hand.controller.contact;
+  const handGuideContext: HandGuideContext = {
+    carrying: carry.carrying, dropMode: Boolean(dropMode), invertHolding: Boolean(hand.controller.invertHold), locked: Boolean(handContact),
+    stroke: hand.controller.stroke, draw: carry.gestureAction()?.action === "draw", armed: hand.controller.armed,
+    lockedLabel: handContact?.target.instanceId ? lowerFirstLetter(scene.bench.find((i) => i.instanceId === handContact.target.instanceId)?.label ?? "") || undefined : undefined,
   };
   const shownTrayGrab = trayGrab ? trayGrabRef.current ?? trayGrab : undefined;
   const shownTrayThumb = shownTrayGrab ? thumbnailUrl(shownTrayGrab.definitionId) : undefined;
@@ -743,6 +775,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
             <Icon name={carry.callout.kind === "valid" ? "check" : carry.callout.kind === "invalid" ? "x" : carry.callout.kind === "input" ? "pencil" : "tray"} size={14} />{carry.callout.text}
           </div>
         ) : null}
+        {hand.state.running && !gestureBlocked ? <HandCursorRing cursor={hand.state.cursor} /> : null}
       </BenchView>
 
       {engine && !benchReady ? (
@@ -772,8 +805,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
       ) : null}
       {notebookOpen ? <NotebookSheet player={player} width={prefs.notebookWidth} onResize={(w) => updatePrefs({ notebookWidth: w })}
         onClose={() => setNotebookOpen(false)} /> : null}
-      {handPanelShown ? <HandControlPanel gesture={gesture} rearmRequired={handRearm} controls={panelControls}
-        onStart={startHandControl} onStop={stopHandControl} onClose={closeHandPanel} /> : null}
+      {handPanelShown ? <HandControlPanel hand={{ ...hand, start: startHandControl, stop: stopHandControl }} guide={handGuideContext}
+        controls={panelControls} onClose={closeHandPanel} /> : null}
 
       <p className="s3d-hint">{hint}</p>
       <nav className="s3d-dock" aria-label="Player tools">
@@ -842,7 +875,6 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
       {player.complete && !confirmMode ? <ResultsSheet player={player} onPlayAgain={() => setConfirmMode("restart")} backHref={backHref} /> : null}
       {helpOpen ? <HelpDialog onClose={() => setHelpOpen(false)} /> : null}
 
-      <GestureCursorOverlay blocked={gestureBlocked} bridge={gestureBridge} enabled={gesture.enabled} frames={gesture.frames} />
       {shownTrayGrab ? (
         <span ref={trayPreviewRef} aria-hidden="true" className="gesture-drag-preview s3d-gesture-preview" data-gesture-drag-preview="true"
           style={{ left: 0, top: 0, width: TRAY_PREVIEW_PX, height: TRAY_PREVIEW_PX,

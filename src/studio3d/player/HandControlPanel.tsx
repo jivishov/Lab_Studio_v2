@@ -1,173 +1,198 @@
-import { statusLabelForGesture, type GestureCameraStatus, type GestureController } from "../../player/gesture/gestureTypes";
-import { labelForGestureCursorSpeed } from "../../player/gesture/gestureMath";
+import type { HandControl, HandControlState } from "../hand/useHandControl";
+import { setHandSettings, smoothingLabel } from "../hand/handTuning";
+import type { Handedness } from "../hand/handTracker";
 import { Icon } from "../ui/Icon";
 import { FloatPanel, type PanelControls } from "./panels";
 
 /**
- * Hand control (handoff §5.15): a floating panel with the camera preview, the set-up state, gesture
- * cards and cursor response, the 2D player's existing control. Its wording is the 2D player's camera
- * help and privacy text, with only the control names changed to Player3D's (Hand control, Restart,
- * tray). One 2D sentence is left out because it is not true here: Player3D has no edge-hover
- * scrolling (the shared scroll engine edge-scrolls only 2D regions and a scrolling document).
- * Its behaviour comes entirely from the shared gesture bridge (plan D6): the panel presents
- * the engine's state and adds no gesture meaning of its own (G-10).
+ * Hand control (handoff §5.15, superseded for Player3D on 2026-10-03/04): the DNA microarray 3D lab's
+ * hand-control panel (`microarray-3d.html:156-189`, `3d-v3/app.js:370-427`) inside Lab Studio's
+ * floating "hand" panel: the camera preview with the tracked hand drawn over it, a live "do this now"
+ * line, the set-up tracker (Start camera, the working hand, then Capture Rest and Capture Press for
+ * the thumb plunger, or Set centre and a first pinch in pinch mode), the plunger meter, the gesture
+ * cards for Lab Studio's actions (§8 of the brief), and Hand settings. Lab Studio's privacy wording
+ * is kept.
  *
- * The dock's Hand control button opens it. The camera starts only from its Start camera button, so a
- * learner reads the privacy note and the set-up steps before the browser asks for the camera
- * (decided 2026-09-24). While the camera runs the panel stays open, and it stays mounted when
- * collapsed so the camera keeps its video. Closing it stops the camera.
+ * The dock's Hand control button opens it; the camera starts only from Start camera, so the privacy
+ * note and the set-up steps are read before the browser asks (decided 2026-09-24). Closing the panel
+ * stops the camera, and it stays mounted when collapsed so the video keeps running.
  */
 
-/** The bridge's re-arm prompt, with Player3D's control name. */
-export const HAND_CONTROL_REARM_MESSAGE = "Open your hand briefly to re-arm hand control.";
-/** Why Start camera is unavailable when the page cannot use the camera (the 2D button title, renamed). */
-export const HAND_CONTROL_UNSUPPORTED_TITLE = "Hand control requires localhost or HTTPS.";
-/** Closing the panel also stops the camera. */
 export const HAND_CONTROL_CLOSE_LABEL = "Close hand control and stop the camera";
+export const HAND_CONTROL_UNSUPPORTED_TITLE = "Hand control requires localhost or HTTPS.";
+export const HAND_PRIVACY = "Frames are processed locally in the browser. They are not saved, exported, serialized to lab state, or sent to the backend.";
 
-export type SetupStepState = "done" | "now" | "problem" | "pending";
-
-export interface SetupStep {
-  key: string;
-  text: string;
-  state?: SetupStepState;
+/** What the controller is doing, for the "do this now" line. */
+export interface HandGuideContext {
+  carrying: boolean;
+  dropMode: boolean;
+  invertHolding: boolean;
+  locked: boolean;
+  stroke?: "lower" | "turn";
+  draw: boolean;
+  armed?: "armed" | "bubbles";
+  lockedLabel?: string;
 }
 
-/**
- * The 2D requirements sentence ("Use localhost or HTTPS, allow webcam permission, keep one hand
- * visible, and use steady lighting with enough contrast."), one requirement per line, each marked
- * from what the browser and the engine report: the secure context (which the engine also requires)
- * and the engine's status. Lighting cannot be checked, so it carries no mark.
- */
-export const handControlSetupSteps = (secureContext: boolean, status: GestureCameraStatus): SetupStep[] => {
-  const tracking = status === "ready" || status === "noHand" || status === "unstable";
-  return [
-    { key: "secure", text: "Use localhost or HTTPS", state: secureContext ? "done" : "problem" },
-    {
-      key: "permission",
-      text: "Allow webcam permission",
-      state: tracking ? "done" : status === "starting" ? "now" : status === "permissionDenied" ? "problem" : "pending",
-    },
-    {
-      key: "hand",
-      text: "Keep one hand visible",
-      state: status === "ready" ? "done" : status === "noHand" || status === "unstable" ? "now" : "pending",
-    },
-    { key: "light", text: "Use steady lighting with enough contrast" },
-  ];
+export type GestureKey = "grab" | "put" | "lock" | "lower" | "turn" | "draw" | "drops" | "invert" | "key" | "leave";
+
+export const handBadge = (s: HandControlState, now: number): { text: string; tone: "" | "on" | "warn" | "error" } => {
+  if (s.error && !s.running) return { text: "Error", tone: "error" };
+  if (!s.running) return { text: "Off", tone: "" };
+  if (now - s.seenAt > 600) return { text: "No hand", tone: "warn" };
+  if (s.settings.mode === "thumb" && !s.calibrated) return { text: "Calibrate", tone: "warn" };
+  if (s.settings.mode === "pinch" && !s.homeSet) return { text: "Centring", tone: "" };
+  return { text: "On", tone: "on" };
 };
 
-/** The 2D "Gestures" help, one card per gesture. */
-const GESTURE_CARDS: Array<{ key: string; icon: "cursor" | "hand" | "move"; title: string; text: string }> = [
-  { key: "steer", icon: "cursor", title: "Steer", text: "Steer with your index fingertip." },
-  { key: "pinch", icon: "hand", title: "Pinch", text: "Pinch thumb and index finger to grab or activate, then release over the target." },
-  { key: "scroll", icon: "move", title: "Scroll", text: "Hold four fingers extended together and wave over a panel to scroll it." },
+/** The live guide line, after the source's `renderCamGuide` (`app.js:375-410`), worded for Lab Studio's actions. */
+export const handGuide = (s: HandControlState, g: HandGuideContext, now: number): { text: string; gesture?: GestureKey; warn: boolean } => {
+  const pinch = s.settings.mode === "pinch";
+  const press = pinch ? "pinch" : "press your thumb";
+  if (s.error && !s.running) return { text: s.status || "The camera could not start. Mouse controls still work.", warn: true };
+  if (!s.running) return { text: "Start the camera. Keep your whole hand in view, about an arm's length from the screen.", warn: false };
+  if (now - s.seenAt > 600) return { text: "Show your working hand to the camera, palm facing the screen.", warn: true };
+  if (!pinch && !s.profiles.rest) return { text: "Hold a relaxed grip, thumb resting, then press Capture Rest.", warn: false };
+  if (!pinch && !s.profiles.press) return { text: "Keep the grip, press your thumb fully down, then press Capture Press.", warn: false };
+  if (pinch && !s.homeSet) return { text: "Hold your hand where it feels comfortable. That spot becomes the centre of the bench.", warn: false };
+  if (g.dropMode) return { text: `Each ${pinch ? "pinch" : "thumb press"} adds one drop; hold it to let the drops run. Grip over At the line when the meniscus meets it.`, gesture: "drops", warn: false };
+  if (g.invertHolding) return { text: "Turn your palm over and back to invert the flask once. Open your hand to let go.", gesture: "invert", warn: false };
+  if (g.armed === "bubbles") return { text: `Bubbles! ${pinch ? "Keep pinching" : "Keep the thumb pressed"}, lift the tip out of the liquid, lower back in, then ${pinch ? "let go" : "release"} to draw.`, gesture: "draw", warn: true };
+  if (g.locked && g.stroke === "turn") return { text: `Locked on ${g.lockedLabel ?? "the target"}. Turn your palm to pour or tip it; lift away to leave.`, gesture: "turn", warn: false };
+  if (g.locked && g.draw) {
+    return g.armed === "armed"
+      ? { text: `${pinch ? "Keep pinching" : "Keep the thumb pressed"} and lower your hand into the liquid, then ${pinch ? "let go" : "release"} to draw.`, gesture: "draw", warn: false }
+      : { text: `Locked on ${g.lockedLabel ?? "the liquid"}. Lift away, ${press} above the liquid, then lower in.`, gesture: "draw", warn: false };
+  }
+  if (g.locked) return { text: `Locked on ${g.lockedLabel ?? "the target"}. Lower your hand, or slide sideways to leave.`, gesture: "lower", warn: false };
+  if (g.carrying) return { text: "Move it where it goes and show an open palm to set it down. Over a target, pause until it locks, then lower your hand or turn your palm.", gesture: "put", warn: false };
+  return { text: `Close your grip over an item and hold to pick it up. To press TARE, aim at the key and ${press}.`, gesture: "grab", warn: false };
+};
+
+const GESTURES: Array<{ key: GestureKey; icon: "grip" | "hand" | "lock" | "seat" | "pour" | "pencil" | "flask" | "retry" | "gauge" | "up"; title: string; thumb: string; pinch: string }> = [
+  { key: "grab", icon: "grip", title: "Pick up", thumb: "Close your grip over an item or a tray item and hold", pinch: "Close your grip over an item or a tray item and hold" },
+  { key: "put", icon: "hand", title: "Set down", thumb: "Show your open palm over the spot and hold", pinch: "Show your open palm over the spot and hold" },
+  { key: "lock", icon: "lock", title: "Aim", thumb: "Pause over the target until it locks", pinch: "Pause over the target until it locks" },
+  { key: "lower", icon: "seat", title: "Seat or deliver", thumb: "Lower your hand", pinch: "Lower your hand" },
+  { key: "turn", icon: "pour", title: "Pour or tip", thumb: "Turn your palm, like tipping a beaker", pinch: "Turn your palm, like tipping a beaker" },
+  { key: "draw", icon: "pencil", title: "Draw up", thumb: "Press your thumb above the liquid, lower in, then release", pinch: "Pinch above the liquid, lower in, then let go" },
+  { key: "drops", icon: "flask", title: "Drops", thumb: "Each thumb press is a drop; hold it to run", pinch: "Each pinch is a drop; hold it to run" },
+  { key: "invert", icon: "retry", title: "Invert", thumb: "Grip the stoppered flask; turn your palm over and back", pinch: "Grip the stoppered flask; turn your palm over and back" },
+  { key: "key", icon: "gauge", title: "TARE", thumb: "Aim at the key and press your thumb", pinch: "Aim at the key and pinch" },
+  { key: "leave", icon: "up", title: "Withdraw", thumb: "Lift your hand or move sideways", pinch: "Lift your hand or move sideways" },
 ];
 
-const stepMark = (state: SetupStepState | undefined, index: number) => {
-  if (state === "done") return <Icon name="check" size={12} />;
-  if (state === "problem") return <Icon name="x" size={12} />;
-  return state ? <span aria-hidden="true">{index + 1}</span> : <span aria-hidden="true">·</span>;
-};
+type StepKey = "start" | "hand" | "rest" | "press" | "centre" | "pinch";
 
-const stepStateLabel: Record<SetupStepState, string> = {
-  done: "done",
-  now: "now",
-  pending: "not yet",
-  problem: "needs attention",
-};
-
-export const HandControlPanel = ({ gesture, rearmRequired, controls, onStart, onStop, onClose }: {
-  gesture: GestureController;
-  /** The bridge is waiting for an open hand after a cancel. */
-  rearmRequired: boolean;
+export const HandControlPanel = ({ hand, guide, controls, onClose }: {
+  hand: HandControl;
+  guide: HandGuideContext;
   controls: PanelControls;
-  onStart: () => void;
-  onStop: () => void;
   /** Close the panel, stopping the camera. */
   onClose: () => void;
 }) => {
+  const s = hand.state;
+  const now = performance.now();
   const collapsed = Boolean(controls.layout.hand?.collapsed);
-  const status = statusLabelForGesture(gesture.status);
-  const steps = handControlSetupSteps(typeof window !== "undefined" && window.isSecureContext, gesture.status);
+  const pinch = s.settings.mode === "pinch";
+  const supported = typeof window !== "undefined" && window.isSecureContext && Boolean(navigator.mediaDevices?.getUserMedia);
+  const badge = handBadge(s, now);
+  const line = handGuide(s, guide, now);
+  const done: Record<StepKey, boolean> = { start: s.running, hand: s.running, rest: Boolean(s.profiles.rest), press: Boolean(s.profiles.press), centre: s.homeSet, pinch: s.pinchSeen };
+  const order: StepKey[] = pinch ? ["start", "centre", "pinch"] : ["start", "rest", "press"];
+  const current = order.find((k) => !done[k]);
+  const stepClass = (k: StepKey) => [done[k] ? "is-done" : "", k === current ? "is-now" : ""].join(" ").trim() || "is-pending";
+  const n = (k: StepKey, i: number) => <span className="s3d-hand__mark">{done[k] ? <Icon name="check" size={12} /> : i}</span>;
   return (
     <FloatPanel id="hand" label="Hand control" className="s3d-hand" controls={controls} keepMounted
       onClose={onClose} closeLabel={HAND_CONTROL_CLOSE_LABEL}
       head={<>
         <h2 className="s3d-float__title">Hand control</h2>
-        <span className={`s3d-chip s3d-hand__state is-${gesture.status}`}>{status}</span>
+        <span className={`s3d-chip s3d-hand__badge${badge.tone ? ` is-${badge.tone}` : ""}`}>{badge.text}</span>
       </>}>
-      <div className="s3d-hand__body" hidden={collapsed} data-gesture-scroll-region="vertical">
+      <div className="s3d-hand__body" hidden={collapsed}>
         <div className="s3d-hand__video" aria-hidden="true">
-          <video ref={gesture.videoRef} autoPlay muted playsInline />
+          <video ref={hand.videoRef} autoPlay muted playsInline />
+          <canvas ref={hand.overlayRef} width={640} height={480} />
         </div>
+        <p className={`s3d-hand__guide${line.warn ? " is-warn" : ""}`} role="status" aria-live="polite">{line.text}</p>
 
-        <section className="s3d-hand__setup" aria-label="Set-up">
-          <div className="s3d-hand__status" aria-live="polite">
-            <span className="s3d-eyebrow">Tracking state</span>
-            <strong>{status}</strong>
-            <span className="s3d-small">{rearmRequired ? HAND_CONTROL_REARM_MESSAGE : gesture.message}</span>
-          </div>
-          <div className="s3d-hand__start">
-            {gesture.enabled ? (
-              <button type="button" className="s3d-button" onClick={onStop}><Icon name="x" />Stop camera</button>
-            ) : (
-              <button type="button" className="s3d-button s3d-button--primary" disabled={!gesture.supported}
-                title={gesture.supported ? undefined : HAND_CONTROL_UNSUPPORTED_TITLE} onClick={onStart}>
-                <Icon name="camera" />Start camera
-              </button>
-            )}
-            {gesture.supported ? null : <span className="s3d-small">{HAND_CONTROL_UNSUPPORTED_TITLE}</span>}
-          </div>
-          <ol className="s3d-hand__steps">
-            {steps.map((step, index) => (
-              <li key={step.key} className={step.state ? `is-${step.state}` : "is-tip"}>
-                <span className="s3d-hand__mark">{stepMark(step.state, index)}</span>
-                <span>{step.text}</span>
-                {step.state ? <span className="s3d-sr">, {stepStateLabel[step.state]}</span> : null}
-              </li>
-            ))}
-          </ol>
-        </section>
+        <ol className="s3d-hand__steps" aria-label="Set-up">
+          <li className={stepClass("start")}>{n("start", 1)}
+            {s.running
+              ? <button type="button" className="s3d-button" onClick={hand.stop}><Icon name="x" />Stop camera</button>
+              : <button type="button" className="s3d-button s3d-button--primary" disabled={!supported} title={supported ? undefined : HAND_CONTROL_UNSUPPORTED_TITLE} onClick={hand.start}><Icon name="camera" />Start camera</button>}
+          </li>
+          <li className={stepClass("hand")}>{n("hand", 2)}
+            <label className="s3d-hand__select">Hand
+              <select value={s.preference} onChange={(e) => hand.setPreference(e.currentTarget.value as Handedness)}>
+                <option>Auto</option><option>Right</option><option>Left</option>
+              </select>
+            </label>
+          </li>
+          {pinch ? <>
+            <li className={stepClass("centre")}>{n("centre", 3)}
+              <button type="button" className="s3d-button" disabled={!s.running} title="Your hand position now becomes the centre of the bench view" onClick={hand.setHome}>Set centre here</button>
+            </li>
+            <li className={stepClass("pinch")}>{n("pinch", 4)}<span>{s.pinchSeen ? "Pinch detected" : "Try a pinch"}</span></li>
+          </> : <>
+            <li className={stepClass("rest")}>{n("rest", 3)}
+              <button type="button" className="s3d-button" disabled={!s.running} title="Hold a relaxed grip with your thumb resting" onClick={() => hand.capture("rest")}>{s.profiles.rest ? "Rest saved" : "Capture Rest"}</button>
+            </li>
+            <li className={stepClass("press")}>{n("press", 4)}
+              <button type="button" className="s3d-button" disabled={!s.running || !s.profiles.rest} title="Keep the grip and press your thumb fully down" onClick={() => hand.capture("press")}>{s.profiles.press ? "Press saved" : "Capture Press"}</button>
+            </li>
+          </>}
+        </ol>
+        {!supported ? <span className="s3d-small">{HAND_CONTROL_UNSUPPORTED_TITLE}</span> : null}
+
+        <div className="s3d-hand__meter"><span>{pinch ? "Pinch" : "Thumb"}</span><div aria-hidden="true"><i style={{ width: `${Math.round(Math.min(1, Math.max(0, s.thumbDepth)) * 100)}%` }} /></div></div>
 
         <section aria-label="Gestures">
           <ul className="s3d-hand__gestures">
-            {GESTURE_CARDS.map((card) => (
-              <li key={card.key}>
+            {GESTURES.map((card) => (
+              <li key={card.key} className={line.gesture === card.key ? "is-now" : undefined}>
                 <Icon name={card.icon} size={20} />
                 <b>{card.title}</b>
-                <span>{card.text}</span>
+                <span>{pinch ? card.pinch : card.thumb}</span>
               </li>
             ))}
           </ul>
         </section>
 
-        <label className="s3d-hand__speed">
-          <span>Cursor response</span>
-          <input
-            type="range"
-            min="1"
-            max="5"
-            step="1"
-            value={gesture.cursorSpeed}
-            aria-label="Cursor response"
-            aria-valuetext={labelForGestureCursorSpeed(gesture.cursorSpeed)}
-            onChange={(event) => gesture.setCursorSpeed(Number(event.currentTarget.value))}
-          />
-          <strong>{labelForGestureCursorSpeed(gesture.cursorSpeed)}</strong>
-        </label>
-
-        <p className="s3d-note">
-          <strong>Privacy.</strong> Frames are processed locally in the browser. They are not saved, exported, serialized to lab state, or sent to the backend.
-        </p>
-
-        <details className="s3d-about">
-          <summary>More about hand control</summary>
-          <p><strong>Controls.</strong> Click Start camera to start, and Stop camera to stop. Use Cursor response to balance precision and speed. Restart and leaving the player both stop the camera tracks.</p>
-          <p><strong>Where it works.</strong> Hand control is limited to tray placement, bench item movement or interactions, and whitelisted current-step controls.</p>
-          <p><strong>Fallbacks.</strong> Mouse, touch, and keyboard stay available. No-hand and unstable-tracking frames do not count as assessment failures. Switching input modes safely cancels an unfinished camera gesture.</p>
+        <details className="s3d-hand__tuning">
+          <summary>Hand settings</summary>
+          <label>Plunger gesture
+            <select value={s.settings.mode} onChange={(e) => setHandSettings({ mode: e.currentTarget.value === "pinch" ? "pinch" : "thumb" })}>
+              <option value="thumb">Thumb press, like a real pipette bulb (recommended)</option>
+              <option value="pinch">Pinch thumb and index finger (no calibration)</option>
+            </select>
+          </label>
+          <label className="s3d-hand__speed"><span>Cursor speed</span>
+            <input type="range" min="100" max="400" step="10" value={Math.round(s.settings.gain * 100)} onChange={(e) => setHandSettings({ gain: Number(e.currentTarget.value) / 100 })} />
+            <strong>{s.settings.gain.toFixed(1)}×</strong>
+          </label>
+          <label className="s3d-hand__speed"><span>Smoothing</span>
+            <input type="range" min="0" max="100" step="5" value={Math.round(s.settings.smoothing * 100)} onChange={(e) => setHandSettings({ smoothing: Number(e.currentTarget.value) / 100 })} />
+            <strong>{smoothingLabel(s.settings.smoothing)}</strong>
+          </label>
+          <label className="s3d-hand__switch">
+            <input type="checkbox" checked={s.settings.assist} onChange={(e) => setHandSettings({ assist: e.currentTarget.checked })} />
+            <span>Aim assist: bigger targets and snapping to the next one (guided mode)</span>
+          </label>
+          <p className="s3d-small">Higher speed means smaller hand movements. More smoothing steadies the cursor but reacts later.</p>
         </details>
+
+        <p className={`s3d-small${s.error ? " s3d-hand__error" : ""}`} role="status">{s.status}</p>
+        {s.running && s.stats ? <p className="s3d-small">{s.handName ?? "—"} · {Math.round(s.stats.inferenceMS)} ms inference · {Math.round(s.stats.ageMS)} ms frame age</p> : null}
+        <p className="s3d-note"><strong>Privacy.</strong> {HAND_PRIVACY}</p>
       </div>
     </FloatPanel>
   );
 };
+
+/** The hand cursor over the bench (`app.js:361-367`): a ring that fills with the insertion depth when locked. */
+export const HandCursorRing = ({ cursor }: { cursor?: HandControlState["cursor"] }) => cursor ? (
+  <span aria-hidden="true" className={`s3d-handcursor${cursor.locked ? " is-locked" : cursor.aiming ? " is-aiming" : ""}${cursor.pressed ? " is-pressed" : ""}`}
+    style={{ left: cursor.x, top: cursor.y, ["--depth" as string]: String(cursor.depth) }} />
+) : null;

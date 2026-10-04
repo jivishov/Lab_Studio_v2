@@ -186,24 +186,43 @@
 .s3d-nb-row__value { font-size: 14px; font-weight: 500; }
 .s3d-nb-row__meta { grid-column: 1 / -1; display: flex; gap: 6px; }
 
-/* Hand control (handoff §5.15): the shared gesture bridge's panel, at bottom right above the dock. */
+/* Hand control (the DNA microarray lab's panel and cursor, decided 2026-10-03/04), at bottom right above the dock. */
 .s3d-hand { right: 14px; bottom: 84px; width: 320px; max-height: calc(100% - 200px); }
 /* Rows keep their content height (the video box has an aspect ratio), so a short panel scrolls rather than overlapping. */
 .s3d-hand__body { display: grid; grid-auto-rows: max-content; align-content: start; gap: 10px; padding: 0 12px 12px; min-height: 0; overflow-x: hidden; overflow-y: auto; }
 /* Collapsed, the body stays mounted (the camera keeps its video) and is hidden. */
 .s3d-hand__body[hidden] { display: none; }
-.s3d-hand__state { background: #edf1ec; color: var(--ink-2); }
-.s3d-hand__state.is-ready { background: var(--ok-tint); color: var(--ok); }
-.s3d-hand__state.is-noHand, .s3d-hand__state.is-unstable, .s3d-hand__state.is-starting { background: var(--warn-tint); color: var(--warn); }
-.s3d-hand__state.is-permissionDenied, .s3d-hand__state.is-unavailable { background: var(--error-tint); color: var(--error); }
-.s3d-hand__video { aspect-ratio: 4 / 3; max-height: 180px; border-radius: var(--radius-button); overflow: hidden; background: #1c3027; }
-/* Mirrored, as the 2D preview is, so the hand moves the way the learner moves it. */
+.s3d-hand__badge { background: #edf1ec; color: var(--ink-2); }
+.s3d-hand__badge.is-on { background: var(--ok-tint); color: var(--ok); }
+.s3d-hand__badge.is-warn { background: var(--warn-tint); color: var(--warn); }
+.s3d-hand__badge.is-error { background: var(--error-tint); color: var(--error); }
+.s3d-hand__video { position: relative; aspect-ratio: 4 / 3; max-height: 180px; border-radius: var(--radius-button); overflow: hidden; background: #1c3027; }
+/* Mirrored, so the hand moves the way the learner moves it; the tracked hand is drawn mirrored over it. */
 .s3d-hand__video video { display: block; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
-.s3d-hand__status { display: grid; gap: 2px; }
-.s3d-hand__status strong { font-size: 14px; }
-.s3d-hand__start { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 8px; }
-.s3d-hand__steps { display: grid; gap: 4px; margin: 8px 0 0; padding: 0; list-style: none; font-size: 12px; }
+.s3d-hand__video canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* The live "do this now" line (the source's camGuide). */
+.s3d-hand__guide { margin: 0; padding: 8px 10px; border-left: 3px solid var(--guide); border-radius: 0 var(--radius-input) var(--radius-input) 0;
+  background: var(--guide-band); font-size: 13px; line-height: 1.45; color: var(--ink); }
+.s3d-hand__guide.is-warn { border-left-color: var(--warn); background: var(--warn-tint); }
+.s3d-hand__steps { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; font-size: 12px; }
 .s3d-hand__steps li { display: flex; align-items: center; gap: 8px; color: var(--ink-2); }
+.s3d-hand__select { display: flex; align-items: center; gap: 8px; }
+.s3d-hand__meter { display: grid; grid-template-columns: auto 1fr; gap: 8px; align-items: center; font-size: 12px; color: var(--ink-2); }
+.s3d-hand__meter div { height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; }
+.s3d-hand__meter i { display: block; height: 100%; background: var(--guide); }
+.s3d-hand__tuning { display: grid; gap: 8px; font-size: 12px; color: var(--ink-2); }
+.s3d-hand__tuning > summary { cursor: pointer; font-weight: 500; color: var(--ink); }
+.s3d-hand__tuning label { display: grid; gap: 4px; margin-top: 6px; }
+.s3d-hand__switch { grid-template-columns: auto 1fr !important; align-items: center; }
+.s3d-hand__error { color: var(--error); }
+.s3d-hand__gestures li.is-now { border-color: var(--guide); background: var(--guide-tint); }
+/* The hand cursor over the bench (app.js:361-367): teal while aiming, enlarged and filling with the depth when locked. */
+.s3d-handcursor { position: absolute; z-index: var(--z-scene-label); width: 22px; height: 22px; margin: -11px 0 0 -11px; border: 2px solid #fff;
+  border-radius: 50%; box-shadow: 0 0 0 2px #1b3a3366; pointer-events: none; }
+.s3d-handcursor.is-aiming { border-color: var(--guide); }
+.s3d-handcursor.is-locked { width: 34px; height: 34px; margin: -17px 0 0 -17px; border-color: var(--focus);
+  background: conic-gradient(var(--guide) calc(var(--depth, 0) * 360deg), transparent 0); }
+.s3d-handcursor.is-pressed { box-shadow: 0 0 0 4px var(--guide); }
 .s3d-hand__steps li.is-now { color: var(--ink); font-weight: 500; }
 .s3d-hand__mark { display: inline-grid; place-items: center; flex: none; width: 20px; height: 20px; border-radius: 50%; background: var(--bg); color: var(--muted); font: 600 11px var(--font-mono); }
 .s3d-hand__steps li.is-done .s3d-hand__mark { background: var(--ok); color: #fff; }
@@ -218,10 +237,6 @@
 .s3d-hand__gestures span { font-size: 11px; line-height: 1.4; color: var(--muted); }
 .s3d-hand__speed { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; align-items: center; font-size: 12px; color: var(--ink-2); }
 .s3d-hand__speed strong { min-width: 76px; text-align: right; font: 500 12px var(--font-mono); color: var(--ink); }
-/* The bridge's cues on Player3D's own targets, in the guidance token so they reach 3:1 (§8). */
-.s3d-player .s3d-tile.is-gesture-hovered,
-.s3d-player button[data-gesture-action].is-gesture-hovered { outline: 3px solid var(--guide); outline-offset: 3px; }
-.s3d-player button[data-gesture-action].is-gesture-armed { box-shadow: 0 0 0 3px var(--guide); }
 .s3d-tile.is-gesture-grabbed { opacity: .42; }
 /* A tray item carried by hand control: its thumbnail, decorative and never focusable (AGENTS.md). */
 .s3d-gesture-preview img { display: block; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 14px #1b3a3340); }

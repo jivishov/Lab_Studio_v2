@@ -23,8 +23,9 @@ export const DropPanel = ({ title, onDrop, onRunStart, onRunEnd, onAccept, onPut
         onPointerUp={onRunEnd} onPointerLeave={onRunEnd} onPointerCancel={onRunEnd}
         onKeyDown={(e) => { if ((e.key === " " || e.key === "Enter") && !e.repeat) { e.preventDefault(); onRunStart(); } }}
         onKeyUp={(e) => { if (e.key === " " || e.key === "Enter") { e.preventDefault(); onRunEnd(); } }}>Hold to run</button>
-      <button type="button" className="s3d-button s3d-button--primary" onClick={onAccept}>At the line</button>
-      <button type="button" className="s3d-link" onClick={onPutDown}>Put the pipette down</button>
+      {/* data-hand-press: hand control presses these with a closed grip held over them (decided 2026-10-04). */}
+      <button type="button" className="s3d-button s3d-button--primary" data-hand-press="at-the-line" onClick={onAccept}>At the line</button>
+      <button type="button" className="s3d-link" data-hand-press="put-down" onClick={onPutDown}>Put the pipette down</button>
     </div>
     <p className="s3d-drop__keys">Space: tap for a drop, hold to run · Enter: at the line · Esc: put down</p>
   </div>

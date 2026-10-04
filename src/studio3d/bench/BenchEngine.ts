@@ -164,6 +164,8 @@ export class BenchEngine {
   onManualCamera?: () => void;
   /** A right click without a drag (the microarray lab cancels the motion in progress with it). */
   onCameraClick?: () => void;
+  /** Any mouse press or wheel on the bench: mouse and hand control exclude each other (`app.js:78`). */
+  onMouseInput?: () => void;
   /** GLB bytes downloaded of those requested, and how many models are still loading (§5.2). */
   onLoadProgress?: (loadedBytes: number, totalBytes: number, pending: number) => void;
   /** The free rectangles of the canvas around open panels (`safeRects`); framing fits into them. */
@@ -525,6 +527,43 @@ export class BenchEngine {
     const hit = this.firstItemHit(this.raycaster.intersectObject(this.itemLayer, true));
     const controlId = hit?.object.userData.controlId as string | undefined;
     return hit && controlId ? { instanceId: hit.object.userData.instanceId as string, controlId } : undefined;
+  }
+
+  /**
+   * Hand-control targets in canvas pixels (the microarray lab's screen-space picking, `app.js:23-26`):
+   * each item's centre and its footprint's projected radius, and each instrument control (the TARE
+   * key) with its own projected size. Items hidden behind the camera are left out.
+   */
+  screenTargets(): Array<{ instanceId: string; controlId?: string; x: number; y: number; r: number }> {
+    const rect = this.canvas.getBoundingClientRect();
+    const toScreen = (p: THREE.Vector3) => {
+      const q = p.clone().project(this.camera);
+      return { x: ((q.x + 1) / 2) * rect.width, y: ((1 - q.y) / 2) * rect.height, z: q.z };
+    };
+    const right = new THREE.Vector3().setFromMatrixColumn(this.camera.matrixWorld, 0).normalize();
+    const out: Array<{ instanceId: string; controlId?: string; x: number; y: number; r: number }> = [];
+    for (const view of this.items.values()) {
+      if (!view.model) continue;
+      view.root.updateWorldMatrix(true, true);
+      const box = new THREE.Box3().setFromObject(view.model);
+      if (box.isEmpty()) continue;
+      const centre = box.getCenter(new THREE.Vector3());
+      const c = toScreen(centre);
+      if (c.z < -1 || c.z > 1) continue;
+      const edge = toScreen(centre.clone().addScaledVector(right, this.footprintRadius(view.instanceId)));
+      out.push({ instanceId: view.instanceId, x: c.x, y: c.y, r: Math.hypot(edge.x - c.x, edge.y - c.y) });
+      for (const control of view.entry?.controls ?? []) {
+        const objects = this.controlObjects(view.instanceId, control.id);
+        if (!objects.length) continue;
+        const keyBox = new THREE.Box3();
+        objects.forEach((object) => keyBox.expandByObject(object));
+        const k = toScreen(keyBox.getCenter(new THREE.Vector3()));
+        const size = keyBox.getSize(new THREE.Vector3());
+        const kEdge = toScreen(keyBox.getCenter(new THREE.Vector3()).addScaledVector(right, Math.max(size.x, size.z) / 2));
+        out.push({ instanceId: view.instanceId, controlId: control.id, x: k.x, y: k.y, r: Math.hypot(kEdge.x - k.x, kEdge.y - k.y) });
+      }
+    }
+    return out;
   }
 
   private controlObjects(instanceId: string, controlId: string): THREE.Object3D[] {
@@ -1378,6 +1417,7 @@ export class BenchEngine {
       return { x: e.clientX - r.left, y: e.clientY - r.top };
     };
     const down = (e: PointerEvent) => {
+      if (e.pointerType === "mouse") this.onMouseInput?.();
       if (e.pointerType === "touch") {
         const p = point(e);
         this.touches.set(e.pointerId, p);
@@ -1428,6 +1468,7 @@ export class BenchEngine {
     };
     const wheel = (e: WheelEvent) => {
       e.preventDefault();
+      this.onMouseInput?.();
       const p = point(e);
       this.beginManualCamera();
       this.zoomAt(p.x, p.y, e.deltaY);
