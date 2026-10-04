@@ -21,9 +21,9 @@ const player = (onPlayer?: (player: Player3DController) => void) => (
 
 const base: HandControlState = {
   running: true, status: "", error: false, profiles: { rest: [0], press: [1] }, calibrated: true, homeSet: true, pinchSeen: true,
-  seenAt: 1000, thumbDepth: 0, backend: "", settings: { ...HAND_DEFAULTS }, preference: "Auto",
+  seenAt: 1000, backend: "", settings: { ...HAND_DEFAULTS }, preference: "Auto",
 };
-const idle: HandGuideContext = { carrying: false, dropMode: false, invertHolding: false, locked: false, draw: false };
+const idle: HandGuideContext = { carrying: false, dropMode: false, invertHolding: false, locked: false, draw: false, squeeze: false, keyLocked: false };
 
 describe("Player3D hand control panel", () => {
   beforeEach(() => { localStorage.clear(); setHandSettings({ ...HAND_DEFAULTS }); });
@@ -67,7 +67,7 @@ describe("Player3D hand control panel", () => {
     render(player());
     fireEvent.click(screen.getByRole("button", { name: "Hand control" }));
     const panel = screen.getByRole("region", { name: "Hand control" });
-    for (const title of ["Pick up", "Set down", "Aim", "Seat or deliver", "Pour or tip", "Draw up", "Drops", "Invert", "TARE", "Withdraw"]) {
+    for (const title of ["Pick up", "Set down", "Aim", "Seat", "Pour or tip", "Draw up", "Empty a pipette", "Drops", "Invert", "TARE", "Withdraw"]) {
       expect(within(panel).getByText(title)).toBeInTheDocument();
     }
   });
@@ -87,7 +87,7 @@ describe("Player3D hand control panel", () => {
   });
 });
 
-describe("the guide line and badge (app.js:375-410)", () => {
+describe("the guide line and badge (app.js:378-421)", () => {
   it("leads through set-up, then names the next gesture", () => {
     expect(handGuide({ ...base, running: false }, idle, 1100).text).toMatch(/Start the camera/);
     expect(handGuide(base, idle, 2000)).toMatchObject({ warn: true });
@@ -99,6 +99,8 @@ describe("the guide line and badge (app.js:375-410)", () => {
     expect(handGuide(base, { ...idle, carrying: true, locked: true, draw: true, armed: "bubbles" }, 1100)).toMatchObject({ gesture: "draw", warn: true });
     expect(handGuide(base, { ...idle, dropMode: true }, 1100)).toMatchObject({ gesture: "drops" });
     expect(handGuide(base, { ...idle, invertHolding: true }, 1100)).toMatchObject({ gesture: "invert" });
+    expect(handGuide(base, { ...idle, carrying: true, locked: true, squeeze: true }, 1100)).toMatchObject({ gesture: "deliver" });
+    expect(handGuide(base, { ...idle, keyLocked: true }, 1100)).toMatchObject({ gesture: "key" });
   });
 
   it("shows Off, Calibrate, No hand and On", () => {

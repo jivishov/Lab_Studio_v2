@@ -1,7 +1,9 @@
+import * as THREE from "three";
 import { describe, expect, it } from "vitest";
 import { BENCH_MM } from "../adapters/benchCoordinates";
 import { BLOOM } from "../bench/look/composer";
-import { ENVIRONMENT_INTENSITY, roomRadiance, SPECULAR_BOOST } from "../bench/look/environment";
+import { roomRadiance } from "../bench/look/environment";
+import { REFLECTION, RIM, roomLightingSupported, roomLitMaterial } from "../bench/look/roomLighting";
 import { packedBevelBox, packedBox, packedLathe, packedPlane } from "../bench/look/microarrayGeometry";
 import { linearHex, ROOM_LIGHTS, ROOM_SCALE } from "../bench/look/room";
 
@@ -61,8 +63,25 @@ describe("environment and frame", () => {
     expect(atWindow[0]).toBeGreaterThan(2.7);
   });
 
-  it("restores full reflections on reflective materials", () => {
-    expect(ENVIRONMENT_INTENSITY * SPECULAR_BOOST).toBeCloseTo(1, 9);
+  it("takes only the environment's reflections, and darkens rims, as the source shades (renderer.js:67-81)", () => {
+    expect(roomLightingSupported).toBe(true);
+    const material = new THREE.MeshStandardMaterial();
+    roomLitMaterial(material);
+    const shader = {
+      fragmentShader: ["#include <lights_fragment_maps>", "#include <opaque_fragment>"].join("\n"),
+      vertexShader: "", uniforms: {},
+    } as unknown as THREE.WebGLProgramParametersWithUniforms;
+    material.onBeforeCompile(shader, {} as THREE.WebGLRenderer);
+    expect(shader.fragmentShader).not.toContain("getIBLIrradiance");
+    expect(shader.fragmentShader).toContain("getIBLRadiance");
+    expect(shader.fragmentShader).toContain("roomRimEdge");
+    expect(material.customProgramCacheKey()).toContain("microarray-room-lit");
+    // Patching twice changes nothing.
+    const once = material.onBeforeCompile;
+    roomLitMaterial(material);
+    expect(material.onBeforeCompile).toBe(once);
+    expect(RIM).toMatchObject({ edgePower: 2.15, weight: 0.35, floor: 0.6 });
+    expect(REFLECTION.glass).toBe(0.62);
   });
 
   it("blooms above the source's threshold at its strength", () => {

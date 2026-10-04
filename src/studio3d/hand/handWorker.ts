@@ -3,7 +3,7 @@ import { createHandDetector } from "./handDetector";
 
 /**
  * Player3D's hand-tracking worker: the DNA microarray 3D lab's string-built worker
- * (`3d-v3/camera.js:22-36`, `workerEntry`) as a module worker (decided 2026-10-04). Frames stay in
+ * (`3d-v3/camera.js:24-37`, `workerEntry`) as a module worker (decided 2026-10-04). Frames stay in
  * this tab and this worker; each bitmap is closed once read.
  */
 type Request =

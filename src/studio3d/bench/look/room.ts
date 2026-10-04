@@ -1,10 +1,11 @@
 import * as THREE from "three";
+import { REFLECTION } from "./roomLighting";
 import { packedBevelBox, packedCylinder, packedLathe, packedPlane, toBufferGeometry } from "./microarrayGeometry";
 import type { BenchTextures } from "./textures";
 
 /**
  * The teaching-lab room and its lights, rebuilt in three.js from the DNA microarray 3D lab
- * (`virtual_lab/experiments/dnamicroarray_v2/3d-v3/scene.js:57-84`, lights from `renderer.js:122,
+ * (`virtual_lab/experiments/dnamicroarray_v2/3d-v3/scene.js:57-84`, lights from `renderer.js:126,
  * 163-170`), decided 2026-10-03 and 2026-10-04 (`proposals/MICROARRAY_ADOPTION.md` §3, choices 1–3).
  *
  * The room is built in the source's arbitrary units inside one group scaled by `ROOM_SCALE`, which
@@ -30,9 +31,9 @@ export const ROOM_LIGHTS = {
   fillColour: [0.55, 0.68, 0.84] as const,
   sky: [0.26, 0.27, 0.29] as const,
   ground: [0.11, 0.1, 0.09] as const,
-  /** The source keeps 22% of the key light in shadow (`renderer.js:43`). */
+  /** The source keeps 22% of the key light in shadow (`renderer.js:39`). */
   shadowLeft: 0.22,
-  /** The canvas clear colour behind the room (`renderer.js:182`). */
+  /** The canvas clear colour behind the room (`renderer.js:177`). */
   clear: [0.55, 0.56, 0.55] as const,
 };
 
@@ -45,6 +46,8 @@ interface RoomOptions {
   shadowMapSize: number;
   /** Called when a texture changes after the room is built (the wall text, once its font loads). */
   onTextureChange?: () => void;
+  /** The room's reflection map, for the glass bottles at the source's glass reflection factor (roomLighting.ts). */
+  environment?: THREE.Texture;
 }
 
 export interface Room {
@@ -54,7 +57,7 @@ export interface Room {
   dispose: () => void;
 }
 
-export const buildRoom = ({ textures, shadowMapSize, onTextureChange }: RoomOptions): Room => {
+export const buildRoom = ({ textures, shadowMapSize, onTextureChange, environment }: RoomOptions): Room => {
   const group = new THREE.Group();
   group.name = "room (scenery)";
   group.scale.setScalar(ROOM_SCALE);
@@ -84,7 +87,7 @@ export const buildRoom = ({ textures, shadowMapSize, onTextureChange }: RoomOpti
   const m = {
     wall: mat("#dcd3c2", { roughness: 0.92 }),
     trim: mat("#e7e4dd", { roughness: 0.5 }),
-    // The worktop's resin colour, speckle and roughness come from its texture (`renderer.js:54`, pattern 1).
+    // The worktop's resin colour, speckle and roughness come from its texture (`renderer.js:58`, pattern 1).
     bench: new THREE.MeshStandardMaterial({ name: "Bench worktop", map: textures.benchC, roughnessMap: textures.benchR, roughness: 1, metalness: 0, side: THREE.DoubleSide }),
     edge: mat("#a47a50", { roughness: 0.55 }),
     steel: mat("#c3c8ca", { roughness: 0.3, metalness: 0.85 }),
@@ -163,14 +166,15 @@ export const buildRoom = ({ textures, shadowMapSize, onTextureChange }: RoomOpti
     const plastic = glass === "#e9ebe4";
     // The source's thin-shell glass (glass 1, opacity .55, roughness .14) as three's transmissive glass.
     const material = plastic ? mat(glass, { roughness: 0.45 })
-      : new THREE.MeshPhysicalMaterial({ color: linearHex(glass), roughness: 0.14, transmission: 0.45, thickness: 0.25, ior: 1.47, side: THREE.FrontSide, depthWrite: false });
+      : new THREE.MeshPhysicalMaterial({ color: linearHex(glass), roughness: 0.14, transmission: 0.45, thickness: 0.25, ior: 1.47, side: THREE.FrontSide, depthWrite: false,
+        ...(environment ? { envMap: environment, envMapIntensity: REFLECTION.glass } : {}) });
     if (!plastic) disposables.push(material);
     const body = mesh(packedLathe(profile, 28), material, [0, 0, 0], g, plastic);
     if (!plastic) body.renderOrder = 2;
     mesh(packedCylinder(0.068, 0.08, 28), mat(cap, { roughness: 0.4 }), [0, h, 0], g);
   }
 
-  // Lights, in metres. The key casts the source's shadow box, scaled (`renderer.js:122`).
+  // Lights, in metres. The key casts the source's shadow box, scaled (`renderer.js:126`).
   const lights = new THREE.Group();
   lights.name = "room lights";
   const key = new THREE.DirectionalLight();
@@ -191,10 +195,13 @@ export const buildRoom = ({ textures, shadowMapSize, onTextureChange }: RoomOpti
   const fill = new THREE.DirectionalLight();
   fill.color.setRGB(...ROOM_LIGHTS.fillColour, THREE.LinearSRGBColorSpace);
   fill.position.copy(ROOM_LIGHTS.fillDirection).normalize();
-  // The source's ambient term (base·mix(ground, sky)) is not added as a hemisphere light: three lights
-  // diffuse surfaces from the environment map as well, and environment.ts scales that map so its
-  // diffuse share stands in for this term.
-  lights.add(key, key.target, fill);
+  // The source's ambient term, base·mix(ground, sky) with no 1/π (`renderer.js:68`); three's hemisphere
+  // light divides by π, so its colours are scaled by π. It is the only ambient: materials take only the
+  // environment's reflections (roomLighting.ts).
+  const hemi = new THREE.HemisphereLight();
+  hemi.color.setRGB(...ROOM_LIGHTS.sky, THREE.LinearSRGBColorSpace).multiplyScalar(Math.PI);
+  hemi.groundColor.setRGB(...ROOM_LIGHTS.ground, THREE.LinearSRGBColorSpace).multiplyScalar(Math.PI);
+  lights.add(key, key.target, fill, hemi);
 
   return {
     group,

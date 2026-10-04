@@ -8,14 +8,9 @@ import * as THREE from "three";
  * PMREM, which stands in for the source's roughness-widened lobes (decided 2026-10-03/04;
  * `proposals/MICROARRAY_ADOPTION.md` §3.3).
  *
- * The source lights diffuse surfaces with a hemisphere term and uses this environment for
- * reflections only; three uses one environment map for both. `ENVIRONMENT_INTENSITY` scales the map
- * so that its diffuse share is close to the source's hemisphere term (0.37 against 0.27 facing up,
- * 0.12 against 0.19 facing sideways), and `SPECULAR_BOOST` restores full reflections on the
- * materials that are mostly reflection (glass, clear plastic, metals, display glass; materials.ts).
+ * As in the source, the map is used for reflections only: every material is patched to drop the
+ * map's diffuse lighting, and the hemisphere light gives the ambient (roomLighting.ts, room.ts).
  */
-export const ENVIRONMENT_INTENSITY = 0.4;
-export const SPECULAR_BOOST = 1 / ENVIRONMENT_INTENSITY;
 
 type V3 = [number, number, number];
 const unit = (v: V3): V3 => {
@@ -46,16 +41,18 @@ export const roomRadiance = (r: V3): V3 => {
 
 export const labEnvironment = (renderer: THREE.WebGLRenderer): THREE.Texture => {
   const W = 512, H = 256;
-  const data = new Float32Array(W * H * 4);
+  // Half floats: linear filtering of them is core WebGL 2, unlike 32-bit floats.
+  const data = new Uint16Array(W * H * 4);
+  const one = THREE.DataUtils.toHalfFloat(1);
   for (let j = 0; j < H; j += 1) {
     const theta = ((j + 0.5) / H - 0.5) * Math.PI; // three's equirectUv: v = asin(y) / π + 0.5
     for (let i = 0; i < W; i += 1) {
       const phi = ((i + 0.5) / W - 0.5) * Math.PI * 2; // u = atan(z, x) / 2π + 0.5
       const c = roomRadiance([Math.cos(theta) * Math.cos(phi), Math.sin(theta), Math.cos(theta) * Math.sin(phi)]);
-      data.set([c[0], c[1], c[2], 1], (j * W + i) * 4);
+      data.set([THREE.DataUtils.toHalfFloat(c[0]), THREE.DataUtils.toHalfFloat(c[1]), THREE.DataUtils.toHalfFloat(c[2]), one], (j * W + i) * 4);
     }
   }
-  const equirect = new THREE.DataTexture(data, W, H, THREE.RGBAFormat, THREE.FloatType);
+  const equirect = new THREE.DataTexture(data, W, H, THREE.RGBAFormat, THREE.HalfFloatType);
   equirect.mapping = THREE.EquirectangularReflectionMapping;
   equirect.colorSpace = THREE.LinearSRGBColorSpace;
   equirect.magFilter = THREE.LinearFilter;

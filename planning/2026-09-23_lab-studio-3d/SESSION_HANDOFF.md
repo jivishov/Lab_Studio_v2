@@ -33,8 +33,10 @@ same on the intro and setup pages), and hover labels hang below items.
 - the left button on the microarray controller: `useBenchCarry.ts`, `PressAction` and `STROKE`;
 - hand control: `src/studio3d/hand/` and `player/HandControlPanel.tsx`.
 
-The 2D player is unchanged. Ten interpretations made while building wait for confirmation (`DECISIONS.md`, the
-"built" row). G3 has still not run.
+The 2D player is unchanged. A fidelity review the same day fixed twelve findings (the evidence note's
+first section): the source's lighting model is now reproduced, mouse strokes act on release (G-5), camera
+clamps are per input, and the hand controller keeps the source's remaining rules. Thirteen interpretations
+wait for confirmation (`DECISIONS.md`, the "built" row). G3 has still not run.
 
 **Standing policies (user decisions):**
 - **Atomization:** break each step down to the real physical actions, within reason, to build
@@ -53,8 +55,8 @@ The 2D player is unchanged. Ten interpretations made while building wait for con
   plunger.
 
 **Next, in order (recommended):**
-1. **Done 2026-10-04: the microarray adoption** (P0–P5). It is open only for the ten interpretations to
-   confirm and for G3.
+1. **Done 2026-10-04: the microarray adoption** (P0–P5, then a fidelity review). It is open only for the
+   thirteen interpretations to confirm and for G3.
 2. **Build Make a Solution** per `proposals/PACK1_ATOMIZATION.md` (decided: pre-weighed boat, swirl in
    the flask, drop to the mark, stopper, invert), on the new controller. It needs:
    - a weigh boat model (none exists in 3D yet);

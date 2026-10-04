@@ -3,7 +3,7 @@ import visionWasmLoaderUrl from "@mediapipe/tasks-vision/vision_wasm_module_inte
 import visionWasmBinaryUrl from "@mediapipe/tasks-vision/vision_wasm_module_internal.wasm?url";
 
 /**
- * The DNA microarray 3D lab's `makeDetector` (`3d-v3/camera.js:11-21`), decided 2026-10-04: MediaPipe
+ * The DNA microarray 3D lab's `makeDetector` (`3d-v3/camera.js:12-23`), decided 2026-10-04: MediaPipe
  * Tasks HandLandmarker in VIDEO mode, two hands, every confidence 0.5, GPU first and then CPU. The
  * installed `@mediapipe/tasks-vision` (1.0.1) is used, as decided; the source was tuned on 0.10.17.
  * The model is the bundled `public/mediapipe/models/hand_landmarker.task` (byte-identical to the

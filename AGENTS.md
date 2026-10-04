@@ -175,7 +175,8 @@ Rules:
 - Nothing commits while the hand passes over a target; leaving a lock before the action changes nothing.
 - Guidance-like help (aim assist toward the step's next target) applies in guided mode only.
 - Panel buttons a hand may press opt in with `data-hand-press`.
-- Mouse and hand exclude each other: a mouse press or the wheel stops the camera.
+- Mouse and hand exclude each other: a mouse press or the wheel stops the camera, and mouse moves are ignored while it runs.
+- The mouse's strokes (press on a target, drag down) act when the button is let go at depth, never mid-drag (guardrail G-5).
 - Camera frames, landmarks and calibration are never stored; only the settings preference is.
 - Thresholds and timings follow the microarray source; a change to them is a reviewed change recorded in `DECISIONS.md`.
 

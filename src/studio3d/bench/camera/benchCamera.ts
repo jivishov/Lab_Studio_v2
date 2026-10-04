@@ -6,10 +6,10 @@ import { ROOM_SCALE } from "../look/room";
  * `proposals/MICROARRAY_ADOPTION.md` §4, choices 3 and 11). Sources, under
  * `virtual_lab/experiments/dnamicroarray_v2/3d-v3/`:
  * - the camera model, `renderer.js:12` (`cameraMatrices`) and `:119` (the default view);
- * - the manual limits, pan, orbit and zoom, `app.js:111-149`;
+ * - the manual limits, pan, orbit and zoom, `app.js:111-151`;
  * - the presets, `app.js:104-110`;
  * - auto-framing's `fit()` and its tween, `framing.js:29-83`; the free rectangles around open
- *   panels, `app.js:81-97` (`safeRects`).
+ *   panels, `app.js:83-97` (`safeRects`).
  *
  * The camera orbits a look-at point `at` by yaw, pitch and distance; there is no roll. Lengths are
  * the source's scene units times `ROOM_SCALE`, so the views frame the same room around Lab Studio's
@@ -31,7 +31,7 @@ export const FOV = 42;
 export const NEAR = 0.04 * S;
 export const FAR = 80 * S;
 
-/** Limits for manual input only (`app.js:125-149`); presets, framing and Examine are not clamped. */
+/** Limits for manual input only (`app.js:121-151`); presets, framing and Examine are not clamped. */
 export const MANUAL = {
   pitchMin: 0.35,
   pitchMax: 1.55,
@@ -84,32 +84,40 @@ export const applyView = (camera: THREE.PerspectiveCamera, view: OrbitView, aspe
   camera.updateMatrixWorld();
 };
 
-/** Manual input re-clamps pitch, distance and the look-at point; yaw is unbounded. */
+/** Pitch, distance and the look-at point within the manual limits; yaw is unbounded. */
 export const clampManual = (view: OrbitView): OrbitView => ({
-  at: new THREE.Vector3(clamp(view.at.x, -MANUAL.atX, MANUAL.atX), view.at.y, clamp(view.at.z, -MANUAL.atZ, MANUAL.atZ)),
+  at: clampAt(view.at),
   yaw: view.yaw,
-  pitch: clamp(view.pitch, MANUAL.pitchMin, MANUAL.pitchMax),
+  pitch: clampPitch(view.pitch),
   distance: clamp(view.distance, MANUAL.distanceMin, MANUAL.distanceMax),
 });
+/**
+ * Each manual input clamps only what it changes, as the source does: an orbit its pitch, a pan its
+ * look-at point and pitch, the wheel its distance and look-at point (`app.js:125-126, 136, 148-149`).
+ * So a programmatic view outside the limits (eye level, close to a meniscus) is not thrown out by a
+ * pan or a zoom.
+ */
+const clampPitch = (pitch: number) => clamp(pitch, MANUAL.pitchMin, MANUAL.pitchMax);
+export const clampAt = (at: THREE.Vector3) => new THREE.Vector3(clamp(at.x, -MANUAL.atX, MANUAL.atX), at.y, clamp(at.z, -MANUAL.atZ, MANUAL.atZ));
 
-/** Shift/Alt + right-drag or middle-drag (`app.js:124`). */
+/** Shift/Alt + right-drag or middle-drag (`app.js:125`). */
 export const orbitBy = (view: OrbitView, dx: number, dy: number): OrbitView =>
-  clampManual({ ...copyView(view), yaw: view.yaw - dx * MANUAL.yawPerPx, pitch: view.pitch + dy * MANUAL.pitchPerPx });
+  ({ ...copyView(view), yaw: view.yaw - dx * MANUAL.yawPerPx, pitch: clampPitch(view.pitch + dy * MANUAL.pitchPerPx) });
 
 /**
- * Right-drag (`app.js:125`, `panBy`): the bench point under the pointer moves with it sideways
+ * Right-drag (`app.js:126`, `panBy` at `:134-137`): the bench point under the pointer moves with it sideways
  * (`from` and `to` are the bench points under the pointer before and after, at the same screen
  * height), and moving up or down tilts the view.
  */
 export const panTiltBy = (view: OrbitView, from: THREE.Vector3 | null, to: THREE.Vector3 | null, dy: number): OrbitView => {
   const at = view.at.clone();
   if (from && to) at.add(from.clone().sub(to));
-  return clampManual({ ...view, at, pitch: view.pitch + dy * MANUAL.pitchPerPx });
+  return { ...view, at: from && to ? clampAt(at) : at, pitch: clampPitch(view.pitch + dy * MANUAL.pitchPerPx) };
 };
 
-/** The wheel (`app.js:144-147`): zoom by e^(deltaY·k); `refit` then keeps the bench point under the pointer fixed. */
+/** The wheel (`app.js:146-151`): zoom by e^(deltaY·k); `refit` then keeps the bench point under the pointer fixed. */
 export const zoomBy = (view: OrbitView, deltaY: number): OrbitView =>
-  clampManual({ ...copyView(view), distance: view.distance * Math.exp(deltaY * MANUAL.zoomPerDelta) });
+  ({ ...copyView(view), distance: clamp(view.distance * Math.exp(deltaY * MANUAL.zoomPerDelta), MANUAL.distanceMin, MANUAL.distanceMax) });
 
 /** Choice 11: framing turns back to the front the short way, never unwinding whole turns made by hand. */
 export const frontYaw = (yaw: number): number => Math.round(yaw / (Math.PI * 2)) * Math.PI * 2;
@@ -156,7 +164,7 @@ export const fit = (points: readonly THREE.Vector3[], base: OrbitView, size: Siz
 };
 
 /**
- * The free rectangles of the stage around open panels (`app.js:81-97`): the canvas less a 12 px
+ * The free rectangles of the stage around open panels (`app.js:83-97`): the canvas less a 12 px
  * margin and everything below the hint or dock, split around each obstacle with a 10 px pad;
  * pieces smaller than 160 × 110 px are dropped. Largest first, at most 24.
  */
@@ -179,7 +187,7 @@ export const safeRects = (size: Size, obstacles: readonly Rect[], bottomLimit = 
   return rects.length ? rects : [base];
 };
 
-/** Fit into each free rectangle and keep the one that frames the points largest (`framing.js:62-63`). */
+/** Fit into each free rectangle and keep the one that frames the points largest (`framing.js:66-67`). */
 export const fitBest = (points: readonly THREE.Vector3[], base: OrbitView, size: Size, rects: readonly Rect[],
   limits?: { min: number; max: number }): OrbitView | undefined => rects
   .map((rect) => fit(points, base, size, rect, limits))

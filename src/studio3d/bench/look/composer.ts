@@ -11,19 +11,21 @@ import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js"
  * ported as written: Narkowicz ACES at exposure 1, its vignette, output gamma 1/2.2 and a dither.
  * three's own ACES and sRGB output differ from it, so the renderer itself does no tone mapping.
  *
- * three's UnrealBloomPass stands in for the source's six-level tent-filtered chain; its high-pass
+ * three.js's UnrealBloomPass stands in for the source's six-level tent-filtered chain; its high-pass
  * smooth width plays the knee, and it thresholds on luminance where the source uses the brightest
- * channel. Bloom is off on the Low tier, as in the source.
+ * channel. On the Low tier the source renders without HDR targets and tone-maps each fragment
+ * (`renderer.js:46-50`, `finish`): no bloom, no vignette and no dither, as here.
  */
 const MicroarrayOutputShader = {
   name: "MicroarrayOutputShader",
-  uniforms: { tDiffuse: { value: null as THREE.Texture | null }, exposure: { value: 1 } },
+  uniforms: { tDiffuse: { value: null as THREE.Texture | null }, exposure: { value: 1 }, finishing: { value: 1 } },
   vertexShader: /* glsl */ `
     varying vec2 vUv;
     void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
   fragmentShader: /* glsl */ `
     uniform sampler2D tDiffuse;
     uniform float exposure;
+    uniform float finishing; // 1: the HDR composite's vignette and dither; 0: the Low tier's plain finish
     varying vec2 vUv;
     float hash(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
     vec3 aces(vec3 x) { return clamp((x * (2.51 * x + 0.03)) / (x * (2.43 * x + 0.59) + 0.14), 0.0, 1.0); }
@@ -33,9 +35,9 @@ const MicroarrayOutputShader = {
       c = clamp(c, 0.0, 64.0);
       c = aces(c * exposure);
       float vig = smoothstep(1.3, 0.3, length((vUv - 0.5) * vec2(1.0, 0.82) * 1.55));
-      c *= mix(0.88, 1.0, vig);
+      c *= mix(1.0, mix(0.88, 1.0, vig), finishing);
       c = pow(c, vec3(1.0 / 2.2));
-      c += (hash(gl_FragCoord.xy) - 0.5) / 255.0;
+      c += finishing * (hash(gl_FragCoord.xy) - 0.5) / 255.0;
       gl_FragColor = vec4(c, 1.0);
     }`,
 };
@@ -53,6 +55,8 @@ export const makeComposer = (renderer: THREE.WebGLRenderer, scene: THREE.Scene, 
     (bloom.highPassUniforms as Record<string, THREE.IUniform<number>>).smoothWidth.value = BLOOM.knee;
     composer.addPass(bloom);
   }
-  composer.addPass(new ShaderPass(MicroarrayOutputShader));
+  const output = new ShaderPass(MicroarrayOutputShader);
+  output.uniforms.finishing.value = options.bloom ? 1 : 0;
+  composer.addPass(output);
   return composer;
 };

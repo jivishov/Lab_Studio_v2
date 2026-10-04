@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { clickCallout, STROKE, strokeDepth } from "../bench/input/useBenchCarry";
+import { clickCallout, handCallout, STROKE, strokeDepth } from "../bench/input/useBenchCarry";
 
 // The left button on the microarray lab's controller (adoption P3, 2026-10-04). Written, not run.
 
@@ -24,12 +24,21 @@ describe("click-carry callouts", () => {
     expect(clickCallout("Release to place", "commit")).toBe("Click to place");
   });
 
-  it("words a seat, pour or delivery as a stroke", () => {
-    expect(clickCallout("Release to pour into the beaker", "insert")).toBe("Press and drag down to pour into the beaker");
+  it("words a seat, pour or delivery as a stroke that acts when let go (G-5)", () => {
+    expect(clickCallout("Release to pour into the beaker", "insert")).toBe("Press, drag down and let go to pour into the beaker");
   });
 
   it("words a draw as press, drag down and let go", () => {
     expect(clickCallout("Release to draw up from the beaker", "draw")).toBe("Press, drag down and let go to draw up from the beaker");
+  });
+
+  it("words a hand carry by the hand's own action (§8)", () => {
+    const plain = { turn: false, squeeze: false };
+    expect(handCallout("Release to set down", "commit", plain)).toBe("Open your palm to set down");
+    expect(handCallout("Release to place the watch glass on the balance pan", "insert", plain)).toBe("Pause here, then lower your hand to place the watch glass on the balance pan");
+    expect(handCallout("Release to pour into the beaker", "insert", { turn: true, squeeze: false })).toBe("Pause here, then turn your palm to pour into the beaker");
+    expect(handCallout("Release to empty the pipette into the cuvette", "insert", { turn: false, squeeze: true })).toBe("Pause here, lower in and squeeze to empty the pipette into the cuvette");
+    expect(handCallout("Release to draw up from the beaker", "draw", plain)).toBe("Squeeze above it, lower in and let go to draw up from the beaker");
   });
 
   it("leaves coaching and refusals as they are", () => {

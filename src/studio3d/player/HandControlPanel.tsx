@@ -30,11 +30,15 @@ export interface HandGuideContext {
   locked: boolean;
   stroke?: "lower" | "turn";
   draw: boolean;
+  /** A pipette over the receiver it empties into: it delivers when squeezed at depth. */
+  squeeze: boolean;
   armed?: "armed" | "bubbles";
   lockedLabel?: string;
+  /** Not carrying, the aim has settled on an instrument key (TARE). */
+  keyLocked: boolean;
 }
 
-export type GestureKey = "grab" | "put" | "lock" | "lower" | "turn" | "draw" | "drops" | "invert" | "key" | "leave";
+export type GestureKey = "grab" | "put" | "lock" | "lower" | "turn" | "draw" | "deliver" | "drops" | "invert" | "key" | "leave";
 
 export const handBadge = (s: HandControlState, now: number): { text: string; tone: "" | "on" | "warn" | "error" } => {
   if (s.error && !s.running) return { text: "Error", tone: "error" };
@@ -45,7 +49,7 @@ export const handBadge = (s: HandControlState, now: number): { text: string; ton
   return { text: "On", tone: "on" };
 };
 
-/** The live guide line, after the source's `renderCamGuide` (`app.js:375-410`), worded for Lab Studio's actions. */
+/** The live guide line, after the source's `renderCamGuide` (`app.js:378-421`), worded for Lab Studio's actions. */
 export const handGuide = (s: HandControlState, g: HandGuideContext, now: number): { text: string; gesture?: GestureKey; warn: boolean } => {
   const pinch = s.settings.mode === "pinch";
   const press = pinch ? "pinch" : "press your thumb";
@@ -64,21 +68,28 @@ export const handGuide = (s: HandControlState, g: HandGuideContext, now: number)
       ? { text: `${pinch ? "Keep pinching" : "Keep the thumb pressed"} and lower your hand into the liquid, then ${pinch ? "let go" : "release"} to draw.`, gesture: "draw", warn: false }
       : { text: `Locked on ${g.lockedLabel ?? "the liquid"}. Lift away, ${press} above the liquid, then lower in.`, gesture: "draw", warn: false };
   }
+  if (g.locked && g.squeeze) {
+    return g.armed === "armed"
+      ? { text: `${pinch ? "Keep pinching" : "Keep the thumb pressed"} and lower the tip into ${g.lockedLabel ?? "the receiver"}; it empties there.`, gesture: "deliver", warn: false }
+      : { text: `Locked on ${g.lockedLabel ?? "the receiver"}. Lower the tip in, then ${press} to empty the pipette.`, gesture: "deliver", warn: false };
+  }
   if (g.locked) return { text: `Locked on ${g.lockedLabel ?? "the target"}. Lower your hand, or slide sideways to leave.`, gesture: "lower", warn: false };
   if (g.carrying) return { text: "Move it where it goes and show an open palm to set it down. Over a target, pause until it locks, then lower your hand or turn your palm.", gesture: "put", warn: false };
-  return { text: `Close your grip over an item and hold to pick it up. To press TARE, aim at the key and ${press}.`, gesture: "grab", warn: false };
+  if (g.keyLocked) return { text: `Locked on the key. ${pinch ? "Pinch" : "Press your thumb"} to press it.`, gesture: "key", warn: false };
+  return { text: `Close your grip over an item and hold to pick it up. To press TARE, pause on the key until it locks, then ${press}.`, gesture: "grab", warn: false };
 };
 
-const GESTURES: Array<{ key: GestureKey; icon: "grip" | "hand" | "lock" | "seat" | "pour" | "pencil" | "flask" | "retry" | "gauge" | "up"; title: string; thumb: string; pinch: string }> = [
+const GESTURES: Array<{ key: GestureKey; icon: "grip" | "hand" | "lock" | "seat" | "pour" | "pencil" | "flask" | "retry" | "gauge" | "up" | "beaker"; title: string; thumb: string; pinch: string }> = [
   { key: "grab", icon: "grip", title: "Pick up", thumb: "Close your grip over an item or a tray item and hold", pinch: "Close your grip over an item or a tray item and hold" },
   { key: "put", icon: "hand", title: "Set down", thumb: "Show your open palm over the spot and hold", pinch: "Show your open palm over the spot and hold" },
   { key: "lock", icon: "lock", title: "Aim", thumb: "Pause over the target until it locks", pinch: "Pause over the target until it locks" },
-  { key: "lower", icon: "seat", title: "Seat or deliver", thumb: "Lower your hand", pinch: "Lower your hand" },
+  { key: "lower", icon: "seat", title: "Seat", thumb: "Lower your hand", pinch: "Lower your hand" },
   { key: "turn", icon: "pour", title: "Pour or tip", thumb: "Turn your palm, like tipping a beaker", pinch: "Turn your palm, like tipping a beaker" },
   { key: "draw", icon: "pencil", title: "Draw up", thumb: "Press your thumb above the liquid, lower in, then release", pinch: "Pinch above the liquid, lower in, then let go" },
+  { key: "deliver", icon: "beaker", title: "Empty a pipette", thumb: "Lower the tip into the receiver, then press your thumb", pinch: "Lower the tip into the receiver, then pinch" },
   { key: "drops", icon: "flask", title: "Drops", thumb: "Each thumb press is a drop; hold it to run", pinch: "Each pinch is a drop; hold it to run" },
   { key: "invert", icon: "retry", title: "Invert", thumb: "Grip the stoppered flask; turn your palm over and back", pinch: "Grip the stoppered flask; turn your palm over and back" },
-  { key: "key", icon: "gauge", title: "TARE", thumb: "Aim at the key and press your thumb", pinch: "Aim at the key and pinch" },
+  { key: "key", icon: "gauge", title: "TARE", thumb: "Pause on the key until it locks, then press your thumb", pinch: "Pause on the key until it locks, then pinch" },
   { key: "leave", icon: "up", title: "Withdraw", thumb: "Lift your hand or move sideways", pinch: "Lift your hand or move sideways" },
 ];
 
@@ -146,7 +157,7 @@ export const HandControlPanel = ({ hand, guide, controls, onClose }: {
         </ol>
         {!supported ? <span className="s3d-small">{HAND_CONTROL_UNSUPPORTED_TITLE}</span> : null}
 
-        <div className="s3d-hand__meter"><span>{pinch ? "Pinch" : "Thumb"}</span><div aria-hidden="true"><i style={{ width: `${Math.round(Math.min(1, Math.max(0, s.thumbDepth)) * 100)}%` }} /></div></div>
+        <div className="s3d-hand__meter"><span>{pinch ? "Pinch" : "Thumb"}</span><div aria-hidden="true"><i ref={hand.meterRef} style={{ width: "0%" }} /></div></div>
 
         <section aria-label="Gestures">
           <ul className="s3d-hand__gestures">
@@ -191,8 +202,10 @@ export const HandControlPanel = ({ hand, guide, controls, onClose }: {
   );
 };
 
-/** The hand cursor over the bench (`app.js:361-367`): a ring that fills with the insertion depth when locked. */
-export const HandCursorRing = ({ cursor }: { cursor?: HandControlState["cursor"] }) => cursor ? (
-  <span aria-hidden="true" className={`s3d-handcursor${cursor.locked ? " is-locked" : cursor.aiming ? " is-aiming" : ""}${cursor.pressed ? " is-pressed" : ""}`}
-    style={{ left: cursor.x, top: cursor.y, ["--depth" as string]: String(cursor.depth) }} />
-) : null;
+/**
+ * The hand cursor over the bench (`app.js:361-367`): a ring, teal while aiming, gold and filling
+ * with the insertion depth when locked. `useHandControl` moves it on every frame.
+ */
+export const HandCursorRing = ({ hand }: { hand: HandControl }) => (
+  <span ref={hand.cursorRef} aria-hidden="true" className="s3d-handcursor" hidden />
+);

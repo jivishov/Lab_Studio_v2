@@ -286,7 +286,7 @@ const CONTROLS: Record<string, Array<[string, string]>> = {
   Mouse: [
     ["Click an item", "Pick it up; it follows the pointer"],
     ["Click a spot or a target while holding it", "Set it down there, or act on the target"],
-    ["Press on a seat, a vessel or a liquid and drag down", "Seat it, pour, deliver, or draw up (let go at depth); drag back up to stop"],
+    ["Press on a seat, a vessel or a liquid, drag down and let go", "Seat it, pour, deliver or draw up; drag back up to stop"],
     ["Esc or right-click while holding it", "Put it back"],
     ["Double-click an item", "Examine it"],
     ["Right-drag", "Pan sideways; drag up or down to tilt"],

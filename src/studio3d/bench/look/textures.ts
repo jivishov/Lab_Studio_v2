@@ -126,7 +126,7 @@ export const makeTextures = (size: "full" | "reduced" = "full"): BenchTextures =
   const fine = fbm(n(1024), [[96, 96, 1], [256, 256, 0.6]], 43);
   for (let i = 0; i < paperH.length; i += 1) paperH[i] = paperH[i] * 0.75 + fine[i] * 0.25;
   const ldpe = fbm(n(256), [[6, 6, 1], [18, 18, 0.35], [90, 90, 0.12]], 53);
-  // Worktop resin: the microarray lab's speckled slate-blue resin (renderer.js:54, pattern 1), as a
+  // Worktop resin: the microarray lab's speckled slate-blue resin (renderer.js:58, pattern 1), as a
   // 0.2 m tile. Its fbm is sampled at 7 cycles per microarray unit; light specks fill 1/240-unit cells
   // and dark ones 1/170-unit cells. The tile spans 0.2 m / ROOM_SCALE units.
   const benchN = n(1024);

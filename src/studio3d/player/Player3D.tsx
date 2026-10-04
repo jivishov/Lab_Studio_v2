@@ -131,7 +131,9 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   // Drop mode (decided 2026-10-02): a pipette held over a vessel while liquid goes in a drop at a time.
   const holdOverRef = useRef<(pipetteId: string, vesselId: string) => void>(() => undefined);
   const onHoldOver = useCallback((pipetteId: string, vesselId: string) => holdOverRef.current(pipetteId, vesselId), []);
-  const carry = useBenchCarry(engine, player, setHovered, onTap, onControl, onHoldOver);
+  // While hand control runs, mouse moves are ignored (a mouse press or the wheel stops the camera).
+  const handRunningRef = useRef(false);
+  const carry = useBenchCarry(engine, player, setHovered, onTap, onControl, onHoldOver, () => handRunningRef.current);
   const carryCancelRef = useRef(carry);
   carryCancelRef.current = carry;
   const carryingRef = useRef(carry.carrying);
@@ -219,14 +221,17 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     dropMode: () => Boolean(dropMode),
     drop: () => addDropRef.current(1),
     runDrops: (on) => (on ? startRun() : endRun()),
+    // The hand's focus shows the item's hover label, as the source labels the target under the cursor.
     focus: (t, locked) => {
       if (handFocus.current.id === t?.id && handFocus.current.locked === locked) return;
       handFocus.current = { id: t?.id, locked };
-      if (t?.kind === "item" && t.instanceId && !carryingRef.current) setHovered(t.instanceId);
+      if (!carryingRef.current) setHovered(t?.kind === "item" ? t.instanceId : undefined);
     },
-    say: (text, error) => (error ? player.correct(text, "") : player.notify(text)),
+    // A technique mistake (bubbles, a stroke left short) shows in the correction block; it is not a runtime attempt.
+    say: (text, error, recovery) => (error ? player.correct(text, recovery ?? "") : player.notify(text)),
   });
   const handPanelShown = handPanelOpen || hand.state.running;
+  handRunningRef.current = hand.state.running;
   const handStopRef = useRef({ running: false, stop: () => undefined as void });
 
   // While a committed pour animates, the bench shows the committed layout with the pour's contents
@@ -704,9 +709,11 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     else setHandPanelOpen(true);
   };
   const handContact = hand.controller.contact;
+  const handCarryAction = carry.gestureAction();
   const handGuideContext: HandGuideContext = {
     carrying: carry.carrying, dropMode: Boolean(dropMode), invertHolding: Boolean(hand.controller.invertHold), locked: Boolean(handContact),
-    stroke: hand.controller.stroke, draw: carry.gestureAction()?.action === "draw", armed: hand.controller.armed,
+    stroke: hand.controller.stroke, draw: handCarryAction?.action === "draw", squeeze: Boolean(handCarryAction?.squeeze), armed: hand.controller.armed,
+    keyLocked: !carry.carrying && hand.controller.lockedTarget?.kind === "control",
     lockedLabel: handContact?.target.instanceId ? lowerFirstLetter(scene.bench.find((i) => i.instanceId === handContact.target.instanceId)?.label ?? "") || undefined : undefined,
   };
   const shownTrayGrab = trayGrab ? trayGrabRef.current ?? trayGrab : undefined;
@@ -716,10 +723,11 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   const markVesselLabel = markStep ? lowerFirstLetter(scene.bench.find((i) => i.instanceId === markStep.vesselInstanceId)?.label ?? "vessel") : "";
   const hint = dropMode ? "Space: tap for a drop, hold to let it run. Enter: at the line. Esc puts the pipette down."
     : carry.keyCarrying ? "Arrows move it (Shift: further). [ ] step through targets. Enter sets it down; Esc cancels."
-    : carry.clickCarrying ? "Click where it goes, or press on the target and drag down. Esc or a right click puts it back."
+    : carry.clickCarrying ? "Click where it goes, or press on the target, drag down and let go. Esc or a right click puts it back."
+    : carry.gestureCarrying ? "Open your palm over the spot to set it down; over a target, pause until it locks, then lower your hand or turn your palm."
     : carry.carrying ? "Release to set down. Esc cancels."
     : tool && flow.canConfirm ? "Pick up the spatula, press it into the source and drag down to scoop, then click the target; or use Source, Target and Confirm. Right-drag to look around."
-    : pipette && flow.canConfirm ? "Pick up the pipette, then press over the liquid or the cuvette and drag down; or use Source, Target and Confirm. Right-drag to look around."
+    : pipette && flow.canConfirm ? "Pick up the pipette, then press over the liquid or the cuvette, drag down and let go; or use Source, Target and Confirm. Right-drag to look around."
     : markStep ? `Pick up the pipette and click the ${markVesselLabel} to hold it there, or use the step card. Right-drag to look around.`
     : invertVesselId ? "Click the stoppered flask to invert it, or use Invert in the step card. Right-drag to look around."
     : flow.canConfirm ? "Click an item to pick it up, then click where it goes; or use Source, Target and Confirm. Right-drag to look around."
@@ -775,7 +783,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
             <Icon name={carry.callout.kind === "valid" ? "check" : carry.callout.kind === "invalid" ? "x" : carry.callout.kind === "input" ? "pencil" : "tray"} size={14} />{carry.callout.text}
           </div>
         ) : null}
-        {hand.state.running && !gestureBlocked ? <HandCursorRing cursor={hand.state.cursor} /> : null}
+        {hand.state.running && !gestureBlocked ? <HandCursorRing hand={hand} /> : null}
       </BenchView>
 
       {engine && !benchReady ? (

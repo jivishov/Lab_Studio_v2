@@ -124,7 +124,7 @@ describe("taking and setting down", () => {
   });
 
   it("sets an item down with an open palm held 450 ms, where a press would set it down", () => {
-    const { c, log } = rig({ carrying: true, action: { action: "commit", pour: false, tip: false } });
+    const { c, log } = rig({ carrying: true, action: { action: "commit", pour: false, tip: false, squeeze: false } });
     still(c, 0, 500, 500, HAND_TIMING.openMs - 60, 0.3, { open: true, grip: false, hold: false });
     expect(log).toEqual([]);
     still(c, 1000, 500, 500, HAND_TIMING.openMs + 40, 0.3, { open: true, grip: false, hold: false });
@@ -132,16 +132,16 @@ describe("taking and setting down", () => {
   });
 
   it("does not let go over a target that needs lowering or turning; it says what to do", () => {
-    const { c, log } = rig({ carrying: true, action: { action: "insert", pour: false, tip: false } });
+    const { c, log } = rig({ carrying: true, action: { action: "insert", pour: false, tip: false, squeeze: false } });
     still(c, 0, 300, 300, 900, 0.3, { open: true, grip: false, hold: false });
     expect(log.filter((l) => l === "commit")).toEqual([]);
     expect(log.some((l) => /Lower your hand/.test(l))).toBe(true);
   });
 });
 
-describe("aim and lock (interaction.js:93-127)", () => {
+describe("aim and lock (interaction.js:79-127)", () => {
   it("never locks a target the hand only sweeps across; settling on one locks it", () => {
-    const { c } = rig({ carrying: true, action: { action: "insert", pour: false, tip: false } });
+    const { c } = rig({ carrying: true, action: { action: "insert", pour: false, tip: false, squeeze: false } });
     let now = 0;
     const locked = new Set<string>();
     for (let x = 250; x <= 420; x += 4) { c.feed(hand(now, x, 300)); if (c.contact) locked.add(c.contact.target.id); now += 33; }
@@ -151,7 +151,7 @@ describe("aim and lock (interaction.js:93-127)", () => {
   });
 
   it("seats by lowering the palm: the action commits at the insertion depth", () => {
-    const { c, log } = rig({ carrying: true, action: { action: "insert", pour: false, tip: false } });
+    const { c, log } = rig({ carrying: true, action: { action: "insert", pour: false, tip: false, squeeze: false } });
     let now = still(c, 0, 300, 300, 200);
     expect(c.contact?.target.id).toBe("beaker-a");
     for (let i = 1; i <= 10 && !log.includes("commit"); i += 1) { now += 33; c.feed(hand(now, 300, 300, 0.3 + i * 0.0046)); }
@@ -159,7 +159,7 @@ describe("aim and lock (interaction.js:93-127)", () => {
   });
 
   it("pours by turning the palm past 60°; lowering alone does not pour", () => {
-    const { c, log } = rig({ carrying: true, action: { action: "insert", pour: true, tip: false } });
+    const { c, log } = rig({ carrying: true, action: { action: "insert", pour: true, tip: false, squeeze: false } });
     let now = still(c, 0, 300, 300, 200);
     expect(c.stroke).toBe("turn");
     now = still(c, now, 300, 300, 200, 0.33);
@@ -170,7 +170,7 @@ describe("aim and lock (interaction.js:93-127)", () => {
   });
 
   it("lifting releases a lock without acting, and the same target waits before re-locking", () => {
-    const { c, log } = rig({ carrying: true, action: { action: "insert", pour: false, tip: false } });
+    const { c, log } = rig({ carrying: true, action: { action: "insert", pour: false, tip: false, squeeze: false } });
     let now = still(c, 0, 300, 300, 200);
     expect(c.contact).toBeDefined();
     let released: number | undefined;
@@ -182,7 +182,7 @@ describe("aim and lock (interaction.js:93-127)", () => {
   });
 
   it("extended-arm sway and tremor keep the lock", () => {
-    const { c } = rig({ carrying: true, action: { action: "insert", pour: false, tip: false } });
+    const { c } = rig({ carrying: true, action: { action: "insert", pour: false, tip: false, squeeze: false } });
     let now = still(c, 0, 300, 300, 200);
     const start = now, lost: number[] = [];
     for (; now < start + 3000; now += 33) {
@@ -196,7 +196,7 @@ describe("aim and lock (interaction.js:93-127)", () => {
 });
 
 describe("drawing up (real bulb technique)", () => {
-  const drawRig = () => rig({ carrying: true, action: { action: "draw", pour: false, tip: false } });
+  const drawRig = () => rig({ carrying: true, action: { action: "draw", pour: false, tip: false, squeeze: false } });
 
   it("squeeze above the liquid, lower in, let go: draws", () => {
     const { c, log } = drawRig();
@@ -257,10 +257,81 @@ describe("drops, inverting and keys", () => {
     expect(c.invertHold).toBeUndefined();
   });
 
-  it("presses TARE when the plunger is pressed with the hand on the key", () => {
+  it("presses TARE only once the aim has settled on the key (§8: lock on the key, then press)", () => {
     const { c, log } = rig();
-    c.feed(hand(0, 600, 420, 0.3, { grip: false, hold: false }));
+    c.feed(hand(0, 600, 420, 0.3, { hold: false }));
     c.press(hand(10, 600, 420));
+    c.release();
+    expect(log).toEqual([]);
+    const now = still(c, 40, 600, 420, HAND_AIM.settleMS + 40, 0.3, { hold: false });
+    expect(c.lockedTarget?.id).toBe("control:balance:tare");
+    c.press(hand(now, 600, 420));
     expect(log).toEqual(["control:tare"]);
+  });
+});
+
+describe("source rules kept from interaction.js", () => {
+  const seat = { carrying: true, action: { action: "insert" as const, pour: false, tip: false, squeeze: false } };
+
+  it("an open hand drops a lock, and nothing is done (interaction.js:108)", () => {
+    const { c, log } = rig(seat);
+    const now = still(c, 0, 300, 300, 200);
+    expect(c.contact).toBeDefined();
+    c.feed(hand(now + 33, 300, 300, 0.3, { open: true, grip: false, hold: false }));
+    expect(c.contact).toBeUndefined();
+    expect(log).toEqual([]);
+  });
+
+  it("before insertion, sliding onto a neighbour hands the lock over (slidOff, interaction.js:71-77)", () => {
+    const { c } = rig(seat);
+    let now = still(c, 0, 300, 300, 200);
+    expect(c.contact?.target.id).toBe("beaker-a");
+    // Beaker B is 60 px to the right: about 0.043 of hand travel at rawX = x / 1400.
+    for (let x = 300; x <= 360; x += 3) { now += 33; c.feed(hand(now, x, 300)); }
+    now = still(c, now, 360, 300, HAND_AIM.exitMS + HAND_AIM.relockMS);
+    expect(c.contact?.target.id).toBe("beaker-b");
+  });
+
+  it("a draw squeezed and lowered in is cancelled, with nothing drawn, if the tip then leaves the liquid sideways", () => {
+    const { c, log } = rig({ carrying: true, action: { action: "draw", pour: false, tip: false, squeeze: false } });
+    let now = still(c, 0, 300, 300, 200);
+    c.press(hand(now, 300, 300));
+    now = still(c, now + 33, 300, 300, 150, 0.346);
+    expect(c.contact?.depth).toBeGreaterThanOrEqual(IMMERSED);
+    for (let i = 1; i <= 15; i += 1) c.feed(hand(now += 33, 300 + i * 10, 300, 0.346));
+    expect(c.contact).toBeUndefined();
+    expect(log.some((l) => l.startsWith("error:Stroke cancelled"))).toBe(true);
+    c.release();
+    expect(log).not.toContain("commit");
+  });
+});
+
+describe("emptying a pipette into its receiver (the source's deliver)", () => {
+  const deliver = () => rig({ carrying: true, action: { action: "insert", pour: false, tip: false, squeeze: true } });
+
+  it("lowering in alone does not empty it; squeezing at depth does", () => {
+    const { c, log } = deliver();
+    let now = still(c, 0, 300, 300, 200);
+    now = still(c, now, 300, 300, 150, 0.346);
+    expect(log).toEqual([]);
+    c.press(hand(now, 300, 300, 0.346));
+    expect(log).toEqual(["commit"]);
+  });
+
+  it("squeezed before it reaches the receiver, it empties on arrival at depth", () => {
+    const { c, log } = deliver();
+    let now = still(c, 0, 300, 300, 200);
+    c.press(hand(now, 300, 300));
+    for (let i = 1; i <= 10 && !log.includes("commit"); i += 1) c.feed(hand(now += 33, 300, 300, 0.3 + i * 0.0046));
+    expect(log).toEqual(["commit"]);
+  });
+
+  it("let go short of the receiver, nothing is delivered", () => {
+    const { c, log } = deliver();
+    const now = still(c, 0, 300, 300, 200);
+    c.press(hand(now, 300, 300));
+    c.release();
+    expect(log.some((l) => l.startsWith("error:Nothing delivered"))).toBe(true);
+    expect(log).not.toContain("commit");
   });
 });

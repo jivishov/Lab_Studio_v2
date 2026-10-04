@@ -5,12 +5,13 @@ import { fillLevelMm, type SceneContents, type SceneDescription, type SceneItem 
 import { ModelLibrary } from "../equipment3d/loadModels";
 import type { Equipment3DEntry } from "../equipment3d/types";
 import {
-  applyView, clampManual, copyView, DEFAULT_VIEW, easeInOutCubic, FAR, fitBest, FOV, FRAME_PITCH, frontYaw, lerpView, MANUAL, NEAR,
+  applyView, clampAt, copyView, DEFAULT_VIEW, easeInOutCubic, FAR, fitBest, FOV, FRAME_PITCH, frontYaw, lerpView, MANUAL, NEAR,
   orbitBy, panTiltBy, PRESETS, safeRects, zoomBy, type OrbitView, type Rect,
 } from "./camera/benchCamera";
 import { makeComposer } from "./look/composer";
 import { ContactShadows } from "./look/contactShadows";
-import { ENVIRONMENT_INTENSITY, labEnvironment } from "./look/environment";
+import { labEnvironment } from "./look/environment";
+import { applyRoomLighting } from "./look/roomLighting";
 import { buildRoom, roomBackground, type Room } from "./look/room";
 import { disposeTextures, makeTextures, type BenchTextures } from "./look/textures";
 import { buildContents, buildTiltingLiquid, disposeObject, liquidOpacity3D, parseCssColour } from "./scene/contents";
@@ -184,13 +185,15 @@ export class BenchEngine {
     this.renderer.localClippingEnabled = true; // a tilting source's liquid is cut level (pour.ts)
 
     this.textures = makeTextures(q.textures);
-    this.models = new ModelLibrary(this.textures);
-    this.models.onProgress = (loaded, total, pending) => this.onLoadProgress?.(loaded, total, pending);
     // The microarray lab's room, lights and reflections (decided 2026-10-03/04); its clear colour behind.
-    this.scene.environment = labEnvironment(this.renderer);
-    this.scene.environmentIntensity = ENVIRONMENT_INTENSITY;
+    // The map gives reflections only; the hemisphere light is the ambient (look/roomLighting.ts).
+    const environment = labEnvironment(this.renderer);
+    this.scene.environment = environment;
     this.scene.background = roomBackground();
-    this.room = buildRoom({ textures: this.textures, shadowMapSize: q.shadowMap, onTextureChange: () => this.requestRender() });
+    this.models = new ModelLibrary(this.textures);
+    this.models.environment = environment;
+    this.models.onProgress = (loaded, total, pending) => this.onLoadProgress?.(loaded, total, pending);
+    this.room = buildRoom({ textures: this.textures, shadowMapSize: q.shadowMap, onTextureChange: () => this.requestRender(), environment });
     this.scene.add(this.room.group, this.room.lights);
     this.contact = new ContactShadows({ width: BENCH_MM.width * MM, depth: BENCH_MM.depth * MM, resolution: q.contact, blur: 2.2, opacity: 0.72 });
     this.scene.add(this.contact.group, this.itemLayer, this.signals.group);
@@ -280,6 +283,8 @@ export class BenchEngine {
       else animating = true;
       this.onChange?.();
     }
+    // Every material is lit as the microarray lab lights its surfaces (patched once, when first drawn).
+    applyRoomLighting(this.scene);
     if (this.shadowsDirty) {
       // Contact shadows are cast by equipment only, never by the room.
       this.room.group.visible = false;
@@ -1402,7 +1407,7 @@ export class BenchEngine {
   // ---------------------------------------------------------------- camera
 
   /**
-   * The microarray lab's mouse camera (`3d-v3/app.js:111-149`), decided 2026-10-03/04: right-drag
+   * The microarray lab's mouse camera (`3d-v3/app.js:111-151`), decided 2026-10-03/04: right-drag
    * pans sideways (the bench point under the pointer stays under it) and tilts with up/down; Shift
    * or Alt + right-drag, or middle-drag, orbits; the wheel zooms toward the bench point under the
    * pointer. Drags start after 3 px; a right click without a drag calls `onCameraClick`. The left
@@ -1421,6 +1426,8 @@ export class BenchEngine {
       if (e.pointerType === "touch") {
         const p = point(e);
         this.touches.set(e.pointerId, p);
+        // Captured, so a finger that slides over a panel or lifts there still ends its gesture here.
+        canvas.setPointerCapture(e.pointerId);
         if (this.cameraHeld) return;
         this.startTouchGesture();
         return;
@@ -1456,6 +1463,7 @@ export class BenchEngine {
     const up = (e: PointerEvent) => {
       if (e.pointerType === "touch") {
         this.touches.delete(e.pointerId);
+        if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
         if (!this.cameraHeld && this.touches.size) this.startTouchGesture();
         else if (!this.touches.size) this.touchGesture = undefined;
         return;
@@ -1526,13 +1534,13 @@ export class BenchEngine {
     g.y = p.y;
   }
 
-  /** Zoom keeping the bench point under (x, y) fixed (`app.js:144-147`). */
+  /** Zoom keeping the bench point under (x, y) fixed (`app.js:146-151`). */
   private zoomAt(x: number, y: number, deltaY: number): void {
     const before = this.onBench(x, y);
     this.view = zoomBy(this.view, deltaY);
     this.updateCamera();
     const after = this.onBench(x, y);
-    if (before && after) this.setView(clampManual({ ...this.view, at: this.view.at.clone().add(before.sub(after)) }));
+    if (before && after) this.setView({ ...this.view, at: clampAt(this.view.at.clone().add(before.sub(after))) });
     else this.setView(this.view);
   }
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { clampBox, coveredSides, PANEL_MIN, PANEL_TOP, resizeBox, sanitizeLayout } from "../player/panelLayout";
+import { clampBox, PANEL_MIN, PANEL_TOP, resizeBox, sanitizeLayout } from "../player/panelLayout";
 
 const viewport = { width: 1280, height: 720 };
 
@@ -27,14 +27,5 @@ describe("panel layout (handoff §5.1)", () => {
     expect(resizeBox(start, "nw", 40, 20)).toEqual({ x: 140, y: 120, w: 260, h: 180 });
     expect(resizeBox(start, "ne", -500, 0)).toEqual({ x: 100, y: 100, w: PANEL_MIN.w, h: 200 });
     expect(resizeBox(start, "sw", -500, 0)).toEqual({ x: -400, y: 100, w: 800, h: 200 });
-  });
-
-  it("counts tall panels on the side their centre is on, and ignores short ones", () => {
-    const canvas = { left: 0, top: 0, right: 1280, bottom: 720 };
-    const stepCard = { left: 14, top: 66, right: 386, bottom: 397 };
-    const tray = { left: 14, top: 573, right: 314, bottom: 706 };
-    const benchList = { left: 926, top: 66, right: 1266, bottom: 540 };
-    expect(coveredSides(canvas, [stepCard, tray, benchList])).toEqual({ left: 398, right: 366 });
-    expect(coveredSides(canvas, [tray])).toEqual({ left: 0, right: 0 });
   });
 });

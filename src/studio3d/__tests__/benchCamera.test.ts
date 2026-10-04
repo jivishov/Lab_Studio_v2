@@ -37,7 +37,7 @@ describe("camera model (renderer.js:12)", () => {
   });
 });
 
-describe("manual input (app.js:111-149)", () => {
+describe("manual input (app.js:111-151)", () => {
   it("clamps pitch, distance and the look-at point, but not yaw", () => {
     const view = clampManual({ at: new THREE.Vector3(9, 0.1, -9), yaw: 12, pitch: 0, distance: 99 });
     expect(view.pitch).toBe(MANUAL.pitchMin);
@@ -60,6 +60,14 @@ describe("manual input (app.js:111-149)", () => {
     expect(view.pitch).toBeCloseTo(0.72 - 0.05, 9);
   });
 
+  it("clamps only what each input changes, so a close programmatic view is not thrown out by an orbit", () => {
+    const eyeLevel = { at: new THREE.Vector3(0, 0.05, 0), yaw: 0, pitch: 0, distance: 0.16 };
+    expect(orbitBy(eyeLevel, 10, 0).distance).toBe(0.16); // an orbit clamps pitch only
+    expect(panTiltBy(eyeLevel, null, null, 0).distance).toBe(0.16); // a pan clamps pitch and the look-at point
+    expect(zoomBy(eyeLevel, 0).pitch).toBe(0); // the wheel clamps distance only
+    expect(zoomBy(eyeLevel, 0).distance).toBe(MANUAL.distanceMin);
+  });
+
   it("zooms by e^(deltaY · 0.0012)", () => {
     expect(zoomBy(DEFAULT_VIEW(), 100).distance).toBeCloseTo(DEFAULT_VIEW().distance * Math.exp(0.12), 9);
   });
@@ -71,7 +79,7 @@ describe("manual input (app.js:111-149)", () => {
   });
 });
 
-describe("auto-framing (framing.js:29-50, app.js:81-97)", () => {
+describe("auto-framing (framing.js:29-50, app.js:83-97)", () => {
   const points = [new THREE.Vector3(-0.2, 0, -0.1), new THREE.Vector3(0.2, 0.15, 0.1)];
   const box = [-0.2, 0.2].flatMap((x) => [0, 0.15].flatMap((y) => [-0.1, 0.1].map((z) => new THREE.Vector3(x, y, z))));
 

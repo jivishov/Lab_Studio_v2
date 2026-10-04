@@ -79,30 +79,3 @@ export const resizeBox = (start: Required<PanelBox>, corner: Corner, dx: number,
   const h = Math.max(PANEL_MIN.h, start.h + (north ? -dy : dy));
   return { x: west ? start.x + start.w - w : start.x, y: north ? start.y + start.h - h : start.y, w, h };
 };
-
-export interface Rect {
-  left: number;
-  top: number;
-  right: number;
-  bottom: number;
-}
-
-/**
- * How much of the canvas's left and right the open panels cover, for auto-framing (§5.9: "fits
- * the working set into the free area around open panels"). A panel counts when it covers at least
- * a quarter of the canvas height, so a short tray or a collapsed card does not squeeze the view;
- * it covers the side its centre is on. Neither side takes more than 70 % of the width.
- */
-export const coveredSides = (canvas: Rect, panels: readonly Rect[], gap = 12): { left: number; right: number } => {
-  const width = canvas.right - canvas.left;
-  const height = canvas.bottom - canvas.top;
-  let left = 0;
-  let right = 0;
-  for (const panel of panels) {
-    const covered = Math.min(panel.bottom, canvas.bottom) - Math.max(panel.top, canvas.top);
-    if (covered < height * 0.25 || panel.right <= canvas.left || panel.left >= canvas.right) continue;
-    if ((panel.left + panel.right) / 2 - canvas.left < width / 2) left = Math.max(left, panel.right - canvas.left + gap);
-    else right = Math.max(right, canvas.right - panel.left + gap);
-  }
-  return { left: Math.min(left, width * 0.7), right: Math.min(right, width * 0.7) };
-};

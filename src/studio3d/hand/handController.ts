@@ -9,20 +9,23 @@ import { angle, Contact, HAND_GAP_MS, type HandFrame } from "./handCore";
  * | Action | Hand |
  * |---|---|
  * | Pick up an item or a tray item | a closed grip held 350 ms over it |
- * | Set it down, place it, tip a pipette's hold over a vessel | an open palm held 450 ms over the spot |
+ * | Set it down, place it, hold a pipette over a vessel | an open palm held 450 ms over the spot |
  * | Pour | lock on the target, then turn the palm past 60° |
- * | Seat, deliver | lock on the target, then lower the palm (insertion depth 0.85) |
- * | Draw into a pipette | press the plunger above the liquid, lock and lower in, release it |
+ * | Seat | lock on the seat, then lower the palm (insertion depth 0.85) |
+ * | Empty a pipette into a receiver | lock, lower in, and squeeze (the source's deliver: pressed at depth) |
+ * | Draw into a pipette | squeeze above the liquid, lock and lower in, let go (the source's draw) |
  * | Spatula | lower into the solid to scoop; lock on the glass and turn the palm to tip it |
  * | Drops (drop mode) | each plunger press is a drop; a press held 300 ms runs |
  * | A panel button marked for the hand ("At the line") | a closed grip held 350 ms over it |
  * | Invert | grip the stoppered vessel, turn the palm over and back: one inversion |
- * | TARE | aim at the key and press the plunger |
+ * | TARE | lock on the key (the aim settles on it), then press the plunger |
  *
- * What each press or release does is still decided by the bench's carry and its release order
- * (`useBenchCarry`, `sceneToIntent`); the controller only says when. Nothing commits while the
- * hand only passes over a target, and an exit before the action changes nothing. Aim assist (the
- * step's next target, within 76 px) is guidance, so it applies only in guided mode (G-7).
+ * As in the source, a hand that opens (or stops gripping) drops any lock, candidate or squeeze in
+ * progress (`interaction.js:108`); before insertion, sliding onto a neighbour hands the lock over
+ * (`slidOff`); and leaving a target with a stroke bound and the tip in cancels it with nothing
+ * transferred. What each action does is still decided by the bench's carry and its release order
+ * (`useBenchCarry`, `sceneToIntent`); the controller only says when. Aim assist (the step's next
+ * target, within 76 px) is guidance, so it applies only in guided mode (G-7).
  */
 export interface HandTarget {
   id: string;
@@ -42,6 +45,8 @@ export interface CarryAction {
   pour: boolean;
   /** A dipped tool over the target it tips onto. */
   tip: boolean;
+  /** A pipette over the receiver it empties into: it delivers when squeezed at depth. */
+  squeeze: boolean;
 }
 
 export interface HandApi {
@@ -67,7 +72,8 @@ export interface HandApi {
   drop: () => void;
   runDrops: (on: boolean) => void;
   focus: (target: HandTarget | undefined, locked: boolean) => void;
-  say: (text: string, error?: boolean) => void;
+  /** A message; an `error` is a technique correction, with what to do next as `recovery`. */
+  say: (text: string, error?: boolean, recovery?: string) => void;
   /** The bench canvas size, for the cursor mapping (the tracker reads it). */
   bounds: () => { width: number; height: number };
   /** A blocking dialog is open: frames and edges are ignored. */
@@ -116,8 +122,10 @@ export class HandController {
   private gripTarget?: string;
   private openSince?: number;
   private openHinted = false;
+  /** The aim settling on an instrument key: it is locked once still for `settleMS`. */
+  private keyAim?: { id: string; since: number; x: number; y: number };
   pressed = false;
-  /** The plunger was pressed before the tip entered the liquid (a draw is armed), or inside it (bubbles). */
+  /** The plunger pressed before the tip reached its target (a draw or a delivery is armed), or a draw squeezed inside the liquid (bubbles). */
   armed: "armed" | "bubbles" | undefined;
   /** A stoppered vessel gripped for inverting: the palm's normal when gripped, and whether it is now over. */
   invertHold?: { id: string; base: number[]; over: boolean };
@@ -127,7 +135,19 @@ export class HandController {
 
   constructor(private readonly a: HandApi) {}
 
-  /** Drop any motion in progress; nothing is committed. */
+  /** The target the cursor is locked on: a contact, or an instrument key the aim has settled on. */
+  get lockedTarget(): HandTarget | undefined {
+    if (this.contact) return this.contact.target;
+    const k = this.keyAim, f = this.lastFrame;
+    return k && f && this.target?.id === k.id && f.now - k.since >= HAND_AIM.settleMS ? this.target : undefined;
+  }
+
+  /** What the carried item would do where the hand is now (for the guide line). */
+  get carrying(): CarryAction | undefined {
+    return this.a.carrying() ? this.carryAction : undefined;
+  }
+
+  /** Drop any motion in progress; nothing is committed and a carried item stays held (`interaction.js:20-25`). */
   resetMotion(reason = ""): void {
     this.contact = undefined;
     this.stroke = undefined;
@@ -136,6 +156,7 @@ export class HandController {
     this.gripSince = undefined;
     this.gripTarget = undefined;
     this.openSince = undefined;
+    this.keyAim = undefined;
     this.armed = undefined;
     this.pressed = false;
     this.invertHold = undefined;
@@ -152,6 +173,11 @@ export class HandController {
     return c.action === "commit" ? undefined : "lower";
   }
 
+  /** A plunger stroke bound to the locked target (`interaction.js:65`, `holding`). */
+  private holding(): boolean {
+    return this.pressed && this.armed === "armed" && Boolean(this.carryAction && (this.carryAction.action === "draw" || this.carryAction.squeeze));
+  }
+
   private lock(t: HandTarget, f: HandFrame, stroke: Stroke): void {
     this.contact = new Contact(t, f);
     this.stroke = stroke;
@@ -161,7 +187,7 @@ export class HandController {
     this.a.focus(t, true);
   }
 
-  /** Leave a lock before acting: nothing was done, so nothing is cancelled. */
+  /** Leave a lock before acting: nothing was done, so nothing is cancelled; a squeezed bulb returns to armed (`interaction.js:78`). */
   private unlock(f: HandFrame): void {
     const c = this.contact;
     this.contact = undefined;
@@ -170,6 +196,7 @@ export class HandController {
     this.candidate = undefined;
     if (c) this.cooldown = { id: c.target.id, until: f.now + HAND_AIM.relockMS };
     if (this.armed === "bubbles") this.armed = "armed";
+    this.a.carryDepth(0);
     this.a.focus(this.target, false);
   }
 
@@ -177,7 +204,20 @@ export class HandController {
     return Boolean(this.cooldown && this.cooldown.id === t.id && f.now < this.cooldown.until);
   }
 
-  /** A target locks once the aim has settled on it, or after a pause followed by the palm dropping (`interaction.js:93-110`). */
+  /**
+   * Before insertion, moving onto a neighbouring item hands the lock over (`interaction.js:71-77`).
+   * It needs real hand travel (`slideRaw`, about 7 mm) as well as the aim being nearer the
+   * neighbour, judged on the locked target's screen row because lowering the palm also moves the
+   * aim down. Returns "far" for a clearly deliberate move.
+   */
+  private slidOff(c: Contact<HandTarget>, f: HandFrame): false | "near" | "far" {
+    const travel = Math.abs((f.rawX ?? f.x) - c.x);
+    if (!(travel >= HAND_AIM.slideRaw) || !Number.isFinite(f.x) || !Number.isFinite(c.target.y)) return false;
+    const next = pickTarget(this.a.targets().filter((t) => t.kind === "item"), f.x, c.target.y, { prefer: c.target.id });
+    return next && next.id !== c.target.id ? (travel >= 2 * HAND_AIM.slideRaw ? "far" : "near") : false;
+  }
+
+  /** A target locks once the aim has settled on it, or after a pause followed by the palm dropping (`interaction.js:79-103`). */
   private aim(t: HandTarget, f: HandFrame, stroke: Stroke): void {
     const c = this.candidate;
     if (c) {
@@ -214,6 +254,8 @@ export class HandController {
       this.resetMotion();
       if (!f.ready) { this.lastFrame = f; return; }
     }
+    // An open hand, or one no longer gripping, drops a lock or a squeeze in progress (`interaction.js:108`).
+    if ((!f.grip || f.open) && (this.contact || this.candidate || this.armed)) this.resetMotion();
     this.lastFrame = f;
     const expected = this.a.expectedId();
     const t = pickTarget(this.a.targets(), f.x, f.y, { prefer: this.target?.id, expected, assist: this.a.assist() });
@@ -226,7 +268,7 @@ export class HandController {
 
     if (this.invertHold) {
       const hold = this.invertHold;
-      if (f.open) { this.invertHold = undefined; this.a.say("Set down."); return; }
+      if (f.open) { this.invertHold = undefined; return; }
       if (f.normal) {
         const turn = angle(f.normal, hold.base);
         if (!hold.over && turn > INVERT.over) hold.over = true;
@@ -238,30 +280,43 @@ export class HandController {
     if (this.a.carrying()) {
       if (this.contact) {
         const c = this.contact, before = c.depth;
-        c.update(f, this.armed === "armed" || this.pressed);
+        c.update(f, this.holding());
         if (c.valid) {
           // An exit counts once it has lasted exitMS, or at once when it is clearly deliberate, so arm sway never knocks the lock off.
-          const exit = c.exit, far = c.far;
+          let exit = c.exit, far = c.far;
+          if (!exit && before < HAND_AIM.shallow) {
+            const slid = this.slidOff(c, f);
+            if (slid) { exit = "slide"; far = slid === "far"; }
+          }
           if (exit) {
             if (c.exitSince === null) { c.exitSince = f.now; c.exitDepth = before; }
             if (far || f.now - c.exitSince >= HAND_AIM.exitMS) { c.valid = false; c.reason = exit; }
           } else { c.exitSince = null; c.exitDepth = null; }
         }
         if (!c.valid) {
-          this.unlock(f);
-          this.a.carryDepth(0);
+          const depth = c.exitDepth ?? before;
+          if (c.reason !== "tracking" && !(this.holding() && depth >= HAND_AIM.shallow)) this.unlock(f);
+          else {
+            // A stroke bound with the tip in its target is cancelled when the tip leaves it (`interaction.js:122-127`).
+            const stroke = this.holding();
+            this.resetMotion();
+            this.a.carryDepth(0);
+            if (stroke) this.a.say("Stroke cancelled: the tip left its target. Nothing was transferred.", true, "Lock on the target again, then lower and finish the stroke there.");
+            return;
+          }
         } else if (this.stroke === "turn") {
           const turn = f.normal && this.turnBase ? angle(f.normal, this.turnBase) : 0;
           this.a.carryDepth(Math.min(1, turn / TURN_RAD));
           if (turn >= TURN_RAD) { this.finishStroke(); this.a.commitCarry(); return; }
         } else {
           this.a.carryDepth(c.depth);
-          const action = this.carryAction?.action;
-          if (c.depth >= IMMERSED) {
-            if (action === "insert") { this.finishStroke(); this.a.commitCarry(); return; }
-            if (action === "dip") { this.a.loadTool(); this.finishStroke(); return; }
+          const action = this.carryAction;
+          if (c.depth >= IMMERSED && action) {
+            // A seat acts on reaching depth; a pipette delivers there only with the bulb squeezed (`interaction.js:159`).
+            if (action.action === "insert" && (!action.squeeze || (this.pressed && this.armed === "armed"))) { this.finishStroke(); this.a.commitCarry(); return; }
+            if (action.action === "dip") { this.a.loadTool(); this.finishStroke(); this.a.carryDepth(0); return; }
           }
-          // After bubbles, lifting the tip out with the bulb still squeezed makes the stroke valid again.
+          // After bubbles, lifting the tip out with the bulb still squeezed makes the stroke valid again (`interaction.js:158`).
           if (this.armed === "bubbles" && this.pressed && c.depth < IMMERSED - 0.25) this.armed = "armed";
         }
         if (this.contact) { this.target = this.contact.target; this.a.focus(this.contact.target, true); return; }
@@ -274,7 +329,8 @@ export class HandController {
       } else this.candidate = undefined;
       this.target = t;
       this.a.focus(t, false);
-      // An open palm held over the spot sets the item down (or places it, or holds a pipette over a vessel).
+      // An open palm held over the spot sets the item down (or places it, or holds a pipette over a
+      // vessel), as the source hangs the pipette on its stand (`interaction.js:142-153`).
       if (f.open) {
         this.openSince ??= f.now;
         if (stroke) {
@@ -290,9 +346,14 @@ export class HandController {
       return;
     }
 
-    // Nothing held: a closed grip held over an item (or a tray tile, or a hand button) takes it.
+    // Nothing held: a closed grip held over an item (or a tray tile, or a hand button) takes it; the
+    // aim settling on an instrument key locks it for a plunger press.
     this.target = t;
-    this.a.focus(t, false);
+    if (t?.kind === "control") {
+      const k = this.keyAim;
+      if (!k || k.id !== t.id || Math.hypot(f.x - k.x, f.y - k.y) > HAND_AIM.settleMaxPx) this.keyAim = { id: t.id, since: f.now, x: f.x, y: f.y };
+    } else this.keyAim = undefined;
+    this.a.focus(t, Boolean(this.lockedTarget));
     if ((f.hold ?? f.grip) && !f.open && t && t.kind !== "control") {
       if (this.gripSince === undefined || this.gripTarget !== t.id) { this.gripSince = f.now; this.gripTarget = t.id; }
       if (f.now - this.gripSince > HAND_TIMING.gripMs) {
@@ -309,7 +370,6 @@ export class HandController {
     if (t.kind === "item" && t.instanceId) {
       if (this.a.invertTarget(t.instanceId)) {
         this.invertHold = { id: t.instanceId, base: f.normal ? [...f.normal] : [0, 0, 1], over: false };
-        this.a.say("Holding the flask. Turn your palm over and back to invert it once; open your hand to let go.");
         return;
       }
       this.a.pickUpItem(t.instanceId);
@@ -326,28 +386,38 @@ export class HandController {
 
   private bubbles(): void {
     this.armed = "bubbles";
-    this.a.say("Bubbles! The bulb was squeezed with the tip already in the liquid. Keep it squeezed, lift the tip out, lower back in, then let go to draw.", true);
+    this.a.say("Bubbles! The bulb was squeezed with the tip already in the liquid, which blows air into it.", true,
+      "Keep it squeezed, lift the tip out of the liquid, lower back in, then let go slowly to draw.");
   }
 
-  /** A plunger press (thumb press or pinch). */
+  /** A plunger press (a calibrated thumb press, or a pinch; `interaction.js:163-177`). */
   press(f: HandFrame): void {
-    if (this.pressed || !f.ready) return;
-    this.pressed = true;
+    if (this.pressed || !f.ready || !f.grip || f.open) return;
     if (this.a.dropMode()) {
+      this.pressed = true;
       this.dropTimer = setTimeout(() => { this.dropTimer = undefined; this.running = true; this.a.runDrops(true); }, HAND_TIMING.dropHoldMs);
       return;
     }
     if (!this.a.carrying()) {
-      if (this.target?.kind === "control") this.a.pressControl(this.target);
+      const key = this.lockedTarget;
+      if (key?.kind === "control") { this.pressed = true; this.a.pressControl(key); }
       return;
     }
-    if (this.carryAction?.action !== "draw") return;
-    // Real technique: squeeze the bulb before the tip enters the liquid; squeezing inside blows air in.
-    if (this.contact && this.contact.depth >= IMMERSED) this.bubbles();
-    else this.armed = "armed";
+    const action = this.carryAction;
+    if (!action || (action.action !== "draw" && !action.squeeze)) return;
+    this.pressed = true;
+    if (action.action === "draw") {
+      // Real technique: squeeze the bulb before the tip enters the liquid; squeezing inside blows air in.
+      if (this.contact && this.contact.depth >= IMMERSED) this.bubbles();
+      else this.armed = "armed";
+      return;
+    }
+    // A pipette over its receiver: squeezed at depth it delivers; squeezed before, it is armed until it gets there.
+    if (this.contact && this.contact.depth >= IMMERSED) { this.finishStroke(); this.a.commitCarry(); return; }
+    this.armed = "armed";
   }
 
-  /** The plunger let go. */
+  /** The plunger let go (`interaction.js:197-209`). */
   release(): void {
     const wasPressed = this.pressed;
     this.pressed = false;
@@ -356,13 +426,17 @@ export class HandController {
       else if (this.running) { this.running = false; this.a.runDrops(false); }
       return;
     }
-    if (!this.a.carrying() || this.carryAction?.action !== "draw") { this.armed = undefined; return; }
-    if (this.armed === "armed" && this.contact?.valid && this.contact.depth >= IMMERSED) {
+    const action = this.carryAction;
+    if (!this.a.carrying() || !action || (action.action !== "draw" && !action.squeeze)) { this.armed = undefined; return; }
+    if (action.action === "draw" && this.armed === "armed" && this.contact?.valid && this.contact.depth >= IMMERSED) {
       this.finishStroke();
       this.a.commitCarry();
       return;
     }
-    if (this.armed === "armed") this.a.say("Nothing drawn. Squeeze the bulb above the liquid, lock and lower in, then let go.", true);
+    if (this.armed === "armed" && wasPressed) {
+      this.a.say(action.action === "draw" ? "Nothing drawn." : "Nothing delivered.", true,
+        action.action === "draw" ? "Squeeze the bulb above the liquid, lock on it and lower in, then let go." : "Lower the tip into the receiver before squeezing the bulb.");
+    }
     this.armed = undefined;
   }
 }

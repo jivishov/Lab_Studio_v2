@@ -48,8 +48,10 @@ export const acceptedDropCallout = (showGuidance: boolean, inputReady: boolean, 
  * What a mouse press does with an item held (the microarray lab's controller, decided 2026-10-04):
  * "commit" acts at once (set down, place, tip a scoop, hold a pipette over a vessel, or a refusal);
  * the rest are strokes, a press on the target dragged down to depth (`interaction.js:156-211`,
- * `hand-core.js:48`): "insert" acts at depth (seat, pour, deliver), "draw" acts when the button is
- * released at depth (a pipette draws as its bulb is let go), "dip" loads the spatula at depth.
+ * `hand-core.js:48`): "insert" (seat, pour, deliver) and "draw" act when the button is let go at
+ * depth, and "dip" loads the spatula at depth. The source commits a delivery the moment the stroke
+ * reaches depth; here every stroke commits on release, as guardrail G-5 requires ("a drag commits on
+ * release"), with the same gesture.
  */
 export type PressAction = "commit" | "insert" | "draw" | "dip";
 
@@ -61,9 +63,23 @@ export const strokeDepth = (dyPx: number): number => Math.min(1, Math.max(0, dyP
 export const clickCallout = (text: string, action: PressAction): string => {
   if (!text.startsWith("Release to ")) return text;
   const rest = text.slice("Release to ".length);
-  if (action === "insert") return `Press and drag down to ${rest}`;
-  if (action === "draw") return `Press, drag down and let go to ${rest}`;
+  if (action === "insert" || action === "draw") return `Press, drag down and let go to ${rest}`;
   return `Click to ${rest}`;
+};
+
+/**
+ * A hand carry's callout (§8 of the adoption brief): "Release to …" becomes the hand's own action:
+ * an open palm for a set-down, place or hold; a palm turn for a pour or a scoop tipped; lowering for
+ * a seat or a scoop; squeezing at depth to empty a pipette; squeeze, lower and let go to draw.
+ */
+export const handCallout = (text: string, action: PressAction, how: { turn: boolean; squeeze: boolean }): string => {
+  if (!text.startsWith("Release to ")) return text;
+  const rest = text.slice("Release to ".length);
+  if (how.turn) return `Pause here, then turn your palm to ${rest}`;
+  if (action === "commit") return `Open your palm to ${rest}`;
+  if (action === "draw") return `Squeeze above it, lower in and let go to ${rest}`;
+  if (how.squeeze) return `Pause here, lower in and squeeze to ${rest}`;
+  return `Pause here, then lower your hand to ${rest}`;
 };
 
 type Carry =
@@ -114,8 +130,12 @@ export type ControlHandler = (instanceId: string, controlId: string) => void;
 export type HoldOverHandler = (pipetteId: string, vesselId: string) => void;
 
 export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DController, onHover: (instanceId?: string) => void,
-  onTap?: TapHandler, onControl?: ControlHandler, onHoldOver?: HoldOverHandler) => {
+  onTap?: TapHandler, onControl?: ControlHandler, onHoldOver?: HoldOverHandler,
+  /** True while hand control runs: mouse moves are then ignored, as in the microarray lab (`app.js:121`). */
+  mouseIgnored?: () => boolean) => {
   const carryRef = useRef<Carry | undefined>(undefined);
+  const mouseIgnoredRef = useRef(mouseIgnored);
+  mouseIgnoredRef.current = mouseIgnored;
   const [callout, setCallout] = useState<CarryCallout>();
   // What is being carried, by definition (the tool's guidance follows it); undefined when nothing is.
   const [carriedDefinitionId, setCarriedDefinitionId] = useState<string>();
@@ -231,7 +251,14 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     const show = (shown: CarryCallout, action: PressAction): CarryCallout => {
       carry.pressAction = action;
       if (carry.kind === "bench") carry.lastKind = shown.kind;
-      const out = carry.click ? { ...shown, text: clickCallout(shown.text, action) } : shown;
+      let out = shown;
+      if (carry.click) out = { ...shown, text: clickCallout(shown.text, action) };
+      else if (carry.via === "gesture") {
+        const isTool = Boolean(toolTransfer && carry.definitionId === toolTransfer.toolDefinitionId);
+        const turn = (action === "insert" && Boolean(carry.pourToward)) || (isTool && carry.kind === "bench" && Boolean(carry.toolLoaded) && shown.kind === "valid");
+        const squeeze = action === "insert" && pipette?.kind === "deliver" && carry.kind === "bench" && carry.instanceId === pipette.toolInstanceId;
+        out = { ...shown, text: handCallout(shown.text, action, { turn, squeeze }) };
+      }
       setCallout(out);
       return out;
     };
@@ -275,7 +302,8 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
         // What happened, not coaching, so it reads the same in both modes.
         if (carry.toolLoaded) shown = { ...screen, text: `Scooped from the ${sourceLabel}`, kind: "valid" };
         else {
-          shown = { ...screen, text: `Press and drag down to scoop from the ${sourceLabel}`, kind: "valid" };
+          shown = { ...screen, text: carry.via === "gesture" ? `Pause here, then lower your hand to scoop from the ${sourceLabel}`
+            : `Press and drag down to scoop from the ${sourceLabel}`, kind: "valid" };
           action = "dip";
         }
       } else {
@@ -603,7 +631,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
   }, [engine, toolTransfer]);
 
   // Pointer handling on the canvas. The mouse follows the DNA microarray lab's controller (decided
-  // 2026-10-04; `3d-v3/app.js:111-131`, `interaction.js:209-210`): a press on an item picks it up at
+  // 2026-10-04; `3d-v3/app.js:111-131`, `interaction.js:210-211`): a press on an item picks it up at
   // once and it follows the pointer, no button held; the next press acts where it is (`pressAction`)
   // and a press on a seat, a pour target or a liquid is dragged down to depth. Touch keeps press and
   // hold, drag and release (§5.6), since the source has no touch control.
@@ -645,10 +673,8 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       stroke.depth = strokeDepth(dy);
       drawDepth(carry, stroke.depth, stroke.kind);
       if (stroke.depth < STROKE.act) return;
-      if (stroke.kind === "insert") {
-        carry.stroke = undefined;
-        release();
-      } else if (stroke.kind === "dip" && carry.kind === "bench" && toolTransfer) {
+      // A seat, pour, delivery or draw waits for the button to be let go (G-5); a scoop is only a cue.
+      if (stroke.kind === "dip" && carry.kind === "bench" && toolTransfer) {
         carry.stroke = undefined;
         carry.toolLoaded = true;
         setToolLoaded(true);
@@ -657,17 +683,18 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       }
     };
 
-    /** The button let go during a stroke: a draw acts if the tip is in; anything else short of depth does nothing. */
+    /** The button let go during a stroke: at depth a seat, pour, delivery or draw acts; short of it nothing changes. */
     const strokeUp = (carry: Carry, stroke: Stroke) => {
       carry.stroke = undefined;
-      if (stroke.kind === "draw" && stroke.depth >= STROKE.act) {
+      if ((stroke.kind === "insert" || stroke.kind === "draw") && stroke.depth >= STROKE.act) {
         release();
         return;
       }
-      if (stroke.depth > 0) {
+      if (stroke.kind !== "dip") {
         player.notify(stroke.kind === "draw" ? "Nothing drawn. Press over the liquid, drag down into it, then let go."
-          : stroke.kind === "dip" ? "Nothing scooped. Press over the solid and drag down into it."
-            : "Nothing done. Drag down further before letting go.");
+          : "Nothing done. Press on the target, drag down and let go.");
+      } else if (stroke.kind === "dip" && !(carry.kind === "bench" && carry.toolLoaded)) {
+        player.notify("Nothing scooped. Press over the solid and drag down into it.");
       }
       if (carry.kind === "bench" && carry.point) carryTo(carry.tipPoint ?? carry.point);
     };
@@ -717,6 +744,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       }, 300);
     };
     const move = (event: PointerEvent) => {
+      if (event.pointerType === "mouse" && mouseIgnoredRef.current?.()) return;
       const carry = carryRef.current;
       if (carry?.click) {
         if (carry.stroke) {
@@ -860,6 +888,10 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       return;
     }
     if (carry.kind === "bench" && carry.point) engine.previewCarry(carry.instanceId, carry.point.xMm, carry.point.yMm, carry.liftMm ?? LIFT_MM);
+    // Off the bench nothing is aimed at, so letting go here only puts the item back.
+    carry.pressAction = "commit";
+    carry.pourToward = undefined;
+    if (carry.kind === "bench") carry.lastKind = undefined;
     engine.setTargetRing(null);
     setCallout(undefined);
   }, [carryToPointer, engine, overBench]);
@@ -884,14 +916,16 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
    * Hand control (the microarray lab's controller, decided 2026-10-04): what the hand's carry would
    * do where it is now. A pour, or a dipped tool over its target, acts on a turn of the palm.
    */
-  const gestureAction = useCallback((): { action: PressAction; pour: boolean; tip: boolean } | undefined => {
+  const gestureAction = useCallback((): { action: PressAction; pour: boolean; tip: boolean; squeeze: boolean } | undefined => {
     const carry = carryRef.current;
     if (carry?.via !== "gesture") return undefined;
     const action = carry.pressAction ?? "commit";
-    if (carry.kind === "tray") return { action: "commit", pour: false, tip: false };
+    if (carry.kind === "tray") return { action: "commit", pour: false, tip: false, squeeze: false };
     const tool = Boolean(toolTransfer && carry.definitionId === toolTransfer.toolDefinitionId);
-    return { action, pour: action === "insert" && Boolean(carry.pourToward), tip: tool && Boolean(carry.toolLoaded) && carry.lastKind === "valid" };
-  }, [toolTransfer]);
+    // A pipette over the receiver it empties into delivers when its bulb is squeezed at depth.
+    const squeeze = action === "insert" && pipette?.kind === "deliver" && carry.instanceId === pipette.toolInstanceId;
+    return { action, pour: action === "insert" && Boolean(carry.pourToward), tip: tool && Boolean(carry.toolLoaded) && carry.lastKind === "valid", squeeze };
+  }, [pipette, toolTransfer]);
 
   /** Hand control: draw the carried item at a stroke depth (0..1). */
   const gestureDepth = useCallback((depth: number) => {
@@ -914,7 +948,8 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
 
   // A mouse carry in the microarray model (it follows the pointer until the next press).
   const clickCarrying = Boolean(carrying && carryRef.current?.click);
-  return { callout, carrying, clickCarrying, carriedDefinitionId, keyCarrying, toolTransfer, toolLoaded, startTrayCarry, startKeyCarry, handleCarryKey, cancel,
+  const gestureCarrying = Boolean(carrying && carryRef.current?.via === "gesture");
+  return { callout, carrying, clickCarrying, gestureCarrying, carriedDefinitionId, keyCarrying, toolTransfer, toolLoaded, startTrayCarry, startKeyCarry, handleCarryKey, cancel,
     canCarry, startGestureCarry, startGestureTrayCarry, gestureCarryTo, releaseGesture, cancelGesture, gestureAction, gestureDepth, loadGestureTool };
 };
 
