@@ -1,7 +1,7 @@
 # Lab Studio 3D: session handoff
 
-Written 2026-09-24 so a fresh session can continue the Pack 1 build without the previous
-conversation, and checked claim by claim against the repository. Read this first, then the
+Written 2026-09-24 and updated 2026-10-03, so a fresh session can continue the Pack 1 build without
+the previous conversation; checked claim by claim against the repository. Read this first, then the
 governing documents it names.
 
 ## State on 2026-10-03 (read this first)
@@ -9,9 +9,9 @@ governing documents it names.
 This section supersedes anything older below where they differ. `DECISIONS.md` has every decision;
 the evidence notes have what was built and checked.
 
-**Branch.** `origin/claude/lab-studio-3d` is at `713c248`. **26 local commits** sit on top, from
-`39fdab8` (M7 hand-panel decisions) to `7a63d86` (pump stays on the pipette). Nothing has been pushed
-since; push only when the user asks.
+**Branch.** `origin/claude/lab-studio-3d` is at `713c248`. Every commit after it is local
+(`git log --oneline 713c248..HEAD`): the build from `39fdab8` (M7 hand-panel decisions) to `7a63d86`
+(the pump stays on the pipette), then the handoff commits of 2026-10-03. Push only when the user asks.
 
 **Pack 1, technique by technique:**
 
@@ -20,10 +20,11 @@ since; push only when the user asks.
 | Weigh a Solid | 5 steps; teacher-prepared readings; the glass seats on the pan; TARE pressed on the balance; solid added with the spatula | `READINGS_EVIDENCE.md`, `TARE_SPATULA_EVIDENCE.md` |
 | Analyze Transmittance of a Dilution | 28 steps; 25 mL cylinder with a filling funnel; working beaker and Beral pipettes for the cuvettes; cuvettes seat in the photometer | `READINGS_EVIDENCE.md`, `PIPETTE_FUNNEL_EVIDENCE.md` |
 | Dilute a Stock Solution | 12 atomized steps: pipette pump, delivery to the line drop by drop, flask to the mark drop by drop, stopper, invert ×10, two calculations | `DILUTION_ATOMIZATION_EVIDENCE.md` |
-| Make a Solution | Still the old 3 steps (the reagent bottle starts empty; "dissolve" creates the solute). **Next to build**, decided | `proposals/PACK1_ATOMIZATION.md` |
-| Measure Liquid Volume | Unchanged; host-bound (plays only inside two 2D labs), so it waits for those labs | `proposals/PACK1_ATOMIZATION.md` |
+| Make a Solution | Still the old 3 steps (the reagent bottle starts empty; "dissolve" creates the solute). Its atomization is decided; it is built after the microarray adoption | `proposals/PACK1_ATOMIZATION.md` |
+| Measure Liquid Volume | Unchanged. Host-bound: it can't play on its own (its 3D route shows only the gate). It is composed into two labs, Precipitate and Filter Calcium Carbonate and the Hard-Water Reference Demo, so it waits for them (Phase B) | `proposals/PACK1_ATOMIZATION.md` |
 
-There is also a simulation switcher on the title (all five), and hover labels hang below items.
+Also built: the top bar's title is a switcher listing the five Pack 1 techniques (a slim bar does the
+same on the intro and setup pages), and hover labels hang below items.
 
 **Standing policies (user decisions):**
 - **Atomization:** break each step down to the real physical actions, within reason, to build
@@ -34,18 +35,27 @@ There is also a simulation switcher on the title (all five), and hover labels ha
   follows the procedure and enters what they observe.
 - **3D is independent of 2D:** the 2D player is out of scope; some atomized steps (drop to the line,
   invert) cannot be played in 2D, and that is accepted.
+- **The microarray lab's environment, bench view, mouse and hand control are adopted for 3D**
+  (decided 2026-10-03; `DECISIONS.md`). The plan, the rules it replaces and the choices still to confirm
+  are in `proposals/MICROARRAY_ADOPTION.md`.
+- **Realistic gestures:** prefer gestures that reproduce the real action. In the microarray lab
+  (2026-09-28) the user found pinching "very tricky" and preferred a calibrated thumb press on the
+  plunger.
 
 **Next, in order (recommended):**
-1. **Study, and propose, adapting the microarray lab's bench design, camera movement and hand control**
-   (`virtual_lab\experiments\dnamicroarray_v2\microarray-3d.html` and `3d-v3\`; the user's local
-   mirror is `experiments\dna-microarray-3d`; six code files differ, and the published copy is the newer). This conflicts with
-   recorded rules: `UI_UX_HANDOFF.md` §0 says the microarray's "code, protocol model and MediaPipe hand
-   pipeline are not used", and G-10 / plan D6 make hand control the shared 2D gesture bridge. Its
-   thumb-plunger technique also post-dates the plan. The user must decide; build nothing until then.
+1. **Adopt the microarray lab's environment, bench view, mouse and hand control** (decided
+   2026-10-03), following `proposals/MICROARRAY_ADOPTION.md`:
+   - P0: put its §9 choices to the user and record the answers.
+   - P1: environment and look. P2: camera and mouse camera. P3: the left button on the ported
+     controller. P4: hand control. P5: records.
+   - The source is `virtual_lab\experiments\dna-microarray-3d` (the folder the user named). It holds
+     the same code as the published `dnamicroarray_v2` at commit `9495489`; only line endings differ.
+     Read either; edit neither.
 2. **Build Make a Solution** per `proposals/PACK1_ATOMIZATION.md` (decided: pre-weighed boat, swirl in
-   the flask, drop to the mark, stopper, invert). It needs a weigh boat model, a funnel seat in the
-   flask's neck (generalize the cylinder-funnel atoms), and the runtime's dissolve to use the solid
-   already in the flask.
+   the flask, drop to the mark, stopper, invert), on the new controller. It needs:
+   - a weigh boat model (none exists in 3D yet);
+   - a funnel seat in the flask's neck (generalize the cylinder-funnel atoms);
+   - the runtime's dissolve to use the solid already in the flask.
 3. **Two small additions:** a stopper and inversion for transmittance-dilution's test tube; an atom
    for weighing's zero step.
 4. **Open UI items:** per-item tray tiles (pairs are grouped, so a tap places the first), and the long
@@ -63,21 +73,26 @@ static validators; tests are written but not run):
   back off; or take one headless look with `probes/look-dilution.cjs` (Playwright, SwiftShader).
 - Dev server: `preview_start` "lab-studio-3d-dev" (port 5182), configured in the session folder's
   `C:\Users\EmilJivishov\Projects\virtual_lab\experiments\lab-studio\.claude\launch.json`, which
-  is temporary; remove it and stop the server when the work is done.
+  is temporary; remove it and stop the server when the work is done. It was not running at this handoff.
+- To look at the microarray lab, add a static-server entry for its folder to the same launch file. The
+  worktree's own `.claude/launch.json` has one, "microarray-reference" (port 8791).
+- G3 (real webcam) was authorised on 2026-09-24 but has not run. The built-in pane blocks the webcam,
+  and Claude in Chrome was not connected, so G3 needs the user, or Claude in Chrome once connected.
 
 **Practicalities:**
 - Models: `"C:/Program Files/Blender Foundation/Blender 5.2/blender.exe" -b --factory-startup -P
   tools/blender/build_equipment3d.py -- --only <ids> --review`, then `python tools/blender/pack_models.py
   --only <ids>`, then the validator. Review renders land in `tools/blender/.build/review/`. New materials
-  go in `labeq/materials.py` and `src/studio3d/equipment3d/viewerMaterials.json` (edit the latter as
-  text; it is CRLF).
+  go in `tools/blender/labeq/materials.py` and `src/studio3d/equipment3d/viewerMaterials.json` (edit the
+  latter as text; it is CRLF).
 - Atom docs are generated: `node scripts/generateAtomicStepsDocs.mjs`. transmittance-dilution is
   generated from `scripts/generatorInputs/simulator/transmittanceDilution.mjs` (`node
   scripts/generateSimulatorTechniqueDefinitions.mjs --only transmittance-dilution`); weighing and dilution
   are edited by hand.
-- CRLF files include `BenchEngine.ts`, `Player3D.tsx`, `usePlayer3D.ts`, `stepRules.ts`, `studio3d.css`,
-  `DECISIONS.md` and `viewerMaterials.json`. Edit them with a byte-aware script (normalize to LF, assert
-  one match, restore CRLF). Long bash heredocs fail; write scripts to a file first.
+- Line endings differ from file to file, and git stores every file byte for byte (the shared
+  `.git/info/attributes` has `* -text`). The checked list is under "Gotchas" below. Edit CRLF files with
+  a byte-aware script (normalize to LF, assert one match, restore CRLF). Long bash heredocs have failed;
+  write longer scripts to a file first.
 - Physical-step rules found the hard way: every physical action needs a registry atom (the bundled
   catalogue policy refuses atomless ones); a `legacyActionEffects` entry must equal the handler-derived
   effect; a step that should finish only on acceptance must be validated by a recorded measurement or a
@@ -108,7 +123,7 @@ static validators; tests are written but not run):
 | `IMPLEMENTATION_PLAN.md` (rev 2.1) | Scope, architecture, scientific fidelity, milestones (§7), risks (§11) |
 | `UI_UX_HANDOFF.md` (rev 1) | Layout, visual design, interaction and copy. When it conflicts with the plan, the guardrails G-1 to G-13 (§1) win, and the conflict is reported, not designed around (§0). |
 | `DECISIONS.md` | Every decision the user made, and the provisional defaults still open |
-| `evidence/M0_*` … `evidence/M6_EVIDENCE.md` | What each milestone delivered, what was checked, and what was not |
+| `evidence/*.md` | What each milestone and later change delivered, what was checked, and what was not (M0 to M7, then readings, TARE and spatula, pipettes and funnel, dilution) |
 | `mockups/lab-studio-3d-mockups.html` | The approved mock-ups: 22 frames, S1–S9 and P1–P13 |
 
 The user asked for **the highest fidelity** to the plan and the handoff.
@@ -139,8 +154,15 @@ The user asked for **the highest fidelity** to the plan and the handoff.
 ## M7 (delivered 2026-09-24)
 
 M7 is done at its static exit: see `evidence/M7_EVIDENCE.md` for what was built, the review showing the
-2D selectors and rules unchanged, the interpretations to confirm, and what was not run (G3 needs the
-user's authorisation). The scope below is kept as the record it was built against.
+2D selectors and rules unchanged, the interpretations to confirm, and what was not run. G3 was authorised
+on 2026-09-24 but could not run (see "State on 2026-10-03"). The scope below is kept as the record it was
+built against.
+
+**Superseded for the 3D player on 2026-10-03.** The user decided that the 3D player takes the microarray
+lab's hand-gesture control of equipment (and its lab environment, bench view and mouse control); see
+`DECISIONS.md` and `proposals/MICROARRAY_ADOPTION.md`. Item 2's "nothing else" and item 3's "import
+nothing, and don't copy its aim assist or lock-on" no longer hold for 3D. The 2D player, and the shared
+bridge as the 2D player uses it, stay exactly as built.
 
 The plan (D6, §4.2, §4.7, §7 M7 row) and the UI handoff (§1 G-10, §2.2, §5.15, build-order table)
 together define it.
@@ -247,9 +269,9 @@ and template rules. `scripts/checkCycle04Foundations.mjs` can't run in this expo
 - **Git.**
   - Never use bare `git stash`: the stash is shared with the main checkout.
   - Commit messages end with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`.
-- **Content (D4).** Pack 1 technique JSON and its generators stay unchanged. The only exception is the
-  weighing fix recorded in `DECISIONS.md`. Any other content or core change needs the user's decision
-  first.
+- **Content (D4).** Pack 1 technique JSON and its generators stay unchanged except through the D4
+  exceptions recorded in `DECISIONS.md` (eight by 2026-10-03). Any further content or core change needs
+  the user's decision first, and becomes the next numbered exception.
 - **Science.**
   - Instruments are measurement-neutral (G-1): no invented readings.
   - The resting scene equals runtime state (G-3).
@@ -278,8 +300,23 @@ and template rules. `scripts/checkCycle04Foundations.mjs` can't run in this expo
 
 - **PowerShell array-of-pairs replacements** mangle multi-line strings, because the comma binds tighter
   than `+`. Use the Edit tool for multi-line edits.
-- **Line endings.** `BenchEngine.ts` started as CRLF and is now mixed after scripted edits; `App.tsx` is
-  mixed too. Match what is there.
+- **Line endings.** Check each file before editing and match it; git keeps them as they are (`* -text`).
+  - **CRLF** (checked 2026-10-03):
+    - `src/studio3d/bench/BenchEngine.ts` and `BenchView.tsx`;
+    - `src/studio3d/player/Player3D.tsx`, `usePlayer3D.ts`, `stepRules.ts` and `Technique3DRoute.tsx`;
+    - `src/studio3d/Studio3DApp.tsx`, `src/studio3d/styles/studio3d.css`, `src/studio3d/copy/slotLabels.ts`;
+    - `src/studio3d/equipment3d/loadModels.ts`, `readiness.ts` and `viewerMaterials.json`;
+    - `src/studio3d/__tests__/adapters.test.ts`, `equipment3dRegistry.test.ts` and `slotLabels.test.ts`;
+    - `tools/blender/labeq/materials.py`;
+    - `DECISIONS.md`, `UI_UX_HANDOFF.md`, the mock-ups, `proposals/AGENTS_3D_ASSETS_SECTION.md` and
+      `evidence/M2_EVIDENCE.md`.
+  - **Mixed:** `src/App.tsx` (mostly CRLF) and `src/player/ProcessSidebar.tsx`.
+  - **LF:**
+    - `src/studio3d/bench/input/*` and `src/studio3d/bench/look/*`;
+    - `src/studio3d/adapters/*`;
+    - `StepCard.tsx`, `panels.tsx`, `HandControlPanel.tsx` and `SimulationSwitcher.tsx`;
+    - the rest of `src/player/**`, and the runtime (`src/runtime/*`);
+    - `AGENTS.md`, `IMPLEMENTATION_PLAN.md`, the other proposals and evidence notes, and this file.
 - **React 19** `useRef` needs an explicit initial value.
 - **React Flow (controlled nodes).** Keep the `dimensions` changes and give `measured` back to the nodes,
   or the minimap and fitting treat cards as unmeasured. Give the MiniMap its size through `style`.
@@ -310,5 +347,7 @@ and template rules. `scripts/checkCycle04Foundations.mjs` can't run in this expo
   - Per-technique composite renders are an asset task; the cards compose item thumbnails for now.
   - Not browser-exercised: HTML drag and drop, the Connect menu, the turntable, the tablet widths, and the
     1600 px split view.
-- **Cleanup.** The temporary `.claude/launch.json` in the `virtual_lab` worktree was removed at handoff,
-  and the dev server was stopped.
+- **Cleanup.** At the 2026-09-24 handoff the temporary launch entry was removed and the dev server
+  stopped. At the 2026-10-03 handoff the entry in
+  `C:\Users\EmilJivishov\Projects\virtual_lab\experiments\lab-studio\.claude\launch.json` was kept for the
+  next thread, and no dev server was running. Remove the entry when the 3D work ends.
