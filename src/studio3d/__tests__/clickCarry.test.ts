@@ -41,6 +41,12 @@ describe("click-carry callouts", () => {
     expect(handCallout("Release to draw up from the beaker", "draw", plain)).toBe("Squeeze above it, lower in and let go to draw up from the beaker");
   });
 
+  it("words a rinse: a click with the mouse, a squeeze by hand (decided 2026-10-04)", () => {
+    const text = "Release to rinse the weighing boat into the funnel";
+    expect(clickCallout(text, "commit")).toBe("Click to rinse the weighing boat into the funnel");
+    expect(handCallout(text, "commit", { turn: false, squeeze: false, rinse: true })).toBe("Pause here, then squeeze to rinse the weighing boat into the funnel");
+  });
+
   it("leaves coaching and refusals as they are", () => {
     expect(clickCallout("Fill in the step card first", "commit")).toBe("Fill in the step card first");
     expect(clickCallout("Not the target for this step", "commit")).toBe("Not the target for this step");

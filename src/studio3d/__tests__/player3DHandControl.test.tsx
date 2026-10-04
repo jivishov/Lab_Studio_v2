@@ -67,7 +67,7 @@ describe("Player3D hand control panel", () => {
     render(player());
     fireEvent.click(screen.getByRole("button", { name: "Hand control" }));
     const panel = screen.getByRole("region", { name: "Hand control" });
-    for (const title of ["Pick up", "Set down", "Aim", "Seat", "Pour or tip", "Draw up", "Empty a pipette", "Drops", "Invert", "TARE", "Withdraw"]) {
+    for (const title of ["Pick up", "Set down", "Aim", "Seat", "Pour or tip", "Draw up", "Empty a pipette", "Rinse", "Drops", "Invert", "Swirl", "TARE", "Withdraw"]) {
       expect(within(panel).getByText(title)).toBeInTheDocument();
     }
   });
@@ -101,6 +101,10 @@ describe("the guide line and badge (app.js:378-421)", () => {
     expect(handGuide(base, { ...idle, invertHolding: true }, 1100)).toMatchObject({ gesture: "invert" });
     expect(handGuide(base, { ...idle, carrying: true, locked: true, squeeze: true }, 1100)).toMatchObject({ gesture: "deliver" });
     expect(handGuide(base, { ...idle, keyLocked: true }, 1100)).toMatchObject({ gesture: "key" });
+    // Make a Solution (decided 2026-10-04): a gripped flask is swirled; a locked wash bottle is squeezed.
+    expect(handGuide(base, { ...idle, swirlHolding: true }, 1100)).toMatchObject({ gesture: "swirl" });
+    expect(handGuide(base, { ...idle, carrying: true, locked: true, rinse: true }, 1100)).toMatchObject({ gesture: "rinse" });
+    expect(handGuide(base, { ...idle, carrying: true, locked: true, rinse: true }, 1100).text).toMatch(/squeeze the wash bottle/);
   });
 
   it("shows Off, Calibrate, No hand and On", () => {

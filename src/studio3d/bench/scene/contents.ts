@@ -55,12 +55,19 @@ const liquidMaterial = (fill: string, opacity: number): THREE.MeshPhysicalMateri
   });
 };
 
-/** A liquid body filling the profile from the floor to `levelMm`, with a meniscus ring. */
+/**
+ * A liquid body filling the profile from the floor to `levelMm`, with a meniscus ring; a solid not yet
+ * dissolved in it (`sediment`) lies on the floor under it.
+ */
 export const buildLiquid = (entry: Equipment3DEntry, contents: Extract<SceneContents, { kind: "liquid" }>): THREE.Object3D | undefined => {
   const fill = entry.fill;
   if (!fill) return undefined;
   const group = new THREE.Group();
   group.name = "contents:liquid";
+  if (contents.sediment) {
+    const heap = buildSolid(entry, { kind: "solid", style: contents.sediment.style, restMm: contents.sediment.restMm, radiusMm: contents.sediment.radiusMm });
+    if (heap) group.add(heap);
+  }
   const material = liquidMaterial(contents.style.fill, contents.style.opacity);
   const level = contents.levelMm;
   if (fill.innerBoxMm) {

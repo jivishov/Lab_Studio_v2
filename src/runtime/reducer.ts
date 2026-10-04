@@ -642,6 +642,105 @@ const mergeContents = (
   };
 };
 
+/**
+ * A pour or drop that only adds solvent (`solventAddition`, decided 2026-10-04 for Make a Solution).
+ * Water added to a solution leaves a solution of the same name at its new volume, its g/L
+ * concentration recomputed from its gram solutes; water added to a vessel whose name already lists it
+ * is not named again. Anything but plain liquid, and content that does not ask, keep the ordinary merge.
+ */
+const withSolventAdded = (target: ContentState, added: ContentState, merged: ContentState): ContentState => {
+  if (added.kind !== "liquid" || added.solutes.length > 0 || target.kind === "empty") return merged;
+  if (target.kind !== "solution") {
+    return target.label.split(" + ").includes(added.label) ? { ...merged, label: target.label } : merged;
+  }
+  const volumeMl = merged.volumeMl ?? 0;
+  const grams = gramSoluteMass(merged);
+  return {
+    ...merged,
+    kind: "solution",
+    label: target.label,
+    concentration: target.concentration?.unit === "g/L" && grams !== undefined && volumeMl > 0
+      ? { value: grams / (volumeMl / 1000), unit: "g/L" }
+      : merged.concentration,
+  };
+};
+
+/**
+ * Rinse washings that run into a named receiver (decided 2026-10-04): a weighing boat, then its
+ * funnel, rinsed into a volumetric flask. Water on a solid the receiver holds makes a wet mixture of
+ * the two, shown with undissolved particles until it is dissolved; water the receiver's name already
+ * lists is not named again.
+ */
+const mergeWashings = (receiver: ContentState, washings: ContentState): ContentState => {
+  if (receiver.kind === "empty") return { ...cloneContent(washings), wetState: "wet" };
+  const holdsSolid = receiver.kind === "solid" || (receiver.kind === "mixture" && (receiver.massG ?? 0) > 0);
+  if (!holdsSolid) return withSolventAdded(receiver, washings, mergeTransferredContents(receiver, washings));
+  return {
+    ...receiver,
+    kind: "mixture",
+    label: receiver.label.split(" + ").includes(washings.label) ? receiver.label : `${receiver.label} + ${washings.label}`,
+    volumeMl: roundToRuntimeMl((receiver.volumeMl ?? 0) + (washings.volumeMl ?? 0)),
+    solutes: [...receiver.solutes, ...washings.solutes.map((solute) => ({ ...solute }))],
+    contamination: [...new Set([...receiver.contamination, ...washings.contamination])],
+    wetState: "wet",
+    visualState: "dissolving-solid",
+  };
+};
+
+/** A material's name inside a sentence: "Sodium carbonate" reads "sodium carbonate"; "NaCl" stays. */
+const inSentence = (name: string): string => (/^[A-Z][a-z]/.test(name) ? name.charAt(0).toLowerCase() + name.slice(1) : name);
+
+/**
+ * Dissolving the solid already in a vessel (decided 2026-10-04): content that names the solid
+ * (`dissolveSoluteId`) dissolves what is actually there, keeping its identity and mass, in the liquid
+ * already there, at the vessel's current volume. Nothing is created from the step's settings, so a
+ * missing solid or missing liquid is refused. A swirl through the process control records itself
+ * under the step's notebook tag.
+ */
+const dissolveSolidInTarget = (
+  state: RuntimeState,
+  target: EquipmentInstance,
+  soluteId: string,
+  actionDefinition: ActionDefinition,
+  nodeId: string,
+  params: Record<string, string | number | boolean | string[] | undefined>,
+): ActionResult => {
+  const contents = target.contents;
+  const solid = contents.solutes.filter((solute) => solute.id === soluteId && solute.unit === "g" && Number.isFinite(solute.amount));
+  const massG = solid.reduce((sum, solute) => sum + solute.amount, 0);
+  const name = inSentence(solid[0]?.label ?? "solid");
+  if (contents.kind === "solution" && massG > 0) {
+    return fail(state, `The ${name} has already dissolved.`, "Go on to the next step.", nodeId);
+  }
+  if ((contents.kind !== "solid" && contents.kind !== "mixture") || !(massG > 0)) {
+    return fail(state, `There is no ${name} in the ${target.label} to dissolve.`,
+      "Tip the weighed solid into the flask and rinse it in before dissolving it.", nodeId);
+  }
+  const volumeMl = contents.volumeMl ?? 0;
+  if (!(volumeMl > 0)) {
+    return fail(state, `There is no water in the ${target.label} to dissolve the ${name} in.`,
+      "Add water to about half full, then swirl.", nodeId);
+  }
+  let next = updateInstance(state, target.id, (instance) => ({
+    ...instance,
+    contents: {
+      ...instance.contents,
+      kind: "solution",
+      label: stringSetting(params, "solutionLabel") ?? `${solid[0]?.label ?? "Prepared"} solution`,
+      massG: undefined,
+      concentration: { value: massG / (volumeMl / 1000), unit: "g/L" },
+      wetState: "wet",
+      visualState: stringSetting(params, "visualState") ?? "clear-solution",
+    },
+  }));
+  const tag = stringSetting(params, "tag");
+  if (tag) {
+    const note = params.mixOperation === "swirl" ? `Swirled the ${target.label} until the ${name} dissolved.` : `The ${name} dissolved.`;
+    next = addNotebook(next, nodeId, actionDefinition.label, note, [tag]);
+  }
+  return { ok: true, state: next, message: actionDefinition.feedback.success };
+};
+
 const usesSpecializedContentMovement = (action: ActionDefinition): boolean => {
   const specialized = /calorimeter|thermal|temperature|kinetic|precipitat|filtrat|rinse|dry|solid|chromatograph|reactionStart|timerContinues|\bheat(?:ing)?\b|\bcool(?:ing)?\b|oven/i;
   const metadata = [
@@ -1444,10 +1543,11 @@ const executeMarkDispense = (
     const named = target.contents.kind !== "empty" && target.contents.label.split(" + ").includes(source.contents.label);
     const kind = merged.kind === "mixture" && !merged.precipitate && ["liquid", "solution"].includes(target.contents.kind)
       && ["liquid", "solution"].includes(source.contents.kind) ? "solution" : merged.kind;
+    const dropped: ContentState = { ...merged, kind, label: named ? target.contents.label : merged.label,
+      volumeMl: roundToRuntimeMl((target.contents.volumeMl ?? 0) + volumeMl), wetState: "wet" };
     next = updateInstance(state, target.id, (instance) => ({
       ...instance,
-      contents: { ...merged, kind, label: named ? target.contents.label : merged.label,
-        volumeMl: roundToRuntimeMl((target.contents.volumeMl ?? 0) + volumeMl), wetState: "wet" },
+      contents: booleanSetting(params, "solventAddition") ? withSolventAdded(target.contents, transferredContents, dropped) : dropped,
     }));
     next = updateInstance(next, source.id, (instance) => ({
       ...instance,
@@ -3122,9 +3222,13 @@ const executeAction = (
       : undefined;
     const transferred = conservedSplit?.transferredContents
       ?? { ...cloneContent(source.contents), volumeMl };
-    const mergedContents = conservedSplit
+    const ordinaryMerge = conservedSplit
       ? mergeTransferredContents(target.contents, transferred)
       : mergeContents(transferred, target.contents, volumeMl);
+    // Content that pours only solvent asks for it to be added as solvent (decided 2026-10-04).
+    const mergedContents = booleanSetting(params, "solventAddition")
+      ? withSolventAdded(target.contents, transferred, ordinaryMerge)
+      : ordinaryMerge;
     const sourceTemperatureC = transferred.temperatureC;
     const targetTemperatureC = target.contents.temperatureC;
     const targetVolumeMl = target.contents.volumeMl ?? 0;
@@ -3286,6 +3390,10 @@ const executeAction = (
     if (!target) {
       return fail(state, "No target container was selected.", "Select the solution container.", nodeId);
     }
+    // Content that names the solid already in the vessel dissolves that solid (decided 2026-10-04);
+    // content that names none keeps the original behaviour below.
+    const dissolveSoluteId = action.verb === "dissolve" ? stringSetting(params, "dissolveSoluteId") : undefined;
+    if (dissolveSoluteId) return dissolveSolidInTarget(state, target, dissolveSoluteId, actionDefinition, nodeId, params);
     // A recovered mass that is written into the action is the answer key. Content may instead name a
     // solute already dissolved in the target, so the mass that precipitates is the mass that was
     // there - which for Investigation 9 traces back to the one teacher-configured composition on the
@@ -3923,7 +4031,23 @@ const executeAction = (
       (target.contents.volumeMl ?? 0) + rinseVolumeMl > rinseCapacity.amount)) {
       return fail(state, "The rinse needs a distinct receiver with sufficient remaining capacity.", "Empty the receiver through the approved waste route before rinsing.", nodeId);
     }
-    const rinseSplit = retainedRinse && source ? splitContentForVolume(source.contents, rinseVolumeMl) : undefined;
+    // Washings that run into a named receiver (decided 2026-10-04): the rinse water, and any dry
+    // residue left on the rinsed item, go into it, as a weighing boat and its funnel are rinsed into a flask.
+    const receiverId = stringSetting(params, "washingsReceiverInstanceId");
+    const receiver = receiverId
+      ? findInstance(state, receiverId, stringSetting(params, "washingsReceiverDefinitionId") ?? "")
+      : undefined;
+    if (receiverId) {
+      if (!receiver || !source || receiver.id === target.id || receiver.id === source.id || retainedRinse) {
+        return fail(state, "The vessel the washings run into is missing.", "Place the receiving vessel this step names, then rinse into it.", nodeId);
+      }
+      const receiverCapacity = equipmentById.get(receiver.definitionId)?.capacity;
+      if (receiverCapacity?.unit === "mL" && (receiver.contents.volumeMl ?? 0) + rinseVolumeMl > receiverCapacity.amount) {
+        return fail(state, `The ${receiver.label} would overflow.`, "Use less rinse water.", nodeId);
+      }
+    }
+    const residue = receiver && target.contents.kind === "solid" && (target.contents.massG ?? 0) > 0 ? target.contents : undefined;
+    const rinseSplit = (retainedRinse || receiver) && source ? splitContentForVolume(source.contents, rinseVolumeMl) : undefined;
     const afterSource =
       explicitLiquidRinse && source && typeof source.contents.volumeMl === "number"
         ? updateInstance(state, source.id, (instance) => {
@@ -3953,7 +4077,7 @@ const executeAction = (
               volumeMl: rinseVolumeMl,
               visualState: stringSetting(params, "resultVisualState") ?? "clear-liquid",
             })
-          : instance.contents),
+          : residue ? emptyContents() : instance.contents),
         wetState: "rinsed",
         precipitate: instance.contents.precipitate
           ? { ...instance.contents.precipitate, rinsed: true }
@@ -3964,13 +4088,27 @@ const executeAction = (
           (instance.contents.precipitate ? "rinsed-precipitate" : "wet-equipment"),
       },
     }));
+    const washed = receiver && rinseSplit
+      ? updateInstance(next, receiver.id, (instance) => {
+          const withResidue = residue
+            ? mergeTransferredSolid(instance.contents, {
+                massG: residue.massG ?? 0,
+                solutes: residue.solutes,
+                sourceLabel: residue.label,
+                sourceVisualState: residue.visualState,
+                sourceTemperatureC: residue.temperatureC,
+              })
+            : instance.contents;
+          return { ...instance, contents: mergeWashings(withResidue, { ...rinseSplit.transferredContents, wetState: "wet" }) };
+        })
+      : next;
     return {
       ok: true,
       state: addNotebook(
-        next,
+        washed,
         nodeId,
         actionDefinition.label,
-        "Rinse completed.",
+        receiver ? `Rinse completed; the washings ran into the ${receiver.label}.` : "Rinse completed.",
         ["rinse", rinseType],
       ),
       message: actionDefinition.feedback.success,

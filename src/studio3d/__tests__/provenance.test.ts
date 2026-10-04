@@ -21,7 +21,7 @@ describe("provenance chips (handoff §3.2)", () => {
   it("marks an observation the teacher configured as a teacher setting, not a bench record", () => {
     const authored = readTechnique("making-solution");
     const configured = applyTechniqueConfiguration(authored, {
-      initialSolventVolumeMl: "50", soluteMassG: "1.06", finalVolumeMl: "100", solutionObservation: "clear colourless solution",
+      soluteMassG: "1.06", solutionObservation: "clear colourless solution",
     });
     expect(notebookProvenance(configured, authored, entry("observe-solution-node"))).toBe("teacher");
     // Without the authored definition the binding cannot be seen, and the old reading returns.

@@ -17,7 +17,7 @@ const TARGETS: HandTarget[] = [
 ];
 
 interface Rig { c: HandController; api: HandApi; log: string[]; set: (patch: Partial<RigState>) => void }
-interface RigState { carrying: boolean; action?: CarryAction; drop: boolean; invertable: string[]; expected?: string; assist: boolean }
+interface RigState { carrying: boolean; action?: CarryAction; drop: boolean; invertable: string[]; swirlable?: string[]; expected?: string; assist: boolean }
 
 const rig = (initial: Partial<RigState> = {}): Rig => {
   const state: RigState = { carrying: false, drop: false, invertable: [], assist: false, ...initial };
@@ -38,6 +38,8 @@ const rig = (initial: Partial<RigState> = {}): Rig => {
     pressButton: (t) => log.push(`button:${t.id}`),
     invertTarget: (id) => state.invertable.includes(id),
     invert: () => log.push("invert"),
+    swirlTarget: (id) => (state.swirlable ?? []).includes(id),
+    swirl: () => log.push("swirl"),
     dropMode: () => state.drop,
     drop: () => log.push("drop"),
     runDrops: (on) => log.push(on ? "run" : "stop"),
@@ -333,5 +335,48 @@ describe("emptying a pipette into its receiver (the source's deliver)", () => {
     c.release();
     expect(log.some((l) => l.startsWith("error:Nothing delivered"))).toBe(true);
     expect(log).not.toContain("commit");
+  });
+});
+
+describe("swirling and rinsing (Make a Solution, decided 2026-10-04)", () => {
+  it("grips the flask at a swirl step and counts one swirl for each circle of the closed hand", () => {
+    const { c, log } = rig({ swirlable: ["beaker-a"] });
+    let now = still(c, 0, 300, 300, HAND_TIMING.gripMs + 40);
+    expect(c.swirlHold?.id).toBe("beaker-a");
+    expect(log).not.toContain("pick:beaker-a");
+    // Once round a 20 px circle about where it was gripped.
+    for (let i = 0; i <= 24; i += 1) {
+      const a = (i / 24) * 2 * Math.PI;
+      c.feed(hand(now += 33, 300 + 20 * Math.cos(a), 300 + 20 * Math.sin(a)));
+    }
+    expect(log.filter((l) => l === "swirl")).toHaveLength(1);
+    c.feed(hand(now += 33, 300, 300, 0.3, { open: true, grip: false, hold: false }));
+    expect(c.swirlHold).toBeUndefined();
+  });
+
+  it("does not swirl for a gripping hand that only jitters where it gripped", () => {
+    const { c, log } = rig({ swirlable: ["beaker-a"] });
+    let now = still(c, 0, 300, 300, HAND_TIMING.gripMs + 40);
+    for (let i = 0; i < 60; i += 1) c.feed(hand(now += 33, 300 + (i % 2 ? 4 : -4), 300 + (i % 3 ? 3 : -3)));
+    expect(log).not.toContain("swirl");
+  });
+
+  it("rinses only once the wash bottle is locked on the item, and only on the squeeze", () => {
+    const { c, log } = rig({ carrying: true, action: { action: "commit", pour: false, tip: false, squeeze: false, rinse: true } });
+    c.press(hand(0, 300, 300));
+    c.release();
+    expect(log).toEqual([]);
+    const now = still(c, 10, 300, 300, 200);
+    expect(c.contact?.target.id).toBe("beaker-a");
+    expect(log).toEqual([]);
+    c.press(hand(now, 300, 300));
+    expect(log).toEqual(["commit"]);
+  });
+
+  it("does not rinse on an open palm; it says to squeeze", () => {
+    const { c, log } = rig({ carrying: true, action: { action: "commit", pour: false, tip: false, squeeze: false, rinse: true } });
+    still(c, 0, 300, 300, 900, 0.3, { open: true, grip: false, hold: false });
+    expect(log.filter((l) => l === "commit")).toEqual([]);
+    expect(log.some((l) => /Squeeze to rinse/.test(l))).toBe(true);
   });
 });

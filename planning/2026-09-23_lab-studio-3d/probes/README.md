@@ -18,6 +18,7 @@ node --experimental-strip-types --experimental-loader ./scripts/tsCompositionLoa
 | `validate-transmittance.mts` | transmittance-dilution's settings, literal volumes, %T and generator byte parity: 28 checks |
 | `probe-catalog-policy.mts` | The bundled-catalogue policy (as the loader applies it) on all five Pack 1 techniques |
 | `probe-dilution.mts` | Dilute a Stock Solution through the runtime: the whole run, an overshoot, an early "at the line", plus validation, the composition contract, the evidence audit and the policy |
+| `probe-making-solution.mts` | Make a Solution through the runtime: the whole run with the flask's contents after every step, an overshoot at the mark, the setup rules, validation, the composition contract, the derived effects, the evidence audit and the policy |
 | `probe-transmittance-steps.mts` | transmittance-dilution step by step through the Confirm path, printing attachments and volumes (`node … probe-transmittance-steps.mts 28`) |
 | `probe-making-solution-baseline.mts` | Make a Solution and the old dilution as they behaved before atomization (the reagent bottle starts empty; "dissolve" creates the solute) |
 | `probe-derived-effects.mts` | The handler-derived effect of transmittance-dilution's atomless actions (what `legacyActionEffects` must match) |
@@ -40,4 +41,5 @@ Two more headless scripts, run the same way (dev server on 5182, `NODE_PATH` as 
 | File | What it does |
 |---|---|
 | `look-room.cjs <prefix> [low balanced high]` | Dilute a Stock Solution under the microarray room and look: one screenshot per tier, then Whole bench and Overhead (adoption P1, P2) |
+| `look-making-solution.cjs <prefix>` | Make a Solution's 14 steps by keyboard carries and the step card, with frames of the tip and the boat's rinse, the half-full flask, the swirl, the mark, the inversion and the results; a carry is retried while a committed animation is still drawn |
 | `run-weighing-mouse.cjs <prefix>` | Weigh a Solid with real mouse events on the microarray controller (adoption P3): tray clicks, a right-click put-back, the seat stroke, TARE, the spatula's dip and tip, double-click Examine; items are found by sweeping the pointer and reading the hover label |

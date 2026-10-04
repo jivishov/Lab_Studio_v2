@@ -1030,10 +1030,13 @@
         "rinse-water-source",
         "rinsed-vessel"
       ],
-      "optionalRoles": [],
+      "optionalRoles": [
+        "receiving-vessel"
+      ],
       "proceduralConstraints": [
         "The rinse volume is deliberately unstated in the source; do not attach a measured quantity to it.",
-        "A rinse-water source must never be a calibrated delivery device."
+        "A rinse-water source must never be a calibrated delivery device.",
+        "When the rinse names the vessel its washings run into, the rinse water and any residue go into that vessel, as when a weighing boat and then its funnel are rinsed into a volumetric flask (Make a Solution, decided by the teacher on 2026-10-04)."
       ],
       "evidence": "residue transferred, source vessel visibly rinsed",
       "sourceExamples": [
@@ -1052,6 +1055,14 @@
         {
           "owner": "technique:filtration",
           "actionId": "rinse-precipitate"
+        },
+        {
+          "owner": "technique:making-solution",
+          "actionId": "rinse-boat-into-funnel"
+        },
+        {
+          "owner": "technique:making-solution",
+          "actionId": "rinse-funnel-into-flask"
         }
       ]
     },
@@ -6627,7 +6638,11 @@
       "contentExamples": [
         {
           "owner": "technique:making-solution",
-          "actionId": "add-solvent"
+          "actionId": "fill-water-half"
+        },
+        {
+          "owner": "technique:making-solution",
+          "actionId": "fill-water-below-mark"
         }
       ]
     },
@@ -10633,9 +10648,9 @@
       "contentExamples": []
     },
     {
-      "id": "atom.place.cylinder-filling-funnel",
+      "id": "atom.place.filling-funnel",
       "family": "measurement",
-      "documentationLabel": "Seat a filling funnel in a graduated cylinder",
+      "documentationLabel": "Seat a filling funnel in a narrow-necked vessel",
       "verb": "place",
       "allowedInteractionTypes": [
         "snapIntoTarget"
@@ -10657,27 +10672,31 @@
         ]
       },
       "requiredRoles": [
-        "variable-volume-measuring-device",
-        "cylinder-filling-funnel"
+        "narrow-necked-vessel",
+        "filling-funnel"
       ],
       "optionalRoles": [],
       "proceduralConstraints": [
-        "The funnel is a temporary aid for pouring from a wide bottle; it is seated before the pour and removed before the volume is read.",
-        "Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited."
+        "The funnel is a temporary filling aid: it is seated before a liquid is poured, or a weighed solid tipped, into the narrow mouth, and removed before the volume is read or the flask is brought to its mark.",
+        "Decided by the teacher on 2026-09-26 for transmittance-dilution's 25 mL cylinder and generalized on 2026-10-04 to the volumetric flask for Make a Solution; no dated plan states this step, so no source example is cited."
       ],
-      "evidence": "filling funnel seated in the graduated cylinder's mouth",
+      "evidence": "filling funnel seated in the vessel's mouth",
       "sourceExamples": [],
       "contentExamples": [
         {
           "owner": "technique:transmittance-dilution",
           "actionId": "transmittance-dilution-seat-cylinder-funnel"
+        },
+        {
+          "owner": "technique:making-solution",
+          "actionId": "seat-funnel"
         }
       ]
     },
     {
-      "id": "atom.place.remove-cylinder-filling-funnel",
+      "id": "atom.place.remove-filling-funnel",
       "family": "measurement",
-      "documentationLabel": "Remove the filling funnel before reading the cylinder",
+      "documentationLabel": "Remove the filling funnel from a narrow-necked vessel",
       "verb": "place",
       "allowedInteractionTypes": [
         "dragToZone"
@@ -10699,20 +10718,24 @@
         ]
       },
       "requiredRoles": [
-        "variable-volume-measuring-device",
-        "cylinder-filling-funnel"
+        "narrow-necked-vessel",
+        "filling-funnel"
       ],
       "optionalRoles": [],
       "proceduralConstraints": [
-        "The funnel is lifted out and set on the workbench so it neither drains into nor hides the meniscus when the volume is read.",
-        "Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited."
+        "The funnel is lifted out and set on the workbench, so it neither drains into nor hides the meniscus when the volume is read or the flask is filled to its mark.",
+        "Decided by the teacher on 2026-09-26 for transmittance-dilution's 25 mL cylinder and generalized on 2026-10-04 to the volumetric flask for Make a Solution; no dated plan states this step, so no source example is cited."
       ],
-      "evidence": "filling funnel detached from the graduated cylinder and placed on the workbench",
+      "evidence": "filling funnel detached from the vessel and placed on the workbench",
       "sourceExamples": [],
       "contentExamples": [
         {
           "owner": "technique:transmittance-dilution",
           "actionId": "transmittance-dilution-remove-cylinder-funnel"
+        },
+        {
+          "owner": "technique:making-solution",
+          "actionId": "remove-funnel"
         }
       ]
     },
@@ -10803,6 +10826,10 @@
         {
           "owner": "technique:transmittance-dilution",
           "actionId": "transmittance-dilution-draw-sample-into-pipette"
+        },
+        {
+          "owner": "technique:making-solution",
+          "actionId": "draw-water-into-pipette"
         }
       ]
     },
@@ -10974,6 +11001,10 @@
         {
           "owner": "technique:dilution",
           "actionId": "bring-to-mark-dropwise"
+        },
+        {
+          "owner": "technique:making-solution",
+          "actionId": "bring-to-mark-dropwise"
         }
       ]
     },
@@ -11015,6 +11046,10 @@
       "contentExamples": [
         {
           "owner": "technique:dilution",
+          "actionId": "stopper-flask"
+        },
+        {
+          "owner": "technique:making-solution",
           "actionId": "stopper-flask"
         }
       ]
@@ -11060,6 +11095,97 @@
         {
           "owner": "technique:dilution",
           "actionId": "invert-to-mix"
+        },
+        {
+          "owner": "technique:making-solution",
+          "actionId": "invert-to-mix"
+        }
+      ]
+    },
+    {
+      "id": "atom.transfer.weighed-solid-through-funnel",
+      "family": "measurement",
+      "documentationLabel": "Tip a pre-weighed solid through a filling funnel into a narrow-necked vessel",
+      "verb": "transfer",
+      "allowedInteractionTypes": [
+        "pourInto"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "instrument"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "weighed-sample-source",
+        "narrow-necked-vessel",
+        "filling-funnel"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "The funnel is seated first: a solid is never tipped straight at a narrow neck.",
+        "The whole weighed portion is tipped in, and what clings to the boat and the funnel is rinsed in after it (atom.rinse.quantitative-transfer), so all of the weighed mass reaches the vessel.",
+        "Decided by the teacher on 2026-10-04 (Make a Solution atomization); no dated plan states this step, so no source example is cited."
+      ],
+      "evidence": "the weighed solid in the vessel and its weighing boat emptied",
+      "sourceExamples": [],
+      "contentExamples": [
+        {
+          "owner": "technique:making-solution",
+          "actionId": "tip-solid-into-funnel"
+        }
+      ]
+    },
+    {
+      "id": "atom.dissolve.swirl-to-dissolve",
+      "family": "foundational",
+      "documentationLabel": "Swirl a vessel until the solid in it dissolves",
+      "verb": "dissolve",
+      "allowedInteractionTypes": [
+        "recordNotebook"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state",
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "final-volume-vessel"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "The solid is dissolved by swirling the flask about half full of solvent, before it is filled to the mark; a stirring rod is not put into a volumetric flask.",
+        "The solid dissolved is the one already in the vessel: its identity and mass are carried into the solution, never set by this step.",
+        "Decided by the teacher on 2026-10-04 (Make a Solution atomization); no dated plan states this step, so no source example is cited."
+      ],
+      "evidence": "no undissolved solid left in the vessel",
+      "sourceExamples": [],
+      "contentExamples": [
+        {
+          "owner": "technique:making-solution",
+          "actionId": "swirl-to-dissolve"
         }
       ]
     }

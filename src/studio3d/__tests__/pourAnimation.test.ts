@@ -1,22 +1,16 @@
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
 import * as THREE from "three";
 import { describe, expect, it } from "vitest";
-import { applyTechniqueConfiguration } from "../../data/techniqueConfiguration";
-import type { TechniqueDefinition } from "../../domain/types";
+import { solutionTechnique } from "../../domain/fixtures";
 import { createRuntimeState, performRuntimeAction } from "../../runtime";
 import { resolveInteractionIntent } from "../../runtime/interactionIntents";
 import { pourStagingScene, runtimeToScene } from "../adapters/runtimeToScene";
 import { onsetTilt, pourGeometry, pourQuaternion, rootForLip, UP, volumeBelow, vesselSlices } from "../bench/scene/pour";
 import { equipment3dEntry } from "../equipment3d/readiness";
 
-const readTechnique = (id: string): TechniqueDefinition =>
-  JSON.parse(readFileSync(join(process.cwd(), "public", "techniques", `${id}.json`), "utf8")) as TechniqueDefinition;
-
 describe("a committed pour is staged on the committed layout (handoff §5.7, G-3)", () => {
-  const making = applyTechniqueConfiguration(readTechnique("making-solution"), {
-    initialSolventVolumeMl: "50", soluteMassG: "1.06", finalVolumeMl: "100", solutionObservation: "clear colourless solution",
-  });
+  // The fixture keeps Make a Solution's first step from before its atomization (decided 2026-10-04): a
+  // pour from the wash bottle on the shelf into the flask on the shelf, the case this is about.
+  const making = solutionTechnique;
   const before = createRuntimeState(making);
   const result = resolveInteractionIntent(making, before, { type: "pourIntent", origin: "keyboard" });
   const after = result.ok ? performRuntimeAction(making, before, result.request) : before;

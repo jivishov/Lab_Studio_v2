@@ -1,0 +1,67 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "weigh-boat",
+  "model": "weigh-boat.glb",
+  "thumbnail": "thumbs/weigh-boat.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "rect",
+      "width": 89.0,
+      "depth": 89.0
+    },
+    "grip": {
+      "heightMm": 20.0
+    },
+    "pour": {
+      "lipMm": [
+        -42.45,
+        -42.45,
+        25.0
+      ],
+      "tiltDeg": 70.0,
+      "style": "pour"
+    },
+    "graduations": null,
+    "solidRest": {
+      "centreMm": [
+        0.0,
+        0.0,
+        0.6
+      ],
+      "radiusMm": 20.0
+    },
+    "anchors": {},
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -44.5,
+        -44.5,
+        0.0
+      ],
+      "max": [
+        44.5,
+        44.5,
+        25.0
+      ]
+    },
+    "triangles": 3952,
+    "materials": [
+      "Polystyrene antistatic white"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/weigh_boat.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "8896ef2d032f4386fc73754411df05efd80a35eadbed2f961fc5bfff6bae5940",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

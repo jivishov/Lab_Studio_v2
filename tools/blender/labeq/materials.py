@@ -140,6 +140,11 @@ _FACTORIES = {
     # the moulded body of a 10 mL pipette pump (decided 2026-10-02)
     'Pipette pump green': lambda n: principled(n, **{'Base Color': (0.03, 0.28, 0.1, 1), 'Roughness': 0.38,
                                                      'Specular IOR Level': 0.4}),
+    # a medium antistatic weighing boat: opaque white polystyrene with a satin finish (decided 2026-10-04)
+    'Polystyrene antistatic white': lambda n: principled(n, **{'Base Color': (0.72, 0.72, 0.71, 1), 'Roughness': 0.42,
+                                                               'IOR': 1.59, 'Subsurface Weight': 0.12,
+                                                               'Subsurface Radius': (1.0, 0.95, 0.9),
+                                                               'Subsurface Scale': 0.0004}),
 }
 
 

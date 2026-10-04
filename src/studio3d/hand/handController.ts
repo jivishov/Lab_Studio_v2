@@ -18,6 +18,8 @@ import { angle, Contact, HAND_GAP_MS, type HandFrame } from "./handCore";
  * | Drops (drop mode) | each plunger press is a drop; a press held 300 ms runs |
  * | A panel button marked for the hand ("At the line") | a closed grip held 350 ms over it |
  * | Invert | grip the stoppered vessel, turn the palm over and back: one inversion |
+ * | Swirl (decided 2026-10-04) | grip the flask, move the closed hand in a small circle: one swirl |
+ * | Rinse (decided 2026-10-04) | lock the wash bottle on what it rinses, then press the plunger (squeeze it) |
  * | TARE | lock on the key (the aim settles on it), then press the plunger |
  *
  * As in the source, a hand that opens (or stops gripping) drops any lock, candidate or squeeze in
@@ -47,6 +49,8 @@ export interface CarryAction {
   tip: boolean;
   /** A pipette over the receiver it empties into: it delivers when squeezed at depth. */
   squeeze: boolean;
+  /** A wash bottle over what it rinses: it squirts when squeezed once locked (decided 2026-10-04). */
+  rinse?: boolean;
 }
 
 export interface HandApi {
@@ -68,6 +72,9 @@ export interface HandApi {
   pressButton: (target: HandTarget) => void;
   invertTarget: (instanceId: string) => boolean;
   invert: () => void;
+  /** The flask a swirl step swirls, and one swirl of it (decided 2026-10-04). */
+  swirlTarget: (instanceId: string) => boolean;
+  swirl: () => void;
   dropMode: () => boolean;
   drop: () => void;
   runDrops: (on: boolean) => void;
@@ -89,6 +96,11 @@ export const IMMERSED = 0.85;
 export const TURN_RAD = (60 * Math.PI) / 180;
 /** Inverting (the ELISA port's strip, `elisa_assay/3d-classroom/interaction.js:177-180`): over past 1.92 rad, back below 1.05. */
 export const INVERT = { over: 1.92, back: 1.05 };
+/**
+ * Swirling (decided 2026-10-04): the gripped hand's cursor goes once round a circle of at least 10 px
+ * radius about where the flask was gripped (that centre follows the hand slowly, so drift is forgiven).
+ */
+export const SWIRL = { minRadiusPx: 10, sweepRad: 1.8 * Math.PI, follow: 0.06 };
 /** Hand hit areas: ×1.5 with a 22 px minimum (`app.js:25`); aim assist reaches 76 px; the current target is preferred (×0.72). */
 export const HAND_PICK = { scale: 1.5, minPx: 22, assistPx: 76, prefer: 0.72 };
 
@@ -129,6 +141,8 @@ export class HandController {
   armed: "armed" | "bubbles" | undefined;
   /** A stoppered vessel gripped for inverting: the palm's normal when gripped, and whether it is now over. */
   invertHold?: { id: string; base: number[]; over: boolean };
+  /** A flask gripped for swirling: the circle's centre, the last angle round it, and the angle swept. */
+  swirlHold?: { id: string; cx: number; cy: number; last?: number; swept: number };
   private dropTimer?: ReturnType<typeof setTimeout>;
   private running = false;
   private carryAction?: CarryAction;
@@ -160,6 +174,7 @@ export class HandController {
     this.armed = undefined;
     this.pressed = false;
     this.invertHold = undefined;
+    this.swirlHold = undefined;
     if (this.dropTimer) clearTimeout(this.dropTimer);
     this.dropTimer = undefined;
     if (this.running) { this.running = false; this.a.runDrops(false); }
@@ -170,6 +185,8 @@ export class HandController {
   private needsLock(c: CarryAction | undefined): Stroke | undefined {
     if (!c) return undefined;
     if (c.pour || c.tip) return "turn";
+    // A rinse locks like a seat, but acts on the plunger, not on depth.
+    if (c.rinse) return "lower";
     return c.action === "commit" ? undefined : "lower";
   }
 
@@ -277,6 +294,26 @@ export class HandController {
       return;
     }
 
+    if (this.swirlHold) {
+      const hold = this.swirlHold;
+      if (f.open) { this.swirlHold = undefined; return; }
+      const dx = f.x - hold.cx, dy = f.y - hold.cy;
+      if (Math.hypot(dx, dy) >= SWIRL.minRadiusPx) {
+        const a = Math.atan2(dy, dx);
+        if (hold.last !== undefined) {
+          let step = a - hold.last;
+          if (step > Math.PI) step -= 2 * Math.PI;
+          else if (step < -Math.PI) step += 2 * Math.PI;
+          hold.swept += step;
+        }
+        hold.last = a;
+        if (Math.abs(hold.swept) >= SWIRL.sweepRad) { hold.swept = 0; this.a.swirl(); }
+      } else hold.last = undefined;
+      hold.cx += (f.x - hold.cx) * SWIRL.follow;
+      hold.cy += (f.y - hold.cy) * SWIRL.follow;
+      return;
+    }
+
     if (this.a.carrying()) {
       if (this.contact) {
         const c = this.contact, before = c.depth;
@@ -336,7 +373,9 @@ export class HandController {
         if (stroke) {
           if (!this.openHinted && f.now - this.openSince > 700) {
             this.openHinted = true;
-            this.a.say(stroke === "turn" ? "Turn your palm to pour or tip it here, or move away to set it down." : "Lower your hand to do this here, or move away to set it down.");
+            this.a.say(stroke === "turn" ? "Turn your palm to pour or tip it here, or move away to set it down."
+              : this.carryAction?.rinse ? "Squeeze to rinse it here, or move away to set it down."
+                : "Lower your hand to do this here, or move away to set it down.");
           }
         } else if (f.now - this.openSince >= HAND_TIMING.openMs) {
           this.openSince = undefined;
@@ -372,6 +411,10 @@ export class HandController {
         this.invertHold = { id: t.instanceId, base: f.normal ? [...f.normal] : [0, 0, 1], over: false };
         return;
       }
+      if (this.a.swirlTarget(t.instanceId)) {
+        this.swirlHold = { id: t.instanceId, cx: f.x, cy: f.y, swept: 0 };
+        return;
+      }
       this.a.pickUpItem(t.instanceId);
     }
   }
@@ -404,6 +447,11 @@ export class HandController {
       return;
     }
     const action = this.carryAction;
+    // A wash bottle locked on what it rinses squirts as it is squeezed (decided 2026-10-04).
+    if (action?.rinse) {
+      if (this.contact) { this.pressed = true; this.finishStroke(); this.a.commitCarry(); }
+      return;
+    }
     if (!action || (action.action !== "draw" && !action.squeeze)) return;
     this.pressed = true;
     if (action.action === "draw") {

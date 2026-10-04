@@ -771,6 +771,23 @@ const validateActionContract15 = (
   }
   if (["mix", "vent", "settle"].includes(String(actionVerb)) && input.extractionOperation === undefined && !["mix", "practice-mix"].includes(stringRecordField(input.parameters, "titrationOperation") ?? "")
     && !(actionVerb === "mix" && stringRecordField(input.parameters, "mixOperation") === "invert")) errors.push(`${path} requires extractionOperation for this verb.`);
+  // Swirling to dissolve (decided 2026-10-04) is the one dissolve done through the process control: it
+  // names the vessel and the solid already in it, and the runtime dissolves that solid, never a new one.
+  const processControlDissolve = actionVerb === "dissolve" && isObject(input.interaction) && input.interaction.type === "recordNotebook";
+  if (processControlDissolve || stringRecordField(input.parameters, "dissolveSoluteId") !== undefined) {
+    if (actionVerb !== "dissolve") errors.push(`${path}.parameters.dissolveSoluteId is legal only on dissolve actions.`);
+    if (processControlDissolve && stringRecordField(input.parameters, "mixOperation") !== "swirl") errors.push(`${path} requires parameters.mixOperation "swirl" to dissolve through the process control.`);
+    if (processControlDissolve) requireString(errors, stringRecordField(input.parameters, "dissolveSoluteId"), `${path}.parameters.dissolveSoluteId`);
+    requireString(errors, stringRecordField(input.parameters, "targetInstanceId"), `${path}.parameters.targetInstanceId`);
+    requireString(errors, stringRecordField(input.parameters, "targetDefinitionId"), `${path}.parameters.targetDefinitionId`);
+    if (input.materialTransition !== undefined) errors.push(`${path} cannot combine dissolving the solid in its vessel with a material transition.`);
+  }
+  // Rinse washings sent into a named vessel (decided 2026-10-04) leave the rinsed item, so they cannot
+  // also be kept in it.
+  if (stringRecordField(input.parameters, "washingsReceiverInstanceId") !== undefined) {
+    if (actionVerb !== "rinse") errors.push(`${path}.parameters.washingsReceiverInstanceId is legal only on rinse actions.`);
+    if (isObject(input.parameters) && input.parameters.collectRinseVolume === true) errors.push(`${path} cannot both keep its washings and send them to a receiver.`);
+  }
   for (const field of ["extractionOperation", "extractionObservation", "extractionDrain"] as const) {
     if (input[field] === undefined) continue;
     const contract = input[field]; const p = `${path}.${field}`;
@@ -1639,6 +1656,16 @@ const validateAuthoredActionEndpoints = (
       errors.push(
         `${path} (${String(input.id ?? actionVerb)}) requires sourceDefinitionId for a readInstrument measureVolume.`,
       );
+    }
+    return;
+  }
+
+  // Swirling to dissolve (decided 2026-10-04) has one operand: the vessel that already holds the solid
+  // and the liquid. Nothing is poured, so only the target is required. The exemption is narrow: only a
+  // dissolve through the process control.
+  if (actionVerb === "dissolve" && stringRecordField(input.interaction, "type") === "recordNotebook") {
+    if (!actionEndpoint(input, "targetDefinitionId")) {
+      errors.push(`${path} (${String(input.id ?? actionVerb)}) requires targetDefinitionId for a dissolve by swirling.`);
     }
     return;
   }

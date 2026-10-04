@@ -1108,12 +1108,27 @@
         "ml": 100,
         "heightMm": 123.69
       },
+      "solidRest": {
+        "centreMm": [
+          0.0,
+          0.0,
+          2.2
+        ],
+        "radiusMm": 12.0
+      },
       "anchors": {
         "volumetric-flask-stopper-seat": {
           "positionMm": [
             0.0,
             0.0,
             160.625
+          ]
+        },
+        "volumetric-flask-funnel-seat": {
+          "positionMm": [
+            0.0,
+            0.0,
+            118.505
           ]
         }
       },
@@ -1122,7 +1137,7 @@
       "provenance": {
         "blender": "5.2.2",
         "generator": "tools/blender/equipment/volumetric_flask.py",
-        "sourceHash": "abc8ff6ad0cd6f1ef3560a584f7f8685f8fce9d6c596b60397ec316239d1a1fc"
+        "sourceHash": "e38e081cccc2df6427216db1090e5604827cb861eb9357660137a46692b30fa3"
       }
     },
     {
@@ -1225,6 +1240,45 @@
         "blender": "5.2.2",
         "generator": "tools/blender/equipment/watch_glass.py",
         "sourceHash": "aa5b56b500e937bc5ebd10d47f5a62c751e6387a6e138d20563d1117075454c2"
+      }
+    },
+    {
+      "definitionId": "weigh-boat",
+      "model": "weigh-boat.glb",
+      "thumbnail": "thumbs/weigh-boat.png",
+      "footprintMm": {
+        "shape": "rect",
+        "width": 89.0,
+        "depth": 89.0
+      },
+      "grip": {
+        "heightMm": 20.0
+      },
+      "pour": {
+        "lipMm": [
+          -42.45,
+          -42.45,
+          25.0
+        ],
+        "tiltDeg": 70.0,
+        "style": "pour"
+      },
+      "graduations": null,
+      "solidRest": {
+        "centreMm": [
+          0.0,
+          0.0,
+          0.6
+        ],
+        "radiusMm": 20.0
+      },
+      "anchors": {},
+      "displays": [],
+      "states": {},
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/weigh_boat.py",
+        "sourceHash": "8896ef2d032f4386fc73754411df05efd80a35eadbed2f961fc5bfff6bae5940"
       }
     }
   ]

@@ -4,16 +4,19 @@
   "learningGoal": "Dissolve a weighed solid in solvent and track concentration state.",
   "requiredEquipment": [
     "volumetric-flask",
-    "reagent-bottle",
+    "weigh-boat",
+    "funnel",
     "wash-bottle",
-    "stirring-rod"
+    "beaker-150ml",
+    "beral-pipette",
+    "rubber-stopper-set"
   ],
   "initialState": {
     "equipment": [
       {
         "id": "volumetric-flask-1",
         "definitionId": "volumetric-flask",
-        "label": "Volumetric flask",
+        "label": "100 mL volumetric flask",
         "location": "shelf",
         "contents": {
           "kind": "empty",
@@ -25,9 +28,31 @@
         }
       },
       {
-        "id": "reagent-bottle-1",
-        "definitionId": "reagent-bottle",
-        "label": "Reagent bottle",
+        "id": "weigh-boat-1",
+        "definitionId": "weigh-boat",
+        "label": "Weighing boat ({{config.soluteMassG}} g sodium carbonate)",
+        "location": "shelf",
+        "contents": {
+          "kind": "solid",
+          "label": "Sodium carbonate",
+          "massG": "{{config.soluteMassG}}",
+          "solutes": [
+            {
+              "id": "sodium-carbonate",
+              "label": "Sodium carbonate",
+              "amount": "{{config.soluteMassG}}",
+              "unit": "g"
+            }
+          ],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "powder"
+        }
+      },
+      {
+        "id": "funnel-1",
+        "definitionId": "funnel",
+        "label": "Filling funnel",
         "location": "shelf",
         "contents": {
           "kind": "empty",
@@ -54,9 +79,38 @@
         }
       },
       {
-        "id": "stirring-rod-1",
-        "definitionId": "stirring-rod",
-        "label": "Stirring rod",
+        "id": "water-beaker-1",
+        "definitionId": "beaker-150ml",
+        "label": "Deionized water beaker",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Deionized water",
+          "volumeMl": 50,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "water-pipette-1",
+        "definitionId": "beral-pipette",
+        "label": "Water pipette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "flask-stopper-1",
+        "definitionId": "rubber-stopper-set",
+        "label": "Flask stopper",
         "location": "shelf",
         "contents": {
           "kind": "empty",
@@ -71,17 +125,106 @@
   },
   "actions": [
     {
-      "id": "add-solvent",
-      "verb": "transfer",
-      "label": "Add solvent",
+      "id": "place-flask",
+      "verb": "place",
+      "label": "Place the volumetric flask",
       "parameters": {
-        "sourceDefinitionId": "wash-bottle",
-        "targetDefinitionId": "volumetric-flask",
-        "volumeMl": "{{config.initialSolventVolumeMl}}"
+        "equipmentDefinitionId": "volumetric-flask",
+        "equipmentInstanceId": "volumetric-flask-1",
+        "location": "workbench"
       },
       "prerequisites": [],
       "stateChanges": [
-        "transfer updates runtime state through structured equipment contents."
+        "Place the volumetric flask: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        }
+      ],
+      "feedback": {
+        "success": "The volumetric flask is on the bench.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "volumetric-flask",
+        "stationId": "workbench",
+        "accessibleLabel": "Place the volumetric flask"
+      },
+      "atomId": "atom.place.select-clean-dry-receiving-vessel",
+      "equipmentRoleBindings": {
+        "receiving-vessel": "volumetric-flask"
+      }
+    },
+    {
+      "id": "seat-funnel",
+      "verb": "place",
+      "label": "Seat the filling funnel in the flask",
+      "parameters": {
+        "equipmentDefinitionId": "funnel",
+        "sourceDefinitionId": "funnel",
+        "targetDefinitionId": "volumetric-flask",
+        "snapZoneId": "volumetric-flask-funnel-seat",
+        "enforceInstanceIdentity": true,
+        "sourceInstanceId": "funnel-1",
+        "targetInstanceId": "volumetric-flask-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Seat the filling funnel in the flask: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        }
+      ],
+      "feedback": {
+        "success": "The funnel is seated in the neck of the flask.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "funnel",
+        "targetDefinitionId": "volumetric-flask",
+        "snapZoneId": "volumetric-flask-funnel-seat",
+        "accessibleLabel": "Seat the filling funnel in the flask"
+      },
+      "atomId": "atom.place.filling-funnel",
+      "equipmentRoleBindings": {
+        "narrow-necked-vessel": "volumetric-flask",
+        "filling-funnel": "funnel"
+      }
+    },
+    {
+      "id": "tip-solid-into-funnel",
+      "verb": "transfer",
+      "label": "Tip the sodium carbonate into the funnel",
+      "parameters": {
+        "sourceDefinitionId": "weigh-boat",
+        "sourceInstanceId": "weigh-boat-1",
+        "targetDefinitionId": "volumetric-flask",
+        "targetInstanceId": "volumetric-flask-1",
+        "requiredAttachmentState": "attached",
+        "attachmentParentDefinitionId": "volumetric-flask",
+        "attachmentChildDefinitionId": "funnel",
+        "attachmentSnapZoneId": "volumetric-flask-funnel-seat"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Tip the sodium carbonate into the funnel: changes the named equipment and contents only."
       ],
       "invalidCases": [
         {
@@ -104,31 +247,50 @@
         }
       ],
       "feedback": {
-        "success": "Solvent is in the flask.",
+        "success": "The sodium carbonate is in the flask.",
         "invalid": "The simulator could not complete that action. Review the step requirements."
       },
       "evidence": [
         "transfer"
       ],
-      "atomId": "atom.transfer.unmeasured-solvent",
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "weigh-boat",
+        "targetDefinitionId": "volumetric-flask",
+        "accessibleLabel": "Tip the sodium carbonate into the funnel"
+      },
+      "atomId": "atom.transfer.weighed-solid-through-funnel",
       "equipmentRoleBindings": {
-        "liquid-source": "wash-bottle",
-        "receiving-vessel": "volumetric-flask"
+        "weighed-sample-source": "weigh-boat",
+        "narrow-necked-vessel": "volumetric-flask",
+        "filling-funnel": "funnel"
+      },
+      "solidTransfer": {
+        "mode": "whole-remaining",
+        "destinationRepresentation": "physical",
+        "requireNonEmptySource": true
       }
     },
     {
-      "id": "dissolve-solid",
-      "verb": "dissolve",
-      "label": "Dissolve solid",
+      "id": "rinse-boat-into-funnel",
+      "verb": "rinse",
+      "label": "Rinse the weighing boat into the funnel",
       "parameters": {
-        "sourceDefinitionId": "reagent-bottle",
-        "targetDefinitionId": "volumetric-flask",
-        "soluteMassG": "{{config.soluteMassG}}",
-        "finalVolumeMl": "{{config.finalVolumeMl}}"
+        "sourceDefinitionId": "wash-bottle",
+        "sourceInstanceId": "wash-bottle-1",
+        "targetDefinitionId": "weigh-boat",
+        "targetInstanceId": "weigh-boat-1",
+        "washingsReceiverInstanceId": "volumetric-flask-1",
+        "washingsReceiverDefinitionId": "volumetric-flask",
+        "rinseType": "quantitative-transfer",
+        "requiredAttachmentState": "attached",
+        "attachmentParentDefinitionId": "volumetric-flask",
+        "attachmentChildDefinitionId": "funnel",
+        "attachmentSnapZoneId": "volumetric-flask-funnel-seat"
       },
       "prerequisites": [],
       "stateChanges": [
-        "dissolve updates runtime state through structured equipment contents."
+        "Rinse the weighing boat into the funnel: changes the named equipment and contents only."
       ],
       "invalidCases": [
         {
@@ -151,29 +313,502 @@
         }
       ],
       "feedback": {
-        "success": "The solution is homogeneous.",
+        "success": "The boat is rinsed into the flask.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "rinse"
+      ],
+      "interaction": {
+        "type": "rinseTarget",
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "weigh-boat",
+        "accessibleLabel": "Rinse the weighing boat into the funnel"
+      },
+      "atomId": "atom.rinse.quantitative-transfer",
+      "equipmentRoleBindings": {
+        "rinse-water-source": "wash-bottle",
+        "rinsed-vessel": "weigh-boat",
+        "receiving-vessel": "volumetric-flask"
+      }
+    },
+    {
+      "id": "rinse-funnel-into-flask",
+      "verb": "rinse",
+      "label": "Rinse the funnel into the flask",
+      "parameters": {
+        "sourceDefinitionId": "wash-bottle",
+        "sourceInstanceId": "wash-bottle-1",
+        "targetDefinitionId": "funnel",
+        "targetInstanceId": "funnel-1",
+        "washingsReceiverInstanceId": "volumetric-flask-1",
+        "washingsReceiverDefinitionId": "volumetric-flask",
+        "rinseType": "quantitative-transfer",
+        "requiredAttachmentState": "attached",
+        "attachmentParentDefinitionId": "volumetric-flask",
+        "attachmentChildDefinitionId": "funnel",
+        "attachmentSnapZoneId": "volumetric-flask-funnel-seat"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Rinse the funnel into the flask: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The funnel is rinsed into the flask.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "rinse"
+      ],
+      "interaction": {
+        "type": "rinseTarget",
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "funnel",
+        "accessibleLabel": "Rinse the funnel into the flask"
+      },
+      "atomId": "atom.rinse.quantitative-transfer",
+      "equipmentRoleBindings": {
+        "rinse-water-source": "wash-bottle",
+        "rinsed-vessel": "funnel",
+        "receiving-vessel": "volumetric-flask"
+      }
+    },
+    {
+      "id": "remove-funnel",
+      "verb": "place",
+      "label": "Remove the filling funnel",
+      "parameters": {
+        "equipmentDefinitionId": "funnel",
+        "sourceDefinitionId": "funnel",
+        "location": "workbench",
+        "requiredAttachmentState": "attached",
+        "attachmentParentDefinitionId": "volumetric-flask",
+        "attachmentChildDefinitionId": "funnel",
+        "attachmentSnapZoneId": "volumetric-flask-funnel-seat",
+        "enforceInstanceIdentity": true,
+        "sourceInstanceId": "funnel-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Remove the filling funnel: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        }
+      ],
+      "feedback": {
+        "success": "The funnel is out of the flask and on the bench.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "funnel",
+        "stationId": "workbench",
+        "accessibleLabel": "Remove the filling funnel"
+      },
+      "atomId": "atom.place.remove-filling-funnel",
+      "equipmentRoleBindings": {
+        "narrow-necked-vessel": "volumetric-flask",
+        "filling-funnel": "funnel"
+      }
+    },
+    {
+      "id": "fill-water-half",
+      "verb": "transfer",
+      "label": "Fill the flask about half full",
+      "parameters": {
+        "sourceInstanceId": "wash-bottle-1",
+        "targetInstanceId": "volumetric-flask-1",
+        "solventAddition": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Fill the flask about half full: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The flask is about half full.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "transfer"
+      ],
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "volumetric-flask",
+        "accessibleLabel": "Fill the flask about half full"
+      },
+      "atomId": "atom.transfer.unmeasured-solvent",
+      "equipmentRoleBindings": {
+        "liquid-source": "wash-bottle",
+        "receiving-vessel": "volumetric-flask"
+      },
+      "volume": {
+        "source": "target-fill-fraction",
+        "fraction": 0.5
+      }
+    },
+    {
+      "id": "swirl-to-dissolve",
+      "verb": "dissolve",
+      "label": "Swirl to dissolve the sodium carbonate",
+      "parameters": {
+        "targetDefinitionId": "volumetric-flask",
+        "targetInstanceId": "volumetric-flask-1",
+        "vesselInstanceId": "volumetric-flask-1",
+        "mixOperation": "swirl",
+        "dissolveSoluteId": "sodium-carbonate",
+        "solutionLabel": "Sodium carbonate solution",
+        "tag": "dissolved-by-swirling"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Swirl to dissolve the sodium carbonate: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        }
+      ],
+      "feedback": {
+        "success": "The sodium carbonate has dissolved.",
         "invalid": "The simulator could not complete that action. Review the step requirements."
       },
       "evidence": [
         "dissolve"
       ],
-      "atomId": "atom.dissolve.solid-in-solvent",
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "tag",
+        "accessibleLabel": "Swirl to dissolve the sodium carbonate"
+      },
+      "atomId": "atom.dissolve.swirl-to-dissolve",
       "equipmentRoleBindings": {
-        "receiving-vessel": "volumetric-flask",
-        "stirring-device": "stirring-rod"
+        "final-volume-vessel": "volumetric-flask"
+      }
+    },
+    {
+      "id": "fill-water-below-mark",
+      "verb": "transfer",
+      "label": "Fill with water to just below the mark",
+      "parameters": {
+        "sourceInstanceId": "wash-bottle-1",
+        "targetInstanceId": "volumetric-flask-1",
+        "solventAddition": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Fill with water to just below the mark: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The flask is filled to just below the mark.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "transfer"
+      ],
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "volumetric-flask",
+        "accessibleLabel": "Fill with water to just below the mark"
+      },
+      "atomId": "atom.transfer.unmeasured-solvent",
+      "equipmentRoleBindings": {
+        "liquid-source": "wash-bottle",
+        "receiving-vessel": "volumetric-flask"
+      },
+      "volume": {
+        "source": "target-fill-fraction",
+        "fraction": 0.99
+      }
+    },
+    {
+      "id": "draw-water-into-pipette",
+      "verb": "transfer",
+      "label": "Draw deionized water into a dropping pipette",
+      "parameters": {
+        "sourceInstanceId": "water-beaker-1",
+        "targetInstanceId": "water-pipette-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Draw deionized water into a dropping pipette: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The dropping pipette holds deionized water.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "transfer"
+      ],
+      "interaction": {
+        "type": "pourInto",
+        "sourceDefinitionId": "beaker-150ml",
+        "targetDefinitionId": "beral-pipette",
+        "accessibleLabel": "Draw deionized water into a dropping pipette"
+      },
+      "atomId": "atom.transfer.draw-into-transfer-pipette",
+      "equipmentRoleBindings": {
+        "pipette-liquid-source": "beaker-150ml",
+        "transfer-pipette": "beral-pipette"
+      },
+      "volume": {
+        "source": "target-fill-fraction",
+        "fraction": 1
+      }
+    },
+    {
+      "id": "bring-to-mark-dropwise",
+      "verb": "transfer",
+      "label": "Bring the flask to the mark drop by drop",
+      "parameters": {
+        "sourceInstanceId": "water-pipette-1",
+        "targetInstanceId": "volumetric-flask-1",
+        "sourceDefinitionId": "beral-pipette",
+        "targetDefinitionId": "volumetric-flask",
+        "markDispense": "target",
+        "markVolumeMl": 100,
+        "dropVolumeMl": 0.05,
+        "solventAddition": true,
+        "outputMeasurementId": "final-volume",
+        "outputLabel": "Final volume"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Bring the flask to the mark drop by drop: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The flask is at the mark.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "transfer"
+      ],
+      "interaction": {
+        "type": "dispenseDrops",
+        "sourceDefinitionId": "beral-pipette",
+        "targetDefinitionId": "volumetric-flask",
+        "accessibleLabel": "Bring the flask to the mark drop by drop"
+      },
+      "atomId": "atom.dilute.dropwise-to-mark",
+      "equipmentRoleBindings": {
+        "transfer-pipette": "beral-pipette",
+        "final-volume-vessel": "volumetric-flask"
+      }
+    },
+    {
+      "id": "stopper-flask",
+      "verb": "place",
+      "label": "Stopper the flask",
+      "parameters": {
+        "equipmentDefinitionId": "rubber-stopper-set",
+        "sourceDefinitionId": "rubber-stopper-set",
+        "targetDefinitionId": "volumetric-flask",
+        "snapZoneId": "volumetric-flask-stopper-seat",
+        "enforceInstanceIdentity": true,
+        "sourceInstanceId": "flask-stopper-1",
+        "targetInstanceId": "volumetric-flask-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Stopper the flask: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        }
+      ],
+      "feedback": {
+        "success": "The flask is stoppered.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "rubber-stopper-set",
+        "targetDefinitionId": "volumetric-flask",
+        "snapZoneId": "volumetric-flask-stopper-seat",
+        "accessibleLabel": "Stopper the flask"
+      },
+      "atomId": "atom.place.stopper-vessel",
+      "equipmentRoleBindings": {
+        "vessel-stopper": "rubber-stopper-set",
+        "final-volume-vessel": "volumetric-flask"
+      }
+    },
+    {
+      "id": "invert-to-mix",
+      "verb": "mix",
+      "label": "Invert the flask to mix",
+      "parameters": {
+        "mixOperation": "invert",
+        "vesselInstanceId": "volumetric-flask-1",
+        "sourceInstanceId": "volumetric-flask-1",
+        "vesselDefinitionId": "volumetric-flask",
+        "inversions": 10,
+        "tag": "mixed-by-inversion",
+        "requiredAttachmentState": "attached",
+        "attachmentParentDefinitionId": "volumetric-flask",
+        "attachmentChildDefinitionId": "rubber-stopper-set",
+        "attachmentSnapZoneId": "volumetric-flask-stopper-seat"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Invert the flask to mix: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        }
+      ],
+      "feedback": {
+        "success": "The solution is mixed.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "mix"
+      ],
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "tag",
+        "accessibleLabel": "Invert the flask to mix"
+      },
+      "atomId": "atom.mix.invert-stoppered-vessel",
+      "equipmentRoleBindings": {
+        "final-volume-vessel": "volumetric-flask",
+        "vessel-stopper": "rubber-stopper-set"
       }
     },
     {
       "id": "observe-solution",
       "verb": "observe",
-      "label": "Record solution appearance",
+      "label": "Record the solution's appearance",
       "parameters": {
         "note": "{{config.solutionObservation}}",
         "tag": "solution-observation"
       },
       "prerequisites": [],
       "stateChanges": [
-        "observe updates runtime state through structured equipment contents."
+        "Record the solution's appearance: changes the named equipment and contents only."
       ],
       "invalidCases": [
         {
@@ -181,18 +816,6 @@
           "when": "current node expects a different action",
           "message": "That action is out of sequence for the current technique step.",
           "recovery": "Check the process map and perform the highlighted step first."
-        },
-        {
-          "id": "missing-source",
-          "when": "source equipment or contents are missing",
-          "message": "The selected source does not contain the material required for this action.",
-          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
-        },
-        {
-          "id": "overflow",
-          "when": "target capacity would be exceeded",
-          "message": "The target equipment cannot hold the requested volume.",
-          "recovery": "Use a larger container or transfer a smaller measured amount."
         }
       ],
       "feedback": {
@@ -206,83 +829,402 @@
     }
   ],
   "process": {
-    "startNodeId": "add-solvent-node",
+    "startNodeId": "place-flask-node",
     "nodes": [
       {
-        "id": "add-solvent-node",
+        "id": "place-flask-node",
         "type": "action",
-        "title": "Add solvent",
-        "description": "Add the configured initial solvent volume of deionized water from the wash bottle to the volumetric flask.",
-        "actionId": "add-solvent",
+        "title": "Place the volumetric flask",
+        "description": "Place the clean, dry 100 mL volumetric flask on the bench.",
+        "actionId": "place-flask",
         "config": {},
         "validation": [
           {
-            "id": "added-solvent",
+            "id": "place-flask-node-done",
             "type": "actionEvidence",
-            "label": "Action add-solvent was completed.",
-            "actionId": "add-solvent"
+            "label": "Place the volumetric flask was completed.",
+            "actionId": "place-flask"
           }
         ],
         "hints": [],
         "feedback": {
-          "success": "Add solvent complete.",
-          "retry": "Review Add solvent and try again."
+          "success": "Place the volumetric flask complete.",
+          "retry": "Review Place the volumetric flask and try again."
         }
       },
       {
-        "id": "dissolve-solid-node",
+        "id": "seat-funnel-node",
         "type": "action",
-        "title": "Dissolve solid",
-        "description": "Dissolve the configured solute mass of solid from the reagent bottle in the volumetric flask.",
-        "actionId": "dissolve-solid",
+        "title": "Seat the funnel",
+        "description": "Seat the filling funnel in the neck of the volumetric flask.",
+        "actionId": "seat-funnel",
         "config": {},
         "validation": [
           {
-            "id": "dissolved-solid",
+            "id": "seat-funnel-node-done",
             "type": "actionEvidence",
-            "label": "Action dissolve-solid was completed.",
-            "actionId": "dissolve-solid"
+            "label": "Seat the funnel was completed.",
+            "actionId": "seat-funnel"
           }
         ],
         "hints": [],
         "feedback": {
-          "success": "Dissolve solid complete.",
-          "retry": "Review Dissolve solid and try again."
+          "success": "Seat the funnel complete.",
+          "retry": "Review Seat the funnel and try again."
+        }
+      },
+      {
+        "id": "tip-solid-into-funnel-node",
+        "type": "action",
+        "title": "Tip in the solid",
+        "description": "Tip all of the {{config.soluteMassG}} g of sodium carbonate from the weighing boat into the funnel.",
+        "actionId": "tip-solid-into-funnel",
+        "config": {},
+        "validation": [
+          {
+            "id": "tip-solid-into-funnel-node-done",
+            "type": "actionEvidence",
+            "label": "Tip in the solid was completed.",
+            "actionId": "tip-solid-into-funnel"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Tip in the solid complete.",
+          "retry": "Review Tip in the solid and try again."
+        }
+      },
+      {
+        "id": "rinse-boat-into-funnel-node",
+        "type": "action",
+        "title": "Rinse the boat",
+        "description": "Hold the boat over the funnel and rinse it with the wash bottle, so the last grains wash into the flask.",
+        "actionId": "rinse-boat-into-funnel",
+        "config": {},
+        "validation": [
+          {
+            "id": "rinse-boat-into-funnel-node-done",
+            "type": "actionEvidence",
+            "label": "Rinse the boat was completed.",
+            "actionId": "rinse-boat-into-funnel"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Rinse the boat complete.",
+          "retry": "Review Rinse the boat and try again."
+        }
+      },
+      {
+        "id": "rinse-funnel-into-flask-node",
+        "type": "action",
+        "title": "Rinse the funnel",
+        "description": "Rinse the inside of the funnel with the wash bottle, so no solid is left on it.",
+        "actionId": "rinse-funnel-into-flask",
+        "config": {},
+        "validation": [
+          {
+            "id": "rinse-funnel-into-flask-node-done",
+            "type": "actionEvidence",
+            "label": "Rinse the funnel was completed.",
+            "actionId": "rinse-funnel-into-flask"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Rinse the funnel complete.",
+          "retry": "Review Rinse the funnel and try again."
+        }
+      },
+      {
+        "id": "remove-funnel-node",
+        "type": "action",
+        "title": "Remove the funnel",
+        "description": "Lift the funnel out of the flask and set it on the bench.",
+        "actionId": "remove-funnel",
+        "config": {},
+        "validation": [
+          {
+            "id": "remove-funnel-node-done",
+            "type": "actionEvidence",
+            "label": "Remove the funnel was completed.",
+            "actionId": "remove-funnel"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Remove the funnel complete.",
+          "retry": "Review Remove the funnel and try again."
+        }
+      },
+      {
+        "id": "fill-water-half-node",
+        "type": "action",
+        "title": "Fill about half full",
+        "description": "Add deionized water from the wash bottle until the flask is about half full.",
+        "actionId": "fill-water-half",
+        "config": {},
+        "validation": [
+          {
+            "id": "fill-water-half-node-done",
+            "type": "actionEvidence",
+            "label": "Fill about half full was completed.",
+            "actionId": "fill-water-half"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Fill about half full complete.",
+          "retry": "Review Fill about half full and try again."
+        }
+      },
+      {
+        "id": "swirl-to-dissolve-node",
+        "type": "action",
+        "title": "Swirl to dissolve",
+        "description": "Swirl the flask gently until no solid is left. A stirring rod is never put into a volumetric flask.",
+        "actionId": "swirl-to-dissolve",
+        "config": {},
+        "validation": [
+          {
+            "id": "swirl-to-dissolve-node-done",
+            "type": "notebookEntry",
+            "label": "Swirl to dissolve was completed.",
+            "notebookTag": "dissolved-by-swirling"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Swirl to dissolve complete.",
+          "retry": "Review Swirl to dissolve and try again."
+        }
+      },
+      {
+        "id": "fill-water-below-mark-node",
+        "type": "action",
+        "title": "Fill to below the mark",
+        "description": "Add deionized water from the wash bottle until the level is just below the mark on the neck.",
+        "actionId": "fill-water-below-mark",
+        "config": {},
+        "validation": [
+          {
+            "id": "fill-water-below-mark-node-done",
+            "type": "actionEvidence",
+            "label": "Fill to below the mark was completed.",
+            "actionId": "fill-water-below-mark"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Fill to below the mark complete.",
+          "retry": "Review Fill to below the mark and try again."
+        }
+      },
+      {
+        "id": "draw-water-into-pipette-node",
+        "type": "action",
+        "title": "Fill a dropping pipette",
+        "description": "Draw deionized water from the beaker into the dropping pipette.",
+        "actionId": "draw-water-into-pipette",
+        "config": {},
+        "validation": [
+          {
+            "id": "draw-water-into-pipette-node-done",
+            "type": "actionEvidence",
+            "label": "Fill a dropping pipette was completed.",
+            "actionId": "draw-water-into-pipette"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Fill a dropping pipette complete.",
+          "retry": "Review Fill a dropping pipette and try again."
+        }
+      },
+      {
+        "id": "bring-to-mark-dropwise-node",
+        "type": "action",
+        "title": "Bring to the mark",
+        "description": "Add water one drop at a time until the bottom of the meniscus touches the mark at eye level.",
+        "actionId": "bring-to-mark-dropwise",
+        "config": {},
+        "validation": [
+          {
+            "id": "bring-to-mark-dropwise-node-done",
+            "type": "measurementRecorded",
+            "label": "Bring to the mark was completed.",
+            "measurementId": "final-volume"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Bring to the mark complete.",
+          "retry": "Review Bring to the mark and try again."
+        }
+      },
+      {
+        "id": "stopper-flask-node",
+        "type": "action",
+        "title": "Stopper the flask",
+        "description": "Seat the stopper firmly in the neck of the flask.",
+        "actionId": "stopper-flask",
+        "config": {},
+        "validation": [
+          {
+            "id": "stopper-flask-node-done",
+            "type": "actionEvidence",
+            "label": "Stopper the flask was completed.",
+            "actionId": "stopper-flask"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Stopper the flask complete.",
+          "retry": "Review Stopper the flask and try again."
+        }
+      },
+      {
+        "id": "invert-to-mix-node",
+        "type": "action",
+        "title": "Invert to mix",
+        "description": "Holding the stopper in place, turn the flask upside down and back about ten times.",
+        "actionId": "invert-to-mix",
+        "config": {},
+        "validation": [
+          {
+            "id": "invert-to-mix-node-done",
+            "type": "notebookEntry",
+            "label": "Invert to mix was completed.",
+            "notebookTag": "mixed-by-inversion"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Invert to mix complete.",
+          "retry": "Review Invert to mix and try again."
         }
       },
       {
         "id": "observe-solution-node",
         "type": "observation",
-        "title": "Record solution appearance",
-        "description": "Record the configured solution-appearance evidence without inventing an observation.",
+        "title": "Record the solution's appearance",
+        "description": "Record in the notebook what the finished solution looks like.",
         "actionId": "observe-solution",
         "config": {},
         "validation": [
           {
             "id": "observed-solution",
             "type": "actionEvidence",
-            "label": "Action observe-solution was completed.",
+            "label": "Record the solution's appearance was completed.",
             "actionId": "observe-solution"
           }
         ],
         "hints": [],
         "feedback": {
-          "success": "Observe solution complete.",
-          "retry": "Review Observe solution and try again."
+          "success": "Record the solution's appearance complete.",
+          "retry": "Review Record the solution's appearance and try again."
         }
       }
     ],
     "edges": [
       {
-        "from": "add-solvent-node",
-        "to": "dissolve-solid-node",
+        "from": "place-flask-node",
+        "to": "seat-funnel-node",
         "label": "Next",
         "condition": {
           "type": "validationPassed"
         }
       },
       {
-        "from": "dissolve-solid-node",
+        "from": "seat-funnel-node",
+        "to": "tip-solid-into-funnel-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "tip-solid-into-funnel-node",
+        "to": "rinse-boat-into-funnel-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "rinse-boat-into-funnel-node",
+        "to": "rinse-funnel-into-flask-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "rinse-funnel-into-flask-node",
+        "to": "remove-funnel-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "remove-funnel-node",
+        "to": "fill-water-half-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "fill-water-half-node",
+        "to": "swirl-to-dissolve-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "swirl-to-dissolve-node",
+        "to": "fill-water-below-mark-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "fill-water-below-mark-node",
+        "to": "draw-water-into-pipette-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "draw-water-into-pipette-node",
+        "to": "bring-to-mark-dropwise-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "bring-to-mark-dropwise-node",
+        "to": "stopper-flask-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "stopper-flask-node",
+        "to": "invert-to-mix-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "invert-to-mix-node",
         "to": "observe-solution-node",
         "label": "Next",
         "condition": {
@@ -295,8 +1237,8 @@
     {
       "id": "solution-success",
       "type": "actionEvidence",
-      "label": "Action dissolve-solid was completed.",
-      "actionId": "dissolve-solid"
+      "label": "The solution's appearance was recorded.",
+      "actionId": "observe-solution"
     }
   ],
   "commonMistakes": [
@@ -335,7 +1277,7 @@
       {
         "id": "entry",
         "kind": "entry",
-        "nodeId": "add-solvent-node",
+        "nodeId": "place-flask-node",
         "label": "Entry"
       },
       {
@@ -347,16 +1289,6 @@
     ],
     "equipmentRoles": [
       {
-        "roleId": "liquid-source",
-        "required": true,
-        "allowedDefinitionIds": [
-          "wash-bottle"
-        ],
-        "sourceInstanceIds": [
-          "wash-bottle-1"
-        ]
-      },
-      {
         "roleId": "receiving-vessel",
         "required": true,
         "allowedDefinitionIds": [
@@ -367,30 +1299,112 @@
         ]
       },
       {
-        "roleId": "stirring-device",
+        "roleId": "narrow-necked-vessel",
         "required": true,
         "allowedDefinitionIds": [
-          "stirring-rod"
+          "volumetric-flask"
         ],
         "sourceInstanceIds": [
-          "stirring-rod-1"
+          "volumetric-flask-1"
+        ]
+      },
+      {
+        "roleId": "filling-funnel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "funnel"
+        ],
+        "sourceInstanceIds": [
+          "funnel-1"
+        ]
+      },
+      {
+        "roleId": "weighed-sample-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "weigh-boat"
+        ],
+        "sourceInstanceIds": [
+          "weigh-boat-1"
+        ]
+      },
+      {
+        "roleId": "rinse-water-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "wash-bottle"
+        ],
+        "sourceInstanceIds": [
+          "wash-bottle-1"
+        ]
+      },
+      {
+        "roleId": "rinsed-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "weigh-boat",
+          "funnel"
+        ],
+        "sourceInstanceIds": [
+          "weigh-boat-1",
+          "funnel-1"
+        ]
+      },
+      {
+        "roleId": "liquid-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "wash-bottle"
+        ],
+        "sourceInstanceIds": [
+          "wash-bottle-1"
+        ]
+      },
+      {
+        "roleId": "final-volume-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "volumetric-flask"
+        ],
+        "sourceInstanceIds": [
+          "volumetric-flask-1"
+        ]
+      },
+      {
+        "roleId": "pipette-liquid-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beaker-150ml"
+        ],
+        "sourceInstanceIds": [
+          "water-beaker-1"
+        ]
+      },
+      {
+        "roleId": "transfer-pipette",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beral-pipette"
+        ],
+        "sourceInstanceIds": [
+          "water-pipette-1"
+        ]
+      },
+      {
+        "roleId": "vessel-stopper",
+        "required": true,
+        "allowedDefinitionIds": [
+          "rubber-stopper-set"
+        ],
+        "sourceInstanceIds": [
+          "flask-stopper-1"
         ]
       }
     ],
     "modelSlots": [],
     "configurationSlots": [
       {
-        "id": "initialSolventVolumeMl",
-        "valueType": "number",
-        "required": true
-      },
-      {
         "id": "soluteMassG",
-        "valueType": "number",
-        "required": true
-      },
-      {
-        "id": "finalVolumeMl",
         "valueType": "number",
         "required": true
       },

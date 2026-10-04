@@ -806,6 +806,65 @@ export class BenchEngine {
     });
   }
 
+  /**
+   * A flask swirled until the solid in it dissolves (decided 2026-10-04): lifted a little and, held by
+   * its neck, its bulb moved in small circles three times round, leaning up to 8° about the hand, then
+   * set down; presentation only, after the runtime has dissolved the solid. Its contents are drawn as they were until the last turn, then as
+   * the runtime has them. Resolves at once under reduced motion.
+   */
+  animateSwirl(vesselId: string, contents?: { before: SceneContents; after: SceneContents }): Promise<void> {
+    this.stopMixRun();
+    const view = this.items.get(vesselId);
+    if (!view || this.options.reducedMotion) return Promise.resolve();
+    const start = view.root.position.clone();
+    const startQuaternion = view.root.quaternion.clone();
+    const LIFT = 0.2, SWIRL = 1.5, DOWN = 0.2, TURNS = 3, LEAN = 8 * DEG, RAISE = 18 * MM;
+    // Held by the neck, about three quarters of the way up: the bulb circles, the neck barely moves.
+    const grip = new THREE.Box3().setFromObject(view.model ?? view.root).getSize(new THREE.Vector3()).y * 0.72;
+    const ease = (u: number): number => (u < 0.5 ? 2 * u * u : 1 - (-2 * u + 2) ** 2 / 2);
+    const entry = view.entry;
+    if (contents && entry) this.replaceContents(view, buildContents(entry, contents.before));
+    let swapped = false;
+    let elapsed = 0;
+    return new Promise((resolve) => {
+      const finish = () => {
+        if (contents && entry && !swapped && this.items.get(vesselId) === view) this.replaceContents(view, buildContents(entry, contents.after));
+        const rest = this.restPositions.get(vesselId);
+        const restQuaternion = this.restQuaternions.get(vesselId);
+        view.root.position.copy(rest ?? start);
+        view.root.quaternion.copy(restQuaternion ?? startQuaternion);
+        this.poseSeatedChildren(vesselId);
+        this.shadowsDirty = true;
+        this.requestRender();
+        resolve();
+      };
+      const tick = (dt: number): boolean => {
+        if (this.items.get(vesselId) !== view) return false;
+        elapsed += dt;
+        const lift = elapsed < LIFT ? ease(elapsed / LIFT)
+          : elapsed < LIFT + SWIRL ? 1 : Math.max(0, 1 - ease((elapsed - LIFT - SWIRL) / DOWN));
+        const u = Math.min(1, Math.max(0, (elapsed - LIFT) / SWIRL));
+        // The circles grow and settle, so the liquid is set going and comes to rest.
+        const amplitude = Math.sin(Math.PI * u);
+        const phase = 2 * Math.PI * TURNS * u;
+        const lean = new THREE.Vector3(Math.cos(phase), 0, Math.sin(phase));
+        const q = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3().crossVectors(lean, UP).normalize(), LEAN * amplitude);
+        const hand = start.clone().add(new THREE.Vector3(0, grip + lift * RAISE, 0));
+        view.root.quaternion.copy(q).multiply(startQuaternion);
+        view.root.position.copy(hand).add(new THREE.Vector3(0, -grip, 0).applyQuaternion(q));
+        if (contents && entry && !swapped && u > 0.75) {
+          swapped = true;
+          this.replaceContents(view, buildContents(entry, contents.after));
+        }
+        this.poseSeatedChildren(vesselId);
+        this.shadowsDirty = true;
+        return elapsed < LIFT + SWIRL + DOWN;
+      };
+      this.mixRun = { tick, finish };
+      this.requestRender();
+    });
+  }
+
   private stopMixRun(): void {
     const run = this.mixRun;
     if (!run) return;
@@ -1107,6 +1166,8 @@ export class BenchEngine {
     targetBefore: SceneContents;
     targetAfter: SceneContents;
     returnTo?: { xMm: number; yMm: number; yawDeg: number };
+    /** An item held tipped over the target's mouth while the source pours into it: a weighing boat being rinsed. */
+    via?: string;
   }): Promise<void> {
     this.stopPour();
     const released = this.releasedCarry?.instanceId === args.sourceId && performance.now() - this.releasedCarry.at < 2000
@@ -1143,12 +1204,19 @@ export class BenchEngine {
     const endPos = args.returnTo ? toWorld(args.returnTo.xMm, args.returnTo.yMm).setY(restPos.y) : restPos.clone();
     const endQuat = args.returnTo ? new THREE.Quaternion().setFromAxisAngle(UP, args.returnTo.yawDeg * DEG) : source.root.quaternion.clone();
 
-    // The target's mouth: the top of its fill profile, on its axis.
+    // The target's mouth: the top of its fill profile, on its axis; or the rim of a filling funnel
+    // seated in it (a zone ending "funnel-seat"), which is where a pour or a rinse goes in (decided 2026-10-04).
     const tFill = targetEntry.fill;
     const box = new THREE.Box3().setFromObject(target.model ?? target.root);
     const targetBase = target.root.getWorldPosition(new THREE.Vector3());
-    const mouthZ = tFill?.innerBoxMm?.topZ ?? tFill?.innerProfileMm?.at(-1)?.[1] ?? (box.max.y - targetBase.y) / MM;
-    const mouthR = (tFill?.innerBoxMm ? Math.min(tFill.innerBoxMm.width, tFill.innerBoxMm.depth) / 2 : tFill?.innerProfileMm?.at(-1)?.[0] ?? 10) * MM;
+    const funnelItem = this.lastScene?.bench.find((item) => item.placement.kind === "seated"
+      && item.placement.parentInstanceId === target.instanceId && /funnel-seat$/.test(item.placement.zoneId));
+    const funnel = funnelItem ? this.items.get(funnelItem.instanceId) : undefined;
+    const funnelBox = funnel ? new THREE.Box3().setFromObject(funnel.model ?? funnel.root) : undefined;
+    const mouthZ = funnelBox ? (funnelBox.max.y - targetBase.y) / MM
+      : tFill?.innerBoxMm?.topZ ?? tFill?.innerProfileMm?.at(-1)?.[1] ?? (box.max.y - targetBase.y) / MM;
+    const mouthR = funnelBox ? ((funnelBox.max.x - funnelBox.min.x) / 2) * 0.8
+      : (tFill?.innerBoxMm ? Math.min(tFill.innerBoxMm.width, tFill.innerBoxMm.depth) / 2 : tFill?.innerProfileMm?.at(-1)?.[0] ?? 10) * MM;
     const mouth = targetBase.clone().add(new THREE.Vector3(0, mouthZ * MM, 0));
 
     // Pour from the target's left or right as the camera sees it, the side the source is on, so the
@@ -1158,9 +1226,25 @@ export class BenchEngine {
     const away = camRight.clone().multiplyScalar(sideOf && sideOf.dot(camRight) > 0 ? 1 : -1);
     const toward = away.clone().negate();
 
+    // An item rinsed into the target (decided 2026-10-04): a weighing boat is lifted from where it rests
+    // and held tipped toward the funnel, just above its rim, with the wash bottle's jet aimed into it, so
+    // its washings run down into the target.
+    const viaView = args.via && args.via !== args.sourceId && args.via !== args.targetId ? this.items.get(args.via) : undefined;
+    const viaRest = viaView ? { pos: viaView.root.position.clone(), quat: viaView.root.quaternion.clone() } : undefined;
+    let viaHold: { pos: THREE.Vector3; quat: THREE.Quaternion } | undefined;
+    if (viaView && viaRest) {
+      const viaBox = new THREE.Box3().setFromObject(viaView.model ?? viaView.root);
+      const halfWidth = Math.max(viaBox.max.x - viaBox.min.x, viaBox.max.z - viaBox.min.z) / 2;
+      viaHold = {
+        pos: mouth.clone().addScaledVector(away, halfWidth * 0.75).add(new THREE.Vector3(0, 0.02, 0)),
+        quat: new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3().crossVectors(away, UP).normalize(), 30 * DEG).multiply(viaRest.quat),
+      };
+    }
+    const aimAt = viaHold ? viaHold.pos.clone().add(new THREE.Vector3(0, 0.012, 0)) : mouth;
+
     // The lip's pouring point: just over the mouth (a jet stands off to the side, above it).
     const lipAt = jet
-      ? mouth.clone().addScaledVector(away, 0.045).add(new THREE.Vector3(0, 0.055, 0))
+      ? aimAt.clone().addScaledVector(away, 0.045).add(new THREE.Vector3(0, 0.055, 0))
       : mouth.clone().addScaledVector(away, mouthR * 0.4).add(new THREE.Vector3(0, 0.004, 0));
 
     // Tilts: where the liquid first reaches the lip, and where it is when the runtime's volume has
@@ -1265,6 +1349,14 @@ export class BenchEngine {
       source.root.quaternion.copy(q);
       source.root.updateMatrixWorld(true);
       lip.copy(geometry.lip).applyQuaternion(q).add(pos);
+      if (viaView && viaRest && viaHold) {
+        // Held over the mouth from the approach until the source is back upright, then set down again.
+        const moving = t < at.tilt ? ease(span(t, 0, T.approach)) : t < at.back ? 1 : 1 - ease(span(t, at.back, T.back));
+        const arc = t < at.tilt || t >= at.back ? Math.sin(moving * Math.PI) * 0.03 : 0;
+        viaView.root.position.copy(viaRest.pos).lerp(viaHold.pos, moving).add(new THREE.Vector3(0, arc, 0));
+        viaView.root.quaternion.copy(viaRest.quat).slerp(viaHold.quat, moving);
+        viaView.root.updateMatrixWorld(true);
+      }
 
       // Volumes: the source's leaves as the pour runs; the target's follows once the stream lands.
       const flowT = t - at.flow;
@@ -1317,6 +1409,10 @@ export class BenchEngine {
         source.root.add(rack.object);
         rack.object.position.copy(rack.position);
         rack.object.quaternion.copy(rack.quaternion);
+      }
+      if (viaView && viaRest) {
+        viaView.root.position.copy(viaRest.pos);
+        viaView.root.quaternion.copy(viaRest.quat);
       }
       // Contents drawn during the pour are rebuilt by the next sync.
       source.contentsKey = "animating";

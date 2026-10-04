@@ -40,6 +40,18 @@ export interface PourAnimation {
   /** What each holds once the runtime has committed the pour, wherever it stands (a shelf source too). */
   sourceAfter: SceneContents;
   targetAfter: SceneContents;
+  /** An item held tipped over the target's mouth during the pour: a weighing boat rinsed into a flask. */
+  via?: string;
+  id: number;
+}
+
+/** A committed swirl being drawn (decided 2026-10-04): the vessel's contents before, while it swirls, then after. */
+export interface SwirlAnimation {
+  vesselId: string;
+  /** The committed layout with the vessel holding what it held before the swirl. */
+  staging: SceneDescription;
+  before: SceneContents;
+  after: SceneContents;
   id: number;
 }
 
@@ -88,6 +100,7 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
   const [pour, setPour] = useState<PourAnimation>();
   const [weighing, setWeighing] = useState<WeighAnimation>();
   const [toolDeposit, setToolDeposit] = useState<ToolDeposit>();
+  const [swirl, setSwirl] = useState<SwirlAnimation>();
   // What each instrument showed when a reading was recorded, by measurement id (results only).
   const [displayedReadings, setDisplayedReadings] = useState<Record<string, string>>({});
   const pourSeq = useRef(0);
@@ -218,6 +231,25 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
       const { sourceInstanceId: sourceId, targetInstanceId: targetId } = result.request;
       setPour({ sourceId, targetId, staging: pourStagingScene(before, next, definition, { sourceId, targetId }),
         sourceAfter: contentsIn(next, sourceId), targetAfter: contentsIn(next, targetId), id: pourSeq.current });
+    } else if (!failed && result.interaction.type === "rinseTarget" && result.request.sourceInstanceId && result.request.targetInstanceId
+      && typeof result.action.parameters.washingsReceiverInstanceId === "string") {
+      // A rinse whose washings run into a receiver (decided 2026-10-04) is drawn as the wash bottle
+      // squirting into the rinsed item over the receiver, whose level rises: a funnel is rinsed where it
+      // is seated; a weighing boat is held tipped over the funnel while it is rinsed.
+      pourSeq.current += 1;
+      const { sourceInstanceId: sourceId, targetInstanceId: rinsedId } = result.request;
+      const targetId = result.action.parameters.washingsReceiverInstanceId;
+      const seated = next.attachments.some((relation) => relation.childInstanceId === rinsedId && relation.parentInstanceId === targetId);
+      setPour({ sourceId, targetId, staging: pourStagingScene(before, next, definition, { sourceId, targetId }),
+        sourceAfter: contentsIn(next, sourceId), targetAfter: contentsIn(next, targetId), ...(seated ? {} : { via: rinsedId }), id: pourSeq.current });
+    } else if (!failed && result.action.verb === "dissolve" && result.action.parameters.mixOperation === "swirl") {
+      // A swirl (decided 2026-10-04): the vessel is drawn swirling with its contents as they were, then as the runtime has them.
+      const vesselId = result.request.targetInstanceId;
+      if (vesselId) {
+        pourSeq.current += 1;
+        setSwirl({ vesselId, staging: pourStagingScene(before, next, definition, { sourceId: vesselId, targetId: vesselId }),
+          before: contentsIn(before, vesselId), after: contentsIn(next, vesselId), id: pourSeq.current });
+      }
     }
     // A committed weighing is shown with the vessel on the balance's pan, then back where the
     // runtime keeps it: the runtime's `weigh` neither seats nor moves it (plan §2.4). A vessel the
@@ -333,6 +365,7 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     setPour(undefined);
     setWeighing(undefined);
     setToolDeposit(undefined);
+    setSwirl(undefined);
     setDisplayedReadings({});
     setInputValues({});
     setCorrection(undefined);
@@ -379,6 +412,9 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     finishPour: (id: number) => setPour((current) => (current?.id === id ? undefined : current)),
     weighing,
     toolDeposit,
+    swirl,
+    /** Ends swirl `id`'s animation; a later one that has already replaced it is left running. */
+    finishSwirl: (id: number) => setSwirl((current) => (current?.id === id ? undefined : current)),
     /** Ends tool deposit `id`'s animation; a later one that has already replaced it is left running. */
     finishToolDeposit: (id: number) => setToolDeposit((current) => (current?.id === id ? undefined : current)),
     /**

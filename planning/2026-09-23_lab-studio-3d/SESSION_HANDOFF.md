@@ -12,7 +12,8 @@ the evidence notes have what was built and checked.
 **Branch.** `origin/claude/lab-studio-3d` is at `713c248`. Every commit after it is local
 (`git log --oneline 713c248..HEAD`): the build from `39fdab8` (M7 hand-panel decisions) to `7a63d86`
 (the pump stays on the pipette), the handoff commits of 2026-10-03, then the microarray adoption of
-2026-10-04 (`9798de1` P0 to the P5 records commit). Push only when the user asks.
+2026-10-04 (`9798de1` P0 to the P5 records commit, and the fidelity review `b886175`), then Make a Solution
+atomized (D4 exception 9). Push only when the user asks.
 
 **Pack 1, technique by technique:**
 
@@ -21,7 +22,7 @@ the evidence notes have what was built and checked.
 | Weigh a Solid | 5 steps; teacher-prepared readings; the glass seats on the pan; TARE pressed on the balance; solid added with the spatula | `READINGS_EVIDENCE.md`, `TARE_SPATULA_EVIDENCE.md` |
 | Analyze Transmittance of a Dilution | 28 steps; 25 mL cylinder with a filling funnel; working beaker and Beral pipettes for the cuvettes; cuvettes seat in the photometer | `READINGS_EVIDENCE.md`, `PIPETTE_FUNNEL_EVIDENCE.md` |
 | Dilute a Stock Solution | 12 atomized steps: pipette pump, delivery to the line drop by drop, flask to the mark drop by drop, stopper, invert ×10, two calculations | `DILUTION_ATOMIZATION_EVIDENCE.md` |
-| Make a Solution | Still the old 3 steps (the reagent bottle starts empty; "dissolve" creates the solute). Its atomization is decided; it is built after the microarray adoption | `proposals/PACK1_ATOMIZATION.md` |
+| Make a Solution | 14 atomized steps: a pre-weighed weighing boat, a funnel in the flask's neck, the solid tipped in, the boat and funnel rinsed into the flask, half full, swirled to dissolve the solid in the flask, to the mark drop by drop, stopper, invert ×10, appearance recorded | `MAKE_SOLUTION_ATOMIZATION_EVIDENCE.md` |
 | Measure Liquid Volume | Unchanged. Host-bound: it can't play on its own (its 3D route shows only the gate). It is composed into two labs, Precipitate and Filter Calcium Carbonate and the Hard-Water Reference Demo, so it waits for them (Phase B) | `proposals/PACK1_ATOMIZATION.md` |
 
 Also built: the top bar's title is a switcher listing the five Pack 1 techniques (a slim bar does the
@@ -41,7 +42,7 @@ wait for confirmation (`DECISIONS.md`, the "built" row). G3 has still not run.
 **Standing policies (user decisions):**
 - **Atomization:** break each step down to the real physical actions, within reason, to build
   "muscle memory". New atoms and roles not cited in the AP lab documents are expected; record the basis
-  as the teacher's decision. Content changes still go to the user first and become D4 exceptions (eight
+  as the teacher's decision. Content changes still go to the user first and become D4 exceptions (nine
   so far).
 - **Teacher-prepared values:** the teacher sets quantities and readings before play; the student
   follows the procedure and enters what they observe.
@@ -57,11 +58,10 @@ wait for confirmation (`DECISIONS.md`, the "built" row). G3 has still not run.
 **Next, in order (recommended):**
 1. **Done 2026-10-04: the microarray adoption** (P0–P5, then a fidelity review). It is open only for the
    thirteen interpretations to confirm and for G3.
-2. **Build Make a Solution** per `proposals/PACK1_ATOMIZATION.md` (decided: pre-weighed boat, swirl in
-   the flask, drop to the mark, stopper, invert), on the new controller. It needs:
-   - a weigh boat model (none exists in 3D yet);
-   - a funnel seat in the flask's neck (generalize the cylinder-funnel atoms);
-   - the runtime's dissolve to use the solid already in the flask.
+2. **Done 2026-10-04: Make a Solution** (D4 exception 9; `evidence/MAKE_SOLUTION_ATOMIZATION_EVIDENCE.md`),
+   on the new controller, with a weighing-boat model, a funnel seat in the flask, generic funnel atoms, rinses
+   into a receiver and a dissolve of the solid in the flask. It is open only for its ten interpretations to
+   confirm, and for G3.
 3. **Two small additions:** a stopper and inversion for transmittance-dilution's test tube; an atom
    for weighing's zero step.
 4. **Open UI items:** per-item tray tiles (pairs are grouped, so a tap places the first), and the long
@@ -78,6 +78,7 @@ static validators; tests are written but not run):
   never finish drawing and carries are blocked. Two workarounds:
   - switch on Menu → Reduced motion for logic, and switch it back off;
   - take one headless look with Playwright and SwiftShader: `probes/look-dilution.cjs`,
+    `probes/look-making-solution.cjs` (all 14 steps; it retries a carry while an animation is drawn),
     `probes/look-room.cjs` (the room, at each tier and view), or `probes/run-weighing-mouse.cjs`.
     The last drives Weigh a Solid with real mouse events, finding items by sweeping the pointer and
     reading the hover label.
@@ -161,7 +162,8 @@ The user asked for **the highest fidelity** to the plan and the handoff.
 | transmittance-dilution: funnel, working beaker, transfer pipettes, 25 mL cylinder (28 steps) | Done; seen end to end in the pane | `evidence/PIPETTE_FUNNEL_EVIDENCE.md` |
 | The balance's TARE key; the spatula for solids (dip, carry, tip) | Done; assessment mode, reduced motion and hand control not seen in the pane | `evidence/TARE_SPATULA_EVIDENCE.md` |
 | The microarray lab's room, camera, mouse and hand control (P0–P5) | Done; looks headless, a mouse run of weighing; G3 not run | `9798de1` … P5; `evidence/MICROARRAY_ADOPTION_EVIDENCE.md` |
-| **M8: Pack 1 acceptance** | **Next**, after Make a Solution | — |
+| Make a Solution atomized (14 steps: weighing boat, funnel in the flask, rinses, swirl, to the mark, invert) | Done; one headless look of all 14 steps; G3 not run | `evidence/MAKE_SOLUTION_ATOMIZATION_EVIDENCE.md` |
+| **M8: Pack 1 acceptance** | **Next**, after the two small additions and the open UI items | — |
 
 ## M7 (delivered 2026-09-24)
 
@@ -241,10 +243,13 @@ The plan's exit:
 - model size budgets;
 - an evidence note.
 
-G1 and G2 run only as the user authorises. Content parity must expect the eight recorded D4 exceptions:
+G1 and G2 run only as the user authorises. Content parity must expect the nine recorded D4 exceptions:
 in weighing, the record-step fix (M6), the seated placement (2026-09-25, which also adds `snapIntoTarget`
 to `atom.place.weighed-vessel` in `src/domain/atomRegistry.json`), the five teacher-prepared steps, and
-the TARE and spatula wording of the zero and transfer steps; in transmittance-dilution, the cuvette insert and remove steps and the funnel, beaker and pipette steps with the 25 mL cylinder (2026-09-26, which also add a catalogue zone, four atoms and four roles); in dilution, the atomized twelve steps (2026-10-02, with two runtime handlers, six atoms, two roles and a catalogue zone); also in
+the TARE and spatula wording of the zero and transfer steps; in transmittance-dilution, the cuvette insert and remove steps and the funnel, beaker and pipette steps with the 25 mL cylinder (2026-09-26, which also add a catalogue zone, four atoms and four roles); in dilution, the atomized twelve steps (2026-10-02, with two runtime handlers, six atoms, two roles and a catalogue zone); in
+making-solution, the atomized fourteen steps (2026-10-04, with the dissolve of the solid in the vessel, rinse washings into a
+receiver and `solventAddition` in the runtime, two new and two generalized atoms, a new role and a renamed one, and the flask's
+funnel seat, which also change transmittance-dilution's funnel atom ids and role names); also in
 transmittance-dilution, the teacher-set volumes and %T, made through its generator input. The core changes
 behind them are listed in `evidence/READINGS_EVIDENCE.md`. `npm run content:check` runs the content rule engine with `--compiled`, which adds
 compiled-context diagnostics through the TypeScript composition loader. It is broader than a basic
@@ -282,7 +287,7 @@ and template rules. `scripts/checkCycle04Foundations.mjs` can't run in this expo
   - Never use bare `git stash`: the stash is shared with the main checkout.
   - Commit messages end with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`.
 - **Content (D4).** Pack 1 technique JSON and its generators stay unchanged except through the D4
-  exceptions recorded in `DECISIONS.md` (eight by 2026-10-03). Any further content or core change needs
+  exceptions recorded in `DECISIONS.md` (nine by 2026-10-04). Any further content or core change needs
   the user's decision first, and becomes the next numbered exception.
 - **Science.**
   - Instruments are measurement-neutral (G-1): no invented readings.

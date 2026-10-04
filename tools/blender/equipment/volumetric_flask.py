@@ -6,10 +6,16 @@ holds 100 mL, so the ring and the fill level the viewer draws from the same prof
 disagree. The stopper is not part of the flask: `rubber-stopper-set` seats at the
 `volumetric-flask-stopper-seat` anchor, computed from the stopper's taper (_fits.py).
 Only "100 mL" is printed: no tolerance class is claimed, since the catalogue states none.
+
+Make a Solution (decided 2026-10-04): a filling funnel seats in the mouth
+(`volumetric-flask-funnel-seat`), where the funnel's origin, its stem tip, sits when the cone rests
+on the mouth where its outer radius equals the bore (_fits.py); the funnel is removed before the
+flask is filled to the mark. A weighed solid tipped in before any water heaps on the flat inner
+floor (solidRest).
 """
 import math
 
-from equipment._fits import FLASK_BORE_D, FLASK_NECK_TOP_Z, stopper_seat_depth
+from equipment._fits import FLASK_BORE_D, FLASK_NECK_TOP_Z, flask_funnel_seat_depth, stopper_seat_depth
 from labeq.geometry import FRONT, lathe, level_for_volume_mm, make_obj, new_root, rounded, set_material_index
 from labeq.markings import markings
 
@@ -73,7 +79,12 @@ def build(coll, M):
         'fill': {'innerProfileMm': inner, 'capacityMl': 100, 'meniscus': 'concave'},
         'graduations': None,
         'calibration': {'ml': 100, 'heightMm': round(ring_z, 2)},
-        'anchors': {'volumetric-flask-stopper-seat': {'positionMm': [0.0, 0.0, round(TOP - stopper_seat_depth(), 3)]}},
+        # a tipped solid heaps on the flat inner floor (radius RB_IN), well inside the bulb
+        'solidRest': {'centreMm': [0.0, 0.0, FLOOR], 'radiusMm': 12.0},
+        'anchors': {
+            'volumetric-flask-stopper-seat': {'positionMm': [0.0, 0.0, round(TOP - stopper_seat_depth(), 3)]},
+            'volumetric-flask-funnel-seat': {'positionMm': [0.0, 0.0, round(TOP - flask_funnel_seat_depth(), 3)]},
+        },
         'displays': [],
         'states': {},
     }

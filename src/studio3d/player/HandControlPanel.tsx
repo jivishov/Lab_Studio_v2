@@ -36,9 +36,13 @@ export interface HandGuideContext {
   lockedLabel?: string;
   /** Not carrying, the aim has settled on an instrument key (TARE). */
   keyLocked: boolean;
+  /** A flask gripped at a swirl step (decided 2026-10-04). */
+  swirlHolding?: boolean;
+  /** A wash bottle over what it rinses: squeezed once locked (decided 2026-10-04). */
+  rinse?: boolean;
 }
 
-export type GestureKey = "grab" | "put" | "lock" | "lower" | "turn" | "draw" | "deliver" | "drops" | "invert" | "key" | "leave";
+export type GestureKey = "grab" | "put" | "lock" | "lower" | "turn" | "draw" | "deliver" | "rinse" | "drops" | "invert" | "swirl" | "key" | "leave";
 
 export const handBadge = (s: HandControlState, now: number): { text: string; tone: "" | "on" | "warn" | "error" } => {
   if (s.error && !s.running) return { text: "Error", tone: "error" };
@@ -61,6 +65,7 @@ export const handGuide = (s: HandControlState, g: HandGuideContext, now: number)
   if (pinch && !s.homeSet) return { text: "Hold your hand where it feels comfortable. That spot becomes the centre of the bench.", warn: false };
   if (g.dropMode) return { text: `Each ${pinch ? "pinch" : "thumb press"} adds one drop; hold it to let the drops run. Grip over At the line when the meniscus meets it.`, gesture: "drops", warn: false };
   if (g.invertHolding) return { text: "Turn your palm over and back to invert the flask once. Open your hand to let go.", gesture: "invert", warn: false };
+  if (g.swirlHolding) return { text: "Move your closed hand in a small circle to swirl the flask. Open your hand to let go.", gesture: "swirl", warn: false };
   if (g.armed === "bubbles") return { text: `Bubbles! ${pinch ? "Keep pinching" : "Keep the thumb pressed"}, lift the tip out of the liquid, lower back in, then ${pinch ? "let go" : "release"} to draw.`, gesture: "draw", warn: true };
   if (g.locked && g.stroke === "turn") return { text: `Locked on ${g.lockedLabel ?? "the target"}. Turn your palm to pour or tip it; lift away to leave.`, gesture: "turn", warn: false };
   if (g.locked && g.draw) {
@@ -73,13 +78,14 @@ export const handGuide = (s: HandControlState, g: HandGuideContext, now: number)
       ? { text: `${pinch ? "Keep pinching" : "Keep the thumb pressed"} and lower the tip into ${g.lockedLabel ?? "the receiver"}; it empties there.`, gesture: "deliver", warn: false }
       : { text: `Locked on ${g.lockedLabel ?? "the receiver"}. Lower the tip in, then ${press} to empty the pipette.`, gesture: "deliver", warn: false };
   }
+  if (g.locked && g.rinse) return { text: `Locked on ${g.lockedLabel ?? "the target"}. ${pinch ? "Pinch" : "Press your thumb"} to squeeze the wash bottle and rinse it.`, gesture: "rinse", warn: false };
   if (g.locked) return { text: `Locked on ${g.lockedLabel ?? "the target"}. Lower your hand, or slide sideways to leave.`, gesture: "lower", warn: false };
   if (g.carrying) return { text: "Move it where it goes and show an open palm to set it down. Over a target, pause until it locks, then lower your hand or turn your palm.", gesture: "put", warn: false };
   if (g.keyLocked) return { text: `Locked on the key. ${pinch ? "Pinch" : "Press your thumb"} to press it.`, gesture: "key", warn: false };
   return { text: `Close your grip over an item and hold to pick it up. To press TARE, pause on the key until it locks, then ${press}.`, gesture: "grab", warn: false };
 };
 
-const GESTURES: Array<{ key: GestureKey; icon: "grip" | "hand" | "lock" | "seat" | "pour" | "pencil" | "flask" | "retry" | "gauge" | "up" | "beaker"; title: string; thumb: string; pinch: string }> = [
+const GESTURES: Array<{ key: GestureKey; icon: "grip" | "hand" | "lock" | "seat" | "pour" | "pencil" | "flask" | "retry" | "reset" | "gauge" | "up" | "beaker"; title: string; thumb: string; pinch: string }> = [
   { key: "grab", icon: "grip", title: "Pick up", thumb: "Close your grip over an item or a tray item and hold", pinch: "Close your grip over an item or a tray item and hold" },
   { key: "put", icon: "hand", title: "Set down", thumb: "Show your open palm over the spot and hold", pinch: "Show your open palm over the spot and hold" },
   { key: "lock", icon: "lock", title: "Aim", thumb: "Pause over the target until it locks", pinch: "Pause over the target until it locks" },
@@ -87,8 +93,10 @@ const GESTURES: Array<{ key: GestureKey; icon: "grip" | "hand" | "lock" | "seat"
   { key: "turn", icon: "pour", title: "Pour or tip", thumb: "Turn your palm, like tipping a beaker", pinch: "Turn your palm, like tipping a beaker" },
   { key: "draw", icon: "pencil", title: "Draw up", thumb: "Press your thumb above the liquid, lower in, then release", pinch: "Pinch above the liquid, lower in, then let go" },
   { key: "deliver", icon: "beaker", title: "Empty a pipette", thumb: "Lower the tip into the receiver, then press your thumb", pinch: "Lower the tip into the receiver, then pinch" },
+  { key: "rinse", icon: "beaker", title: "Rinse", thumb: "Pause the wash bottle over the item until it locks, then press your thumb", pinch: "Pause the wash bottle over the item until it locks, then pinch" },
   { key: "drops", icon: "flask", title: "Drops", thumb: "Each thumb press is a drop; hold it to run", pinch: "Each pinch is a drop; hold it to run" },
   { key: "invert", icon: "retry", title: "Invert", thumb: "Grip the stoppered flask; turn your palm over and back", pinch: "Grip the stoppered flask; turn your palm over and back" },
+  { key: "swirl", icon: "reset", title: "Swirl", thumb: "Grip the flask; move your closed hand in a small circle", pinch: "Grip the flask; move your closed hand in a small circle" },
   { key: "key", icon: "gauge", title: "TARE", thumb: "Pause on the key until it locks, then press your thumb", pinch: "Pause on the key until it locks, then pinch" },
   { key: "leave", icon: "up", title: "Withdraw", thumb: "Lift your hand or move sideways", pinch: "Lift your hand or move sideways" },
 ];

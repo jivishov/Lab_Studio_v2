@@ -218,6 +218,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     pressButton: (t) => handButtons.current.get(t.id)?.click(),
     invertTarget: (instanceId) => isInvertTarget(instanceId),
     invert: () => player.recordEvidence(),
+    swirlTarget: (instanceId) => isSwirlTarget(instanceId),
+    swirl: () => player.recordEvidence(),
     dropMode: () => Boolean(dropMode),
     drop: () => addDropRef.current(1),
     runDrops: (on) => (on ? startRun() : endRun()),
@@ -238,7 +240,9 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   // not yet moved (pourStagingScene); when it ends, the committed scene (G-3).
   // Under reduced motion the pour is skipped (§3.5: levels jump to the committed state), so nothing
   // is staged: a shelf source must not appear beside the target for a frame.
-  const displayScene = player.pour && !reducedMotion ? player.pour.staging : scene;
+  // A committed swirl is staged the same way: the vessel holds what it held until the swirl is drawn.
+  const displayScene = player.pour && !reducedMotion ? player.pour.staging
+    : player.swirl && !reducedMotion ? player.swirl.staging : scene;
   useEffect(() => {
     const pour = player.pour;
     if (!pour) return;
@@ -253,19 +257,32 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     const run = async () => {
       await engine.sync(pour.staging);
       // The pour is framed where it happens, unless the learner has taken the camera (§5.9).
-      if (autoViewRef.current && !reducedMotion) engine.frameItems([pour.sourceId, pour.targetId], 1.4);
+      if (autoViewRef.current && !reducedMotion) engine.frameItems([pour.sourceId, pour.targetId, ...(pour.via ? [pour.via] : [])], 1.4);
       if (source && target) {
         await engine.animatePour({ sourceId: pour.sourceId, targetId: pour.targetId,
           sourceBefore: source.contents, sourceAfter: pour.sourceAfter,
           targetBefore: target.contents, targetAfter: pour.targetAfter,
           // The source is set down where the runtime has it afterwards (parked after a drag).
-          ...(sourceAfter?.placement.kind === "bench" ? { returnTo: sourceAfter.placement.point } : {}) });
+          ...(sourceAfter?.placement.kind === "bench" ? { returnTo: sourceAfter.placement.point } : {}),
+          ...(pour.via ? { via: pour.via } : {}) });
       }
       player.finishPour(pour.id);
     };
     void run();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [player.pour?.id, engine]);
+
+  // A committed swirl (decided 2026-10-04): the flask is drawn swirling, its undissolved solid clearing
+  // in the last turn. Under reduced motion the end state is shown at once (§3.5).
+  useEffect(() => {
+    const swirl = player.swirl;
+    if (!swirl) return;
+    if (reducedMotion || !engine) { player.finishSwirl(swirl.id); return; }
+    void engine.sync(swirl.staging)
+      .then(() => engine.animateSwirl(swirl.vesselId, { before: swirl.before, after: swirl.after }))
+      .then(() => player.finishSwirl(swirl.id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [player.swirl?.id, engine]);
 
   // A committed weighing (handoff §5.7): the vessel is shown on the pan, then back where the runtime
   // keeps it. Under reduced motion the end state is shown at once (§3.5).
@@ -435,6 +452,12 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     const item = scene.bench.find((i) => i.instanceId === id);
     return id === invertVesselId || (item?.placement.kind === "seated" && item.placement.parentInstanceId === invertVesselId);
   };
+  // Swirling to dissolve (decided 2026-10-04): a tap on the flask, Enter on it, the step card's Swirl,
+  // or a closed hand moved in a circle swirls it once, which dissolves the solid in it.
+  const swirlParams = runtime.expectedAction?.verb === "dissolve" && runtime.expectedAction.parameters.mixOperation === "swirl" && !flow.nodeCompleted
+    ? runtime.expectedAction.parameters : undefined;
+  const swirlVesselId = typeof swirlParams?.targetInstanceId === "string" ? swirlParams.targetInstanceId : undefined;
+  const isSwirlTarget = (id: string): boolean => Boolean(swirlVesselId) && id === swirlVesselId;
   const inversions = runtime.state.mixInversions ?? {};
   const inversionTotal = Object.values(inversions).reduce((sum, n) => sum + n, 0);
   const lastInversions = useRef<Record<string, number>>({});
@@ -500,7 +523,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   // the scene from before it, so framing also waits for the pour to finish. A new step also ends a
   // manual-camera suspension (§5.9).
   // A committed pour, weighing or tool transfer being drawn holds the framing back, as a carry does (§5.9).
-  const pouring = Boolean(player.pour || player.weighing || player.toolDeposit);
+  const pouring = Boolean(player.pour || player.weighing || player.toolDeposit || player.swirl);
   const frameRef = useRef(frame);
   frameRef.current = frame;
   const autoViewRef = useRef(autoView);
@@ -568,8 +591,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
         if (next) setSelected(next);
         e.preventDefault();
       } else if (e.key === "Enter") {
-        // At an inversion step, Enter on the stoppered vessel inverts it once.
-        if (selected && isInvertTarget(selected)) { player.recordEvidence(); e.preventDefault(); }
+        // At an inversion or swirl step, Enter on the flask inverts or swirls it once.
+        if (selected && (isInvertTarget(selected) || isSwirlTarget(selected))) { player.recordEvidence(); e.preventDefault(); }
         else if (selected && scene.bench.some((item) => item.instanceId === selected)) { startMove(selected); e.preventDefault(); }
       } else if (e.key === "e" || e.key === "E") { if (selected) examine(selected); }
       else if (e.key === "s" || e.key === "S") { if (selected) player.setSelectedSource(selected); }
@@ -649,8 +672,9 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     else engine?.showMe(expectedSourceId, expectedTargetId);
   };
   tapRef.current = (id, pointerType, x, y) => {
-    // At an inversion step, a tap on the stoppered vessel (or its stopper) inverts it once.
-    if (isInvertTarget(id)) {
+    // At an inversion step, a tap on the stoppered vessel (or its stopper) inverts it once; at a swirl
+    // step, a tap on the flask swirls it.
+    if (isInvertTarget(id) || isSwirlTarget(id)) {
       player.recordEvidence();
       return true;
     }
@@ -711,7 +735,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   const handContact = hand.controller.contact;
   const handCarryAction = carry.gestureAction();
   const handGuideContext: HandGuideContext = {
-    carrying: carry.carrying, dropMode: Boolean(dropMode), invertHolding: Boolean(hand.controller.invertHold), locked: Boolean(handContact),
+    carrying: carry.carrying, dropMode: Boolean(dropMode), invertHolding: Boolean(hand.controller.invertHold), swirlHolding: Boolean(hand.controller.swirlHold),
+    rinse: Boolean(handCarryAction?.rinse), locked: Boolean(handContact),
     stroke: hand.controller.stroke, draw: handCarryAction?.action === "draw", squeeze: Boolean(handCarryAction?.squeeze), armed: hand.controller.armed,
     keyLocked: !carry.carrying && hand.controller.lockedTarget?.kind === "control",
     lockedLabel: handContact?.target.instanceId ? lowerFirstLetter(scene.bench.find((i) => i.instanceId === handContact.target.instanceId)?.label ?? "") || undefined : undefined,
@@ -730,6 +755,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     : pipette && flow.canConfirm ? "Pick up the pipette, then press over the liquid or the cuvette, drag down and let go; or use Source, Target and Confirm. Right-drag to look around."
     : markStep ? `Pick up the pipette and click the ${markVesselLabel} to hold it there, or use the step card. Right-drag to look around.`
     : invertVesselId ? "Click the stoppered flask to invert it, or use Invert in the step card. Right-drag to look around."
+    : swirlVesselId ? "Click the flask to swirl it until the solid dissolves, or use Swirl in the step card. Right-drag to look around."
     : flow.canConfirm ? "Click an item to pick it up, then click where it goes; or use Source, Target and Confirm. Right-drag to look around."
       : player.runtime.expectedAction?.parameters.balanceOperation === "zero" ? "Press TARE on the balance, or Tare in the step card. Right-drag to look around."
       : "Fill in the step card, then record. Right-drag to look around.";

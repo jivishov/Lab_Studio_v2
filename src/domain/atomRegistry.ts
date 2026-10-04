@@ -468,6 +468,13 @@ export const deriveActionEffectContract = (
       classes: ["apparatus-material-instrument-state", "evidence-recording"],
       targets: [{ domain: "equipment" }, { domain: "material" }, { domain: "evidence" }],
     };
+  } else if (action.verb === "dissolve" && action.parameters.mixOperation === "swirl" && interaction.type === "recordNotebook") {
+    // Swirling a vessel to dissolve the solid already in it (decided 2026-10-04): the reducer's
+    // dissolve branch turns that solid into a solution, keeping its identity and mass, and records the swirl.
+    handler = {
+      classes: ["apparatus-material-instrument-state", "evidence-recording"],
+      targets: [{ domain: "equipment" }, { domain: "material" }, { domain: "evidence" }],
+    };
   } else if (action.extractionObservation) {
     handler = {
       classes: ["measurement-direct-observation-acquisition", "evidence-recording"],

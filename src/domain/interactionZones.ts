@@ -121,6 +121,9 @@ export const v1InteractionZones: InteractionZone[] = [
   zone("graduated-pipette-pump-seat", "graduated-pipette-10ml", ["pipette-pump"], "mounted"),
   zone("chromatography-chamber-paper-slot", "chromatography-chamber", ["chromatography-paper"], "developing"),
   zone("volumetric-flask-stopper-seat", "volumetric-flask", ["rubber-stopper-set"], "inserted"),
+  // A temporary filling funnel in the neck, removed before the flask is filled to its mark
+  // (Make a Solution, decided 2026-10-04).
+  zone("volumetric-flask-funnel-seat", "volumetric-flask", ["funnel"], "mounted"),
   zone("spectrophotometer-cuvette-slot", "spectrophotometer", ["cuvette"], "inserted"),
   zone("erlenmeyer-stopper-neck", "erlenmeyer-flask-250ml", ["rubber-stopper-delivery-tube"], "inserted"),
   zone("erlenmeyer-ph-probe-zone", "erlenmeyer-flask-250ml", ["ph-meter"], "inserted"),

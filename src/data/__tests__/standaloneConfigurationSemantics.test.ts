@@ -38,26 +38,16 @@ describe("standalone configuration physical semantics", () => {
     })).some((issue) => issue.message.includes("stockConcentrationM must be greater than zero"))).toBe(true);
   });
 
-  it("rejects non-positive solution quantities and final volume below initial solvent", async () => {
+  it("keeps the solid's mass positive and small enough to dissolve in the half-full flask (decided 2026-10-04)", async () => {
     const definition = await readTechnique("making-solution");
 
-    expect(validateStandaloneConfigurationSemantics(definition, values({
-      initialSolventVolumeMl: 50,
-      soluteMassG: 2.5,
-      finalVolumeMl: 100,
-    }))).toEqual([]);
+    expect(validateStandaloneConfigurationSemantics(definition, values({ soluteMassG: 2.5 }))).toEqual([]);
 
-    expect(validateStandaloneConfigurationSemantics(definition, values({
-      initialSolventVolumeMl: 50,
-      soluteMassG: 0,
-      finalVolumeMl: 100,
-    })).some((issue) => issue.message.includes("soluteMassG must be greater than zero"))).toBe(true);
+    expect(validateStandaloneConfigurationSemantics(definition, values({ soluteMassG: 0 }))
+      .some((issue) => issue.message.includes("soluteMassG must be greater than zero"))).toBe(true);
 
-    expect(validateStandaloneConfigurationSemantics(definition, values({
-      initialSolventVolumeMl: 80,
-      soluteMassG: 2.5,
-      finalVolumeMl: 50,
-    })).some((issue) => issue.message.includes("at least the initial solvent volume"))).toBe(true);
+    expect(validateStandaloneConfigurationSemantics(definition, values({ soluteMassG: 12 }))
+      .some((issue) => issue.message.includes("at most 10 g"))).toBe(true);
   });
 
   it("honors the hard-water ranges stated by the authored drying actions", async () => {

@@ -37,9 +37,19 @@ export type ScenePlacement =
       locked: boolean;
     };
 
+/**
+ * A solid lying under a liquid: a registered state with visible particles (an undissolved solid,
+ * decided 2026-10-04) shows its solid at the model's solid rest, in the one solid palette (G-9).
+ */
+export interface SceneSediment {
+  style: SolidRenderStyle;
+  restMm?: number[];
+  radiusMm?: number;
+}
+
 export type SceneContents =
   | { kind: "none" }
-  | { kind: "liquid"; volumeMl: number; levelMm: number; overfull: boolean; style: LiquidRenderStyle }
+  | { kind: "liquid"; volumeMl: number; levelMm: number; overfull: boolean; style: LiquidRenderStyle; sediment?: SceneSediment }
   | { kind: "solid"; massG?: number; restMm?: number[]; radiusMm?: number; style: SolidRenderStyle }
   | { kind: "wet" };
 
@@ -122,7 +132,11 @@ export const sceneContents = (instance: EquipmentInstance, model?: Equipment3DEn
   if (isVisibleLiquid(contents)) {
     const volumeMl = volumeOf(contents);
     if (volumeMl !== undefined && volumeMl > 0 && model?.fill) {
-      return { kind: "liquid", volumeMl, ...fillLevelMm(model.fill, volumeMl), style: resolveLiquidStyle(contents, definition) };
+      const style = resolveLiquidStyle(contents, definition);
+      const sediment: SceneSediment | undefined = style.particles && model.solidRest
+        ? { style: resolveSolidStyle(contents), restMm: model.solidRest.centreMm, radiusMm: model.solidRest.radiusMm * 0.8 }
+        : undefined;
+      return { kind: "liquid", volumeMl, ...fillLevelMm(model.fill, volumeMl), style, ...(sediment ? { sediment } : {}) };
     }
   }
   if (isVisibleSolidContent(contents)) {

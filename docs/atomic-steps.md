@@ -29,7 +29,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 
 ## Atoms
 
-214 atoms across 15 families.
+216 atoms across 15 families.
 
 | Atom | Family | Verb | Interactions | Required roles |
 |---|---|---|---|---|
@@ -237,8 +237,8 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 | `atom.place.thermal-crucible-assembly` | thermal-decomposition | `place` | `dragToZone`, `snapIntoTarget` | `weighed-vessel` |
 | `atom.heat.thermal-decomposition-stage` | thermal-decomposition | `dry` | `placeInInstrument` | `thermal-heating-instrument`, `weighed-vessel` |
 | `atom.control.thermal-burner` | thermal-decomposition | `reset` | `dragToZone` | `thermal-heating-instrument` |
-| `atom.place.cylinder-filling-funnel` | measurement | `place` | `snapIntoTarget` | `variable-volume-measuring-device`, `cylinder-filling-funnel` |
-| `atom.place.remove-cylinder-filling-funnel` | measurement | `place` | `dragToZone` | `variable-volume-measuring-device`, `cylinder-filling-funnel` |
+| `atom.place.filling-funnel` | measurement | `place` | `snapIntoTarget` | `narrow-necked-vessel`, `filling-funnel` |
+| `atom.place.remove-filling-funnel` | measurement | `place` | `dragToZone` | `narrow-necked-vessel`, `filling-funnel` |
 | `atom.transfer.working-portion` | foundational | `transfer` | `pourInto` | `liquid-source`, `working-portion-vessel` |
 | `atom.transfer.draw-into-transfer-pipette` | foundational | `transfer` | `pourInto` | `pipette-liquid-source`, `transfer-pipette` |
 | `atom.place.pipette-filler` | measurement | `place` | `snapIntoTarget` | `variable-volume-measuring-device`, `pipette-filler` |
@@ -247,6 +247,8 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 | `atom.dilute.dropwise-to-mark` | measurement | `transfer` | `dispenseDrops` | `transfer-pipette`, `final-volume-vessel` |
 | `atom.place.stopper-vessel` | foundational | `place` | `snapIntoTarget` | `vessel-stopper`, `final-volume-vessel` |
 | `atom.mix.invert-stoppered-vessel` | foundational | `mix` | `recordNotebook` | `final-volume-vessel`, `vessel-stopper` |
+| `atom.transfer.weighed-solid-through-funnel` | measurement | `transfer` | `pourInto` | `weighed-sample-source`, `narrow-necked-vessel`, `filling-funnel` |
+| `atom.dissolve.swirl-to-dissolve` | foundational | `dissolve` | `recordNotebook` | `final-volume-vessel` |
 
 ### Family: calorimetry
 
@@ -1178,7 +1180,8 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 - Procedural constraints:
   - Add solvent without implying a calibrated delivered volume.
 - Content examples:
-  - `technique:making-solution` action `add-solvent`
+  - `technique:making-solution` action `fill-water-half`
+  - `technique:making-solution` action `fill-water-below-mark`
 
 #### `atom.place.precipitation-vessel`
 
@@ -1371,6 +1374,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 - Content examples:
   - `technique:transmittance-dilution` action `transmittance-dilution-draw-blank-into-pipette`
   - `technique:transmittance-dilution` action `transmittance-dilution-draw-sample-into-pipette`
+  - `technique:making-solution` action `draw-water-into-pipette`
 
 #### `atom.place.stopper-vessel`
 
@@ -1386,6 +1390,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
   - Decided by the teacher on 2026-10-02 (Pack 1 atomization); no dated plan states this step, so no source example is cited.
 - Content examples:
   - `technique:dilution` action `stopper-flask`
+  - `technique:making-solution` action `stopper-flask`
 
 #### `atom.mix.invert-stoppered-vessel`
 
@@ -1402,6 +1407,23 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
   - Decided by the teacher on 2026-10-02 (Pack 1 atomization); no dated plan states this step, so no source example is cited.
 - Content examples:
   - `technique:dilution` action `invert-to-mix`
+  - `technique:making-solution` action `invert-to-mix`
+
+#### `atom.dissolve.swirl-to-dissolve`
+
+**Swirl a vessel until the solid in it dissolves**
+
+- Verb: `dissolve`
+- Allowed interaction types: `recordNotebook`
+- Required roles: `final-volume-vessel`
+- Optional roles: none
+- Evidence: no undissolved solid left in the vessel
+- Procedural constraints:
+  - The solid is dissolved by swirling the flask about half full of solvent, before it is filled to the mark; a stirring rod is not put into a volumetric flask.
+  - The solid dissolved is the one already in the vessel: its identity and mass are carried into the solution, never set by this step.
+  - Decided by the teacher on 2026-10-04 (Make a Solution atomization); no dated plan states this step, so no source example is cited.
+- Content examples:
+  - `technique:making-solution` action `swirl-to-dissolve`
 
 ### Family: gravimetry
 
@@ -1779,16 +1801,19 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 - Verb: `rinse`
 - Allowed interaction types: `rinseTarget`
 - Required roles: `rinse-water-source`, `rinsed-vessel`
-- Optional roles: none
+- Optional roles: `receiving-vessel`
 - Evidence: residue transferred, source vessel visibly rinsed
 - Procedural constraints:
   - The rinse volume is deliberately unstated in the source; do not attach a measured quantity to it.
   - A rinse-water source must never be a calibrated delivery device.
+  - When the rinse names the vessel its washings run into, the rinse water and any residue go into that vessel, as when a weighing boat and then its funnel are rinsed into a volumetric flask (Make a Solution, decided by the teacher on 2026-10-04).
 - Source examples:
   - `what-makes-hard-water-hard_2026-07-27.md` phase step `FD-07` (M)
 - Content examples:
   - `technique:gravimetric-vacuum-filtration` action `rinse-practice-beaker`
   - `technique:filtration` action `rinse-precipitate`
+  - `technique:making-solution` action `rinse-boat-into-funnel`
+  - `technique:making-solution` action `rinse-funnel-into-flask`
 
 #### `atom.dilute.to-final-volume`
 
@@ -1909,35 +1934,37 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
   - The source volume has already been read by a calibrated device; this operation transfers that aliquot and does not relabel it as solvent.
   - Measuring and transferring remain distinct authored operations.
 
-#### `atom.place.cylinder-filling-funnel`
+#### `atom.place.filling-funnel`
 
-**Seat a filling funnel in a graduated cylinder**
+**Seat a filling funnel in a narrow-necked vessel**
 
 - Verb: `place`
 - Allowed interaction types: `snapIntoTarget`
-- Required roles: `variable-volume-measuring-device`, `cylinder-filling-funnel`
+- Required roles: `narrow-necked-vessel`, `filling-funnel`
 - Optional roles: none
-- Evidence: filling funnel seated in the graduated cylinder's mouth
+- Evidence: filling funnel seated in the vessel's mouth
 - Procedural constraints:
-  - The funnel is a temporary aid for pouring from a wide bottle; it is seated before the pour and removed before the volume is read.
-  - Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited.
+  - The funnel is a temporary filling aid: it is seated before a liquid is poured, or a weighed solid tipped, into the narrow mouth, and removed before the volume is read or the flask is brought to its mark.
+  - Decided by the teacher on 2026-09-26 for transmittance-dilution's 25 mL cylinder and generalized on 2026-10-04 to the volumetric flask for Make a Solution; no dated plan states this step, so no source example is cited.
 - Content examples:
   - `technique:transmittance-dilution` action `transmittance-dilution-seat-cylinder-funnel`
+  - `technique:making-solution` action `seat-funnel`
 
-#### `atom.place.remove-cylinder-filling-funnel`
+#### `atom.place.remove-filling-funnel`
 
-**Remove the filling funnel before reading the cylinder**
+**Remove the filling funnel from a narrow-necked vessel**
 
 - Verb: `place`
 - Allowed interaction types: `dragToZone`
-- Required roles: `variable-volume-measuring-device`, `cylinder-filling-funnel`
+- Required roles: `narrow-necked-vessel`, `filling-funnel`
 - Optional roles: none
-- Evidence: filling funnel detached from the graduated cylinder and placed on the workbench
+- Evidence: filling funnel detached from the vessel and placed on the workbench
 - Procedural constraints:
-  - The funnel is lifted out and set on the workbench so it neither drains into nor hides the meniscus when the volume is read.
-  - Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited.
+  - The funnel is lifted out and set on the workbench, so it neither drains into nor hides the meniscus when the volume is read or the flask is filled to its mark.
+  - Decided by the teacher on 2026-09-26 for transmittance-dilution's 25 mL cylinder and generalized on 2026-10-04 to the volumetric flask for Make a Solution; no dated plan states this step, so no source example is cited.
 - Content examples:
   - `technique:transmittance-dilution` action `transmittance-dilution-remove-cylinder-funnel`
+  - `technique:making-solution` action `remove-funnel`
 
 #### `atom.place.pipette-filler`
 
@@ -2001,6 +2028,23 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
   - Decided by the teacher on 2026-10-02 (Pack 1 atomization); no dated plan states this step, so no source example is cited.
 - Content examples:
   - `technique:dilution` action `bring-to-mark-dropwise`
+  - `technique:making-solution` action `bring-to-mark-dropwise`
+
+#### `atom.transfer.weighed-solid-through-funnel`
+
+**Tip a pre-weighed solid through a filling funnel into a narrow-necked vessel**
+
+- Verb: `transfer`
+- Allowed interaction types: `pourInto`
+- Required roles: `weighed-sample-source`, `narrow-necked-vessel`, `filling-funnel`
+- Optional roles: none
+- Evidence: the weighed solid in the vessel and its weighing boat emptied
+- Procedural constraints:
+  - The funnel is seated first: a solid is never tipped straight at a narrow neck.
+  - The whole weighed portion is tipped in, and what clings to the boat and the funnel is rinsed in after it (atom.rinse.quantitative-transfer), so all of the weighed mass reaches the vessel.
+  - Decided by the teacher on 2026-10-04 (Make a Solution atomization); no dated plan states this step, so no source example is cited.
+- Content examples:
+  - `technique:making-solution` action `tip-solid-into-funnel`
 
 ### Family: qualitative-analysis
 
@@ -4031,7 +4075,7 @@ A role is a constraint, not a synonym for one apparatus id. Capacity, tolerance,
 | `filtration-receiver` | vessel | `beaker-150ml`, `beaker-250ml`, `erlenmeyer-flask-250ml`, `side-arm-filter-flask` | — | GRAV-04 aligns the receiver under the outlet before any pour. A side-arm flask is required only in the vacuum configuration. |
 | `filtration-vacuum-source` | tool | `vacuum-source` | — | Investigation 3 lists a vacuum filtration apparatus but never illustrates or enumerates it (finding 3, M/C), and confirmation point 1 leaves gravity versus vacuum open. The role exists so the vacuum configuration can be assembled explicitly rather than implied, and it is unfilled in the gravity configuration. |
 | `mixture-source` | delivery | `beaker-150ml`, `beaker-250ml`, `erlenmeyer-flask-250ml` | — | FD-06 requires a slow pour without overflow, so the source vessel is part of the validated behaviour. |
-| `rinsed-vessel` | vessel | `beaker-150ml`, `beaker-250ml`, `erlenmeyer-flask-250ml`, `funnel`, `test-tube` | — | FD-07 rinses the beaker for quantitative transfer; the same role covers conditioning rinses elsewhere. |
+| `rinsed-vessel` | vessel | `beaker-150ml`, `beaker-250ml`, `erlenmeyer-flask-250ml`, `funnel`, `test-tube`, `weigh-boat` | — | FD-07 rinses the beaker for quantitative transfer; the same role covers conditioning rinses elsewhere. Make a Solution rinses the weighing boat, then the funnel, into the volumetric flask after tipping the weighed solid (decided by the teacher on 2026-10-04; no dated plan states it). |
 | `drying-instrument` | instrument | `drying-oven` | — | FD-13 states 110-120 C. The range is source-stated; the exact setpoint stays configurable. |
 | `dried-assembly` | vessel | `crucible-with-lid`, `watch-glass`, `weigh-boat` | — | DRY-00 and DRY-01 put the pre-weighed, labelled watch glass under the paper and precipitate. |
 | `cooling-tool` | tool | `crucible-tongs` | — | S-05 and S-06 require heat-safe handling and full cooling before the assembly is weighed. |
@@ -4087,7 +4131,8 @@ A role is a constraint, not a synonym for one apparatus id. Capacity, tolerance,
 | `thermal-support` | support | `ring-stand`, `clay-triangle` | — | The thermal route needs the ring stand and clay triangle as a stable support assembly before the crucible is heated. This role does not substitute for the burner or the weighed vessel. |
 | `thermal-heating-instrument` | instrument | `bunsen-burner` | — | The approved thermal decomposition route uses a Bunsen burner for gentle warming and repeated heating. The exact intensity and duration remain configuration values. |
 | `color-depth-comparison-vessel` | vessel | `test-tube` | — | Investigation 2 V-01 fills a dedicated comparison tube for each arm of the paired visual method, and V-02 then removes solution from the standard arm only. The receiving tube is a material endpoint distinct from the comparison apparatus that holds the pair over the white field, and distinct from the original labelled tube a measured cuvette portion is returned to at S-09. |
-| `cylinder-filling-funnel` | vessel | `funnel` | — | A funnel seated in a graduated cylinder's mouth while a liquid is poured in from a wide bottle, and removed before the volume is read. Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited. It cannot satisfy the filtration-funnel or burette-filling-funnel roles. |
+| `filling-funnel` | vessel | `funnel` | — | A funnel seated in the mouth of a narrow-necked vessel while a liquid is poured or a weighed solid is tipped in, and removed before the volume is read or the flask is brought to its mark. Decided by the teacher on 2026-09-26 for transmittance-dilution's 25 mL cylinder and widened on 2026-10-04 to the volumetric flask for Make a Solution; no dated plan states either practice, so no source example is cited. It cannot satisfy the filtration-funnel or burette-filling-funnel roles. |
+| `narrow-necked-vessel` | vessel | `graduated-cylinder-25ml`, `volumetric-flask` | — | A vessel whose mouth is too narrow to pour or tip into without a filling funnel, and which has a funnel seat in its mouth: the 25 mL graduated cylinder (transmittance-dilution, decided by the teacher on 2026-09-26) and the 100 mL volumetric flask (Make a Solution, decided on 2026-10-04). No dated plan states either practice, so no source example is cited. |
 | `working-portion-vessel` | vessel | `beaker-150ml`, `beaker-250ml` | — | A clean vessel that holds an unmeasured working portion poured from a stock bottle, so that no pipette or other tool enters the stock. Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited. |
 | `pipette-liquid-source` | vessel | `beaker-150ml`, `beaker-250ml`, `test-tube` | — | An open vessel whose liquid a transfer pipette draws up: a working portion in a beaker, or a prepared sample in a test tube. A stock bottle is never one. Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited. |
 | `transfer-pipette` | delivery | `beral-pipette` | — | A disposable transfer pipette that carries a small unmeasured volume, as when filling a cuvette. Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited. |
@@ -4110,5 +4155,5 @@ A role is a constraint, not a synonym for one apparatus id. Capacity, tolerance,
 - `provenance-matched-sample-receiver` must not be confused with `receiving-vessel`, `phase-receiver`.
 - `measured-liquid-source` must not be confused with `measured-solvent-source`, `liquid-source`.
 - `color-depth-comparison-vessel` must not be confused with `receiving-vessel`, `provenance-matched-sample-receiver`, `color-depth-comparison-apparatus`.
-- `cylinder-filling-funnel` must not be confused with `burette-filling-funnel`, `filtration-funnel`.
+- `filling-funnel` must not be confused with `burette-filling-funnel`, `filtration-funnel`.
 - `transfer-pipette` must not be confused with `photometric-aliquot-tool`, `variable-volume-measuring-device`.

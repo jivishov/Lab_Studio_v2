@@ -939,6 +939,7 @@ export const v1VisualCatalog: VisualCatalog = {
     hitBox: rect(0, 0, 98, 142),
     visualZones: [
       { id: "volumetric-flask-stopper-seat", bounds: rect(39, 8, 20, 26), anchor: { x: 49, y: 26 } },
+      { id: "volumetric-flask-funnel-seat", bounds: rect(14, -40, 70, 66), anchor: { x: 49, y: 26 } },
     ],
     contentRegions: [liquidRect(rect(24, 54, 50, 60), "wide-bottom")],
     liquidVisualProfile: liquidProfile(

@@ -46,7 +46,8 @@ export const compatibleInteractionVerbs: Record<ActionInteractionType, readonly 
   placeInInstrument: ["dry", "heat", "cool", "stressEquilibrium"],
   readInstrument: ["weigh", "measureVolume", "observe", "stressEquilibrium"],
   recordTimeSeries: ["record"],
-  recordNotebook: ["calculate", "record", "observe", "stressEquilibrium", "mix", "vent", "settle", "dry", "cool", "transfer", "rinse", "developChromatogram"],
+  // `dissolve` only as a swirl that dissolves the solid already in its vessel (validation.ts; decided 2026-10-04).
+  recordNotebook: ["calculate", "record", "observe", "stressEquilibrium", "mix", "vent", "settle", "dry", "cool", "transfer", "rinse", "developChromatogram", "dissolve"],
   submitCalculation: ["calculate"],
 };
 

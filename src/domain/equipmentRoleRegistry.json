@@ -440,9 +440,10 @@
         "beaker-250ml",
         "erlenmeyer-flask-250ml",
         "funnel",
-        "test-tube"
+        "test-tube",
+        "weigh-boat"
       ],
-      "rationale": "FD-07 rinses the beaker for quantitative transfer; the same role covers conditioning rinses elsewhere."
+      "rationale": "FD-07 rinses the beaker for quantitative transfer; the same role covers conditioning rinses elsewhere. Make a Solution rinses the weighing boat, then the funnel, into the volumetric flask after tipping the weighed solid (decided by the teacher on 2026-10-04; no dated plan states it)."
     },
     {
       "id": "drying-instrument",
@@ -1250,8 +1251,8 @@
       ]
     },
     {
-      "id": "cylinder-filling-funnel",
-      "label": "Cylinder filling funnel",
+      "id": "filling-funnel",
+      "label": "Filling funnel",
       "kind": "vessel",
       "constraints": {
         "use": "temporary filling aid",
@@ -1261,11 +1262,22 @@
       "allowedEquipmentIds": [
         "funnel"
       ],
-      "rationale": "A funnel seated in a graduated cylinder's mouth while a liquid is poured in from a wide bottle, and removed before the volume is read. Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited. It cannot satisfy the filtration-funnel or burette-filling-funnel roles.",
+      "rationale": "A funnel seated in the mouth of a narrow-necked vessel while a liquid is poured or a weighed solid is tipped in, and removed before the volume is read or the flask is brought to its mark. Decided by the teacher on 2026-09-26 for transmittance-dilution's 25 mL cylinder and widened on 2026-10-04 to the volumetric flask for Make a Solution; no dated plan states either practice, so no source example is cited. It cannot satisfy the filtration-funnel or burette-filling-funnel roles.",
       "distinguishedFrom": [
         "burette-filling-funnel",
         "filtration-funnel"
       ]
+    },
+    {
+      "id": "narrow-necked-vessel",
+      "label": "Narrow-necked vessel filled through a funnel",
+      "kind": "vessel",
+      "constraints": {},
+      "allowedEquipmentIds": [
+        "graduated-cylinder-25ml",
+        "volumetric-flask"
+      ],
+      "rationale": "A vessel whose mouth is too narrow to pour or tip into without a filling funnel, and which has a funnel seat in its mouth: the 25 mL graduated cylinder (transmittance-dilution, decided by the teacher on 2026-09-26) and the 100 mL volumetric flask (Make a Solution, decided on 2026-10-04). No dated plan states either practice, so no source example is cited."
     },
     {
       "id": "working-portion-vessel",

@@ -237,13 +237,12 @@ export const validateStandaloneConfigurationSemantics = (
   }
 
   if (definition.id === "making-solution") {
-    const initial = numeric(values, "initialSolventVolumeMl");
-    const finalVolume = numeric(values, "finalVolumeMl");
-    if (initial !== undefined && finalVolume !== undefined && finalVolume < initial) {
-      add(
-        ["initialSolventVolumeMl", "finalVolumeMl"],
-        "finalVolumeMl must be at least the initial solvent volume already placed in the flask.",
-      );
+    // The weighed sodium carbonate is dissolved in the half-full 100 mL flask, then made up to the
+    // mark (decided 2026-10-04), so the final volume is the flask's and the mass must dissolve in about
+    // 50 mL: sodium carbonate dissolves to about 21 g per 100 mL of water at 20 °C.
+    const mass = numeric(values, "soluteMassG");
+    if (mass !== undefined && mass > 10) {
+      add(["soluteMassG"], "soluteMassG must be at most 10 g, so it dissolves in the half-full 100 mL flask.");
     }
   }
 

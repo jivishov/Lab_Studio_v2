@@ -70,12 +70,14 @@ export const clickCallout = (text: string, action: PressAction): string => {
 /**
  * A hand carry's callout (§8 of the adoption brief): "Release to …" becomes the hand's own action:
  * an open palm for a set-down, place or hold; a palm turn for a pour or a scoop tipped; lowering for
- * a seat or a scoop; squeezing at depth to empty a pipette; squeeze, lower and let go to draw.
+ * a seat or a scoop; squeezing at depth to empty a pipette; squeeze, lower and let go to draw; and a
+ * wash bottle locked on what it rinses is squeezed (decided 2026-10-04).
  */
-export const handCallout = (text: string, action: PressAction, how: { turn: boolean; squeeze: boolean }): string => {
+export const handCallout = (text: string, action: PressAction, how: { turn: boolean; squeeze: boolean; rinse?: boolean }): string => {
   if (!text.startsWith("Release to ")) return text;
   const rest = text.slice("Release to ".length);
   if (how.turn) return `Pause here, then turn your palm to ${rest}`;
+  if (how.rinse) return `Pause here, then squeeze to ${rest}`;
   if (action === "commit") return `Open your palm to ${rest}`;
   if (action === "draw") return `Squeeze above it, lower in and let go to ${rest}`;
   if (how.squeeze) return `Pause here, lower in and squeeze to ${rest}`;
@@ -97,6 +99,8 @@ type Carry =
       stroke?: Stroke;
       /** The pour target under the carried item, for the tilt drawn during a pour stroke. */
       pourToward?: string;
+      /** The item the carried wash bottle would rinse here (a rinse step's valid target). */
+      rinseAt?: string;
       /** The kind of the last callout: "valid" when over a target the step accepts. */
       lastKind?: CarryCallout["kind"] }
   | { kind: "tray"; via: "pointer" | "gesture"; definitionId: string; point?: BenchPoint; click?: boolean; pressAction?: PressAction; stroke?: Stroke;
@@ -146,7 +150,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
   const { scene, interaction, showGuidance, flow } = player;
   // Nothing is picked up while a committed pour, weighing or tool transfer is being drawn.
   const pouringRef = useRef(false);
-  pouringRef.current = Boolean(player.pour || player.weighing || player.toolDeposit);
+  pouringRef.current = Boolean(player.pour || player.weighing || player.toolDeposit || player.swirl);
 
   // A solid transfer this step makes with a tool (the spatula), decided 2026-09-25.
   const toolTransfer = player.toolTransfer;
@@ -257,7 +261,8 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
         const isTool = Boolean(toolTransfer && carry.definitionId === toolTransfer.toolDefinitionId);
         const turn = (action === "insert" && Boolean(carry.pourToward)) || (isTool && carry.kind === "bench" && Boolean(carry.toolLoaded) && shown.kind === "valid");
         const squeeze = action === "insert" && pipette?.kind === "deliver" && carry.kind === "bench" && carry.instanceId === pipette.toolInstanceId;
-        out = { ...shown, text: handCallout(shown.text, action, { turn, squeeze }) };
+        const rinse = action === "commit" && carry.kind === "bench" && Boolean(carry.rinseAt);
+        out = { ...shown, text: handCallout(shown.text, action, { turn, squeeze, rinse }) };
       }
       setCallout(out);
       return out;
@@ -389,6 +394,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     const pourCue = !tipsSource && interaction?.type === "pourInto" && overlap.kind === "valid" && overlap.target ? overlap.target.id : undefined;
     carry.liftMm = surfaceMm + LIFT_MM;
     carry.pourToward = pourCue;
+    carry.rinseAt = !tipsSource && interaction?.type === "rinseTarget" && overlap.kind === "valid" && overlap.target ? overlap.target.id : undefined;
     engine.previewCarry(carry.instanceId, point.xMm, point.yMm, carry.liftMm, pourCue);
     const top = screenAt ? undefined : engine.screenPoint(carry.instanceId, 1);
     const screen = screenAt ?? (top ? { x: top.x, y: top.y - 30 } : { x: 0, y: 0 });
@@ -891,7 +897,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     // Off the bench nothing is aimed at, so letting go here only puts the item back.
     carry.pressAction = "commit";
     carry.pourToward = undefined;
-    if (carry.kind === "bench") carry.lastKind = undefined;
+    if (carry.kind === "bench") { carry.lastKind = undefined; carry.rinseAt = undefined; }
     engine.setTargetRing(null);
     setCallout(undefined);
   }, [carryToPointer, engine, overBench]);
@@ -916,15 +922,17 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
    * Hand control (the microarray lab's controller, decided 2026-10-04): what the hand's carry would
    * do where it is now. A pour, or a dipped tool over its target, acts on a turn of the palm.
    */
-  const gestureAction = useCallback((): { action: PressAction; pour: boolean; tip: boolean; squeeze: boolean } | undefined => {
+  const gestureAction = useCallback((): { action: PressAction; pour: boolean; tip: boolean; squeeze: boolean; rinse: boolean } | undefined => {
     const carry = carryRef.current;
     if (carry?.via !== "gesture") return undefined;
     const action = carry.pressAction ?? "commit";
-    if (carry.kind === "tray") return { action: "commit", pour: false, tip: false, squeeze: false };
+    if (carry.kind === "tray") return { action: "commit", pour: false, tip: false, squeeze: false, rinse: false };
     const tool = Boolean(toolTransfer && carry.definitionId === toolTransfer.toolDefinitionId);
     // A pipette over the receiver it empties into delivers when its bulb is squeezed at depth.
     const squeeze = action === "insert" && pipette?.kind === "deliver" && carry.instanceId === pipette.toolInstanceId;
-    return { action, pour: action === "insert" && Boolean(carry.pourToward), tip: tool && Boolean(carry.toolLoaded) && carry.lastKind === "valid", squeeze };
+    // A wash bottle over what it rinses squirts when it is squeezed (decided 2026-10-04).
+    const rinse = action === "commit" && Boolean(carry.rinseAt);
+    return { action, pour: action === "insert" && Boolean(carry.pourToward), tip: tool && Boolean(carry.toolLoaded) && carry.lastKind === "valid", squeeze, rinse };
   }, [pipette, toolTransfer]);
 
   /** Hand control: draw the carried item at a stroke depth (0..1). */

@@ -221,6 +221,8 @@ export const v1EquipmentCatalog: EquipmentDefinition[] = [
     "pourable",
     "recordable",
   ], 20, 0.5, ["empty", "liquid", "solid", "solution", "mixture", "precipitate"]),
+  // `solid` and `mixture` because Make a Solution tips a weighed solid through a funnel into the dry
+  // flask, then rinses it in and swirls it with water until it dissolves (decided 2026-10-04).
   equipment(
     "volumetric-flask",
     "Volumetric flask",
@@ -233,12 +235,21 @@ export const v1EquipmentCatalog: EquipmentDefinition[] = [
     ],
     100,
     0.1,
-    ["empty", "liquid", "solution"],
+    ["empty", "liquid", "solid", "solution", "mixture"],
     [
       {
         id: "volumetric-flask-stopper-seat",
         label: "Volumetric flask stopper seat",
         accepts: ["rubber-stopper-set"],
+        x: 49,
+        y: 26,
+      },
+      // A temporary filling funnel in the neck, removed before the flask is filled to its mark
+      // (decided 2026-10-04).
+      {
+        id: "volumetric-flask-funnel-seat",
+        label: "Volumetric flask filling funnel seat",
+        accepts: ["funnel"],
         x: 49,
         y: 26,
       },

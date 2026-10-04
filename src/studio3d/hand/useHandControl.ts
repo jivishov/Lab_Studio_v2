@@ -63,6 +63,8 @@ export const useHandControl = (api: HandApi) => {
     pressButton: (t) => apiRef.current.pressButton(t),
     invertTarget: (id) => apiRef.current.invertTarget(id),
     invert: () => apiRef.current.invert(),
+    swirlTarget: (id) => apiRef.current.swirlTarget(id),
+    swirl: () => apiRef.current.swirl(),
     dropMode: () => apiRef.current.dropMode(),
     drop: () => apiRef.current.drop(),
     runDrops: (on) => apiRef.current.runDrops(on),

@@ -28,13 +28,17 @@ describe("the Flow view reads a draft without changing it (handoff §4.4)", () =
   it("shows each step's verb, derived interaction, equipment and input role", () => {
     const cards = nodeCards(draft, assessStudioReadiness(draft).diagnostics);
     expect(cards).toHaveLength(draft.process.nodes.length);
+    // Make a Solution, atomized (decided 2026-10-04), starts by placing the flask.
     const first = cards[0];
     expect(first.isStart).toBe(true);
-    expect(first.interaction).toBe("pourInto");
-    expect(first.icon).toBe("pour");
+    expect(first.interaction).toBe("dragToZone");
+    expect(first.icon).toBe("move");
     expect(first.equipment).toContain("volumetric-flask");
-    expect(first.inputRole).toBe("teacherConfiguration");
+    expect(first.inputRole).toBeUndefined();
     expect(first.eyebrow.startsWith("Action · ")).toBe(true);
+    const swirl = cards.find((card) => card.id === "swirl-to-dissolve-node");
+    expect(swirl?.interaction).toBe("recordNotebook");
+    expect(swirl?.icon).toBe("pencil");
   });
 
   it("counts the Studio's diagnostics on the step they concern", () => {

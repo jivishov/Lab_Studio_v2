@@ -135,6 +135,7 @@ export const StepCard = ({ player, controls, onShowMe, onHoldOver, holdOverReady
           ) : flow.interaction?.type === "recordNotebook" ? (
             <button type="button" className="s3d-button s3d-button--primary" data-hand-press="record-evidence" disabled={!(flow.canRecord || flow.canRecordObservation)} onClick={player.recordEvidence}>
               {runtime.expectedAction?.parameters.balanceOperation === "zero" ? "Tare"
+                : runtime.expectedAction?.parameters.mixOperation === "swirl" ? "Swirl"
                 : runtime.expectedAction?.parameters.mixOperation === "invert"
                   ? `Invert (${runtime.state.mixInversions?.[runtime.expectedAction.id] ?? 0} of ${Number(runtime.expectedAction.parameters.inversions ?? 10)})`
                   : "Record"}

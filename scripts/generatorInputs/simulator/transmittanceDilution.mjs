@@ -354,10 +354,10 @@ const definition = {
       "evidence": [
         "place"
       ],
-      "atomId": "atom.place.cylinder-filling-funnel",
+      "atomId": "atom.place.filling-funnel",
       "equipmentRoleBindings": {
-        "variable-volume-measuring-device": "graduated-cylinder-25ml",
-        "cylinder-filling-funnel": "funnel"
+        "narrow-necked-vessel": "graduated-cylinder-25ml",
+        "filling-funnel": "funnel"
       },
       "interaction": {
         "type": "snapIntoTarget",
@@ -444,10 +444,10 @@ const definition = {
       "evidence": [
         "place"
       ],
-      "atomId": "atom.place.remove-cylinder-filling-funnel",
+      "atomId": "atom.place.remove-filling-funnel",
       "equipmentRoleBindings": {
-        "variable-volume-measuring-device": "graduated-cylinder-25ml",
-        "cylinder-filling-funnel": "funnel"
+        "narrow-necked-vessel": "graduated-cylinder-25ml",
+        "filling-funnel": "funnel"
       },
       "interaction": {
         "type": "dragToZone",
@@ -2258,10 +2258,18 @@ const definition = {
         "sourceInstanceIds": []
       },
       {
-        "roleId": "cylinder-filling-funnel",
+        "roleId": "filling-funnel",
         "required": true,
         "allowedDefinitionIds": [
           "funnel"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "narrow-necked-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "graduated-cylinder-25ml"
         ],
         "sourceInstanceIds": []
       },

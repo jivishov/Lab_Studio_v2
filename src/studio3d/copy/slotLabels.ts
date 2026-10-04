@@ -24,7 +24,7 @@ const LABELS: Record<string, SlotLabel> = {
   // making-solution
   finalVolumeMl: { label: "Final solution volume", unit: "mL" },
   initialSolventVolumeMl: { label: "Initial solvent volume", unit: "mL", help: "Deionized water added from the wash bottle first." },
-  soluteMassG: { label: "Solute mass", unit: "g" },
+  soluteMassG: { label: "Sodium carbonate in the weighing boat", unit: "g", help: "The pre-weighed mass the student tips into the flask, at most 10 g so it dissolves in the half-full flask." },
   solutionObservation: { label: "Solution appearance to record", help: "The appearance evidence the notebook step records." },
   // dilution
   aliquotVolumeMl: { label: "Aliquot volume", unit: "mL" },

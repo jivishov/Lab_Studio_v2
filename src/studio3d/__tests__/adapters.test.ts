@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { applyTechniqueConfiguration } from "../../data/techniqueConfiguration";
+import { solutionTechnique } from "../../domain/fixtures";
 import type { ActionDefinition, EquipmentInstance, RuntimeState, TechniqueDefinition } from "../../domain/types";
 import { equipmentById } from "../../equipment/catalog";
 import { resolveLiquidStyle } from "../../equipment/liquidRendering";
@@ -177,9 +178,9 @@ describe("weighing through the real runtime: the balance shows the teacher-prepa
 });
 
 describe("bench positions follow the 2D workbench (G-3)", () => {
-  const making = applyTechniqueConfiguration(readTechnique("making-solution"), {
-    initialSolventVolumeMl: "50", soluteMassG: "1.06", finalVolumeMl: "100", solutionObservation: "clear colourless solution",
-  });
+  // The fixture keeps Make a Solution's first step from before its atomization (decided 2026-10-04): a
+  // pour from the wash bottle on the shelf into the flask on the shelf, the case this is about.
+  const making = solutionTechnique;
 
   it("stands an item the runtime moved onto the bench without coordinates at the 2D default slot", () => {
     // Step 1 by the accessible flow's Confirm: the runtime resolves the source and target itself,

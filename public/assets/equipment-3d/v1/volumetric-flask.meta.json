@@ -155,12 +155,27 @@
       "ml": 100,
       "heightMm": 123.69
     },
+    "solidRest": {
+      "centreMm": [
+        0.0,
+        0.0,
+        2.2
+      ],
+      "radiusMm": 12.0
+    },
     "anchors": {
       "volumetric-flask-stopper-seat": {
         "positionMm": [
           0.0,
           0.0,
           160.625
+        ]
+      },
+      "volumetric-flask-funnel-seat": {
+        "positionMm": [
+          0.0,
+          0.0,
+          118.505
         ]
       }
     },
@@ -193,7 +208,7 @@
     "blender": "5.2.2",
     "generator": "tools/blender/equipment/volumetric_flask.py",
     "library": "tools/blender/labeq",
-    "sourceHash": "abc8ff6ad0cd6f1ef3560a584f7f8685f8fce9d6c596b60397ec316239d1a1fc",
+    "sourceHash": "e38e081cccc2df6427216db1090e5604827cb861eb9357660137a46692b30fa3",
     "markingFont": {
       "family": "Inter",
       "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
