@@ -7,7 +7,8 @@ import { ModelLibrary } from "../equipment3d/loadModels";
 import type { Equipment3DEntry } from "../equipment3d/types";
 import { makeComposer } from "./look/composer";
 import { ContactShadows } from "./look/contactShadows";
-import { labEnvironment } from "./look/environment";
+import { ENVIRONMENT_INTENSITY, labEnvironment } from "./look/environment";
+import { buildRoom, roomBackground, type Room } from "./look/room";
 import { disposeTextures, makeTextures, type BenchTextures } from "./look/textures";
 import { buildContents, buildTiltingLiquid, disposeObject, liquidOpacity3D, parseCssColour } from "./scene/contents";
 import { buildDisplayFace, type DisplayFace } from "./scene/displays";
@@ -82,10 +83,14 @@ const DEMO = { source: 0.7, travel: 1.2, target: 0.8 };
 const PICK_PROXY = { belowHeightMm: 10, heightMm: 16, minWidthMm: 24 };
 const PICK_PROXY_MATERIAL = new THREE.MeshBasicMaterial();
 
-const QUALITY: Record<GraphicsQuality, { pixelRatio: number; samples: number; contact: number; keyShadow: boolean; textures: "full" | "reduced" }> = {
-  high: { pixelRatio: 2, samples: 4, contact: 1024, keyShadow: true, textures: "full" },
-  balanced: { pixelRatio: 1.5, samples: 2, contact: 512, keyShadow: true, textures: "full" },
-  low: { pixelRatio: 1, samples: 0, contact: 256, keyShadow: false, textures: "reduced" },
+/**
+ * Graphics tiers. Pixel-ratio cap, MSAA, key shadow map and bloom are the DNA microarray 3D lab's
+ * (`3d-v3/renderer.js:114`, adopted 2026-10-03/04); contact shadows and texture sizes are Lab Studio's.
+ */
+const QUALITY: Record<GraphicsQuality, { pixelRatio: number; samples: number; shadowMap: number; bloom: boolean; contact: number; textures: "full" | "reduced" }> = {
+  high: { pixelRatio: 1.6, samples: 4, shadowMap: 2048, bloom: true, contact: 1024, textures: "full" },
+  balanced: { pixelRatio: 1.25, samples: 4, shadowMap: 2048, bloom: true, contact: 512, textures: "full" },
+  low: { pixelRatio: 1, samples: 0, shadowMap: 1024, bloom: false, contact: 256, textures: "reduced" },
 };
 
 export const webgl2Available = (): boolean => {
@@ -105,6 +110,8 @@ export class BenchEngine {
   private readonly textures: BenchTextures;
   private readonly models: ModelLibrary;
   private readonly contact: ContactShadows;
+  /** The teaching-lab room and its lights (scenery, G-8). */
+  private readonly room: Room;
   private readonly signals = new Signals();
   private readonly items = new Map<string, ItemView>();
   private readonly itemLayer = new THREE.Group();
@@ -157,23 +164,23 @@ export class BenchEngine {
     const q = QUALITY[options.quality];
     this.renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: "high-performance" });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, q.pixelRatio));
-    this.renderer.toneMapping = THREE.NeutralToneMapping; // Khronos PBR Neutral
+    // Linear HDR into the composer; its last pass tone-maps and encodes (look/composer.ts).
+    this.renderer.toneMapping = THREE.NoToneMapping;
     this.renderer.toneMappingExposure = 1;
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
-    this.renderer.shadowMap.enabled = q.keyShadow;
+    this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer.localClippingEnabled = true; // a tilting source's liquid is cut level (pour.ts)
 
     this.textures = makeTextures(q.textures);
     this.models = new ModelLibrary(this.textures);
     this.models.onProgress = (loaded, total, pending) => this.onLoadProgress?.(loaded, total, pending);
-    const env = labEnvironment(this.renderer);
-    this.scene.environment = env;
-    this.scene.background = env;
-    this.scene.backgroundBlurriness = 0.42; // a soft-focus room behind the bench (handoff §3.7)
-    this.scene.backgroundIntensity = 1.25;
-
-    this.addBench(q.keyShadow);
+    // The microarray lab's room, lights and reflections (decided 2026-10-03/04); its clear colour behind.
+    this.scene.environment = labEnvironment(this.renderer);
+    this.scene.environmentIntensity = ENVIRONMENT_INTENSITY;
+    this.scene.background = roomBackground();
+    this.room = buildRoom({ textures: this.textures, shadowMapSize: q.shadowMap, onTextureChange: () => this.requestRender() });
+    this.scene.add(this.room.group, this.room.lights);
     this.contact = new ContactShadows({ width: BENCH_MM.width * MM, depth: BENCH_MM.depth * MM, resolution: q.contact, blur: 2.2, opacity: 0.72 });
     this.scene.add(this.contact.group, this.itemLayer, this.signals.group);
 
@@ -196,35 +203,8 @@ export class BenchEngine {
       this.tween = undefined;
       this.onManualCamera?.();
     });
-    this.composer = makeComposer(this.renderer, this.scene, this.camera, q.samples);
+    this.composer = makeComposer(this.renderer, this.scene, this.camera, { samples: q.samples, bloom: q.bloom });
     this.resize();
-  }
-
-  private addBench(keyShadow: boolean): void {
-    const T = this.textures;
-    const top = new THREE.Mesh(
-      new THREE.BoxGeometry(BENCH_MM.width * MM, 0.03, BENCH_MM.depth * MM),
-      new THREE.MeshPhysicalMaterial({ name: "Bench worktop", map: T.benchC, roughnessMap: T.benchR, roughness: 1, metalness: 0, clearcoat: 0.25, clearcoatRoughness: 0.35 }),
-    );
-    top.position.y = -0.015;
-    top.receiveShadow = true;
-    top.name = "bench";
-    this.scene.add(top);
-    const back = new THREE.Mesh(new THREE.BoxGeometry(BENCH_MM.width * MM, 0.06, 0.02),
-      new THREE.MeshStandardMaterial({ color: 0xb4bab1, roughness: 0.7 }));
-    back.position.set(0, 0.03, -(BENCH_MM.depth * MM) / 2 - 0.01);
-    this.scene.add(back);
-    const key = new THREE.DirectionalLight(0xfff8f0, keyShadow ? 1.1 : 0.8);
-    key.position.set(-0.9, 1.6, 0.7);
-    key.castShadow = keyShadow;
-    key.shadow.mapSize.set(2048, 2048);
-    key.shadow.camera.left = -0.8;
-    key.shadow.camera.right = 0.8;
-    key.shadow.camera.top = 0.5;
-    key.shadow.camera.bottom = -0.5;
-    key.shadow.radius = 6;
-    key.shadow.bias = -0.0004;
-    this.scene.add(key);
   }
 
   get canvasElement(): HTMLCanvasElement {
@@ -310,7 +290,10 @@ export class BenchEngine {
       this.onChange?.();
     }
     if (this.shadowsDirty) {
+      // Contact shadows are cast by equipment only, never by the room.
+      this.room.group.visible = false;
       this.contact.update(this.renderer, this.scene);
+      this.room.group.visible = true;
       this.shadowsDirty = false;
     }
     this.composer.render();
@@ -1521,6 +1504,7 @@ export class BenchEngine {
     this.models.dispose();
     disposeTextures(this.textures);
     (this.scene.environment as THREE.Texture | null)?.dispose();
+    this.room.dispose();
     this.composer.dispose();
     this.renderer.dispose();
   }

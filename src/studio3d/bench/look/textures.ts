@@ -126,9 +126,24 @@ export const makeTextures = (size: "full" | "reduced" = "full"): BenchTextures =
   const fine = fbm(n(1024), [[96, 96, 1], [256, 256, 0.6]], 43);
   for (let i = 0; i < paperH.length; i += 1) paperH[i] = paperH[i] * 0.75 + fine[i] * 0.25;
   const ldpe = fbm(n(256), [[6, 6, 1], [18, 18, 0.35], [90, 90, 0.12]], 53);
-  const benchN = n(512);
-  const mottle = fbm(benchN, [[6, 6, 1], [24, 24, 0.5]], 71);
-  const speck = rng(73);
+  // Worktop resin: the microarray lab's speckled slate-blue resin (renderer.js:54, pattern 1), as a
+  // 0.2 m tile. Its fbm is sampled at 7 cycles per microarray unit; light specks fill 1/240-unit cells
+  // and dark ones 1/170-unit cells. The tile spans 0.2 m / ROOM_SCALE units.
+  const benchN = n(1024);
+  const tileUnits = 0.2 / (1.4 / 15);
+  const cycles = (k: number) => Math.round(tileUnits * 7 * k);
+  const resin = fbm(benchN, [[cycles(1), cycles(1), 0.5], [cycles(2.07), cycles(2.07), 0.3], [cycles(4.3), cycles(4.3), 0.2]], 71);
+  const cellHash = (x: number, y: number, salt: number) => {
+    let h = Math.imul(x + salt * 7919, 374761393) ^ Math.imul(y + salt * 104729, 668265263);
+    h = Math.imul(h ^ (h >>> 13), 1274126177);
+    return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
+  };
+  const toSrgb = (v: number) => 255 * (v <= 0.0031308 ? 12.92 * v : 1.055 * Math.pow(v, 1 / 2.4) - 0.055);
+  const resinBase = [0x5e, 0x6a, 0x71].map((c) => Math.pow(c / 255, 2.2));
+  const speckColour = [0.62, 0.61, 0.58];
+  const lightCells = Math.round(tileUnits * 240), darkCells = Math.round(tileUnits * 170);
+  // The worktop's top face runs u along its 10-unit depth and v along its 15-unit width (room.ts).
+  const resinRepeat: [number, number] = [(10 * 1.4) / 15 / 0.2, 1.4 / 0.2];
   return {
     brushedN: normalTex(brushed, n(512), 1.4, [3.3, 3.3]),
     brushedR: greyTex(brushed, n(512), 0.2, 0.36, [3.3, 3.3]),
@@ -137,20 +152,22 @@ export const makeTextures = (size: "full" | "reduced" = "full"): BenchTextures =
     castN: normalTex(cast, n(256), 1.2, [8, 8]),
     paperN: normalTex(paperH, n(1024), 3.0, [3.3, 3.3]),
     ldpeN: normalTex(ldpe, n(256), 1.1, [1, 1]),
-    // Worktop: a low-saturation, mid-tone epoxy resin, faintly mottled with fine speckle (handoff §3.7).
     benchC: dataTexture(benchN, (d) => {
-      for (let i = 0; i < benchN * benchN; i += 1) {
-        let v = 92 + mottle[i] * 16;
-        const s = speck();
-        if (s > 0.9965) v += 40;
-        else if (s < 0.002) v -= 22;
-        d[i * 4] = v;
-        d[i * 4 + 1] = v + 2;
-        d[i * 4 + 2] = v + 1;
+      for (let y = 0; y < benchN; y += 1) for (let x = 0; x < benchN; x += 1) {
+        const i = y * benchN + x, g = resin[i];
+        const light = cellHash(Math.floor((x / benchN) * lightCells), Math.floor((y / benchN) * lightCells), 1) > 0.986 ? 0.55 : 0;
+        const dark = cellHash(Math.floor((x / benchN) * darkCells), Math.floor((y / benchN) * darkCells), 9) > 0.991 ? 0.45 : 0;
+        for (let c = 0; c < 3; c += 1) {
+          let v = resinBase[c] * (0.9 + 0.16 * g);
+          v += (speckColour[c] - v) * light;
+          v += (0.03 - v) * dark;
+          d[i * 4 + c] = toSrgb(Math.min(1, v));
+        }
         d[i * 4 + 3] = 255;
       }
-    }, [8, 4], true),
-    benchR: greyTex(fbm(benchN, [[10, 10, 1], [40, 40, 0.5]], 79), benchN, 0.35, 0.55, [8, 4]),
+    }, resinRepeat, true),
+    // Roughness 0.5, varied by the same fbm (the source's rough + (g - .5) * .22).
+    benchR: greyTex(resin, benchN, 0.5 - 0.11, 0.5 + 0.11, resinRepeat),
   };
 };
 

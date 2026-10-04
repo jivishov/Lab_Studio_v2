@@ -1,50 +1,68 @@
 import * as THREE from "three";
 
 /**
- * A small synthetic laboratory rendered into a PMREM (ported from the prototype's look.js, plan
- * §6.2, §12): a daylight window, ceiling troffers, a softbox and rim strips, with dark cabinets and
- * a worktop. It lights the scene and gives glass and steel their window streaks and dark edges.
- * The bright sources sit near bench height, because vertical glass reflects what lies near its
- * own height. Units are metres; the bench top is y = 0.
+ * Reflections of the teaching-lab room, from the DNA microarray 3D lab's analytic environment
+ * (`virtual_lab/experiments/dnamicroarray_v2/3d-v3/renderer.js:33-38`, `env()`): a floor-to-ceiling
+ * gradient with three lobes, the window behind and to the left, a ceiling panel and a cool strip
+ * light. It is evaluated per direction into an equirectangular map (roughness 0) and prefiltered by
+ * PMREM, which stands in for the source's roughness-widened lobes (decided 2026-10-03/04;
+ * `proposals/MICROARRAY_ADOPTION.md` §3.3).
+ *
+ * The source lights diffuse surfaces with a hemisphere term and uses this environment for
+ * reflections only; three uses one environment map for both. `ENVIRONMENT_INTENSITY` scales the map
+ * so that its diffuse share is close to the source's hemisphere term (0.37 against 0.27 facing up,
+ * 0.12 against 0.19 facing sideways), and `SPECULAR_BOOST` restores full reflections on the
+ * materials that are mostly reflection (glass, clear plastic, metals, display glass; materials.ts).
  */
+export const ENVIRONMENT_INTENSITY = 0.4;
+export const SPECULAR_BOOST = 1 / ENVIRONMENT_INTENSITY;
+
+type V3 = [number, number, number];
+const unit = (v: V3): V3 => {
+  const l = Math.hypot(...v);
+  return [v[0] / l, v[1] / l, v[2] / l];
+};
+const smoothstep = (a: number, b: number, x: number) => {
+  const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
+  return t * t * (3 - 2 * t);
+};
+const WINDOW = unit([-0.8, 0.55, -0.5]);
+const PANEL = unit([0.1, 0.98, -0.2]);
+const STRIP = unit([0.75, 0.55, 0.6]);
+const dot = (a: V3, b: V3) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+
+/** The source's `env(r, 0)`: linear radiance seen along direction `r`. */
+export const roomRadiance = (r: V3): V3 => {
+  const h = smoothstep(-0.2, 0.9, r[1]);
+  const w = smoothstep(0.86, 0.99, dot(r, WINDOW));
+  const p = smoothstep(0.9, 0.997, dot(r, PANEL));
+  const s = smoothstep(0.975, 0.999, dot(r, STRIP));
+  return [
+    0.15 + 0.45 * h + 2.7 * w + 2.1 * p + 1.0 * s,
+    0.14 + 0.48 * h + 2.55 * w + 2.15 * p + 1.04 * s,
+    0.13 + 0.49 * h + 2.3 * w + 2.2 * p + 1.1 * s,
+  ];
+};
+
 export const labEnvironment = (renderer: THREE.WebGLRenderer): THREE.Texture => {
-  const env = new THREE.Scene();
-  const flat = (r: number, g = r, b = r) => new THREE.MeshBasicMaterial({ color: new THREE.Color(r, g, b), side: THREE.BackSide });
-  const room = new THREE.Mesh(new THREE.BoxGeometry(7, 3.2, 6), [
-    flat(0.66, 0.67, 0.68), flat(0.58, 0.59, 0.6), flat(0.82, 0.82, 0.8), flat(0.08), flat(0.5, 0.51, 0.52), flat(0.7, 0.7, 0.7),
-  ]);
-  room.position.set(0, 0.7, 0);
-  env.add(room);
-  const panel = (w: number, h: number, color: THREE.Color, pos: [number, number, number], rotY = 0, rotX = 0) => {
-    const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color, side: THREE.DoubleSide }));
-    m.position.set(...pos);
-    m.rotation.set(rotX, rotY, 0);
-    env.add(m);
-  };
-  const box = (sx: number, sy: number, sz: number, c: number, pos: [number, number, number]) => {
-    const m = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz), new THREE.MeshBasicMaterial({ color: new THREE.Color(c, c, c) }));
-    m.position.set(...pos);
-    env.add(m);
-  };
-  const day = new THREE.Color(15, 16, 17.5);
-  for (const z of [-1.35, -0.2, 0.95]) panel(1.05, 1.9, day, [-3.48, 0.95, z], Math.PI / 2);
-  for (const z of [-1.6, 0, 1.6]) panel(1.3, 0.3, new THREE.Color(22, 22, 21), [0, 2.28, z], 0, Math.PI / 2);
-  panel(0.9, 1.7, new THREE.Color(11, 10.8, 10.2), [2.1, 0.45, 2.2], -Math.PI * 0.72);
-  panel(0.3, 1.6, new THREE.Color(9, 9.2, 9.8), [1.7, 0.45, -2.9], -Math.PI * 0.1);
-  panel(0.3, 1.6, new THREE.Color(7, 7.2, 7.6), [-1.9, 0.45, -2.9], Math.PI * 0.1);
-  box(5.5, 0.8, 0.6, 0.05, [0, -0.5, -2.6]);
-  box(2.6, 0.04, 1.2, 0.045, [0, -0.02, 0.05]);
-  box(2.6, 0.9, 0.05, 0.03, [0, -0.47, 0.66]);
-  box(1.4, 0.55, 0.35, 0.08, [-1.9, 1.7, -2.75]);
-  const pmrem = new THREE.PMREMGenerator(renderer);
-  const texture = pmrem.fromScene(env, 0.02).texture;
-  pmrem.dispose();
-  env.traverse((object) => {
-    const mesh = object as THREE.Mesh;
-    if (mesh.isMesh) {
-      mesh.geometry.dispose();
-      (Array.isArray(mesh.material) ? mesh.material : [mesh.material]).forEach((m) => m.dispose());
+  const W = 512, H = 256;
+  const data = new Float32Array(W * H * 4);
+  for (let j = 0; j < H; j += 1) {
+    const theta = ((j + 0.5) / H - 0.5) * Math.PI; // three's equirectUv: v = asin(y) / π + 0.5
+    for (let i = 0; i < W; i += 1) {
+      const phi = ((i + 0.5) / W - 0.5) * Math.PI * 2; // u = atan(z, x) / 2π + 0.5
+      const c = roomRadiance([Math.cos(theta) * Math.cos(phi), Math.sin(theta), Math.cos(theta) * Math.sin(phi)]);
+      data.set([c[0], c[1], c[2], 1], (j * W + i) * 4);
     }
-  });
+  }
+  const equirect = new THREE.DataTexture(data, W, H, THREE.RGBAFormat, THREE.FloatType);
+  equirect.mapping = THREE.EquirectangularReflectionMapping;
+  equirect.colorSpace = THREE.LinearSRGBColorSpace;
+  equirect.magFilter = THREE.LinearFilter;
+  equirect.needsUpdate = true;
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  const texture = pmrem.fromEquirectangular(equirect).texture;
+  pmrem.dispose();
+  equirect.dispose();
   return texture;
 };

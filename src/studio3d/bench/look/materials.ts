@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import viewerMaterials from "../../equipment3d/viewerMaterials.json";
+import { SPECULAR_BOOST } from "./environment";
 import type { BenchTextures } from "./textures";
 
 /**
@@ -8,6 +9,10 @@ import type { BenchTextures } from "./textures";
  * Values are the prototype's look.js settings. Glass is front-sided and writes no depth, so
  * liquids drawn inside it stay visible and double-sided transmission cannot render black bands
  * (plan §6.2).
+ *
+ * Materials that are mostly reflection (glass, clear plastic, metals, display glass) multiply their
+ * environment intensity by `SPECULAR_BOOST`, which undoes the scene-wide environment scale that
+ * stands in for the microarray lab's ambient term (environment.ts).
  */
 type Role =
   | "glass-thin" | "glass-thick" | "frosted" | "print" | "metal-brushed" | "metal" | "coating" | "rubber"
@@ -45,13 +50,13 @@ const tune = (src: THREE.Material, T: BenchTextures, enclosureGlass: boolean): T
         // be seen. Enclosure panes are therefore blended, and drawn after the glassware.
         Object.assign(m, {
           transmission: 0, transparent: true, opacity: 0.12, roughness: 0.015, metalness: 0, ior: 1.473,
-          specularIntensity: 1, envMapIntensity: 1.15, side: THREE.FrontSide, depthWrite: false,
+          specularIntensity: 1, envMapIntensity: 1.15 * SPECULAR_BOOST, side: THREE.FrontSide, depthWrite: false,
         });
         m.color.setRGB(1, 1, 1);
         return m;
       }
       Object.assign(m, {
-        transmission: 1, roughness: 0.015, metalness: 0, ior: 1.473, specularIntensity: 1, envMapIntensity: 1.15,
+        transmission: 1, roughness: 0.015, metalness: 0, ior: 1.473, specularIntensity: 1, envMapIntensity: 1.15 * SPECULAR_BOOST,
         thickness: thick ? 0.007 : 0.0022, attenuationDistance: thick ? 0.045 : 0.3, dispersion: thick ? 0.12 : 0.04,
         side: THREE.FrontSide, depthWrite: false,
       });
@@ -61,20 +66,20 @@ const tune = (src: THREE.Material, T: BenchTextures, enclosureGlass: boolean): T
     }
     case "plastic-clear": {
       const m = toPhysical(src);
-      Object.assign(m, { transmission: 1, roughness: 0.03, ior: 1.59, thickness: 0.0012, side: THREE.FrontSide, depthWrite: false });
+      Object.assign(m, { transmission: 1, roughness: 0.03, ior: 1.59, thickness: 0.0012, side: THREE.FrontSide, depthWrite: false, envMapIntensity: SPECULAR_BOOST });
       m.color.setRGB(1, 1, 1);
       return m;
     }
     case "metal-brushed": {
       const m = toPhysical(src);
-      Object.assign(m, { metalness: 1, roughness: 1, roughnessMap: T.brushedR, normalMap: T.brushedN, anisotropy: 0.55, envMapIntensity: 1 });
+      Object.assign(m, { metalness: 1, roughness: 1, roughnessMap: T.brushedR, normalMap: T.brushedN, anisotropy: 0.55, envMapIntensity: SPECULAR_BOOST });
       m.normalScale = new THREE.Vector2(0.25, 0.25);
       m.color.setRGB(0.63, 0.64, 0.65);
       return m;
     }
     case "metal": {
       const m = toPhysical(src);
-      Object.assign(m, { metalness: 1, roughness: 0.34, normalMap: T.castN });
+      Object.assign(m, { metalness: 1, roughness: 0.34, normalMap: T.castN, envMapIntensity: SPECULAR_BOOST });
       m.normalScale = new THREE.Vector2(0.12, 0.12);
       m.color.setRGB(0.6, 0.61, 0.62);
       return m;
@@ -138,7 +143,7 @@ const tune = (src: THREE.Material, T: BenchTextures, enclosureGlass: boolean): T
     }
     case "display": {
       const m = toPhysical(src);
-      Object.assign(m, { roughness: 0.12, clearcoat: 1, clearcoatRoughness: 0.05 });
+      Object.assign(m, { roughness: 0.12, clearcoat: 1, clearcoatRoughness: 0.05, envMapIntensity: SPECULAR_BOOST });
       m.color.setRGB(0.012, 0.015, 0.017);
       return m;
     }
