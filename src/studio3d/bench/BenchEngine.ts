@@ -970,9 +970,10 @@ export class BenchEngine {
   /**
    * Draw a carried item at a bench point, lifted, with whatever is locked to it following along
    * (handoff §5.6); unlocked items stay where the runtime keeps them. The runtime is not touched
-   * (G-5): the next sync puts everything back where the runtime has it.
+   * (G-5): the next sync puts everything back where the runtime has it. `pourTiltDeg` is the cue's
+   * tilt (30°), deeper while a mouse pour stroke is dragged down.
    */
-  previewCarry(instanceId: string, xMm: number, yMm: number, liftMm: number, pourToward?: string): void {
+  previewCarry(instanceId: string, xMm: number, yMm: number, liftMm: number, pourToward?: string, pourTiltDeg = 30): void {
     const view = this.items.get(instanceId);
     if (!view) return;
     const base = toWorld(xMm, yMm);
@@ -985,7 +986,7 @@ export class BenchEngine {
     if (view.entry && toward && toward.lengthSq() > 1e-8) {
       const geometry = pourGeometry(view.entry);
       const upright = pourQuaternion(geometry, toward.normalize(), 0);
-      const tilted = pourQuaternion(geometry, toward, 30 * DEG);
+      const tilted = pourQuaternion(geometry, toward, pourTiltDeg * DEG);
       const lip = geometry.lip.clone().applyQuaternion(upright).add(view.root.position);
       view.root.quaternion.copy(tilted);
       view.root.position.copy(rootForLip(geometry, tilted, lip));

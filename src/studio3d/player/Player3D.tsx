@@ -126,7 +126,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
 
   // A tap selects an item; on touch, a second tap on the selection opens its item menu (§5.19).
   const [itemMenu, setItemMenu] = useState<{ id: string; x: number; y: number }>();
-  const tapRef = useRef<(id: string, pointerType: string, x: number, y: number) => void>(() => undefined);
+  const tapRef = useRef<(id: string, pointerType: string, x: number, y: number) => boolean | void>(() => undefined);
   const onTap = useCallback((id: string, pointerType: string, x: number, y: number) => tapRef.current(id, pointerType, x, y), []);
   // A control on an instrument, the balance's TARE key (decided 2026-09-25): see controlRef below.
   const controlRef = useRef<(instanceId: string, controlId: string) => void>(() => undefined);
@@ -135,6 +135,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   const holdOverRef = useRef<(pipetteId: string, vesselId: string) => void>(() => undefined);
   const onHoldOver = useCallback((pipetteId: string, vesselId: string) => holdOverRef.current(pipetteId, vesselId), []);
   const carry = useBenchCarry(engine, player, setHovered, onTap, onControl, onHoldOver);
+  const carryCancelRef = useRef(carry);
+  carryCancelRef.current = carry;
   const carryingRef = useRef(carry.carrying);
   carryingRef.current = carry.carrying;
 
@@ -378,7 +380,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     player.notify(`${label} pressed. Nothing is zeroed at this step.`);
   };
   // A tool deposit ends with the tool back where the runtime keeps it, so the ring follows it there.
-  useEffect(() => { engine?.setSelected(selected ?? null); }, [engine, selected, displayScene, player.toolDeposit]);
+  // While an item is carried its ring is not drawn at the spot it was lifted from.
+  useEffect(() => { engine?.setSelected(carry.carrying ? null : selected ?? null); }, [engine, selected, displayScene, player.toolDeposit, carry.carrying]);
 
   // Auto-framing on a new step: the working set in guided mode, the whole bench in assessment (§5.9).
   // It fits the free area left by the open panels, wherever they have been moved, and never moves
@@ -503,7 +506,9 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     if (!engine) return undefined;
     engine.onManualCamera = () => setAutoView(false);
     engine.onChange = () => bump((v) => v + 1);
-    return () => { engine.onManualCamera = undefined; engine.onChange = undefined; };
+    // A right click puts a held item back, as in the microarray lab (decided 2026-10-04).
+    engine.onCameraClick = () => { if (carryCancelRef.current.carrying) carryCancelRef.current.cancel(); };
+    return () => { engine.onManualCamera = undefined; engine.onChange = undefined; engine.onCameraClick = undefined; };
   }, [engine]);
 
   // The loader (§5.2): the bar counts the technique's GLB bytes until the first bench is drawn.
@@ -565,7 +570,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     // At an inversion step, a tap on the stoppered vessel (or its stopper) inverts it once.
     if (isInvertTarget(id)) {
       player.recordEvidence();
-      return;
+      return true;
     }
     const rect = engine?.canvasElement.getBoundingClientRect();
     if (pointerType === "touch" && selected === id && rect) setItemMenu({ id, x: x - rect.left, y: y - rect.top });
@@ -679,12 +684,13 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   const markVesselLabel = markStep ? lowerFirstLetter(scene.bench.find((i) => i.instanceId === markStep.vesselInstanceId)?.label ?? "vessel") : "";
   const hint = dropMode ? "Space: tap for a drop, hold to let it run. Enter: at the line. Esc puts the pipette down."
     : carry.keyCarrying ? "Arrows move it (Shift: further). [ ] step through targets. Enter sets it down; Esc cancels."
+    : carry.clickCarrying ? "Click where it goes, or press on the target and drag down. Esc or a right click puts it back."
     : carry.carrying ? "Release to set down. Esc cancels."
-    : tool && flow.canConfirm ? "Dip the spatula into the source, then release it over the target; or use Source, Target and Confirm. Right-drag to look around."
-    : pipette && flow.canConfirm ? "Carry the pipette by its tip and release it over the liquid or the cuvette; or use Source, Target and Confirm. Right-drag to look around."
-    : markStep ? `Carry the pipette over the ${markVesselLabel} and release to hold it there, or use the step card. Right-drag to look around.`
-    : invertVesselId ? "Tap the stoppered flask to invert it, or use Invert in the step card. Right-drag to look around."
-    : flow.canConfirm ? "Drag items on the bench, or use Source, Target and Confirm. Right-drag to look around."
+    : tool && flow.canConfirm ? "Pick up the spatula, press it into the source and drag down to scoop, then click the target; or use Source, Target and Confirm. Right-drag to look around."
+    : pipette && flow.canConfirm ? "Pick up the pipette, then press over the liquid or the cuvette and drag down; or use Source, Target and Confirm. Right-drag to look around."
+    : markStep ? `Pick up the pipette and click the ${markVesselLabel} to hold it there, or use the step card. Right-drag to look around.`
+    : invertVesselId ? "Click the stoppered flask to invert it, or use Invert in the step card. Right-drag to look around."
+    : flow.canConfirm ? "Click an item to pick it up, then click where it goes; or use Source, Target and Confirm. Right-drag to look around."
       : player.runtime.expectedAction?.parameters.balanceOperation === "zero" ? "Press TARE on the balance, or Tare in the step card. Right-drag to look around."
       : "Fill in the step card, then record. Right-drag to look around.";
 

@@ -148,7 +148,7 @@ export const FloatPanel = ({ id, label, className, controls, head, collapsedHead
 export const EquipmentTray = ({ player, controls, onPointerDownTile, gestureGrabbedDefinitionId }: {
   player: Player3DController;
   controls: PanelControls;
-  onPointerDownTile: (definitionId: string) => void;
+  onPointerDownTile: (definitionId: string, pointerType: string) => void;
   /** The tile a hand-control pinch is carrying from, dimmed while its preview follows the pinch. */
   gestureGrabbedDefinitionId?: string;
 }) => {
@@ -170,9 +170,9 @@ export const EquipmentTray = ({ player, controls, onPointerDownTile, gestureGrab
               type="button"
               className={`s3d-tile${gestureGrabbedDefinitionId === g.definitionId ? " is-gesture-grabbed" : ""}`}
               data-definition-id={g.definitionId}
-              onPointerDown={(e) => { if (e.button === 0) { e.preventDefault(); onPointerDownTile(g.definitionId); } }}
+              onPointerDown={(e) => { if (e.button === 0) { e.preventDefault(); onPointerDownTile(g.definitionId, e.pointerType); } }}
               onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); player.dropFromTray(g.definitionId); } }}
-              aria-label={`${g.label}${g.count > 1 ? `, ${g.count}` : ""}${needed.has(g.definitionId) ? ", needed now" : ""}. Drag onto the bench, or press Enter to place it.`}
+              aria-label={`${g.label}${g.count > 1 ? `, ${g.count}` : ""}${needed.has(g.definitionId) ? ", needed now" : ""}. Pick it up and set it on the bench, or press Enter to place it.`}
             >
               {needed.has(g.definitionId) ? <span className="s3d-tile__need" aria-hidden="true" /> : null}
               {g.count > 1 ? <span className="s3d-tile__count">× {g.count}</span> : null}
@@ -284,7 +284,10 @@ export const ExamineCard = ({ item, holderLabel, onClose, onEyeLevel }: {
 
 const CONTROLS: Record<string, Array<[string, string]>> = {
   Mouse: [
-    ["Press an item and move, or hold it", "Pick it up and carry it; release to set it down"],
+    ["Click an item", "Pick it up; it follows the pointer"],
+    ["Click a spot or a target while holding it", "Set it down there, or act on the target"],
+    ["Press on a seat, a vessel or a liquid and drag down", "Seat it, pour, deliver, or draw up (let go at depth); drag back up to stop"],
+    ["Esc or right-click while holding it", "Put it back"],
     ["Double-click an item", "Examine it"],
     ["Right-drag", "Pan sideways; drag up or down to tilt"],
     ["Shift or Alt + right-drag, or middle-drag", "Orbit"],
