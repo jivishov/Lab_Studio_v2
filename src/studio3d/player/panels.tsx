@@ -286,8 +286,8 @@ const CONTROLS: Record<string, Array<[string, string]>> = {
   Mouse: [
     ["Press an item and move, or hold it", "Pick it up and carry it; release to set it down"],
     ["Double-click an item", "Examine it"],
-    ["Right-drag", "Look around"],
-    ["Shift + right-drag, or middle-drag", "Pan"],
+    ["Right-drag", "Pan sideways; drag up or down to tilt"],
+    ["Shift or Alt + right-drag, or middle-drag", "Orbit"],
     ["Wheel", "Zoom toward the pointer"],
   ],
   "Keyboard, while the bench has focus": [
@@ -303,8 +303,8 @@ const CONTROLS: Record<string, Array<[string, string]>> = {
   ],
   Touch: [
     ["Hold for 300 ms, then drag", "Carry"],
-    ["Drag on the empty bench", "Look around"],
-    ["Two-finger drag / pinch", "Pan / zoom"],
+    ["Drag on the empty bench", "Pan sideways; drag up or down to tilt"],
+    ["Two-finger drag / pinch", "Orbit / zoom"],
   ],
 };
 

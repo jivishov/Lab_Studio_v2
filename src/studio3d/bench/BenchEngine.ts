@@ -1,10 +1,13 @@
 import * as THREE from "three";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import type { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { BENCH_MM } from "../adapters/benchCoordinates";
 import { fillLevelMm, type SceneContents, type SceneDescription, type SceneItem } from "../adapters/runtimeToScene";
 import { ModelLibrary } from "../equipment3d/loadModels";
 import type { Equipment3DEntry } from "../equipment3d/types";
+import {
+  applyView, clampManual, copyView, DEFAULT_VIEW, easeInOutCubic, FAR, fitBest, FOV, FRAME_PITCH, frontYaw, lerpView, MANUAL, NEAR,
+  orbitBy, panTiltBy, PRESETS, safeRects, zoomBy, type OrbitView, type Rect,
+} from "./camera/benchCamera";
 import { makeComposer } from "./look/composer";
 import { ContactShadows } from "./look/contactShadows";
 import { ENVIRONMENT_INTENSITY, labEnvironment } from "./look/environment";
@@ -65,14 +68,11 @@ interface SetOnRun {
 const MM = 0.001;
 export const toWorld = (xMm: number, yMm: number, zMm = 0): THREE.Vector3 => new THREE.Vector3(xMm * MM, zMm * MM, -yMm * MM);
 const DEG = Math.PI / 180;
-/** Orbit limits (handoff §5.9): elevation 12–70°, as polar angles from straight up. */
-const MIN_POLAR = (90 - 70) * DEG;
-const MAX_POLAR = (90 - 12) * DEG;
+/** The Studio turntable's turn, rad/s (what OrbitControls' autoRotateSpeed 1.6 gave). */
+const TURNTABLE_RAD_PER_S = ((2 * Math.PI) / 60) * 1.6;
 
-export interface CameraPose {
-  position: THREE.Vector3;
-  target: THREE.Vector3;
-}
+/** A camera pose to come back to (Examine): the microarray lab's orbit view. */
+export type CameraPose = OrbitView;
 
 /** Show me's timeline (§5.9), seconds: pulse the source, carry the ghost, pulse the target. */
 const DEMO = { source: 0.7, travel: 1.2, target: 0.8 };
@@ -103,9 +103,17 @@ export const webgl2Available = (): boolean => {
 
 export class BenchEngine {
   readonly scene = new THREE.Scene();
-  readonly camera = new THREE.PerspectiveCamera(32, 1, 0.02, 20);
+  readonly camera = new THREE.PerspectiveCamera(FOV, 1, NEAR, FAR);
   private readonly renderer: THREE.WebGLRenderer;
-  private readonly controls: OrbitControls;
+  /** The microarray lab's bench view (camera/benchCamera.ts), decided 2026-10-03/04. */
+  private view: OrbitView = DEFAULT_VIEW();
+  /** Set while an item is held, so a touch drag carries it instead of moving the camera. */
+  private cameraHeld = false;
+  private turntable = false;
+  private camDrag?: { id: number; button: number; mode: "orbit" | "pan"; x: number; y: number; startX: number; startY: number; drag: boolean };
+  private readonly touches = new Map<number, { x: number; y: number }>();
+  private touchGesture?: { startX: number; startY: number; x: number; y: number; drag: boolean; span?: number; manual: boolean };
+  private detachCameraInput?: () => void;
   private composer: EffectComposer;
   private readonly textures: BenchTextures;
   private readonly models: ModelLibrary;
@@ -121,7 +129,7 @@ export class BenchEngine {
   private dirty = true;
   private shadowsDirty = true;
   private lastTime = 0;
-  private tween?: { from: THREE.Vector3; to: THREE.Vector3; fromTarget: THREE.Vector3; toTarget: THREE.Vector3; t: number; duration: number };
+  private tween?: { from: OrbitView; to: OrbitView; t: number; duration: number };
   private carried?: { instanceId: string; position: THREE.Vector3; lift: number };
   private beaconId: string | null = null;
   private demo?: { sourceId: string; targetId?: string; viaId?: string; t: number; ghost?: THREE.Object3D; material?: THREE.Material;
@@ -151,14 +159,15 @@ export class BenchEngine {
   /** Where a carried item was drawn when it was released, so a pour it starts carries on from there. */
   private releasedCarry?: { instanceId: string; position: THREE.Vector3; quaternion: THREE.Quaternion; at: number };
   private disposed = false;
-  private readonly home = { position: new THREE.Vector3(0, 0.62, 1.05), target: new THREE.Vector3(0, 0.06, 0) };
   /** Called after a sync finishes loading, and when the camera moves, so overlays can re-project. */
   onChange?: () => void;
   onManualCamera?: () => void;
+  /** A right click without a drag (the microarray lab cancels the motion in progress with it). */
+  onCameraClick?: () => void;
   /** GLB bytes downloaded of those requested, and how many models are still loading (§5.2). */
   onLoadProgress?: (loadedBytes: number, totalBytes: number, pending: number) => void;
-  /** Canvas pixels covered by floating panels on each side; framing avoids them. */
-  panelInsets: { left?: number; right?: number } = {};
+  /** The free rectangles of the canvas around open panels (`safeRects`); framing fits into them. */
+  safeAreas?: Rect[];
 
   constructor(private readonly canvas: HTMLCanvasElement, private options: BenchEngineOptions) {
     const q = QUALITY[options.quality];
@@ -184,25 +193,7 @@ export class BenchEngine {
     this.contact = new ContactShadows({ width: BENCH_MM.width * MM, depth: BENCH_MM.depth * MM, resolution: q.contact, blur: 2.2, opacity: 0.72 });
     this.scene.add(this.contact.group, this.itemLayer, this.signals.group);
 
-    this.camera.position.copy(this.home.position);
-    this.controls = new OrbitControls(this.camera, canvas);
-    this.controls.target.copy(this.home.target);
-    // Left button belongs to picking up items; right orbits, middle and Shift+right pan (handoff §5.9).
-    this.controls.mouseButtons = { LEFT: null, MIDDLE: THREE.MOUSE.PAN, RIGHT: THREE.MOUSE.ROTATE };
-    this.controls.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN };
-    this.controls.minAzimuthAngle = -70 * DEG;
-    this.controls.maxAzimuthAngle = 70 * DEG;
-    this.controls.minPolarAngle = MIN_POLAR;
-    this.controls.maxPolarAngle = MAX_POLAR;
-    this.controls.minDistance = 0.22;
-    this.controls.maxDistance = 2.4;
-    this.controls.zoomToCursor = true;
-    this.controls.enableDamping = false;
-    this.controls.addEventListener("change", () => this.requestRender());
-    this.controls.addEventListener("start", () => {
-      this.tween = undefined;
-      this.onManualCamera?.();
-    });
+    this.detachCameraInput = this.attachCameraInput();
     this.composer = makeComposer(this.renderer, this.scene, this.camera, { samples: q.samples, bloom: q.bloom });
     this.resize();
   }
@@ -221,8 +212,7 @@ export class BenchEngine {
     if (w === 0 || h === 0) return;
     this.renderer.setSize(w, h, false);
     this.composer.setSize(w, h);
-    this.camera.aspect = w / h;
-    this.camera.updateProjectionMatrix();
+    this.updateCamera();
     this.requestRender();
   }
 
@@ -274,17 +264,16 @@ export class BenchEngine {
       if (press.t >= 0.16) this.controlPress = undefined;
       animating = true;
     }
-    if (this.controls.autoRotate) {
-      this.controls.update(dt);
+    if (this.turntable && !this.options.reducedMotion && !this.tween) {
+      this.view.yaw += TURNTABLE_RAD_PER_S * dt;
+      this.updateCamera();
       animating = true;
     }
     if (this.tween) {
       const tw = this.tween;
       tw.t = Math.min(1, tw.t + (tw.duration > 0 ? dt / tw.duration : 1));
-      const e = tw.t < 0.5 ? 2 * tw.t * tw.t : 1 - Math.pow(-2 * tw.t + 2, 2) / 2; // ease-in-out
-      this.camera.position.lerpVectors(tw.from, tw.to, e);
-      this.controls.target.lerpVectors(tw.fromTarget, tw.toTarget, e);
-      this.controls.update();
+      this.view = lerpView(tw.from, tw.to, easeInOutCubic(tw.t));
+      this.updateCamera();
       if (tw.t >= 1) this.tween = undefined;
       else animating = true;
       this.onChange?.();
@@ -1033,7 +1022,8 @@ export class BenchEngine {
    * orbiting is on the right button and unaffected (handoff §5.9, §5.19).
    */
   holdCameraInput(held: boolean): void {
-    this.controls.enabled = !held;
+    this.cameraHeld = held;
+    if (held) this.touchGesture = undefined;
   }
 
   /**
@@ -1372,62 +1362,223 @@ export class BenchEngine {
   // ---------------------------------------------------------------- camera
 
   /**
-   * Frame a set of items (or the whole bench) with a 650 ms tween, or a cut under reduced motion.
-   * `insets` (canvas pixels) are covered by panels; the working set is centred in what remains
-   * (handoff §5.9: "fits the working set into the free area around open panels").
+   * The microarray lab's mouse camera (`3d-v3/app.js:111-149`), decided 2026-10-03/04: right-drag
+   * pans sideways (the bench point under the pointer stays under it) and tilts with up/down; Shift
+   * or Alt + right-drag, or middle-drag, orbits; the wheel zooms toward the bench point under the
+   * pointer. Drags start after 3 px; a right click without a drag calls `onCameraClick`. The left
+   * button is never the camera's. Touch (choice 5, tablets): one finger on empty bench pans and
+   * tilts like a right-drag, a pinch zooms and a two-finger drag orbits; a touch that picks up an
+   * item holds the camera (`holdCameraInput`).
    */
-  frameItems(instanceIds: string[] | "all", marginFactor = 1.25, insets: { left?: number; right?: number } = this.panelInsets): void {
-    const box = new THREE.Box3();
-    const views = instanceIds === "all" ? [...this.items.values()] : instanceIds.map((id) => this.items.get(id)).filter(Boolean) as ItemView[];
-    views.forEach((view) => box.expandByObject(view.root));
-    if (box.isEmpty()) box.set(new THREE.Vector3(-0.5, 0, -0.3), new THREE.Vector3(0.5, 0.25, 0.3));
-    this.frameBox(box, marginFactor, insets);
+  private attachCameraInput(): () => void {
+    const canvas = this.canvas;
+    const point = (e: { clientX: number; clientY: number }) => {
+      const r = canvas.getBoundingClientRect();
+      return { x: e.clientX - r.left, y: e.clientY - r.top };
+    };
+    const down = (e: PointerEvent) => {
+      if (e.pointerType === "touch") {
+        const p = point(e);
+        this.touches.set(e.pointerId, p);
+        if (this.cameraHeld) return;
+        this.startTouchGesture();
+        return;
+      }
+      if (e.button !== 1 && e.button !== 2) return;
+      const p = point(e);
+      const mode = e.button === 1 || e.shiftKey || e.altKey ? "orbit" : "pan";
+      this.camDrag = { id: e.pointerId, button: e.button, mode, x: p.x, y: p.y, startX: p.x, startY: p.y, drag: false };
+      canvas.setPointerCapture(e.pointerId);
+      e.preventDefault();
+    };
+    const move = (e: PointerEvent) => {
+      if (e.pointerType === "touch") {
+        if (!this.touches.has(e.pointerId)) return;
+        this.touches.set(e.pointerId, point(e));
+        if (!this.cameraHeld) this.moveTouchGesture();
+        return;
+      }
+      const d = this.camDrag;
+      if (!d || d.id !== e.pointerId) return;
+      const p = point(e);
+      if (!d.drag && Math.hypot(p.x - d.startX, p.y - d.startY) > MANUAL.dragPx) {
+        d.drag = true;
+        this.beginManualCamera();
+      }
+      if (d.drag) {
+        if (d.mode === "orbit") this.setView(orbitBy(this.view, p.x - d.x, p.y - d.y));
+        else this.setView(panTiltBy(this.view, this.onBench(d.x, d.y), this.onBench(p.x, d.y), p.y - d.y));
+      }
+      d.x = p.x;
+      d.y = p.y;
+    };
+    const up = (e: PointerEvent) => {
+      if (e.pointerType === "touch") {
+        this.touches.delete(e.pointerId);
+        if (!this.cameraHeld && this.touches.size) this.startTouchGesture();
+        else if (!this.touches.size) this.touchGesture = undefined;
+        return;
+      }
+      const d = this.camDrag;
+      if (!d || d.id !== e.pointerId) return;
+      this.camDrag = undefined;
+      if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
+      if (!d.drag && d.button === 2 && e.type === "pointerup") this.onCameraClick?.();
+    };
+    const wheel = (e: WheelEvent) => {
+      e.preventDefault();
+      const p = point(e);
+      this.beginManualCamera();
+      this.zoomAt(p.x, p.y, e.deltaY);
+    };
+    const noMenu = (e: Event) => e.preventDefault();
+    const noMiddle = (e: MouseEvent) => { if (e.button === 1) e.preventDefault(); };
+    canvas.addEventListener("pointerdown", down);
+    canvas.addEventListener("pointermove", move);
+    canvas.addEventListener("pointerup", up);
+    canvas.addEventListener("pointercancel", up);
+    canvas.addEventListener("wheel", wheel, { passive: false });
+    canvas.addEventListener("contextmenu", noMenu);
+    canvas.addEventListener("auxclick", noMiddle);
+    return () => {
+      canvas.removeEventListener("pointerdown", down);
+      canvas.removeEventListener("pointermove", move);
+      canvas.removeEventListener("pointerup", up);
+      canvas.removeEventListener("pointercancel", up);
+      canvas.removeEventListener("wheel", wheel);
+      canvas.removeEventListener("contextmenu", noMenu);
+      canvas.removeEventListener("auxclick", noMiddle);
+    };
+  }
+
+  /** A new touch baseline: one finger pans and tilts; two fingers pinch-zoom and orbit about their midpoint. */
+  private startTouchGesture(): void {
+    const pts = [...this.touches.values()];
+    if (!pts.length) return;
+    const x = pts.length > 1 ? (pts[0].x + pts[1].x) / 2 : pts[0].x;
+    const y = pts.length > 1 ? (pts[0].y + pts[1].y) / 2 : pts[0].y;
+    const span = pts.length > 1 ? Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y) : undefined;
+    this.touchGesture = { startX: x, startY: y, x, y, drag: Boolean(span), span, manual: this.touchGesture?.manual ?? false };
+  }
+
+  private moveTouchGesture(): void {
+    const g = this.touchGesture;
+    const pts = [...this.touches.values()];
+    if (!g || !pts.length) return;
+    if (pts.length > 1 && g.span !== undefined) {
+      const x = (pts[0].x + pts[1].x) / 2, y = (pts[0].y + pts[1].y) / 2;
+      const span = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+      if (!g.manual) { g.manual = true; this.beginManualCamera(); }
+      if (span > 1 && g.span > 1) this.zoomAt(x, y, Math.log(g.span / span) / MANUAL.zoomPerDelta);
+      this.setView(orbitBy(this.view, x - g.x, y - g.y));
+      Object.assign(g, { x, y, span });
+      return;
+    }
+    const p = pts[0];
+    if (!g.drag && Math.hypot(p.x - g.startX, p.y - g.startY) > MANUAL.dragPx) g.drag = true;
+    if (g.drag) {
+      if (!g.manual) { g.manual = true; this.beginManualCamera(); }
+      this.setView(panTiltBy(this.view, this.onBench(g.x, g.y), this.onBench(p.x, g.y), p.y - g.y));
+    }
+    g.x = p.x;
+    g.y = p.y;
+  }
+
+  /** Zoom keeping the bench point under (x, y) fixed (`app.js:144-147`). */
+  private zoomAt(x: number, y: number, deltaY: number): void {
+    const before = this.onBench(x, y);
+    this.view = zoomBy(this.view, deltaY);
+    this.updateCamera();
+    const after = this.onBench(x, y);
+    if (before && after) this.setView(clampManual({ ...this.view, at: this.view.at.clone().add(before.sub(after)) }));
+    else this.setView(this.view);
+  }
+
+  /** The bench-plane point under canvas pixel (x, y), or null when the ray misses it (`renderer.js` `onPlane`). */
+  private onBench(x: number, y: number): THREE.Vector3 | null {
+    const w = this.canvas.clientWidth, h = this.canvas.clientHeight;
+    if (!w || !h) return null;
+    this.raycaster.setFromCamera(new THREE.Vector2((x / w) * 2 - 1, 1 - (y / h) * 2), this.camera);
+    const ray = this.raycaster.ray;
+    if (Math.abs(ray.direction.y) < 0.001) return null;
+    const t = -ray.origin.y / ray.direction.y;
+    return t > 0 ? ray.at(t, new THREE.Vector3()) : null;
+  }
+
+  /** A manual move cancels any framing tween and suspends auto-framing (`framing.js:84`). */
+  private beginManualCamera(): void {
+    this.tween = undefined;
+    this.onManualCamera?.();
+  }
+
+  private setView(view: OrbitView): void {
+    this.view = view;
+    this.updateCamera();
+    this.requestRender();
+    this.onChange?.();
+  }
+
+  private updateCamera(): void {
+    const w = this.canvas.clientWidth, h = this.canvas.clientHeight;
+    applyView(this.camera, this.view, w > 0 && h > 0 ? w / h : this.camera.aspect || 1);
+  }
+
+  private canvasSize(): { w: number; h: number } {
+    return { w: Math.max(1, this.canvas.clientWidth), h: Math.max(1, this.canvas.clientHeight) };
   }
 
   /**
-   * "Whole bench" (§5.9): the bench surface itself, not only what stands on it. `fromFront` looks
-   * from the default front direction, whatever the camera is doing (the Studio's Front and Reset).
+   * Frame a set of items (or every item) into the free area around open panels, with the
+   * microarray lab's `fit` (camera/benchCamera.ts): yaw back to the front the short way, pitch 0.9,
+   * a 650 ms tween, or a cut under reduced motion. `marginFactor` grows the items' bounds about
+   * their centre; `safe` are the free canvas rectangles (default `safeAreas`). "all" also takes in
+   * the runtime bench, as the microarray's framing keeps its bench outline in view, so one item
+   * alone on the bench is not framed as a close-up.
    */
-  frameBench(insets: { left?: number; right?: number } = this.panelInsets, fromFront = false): void {
-    const w = (BENCH_MM.width * MM) / 2;
-    const d = (BENCH_MM.depth * MM) / 2;
-    const front = fromFront ? this.home.position.clone().sub(this.home.target).normalize() : undefined;
-    this.frameBox(new THREE.Box3(new THREE.Vector3(-w, 0, -d), new THREE.Vector3(w, 0.12, d)), 0.9, insets, front);
+  frameItems(instanceIds: string[] | "all", marginFactor = 1.1, safe: Rect[] | undefined = this.safeAreas): void {
+    const box = new THREE.Box3();
+    const views = instanceIds === "all" ? [...this.items.values()] : instanceIds.map((id) => this.items.get(id)).filter(Boolean) as ItemView[];
+    views.forEach((view) => box.expandByObject(view.root));
+    if (instanceIds === "all") {
+      const w = (BENCH_MM.width * MM) / 2, d = (BENCH_MM.depth * MM) / 2;
+      box.expandByPoint(new THREE.Vector3(-w, 0, -d)).expandByPoint(new THREE.Vector3(w, 0, d));
+    }
+    if (box.isEmpty()) box.set(new THREE.Vector3(-0.5, 0, -0.3), new THREE.Vector3(0.5, 0.25, 0.3));
+    this.frameBox(box, marginFactor, safe);
   }
 
-  /** "Overhead" (§5.9): the steepest view the orbit limits allow, over the bench centre. */
+  /** "Whole bench": the microarray lab's preset (`app.js:108`). */
+  frameBench(): void {
+    this.tweenTo(PRESETS.bench());
+  }
+
+  /** "Overhead": the microarray lab's Top preset (`app.js:108`). */
   overhead(): void {
-    this.controls.maxPolarAngle = MAX_POLAR;
-    const distance = 1.7;
-    const target = new THREE.Vector3(0, 0, 0);
-    this.tweenTo(new THREE.Vector3(0, distance * Math.cos(MIN_POLAR), distance * Math.sin(MIN_POLAR)), target);
+    this.tweenTo(PRESETS.top());
   }
 
   /** The current camera pose, so Examine can return to it (§5.8). */
   pose(): CameraPose {
-    return { position: this.camera.position.clone(), target: this.controls.target.clone() };
+    return copyView(this.view);
   }
 
-  /** Back to a saved pose, with the normal orbit limits (Examine's Eye level relaxes them). */
+  /** Back to a saved pose. */
   restorePose(pose: CameraPose): void {
-    this.controls.maxPolarAngle = MAX_POLAR;
-    this.tweenTo(pose.position.clone(), pose.target.clone());
+    this.tweenTo(copyView(pose));
   }
 
   /**
    * Examine's Eye level (§5.8): the camera level with the liquid surface, looking straight at it,
    * the correct way to read a meniscus. The level comes from the runtime contents through the fill
-   * profile; the item does not move. Level views sit below the normal 12° floor, so the limit is
-   * relaxed until `restorePose`.
+   * profile; the item does not move. A programmatic view, so it sits outside the manual limits
+   * (pitch 0 and a short distance) until the camera is next moved by hand.
    */
   eyeLevel(instanceId: string, levelMm: number, distanceM = 0.32, seeThrough: string[] = []): void {
     const view = this.items.get(instanceId);
     if (!view) return;
     const target = view.root.position.clone();
     target.y += levelMm * MM;
-    const current = this.camera.position.clone().sub(this.controls.target).setY(0);
-    if (current.lengthSq() < 1e-6) current.set(0, 0, 1);
-    current.normalize();
+    const current = new THREE.Vector3(Math.sin(this.view.yaw), 0, Math.cos(this.view.yaw));
     // The first direction, from the current one outward, with nothing else between the eye and the
     // line: another item standing in front (a wash bottle beside the flask) would hide the meniscus.
     const own = new Set([instanceId, ...seeThrough, ...this.lockedDescendants(instanceId)]);
@@ -1440,48 +1591,42 @@ export class BenchEngine {
     };
     const turns = [0, 35, -35, 70, -70, 110, -110, 180];
     const chosen = turns.map((deg) => current.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), deg * DEG)).find(clear) ?? current;
-    const across = chosen.multiplyScalar(distanceM);
-    this.controls.maxPolarAngle = 90 * DEG;
-    this.tweenTo(target.clone().add(across), target);
+    const yaw = this.view.yaw + Math.atan2(Math.sin(Math.atan2(chosen.x, chosen.z) - this.view.yaw), Math.cos(Math.atan2(chosen.x, chosen.z) - this.view.yaw));
+    this.tweenTo({ at: target, yaw, pitch: 0, distance: distanceM });
   }
 
-  private frameBox(box: THREE.Box3, marginFactor: number, insets: { left?: number; right?: number }, direction?: THREE.Vector3): void {
-    this.controls.maxPolarAngle = MAX_POLAR;
+  private frameBox(box: THREE.Box3, marginFactor: number, safe: Rect[] | undefined): void {
     const centre = box.getCenter(new THREE.Vector3());
-    const radius = Math.max(0.12, box.getSize(new THREE.Vector3()).length() / 2) * marginFactor;
-    const dir = direction ?? this.camera.position.clone().sub(this.controls.target).normalize();
-    const width = Math.max(1, this.canvas.clientWidth);
-    const free = Math.max(0.3, 1 - ((insets.left ?? 0) + (insets.right ?? 0)) / width);
-    const distance = Math.min(this.controls.maxDistance, Math.max(this.controls.minDistance, radius / Math.sin((this.camera.fov * DEG) / 2) / Math.sqrt(free)));
-    // Shift the look-at point so the set sits in the middle of the uncovered part of the canvas.
-    const halfWidthWorld = Math.tan((this.camera.fov * DEG) / 2) * distance * this.camera.aspect;
-    const shiftPx = ((insets.left ?? 0) - (insets.right ?? 0)) / 2;
-    const right = new THREE.Vector3().crossVectors(dir, new THREE.Vector3(0, 1, 0)).normalize().negate();
-    const target = centre.clone().addScaledVector(right, -(shiftPx / (width / 2)) * halfWidthWorld);
-    this.tweenTo(target.clone().addScaledVector(dir, distance), target);
+    const half = box.getSize(new THREE.Vector3()).multiplyScalar(marginFactor / 2);
+    const points: THREE.Vector3[] = [];
+    for (const sx of [-1, 1]) for (const sy of [-1, 1]) for (const sz of [-1, 1]) {
+      points.push(new THREE.Vector3(centre.x + sx * half.x, Math.max(0, centre.y + sy * half.y), centre.z + sz * half.z));
+    }
+    const size = this.canvasSize();
+    const rects = safe?.length ? safe : safeRects(size, []);
+    const base: OrbitView = { ...copyView(this.view), yaw: frontYaw(this.view.yaw), pitch: FRAME_PITCH };
+    const goal = fitBest(points, base, size, rects);
+    if (goal) this.tweenTo(goal);
   }
 
   /**
    * The Studio's equipment inspection (handoff §4.8): the camera turns slowly around what it
-   * frames, all the way round (the ±70° azimuth limit is lifted while it turns). Under reduced
-   * motion it does not turn; the item can still be orbited by hand.
+   * frames, all the way round. Under reduced motion it does not turn; the item can still be
+   * orbited by hand.
    */
   setTurntable(on: boolean): void {
-    this.controls.minAzimuthAngle = on ? -Infinity : -70 * DEG;
-    this.controls.maxAzimuthAngle = on ? Infinity : 70 * DEG;
-    this.controls.autoRotate = on && !this.options.reducedMotion;
-    this.controls.autoRotateSpeed = 1.6;
+    this.turntable = on;
     this.requestRender();
   }
 
+  /** Home: the microarray lab's starting view (`renderer.js:119`). */
   resetView(): void {
-    this.controls.maxPolarAngle = MAX_POLAR;
-    this.tweenTo(this.home.position.clone(), this.home.target.clone());
+    this.tweenTo(DEFAULT_VIEW());
   }
 
-  private tweenTo(position: THREE.Vector3, target: THREE.Vector3): void {
+  private tweenTo(goal: OrbitView): void {
     const duration = this.options.reducedMotion ? 0 : 0.65;
-    this.tween = { from: this.camera.position.clone(), to: position, fromTarget: this.controls.target.clone(), toTarget: target, t: 0, duration };
+    this.tween = { from: copyView(this.view), to: goal, t: 0, duration };
     this.requestRender();
   }
 
@@ -1497,7 +1642,7 @@ export class BenchEngine {
     this.dropMaterial?.dispose();
     this.disposed = true;
     if (this.frame) cancelAnimationFrame(this.frame);
-    this.controls.dispose();
+    this.detachCameraInput?.();
     this.items.forEach((view) => { if (view.contents) disposeObject(view.contents); });
     this.items.clear();
     this.contact.dispose();

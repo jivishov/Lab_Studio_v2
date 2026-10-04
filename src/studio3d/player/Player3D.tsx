@@ -4,13 +4,14 @@ import type { GestureController } from "../../player/gesture/gestureTypes";
 import { useGestureRecognition } from "../../player/gesture/useGestureRecognition";
 import type { RuntimeDefinition } from "../../runtime";
 import { BenchView } from "../bench/BenchView";
+import { safeRects } from "../bench/camera/benchCamera";
 import type { BenchEngine, CameraPose, GraphicsQuality } from "../bench/BenchEngine";
 import { arrowDirection, spatialNeighbour } from "../bench/input/keyboard";
 import { createBenchGestureTargetResolver, type BenchGestureGrab } from "../bench/input/targetResolver";
 import { useBenchCarry } from "../bench/input/useBenchCarry";
 import { Icon } from "../ui/Icon";
 import { HandControlPanel } from "./HandControlPanel";
-import { coveredSides, MOVABLE_FROM_WIDTH, sanitizeLayout, type PanelId, type PanelLayout, type PanelState } from "./panelLayout";
+import { MOVABLE_FROM_WIDTH, sanitizeLayout, type PanelId, type PanelLayout, type PanelState } from "./panelLayout";
 import { BenchList, EquipmentTray, ExamineCard, HelpDialog, NOTEBOOK_WIDTH, NotebookSheet, ResultsSheet, thumbnailUrl, type PanelControls } from "./panels";
 import { SimulationSwitcher } from "./SimulationSwitcher";
 import { DropPanel } from "./DropPanel";
@@ -170,7 +171,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     const run = async () => {
       await engine.sync(pour.staging);
       // The pour is framed where it happens, unless the learner has taken the camera (§5.9).
-      if (autoViewRef.current && !reducedMotion) engine.frameItems([pour.sourceId, pour.targetId], 2.2);
+      if (autoViewRef.current && !reducedMotion) engine.frameItems([pour.sourceId, pour.targetId], 1.4);
       if (source && target) {
         await engine.animatePour({ sourceId: pour.sourceId, targetId: pour.targetId,
           sourceBefore: source.contents, sourceAfter: pour.sourceAfter,
@@ -384,8 +385,17 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   // the camera during a carry.
   const frame = useCallback(() => {
     if (!engine || carryingRef.current) return;
-    const panels = [...(playerRef.current?.querySelectorAll<HTMLElement>("[data-panel], .s3d-examine, .s3d-sheet") ?? [])];
-    engine.panelInsets = coveredSides(engine.canvasElement.getBoundingClientRect(), panels.map((el) => el.getBoundingClientRect()));
+    // The free stage around every open panel, above the hint and dock (the microarray lab's safeRects).
+    const canvasRect = engine.canvasElement.getBoundingClientRect();
+    const rel = (el: Element | null | undefined) => {
+      if (!el || (el as HTMLElement).offsetParent === null) return undefined;
+      const b = el.getBoundingClientRect();
+      return { left: b.left - canvasRect.left, top: b.top - canvasRect.top, right: b.right - canvasRect.left, bottom: b.bottom - canvasRect.top };
+    };
+    const root = playerRef.current;
+    const obstacles = [...(root?.querySelectorAll("[data-panel], .s3d-examine, .s3d-sheet, .s3d-drop") ?? [])].map(rel).filter((r) => r !== undefined);
+    const below = [rel(root?.querySelector(".s3d-hint")), rel(root?.querySelector(".s3d-dock"))].filter((r) => r !== undefined).map((r) => r.top);
+    engine.safeAreas = safeRects({ w: canvasRect.width, h: canvasRect.height }, obstacles, below.length ? Math.min(...below) : canvasRect.height);
     const targetDef = flow.target.definitionId;
     const toolDef = player.toolTransfer?.toolDefinitionId;
     const working = new Set(showGuidance
@@ -394,7 +404,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     for (const item of scene.bench) {
       if (working.has(item.instanceId) && item.placement.kind === "seated") working.add(item.placement.parentInstanceId);
     }
-    engine.frameItems(working.size ? [...working] : "all", working.size ? 1.9 : 1.2);
+    engine.frameItems(working.size ? [...working] : "all", working.size ? 1.6 : 1.05);
   }, [engine, flow.source.definitionId, flow.target.definitionId, player.toolTransfer, scene, showGuidance]);
   useEffect(() => {
     if (runtime.currentNode.id !== lastNode.current) {
@@ -530,7 +540,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     if (!examined) examinePose.current = { ...engine.pose(), auto: autoView };
     setExamined(id);
     setSelected(id);
-    engine.frameItems([id], 1.6);
+    engine.frameItems([id], 1.3);
     setAutoView(false);
   };
   examineRef.current = examine;
@@ -570,7 +580,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     setAutoView(view === "auto");
     if (view === "auto") frame();
     else if (view === "bench") engine?.frameBench();
-    else if (view === "selected" && selected) engine?.frameItems([selected], 2.2);
+    else if (view === "selected" && selected) engine?.frameItems([selected], 1.4);
     else if (view === "overhead") engine?.overhead();
   };
   const examinedHolder = (() => {
@@ -746,7 +756,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
       {panel === "tray" ? <EquipmentTray player={player} controls={panelControls} onPointerDownTile={carry.startTrayCarry}
         gestureGrabbedDefinitionId={trayGrab?.definitionId} /> : null}
       {panel === "list" ? <BenchList player={player} controls={panelControls} selected={selected}
-        onSelect={(id) => { setSelected(id); setAutoView(false); engine?.frameItems([id], 2.2); }} onExamine={examine}
+        onSelect={(id) => { setSelected(id); setAutoView(false); engine?.frameItems([id], 1.4); }} onExamine={examine}
         onMove={startMove} onClose={() => setPanel("none")} /> : null}
       {examinedItem ? (
         <ExamineCard item={examinedItem} holderLabel={examinedHolder} onClose={closeExamine}

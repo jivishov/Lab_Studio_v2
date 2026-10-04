@@ -36,8 +36,17 @@ const tiers = process.argv.slice(3).length ? process.argv.slice(3) : ["low"];
       }
       return r.join(" | ");
     });
-    await page.waitForTimeout(3000);
+    await page.waitForTimeout(8000);
     await page.screenshot({ timeout: 180000, path: `${out}-${quality}.png` });
+    // The camera menu's views (the microarray lab's presets), one screenshot each.
+    for (const view of ["Whole bench", "Overhead"]) {
+      await page.evaluate(async (label) => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        document.querySelector('[aria-label="Camera views"]')?.click(); await sleep(300);
+        [...document.querySelectorAll('[role="menuitem"]')].find((b) => b.textContent.trim() === label)?.click(); await sleep(8000); // SwiftShader frames are slow; the 650 ms tween takes several
+      }, view);
+      await page.screenshot({ timeout: 180000, path: `${out}-${quality}-${view.replace(/ /g, "-").toLowerCase()}.png` });
+    }
     console.log(quality, result, errors.length ? "ERRORS " + errors.join(" ; ") : "no errors");
     await page.close();
   }

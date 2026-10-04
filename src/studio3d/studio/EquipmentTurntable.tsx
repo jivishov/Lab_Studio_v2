@@ -28,7 +28,7 @@ export const EquipmentTurntable = ({ studio, instanceId }: { studio: Studio3DCon
     let active = true;
     void engine.settled().then(() => {
       if (!active) return;
-      engine.frameItems([item.instanceId], 1.5, {});
+      engine.frameItems([item.instanceId], 1.5, []);
       engine.setTurntable(true);
     });
     return () => { active = false; engine.setTurntable(false); };

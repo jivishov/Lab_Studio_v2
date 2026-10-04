@@ -102,7 +102,7 @@ export const BenchSetupView = ({ studio, onToast, onInspectEquipment }: {
     engine.onChange = () => bump((v) => v + 1);
     // The stage is narrower than the player's window: start on the whole bench (§4.5 "Reset").
     let active = true;
-    void engine.settled().then(() => { if (active) engine.frameBench({}, true); });
+    void engine.settled().then(() => { if (active) engine.frameBench(); });
     return () => { active = false; engine.onChange = undefined; };
   }, [engine]);
   useEffect(() => { engine?.setSelected(selectedId ?? null); }, [engine, selectedId, scene]);
@@ -265,7 +265,7 @@ export const BenchSetupView = ({ studio, onToast, onInspectEquipment }: {
   const onKeyDown = (event: React.KeyboardEvent) => {
     if (!engine) return;
     const instance = selectedId ? instanceFor(selectedId) : undefined;
-    if (event.key === "Home") { event.preventDefault(); engine.frameBench({}, true); return; }
+    if (event.key === "Home") { event.preventDefault(); engine.frameBench(); return; }
     if ((event.key === "f" || event.key === "F") && selectedId) { event.preventDefault(); engine.frameItems([selectedId], 2.2); return; }
     if (!instance || readOnly) return;
     if (event.key === "Delete" || event.key === "Backspace") { event.preventDefault(); remove(instance.id); return; }
@@ -322,9 +322,9 @@ export const BenchSetupView = ({ studio, onToast, onInspectEquipment }: {
         <button type="button" className={snapZones ? "is-on" : ""} aria-pressed={snapZones} onClick={() => setSnapZones((v) => !v)} title="Alt bypasses snapping"><Icon name="seat" />Snap to zones</button>
         <button type="button" className={labels ? "is-on" : ""} aria-pressed={labels} onClick={() => setLabels((v) => !v)}>Labels</button>
         <i />
-        <button type="button" onClick={() => engine?.frameBench({}, true)}>Front</button>
+        <button type="button" onClick={() => engine?.frameBench()}>Front</button>
         <button type="button" onClick={() => engine?.overhead()}>Top</button>
-        <button type="button" onClick={() => engine?.frameBench({}, true)}><Icon name="reset" />Reset</button>
+        <button type="button" onClick={() => engine?.frameBench()}><Icon name="reset" />Reset</button>
       </div>
       <span className="s3d-sr" aria-live="polite">{onBench} on bench, {shelf.length} on shelf</span>
     </div>
