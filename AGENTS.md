@@ -56,6 +56,8 @@
 
 ## Student Player Camera Gesture Control Rules
 
+These rules govern the 2D Student Player. Lab Studio 3D's Player3D has its own hand control, ported from the DNA microarray 3D lab (decided 2026-10-03/04); see "Player3D Hand Control Rules" below.
+
 Gesture control is a shared Student Player input mode. Do not create per-lab or per-template gesture systems. To apply gesture control to another lab, build the activity with the normal equipment, workbench, snap-zone, and interaction specs, then verify that the shared Student Player gesture bridge can operate it.
 
 Source-of-truth files:
@@ -155,6 +157,27 @@ When asked to "apply gesture control" to a lab/template/technique:
 - Do not serialize runtime-only camera or landmark data.
 - Do not make decorative drag previews focusable.
 - Do not bypass runtime validation, assessment feedback, snap zones, or overlap checks.
+
+## Player3D Hand Control Rules
+
+Lab Studio 3D's Player3D (`src/studio3d/`) takes its hand control from the DNA microarray 3D lab (`virtual_lab/experiments/dnamicroarray_v2/3d-v3/`), decided 2026-10-03 and 2026-10-04 (`planning/2026-09-23_lab-studio-3d/DECISIONS.md`, `proposals/MICROARRAY_ADOPTION.md`). It is one hand-control system for every 3D technique; do not add per-technique gesture code.
+
+Source-of-truth files:
+- `src/studio3d/hand/handCore.ts`: pose measures, the plunger gate, the thumb calibration line and insertion contact (`hand-core.js`).
+- `src/studio3d/hand/handTracker.ts`, `handWorker.ts`, `handDetector.ts`: the webcam, the module worker and MediaPipe HandLandmarker (`camera.js`).
+- `src/studio3d/hand/handController.ts`: picking, aim assist, lock-on, exits and the gesture table (`interaction.js`, `app.js`).
+- `src/studio3d/hand/handTuning.ts`: the settings, stored under `lab-studio:3d:v1:hand` (`hand-tuning.js`).
+- `src/studio3d/hand/useHandControl.ts`, `src/studio3d/player/HandControlPanel.tsx`, `src/studio3d/player/Player3D.tsx`: the panel and the wiring to the bench's carry.
+
+Rules:
+- Player3D does not import the 2D gesture engine or bridge (`src/player/gesture/**`), and changes to 3D hand control never edit them.
+- The hand only says when to act. What an action does comes from the bench's carry and its release order (`useBenchCarry`, `sceneToIntent`), the same path the mouse and keyboard use, so runtime validation, refusals and assessment recording are never bypassed.
+- Nothing commits while the hand passes over a target; leaving a lock before the action changes nothing.
+- Guidance-like help (aim assist toward the step's next target) applies in guided mode only.
+- Panel buttons a hand may press opt in with `data-hand-press`.
+- Mouse and hand exclude each other: a mouse press or the wheel stops the camera.
+- Camera frames, landmarks and calibration are never stored; only the settings preference is.
+- Thresholds and timings follow the microarray source; a change to them is a reviewed change recorded in `DECISIONS.md`.
 
 ## Lab Studio 3D Equipment Asset Rules
 

@@ -34,3 +34,10 @@ NODE_PATH="C:/Users/EmilJivishov/Projects/Lab_studio/node_modules" node planning
 
 It sets the player's graphics preference to Low (SwiftShader frames are slow) and waits after
 pours, which block carries until they finish drawing.
+
+Two more headless scripts, run the same way (dev server on 5182, `NODE_PATH` as above):
+
+| File | What it does |
+|---|---|
+| `look-room.cjs <prefix> [low balanced high]` | Dilute a Stock Solution under the microarray room and look: one screenshot per tier, then Whole bench and Overhead (adoption P1, P2) |
+| `run-weighing-mouse.cjs <prefix>` | Weigh a Solid with real mouse events on the microarray controller (adoption P3): tray clicks, a right-click put-back, the seat stroke, TARE, the spatula's dip and tip, double-click Examine; items are found by sweeping the pointer and reading the hover label |

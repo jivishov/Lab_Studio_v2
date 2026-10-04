@@ -1,17 +1,18 @@
 # Lab Studio 3D: session handoff
 
-Written 2026-09-24 and updated 2026-10-03, so a fresh session can continue the Pack 1 build without
+Written 2026-09-24 and updated 2026-10-04, so a fresh session can continue the Pack 1 build without
 the previous conversation; checked claim by claim against the repository. Read this first, then the
 governing documents it names.
 
-## State on 2026-10-03 (read this first)
+## State on 2026-10-04 (read this first)
 
 This section supersedes anything older below where they differ. `DECISIONS.md` has every decision;
 the evidence notes have what was built and checked.
 
 **Branch.** `origin/claude/lab-studio-3d` is at `713c248`. Every commit after it is local
 (`git log --oneline 713c248..HEAD`): the build from `39fdab8` (M7 hand-panel decisions) to `7a63d86`
-(the pump stays on the pipette), then the handoff commits of 2026-10-03. Push only when the user asks.
+(the pump stays on the pipette), the handoff commits of 2026-10-03, then the microarray adoption of
+2026-10-04 (`9798de1` P0 to the P5 records commit). Push only when the user asks.
 
 **Pack 1, technique by technique:**
 
@@ -26,6 +27,15 @@ the evidence notes have what was built and checked.
 Also built: the top bar's title is a switcher listing the five Pack 1 techniques (a slim bar does the
 same on the intro and setup pages), and hover labels hang below items.
 
+**The microarray adoption is built (2026-10-04;** `evidence/MICROARRAY_ADOPTION_EVIDENCE.md`). It covers:
+- the room and look: `bench/look/room.ts`, `microarrayGeometry.ts`, `environment.ts` and `composer.ts`;
+- the camera and mouse camera: `bench/camera/benchCamera.ts` and `BenchEngine.ts`;
+- the left button on the microarray controller: `useBenchCarry.ts`, `PressAction` and `STROKE`;
+- hand control: `src/studio3d/hand/` and `player/HandControlPanel.tsx`.
+
+The 2D player is unchanged. Ten interpretations made while building wait for confirmation (`DECISIONS.md`, the
+"built" row). G3 has still not run.
+
 **Standing policies (user decisions):**
 - **Atomization:** break each step down to the real physical actions, within reason, to build
   "muscle memory". New atoms and roles not cited in the AP lab documents are expected; record the basis
@@ -36,21 +46,15 @@ same on the intro and setup pages), and hover labels hang below items.
 - **3D is independent of 2D:** the 2D player is out of scope; some atomized steps (drop to the line,
   invert) cannot be played in 2D, and that is accepted.
 - **The microarray lab's environment, bench view, mouse and hand control are adopted for 3D**
-  (decided 2026-10-03; `DECISIONS.md`). The plan, the rules it replaces and the choices still to confirm
-  are in `proposals/MICROARRAY_ADOPTION.md`.
+  (decided 2026-10-03; choices confirmed 2026-10-04; built 2026-10-04). The plan and the rules it
+  replaces are in `proposals/MICROARRAY_ADOPTION.md`; `AGENTS.md` has "Player3D Hand Control Rules".
 - **Realistic gestures:** prefer gestures that reproduce the real action. In the microarray lab
   (2026-09-28) the user found pinching "very tricky" and preferred a calibrated thumb press on the
   plunger.
 
 **Next, in order (recommended):**
-1. **Adopt the microarray lab's environment, bench view, mouse and hand control** (decided
-   2026-10-03), following `proposals/MICROARRAY_ADOPTION.md`:
-   - P0: put its §9 choices to the user and record the answers.
-   - P1: environment and look. P2: camera and mouse camera. P3: the left button on the ported
-     controller. P4: hand control. P5: records.
-   - The source is `virtual_lab\experiments\dna-microarray-3d` (the folder the user named). It holds
-     the same code as the published `dnamicroarray_v2` at commit `9495489`; only line endings differ.
-     Read either; edit neither.
+1. **Done 2026-10-04: the microarray adoption** (P0–P5). It is open only for the ten interpretations to
+   confirm and for G3.
 2. **Build Make a Solution** per `proposals/PACK1_ATOMIZATION.md` (decided: pre-weighed boat, swirl in
    the flask, drop to the mark, stopper, invert), on the new controller. It needs:
    - a weigh boat model (none exists in 3D yet);
@@ -69,8 +73,13 @@ tsconfig.app.json --noEmit`, `python tools/blender/validate_equipment3d.py --pac
 static validators; tests are written but not run):
 - `probes/` holds the narrow validators and runtime probes; see `probes/README.md`.
 - G1 is one browser look per change in the app's pane. A hidden pane stops animation frames, so pours
-  never finish drawing and carries are blocked: switch on Menu → Reduced motion for logic, and switch it
-  back off; or take one headless look with `probes/look-dilution.cjs` (Playwright, SwiftShader).
+  never finish drawing and carries are blocked. Two workarounds:
+  - switch on Menu → Reduced motion for logic, and switch it back off;
+  - take one headless look with Playwright and SwiftShader: `probes/look-dilution.cjs`,
+    `probes/look-room.cjs` (the room, at each tier and view), or `probes/run-weighing-mouse.cjs`.
+    The last drives Weigh a Solid with real mouse events, finding items by sweeping the pointer and
+    reading the hover label.
+  - SwiftShader frames are slow, so allow seconds for a 650 ms camera tween.
 - Dev server: `preview_start` "lab-studio-3d-dev" (port 5182), configured in the session folder's
   `C:\Users\EmilJivishov\Projects\virtual_lab\experiments\lab-studio\.claude\launch.json`, which
   is temporary; remove it and stop the server when the work is done. It was not running at this handoff.
@@ -149,7 +158,8 @@ The user asked for **the highest fidelity** to the plan and the handoff.
 | Dilute a Stock Solution atomized (12 steps: pipette pump, drop to the line, stopper, invert) | Done; seen in the pane and in a headless look | `evidence/DILUTION_ATOMIZATION_EVIDENCE.md` |
 | transmittance-dilution: funnel, working beaker, transfer pipettes, 25 mL cylinder (28 steps) | Done; seen end to end in the pane | `evidence/PIPETTE_FUNNEL_EVIDENCE.md` |
 | The balance's TARE key; the spatula for solids (dip, carry, tip) | Done; assessment mode, reduced motion and hand control not seen in the pane | `evidence/TARE_SPATULA_EVIDENCE.md` |
-| **M8: Pack 1 acceptance** | **Next** | — |
+| The microarray lab's room, camera, mouse and hand control (P0–P5) | Done; looks headless, a mouse run of weighing; G3 not run | `9798de1` … P5; `evidence/MICROARRAY_ADOPTION_EVIDENCE.md` |
+| **M8: Pack 1 acceptance** | **Next**, after Make a Solution | — |
 
 ## M7 (delivered 2026-09-24)
 
@@ -300,6 +310,9 @@ and template rules. `scripts/checkCycle04Foundations.mjs` can't run in this expo
 
 - **PowerShell array-of-pairs replacements** mangle multi-line strings, because the comma binds tighter
   than `+`. Use the Edit tool for multi-line edits.
+- **Git Bash's `sed -i` turns CRLF into LF** for the whole file (this happened to `Player3D.tsx` in P2 and
+  was restored in P3). Never use it on a CRLF file; use the byte-aware script.
+- **Never `cat >` without a heredoc** in a Bash call: it waits on stdin until the call times out.
 - **Line endings.** Check each file before editing and match it; git keeps them as they are (`* -text`).
   - **CRLF** (checked 2026-10-03):
     - `src/studio3d/bench/BenchEngine.ts` and `BenchView.tsx`;
@@ -312,7 +325,7 @@ and template rules. `scripts/checkCycle04Foundations.mjs` can't run in this expo
       `evidence/M2_EVIDENCE.md`.
   - **Mixed:** `src/App.tsx` (mostly CRLF) and `src/player/ProcessSidebar.tsx`.
   - **LF:**
-    - `src/studio3d/bench/input/*` and `src/studio3d/bench/look/*`;
+    - `src/studio3d/bench/input/*`, `src/studio3d/bench/look/*`, `src/studio3d/bench/camera/*` and `src/studio3d/hand/*`;
     - `src/studio3d/adapters/*`;
     - `StepCard.tsx`, `panels.tsx`, `HandControlPanel.tsx` and `SimulationSwitcher.tsx`;
     - the rest of `src/player/**`, and the runtime (`src/runtime/*`);
