@@ -782,6 +782,14 @@ const validateActionContract15 = (
     requireString(errors, stringRecordField(input.parameters, "targetDefinitionId"), `${path}.parameters.targetDefinitionId`);
     if (input.materialTransition !== undefined) errors.push(`${path} cannot combine dissolving the solid in its vessel with a material transition.`);
   }
+  // A rinse in several squirts (decided 2026-10-05): a whole number from 1 to 10, on rinses only.
+  if (isObject(input.parameters) && input.parameters.rinsePortions !== undefined) {
+    const portions = input.parameters.rinsePortions;
+    if (actionVerb !== "rinse") errors.push(`${path}.parameters.rinsePortions is legal only on rinse actions.`);
+    if (typeof portions !== "number" || !Number.isInteger(portions) || portions < 1 || portions > 10) {
+      errors.push(`${path}.parameters.rinsePortions must be a whole number from 1 to 10.`);
+    }
+  }
   // Rinse washings sent into a named vessel (decided 2026-10-04) leave the rinsed item, so they cannot
   // also be kept in it.
   if (stringRecordField(input.parameters, "washingsReceiverInstanceId") !== undefined) {

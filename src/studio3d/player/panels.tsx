@@ -144,40 +144,39 @@ export const FloatPanel = ({ id, label, className, controls, head, collapsedHead
   );
 };
 
-/** Tray (§5.10): shelf items only; guided mode marks what the current step needs, as the 2D shelf does. */
-export const EquipmentTray = ({ player, controls, onPointerDownTile, gestureGrabbedDefinitionId }: {
+/**
+ * Tray (§5.10): shelf items only; guided mode marks what the current step needs, as the 2D shelf does.
+ * One tile per item (decided 2026-10-05): two of a kind (a blank and a sample cuvette) are two tiles,
+ * each named and each placing its own item.
+ */
+export const EquipmentTray = ({ player, controls, onPointerDownTile, gestureGrabbedInstanceId }: {
   player: Player3DController;
   controls: PanelControls;
-  onPointerDownTile: (definitionId: string, pointerType: string) => void;
+  onPointerDownTile: (definitionId: string, pointerType: string, instanceId: string) => void;
   /** The tile a hand-control pinch is carrying from, dimmed while its preview follows the pinch. */
-  gestureGrabbedDefinitionId?: string;
+  gestureGrabbedInstanceId?: string;
 }) => {
-  const groups = new Map<string, { definitionId: string; label: string; count: number }>();
-  for (const item of player.scene.tray) {
-    const g = groups.get(item.definitionId);
-    if (g) g.count += 1;
-    else groups.set(item.definitionId, { definitionId: item.definitionId, label: item.label, count: 1 });
-  }
+  const items = player.scene.tray;
   const needed = new Set(player.showGuidance ? currentStepEquipmentIds(player.interaction, player.toolTransfer?.toolDefinitionId) : []);
-  if (groups.size === 0) return null;
+  if (items.length === 0) return null;
   return (
     <FloatPanel id="tray" label="Tray" className="s3d-tray" controls={controls}
-      head={<h2 className="s3d-float__title">Tray · {player.scene.tray.length}</h2>}>
+      head={<h2 className="s3d-float__title">Tray · {items.length}</h2>}>
       <ul className="s3d-tray__tiles" data-gesture-scroll-region="vertical">
-        {[...groups.values()].map((g) => (
-          <li key={g.definitionId}>
+        {items.map((item) => (
+          <li key={item.instanceId}>
             <button
               type="button"
-              className={`s3d-tile${gestureGrabbedDefinitionId === g.definitionId ? " is-gesture-grabbed" : ""}`}
-              data-definition-id={g.definitionId}
-              onPointerDown={(e) => { if (e.button === 0) { e.preventDefault(); onPointerDownTile(g.definitionId, e.pointerType); } }}
-              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); player.dropFromTray(g.definitionId); } }}
-              aria-label={`${g.label}${g.count > 1 ? `, ${g.count}` : ""}${needed.has(g.definitionId) ? ", needed now" : ""}. Pick it up and set it on the bench, or press Enter to place it.`}
+              className={`s3d-tile${gestureGrabbedInstanceId === item.instanceId ? " is-gesture-grabbed" : ""}`}
+              data-definition-id={item.definitionId}
+              data-instance-id={item.instanceId}
+              onPointerDown={(e) => { if (e.button === 0) { e.preventDefault(); onPointerDownTile(item.definitionId, e.pointerType, item.instanceId); } }}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); player.dropFromTray(item.definitionId, undefined, undefined, item.instanceId); } }}
+              aria-label={`${item.label}${needed.has(item.definitionId) ? ", needed now" : ""}. Pick it up and set it on the bench, or press Enter to place it.`}
             >
-              {needed.has(g.definitionId) ? <span className="s3d-tile__need" aria-hidden="true" /> : null}
-              {g.count > 1 ? <span className="s3d-tile__count">× {g.count}</span> : null}
-              <Thumb definitionId={g.definitionId} />
-              <span>{g.label}</span>
+              {needed.has(item.definitionId) ? <span className="s3d-tile__need" aria-hidden="true" /> : null}
+              <Thumb definitionId={item.definitionId} />
+              <span>{item.label}</span>
             </button>
           </li>
         ))}

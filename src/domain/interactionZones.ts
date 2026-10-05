@@ -121,6 +121,8 @@ export const v1InteractionZones: InteractionZone[] = [
   zone("graduated-pipette-pump-seat", "graduated-pipette-10ml", ["pipette-pump"], "mounted"),
   zone("chromatography-chamber-paper-slot", "chromatography-chamber", ["chromatography-paper"], "developing"),
   zone("volumetric-flask-stopper-seat", "volumetric-flask", ["rubber-stopper-set"], "inserted"),
+  // transmittance-dilution's test tube is stoppered and inverted to mix (decided 2026-10-05).
+  zone("test-tube-stopper-seat", "test-tube", ["rubber-stopper-set"], "inserted"),
   // A temporary filling funnel in the neck, removed before the flask is filled to its mark
   // (Make a Solution, decided 2026-10-04).
   zone("volumetric-flask-funnel-seat", "volumetric-flask", ["funnel"], "mounted"),

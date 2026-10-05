@@ -127,7 +127,11 @@ export const StepCard = ({ player, controls, onShowMe, onHoldOver, holdOverReady
                 title={holdOverReady ? undefined : "Put the pipette and the vessel on the bench first."}>Hold the pipette over it</button>
             ) : null
           ) : flow.canConfirm ? (
-            <button type="button" className="s3d-button s3d-button--primary" data-hand-press="confirm-accessible-action" disabled={!flow.confirmEnabled} onClick={player.confirm}>Confirm</button>
+            <button type="button" className="s3d-button s3d-button--primary" data-hand-press="confirm-accessible-action" disabled={!flow.confirmEnabled} onClick={player.confirm}>
+              {runtime.expectedAction?.verb === "rinse" && Number(runtime.expectedAction.parameters.rinsePortions ?? 1) > 1
+                ? `Rinse (${runtime.state.rinsePortions?.[runtime.expectedAction.id] ?? 0} of ${Number(runtime.expectedAction.parameters.rinsePortions)})`
+                : "Confirm"}
+            </button>
           ) : flow.canSubmitCalculation || (runtime.expectedAction?.verb === "calculate" && !flow.nodeCompleted) ? (
             <button type="button" className="s3d-button s3d-button--primary" data-hand-press="submit-calculation" disabled={!flow.canSubmitCalculation} onClick={player.submitCalculation}>
               {submitCalculationLabel(runtime.expectedAction?.label ?? "calculation")}

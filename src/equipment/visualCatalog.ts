@@ -657,6 +657,9 @@ export const v1VisualCatalog: VisualCatalog = {
     shelfSize: rect(0, 0, 48, 118),
     footprint: rect(18, 132, 18, 10),
     hitBox: rect(-6, 0, 66, 150),
+    visualZones: [
+      { id: "test-tube-stopper-seat", bounds: rect(17, -10, 20, 24), anchor: { x: 27, y: 4 } },
+    ],
     contentRegions: [liquidRect(rect(18, 48, 18, 78), "narrow-neck")],
     liquidVisualProfile: liquidProfile(
       "test-tube-v1",

@@ -181,6 +181,12 @@ describe("tray drops (placeShelfEquipment)", () => {
       request: { verb: "place", equipmentDefinitionId: "spatula", location: "workbench", parameters: { benchMove: true, x: 10, y: 20, zIndex: 4 } } });
     expect(resolveTrayDrop(drag, true, undefined, "watch-glass", { x: 10, y: 20 }, 4).kind).toBe("freeMove");
   });
+  it("moves the very item whose tile was used, not the first of its kind (per-item tiles, 2026-10-05)", () => {
+    const placed = resolveTrayDrop(drag, false, undefined, "watch-glass", { x: 10, y: 20 }, 4, "pointer", "watch-glass-2");
+    expect(placed.kind === "intent" && placed.intent.sourceInstanceId).toBe("watch-glass-2");
+    const moved = resolveTrayDrop(drag, false, undefined, "cuvette", { x: 10, y: 20 }, 4, "pointer", "sample-cuvette-1");
+    expect(moved.kind === "freeMove" && moved.request.sourceInstanceId).toBe("sample-cuvette-1");
+  });
 });
 
 describe("hand-control releases (plan D6)", () => {

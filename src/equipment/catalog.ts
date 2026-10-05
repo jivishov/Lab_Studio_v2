@@ -220,7 +220,16 @@ export const v1EquipmentCatalog: EquipmentDefinition[] = [
     "fillable",
     "pourable",
     "recordable",
-  ], 20, 0.5, ["empty", "liquid", "solid", "solution", "mixture", "precipitate"]),
+  ], 20, 0.5, ["empty", "liquid", "solid", "solution", "mixture", "precipitate"], [
+    // Stoppered and inverted to mix a dilution (transmittance-dilution, decided 2026-10-05).
+    {
+      id: "test-tube-stopper-seat",
+      label: "Test tube stopper seat",
+      accepts: ["rubber-stopper-set"],
+      x: 27,
+      y: 4,
+    },
+  ]),
   // `solid` and `mixture` because Make a Solution tips a weighed solid through a funnel into the dry
   // flask, then rinses it in and swirls it with water until it dissolves (decided 2026-10-04).
   equipment(

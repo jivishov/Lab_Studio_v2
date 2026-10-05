@@ -62,13 +62,15 @@ wait for confirmation (`DECISIONS.md`, the "built" row). G3 has still not run.
    on the new controller, with a weighing-boat model, a funnel seat in the flask, generic funnel atoms, rinses
    into a receiver and a dissolve of the solid in the flask. Reviewed for fidelity the same day: eleven findings
    fixed (evidence note, "Fidelity review"). It is open only for its nine interpretations to confirm, and for G3.
-3. **Two small additions:** a stopper and inversion for transmittance-dilution's test tube; an atom
-   for weighing's zero step.
-4. **Open UI items:** per-item tray tiles (pairs are grouped, so a tap places the first), and the long
-   title overlapping the step counter at narrow widths.
-5. **M8 acceptance**, with the provisional decisions confirmed (D8, Q4, Q6, U2, U5–U8, `[` `]`, free
-   re-seat, results rounding, the `AGENTS.md` heading) and permission for the test suite and
-   `content:check`. G3 (webcam) was approved but needs the user or Claude in Chrome.
+3. **Done 2026-10-05: Pack 1 finished** (`evidence/PACK1_FINISH_EVIDENCE.md`; D4 exceptions 10–12):
+   Make a Solution's rinses in three squirts; transmittance-dilution's test tube stoppered, inverted ten
+   times and opened (31 steps); weighing's zero atom; one tray tile per item; the top bar's long titles.
+   The tests and `content:check` were run for the first time: the branch's own failures are fixed, and
+   what remains fails the same way on GitHub main (the evidence note lists it).
+4. **M8 acceptance**, with the provisional decisions confirmed (D8, Q4, Q6, U2, U5–U8, `[` `]`, free
+   re-seat, results rounding, the `AGENTS.md` heading), the interpretations in the Pack 1 evidence notes
+   confirmed, and a decision on the stale content-check baseline. G3 (webcam) was approved but needs the
+   user or Claude in Chrome.
 
 **How the work has been checked** (the user's validation policy: source review, `npx tsc -p
 tsconfig.app.json --noEmit`, `python tools/blender/validate_equipment3d.py --pack 1`, and narrow
@@ -163,7 +165,8 @@ The user asked for **the highest fidelity** to the plan and the handoff.
 | The balance's TARE key; the spatula for solids (dip, carry, tip) | Done; assessment mode, reduced motion and hand control not seen in the pane | `evidence/TARE_SPATULA_EVIDENCE.md` |
 | The microarray lab's room, camera, mouse and hand control (P0–P5) | Done; looks headless, a mouse run of weighing; G3 not run | `9798de1` … P5; `evidence/MICROARRAY_ADOPTION_EVIDENCE.md` |
 | Make a Solution atomized (14 steps: weighing boat, funnel in the flask, rinses, swirl, to the mark, invert) | Done, then reviewed for fidelity; headless looks of all 14 steps before and after the review; G3 not run | `evidence/MAKE_SOLUTION_ATOMIZATION_EVIDENCE.md` |
-| **M8: Pack 1 acceptance** | **Next**, after the two small additions and the open UI items | — |
+| Pack 1 finished: three-squirt rinses, the test tube stoppered and inverted, the zero atom, per-item tray tiles, the top bar | Done 2026-10-05; tests and `content:check` run; one headless look | `evidence/PACK1_FINISH_EVIDENCE.md` |
+| **M8: Pack 1 acceptance** | **Next** | — |
 
 ## M7 (delivered 2026-09-24)
 

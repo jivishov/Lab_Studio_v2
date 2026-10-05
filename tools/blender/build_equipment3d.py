@@ -134,6 +134,7 @@ COMPOSITES = [
     ('spectrophotometer-with-cuvette', 'spectrophotometer', 'spectrophotometer-cuvette-slot', 'cuvette'),
     ('volumetric-flask-with-stopper', 'volumetric-flask', 'volumetric-flask-stopper-seat', 'rubber-stopper-set'),
     ('test-tube-in-rack', 'test-tube-rack', 'seat:1', 'test-tube'),
+    ('test-tube-with-stopper', 'test-tube', 'test-tube-stopper-seat', 'rubber-stopper-set'),
 ]
 
 

@@ -53,7 +53,7 @@ export const useHandControl = (api: HandApi) => {
     assist: () => apiRef.current.assist(),
     carrying: () => apiRef.current.carrying(),
     pickUpItem: (id) => apiRef.current.pickUpItem(id),
-    pickUpTile: (id) => apiRef.current.pickUpTile(id),
+    pickUpTile: (id, instanceId) => apiRef.current.pickUpTile(id, instanceId),
     aimCarry: (x, y) => apiRef.current.aimCarry(x, y),
     carryDepth: (d) => apiRef.current.carryDepth(d),
     commitCarry: () => apiRef.current.commitCarry(),

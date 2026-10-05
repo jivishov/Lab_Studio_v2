@@ -181,7 +181,10 @@ export const resolveTrayDrop = (
   point: { x: number; y: number },
   nextZIndex: number,
   origin: ReleaseOrigin = "pointer",
+  /** The tray item itself, when its tile names it (per-item tiles, decided 2026-10-05). */
+  instanceId?: string,
 ): { kind: "intent"; intent: RuntimeInteractionIntent } | { kind: "freeMove"; request: RuntimeActionRequest } => {
+  const item = instanceId ? { sourceInstanceId: instanceId } : {};
   const expectedSource = expected?.sourceDefinitionId ?? expectedActionEquipmentDefinitionId;
   const station = (zone: string) => (zone === "shelf" ? "shelf" : zone === "heating" || zone === "oven" || zone === "drying-oven" ? "oven" : "workbench");
   const matches = !currentNodeCompleted && expected?.type === "dragToZone" && expectedSource === definitionId
@@ -189,12 +192,12 @@ export const resolveTrayDrop = (
   if (matches) {
     return {
       kind: "intent",
-      intent: { type: "placeIntent", origin, sourceDefinitionId: definitionId, stationId: expected?.stationId ?? "workbench", x: point.x, y: point.y },
+      intent: { type: "placeIntent", origin, sourceDefinitionId: definitionId, ...item, stationId: expected?.stationId ?? "workbench", x: point.x, y: point.y },
     };
   }
   return {
     kind: "freeMove",
-    request: { verb: "place", equipmentDefinitionId: definitionId, location: "workbench", parameters: { benchMove: true, x: point.x, y: point.y, zIndex: nextZIndex } },
+    request: { verb: "place", equipmentDefinitionId: definitionId, ...item, location: "workbench", parameters: { benchMove: true, x: point.x, y: point.y, zIndex: nextZIndex } },
   };
 };
 

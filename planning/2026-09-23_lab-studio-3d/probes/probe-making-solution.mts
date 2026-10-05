@@ -72,6 +72,11 @@ const run = (mode: "good" | "overshoot" | "swirl-out-of-sequence") => {
       note = `${sent} drops; accept -> ` + send(action, { type: "dispenseCompleteIntent" });
     } else if (action.id === "invert-to-mix") {
       for (let i = 0; i < 10; i += 1) note = send(action, { type: "notebookRecordIntent" });
+    } else if (typeof action.parameters.rinsePortions === "number") {
+      // A rinse is several squirts (decided 2026-10-05); each but the last is progress within the step.
+      const notes = [];
+      for (let i = 0; i < action.parameters.rinsePortions; i += 1) notes.push(send(action, { type: "rinseIntent" }));
+      note = notes.join(" / ");
     } else {
       note = send(action, { type: intentTypeForInteraction[interaction.type] });
     }

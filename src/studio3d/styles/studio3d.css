@@ -95,14 +95,22 @@
 
 /* ---------------------------------------------------------------- player frame (handoff §5) */
 .s3d-player { position: absolute; inset: 0; }
-.s3d-topbar { position: absolute; top: 0; left: 0; right: 0; z-index: var(--z-bar); height: 52px; display: flex; align-items: center; gap: 12px; padding: 0 14px;
+/* Three columns (decided 2026-10-05): the step counter stays centred while there is room; the
+   buttons on the right keep their width; a long title shortens with an ellipsis rather than running
+   under the counter. */
+.s3d-topbar { position: absolute; top: 0; left: 0; right: 0; z-index: var(--z-bar); height: 52px; display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(max-content, 1fr); align-items: center; gap: 12px; padding: 0 14px;
   background: #fbfcf8f0; backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+.s3d-topbar__left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.s3d-topbar__left > .s3d-mark, .s3d-topbar__left > .s3d-source { flex-shrink: 0; }
 .s3d-mark { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: var(--radius-button); background: var(--brand); color: #fff; }
-.s3d-topbar__title { font-weight: 600; font-size: 15px; }
+.s3d-topbar__title { font-weight: 600; font-size: 15px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .s3d-source { font-size: 10px; font-weight: 600; letter-spacing: 1.2px; color: var(--muted); border: 1px solid var(--line-strong); border-radius: 5px; padding: 2px 6px; }
-.s3d-topbar__centre { position: absolute; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--ink-2); }
+.s3d-topbar__centre { justify-self: center; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--ink-2); white-space: nowrap; }
 .s3d-topbar__centre b { color: var(--ink); }
-.s3d-topbar__right { margin-left: auto; display: flex; gap: 8px; }
+.s3d-topbar__right { justify-self: end; display: flex; gap: 8px; }
+/* Narrower screens give the title the room the source label took. */
+@media (max-width: 1439px) { .s3d-topbar .s3d-source { display: none; } }
 .s3d-mode { display: inline-flex; align-items: center; gap: 5px; height: 24px; padding: 0 9px; border-radius: 999px; font-size: 12px; font-weight: 500; background: var(--guide-tint); color: var(--guide-strong); }
 .s3d-mode.is-assess { background: #ecebf3; color: #3f3d63; }
 .s3d-float { position: absolute; z-index: var(--z-panel); display: flex; flex-direction: column; background: var(--float); backdrop-filter: blur(6px); border: 1px solid var(--float-line); border-radius: var(--radius-panel); box-shadow: var(--shadow-float); }
@@ -336,11 +344,10 @@
   .s3d-hand { bottom: calc(40% + 84px); }
   .s3d-sheet { width: 100% !important; max-width: none; }
   .s3d-sheet__edge { display: none; }
-  .s3d-topbar__centre { position: static; transform: none; }
 }
 /* Simulation switcher (decided 2026-09-26): the top bar's title opens the list of 3D simulations. */
-.s3d-switcher { position: relative; }
-.s3d-switcher__trigger { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 8px 0 10px; margin-left: -6px; border: 1px solid transparent; border-radius: var(--radius-button);
+.s3d-switcher { position: relative; display: flex; min-width: 0; }
+.s3d-switcher__trigger { display: inline-flex; align-items: center; gap: 6px; min-width: 0; height: 34px; padding: 0 8px 0 10px; margin-left: -6px; border: 1px solid transparent; border-radius: var(--radius-button);
   background: none; color: var(--ink); font: inherit; cursor: pointer; transition: background var(--dur-hover) var(--ease-standard), border-color var(--dur-hover) var(--ease-standard); }
 .s3d-switcher__trigger:hover, .s3d-switcher__trigger[aria-expanded="true"] { background: var(--brand-tint); border-color: var(--line-strong); }
 .s3d-switcher__trigger .s3d-icon { color: var(--muted); transition: transform var(--dur-panel) var(--ease-standard); }

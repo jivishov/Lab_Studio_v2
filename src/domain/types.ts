@@ -1397,6 +1397,8 @@ export interface RuntimeState {
   markDispenses?: Record<string, MarkDispenseRecord>;
   /** Inversions made so far by a stoppered-vessel mix, keyed by action id. */
   mixInversions?: Record<string, number>;
+  /** Squirts made so far by a rinse in several portions (`rinsePortions`), keyed by action id. */
+  rinsePortions?: Record<string, number>;
   repeatProgress: Record<string, {
     groupId: string;
     completedIterations: number[];

@@ -28,8 +28,13 @@ for (const [i, node] of def.process.nodes.slice(0, upTo).entries()) {
   if (!result.ok) { console.log(i + 1, node.id, "REFUSED", result.feedback.message); break; }
   const before = state.feedbackQueue.length;
   state = performRuntimeAction(def, state, result.request);
+  // An inversion step takes its count of inversions (the test tube's, decided 2026-10-05).
+  for (let n = 1; action.parameters.mixOperation === "invert" && n < Number(action.parameters.inversions ?? 10); n += 1) {
+    const again = resolveInteractionIntent(def, state, intent);
+    if (again.ok) state = performRuntimeAction(def, state, again.request);
+  }
   const errs = state.feedbackQueue.slice(before).filter((f: any) => f.severity === "error").map((f: any) => f.message);
-  const att = state.attachments.filter((a: any) => a.parentInstanceId === "spectrophotometer-1" || a.childInstanceId?.includes("cuvette") || a.childInstanceId === "funnel-1").map((a: any) => a.childInstanceId + ">" + a.parentInstanceId);
+  const att = state.attachments.filter((a: any) => a.parentInstanceId === "spectrophotometer-1" || a.childInstanceId?.includes("cuvette") || a.childInstanceId === "funnel-1" || a.childInstanceId === "rubber-stopper-set-1").map((a: any) => a.childInstanceId + ">" + a.parentInstanceId);
   const vol = (id: string) => state.equipmentInstances.find((e: any) => e.id === id)?.contents.volumeMl ?? 0;
   const v = `cyl ${vol("graduated-cylinder-1")} tube ${vol("prepared-receiver-1")} beaker ${vol("blank-beaker-1")} bp ${vol("blank-pipette-1")} sp ${vol("sample-pipette-1")} bc ${vol("blank-cuvette-1")} sc ${vol("sample-cuvette-1")}`;
   const cuv = state.equipmentInstances.filter((e: any) => e.definitionId === "cuvette").map((e: any) => `${e.id}@${e.location}`);

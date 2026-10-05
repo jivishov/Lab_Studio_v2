@@ -91,7 +91,7 @@ describe("hand core (hand-core.js)", () => {
     const t = TARGETS[0];
     const c = new Contact(t, hand(0, 300, 300, 0.3));
     c.update(hand(33, 300, 300, 0.3 + HAND_EXIT.travel));
-    expect(c.depth).toBe(1);
+    expect(c.depth).toBeCloseTo(1, 9);
     expect(c.inserted).toBe(true);
     c.update(hand(66, 300, 300, 0.3 + HAND_EXIT.lift * 1.5));
     expect(c.exit).toBe("withdrawal");

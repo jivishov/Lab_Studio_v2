@@ -172,6 +172,11 @@
         "invalid": "The simulator could not complete that action. Review the step requirements."
       },
       "evidence": [],
+      "atomId": "atom.observe.zero-balance",
+      "equipmentRoleBindings": {
+        "balance-instrument": "analytical-balance",
+        "weighed-vessel": "watch-glass"
+      },
       "interaction": {
         "type": "recordNotebook",
         "valueParameter": "tag",
@@ -673,19 +678,6 @@
     },
     "catalogDisposition": "composable",
     "legacyActionEffects": [
-      {
-        "actionId": "zero-balance",
-        "effect": {
-          "classes": [
-            "evidence-recording"
-          ],
-          "targets": [
-            {
-              "domain": "evidence"
-            }
-          ]
-        }
-      },
       {
         "actionId": "record-solid-mass",
         "effect": {

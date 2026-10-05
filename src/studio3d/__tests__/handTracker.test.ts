@@ -42,7 +42,7 @@ const skeleton = (pressed = false): Landmark[] => {
   if (pressed) { coords[3] = [0.05, 0.03, 0]; coords[4] = [0.049, 0.047, 0.004]; }
   return coords.map(([x, y, z]) => ({ x, y, z }));
 };
-const packet = (stamp: number, { name = "Right", pressed = false, dy = 0, dx = 0, world = skeleton(pressed) as Landmark[] | undefined } = {}) => ({
+const packet = (stamp: number, { name = "Right", pressed = false, dy = 0, dx = 0, world = skeleton(pressed) as Landmark[] | null } = {}) => ({
   stamp, inferenceMS: 15,
   landmarks: [skeleton(pressed).map((p) => ({ x: 0.5 + p.x * 3 + dx, y: 0.45 - p.y * 3 + dy, z: p.z * 3 }))],
   worldLandmarks: world ? [world] : [],
@@ -104,7 +104,7 @@ describe("HandTracker (camera.js)", () => {
     expect(cam.captureState?.samples).toHaveLength(1);
     now = 800; cam.result(packet(now, { name: "Left" }));
     expect(cam.captureState?.samples).toHaveLength(1);
-    now = 1000; cam.result(packet(now, { world: undefined }));
+    now = 1000; cam.result(packet(now, { world: null }));
     expect(cam.captureState?.samples).toHaveLength(1);
     for (now = 1100; now <= 1500; now += 100) cam.result(packet(now));
     cam.finishCapture();

@@ -28,9 +28,13 @@ const playTo = (stopBefore: string): RuntimeState => {
     if (node.actionId === stopBefore) return state;
     const action = technique.actions.find((candidate) => candidate.id === node.actionId)!;
     const interaction = resolveActionInteraction(action)!;
-    const result = resolveInteractionIntent(technique, state, { type: intentTypeForInteraction[interaction.type], origin: "keyboard" } as RuntimeInteractionIntent);
-    if (!result.ok) throw new Error(`${node.id}: ${result.feedback.message}`);
-    state = performRuntimeAction(technique, state, result.request);
+    // A rinse is three squirts (decided 2026-10-05).
+    const times = typeof action.parameters.rinsePortions === "number" ? action.parameters.rinsePortions : 1;
+    for (let i = 0; i < times; i += 1) {
+      const result = resolveInteractionIntent(technique, state, { type: intentTypeForInteraction[interaction.type], origin: "keyboard" } as RuntimeInteractionIntent);
+      if (!result.ok) throw new Error(`${node.id}: ${result.feedback.message}`);
+      state = performRuntimeAction(technique, state, result.request);
+    }
   }
   return state;
 };

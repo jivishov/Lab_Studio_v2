@@ -1609,6 +1609,7 @@ const EQUIPMENT_PARAMETER_KEYS = [
   "ovenDefinitionId",
   "heatSourceDefinitionId",
   "coolingToolDefinitionId",
+  "washingsReceiverDefinitionId",
 ];
 
 const equipmentIdsUsedByAction = (action) => {
@@ -2720,6 +2721,13 @@ const cycle09MeasurementIdsWrittenBy = (actions) => {
   return written;
 };
 
+/**
+ * A drop step that brings a level to a line (`markDispense`, decided 2026-10-02 for the dilutions) is
+ * not a burette titration: the reducer sends it to its own handler before any titration branch, with
+ * no titration model, burette mount or initial reading. Mirrors `executeAction` in reducer.ts.
+ */
+const isMarkDispense = (action) => action.interaction?.type === "dispenseDrops" && Boolean(action.parameters?.markDispense);
+
 const checkCycle09Titration = (world, report) => {
   const titrationAtoms = new Set(
     (world.registries.atoms.atoms ?? [])
@@ -2729,7 +2737,7 @@ const checkCycle09Titration = (world, report) => {
 
   for (const entry of world.owners) {
     if (!entry.runtimeExecuted) continue;
-    const actions = entry.definition.actions ?? [];
+    const actions = (entry.definition.actions ?? []).filter((action) => !isMarkDispense(action));
     const usesTitration = actions.some(
       (action) =>
         titrationAtoms.has(action.atomId) ||

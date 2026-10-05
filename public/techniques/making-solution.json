@@ -283,6 +283,8 @@
         "washingsReceiverInstanceId": "volumetric-flask-1",
         "washingsReceiverDefinitionId": "volumetric-flask",
         "rinseType": "quantitative-transfer",
+        "rinsePortions": 3,
+        "tag": "boat-rinsed-into-flask",
         "requiredAttachmentState": "attached",
         "attachmentParentDefinitionId": "volumetric-flask",
         "attachmentChildDefinitionId": "funnel",
@@ -344,6 +346,8 @@
         "washingsReceiverInstanceId": "volumetric-flask-1",
         "washingsReceiverDefinitionId": "volumetric-flask",
         "rinseType": "quantitative-transfer",
+        "rinsePortions": 3,
+        "tag": "funnel-rinsed-into-flask",
         "requiredAttachmentState": "attached",
         "attachmentParentDefinitionId": "volumetric-flask",
         "attachmentChildDefinitionId": "funnel",
@@ -897,15 +901,15 @@
         "id": "rinse-boat-into-funnel-node",
         "type": "action",
         "title": "Rinse the boat",
-        "description": "Hold the boat over the funnel and rinse it with the wash bottle, so the last grains wash into the flask.",
+        "description": "Hold the boat over the funnel and rinse it with three small squirts from the wash bottle, so the last grains wash into the flask.",
         "actionId": "rinse-boat-into-funnel",
         "config": {},
         "validation": [
           {
             "id": "rinse-boat-into-funnel-node-done",
-            "type": "actionEvidence",
+            "type": "notebookEntry",
             "label": "Rinse the boat was completed.",
-            "actionId": "rinse-boat-into-funnel"
+            "notebookTag": "boat-rinsed-into-flask"
           }
         ],
         "hints": [],
@@ -918,15 +922,15 @@
         "id": "rinse-funnel-into-flask-node",
         "type": "action",
         "title": "Rinse the funnel",
-        "description": "Rinse the inside of the funnel with the wash bottle, so no solid is left on it.",
+        "description": "Rinse the inside of the funnel with three small squirts from the wash bottle, so no solid is left on it.",
         "actionId": "rinse-funnel-into-flask",
         "config": {},
         "validation": [
           {
             "id": "rinse-funnel-into-flask-node-done",
-            "type": "actionEvidence",
+            "type": "notebookEntry",
             "label": "Rinse the funnel was completed.",
-            "actionId": "rinse-funnel-into-flask"
+            "notebookTag": "funnel-rinsed-into-flask"
           }
         ],
         "hints": [],

@@ -6,7 +6,7 @@ lowest point of the round bottom, the point a rack seat supports.
 """
 import math
 
-from equipment._fits import TEST_TUBE
+from equipment._fits import TEST_TUBE, stopper_seat_depth
 from labeq.geometry import lathe, make_obj, new_root, rounded, set_material_index
 
 DEFINITION_ID = 'test-tube'
@@ -33,7 +33,10 @@ def build(coll, M):
         'fill': {'innerProfileMm': fill, 'capacityMl': 20, 'meniscus': 'concave'},
         'graduations': None,
         'requiresSupport': 'test-tube-rack',
-        'anchors': {},
+        # A #0 stopper wedges where its taper meets the 13.6 mm bore (decided 2026-10-05).
+        'anchors': {
+            'test-tube-stopper-seat': {'positionMm': [0.0, 0.0, round(L - stopper_seat_depth(bore_d=2 * ri), 3)]},
+        },
         'displays': [],
         'states': {},
     }

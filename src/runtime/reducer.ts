@@ -208,6 +208,8 @@ const roundToInstrumentMl = (value: number): number => Math.round(value * 100) /
 const roundToRuntimeMl = (value: number): number => Number(value.toFixed(10));
 
 const DEFAULT_RINSE_VOLUME_ML = 5;
+/** One squirt of a rinse made in several portions (decided 2026-10-05): about 3 mL. */
+const DEFAULT_RINSE_PORTION_ML = 3;
 
 const numberSetting = (
   params: Record<string, string | number | boolean | string[] | undefined>,
@@ -3994,6 +3996,13 @@ const executeAction = (
     // A rinse that names the vessel its washings run into (decided 2026-10-04) always takes real water
     // from its source.
     const receiverId = stringSetting(params, "washingsReceiverInstanceId");
+    // A rinse in several portions (decided 2026-10-05): each request is one squirt, and the last of
+    // `rinsePortions` records the rinse, as the inversions of a mix are counted.
+    const rinsePortions = Math.max(1, Math.round(numberSetting(params, "rinsePortions", 1)));
+    const portionsDone = state.rinsePortions?.[actionDefinition.id] ?? 0;
+    if (rinsePortions > 1 && portionsDone >= rinsePortions) {
+      return fail(state, "The rinse is already done.", "Go on to the next step.", nodeId);
+    }
     const conditionsWithSample = actionDefinition.atomId === "atom.rinse.condition-cuvette-with-sample";
     const quantitativeRinse = new Set([
       "atom.rinse.quantitative-transfer",
@@ -4008,7 +4017,7 @@ const executeAction = (
     const conditioningPortionMl = conditionsWithSample ? numberSetting(params, "conditioningPortionMl", Number.NaN) : Number.NaN;
     const requestedRinseVolumeMl = conditionsWithSample
       ? conditioningCount * conditioningPortionMl
-      : Number(action.value ?? params.volumeMl ?? DEFAULT_RINSE_VOLUME_ML);
+      : Number(action.value ?? params.volumeMl ?? (rinsePortions > 1 ? DEFAULT_RINSE_PORTION_ML : DEFAULT_RINSE_VOLUME_ML));
     const rinseVolumeMl = requestedRinseVolumeMl;
     if (conditionsWithSample &&
       (!Number.isFinite(conditioningCount) || conditioningCount <= 0 || !Number.isInteger(conditioningCount) ||
@@ -4114,14 +4123,19 @@ const executeAction = (
           return { ...instance, contents: mergeWashings(withResidue, { ...rinseSplit.transferredContents, wetState: "wet" }, params) };
         })
       : next;
+    const squirts = portionsDone + 1;
+    const counted = rinsePortions > 1 ? { ...washed, rinsePortions: { ...washed.rinsePortions, [actionDefinition.id]: squirts } } : washed;
+    if (squirts < rinsePortions) return { ok: true, state: counted, message: `Squirt ${squirts} of ${rinsePortions}.` };
+    const tag = stringSetting(params, "tag");
+    const rinsed = rinsePortions > 1 ? `Rinsed with ${rinsePortions} squirts` : "Rinse completed";
     return {
       ok: true,
       state: addNotebook(
-        washed,
+        counted,
         nodeId,
         actionDefinition.label,
-        receiver ? `Rinse completed; the washings ran into the ${receiver.label}.` : "Rinse completed.",
-        ["rinse", rinseType],
+        receiver ? `${rinsed}; the washings ran into the ${receiver.label}.` : `${rinsed}.`,
+        ["rinse", rinseType, ...(tag ? [tag] : [])],
       ),
       message: actionDefinition.feedback.success,
     };
@@ -7869,12 +7883,14 @@ export const performRuntimeAction = (
   const nextId = requestedNext && passed && process.edges.some(edge => edge.from === currentNode.id && edge.to === requestedNext)
     ? requestedNext
     : runtimeRepeatComplete ? nextNodeId(currentNode.id, process.edges, result.state, passed) : currentNode.id;
-  // A drop, or an inversion short of the count, is progress within the step: no retry feedback.
+  // A drop, an inversion or a rinse squirt short of the count is progress within the step: no retry
+  // feedback.
   const pendingDispenseDrop =
     !passed &&
     ((actionDefinition.interaction?.type === "dispenseDrops" &&
       normalizedRequest.parameters?.dispenseMode === "drop") ||
-      (actionDefinition.verb === "mix" && actionDefinition.parameters.mixOperation === "invert"));
+      (actionDefinition.verb === "mix" && actionDefinition.parameters.mixOperation === "invert") ||
+      (actionDefinition.verb === "rinse" && Number(actionDefinition.parameters.rinsePortions ?? 1) > 1));
   const repeatProgress = { ...result.state.repeatProgress };
   if (passed && runtimeRepeat && runtimeRepeatIteration !== undefined && runtimeRepeatExpected !== undefined) {
     const completedIterations = Array.from(new Set([

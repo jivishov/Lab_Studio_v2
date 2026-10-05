@@ -1036,7 +1036,8 @@
       "proceduralConstraints": [
         "The rinse volume is deliberately unstated in the source; do not attach a measured quantity to it.",
         "A rinse-water source must never be a calibrated delivery device.",
-        "When the rinse names the vessel its washings run into, the rinse water and any residue go into that vessel, as when a weighing boat and then its funnel are rinsed into a volumetric flask (Make a Solution, decided by the teacher on 2026-10-04)."
+        "When the rinse names the vessel its washings run into, the rinse water and any residue go into that vessel, as when a weighing boat and then its funnel are rinsed into a volumetric flask (Make a Solution, decided by the teacher on 2026-10-04).",
+        "A rinse may be made in several small squirts (`rinsePortions`), each one request; the last records the rinse. The squirts are about 3 mL each by the runtime's default, not a stated measured quantity (decided by the teacher on 2026-10-05)."
       ],
       "evidence": "residue transferred, source vessel visibly rinsed",
       "sourceExamples": [
@@ -6761,12 +6762,7 @@
       ],
       "evidence": "Add unmeasured solvent until the configured final-volume mark is reached.",
       "sourceExamples": [],
-      "contentExamples": [
-        {
-          "owner": "technique:dilution",
-          "actionId": "dilute-to-mark"
-        }
-      ]
+      "contentExamples": []
     },
     {
       "id": "atom.place.remove-warm-drying-assembly",
@@ -11051,6 +11047,10 @@
         {
           "owner": "technique:making-solution",
           "actionId": "stopper-flask"
+        },
+        {
+          "owner": "technique:transmittance-dilution",
+          "actionId": "transmittance-dilution-stopper-test-tube"
         }
       ]
     },
@@ -11099,6 +11099,52 @@
         {
           "owner": "technique:making-solution",
           "actionId": "invert-to-mix"
+        },
+        {
+          "owner": "technique:transmittance-dilution",
+          "actionId": "transmittance-dilution-invert-test-tube"
+        }
+      ]
+    },
+    {
+      "id": "atom.place.remove-stopper",
+      "family": "foundational",
+      "documentationLabel": "Remove the stopper from a vessel",
+      "verb": "place",
+      "allowedInteractionTypes": [
+        "dragToZone"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "instrument"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "final-volume-vessel",
+        "vessel-stopper"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "The stopper is taken out and set on the workbench after the contents are mixed, before anything is drawn from or poured out of the vessel.",
+        "Decided by the teacher on 2026-10-05 (Pack 1: transmittance-dilution's test tube is stoppered, inverted and opened before its sample is drawn); no dated plan states this step, so no source example is cited."
+      ],
+      "evidence": "stopper detached from the vessel and placed on the workbench",
+      "sourceExamples": [],
+      "contentExamples": [
+        {
+          "owner": "technique:transmittance-dilution",
+          "actionId": "transmittance-dilution-remove-test-tube-stopper"
         }
       ]
     },
@@ -11143,6 +11189,43 @@
         {
           "owner": "technique:making-solution",
           "actionId": "tip-solid-into-funnel"
+        }
+      ]
+    },
+    {
+      "id": "atom.observe.zero-balance",
+      "family": "weighing",
+      "documentationLabel": "Zero the balance with the empty vessel on the pan",
+      "verb": "observe",
+      "allowedInteractionTypes": [
+        "recordNotebook"
+      ],
+      "effectContract": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "balance-instrument",
+        "weighed-vessel"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "The empty vessel is on the pan, the draft-shield doors are closed and the display has settled before TARE (zero) is pressed, so the next reading is the sample's mass alone.",
+        "The step records that the balance was zeroed with the named vessel; it acquires no reading and never asserts a displayed precision, which stays teacher-configured.",
+        "Planned in the Pack 1 atomization (2026-10-02) and built on 2026-10-05; no dated plan states this step, so no source example is cited."
+      ],
+      "evidence": "the balance zeroed with the named vessel on the pan",
+      "sourceExamples": [],
+      "contentExamples": [
+        {
+          "owner": "technique:weighing",
+          "actionId": "zero-balance"
         }
       ]
     },

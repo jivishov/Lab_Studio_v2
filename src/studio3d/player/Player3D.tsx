@@ -50,7 +50,7 @@ const systemReducedMotion = () => typeof window !== "undefined" && window.matchM
 const windowSize = () => ({ width: window.innerWidth, height: window.innerHeight });
 
 /** A tray item carried by hand control: its thumbnail follows the hand, centred on it. */
-interface TrayGrabPreview { definitionId: string; label: string; offsetX: number; offsetY: number; x: number; y: number }
+interface TrayGrabPreview { definitionId: string; instanceId?: string; label: string; offsetX: number; offsetY: number; x: number; y: number }
 const TRAY_PREVIEW_PX = 72;
 
 export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fallbackHash, backHref, variant = "full", focusNodeId, focusVersion, onPlayer, simulationId }: {
@@ -169,7 +169,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
       return { x: b.left + b.width / 2 - rect.left, y: b.top + b.height / 2 - rect.top, r: Math.min(b.width, b.height) / 3 };
     };
     for (const tile of playerRef.current?.querySelectorAll<HTMLElement>(".s3d-tile[data-definition-id]") ?? []) {
-      out.push({ id: `tile:${tile.dataset.definitionId}`, kind: "tile", definitionId: tile.dataset.definitionId, ...box(tile) });
+      out.push({ id: `tile:${tile.dataset.instanceId ?? tile.dataset.definitionId}`, kind: "tile", definitionId: tile.dataset.definitionId,
+        instanceId: tile.dataset.instanceId, ...box(tile) });
     }
     handButtons.current.clear();
     for (const button of playerRef.current?.querySelectorAll<HTMLElement>("[data-hand-press]") ?? []) {
@@ -188,10 +189,11 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     assist: () => showGuidance && handSettings().assist,
     carrying: () => carryingRef.current,
     pickUpItem: (instanceId) => carry.startGestureCarry(instanceId),
-    pickUpTile: (definitionId) => {
-      if (!carry.startGestureTrayCarry(definitionId)) return false;
-      const tile = playerRef.current?.querySelector<HTMLElement>(`.s3d-tile[data-definition-id="${definitionId}"]`)?.getBoundingClientRect();
-      const preview = { definitionId, label: scene.tray.find((item) => item.definitionId === definitionId)?.label ?? definitionId,
+    pickUpTile: (definitionId, instanceId) => {
+      if (!carry.startGestureTrayCarry(definitionId, instanceId)) return false;
+      const tile = playerRef.current?.querySelector<HTMLElement>(instanceId ? `.s3d-tile[data-instance-id="${instanceId}"]` : `.s3d-tile[data-definition-id="${definitionId}"]`)?.getBoundingClientRect();
+      const preview = { definitionId, instanceId,
+        label: scene.tray.find((item) => (instanceId ? item.instanceId === instanceId : item.definitionId === definitionId))?.label ?? definitionId,
         offsetX: TRAY_PREVIEW_PX / 2, offsetY: TRAY_PREVIEW_PX / 2, x: tile ? tile.left + tile.width / 2 : 0, y: tile ? tile.top + tile.height / 2 : 0 };
       trayGrabRef.current = preview;
       setTrayGrab(preview);
@@ -756,6 +758,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
 
   const markStep = player.markStep;
   const markVesselLabel = markStep ? lowerFirstLetter(scene.bench.find((i) => i.instanceId === markStep.vesselInstanceId)?.label ?? "vessel") : "";
+  const invertVesselNoun = scene.bench.find((i) => i.instanceId === invertVesselId)?.definitionId === "test-tube" ? "test tube" : "flask";
   const hint = dropMode ? "Space: tap for a drop, hold to let it run. Enter: at the line. Esc puts the pipette down."
     : carry.keyCarrying ? "Arrows move it (Shift: further). [ ] step through targets. Enter sets it down; Esc cancels."
     : carry.clickCarrying ? "Click where it goes, or press on the target, drag down and let go. Esc or a right click puts it back."
@@ -764,7 +767,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     : tool && flow.canConfirm ? "Pick up the spatula, press it into the source and drag down to scoop, then click the target; or use Source, Target and Confirm. Right-drag to look around."
     : pipette && flow.canConfirm ? "Pick up the pipette, then press over the liquid or the cuvette, drag down and let go; or use Source, Target and Confirm. Right-drag to look around."
     : markStep ? `Pick up the pipette and click the ${markVesselLabel} to hold it there, or use the step card. Right-drag to look around.`
-    : invertVesselId ? "Click the stoppered flask to invert it, or use Invert in the step card. Right-drag to look around."
+    : invertVesselId ? `Click the stoppered ${invertVesselNoun} to invert it, or use Invert in the step card. Right-drag to look around.`
     : swirlVesselId ? "Click the flask to swirl it until the solid dissolves, or use Swirl in the step card. Right-drag to look around."
     : flow.canConfirm ? "Click an item to pick it up, then click where it goes; or use Source, Target and Confirm. Right-drag to look around."
       : player.runtime.expectedAction?.parameters.balanceOperation === "zero" ? "Press TARE on the balance, or Tare in the step card. Right-drag to look around."
@@ -773,12 +776,14 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   return (
     <div className={`s3d-player${reducedMotion ? " is-reduced-motion" : ""}${variant === "preview" ? " s3d-player--preview" : ""}`} ref={playerRef}>
       <header className="s3d-topbar">
-        <span className="s3d-mark"><Icon name="flask" size={18} /></span>
-        {simulationId && variant === "full" ? (
-          <SimulationSwitcher currentId={simulationId} title={title} hasProgress={runtime.state.completedNodes.length > 0 && !player.complete}
-            onLeave={stopHandControl} />
-        ) : <span className="s3d-topbar__title">{title}</span>}
-        <span className="s3d-source">{sourceTag}</span>
+        <span className="s3d-topbar__left">
+          <span className="s3d-mark"><Icon name="flask" size={18} /></span>
+          {simulationId && variant === "full" ? (
+            <SimulationSwitcher currentId={simulationId} title={title} hasProgress={runtime.state.completedNodes.length > 0 && !player.complete}
+              onLeave={stopHandControl} />
+          ) : <span className="s3d-topbar__title" title={title}>{title}</span>}
+          <span className="s3d-source">{sourceTag}</span>
+        </span>
         <span className="s3d-topbar__centre">Step <b>{n}</b> of <b>{N}</b>
           <span className={`s3d-mode${showGuidance ? "" : " is-assess"}`}><Icon name={showGuidance ? "eye" : "clip"} size={13} />{showGuidance ? "Guided" : "Assessment"}</span>
         </span>
@@ -837,7 +842,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
       ) : null}
 
       {panel === "tray" ? <EquipmentTray player={player} controls={panelControls} onPointerDownTile={carry.startTrayCarry}
-        gestureGrabbedDefinitionId={trayGrab?.definitionId} /> : null}
+        gestureGrabbedInstanceId={trayGrab?.instanceId} /> : null}
       {panel === "list" ? <BenchList player={player} controls={panelControls} selected={selected}
         onSelect={(id) => { setSelected(id); setAutoView(false); engine?.frameItems([id], 1.4); }} onExamine={examine}
         onMove={startMove} onClose={() => setPanel("none")} /> : null}

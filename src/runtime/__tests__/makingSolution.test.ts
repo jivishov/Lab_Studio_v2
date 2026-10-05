@@ -48,6 +48,8 @@ const playTo = (stopBefore?: string, tech: TechniqueDefinition = technique): Run
       state = send(state, { type: "dispenseCompleteIntent" }, tech);
     } else if (action.id === "invert-to-mix") {
       for (let i = 0; i < 10; i += 1) state = send(state, { type: "notebookRecordIntent" }, tech);
+    } else if (typeof action.parameters.rinsePortions === "number") {
+      for (let i = 0; i < action.parameters.rinsePortions; i += 1) state = send(state, { type: "rinseIntent" }, tech);
     } else {
       state = send(state, { type: types[interaction.type] }, tech);
     }
@@ -74,16 +76,32 @@ describe("Make a Solution through the runtime", () => {
     expect(contents(after, "volumetric-flask-1").kind).toBe("empty");
   });
 
-  it("rinses the boat, then the funnel, into the flask: 5 mL each from the wash bottle", () => {
+  it("rinses the boat, then the funnel, into the flask: three 3 mL squirts each from the wash bottle", () => {
     const state = playTo("remove-funnel");
     expect(contents(state, "volumetric-flask-1")).toMatchObject({
-      kind: "mixture", label: "Sodium carbonate + Deionized water", volumeMl: 10, massG: 2.5, visualState: "dissolving-solid",
+      kind: "mixture", label: "Sodium carbonate + Deionized water", volumeMl: 18, massG: 2.5, visualState: "dissolving-solid",
     });
-    expect(contents(state, "wash-bottle-1").volumeMl).toBe(490);
+    expect(contents(state, "wash-bottle-1").volumeMl).toBe(482);
     expect(contents(state, "weigh-boat-1").wetState).toBe("rinsed");
     expect(contents(state, "funnel-1").wetState).toBe("rinsed");
     expect(state.notebook.filter((entry) => entry.tags.includes("rinse")).map((entry) => entry.value))
-      .toEqual(Array(2).fill("Rinse completed; the washings ran into the 100 mL volumetric flask."));
+      .toEqual(Array(2).fill("Rinsed with 3 squirts; the washings ran into the 100 mL volumetric flask."));
+    expect(state.rinsePortions).toEqual({ "rinse-boat-into-funnel": 3, "rinse-funnel-into-flask": 3 });
+  });
+
+  it("keeps the rinse step open until its third squirt, with no retry message in between", () => {
+    let state = playTo("rinse-boat-into-funnel");
+    for (const squirt of [1, 2]) {
+      const before = state;
+      state = send(state, { type: "rinseIntent" });
+      expect(state.currentNodeId).toBe("rinse-boat-into-funnel-node");
+      expect(state.feedbackQueue.slice(before.feedbackQueue.length)).toEqual([]);
+      expect(contents(state, "volumetric-flask-1").volumeMl).toBe(3 * squirt);
+    }
+    expect(state.notebook.some((entry) => entry.tags.includes("boat-rinsed-into-flask"))).toBe(false);
+    state = send(state, { type: "rinseIntent" });
+    expect(state.completedNodes).toContain("rinse-boat-into-funnel-node");
+    expect(state.notebook.at(-1)?.tags).toEqual(["rinse", "quantitative-transfer", "boat-rinsed-into-flask"]);
   });
 
   it("adds the half-fill water as solvent, without naming the water twice", () => {
@@ -159,11 +177,12 @@ describe("the swirl and the rinse receiver are typed contracts", () => {
 });
 
 describe("rinse receivers, added water and a second solid (fidelity review, 2026-10-04)", () => {
+  // Changed after setup, as the reducer sees it: these cases are about the rinse handler, not authoring.
   const withRinse = (change: (action: ActionDefinition) => ActionDefinition): TechniqueDefinition =>
-    applyTechniqueConfiguration({ ...raw, actions: raw.actions.map((action) => (action.id === "rinse-boat-into-funnel" ? change(action) : action)) }, settings);
+    ({ ...technique, actions: technique.actions.map((action) => (action.id === "rinse-boat-into-funnel" ? change(action) : action)) });
 
   it("refuses washings sent into a vessel other than the one the step names", () => {
-    const misnamed = withRinse((action) => ({ ...action, parameters: { ...action.parameters, washingsReceiverDefinitionId: "beaker" } }));
+    const misnamed = withRinse((action) => ({ ...action, parameters: { ...action.parameters, washingsReceiverDefinitionId: "beaker-150ml" } }));
     const atRinse = playTo("rinse-boat-into-funnel", misnamed);
     const after = send(atRinse, { type: "rinseIntent" }, misnamed);
     expect(lastError(atRinse, after)).toBe("The vessel the washings run into is not the one this step names.");
@@ -173,15 +192,16 @@ describe("rinse receivers, added water and a second solid (fidelity review, 2026
 
   it("takes a named receiver's washings out of the source, whatever the rinse's atom", () => {
     // No atom, no source definition and no rinse type: nothing else makes this a liquid rinse.
-    const generic = withRinse(({ atomId: _atom, ...action }) => {
+    const generic = withRinse(({ atomId: _atom, equipmentRoleBindings: _roles, ...action }) => {
       const { sourceDefinitionId: _source, rinseType: _type, ...parameters } = action.parameters;
       return { ...action, parameters };
     });
     const atRinse = playTo("rinse-boat-into-funnel", generic);
     const after = send(atRinse, { type: "rinseIntent" }, generic);
     expect(lastError(atRinse, after)).toBeUndefined();
-    expect(contents(after, "wash-bottle-1").volumeMl).toBe(495);
-    expect(contents(after, "volumetric-flask-1")).toMatchObject({ kind: "mixture", volumeMl: 5, massG: 2.5 });
+    // One squirt of the three: 3 mL.
+    expect(contents(after, "wash-bottle-1").volumeMl).toBe(497);
+    expect(contents(after, "volumetric-flask-1")).toMatchObject({ kind: "mixture", volumeMl: 3, massG: 2.5 });
   });
 
   it("dilutes the concentration by the water added, whatever its unit", () => {

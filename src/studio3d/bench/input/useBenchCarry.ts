@@ -103,7 +103,7 @@ type Carry =
       rinseAt?: string;
       /** The kind of the last callout: "valid" when over a target the step accepts. */
       lastKind?: CarryCallout["kind"] }
-  | { kind: "tray"; via: "pointer" | "gesture"; definitionId: string; point?: BenchPoint; click?: boolean; pressAction?: PressAction; stroke?: Stroke;
+  | { kind: "tray"; via: "pointer" | "gesture"; definitionId: string; instanceId?: string; point?: BenchPoint; click?: boolean; pressAction?: PressAction; stroke?: Stroke;
       pourToward?: string; liftMm?: number };
 
 interface Stroke { kind: Exclude<PressAction, "commit">; startY: number; depth: number }
@@ -463,7 +463,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     endCarry();
     // A tray tile pressed and released without moving is a click: the 2D next free slot (§5.10).
     if (engine && carry?.kind === "tray" && !carry.point) {
-      player.dropFromTray(carry.definitionId);
+      player.dropFromTray(carry.definitionId, undefined, undefined, carry.instanceId);
       return;
     }
     if (!engine || !carry || !carry.point) {
@@ -474,7 +474,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     const origin = carry.via === "gesture" ? "vision" : "pointer";
     engine.endCarryPreview(true);
     if (carry.kind === "tray") {
-      player.dropFromTray(carry.definitionId, point, origin);
+      player.dropFromTray(carry.definitionId, point, origin, carry.instanceId);
       return;
     }
     if (toolTransfer) {
@@ -839,10 +839,10 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
   }, [cancel, carryTo, carryToPointer, drawDepth, engine, onControl, onHover, onTap, player, release, scene, scoopFor, toolTransfer]);
 
   /** Start carrying a tray item (pointer down on its tile): with a mouse it then follows the pointer until a press on the bench. */
-  const startTrayCarry = useCallback((definitionId: string, pointerType = "mouse") => {
+  const startTrayCarry = useCallback((definitionId: string, pointerType = "mouse", instanceId?: string) => {
     if (pouringRef.current) return;
     if (carryRef.current) cancel();
-    carryRef.current = { kind: "tray", via: "pointer", definitionId, click: pointerType !== "touch" };
+    carryRef.current = { kind: "tray", via: "pointer", definitionId, instanceId, click: pointerType !== "touch" };
     setCarrying(true);
   }, [cancel]);
 
@@ -874,10 +874,10 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
   }, [canCarry, cancel, scene]);
 
   /** Hand control: a closed grip held on a tray tile starts the same tray carry a pointer press does. */
-  const startGestureTrayCarry = useCallback((definitionId: string): boolean => {
+  const startGestureTrayCarry = useCallback((definitionId: string, instanceId?: string): boolean => {
     if (pouringRef.current) return false;
     if (carryRef.current) cancel();
-    carryRef.current = { kind: "tray", via: "gesture", definitionId };
+    carryRef.current = { kind: "tray", via: "gesture", definitionId, instanceId };
     setCarrying(true);
     return true;
   }, [cancel]);

@@ -542,7 +542,7 @@ const definition = {
     {
       "id": "transmittance-dilution-add-water-below-mark",
       "verb": "dilute",
-      "label": "Add the measured water and mix to the configured final volume",
+      "label": "Add the measured water to the configured final volume",
       "parameters": {
         "sourceInstanceId": "graduated-cylinder-1",
         "targetInstanceId": "prepared-receiver-1",
@@ -550,7 +550,7 @@ const definition = {
       },
       "prerequisites": [],
       "stateChanges": [
-        "Dilute and mix to the configured final volume: completed with the named sample and configuration provenance preserved."
+        "Dilute to the configured final volume: completed with the named sample and configuration provenance preserved."
       ],
       "invalidCases": [
         {
@@ -561,7 +561,7 @@ const definition = {
         }
       ],
       "feedback": {
-        "success": "Dilute and mix to the configured final volume complete.",
+        "success": "Dilute to the configured final volume complete.",
         "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
       },
       "evidence": [],
@@ -574,12 +574,149 @@ const definition = {
         "type": "pourInto",
         "sourceDefinitionId": "graduated-cylinder-25ml",
         "targetDefinitionId": "test-tube",
-        "accessibleLabel": "Dilute and mix to the configured final volume"
+        "accessibleLabel": "Dilute to the configured final volume"
       },
       "volume": {
         "source": "literal",
         "valueMl": "{{config.finalVolumeMl}}",
         "outputMeasurementId": "{{config.finalVolumeMeasurementId}}"
+      }
+    },
+    {
+      "id": "transmittance-dilution-stopper-test-tube",
+      "verb": "place",
+      "label": "Stopper the test tube",
+      "parameters": {
+        "equipmentDefinitionId": "rubber-stopper-set",
+        "sourceDefinitionId": "rubber-stopper-set",
+        "targetDefinitionId": "test-tube",
+        "snapZoneId": "test-tube-stopper-seat",
+        "enforceInstanceIdentity": true,
+        "sourceInstanceId": "rubber-stopper-set-1",
+        "targetInstanceId": "prepared-receiver-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Stopper the test tube: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the required predecessor evidence or named equipment is unavailable",
+          "message": "This operation is not ready or the selected sample does not match the authored provenance.",
+          "recovery": "Restore the named sample and equipment state, then complete the immediately preceding operation."
+        }
+      ],
+      "feedback": {
+        "success": "The test tube is stoppered.",
+        "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.stopper-vessel",
+      "equipmentRoleBindings": {
+        "vessel-stopper": "rubber-stopper-set",
+        "final-volume-vessel": "test-tube"
+      },
+      "interaction": {
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "rubber-stopper-set",
+        "targetDefinitionId": "test-tube",
+        "snapZoneId": "test-tube-stopper-seat",
+        "accessibleLabel": "Stopper the test tube"
+      }
+    },
+    {
+      "id": "transmittance-dilution-invert-test-tube",
+      "verb": "mix",
+      "label": "Invert the test tube to mix",
+      "parameters": {
+        "mixOperation": "invert",
+        "vesselInstanceId": "prepared-receiver-1",
+        "sourceInstanceId": "prepared-receiver-1",
+        "vesselDefinitionId": "test-tube",
+        "inversions": 10,
+        "tag": "test-tube-mixed-by-inversion",
+        "requiredAttachmentState": "attached",
+        "attachmentParentDefinitionId": "test-tube",
+        "attachmentChildDefinitionId": "rubber-stopper-set",
+        "attachmentSnapZoneId": "test-tube-stopper-seat"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Invert the test tube to mix: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the required predecessor evidence or named equipment is unavailable",
+          "message": "This operation is not ready or the selected sample does not match the authored provenance.",
+          "recovery": "Restore the named sample and equipment state, then complete the immediately preceding operation."
+        }
+      ],
+      "feedback": {
+        "success": "The dilution is mixed.",
+        "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
+      },
+      "evidence": [
+        "mix"
+      ],
+      "atomId": "atom.mix.invert-stoppered-vessel",
+      "equipmentRoleBindings": {
+        "final-volume-vessel": "test-tube",
+        "vessel-stopper": "rubber-stopper-set"
+      },
+      "interaction": {
+        "type": "recordNotebook",
+        "valueParameter": "tag",
+        "accessibleLabel": "Invert the test tube to mix"
+      }
+    },
+    {
+      "id": "transmittance-dilution-remove-test-tube-stopper",
+      "verb": "place",
+      "label": "Remove the stopper",
+      "parameters": {
+        "equipmentDefinitionId": "rubber-stopper-set",
+        "sourceDefinitionId": "rubber-stopper-set",
+        "location": "workbench",
+        "requiredAttachmentState": "attached",
+        "attachmentParentDefinitionId": "test-tube",
+        "attachmentChildDefinitionId": "rubber-stopper-set",
+        "attachmentSnapZoneId": "test-tube-stopper-seat",
+        "enforceInstanceIdentity": true,
+        "sourceInstanceId": "rubber-stopper-set-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Remove the stopper: changes the named equipment only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "the required predecessor evidence or named equipment is unavailable",
+          "message": "This operation is not ready or the selected sample does not match the authored provenance.",
+          "recovery": "Restore the named sample and equipment state, then complete the immediately preceding operation."
+        }
+      ],
+      "feedback": {
+        "success": "The stopper is out of the test tube and on the bench.",
+        "invalid": "Check the named sample, equipment binding, configuration evidence, and operation order."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.remove-stopper",
+      "equipmentRoleBindings": {
+        "final-volume-vessel": "test-tube",
+        "vessel-stopper": "rubber-stopper-set"
+      },
+      "interaction": {
+        "type": "dragToZone",
+        "sourceDefinitionId": "rubber-stopper-set",
+        "stationId": "workbench",
+        "accessibleLabel": "Remove the stopper"
       }
     },
     {
@@ -1511,22 +1648,85 @@ const definition = {
       {
         "id": "transmittance-dilution-add-water-below-mark-node",
         "type": "action",
-        "title": "Dilute and mix to the configured final volume",
-        "description": "Add the measured water to the receiver and mix to a final volume of {{config.finalVolumeMl}} mL.",
+        "title": "Dilute to the configured final volume",
+        "description": "Add the measured water to the test tube, to a final volume of {{config.finalVolumeMl}} mL.",
         "actionId": "transmittance-dilution-add-water-below-mark",
         "config": {},
         "validation": [
           {
             "id": "transmittance-dilution-add-water-below-mark-node-done",
             "type": "actionEvidence",
-            "label": "Dilute and mix to the configured final volume was completed.",
+            "label": "Dilute to the configured final volume was completed.",
             "actionId": "transmittance-dilution-add-water-below-mark"
           }
         ],
         "hints": [],
         "feedback": {
-          "success": "Dilute and mix to the configured final volume complete.",
-          "retry": "Review Dilute and mix to the configured final volume and try again."
+          "success": "Dilute to the configured final volume complete.",
+          "retry": "Review Dilute to the configured final volume and try again."
+        }
+      },
+      {
+        "id": "transmittance-dilution-stopper-test-tube-node",
+        "type": "action",
+        "title": "Stopper the test tube",
+        "description": "Press the rubber stopper firmly into the mouth of the test tube.",
+        "actionId": "transmittance-dilution-stopper-test-tube",
+        "config": {},
+        "validation": [
+          {
+            "id": "transmittance-dilution-stopper-test-tube-node-done",
+            "type": "actionEvidence",
+            "label": "Stopper the test tube was completed.",
+            "actionId": "transmittance-dilution-stopper-test-tube"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Stopper the test tube complete.",
+          "retry": "Review Stopper the test tube and try again."
+        }
+      },
+      {
+        "id": "transmittance-dilution-invert-test-tube-node",
+        "type": "action",
+        "title": "Invert to mix",
+        "description": "Holding the stopper in place, turn the test tube upside down and back about ten times, so the dilution is uniform.",
+        "actionId": "transmittance-dilution-invert-test-tube",
+        "config": {},
+        "validation": [
+          {
+            "id": "transmittance-dilution-invert-test-tube-node-done",
+            "type": "notebookEntry",
+            "label": "Invert to mix was completed.",
+            "notebookTag": "test-tube-mixed-by-inversion"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Invert to mix complete.",
+          "retry": "Review Invert to mix and try again."
+        }
+      },
+      {
+        "id": "transmittance-dilution-remove-test-tube-stopper-node",
+        "type": "action",
+        "title": "Remove the stopper",
+        "description": "Take the stopper out and set it on the bench, so the sample can be drawn from the test tube.",
+        "actionId": "transmittance-dilution-remove-test-tube-stopper",
+        "config": {},
+        "validation": [
+          {
+            "id": "transmittance-dilution-remove-test-tube-stopper-node-done",
+            "type": "actionEvidence",
+            "label": "Remove the stopper was completed.",
+            "actionId": "transmittance-dilution-remove-test-tube-stopper"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Remove the stopper complete.",
+          "retry": "Review Remove the stopper and try again."
         }
       },
       {
@@ -1996,6 +2196,30 @@ const definition = {
       },
       {
         "from": "transmittance-dilution-add-water-below-mark-node",
+        "to": "transmittance-dilution-stopper-test-tube-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "transmittance-dilution-stopper-test-tube-node",
+        "to": "transmittance-dilution-invert-test-tube-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "transmittance-dilution-invert-test-tube-node",
+        "to": "transmittance-dilution-remove-test-tube-stopper-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "transmittance-dilution-remove-test-tube-stopper-node",
         "to": "transmittance-dilution-place-spectrophotometer-node",
         "label": "Next",
         "condition": {
@@ -2198,6 +2422,22 @@ const definition = {
       }
     ],
     "equipmentRoles": [
+      {
+        "roleId": "final-volume-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "test-tube"
+        ],
+        "sourceInstanceIds": []
+      },
+      {
+        "roleId": "vessel-stopper",
+        "required": true,
+        "allowedDefinitionIds": [
+          "rubber-stopper-set"
+        ],
+        "sourceInstanceIds": []
+      },
       {
         "roleId": "receiving-vessel",
         "required": true,

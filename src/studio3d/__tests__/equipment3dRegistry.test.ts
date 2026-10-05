@@ -34,7 +34,7 @@ describe("equipment3d registry", () => {
     bad.entries[0].footprintMm.shape = "blob";
     expect(() => parseEquipment3DRegistry(bad)).toThrow(/footprintMm.shape/);
     const badLip = clone(registryJson) as { entries: Array<Record<string, any>> };
-    badLip.entries[0].pour.lipMm = [1, 2];
+    badLip.entries.find((entry) => entry.pour)!.pour.lipMm = [1, 2];
     expect(() => parseEquipment3DRegistry(badLip)).toThrow(/pour.lipMm/);
   });
 });

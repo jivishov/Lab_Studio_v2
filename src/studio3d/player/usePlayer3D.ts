@@ -300,12 +300,12 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
    * point, it slides to the nearest free spot; clicked or chosen with Enter, it takes the slot the
    * 2D `placeEquipment` would give it. A hand-control drop is tagged "vision", as in 2D.
    */
-  const dropFromTray = useCallback((definitionId: string, at?: { xMm: number; yMm: number }, origin: ReleaseOrigin = "pointer") => {
+  const dropFromTray = useCallback((definitionId: string, at?: { xMm: number; yMm: number }, origin: ReleaseOrigin = "pointer", instanceId?: string) => {
     const spot = at ? nearestFreeSpot(footprintOf(equipment3dEntry(definitionId), at.xMm, at.yMm), occupiedFootprints()) : undefined;
     const point = spot ? fromBench(definitionId, spot.xMm, spot.yMm) : nextPlacementPoint(runtime.getState().equipmentInstances, definitionId);
     const actionDefinitionId = runtime.expectedAction?.parameters.equipmentDefinitionId;
     const resolution = resolveTrayDrop(interaction, nodeCompletedIn(runtime.getState(), runtime.currentNode.id),
-      typeof actionDefinitionId === "string" ? actionDefinitionId : undefined, definitionId, point, nextZIndex(), origin);
+      typeof actionDefinitionId === "string" ? actionDefinitionId : undefined, definitionId, point, nextZIndex(), origin, instanceId);
     if (resolution.kind === "intent") {
       runIntent(resolution.intent);
       return;

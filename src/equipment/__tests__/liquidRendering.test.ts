@@ -458,7 +458,7 @@ describe("liquid rendering", () => {
       expect.arrayContaining([
         "acid-base-titration.initialState:unknown-acid-bottle",
         "paper-chromatography.initialState:distilled-water-bottle",
-        "dilution.initialState:graduated-cylinder",
+        "dilution.initialState:sample-bottle",
       ]),
     );
   });

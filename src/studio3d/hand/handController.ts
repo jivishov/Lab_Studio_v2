@@ -60,7 +60,8 @@ export interface HandApi {
   assist: () => boolean;
   carrying: () => boolean;
   pickUpItem: (instanceId: string) => boolean;
-  pickUpTile: (definitionId: string) => boolean;
+  /** A tray tile: its kind, and the item itself (per-item tiles, decided 2026-10-05). */
+  pickUpTile: (definitionId: string, instanceId?: string) => boolean;
   /** Move the carried item to canvas point (x, y); returns what a press there would do. */
   aimCarry: (x: number, y: number) => CarryAction | undefined;
   /** Draw the carried item lowered by `depth` (0..1), or a pour source tipped further. */
@@ -409,7 +410,7 @@ export class HandController {
 
   private take(t: HandTarget, f: HandFrame): void {
     if (t.kind === "button") { this.a.pressButton(t); return; }
-    if (t.kind === "tile" && t.definitionId) { this.a.pickUpTile(t.definitionId); return; }
+    if (t.kind === "tile" && t.definitionId) { this.a.pickUpTile(t.definitionId, t.instanceId); return; }
     if (t.kind === "item" && t.instanceId) {
       if (this.a.invertTarget(t.instanceId)) {
         this.invertHold = { id: t.instanceId, base: f.normal ? [...f.normal] : [0, 0, 1], over: false };

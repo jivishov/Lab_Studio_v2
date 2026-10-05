@@ -29,7 +29,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 
 ## Atoms
 
-216 atoms across 15 families.
+218 atoms across 15 families.
 
 | Atom | Family | Verb | Interactions | Required roles |
 |---|---|---|---|---|
@@ -247,7 +247,9 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 | `atom.dilute.dropwise-to-mark` | measurement | `transfer` | `dispenseDrops` | `transfer-pipette`, `final-volume-vessel` |
 | `atom.place.stopper-vessel` | foundational | `place` | `snapIntoTarget` | `vessel-stopper`, `final-volume-vessel` |
 | `atom.mix.invert-stoppered-vessel` | foundational | `mix` | `recordNotebook` | `final-volume-vessel`, `vessel-stopper` |
+| `atom.place.remove-stopper` | foundational | `place` | `dragToZone` | `final-volume-vessel`, `vessel-stopper` |
 | `atom.transfer.weighed-solid-through-funnel` | measurement | `transfer` | `pourInto` | `weighed-sample-source`, `narrow-necked-vessel`, `filling-funnel` |
+| `atom.observe.zero-balance` | weighing | `observe` | `recordNotebook` | `balance-instrument`, `weighed-vessel` |
 | `atom.dissolve.swirl-to-dissolve` | foundational | `dissolve` | `recordNotebook` | `final-volume-vessel` |
 
 ### Family: calorimetry
@@ -1222,8 +1224,6 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 - Evidence: Add unmeasured solvent until the configured final-volume mark is reached.
 - Procedural constraints:
   - Add unmeasured solvent until the configured final-volume mark is reached.
-- Content examples:
-  - `technique:dilution` action `dilute-to-mark`
 
 #### `atom.place.remove-warm-drying-assembly`
 
@@ -1391,6 +1391,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 - Content examples:
   - `technique:dilution` action `stopper-flask`
   - `technique:making-solution` action `stopper-flask`
+  - `technique:transmittance-dilution` action `transmittance-dilution-stopper-test-tube`
 
 #### `atom.mix.invert-stoppered-vessel`
 
@@ -1408,6 +1409,22 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 - Content examples:
   - `technique:dilution` action `invert-to-mix`
   - `technique:making-solution` action `invert-to-mix`
+  - `technique:transmittance-dilution` action `transmittance-dilution-invert-test-tube`
+
+#### `atom.place.remove-stopper`
+
+**Remove the stopper from a vessel**
+
+- Verb: `place`
+- Allowed interaction types: `dragToZone`
+- Required roles: `final-volume-vessel`, `vessel-stopper`
+- Optional roles: none
+- Evidence: stopper detached from the vessel and placed on the workbench
+- Procedural constraints:
+  - The stopper is taken out and set on the workbench after the contents are mixed, before anything is drawn from or poured out of the vessel.
+  - Decided by the teacher on 2026-10-05 (Pack 1: transmittance-dilution's test tube is stoppered, inverted and opened before its sample is drawn); no dated plan states this step, so no source example is cited.
+- Content examples:
+  - `technique:transmittance-dilution` action `transmittance-dilution-remove-test-tube-stopper`
 
 #### `atom.dissolve.swirl-to-dissolve`
 
@@ -1807,6 +1824,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
   - The rinse volume is deliberately unstated in the source; do not attach a measured quantity to it.
   - A rinse-water source must never be a calibrated delivery device.
   - When the rinse names the vessel its washings run into, the rinse water and any residue go into that vessel, as when a weighing boat and then its funnel are rinsed into a volumetric flask (Make a Solution, decided by the teacher on 2026-10-04).
+  - A rinse may be made in several small squirts (`rinsePortions`), each one request; the last records the rinse. The squirts are about 3 mL each by the runtime's default, not a stated measured quantity (decided by the teacher on 2026-10-05).
 - Source examples:
   - `what-makes-hard-water-hard_2026-07-27.md` phase step `FD-07` (M)
 - Content examples:
@@ -4047,6 +4065,22 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
   - `how-can-color-determine-copper-in-brass_2026-07-27.md` phase step `B-01` (M)
 - Content examples:
   - `technique:brass-spectrophotometry` action `load-brass-onto-weighing-support-action`
+
+#### `atom.observe.zero-balance`
+
+**Zero the balance with the empty vessel on the pan**
+
+- Verb: `observe`
+- Allowed interaction types: `recordNotebook`
+- Required roles: `balance-instrument`, `weighed-vessel`
+- Optional roles: none
+- Evidence: the balance zeroed with the named vessel on the pan
+- Procedural constraints:
+  - The empty vessel is on the pan, the draft-shield doors are closed and the display has settled before TARE (zero) is pressed, so the next reading is the sample's mass alone.
+  - The step records that the balance was zeroed with the named vessel; it acquires no reading and never asserts a displayed precision, which stays teacher-configured.
+  - Planned in the Pack 1 atomization (2026-10-02) and built on 2026-10-05; no dated plan states this step, so no source example is cited.
+- Content examples:
+  - `technique:weighing` action `zero-balance`
 
 ## Equipment roles
 
