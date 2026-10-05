@@ -34,7 +34,7 @@ This is D4 exception 9. Dilute a Stock Solution (exception 8) built the shared p
 - **Settings:** the solid's mass, `soluteMassG`, stays a teacher setting, and so does the observation. `initialSolventVolumeMl` and `finalVolumeMl` are gone: the final volume is the flask's 100 mL. The setup rule now refuses more than 10 g, so the solid dissolves in the half-full flask (below).
 - **Equipment:**
   - the flask;
-  - a weighing boat holding the set mass of sodium carbonate. It is the same stock as Weigh a Solid: "Sodium carbonate", solute `sodium-carbonate`, drawn as "powder". Its label names the mass: "Weighing boat (2.5 g sodium carbonate)".
+  - a weighing boat holding the set mass of sodium carbonate. It is the same stock as Weigh a Solid: "Sodium carbonate", solute `sodium-carbonate`, drawn as "powder". It is labelled "Weighing boat"; its contents carry the solid and its mass (see the fidelity review).
   - the funnel, the wash bottle, a 150 mL beaker of deionized water, a Beral pipette and a stopper.
 
   The empty reagent bottle and the stirring rod are gone. A stirring rod is never put into a volumetric flask; the step text says so.
@@ -60,19 +60,22 @@ This is D4 exception 9. Dilute a Stock Solution (exception 8) built the shared p
   - A dissolve that names its solid (`dissolveSoluteId`) dissolves the gram solute already in the vessel, in the liquid already there, at the vessel's current volume.
   - It keeps the solute's identity and mass, clears `massG` (the solid is now dissolved), and sets a g/L concentration.
   - It refuses a vessel with no such solid ("There is no sodium carbonate in the … to dissolve.") or with no liquid ("There is no water in the … to dissolve the sodium carbonate in."). It also refuses one already dissolved.
+  - Any other solid in the vessel stays undissolved, and the vessel stays a mixture holding it. No content tips in two solids today.
   - A swirl records "Swirled the 100 mL volumetric flask until the sodium carbonate dissolved." under its tag.
   - Content that names no solid keeps the original "Prepared solute" path; hard-water-practice-preparation and the runtime fixture still use it.
 - **Rinse into a receiver** (`washingsReceiverInstanceId`):
   - The rinse water, split from the wash bottle, runs into the named receiver, and so does any dry residue left on the rinsed item. The rinsed item is left rinsed.
   - Water on a solid makes a wet mixture, drawn as "dissolving-solid". Water the receiver's name already lists is not named again.
-  - The rinse refuses a missing receiver, a receiver that is also the rinsed item or its source, and a receiver that would overflow.
-  - Validation refuses a rinse that both keeps its washings (`collectRinseVolume`) and sends them away. Composition remaps the parameter like every `…InstanceId`.
+  - A rinse that names a receiver always takes its water from its source, whatever its atom.
+  - The rinse refuses a missing receiver, a receiver of another kind than `washingsReceiverDefinitionId` names, a receiver that is also the rinsed item or its source, and a receiver that would overflow.
+  - Validation refuses a rinse that both keeps its washings (`collectRinseVolume`) and sends them away, and checks `washingsReceiverDefinitionId` as an equipment reference. Composition remaps both parameters like every `…InstanceId` and `…DefinitionId`.
+  - The receiver's "dissolving-solid" is a default: content can name another state with `washingsVisualState`.
 - **Adding solvent** (`solventAddition`, opt-in on the two pours and the drops):
-  - Water added to a solution leaves a solution of the same name, with its g/L concentration recomputed from its gram solutes. The flask therefore ends as "Sodium carbonate solution" at 25.000 g/L for 2.5 g.
+  - Water added to a solution leaves a solution of the same name, its concentration diluted by the ratio of the volumes, whatever its unit. The flask therefore ends as "Sodium carbonate solution" at 25.000 g/L for 2.5 g.
   - Water added to a vessel whose name already lists it is not named again.
   - Other content is unchanged: dilution's flask still ends as "Blue dye stock + Deionized water".
 - **Wiring:**
-  - `interactions.ts` lets `dissolve` use the process control (`recordNotebook`).
+  - `interactions.ts` lets `dissolve` use the process control (`recordNotebook`), and so does the content lint's copy of that table (`scripts/checkContentConsistency.mjs`).
   - `validation.ts` requires that form to be `mixOperation: "swirl"`, naming its solid and target, and needs no source for it.
   - `atomRegistry.ts` gives the swirl a typed physical-and-recorded effect.
 - **Catalogue:**
@@ -92,11 +95,13 @@ This is D4 exception 9. Dilute a Stock Solution (exception 8) built the shared p
 - The Pack 1 validator passes: 20 definitions, 0 failures, 2,129,904 bytes. The weighing boat replaces the stirring rod in Pack 1; the validator notes the rod's model is now outside it.
 
 **3D:**
-- **The tip** is the existing pour, with the boat as a solid source: a powder stream in the solid's own colour, the boat's heap gone as it tips.
+- **The tip** is the existing pour, with the boat as a solid source: a powder stream in the solid's own colour, the boat's heap gone as it tips, and the heap in the flask appearing as the powder lands.
 - **A pour or rinse into a vessel with a seated filling funnel aims at the funnel's rim,** not the vessel's mouth, which the funnel stands above. This also applies to transmittance-dilution's pour into the 25 mL cylinder.
+- **A jet** (the wash bottle's) leaves its nozzle along the bottle's own direction and passes through the point it is aimed at, so it goes into a narrow mouth: the funnel, or the flask's neck when it is filled.
 - **A rinse with a receiver** is drawn as the wash bottle squirting into the rinsed item over the receiver, whose level rises:
   - the funnel is rinsed where it is seated;
-  - the boat is lifted and held tipped over the funnel's rim, then set back;
+  - the boat is lifted clear of the funnel, carried across and lowered, tipped to its registered pour tilt (70°) with its pour corner just inside the funnel's rim. The jet goes into the boat, the washings run from its corner down through the funnel, and the boat goes back the same way;
+  - the flask keeps its solid in view until the water lands;
   - the camera frames all three.
 
   The mouse clicks the rinse target ("Click to rinse the weighing boat into the funnel").
@@ -106,7 +111,7 @@ This is D4 exception 9. Dilute a Stock Solution (exception 8) built the shared p
   - The flask is drawn lifted and held by its neck while its bulb circles three times round, leaning up to 8°. The solid clears in the last turn.
   - Under reduced motion the end state shows at once.
 - **Hand control:**
-  - At a swirl step, gripping the flask holds it; moving the closed hand once round a circle of at least 10 px swirls it.
+  - At a swirl step, gripping the flask holds it; moving the closed hand once round a circle of at least 10 px swirls it. Once the step has moved on, the grip counts nothing more and lasts until the hand opens; the guide says "Done. Open your hand to let go of the flask." The inversion grip does the same.
   - A wash bottle over what it rinses locks there and squirts on the plunger (a thumb press or a pinch), as a wash bottle is squeezed.
   - The guide lines, the gesture cards (Rinse, Swirl) and the callouts say so.
   - These are new thresholds: 10 px radius, 1.8π swept, a centre that follows the hand at 6 % per frame (`SWIRL` in `handController.ts`).
@@ -162,6 +167,55 @@ This is D4 exception 9. Dilute a Stock Solution (exception 8) built the shared p
   - `provenance.test.ts`: the new settings.
   - `adapters.test.ts` and `pourAnimation.test.ts`: these used the old first step's shelf-to-shelf pour, so they now use the same pour in the runtime fixture.
 
+## Fidelity review (2026-10-04)
+
+Your request: "Critically review your work for fidelity and refine where needed." Two reviewers read the build, one the runtime and one the 3D, and I checked their findings against the code before changing it.
+
+**3D, fixed:**
+1. **A hand still swirling or inverting could act on the next step.** The grip went on counting circles and turns after its step was done. Now a grip counts nothing once its step has moved on, and holds the flask until the hand opens (`handController.ts`, `Player3D.tsx`, `HandControlPanel.tsx`).
+2. **The flask's solid vanished during the tip and the rinses.** Until liquid rose in it, the flask was drawn from its after-state with no liquid, which drew nothing. Now it shows what it held until the stream lands, and a tipped solid appears as it lands (`BenchEngine.planPour`).
+3. **The held boat could not drain, and its path cut through the funnel.** It was held at 30°, less than its walls' slope, and moved straight from the bench to the funnel. Now it is posed by its registered pour corner and 70° tilt, and lifted, carried across and lowered.
+4. **The jet missed narrow mouths.** It left the nozzle at a fixed offset and bent toward wherever it landed, so it could strike the funnel's or the flask's outside. This was already so before Make a Solution, for the flask fills too. Now the nozzle stands back along the bottle's own direction, and the stream passes through the point it is aimed at (`streamGeometry`'s `through` point).
+5. **A keyboard carry could pick up the swirling flask.** Carries are now refused while any committed animation is drawn (`useBenchCarry.ts`).
+6. **At the mark, the parked wash bottle could fill half the view.** The eye-level camera now prefers a direction whose line of sight and a fan of four rays around it are clear, then falls back to the old rule. Not yet seen: the look after the review caught the camera still turning toward eye level (below).
+
+**Runtime, fixed:**
+1. **`npm run content:check` would gain failures.** The lint's copy of the verb table lacked `dissolve`, and the rinse assigned "dissolving-solid" unconditionally while the registry calls it a default. Both are fixed. The lint's titration hits on the drops were already there with dilution. `content:check` itself was not run: it needs your go-ahead. A scratch copy of its visual-state parse finds 21 states the reducer assigns and no mismatch.
+2. **A receiver could be given water the source never lost.** A rinse that named a receiver, but was not otherwise a liquid rinse, sent water into the receiver without taking it from the wash bottle. A named receiver now always makes the rinse take its water from the source.
+3. **`washingsReceiverDefinitionId` was neither checked nor compared.** It is now an equipment reference that validation and the lab import check, and the rinse refuses a receiver of another kind.
+4. **Added water recomputed only a g/L concentration.** Now any concentration is diluted by the volume ratio.
+5. **The dissolve would drop any other solid in the flask.** Now another solid stays undissolved, and the flask stays a mixture holding it.
+
+**Mine:**
+- The boat's label named the set mass. A label is fixed for the whole run, so after the tip it named sodium carbonate in an empty, rinsed boat. It is now "Weighing boat"; the contents carry the solid and its mass. Interpretation 10 is withdrawn.
+- The swirl carried a `vesselInstanceId` that nothing reads. Removed.
+
+**Accepted, not changed:** 2D cannot finish Make a Solution, as it cannot finish Dilute a Stock Solution. The wash bottle's two hand gestures (lock, then squeeze) stay as interpretation 5.
+
+**Tests written, not run:**
+- `makingSolution.test.ts`: a receiver of another kind refused; a named receiver's water taken from the source whatever the rinse's atom; a molar concentration diluted by volume; a second solid left undissolved.
+- `handControl.test.ts`: a swirl or inversion counting nothing once its step has moved on, and the grip kept until the hand opens.
+- `player3DHandControl.test.tsx`: the "Done. Open your hand…" guide line.
+
+**Checks after the review:**
+- the typecheck exits 0;
+- the probe runs 14 of 14 at 25.000 g/L, the wash bottle from 500 to 401 mL, with the overshoot, the out-of-sequence swirl and the setup rules refused as before;
+- transmittance-dilution 28 of 28 and weighing 32 of 32;
+- Dilute a Stock Solution 12 of 12;
+- the catalogue policy accepts all five Pack 1 techniques;
+- the Pack 1 validator passes, 20 definitions;
+- line endings are unchanged, and nothing under `src/player/**` or `src/styles/app.css` changed.
+
+**One headless look after the review** (`probes/look-making-solution.cjs`, as before). All 14 steps ran, with no console errors, and the results were as before: 14 of 14, 100.0 mL, the two rinse records, the swirl record, ten inversions and the teacher's observation. Seen:
+- the white solid in the flask once the tip had landed;
+- the boat held tipped at the funnel's rim while the wash bottle came over, then set back empty;
+- the flask with 5 mL of water over its solid after the boat's rinse;
+- the solid under the half-full water, the flask mid-swirl, then the clear solution.
+
+**Not seen:**
+- the eye-level view after the fan change: the frame at the mark was taken while the camera was still turning toward it. One path moves the camera there, once, so this is most likely SwiftShader's slow frames during the twenty drops.
+- the runoff and the jet mid-squirt at normal speed. A frame-stepped capture before these records showed the boat tipped steeply at the funnel's rim, the runoff through the funnel, and the flask keeping its solid until the water landed.
+
 ## Interpretations to confirm
 
 These are my choices within your decisions:
@@ -174,11 +228,10 @@ These are my choices within your decisions:
 7. **The swirl writes a notebook entry,** and its step completes on that tag, as the inversion's does.
 8. **The undissolved solid is drawn** as a heap under the liquid wherever a registered state has visible particles and the model has a solid rest.
 9. **Pours and rinses into a vessel with a seated funnel aim at the funnel's rim.** This changes how transmittance-dilution's pour into its cylinder is drawn.
-10. **The weighing boat's label names its mass.**
 
 ## Notes, not changed
 
 - **2D.** The 2D player does not enable the swirl's Record button, as it does not for the inversion, and it has no art for a funnel in the flask. 2D is out of scope, by your decision.
-- **The view at the mark.** The parked wash bottle can stand between the camera and the bench edge at eye level (seen in the look). The eye-level view only checks that nothing hides the line itself.
+- **The content baseline** still lists the three removed actions, and the `initialSolventVolumeMl` slot label is no longer used. Both are left for the content-baseline refresh.
 - **Model hashes.** `labeq/materials.py` changed, so the source hash of every model would change if rebuilt. Only the flask and the boat were rebuilt, as when the pump's material was added on 2026-10-02.
 - **Model status.** The stirring rod's model stays in the registry, outside Pack 1.

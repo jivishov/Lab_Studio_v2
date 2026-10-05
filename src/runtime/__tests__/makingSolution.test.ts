@@ -5,7 +5,7 @@ import { applyTechniqueConfiguration } from "../../data/techniqueConfiguration";
 import { deriveActionEffectContract } from "../../domain/atomRegistry";
 import { solutionTechnique } from "../../domain/fixtures";
 import { resolveActionInteraction } from "../../domain/interactions";
-import type { ContentState, RuntimeState, TechniqueDefinition } from "../../domain/types";
+import type { ActionDefinition, ContentState, RuntimeState, TechniqueDefinition } from "../../domain/types";
 import { validateTechniqueDefinition } from "../../domain/validation";
 import { createRuntimeState, performRuntimeAction } from "../index";
 import { resolveInteractionIntent, type RuntimeInteractionIntent } from "../interactionIntents";
@@ -17,12 +17,13 @@ import { resolveInteractionIntent, type RuntimeInteractionIntent } from "../inte
  * then filled to the mark drop by drop, stoppered and inverted. Written, not run.
  */
 const raw = JSON.parse(readFileSync(join(process.cwd(), "public", "techniques", "making-solution.json"), "utf8")) as TechniqueDefinition;
-const technique = applyTechniqueConfiguration(raw, { soluteMassG: "2.5", solutionObservation: "Clear and colourless; no solid left" });
+const settings = { soluteMassG: "2.5", solutionObservation: "Clear and colourless; no solid left" };
+const technique = applyTechniqueConfiguration(raw, settings);
 
-const send = (state: RuntimeState, intent: Record<string, unknown>): RuntimeState => {
-  const result = resolveInteractionIntent(technique, state, { origin: "keyboard", ...intent } as RuntimeInteractionIntent);
+const send = (state: RuntimeState, intent: Record<string, unknown>, tech: TechniqueDefinition = technique): RuntimeState => {
+  const result = resolveInteractionIntent(tech, state, { origin: "keyboard", ...intent } as RuntimeInteractionIntent);
   if (!result.ok) throw new Error(result.feedback.message);
-  return performRuntimeAction(technique, state, result.request);
+  return performRuntimeAction(tech, state, result.request);
 };
 const lastError = (before: RuntimeState, after: RuntimeState) =>
   after.feedbackQueue.slice(before.feedbackQueue.length).find((item) => item.severity === "error")?.message;
@@ -33,22 +34,22 @@ const withFlask = (state: RuntimeState, change: (contents: ContentState) => Cont
 });
 
 /** Plays each step through the Confirm path until `stopBefore`. */
-const playTo = (stopBefore?: string): RuntimeState => {
-  let state = createRuntimeState(technique);
+const playTo = (stopBefore?: string, tech: TechniqueDefinition = technique): RuntimeState => {
+  let state = createRuntimeState(tech);
   const types: Record<string, string> = {
     dragToZone: "placeIntent", snapIntoTarget: "snapIntent", pourInto: "pourIntent", rinseTarget: "rinseIntent", recordNotebook: "notebookRecordIntent",
   };
-  for (const node of technique.process.nodes) {
+  for (const node of tech.process.nodes) {
     if (node.actionId === stopBefore) return state;
-    const action = technique.actions.find((candidate) => candidate.id === node.actionId)!;
+    const action = tech.actions.find((candidate) => candidate.id === node.actionId)!;
     const interaction = resolveActionInteraction(action)!;
     if (interaction.type === "dispenseDrops") {
-      state = send(state, { type: "dispenseDropIntent", runtimeParameters: { dropCount: 20 } });
-      state = send(state, { type: "dispenseCompleteIntent" });
+      state = send(state, { type: "dispenseDropIntent", runtimeParameters: { dropCount: 20 } }, tech);
+      state = send(state, { type: "dispenseCompleteIntent" }, tech);
     } else if (action.id === "invert-to-mix") {
-      for (let i = 0; i < 10; i += 1) state = send(state, { type: "notebookRecordIntent" });
+      for (let i = 0; i < 10; i += 1) state = send(state, { type: "notebookRecordIntent" }, tech);
     } else {
-      state = send(state, { type: types[interaction.type] });
+      state = send(state, { type: types[interaction.type] }, tech);
     }
   }
   return state;
@@ -154,5 +155,50 @@ describe("the swirl and the rinse receiver are typed contracts", () => {
   it("refuses a rinse that both keeps its washings and sends them to a receiver", () => {
     const both = { ...rinse, parameters: { ...rinse.parameters, collectRinseVolume: true } };
     expect(validateTechniqueDefinition(withAction(both)).errors?.join(" ")).toContain("cannot both keep its washings and send them to a receiver");
+  });
+});
+
+describe("rinse receivers, added water and a second solid (fidelity review, 2026-10-04)", () => {
+  const withRinse = (change: (action: ActionDefinition) => ActionDefinition): TechniqueDefinition =>
+    applyTechniqueConfiguration({ ...raw, actions: raw.actions.map((action) => (action.id === "rinse-boat-into-funnel" ? change(action) : action)) }, settings);
+
+  it("refuses washings sent into a vessel other than the one the step names", () => {
+    const misnamed = withRinse((action) => ({ ...action, parameters: { ...action.parameters, washingsReceiverDefinitionId: "beaker" } }));
+    const atRinse = playTo("rinse-boat-into-funnel", misnamed);
+    const after = send(atRinse, { type: "rinseIntent" }, misnamed);
+    expect(lastError(atRinse, after)).toBe("The vessel the washings run into is not the one this step names.");
+    expect(contents(after, "volumetric-flask-1")).toMatchObject({ kind: "solid", massG: 2.5 });
+    expect(contents(after, "wash-bottle-1").volumeMl).toBe(500);
+  });
+
+  it("takes a named receiver's washings out of the source, whatever the rinse's atom", () => {
+    // No atom, no source definition and no rinse type: nothing else makes this a liquid rinse.
+    const generic = withRinse(({ atomId: _atom, ...action }) => {
+      const { sourceDefinitionId: _source, rinseType: _type, ...parameters } = action.parameters;
+      return { ...action, parameters };
+    });
+    const atRinse = playTo("rinse-boat-into-funnel", generic);
+    const after = send(atRinse, { type: "rinseIntent" }, generic);
+    expect(lastError(atRinse, after)).toBeUndefined();
+    expect(contents(after, "wash-bottle-1").volumeMl).toBe(495);
+    expect(contents(after, "volumetric-flask-1")).toMatchObject({ kind: "mixture", volumeMl: 5, massG: 2.5 });
+  });
+
+  it("dilutes the concentration by the water added, whatever its unit", () => {
+    const atFill = withFlask(playTo("fill-water-below-mark"), (flask) => ({ ...flask, concentration: { value: 0.4717, unit: "M" } }));
+    const flask = contents(send(atFill, { type: "pourIntent" }), "volumetric-flask-1");
+    expect(flask.concentration?.unit).toBe("M");
+    expect(flask.concentration?.value).toBeCloseTo((0.4717 * 50) / flask.volumeMl!, 9);
+  });
+
+  it("leaves a second solid undissolved: the flask stays a mixture holding it", () => {
+    const atSwirl = withFlask(playTo("swirl-to-dissolve"), (flask) => ({
+      ...flask, massG: 3, solutes: [...flask.solutes, { id: "sand", label: "Sand", amount: 0.5, unit: "g" }],
+    }));
+    const after = send(atSwirl, { type: "notebookRecordIntent" });
+    expect(lastError(atSwirl, after)).toBeUndefined();
+    const flask = contents(after, "volumetric-flask-1");
+    expect(flask).toMatchObject({ kind: "mixture", label: "Sodium carbonate + Deionized water", massG: 0.5, visualState: "dissolving-solid" });
+    expect(flask.concentration).toBeUndefined();
   });
 });

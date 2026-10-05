@@ -38,6 +38,8 @@ export interface HandGuideContext {
   keyLocked: boolean;
   /** A flask gripped at a swirl step (decided 2026-10-04). */
   swirlHolding?: boolean;
+  /** A flask still gripped after its inverting or swirling step has finished: open the hand. */
+  holdDone?: boolean;
   /** A wash bottle over what it rinses: squeezed once locked (decided 2026-10-04). */
   rinse?: boolean;
 }
@@ -66,6 +68,7 @@ export const handGuide = (s: HandControlState, g: HandGuideContext, now: number)
   if (g.dropMode) return { text: `Each ${pinch ? "pinch" : "thumb press"} adds one drop; hold it to let the drops run. Grip over At the line when the meniscus meets it.`, gesture: "drops", warn: false };
   if (g.invertHolding) return { text: "Turn your palm over and back to invert the flask once. Open your hand to let go.", gesture: "invert", warn: false };
   if (g.swirlHolding) return { text: "Move your closed hand in a small circle to swirl the flask. Open your hand to let go.", gesture: "swirl", warn: false };
+  if (g.holdDone) return { text: "Done. Open your hand to let go of the flask.", gesture: "put", warn: false };
   if (g.armed === "bubbles") return { text: `Bubbles! ${pinch ? "Keep pinching" : "Keep the thumb pressed"}, lift the tip out of the liquid, lower back in, then ${pinch ? "let go" : "release"} to draw.`, gesture: "draw", warn: true };
   if (g.locked && g.stroke === "turn") return { text: `Locked on ${g.lockedLabel ?? "the target"}. Turn your palm to pour or tip it; lift away to leave.`, gesture: "turn", warn: false };
   if (g.locked && g.draw) {

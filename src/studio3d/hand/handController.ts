@@ -283,9 +283,12 @@ export class HandController {
       return;
     }
 
+    // A grip held for inverting or swirling lasts until the hand opens. Once its step has moved on it
+    // counts nothing more, so a hand still turning or circling never acts on the next step.
     if (this.invertHold) {
       const hold = this.invertHold;
       if (f.open) { this.invertHold = undefined; return; }
+      if (!this.a.invertTarget(hold.id)) return;
       if (f.normal) {
         const turn = angle(f.normal, hold.base);
         if (!hold.over && turn > INVERT.over) hold.over = true;
@@ -297,6 +300,7 @@ export class HandController {
     if (this.swirlHold) {
       const hold = this.swirlHold;
       if (f.open) { this.swirlHold = undefined; return; }
+      if (!this.a.swirlTarget(hold.id)) return;
       const dx = f.x - hold.cx, dy = f.y - hold.cy;
       if (Math.hypot(dx, dy) >= SWIRL.minRadiusPx) {
         const a = Math.atan2(dy, dx);

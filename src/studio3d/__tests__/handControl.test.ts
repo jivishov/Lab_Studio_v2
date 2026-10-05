@@ -354,6 +354,37 @@ describe("swirling and rinsing (Make a Solution, decided 2026-10-04)", () => {
     expect(c.swirlHold).toBeUndefined();
   });
 
+  it("counts nothing more once the step has moved on, and keeps the grip until the hand opens", () => {
+    const { c, log, set } = rig({ swirlable: ["beaker-a"] });
+    let now = still(c, 0, 300, 300, HAND_TIMING.gripMs + 40);
+    const circle = () => {
+      for (let i = 0; i <= 24; i += 1) {
+        const a = (i / 24) * 2 * Math.PI;
+        c.feed(hand(now += 33, 300 + 20 * Math.cos(a), 300 + 20 * Math.sin(a)));
+      }
+    };
+    circle();
+    expect(log.filter((l) => l === "swirl")).toHaveLength(1);
+    set({ swirlable: [] }); // the runtime has dissolved the solid and moved on
+    circle();
+    expect(log.filter((l) => l === "swirl")).toHaveLength(1);
+    expect(c.swirlHold?.id).toBe("beaker-a");
+    expect(log).not.toContain("pick:beaker-a");
+    c.feed(hand(now += 33, 300, 300, 0.3, { open: true, grip: false, hold: false }));
+    expect(c.swirlHold).toBeUndefined();
+  });
+
+  it("inverts nothing more once the inverting step has moved on", () => {
+    const { c, log, set } = rig({ invertable: ["beaker-a"] });
+    let now = still(c, 0, 300, 300, HAND_TIMING.gripMs + 40);
+    for (const rad of [1, 2.2, 0.5]) c.feed(hand(now += 33, 300, 300, 0.3, { normal: turned(rad) }));
+    expect(log.filter((l) => l === "invert")).toHaveLength(1);
+    set({ invertable: [] });
+    for (const rad of [2.2, 0.5, 2.2, 0.5]) c.feed(hand(now += 33, 300, 300, 0.3, { normal: turned(rad) }));
+    expect(log.filter((l) => l === "invert")).toHaveLength(1);
+    expect(c.invertHold?.id).toBe("beaker-a");
+  });
+
   it("does not swirl for a gripping hand that only jitters where it gripped", () => {
     const { c, log } = rig({ swirlable: ["beaker-a"] });
     let now = still(c, 0, 300, 300, HAND_TIMING.gripMs + 40);

@@ -13,7 +13,7 @@ the evidence notes have what was built and checked.
 (`git log --oneline 713c248..HEAD`): the build from `39fdab8` (M7 hand-panel decisions) to `7a63d86`
 (the pump stays on the pipette), the handoff commits of 2026-10-03, then the microarray adoption of
 2026-10-04 (`9798de1` P0 to the P5 records commit, and the fidelity review `b886175`), then Make a Solution
-atomized (D4 exception 9). Push only when the user asks.
+atomized (D4 exception 9, `63096ed`) and its fidelity review. Push only when the user asks.
 
 **Pack 1, technique by technique:**
 
@@ -60,8 +60,8 @@ wait for confirmation (`DECISIONS.md`, the "built" row). G3 has still not run.
    thirteen interpretations to confirm and for G3.
 2. **Done 2026-10-04: Make a Solution** (D4 exception 9; `evidence/MAKE_SOLUTION_ATOMIZATION_EVIDENCE.md`),
    on the new controller, with a weighing-boat model, a funnel seat in the flask, generic funnel atoms, rinses
-   into a receiver and a dissolve of the solid in the flask. It is open only for its ten interpretations to
-   confirm, and for G3.
+   into a receiver and a dissolve of the solid in the flask. Reviewed for fidelity the same day: eleven findings
+   fixed (evidence note, "Fidelity review"). It is open only for its nine interpretations to confirm, and for G3.
 3. **Two small additions:** a stopper and inversion for transmittance-dilution's test tube; an atom
    for weighing's zero step.
 4. **Open UI items:** per-item tray tiles (pairs are grouped, so a tap places the first), and the long
@@ -162,7 +162,7 @@ The user asked for **the highest fidelity** to the plan and the handoff.
 | transmittance-dilution: funnel, working beaker, transfer pipettes, 25 mL cylinder (28 steps) | Done; seen end to end in the pane | `evidence/PIPETTE_FUNNEL_EVIDENCE.md` |
 | The balance's TARE key; the spatula for solids (dip, carry, tip) | Done; assessment mode, reduced motion and hand control not seen in the pane | `evidence/TARE_SPATULA_EVIDENCE.md` |
 | The microarray lab's room, camera, mouse and hand control (P0–P5) | Done; looks headless, a mouse run of weighing; G3 not run | `9798de1` … P5; `evidence/MICROARRAY_ADOPTION_EVIDENCE.md` |
-| Make a Solution atomized (14 steps: weighing boat, funnel in the flask, rinses, swirl, to the mark, invert) | Done; one headless look of all 14 steps; G3 not run | `evidence/MAKE_SOLUTION_ATOMIZATION_EVIDENCE.md` |
+| Make a Solution atomized (14 steps: weighing boat, funnel in the flask, rinses, swirl, to the mark, invert) | Done, then reviewed for fidelity; headless looks of all 14 steps before and after the review; G3 not run | `evidence/MAKE_SOLUTION_ATOMIZATION_EVIDENCE.md` |
 | **M8: Pack 1 acceptance** | **Next**, after the two small additions and the open UI items | — |
 
 ## M7 (delivered 2026-09-24)

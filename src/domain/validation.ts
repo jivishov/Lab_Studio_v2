@@ -1605,6 +1605,8 @@ export const actionEquipmentParameterKeys = [
   "ovenDefinitionId",
   "heatSourceDefinitionId",
   "coolingToolDefinitionId",
+  // The vessel a rinse's washings run into (decided 2026-10-04).
+  "washingsReceiverDefinitionId",
 ] as const;
 
 /** Action `parameters` keys that name a lab-owned simulation model. */

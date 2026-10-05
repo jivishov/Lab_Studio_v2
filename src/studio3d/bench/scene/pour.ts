@@ -150,9 +150,15 @@ class CurveSpan extends THREE.Curve<THREE.Vector3> {
 
 /**
  * A falling stream from `from` to `to`: for a pour, it leaves the lip almost level and drops; for
- * a squeeze jet, it leaves along `aim` and arcs down. Only the span [s0, s1] is drawn.
+ * a squeeze jet, it leaves along `aim` and arcs down, through `through` when given (the mouth it is
+ * aimed at, decided 2026-10-04). Only the span [s0, s1] is drawn.
  */
-export const streamGeometry = (from: THREE.Vector3, to: THREE.Vector3, radius: number, s0: number, s1: number, aim?: THREE.Vector3): THREE.BufferGeometry => {
+export const streamGeometry = (from: THREE.Vector3, to: THREE.Vector3, radius: number, s0: number, s1: number, aim?: THREE.Vector3,
+  through?: THREE.Vector3): THREE.BufferGeometry => {
+  if (through) {
+    const curve = new CurveSpan(new THREE.CatmullRomCurve3([from.clone(), through.clone(), to.clone()], false, "centripetal"), s0, s1);
+    return new THREE.TubeGeometry(curve, 24, radius, 8, false);
+  }
   const control = aim
     ? from.clone().addScaledVector(aim, from.distanceTo(to) * 0.45)
     : new THREE.Vector3(from.x + (to.x - from.x) * 0.35, from.y - (from.y - to.y) * 0.08, from.z + (to.z - from.z) * 0.35);

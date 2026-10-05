@@ -217,9 +217,10 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     pressControl: (t) => { if (t.instanceId && t.controlId) onControl(t.instanceId, t.controlId); },
     pressButton: (t) => handButtons.current.get(t.id)?.click(),
     invertTarget: (instanceId) => isInvertTarget(instanceId),
-    invert: () => player.recordEvidence(),
+    // Only while the step is current: a hand still turning or circling never acts on the next step.
+    invert: () => { if (invertVesselId) player.recordEvidence(); },
     swirlTarget: (instanceId) => isSwirlTarget(instanceId),
-    swirl: () => player.recordEvidence(),
+    swirl: () => { if (swirlVesselId) player.recordEvidence(); },
     dropMode: () => Boolean(dropMode),
     drop: () => addDropRef.current(1),
     runDrops: (on) => (on ? startRun() : endRun()),
@@ -733,9 +734,12 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     else setHandPanelOpen(true);
   };
   const handContact = hand.controller.contact;
+  const { invertHold, swirlHold } = hand.controller;
   const handCarryAction = carry.gestureAction();
   const handGuideContext: HandGuideContext = {
-    carrying: carry.carrying, dropMode: Boolean(dropMode), invertHolding: Boolean(hand.controller.invertHold), swirlHolding: Boolean(hand.controller.swirlHold),
+    carrying: carry.carrying, dropMode: Boolean(dropMode),
+    invertHolding: Boolean(invertHold && isInvertTarget(invertHold.id)), swirlHolding: Boolean(swirlHold && isSwirlTarget(swirlHold.id)),
+    holdDone: Boolean((invertHold && !isInvertTarget(invertHold.id)) || (swirlHold && !isSwirlTarget(swirlHold.id))),
     rinse: Boolean(handCarryAction?.rinse), locked: Boolean(handContact),
     stroke: hand.controller.stroke, draw: handCarryAction?.action === "draw", squeeze: Boolean(handCarryAction?.squeeze), armed: hand.controller.armed,
     keyLocked: !carry.carrying && hand.controller.lockedTarget?.kind === "control",

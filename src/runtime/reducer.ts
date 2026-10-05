@@ -644,23 +644,24 @@ const mergeContents = (
 
 /**
  * A pour or drop that only adds solvent (`solventAddition`, decided 2026-10-04 for Make a Solution).
- * Water added to a solution leaves a solution of the same name at its new volume, its g/L
- * concentration recomputed from its gram solutes; water added to a vessel whose name already lists it
- * is not named again. Anything but plain liquid, and content that does not ask, keep the ordinary merge.
+ * Water added to a solution leaves a solution of the same name at its new volume, its concentration
+ * diluted by the volume ratio; water added to a vessel whose name already lists it is not named again.
+ * Anything but plain liquid, and content that does not ask, keep the ordinary merge.
  */
 const withSolventAdded = (target: ContentState, added: ContentState, merged: ContentState): ContentState => {
   if (added.kind !== "liquid" || added.solutes.length > 0 || target.kind === "empty") return merged;
   if (target.kind !== "solution") {
     return target.label.split(" + ").includes(added.label) ? { ...merged, label: target.label } : merged;
   }
-  const volumeMl = merged.volumeMl ?? 0;
-  const grams = gramSoluteMass(merged);
+  const before = target.volumeMl ?? 0;
+  const after = merged.volumeMl ?? 0;
   return {
     ...merged,
     kind: "solution",
     label: target.label,
-    concentration: target.concentration?.unit === "g/L" && grams !== undefined && volumeMl > 0
-      ? { value: grams / (volumeMl / 1000), unit: "g/L" }
+    // Diluted by the solvent added: the concentration falls as the volume rises, whatever its unit.
+    concentration: target.concentration && before > 0 && after > 0
+      ? { ...target.concentration, value: target.concentration.value * (before / after) }
       : merged.concentration,
   };
 };
@@ -671,7 +672,11 @@ const withSolventAdded = (target: ContentState, added: ContentState, merged: Con
  * the two, shown with undissolved particles until it is dissolved; water the receiver's name already
  * lists is not named again.
  */
-const mergeWashings = (receiver: ContentState, washings: ContentState): ContentState => {
+const mergeWashings = (
+  receiver: ContentState,
+  washings: ContentState,
+  params: Record<string, string | number | boolean | string[] | undefined>,
+): ContentState => {
   if (receiver.kind === "empty") return { ...cloneContent(washings), wetState: "wet" };
   const holdsSolid = receiver.kind === "solid" || (receiver.kind === "mixture" && (receiver.massG ?? 0) > 0);
   if (!holdsSolid) return withSolventAdded(receiver, washings, mergeTransferredContents(receiver, washings));
@@ -683,7 +688,7 @@ const mergeWashings = (receiver: ContentState, washings: ContentState): ContentS
     solutes: [...receiver.solutes, ...washings.solutes.map((solute) => ({ ...solute }))],
     contamination: [...new Set([...receiver.contamination, ...washings.contamination])],
     wetState: "wet",
-    visualState: "dissolving-solid",
+    visualState: stringSetting(params, "washingsVisualState") ?? "dissolving-solid",
   };
 };
 
@@ -721,16 +726,19 @@ const dissolveSolidInTarget = (
     return fail(state, `There is no water in the ${target.label} to dissolve the ${name} in.`,
       "Add water to about half full, then swirl.", nodeId);
   }
+  // Any other solid in the vessel (content that tips in more than one) stays undissolved: a mixture.
+  const otherSolidG = Math.max(0, (contents.massG ?? massG) - massG);
+  const mixed = otherSolidG > 1e-9;
   let next = updateInstance(state, target.id, (instance) => ({
     ...instance,
     contents: {
       ...instance.contents,
-      kind: "solution",
-      label: stringSetting(params, "solutionLabel") ?? `${solid[0]?.label ?? "Prepared"} solution`,
-      massG: undefined,
-      concentration: { value: massG / (volumeMl / 1000), unit: "g/L" },
+      kind: mixed ? "mixture" : "solution",
+      label: mixed ? instance.contents.label : stringSetting(params, "solutionLabel") ?? `${solid[0]?.label ?? "Prepared"} solution`,
+      massG: mixed ? Number(otherSolidG.toFixed(10)) : undefined,
+      concentration: mixed ? undefined : { value: massG / (volumeMl / 1000), unit: "g/L" },
       wetState: "wet",
-      visualState: stringSetting(params, "visualState") ?? "clear-solution",
+      visualState: mixed ? instance.contents.visualState : stringSetting(params, "visualState") ?? "clear-solution",
     },
   }));
   const tag = stringSetting(params, "tag");
@@ -3983,6 +3991,9 @@ const executeAction = (
       );
     }
     const source = findInstance(state, action.sourceInstanceId, String(params.sourceDefinitionId ?? ""));
+    // A rinse that names the vessel its washings run into (decided 2026-10-04) always takes real water
+    // from its source.
+    const receiverId = stringSetting(params, "washingsReceiverInstanceId");
     const conditionsWithSample = actionDefinition.atomId === "atom.rinse.condition-cuvette-with-sample";
     const quantitativeRinse = new Set([
       "atom.rinse.quantitative-transfer",
@@ -3991,7 +4002,7 @@ const executeAction = (
     ]).has(actionDefinition.atomId ?? "") ||
       rinseType === "pre-wet" || rinseType === "precipitate" ||
       booleanSetting(params, "collectRinseVolume");
-    const explicitLiquidRinse = conditionsWithSample || quantitativeRinse ||
+    const explicitLiquidRinse = conditionsWithSample || quantitativeRinse || receiverId !== undefined ||
       params.sourceDefinitionId !== undefined || params.volumeMl !== undefined || action.value !== undefined;
     const conditioningCount = conditionsWithSample ? numberSetting(params, "conditioningCount", Number.NaN) : 1;
     const conditioningPortionMl = conditionsWithSample ? numberSetting(params, "conditioningPortionMl", Number.NaN) : Number.NaN;
@@ -4033,13 +4044,14 @@ const executeAction = (
     }
     // Washings that run into a named receiver (decided 2026-10-04): the rinse water, and any dry
     // residue left on the rinsed item, go into it, as a weighing boat and its funnel are rinsed into a flask.
-    const receiverId = stringSetting(params, "washingsReceiverInstanceId");
-    const receiver = receiverId
-      ? findInstance(state, receiverId, stringSetting(params, "washingsReceiverDefinitionId") ?? "")
-      : undefined;
+    const receiverDefinitionId = stringSetting(params, "washingsReceiverDefinitionId");
+    const receiver = receiverId ? findInstance(state, receiverId, receiverDefinitionId ?? "") : undefined;
     if (receiverId) {
       if (!receiver || !source || receiver.id === target.id || receiver.id === source.id || retainedRinse) {
         return fail(state, "The vessel the washings run into is missing.", "Place the receiving vessel this step names, then rinse into it.", nodeId);
+      }
+      if (receiverDefinitionId && receiver.definitionId !== receiverDefinitionId) {
+        return fail(state, "The vessel the washings run into is not the one this step names.", "Rinse into the receiving vessel this step names.", nodeId);
       }
       const receiverCapacity = equipmentById.get(receiver.definitionId)?.capacity;
       if (receiverCapacity?.unit === "mL" && (receiver.contents.volumeMl ?? 0) + rinseVolumeMl > receiverCapacity.amount) {
@@ -4099,7 +4111,7 @@ const executeAction = (
                 sourceTemperatureC: residue.temperatureC,
               })
             : instance.contents;
-          return { ...instance, contents: mergeWashings(withResidue, { ...rinseSplit.transferredContents, wetState: "wet" }) };
+          return { ...instance, contents: mergeWashings(withResidue, { ...rinseSplit.transferredContents, wetState: "wet" }, params) };
         })
       : next;
     return {

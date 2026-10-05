@@ -103,6 +103,7 @@ describe("the guide line and badge (app.js:378-421)", () => {
     expect(handGuide(base, { ...idle, keyLocked: true }, 1100)).toMatchObject({ gesture: "key" });
     // Make a Solution (decided 2026-10-04): a gripped flask is swirled; a locked wash bottle is squeezed.
     expect(handGuide(base, { ...idle, swirlHolding: true }, 1100)).toMatchObject({ gesture: "swirl" });
+    expect(handGuide(base, { ...idle, holdDone: true }, 1100).text).toMatch(/Open your hand to let go/);
     expect(handGuide(base, { ...idle, carrying: true, locked: true, rinse: true }, 1100)).toMatchObject({ gesture: "rinse" });
     expect(handGuide(base, { ...idle, carrying: true, locked: true, rinse: true }, 1100).text).toMatch(/squeeze the wash bottle/);
   });

@@ -1227,24 +1227,28 @@ export class BenchEngine {
     const toward = away.clone().negate();
 
     // An item rinsed into the target (decided 2026-10-04): a weighing boat is lifted from where it rests
-    // and held tipped toward the funnel, just above its rim, with the wash bottle's jet aimed into it, so
-    // its washings run down into the target.
+    // and held tipped toward the funnel, just above its rim. The wash bottle's jet goes into it, and the
+    // washings spill from its low rim down into the target.
     const viaView = args.via && args.via !== args.sourceId && args.via !== args.targetId ? this.items.get(args.via) : undefined;
     const viaRest = viaView ? { pos: viaView.root.position.clone(), quat: viaView.root.quaternion.clone() } : undefined;
-    let viaHold: { pos: THREE.Vector3; quat: THREE.Quaternion } | undefined;
-    if (viaView && viaRest) {
-      const viaBox = new THREE.Box3().setFromObject(viaView.model ?? viaView.root);
-      const halfWidth = Math.max(viaBox.max.x - viaBox.min.x, viaBox.max.z - viaBox.min.z) / 2;
-      viaHold = {
-        pos: mouth.clone().addScaledVector(away, halfWidth * 0.75).add(new THREE.Vector3(0, 0.02, 0)),
-        quat: new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3().crossVectors(away, UP).normalize(), 30 * DEG).multiply(viaRest.quat),
-      };
+    let viaHold: { pos: THREE.Vector3; quat: THREE.Quaternion; spill: THREE.Vector3; inside: THREE.Vector3 } | undefined;
+    if (viaView && viaRest && viaView.entry?.pour) {
+      // Tipped the way it is poured from (its registered lip and tilt, past its walls' slope so the
+      // washings run out), with its lip just inside the funnel's rim, where they spill.
+      const viaGeometry = pourGeometry(viaView.entry);
+      const quat = pourQuaternion(viaGeometry, toward, viaGeometry.tiltMax);
+      const spill = mouth.clone().addScaledVector(away, mouthR * 0.4).add(new THREE.Vector3(0, 0.004, 0));
+      const pos = rootForLip(viaGeometry, quat, spill);
+      viaHold = { pos, quat, spill, inside: pos.clone().add(new THREE.Vector3(0, 0.012, 0).applyQuaternion(quat)) };
     }
-    const aimAt = viaHold ? viaHold.pos.clone().add(new THREE.Vector3(0, 0.012, 0)) : mouth;
+    // What a jet is aimed at: inside a held item, or the mouth.
+    const aimAt = viaHold ? viaHold.inside : mouth;
 
-    // The lip's pouring point: just over the mouth (a jet stands off to the side, above it).
+    // The lip's pouring point: just over the mouth. A jet's nozzle stands back along its own direction
+    // from the point it is aimed at, so the jet goes there.
+    const jetDir = jet && geometry.tipDir ? geometry.tipDir.clone().applyQuaternion(pourQuaternion(geometry, toward, geometry.tiltMax)).normalize() : undefined;
     const lipAt = jet
-      ? aimAt.clone().addScaledVector(away, 0.045).add(new THREE.Vector3(0, 0.055, 0))
+      ? jetDir ? aimAt.clone().addScaledVector(jetDir, -0.06) : aimAt.clone().addScaledVector(away, 0.045).add(new THREE.Vector3(0, 0.055, 0))
       : mouth.clone().addScaledVector(away, mouthR * 0.4).add(new THREE.Vector3(0, 0.004, 0));
 
     // Tilts: where the liquid first reaches the lip, and where it is when the runtime's volume has
@@ -1281,7 +1285,7 @@ export class BenchEngine {
     const flow = Math.min(1.4, Math.max(0.6, 0.6 + moved / 125));
     // The carry in and out stays short, so the pour itself keeps most of the time: from a drag's drop
     // point the source is already over the target.
-    const T = { approach: released ? 0.3 : 0.45, tilt: 0.35, flow, untilt: 0.3, back: 0.45 };
+    const T = { approach: (released ? 0.3 : 0.45) + (viaHold ? 0.45 : 0), tilt: 0.35, flow, untilt: 0.3, back: 0.45 + (viaHold ? 0.45 : 0) };
     const at = { tilt: T.approach, flow: T.approach + T.tilt, untilt: T.approach + T.tilt + flow, back: T.approach + T.tilt + flow + T.untilt };
     const total = at.back + T.back;
 
@@ -1297,11 +1301,14 @@ export class BenchEngine {
         transparent: true, opacity: 0.85, depthWrite: false });
     }
     const stream = material ? new THREE.Mesh(new THREE.BufferGeometry(), material) : undefined;
-    if (stream) {
-      stream.visible = false;
-      stream.renderOrder = 4;
-      stream.raycast = () => undefined;
-      this.scene.add(stream);
+    // With an item held over the mouth, a second stream: its washings running down into the target.
+    const runoff = material && viaHold ? new THREE.Mesh(new THREE.BufferGeometry(), material) : undefined;
+    for (const mesh of [stream, runoff]) {
+      if (!mesh) continue;
+      mesh.visible = false;
+      mesh.renderOrder = 4;
+      mesh.raycast = () => undefined;
+      this.scene.add(mesh);
     }
     const streamRadius = solid ? 0.0022 : jet ? 0.0011 : Math.min(0.0019, Math.max(0.0008, mouthR * 0.3));
 
@@ -1320,6 +1327,7 @@ export class BenchEngine {
     const targetLevel = (ml: number) => (tFill ? fillLevelMm(tFill, ml).levelMm : 0);
     let t = 0;
     let lastTarget = Number.NaN;
+    let solidLanded = false;
 
     const tick = (dt: number): boolean => {
       t = Math.min(total, t + dt);
@@ -1350,11 +1358,15 @@ export class BenchEngine {
       source.root.updateMatrixWorld(true);
       lip.copy(geometry.lip).applyQuaternion(q).add(pos);
       if (viaView && viaRest && viaHold) {
-        // Held over the mouth from the approach until the source is back upright, then set down again.
-        const moving = t < at.tilt ? ease(span(t, 0, T.approach)) : t < at.back ? 1 : 1 - ease(span(t, at.back, T.back));
-        const arc = t < at.tilt || t >= at.back ? Math.sin(moving * Math.PI) * 0.03 : 0;
-        viaView.root.position.copy(viaRest.pos).lerp(viaHold.pos, moving).add(new THREE.Vector3(0, arc, 0));
-        viaView.root.quaternion.copy(viaRest.quat).slerp(viaHold.quat, moving);
+        // Held over the mouth from the approach until the source is back upright, then set down again:
+        // lifted clear of the funnel, carried across, lowered onto its hold, and back the same way.
+        const moving = t < at.tilt ? span(t, 0, T.approach) : t < at.back ? 1 : 1 - span(t, at.back, T.back);
+        const clearY = Math.max(viaRest.pos.y, viaHold.pos.y, mouth.y + 0.05);
+        const up = viaRest.pos.clone().setY(clearY), over = viaHold.pos.clone().setY(clearY);
+        const leg = (u: number) => ease(Math.min(1, Math.max(0, u)));
+        viaView.root.position.copy(moving < 1 / 3 ? viaRest.pos.clone().lerp(up, leg(moving * 3))
+          : moving < 2 / 3 ? up.lerp(over, leg(moving * 3 - 1)) : over.lerp(viaHold.pos, leg(moving * 3 - 2)));
+        viaView.root.quaternion.copy(viaRest.quat).slerp(viaHold.quat, leg(moving * 1.5));
         viaView.root.updateMatrixWorld(true);
       }
 
@@ -1377,21 +1389,37 @@ export class BenchEngine {
         const key = ml + (style === args.targetAfter.style ? 1e6 : 0);
         if (key !== lastTarget) {
           lastTarget = key;
-          this.replaceContents(target, ml > 0 ? buildContents(targetEntry, { ...args.targetAfter, style, volumeMl: ml, ...fillLevelMm(tFill!, ml) }) : undefined);
+          this.replaceContents(target, ml > 0 ? buildContents(targetEntry, { ...args.targetAfter, style, volumeMl: ml, ...fillLevelMm(tFill!, ml) })
+            : buildContents(targetEntry, args.targetBefore));
         }
+      } else if (args.targetAfter.kind === "solid" && !solidLanded && targetU > 0.15) {
+        // A solid poured in (a weighing boat tipped into a flask) shows in the target as it lands.
+        solidLanded = true;
+        this.replaceContents(target, buildContents(targetEntry, args.targetAfter));
       }
 
-      // The stream: its leading edge falls from the lip, its trailing edge follows it down.
+      // The stream: its leading edge falls from the lip, its trailing edge follows it down. With an item
+      // held over the mouth, the jet goes into the item, and the washings spill from its rim a moment later.
       if (stream) {
         const s1 = span(flowT, 0, 0.12);
         const s0 = span(flowT, flow - 0.15, 0.15);
         stream.visible = flowT > 0 && s1 > s0 + 0.01;
+        const landMl = liquidOf(args.targetBefore) + (liquidOf(args.targetAfter) - liquidOf(args.targetBefore)) * targetU;
+        const land = targetBase.clone().addScaledVector(away, mouthR * 0.15);
+        land.y = targetBase.y + Math.max(targetLevel(landMl), tFill?.innerProfileMm?.[0]?.[1] ?? tFill?.innerBoxMm?.floorZ ?? 0) * MM;
         if (stream.visible) {
-          const landMl = liquidOf(args.targetBefore) + (liquidOf(args.targetAfter) - liquidOf(args.targetBefore)) * targetU;
-          const land = targetBase.clone().addScaledVector(away, mouthR * 0.15);
-          land.y = targetBase.y + Math.max(targetLevel(landMl), tFill?.innerProfileMm?.[0]?.[1] ?? tFill?.innerBoxMm?.floorZ ?? 0) * MM;
           stream.geometry.dispose();
-          stream.geometry = streamGeometry(lip, land, streamRadius, s0, s1, jet && geometry.tipDir ? geometry.tipDir.clone().applyQuaternion(q) : undefined);
+          stream.geometry = streamGeometry(lip, viaHold ? aimAt : land, streamRadius, s0, s1,
+            jet && geometry.tipDir ? geometry.tipDir.clone().applyQuaternion(q) : undefined, jet && !viaHold ? aimAt : undefined);
+        }
+        if (runoff && viaHold) {
+          const r1 = span(flowT, 0.18, 0.12);
+          const r0 = span(flowT, flow - 0.02, 0.2);
+          runoff.visible = flowT > 0.18 && r1 > r0 + 0.01;
+          if (runoff.visible) {
+            runoff.geometry.dispose();
+            runoff.geometry = streamGeometry(viaHold.spill, land, streamRadius * 1.4, r0, r1);
+          }
         }
       }
       this.shadowsDirty = true;
@@ -1404,6 +1432,10 @@ export class BenchEngine {
         this.scene.remove(stream);
         stream.geometry.dispose();
         material?.dispose();
+      }
+      if (runoff) {
+        this.scene.remove(runoff);
+        runoff.geometry.dispose();
       }
       if (rack) {
         source.root.add(rack.object);
@@ -1728,15 +1760,22 @@ export class BenchEngine {
     // The first direction, from the current one outward, with nothing else between the eye and the
     // line: another item standing in front (a wash bottle beside the flask) would hide the meniscus.
     const own = new Set([instanceId, ...seeThrough, ...this.lockedDescendants(instanceId)]);
-    const clear = (dir: THREE.Vector3): boolean => {
-      this.raycaster.set(target, dir);
+    const blocked = (dir: THREE.Vector3): boolean => {
+      this.raycaster.set(target, dir.clone().normalize());
       this.raycaster.far = distanceM;
       const hits = this.raycaster.intersectObject(this.itemLayer, true);
       this.raycaster.far = Infinity;
-      return !hits.some((hit) => !own.has(hit.object.userData.instanceId as string));
+      return hits.some((hit) => !own.has(hit.object.userData.instanceId as string));
     };
-    const turns = [0, 35, -35, 70, -70, 110, -110, 180];
-    const chosen = turns.map((deg) => current.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), deg * DEG)).find(clear) ?? current;
+    // Best, the middle of the view is clear too: an item beside the line of sight close to the eye (a
+    // parked wash bottle) would fill half the view without hiding the line (found 2026-10-04).
+    const fan = (dir: THREE.Vector3): THREE.Vector3[] => {
+      const side = new THREE.Vector3().crossVectors(UP, dir).normalize();
+      return [[10, 0], [-10, 0], [0, 6], [0, -6]].map(([yawDeg, pitchDeg]) =>
+        dir.clone().applyAxisAngle(UP, yawDeg * DEG).applyAxisAngle(side, pitchDeg * DEG));
+    };
+    const turns = [0, 35, -35, 70, -70, 110, -110, 180].map((deg) => current.clone().applyAxisAngle(UP, deg * DEG));
+    const chosen = turns.find((dir) => !blocked(dir) && !fan(dir).some(blocked)) ?? turns.find((dir) => !blocked(dir)) ?? current;
     const yaw = this.view.yaw + Math.atan2(Math.sin(Math.atan2(chosen.x, chosen.z) - this.view.yaw), Math.cos(Math.atan2(chosen.x, chosen.z) - this.view.yaw));
     this.tweenTo({ at: target, yaw, pitch: 0, distance: distanceM });
   }

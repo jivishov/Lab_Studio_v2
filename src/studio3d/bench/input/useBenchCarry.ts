@@ -578,7 +578,8 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
   const startKeyCarry = useCallback((instanceId: string): boolean => {
     const item = scene.bench.find((i) => i.instanceId === instanceId);
     const base = engine?.basePosition(instanceId);
-    if (!engine || !item || !base || player.pour || getVisualProfile(item.definitionId)?.probePresentation) return false;
+    // Nothing is picked up while a committed pour, weighing, tool transfer or swirl is being drawn.
+    if (!engine || !item || !base || pouringRef.current || getVisualProfile(item.definitionId)?.probePresentation) return false;
     if (carryRef.current) cancel();
     carryRef.current = { kind: "bench", via: "keyboard", instanceId, definitionId: item.definitionId, label: item.label,
       startX: 0, startY: 0, active: true, pointerType: "keyboard" };

@@ -168,7 +168,7 @@ const COMPATIBLE_INTERACTION_VERBS = {
   placeInInstrument: ["dry", "heat", "cool", "stressEquilibrium"],
   readInstrument: ["weigh", "measureVolume", "observe", "stressEquilibrium"],
   recordTimeSeries: ["record"],
-  recordNotebook: ["calculate", "record", "observe", "stressEquilibrium", "mix", "vent", "settle", "dry", "cool", "transfer", "rinse", "developChromatogram"],
+  recordNotebook: ["calculate", "record", "observe", "stressEquilibrium", "mix", "vent", "settle", "dry", "cool", "transfer", "rinse", "developChromatogram", "dissolve"],
   submitCalculation: ["calculate"],
 };
 
