@@ -19,6 +19,9 @@ def build(coll, M):
     registry = {
         'footprintMm': {'shape': 'circle', 'radius': rl},
         'grip': {'heightMm': h * 0.7},
+        # Set down off a vessel, it stands on its wide end, the end that was in the neck kept off the
+        # bench (decided 2026-10-05).
+        'benchRest': {'rollDeg': 180.0, 'liftMm': h, 'shiftMm': [0.0, 0.0]},
         'graduations': None,
         'anchors': {},
         'displays': [],

@@ -78,6 +78,12 @@ export interface HandApi {
   swirl: () => void;
   dropMode: () => boolean;
   drop: () => void;
+  /**
+   * A wash bottle held over what it rinses between squirts (decided 2026-10-05): each plunger press,
+   * a thumb press or a pinch, is one more squirt.
+   */
+  squirtMode?: () => boolean;
+  squirt?: () => void;
   runDrops: (on: boolean) => void;
   focus: (target: HandTarget | undefined, locked: boolean) => void;
   /** A message; an `error` is a technique correction, with what to do next as `recovery`. */
@@ -278,7 +284,7 @@ export class HandController {
     const expected = this.a.expectedId();
     const t = pickTarget(this.a.targets(), f.x, f.y, { prefer: this.target?.id, expected, assist: this.a.assist() });
 
-    if (this.a.dropMode()) {
+    if (this.a.dropMode() || this.a.squirtMode?.()) {
       this.target = t;
       this.a.focus(t, false);
       return;
@@ -441,6 +447,7 @@ export class HandController {
   /** A plunger press (a calibrated thumb press, or a pinch; `interaction.js:163-177`). */
   press(f: HandFrame): void {
     if (this.pressed || !f.ready || !f.grip || f.open) return;
+    if (this.a.squirtMode?.()) { this.pressed = true; return; }
     if (this.a.dropMode()) {
       this.pressed = true;
       this.dropTimer = setTimeout(() => { this.dropTimer = undefined; this.running = true; this.a.runDrops(true); }, HAND_TIMING.dropHoldMs);
@@ -474,6 +481,10 @@ export class HandController {
   release(): void {
     const wasPressed = this.pressed;
     this.pressed = false;
+    if (this.a.squirtMode?.()) {
+      if (wasPressed) this.a.squirt?.();
+      return;
+    }
     if (this.a.dropMode()) {
       if (this.dropTimer) { clearTimeout(this.dropTimer); this.dropTimer = undefined; if (wasPressed) this.a.drop(); }
       else if (this.running) { this.running = false; this.a.runDrops(false); }

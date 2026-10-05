@@ -13,7 +13,7 @@ import { heldOnSeat, readingSeatZone } from "../bench/scene/setOn";
 import { benchMoveRequest, intentTypeForInteraction, markStepFor, mergeActionInput, pipetteStepFor, resolveTrayDrop, toolTransferFor, type ReleaseOrigin } from "../adapters/sceneToIntent";
 import { nextPlacementPoint, parkPointAfterInteraction } from "../adapters/twoDPlacement";
 import { equipment3dEntry } from "../equipment3d/readiness";
-import { stepFlow, type StepFlow } from "./stepRules";
+import { stepFlow, type StepFlow, placedInstanceId } from "./stepRules";
 
 /**
  * Player3D's controller: the same runtime hook and the same intent path as the 2D player
@@ -305,7 +305,8 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     const point = spot ? fromBench(definitionId, spot.xMm, spot.yMm) : nextPlacementPoint(runtime.getState().equipmentInstances, definitionId);
     const actionDefinitionId = runtime.expectedAction?.parameters.equipmentDefinitionId;
     const resolution = resolveTrayDrop(interaction, nodeCompletedIn(runtime.getState(), runtime.currentNode.id),
-      typeof actionDefinitionId === "string" ? actionDefinitionId : undefined, definitionId, point, nextZIndex(), origin, instanceId);
+      typeof actionDefinitionId === "string" ? actionDefinitionId : undefined, definitionId, point, nextZIndex(), origin, instanceId,
+      placedInstanceId(runtime.expectedAction?.parameters));
     if (resolution.kind === "intent") {
       runIntent(resolution.intent);
       return;

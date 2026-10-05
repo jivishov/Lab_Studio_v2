@@ -127,7 +127,8 @@ export const StepCard = ({ player, controls, onShowMe, onHoldOver, holdOverReady
                 title={holdOverReady ? undefined : "Put the pipette and the vessel on the bench first."}>Hold the pipette over it</button>
             ) : null
           ) : flow.canConfirm ? (
-            <button type="button" className="s3d-button s3d-button--primary" data-hand-press="confirm-accessible-action" disabled={!flow.confirmEnabled} onClick={player.confirm}>
+            <button type="button" className="s3d-button s3d-button--primary" data-hand-press="confirm-accessible-action"
+              disabled={!flow.confirmEnabled || (runtime.expectedAction?.verb === "rinse" && Boolean(player.pour))} onClick={player.confirm}>
               {runtime.expectedAction?.verb === "rinse" && Number(runtime.expectedAction.parameters.rinsePortions ?? 1) > 1
                 ? `Rinse (${runtime.state.rinsePortions?.[runtime.expectedAction.id] ?? 0} of ${Number(runtime.expectedAction.parameters.rinsePortions)})`
                 : "Confirm"}

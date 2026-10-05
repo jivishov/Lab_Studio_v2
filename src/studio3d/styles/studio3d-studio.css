@@ -183,6 +183,8 @@
 .s3d-studio .s3d-callout { position: absolute; transform: translateX(-50%); background: var(--label-bg); color: var(--label-ink); font-size: 12px; font-weight: 500; padding: 6px 10px; border-radius: 999px; white-space: nowrap; pointer-events: none; z-index: 7; }
 .s3d-callout--insert { position: static !important; transform: none !important; }
 .s3d-callout--status { top: 58px; left: 50%; }
+/* Below the preview's and the starting bench's notices, which sit at the top centre too. */
+.s3d-studio .s3d-callout--docked { top: 104px; }
 .s3d-callout--free { box-shadow: none; }
 .s3d-connect-menu { top: auto; }
 

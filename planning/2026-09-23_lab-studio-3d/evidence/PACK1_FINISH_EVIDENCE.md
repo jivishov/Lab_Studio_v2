@@ -93,10 +93,83 @@ The work is the plan's remaining Pack 1 items: the two small additions, the two 
   - Make a Solution's boat rinse counting "Rinse (0 of 3)", "(1 of 3)", "(2 of 3)", then moving to the funnel.
 - **Not seen:** hand control with a camera (G3), and assessment mode.
 
-## Interpretations to confirm
+## Fidelity review (2026-10-05)
+
+Your request: "Critically review your work for fidelity and refine where needed." It covers this round and the two commits before it: the view, labels and window, and the launcher. Two reviewers read it, one the runtime and content and one the 3D. I checked each finding against the code before changing anything.
+
+**Fixed:**
+1. **Each squirt was a separate carry, and the boat was carried back between squirts.** In practice the boat is held over the funnel while the bottle is squeezed three times. Now, after a squirt short of the count:
+   - the wash bottle stays held upright beside what it rinses, and the boat stays tipped over the funnel;
+   - the next squirt is a click on the bench, Space or Enter, the step card's "Rinse (n of 3)", or one hand squeeze (a thumb press or a pinch);
+   - only the last squirt sets the bottle and the boat down where they were;
+   - Esc, a restart or leaving the step puts them down;
+   - nothing else can be picked up meanwhile, and the camera does not reframe between squirts;
+   - the button is off while a squirt is drawn, so a quick second click cannot cut one short.
+   The hold lives in the bench engine (`squirtHold`) and survives each sync, as a pipette held at a mark does.
+2. **The test tube's rack turned over with the tube.** The rack is attached to the tube, and the inversion moved the whole tube. The rack now stays on the bench while the tube is inverted or swirled, as it already did for a pour (`detachRack`).
+3. **A tray tile could complete "Remove the blank cuvette" with the sample cuvette.** The tray matched the step by kind, then moved the tile's own cuvette, leaving the blank in the photometer. Now:
+   - a tile stands for the step only if it is the item the step names;
+   - another of the same kind is a free move;
+   - the "needed now" dot and the "Release to place" label follow the named item.
+4. **The stopper came out nine steps before the sample was drawn.** It now comes out just before the sample is drawn, so the tube stays closed through the blanking.
+5. **The stopper check took the first test tube and first stopper in the lab.** A step can now name its pair (`attachmentParentInstanceId`, `attachmentChildInstanceId`; composition remaps them), and every gated Pack 1 action does. Nothing composes these techniques today; a lab with several test tubes would have hit it.
+6. **Nothing tied a counted step to how it is judged.** Validation now requires a rinse with `rinsePortions` above 1, or an inversion, to:
+   - write its own tag, unique in the technique or lab;
+   - be judged on that tag, not on the action's evidence (which the first request already gives);
+   - not be a conditioning rinse, whose one request is already its whole count.
+   All Pack 1 content already met this.
+7. **A request could change a count.** The squirt count, the inversion count and their tags are now read from the step itself, never from a request. "The flask is already mixed" now names the vessel.
+8. **No air was left in a full tube.** A stoppered tube needs air above the liquid to mix by inversion, so setup now refuses a final volume above 15 mL (three quarters of the 20 mL tube).
+9. **Wording:**
+   - the stopper is twisted gently into the tube, not pressed "firmly";
+   - the stopper step changes "the named equipment only";
+   - the zero atom now says the pan is not checked at that step, and why (no free re-seat).
+10. **The lint skip was broader than the reducer's routing.** It now skips only a `source`/`target` `markDispense` step with no titration operation or titration atom.
+11. **The camera:**
+    - Show me no longer takes the camera back; it frames the demo only in Auto view;
+    - Home turns Auto view off, as Reset view does;
+    - a pose asked for mid-flight is where the camera is going;
+    - after "At the line" in Auto view the next step is framed again.
+12. **The docked label** is drawn above the panels, wraps within 560 px, and sits below the Studio's notices in Studio 3D.
+13. **The removed stopper** stands on its wide end, keeping the end that was in the tube off the bench (`benchRest`).
+14. **Counts are said aloud:** "Squirt 1 of 3", "Inversion 3 of 10".
+15. **A seated part could be lifted off early, leaving the run unfinishable** (found in the review's own look).
+    - Lifting the stopper off the tube between stoppering and its removal step was a free move. It detached the stopper, and a free move never re-seats a part, so the inversion or the removal step could no longer pass.
+    - The same held for Make a Solution's funnel and stopper, Dilute a Stock Solution's stopper and pipette pump, and transmittance-dilution's cylinder funnel.
+    - Now the 3D bench keeps a seated part where it is while a step not yet done needs it seated there. It says so ("Leave the rubber stopper in the …: a step still needs it there."). The step that takes it off may still lift it.
+    - This is a 3D rule, not a runtime change (`seatNeededLater` in `stepRules.ts`). Parts no step needs seated, such as the watch glass on the pan, move freely as before.
+16. **The launcher:**
+    - it checks that the page on its port is Lab Studio, and says so if another program has the port;
+    - it waits with `timeout`;
+    - it runs vite without offering to download it.
+
+**Checks after the review:**
+- the typecheck exits 0;
+- **probes:**
+  - transmittance-dilution 31 of 31, including the new order and the 15 mL limit; its step probe runs all 31 steps, with the stopper in through the blanking and out just before the sample;
+  - Make a Solution 14 of 14;
+  - Dilute a Stock Solution 12 of 12;
+  - weighing 33 of 33;
+  - the catalogue policy accepts all five techniques;
+- the Pack 1 validator passes after the stopper rebuild;
+- `content:check` has the same 22 findings, all also on GitHub main;
+- **the full suite:** 130 failures. All also fail on GitHub main, except an assay evidence test, which passes alone (code the branch never touched).
+- **One headless look:**
+  - **Make a Solution:** the boat stays tipped at the funnel's rim with the bottle held beside it after the first squirt; the hint counts "Squirt 1 of 3", "2 of 3"; Space makes the next squirt; after the third both are back on the bench and the step moves to the funnel.
+  - **transmittance-dilution:** the rack stays on the bench while the tube is inverted above it; after inverting, lifting the stopper is refused with "Leave the rubber stopper in the …: a step still needs it there."
+  - No console errors.
+  - The first try of this look had hit `placedInstanceId is not defined`. Two of my scripted edits to `usePlayer3D.ts` landed within one second, and the running dev server kept the version between them. The source was right; touching the file made the server re-read it.
+
+**Accepted, not changed:**
+- **The 2D player cannot finish transmittance-dilution** now: it has no control for the inversion, as with Dilute a Stock Solution's and Make a Solution's. 2D is out of scope (your decision).
+- **A stopper dropped exactly over the rack** can land in it. The rack is scenery and is not counted as occupied.
+- **The zero step has no pan check,** because a moved vessel could then never be re-seated (no free re-seat, decided today).
+- **Squirts after the first move no solid,** because the boat is emptied by the tip; Make a Solution never leaves residue for them.
+
+## Interpretations (confirmed at their defaults, 2026-10-05)
 
 1. **A squirt is about 3 mL,** as a runtime default.
 2. **The test tube is inverted ten times,** as the flask is, because the stopper atom says "about ten times".
-3. **A third step takes the stopper out** before the sample is drawn.
+3. **A third step takes the stopper out,** just before the sample is drawn (moved there in the fidelity review).
 4. **The zero step records evidence only:** it takes no reading.
 5. **The source label hides below 1440 px.**

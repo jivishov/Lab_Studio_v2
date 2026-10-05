@@ -11217,6 +11217,7 @@
       "optionalRoles": [],
       "proceduralConstraints": [
         "The empty vessel is on the pan, the draft-shield doors are closed and the display has settled before TARE (zero) is pressed, so the next reading is the sample's mass alone.",
+        "The runtime does not check the pan at this step: a vessel moved off the pan cannot be re-seated outside its placement step, so a gate here could leave the run unfinishable (no free re-seat, decided 2026-10-05).",
         "The step records that the balance was zeroed with the named vessel; it acquires no reading and never asserts a displayed precision, which stays teacher-configured.",
         "Planned in the Pack 1 atomization (2026-10-02) and built on 2026-10-05; no dated plan states this step, so no source example is cited."
       ],

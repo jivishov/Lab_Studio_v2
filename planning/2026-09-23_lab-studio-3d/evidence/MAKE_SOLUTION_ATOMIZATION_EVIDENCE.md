@@ -39,6 +39,7 @@ This is D4 exception 9. Dilute a Stock Solution (exception 8) built the shared p
 
   The empty reagent bottle and the stirring rod are gone. A stirring rod is never put into a volumetric flask; the step text says so.
 - **Rinse water:** each rinse uses the runtime's default 5 mL. Content states no volume, as `atom.rinse.quantitative-transfer` requires. The flask therefore holds 10 mL before it is filled to half full.
+  - **Superseded 2026-10-05** (D4 exception 10, `PACK1_FINISH_EVIDENCE.md`): each rinse step is three squirts of about 3 mL, so the flask holds 18 mL before it is filled to half full.
 - **Version:** stays `1.2.0`. The learning goal is unchanged.
 
 **Atoms and roles** (`src/domain/atomRegistry.json`, `src/domain/equipmentRoleRegistry.json`; `docs/atomic-steps.md` regenerated):

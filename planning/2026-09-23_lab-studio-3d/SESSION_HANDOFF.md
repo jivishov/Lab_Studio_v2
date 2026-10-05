@@ -67,10 +67,13 @@ wait for confirmation (`DECISIONS.md`, the "built" row). G3 has still not run.
    times and opened (31 steps); weighing's zero atom; one tray tile per item; the top bar's long titles.
    The tests and `content:check` were run for the first time: the branch's own failures are fixed, and
    what remains fails the same way on GitHub main (the evidence note lists it).
-4. **M8 acceptance**, with the provisional decisions confirmed (D8, Q4, Q6, U2, U5–U8, `[` `]`, free
-   re-seat, results rounding, the `AGENTS.md` heading), the interpretations in the Pack 1 evidence notes
-   confirmed, and a decision on the stale content-check baseline. G3 (webcam) was approved but needs the
-   user or Claude in Chrome.
+   Reviewed for fidelity the same day (evidence note, "Fidelity review"): held squirts, the rack left
+   standing, per-item tray drops, seated parts kept seated while a step needs them, and more.
+4. **M8 acceptance.** On 2026-10-05 the provisional decisions and every interpretation were confirmed at
+   their defaults (`DECISIONS.md`, "Open decisions"), and `content:check`'s baseline is left as it is.
+   **D8 (how experiments are assembled from the atomic steps) is open for a separate discussion with the
+   user**, so nothing in Phase B is built before it. Pre-existing failures that do not affect the 3D
+   work are ignored. What remains is G3 (webcam), which needs the user or Claude in Chrome.
 
 **How the work has been checked** (the user's validation policy: source review, `npx tsc -p
 tsconfig.app.json --noEmit`, `python tools/blender/validate_equipment3d.py --pack 1`, and narrow

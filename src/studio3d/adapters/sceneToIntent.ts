@@ -183,12 +183,15 @@ export const resolveTrayDrop = (
   origin: ReleaseOrigin = "pointer",
   /** The tray item itself, when its tile names it (per-item tiles, decided 2026-10-05). */
   instanceId?: string,
+  /** The item the step itself names, if any: another of the same kind is only moved, never the step's. */
+  expectedInstanceId?: string,
 ): { kind: "intent"; intent: RuntimeInteractionIntent } | { kind: "freeMove"; request: RuntimeActionRequest } => {
   const item = instanceId ? { sourceInstanceId: instanceId } : {};
   const expectedSource = expected?.sourceDefinitionId ?? expectedActionEquipmentDefinitionId;
   const station = (zone: string) => (zone === "shelf" ? "shelf" : zone === "heating" || zone === "oven" || zone === "drying-oven" ? "oven" : "workbench");
   const matches = !currentNodeCompleted && expected?.type === "dragToZone" && expectedSource === definitionId
-    && station(expected.stationId ?? "workbench") === "workbench";
+    && station(expected.stationId ?? "workbench") === "workbench"
+    && (!instanceId || !expectedInstanceId || instanceId === expectedInstanceId);
   if (matches) {
     return {
       kind: "intent",

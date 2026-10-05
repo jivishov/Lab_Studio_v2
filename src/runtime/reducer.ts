@@ -1600,14 +1600,15 @@ const executeInversion = (
   if ((vessel.contents.volumeMl ?? 0) <= 0) {
     return fail(state, `The ${vessel.label} is empty.`, "Fill the flask before mixing it.", nodeId);
   }
-  const required = Math.max(1, Math.round(numberSetting(params, "inversions", 10)));
+  // The count and tag are the step's own, never a request's (a request cannot shorten the count).
+  const required = Math.max(1, Math.round(numberSetting(actionDefinition.parameters, "inversions", 10)));
   const done = state.mixInversions?.[actionDefinition.id] ?? 0;
-  if (done >= required) return fail(state, "The flask is already mixed.", "Go on to the next step.", nodeId);
+  if (done >= required) return fail(state, `The ${vessel.label} is already mixed.`, "Go on to the next step.", nodeId);
   const count = done + 1;
   let next: RuntimeState = { ...state, mixInversions: { ...state.mixInversions, [actionDefinition.id]: count } };
   if (count >= required) {
     next = addNotebook(next, nodeId, actionDefinition.label, `Inverted ${count} times with the stopper held in place.`,
-      [stringSetting(params, "tag") ?? "mixed-by-inversion"]);
+      [stringSetting(actionDefinition.parameters, "tag") ?? "mixed-by-inversion"]);
   }
   return { ok: true, state: next, message: count >= required ? actionDefinition.feedback.success : `Inversion ${count} of ${required}.` };
 };
@@ -3998,7 +3999,8 @@ const executeAction = (
     const receiverId = stringSetting(params, "washingsReceiverInstanceId");
     // A rinse in several portions (decided 2026-10-05): each request is one squirt, and the last of
     // `rinsePortions` records the rinse, as the inversions of a mix are counted.
-    const rinsePortions = Math.max(1, Math.round(numberSetting(params, "rinsePortions", 1)));
+    // The count is the step's own, never a request's. A stated volume (`volumeMl`, `value`) is per squirt.
+    const rinsePortions = Math.max(1, Math.round(numberSetting(actionDefinition.parameters, "rinsePortions", 1)));
     const portionsDone = state.rinsePortions?.[actionDefinition.id] ?? 0;
     if (rinsePortions > 1 && portionsDone >= rinsePortions) {
       return fail(state, "The rinse is already done.", "Go on to the next step.", nodeId);
@@ -4126,7 +4128,7 @@ const executeAction = (
     const squirts = portionsDone + 1;
     const counted = rinsePortions > 1 ? { ...washed, rinsePortions: { ...washed.rinsePortions, [actionDefinition.id]: squirts } } : washed;
     if (squirts < rinsePortions) return { ok: true, state: counted, message: `Squirt ${squirts} of ${rinsePortions}.` };
-    const tag = stringSetting(params, "tag");
+    const tag = stringSetting(actionDefinition.parameters, "tag");
     const rinsed = rinsePortions > 1 ? `Rinsed with ${rinsePortions} squirts` : "Rinse completed";
     return {
       ok: true,

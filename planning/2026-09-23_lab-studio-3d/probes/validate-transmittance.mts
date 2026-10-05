@@ -41,9 +41,12 @@ const node = (id: string) => configured.process.nodes.find((n: any) => n.id === 
 check("instructions state the amounts", node("measure-stock-dye") === "Pour 5 mL of the stock dye through the funnel into the graduated cylinder." && node("add-water-below-mark") === "Add the measured water to the test tube, to a final volume of 15 mL." && node("configure-photometer") === "Set the photometer to 630 nm in percent-transmittance mode.", `${node("measure-stock-dye")} | ${node("configure-photometer")}`);
 // The test tube is stoppered, inverted ten times and opened before its sample is drawn (decided 2026-10-05).
 const order = configured.process.nodes.map((n: any) => n.actionId.replace("transmittance-dilution-", ""));
-check("stopper, invert and unstopper follow the water and precede the photometer",
+check("stopper and invert follow the water; the stopper comes out just before the sample is drawn",
   order.slice(order.indexOf("add-water-below-mark"), order.indexOf("place-spectrophotometer") + 1).join(",") ===
-    "add-water-below-mark,stopper-test-tube,invert-test-tube,remove-test-tube-stopper,place-spectrophotometer", order.join(","));
+    "add-water-below-mark,stopper-test-tube,invert-test-tube,place-spectrophotometer"
+  && order[order.indexOf("draw-sample-into-pipette") - 1] === "remove-test-tube-stopper", order.join(","));
+check("setup refuses a final volume that leaves no air in the stoppered tube",
+  (() => { try { applyTechniqueConfiguration(raw, { ...values, waterVolumeMl: "13", finalVolumeMl: "18" }); return false; } catch (e) { return /at most 15 mL/.test(String(e)); } })());
 check("the inversion needs the stopper seated", act("invert-test-tube").parameters.requiredAttachmentState === "attached" && act("invert-test-tube").parameters.inversions === 10);
 check("the prepared %T is not in any instruction", !configured.process.nodes.some((n: any) => String(n.description).includes("42.5")));
 

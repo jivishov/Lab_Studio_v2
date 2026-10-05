@@ -25,14 +25,18 @@ if not exist "node_modules\" (
 
 call :ping
 if not errorlevel 1 goto :ready
+if errorlevel 2 (
+  call :fail "Port %LAB_STUDIO_3D_PORT% is used by another program. Close it, or change LAB_STUDIO_3D_PORT in this file."
+  exit /b 1
+)
 
-start "Lab Studio 3D Dev Server" cmd /k npx vite --host 127.0.0.1 --port %LAB_STUDIO_3D_PORT% --strictPort
+start "Lab Studio 3D Dev Server" cmd /k npm exec --no -- vite --host 127.0.0.1 --port %LAB_STUDIO_3D_PORT% --strictPort
 echo Starting Lab Studio 3D at %LAB_STUDIO_3D_URL% ...
 
 for /L %%A in (1,1,60) do (
   call :ping
   if not errorlevel 1 goto :ready
-  powershell -NoProfile -Command "Start-Sleep -Seconds 1"
+  timeout /t 1 /nobreak >nul
 )
 call :fail "Lab Studio 3D did not start within a minute. Check the Lab Studio 3D Dev Server window."
 exit /b 1
@@ -43,8 +47,9 @@ echo Lab Studio 3D is open at %LAB_STUDIO_3D_PAGE%
 echo Close the "Lab Studio 3D Dev Server" window to stop it.
 exit /b 0
 
+rem 0: Lab Studio answers; 1: nothing answers yet; 2: another program answers on the port.
 :ping
-powershell -NoProfile -Command "try { Invoke-WebRequest -UseBasicParsing -Uri $env:LAB_STUDIO_3D_URL -TimeoutSec 2 | Out-Null; exit 0 } catch { exit 1 }"
+powershell -NoProfile -Command "try { $r = Invoke-WebRequest -UseBasicParsing -Uri $env:LAB_STUDIO_3D_URL -TimeoutSec 2; if ($r.Content -match '<title>Lab Studio') { exit 0 } else { exit 2 } } catch { exit 1 }"
 exit /b %ERRORLEVEL%
 
 :fail

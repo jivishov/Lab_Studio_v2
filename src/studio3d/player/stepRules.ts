@@ -77,6 +77,53 @@ export const currentStepEquipmentIds = (interaction?: ActionInteractionSpec, too
   [interaction?.sourceDefinitionId, interaction?.targetDefinitionId, interaction?.stationId, toolDefinitionId]
     .filter((definitionId): definitionId is string => Boolean(definitionId && equipmentById.has(definitionId)));
 
+/**
+ * The items a step names itself (decided 2026-10-05): its `equipmentInstanceId`, `sourceInstanceId` and
+ * `targetInstanceId`. Where a step names one item of a kind, only that one is "needed now", and only a
+ * drop of that one is the step; another of the same kind (a sample cuvette at "Remove the blank
+ * cuvette") is a free move.
+ */
+export const currentStepInstanceIds = (parameters?: Record<string, unknown>): string[] =>
+  ["equipmentInstanceId", "sourceInstanceId", "targetInstanceId"]
+    .map((key) => parameters?.[key])
+    .filter((id): id is string => typeof id === "string" && id.length > 0);
+
+/** The one item a placement step names, if any: its `equipmentInstanceId`, else its `sourceInstanceId`. */
+export const placedInstanceId = (parameters?: Record<string, unknown>): string | undefined => {
+  const named = parameters?.equipmentInstanceId ?? parameters?.sourceInstanceId;
+  return typeof named === "string" && named.length > 0 ? named : undefined;
+};
+
+/**
+ * Whether a seated part must stay where it is (decided 2026-10-05): a step not yet done needs it
+ * seated there (`requiredAttachmentState: "attached"` naming its kind, its holder's kind and the
+ * zone, and the items where the step names them). A free move never re-seats a part, so lifting it
+ * off would leave that step no way through. The step that takes it off may still lift it.
+ */
+export const seatNeededLater = (
+  actions: readonly ActionDefinition[],
+  nodes: readonly ProcessNode[],
+  completedNodeIds: readonly string[],
+  currentAction: ActionDefinition | undefined,
+  child: { instanceId: string; definitionId: string },
+  parent: { instanceId: string; definitionId: string },
+  zoneId: string,
+): boolean => {
+  const needsIt = (action: ActionDefinition): boolean => {
+    const p = action.parameters;
+    return p.requiredAttachmentState === "attached" && p.attachmentChildDefinitionId === child.definitionId
+      && p.attachmentParentDefinitionId === parent.definitionId && p.attachmentSnapZoneId === zoneId
+      && (p.attachmentChildInstanceId === undefined || p.attachmentChildInstanceId === child.instanceId)
+      && (p.attachmentParentInstanceId === undefined || p.attachmentParentInstanceId === parent.instanceId);
+  };
+  if (currentAction && needsIt(currentAction) && currentAction.verb === "place" && placedInstanceId(currentAction.parameters) === child.instanceId) return false;
+  return nodes.some((node) => {
+    if (!node.actionId || completedNodeIds.includes(node.id)) return false;
+    const action = actions.find((candidate) => candidate.id === node.actionId);
+    return Boolean(action && needsIt(action));
+  });
+};
+
 /** ProcessSidebar.stationLabel: what an optional target shows when the step names no equipment. */
 export const stationLabel = (stationId?: string): string => {
   if (!stationId) return "No target required";

@@ -6,6 +6,8 @@ import { deriveActionEffectContract } from "../../domain/atomRegistry";
 import { resolveActionInteraction } from "../../domain/interactions";
 import type { RuntimeState, TechniqueDefinition } from "../../domain/types";
 import { validateTechniqueDefinition } from "../../domain/validation";
+import { validateActionAttachmentState } from "../attachments";
+import { seatNeededLater } from "../../studio3d/player/stepRules";
 import { intentTypeForInteraction, mergeActionInput } from "../../studio3d/adapters/sceneToIntent";
 import { actionInputField, resolveActionInput } from "../actionInputs";
 import { createRuntimeState, performRuntimeAction } from "../index";
@@ -67,13 +69,12 @@ describe("transmittance-dilution's test tube is stoppered, inverted and opened",
   };
   const stopper = (state: RuntimeState) => state.attachments.find((a) => a.childInstanceId === "rubber-stopper-set-1");
 
-  it("validates, with the three steps between the water and the photometer", () => {
+  it("validates, stoppering and inverting after the water and unstoppering just before the sample is drawn", () => {
     expect(validateTechniqueDefinition(technique).errors ?? []).toEqual([]);
     const order = technique.process.nodes.map((node) => node.actionId);
     const at = order.indexOf("transmittance-dilution-add-water-below-mark");
-    expect(order.slice(at + 1, at + 4)).toEqual([
-      "transmittance-dilution-stopper-test-tube", "transmittance-dilution-invert-test-tube", "transmittance-dilution-remove-test-tube-stopper",
-    ]);
+    expect(order.slice(at + 1, at + 3)).toEqual(["transmittance-dilution-stopper-test-tube", "transmittance-dilution-invert-test-tube"]);
+    expect(order[order.indexOf("transmittance-dilution-draw-sample-into-pipette") - 1]).toBe("transmittance-dilution-remove-test-tube-stopper");
   });
 
   it("seats the stopper in the test tube's stopper seat", () => {
@@ -92,7 +93,7 @@ describe("transmittance-dilution's test tube is stoppered, inverted and opened",
     expect(state.currentNodeId).toBe("transmittance-dilution-invert-test-tube-node");
     state = send(state, "notebookRecordIntent");
     expect(state.notebook.at(-1)?.tags).toContain("test-tube-mixed-by-inversion");
-    expect(state.currentNodeId).toBe("transmittance-dilution-remove-test-tube-stopper-node");
+    expect(state.currentNodeId).toBe("transmittance-dilution-place-spectrophotometer-node");
   });
 
   it("takes the stopper out before the sample is drawn, and the run completes", () => {
@@ -117,5 +118,89 @@ describe("rinsePortions is checked", () => {
 
   it("on rinse actions only", () => {
     expect(validateTechniqueDefinition(withRinse(3, "swirl-to-dissolve")).errors?.join(" ")).toContain("rinsePortions is legal only on rinse actions");
+  });
+});
+
+describe("fidelity review of the Pack 1 finish (2026-10-05)", () => {
+  const solution = read("making-solution");
+  const swap = (definition: TechniqueDefinition, actionId: string, change: (p: Record<string, unknown>) => Record<string, unknown>): TechniqueDefinition => ({
+    ...definition,
+    actions: definition.actions.map((action) => (action.id === actionId ? { ...action, parameters: change({ ...action.parameters }) as typeof action.parameters } : action)),
+  });
+  const errorsOf = (definition: TechniqueDefinition) => (validateTechniqueDefinition(definition).errors ?? []).join(" ");
+
+  it("checks the stopper on the named tube, not the first tube in the lab", () => {
+    const tube = (id: string) => ({ id, definitionId: "test-tube", label: id, location: "workbench", contents: { kind: "empty", label: "empty", solutes: [], contamination: [], wetState: "dry", visualState: "empty" } });
+    const stopper = { ...tube("stopper-1"), definitionId: "rubber-stopper-set" };
+    const state = {
+      equipmentInstances: [tube("other-tube"), tube("receiver"), stopper],
+      attachments: [{ id: "a", parentInstanceId: "receiver", childInstanceId: "stopper-1", zoneId: "test-tube-stopper-seat" }],
+    } as unknown as Parameters<typeof validateActionAttachmentState>[0];
+    const gate = {
+      requiredAttachmentState: "attached", attachmentParentDefinitionId: "test-tube", attachmentChildDefinitionId: "rubber-stopper-set",
+      attachmentSnapZoneId: "test-tube-stopper-seat",
+    };
+    expect(validateActionAttachmentState(state, gate)).toBeDefined();
+    expect(validateActionAttachmentState(state, { ...gate, attachmentParentInstanceId: "receiver", attachmentChildInstanceId: "stopper-1" })).toBeUndefined();
+  });
+
+  it("requires a counted step to be judged on its own unique tag", () => {
+    expect(errorsOf(swap(solution, "rinse-boat-into-funnel", ({ tag: _tag, ...p }) => p))).toContain("needs parameters.tag");
+    expect(errorsOf(swap(solution, "rinse-boat-into-funnel", (p) => ({ ...p, tag: "funnel-rinsed-into-flask" })))).toContain("must be unique");
+    const byEvidence = {
+      ...solution,
+      process: { ...solution.process, nodes: solution.process.nodes.map((node) => (node.actionId === "invert-to-mix"
+        ? { ...node, validation: [{ id: "x", type: "actionEvidence", label: "x", actionId: "invert-to-mix" }] } : node)) },
+    } as TechniqueDefinition;
+    expect(errorsOf(byEvidence)).toContain("not the action's evidence");
+    expect(errorsOf(solution)).not.toContain("count of requests");
+  });
+
+  it("keeps the step's own squirt count, whatever a request carries", () => {
+    const technique = applyTechniqueConfiguration(solution, { soluteMassG: "2.5", solutionObservation: "Clear" });
+    let state = createRuntimeState(technique);
+    for (const node of technique.process.nodes) {
+      if (node.actionId === "rinse-boat-into-funnel") break;
+      const action = technique.actions.find((candidate) => candidate.id === node.actionId)!;
+      const types: Record<string, string> = { dragToZone: "placeIntent", snapIntoTarget: "snapIntent", pourInto: "pourIntent" };
+      const result = resolveInteractionIntent(technique, state, { type: types[resolveActionInteraction(action)!.type], origin: "keyboard" } as RuntimeInteractionIntent);
+      if (!result.ok) throw new Error(result.feedback.message);
+      state = performRuntimeAction(technique, state, result.request);
+    }
+    const result = resolveInteractionIntent(technique, state, { type: "rinseIntent", origin: "keyboard" } as RuntimeInteractionIntent);
+    if (!result.ok) throw new Error(result.feedback.message);
+    const after = performRuntimeAction(technique, state, { ...result.request, parameters: { ...result.request.parameters, rinsePortions: 1 } });
+    expect(after.currentNodeId).toBe("rinse-boat-into-funnel-node");
+    expect(after.rinsePortions?.["rinse-boat-into-funnel"]).toBe(1);
+  });
+
+  it("refuses a dilution that would leave no air in the stoppered tube", () => {
+    expect(() => applyTechniqueConfiguration(read("transmittance-dilution"), {
+      stockConcentrationM: "0.2", wavelengthNm: "630", stockAliquotVolumeMl: "5", waterVolumeMl: "13", finalVolumeMl: "18", samplePercentTransmittance: "42.5",
+    })).toThrow(/at most 15 mL/);
+  });
+});
+
+describe("a seated part a step still needs stays seated (fidelity review, 2026-10-05)", () => {
+  const technique = read("transmittance-dilution");
+  const stopper = { instanceId: "rubber-stopper-set-1", definitionId: "rubber-stopper-set" };
+  const tube = { instanceId: "prepared-receiver-1", definitionId: "test-tube" };
+  const nodeOf = (actionId: string) => technique.process.nodes.find((node) => node.actionId === actionId)!.id;
+  const actionOf = (id: string) => technique.actions.find((action) => action.id === `transmittance-dilution-${id}`);
+  const doneThrough = (actionId: string) => {
+    const ids = technique.process.nodes.map((node) => node.id);
+    return ids.slice(0, ids.indexOf(nodeOf(`transmittance-dilution-${actionId}`)) + 1);
+  };
+  const needed = (done: string[], current?: string) =>
+    seatNeededLater(technique.actions, technique.process.nodes, done, current ? actionOf(current) : undefined, stopper, tube, "test-tube-stopper-seat");
+
+  it("keeps the stopper in from stoppering until the step that takes it out", () => {
+    expect(needed(doneThrough("stopper-test-tube"), "invert-test-tube")).toBe(true);
+    expect(needed(doneThrough("invert-test-tube"), "place-spectrophotometer")).toBe(true);
+  });
+
+  it("lets the removal step lift it, and anything after", () => {
+    expect(needed(doneThrough("remove-blank-cuvette"), "remove-test-tube-stopper")).toBe(false);
+    expect(needed(doneThrough("remove-test-tube-stopper"), "draw-sample-into-pipette")).toBe(false);
   });
 });

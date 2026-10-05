@@ -153,6 +153,21 @@ export class BenchEngine {
   private toolRun?: SetOnRun;
   /** A pipette held over a vessel while liquid is added a drop at a time (decided 2026-10-02). */
   private held?: { itemId: string; overId: string };
+  /**
+   * A wash bottle held over what it rinses between the squirts of a counted rinse (decided
+   * 2026-10-05), with the boat it rinses held tipped over the funnel, and where each goes back to
+   * after the last squirt. Like a held pipette, the hold outlasts each sync. `away` keeps every
+   * squirt on the same side, so nothing jumps between them.
+   */
+  private squirtHold?: {
+    sourceId: string;
+    away: THREE.Vector3;
+    source: { pos: THREE.Vector3; quat: THREE.Quaternion };
+    sourceRest: { pos: THREE.Vector3; quat: THREE.Quaternion };
+    viaId?: string;
+    via?: { pos: THREE.Vector3; quat: THREE.Quaternion };
+    viaRest?: { pos: THREE.Vector3; quat: THREE.Quaternion };
+  };
   /** Drops falling from a held pipette: presentation only. */
   private droplets: Array<{ mesh: THREE.Mesh; from: number; to: number; t: number }> = [];
   /** A stoppered vessel being drawn inverted to mix, after the runtime has counted the inversion. */
@@ -370,6 +385,7 @@ export class BenchEngine {
     };
     description.bench.forEach((item) => place(item));
     if (this.held) this.poseHeld();
+    if (this.squirtHold) this.poseSquirtHold();
     for (const item of description.bench) this.updateItem(item);
     // World matrices normally refresh at the next render; picking, labels and framing can run
     // before it, so they are brought up to date with the scene now.
@@ -724,6 +740,37 @@ export class BenchEngine {
     this.requestRender();
   }
 
+  /** The wash bottle held over what it rinses between squirts, if any (decided 2026-10-05). */
+  squirtHolding(): string | undefined {
+    return this.squirtHold?.sourceId;
+  }
+
+  /** Set a wash bottle held between squirts (and the boat it rinses) back where they rest. */
+  releaseSquirtHold(): void {
+    if (!this.squirtHold) return;
+    this.squirtHold = undefined;
+    if (this.lastScene) void this.sync(this.lastScene);
+    this.requestRender();
+  }
+
+  private poseSquirtHold(): void {
+    const hold = this.squirtHold;
+    if (!hold) return;
+    const pose = (id: string | undefined, at?: { pos: THREE.Vector3; quat: THREE.Quaternion }) => {
+      const view = id ? this.items.get(id) : undefined;
+      if (!view || !at) return;
+      view.root.position.copy(at.pos);
+      view.root.quaternion.copy(at.quat);
+      view.benchShift = undefined;
+      view.benchLift = undefined;
+      this.poseSeatedChildren(view.instanceId);
+    };
+    pose(hold.sourceId, hold.source);
+    pose(hold.viaId, hold.via);
+    this.itemLayer.updateMatrixWorld(true);
+    this.shadowsDirty = true;
+  }
+
   private poseHeld(): void {
     const held = this.held;
     const view = held ? this.items.get(held.itemId) : undefined;
@@ -771,6 +818,8 @@ export class BenchEngine {
     const start = view.root.position.clone();
     const startQuaternion = view.root.quaternion.clone();
     const height = new THREE.Box3().setFromObject(view.model ?? view.root).getSize(new THREE.Vector3()).y;
+    // A racked tube leaves its rack on the bench while it is turned over (scenery never moves; D9).
+    const rack = this.detachRack(view);
     const LIFT = 0.18, TURN = 0.32, BACK = 0.32, DOWN = 0.18;
     const ease = (u: number): number => (u < 0.5 ? 2 * u * u : 1 - (-2 * u + 2) ** 2 / 2);
     let elapsed = 0;
@@ -780,6 +829,7 @@ export class BenchEngine {
         const restQuaternion = this.restQuaternions.get(vesselId);
         view.root.position.copy(rest ?? start);
         view.root.quaternion.copy(restQuaternion ?? startQuaternion);
+        rack?.();
         this.poseSeatedChildren(vesselId);
         this.shadowsDirty = true;
         this.requestRender();
@@ -823,6 +873,7 @@ export class BenchEngine {
     const grip = new THREE.Box3().setFromObject(view.model ?? view.root).getSize(new THREE.Vector3()).y * 0.72;
     const ease = (u: number): number => (u < 0.5 ? 2 * u * u : 1 - (-2 * u + 2) ** 2 / 2);
     const entry = view.entry;
+    const rack = this.detachRack(view);
     if (contents && entry) this.replaceContents(view, buildContents(entry, contents.before));
     let swapped = false;
     let elapsed = 0;
@@ -833,6 +884,7 @@ export class BenchEngine {
         const restQuaternion = this.restQuaternions.get(vesselId);
         view.root.position.copy(rest ?? start);
         view.root.quaternion.copy(restQuaternion ?? startQuaternion);
+        rack?.();
         this.poseSeatedChildren(vesselId);
         this.shadowsDirty = true;
         this.requestRender();
@@ -863,6 +915,23 @@ export class BenchEngine {
       this.mixRun = { tick, finish };
       this.requestRender();
     });
+  }
+
+  /**
+   * Leave an item's rack scenery standing on the bench while the item moves (the pour does this
+   * too); returns how to put it back on the item.
+   */
+  private detachRack(view: ItemView): (() => void) | undefined {
+    const object = view.scenery;
+    if (!object) return undefined;
+    const position = object.position.clone();
+    const quaternion = object.quaternion.clone();
+    this.itemLayer.attach(object);
+    return () => {
+      view.root.add(object);
+      object.position.copy(position);
+      object.quaternion.copy(quaternion);
+    };
   }
 
   private stopMixRun(): void {
@@ -1168,6 +1237,11 @@ export class BenchEngine {
     returnTo?: { xMm: number; yMm: number; yawDeg: number };
     /** An item held tipped over the target's mouth while the source pours into it: a weighing boat being rinsed. */
     via?: string;
+    /**
+     * A squirt short of a counted rinse's count (decided 2026-10-05): the wash bottle stays held over
+     * what it rinses, and the boat over the funnel, for the next squirt; only the last sets them down.
+     */
+    holdAfter?: boolean;
   }): Promise<void> {
     this.stopPour();
     const released = this.releasedCarry?.instanceId === args.sourceId && performance.now() - this.releasedCarry.at < 2000
@@ -1197,12 +1271,17 @@ export class BenchEngine {
     const solid = args.sourceBefore.kind === "solid";
     const liquidOf = (c: SceneContents) => (c.kind === "liquid" ? c.volumeMl : 0);
 
+    // A squirt after the first of a counted rinse starts where the bottle is held and ends, after the
+    // last, where it rested before the first.
+    const holding = this.squirtHold?.sourceId === args.sourceId ? this.squirtHold : undefined;
     // Where the source starts (the drop point after a drag), rests now, and is set down afterwards.
-    const restPos = source.root.position.clone();
-    const startPos = released?.position.clone() ?? restPos.clone();
+    const restPos = holding ? holding.sourceRest.pos.clone() : source.root.position.clone();
+    const startPos = released?.position.clone() ?? (holding ? source.root.position.clone() : restPos.clone());
     const startQuat = released?.quaternion.clone() ?? source.root.quaternion.clone();
-    const endPos = args.returnTo ? toWorld(args.returnTo.xMm, args.returnTo.yMm).setY(restPos.y) : restPos.clone();
-    const endQuat = args.returnTo ? new THREE.Quaternion().setFromAxisAngle(UP, args.returnTo.yawDeg * DEG) : source.root.quaternion.clone();
+    const endPos = holding ? holding.sourceRest.pos.clone()
+      : args.returnTo ? toWorld(args.returnTo.xMm, args.returnTo.yMm).setY(restPos.y) : restPos.clone();
+    const endQuat = holding ? holding.sourceRest.quat.clone()
+      : args.returnTo ? new THREE.Quaternion().setFromAxisAngle(UP, args.returnTo.yawDeg * DEG) : source.root.quaternion.clone();
 
     // The target's mouth: the top of its fill profile, on its axis; or the rim of a filling funnel
     // seated in it (a zone ending "funnel-seat"), which is where a pour or a rinse goes in (decided 2026-10-04).
@@ -1223,14 +1302,18 @@ export class BenchEngine {
     // stream is not hidden behind either vessel.
     const camRight = new THREE.Vector3().setFromMatrixColumn(this.camera.matrixWorld, 0).setY(0).normalize();
     const sideOf = [endPos, restPos, startPos].map((p) => p.clone().sub(mouth).setY(0)).find((d) => d.length() > 0.03);
-    const away = camRight.clone().multiplyScalar(sideOf && sideOf.dot(camRight) > 0 ? 1 : -1);
+    const away = holding ? holding.away.clone() : camRight.clone().multiplyScalar(sideOf && sideOf.dot(camRight) > 0 ? 1 : -1);
     const toward = away.clone().negate();
 
     // An item rinsed into the target (decided 2026-10-04): a weighing boat is lifted from where it rests
     // and held tipped toward the funnel, just above its rim. The wash bottle's jet goes into it, and the
     // washings spill from its low rim down into the target.
     const viaView = args.via && args.via !== args.sourceId && args.via !== args.targetId ? this.items.get(args.via) : undefined;
-    const viaRest = viaView ? { pos: viaView.root.position.clone(), quat: viaView.root.quaternion.clone() } : undefined;
+    // A boat already held over the funnel from the last squirt stays there; it rests where it rested before.
+    const viaHeld = Boolean(viaView && holding && holding.viaId === args.via && holding.via && holding.viaRest);
+    const heldRest = viaHeld ? holding?.viaRest : undefined;
+    const viaRest = viaView ? (heldRest ? { pos: heldRest.pos.clone(), quat: heldRest.quat.clone() }
+      : { pos: viaView.root.position.clone(), quat: viaView.root.quaternion.clone() }) : undefined;
     let viaHold: { pos: THREE.Vector3; quat: THREE.Quaternion; spill: THREE.Vector3; inside: THREE.Vector3 } | undefined;
     if (viaView && viaRest && viaView.entry?.pour) {
       // Tipped the way it is poured from (its registered lip and tilt, past its walls' slope so the
@@ -1285,9 +1368,11 @@ export class BenchEngine {
     const flow = Math.min(1.4, Math.max(0.6, 0.6 + moved / 125));
     // The carry in and out stays short, so the pour itself keeps most of the time: from a drag's drop
     // point the source is already over the target.
-    const T = { approach: (released ? 0.3 : 0.45) + (viaHold ? 0.45 : 0), tilt: 0.35, flow, untilt: 0.3, back: 0.45 + (viaHold ? 0.45 : 0) };
+    const T = { approach: holding ? 0.2 : (released ? 0.3 : 0.45) + (viaHold && !viaHeld ? 0.45 : 0), tilt: 0.35, flow, untilt: 0.3,
+      back: 0.45 + (viaHold ? 0.45 : 0) };
     const at = { tilt: T.approach, flow: T.approach + T.tilt, untilt: T.approach + T.tilt + flow, back: T.approach + T.tilt + flow + T.untilt };
-    const total = at.back + T.back;
+    // A squirt short of the count ends with the bottle upright beside what it rinses, still held.
+    const total = args.holdAfter ? at.back : at.back + T.back;
 
     // What falls: the source's own colour, a liquid or a powder.
     const falling = args.sourceBefore;
@@ -1360,7 +1445,7 @@ export class BenchEngine {
       if (viaView && viaRest && viaHold) {
         // Held over the mouth from the approach until the source is back upright, then set down again:
         // lifted clear of the funnel, carried across, lowered onto its hold, and back the same way.
-        const moving = t < at.tilt ? span(t, 0, T.approach) : t < at.back ? 1 : 1 - span(t, at.back, T.back);
+        const moving = viaHeld && t < at.back ? 1 : t < at.tilt ? span(t, 0, T.approach) : t < at.back ? 1 : 1 - span(t, at.back, T.back);
         const clearY = Math.max(viaRest.pos.y, viaHold.pos.y, mouth.y + 0.05);
         const up = viaRest.pos.clone().setY(clearY), over = viaHold.pos.clone().setY(clearY);
         const leg = (u: number) => ease(Math.min(1, Math.max(0, u)));
@@ -1442,9 +1527,24 @@ export class BenchEngine {
         rack.object.position.copy(rack.position);
         rack.object.quaternion.copy(rack.quaternion);
       }
-      if (viaView && viaRest) {
-        viaView.root.position.copy(viaRest.pos);
-        viaView.root.quaternion.copy(viaRest.quat);
+      if (args.holdAfter) {
+        // Held for the next squirt: the bottle upright beside what it rinses, the boat over the funnel.
+        this.squirtHold = {
+          sourceId: args.sourceId, away: away.clone(),
+          source: { pos: standPos.clone(), quat: upright.clone() },
+          sourceRest: { pos: endPos.clone(), quat: endQuat.clone() },
+          ...(viaView && viaRest && viaHold ? {
+            viaId: viaView.instanceId,
+            via: { pos: viaHold.pos.clone(), quat: viaHold.quat.clone() },
+            viaRest: { pos: viaRest.pos.clone(), quat: viaRest.quat.clone() },
+          } : {}),
+        };
+      } else {
+        if (holding) this.squirtHold = undefined;
+        if (viaView && viaRest) {
+          viaView.root.position.copy(viaRest.pos);
+          viaView.root.quaternion.copy(viaRest.quat);
+        }
       }
       // Contents drawn during the pour are rebuilt by the next sync.
       source.contentsKey = "animating";
@@ -1707,8 +1807,9 @@ export class BenchEngine {
 
   /**
    * Frame a set of items (or every item) into the free area around open panels, with the
-   * microarray lab's `fit` (camera/benchCamera.ts): yaw back to the front the short way, pitch 0.9,
-   * a 650 ms tween, or a cut under reduced motion. `marginFactor` grows the items' bounds about
+   * microarray lab's `fit` (camera/benchCamera.ts), keeping the angle the learner looks from (its
+   * yaw, and its pitch within the manual limits; decided 2026-10-05), a 650 ms tween, or a cut under
+   * reduced motion. `marginFactor` grows the items' bounds about
    * their centre; `safe` are the free canvas rectangles (default `safeAreas`). "all" also takes in
    * the runtime bench, as the microarray's framing keeps its bench outline in view, so one item
    * alone on the bench is not framed as a close-up.
@@ -1737,7 +1838,8 @@ export class BenchEngine {
 
   /** The current camera pose, so Examine can return to it (§5.8). */
   pose(): CameraPose {
-    return copyView(this.view);
+    // Mid-tween, the view it is going to: Examine or drop mode returns there, not half-way.
+    return copyView(this.tween ? this.tween.to : this.view);
   }
 
   /** Back to a saved pose. */

@@ -187,6 +187,13 @@ describe("tray drops (placeShelfEquipment)", () => {
     const moved = resolveTrayDrop(drag, false, undefined, "cuvette", { x: 10, y: 20 }, 4, "pointer", "sample-cuvette-1");
     expect(moved.kind === "freeMove" && moved.request.sourceInstanceId).toBe("sample-cuvette-1");
   });
+  it("treats another item of the kind the step names as a move, not the step (fidelity review, 2026-10-05)", () => {
+    const remove = spec({ type: "dragToZone", sourceDefinitionId: "cuvette", stationId: "workbench" });
+    const wrong = resolveTrayDrop(remove, false, undefined, "cuvette", { x: 10, y: 20 }, 4, "pointer", "sample-cuvette-1", "blank-cuvette-1");
+    expect(wrong.kind).toBe("freeMove");
+    const right = resolveTrayDrop(remove, false, undefined, "cuvette", { x: 10, y: 20 }, 4, "pointer", "blank-cuvette-1", "blank-cuvette-1");
+    expect(right.kind).toBe("intent");
+  });
 });
 
 describe("hand-control releases (plan D6)", () => {

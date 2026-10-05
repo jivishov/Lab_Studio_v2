@@ -422,6 +422,8 @@ const definition = {
         "attachmentParentDefinitionId": "graduated-cylinder-25ml",
         "attachmentChildDefinitionId": "funnel",
         "attachmentSnapZoneId": "graduated-cylinder-funnel-seat",
+        "attachmentParentInstanceId": "graduated-cylinder-1",
+        "attachmentChildInstanceId": "funnel-1",
         "enforceInstanceIdentity": true,
         "sourceInstanceId": "funnel-1"
       },
@@ -597,7 +599,7 @@ const definition = {
       },
       "prerequisites": [],
       "stateChanges": [
-        "Stopper the test tube: changes the named equipment and contents only."
+        "Stopper the test tube: changes the named equipment only."
       ],
       "invalidCases": [
         {
@@ -641,11 +643,13 @@ const definition = {
         "requiredAttachmentState": "attached",
         "attachmentParentDefinitionId": "test-tube",
         "attachmentChildDefinitionId": "rubber-stopper-set",
-        "attachmentSnapZoneId": "test-tube-stopper-seat"
+        "attachmentSnapZoneId": "test-tube-stopper-seat",
+        "attachmentParentInstanceId": "prepared-receiver-1",
+        "attachmentChildInstanceId": "rubber-stopper-set-1"
       },
       "prerequisites": [],
       "stateChanges": [
-        "Invert the test tube to mix: changes the named equipment and contents only."
+        "Invert the test tube to mix: mixes the dilution in the stoppered test tube."
       ],
       "invalidCases": [
         {
@@ -685,6 +689,8 @@ const definition = {
         "attachmentParentDefinitionId": "test-tube",
         "attachmentChildDefinitionId": "rubber-stopper-set",
         "attachmentSnapZoneId": "test-tube-stopper-seat",
+        "attachmentParentInstanceId": "prepared-receiver-1",
+        "attachmentChildInstanceId": "rubber-stopper-set-1",
         "enforceInstanceIdentity": true,
         "sourceInstanceId": "rubber-stopper-set-1"
       },
@@ -1670,7 +1676,7 @@ const definition = {
         "id": "transmittance-dilution-stopper-test-tube-node",
         "type": "action",
         "title": "Stopper the test tube",
-        "description": "Press the rubber stopper firmly into the mouth of the test tube.",
+        "description": "Twist the rubber stopper gently into the mouth of the test tube.",
         "actionId": "transmittance-dilution-stopper-test-tube",
         "config": {},
         "validation": [
@@ -1706,27 +1712,6 @@ const definition = {
         "feedback": {
           "success": "Invert to mix complete.",
           "retry": "Review Invert to mix and try again."
-        }
-      },
-      {
-        "id": "transmittance-dilution-remove-test-tube-stopper-node",
-        "type": "action",
-        "title": "Remove the stopper",
-        "description": "Take the stopper out and set it on the bench, so the sample can be drawn from the test tube.",
-        "actionId": "transmittance-dilution-remove-test-tube-stopper",
-        "config": {},
-        "validation": [
-          {
-            "id": "transmittance-dilution-remove-test-tube-stopper-node-done",
-            "type": "actionEvidence",
-            "label": "Remove the stopper was completed.",
-            "actionId": "transmittance-dilution-remove-test-tube-stopper"
-          }
-        ],
-        "hints": [],
-        "feedback": {
-          "success": "Remove the stopper complete.",
-          "retry": "Review Remove the stopper and try again."
         }
       },
       {
@@ -1916,6 +1901,27 @@ const definition = {
         "feedback": {
           "success": "Remove the blank cuvette complete.",
           "retry": "Review Remove the blank cuvette and try again."
+        }
+      },
+      {
+        "id": "transmittance-dilution-remove-test-tube-stopper-node",
+        "type": "action",
+        "title": "Remove the stopper",
+        "description": "Take the stopper out of the test tube and set it on the bench, just before drawing the sample.",
+        "actionId": "transmittance-dilution-remove-test-tube-stopper",
+        "config": {},
+        "validation": [
+          {
+            "id": "transmittance-dilution-remove-test-tube-stopper-node-done",
+            "type": "actionEvidence",
+            "label": "Remove the stopper was completed.",
+            "actionId": "transmittance-dilution-remove-test-tube-stopper"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Remove the stopper complete.",
+          "retry": "Review Remove the stopper and try again."
         }
       },
       {
@@ -2212,14 +2218,6 @@ const definition = {
       },
       {
         "from": "transmittance-dilution-invert-test-tube-node",
-        "to": "transmittance-dilution-remove-test-tube-stopper-node",
-        "label": "Next",
-        "condition": {
-          "type": "validationPassed"
-        }
-      },
-      {
-        "from": "transmittance-dilution-remove-test-tube-stopper-node",
         "to": "transmittance-dilution-place-spectrophotometer-node",
         "label": "Next",
         "condition": {
@@ -2292,6 +2290,14 @@ const definition = {
       },
       {
         "from": "transmittance-dilution-remove-blank-cuvette-node",
+        "to": "transmittance-dilution-remove-test-tube-stopper-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "transmittance-dilution-remove-test-tube-stopper-node",
         "to": "transmittance-dilution-draw-sample-into-pipette-node",
         "label": "Next",
         "condition": {

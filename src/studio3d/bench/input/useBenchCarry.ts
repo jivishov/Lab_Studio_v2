@@ -10,6 +10,8 @@ import type { SceneContents, SceneItem } from "../../adapters/runtimeToScene";
 import type { Player3DController } from "../../player/usePlayer3D";
 import type { BenchEngine } from "../BenchEngine";
 import { arrowDirection, cycleIndex, nudgePoint, spatialOrder, type BenchPoint } from "./keyboard";
+import { placedInstanceId, seatNeededLater } from "../../player/stepRules";
+import { getActions, getProcess } from "../../../runtime/createRuntime";
 
 /**
  * Picking up and setting down on the 3D bench (handoff §5.6). With a mouse it follows the DNA
@@ -222,10 +224,30 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
    * (Workbench.finishMove, first rule). The 3D bench has one station, the bench surface, which is
    * the station of every Pack 1 placement.
    */
-  const placesForStep = useCallback((definitionId: string): boolean =>
+  /**
+   * A seated part a step still needs seated stays put (decided 2026-10-05): lifting it off would leave
+   * that step no way through, as a free move never re-seats it. Says so, and returns true, when refused.
+   */
+  const keptSeated = useCallback((instanceId: string): boolean => {
+    const item = scene.bench.find((i) => i.instanceId === instanceId);
+    if (item?.placement.kind !== "seated") return false;
+    const { parentInstanceId, zoneId } = item.placement;
+    const parent = scene.bench.find((i) => i.instanceId === parentInstanceId);
+    if (!parent) return false;
+    const { runtime } = player;
+    const needed = seatNeededLater(getActions(player.definition), getProcess(player.definition).nodes, runtime.state.completedNodes,
+      runtime.expectedAction, item, parent, zoneId);
+    if (needed) player.notify(`Leave the ${item.label.toLowerCase()} in the ${parent.label.toLowerCase()}: a step still needs it there.`);
+    return needed;
+  }, [player, scene]);
+
+  // Where the step names one item, another of the same kind is only moved (decided 2026-10-05).
+  const namedInstanceId = placedInstanceId(player.runtime.expectedAction?.parameters);
+  const placesForStep = useCallback((definitionId: string, instanceId?: string): boolean =>
     interaction?.type === "dragToZone" && interaction.sourceDefinitionId === definitionId
-    && (interaction.stationId ?? "workbench") === "workbench" && !flow.nodeCompleted,
-  [flow.nodeCompleted, interaction]);
+    && (interaction.stationId ?? "workbench") === "workbench" && !flow.nodeCompleted
+    && (!instanceId || !namedInstanceId || instanceId === namedInstanceId),
+  [flow.nodeCompleted, interaction, namedInstanceId]);
 
   const endCarry = useCallback(() => {
     carryRef.current = undefined;
@@ -270,7 +292,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     // Over the expected station (§5.6): "Release to place" in guided mode, neutral in assessment.
     const placing = acceptedDropCallout(showGuidance, flow.inputReady, "Release to place");
     if (carry.kind === "tray") {
-      const shown: CarryCallout = placesForStep(carry.definitionId)
+      const shown: CarryCallout = placesForStep(carry.definitionId, carry.instanceId)
         ? { ...(screenAt ?? { x: 0, y: 0 }), ...placing }
         : { ...(screenAt ?? { x: 0, y: 0 }), text: "Release to set down", kind: "free" };
       return show(shown, "commit");
@@ -406,7 +428,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       // Coaching toward the tool shows only in guided mode (G-7); the release is refused in both.
       const coaching = pouredOntoPipette ? "Draw it up with the pipette" : `Use the ${labelOf(tool!.toolDefinitionId)} to add a solid`;
       shown = { ...screen, text: showGuidance ? coaching : "Release to try this", kind: "invalid" };
-    } else if (placesForStep(carry.definitionId)) {
+    } else if (placesForStep(carry.definitionId, carry.instanceId)) {
       engine.setTargetRing(null);
       shown = { ...screen, ...placing };
     } else if (overlap.kind === "valid" && overlap.target) {
@@ -580,6 +602,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     const base = engine?.basePosition(instanceId);
     // Nothing is picked up while a committed pour, weighing, tool transfer or swirl is being drawn.
     if (!engine || !item || !base || pouringRef.current || getVisualProfile(item.definitionId)?.probePresentation) return false;
+    if (keptSeated(instanceId)) return true;
     if (carryRef.current) cancel();
     carryRef.current = { kind: "bench", via: "keyboard", instanceId, definitionId: item.definitionId, label: item.label,
       startX: 0, startY: 0, active: true, pointerType: "keyboard" };
@@ -728,6 +751,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
         if (onTap?.(item.instanceId, event.pointerType, event.clientX, event.clientY) === true) return;
         // Probes (a visual profile with probePresentation, as in 2D) move only as part of their interaction.
         if (getVisualProfile(item.definitionId)?.probePresentation) return;
+        if (keptSeated(item.instanceId)) return;
         carryRef.current = { kind: "bench", via: "pointer", click: true, instanceId: item.instanceId, definitionId: item.definitionId, label: item.label,
           startX: event.clientX, startY: event.clientY, active: true, pointerType: event.pointerType,
           pickedAt: { x: event.clientX, y: event.clientY, t: performance.now() } };
@@ -737,6 +761,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
         return;
       }
       if (getVisualProfile(item.definitionId)?.probePresentation) return;
+      if (keptSeated(item.instanceId)) return;
       carryRef.current = { kind: "bench", via: "pointer", instanceId: item.instanceId, definitionId: item.definitionId, label: item.label,
         startX: event.clientX, startY: event.clientY, active: false, pointerType: event.pointerType };
       canvas.setPointerCapture(event.pointerId);
@@ -849,8 +874,8 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
   /** Whether a bench item can be carried now: probes move only as part of their interaction (parity). */
   const canCarry = useCallback((instanceId: string): boolean => {
     const item = scene.bench.find((i) => i.instanceId === instanceId);
-    return Boolean(engine && item && !pouringRef.current && !getVisualProfile(item.definitionId)?.probePresentation);
-  }, [engine, scene]);
+    return Boolean(engine && item && !pouringRef.current && !getVisualProfile(item.definitionId)?.probePresentation && !keptSeated(instanceId));
+  }, [engine, scene, keptSeated]);
 
   /**
    * Whether a client point is over the bench, where a gesture carry follows and can commit: the

@@ -158,7 +158,6 @@
   padding: 4px 4px 6px; font: 11px/1.25 var(--font-sans); color: var(--ink); text-align: center; cursor: grab; touch-action: none; }
 .s3d-tile:hover { border-color: var(--line-strong); }
 .s3d-tile__need { position: absolute; top: 5px; right: 5px; width: 8px; height: 8px; border-radius: 50%; background: var(--guide); box-shadow: 0 0 0 2px #fff; }
-.s3d-tile__count { position: absolute; top: 3px; left: 5px; font: 500 10px var(--font-mono); color: var(--muted); }
 .s3d-thumb { display: block; border-radius: 6px; background: #eef1ea; object-fit: contain; }
 
 .s3d-benchlist { top: 66px; right: 14px; width: 340px; max-height: calc(100% - 180px); display: flex; flex-direction: column; }
@@ -280,7 +279,7 @@
 .s3d-callout { display: flex; align-items: center; gap: 6px; }
 /* A carry's callout sits at the top centre of the stage, never over the carried item or the point it
    is worked at (decided 2026-10-05); the ring on the target still shows where. */
-.s3d-callout--docked { left: 50%; top: 64px; }
+.s3d-callout--docked { left: 50%; top: 64px; z-index: var(--z-bar); max-width: min(560px, calc(100% - 32px)); white-space: normal; text-align: center; justify-content: center; }
 .s3d-callout--invalid { box-shadow: 0 0 0 2px var(--error); }
 .s3d-callout--valid { box-shadow: 0 0 0 2px var(--guide); }
 .s3d-toast { position: absolute; z-index: var(--z-toast); left: 50%; bottom: 120px; transform: translateX(-50%); display: flex; gap: 8px; align-items: center;

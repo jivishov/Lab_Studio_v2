@@ -1823,6 +1823,46 @@ const collectDefinitionKineticsConditionIdsByModelId = (
   return byModelId;
 };
 
+/**
+ * A step done by a count of requests (decided 2026-10-05): a rinse in several squirts (`rinsePortions`
+ * above 1) or an inversion (`mixOperation: "invert"`). Each request succeeds, so the step must be judged
+ * on the notebook entry its last request writes: it needs its own tag, unique in the definition, and
+ * its node must validate that tag and not the action's evidence, which the first request already gives.
+ * A conditioning rinse, whose one request is already its whole count, may not be split again.
+ */
+const validateCountedSteps = (actions: unknown, process: unknown, path: string, errors: string[]): void => {
+  if (!Array.isArray(actions) || !isObject(process) || !Array.isArray(process.nodes)) return;
+  const tagOf = (action: Record<string, unknown>) => (isObject(action.parameters) ? stringRecordField(action.parameters, "tag") : undefined);
+  actions.forEach((action, index) => {
+    if (!isObject(action) || !isObject(action.parameters)) return;
+    const parameters = action.parameters;
+    const portions = typeof parameters.rinsePortions === "number" ? parameters.rinsePortions : 1;
+    const counted = (action.verb === "rinse" && portions > 1) || (action.verb === "mix" && parameters.mixOperation === "invert");
+    if (!counted) return;
+    const actionPath = `${path}.actions[${index}]`;
+    if (action.atomId === "atom.rinse.condition-cuvette-with-sample" && portions > 1) {
+      errors.push(`${actionPath} cannot split a conditioning rinse into rinsePortions; its count is conditioningCount.`);
+    }
+    const tag = tagOf(action);
+    if (!tag) {
+      errors.push(`${actionPath} is done by a count of requests, so it needs parameters.tag, written when the count is complete.`);
+      return;
+    }
+    if (actions.some((other, otherIndex) => otherIndex !== index && isObject(other) && tagOf(other) === tag)) {
+      errors.push(`${actionPath}.parameters.tag "${tag}" must be unique in the ${path}, or another step's entry would complete this one.`);
+    }
+    for (const node of process.nodes as unknown[]) {
+      if (!isObject(node) || node.actionId !== action.id) continue;
+      const rules = Array.isArray(node.validation) ? node.validation.filter(isObject) : [];
+      const judgedOnTag = rules.some((rule) => rule.type === "notebookEntry" && rule.notebookTag === tag);
+      const judgedOnEvidence = rules.some((rule) => rule.type === "actionEvidence" && rule.actionId === action.id);
+      if (!judgedOnTag || judgedOnEvidence) {
+        errors.push(`${path} node "${String(node.id)}" must validate its notebook entry "${tag}", not the action's evidence, because ${String(action.id)} is done by a count of requests.`);
+      }
+    }
+  });
+};
+
 const validateProcess = (
   process: unknown,
   path: string,
@@ -2308,6 +2348,7 @@ export const validateTechniqueDefinition = (
     }
   }
   validateProcess(input.process, "technique.process", errors, context);
+  validateCountedSteps(input.actions, input.process, "technique", errors);
   validateRuleArray(input.successCriteria, "technique.successCriteria", errors, context);
   if (!Array.isArray(input.commonMistakes)) {
     errors.push("technique.commonMistakes must be an array.");
@@ -2434,6 +2475,7 @@ export const validateLabDefinition = (
     validateOperationEndpoints(input.actions, endpointEquipment, "lab.actions", errors);
   }
   validateProcess(input.process, "lab.process", errors, context);
+  validateCountedSteps(input.actions, input.process, "lab", errors);
   validateRuleArray(input.assessments, "lab.assessments", errors, context);
   if (input.compositionManifest !== undefined) {
     const manifestValidation = validateCompositionManifest(input.compositionManifest);

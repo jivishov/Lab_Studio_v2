@@ -2726,7 +2726,11 @@ const cycle09MeasurementIdsWrittenBy = (actions) => {
  * not a burette titration: the reducer sends it to its own handler before any titration branch, with
  * no titration model, burette mount or initial reading. Mirrors `executeAction` in reducer.ts.
  */
-const isMarkDispense = (action) => action.interaction?.type === "dispenseDrops" && Boolean(action.parameters?.markDispense);
+const isMarkDispense = (action) =>
+  action.interaction?.type === "dispenseDrops"
+  && ["source", "target"].includes(action.parameters?.markDispense)
+  && action.parameters?.titrationOperation === undefined
+  && !String(action.atomId ?? "").includes(".titration-");
 
 const checkCycle09Titration = (world, report) => {
   const titrationAtoms = new Set(

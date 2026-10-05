@@ -9,7 +9,7 @@ import { Icon } from "../ui/Icon";
 import { ProvenanceChip } from "../ui/ProvenanceChip";
 import { CORNERS, clampBox, resizeBox, type Corner, type PanelBox, type PanelId, type PanelLayout, type Viewport } from "./panelLayout";
 import { measurementProvenance, notebookProvenance } from "./provenance";
-import { currentStepEquipmentIds } from "./stepRules";
+import { currentStepEquipmentIds, currentStepInstanceIds } from "./stepRules";
 import type { Player3DController } from "./usePlayer3D";
 
 /** Values read the same as in the 2D player's evidence and results (evidenceFormatting). */
@@ -158,6 +158,11 @@ export const EquipmentTray = ({ player, controls, onPointerDownTile, gestureGrab
 }) => {
   const items = player.scene.tray;
   const needed = new Set(player.showGuidance ? currentStepEquipmentIds(player.interaction, player.toolTransfer?.toolDefinitionId) : []);
+  // Where the step names one item of a kind, only that one is needed now (decided 2026-10-05).
+  const named = new Set(player.showGuidance ? currentStepInstanceIds(player.runtime.expectedAction?.parameters) : []);
+  const namedKinds = new Set(player.runtime.state.equipmentInstances.filter((i) => named.has(i.id)).map((i) => i.definitionId));
+  const isNeeded = (item: { instanceId: string; definitionId: string }) =>
+    needed.has(item.definitionId) && (!namedKinds.has(item.definitionId) || named.has(item.instanceId));
   if (items.length === 0) return null;
   return (
     <FloatPanel id="tray" label="Tray" className="s3d-tray" controls={controls}
@@ -172,9 +177,9 @@ export const EquipmentTray = ({ player, controls, onPointerDownTile, gestureGrab
               data-instance-id={item.instanceId}
               onPointerDown={(e) => { if (e.button === 0) { e.preventDefault(); onPointerDownTile(item.definitionId, e.pointerType, item.instanceId); } }}
               onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); player.dropFromTray(item.definitionId, undefined, undefined, item.instanceId); } }}
-              aria-label={`${item.label}${needed.has(item.definitionId) ? ", needed now" : ""}. Pick it up and set it on the bench, or press Enter to place it.`}
+              aria-label={`${item.label}${isNeeded(item) ? ", needed now" : ""}. Pick it up and set it on the bench, or press Enter to place it.`}
             >
-              {needed.has(item.definitionId) ? <span className="s3d-tile__need" aria-hidden="true" /> : null}
+              {isNeeded(item) ? <span className="s3d-tile__need" aria-hidden="true" /> : null}
               <Thumb definitionId={item.definitionId} />
               <span>{item.label}</span>
             </button>

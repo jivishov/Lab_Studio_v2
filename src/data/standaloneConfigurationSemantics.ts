@@ -215,6 +215,11 @@ export const validateStandaloneConfigurationSemantics = (
         "finalVolumeMl must be greater than the stock aliquot volume.",
       );
     }
+    // The diluted sample is stoppered and inverted in a 20 mL test tube (decided 2026-10-05), which
+    // needs air left above the liquid to mix: at most three quarters full.
+    if (finalVolume !== undefined && finalVolume > 15) {
+      add(["finalVolumeMl"], "finalVolumeMl must be at most 15 mL, so the stoppered 20 mL test tube keeps air above the liquid to mix it by inversion.");
+    }
     if (aliquot !== undefined && water !== undefined && finalVolume !== undefined && finalVolume > aliquot + water) {
       add(
         ["stockAliquotVolumeMl", "waterVolumeMl", "finalVolumeMl"],

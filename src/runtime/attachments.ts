@@ -134,12 +134,14 @@ export const validateActionAttachmentState = (
     };
   }
 
-  const parent = state.equipmentInstances.find(
-    (instance) => instance.definitionId === parentDefinitionId,
-  );
-  const child = state.equipmentInstances.find(
-    (instance) => instance.definitionId === childDefinitionId,
-  );
+  // The named parent and child when the step names them (decided 2026-10-05: a lab with several test
+  // tubes or stoppers checks the pair this step uses); otherwise the first of each kind, as before.
+  const parentInstanceId = stringParameter(parameters, "attachmentParentInstanceId");
+  const childInstanceId = stringParameter(parameters, "attachmentChildInstanceId");
+  const parent = state.equipmentInstances.find((instance) =>
+    instance.definitionId === parentDefinitionId && (!parentInstanceId || instance.id === parentInstanceId));
+  const child = state.equipmentInstances.find((instance) =>
+    instance.definitionId === childDefinitionId && (!childInstanceId || instance.id === childInstanceId));
   const parentLabel = parent?.label ?? equipmentById.get(parentDefinitionId)?.label ?? "target apparatus";
   const childLabel = child?.label ?? equipmentById.get(childDefinitionId)?.label ?? "required equipment";
   const zoneLabel =

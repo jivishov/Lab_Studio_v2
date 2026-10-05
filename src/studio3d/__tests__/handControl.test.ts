@@ -17,7 +17,7 @@ const TARGETS: HandTarget[] = [
 ];
 
 interface Rig { c: HandController; api: HandApi; log: string[]; set: (patch: Partial<RigState>) => void }
-interface RigState { carrying: boolean; action?: CarryAction; drop: boolean; invertable: string[]; swirlable?: string[]; expected?: string; assist: boolean }
+interface RigState { carrying: boolean; action?: CarryAction; drop: boolean; squirting?: boolean; invertable: string[]; swirlable?: string[]; expected?: string; assist: boolean }
 
 const rig = (initial: Partial<RigState> = {}): Rig => {
   const state: RigState = { carrying: false, drop: false, invertable: [], assist: false, ...initial };
@@ -43,6 +43,8 @@ const rig = (initial: Partial<RigState> = {}): Rig => {
     dropMode: () => state.drop,
     drop: () => log.push("drop"),
     runDrops: (on) => log.push(on ? "run" : "stop"),
+    squirtMode: () => Boolean(state.squirting),
+    squirt: () => log.push("squirt"),
     focus: vi.fn(),
     say: (text, error) => log.push(`${error ? "error" : "say"}:${text}`),
     bounds: () => ({ width: 1000, height: 700 }),
@@ -409,5 +411,26 @@ describe("swirling and rinsing (Make a Solution, decided 2026-10-04)", () => {
     still(c, 0, 300, 300, 900, 0.3, { open: true, grip: false, hold: false });
     expect(log.filter((l) => l === "commit")).toEqual([]);
     expect(log.some((l) => /Squeeze to rinse/.test(l))).toBe(true);
+  });
+});
+
+describe("a wash bottle held between squirts (decided 2026-10-05)", () => {
+  it("squirts once for each press let go, and picks nothing up meanwhile", () => {
+    const { c, log } = rig({ squirting: true });
+    let now = still(c, 0, 300, 300, 600);
+    c.press(hand(now, 300, 300));
+    c.release();
+    now = still(c, now + 33, 300, 300, 200);
+    c.press(hand(now, 300, 300));
+    c.release();
+    expect(log.filter((entry) => entry === "squirt")).toHaveLength(2);
+    expect(log.some((entry) => entry.startsWith("pick:"))).toBe(false);
+  });
+
+  it("does nothing for a press outside squirt mode with nothing carried", () => {
+    const { c, log } = rig();
+    c.press(hand(0, 300, 300));
+    c.release();
+    expect(log).not.toContain("squirt");
   });
 });

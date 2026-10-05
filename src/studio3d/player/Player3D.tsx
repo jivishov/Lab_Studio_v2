@@ -225,6 +225,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     swirl: () => { if (swirlVesselId) player.recordEvidence(); },
     dropMode: () => Boolean(dropMode),
     drop: () => addDropRef.current(1),
+    squirtMode: () => squirtHeldRef.current,
+    squirt: () => squirtAgainRef.current(),
     runDrops: (on) => (on ? startRun() : endRun()),
     // The hand's focus shows the item's hover label, as the source labels the target under the cursor.
     focus: (t, locked) => {
@@ -257,18 +259,26 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     const target = staged(pour.targetId);
     // Where the source rests afterwards (parked after a drag); a shelf source goes back to the tray.
     const sourceAfter = committed(pour.sourceId);
+    // A squirt short of a counted rinse's count keeps the bottle held for the next (decided 2026-10-05).
+    const rinse = runtime.expectedAction;
+    const portions = rinse?.verb === "rinse" ? Number(rinse.parameters.rinsePortions ?? 1) : 1;
+    const squirted = rinse ? runtime.state.rinsePortions?.[rinse.id] ?? 0 : 0;
+    const holdAfter = portions > 1 && squirted > 0 && squirted < portions && !flow.nodeCompleted;
+    const continuing = engine.squirtHolding() === pour.sourceId;
     const run = async () => {
       await engine.sync(pour.staging);
-      // The pour is framed where it happens, unless the learner has taken the camera (§5.9).
-      if (autoViewRef.current && !reducedMotion) engine.frameItems([pour.sourceId, pour.targetId, ...(pour.via ? [pour.via] : [])], 1.4);
+      // The pour is framed where it happens, unless the learner has taken the camera (§5.9) or the
+      // bottle is already held there.
+      if (autoViewRef.current && !reducedMotion && !continuing) engine.frameItems([pour.sourceId, pour.targetId, ...(pour.via ? [pour.via] : [])], 1.4);
       if (source && target) {
         await engine.animatePour({ sourceId: pour.sourceId, targetId: pour.targetId,
           sourceBefore: source.contents, sourceAfter: pour.sourceAfter,
           targetBefore: target.contents, targetAfter: pour.targetAfter,
           // The source is set down where the runtime has it afterwards (parked after a drag).
           ...(sourceAfter?.placement.kind === "bench" ? { returnTo: sourceAfter.placement.point } : {}),
-          ...(pour.via ? { via: pour.via } : {}) });
+          ...(pour.via ? { via: pour.via } : {}), holdAfter });
       }
+      setSquirtHeld(holdAfter && engine.squirtHolding() === pour.sourceId);
       player.finishPour(pour.id);
     };
     void run();
@@ -380,6 +390,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     if (engine && before) {
       engine.restorePose(before);
       setAutoView(before.auto);
+      autoViewRef.current = before.auto;
     }
   };
   const acceptAtLine = () => {
@@ -409,6 +420,79 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     const mark = player.markStep;
     if (mark) holdOverRef.current(mark.pipetteInstanceId, mark.vesselInstanceId);
   };
+  // A wash bottle held over what it rinses between the squirts of a counted rinse (decided 2026-10-05):
+  // a click on the bench, Space, Enter, the step card's Rinse or a hand squeeze is the next squirt; Esc
+  // or leaving the step puts it down. Nothing else is picked up while it is held.
+  const [squirtHeld, setSquirtHeld] = useState(false);
+  const squirtHeldRef = useRef(false);
+  squirtHeldRef.current = squirtHeld;
+  const rinseAction = runtime.expectedAction?.verb === "rinse" && Number(runtime.expectedAction.parameters.rinsePortions ?? 1) > 1
+    ? runtime.expectedAction : undefined;
+  const squirtCount = rinseAction
+    ? { done: runtime.state.rinsePortions?.[rinseAction.id] ?? 0, total: Number(rinseAction.parameters.rinsePortions) } : undefined;
+  const putBottleDown = () => {
+    setSquirtHeld(false);
+    engine?.releaseSquirtHold();
+  };
+  const squirtAgainRef = useRef(() => undefined as void);
+  squirtAgainRef.current = () => {
+    if (!squirtHeldRef.current || player.pour || flow.nodeCompleted) return;
+    player.confirm();
+  };
+  // Leaving the step another way (a restart, a mode switch) puts the bottle down; the last squirt's own
+  // animation sets it down after the count is complete, so nothing is released while a squirt is drawn.
+  useEffect(() => {
+    if (squirtHeld && !player.pour && (!rinseAction || flow.nodeCompleted)) putBottleDown();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [squirtHeld, rinseAction?.id, flow.nodeCompleted, player.pour]);
+  useEffect(() => {
+    if (!squirtHeld || !engine) return undefined;
+    const canvas = engine.canvasElement;
+    const down = (e: PointerEvent) => {
+      if (e.button !== 0) return;
+      e.stopImmediatePropagation();
+      e.preventDefault();
+      squirtAgainRef.current();
+    };
+    const key = (e: KeyboardEvent) => {
+      const typing = e.target instanceof HTMLElement && ["INPUT", "SELECT", "TEXTAREA", "BUTTON"].includes(e.target.tagName);
+      if (typing) return;
+      if (e.key === " " || e.key === "Enter") {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        if (!e.repeat) squirtAgainRef.current();
+      } else if (e.key === "Escape") {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        putBottleDown();
+      }
+    };
+    canvas.addEventListener("pointerdown", down, { capture: true });
+    window.addEventListener("keydown", key, { capture: true });
+    return () => {
+      canvas.removeEventListener("pointerdown", down, { capture: true });
+      window.removeEventListener("keydown", key, { capture: true });
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [squirtHeld, engine]);
+  // A count within a step, said aloud: a squirt or an inversion short of the count (decided 2026-10-05).
+  const lastCounts = useRef<Record<string, number>>({});
+  useEffect(() => {
+    const counts = { ...runtime.state.rinsePortions, ...runtime.state.mixInversions };
+    const before = lastCounts.current;
+    lastCounts.current = counts;
+    const action = runtime.expectedAction;
+    if (!action) return;
+    const done = counts[action.id] ?? 0;
+    if (done <= (before[action.id] ?? 0)) return;
+    if (action.verb === "rinse" && squirtCount && done < squirtCount.total) player.announce(`Squirt ${done} of ${squirtCount.total}.`);
+    if (action.verb === "mix" && action.parameters.mixOperation === "invert") {
+      const total = Number(action.parameters.inversions ?? 10);
+      if (done < total) player.announce(`Inversion ${done} of ${total}.`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [runtime.state.rinsePortions, runtime.state.mixInversions]);
+
   // Leaving the step (accepted at the line, or restarted) puts the pipette down.
   useEffect(() => {
     if (dropMode && (!player.markStep || player.markStep.pipetteInstanceId !== dropMode.pipetteId)) exitDropMode();
@@ -549,7 +633,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   // Opening, closing, moving, resizing or collapsing a panel changes the free area, so the auto
   // view refits (§5.9).
   useEffect(() => {
-    if (engine && !pouring && autoViewRef.current) void engine.settled().then(() => { if (autoViewRef.current) frameRef.current(); });
+    // Not between squirts: the bottle is held where the last one framed it.
+    if (engine && !pouring && autoViewRef.current && !engine.squirtHolding()) void engine.settled().then(() => { if (autoViewRef.current) frameRef.current(); });
   }, [engine, panel, notebookOpen, handPanelShown, pouring, prefs.panels, prefs.notebookWidth, viewport]);
 
   // Keyboard map (§5.19); single-letter keys only while the bench has focus (WCAG 2.1.4).
@@ -608,7 +693,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
       else if (e.key === "t" || e.key === "T") { if (selected) player.setSelectedTarget(selected); }
       else if (e.key === "n" || e.key === "N") setNotebookOpen((v) => !v);
       else if (e.key === "a" || e.key === "A") { setAutoView(true); frame(); }
-      else if (e.key === "Home") engine?.resetView();
+      else if (e.key === "Home") { setAutoView(false); engine?.resetView(); }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -674,8 +759,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   // Show me (§5.9, guided only): frame the working set, then the engine's pulse-and-ghost demo. A
   // step done with a tool shows the tool going to the source, then to the target.
   const showMe = () => {
-    setAutoView(true);
-    frame();
+    // The demo plays where the learner is looking; only the auto view frames it (decided 2026-10-05).
+    if (autoViewRef.current) frame();
     if (tool) engine?.showMe(toolId, expectedTargetId, expectedSourceId);
     else if (drawIds) engine?.showMe(drawIds.tool, drawIds.liquid);
     else engine?.showMe(expectedSourceId, expectedTargetId);
@@ -748,6 +833,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     carrying: carry.carrying, dropMode: Boolean(dropMode),
     invertHolding: Boolean(invertHold && isInvertTarget(invertHold.id)), swirlHolding: Boolean(swirlHold && isSwirlTarget(swirlHold.id)),
     holdDone: Boolean((invertHold && !isInvertTarget(invertHold.id)) || (swirlHold && !isSwirlTarget(swirlHold.id))),
+    ...(squirtHeld && squirtCount ? { squirtHolding: squirtCount } : {}),
     rinse: Boolean(handCarryAction?.rinse), locked: Boolean(handContact),
     stroke: hand.controller.stroke, draw: handCarryAction?.action === "draw", squeeze: Boolean(handCarryAction?.squeeze), armed: hand.controller.armed,
     keyLocked: !carry.carrying && hand.controller.lockedTarget?.kind === "control",
@@ -760,6 +846,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   const markVesselLabel = markStep ? lowerFirstLetter(scene.bench.find((i) => i.instanceId === markStep.vesselInstanceId)?.label ?? "vessel") : "";
   const invertVesselNoun = scene.bench.find((i) => i.instanceId === invertVesselId)?.definitionId === "test-tube" ? "test tube" : "flask";
   const hint = dropMode ? "Space: tap for a drop, hold to let it run. Enter: at the line. Esc puts the pipette down."
+    : squirtHeld && squirtCount ? `Squirt ${squirtCount.done} of ${squirtCount.total}: click the bench, press Space or squeeze to squirt again. Esc puts the bottle down.`
     : carry.keyCarrying ? "Arrows move it (Shift: further). [ ] step through targets. Enter sets it down; Esc cancels."
     : carry.clickCarrying ? "Click where it goes, or press on the target, drag down and let go. Esc or a right click puts it back."
     : carry.gestureCarrying ? "Open your palm over the spot to set it down; over a target, pause until it locks, then lower your hand or turn your palm."
