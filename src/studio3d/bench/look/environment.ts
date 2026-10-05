@@ -26,16 +26,19 @@ const PANEL = unit([0.1, 0.98, -0.2]);
 const STRIP = unit([0.75, 0.55, 0.6]);
 const dot = (a: V3, b: V3) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 
-/** The source's `env(r, 0)`: linear radiance seen along direction `r`. */
+/**
+ * The source's `env(r, 0)`: linear radiance seen along direction `r`. The window's lobe is dimmed to
+ * 0.45 of the source's (decided 2026-10-05), as the window itself is, so glass does not mirror a glare.
+ */
 export const roomRadiance = (r: V3): V3 => {
   const h = smoothstep(-0.2, 0.9, r[1]);
   const w = smoothstep(0.86, 0.99, dot(r, WINDOW));
   const p = smoothstep(0.9, 0.997, dot(r, PANEL));
   const s = smoothstep(0.975, 0.999, dot(r, STRIP));
   return [
-    0.15 + 0.45 * h + 2.7 * w + 2.1 * p + 1.0 * s,
-    0.14 + 0.48 * h + 2.55 * w + 2.15 * p + 1.04 * s,
-    0.13 + 0.49 * h + 2.3 * w + 2.2 * p + 1.1 * s,
+    0.15 + 0.45 * h + 1.2 * w + 2.1 * p + 1.0 * s,
+    0.14 + 0.48 * h + 1.15 * w + 2.15 * p + 1.04 * s,
+    0.13 + 0.49 * h + 1.05 * w + 2.2 * p + 1.1 * s,
   ];
 };
 

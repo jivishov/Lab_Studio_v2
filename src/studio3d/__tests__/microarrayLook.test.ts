@@ -60,7 +60,9 @@ describe("environment and frame", () => {
     expect(roomRadiance([0, -1, 0])).toEqual([0.15, 0.14, 0.13]);
     const window = Math.hypot(-0.8, 0.55, -0.5);
     const atWindow = roomRadiance([-0.8 / window, 0.55 / window, -0.5 / window]);
-    expect(atWindow[0]).toBeGreaterThan(2.7);
+    // The window's lobe, dimmed from the source's 2.7 (decided 2026-10-05).
+    expect(atWindow[0]).toBeGreaterThan(1.2);
+    expect(atWindow[0]).toBeLessThan(2.7);
   });
 
   it("takes only the environment's reflections, and darkens rims, as the source shades (renderer.js:67-81)", () => {

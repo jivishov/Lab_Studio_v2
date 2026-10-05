@@ -109,7 +109,9 @@ export const buildRoom = ({ textures, shadowMapSize, onTextureChange, environmen
   // Back wall, skirting rail, window and sill.
   box(15, 4.4, 0.13, m.wall, [0, 2.0, -4.6]);
   box(15, 0.14, 0.2, m.trim, [0, 0.05, -4.47]);
-  const glow = new THREE.MeshBasicMaterial({ color: linearHex("#e3ecef").multiplyScalar(1.9), side: THREE.DoubleSide }); // emission 1.9
+  // Emission 0.85, dimmed from the source's 1.9 (decided 2026-10-05): below the bloom threshold
+  // (1.05), so the window no longer glares across the bench and the balance's draft shield.
+  const glow = new THREE.MeshBasicMaterial({ color: linearHex("#e3ecef").multiplyScalar(0.85), side: THREE.DoubleSide });
   disposables.push(glow);
   mesh(packedBevelBox(4.6, 2.1, 0.02), glow, [-4.1, 2.25, -4.52], group, false);
   for (const x of [-6.4, -4.1, -1.8]) box(0.07, 2.2, 0.05, m.trim, [x, 2.25, -4.48]);

@@ -367,12 +367,18 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   };
   const addDropRef = useRef(addDrop);
   addDropRef.current = addDrop;
+  // The view from before the eye-level view at the line, returned to when the pipette is put down.
+  const dropPose = useRef<(CameraPose & { auto: boolean }) | undefined>(undefined);
   const exitDropMode = () => {
     endRun();
     setDropMode(undefined);
     engine?.holdOver(null);
-    setAutoView(true);
-    void engine?.settled().then(() => frameRef.current());
+    const before = dropPose.current;
+    dropPose.current = undefined;
+    if (engine && before) {
+      engine.restorePose(before);
+      setAutoView(before.auto);
+    }
   };
   const acceptAtLine = () => {
     endRun();
@@ -382,6 +388,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     const mark = player.markStep;
     if (!engine || !mark) return;
     setDropMode({ pipetteId, vesselId });
+    if (!dropPose.current) dropPose.current = { ...engine.pose(), auto: autoViewRef.current };
     engine.holdOver(pipetteId, vesselId);
     setAutoView(false);
     // Level with the line: the flask's calibration mark, or the pipette's line for the aliquot.
@@ -521,8 +528,9 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   }, [player, runtime.currentNode]);
   // Framing waits for the bench to settle: a step often brings an item off the tray, and its bounds
   // exist only once its model has loaded. While a committed pour animates, the bench still shows
-  // the scene from before it, so framing also waits for the pour to finish. A new step also ends a
-  // manual-camera suspension (§5.9).
+  // the scene from before it, so framing also waits for the pour to finish. A view the learner has
+  // set is kept through new steps until they choose Auto view again (decided 2026-10-05; it no
+  // longer ends at each step, §5.9).
   // A committed pour, weighing or tool transfer being drawn holds the framing back, as a carry does (§5.9).
   const pouring = Boolean(player.pour || player.weighing || player.toolDeposit || player.swirl);
   const frameRef = useRef(frame);
@@ -534,9 +542,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     const nodeId = runtime.currentNode.id;
     if (!engine || pouring || framedNode.current === nodeId) return;
     framedNode.current = nodeId;
-    setAutoView(true);
-    autoViewRef.current = true;
-    void engine.settled().then(() => { if (framedNode.current === nodeId && autoViewRef.current) frameRef.current(); });
+    if (autoViewRef.current) void engine.settled().then(() => { if (framedNode.current === nodeId && autoViewRef.current) frameRef.current(); });
   }, [engine, pouring, runtime.currentNode.id]);
   // Opening, closing, moving, resizing or collapsing a panel changes the free area, so the auto
   // view refits (§5.9).
@@ -809,7 +815,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
           </div>
         ) : null}
         {carry.callout ? (
-          <div className={`s3d-callout s3d-callout--${carry.callout.kind}`} style={{ left: carry.callout.x, top: carry.callout.y }}>
+          <div className={`s3d-callout s3d-callout--docked s3d-callout--${carry.callout.kind}`}>
             <Icon name={carry.callout.kind === "valid" ? "check" : carry.callout.kind === "invalid" ? "x" : carry.callout.kind === "input" ? "pencil" : "tray"} size={14} />{carry.callout.text}
           </div>
         ) : null}

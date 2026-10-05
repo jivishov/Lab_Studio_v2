@@ -5,7 +5,7 @@ import { fillLevelMm, type SceneContents, type SceneDescription, type SceneItem 
 import { ModelLibrary } from "../equipment3d/loadModels";
 import type { Equipment3DEntry } from "../equipment3d/types";
 import {
-  applyView, clampAt, copyView, DEFAULT_VIEW, easeInOutCubic, FAR, fitBest, FOV, FRAME_PITCH, frontYaw, lerpView, MANUAL, NEAR,
+  applyView, clampAt, clampManual, copyView, DEFAULT_VIEW, easeInOutCubic, FAR, fitBest, FOV, lerpView, MANUAL, NEAR,
   orbitBy, panTiltBy, PRESETS, safeRects, zoomBy, type OrbitView, type Rect,
 } from "./camera/benchCamera";
 import { makeComposer } from "./look/composer";
@@ -1789,7 +1789,9 @@ export class BenchEngine {
     }
     const size = this.canvasSize();
     const rects = safe?.length ? safe : safeRects(size, []);
-    const base: OrbitView = { ...copyView(this.view), yaw: frontYaw(this.view.yaw), pitch: FRAME_PITCH };
+    // The angle the learner is looking from is kept (decided 2026-10-05, replacing choice 11's turn
+    // back to the front at a fixed pitch): framing moves only the look-at point and the distance.
+    const base: OrbitView = { ...copyView(this.view), pitch: clampManual(this.view).pitch };
     const goal = fitBest(points, base, size, rects);
     if (goal) this.tweenTo(goal);
   }

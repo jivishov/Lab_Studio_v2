@@ -295,7 +295,7 @@ export const BenchSetupView = ({ studio, onToast, onInspectEquipment }: {
           <div key={item.instanceId} className={`s3d-label s3d-label--quiet${item.instanceId === selectedId ? " is-selected" : ""}`} style={{ left: at.x, top: at.y + 10 }}>{item.label}</div>
         ) : null))}
         {callout ? (
-          <div className={`s3d-callout s3d-callout--${callout.kind === "valid" ? "valid" : callout.kind === "detach" ? "invalid" : "free"}`} style={{ left: callout.x, top: callout.y }}>
+          <div className={`s3d-callout s3d-callout--docked s3d-callout--${callout.kind === "valid" ? "valid" : callout.kind === "detach" ? "invalid" : "free"}`}>
             <Icon name={callout.kind === "valid" ? "seat" : callout.kind === "detach" ? "warn" : "move"} size={14} />{callout.text}
           </div>
         ) : null}
