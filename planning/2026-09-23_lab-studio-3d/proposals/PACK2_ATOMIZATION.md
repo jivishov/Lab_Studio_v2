@@ -1,6 +1,8 @@
-# Pack 2: the next five techniques in 3D (proposal, revision 2, 2026-10-05)
+# Pack 2: the next five techniques in 3D (proposal, revision 2, 2026-10-05; decided)
 
-**Status:** proposal only; nothing is built. Your requests:
+**Status: decided 2026-10-05; not built.** You: "go with recommendations." All ten recommendations are decided, and are listed under "Decisions" below. Then: "Do not build now", and "Add the recommendations in the pack 2 proposal. I will run it in a new thread." The build is for a new thread; read "For the build thread" first.
+
+Your requests that shaped this proposal:
 - "Start with the Pack 2 proposal."
 - "Critically review your pack 2 handoff for fidelity and refine it." The review's changes are listed at the end.
 
@@ -222,18 +224,86 @@ These are out of the techniques' scope here, as in Pack 1:
 5. **Heat and Reweigh**: burner lighting and flame, crucible and lid, the renamed step.
 6. **Records.** An evidence note and one G1 look per technique. Under decision 1A each practice version is new content; under 1B each changed technique is a D4 exception and its labs are checked to compile.
 
-## Your decisions, in one list
+## Decisions (decided 2026-10-05: all ten recommendations)
 
-1. **How to build Pack 2 while D8 is open:** 3D practice versions with the 2D labs untouched (recommended); change the techniques and let the labs follow; or wait for D8.
-2. **Transfer:** rinse the cylinder into the beaker (recommended) or not.
-3. **Filtration, paper:** weigh it dry (recommended; it brings the mass-by-difference step into Dry and Weigh); fold it as one step (recommended).
-4. **Filtration, pour:** decant first and pour down a rod (recommended), or a plain pour.
-5. **Gravity filtration** (recommended) or vacuum.
-6. **Precipitation:** three portions while stirring (recommended), or one pour then stir.
-7. **Precipitation:** the complete-precipitation drop test (recommended) or not.
-8. **Drying:** pour the filtrate down a sink (recommended) or leave it.
-9. **Time:** a fast step clock (recommended), real minutes, or a wait button.
-10. **Heat and Reweigh:** a flame-setting step (recommended), or intensity inside the heating steps.
+You: "go with recommendations."
+1. **How to build Pack 2 while D8 is open: 3D practice versions, with the 2D labs untouched.**
+   - The lab-bound techniques (`transfer`, `hard-water-precipitation`, `filtration`, `drying`, `thermal-decomposition-mass-loss`) stay exactly as they are.
+   - So do their three labs (`intro-filtration-demo`, `hard-water-demo`, `green-chemistry-mixture-purification`).
+   - At D8 we decide whether the labs move to the practice versions' steps.
+2. **Transfer:** rinse the cylinder into the beaker, three squirts.
+3. **Filtration, paper:**
+   - weigh the dry paper and record it, which brings the mass-by-difference step into Dry and Weigh;
+   - fold the paper as one step.
+4. **Filtration, pour:** decant the clear liquid first, pour down a stirring rod, and keep the liquid about 1 cm below the paper's rim. An overflow is refused.
+5. **Filtration type:** gravity.
+6. **Precipitation:** the reagent in three portions while stirring.
+7. **Precipitation:** the complete-precipitation drop test.
+8. **Drying:** pour the filtrate down a sink at the bench edge.
+9. **Time:** a fast step clock. Opening the oven early is refused.
+10. **Heat and Reweigh:** a flame-setting step (air collar; yellow to blue).
+
+**Also decided with them:**
+- **Constant mass in Dry and Weigh:** the manual's two timed stages, no repeat-until-constant loop.
+- **Watch glass:** its label is shown, not written as a step.
+- **Cooling:** a heat-safe pad for both Dry and Weigh and Heat and Reweigh.
+- **Heat and Reweigh:**
+  - the "covered" step is renamed "Warm the mixture gently with the lid askew";
+  - its records and calculation keep their legacy effects.
+
+## For the build thread
+
+**Read first:**
+- this proposal;
+- `DECISIONS.md` (Pack 2 row);
+- `SESSION_HANDOFF.md`;
+- the two source plans named at the top, for each step's ID and basis label.
+
+**What the code does today** (read on 2026-10-05, nothing changed):
+- **Loading:**
+  - `loadBundledTechnique(id)` (`src/data/loadBundledTechniques.ts`) loads only ids listed in `public/techniques/index.json`, and runs each through validation and the catalogue policy.
+  - `packNumber` (`src/studio3d/packs.ts`) counts the 3D packs in fives from that index's order. The simulation switcher (`SimulationSwitcher.tsx`), the 3D route's pack badge (`Technique3DRoute.tsx`) and the Studio 3D catalogue (`studio/techniqueCatalog.ts`) all use it.
+  - Adding the practice versions to `index.json` would therefore put them in the 2D catalogue and shift every later pack. Practice versions need their own 3D list and a load path that keeps them out of the 2D order. Design this first, and ask if it touches 2D.
+- **The play-alone block** is `standaloneTechniqueConfigurationBlocker` (`src/data/techniqueConfiguration.ts`). It refuses a technique that has host labs (`hostLabsForTechnique`, `src/data/techniqueHosts.ts`). New practice ids have no host labs, so they can play alone with their own setup slots, as Pack 1's techniques do.
+- **The labs carry their own starting bench** (`initialState` in each lab file). A practice version's starting state never reaches a lab.
+
+**Reuse from Pack 1** (already built):
+- **Counted steps:** `rinsePortions` with its own tag, judged by `notebookEntry`, and enforced by `validateCountedSteps` in `validation.ts`. The same pattern serves the portions (`pourPortions`).
+- **The held wash bottle** between squirts (`squirtHold` in `BenchEngine`, squirt mode in `Player3D`).
+- **Rinses into a receiver** (`washingsReceiverInstanceId`).
+- **Attachments:**
+  - attachment pairs (`attachmentParentInstanceId` and `attachmentChildInstanceId`);
+  - the 3D seat rule (`seatNeededLater` in `stepRules.ts`), which keeps a part seated while a step needs it;
+  - the funnel seat and funnel atoms (`atom.place.filling-funnel` and its removal).
+- **The balance steps** from Weigh a Solid (place, `atom.observe.zero-balance`, read, record).
+- **Probes and looks:** the probe and look scripts in `probes/` as patterns.
+
+**Working rules** (from the standing brief and this session):
+- **Where:** work only in this worktree, on `claude/lab-studio-3d`.
+- **Git:**
+  - Commit locally; every commit message ends with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`.
+  - Push only when asked.
+  - Never use a bare `git stash`.
+- **Hands off:**
+  - nothing under `src/player/**` or `src/styles/app.css`;
+  - no mobile layouts;
+  - the authoritative `Lab_studio` folder, the main checkout and the microarray lab folders are read-only.
+- **Checks:**
+  - the typecheck;
+  - `python tools/blender/validate_equipment3d.py --pack 1` (extend it to the Pack 2 models);
+  - narrow probes;
+  - written tests;
+  - the test suite and `content:check`, which were authorised on 2026-10-05. Pre-existing failures that also occur on GitHub main and do not affect 3D are ignored. `content:check`'s baseline stays as it is.
+- **Looks:** one G1 look per change; no full playthroughs without a go-ahead. Hand control (G3) is set aside.
+- **Files and line endings:**
+  - Edit CRLF files only with a byte-aware script. Python's `write_text` on Windows writes CRLF, so use `write_bytes`.
+  - Check the line endings of every changed file before committing.
+- **Records:** each practice version gets an evidence note, and its decisions go into `DECISIONS.md`.
+
+**Gotchas met on 2026-10-05:**
+- **Stale dev server:** two scripted writes to one file within the same second left the running dev server serving the in-between version (a `ReferenceError` at runtime). Touch the files after scripted edits, or reload.
+- **Starting beds:** a step-card (Confirm) run leaves tray items in the tray, so a look must bring them out itself.
+- **Look timing:** SwiftShader frames are slow; allow seconds for a camera tween or a pour.
 
 ## Fidelity review (revision 2)
 
