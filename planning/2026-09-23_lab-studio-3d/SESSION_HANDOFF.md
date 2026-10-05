@@ -74,6 +74,10 @@ wait for confirmation (`DECISIONS.md`, the "built" row). G3 has still not run.
    **D8 (how experiments are assembled from the atomic steps) is open for a separate discussion with the
    user**, so nothing in Phase B is built before it. Pre-existing failures that do not affect the 3D
    work are ignored. What remains is G3 (webcam), which needs the user or Claude in Chrome.
+5. **Pack 2, proposed 2026-10-05** (`proposals/PACK2_ATOMIZATION.md`): Transfer Liquid, Precipitation, Filter
+   a Precipitate, Dry and Weigh, and Heat and Reweigh. None of them plays on its own (each is composed into
+   2D labs), so the first decision is how to play them in 3D before D8. Ten decisions wait for the user.
+   Hand control (G3) is set aside for now (user, 2026-10-05).
 
 **How the work has been checked** (the user's validation policy: source review, `npx tsc -p
 tsconfig.app.json --noEmit`, `python tools/blender/validate_equipment3d.py --pack 1`, and narrow
