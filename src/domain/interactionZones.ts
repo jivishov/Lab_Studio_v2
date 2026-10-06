@@ -37,6 +37,7 @@ export const v1InteractionZones: InteractionZone[] = [
     ["hot-plate-stirrer"],
     "receiving",
   ),
+  zone("ring-stand-burner-bay", "ring-stand", ["bunsen-burner"], "receiving"),
   // The hand-warmer assembly renders the stand as a state asset. Its heater
   // seat is intentionally distinct from the generic ring-stand support-ring
   // zone so the heater attaches to the visual base.

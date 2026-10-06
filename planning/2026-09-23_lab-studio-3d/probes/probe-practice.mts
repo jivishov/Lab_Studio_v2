@@ -18,7 +18,7 @@ const { auditStandaloneEvidence } = await import(root + "src/data/standaloneEvid
 const { assessBundledTechniqueCatalogPolicy } = await import(root + "src/data/bundledCatalogPolicyBoundary.ts");
 
 const [id, configJson = "{}", watchList = ""] = process.argv.slice(2);
-const raw = JSON.parse(await readFile(new URL(root + `public/techniques-3d/${id}.json`), "utf8"));
+const raw = JSON.parse(await readFile(new URL(root + `${process.env.PROBE_DIR ?? "public/techniques-3d"}/${id}.json`), "utf8"));
 const v = validateTechniqueDefinition(raw);
 console.log("validates:", v.ok, (v.errors ?? []).slice(0, 12).join(" | "));
 const cc = validateTechniqueCompositionContract(raw);

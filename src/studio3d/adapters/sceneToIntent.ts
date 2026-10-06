@@ -403,15 +403,17 @@ export const benchOpStepFor = (action: ActionDefinition | undefined, nodeComplet
   const spec = benchOperationSpec(operation);
   if (!action || !spec || nodeCompleted) return undefined;
   const text = (key: string) => (typeof action.parameters[key] === "string" ? action.parameters[key] as string : undefined);
-  const minutes = [action.parameters.stirMinutes, action.parameters.settleMinutes, action.parameters.durationMinutes, action.parameters.coolMinutes]
+  const minutes = [action.parameters.stirMinutes, action.parameters.settleMinutes, action.parameters.durationMinutes, action.parameters.coolMinutes,
+    action.parameters.heatMinutes]
     .find((value): value is number => typeof value === "number");
   return {
     operation: operation as BenchOperationId,
     control: spec.control,
-    ...(text("vesselInstanceId") ? { vesselInstanceId: text("vesselInstanceId") } : {}),
+    // The crucible is the vessel of the burner's operations, the burner their device (Heat and Reweigh).
+    ...(text("vesselInstanceId") ?? text("crucibleInstanceId") ? { vesselInstanceId: text("vesselInstanceId") ?? text("crucibleInstanceId") } : {}),
     ...(text("sourceInstanceId") ? { toolInstanceId: text("sourceInstanceId") } : {}),
     ...(text("precipitateCarrierInstanceId") ? { contentsInstanceId: text("precipitateCarrierInstanceId") } : {}),
-    ...(text("ovenInstanceId") ? { deviceInstanceId: text("ovenInstanceId") } : {}),
+    ...(text("ovenInstanceId") ?? text("burnerInstanceId") ? { deviceInstanceId: text("ovenInstanceId") ?? text("burnerInstanceId") } : {}),
     ...(minutes !== undefined ? { minutes } : {}),
   };
 };

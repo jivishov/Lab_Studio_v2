@@ -25,6 +25,8 @@ const PRACTICE = [
     description: "Weigh and fold the paper, then filter by gravity: decant, pour down a rod, rinse and wash." },
   { module: "./dryingPractice.mjs", basedOn: "drying", pack: 2,
     description: "Dry the precipitate in two oven stages, handle it hot with tongs, and weigh it by difference." },
+  { module: "./heatReweighPractice.mjs", basedOn: "thermal-decomposition-mass-loss", pack: 2,
+    description: "Heat a carbonate mixture over a blue flame, lid askew, then cool and reweigh it to constant mass." },
 ];
 
 const check = process.argv.includes("--check");

@@ -16,7 +16,7 @@ import type { BenchTextures } from "./textures";
  */
 type Role =
   | "glass-thin" | "glass-thick" | "frosted" | "print" | "metal-brushed" | "metal" | "coating" | "rubber"
-  | "plastic-opaque" | "plastic-translucent" | "plastic-clear" | "paper" | "display";
+  | "plastic-opaque" | "plastic-translucent" | "plastic-clear" | "paper" | "display" | "porcelain" | "brass" | "flame";
 
 const roleByName = new Map<string, Role>(
   Object.entries(viewerMaterials.materials as Record<string, { role: string }>).map(([name, value]) => [name, value.role as Role]),
@@ -151,6 +151,28 @@ const tune = (src: THREE.Material, T: BenchTextures, enclosureGlass: boolean, en
       m.color.setRGB(0.012, 0.015, 0.017);
       return m;
     }
+    // Pack 2's Heat and Reweigh (decided 2026-10-05): glazed porcelain, a burner's brass, and its flames.
+    case "porcelain": {
+      const m = toPhysical(src);
+      Object.assign(m, { roughness: 0.16, metalness: 0, clearcoat: 0.8, clearcoatRoughness: 0.06, sheen: 0.1 });
+      m.color.setRGB(0.86, 0.85, 0.82);
+      return m;
+    }
+    case "brass": {
+      const m = toPhysical(src);
+      Object.assign(m, { metalness: 1, roughness: 0.32, normalMap: T.castN });
+      m.normalScale = new THREE.Vector2(0.08, 0.08);
+      m.color.setRGB(0.78, 0.58, 0.3);
+      return m;
+    }
+    case "flame": {
+      // A flame gives light and blocks none: unlit and see-through, writing no depth. It is drawn a little
+      // stronger than a real flame in a lit room, which is faint against a pale bench.
+      const colour = (src as THREE.MeshStandardMaterial).color ?? new THREE.Color(1, 0.6, 0.2);
+      const opacity = /inner/i.test(name) ? 0.85 : /yellow/i.test(name) ? 0.75 : 0.55;
+      return new THREE.MeshBasicMaterial({ name: src.name, color: colour.clone(), transparent: true, opacity,
+        depthWrite: false, side: THREE.DoubleSide, toneMapped: false });
+    }
     default:
       return src;
   }
@@ -177,7 +199,7 @@ export const tuneMaterials = (root: THREE.Object3D, T: BenchTextures, cache: Map
     const role = materialRole(tuned.name);
     // Marked for picking: an instrument's enclosure glass is seen through (BenchEngine.pick).
     if (options.enclosureGlass && (role === "glass-thin" || role === "glass-thick")) mesh.userData.enclosureGlass = true;
-    mesh.castShadow = role !== "glass-thin" && role !== "glass-thick" && role !== "plastic-clear";
+    mesh.castShadow = role !== "glass-thin" && role !== "glass-thick" && role !== "plastic-clear" && role !== "flame";
     mesh.receiveShadow = true;
   });
 };

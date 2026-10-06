@@ -117,6 +117,17 @@ def build_one(def_id, mod, args):
             if ob.name in formed:
                 ob.hide_render = ob.name not in shown
         lo, hi = bounds_mm([ob for ob in coll.all_objects if ob.name not in formed or ob.name in shown])
+    # Parts drawn by apparatus state (a crucible's lid askew, a burner's flames) render in their default state.
+    stated = registry.get('stateObjects')
+    if stated:
+        hidden = set()
+        for group in stated:
+            shown_now = set(group['objects'].get(group.get('default', ''), []))
+            hidden |= {name for names in group['objects'].values() for name in names} - shown_now
+        for ob in coll.all_objects:
+            if ob.name in hidden:
+                ob.hide_render = True
+        lo, hi = bounds_mm([ob for ob in coll.all_objects if ob.name not in hidden])
     studio = bpy.data.collections.new('studio')
     scene.collection.children.link(studio)
     build_studio(studio)
@@ -148,6 +159,9 @@ COMPOSITES = [
     ('ring-stand-with-funnel', 'ring-stand', 'ring-stand-funnel-seat', 'funnel'),
     ('funnel-stand-with-paper', 'funnel-stand', 'funnel-stand-paper-seat', 'filter-paper'),
     ('funnel-stand-with-flask', 'funnel-stand', 'funnel-receiving-vessel-zone', 'erlenmeyer-flask-250ml'),
+    ('ring-stand-with-clay-triangle', 'ring-stand', 'ring-stand-clay-triangle-seat', 'clay-triangle'),
+    ('ring-stand-with-crucible', 'ring-stand', 'ring-stand-crucible-seat', 'crucible-with-lid'),
+    ('ring-stand-with-burner', 'ring-stand', 'ring-stand-burner-bay', 'bunsen-burner'),
 ]
 
 

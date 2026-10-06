@@ -37,6 +37,16 @@ export const benchOperations = {
   "break-up-precipitate": { verb: "observe", atomId: "atom.observe.break-up-precipitate", control: "Break it up" },
   /** Leave a hot assembly on the heat-safe pad until it is cool enough to weigh (FD-18, FD-19). */
   "cool-on-pad": { verb: "cool", atomId: "atom.cool.on-heat-safe-pad", control: "Wait" },
+  /** Set the crucible's lid askew on the crucible, its vent gap open (S-02, S-03, EX-09). */
+  "set-crucible-lid": { verb: "observe", atomId: "atom.observe.set-crucible-lid-askew", control: "Set the lid askew" },
+  /** Light the burner: air collar nearly closed, gas on, the striker at the top of the barrel (EX-10). */
+  "light-burner": { verb: "observe", atomId: "atom.control.light-burner", control: "Light" },
+  /** Open the burner's air collar until the flame turns from yellow to blue with an inner cone (decision 10). */
+  "set-flame": { verb: "observe", atomId: "atom.control.set-burner-flame", control: "Open the air collar" },
+  /** Heat the crucible over the blue flame, its lid askew, for a stated time (EX-10, EX-16). */
+  "heat-crucible": { verb: "heat", atomId: "atom.heat.crucible-over-burner", control: "Heat" },
+  /** Turn the burner's gas off before the crucible is moved (EX-11). */
+  "turn-off-burner": { verb: "observe", atomId: "atom.control.turn-off-burner", control: "Turn off" },
 } as const satisfies Record<string, BenchOperationSpec>;
 
 export type BenchOperationId = keyof typeof benchOperations;

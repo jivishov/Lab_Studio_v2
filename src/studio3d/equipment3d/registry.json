@@ -268,6 +268,89 @@
       }
     },
     {
+      "definitionId": "bunsen-burner",
+      "model": "bunsen-burner.glb",
+      "thumbnail": "thumbs/bunsen-burner.png",
+      "footprintMm": {
+        "shape": "circle",
+        "radius": 47.5
+      },
+      "grip": {
+        "heightMm": 80.0
+      },
+      "graduations": null,
+      "stateObjects": [
+        {
+          "stateKeys": [
+            "flame",
+            "heat"
+          ],
+          "default": "off",
+          "objects": {
+            "off": [],
+            "yellow": [
+              "Flame_yellow"
+            ],
+            "blue": [
+              "Flame_blue_outer",
+              "Flame_blue_inner"
+            ],
+            "blue/gentle": [
+              "Flame_gentle_outer",
+              "Flame_gentle_inner"
+            ]
+          }
+        },
+        {
+          "stateKeys": [
+            "collar"
+          ],
+          "default": "nearly-closed",
+          "objects": {
+            "nearly-closed": [],
+            "open": [
+              "Burner_collar_port_0",
+              "Burner_collar_port_1"
+            ]
+          }
+        }
+      ],
+      "flicker": [
+        "Flame_yellow",
+        "Flame_blue_outer",
+        "Flame_gentle_outer"
+      ],
+      "anchors": {},
+      "displays": [],
+      "states": {},
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/bunsen_burner.py",
+        "sourceHash": "47299cdf282b42a100a98171c5e55fc506c28f09930c65765e6b4ad08359b7c3"
+      }
+    },
+    {
+      "definitionId": "clay-triangle",
+      "model": "clay-triangle.glb",
+      "thumbnail": "thumbs/clay-triangle.png",
+      "footprintMm": {
+        "shape": "circle",
+        "radius": 60.0
+      },
+      "grip": {
+        "heightMm": 3.0
+      },
+      "graduations": null,
+      "anchors": {},
+      "displays": [],
+      "states": {},
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/clay_triangle.py",
+        "sourceHash": "99038bfe0a12d3af9c2091383624e348e8a6e266f3e6d72e6119fb3978e97ce2"
+      }
+    },
+    {
       "definitionId": "crucible-tongs",
       "model": "crucible-tongs.glb",
       "thumbnail": "thumbs/crucible-tongs.png",
@@ -292,6 +375,68 @@
         "blender": "5.2.2",
         "generator": "tools/blender/equipment/crucible_tongs.py",
         "sourceHash": "c7b304161873d18852ea4d7f549ebc399da29839fd95b43ef54a4f4993793b3e"
+      }
+    },
+    {
+      "definitionId": "crucible-with-lid",
+      "model": "crucible-with-lid.glb",
+      "thumbnail": "thumbs/crucible-with-lid.png",
+      "footprintMm": {
+        "shape": "circle",
+        "radius": 22.5
+      },
+      "grip": {
+        "heightMm": 30.0
+      },
+      "pour": {
+        "lipMm": [
+          -22.5,
+          0.0,
+          39.0
+        ],
+        "tiltDeg": 115.0,
+        "style": "pour"
+      },
+      "graduations": null,
+      "solidRest": {
+        "centreMm": [
+          0.0,
+          0.0,
+          3.2
+        ],
+        "radiusMm": 9.0
+      },
+      "stateObjects": [
+        {
+          "stateKeys": [
+            "lid"
+          ],
+          "default": "closed",
+          "objects": {
+            "closed": [
+              "Crucible_lid",
+              "Crucible_lid_knob"
+            ],
+            "askew": [
+              "Crucible_lid_askew",
+              "Crucible_lid_askew_knob"
+            ]
+          }
+        }
+      ],
+      "glow": {
+        "stateKey": "glow",
+        "objects": [
+          "Crucible_body"
+        ]
+      },
+      "anchors": {},
+      "displays": [],
+      "states": {},
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/crucible_with_lid.py",
+        "sourceHash": "b250aff95ec851b661acdf89469be96dca3681598cab6ff547796fc0ff3780b1"
       }
     },
     {
@@ -1063,12 +1208,19 @@
             0.0,
             12.0
           ]
+        },
+        "ring-stand-burner-bay": {
+          "positionMm": [
+            0.0,
+            0.0,
+            12.0
+          ]
         }
       },
       "provenance": {
         "blender": "5.2.2",
         "generator": "tools/blender/equipment/ring_stand.py",
-        "sourceHash": "e87edd904b13b2bcf640a34ad4c416d9f241450ddc18a1fe32a7f0d8cab49104"
+        "sourceHash": "085bcc0dadc23b0558b32c022cc96e83bfb1ae7b3fb49bf28f23aa50550cddf3"
       }
     },
     {
@@ -1265,6 +1417,74 @@
         "blender": "5.2.2",
         "generator": "tools/blender/equipment/scoopula.py",
         "sourceHash": "fe4db8a0ee90bc18faba13eb72e78a8be154677ffd2a0cea26d21f7308ab264b"
+      }
+    },
+    {
+      "definitionId": "small-vial",
+      "model": "small-vial.glb",
+      "thumbnail": "thumbs/small-vial.png",
+      "footprintMm": {
+        "shape": "circle",
+        "radius": 14.0
+      },
+      "grip": {
+        "heightMm": 35.0
+      },
+      "pour": {
+        "lipMm": [
+          -12.0,
+          0.0,
+          61.0
+        ],
+        "tiltDeg": 120.0,
+        "style": "pour"
+      },
+      "fill": {
+        "innerProfileMm": [
+          [
+            0.0,
+            1.8
+          ],
+          [
+            10.8,
+            1.8
+          ],
+          [
+            12.8,
+            3.8
+          ],
+          [
+            12.8,
+            48.5
+          ],
+          [
+            10.8,
+            52.5
+          ],
+          [
+            10.8,
+            61.0
+          ]
+        ],
+        "capacityMl": 20,
+        "meniscus": "concave"
+      },
+      "graduations": null,
+      "solidRest": {
+        "centreMm": [
+          0.0,
+          0.0,
+          1.8
+        ],
+        "radiusMm": 8.0
+      },
+      "anchors": {},
+      "displays": [],
+      "states": {},
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/small_vial.py",
+        "sourceHash": "3db03e5c4b7908b84a0952b6604ed67c1abf5873d97f6bf5d007276cc8e567dc"
       }
     },
     {

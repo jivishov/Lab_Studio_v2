@@ -1,0 +1,3221 @@
+{
+  "id": "thermal-decomposition-mass-loss-practice",
+  "title": "Heat and Reweigh a Carbonate Mixture",
+  "learningGoal": "Heat a carbonate mixture in a vented crucible over a Bunsen flame, cool and reweigh it to constant mass, and find its composition from the mass lost.",
+  "requiredEquipment": [
+    "analytical-balance",
+    "heat-safe-pad",
+    "crucible-with-lid",
+    "small-vial",
+    "ring-stand",
+    "clay-triangle",
+    "bunsen-burner",
+    "crucible-tongs",
+    "beaker-250ml"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "analytical-balance-1",
+        "definitionId": "analytical-balance",
+        "label": "Analytical balance",
+        "location": "workbench",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "x": 495,
+        "y": 198
+      },
+      {
+        "id": "heat-safe-pad-1",
+        "definitionId": "heat-safe-pad",
+        "label": "Heat-safe pad",
+        "location": "workbench",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "x": 212,
+        "y": 300
+      },
+      {
+        "id": "crucible-with-lid-1",
+        "definitionId": "crucible-with-lid",
+        "label": "Crucible with lid",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "working-sample-portion-1",
+        "definitionId": "small-vial",
+        "label": "Mixture portion",
+        "location": "shelf",
+        "contents": {
+          "kind": "solid",
+          "label": "NaHCO3 / Na2CO3 mixture",
+          "massG": "{{config.sampleMassG}}",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "powder"
+        }
+      },
+      {
+        "id": "ring-stand-1",
+        "definitionId": "ring-stand",
+        "label": "Ring stand",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "clay-triangle-1",
+        "definitionId": "clay-triangle",
+        "label": "Clay triangle",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "bunsen-burner-1",
+        "definitionId": "bunsen-burner",
+        "label": "Bunsen burner",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "crucible-tongs-1",
+        "definitionId": "crucible-tongs",
+        "label": "Crucible tongs",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "heated-product-recovery-1",
+        "definitionId": "beaker-250ml",
+        "label": "Product Made from Heating Samples",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "crucible-on-balance",
+      "verb": "place",
+      "label": "Put the crucible and lid on the balance pan",
+      "parameters": {
+        "equipmentDefinitionId": "crucible-with-lid",
+        "equipmentInstanceId": "crucible-with-lid-1",
+        "targetDefinitionId": "analytical-balance",
+        "targetInstanceId": "analytical-balance-1",
+        "location": "snapZone",
+        "snapZoneId": "analytical-balance-pan",
+        "moveFromHolder": true,
+        "supportEmptyMassG": "{{config.crucibleMassG}}"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Put the crucible and lid on the balance pan: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The crucible is on the pan.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.weighed-vessel",
+      "equipmentRoleBindings": {
+        "weighed-vessel": "crucible-with-lid"
+      }
+    },
+    {
+      "id": "read-empty-crucible",
+      "verb": "weigh",
+      "label": "Read the empty crucible and lid mass",
+      "parameters": {
+        "sourceDefinitionId": "crucible-with-lid",
+        "sourceInstanceId": "crucible-with-lid-1",
+        "targetDefinitionId": "analytical-balance",
+        "targetInstanceId": "analytical-balance-1",
+        "instrumentDefinitionId": "analytical-balance",
+        "maxSafeTemperatureC": 40,
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Balance display for the empty crucible and lid (g)",
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "inputStep": 0.001,
+        "inputRequired": true,
+        "unit": "g"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Read the empty crucible and lid mass: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Reading taken.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "weigh"
+      ],
+      "atomId": "atom.weigh.vessel-supported-balance-display",
+      "equipmentRoleBindings": {
+        "balance-instrument": "analytical-balance",
+        "weighed-vessel": "crucible-with-lid"
+      },
+      "mass": {
+        "source": "action-input",
+        "outputMeasurementId": "empty-crucible-mass",
+        "continuity": {
+          "version": 1,
+          "quantityKind": "balance-display",
+          "measuredSupportInstanceId": "crucible-with-lid-1"
+        }
+      }
+    },
+    {
+      "id": "record-empty-crucible",
+      "verb": "record",
+      "label": "Record the empty crucible and lid mass",
+      "parameters": {
+        "measurementId": "empty-crucible-mass",
+        "label": "Empty crucible and lid",
+        "unit": "g",
+        "copyExistingMeasurementOnly": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record the empty crucible and lid mass: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Mass recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "record",
+        "notebook"
+      ],
+      "interaction": {
+        "accessibleLabel": "Record the empty crucible and lid mass",
+        "type": "recordNotebook",
+        "valueParameter": "measurementId"
+      }
+    },
+    {
+      "id": "add-sample",
+      "verb": "transfer",
+      "label": "Tip the mixture portion into the crucible",
+      "parameters": {
+        "sourceDefinitionId": "small-vial",
+        "sourceInstanceId": "working-sample-portion-1",
+        "targetDefinitionId": "crucible-with-lid",
+        "targetInstanceId": "crucible-with-lid-1",
+        "massG": "{{config.sampleMassG}}",
+        "massIsPlanTargetNotMeasurement": true,
+        "targetLabel": "Crucible containing the carbonate mixture",
+        "visualState": "powder"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Tip the mixture portion into the crucible: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The mixture is in the crucible.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "transfer"
+      ],
+      "interaction": {
+        "accessibleLabel": "Tip the mixture portion into the crucible",
+        "type": "pourInto",
+        "sourceDefinitionId": "small-vial",
+        "targetDefinitionId": "crucible-with-lid"
+      },
+      "atomId": "atom.transfer.solid-portion",
+      "equipmentRoleBindings": {
+        "solid-reagent-source": "small-vial",
+        "receiving-vessel": "crucible-with-lid"
+      }
+    },
+    {
+      "id": "read-loaded-crucible",
+      "verb": "weigh",
+      "label": "Read the loaded crucible and lid mass",
+      "parameters": {
+        "sourceDefinitionId": "crucible-with-lid",
+        "sourceInstanceId": "crucible-with-lid-1",
+        "targetDefinitionId": "analytical-balance",
+        "targetInstanceId": "analytical-balance-1",
+        "instrumentDefinitionId": "analytical-balance",
+        "maxSafeTemperatureC": 40,
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Balance display for the crucible, lid and mixture (g)",
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "inputStep": 0.001,
+        "inputRequired": true,
+        "unit": "g"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Read the loaded crucible and lid mass: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Reading taken.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "weigh"
+      ],
+      "atomId": "atom.weigh.vessel-supported-balance-display",
+      "equipmentRoleBindings": {
+        "balance-instrument": "analytical-balance",
+        "weighed-vessel": "crucible-with-lid"
+      },
+      "mass": {
+        "source": "action-input",
+        "outputMeasurementId": "loaded-crucible-mass",
+        "continuity": {
+          "version": 1,
+          "quantityKind": "balance-display",
+          "measuredSupportInstanceId": "crucible-with-lid-1"
+        }
+      }
+    },
+    {
+      "id": "record-loaded-crucible",
+      "verb": "record",
+      "label": "Record the loaded crucible and lid mass",
+      "parameters": {
+        "measurementId": "loaded-crucible-mass",
+        "label": "Crucible, lid and mixture",
+        "unit": "g",
+        "copyExistingMeasurementOnly": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record the loaded crucible and lid mass: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Mass recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "record",
+        "notebook"
+      ],
+      "interaction": {
+        "accessibleLabel": "Record the loaded crucible and lid mass",
+        "type": "recordNotebook",
+        "valueParameter": "measurementId"
+      }
+    },
+    {
+      "id": "place-ring-stand",
+      "verb": "place",
+      "label": "Stand the ring stand on the bench",
+      "parameters": {
+        "equipmentDefinitionId": "ring-stand",
+        "equipmentInstanceId": "ring-stand-1",
+        "location": "workbench"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Stand the ring stand on the bench: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The ring stand is on the bench.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.thermal-support",
+      "equipmentRoleBindings": {
+        "thermal-support": "ring-stand"
+      }
+    },
+    {
+      "id": "seat-triangle",
+      "verb": "place",
+      "label": "Seat the clay triangle on the ring",
+      "parameters": {
+        "equipmentDefinitionId": "clay-triangle",
+        "equipmentInstanceId": "clay-triangle-1",
+        "targetDefinitionId": "ring-stand",
+        "targetInstanceId": "ring-stand-1",
+        "location": "snapZone",
+        "snapZoneId": "ring-stand-clay-triangle-seat"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Seat the clay triangle on the ring: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The triangle rests on the ring.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.thermal-support",
+      "equipmentRoleBindings": {
+        "thermal-support": "clay-triangle"
+      }
+    },
+    {
+      "id": "place-burner",
+      "verb": "place",
+      "label": "Stand the burner beneath the ring",
+      "parameters": {
+        "equipmentDefinitionId": "bunsen-burner",
+        "equipmentInstanceId": "bunsen-burner-1",
+        "targetDefinitionId": "ring-stand",
+        "targetInstanceId": "ring-stand-1",
+        "location": "snapZone",
+        "snapZoneId": "ring-stand-burner-bay"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Stand the burner beneath the ring: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The burner stands under the ring.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "interaction": {
+        "accessibleLabel": "Stand the burner beneath the ring",
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "bunsen-burner",
+        "targetDefinitionId": "ring-stand"
+      },
+      "atomId": "atom.place.thermal-heating-instrument",
+      "equipmentRoleBindings": {
+        "thermal-heating-instrument": "bunsen-burner"
+      }
+    },
+    {
+      "id": "crucible-on-triangle",
+      "verb": "place",
+      "label": "Set the crucible in the clay triangle",
+      "parameters": {
+        "equipmentDefinitionId": "crucible-with-lid",
+        "equipmentInstanceId": "crucible-with-lid-1",
+        "targetDefinitionId": "ring-stand",
+        "targetInstanceId": "ring-stand-1",
+        "location": "snapZone",
+        "snapZoneId": "ring-stand-crucible-seat",
+        "moveFromHolder": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Set the crucible in the clay triangle: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The crucible stands in the clay triangle.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.thermal-crucible-assembly",
+      "equipmentRoleBindings": {
+        "weighed-vessel": "crucible-with-lid",
+        "thermal-support": "ring-stand"
+      }
+    },
+    {
+      "id": "set-lid-askew",
+      "verb": "observe",
+      "label": "Set the lid askew",
+      "parameters": {
+        "benchOperation": "set-crucible-lid",
+        "crucibleInstanceId": "crucible-with-lid-1",
+        "crucibleDefinitionId": "crucible-with-lid",
+        "crucibleSeatZoneId": "ring-stand-crucible-seat",
+        "tag": "set-lid-askew-done"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Set the lid askew: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The lid is askew; the gap is open.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "interaction": {
+        "accessibleLabel": "Set the lid askew",
+        "type": "recordNotebook",
+        "valueParameter": "note"
+      },
+      "atomId": "atom.observe.set-crucible-lid-askew",
+      "equipmentRoleBindings": {
+        "weighed-vessel": "crucible-with-lid",
+        "thermal-support": "ring-stand"
+      }
+    },
+    {
+      "id": "light-burner-1",
+      "verb": "observe",
+      "label": "Light the burner",
+      "parameters": {
+        "benchOperation": "light-burner",
+        "burnerInstanceId": "bunsen-burner-1",
+        "burnerDefinitionId": "bunsen-burner",
+        "crucibleInstanceId": "crucible-with-lid-1",
+        "crucibleDefinitionId": "crucible-with-lid",
+        "tag": "light-burner-1-done"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Light the burner: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The burner is lit: a yellow flame.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "interaction": {
+        "accessibleLabel": "Light the burner",
+        "type": "recordNotebook",
+        "valueParameter": "note"
+      },
+      "atomId": "atom.control.light-burner",
+      "equipmentRoleBindings": {
+        "thermal-heating-instrument": "bunsen-burner",
+        "weighed-vessel": "crucible-with-lid"
+      }
+    },
+    {
+      "id": "set-flame-1",
+      "verb": "observe",
+      "label": "Open the air collar to a blue flame",
+      "parameters": {
+        "benchOperation": "set-flame",
+        "burnerInstanceId": "bunsen-burner-1",
+        "burnerDefinitionId": "bunsen-burner",
+        "tag": "set-flame-1-done"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Open the air collar to a blue flame: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The flame is blue, with an inner cone.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "interaction": {
+        "accessibleLabel": "Open the air collar to a blue flame",
+        "type": "recordNotebook",
+        "valueParameter": "note"
+      },
+      "atomId": "atom.control.set-burner-flame",
+      "equipmentRoleBindings": {
+        "thermal-heating-instrument": "bunsen-burner"
+      }
+    },
+    {
+      "id": "warm-gently",
+      "verb": "heat",
+      "label": "Warm the mixture gently with the lid askew",
+      "parameters": {
+        "benchOperation": "heat-crucible",
+        "sourceDefinitionId": "crucible-with-lid",
+        "targetDefinitionId": "bunsen-burner",
+        "burnerInstanceId": "bunsen-burner-1",
+        "burnerDefinitionId": "bunsen-burner",
+        "crucibleInstanceId": "crucible-with-lid-1",
+        "crucibleDefinitionId": "crucible-with-lid",
+        "burnerBayZoneId": "ring-stand-burner-bay",
+        "crucibleSeatZoneId": "ring-stand-crucible-seat",
+        "heatMinutes": "{{config.warmMinutes}}",
+        "heatIntensity": "gentle",
+        "tag": "warm-gently-done"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Warm the mixture gently with the lid askew: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The mixture is warm.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "heat",
+        "notebook"
+      ],
+      "interaction": {
+        "accessibleLabel": "Warm the mixture gently with the lid askew",
+        "type": "recordNotebook",
+        "valueParameter": "note"
+      },
+      "atomId": "atom.heat.crucible-over-burner",
+      "equipmentRoleBindings": {
+        "thermal-heating-instrument": "bunsen-burner",
+        "weighed-vessel": "crucible-with-lid",
+        "thermal-support": "ring-stand"
+      }
+    },
+    {
+      "id": "heat-mixture",
+      "verb": "heat",
+      "label": "Heat the mixture",
+      "parameters": {
+        "benchOperation": "heat-crucible",
+        "sourceDefinitionId": "crucible-with-lid",
+        "targetDefinitionId": "bunsen-burner",
+        "burnerInstanceId": "bunsen-burner-1",
+        "burnerDefinitionId": "bunsen-burner",
+        "crucibleInstanceId": "crucible-with-lid-1",
+        "crucibleDefinitionId": "crucible-with-lid",
+        "burnerBayZoneId": "ring-stand-burner-bay",
+        "crucibleSeatZoneId": "ring-stand-crucible-seat",
+        "heatMinutes": "{{config.heatingMinutes}}",
+        "heatIntensity": "{{config.heatingIntensity}}",
+        "residueMassG": "{{config.residueMassG}}",
+        "tag": "heat-mixture-done"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Heat the mixture: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The first heating is done.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "heat",
+        "notebook"
+      ],
+      "interaction": {
+        "accessibleLabel": "Heat the mixture",
+        "type": "recordNotebook",
+        "valueParameter": "note"
+      },
+      "atomId": "atom.heat.crucible-over-burner",
+      "equipmentRoleBindings": {
+        "thermal-heating-instrument": "bunsen-burner",
+        "weighed-vessel": "crucible-with-lid",
+        "thermal-support": "ring-stand"
+      }
+    },
+    {
+      "id": "turn-off-1",
+      "verb": "observe",
+      "label": "Turn off the burner",
+      "parameters": {
+        "benchOperation": "turn-off-burner",
+        "burnerInstanceId": "bunsen-burner-1",
+        "burnerDefinitionId": "bunsen-burner",
+        "crucibleInstanceId": "crucible-with-lid-1",
+        "crucibleDefinitionId": "crucible-with-lid",
+        "tag": "turn-off-1-done"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Turn off the burner: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The gas is off.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "interaction": {
+        "accessibleLabel": "Turn off the burner",
+        "type": "recordNotebook",
+        "valueParameter": "note"
+      },
+      "atomId": "atom.control.turn-off-burner",
+      "equipmentRoleBindings": {
+        "thermal-heating-instrument": "bunsen-burner"
+      }
+    },
+    {
+      "id": "first-to-pad",
+      "verb": "place",
+      "label": "Move the crucible with tongs onto the pad",
+      "parameters": {
+        "equipmentDefinitionId": "crucible-with-lid",
+        "equipmentInstanceId": "crucible-with-lid-1",
+        "targetDefinitionId": "heat-safe-pad",
+        "targetInstanceId": "heat-safe-pad-1",
+        "location": "snapZone",
+        "snapZoneId": "heat-safe-pad-surface",
+        "moveFromHolder": true,
+        "handledWithDefinitionId": "crucible-tongs",
+        "requireBurnerOffInstanceId": "bunsen-burner-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Move the crucible with tongs onto the pad: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The hot crucible is on the pad.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.hot-assembly-onto-pad",
+      "equipmentRoleBindings": {
+        "dried-assembly": "crucible-with-lid",
+        "cooling-surface": "heat-safe-pad",
+        "cooling-tool": "crucible-tongs"
+      }
+    },
+    {
+      "id": "cool-1",
+      "verb": "cool",
+      "label": "Let it cool",
+      "parameters": {
+        "benchOperation": "cool-on-pad",
+        "sourceDefinitionId": "crucible-with-lid",
+        "targetDefinitionId": "heat-safe-pad",
+        "vesselInstanceId": "crucible-with-lid-1",
+        "padInstanceId": "heat-safe-pad-1",
+        "coolMinutes": 10,
+        "cooledTemperatureC": 25,
+        "tag": "cool-1-done"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Let it cool: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "It is cool enough to weigh.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "cool"
+      ],
+      "interaction": {
+        "accessibleLabel": "Let it cool",
+        "type": "recordNotebook",
+        "valueParameter": "note"
+      },
+      "atomId": "atom.cool.on-heat-safe-pad",
+      "equipmentRoleBindings": {
+        "dried-assembly": "crucible-with-lid",
+        "cooling-surface": "heat-safe-pad"
+      }
+    },
+    {
+      "id": "first-on-balance",
+      "verb": "place",
+      "label": "Put the crucible on the balance pan",
+      "parameters": {
+        "equipmentDefinitionId": "crucible-with-lid",
+        "equipmentInstanceId": "crucible-with-lid-1",
+        "targetDefinitionId": "analytical-balance",
+        "targetInstanceId": "analytical-balance-1",
+        "location": "snapZone",
+        "snapZoneId": "analytical-balance-pan",
+        "moveFromHolder": true,
+        "refuseHotByHand": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Put the crucible on the balance pan: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The crucible is on the pan.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.weighed-vessel",
+      "equipmentRoleBindings": {
+        "weighed-vessel": "crucible-with-lid"
+      }
+    },
+    {
+      "id": "read-first-cycle",
+      "verb": "weigh",
+      "label": "Read the first cooled mass",
+      "parameters": {
+        "sourceDefinitionId": "crucible-with-lid",
+        "sourceInstanceId": "crucible-with-lid-1",
+        "targetDefinitionId": "analytical-balance",
+        "targetInstanceId": "analytical-balance-1",
+        "instrumentDefinitionId": "analytical-balance",
+        "maxSafeTemperatureC": 40,
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Balance display after the first heating (g)",
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "inputStep": 0.001,
+        "inputRequired": true,
+        "unit": "g"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Read the first cooled mass: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Reading taken.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "weigh"
+      ],
+      "atomId": "atom.weigh.vessel-supported-balance-display",
+      "equipmentRoleBindings": {
+        "balance-instrument": "analytical-balance",
+        "weighed-vessel": "crucible-with-lid"
+      },
+      "mass": {
+        "source": "action-input",
+        "outputMeasurementId": "cooled-cycle-mass",
+        "continuity": {
+          "version": 1,
+          "quantityKind": "balance-display",
+          "measuredSupportInstanceId": "crucible-with-lid-1"
+        }
+      }
+    },
+    {
+      "id": "record-first-cycle",
+      "verb": "record",
+      "label": "Record the first cooled mass",
+      "parameters": {
+        "measurementId": "cooled-cycle-mass",
+        "label": "Crucible, lid and residue after the first heating",
+        "unit": "g",
+        "copyExistingMeasurementOnly": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record the first cooled mass: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Mass recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "record",
+        "notebook"
+      ],
+      "interaction": {
+        "accessibleLabel": "Record the first cooled mass",
+        "type": "recordNotebook",
+        "valueParameter": "measurementId"
+      }
+    },
+    {
+      "id": "crucible-back-on-triangle",
+      "verb": "place",
+      "label": "Set the crucible back in the clay triangle",
+      "parameters": {
+        "equipmentDefinitionId": "crucible-with-lid",
+        "equipmentInstanceId": "crucible-with-lid-1",
+        "targetDefinitionId": "ring-stand",
+        "targetInstanceId": "ring-stand-1",
+        "location": "snapZone",
+        "snapZoneId": "ring-stand-crucible-seat",
+        "moveFromHolder": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Set the crucible back in the clay triangle: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The crucible stands in the clay triangle.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.thermal-crucible-assembly",
+      "equipmentRoleBindings": {
+        "weighed-vessel": "crucible-with-lid",
+        "thermal-support": "ring-stand"
+      }
+    },
+    {
+      "id": "light-burner-2",
+      "verb": "observe",
+      "label": "Light the burner",
+      "parameters": {
+        "benchOperation": "light-burner",
+        "burnerInstanceId": "bunsen-burner-1",
+        "burnerDefinitionId": "bunsen-burner",
+        "crucibleInstanceId": "crucible-with-lid-1",
+        "crucibleDefinitionId": "crucible-with-lid",
+        "tag": "light-burner-2-done"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Light the burner: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The burner is lit: a yellow flame.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "interaction": {
+        "accessibleLabel": "Light the burner",
+        "type": "recordNotebook",
+        "valueParameter": "note"
+      },
+      "atomId": "atom.control.light-burner",
+      "equipmentRoleBindings": {
+        "thermal-heating-instrument": "bunsen-burner",
+        "weighed-vessel": "crucible-with-lid"
+      }
+    },
+    {
+      "id": "set-flame-2",
+      "verb": "observe",
+      "label": "Open the air collar to a blue flame",
+      "parameters": {
+        "benchOperation": "set-flame",
+        "burnerInstanceId": "bunsen-burner-1",
+        "burnerDefinitionId": "bunsen-burner",
+        "tag": "set-flame-2-done"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Open the air collar to a blue flame: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The flame is blue, with an inner cone.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "interaction": {
+        "accessibleLabel": "Open the air collar to a blue flame",
+        "type": "recordNotebook",
+        "valueParameter": "note"
+      },
+      "atomId": "atom.control.set-burner-flame",
+      "equipmentRoleBindings": {
+        "thermal-heating-instrument": "bunsen-burner"
+      }
+    },
+    {
+      "id": "heat-again",
+      "verb": "heat",
+      "label": "Heat it again",
+      "parameters": {
+        "benchOperation": "heat-crucible",
+        "sourceDefinitionId": "crucible-with-lid",
+        "targetDefinitionId": "bunsen-burner",
+        "burnerInstanceId": "bunsen-burner-1",
+        "burnerDefinitionId": "bunsen-burner",
+        "crucibleInstanceId": "crucible-with-lid-1",
+        "crucibleDefinitionId": "crucible-with-lid",
+        "burnerBayZoneId": "ring-stand-burner-bay",
+        "crucibleSeatZoneId": "ring-stand-crucible-seat",
+        "heatMinutes": "{{config.heatingMinutes}}",
+        "heatIntensity": "{{config.heatingIntensity}}",
+        "residueMassG": "{{config.residueMassG}}",
+        "tag": "heat-again-done"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Heat it again: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The second heating is done.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "heat",
+        "notebook"
+      ],
+      "interaction": {
+        "accessibleLabel": "Heat it again",
+        "type": "recordNotebook",
+        "valueParameter": "note"
+      },
+      "atomId": "atom.heat.crucible-over-burner",
+      "equipmentRoleBindings": {
+        "thermal-heating-instrument": "bunsen-burner",
+        "weighed-vessel": "crucible-with-lid",
+        "thermal-support": "ring-stand"
+      }
+    },
+    {
+      "id": "turn-off-2",
+      "verb": "observe",
+      "label": "Turn off the burner",
+      "parameters": {
+        "benchOperation": "turn-off-burner",
+        "burnerInstanceId": "bunsen-burner-1",
+        "burnerDefinitionId": "bunsen-burner",
+        "crucibleInstanceId": "crucible-with-lid-1",
+        "crucibleDefinitionId": "crucible-with-lid",
+        "tag": "turn-off-2-done"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Turn off the burner: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The gas is off.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "interaction": {
+        "accessibleLabel": "Turn off the burner",
+        "type": "recordNotebook",
+        "valueParameter": "note"
+      },
+      "atomId": "atom.control.turn-off-burner",
+      "equipmentRoleBindings": {
+        "thermal-heating-instrument": "bunsen-burner"
+      }
+    },
+    {
+      "id": "second-to-pad",
+      "verb": "place",
+      "label": "Move the crucible with tongs onto the pad",
+      "parameters": {
+        "equipmentDefinitionId": "crucible-with-lid",
+        "equipmentInstanceId": "crucible-with-lid-1",
+        "targetDefinitionId": "heat-safe-pad",
+        "targetInstanceId": "heat-safe-pad-1",
+        "location": "snapZone",
+        "snapZoneId": "heat-safe-pad-surface",
+        "moveFromHolder": true,
+        "handledWithDefinitionId": "crucible-tongs",
+        "requireBurnerOffInstanceId": "bunsen-burner-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Move the crucible with tongs onto the pad: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The hot crucible is on the pad.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.hot-assembly-onto-pad",
+      "equipmentRoleBindings": {
+        "dried-assembly": "crucible-with-lid",
+        "cooling-surface": "heat-safe-pad",
+        "cooling-tool": "crucible-tongs"
+      }
+    },
+    {
+      "id": "cool-2",
+      "verb": "cool",
+      "label": "Let it cool",
+      "parameters": {
+        "benchOperation": "cool-on-pad",
+        "sourceDefinitionId": "crucible-with-lid",
+        "targetDefinitionId": "heat-safe-pad",
+        "vesselInstanceId": "crucible-with-lid-1",
+        "padInstanceId": "heat-safe-pad-1",
+        "coolMinutes": 10,
+        "cooledTemperatureC": 25,
+        "tag": "cool-2-done"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Let it cool: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "It is cool enough to weigh.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "cool"
+      ],
+      "interaction": {
+        "accessibleLabel": "Let it cool",
+        "type": "recordNotebook",
+        "valueParameter": "note"
+      },
+      "atomId": "atom.cool.on-heat-safe-pad",
+      "equipmentRoleBindings": {
+        "dried-assembly": "crucible-with-lid",
+        "cooling-surface": "heat-safe-pad"
+      }
+    },
+    {
+      "id": "second-on-balance",
+      "verb": "place",
+      "label": "Put the crucible on the balance pan",
+      "parameters": {
+        "equipmentDefinitionId": "crucible-with-lid",
+        "equipmentInstanceId": "crucible-with-lid-1",
+        "targetDefinitionId": "analytical-balance",
+        "targetInstanceId": "analytical-balance-1",
+        "location": "snapZone",
+        "snapZoneId": "analytical-balance-pan",
+        "moveFromHolder": true,
+        "refuseHotByHand": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Put the crucible on the balance pan: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The crucible is on the pan.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.weighed-vessel",
+      "equipmentRoleBindings": {
+        "weighed-vessel": "crucible-with-lid"
+      }
+    },
+    {
+      "id": "read-final",
+      "verb": "weigh",
+      "label": "Read the second cooled mass",
+      "parameters": {
+        "sourceDefinitionId": "crucible-with-lid",
+        "sourceInstanceId": "crucible-with-lid-1",
+        "targetDefinitionId": "analytical-balance",
+        "targetInstanceId": "analytical-balance-1",
+        "instrumentDefinitionId": "analytical-balance",
+        "maxSafeTemperatureC": 40,
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Balance display after the second heating (g)",
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "inputStep": 0.001,
+        "inputRequired": true,
+        "unit": "g"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Read the second cooled mass: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Reading taken.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "weigh"
+      ],
+      "atomId": "atom.weigh.vessel-supported-balance-display",
+      "equipmentRoleBindings": {
+        "balance-instrument": "analytical-balance",
+        "weighed-vessel": "crucible-with-lid"
+      },
+      "mass": {
+        "source": "action-input",
+        "outputMeasurementId": "final-cooled-crucible-mass",
+        "continuity": {
+          "version": 1,
+          "quantityKind": "balance-display",
+          "measuredSupportInstanceId": "crucible-with-lid-1"
+        }
+      }
+    },
+    {
+      "id": "record-final",
+      "verb": "record",
+      "label": "Record the constant final mass",
+      "parameters": {
+        "measurementId": "final-cooled-crucible-mass",
+        "label": "Crucible, lid and residue at constant mass",
+        "unit": "g",
+        "copyExistingMeasurementOnly": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record the constant final mass: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Mass recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "record",
+        "notebook"
+      ],
+      "interaction": {
+        "accessibleLabel": "Record the constant final mass",
+        "type": "recordNotebook",
+        "valueParameter": "measurementId"
+      }
+    },
+    {
+      "id": "recover-product",
+      "verb": "transfer",
+      "label": "Tip the product into its labelled beaker",
+      "parameters": {
+        "sourceInstanceId": "crucible-with-lid-1",
+        "sourceDefinitionId": "crucible-with-lid",
+        "targetInstanceId": "heated-product-recovery-1",
+        "targetDefinitionId": "beaker-250ml",
+        "targetLabel": "Product Made from Heating Samples",
+        "massG": "{{config.residueMassG}}",
+        "massIsPlanTargetNotMeasurement": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Tip the product into its labelled beaker: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The product is in its labelled beaker.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "transfer"
+      ],
+      "interaction": {
+        "accessibleLabel": "Tip the product into its labelled beaker",
+        "type": "pourInto",
+        "sourceDefinitionId": "crucible-with-lid",
+        "targetDefinitionId": "beaker-250ml"
+      },
+      "atomId": "atom.transfer.heated-product-to-labeled-recovery",
+      "equipmentRoleBindings": {
+        "weighed-vessel": "crucible-with-lid",
+        "recovery-vessel": "beaker-250ml"
+      }
+    },
+    {
+      "id": "calculate-composition",
+      "verb": "calculate",
+      "label": "Work out the mixture's composition",
+      "parameters": {
+        "calculationId": "composition-analysis",
+        "template": "carbonateMassLossComposition",
+        "emptyMassMeasurementId": "empty-crucible-mass",
+        "initialMassMeasurementId": "loaded-crucible-mass",
+        "finalMassMeasurementId": "final-cooled-crucible-mass",
+        "sampleMassG": "{{config.sampleMassG}}",
+        "tolerance": 0.002,
+        "reactionEquation": "2 NaHCO3(s) -> Na2CO3(s) + CO2(g) + H2O(g)"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Work out the mixture's composition: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Composition worked out.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "calculate"
+      ]
+    }
+  ],
+  "process": {
+    "startNodeId": "crucible-on-balance-node",
+    "nodes": [
+      {
+        "id": "crucible-on-balance-node",
+        "type": "action",
+        "title": "Put the crucible on the balance",
+        "description": "Put the clean, dry, cool crucible with its lid on the balance pan.",
+        "actionId": "crucible-on-balance",
+        "config": {},
+        "validation": [
+          {
+            "id": "crucible-on-balance-node-done",
+            "type": "actionEvidence",
+            "label": "Action crucible-on-balance was completed.",
+            "actionId": "crucible-on-balance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Put the crucible on the balance complete.",
+          "retry": "Review Put the crucible on the balance and try again."
+        }
+      },
+      {
+        "id": "read-empty-crucible-node",
+        "type": "action",
+        "title": "Read its mass",
+        "description": "Read the balance and enter the empty crucible and lid's mass.",
+        "actionId": "read-empty-crucible",
+        "config": {},
+        "validation": [
+          {
+            "id": "read-empty-crucible-node-done",
+            "type": "measurementRecorded",
+            "label": "Read its mass was recorded.",
+            "measurementId": "empty-crucible-mass"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read its mass complete.",
+          "retry": "Review Read its mass and try again."
+        }
+      },
+      {
+        "id": "record-empty-crucible-node",
+        "type": "action",
+        "title": "Record the mass",
+        "description": "Record the empty crucible and lid's mass in your notebook.",
+        "actionId": "record-empty-crucible",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-empty-crucible-node-done",
+            "type": "measurementRecorded",
+            "label": "Record the mass was recorded.",
+            "measurementId": "empty-crucible-mass"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record the mass complete.",
+          "retry": "Review Record the mass and try again."
+        }
+      },
+      {
+        "id": "add-sample-node",
+        "type": "action",
+        "title": "Add the mixture",
+        "description": "Tip the mixture portion from its vial into the crucible.",
+        "actionId": "add-sample",
+        "config": {},
+        "validation": [
+          {
+            "id": "add-sample-node-done",
+            "type": "actionEvidence",
+            "label": "Action add-sample was completed.",
+            "actionId": "add-sample"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Add the mixture complete.",
+          "retry": "Review Add the mixture and try again."
+        }
+      },
+      {
+        "id": "read-loaded-crucible-node",
+        "type": "action",
+        "title": "Read the loaded mass",
+        "description": "Read the balance and enter the crucible, lid and mixture's mass.",
+        "actionId": "read-loaded-crucible",
+        "config": {},
+        "validation": [
+          {
+            "id": "read-loaded-crucible-node-done",
+            "type": "measurementRecorded",
+            "label": "Read the loaded mass was recorded.",
+            "measurementId": "loaded-crucible-mass"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read the loaded mass complete.",
+          "retry": "Review Read the loaded mass and try again."
+        }
+      },
+      {
+        "id": "record-loaded-crucible-node",
+        "type": "action",
+        "title": "Record the loaded mass",
+        "description": "Record the loaded mass in your notebook.",
+        "actionId": "record-loaded-crucible",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-loaded-crucible-node-done",
+            "type": "measurementRecorded",
+            "label": "Record the loaded mass was recorded.",
+            "measurementId": "loaded-crucible-mass"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record the loaded mass complete.",
+          "retry": "Review Record the loaded mass and try again."
+        }
+      },
+      {
+        "id": "place-ring-stand-node",
+        "type": "action",
+        "title": "Stand the ring stand",
+        "description": "Stand the ring stand on the bench.",
+        "actionId": "place-ring-stand",
+        "config": {},
+        "validation": [
+          {
+            "id": "place-ring-stand-node-done",
+            "type": "actionEvidence",
+            "label": "Action place-ring-stand was completed.",
+            "actionId": "place-ring-stand"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Stand the ring stand complete.",
+          "retry": "Review Stand the ring stand and try again."
+        }
+      },
+      {
+        "id": "seat-triangle-node",
+        "type": "action",
+        "title": "Seat the clay triangle",
+        "description": "Rest the clay triangle on the iron ring.",
+        "actionId": "seat-triangle",
+        "config": {},
+        "validation": [
+          {
+            "id": "seat-triangle-node-done",
+            "type": "actionEvidence",
+            "label": "Action seat-triangle was completed.",
+            "actionId": "seat-triangle"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Seat the clay triangle complete.",
+          "retry": "Review Seat the clay triangle and try again."
+        }
+      },
+      {
+        "id": "place-burner-node",
+        "type": "action",
+        "title": "Place the burner",
+        "description": "Stand the Bunsen burner on the base beneath the ring.",
+        "actionId": "place-burner",
+        "config": {},
+        "validation": [
+          {
+            "id": "place-burner-node-done",
+            "type": "actionEvidence",
+            "label": "Action place-burner was completed.",
+            "actionId": "place-burner"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Place the burner complete.",
+          "retry": "Review Place the burner and try again."
+        }
+      },
+      {
+        "id": "crucible-on-triangle-node",
+        "type": "action",
+        "title": "Set the crucible on the support",
+        "description": "Take the crucible off the balance and stand it in the clay triangle.",
+        "actionId": "crucible-on-triangle",
+        "config": {},
+        "validation": [
+          {
+            "id": "crucible-on-triangle-node-done",
+            "type": "actionEvidence",
+            "label": "Action crucible-on-triangle was completed.",
+            "actionId": "crucible-on-triangle"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Set the crucible on the support complete.",
+          "retry": "Review Set the crucible on the support and try again."
+        }
+      },
+      {
+        "id": "set-lid-askew-node",
+        "type": "action",
+        "title": "Set the lid askew",
+        "description": "Set the lid askew, leaving a gap. Never heat a fully covered crucible.",
+        "actionId": "set-lid-askew",
+        "config": {},
+        "validation": [
+          {
+            "id": "set-lid-askew-node-done",
+            "type": "notebookEntry",
+            "label": "Set the lid askew was completed.",
+            "notebookTag": "set-lid-askew-done"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Set the lid askew complete.",
+          "retry": "Review Set the lid askew and try again."
+        }
+      },
+      {
+        "id": "light-burner-1-node",
+        "type": "action",
+        "title": "Light the burner",
+        "description": "Close the air collar almost fully, turn on the gas, and light it with the striker at the top of the barrel.",
+        "actionId": "light-burner-1",
+        "config": {},
+        "validation": [
+          {
+            "id": "light-burner-1-node-done",
+            "type": "notebookEntry",
+            "label": "Light the burner was completed.",
+            "notebookTag": "light-burner-1-done"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Light the burner complete.",
+          "retry": "Review Light the burner and try again."
+        }
+      },
+      {
+        "id": "set-flame-1-node",
+        "type": "action",
+        "title": "Set the flame",
+        "description": "Open the air collar until the flame is blue, with an inner cone.",
+        "actionId": "set-flame-1",
+        "config": {},
+        "validation": [
+          {
+            "id": "set-flame-1-node-done",
+            "type": "notebookEntry",
+            "label": "Set the flame was completed.",
+            "notebookTag": "set-flame-1-done"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Set the flame complete.",
+          "retry": "Review Set the flame and try again."
+        }
+      },
+      {
+        "id": "warm-gently-node",
+        "type": "action",
+        "title": "Warm the mixture gently with the lid askew",
+        "description": "Warm the crucible gently first.",
+        "actionId": "warm-gently",
+        "config": {},
+        "validation": [
+          {
+            "id": "warm-gently-node-done",
+            "type": "notebookEntry",
+            "label": "Warm the mixture gently with the lid askew was completed.",
+            "notebookTag": "warm-gently-done"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Warm the mixture gently with the lid askew complete.",
+          "retry": "Review Warm the mixture gently with the lid askew and try again."
+        }
+      },
+      {
+        "id": "heat-mixture-node",
+        "type": "action",
+        "title": "Heat the mixture",
+        "description": "Heat the crucible for the set time.",
+        "actionId": "heat-mixture",
+        "config": {},
+        "validation": [
+          {
+            "id": "heat-mixture-node-done",
+            "type": "notebookEntry",
+            "label": "Heat the mixture was completed.",
+            "notebookTag": "heat-mixture-done"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Heat the mixture complete.",
+          "retry": "Review Heat the mixture and try again."
+        }
+      },
+      {
+        "id": "turn-off-1-node",
+        "type": "action",
+        "title": "Turn off the burner",
+        "description": "Turn the gas off before you move the crucible.",
+        "actionId": "turn-off-1",
+        "config": {},
+        "validation": [
+          {
+            "id": "turn-off-1-node-done",
+            "type": "notebookEntry",
+            "label": "Turn off the burner was completed.",
+            "notebookTag": "turn-off-1-done"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Turn off the burner complete.",
+          "retry": "Review Turn off the burner and try again."
+        }
+      },
+      {
+        "id": "first-to-pad-node",
+        "type": "action",
+        "title": "Move it with tongs",
+        "description": "Lift the hot crucible with the crucible tongs onto the heat-safe pad.",
+        "actionId": "first-to-pad",
+        "config": {},
+        "validation": [
+          {
+            "id": "first-to-pad-node-done",
+            "type": "actionEvidence",
+            "label": "Action first-to-pad was completed.",
+            "actionId": "first-to-pad"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Move it with tongs complete.",
+          "retry": "Review Move it with tongs and try again."
+        }
+      },
+      {
+        "id": "cool-1-node",
+        "type": "action",
+        "title": "Let it cool",
+        "description": "Leave it on the pad until it is cool enough to weigh.",
+        "actionId": "cool-1",
+        "config": {},
+        "validation": [
+          {
+            "id": "cool-1-node-done",
+            "type": "notebookEntry",
+            "label": "Let it cool was completed.",
+            "notebookTag": "cool-1-done"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Let it cool complete.",
+          "retry": "Review Let it cool and try again."
+        }
+      },
+      {
+        "id": "first-on-balance-node",
+        "type": "action",
+        "title": "Put it on the balance",
+        "description": "Put the cool crucible on the balance pan.",
+        "actionId": "first-on-balance",
+        "config": {},
+        "validation": [
+          {
+            "id": "first-on-balance-node-done",
+            "type": "actionEvidence",
+            "label": "Action first-on-balance was completed.",
+            "actionId": "first-on-balance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Put it on the balance complete.",
+          "retry": "Review Put it on the balance and try again."
+        }
+      },
+      {
+        "id": "read-first-cycle-node",
+        "type": "action",
+        "title": "Read the cooled mass",
+        "description": "Read the balance and enter the mass.",
+        "actionId": "read-first-cycle",
+        "config": {},
+        "validation": [
+          {
+            "id": "read-first-cycle-node-done",
+            "type": "measurementRecorded",
+            "label": "Read the cooled mass was recorded.",
+            "measurementId": "cooled-cycle-mass"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read the cooled mass complete.",
+          "retry": "Review Read the cooled mass and try again."
+        }
+      },
+      {
+        "id": "record-first-cycle-node",
+        "type": "action",
+        "title": "Record the cooled mass",
+        "description": "Record the mass in your notebook.",
+        "actionId": "record-first-cycle",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-first-cycle-node-done",
+            "type": "measurementRecorded",
+            "label": "Record the cooled mass was recorded.",
+            "measurementId": "cooled-cycle-mass"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record the cooled mass complete.",
+          "retry": "Review Record the cooled mass and try again."
+        }
+      },
+      {
+        "id": "crucible-back-on-triangle-node",
+        "type": "action",
+        "title": "Set it back on the support",
+        "description": "Stand the crucible back in the clay triangle, the lid still askew.",
+        "actionId": "crucible-back-on-triangle",
+        "config": {},
+        "validation": [
+          {
+            "id": "crucible-back-on-triangle-node-done",
+            "type": "actionEvidence",
+            "label": "Action crucible-back-on-triangle was completed.",
+            "actionId": "crucible-back-on-triangle"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Set it back on the support complete.",
+          "retry": "Review Set it back on the support and try again."
+        }
+      },
+      {
+        "id": "light-burner-2-node",
+        "type": "action",
+        "title": "Light the burner",
+        "description": "Light the burner again, the air collar almost closed.",
+        "actionId": "light-burner-2",
+        "config": {},
+        "validation": [
+          {
+            "id": "light-burner-2-node-done",
+            "type": "notebookEntry",
+            "label": "Light the burner was completed.",
+            "notebookTag": "light-burner-2-done"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Light the burner complete.",
+          "retry": "Review Light the burner and try again."
+        }
+      },
+      {
+        "id": "set-flame-2-node",
+        "type": "action",
+        "title": "Set the flame",
+        "description": "Open the air collar to a blue flame.",
+        "actionId": "set-flame-2",
+        "config": {},
+        "validation": [
+          {
+            "id": "set-flame-2-node-done",
+            "type": "notebookEntry",
+            "label": "Set the flame was completed.",
+            "notebookTag": "set-flame-2-done"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Set the flame complete.",
+          "retry": "Review Set the flame and try again."
+        }
+      },
+      {
+        "id": "heat-again-node",
+        "type": "action",
+        "title": "Heat it again",
+        "description": "Heat the crucible again for the same time.",
+        "actionId": "heat-again",
+        "config": {},
+        "validation": [
+          {
+            "id": "heat-again-node-done",
+            "type": "notebookEntry",
+            "label": "Heat it again was completed.",
+            "notebookTag": "heat-again-done"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Heat it again complete.",
+          "retry": "Review Heat it again and try again."
+        }
+      },
+      {
+        "id": "turn-off-2-node",
+        "type": "action",
+        "title": "Turn off the burner",
+        "description": "Turn the gas off.",
+        "actionId": "turn-off-2",
+        "config": {},
+        "validation": [
+          {
+            "id": "turn-off-2-node-done",
+            "type": "notebookEntry",
+            "label": "Turn off the burner was completed.",
+            "notebookTag": "turn-off-2-done"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Turn off the burner complete.",
+          "retry": "Review Turn off the burner and try again."
+        }
+      },
+      {
+        "id": "second-to-pad-node",
+        "type": "action",
+        "title": "Move it with tongs",
+        "description": "Lift the crucible with the tongs onto the heat-safe pad.",
+        "actionId": "second-to-pad",
+        "config": {},
+        "validation": [
+          {
+            "id": "second-to-pad-node-done",
+            "type": "actionEvidence",
+            "label": "Action second-to-pad was completed.",
+            "actionId": "second-to-pad"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Move it with tongs complete.",
+          "retry": "Review Move it with tongs and try again."
+        }
+      },
+      {
+        "id": "cool-2-node",
+        "type": "action",
+        "title": "Let it cool",
+        "description": "Leave it on the pad until it is cool enough to weigh.",
+        "actionId": "cool-2",
+        "config": {},
+        "validation": [
+          {
+            "id": "cool-2-node-done",
+            "type": "notebookEntry",
+            "label": "Let it cool was completed.",
+            "notebookTag": "cool-2-done"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Let it cool complete.",
+          "retry": "Review Let it cool and try again."
+        }
+      },
+      {
+        "id": "second-on-balance-node",
+        "type": "action",
+        "title": "Put it on the balance",
+        "description": "Put the cool crucible on the balance pan.",
+        "actionId": "second-on-balance",
+        "config": {},
+        "validation": [
+          {
+            "id": "second-on-balance-node-done",
+            "type": "actionEvidence",
+            "label": "Action second-on-balance was completed.",
+            "actionId": "second-on-balance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Put it on the balance complete.",
+          "retry": "Review Put it on the balance and try again."
+        }
+      },
+      {
+        "id": "read-final-node",
+        "type": "action",
+        "title": "Read the mass again",
+        "description": "Read the balance and enter the mass. It should match the first cooled mass: constant mass.",
+        "actionId": "read-final",
+        "config": {},
+        "validation": [
+          {
+            "id": "read-final-node-done",
+            "type": "measurementRecorded",
+            "label": "Read the mass again was recorded.",
+            "measurementId": "final-cooled-crucible-mass"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read the mass again complete.",
+          "retry": "Review Read the mass again and try again."
+        }
+      },
+      {
+        "id": "record-final-node",
+        "type": "action",
+        "title": "Record the final mass",
+        "description": "Record the constant final mass in your notebook.",
+        "actionId": "record-final",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-final-node-done",
+            "type": "measurementRecorded",
+            "label": "Record the final mass was recorded.",
+            "measurementId": "final-cooled-crucible-mass"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record the final mass complete.",
+          "retry": "Review Record the final mass and try again."
+        }
+      },
+      {
+        "id": "recover-product-node",
+        "type": "action",
+        "title": "Recover the product",
+        "description": "Tip the cool product into the beaker labelled \"Product Made from Heating Samples\".",
+        "actionId": "recover-product",
+        "config": {},
+        "validation": [
+          {
+            "id": "recover-product-node-done",
+            "type": "actionEvidence",
+            "label": "Action recover-product was completed.",
+            "actionId": "recover-product"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Recover the product complete.",
+          "retry": "Review Recover the product and try again."
+        }
+      },
+      {
+        "id": "calculate-composition-node",
+        "type": "calculation",
+        "title": "Work out the composition",
+        "description": "From the mass lost, work out the masses of sodium hydrogen carbonate and sodium carbonate in the mixture.",
+        "actionId": "calculate-composition",
+        "config": {},
+        "validation": [
+          {
+            "id": "calculate-composition-node-done",
+            "type": "calculationWithinTolerance",
+            "label": "Work out the composition was submitted.",
+            "calculationId": "composition-analysis"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Work out the composition complete.",
+          "retry": "Review Work out the composition and try again."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "crucible-on-balance-node",
+        "to": "read-empty-crucible-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "read-empty-crucible-node",
+        "to": "record-empty-crucible-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-empty-crucible-node",
+        "to": "add-sample-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "add-sample-node",
+        "to": "read-loaded-crucible-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "read-loaded-crucible-node",
+        "to": "record-loaded-crucible-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-loaded-crucible-node",
+        "to": "place-ring-stand-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "place-ring-stand-node",
+        "to": "seat-triangle-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "seat-triangle-node",
+        "to": "place-burner-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "place-burner-node",
+        "to": "crucible-on-triangle-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "crucible-on-triangle-node",
+        "to": "set-lid-askew-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "set-lid-askew-node",
+        "to": "light-burner-1-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "light-burner-1-node",
+        "to": "set-flame-1-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "set-flame-1-node",
+        "to": "warm-gently-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "warm-gently-node",
+        "to": "heat-mixture-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "heat-mixture-node",
+        "to": "turn-off-1-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "turn-off-1-node",
+        "to": "first-to-pad-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "first-to-pad-node",
+        "to": "cool-1-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cool-1-node",
+        "to": "first-on-balance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "first-on-balance-node",
+        "to": "read-first-cycle-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "read-first-cycle-node",
+        "to": "record-first-cycle-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-first-cycle-node",
+        "to": "crucible-back-on-triangle-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "crucible-back-on-triangle-node",
+        "to": "light-burner-2-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "light-burner-2-node",
+        "to": "set-flame-2-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "set-flame-2-node",
+        "to": "heat-again-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "heat-again-node",
+        "to": "turn-off-2-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "turn-off-2-node",
+        "to": "second-to-pad-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "second-to-pad-node",
+        "to": "cool-2-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cool-2-node",
+        "to": "second-on-balance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "second-on-balance-node",
+        "to": "read-final-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "read-final-node",
+        "to": "record-final-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-final-node",
+        "to": "recover-product-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "recover-product-node",
+        "to": "calculate-composition-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [
+    {
+      "id": "thermal-decomposition-mass-loss-practice-success",
+      "type": "actionEvidence",
+      "label": "Action read-final was completed.",
+      "actionId": "read-final"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "current node expects a different action",
+      "message": "That action is out of sequence for the current technique step.",
+      "recovery": "Check the process map and perform the highlighted step first."
+    },
+    {
+      "id": "missing-source",
+      "when": "source equipment or contents are missing",
+      "message": "The selected source does not contain the material required for this action.",
+      "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+    },
+    {
+      "id": "overflow",
+      "when": "target capacity would be exceeded",
+      "message": "The target equipment cannot hold the requested volume.",
+      "recovery": "Use a larger container or transfer a smaller measured amount."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.0.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-10-05T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "practice-3d",
+      "thermal-decomposition",
+      "constant-mass",
+      "gravimetry"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry",
+        "kind": "entry",
+        "nodeId": "crucible-on-balance-node",
+        "label": "Entry"
+      },
+      {
+        "id": "exit",
+        "kind": "exit",
+        "nodeId": "calculate-composition-node",
+        "label": "Exit"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "weighed-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "crucible-with-lid"
+        ],
+        "sourceInstanceIds": [
+          "crucible-with-lid-1"
+        ]
+      },
+      {
+        "roleId": "balance-instrument",
+        "required": true,
+        "allowedDefinitionIds": [
+          "analytical-balance"
+        ],
+        "sourceInstanceIds": [
+          "analytical-balance-1"
+        ]
+      },
+      {
+        "roleId": "solid-reagent-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "small-vial"
+        ],
+        "sourceInstanceIds": [
+          "working-sample-portion-1"
+        ]
+      },
+      {
+        "roleId": "receiving-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "crucible-with-lid"
+        ],
+        "sourceInstanceIds": [
+          "crucible-with-lid-1"
+        ]
+      },
+      {
+        "roleId": "thermal-support",
+        "required": true,
+        "allowedDefinitionIds": [
+          "ring-stand",
+          "clay-triangle"
+        ],
+        "sourceInstanceIds": [
+          "ring-stand-1",
+          "clay-triangle-1"
+        ]
+      },
+      {
+        "roleId": "thermal-heating-instrument",
+        "required": true,
+        "allowedDefinitionIds": [
+          "bunsen-burner"
+        ],
+        "sourceInstanceIds": [
+          "bunsen-burner-1"
+        ]
+      },
+      {
+        "roleId": "dried-assembly",
+        "required": true,
+        "allowedDefinitionIds": [
+          "crucible-with-lid"
+        ],
+        "sourceInstanceIds": [
+          "crucible-with-lid-1"
+        ]
+      },
+      {
+        "roleId": "cooling-surface",
+        "required": true,
+        "allowedDefinitionIds": [
+          "heat-safe-pad"
+        ],
+        "sourceInstanceIds": [
+          "heat-safe-pad-1"
+        ]
+      },
+      {
+        "roleId": "cooling-tool",
+        "required": true,
+        "allowedDefinitionIds": [
+          "crucible-tongs"
+        ],
+        "sourceInstanceIds": [
+          "crucible-tongs-1"
+        ]
+      },
+      {
+        "roleId": "recovery-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beaker-250ml"
+        ],
+        "sourceInstanceIds": [
+          "heated-product-recovery-1"
+        ]
+      }
+    ],
+    "modelSlots": [],
+    "configurationSlots": [
+      {
+        "id": "crucibleMassG",
+        "valueType": "number",
+        "required": true,
+        "defaultValue": 25
+      },
+      {
+        "id": "sampleMassG",
+        "valueType": "number",
+        "required": true,
+        "defaultValue": 2
+      },
+      {
+        "id": "residueMassG",
+        "valueType": "number",
+        "required": true,
+        "defaultValue": 1.557
+      },
+      {
+        "id": "warmMinutes",
+        "valueType": "number",
+        "required": true,
+        "defaultValue": 2
+      },
+      {
+        "id": "heatingMinutes",
+        "valueType": "number",
+        "required": true,
+        "defaultValue": 10
+      },
+      {
+        "id": "heatingIntensity",
+        "valueType": "string",
+        "required": true,
+        "defaultValue": "strong",
+        "allowedValues": [
+          "moderate",
+          "strong"
+        ]
+      }
+    ],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [
+      {
+        "id": "empty-crucible-mass",
+        "kind": "measurement",
+        "actionId": "read-empty-crucible",
+        "referenceId": "empty-crucible-mass"
+      },
+      {
+        "id": "loaded-crucible-mass",
+        "kind": "measurement",
+        "actionId": "read-loaded-crucible",
+        "referenceId": "loaded-crucible-mass"
+      },
+      {
+        "id": "final-cooled-crucible-mass",
+        "kind": "measurement",
+        "actionId": "read-final",
+        "referenceId": "final-cooled-crucible-mass"
+      },
+      {
+        "id": "composition-analysis",
+        "kind": "calculation",
+        "actionId": "calculate-composition",
+        "referenceId": "composition-analysis"
+      }
+    ],
+    "completion": {
+      "exitPortIds": [
+        "exit"
+      ],
+      "requiredEvidenceOutputIds": [
+        "empty-crucible-mass",
+        "loaded-crucible-mass",
+        "final-cooled-crucible-mass",
+        "composition-analysis"
+      ],
+      "requiredValidationRuleIds": [
+        "thermal-decomposition-mass-loss-practice-success"
+      ]
+    },
+    "catalogDisposition": "standalone-practice",
+    "legacyActionEffects": [
+      {
+        "actionId": "record-empty-crucible",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-loaded-crucible",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-first-cycle",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-final",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "calculate-composition",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

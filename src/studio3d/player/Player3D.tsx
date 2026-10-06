@@ -325,7 +325,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     const draw = async () => {
       await engine.sync(run.staging);
       if (run.operation === "stir") await engine.animateStir(run.vesselId, run.clockSeconds ?? 3);
-      else if (run.operation === "settle-precipitate" || run.operation === "dry-in-oven" || run.operation === "cool-on-pad") {
+      else if (run.operation === "settle-precipitate" || run.operation === "dry-in-oven" || run.operation === "cool-on-pad"
+        || run.operation === "heat-crucible") {
         await engine.animateContentsChange(run.vesselId, { before: run.before, after: run.after }, run.clockSeconds ?? 3);
       }
       else if (run.toolId) {
@@ -620,6 +621,13 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   const ovenDoorStep = player.benchOp && (player.benchOp.operation === "open-oven-door" || player.benchOp.operation === "dry-in-oven")
     ? player.benchOp.deviceInstanceId : undefined;
   const isOvenTarget = (id: string): boolean => Boolean(ovenDoorStep) && id === ovenDoorStep;
+  // The Bunsen burner (Heat and Reweigh): a click on it lights it, opens its air collar, starts the heating or
+  // turns it off, as the step says; a click on the crucible sets its lid askew.
+  const burnerOperation = player.benchOp && ["light-burner", "set-flame", "heat-crucible", "turn-off-burner"].includes(player.benchOp.operation)
+    ? player.benchOp : undefined;
+  const isBurnerTarget = (id: string): boolean => Boolean(burnerOperation) && !player.benchOpRun
+    && (id === burnerOperation!.deviceInstanceId || (burnerOperation!.operation === "heat-crucible" && id === burnerOperation!.vesselInstanceId));
+  const isLidTarget = (id: string): boolean => player.benchOp?.operation === "set-crucible-lid" && id === player.benchOp.vesselInstanceId;
   // Folding the filter paper (Pack 2): a click on it once it is on the bench, Enter on it, or the step card's Fold.
   const foldPaperId = player.benchOp?.operation === "fold-filter-paper" ? player.benchOp.toolInstanceId : undefined;
   const isFoldTarget = (id: string): boolean => Boolean(foldPaperId) && id === foldPaperId
@@ -780,7 +788,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
         e.preventDefault();
       } else if (e.key === "Enter") {
         // At an inversion or swirl step, Enter on the flask inverts or swirls it once.
-        if (selected && (isInvertTarget(selected) || isSwirlTarget(selected) || isStirTarget(selected) || isFoldTarget(selected))) { player.recordEvidence(); e.preventDefault(); }
+        if (selected && (isInvertTarget(selected) || isSwirlTarget(selected) || isStirTarget(selected) || isFoldTarget(selected)
+          || isBurnerTarget(selected) || isLidTarget(selected))) { player.recordEvidence(); e.preventDefault(); }
         else if (selected && scene.bench.some((item) => item.instanceId === selected)) { startMove(selected); e.preventDefault(); }
       } else if (e.key === "e" || e.key === "E") { if (selected) examine(selected); }
       else if (e.key === "s" || e.key === "S") { if (selected) player.setSelectedSource(selected); }
@@ -863,7 +872,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     // At an inversion step, a tap on the stoppered vessel (or its stopper) inverts it once; at a swirl
     // step, a tap on the flask swirls it.
     if (refuseEarlyOpen(id)) return true;
-    if (isInvertTarget(id) || isSwirlTarget(id) || isStirTarget(id) || isFoldTarget(id) || isOvenTarget(id)) {
+    if (isInvertTarget(id) || isSwirlTarget(id) || isStirTarget(id) || isFoldTarget(id) || isOvenTarget(id) || isBurnerTarget(id) || isLidTarget(id)) {
       player.recordEvidence();
       return true;
     }
@@ -962,6 +971,11 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     : player.benchOp?.operation === "dry-in-oven" ? "Click the oven door to close it and start the clock, or use Close and dry. Right-drag to look around."
     : player.benchOp?.operation === "break-up-precipitate" ? "Pick up the metal scoop and click the watch glass to break up the solid, or use Break it up. Right-drag to look around."
     : player.benchOp?.operation === "cool-on-pad" ? "Leave it on the pad: use Wait while it cools. Right-drag to look around."
+    : player.benchOp?.operation === "set-crucible-lid" ? "Click the crucible to set its lid askew, or use Set the lid askew. Right-drag to look around."
+    : player.benchOp?.operation === "light-burner" ? "Click the burner: collar nearly closed, gas on, striker at the top of the barrel. Or use Light. Right-drag to look around."
+    : player.benchOp?.operation === "set-flame" ? "Click the burner to open its air collar until the flame is blue, or use Open the air collar. Right-drag to look around."
+    : player.benchOp?.operation === "heat-crucible" ? "Click the burner to heat for the set time, or use Heat. Right-drag to look around."
+    : player.benchOp?.operation === "turn-off-burner" ? "Click the burner to turn the gas off, or use Turn off. Right-drag to look around."
     : player.tongsStep ? "Pick up the crucible tongs, click the watch glass to grip it, then click where it goes. Right-drag to look around."
     : player.benchOp?.operation === "precipitation-drop-test" ? "Pick up the dropping pipette and click the beaker to add one drop, or use Add a drop in the step card. Right-drag to look around."
     : flow.canConfirm ? "Click an item to pick it up, then click where it goes; or use Source, Target and Confirm. Right-drag to look around."

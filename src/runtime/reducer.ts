@@ -1865,7 +1865,7 @@ const executeBenchOperation = (
     const carrier = findInstance(state, stringSetting(params, "precipitateCarrierInstanceId"), "");
     const pad = findInstance(state, stringSetting(params, "padInstanceId"), "heat-safe-pad");
     if (!holder || !pad || !state.attachments.some((relation) => relation.childInstanceId === holder.id && relation.parentInstanceId === pad.id)) {
-      return fail(state, "The watch glass is not on the heat-safe pad.", "Set it on the pad with the tongs to cool.", nodeId);
+      return fail(state, `The ${holder?.label.toLowerCase() ?? "hot item"} is not on the heat-safe pad.`, "Set it on the pad with the tongs to cool.", nodeId);
     }
     const cooledC = numberSetting(params, "cooledTemperatureC", 25);
     const cool = (base: RuntimeState, id: string, visual?: string) => updateInstance(base, id, (instance) => ({
@@ -1874,6 +1874,84 @@ const executeBenchOperation = (
     let next = cool(state, holder.id);
     if (carrier) next = cool(next, carrier.id, stringSetting(params, "visualState") ?? "cooled-dry-precipitate");
     return record(next, `Left the assembly on the heat-safe pad${minutes("coolMinutes")} until cool enough to weigh (${cooledC} °C).`, "cool");
+  }
+  // The Bunsen burner and the crucible over it (Pack 2's Heat and Reweigh, EX-09 to EX-16 and decision 10).
+  const burner = findInstance(state, stringSetting(params, "burnerInstanceId"), stringSetting(params, "burnerDefinitionId") ?? "bunsen-burner");
+  const burnerState = burner ? state.apparatusStates?.[burner.id] ?? {} : {};
+  const crucible = findInstance(state, stringSetting(params, "crucibleInstanceId"), stringSetting(params, "crucibleDefinitionId") ?? "crucible-with-lid");
+  const patchApparatus = (base: RuntimeState, id: string | undefined, patch: Record<string, string | number | boolean>): RuntimeState =>
+    id ? { ...base, apparatusStates: { ...base.apparatusStates, [id]: { ...base.apparatusStates?.[id], ...patch } } } : base;
+  const seatedIn = (child: string | undefined, zoneId: string): boolean => Boolean(child)
+    && state.attachments.some((relation) => relation.childInstanceId === child && relation.zoneId === zoneId);
+  const crucibleSeat = stringSetting(params, "crucibleSeatZoneId") ?? "ring-stand-crucible-seat";
+  const lidAskew = crucible ? state.apparatusStates?.[crucible.id]?.lid === "askew" : false;
+  if (operation === "set-crucible-lid") {
+    if (!crucible) return fail(state, "The crucible is missing.", "Use the crucible with its lid.", nodeId);
+    if (!seatedIn(crucible.id, crucibleSeat)) return fail(state, "The crucible is not on the clay triangle.", "Set the crucible in the clay triangle first.", nodeId);
+    if (lidAskew) return fail(state, "The lid is already askew.", "Go on to the next step.", nodeId);
+    return record(patchApparatus(state, crucible.id, { lid: "askew" }), "Set the lid askew on the crucible, leaving a gap for the gas to escape.", "lid");
+  }
+  if (operation === "light-burner") {
+    if (!burner) return fail(state, "The Bunsen burner is missing.", "Use the burner under the support.", nodeId);
+    if (burnerState.flame && burnerState.flame !== "off") return fail(state, "The burner is already lit.", "Go on to the next step.", nodeId);
+    // The lid is askew before ignition and stays so (S-03).
+    if (stringSetting(params, "crucibleInstanceId") && !lidAskew) {
+      return fail(state, "The crucible's lid is not askew.", "Set the lid askew before you light the burner; a covered crucible is never heated.", nodeId);
+    }
+    return record(patchApparatus(state, burner.id, { gas: "on", collar: "nearly-closed", flame: "yellow" }),
+      "Closed the air collar almost fully, turned the gas on, and lit the burner with the striker at the top of the barrel: a yellow flame.", "burner");
+  }
+  if (operation === "set-flame") {
+    if (!burner) return fail(state, "The Bunsen burner is missing.", "Use the burner under the support.", nodeId);
+    if (!burnerState.flame || burnerState.flame === "off") return fail(state, "The burner is not lit.", "Light the burner first.", nodeId);
+    if (burnerState.flame === "blue") return fail(state, "The flame is already blue.", "Go on to the next step.", nodeId);
+    return record(patchApparatus(state, burner.id, { collar: "open", flame: "blue" }),
+      "Opened the air collar until the flame turned from yellow to blue, with a pale inner cone; the crucible sits just above the cone's tip.", "burner");
+  }
+  if (operation === "heat-crucible") {
+    if (!burner) return fail(state, "The Bunsen burner is missing.", "Use the burner under the support.", nodeId);
+    if (!crucible || crucible.contents.kind === "empty") return fail(state, "There is no sample in the crucible to heat.", "Put the mixture in the crucible first.", nodeId);
+    if (!seatedIn(crucible.id, crucibleSeat)) return fail(state, "The crucible is not on the clay triangle.", "Set the crucible in the clay triangle over the burner.", nodeId);
+    const burnerBay = stringSetting(params, "burnerBayZoneId");
+    if (burnerBay && !seatedIn(burner.id, burnerBay)) return fail(state, "The burner is not under the crucible.", "Stand the burner beneath the ring.", nodeId);
+    if (!lidAskew) return fail(state, "The crucible's lid is not askew.", "Never heat a covered crucible: set the lid askew first.", nodeId);
+    if (!burnerState.flame || burnerState.flame === "off") return fail(state, "The burner is not lit.", "Light the burner first.", nodeId);
+    if (burnerState.flame !== "blue") return fail(state, "The flame is still yellow.", "Open the air collar until the flame is blue; a yellow flame is cooler and leaves soot.", nodeId);
+    const intensity = stringSetting(params, "heatIntensity") ?? "strong";
+    const temperatureC = numberSetting(params, "heatedTemperatureC", intensity === "gentle" ? 150 : intensity === "strong" ? 650 : 450);
+    const residueMassG = numberSetting(params, "residueMassG", Number.NaN);
+    let next = updateInstance(state, crucible.id, (instance) => ({ ...instance, contents: { ...instance.contents, temperatureC } }));
+    if (Number.isFinite(residueMassG)) {
+      const sampleMassG = crucible.contents.massG;
+      if (!(residueMassG > 0) || (typeof sampleMassG === "number" && residueMassG > sampleMassG + 1e-9)) {
+        return fail(state, "The residue's mass is not set up.", "Complete the technique's setup before starting it.", nodeId);
+      }
+      // Sodium hydrogen carbonate decomposes; the residue is sodium carbonate (2 NaHCO3 -> Na2CO3 + CO2 + H2O).
+      next = updateInstance(next, crucible.id, (instance) => ({
+        ...instance,
+        contents: {
+          ...instance.contents,
+          kind: "solid",
+          label: stringSetting(params, "productLabel") ?? "Sodium carbonate residue",
+          massG: residueMassG,
+          solutes: [
+            ...instance.contents.solutes.filter((solute) => solute.id !== "sodium-bicarbonate" && solute.id !== "sodium-carbonate"),
+            { id: "sodium-carbonate", label: "Sodium carbonate", amount: residueMassG, unit: "g" as const },
+          ],
+          wetState: "dry",
+          visualState: "heated-residue",
+        },
+      }));
+    }
+    next = patchApparatus(patchApparatus(next, burner.id, { heat: intensity }), crucible.id, { glow: intensity === "strong" });
+    const how = intensity === "gentle" ? "Warmed the crucible gently" : `Heated the crucible ${intensity === "strong" ? "strongly" : "steadily"}`;
+    return record(next, `${how} over the blue flame, its lid askew${minutes("heatMinutes")}.`, "heat");
+  }
+  if (operation === "turn-off-burner") {
+    if (!burner) return fail(state, "The Bunsen burner is missing.", "Use the burner under the support.", nodeId);
+    if (!burnerState.flame || burnerState.flame === "off") return fail(state, "The burner is already off.", "Go on to the next step.", nodeId);
+    const off = patchApparatus(patchApparatus(state, burner.id, { gas: "off", flame: "off", heat: "none" }), crucible?.id, { glow: false });
+    return record(off, "Turned the gas off at the burner; the flame is out.", "burner");
   }
   return fail(state, `Unknown bench operation "${operation ?? ""}".`, "Check the step's authored operation.", nodeId);
 };
@@ -2605,23 +2683,6 @@ const executeAction = (
       return fail(state, `The ${target.label.toLowerCase()} is still on the ${holder?.label.toLowerCase() ?? "holder"}.`,
         `Take the ${target.label.toLowerCase()} off the ${holder?.label.toLowerCase() ?? "holder"} onto the bench first.`, nodeId);
     }
-    // A part lifted from one holder onto another in one movement (Pack 2: the paper out of the funnel onto the
-    // watch glass, the watch glass off the pad onto the pan): its old seat is let go first.
-    if (booleanSetting(params, "moveFromHolder") && state.attachments.some((relation) => relation.childInstanceId === equipment.id)) {
-      state = detachChild(state, equipment.id);
-    }
-    const attachmentCheck =
-      target && snapZoneId && nextLocation === "snapZone"
-        ? canAttach(state, target, equipment, snapZoneId)
-        : undefined;
-    // Taking a strip back out is the mirror of putting it in: a closed lid refuses both. `canAttach`
-    // covers entry; this covers the exit, which reaches here as a `place` back onto the workbench.
-    const currentParentId = attachmentsForChild(state, equipment.id)[0]?.parentInstanceId;
-    const currentParent = currentParentId ? findInstance(state, currentParentId) : undefined;
-    if (nextLocation !== "snapZone" && currentParent) {
-      const closedParent = closedChamberAccessRefusal(currentParent);
-      if (closedParent) return fail(state, closedParent.message, closedParent.recovery, nodeId);
-    }
     // Hot glassware is handled with tongs (S-05; Pack 2): a step that names them needs them on the bench,
     // and one that opts in (`refuseHotByHand`) is refused for a hot item.
     const handledWith = stringSetting(params, "handledWithDefinitionId");
@@ -2640,6 +2701,29 @@ const executeAction = (
     const ovenHere = intoOven ? ovenOf(String(params.snapZoneId)) : equipment.location === "oven" ? ovenOf(equipment.snapZoneId) : undefined;
     if ((intoOven || equipment.location === "oven") && ovenHere && state.apparatusStates?.[ovenHere.id]?.door !== "open") {
       return fail(state, "The oven door is closed.", "Open the oven door first.", nodeId);
+    }
+    // A crucible over a lit burner is not moved (EX-11): the gas is turned off first.
+    const burnerId = stringSetting(params, "requireBurnerOffInstanceId");
+    const burnerFlame = burnerId ? state.apparatusStates?.[burnerId]?.flame : undefined;
+    if (burnerFlame && burnerFlame !== "off") {
+      return fail(state, "The burner is still lit.", "Turn the burner off before you move the crucible.", nodeId);
+    }
+    // A part lifted from one holder onto another in one movement (Pack 2: the paper out of the funnel onto the
+    // watch glass, the watch glass off the pad onto the pan): its old seat is let go first.
+    if (booleanSetting(params, "moveFromHolder") && state.attachments.some((relation) => relation.childInstanceId === equipment.id)) {
+      state = detachChild(state, equipment.id);
+    }
+    const attachmentCheck =
+      target && snapZoneId && nextLocation === "snapZone"
+        ? canAttach(state, target, equipment, snapZoneId)
+        : undefined;
+    // Taking a strip back out is the mirror of putting it in: a closed lid refuses both. `canAttach`
+    // covers entry; this covers the exit, which reaches here as a `place` back onto the workbench.
+    const currentParentId = attachmentsForChild(state, equipment.id)[0]?.parentInstanceId;
+    const currentParent = currentParentId ? findInstance(state, currentParentId) : undefined;
+    if (nextLocation !== "snapZone" && currentParent) {
+      const closedParent = closedChamberAccessRefusal(currentParent);
+      if (closedParent) return fail(state, closedParent.message, closedParent.recovery, nodeId);
     }
     if (intoOven) {
       if (!ovenHere) return fail(state, "The oven is not on the bench.", "Use the drying oven on the bench.", nodeId);
@@ -8208,7 +8292,9 @@ export const performRuntimeAction = (
   const transactionalTypedAction = Boolean(
     actionDefinition.volume || actionDefinition.mass || actionDefinition.solidTransfer || actionDefinition.analysis || actionDefinition.runtimeRepeat ||
     actionDefinition.sourceInventory || actionDefinition.materialTransition || actionDefinition.deliveryDevice ||
-    actionDefinition.choiceObservation || actionDefinition.extractionOperation || actionDefinition.extractionObservation || actionDefinition.extractionDrain,
+    actionDefinition.choiceObservation || actionDefinition.extractionOperation || actionDefinition.extractionObservation || actionDefinition.extractionDrain ||
+    // Pack 2: a part lifted from its holder is let go before the later checks, so a refusal keeps it seated.
+    actionDefinition.parameters.moveFromHolder === true || benchOperationSpec(actionDefinition.parameters.benchOperation),
   );
   let result = executeAction(definition, activeState, executableRequest, executableActionDefinition, currentNode.id);
   if (result.ok && runtimeRepeat && runtimeRepeatOutputMeasurementId) {

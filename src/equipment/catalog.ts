@@ -449,6 +449,14 @@ export const v1EquipmentCatalog: EquipmentDefinition[] = [
         x: 142,
         y: 378,
       },
+      // The Bunsen burner stands on the base under the ring, its flame below the crucible (HEAT-05; Pack 2).
+      {
+        id: "ring-stand-burner-bay",
+        label: "Burner position beneath the support ring",
+        accepts: ["bunsen-burner"],
+        x: 142,
+        y: 378,
+      },
     ],
   ),
   equipment("funnel", "Glass funnel", "filtration", ["draggable"], 0, 0, ["empty"]),

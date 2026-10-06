@@ -1,0 +1,97 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "small-vial",
+  "model": "small-vial.glb",
+  "thumbnail": "thumbs/small-vial.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "circle",
+      "radius": 14.0
+    },
+    "grip": {
+      "heightMm": 35.0
+    },
+    "pour": {
+      "lipMm": [
+        -12.0,
+        0.0,
+        61.0
+      ],
+      "tiltDeg": 120.0,
+      "style": "pour"
+    },
+    "fill": {
+      "innerProfileMm": [
+        [
+          0.0,
+          1.8
+        ],
+        [
+          10.8,
+          1.8
+        ],
+        [
+          12.8,
+          3.8
+        ],
+        [
+          12.8,
+          48.5
+        ],
+        [
+          10.8,
+          52.5
+        ],
+        [
+          10.8,
+          61.0
+        ]
+      ],
+      "capacityMl": 20,
+      "meniscus": "concave"
+    },
+    "graduations": null,
+    "solidRest": {
+      "centreMm": [
+        0.0,
+        0.0,
+        1.8
+      ],
+      "radiusMm": 8.0
+    },
+    "anchors": {},
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -14.0,
+        -14.0,
+        0.0
+      ],
+      "max": [
+        14.0,
+        14.0,
+        61.0
+      ]
+    },
+    "triangles": 27648,
+    "materials": [
+      "Borosilicate glass",
+      "Borosilicate glass thick"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/small_vial.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "3db03e5c4b7908b84a0952b6604ed67c1abf5873d97f6bf5d007276cc8e567dc",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

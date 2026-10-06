@@ -1731,6 +1731,16 @@ const validateThermalActionParameters = (
   actionVerb: ActionVerb | undefined,
 ): void => {
   if (actionVerb === "heat") {
+    // A crucible heated over the burner as a bench operation (Pack 2, decided 2026-10-05): a stage that
+    // decomposes the sample names the residue's mass; a gentle warming changes no mass.
+    if (isObject(input.parameters) && input.parameters.benchOperation === "heat-crucible") {
+      const residue = input.parameters.residueMassG;
+      if (residue !== undefined && !(isNumber(residue) ? residue > 0 : typeof residue === "string" && residue.startsWith("{{config."))) {
+        errors.push(`${path}.parameters.residueMassG must be a positive number or a configuration reference.`);
+      }
+      if (input.parameters.heatIntensity === undefined) errors.push(`${path}.parameters.heatIntensity is required for heating over the burner.`);
+      return;
+    }
     if (
       isObject(input.parameters) &&
       input.parameters.thermalMode === "targetTemperature"

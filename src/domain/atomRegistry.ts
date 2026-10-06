@@ -417,7 +417,7 @@ export const deriveActionEffectContract = (
   if (action.atomId === resultingFinalVolumeAtomId && !action.volume?.outputMeasurementId) {
     errors.push(`Action "${action.id}" requires volume.outputMeasurementId for ${resultingFinalVolumeAtomId}.`);
   }
-  if (interaction.type === "recordNotebook" && ["dry", "cool", "transfer", "rinse"].includes(action.verb) && !action.fractionHandling && !titrationOperation
+  if (interaction.type === "recordNotebook" && ["dry", "cool", "transfer", "rinse", "heat"].includes(action.verb) && !action.fractionHandling && !titrationOperation
     && !benchOperationSpec(action.parameters.benchOperation)) errors.push(`Action "${action.id}" requires a typed physical fraction handler for this endpoint.`);
   if (action.extractionOperation && (action.verb !== action.extractionOperation.operation || action.atomId !== `atom.${action.extractionOperation.operation}.extraction-funnel` || interaction.type !== "recordNotebook")) errors.push(`Action "${action.id}" has incompatible extraction operation semantics.`);
   if (chromatographyOperation !== undefined && (!chromatographyAtom || action.verb !== "observe" || action.atomId !== chromatographyAtom || interaction.type !== "recordNotebook")) errors.push(`Action "${action.id}" has incompatible chromatography operation semantics.`);

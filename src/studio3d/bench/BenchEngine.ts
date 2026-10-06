@@ -57,6 +57,10 @@ interface ItemView {
   dryMaterials?: Map<THREE.Mesh, THREE.Material | THREE.Material[]>;
   /** Hinged doors (Pack 2: the drying oven's), each turned about its pivot toward its goal. */
   doors?: Array<{ id: string; pivot: THREE.Object3D; stateKey: string; openRad: number; angle: number; goal: number }>;
+  /** The model's own materials of parts that glow (Pack 2: a crucible under strong heat), kept while lit. */
+  coolMaterials?: Map<THREE.Mesh, THREE.Material | THREE.Material[]>;
+  /** Parts that flicker while shown (a flame), with their resting scale. */
+  flicker?: Array<{ object: THREE.Object3D; phase: number }>;
 }
 
 /** A committed pour being drawn: advanced by the render loop, cleaned up when it ends or is cut short. */
@@ -274,6 +278,7 @@ export class BenchEngine {
       else this.stopDrainRun();
     }
     if (this.tickDoors(dt)) animating = true;
+    if (this.tickFlicker(time)) animating = true;
     if (this.droplets.length) {
       for (const drop of this.droplets) {
         drop.t = Math.min(1, drop.t + dt / 0.22);
@@ -412,6 +417,8 @@ export class BenchEngine {
     // The beacon follows its item to where this sync put it: an item that has just arrived is
     // placed only now, after the beacon was set for it.
     if (!this.demo) this.placeBeacon(this.beaconId);
+    // So does the selection ring: a tool put back after a released carry (the tongs, Pack 2) leaves no ring behind.
+    if (this.selectedId) this.setSelected(this.selectedId);
     this.shadowsDirty = true;
     this.requestRender();
     this.onChange?.();
@@ -476,10 +483,22 @@ export class BenchEngine {
   private applyForm(view: ItemView, item: SceneItem): void {
     const model = view.model;
     const doorKey = (item.model?.doors ?? []).map((door) => item.apparatus?.[door.stateKey] ?? "").join(",");
-    const key = `${item.form ?? ""}|${item.wet ? "wet" : "dry"}|${doorKey}`;
+    const shownByState = this.stateShown(item);
+    const glowing = Boolean(item.model?.glow && item.apparatus?.[item.model.glow.stateKey] === true);
+    const key = `${item.form ?? ""}|${item.wet ? "wet" : "dry"}|${doorKey}|${shownByState ? [...shownByState.shown].join(",") : ""}|${glowing}`;
     if (!model || view.formKey === key) return;
     view.formKey = key;
     this.applyDoors(view, item);
+    if (shownByState) {
+      model.traverse((object) => { if (shownByState.listed.has(object.name)) object.visible = shownByState.shown.has(object.name); });
+    }
+    this.applyGlow(view, item, glowing);
+    if (item.model?.flicker?.length && !view.flicker) {
+      const flickering = new Set(item.model.flicker);
+      view.flicker = [];
+      model.traverse((object) => { if (flickering.has(object.name)) view.flicker!.push({ object, phase: view.flicker!.length * 1.7 }); });
+    }
+    this.requestRender();
     const forms = item.model?.forms;
     if (forms) {
       const shown = new Set(forms[item.form ?? ""] ?? []);
@@ -502,6 +521,64 @@ export class BenchEngine {
       wet.opacity = 0.86;
       mesh.material = wet;
     });
+  }
+
+  /**
+   * The parts an item's apparatus state shows (Pack 2's Heat and Reweigh: a crucible's lid on or askew, a
+   * burner's flame and air ports), and every part those states name; undefined when the item has none.
+   */
+  private stateShown(item: SceneItem): { shown: Set<string>; listed: Set<string> } | undefined {
+    const groups = item.model?.stateObjects;
+    if (!groups?.length) return undefined;
+    const shown = new Set<string>();
+    const listed = new Set<string>();
+    for (const group of groups) {
+      for (const names of Object.values(group.objects)) names.forEach((name) => listed.add(name));
+      const values = group.stateKeys.map((stateKey) => String(item.apparatus?.[stateKey] ?? ""));
+      const parts = group.objects[values.join("/")] ?? group.objects[values[0]] ?? group.objects[group.default] ?? [];
+      parts.forEach((name) => shown.add(name));
+    }
+    return { shown, listed };
+  }
+
+  /** A dull red glow on the parts the model names while the runtime records strong heat (Pack 2). */
+  private applyGlow(view: ItemView, item: SceneItem, glowing: boolean): void {
+    const glow = item.model?.glow;
+    if (!glow || !view.model) return;
+    const parts = new Set(glow.objects);
+    view.coolMaterials ??= new Map();
+    view.model.traverse((object) => {
+      const mesh = object as THREE.Mesh;
+      // A part with more than one material arrives from glTF as a group of meshes under its name.
+      if (!mesh.isMesh || !(parts.has(object.name) || parts.has(object.parent?.name ?? ""))) return;
+      if (!view.coolMaterials!.has(mesh)) view.coolMaterials!.set(mesh, mesh.material);
+      const cool = view.coolMaterials!.get(mesh)!;
+      if (!glowing) { mesh.material = cool; return; }
+      const heat = (material: THREE.Material): THREE.Material => {
+        const hot = material.clone() as THREE.MeshStandardMaterial;
+        // Dull red heat: the glaze darkens toward red and glows, drawn plainly enough to read on the bench.
+        hot.color?.lerp(new THREE.Color(0.75, 0.22, 0.1), 0.6);
+        if (hot.emissive) { hot.emissive.setRGB(0.7, 0.1, 0.02); hot.emissiveIntensity = 1.4; }
+        return hot;
+      };
+      mesh.material = Array.isArray(cool) ? cool.map(heat) : heat(cool);
+    });
+  }
+
+  /** Flames flicker slightly while shown; returns whether any is drawn, so the loop keeps running. */
+  private tickFlicker(time: number): boolean {
+    if (this.options.reducedMotion) return false;
+    let any = false;
+    for (const view of this.items.values()) {
+      for (const part of view.flicker ?? []) {
+        if (!part.object.visible) continue;
+        any = true;
+        const t = time / 1000 + part.phase;
+        const wobble = 1 + 0.05 * Math.sin(t * 13) + 0.03 * Math.sin(t * 29 + 1.3);
+        part.object.scale.set(1 + 0.025 * Math.sin(t * 17), wobble, 1 + 0.025 * Math.sin(t * 19 + 0.7));
+      }
+    }
+    return any;
   }
 
   /**
@@ -1386,7 +1463,10 @@ export class BenchEngine {
     this.placeBeacon(this.beaconId);
   }
 
+  private selectedId: string | null = null;
+
   setSelected(instanceId: string | null): void {
+    this.selectedId = instanceId;
     const at = instanceId ? this.basePosition(instanceId) ?? null : null;
     this.signals.setSelected(at, instanceId ? this.footprintRadius(instanceId) : 0.05);
     this.requestRender();

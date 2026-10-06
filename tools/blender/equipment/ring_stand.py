@@ -30,6 +30,8 @@ def build(coll, M):
         'ring-stand-crucible-seat': {'positionMm': [x, y, round(TRIANGLE_Z - CRUCIBLE_BASE_BELOW_TRIANGLE, 2)]},
         'ring-stand-calorimeter-support': {'positionMm': [x, y, TRIANGLE_Z]},
         'ring-stand-stirrer-bay': {'positionMm': [x, y, S['base_h']]},
+        # A Bunsen burner stands on the base under the ring (HEAT-05), its inner cone's tip just below the crucible.
+        'ring-stand-burner-bay': {'positionMm': [x, y, S['base_h']]},
     }
     assert FUNNEL['top_r'] > S['ring_id'] / 2, 'the funnel must rest in the ring, not drop through it'
     return root, registry

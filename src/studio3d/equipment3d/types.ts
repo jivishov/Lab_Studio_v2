@@ -136,6 +136,16 @@ export interface Equipment3DEntry {
   doors?: Array<{ id: string; objects: string[]; hingeMm: number[]; openDeg: number; stateKey: string }>;
   /** A tool's working end, model-local mm (tongs' jaws, a scoop's end): where it is aimed when carried. */
   tipMm?: Vec3Mm;
+  /**
+   * Parts drawn by the runtime's apparatus state (Pack 2's Heat and Reweigh: a crucible's lid on or askew, a
+   * burner's flame and air ports). The values of `stateKeys`, joined by "/", pick the parts shown; a value
+   * not listed falls back to its first key's value alone, then to `default`. Every other listed part is hidden.
+   */
+  stateObjects?: Array<{ stateKeys: string[]; default: string; objects: Record<string, string[]> }>;
+  /** A dull red glow on these parts while `stateKey` reads true (a crucible under strong heating). */
+  glow?: { stateKey: string; objects: string[] };
+  /** Parts that flicker slightly while shown (a flame), except under reduced motion. */
+  flicker?: string[];
   anchors: Record<string, Equipment3DAnchor>;
   displays: Equipment3DDisplay[];
   controls?: Equipment3DControl[];

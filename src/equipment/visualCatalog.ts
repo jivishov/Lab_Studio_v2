@@ -782,6 +782,7 @@ export const v1VisualCatalog: VisualCatalog = {
         bounds: rect(62, 318, 160, 112),
         anchor: { x: 142, y: 378 },
       },
+      { id: "ring-stand-burner-bay", bounds: rect(62, 318, 160, 112), anchor: { x: 142, y: 378 } },
     ],
     noLiquidRender: true,
   }),

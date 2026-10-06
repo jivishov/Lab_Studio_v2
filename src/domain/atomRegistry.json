@@ -10472,7 +10472,8 @@
       "documentationLabel": "Place the Bunsen burner for the thermal route",
       "verb": "place",
       "allowedInteractionTypes": [
-        "dragToZone"
+        "dragToZone",
+        "snapIntoTarget"
       ],
       "effectContract": {
         "classes": [
@@ -11970,6 +11971,249 @@
           "sourceTable": "phase",
           "step": "FD-12",
           "basis": "M"
+        }
+      ],
+      "contentExamples": []
+    },
+    {
+      "id": "atom.observe.set-crucible-lid-askew",
+      "family": "thermal-decomposition",
+      "documentationLabel": "Set the crucible's lid askew, its vent gap open",
+      "verb": "observe",
+      "allowedInteractionTypes": [
+        "recordNotebook"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state",
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "instrument"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "weighed-vessel"
+      ],
+      "optionalRoles": [
+        "thermal-support"
+      ],
+      "proceduralConstraints": [
+        "The crucible stands in the clay triangle; the lid rests across it with a visible gap, so the gases escape (Figure 1).",
+        "A fully covered crucible is never heated (S-02); the lid is askew before ignition and stays so while heating (S-03)."
+      ],
+      "evidence": "lid askew with the vent gap open",
+      "sourceExamples": [
+        {
+          "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "sourceTable": "phase",
+          "step": "EX-09",
+          "basis": "M/F"
+        },
+        {
+          "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "sourceTable": "safety",
+          "step": "S-03",
+          "basis": "M/F"
+        }
+      ],
+      "contentExamples": []
+    },
+    {
+      "id": "atom.control.light-burner",
+      "family": "thermal-decomposition",
+      "documentationLabel": "Light the Bunsen burner",
+      "verb": "observe",
+      "allowedInteractionTypes": [
+        "recordNotebook"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state",
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "instrument"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "thermal-heating-instrument"
+      ],
+      "optionalRoles": [
+        "weighed-vessel"
+      ],
+      "proceduralConstraints": [
+        "The air collar is nearly closed, the gas is turned on, and the striker is held at the top of the barrel; the flame is yellow.",
+        "The crucible's lid is already askew (S-03).",
+        "Decided by the teacher on 2026-10-05 (Pack 2, the 3D practice of Heat and Reweigh a Carbonate Mixture)."
+      ],
+      "evidence": "burner lit with a yellow flame",
+      "sourceExamples": [
+        {
+          "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "sourceTable": "phase",
+          "step": "EX-10",
+          "basis": "M/C"
+        }
+      ],
+      "contentExamples": []
+    },
+    {
+      "id": "atom.control.set-burner-flame",
+      "family": "thermal-decomposition",
+      "documentationLabel": "Open the air collar to a blue flame",
+      "verb": "observe",
+      "allowedInteractionTypes": [
+        "recordNotebook"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state",
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "instrument"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "thermal-heating-instrument"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "Opening the air collar turns the flame from yellow to blue with a pale inner cone; the crucible sits just above the cone's tip, the hottest part.",
+        "Decision 10 (2026-10-05): a flame-setting step for the approved heating intensity.",
+        "Decided by the teacher on 2026-10-05 (Pack 2, the 3D practice of Heat and Reweigh a Carbonate Mixture)."
+      ],
+      "evidence": "blue flame with an inner cone",
+      "sourceExamples": [
+        {
+          "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "sourceTable": "phase",
+          "step": "EX-10",
+          "basis": "M/C"
+        }
+      ],
+      "contentExamples": []
+    },
+    {
+      "id": "atom.heat.crucible-over-burner",
+      "family": "thermal-decomposition",
+      "documentationLabel": "Heat the crucible over the blue flame for a stated time",
+      "verb": "heat",
+      "allowedInteractionTypes": [
+        "recordNotebook"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state",
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "instrument"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "thermal-heating-instrument",
+        "weighed-vessel"
+      ],
+      "optionalRoles": [
+        "thermal-support"
+      ],
+      "proceduralConstraints": [
+        "The crucible stands in the clay triangle with its lid askew, over a lit blue flame.",
+        "Gentle warming, the approved heating and each repeat are distinct stages; the time passes on the 3D player's fast step clock (decision 9). A dull red glow shows only under strong heating."
+      ],
+      "evidence": "crucible heated for the stated time",
+      "sourceExamples": [
+        {
+          "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "sourceTable": "phase",
+          "step": "EX-10",
+          "basis": "M/C"
+        },
+        {
+          "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "sourceTable": "phase",
+          "step": "EX-16",
+          "basis": "M/C"
+        }
+      ],
+      "contentExamples": []
+    },
+    {
+      "id": "atom.control.turn-off-burner",
+      "family": "thermal-decomposition",
+      "documentationLabel": "Turn off the Bunsen burner",
+      "verb": "observe",
+      "allowedInteractionTypes": [
+        "recordNotebook"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state",
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "instrument"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "thermal-heating-instrument"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "The gas is turned off before the hot crucible is moved with tongs."
+      ],
+      "evidence": "burner off",
+      "sourceExamples": [
+        {
+          "sourceFile": "purify-a-mixture-green-chemistry_2026-07-27.md",
+          "sourceTable": "phase",
+          "step": "EX-11",
+          "basis": "R"
         }
       ],
       "contentExamples": []

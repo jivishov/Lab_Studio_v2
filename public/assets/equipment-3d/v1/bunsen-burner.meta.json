@@ -1,0 +1,95 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "bunsen-burner",
+  "model": "bunsen-burner.glb",
+  "thumbnail": "thumbs/bunsen-burner.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "circle",
+      "radius": 47.5
+    },
+    "grip": {
+      "heightMm": 80.0
+    },
+    "graduations": null,
+    "stateObjects": [
+      {
+        "stateKeys": [
+          "flame",
+          "heat"
+        ],
+        "default": "off",
+        "objects": {
+          "off": [],
+          "yellow": [
+            "Flame_yellow"
+          ],
+          "blue": [
+            "Flame_blue_outer",
+            "Flame_blue_inner"
+          ],
+          "blue/gentle": [
+            "Flame_gentle_outer",
+            "Flame_gentle_inner"
+          ]
+        }
+      },
+      {
+        "stateKeys": [
+          "collar"
+        ],
+        "default": "nearly-closed",
+        "objects": {
+          "nearly-closed": [],
+          "open": [
+            "Burner_collar_port_0",
+            "Burner_collar_port_1"
+          ]
+        }
+      }
+    ],
+    "flicker": [
+      "Flame_yellow",
+      "Flame_blue_outer",
+      "Flame_gentle_outer"
+    ],
+    "anchors": {},
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -47.5,
+        -47.5,
+        0.0
+      ],
+      "max": [
+        47.5,
+        47.5,
+        272.0
+      ]
+    },
+    "triangles": 21944,
+    "materials": [
+      "Black powder coat",
+      "Black rubber",
+      "Burner brass",
+      "Flame blue",
+      "Flame inner cone",
+      "Flame yellow"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/bunsen_burner.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "47299cdf282b42a100a98171c5e55fc506c28f09930c65765e6b4ad08359b7c3",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

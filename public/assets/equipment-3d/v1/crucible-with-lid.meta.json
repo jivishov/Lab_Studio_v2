@@ -1,0 +1,91 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "crucible-with-lid",
+  "model": "crucible-with-lid.glb",
+  "thumbnail": "thumbs/crucible-with-lid.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "circle",
+      "radius": 22.5
+    },
+    "grip": {
+      "heightMm": 30.0
+    },
+    "pour": {
+      "lipMm": [
+        -22.5,
+        0.0,
+        39.0
+      ],
+      "tiltDeg": 115.0,
+      "style": "pour"
+    },
+    "graduations": null,
+    "solidRest": {
+      "centreMm": [
+        0.0,
+        0.0,
+        3.2
+      ],
+      "radiusMm": 9.0
+    },
+    "stateObjects": [
+      {
+        "stateKeys": [
+          "lid"
+        ],
+        "default": "closed",
+        "objects": {
+          "closed": [
+            "Crucible_lid",
+            "Crucible_lid_knob"
+          ],
+          "askew": [
+            "Crucible_lid_askew",
+            "Crucible_lid_askew_knob"
+          ]
+        }
+      }
+    ],
+    "glow": {
+      "stateKey": "glow",
+      "objects": [
+        "Crucible_body"
+      ]
+    },
+    "anchors": {},
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -23.6,
+        -23.6,
+        0.0
+      ],
+      "max": [
+        32.51,
+        23.6,
+        52.68
+      ]
+    },
+    "triangles": 20928,
+    "materials": [
+      "Glazed porcelain",
+      "Pipe clay"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/crucible_with_lid.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "b250aff95ec851b661acdf89469be96dca3681598cab6ff547796fc0ff3780b1",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

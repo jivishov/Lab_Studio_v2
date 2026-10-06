@@ -149,7 +149,25 @@ _FACTORIES = {
                                                                'IOR': 1.59, 'Subsurface Weight': 0.12,
                                                                'Subsurface Radius': (1.0, 0.95, 0.9),
                                                                'Subsurface Scale': 0.0004}),
+    # Pack 2's Heat and Reweigh (decided 2026-10-05): a glazed porcelain crucible and lid, the pipe-clay
+    # tubes and nichrome wire of a clay triangle, a Bunsen burner's brass barrel, and its flames, which
+    # glow (emission) and are drawn see-through and additive in the viewer.
+    'Glazed porcelain': lambda n: principled(n, **{'Base Color': (0.9, 0.89, 0.86, 1), 'Roughness': 0.12,
+                                                   'Coat Weight': 0.6, 'Coat Roughness': 0.08}),
+    'Pipe clay': lambda n: principled(n, **{'Base Color': (0.6, 0.55, 0.46, 1), 'Roughness': 0.95}),
+    'Nichrome wire': lambda n: principled(n, **{'Base Color': (0.5, 0.48, 0.45, 1), 'Metallic': 1.0, 'Roughness': 0.45}),
+    'Burner brass': lambda n: principled(n, **{'Base Color': (0.78, 0.6, 0.32, 1), 'Metallic': 1.0, 'Roughness': 0.3}),
+    'Flame yellow': lambda n: _flame(n, (1.0, 0.62, 0.16, 1), 0.55),
+    'Flame blue': lambda n: _flame(n, (0.25, 0.42, 1.0, 1), 0.35),
+    'Flame inner cone': lambda n: _flame(n, (0.45, 0.75, 1.0, 1), 0.6),
 }
+
+
+def _flame(name, colour, alpha):
+    m = principled(name, **{'Base Color': colour, 'Emission Color': colour, 'Emission Strength': 4.0, 'Alpha': alpha,
+                            'Roughness': 1.0})
+    m.blend_method = 'BLEND' if hasattr(m, 'blend_method') else None
+    return m
 
 
 def material(name):

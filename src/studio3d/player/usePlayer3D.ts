@@ -316,7 +316,7 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
       } else if (step && vesselId) {
         pourSeq.current += 1;
         const labels: Record<string, string> = { stir: "Stirring", "settle-precipitate": "Settling", "precipitation-drop-test": "One drop",
-          "dry-in-oven": "Drying", "cool-on-pad": "Cooling" };
+          "dry-in-oven": "Drying", "cool-on-pad": "Cooling", "heat-crucible": "Heating" };
         const sourceId = step.operation === "precipitation-drop-test" ? step.toolInstanceId ?? vesselId : vesselId;
         setBenchOpRun({ operation: step.operation, vesselId, ...(step.toolInstanceId ? { toolId: step.toolInstanceId } : {}),
           ...(step.minutes !== undefined ? { minutes: step.minutes, clockSeconds: stepClockSeconds(step.minutes) } : {}),
