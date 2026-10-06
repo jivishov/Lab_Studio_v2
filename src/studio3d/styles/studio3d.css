@@ -356,7 +356,9 @@
   animation: s3d-switcher-in var(--dur-panel) var(--ease-standard); }
 @keyframes s3d-switcher-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
 .s3d-switcher__eyebrow { margin: 4px 8px 6px; font-size: 10.5px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); }
-.s3d-switcher__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.s3d-switcher__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; max-height: min(70vh, 640px); overflow-y: auto; }
+.s3d-switcher__pack { margin: 8px 10px 2px; font-size: 11px; font-weight: 600; color: var(--muted); }
+.s3d-switcher__pack:first-child { margin-top: 0; }
 .s3d-switcher__item { width: 100%; display: grid; grid-template-columns: 28px 1fr auto; align-items: center; gap: 12px; padding: 9px 10px; border: 0; border-radius: var(--radius-button);
   background: none; text-align: left; font: inherit; color: var(--ink); cursor: pointer; transition: background var(--dur-hover) var(--ease-standard); }
 .s3d-switcher__item:hover, .s3d-switcher__item:focus-visible { background: var(--bg); }

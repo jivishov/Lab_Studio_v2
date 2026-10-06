@@ -1,22 +1,13 @@
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
-import { loadBundledTechniqueSummaries } from "../../data/loadBundledTechniques";
-import { packNumber } from "../packs";
+import { Fragment, useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { loadSimulations3D, type Simulation3D as Simulation } from "../practice";
 import { studio3DRouteHash } from "../routes3d";
 import { Icon } from "../ui/Icon";
 
-interface Simulation { id: string; title: string; description: string }
-
 /**
- * The 3D simulations a learner can move between: the techniques of Pack 1, the pack with every
- * model built (plan §1, §9), in catalogue order.
+ * The 3D simulations a learner can move between: Pack 1's techniques in catalogue order, then each
+ * later pack's practice versions (Pack 2 decision 1A, 2026-10-05), under a heading per pack.
  */
-const loadSimulations = async (): Promise<Simulation[]> => {
-  const summaries = await loadBundledTechniqueSummaries();
-  const ids = summaries.map((summary) => summary.id);
-  return summaries
-    .filter((summary) => packNumber(ids, summary.id) === 1)
-    .map((summary) => ({ id: summary.id, title: summary.title, description: summary.description ?? "" }));
-};
+const loadSimulations = (): Promise<Simulation[]> => loadSimulations3D();
 
 /**
  * The top bar's title as a switcher (decided 2026-09-26): it opens a list of the 3D simulations,
@@ -78,6 +69,7 @@ export const SimulationSwitcher = ({ currentId, title, hasProgress, onLeave }: {
     items[(at + (event.key === "ArrowDown" ? 1 : items.length - 1)) % items.length]?.focus();
     event.preventDefault();
   };
+  const packs = [...new Set(simulations.map((simulation) => simulation.pack))];
 
   return (
     <div className="s3d-switcher" ref={rootRef} onKeyDown={onKey}>
@@ -99,22 +91,27 @@ export const SimulationSwitcher = ({ currentId, title, hasProgress, onLeave }: {
             </div>
           ) : (
             <ul className="s3d-switcher__list" ref={listRef}>
-              {simulations.map((simulation, index) => {
-                const current = simulation.id === currentId;
-                return (
-                  <li key={simulation.id}>
-                    <button type="button" className={`s3d-switcher__item${current ? " is-current" : ""}`}
-                      aria-current={current ? "true" : undefined} onClick={() => choose(simulation)}>
-                      <span className="s3d-switcher__index">{index + 1}</span>
-                      <span className="s3d-switcher__text">
-                        <span className="s3d-switcher__name">{simulation.title}</span>
-                        <span className="s3d-switcher__desc">{simulation.description}</span>
-                      </span>
-                      {current ? <span className="s3d-switcher__here"><Icon name="check" size={14} />Open</span> : <Icon name="arrow-right" size={16} className="s3d-switcher__go" />}
-                    </button>
-                  </li>
-                );
-              })}
+              {packs.map((pack) => (
+                <Fragment key={pack}>
+                  {packs.length > 1 ? <li className="s3d-switcher__pack" aria-hidden="true">Pack {pack}{pack > 1 ? " · practice" : ""}</li> : null}
+                  {simulations.filter((simulation) => simulation.pack === pack).map((simulation, index) => {
+                    const current = simulation.id === currentId;
+                    return (
+                      <li key={simulation.id}>
+                        <button type="button" className={`s3d-switcher__item${current ? " is-current" : ""}`}
+                          aria-current={current ? "true" : undefined} aria-label={`Pack ${pack}, ${simulation.title}`} onClick={() => choose(simulation)}>
+                          <span className="s3d-switcher__index">{index + 1}</span>
+                          <span className="s3d-switcher__text">
+                            <span className="s3d-switcher__name">{simulation.title}</span>
+                            <span className="s3d-switcher__desc">{simulation.description}</span>
+                          </span>
+                          {current ? <span className="s3d-switcher__here"><Icon name="check" size={14} />Open</span> : <Icon name="arrow-right" size={16} className="s3d-switcher__go" />}
+                        </button>
+                      </li>
+                    );
+                  })}
+                </Fragment>
+              ))}
             </ul>
           )}
         </div>

@@ -1242,6 +1242,11 @@ export class BenchEngine {
      * what it rinses, and the boat over the funnel, for the next squirt; only the last sets them down.
      */
     holdAfter?: boolean;
+    /**
+     * Seconds a measuring vessel is held tipped over the target once it is empty, so it drains (Pack 2's
+     * Transfer Liquid, decided 2026-10-05): the last drops fall from its lip before it is set upright.
+     */
+    drainS?: number;
   }): Promise<void> {
     this.stopPour();
     const released = this.releasedCarry?.instanceId === args.sourceId && performance.now() - this.releasedCarry.at < 2000
@@ -1368,9 +1373,12 @@ export class BenchEngine {
     const flow = Math.min(1.4, Math.max(0.6, 0.6 + moved / 125));
     // The carry in and out stays short, so the pour itself keeps most of the time: from a drag's drop
     // point the source is already over the target.
-    const T = { approach: holding ? 0.2 : (released ? 0.3 : 0.45) + (viaHold && !viaHeld ? 0.45 : 0), tilt: 0.35, flow, untilt: 0.3,
+    const drain = Math.max(0, args.drainS ?? 0);
+    const T = { approach: holding ? 0.2 : (released ? 0.3 : 0.45) + (viaHold && !viaHeld ? 0.45 : 0), tilt: 0.35, flow, drain, untilt: 0.3,
       back: 0.45 + (viaHold ? 0.45 : 0) };
-    const at = { tilt: T.approach, flow: T.approach + T.tilt, untilt: T.approach + T.tilt + flow, back: T.approach + T.tilt + flow + T.untilt };
+    // Draining holds the emptied vessel at its last tilt between the pour and the untilt.
+    const at = { tilt: T.approach, flow: T.approach + T.tilt, drain: T.approach + T.tilt + flow, untilt: T.approach + T.tilt + flow + drain,
+      back: T.approach + T.tilt + flow + drain + T.untilt };
     // A squirt short of the count ends with the bottle upright beside what it rinses, still held.
     const total = args.holdAfter ? at.back : at.back + T.back;
 
@@ -1388,7 +1396,9 @@ export class BenchEngine {
     const stream = material ? new THREE.Mesh(new THREE.BufferGeometry(), material) : undefined;
     // With an item held over the mouth, a second stream: its washings running down into the target.
     const runoff = material && viaHold ? new THREE.Mesh(new THREE.BufferGeometry(), material) : undefined;
-    for (const mesh of [stream, runoff]) {
+    // While a measuring vessel drains, single drops fall from its lip.
+    const drip = material && drain > 0 && !solid ? new THREE.Mesh(new THREE.BufferGeometry(), material) : undefined;
+    for (const mesh of [stream, runoff, drip]) {
       if (!mesh) continue;
       mesh.visible = false;
       mesh.renderOrder = 4;
@@ -1428,7 +1438,12 @@ export class BenchEngine {
         const tipping = t < at.flow;
         const u = tipping ? span(t, at.tilt, T.tilt) : t < at.untilt ? span(t, at.flow, flow) : span(t, at.untilt, T.untilt);
         // The tilt leads the lip's travel on the way in, so the body swings up and away first.
-        const tilt = tipping ? tiltStart * (1 - Math.pow(1 - u, 2)) : t < at.untilt ? tiltStart + (tiltEnd - tiltStart) * ease(u) : tiltEnd * (1 - ease(u));
+        // Draining tips the emptied vessel on toward upside down (to 150°), so its last drops run to the lip.
+        const drained = drain > 0 ? Math.max(tiltEnd, 150 * DEG) : tiltEnd;
+        const dU = drain > 0 ? ease(span(t, at.drain, Math.min(0.6, drain))) : 0;
+        const held = tiltEnd + (drained - tiltEnd) * dU;
+        const tilt = tipping ? tiltStart * (1 - Math.pow(1 - u, 2)) : t < at.drain ? tiltStart + (tiltEnd - tiltStart) * ease(u)
+          : t < at.untilt ? held : drained * (1 - ease(u));
         const lipU = tipping ? ease(u) : t < at.untilt ? 1 : 1 - ease(u);
         q = pourQuaternion(geometry, toward, tilt);
         pos = rootForLip(geometry, q, standLip.clone().lerp(lipAt, lipU));
@@ -1497,6 +1512,19 @@ export class BenchEngine {
           stream.geometry = streamGeometry(lip, viaHold ? aimAt : land, streamRadius, s0, s1,
             jet && geometry.tipDir ? geometry.tipDir.clone().applyQuaternion(q) : undefined, jet && !viaHold ? aimAt : undefined);
         }
+        if (drip) {
+          const dripT = t - at.drain;
+          const phase = (dripT * 1.6) % 1;
+          drip.visible = dripT > 0.15 && t < at.untilt - 0.1 && phase < 0.7;
+          if (drip.visible) {
+            const landMl = liquidOf(args.targetAfter);
+            const land = targetBase.clone().addScaledVector(away, mouthR * 0.15);
+            land.y = targetBase.y + Math.max(targetLevel(landMl), tFill?.innerProfileMm?.[0]?.[1] ?? tFill?.innerBoxMm?.floorZ ?? 0) * MM;
+            const head = Math.min(1, phase / 0.7);
+            drip.geometry.dispose();
+            drip.geometry = streamGeometry(lip, land, streamRadius * 0.9, Math.max(0, head - 0.06), head);
+          }
+        }
         if (runoff && viaHold) {
           const r1 = span(flowT, 0.18, 0.12);
           const r0 = span(flowT, flow - 0.02, 0.2);
@@ -1521,6 +1549,10 @@ export class BenchEngine {
       if (runoff) {
         this.scene.remove(runoff);
         runoff.geometry.dispose();
+      }
+      if (drip) {
+        this.scene.remove(drip);
+        drip.geometry.dispose();
       }
       if (rack) {
         source.root.add(rack.object);

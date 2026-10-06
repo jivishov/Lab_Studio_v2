@@ -45,7 +45,7 @@ const argValue = (flag: string): string | undefined => {
   return index >= 0 ? process.argv[index + 1] : undefined;
 };
 
-interface IndexEntry { id: string; file?: string }
+interface IndexEntry { id: string; file?: string; pack?: number }
 
 type ValueSource =
   | "teacher-configuration"
@@ -122,7 +122,8 @@ const authoredVisualStates = (technique: TechniqueDefinition): string[] => {
 };
 
 const loadTechnique = (entry: IndexEntry): TechniqueDefinition => {
-  const raw = readJson<unknown>(`public/techniques/${entry.file ?? `${entry.id}.json`}`);
+  const folder = practiceIds.has(entry.id) ? "techniques-3d" : "techniques";
+  const raw = readJson<unknown>(`public/${folder}/${entry.file ?? `${entry.id}.json`}`);
   const validation = validateTechniqueDefinition(raw);
   if (!validation.ok || !validation.value) {
     throw new Error(`Technique ${entry.id} fails validation:\n${validation.errors.join("\n")}`);
@@ -135,7 +136,12 @@ if (!Number.isInteger(pack) || pack < 1) throw new Error("--pack must be a posit
 
 const techniqueIndex = readJson<IndexEntry[]>("public/techniques/index.json");
 const packOf = new Map(techniqueIndex.map((entry, index) => [entry.id, Math.floor(index / PACK_SIZE) + 1]));
-const packEntries = techniqueIndex.slice((pack - 1) * PACK_SIZE, pack * PACK_SIZE);
+// Pack 2 onward is played as 3D practice versions (decided 2026-10-05, Pack 2 decision 1A), listed
+// in public/techniques-3d/index.json with their pack; a pack with practice versions is evaluated on them.
+const practiceIndex = readJson<IndexEntry[]>("public/techniques-3d/index.json");
+const practiceIds = new Set(practiceIndex.map((entry) => entry.id));
+const practiceEntries = practiceIndex.filter((entry) => entry.pack === pack);
+const packEntries = practiceEntries.length ? practiceEntries : techniqueIndex.slice((pack - 1) * PACK_SIZE, pack * PACK_SIZE);
 const visualRegistry = readJson<{ states: Array<{ id: string; disposition: string; quantitativeClaim?: string }> }>(
   "src/equipment/visualStateRegistry.json",
 );

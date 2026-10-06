@@ -42,6 +42,8 @@ export interface PourAnimation {
   targetAfter: SceneContents;
   /** An item held tipped over the target's mouth during the pour: a weighing boat rinsed into a flask. */
   via?: string;
+  /** A measuring vessel held over the target to drain once it is empty (Pack 2's Transfer Liquid). */
+  drain?: boolean;
   id: number;
 }
 
@@ -230,7 +232,8 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
       pourSeq.current += 1;
       const { sourceInstanceId: sourceId, targetInstanceId: targetId } = result.request;
       setPour({ sourceId, targetId, staging: pourStagingScene(before, next, definition, { sourceId, targetId }),
-        sourceAfter: contentsIn(next, sourceId), targetAfter: contentsIn(next, targetId), id: pourSeq.current });
+        sourceAfter: contentsIn(next, sourceId), targetAfter: contentsIn(next, targetId),
+        ...(result.action.parameters.drainMeasuringVessel === true ? { drain: true } : {}), id: pourSeq.current });
     } else if (!failed && result.interaction.type === "rinseTarget" && result.request.sourceInstanceId && result.request.targetInstanceId
       && typeof result.action.parameters.washingsReceiverInstanceId === "string") {
       // A rinse whose washings run into a receiver (decided 2026-10-04) is drawn as the wash bottle

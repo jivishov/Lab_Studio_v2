@@ -276,7 +276,9 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
           targetBefore: target.contents, targetAfter: pour.targetAfter,
           // The source is set down where the runtime has it afterwards (parked after a drag).
           ...(sourceAfter?.placement.kind === "bench" ? { returnTo: sourceAfter.placement.point } : {}),
-          ...(pour.via ? { via: pour.via } : {}), holdAfter });
+          ...(pour.via ? { via: pour.via } : {}), holdAfter,
+          // A measuring cylinder is held over the beaker for a few seconds so it drains (decided 2026-10-05).
+          ...(pour.drain ? { drainS: 2.4 } : {}) });
       }
       setSquirtHeld(holdAfter && engine.squirtHolding() === pour.sourceId);
       player.finishPour(pour.id);

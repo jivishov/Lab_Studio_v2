@@ -133,6 +133,66 @@
       }
     },
     {
+      "definitionId": "beaker-250ml",
+      "model": "beaker-250ml.glb",
+      "thumbnail": "thumbs/beaker-250ml.png",
+      "footprintMm": {
+        "shape": "circle",
+        "radius": 35.0
+      },
+      "grip": {
+        "heightMm": 52.0
+      },
+      "pour": {
+        "lipMm": [
+          -40.5,
+          0.0,
+          96.0
+        ],
+        "tiltDeg": 100.0,
+        "style": "pour"
+      },
+      "fill": {
+        "innerProfileMm": [
+          [
+            0.0,
+            2.2
+          ],
+          [
+            30.9,
+            2.2
+          ],
+          [
+            33.4,
+            4.7
+          ],
+          [
+            33.4,
+            95.0
+          ]
+        ],
+        "capacityMl": 250,
+        "meniscus": "concave"
+      },
+      "solidRest": {
+        "centreMm": [
+          0.0,
+          0.0,
+          2.2
+        ],
+        "radiusMm": 30.4
+      },
+      "graduations": null,
+      "anchors": {},
+      "displays": [],
+      "states": {},
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/beaker_250ml.py",
+        "sourceHash": "242111e08c963b3a10e7e838334c3dfa64fa92b7e837c49e604d277f02ec431f"
+      }
+    },
+    {
       "definitionId": "beral-pipette",
       "model": "beral-pipette.glb",
       "thumbnail": "thumbs/beral-pipette.png",

@@ -1,0 +1,90 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "beaker-250ml",
+  "model": "beaker-250ml.glb",
+  "thumbnail": "thumbs/beaker-250ml.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "circle",
+      "radius": 35.0
+    },
+    "grip": {
+      "heightMm": 52.0
+    },
+    "pour": {
+      "lipMm": [
+        -40.5,
+        0.0,
+        96.0
+      ],
+      "tiltDeg": 100.0,
+      "style": "pour"
+    },
+    "fill": {
+      "innerProfileMm": [
+        [
+          0.0,
+          2.2
+        ],
+        [
+          30.9,
+          2.2
+        ],
+        [
+          33.4,
+          4.7
+        ],
+        [
+          33.4,
+          95.0
+        ]
+      ],
+      "capacityMl": 250,
+      "meniscus": "concave"
+    },
+    "solidRest": {
+      "centreMm": [
+        0.0,
+        0.0,
+        2.2
+      ],
+      "radiusMm": 30.4
+    },
+    "graduations": null,
+    "anchors": {},
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -40.77,
+        -35.57,
+        0.0
+      ],
+      "max": [
+        35.57,
+        35.57,
+        96.11
+      ]
+    },
+    "triangles": 19505,
+    "materials": [
+      "Borosilicate glass",
+      "Borosilicate glass thick",
+      "White enamel print"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/beaker_250ml.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "242111e08c963b3a10e7e838334c3dfa64fa92b7e837c49e604d277f02ec431f",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
-import { loadBundledTechnique, loadBundledTechniqueSummaries } from "../../data/loadBundledTechniques";
 import {
   applyTechniqueConfiguration,
   configurationSlots,
@@ -11,7 +10,7 @@ import { hostLabsForTechnique } from "../../data/techniqueHosts";
 import type { TechniqueDefinition } from "../../domain/types";
 import { slotLabel } from "../copy/slotLabels";
 import { equipment3dReadiness } from "../equipment3d/readiness";
-import { packNumber } from "../packs";
+import { load3DTechnique, pack3D, practiceSummary } from "../practice";
 import { studio3DFallbackHash } from "../routes3d";
 import { ProvenanceChip } from "../ui/ProvenanceChip";
 import { Player3D } from "./Player3D";
@@ -33,19 +32,23 @@ export const Technique3DRoute = ({ techniqueId }: { techniqueId: string }) => {
   const [configured, setConfigured] = useState<TechniqueDefinition>();
   const [setupError, setSetupError] = useState<string>();
   const [pack, setPack] = useState<number>();
-  const fallbackHash = studio3DFallbackHash({ view: "technique", techniqueId });
+  // A practice version (Pack 2 decision 1A) has no 2D route of its own: its 2D fallback is the
+  // lab-bound original's, which names the labs that play it.
+  const [basedOn, setBasedOn] = useState<string>();
+  const fallbackHash = studio3DFallbackHash({ view: "technique", techniqueId: basedOn ?? techniqueId });
 
-  // The top bar's source badge names the technique's pack (§5.4): catalogue order, in fives.
+  // The top bar's source badge names the technique's pack (§5.4): catalogue order, in fives, for
+  // Pack 1; a practice version's own pack.
   useEffect(() => {
     let active = true;
-    loadBundledTechniqueSummaries().then((summaries) => { if (active) setPack(packNumber(summaries.map((s) => s.id), techniqueId)); },
-      () => undefined);
+    pack3D(techniqueId).then((p) => { if (active) setPack(p); }, () => undefined);
+    practiceSummary(techniqueId).then((p) => { if (active) setBasedOn(p?.basedOn); }, () => undefined);
     return () => { active = false; };
   }, [techniqueId]);
 
   useEffect(() => {
     let active = true;
-    loadBundledTechnique(techniqueId).then((d) => {
+    load3DTechnique(techniqueId).then((d) => {
       if (!active) return;
       setDefinition(d);
       // As the 2D TechniqueSetupForm does: authored slot defaults pre-fill; nothing else is supplied.
@@ -68,7 +71,7 @@ export const Technique3DRoute = ({ techniqueId }: { techniqueId: string }) => {
 
   if (page === "play" && (configured ?? (missing.length === 0 ? definition : undefined))) {
     return <Player3D definition={configured ?? definition} authoredDefinition={definition} title={definition.title}
-      sourceTag={pack ? `TECHNIQUE · PACK ${pack}` : "TECHNIQUE"} fallbackHash={fallbackHash} backHref="#/techniques"
+      sourceTag={pack ? `${basedOn ? "PRACTICE" : "TECHNIQUE"} · PACK ${pack}` : "TECHNIQUE"} fallbackHash={fallbackHash} backHref="#/techniques"
       simulationId={techniqueId} />;
   }
 
