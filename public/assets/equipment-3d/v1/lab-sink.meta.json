@@ -1,0 +1,62 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "lab-sink",
+  "model": "lab-sink.glb",
+  "thumbnail": "thumbs/lab-sink.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "rect",
+      "width": 360.0,
+      "depth": 280.0
+    },
+    "grip": {
+      "heightMm": 110.0
+    },
+    "graduations": null,
+    "fill": {
+      "innerBoxMm": {
+        "width": 336.0,
+        "depth": 256.0,
+        "floorZ": 20.0,
+        "topZ": 110.0
+      },
+      "capacityMl": 7500,
+      "meniscus": "flat"
+    },
+    "anchors": {},
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -180.0,
+        -140.0,
+        0.0
+      ],
+      "max": [
+        180.0,
+        143.0,
+        346.33
+      ]
+    },
+    "triangles": 2616,
+    "materials": [
+      "Black epoxy resin",
+      "Brushed stainless",
+      "Cast clamp chrome"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/lab_sink.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "7bf83b19714093ca7bb636c0ed0030ad9c39402f8b06f67c757e8786640e8dcb",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

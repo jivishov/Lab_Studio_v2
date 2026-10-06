@@ -27,6 +27,16 @@ export const benchOperations = {
   "precipitation-drop-test": { verb: "observe", atomId: "atom.observe.complete-precipitation-test", control: "Add a drop" },
   /** Fold a dry filter paper in half and in half again, ready to open into a cone in the funnel. */
   "fold-filter-paper": { verb: "observe", atomId: "atom.observe.fold-filter-paper", control: "Fold" },
+  /** Turn the drying oven's control to the stated range (FD-13). */
+  "set-oven-temperature": { verb: "observe", atomId: "atom.observe.set-drying-oven", control: "Set" },
+  /** Open the drying oven's door. */
+  "open-oven-door": { verb: "observe", atomId: "atom.observe.open-oven-door", control: "Open the door" },
+  /** Close the door on the sample and dry it for a stated time (FD-14, FD-17), on the fast step clock. */
+  "dry-in-oven": { verb: "dry", atomId: "atom.dry.close-oven-and-dry", control: "Close and dry" },
+  /** Break a partly dried solid into small pieces with the metal scoop (FD-16). */
+  "break-up-precipitate": { verb: "observe", atomId: "atom.observe.break-up-precipitate", control: "Break it up" },
+  /** Leave a hot assembly on the heat-safe pad until it is cool enough to weigh (FD-18, FD-19). */
+  "cool-on-pad": { verb: "cool", atomId: "atom.cool.on-heat-safe-pad", control: "Wait" },
 } as const satisfies Record<string, BenchOperationSpec>;
 
 export type BenchOperationId = keyof typeof benchOperations;

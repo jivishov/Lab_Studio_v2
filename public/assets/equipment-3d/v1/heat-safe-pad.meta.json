@@ -1,0 +1,58 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "heat-safe-pad",
+  "model": "heat-safe-pad.glb",
+  "thumbnail": "thumbs/heat-safe-pad.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "rect",
+      "width": 150.0,
+      "depth": 150.0
+    },
+    "grip": {
+      "heightMm": 8.0
+    },
+    "graduations": null,
+    "anchors": {
+      "heat-safe-pad-surface": {
+        "positionMm": [
+          0.0,
+          0.0,
+          8.0
+        ]
+      }
+    },
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -75.0,
+        -75.0,
+        0.0
+      ],
+      "max": [
+        75.0,
+        75.0,
+        8.0
+      ]
+    },
+    "triangles": 108,
+    "materials": [
+      "Ceramic fibre board"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/heat_safe_pad.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "55d37b3083ac7f2dc0e5829484e09471f05aa23ac4cf955d3cfe046b91d12965",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

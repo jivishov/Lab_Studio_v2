@@ -106,6 +106,7 @@ import {
 } from "./createRuntime";
 import { configurationLockFor } from "./configurationGate";
 import { benchOperationSpec } from "../domain/benchOperations";
+import { v1InteractionZones } from "../domain/interactionZones";
 import {
   currentEvidenceScopeGeneration,
   evaluateNode,
@@ -1801,6 +1802,79 @@ const executeBenchOperation = (
     const folded = { ...state, apparatusStates: { ...state.apparatusStates, [paper.id]: { ...state.apparatusStates?.[paper.id], form: "folded" } } };
     return record(folded, `Folded the ${paper.label.toLowerCase()} in half and in half again, ready to open into a cone.`, "fold");
   }
+  // The drying oven (Pack 2's Dry and Weigh, FD-13 to FD-18): its setpoint, its door, and the stages it dries.
+  const oven = findInstance(state, stringSetting(params, "ovenInstanceId"), stringSetting(params, "ovenDefinitionId") ?? "drying-oven");
+  const ovenState = oven ? state.apparatusStates?.[oven.id] ?? {} : {};
+  const withOven = (base: RuntimeState, patch: Record<string, string | number | boolean>): RuntimeState =>
+    oven ? { ...base, apparatusStates: { ...base.apparatusStates, [oven.id]: { ...base.apparatusStates?.[oven.id], ...patch } } } : base;
+  if (operation === "set-oven-temperature") {
+    if (!oven) return fail(state, "The drying oven is missing.", "Use the drying oven on the bench.", nodeId);
+    const low = numberSetting(params, "temperatureMinC", Number.NaN);
+    const high = numberSetting(params, "temperatureMaxC", Number.NaN);
+    const value = typeof action.value === "number" ? action.value : Number.NaN;
+    if (!Number.isFinite(value)) return fail(state, "Enter the temperature you set on the oven.", "Turn the control and enter the setting.", nodeId);
+    if ((Number.isFinite(low) && value < low) || (Number.isFinite(high) && value > high)) {
+      return fail(state, `${value} °C is outside ${low}–${high} °C.`, `Set the oven between ${low} and ${high} °C.`, nodeId);
+    }
+    return record(withOven(state, { setpointC: value }), `Set the drying oven to ${value} °C.`, "oven-setting");
+  }
+  if (operation === "open-oven-door") {
+    if (!oven) return fail(state, "The drying oven is missing.", "Use the drying oven on the bench.", nodeId);
+    if (ovenState.door === "open") return fail(state, "The oven door is already open.", "Go on to the next step.", nodeId);
+    return record(withOven(state, { door: "open" }), "Opened the oven door.", "oven-door");
+  }
+  if (operation === "dry-in-oven") {
+    if (!oven) return fail(state, "The drying oven is missing.", "Use the drying oven on the bench.", nodeId);
+    const setpoint = typeof ovenState.setpointC === "number" ? ovenState.setpointC : undefined;
+    if (setpoint === undefined) return fail(state, "The oven has not been set.", "Set the oven's temperature first.", nodeId);
+    const sample = findInstance(state, stringSetting(params, "sampleInstanceId"), "");
+    if (!sample || sample.location !== "oven") return fail(state, "The sample is not in the oven.", "Put the watch glass on the oven's shelf first.", nodeId);
+    const carrier = findInstance(state, stringSetting(params, "precipitateCarrierInstanceId"), "") ?? sample;
+    const precipitate = carrier.contents.precipitate;
+    if (!precipitate) return fail(state, "There is no precipitate to dry.", "Put the paper with the solid on the watch glass first.", nodeId);
+    if (!precipitate.rinsed) return fail(state, "The precipitate must be washed before drying.", "Wash the solid on the paper first.", nodeId);
+    const dryness = stringSetting(params, "drynessResult") === "damp" ? "damp" : "dry";
+    const warm = (base: RuntimeState, id: string) => updateInstance(base, id, (instance) => ({
+      ...instance, contents: { ...instance.contents, temperatureC: setpoint },
+    }));
+    let next = warm(warm(state, sample.id), carrier.id);
+    next = updateInstance(next, carrier.id, (instance) => ({
+      ...instance,
+      contents: {
+        ...instance.contents,
+        wetState: dryness === "dry" ? "dry" : "wet",
+        visualState: stringSetting(params, "visualState") ?? (dryness === "dry" ? "dry-precipitate" : "partially-dry-precipitate"),
+        precipitate: { ...instance.contents.precipitate!, dryness, dryMassG: instance.contents.precipitate!.massG },
+      },
+    }));
+    return record(withOven(next, { door: "closed" }),
+      `Closed the oven door and dried the assembly at ${setpoint} °C${minutes("durationMinutes")}; the solid is ${dryness}.`, "dry");
+  }
+  if (operation === "break-up-precipitate") {
+    const carrier = findInstance(state, stringSetting(params, "precipitateCarrierInstanceId"), "");
+    const holder = findInstance(state, stringSetting(params, "vesselInstanceId"), "");
+    if (!carrier?.contents.precipitate || !holder) return fail(state, "There is no solid on the watch glass to break up.", "Dry the solid first.", nodeId);
+    if (holder.location === "oven") return fail(state, "The watch glass is still in the oven.", "Lift it out onto the heat-safe pad first.", nodeId);
+    const broken = updateInstance(state, carrier.id, (instance) => ({
+      ...instance, contents: { ...instance.contents, visualState: stringSetting(params, "visualState") ?? "broken-dry-precipitate" },
+    }));
+    return record(broken, "Broke the solid into small pieces with the metal scoop.", "break-up");
+  }
+  if (operation === "cool-on-pad") {
+    const holder = findInstance(state, stringSetting(params, "vesselInstanceId"), "");
+    const carrier = findInstance(state, stringSetting(params, "precipitateCarrierInstanceId"), "");
+    const pad = findInstance(state, stringSetting(params, "padInstanceId"), "heat-safe-pad");
+    if (!holder || !pad || !state.attachments.some((relation) => relation.childInstanceId === holder.id && relation.parentInstanceId === pad.id)) {
+      return fail(state, "The watch glass is not on the heat-safe pad.", "Set it on the pad with the tongs to cool.", nodeId);
+    }
+    const cooledC = numberSetting(params, "cooledTemperatureC", 25);
+    const cool = (base: RuntimeState, id: string, visual?: string) => updateInstance(base, id, (instance) => ({
+      ...instance, contents: { ...instance.contents, temperatureC: cooledC, ...(visual ? { visualState: visual } : {}) },
+    }));
+    let next = cool(state, holder.id);
+    if (carrier) next = cool(next, carrier.id, stringSetting(params, "visualState") ?? "cooled-dry-precipitate");
+    return record(next, `Left the assembly on the heat-safe pad${minutes("coolMinutes")} until cool enough to weigh (${cooledC} °C).`, "cool");
+  }
   return fail(state, `Unknown bench operation "${operation ?? ""}".`, "Check the step's authored operation.", nodeId);
 };
 
@@ -2522,6 +2596,20 @@ const executeAction = (
             snapZoneId,
           )
         : undefined;
+    // A target that must stand on the bench to receive this (Pack 2: the watch glass off the balance
+    // before the wet paper goes on it).
+    const targetHolder = target && booleanSetting(params, "requireTargetUnseated")
+      ? state.attachments.find((relation) => relation.childInstanceId === target.id) : undefined;
+    if (target && targetHolder) {
+      const holder = findInstance(state, targetHolder.parentInstanceId);
+      return fail(state, `The ${target.label.toLowerCase()} is still on the ${holder?.label.toLowerCase() ?? "holder"}.`,
+        `Take the ${target.label.toLowerCase()} off the ${holder?.label.toLowerCase() ?? "holder"} onto the bench first.`, nodeId);
+    }
+    // A part lifted from one holder onto another in one movement (Pack 2: the paper out of the funnel onto the
+    // watch glass, the watch glass off the pad onto the pan): its old seat is let go first.
+    if (booleanSetting(params, "moveFromHolder") && state.attachments.some((relation) => relation.childInstanceId === equipment.id)) {
+      state = detachChild(state, equipment.id);
+    }
     const attachmentCheck =
       target && snapZoneId && nextLocation === "snapZone"
         ? canAttach(state, target, equipment, snapZoneId)
@@ -2533,6 +2621,32 @@ const executeAction = (
     if (nextLocation !== "snapZone" && currentParent) {
       const closedParent = closedChamberAccessRefusal(currentParent);
       if (closedParent) return fail(state, closedParent.message, closedParent.recovery, nodeId);
+    }
+    // Hot glassware is handled with tongs (S-05; Pack 2): a step that names them needs them on the bench,
+    // and one that opts in (`refuseHotByHand`) is refused for a hot item.
+    const handledWith = stringSetting(params, "handledWithDefinitionId");
+    if (handledWith && !state.equipmentInstances.some((instance) => instance.definitionId === handledWith && instance.location === "workbench")) {
+      return fail(state, `Use the ${equipmentById.get(handledWith)?.label.toLowerCase() ?? handledWith}.`, `Put the ${equipmentById.get(handledWith)?.label.toLowerCase() ?? handledWith} on the bench and handle the hot item with them.`, nodeId);
+    }
+    if (!handledWith && booleanSetting(params, "refuseHotByHand") && (equipment.contents.temperatureC ?? 0) > numberSetting(params, "handSafeTemperatureC", 45)) {
+      return fail(state, `The ${equipment.label.toLowerCase()} is hot.`, "Handle it with the crucible tongs.", nodeId);
+    }
+    // Into or out of a closed oven: its door must be open (Pack 2).
+    const zoneRelation = params.snapZoneId ? v1InteractionZones.find((zone) => zone.id === String(params.snapZoneId))?.relationType : undefined;
+    // A snap into an instrument's chamber arrives as "oven" (its station) or "snapZone".
+    const intoOven = (nextLocation === "snapZone" || nextLocation === "oven") && zoneRelation === "insideInstrument";
+    const ovenOf = (zoneId?: string) => zoneId ? state.equipmentInstances.find((instance) =>
+      v1InteractionZones.some((zone) => zone.id === zoneId && zone.ownerDefinitionId === instance.definitionId) && instance.location === "workbench") : undefined;
+    const ovenHere = intoOven ? ovenOf(String(params.snapZoneId)) : equipment.location === "oven" ? ovenOf(equipment.snapZoneId) : undefined;
+    if ((intoOven || equipment.location === "oven") && ovenHere && state.apparatusStates?.[ovenHere.id]?.door !== "open") {
+      return fail(state, "The oven door is closed.", "Open the oven door first.", nodeId);
+    }
+    if (intoOven) {
+      if (!ovenHere) return fail(state, "The oven is not on the bench.", "Use the drying oven on the bench.", nodeId);
+      const inOven = updateInstance(detachChild(state, equipment.id), equipment.id, (instance) => ({
+        ...instance, location: "oven", snapZoneId: String(params.snapZoneId), interactionStatus: "inInstrument",
+      }));
+      return { ok: true, state: inOven, message: actionDefinition.feedback.success };
     }
     // A part that must first be shaped (Pack 2: the filter paper folded before it is opened into the funnel).
     const requiredForm = stringSetting(params, "requiredForm");
@@ -3036,6 +3150,32 @@ const executeAction = (
           },
         ],
       },
+      message: actionDefinition.feedback.success,
+    };
+  }
+
+  // Poured down the sink (Pack 2's Dry and Weigh, FD-12; S-07's configured disposal): the source is
+  // emptied and the drain keeps nothing.
+  if (action.verb === "transfer" && booleanSetting(actionDefinition.parameters, "toDrain")) {
+    const source = findInstance(state, action.sourceInstanceId, String(params.sourceDefinitionId ?? ""));
+    const drain = findInstance(state, action.targetInstanceId, String(params.targetDefinitionId ?? ""));
+    if (!source || (source.contents.volumeMl ?? 0) <= 0) return fail(state, "There is nothing to pour away.", "Pour the filtrate from the flask.", nodeId);
+    if (!drain || drain.definitionId !== String(params.targetDefinitionId ?? drain.definitionId) || drain.location !== "workbench") {
+      return fail(state, "Pour it into the sink.", "Use the sink at the edge of the bench.", nodeId);
+    }
+    const volume = source.contents.volumeMl ?? 0;
+    const poured = updateInstance(detachChild(state, source.id), source.id, (instance) => ({
+      ...instance,
+      location: "workbench",
+      snapZoneId: undefined,
+      interactionStatus: "free",
+      contents: { ...emptyContents(), wetState: "wet" },
+    }));
+    const tag = stringSetting(actionDefinition.parameters, "tag");
+    return {
+      ok: true,
+      state: addNotebook(poured, nodeId, actionDefinition.label, `Poured ${roundToRuntimeMl(volume)} mL of ${source.contents.label.toLowerCase()} down the sink.`,
+        ["dispose", ...(tag ? [tag] : [])]),
       message: actionDefinition.feedback.success,
     };
   }

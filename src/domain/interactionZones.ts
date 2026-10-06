@@ -126,6 +126,8 @@ export const v1InteractionZones: InteractionZone[] = [
   // A temporary filling funnel in the neck, removed before the flask is filled to its mark
   // (Make a Solution, decided 2026-10-04).
   zone("volumetric-flask-funnel-seat", "volumetric-flask", ["funnel"], "mounted"),
+  // Hot glassware set down to cool (Pack 2, decided 2026-10-05).
+  zone("heat-safe-pad-surface", "heat-safe-pad", ["watch-glass", "crucible-with-lid"], "placedOn"),
   // The stirring rod standing in the beaker while the reagent is added and stirred in (Pack 2, 2026-10-05).
   zone("beaker-250ml-stirring-rod-rest", "beaker-250ml", ["stirring-rod"], "inserted"),
   zone("spectrophotometer-cuvette-slot", "spectrophotometer", ["cuvette"], "inserted"),

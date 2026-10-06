@@ -52,7 +52,7 @@ TRANSIENT_FILL = {
 }
 FLOAT = 5126
 # Operations a model control may declare; the viewer maps each to a technique step (src/studio3d).
-CONTROL_OPERATIONS = {'zero'}
+CONTROL_OPERATIONS = {'zero', 'set-temperature', 'door'}
 
 
 def load_inventory(pack, path):

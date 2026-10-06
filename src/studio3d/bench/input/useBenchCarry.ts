@@ -6,6 +6,7 @@ import { fromBench, runtimeBenchPoints } from "../../adapters/benchCoordinates";
 import { classifyOverlap, footprintOf, snapClassification, snapZoneFootprint, type FootprintCandidate } from "../../adapters/footprints";
 import { pointInFootprint, resolvePipetteRelease, resolveRelease, resolveToolRelease, snapReleasePoint, type ToolTransfer } from "../../adapters/sceneToIntent";
 import type { ActionInteractionSpec } from "../../../domain/types";
+import type { RuntimeInteractionIntent } from "../../../runtime/interactionIntents";
 import type { SceneContents, SceneItem } from "../../adapters/runtimeToScene";
 import type { Player3DController } from "../../player/usePlayer3D";
 import type { BenchEngine } from "../BenchEngine";
@@ -138,7 +139,9 @@ export type HoldOverHandler = (pipetteId: string, vesselId: string) => void;
 export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DController, onHover: (instanceId?: string) => void,
   onTap?: TapHandler, onControl?: ControlHandler, onHoldOver?: HoldOverHandler,
   /** True while hand control runs: mouse moves are then ignored, as in the microarray lab (`app.js:121`). */
-  mouseIgnored?: () => boolean) => {
+  mouseIgnored?: () => boolean,
+  /** A press on an item while a committed animation is drawn (Pack 2: the oven opened before its time is up). */
+  onBusyPress?: (instanceId: string) => void) => {
   const carryRef = useRef<Carry | undefined>(undefined);
   const mouseIgnoredRef = useRef(mouseIgnored);
   mouseIgnoredRef.current = mouseIgnored;
@@ -224,6 +227,10 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     return classifyOverlap({ instanceId, definitionId, footprint }, candidates(instanceId), judged, snap);
   }, [candidates, interaction, scene]);
 
+  // A hot item moved with the tongs, and the solid broken up with the scoop (Pack 2, decided 2026-10-05).
+  const tongs = player.tongsStep;
+  const breakUp = useMemo(() => (benchOp?.operation === "break-up-precipitate" && benchOp.toolInstanceId && benchOp.vesselInstanceId
+    ? { toolId: benchOp.toolInstanceId, vesselId: benchOp.vesselInstanceId } : undefined), [benchOp]);
   /** Whether a carried item's tip is over a bench item's footprint (the dropping pipette over the beaker). */
   const tipOver = useCallback((vesselId: string, carriedId: string, point: BenchPoint): boolean =>
     candidates(carriedId).some((candidate) => candidate.instanceId === vesselId && pointInFootprint(candidate.footprint, point)), [candidates]);
@@ -258,6 +265,18 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     if (needed) player.notify(`Leave the ${item.label.toLowerCase()} in the ${parent.label.toLowerCase()}: a step still needs it there.`);
     return needed;
   }, [player, scene]);
+  /**
+   * Hot glassware is not picked up by hand (S-05): a correction names the tongs. Also a part a later step
+   * needs where it is seated stays put. Returns whether the pick-up is refused.
+   */
+  const heldBack = useCallback((instanceId: string): boolean => {
+    const instance = player.runtime.state.equipmentInstances.find((candidate) => candidate.id === instanceId);
+    if ((instance?.contents.temperatureC ?? 0) > 45) {
+      player.correct(`The ${instance!.label.toLowerCase()} is hot.`, "Pick it up with the crucible tongs.");
+      return true;
+    }
+    return keptSeated(instanceId);
+  }, [keptSeated, player]);
 
   // Where the step names one item, another of the same kind is only moved (decided 2026-10-05).
   const namedInstanceId = placedInstanceId(player.runtime.expectedAction?.parameters);
@@ -279,6 +298,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
 
   const cancel = useCallback(() => {
     endCarry();
+    engine?.setToolHeld(null);
     engine?.endCarryPreview();
     if (engine) void engine.sync(scene);
   }, [endCarry, engine, scene]);
@@ -368,6 +388,60 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
                 : { ...screen, text: "Release to set down", kind: "free" };
         }
       }
+      return show(shown, action);
+    }
+    if ((tongs && carry.instanceId === tongs.toolInstanceId) || (breakUp && carry.instanceId === breakUp.toolId)) {
+      // A tool aimed by its working end (`tipMm`): the tongs grip the hot item, then carry it where the step
+      // puts it; the scoop breaks up the solid on the watch glass (Pack 2).
+      const offset = engine.tipOffsetMm(carry.instanceId);
+      carry.tipPoint = point;
+      carry.point = offset ? { xMm: point.xMm - offset.xMm, yMm: point.yMm - offset.yMm } : point;
+      carry.liftMm = surfaceMm + LIFT_MM;
+      engine.previewCarry(carry.instanceId, carry.point.xMm, carry.point.yMm, carry.liftMm);
+      const top = screenAt ? undefined : engine.screenPoint(carry.instanceId, 1);
+      const screen = screenAt ?? (top ? { x: top.x, y: top.y - 30 } : { x: 0, y: 0 });
+      const vesselId = tongs && carry.instanceId === tongs.toolInstanceId ? tongs.vesselInstanceId : breakUp!.vesselId;
+      const vesselLabel = lowerFirst(scene.bench.find((i) => i.instanceId === vesselId)?.label ?? "watch glass");
+      let shown: CarryCallout;
+      let action: PressAction = "commit";
+      if (breakUp && carry.instanceId === breakUp.toolId) {
+        if (tipOver(vesselId, carry.instanceId, point)) {
+          engine.setTargetRing(vesselId, "valid");
+          shown = { ...screen, ...acceptedDropCallout(showGuidance, flow.inputReady, `Release to break up the solid on the ${vesselLabel}`) };
+        } else {
+          engine.setTargetRing(null);
+          shown = showGuidance ? { ...screen, text: `Carry the scoop to the ${vesselLabel}`, kind: "free" } : { ...screen, text: "Release to set down", kind: "free" };
+        }
+        return show(shown, action);
+      }
+      const gripped = Boolean(carry.toolLoaded);
+      if (!gripped) {
+        if (tipOver(vesselId, carry.instanceId, point)) {
+          engine.setTargetRing(vesselId, "valid");
+          // The keyboard and touch grip as the jaws pass over it; the mouse and the hand grip with a press.
+          if (!carry.click && carry.via !== "gesture") {
+            carry.toolLoaded = true;
+            setToolLoaded(true);
+            engine.setToolHeld(carry.instanceId, vesselId);
+            shown = { ...screen, text: `Gripped the ${vesselLabel}`, kind: "valid" };
+          } else {
+            shown = { ...screen, text: carry.via === "gesture" ? `Pause here, then close your hand to grip the ${vesselLabel}` : `Click to grip the ${vesselLabel}`, kind: "valid" };
+          }
+        } else {
+          engine.setTargetRing(null);
+          shown = showGuidance ? { ...screen, text: `Carry the tongs to the ${vesselLabel}`, kind: "free" } : { ...screen, text: "Release to set down", kind: "free" };
+        }
+        return show(shown, action);
+      }
+      const overlap = overlapAt(vesselId, tongs!.vesselDefinitionId, point);
+      if (overlap.kind === "valid" && overlap.target && (!tongs!.targetInstanceId || overlap.target.id === tongs!.targetInstanceId)) {
+        engine.setTargetRing(overlap.target.id, "valid");
+        shown = { ...screen, ...acceptedDropCallout(showGuidance, flow.inputReady, `Release to ${lowerFirst(interaction?.accessibleLabel ?? "set it down")}`) };
+      } else {
+        engine.setTargetRing(overlap.target && overlap.kind !== "moveOnly" ? overlap.target.id : null, overlap.target && overlap.kind !== "moveOnly" ? "invalid" : "valid");
+        shown = showGuidance ? { ...screen, text: `Carry the ${vesselLabel} where the step puts it`, kind: "free" } : { ...screen, text: "Release to try this", kind: "free" };
+      }
+      action = "commit";
       return show(shown, action);
     }
     if (dropTest && carry.instanceId === dropTest.pipetteId) {
@@ -485,7 +559,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       shown = holder ? { ...screen, text: `Release to take it off ${holder.label}`, kind: "detach" } : { ...screen, text: "Release to set down", kind: "free" };
     }
     return show(shown, action);
-  }, [dropTest, engine, flow.inputReady, interaction, labelOf, markStep, overlapAt, pipette, pipetteSpec, placesForStep, scene, scoopFor, showGuidance, tipOver, toolTransfer]);
+  }, [breakUp, dropTest, engine, flow.inputReady, interaction, labelOf, markStep, overlapAt, pipette, pipetteSpec, placesForStep, scene, scoopFor, showGuidance, tipOver, tongs, toolTransfer]);
 
   /**
    * Pointing at an item with a seat for the carried item (a registry zone that accepts it, with a 3D
@@ -519,6 +593,40 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
 
   const release = useCallback(() => {
     const carry = carryRef.current;
+    // The tongs (Pack 2): a press over the hot item grips it and the carry goes on; over its place, the
+    // runtime records the item put there, as a hand would.
+    if (engine && carry?.kind === "bench" && tongs && carry.instanceId === tongs.toolInstanceId && carry.point) {
+      const at = carry.tipPoint ?? carry.point;
+      if (!carry.toolLoaded) {
+        if (tipOver(tongs.vesselInstanceId, carry.instanceId, at)) {
+          carry.toolLoaded = true;
+          setToolLoaded(true);
+          engine.setToolHeld(carry.instanceId, tongs.vesselInstanceId);
+          carryTo(at);
+          return;
+        }
+      } else {
+        const overlap = overlapAt(tongs.vesselInstanceId, tongs.vesselDefinitionId, at);
+        if (overlap.kind === "valid" && overlap.target && (!tongs.targetInstanceId || overlap.target.id === tongs.targetInstanceId)) {
+          endCarry();
+          engine.endCarryPreview(true);
+          engine.setToolHeld(null);
+          const accepted = Boolean(player.runIntent({ type: "snapIntent", origin: carry.via === "gesture" ? "vision" : "pointer",
+            sourceInstanceId: tongs.vesselInstanceId, targetInstanceId: overlap.target.id } as RuntimeInteractionIntent));
+          if (!accepted) void engine.sync(scene);
+          return;
+        }
+      }
+    }
+    if (engine && carry?.kind === "bench" && breakUp && carry.instanceId === breakUp.toolId && carry.point
+      && tipOver(breakUp.vesselId, carry.instanceId, carry.tipPoint ?? carry.point)) {
+      endCarry();
+      engine.endCarryPreview(true);
+      void engine.sync(scene);
+      player.recordEvidence();
+      return;
+    }
+    if (engine && carry?.kind === "bench" && carry.toolLoaded && tongs && carry.instanceId === tongs.toolInstanceId) engine.setToolHeld(null);
     endCarry();
     // A tray tile pressed and released without moving is a click: the 2D next free slot (§5.10).
     if (engine && carry?.kind === "tray" && !carry.point) {
@@ -634,7 +742,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       accepted = true;
     }
     if (!accepted) void engine.sync(scene);
-  }, [cancel, dropTest, endCarry, engine, interaction, labelOf, markStep, onHoldOver, overlapAt, pipette, pipetteSpec, player, scene, scoopFor, tipOver, toolTransfer]);
+  }, [breakUp, cancel, carryTo, dropTest, endCarry, engine, interaction, labelOf, markStep, onHoldOver, overlapAt, pipette, pipetteSpec, player, scene, scoopFor, tipOver, tongs, toolTransfer]);
 
   /**
    * Keyboard carry (§5.6): the item lifts where it stands. Probes do not free-move (parity), so
@@ -646,14 +754,15 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     // Nothing is picked up while a committed pour, weighing, tool transfer or swirl is being drawn.
     if (overflowRefused(item?.instanceId)) return true;
     if (!engine || !item || !base || pouringRef.current || getVisualProfile(item.definitionId)?.probePresentation) return false;
-    if (keptSeated(instanceId)) return true;
+    if (heldBack(instanceId)) return true;
     if (carryRef.current) cancel();
     carryRef.current = { kind: "bench", via: "keyboard", instanceId, definitionId: item.definitionId, label: item.label,
       startX: 0, startY: 0, active: true, pointerType: "keyboard" };
     setCarrying(true);
     setKeyCarrying(true);
     // A tool is held by its working end, so the carry starts from where that end lies.
-    const offset = toolTransfer?.toolDefinitionId === item.definitionId ? engine.solidRestOffsetMm(instanceId) : undefined;
+    const offset = toolTransfer?.toolDefinitionId === item.definitionId ? engine.solidRestOffsetMm(instanceId)
+      : (tongs?.toolInstanceId === instanceId || breakUp?.toolId === instanceId) ? engine.tipOffsetMm(instanceId) : undefined;
     carryTo({ xMm: base.x / MM + (offset?.xMm ?? 0), yMm: -base.z / MM + (offset?.yMm ?? 0) });
     player.announce(`Carrying ${item.label}. Arrow keys move it, Shift moves further, [ and ] step through targets. Enter sets it down; Escape cancels.`);
     return true;
@@ -778,7 +887,8 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       // the filter drains is refused as an overflow.
       if (event.button !== 0) return;
       if (pouringRef.current) {
-        if (!carryRef.current) overflowRefused(engine.pick(event.clientX, event.clientY));
+        const picked = carryRef.current ? undefined : engine.pick(event.clientX, event.clientY);
+        if (picked && !overflowRefused(picked)) onBusyPress?.(picked);
         return;
       }
       const current = carryRef.current;
@@ -800,7 +910,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
         if (onTap?.(item.instanceId, event.pointerType, event.clientX, event.clientY) === true) return;
         // Probes (a visual profile with probePresentation, as in 2D) move only as part of their interaction.
         if (getVisualProfile(item.definitionId)?.probePresentation) return;
-        if (keptSeated(item.instanceId)) return;
+        if (heldBack(item.instanceId)) return;
         carryRef.current = { kind: "bench", via: "pointer", click: true, instanceId: item.instanceId, definitionId: item.definitionId, label: item.label,
           startX: event.clientX, startY: event.clientY, active: true, pointerType: event.pointerType,
           pickedAt: { x: event.clientX, y: event.clientY, t: performance.now() } };
@@ -810,7 +920,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
         return;
       }
       if (getVisualProfile(item.definitionId)?.probePresentation) return;
-      if (keptSeated(item.instanceId)) return;
+      if (heldBack(item.instanceId)) return;
       carryRef.current = { kind: "bench", via: "pointer", instanceId: item.instanceId, definitionId: item.definitionId, label: item.label,
         startX: event.clientX, startY: event.clientY, active: false, pointerType: event.pointerType };
       canvas.setPointerCapture(event.pointerId);
@@ -910,7 +1020,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       window.removeEventListener("pointercancel", up);
       window.removeEventListener("keydown", key);
     };
-  }, [cancel, carryTo, carryToPointer, drawDepth, engine, onControl, onHover, onTap, overflowRefused, player, release, scene, scoopFor, toolTransfer]);
+  }, [cancel, carryTo, carryToPointer, drawDepth, engine, onBusyPress, onControl, onHover, onTap, overflowRefused, player, release, scene, scoopFor, toolTransfer]);
 
   /** Start carrying a tray item (pointer down on its tile): with a mouse it then follows the pointer until a press on the bench. */
   const startTrayCarry = useCallback((definitionId: string, pointerType = "mouse", instanceId?: string) => {
@@ -923,8 +1033,8 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
   /** Whether a bench item can be carried now: probes move only as part of their interaction (parity). */
   const canCarry = useCallback((instanceId: string): boolean => {
     const item = scene.bench.find((i) => i.instanceId === instanceId);
-    return Boolean(engine && item && !pouringRef.current && !getVisualProfile(item.definitionId)?.probePresentation && !keptSeated(instanceId));
-  }, [engine, scene, keptSeated]);
+    return Boolean(engine && item && !pouringRef.current && !getVisualProfile(item.definitionId)?.probePresentation && !heldBack(instanceId));
+  }, [engine, scene, heldBack]);
 
   /**
    * Whether a client point is over the bench, where a gesture carry follows and can commit: the

@@ -10,7 +10,7 @@ import { footprintOf, nearestFreeSpot, type FootprintMm } from "../adapters/foot
 import { readingShownFor } from "../adapters/instrumentDisplay";
 import { fillLevelMm, pourStagingScene, runtimeToScene, sceneContents, type SceneContents, type SceneDescription } from "../adapters/runtimeToScene";
 import { heldOnSeat, readingSeatZone } from "../bench/scene/setOn";
-import { benchMoveRequest, benchOpStepFor, intentTypeForInteraction, markStepFor, mergeActionInput, pipetteStepFor, resolveTrayDrop, stepClockSeconds, toolTransferFor, type ReleaseOrigin } from "../adapters/sceneToIntent";
+import { benchMoveRequest, benchOpStepFor, intentTypeForInteraction, markStepFor, mergeActionInput, pipetteStepFor, resolveTrayDrop, stepClockSeconds, tongsStepFor, toolTransferFor, type ReleaseOrigin } from "../adapters/sceneToIntent";
 import { nextPlacementPoint, parkPointAfterInteraction } from "../adapters/twoDPlacement";
 import { equipment3dEntry } from "../equipment3d/readiness";
 import { stepFlow, type StepFlow, placedInstanceId } from "./stepRules";
@@ -168,6 +168,9 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
   );
   // A step done as a bench operation: a stir, a settle, a drop test (Pack 2, decided 2026-10-05).
   const benchOp = useMemo(() => benchOpStepFor(runtime.expectedAction, flow.nodeCompleted), [flow.nodeCompleted, runtime.expectedAction]);
+  // A hot item moved with the crucible tongs (Pack 2, S-05).
+  const tongsStep = useMemo(() => tongsStepFor(runtime.expectedAction, runtime.state.equipmentInstances, flow.nodeCompleted),
+    [flow.nodeCompleted, runtime.expectedAction, runtime.state]);
   // The run is complete when the current node is done and nothing follows it.
   const complete = useMemo(
     () => runtime.state.completedNodes.includes(runtime.currentNode.id)
@@ -304,14 +307,21 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     } else if (!failed && typeof result.action.parameters.benchOperation === "string") {
       // A bench operation (Pack 2): drawn after the runtime has recorded it, the vessel as it was until then.
       const step = benchOpStepFor(result.action, false);
-      const vesselId = step?.vesselInstanceId;
-      if (step && vesselId) {
+      // What changes while it is drawn: the paper under a drying solid, else the vessel itself.
+      const vesselId = step?.contentsInstanceId ?? step?.vesselInstanceId;
+      if (step?.operation === "break-up-precipitate" && step.toolInstanceId) {
+        // The scoop is drawn dipping into the solid, as a pipette dips (decided 2026-10-05).
         pourSeq.current += 1;
-        const labels: Record<string, string> = { stir: "Stirring", "settle-precipitate": "Settling", "precipitation-drop-test": "One drop" };
+        setToolDeposit({ toolId: step.toolInstanceId, motion: "dip", id: pourSeq.current });
+      } else if (step && vesselId) {
+        pourSeq.current += 1;
+        const labels: Record<string, string> = { stir: "Stirring", "settle-precipitate": "Settling", "precipitation-drop-test": "One drop",
+          "dry-in-oven": "Drying", "cool-on-pad": "Cooling" };
+        const sourceId = step.operation === "precipitation-drop-test" ? step.toolInstanceId ?? vesselId : vesselId;
         setBenchOpRun({ operation: step.operation, vesselId, ...(step.toolInstanceId ? { toolId: step.toolInstanceId } : {}),
           ...(step.minutes !== undefined ? { minutes: step.minutes, clockSeconds: stepClockSeconds(step.minutes) } : {}),
           label: labels[step.operation] ?? step.control,
-          staging: pourStagingScene(before, next, definition, { sourceId: step.toolInstanceId ?? vesselId, targetId: vesselId }),
+          staging: pourStagingScene(before, next, definition, { sourceId, targetId: vesselId }),
           before: contentsIn(before, vesselId), after: contentsIn(next, vesselId), id: pourSeq.current });
       }
     } else if (!failed && result.action.verb === "dissolve" && result.action.parameters.mixOperation === "swirl") {
@@ -479,6 +489,7 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     markStep,
     benchOp,
     benchOpRun,
+    tongsStep,
     /** Ends bench operation `id`'s animation; a later one that has already replaced it is left running. */
     finishBenchOp: (id: number) => setBenchOpRun((current) => (current?.id === id ? undefined : current)),
     addDrops,

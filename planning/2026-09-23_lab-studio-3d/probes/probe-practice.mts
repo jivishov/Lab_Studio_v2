@@ -52,16 +52,16 @@ const send = (action: any, intent: any, input = "") => {
 };
 const inputs: Record<string, string> = JSON.parse(process.env.PROBE_INPUTS ?? "{}");
 // Free moves made before a step (a paper lifted off the balance pan before it is folded): action id -> instance id.
-const moves: Record<string, string> = JSON.parse(process.env.PROBE_MOVES ?? "{}");
+const moves: Record<string, string | string[]> = JSON.parse(process.env.PROBE_MOVES ?? "{}");
 for (const n of def.process.nodes) {
   if (state.currentNodeId !== n.id) { console.log(`stuck before ${n.id} (current ${state.currentNodeId})`); break; }
   const action = def.actions.find((a: any) => a.id === n.actionId);
   const interaction = resolveActionInteraction(action);
   const type = intentTypeForInteraction[interaction.type];
   const notes: string[] = [];
-  if (moves[action.id]) {
-    state = performRuntimeAction(def, state, benchMoveRequest(moves[action.id], { x: 300, y: 300 }, 50));
-    notes.push(`(moved ${moves[action.id]} to the bench)`);
+  for (const [i, id] of [moves[action.id] ?? []].flat().entries()) {
+    state = performRuntimeAction(def, state, benchMoveRequest(id, { x: 300 + 90 * i, y: 380 }, 50 + i));
+    notes.push(`(moved ${id} to the bench)`);
   }
   const repeats = Number(action.parameters.rinsePortions ?? action.parameters.inversions ?? action.parameters.portionsThisStep ?? (action.parameters.pourPortionMl ? 20 : 1));
   for (let i = 0; i < repeats * (action.parameters.stirBetweenPortions ? 2 : 1) && !state.completedNodes.includes(n.id); i += 1) {
@@ -74,6 +74,7 @@ for (const n of def.process.nodes) {
     const inst = state.equipmentInstances.find((e: any) => e.id === w);
     console.log(`      ${w}@${inst?.location} ${describe(inst?.contents)}`);
   }
+  if (process.env.PROBE_DUMP) console.log("      dump " + JSON.stringify(state.equipmentInstances.find((e: any) => e.id === process.env.PROBE_DUMP)));
   if (!state.completedNodes.includes(n.id)) { console.log("   (node not completed)"); break; }
 }
 console.log("attachments " + JSON.stringify(state.attachments.map((a: any) => [a.childInstanceId, a.parentInstanceId, a.zoneId])));

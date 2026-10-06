@@ -134,7 +134,10 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   const onHoldOver = useCallback((pipetteId: string, vesselId: string) => holdOverRef.current(pipetteId, vesselId), []);
   // While hand control runs, mouse moves are ignored (a mouse press or the wheel stops the camera).
   const handRunningRef = useRef(false);
-  const carry = useBenchCarry(engine, player, setHovered, onTap, onControl, onHoldOver, () => handRunningRef.current);
+  // A press while a committed animation is drawn: the oven is not opened before a drying stage is up.
+  const busyRef = useRef<(instanceId: string) => void>(() => undefined);
+  const onBusyPress = useCallback((instanceId: string) => busyRef.current(instanceId), []);
+  const carry = useBenchCarry(engine, player, setHovered, onTap, onControl, onHoldOver, () => handRunningRef.current, onBusyPress);
   const carryCancelRef = useRef(carry);
   carryCancelRef.current = carry;
   const carryingRef = useRef(carry.carrying);
@@ -322,7 +325,9 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     const draw = async () => {
       await engine.sync(run.staging);
       if (run.operation === "stir") await engine.animateStir(run.vesselId, run.clockSeconds ?? 3);
-      else if (run.operation === "settle-precipitate") await engine.animateContentsChange(run.vesselId, { before: run.before, after: run.after }, run.clockSeconds ?? 3);
+      else if (run.operation === "settle-precipitate" || run.operation === "dry-in-oven" || run.operation === "cool-on-pad") {
+        await engine.animateContentsChange(run.vesselId, { before: run.before, after: run.after }, run.clockSeconds ?? 3);
+      }
       else if (run.toolId) {
         engine.holdOver(run.toolId, run.vesselId);
         await pause(700);
@@ -389,11 +394,20 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   // The control a step asks for: the zero step's balance and its "zero" control (the TARE key).
   const expectedControl = useMemo(() => {
     const parameters = runtime.expectedAction?.parameters;
+    if (flow.nodeCompleted) return undefined;
+    // The drying oven's dial at the setting step, its door at a door or drying step (Pack 2).
+    const oven = player.benchOp?.deviceInstanceId;
+    const ovenOperation = player.benchOp?.operation === "set-oven-temperature" ? "set-temperature"
+      : player.benchOp?.operation === "open-oven-door" || player.benchOp?.operation === "dry-in-oven" ? "door" : undefined;
+    if (oven && ovenOperation) {
+      const control = scene.bench.find((item) => item.instanceId === oven)?.model?.controls?.find((c) => c.operation === ovenOperation);
+      return control ? { instanceId: oven, controlId: control.id } : undefined;
+    }
     const instanceId = parameters?.instrumentInstanceId;
-    if (flow.nodeCompleted || parameters?.balanceOperation !== "zero" || typeof instanceId !== "string") return undefined;
+    if (parameters?.balanceOperation !== "zero" || typeof instanceId !== "string") return undefined;
     const control = scene.bench.find((item) => item.instanceId === instanceId)?.model?.controls?.find((c) => c.operation === "zero");
     return control ? { instanceId, controlId: control.id } : undefined;
-  }, [flow.nodeCompleted, runtime.expectedAction, scene]);
+  }, [flow.nodeCompleted, player.benchOp, runtime.expectedAction, scene]);
   // Guided only (G-7): the key the step asks for is lit.
   useEffect(() => {
     engine?.setControlCue(showGuidance && expectedControl ? expectedControl : null);
@@ -594,6 +608,18 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   // Stirring with the rod (Pack 2): a click on the beaker or the rod standing in it, Enter on either,
   // the step card's Stir, or a closed hand moved in a circle.
   const stirVesselId = player.benchOp?.operation === "stir" ? player.benchOp.vesselInstanceId : undefined;
+  // A drying stage's time on the clock (Pack 2 decision 9): the oven is not opened before it is up.
+  const refuseEarlyOpen = (instanceId: string): boolean => {
+    const run = player.benchOpRun;
+    if (run?.operation !== "dry-in-oven" || scene.bench.find((i) => i.instanceId === instanceId)?.definitionId !== "drying-oven") return false;
+    player.correct(`The ${run.minutes ?? ""} minutes are not up yet.`.replace("  ", " "), "Leave the door shut until the clock has run, then open it.");
+    return true;
+  };
+  busyRef.current = (instanceId) => { refuseEarlyOpen(instanceId); };
+  // The oven's door by a click on the oven at a door or drying step (its door key and dial are controls too).
+  const ovenDoorStep = player.benchOp && (player.benchOp.operation === "open-oven-door" || player.benchOp.operation === "dry-in-oven")
+    ? player.benchOp.deviceInstanceId : undefined;
+  const isOvenTarget = (id: string): boolean => Boolean(ovenDoorStep) && id === ovenDoorStep;
   // Folding the filter paper (Pack 2): a click on it once it is on the bench, Enter on it, or the step card's Fold.
   const foldPaperId = player.benchOp?.operation === "fold-filter-paper" ? player.benchOp.toolInstanceId : undefined;
   const isFoldTarget = (id: string): boolean => Boolean(foldPaperId) && id === foldPaperId
@@ -619,6 +645,18 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   // Pressing the key performs the step it is for, exactly as the step card's Tare button does
   // (both stay: G-6). At any other step nothing changes, and a neutral notice says so.
   controlRef.current = (instanceId, controlId) => {
+    const operation = scene.bench.find((item) => item.instanceId === instanceId)?.model?.controls?.find((c) => c.id === controlId)?.operation;
+    // The oven (Pack 2): its door is not opened before a drying stage's time is up.
+    if (operation === "door" || operation === "set-temperature") {
+      if (refuseEarlyOpen(instanceId)) return;
+      if (expectedControl?.instanceId === instanceId && expectedControl.controlId === controlId) {
+        if (flow.canRecordObservation || flow.canRecord) player.recordEvidence();
+        else player.notify(operation === "set-temperature" ? "Enter the setting in the step card, then turn the dial." : "Not yet: finish the step card first.");
+        return;
+      }
+      player.notify(operation === "door" ? "The oven door stays as it is at this step." : "The oven's setting stays as it is at this step.");
+      return;
+    }
     engine?.pressControl(instanceId, controlId);
     if (expectedControl?.instanceId === instanceId && expectedControl.controlId === controlId && (flow.canRecord || flow.canRecordObservation)) {
       player.recordEvidence();
@@ -824,7 +862,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   tapRef.current = (id, pointerType, x, y) => {
     // At an inversion step, a tap on the stoppered vessel (or its stopper) inverts it once; at a swirl
     // step, a tap on the flask swirls it.
-    if (isInvertTarget(id) || isSwirlTarget(id) || isStirTarget(id) || isFoldTarget(id)) {
+    if (refuseEarlyOpen(id)) return true;
+    if (isInvertTarget(id) || isSwirlTarget(id) || isStirTarget(id) || isFoldTarget(id) || isOvenTarget(id)) {
       player.recordEvidence();
       return true;
     }
@@ -918,6 +957,12 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     : foldPaperId ? (scene.bench.find((i) => i.instanceId === foldPaperId)?.placement.kind === "bench"
       ? "Click the paper to fold it in half and in half again, or use Fold in the step card. Right-drag to look around."
       : "Lift the paper off the balance onto the bench, then click it to fold it. Right-drag to look around.")
+    : player.benchOp?.operation === "set-oven-temperature" ? "Enter the setting in the step card, then turn the oven's SET dial (or use Set). Right-drag to look around."
+    : player.benchOp?.operation === "open-oven-door" ? "Click the oven door to open it, or use Open the door. Right-drag to look around."
+    : player.benchOp?.operation === "dry-in-oven" ? "Click the oven door to close it and start the clock, or use Close and dry. Right-drag to look around."
+    : player.benchOp?.operation === "break-up-precipitate" ? "Pick up the metal scoop and click the watch glass to break up the solid, or use Break it up. Right-drag to look around."
+    : player.benchOp?.operation === "cool-on-pad" ? "Leave it on the pad: use Wait while it cools. Right-drag to look around."
+    : player.tongsStep ? "Pick up the crucible tongs, click the watch glass to grip it, then click where it goes. Right-drag to look around."
     : player.benchOp?.operation === "precipitation-drop-test" ? "Pick up the dropping pipette and click the beaker to add one drop, or use Add a drop in the step card. Right-drag to look around."
     : flow.canConfirm ? "Click an item to pick it up, then click where it goes; or use Source, Target and Confirm. Right-drag to look around."
       : player.runtime.expectedAction?.parameters.balanceOperation === "zero" ? "Press TARE on the balance, or Tare in the step card. Right-drag to look around."

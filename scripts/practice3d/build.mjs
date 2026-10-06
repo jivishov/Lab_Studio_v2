@@ -23,6 +23,8 @@ const PRACTICE = [
     description: "Add sodium carbonate in portions while stirring, then test that precipitation is complete." },
   { module: "./filtrationPractice.mjs", basedOn: "filtration", pack: 2,
     description: "Weigh and fold the paper, then filter by gravity: decant, pour down a rod, rinse and wash." },
+  { module: "./dryingPractice.mjs", basedOn: "drying", pack: 2,
+    description: "Dry the precipitate in two oven stages, handle it hot with tongs, and weigh it by difference." },
 ];
 
 const check = process.argv.includes("--check");

@@ -1,0 +1,55 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "scoopula",
+  "model": "scoopula.glb",
+  "thumbnail": "thumbs/scoopula.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "rect",
+      "width": 210.0,
+      "depth": 16.0
+    },
+    "grip": {
+      "heightMm": 4.0
+    },
+    "graduations": null,
+    "tipMm": [
+      99.0,
+      0.0,
+      4.0
+    ],
+    "anchors": {},
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -105.0,
+        -8.0,
+        2.0
+      ],
+      "max": [
+        105.0,
+        8.0,
+        7.7
+      ]
+    },
+    "triangles": 1204,
+    "materials": [
+      "Brushed stainless"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/scoopula.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "fe4db8a0ee90bc18faba13eb72e78a8be154677ffd2a0cea26d21f7308ab264b",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

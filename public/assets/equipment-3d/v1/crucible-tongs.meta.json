@@ -1,0 +1,56 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "crucible-tongs",
+  "model": "crucible-tongs.glb",
+  "thumbnail": "thumbs/crucible-tongs.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "rect",
+      "width": 230.0,
+      "depth": 30.0
+    },
+    "grip": {
+      "heightMm": 4.8
+    },
+    "graduations": null,
+    "tipMm": [
+      115.0,
+      0.0,
+      2.4
+    ],
+    "anchors": {},
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -115.16,
+        -16.39,
+        -0.8
+      ],
+      "max": [
+        115.69,
+        16.39,
+        5.6
+      ]
+    },
+    "triangles": 472,
+    "materials": [
+      "Brushed stainless",
+      "Cast clamp chrome"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/crucible_tongs.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "c7b304161873d18852ea4d7f549ebc399da29839fd95b43ef54a4f4993793b3e",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

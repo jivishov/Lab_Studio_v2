@@ -78,7 +78,8 @@ export interface Equipment3DDisplay {
  */
 export interface Equipment3DControl {
   id: string;
-  operation: "zero";
+  /** "zero": a balance's TARE; "set-temperature": an oven's setting dial; "door": an oven's door (Pack 2). */
+  operation: "zero" | "set-temperature" | "door";
   label: string;
   objects: string[];
   centreMm: Vec3Mm;
@@ -127,6 +128,14 @@ export interface Equipment3DEntry {
   formSolidRest?: Record<string, Equipment3DSolidRest>;
   /** Darkened and translucent while wet (a filter paper wetted, or holding a wet precipitate). */
   wetLook?: boolean;
+  /**
+   * A hinged door drawn open or closed from the runtime's apparatus state (Pack 2: the drying oven): its
+   * node names, its hinge's vertical axis at [x, y] model-local mm, and how far it swings out toward the
+   * viewer when `stateKey` reads "open".
+   */
+  doors?: Array<{ id: string; objects: string[]; hingeMm: number[]; openDeg: number; stateKey: string }>;
+  /** A tool's working end, model-local mm (tongs' jaws, a scoop's end): where it is aimed when carried. */
+  tipMm?: Vec3Mm;
   anchors: Record<string, Equipment3DAnchor>;
   displays: Equipment3DDisplay[];
   controls?: Equipment3DControl[];

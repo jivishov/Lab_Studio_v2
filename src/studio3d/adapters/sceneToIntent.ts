@@ -390,8 +390,12 @@ export interface BenchOpStep {
   vesselInstanceId?: string;
   /** The item it is done with: the dropping pipette of the drop test. */
   toolInstanceId?: string;
-  /** Minutes the step states (stirring, settling), shown on the step clock. */
+  /** Minutes the step states (stirring, settling, drying, cooling), shown on the step clock. */
   minutes?: number;
+  /** What changes while the clock runs, if not the vessel: the paper holding a drying precipitate. */
+  contentsInstanceId?: string;
+  /** The instrument it is done at: the drying oven (its door, its dial). */
+  deviceInstanceId?: string;
 }
 
 export const benchOpStepFor = (action: ActionDefinition | undefined, nodeCompleted: boolean): BenchOpStep | undefined => {
@@ -399,14 +403,44 @@ export const benchOpStepFor = (action: ActionDefinition | undefined, nodeComplet
   const spec = benchOperationSpec(operation);
   if (!action || !spec || nodeCompleted) return undefined;
   const text = (key: string) => (typeof action.parameters[key] === "string" ? action.parameters[key] as string : undefined);
-  const minutes = [action.parameters.stirMinutes, action.parameters.settleMinutes].find((value): value is number => typeof value === "number");
+  const minutes = [action.parameters.stirMinutes, action.parameters.settleMinutes, action.parameters.durationMinutes, action.parameters.coolMinutes]
+    .find((value): value is number => typeof value === "number");
   return {
     operation: operation as BenchOperationId,
     control: spec.control,
     ...(text("vesselInstanceId") ? { vesselInstanceId: text("vesselInstanceId") } : {}),
     ...(text("sourceInstanceId") ? { toolInstanceId: text("sourceInstanceId") } : {}),
+    ...(text("precipitateCarrierInstanceId") ? { contentsInstanceId: text("precipitateCarrierInstanceId") } : {}),
+    ...(text("ovenInstanceId") ? { deviceInstanceId: text("ovenInstanceId") } : {}),
     ...(minutes !== undefined ? { minutes } : {}),
   };
+};
+
+/**
+ * A hot item moved with the crucible tongs (Pack 2, S-05): a placement that names the tongs. The tongs are
+ * carried to the item and grip it, then carry it to where the step puts it; the runtime records the same
+ * placement as a hand would make.
+ */
+export interface TongsStep {
+  toolDefinitionId: string;
+  toolInstanceId?: string;
+  vesselInstanceId: string;
+  vesselDefinitionId: string;
+  targetInstanceId?: string;
+  zoneId?: string;
+}
+
+export const tongsStepFor = (action: ActionDefinition | undefined, instances: readonly EquipmentInstance[], nodeCompleted: boolean): TongsStep | undefined => {
+  const tool = action?.parameters.handledWithDefinitionId;
+  const vesselId = action?.parameters.equipmentInstanceId;
+  if (!action || nodeCompleted || action.verb !== "place" || typeof tool !== "string" || typeof vesselId !== "string") return undefined;
+  const vessel = instances.find((instance) => instance.id === vesselId);
+  if (!vessel) return undefined;
+  const toolInstance = instances.find((instance) => instance.definitionId === tool && instance.location === "workbench");
+  const target = typeof action.parameters.targetInstanceId === "string" ? action.parameters.targetInstanceId : undefined;
+  const zone = typeof action.parameters.snapZoneId === "string" ? action.parameters.snapZoneId : undefined;
+  return { toolDefinitionId: tool, ...(toolInstance ? { toolInstanceId: toolInstance.id } : {}), vesselInstanceId: vessel.id,
+    vesselDefinitionId: vessel.definitionId, ...(target ? { targetInstanceId: target } : {}), ...(zone ? { zoneId: zone } : {}) };
 };
 
 /** How long the fast step clock takes to show `minutes` (decision 9: minutes run in a few seconds). */

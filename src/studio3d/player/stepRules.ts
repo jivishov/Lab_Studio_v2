@@ -197,7 +197,9 @@ export const stepFlow = (args: {
   const nodeCompleted = state.completedNodes.includes(node.id);
   const inputField = actionInputField(action);
   const inputResolution = { ...resolveActionInput(action, args.inputValue), field: inputField };
-  const inputReady = !inputField || inputResolution.valid;
+  // A value the teacher set up is shown in the step card, not asked for (StepCard): it is ready as set.
+  const configuredByTeacher = inputField?.role === "teacherConfiguration" && typeof action?.parameters.configuredValue === "number";
+  const inputReady = !inputField || configuredByTeacher || inputResolution.valid;
   const configurationLock = configurationLockFor(action, inputField?.role === "teacherConfiguration" && inputResolution.valid);
   const prerequisites = action?.prerequisites ?? [];
   const prerequisitesReady = prerequisites.every((rule) => displayRulePasses(rule, state, node.id));

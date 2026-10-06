@@ -141,6 +141,10 @@ _FACTORIES = {
     'Pipette pump green': lambda n: principled(n, **{'Base Color': (0.03, 0.28, 0.1, 1), 'Roughness': 0.38,
                                                      'Specular IOR Level': 0.4}),
     # a medium antistatic weighing boat: opaque white polystyrene with a satin finish (decided 2026-10-04)
+    # Pack 2 (decided 2026-10-05): an off-white ceramic-fibre heat-safe pad, and a black epoxy-resin sink.
+    'Ceramic fibre board': lambda n: principled(n, **{'Base Color': (0.66, 0.64, 0.6, 1), 'Roughness': 0.95}),
+    'Black epoxy resin': lambda n: principled(n, **{'Base Color': (0.02, 0.021, 0.022, 1), 'Roughness': 0.35,
+                                                    'Specular IOR Level': 0.4}),
     'Polystyrene antistatic white': lambda n: principled(n, **{'Base Color': (0.72, 0.72, 0.71, 1), 'Roughness': 0.42,
                                                                'IOR': 1.59, 'Subsurface Weight': 0.12,
                                                                'Subsurface Radius': (1.0, 0.95, 0.9),

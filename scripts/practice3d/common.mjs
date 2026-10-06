@@ -82,7 +82,7 @@ export const node = (actionId, title, description, validation = { action: action
     : validation.measurementId
       ? { id: `${id}-done`, type: "measurementRecorded", label: `${title} was recorded.`, measurementId: validation.measurementId }
       : validation.calculationId
-        ? { id: `${id}-done`, type: "processCompleted", label: `${title} was submitted.` }
+        ? { id: `${id}-done`, type: "calculationWithinTolerance", label: `${title} was submitted.`, calculationId: validation.calculationId }
         : { id: `${id}-done`, type: "actionEvidence", label: `Action ${actionId} was completed.`, actionId };
   return {
     id,

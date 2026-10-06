@@ -1,0 +1,149 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "drying-oven",
+  "model": "drying-oven.glb",
+  "thumbnail": "thumbs/drying-oven.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "rect",
+      "width": 420.0,
+      "depth": 380.0
+    },
+    "grip": {
+      "heightMm": 252.0
+    },
+    "graduations": null,
+    "anchors": {
+      "drying-oven-chamber": {
+        "positionMm": [
+          -42.0,
+          -40.0,
+          163.5
+        ]
+      }
+    },
+    "displays": [
+      {
+        "id": "main",
+        "policy": "oven-setpoint",
+        "centreMm": [
+          168.0,
+          -194.6,
+          330.0
+        ],
+        "sizeMm": [
+          64.0,
+          24.0
+        ],
+        "normalMm": [
+          0,
+          -1,
+          0
+        ]
+      }
+    ],
+    "controls": [
+      {
+        "id": "dial",
+        "operation": "set-temperature",
+        "label": "SET",
+        "objects": [
+          "Oven_dial",
+          "Oven_dial_pointer"
+        ],
+        "centreMm": [
+          168.0,
+          -200.0,
+          250.0
+        ],
+        "sizeMm": [
+          36.0,
+          36.0
+        ],
+        "normalMm": [
+          0,
+          -1,
+          0
+        ]
+      },
+      {
+        "id": "door",
+        "operation": "door",
+        "label": "Door",
+        "objects": [
+          "Oven_door",
+          "Oven_door_window",
+          "Oven_door_handle"
+        ],
+        "centreMm": [
+          -42.0,
+          -192.0,
+          212.0
+        ],
+        "sizeMm": [
+          318.0,
+          300.0
+        ],
+        "normalMm": [
+          0,
+          -1,
+          0
+        ]
+      }
+    ],
+    "doors": [
+      {
+        "id": "door",
+        "objects": [
+          "Oven_door",
+          "Oven_door_window",
+          "Oven_door_handle"
+        ],
+        "hingeMm": [
+          -201.0,
+          -190.0
+        ],
+        "openDeg": 105.0,
+        "stateKey": "door"
+      }
+    ],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -210.0,
+        -210.0,
+        0.0
+      ],
+      "max": [
+        210.0,
+        190.0,
+        420.0
+      ]
+    },
+    "triangles": 6510,
+    "materials": [
+      "Black phenolic knob",
+      "Black rubber",
+      "Brushed stainless",
+      "Cast clamp chrome",
+      "Display glass",
+      "Instrument housing dark grey",
+      "Instrument housing light grey",
+      "White enamel print"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/drying_oven.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "babcb797a68837748ed057e13a6a243fb68ac6af9ec1f2793cb53c6143127a46",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

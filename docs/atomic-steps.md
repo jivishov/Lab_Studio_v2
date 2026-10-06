@@ -29,7 +29,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 
 ## Atoms
 
-226 atoms across 15 families.
+234 atoms across 15 families.
 
 | Atom | Family | Verb | Interactions | Required roles |
 |---|---|---|---|---|
@@ -259,6 +259,14 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 | `atom.observe.complete-precipitation-test` | gravimetry | `observe` | `recordNotebook` | `transfer-pipette`, `precipitation-vessel` |
 | `atom.place.filter-medium-on-balance` | gravimetry | `place` | `snapIntoTarget` | `filter-medium`, `balance-instrument` |
 | `atom.observe.fold-filter-paper` | gravimetry | `observe` | `recordNotebook` | `filter-medium` |
+| `atom.observe.set-drying-oven` | gravimetry | `observe` | `recordNotebook` | `drying-instrument` |
+| `atom.observe.open-oven-door` | gravimetry | `observe` | `recordNotebook` | `drying-instrument` |
+| `atom.place.drying-assembly-into-oven` | gravimetry | `place` | `snapIntoTarget` | `drying-instrument`, `dried-assembly` |
+| `atom.dry.close-oven-and-dry` | gravimetry | `dry` | `recordNotebook` | `drying-instrument`, `dried-assembly` |
+| `atom.place.hot-assembly-onto-pad` | gravimetry | `place` | `snapIntoTarget` | `dried-assembly`, `cooling-surface`, `cooling-tool` |
+| `atom.observe.break-up-precipitate` | gravimetry | `observe` | `recordNotebook` | `dried-assembly`, `solid-transfer-tool` |
+| `atom.cool.on-heat-safe-pad` | gravimetry | `cool` | `recordNotebook` | `dried-assembly`, `cooling-surface` |
+| `atom.transfer.filtrate-to-drain` | gravimetry | `transfer` | `pourInto` | `filtration-receiver`, `waste-drain` |
 
 ### Family: calorimetry
 
@@ -1739,6 +1747,123 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 - Procedural constraints:
   - A dry, weighed paper is folded in half and in half again on the bench; it is opened into a cone as it is seated in the funnel.
   - Decided by the teacher on 2026-10-05 (Pack 2, the 3D practice of Filter a Precipitate) (decision 3, one fold step); real practice the source leaves implicit, so no source example is cited.
+
+#### `atom.observe.set-drying-oven`
+
+**Set the drying oven's temperature**
+
+- Verb: `observe`
+- Allowed interaction types: `recordNotebook`
+- Required roles: `drying-instrument`
+- Optional roles: none
+- Evidence: oven set within the stated range
+- Procedural constraints:
+  - The student turns the oven's control and enters the setting; a setting outside the stated range (110-120 C) is refused.
+- Source examples:
+  - `what-makes-hard-water-hard_2026-07-27.md` phase step `FD-13` (M)
+
+#### `atom.observe.open-oven-door`
+
+**Open the drying oven's door**
+
+- Verb: `observe`
+- Allowed interaction types: `recordNotebook`
+- Required roles: `drying-instrument`
+- Optional roles: none
+- Evidence: oven door open
+- Procedural constraints:
+  - The door is opened before anything goes into or comes out of the oven, and is not opened before a timed stage is over.
+  - Decided by the teacher on 2026-10-05 (Pack 2, the 3D practice of Dry and Weigh a Precipitate); real practice the source leaves implicit, so no source example is cited.
+
+#### `atom.place.drying-assembly-into-oven`
+
+**Put the drying assembly on the oven's shelf**
+
+- Verb: `place`
+- Allowed interaction types: `snapIntoTarget`
+- Required roles: `drying-instrument`, `dried-assembly`
+- Optional roles: `cooling-tool`
+- Evidence: assembly inside the oven
+- Procedural constraints:
+  - The door must be open. A hot assembly goes back in with the tongs (S-05).
+- Source examples:
+  - `what-makes-hard-water-hard_2026-07-27.md` phase step `FD-14` (M)
+  - `what-makes-hard-water-hard_2026-07-27.md` phase step `FD-17` (M)
+
+#### `atom.dry.close-oven-and-dry`
+
+**Close the oven and dry the assembly for a stated time**
+
+- Verb: `dry`
+- Allowed interaction types: `recordNotebook`
+- Required roles: `drying-instrument`, `dried-assembly`
+- Optional roles: none
+- Evidence: assembly dried at the set temperature for the stated time
+- Procedural constraints:
+  - The stated time (10-15 minutes, then 5) passes on the 3D player's fast step clock (decision 9); the solid is damp after the first stage and dry after the second.
+  - The manual's two timed stages, with no repeat-until-constant loop (decided by the teacher on 2026-10-05).
+- Source examples:
+  - `what-makes-hard-water-hard_2026-07-27.md` phase step `FD-14` (M)
+  - `what-makes-hard-water-hard_2026-07-27.md` phase step `FD-17` (M)
+
+#### `atom.place.hot-assembly-onto-pad`
+
+**Lift a hot assembly out with tongs onto the heat-safe pad**
+
+- Verb: `place`
+- Allowed interaction types: `snapIntoTarget`
+- Required roles: `dried-assembly`, `cooling-surface`, `cooling-tool`
+- Optional roles: `drying-instrument`
+- Evidence: hot assembly on the pad
+- Procedural constraints:
+  - A hot assembly is lifted with the crucible tongs, never by hand, and set on a heat-safe pad (S-05; the pad is real practice, decided by the teacher on 2026-10-05).
+- Source examples:
+  - `what-makes-hard-water-hard_2026-07-27.md` phase step `FD-15` (M)
+  - `what-makes-hard-water-hard_2026-07-27.md` phase step `FD-18` (M)
+
+#### `atom.observe.break-up-precipitate`
+
+**Break the partly dried solid into small pieces**
+
+- Verb: `observe`
+- Allowed interaction types: `recordNotebook`
+- Required roles: `dried-assembly`, `solid-transfer-tool`
+- Optional roles: none
+- Evidence: solid broken into small pieces
+- Procedural constraints:
+  - With the metal scoop, on the heat-safe pad, after the first drying stage.
+- Source examples:
+  - `what-makes-hard-water-hard_2026-07-27.md` phase step `FD-16` (M)
+
+#### `atom.cool.on-heat-safe-pad`
+
+**Leave the assembly on the heat-safe pad until cool**
+
+- Verb: `cool`
+- Allowed interaction types: `recordNotebook`
+- Required roles: `dried-assembly`, `cooling-surface`
+- Optional roles: none
+- Evidence: assembly cool enough to weigh
+- Procedural constraints:
+  - It is weighed only when cool: a warm assembly reads falsely low and harms the balance (S-06).
+  - The waiting time passes on the fast step clock (decision 9).
+- Source examples:
+  - `what-makes-hard-water-hard_2026-07-27.md` phase step `FD-18` (M)
+  - `what-makes-hard-water-hard_2026-07-27.md` phase step `FD-19` (M)
+
+#### `atom.transfer.filtrate-to-drain`
+
+**Pour the filtrate down the sink**
+
+- Verb: `transfer`
+- Allowed interaction types: `pourInto`
+- Required roles: `filtration-receiver`, `waste-drain`
+- Optional roles: none
+- Evidence: receiving flask emptied into the sink
+- Procedural constraints:
+  - Only the source-approved filtrate goes down the drain, through the configured disposal (S-07).
+- Source examples:
+  - `what-makes-hard-water-hard_2026-07-27.md` phase step `FD-12` (M)
 
 ### Family: kinetics
 
@@ -4294,6 +4419,8 @@ A role is a constraint, not a synonym for one apparatus id. Capacity, tolerance,
 | `transfer-pipette` | delivery | `beral-pipette` | — | A disposable transfer pipette that carries a small unmeasured volume, as when filling a cuvette. Decided by the teacher on 2026-09-26 for transmittance-dilution (a simulator-generated technique with no dated plan), so no source example is cited. |
 | `pipette-filler` | tool | `pipette-pump` | — | The pump fitted to a graduated pipette, which fills it and lets it down to a line. Decided by the teacher on 2026-10-02 (Pack 1 atomization); no dated plan states this step, so no source example is cited. |
 | `vessel-stopper` | tool | `rubber-stopper-set` | — | A stopper seated in a volumetric flask or test tube before its contents are mixed by inversion. Decided by the teacher on 2026-10-02 (Pack 1 atomization); no dated plan states this step, so no source example is cited. |
+| `cooling-surface` | support | `heat-safe-pad` | — | Hot glassware or a crucible is set down to cool on a heat-safe surface (Investigation 3 S-05/S-06; Investigation 7's cooling surface, its confirmation point 6). The pad is real practice (decided by the teacher on 2026-10-05, Pack 2). |
+| `waste-drain` | support | `lab-sink` | — | Investigation 3 FD-12 pours the filtrate down the drain, through the configured disposal (S-07). The 3D practice of Dry and Weigh uses a sink at the bench edge (decided by the teacher on 2026-10-05, Pack 2 decision 8). |
 
 ### Deliberate distinctions
 

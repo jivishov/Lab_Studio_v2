@@ -11601,6 +11601,378 @@
       "evidence": "paper folded in quarters",
       "sourceExamples": [],
       "contentExamples": []
+    },
+    {
+      "id": "atom.observe.set-drying-oven",
+      "family": "gravimetry",
+      "documentationLabel": "Set the drying oven's temperature",
+      "verb": "observe",
+      "allowedInteractionTypes": [
+        "recordNotebook"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state",
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "drying-instrument"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "The student turns the oven's control and enters the setting; a setting outside the stated range (110-120 C) is refused."
+      ],
+      "evidence": "oven set within the stated range",
+      "sourceExamples": [
+        {
+          "sourceFile": "what-makes-hard-water-hard_2026-07-27.md",
+          "sourceTable": "phase",
+          "step": "FD-13",
+          "basis": "M"
+        }
+      ],
+      "contentExamples": []
+    },
+    {
+      "id": "atom.observe.open-oven-door",
+      "family": "gravimetry",
+      "documentationLabel": "Open the drying oven's door",
+      "verb": "observe",
+      "allowedInteractionTypes": [
+        "recordNotebook"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state",
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "drying-instrument"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "The door is opened before anything goes into or comes out of the oven, and is not opened before a timed stage is over.",
+        "Decided by the teacher on 2026-10-05 (Pack 2, the 3D practice of Dry and Weigh a Precipitate); real practice the source leaves implicit, so no source example is cited."
+      ],
+      "evidence": "oven door open",
+      "sourceExamples": [],
+      "contentExamples": []
+    },
+    {
+      "id": "atom.place.drying-assembly-into-oven",
+      "family": "gravimetry",
+      "documentationLabel": "Put the drying assembly on the oven's shelf",
+      "verb": "place",
+      "allowedInteractionTypes": [
+        "snapIntoTarget"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "instrument"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "drying-instrument",
+        "dried-assembly"
+      ],
+      "optionalRoles": [
+        "cooling-tool"
+      ],
+      "proceduralConstraints": [
+        "The door must be open. A hot assembly goes back in with the tongs (S-05)."
+      ],
+      "evidence": "assembly inside the oven",
+      "sourceExamples": [
+        {
+          "sourceFile": "what-makes-hard-water-hard_2026-07-27.md",
+          "sourceTable": "phase",
+          "step": "FD-14",
+          "basis": "M"
+        },
+        {
+          "sourceFile": "what-makes-hard-water-hard_2026-07-27.md",
+          "sourceTable": "phase",
+          "step": "FD-17",
+          "basis": "M"
+        }
+      ],
+      "contentExamples": []
+    },
+    {
+      "id": "atom.dry.close-oven-and-dry",
+      "family": "gravimetry",
+      "documentationLabel": "Close the oven and dry the assembly for a stated time",
+      "verb": "dry",
+      "allowedInteractionTypes": [
+        "recordNotebook"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state",
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "drying-instrument",
+        "dried-assembly"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "The stated time (10-15 minutes, then 5) passes on the 3D player's fast step clock (decision 9); the solid is damp after the first stage and dry after the second.",
+        "The manual's two timed stages, with no repeat-until-constant loop (decided by the teacher on 2026-10-05)."
+      ],
+      "evidence": "assembly dried at the set temperature for the stated time",
+      "sourceExamples": [
+        {
+          "sourceFile": "what-makes-hard-water-hard_2026-07-27.md",
+          "sourceTable": "phase",
+          "step": "FD-14",
+          "basis": "M"
+        },
+        {
+          "sourceFile": "what-makes-hard-water-hard_2026-07-27.md",
+          "sourceTable": "phase",
+          "step": "FD-17",
+          "basis": "M"
+        }
+      ],
+      "contentExamples": []
+    },
+    {
+      "id": "atom.place.hot-assembly-onto-pad",
+      "family": "gravimetry",
+      "documentationLabel": "Lift a hot assembly out with tongs onto the heat-safe pad",
+      "verb": "place",
+      "allowedInteractionTypes": [
+        "snapIntoTarget"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "instrument"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "dried-assembly",
+        "cooling-surface",
+        "cooling-tool"
+      ],
+      "optionalRoles": [
+        "drying-instrument"
+      ],
+      "proceduralConstraints": [
+        "A hot assembly is lifted with the crucible tongs, never by hand, and set on a heat-safe pad (S-05; the pad is real practice, decided by the teacher on 2026-10-05)."
+      ],
+      "evidence": "hot assembly on the pad",
+      "sourceExamples": [
+        {
+          "sourceFile": "what-makes-hard-water-hard_2026-07-27.md",
+          "sourceTable": "phase",
+          "step": "FD-15",
+          "basis": "M"
+        },
+        {
+          "sourceFile": "what-makes-hard-water-hard_2026-07-27.md",
+          "sourceTable": "phase",
+          "step": "FD-18",
+          "basis": "M"
+        }
+      ],
+      "contentExamples": []
+    },
+    {
+      "id": "atom.observe.break-up-precipitate",
+      "family": "gravimetry",
+      "documentationLabel": "Break the partly dried solid into small pieces",
+      "verb": "observe",
+      "allowedInteractionTypes": [
+        "recordNotebook"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state",
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "dried-assembly",
+        "solid-transfer-tool"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "With the metal scoop, on the heat-safe pad, after the first drying stage."
+      ],
+      "evidence": "solid broken into small pieces",
+      "sourceExamples": [
+        {
+          "sourceFile": "what-makes-hard-water-hard_2026-07-27.md",
+          "sourceTable": "phase",
+          "step": "FD-16",
+          "basis": "M"
+        }
+      ],
+      "contentExamples": []
+    },
+    {
+      "id": "atom.cool.on-heat-safe-pad",
+      "family": "gravimetry",
+      "documentationLabel": "Leave the assembly on the heat-safe pad until cool",
+      "verb": "cool",
+      "allowedInteractionTypes": [
+        "recordNotebook"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state",
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "dried-assembly",
+        "cooling-surface"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "It is weighed only when cool: a warm assembly reads falsely low and harms the balance (S-06).",
+        "The waiting time passes on the fast step clock (decision 9)."
+      ],
+      "evidence": "assembly cool enough to weigh",
+      "sourceExamples": [
+        {
+          "sourceFile": "what-makes-hard-water-hard_2026-07-27.md",
+          "sourceTable": "phase",
+          "step": "FD-18",
+          "basis": "M"
+        },
+        {
+          "sourceFile": "what-makes-hard-water-hard_2026-07-27.md",
+          "sourceTable": "phase",
+          "step": "FD-19",
+          "basis": "M"
+        }
+      ],
+      "contentExamples": []
+    },
+    {
+      "id": "atom.transfer.filtrate-to-drain",
+      "family": "gravimetry",
+      "documentationLabel": "Pour the filtrate down the sink",
+      "verb": "transfer",
+      "allowedInteractionTypes": [
+        "pourInto"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "instrument"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "filtration-receiver",
+        "waste-drain"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "Only the source-approved filtrate goes down the drain, through the configured disposal (S-07)."
+      ],
+      "evidence": "receiving flask emptied into the sink",
+      "sourceExamples": [
+        {
+          "sourceFile": "what-makes-hard-water-hard_2026-07-27.md",
+          "sourceTable": "phase",
+          "step": "FD-12",
+          "basis": "M"
+        }
+      ],
+      "contentExamples": []
     }
   ]
 }

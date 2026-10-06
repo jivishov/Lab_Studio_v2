@@ -235,6 +235,10 @@ export const instrumentDisplay = (
     // The mass on the pan, as the teacher prepared it; the learner's entry when it cannot be known.
     const readout = balanceReadout(definition, state, instance);
     lines = readout ? [readout] : learnerEntryLines(definition, state, instance.id);
+  } else if (policy === "oven-setpoint") {
+    // The setting the student made with the dial (Pack 2): runtime state, never a simulated temperature.
+    const setpoint = state.apparatusStates?.[instance.id]?.setpointC;
+    lines = typeof setpoint === "number" ? [{ key: READOUT_KEY, text: `${setpoint}${THIN}°C`, source: "bench" }] : [];
   } else if (policy === "photometer-settings-status-and-entry") {
     lines = photometerLines(definition, state, instance);
   } else if (policy === "simulator-readout") {

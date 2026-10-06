@@ -926,6 +926,19 @@ export const v1EquipmentCatalog: EquipmentDefinition[] = [
   equipment("spatula", "Spatula", "tool", ["draggable"], 0, 0, ["empty", "solid"]),
   equipment("scoopula", "Metal scoopula", "tool", ["draggable"], 0, 0, ["solid"]),
   equipment("stirring-rod", "Stirring rod", "tool", ["draggable"], 0, 0),
+  // Pack 2 (decided 2026-10-05): a heat-safe pad that hot glassware cools on (the source's cooling
+  // surface, S-05/S-06), and the bench's sink, which the filtrate is poured down (FD-12, S-07).
+  equipment("heat-safe-pad", "Heat-safe pad", "heating", ["draggable"], 0, 0, ["empty"], [
+    {
+      id: "heat-safe-pad-surface",
+      label: "Heat-safe pad surface",
+      accepts: ["watch-glass", "crucible-with-lid"],
+      x: 60,
+      y: 40,
+    },
+  ]),
+  // A liquid poured into it runs down the drain (the reducer's `toDrain` transfer keeps nothing in it).
+  equipment("lab-sink", "Sink", "tool", ["fillable"], 7500, 0, ["empty", "liquid", "solution", "mixture"], [], { shelfPlaceable: false }),
 ];
 
 // Explicit stock sizes preserve the original bottle capacities used by other activities.

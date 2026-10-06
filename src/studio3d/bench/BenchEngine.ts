@@ -55,6 +55,8 @@ interface ItemView {
   formKey?: string;
   /** The model's own materials, kept while a wet look replaces them. */
   dryMaterials?: Map<THREE.Mesh, THREE.Material | THREE.Material[]>;
+  /** Hinged doors (Pack 2: the drying oven's), each turned about its pivot toward its goal. */
+  doors?: Array<{ id: string; pivot: THREE.Object3D; stateKey: string; openRad: number; angle: number; goal: number }>;
 }
 
 /** A committed pour being drawn: advanced by the render loop, cleaned up when it ends or is cut short. */
@@ -271,6 +273,7 @@ export class BenchEngine {
       if (this.drainRun.tick(dt)) animating = true;
       else this.stopDrainRun();
     }
+    if (this.tickDoors(dt)) animating = true;
     if (this.droplets.length) {
       for (const drop of this.droplets) {
         drop.t = Math.min(1, drop.t + dt / 0.22);
@@ -394,6 +397,7 @@ export class BenchEngine {
     description.bench.forEach((item) => place(item));
     if (this.held) this.poseHeld();
     if (this.squirtHold) this.poseSquirtHold();
+    if (this.toolHeld) this.poseToolHeld();
     for (const item of description.bench) this.updateItem(item);
     // World matrices normally refresh at the next render; picking, labels and framing can run
     // before it, so they are brought up to date with the scene now.
@@ -471,9 +475,11 @@ export class BenchEngine {
    */
   private applyForm(view: ItemView, item: SceneItem): void {
     const model = view.model;
-    const key = `${item.form ?? ""}|${item.wet ? "wet" : "dry"}`;
+    const doorKey = (item.model?.doors ?? []).map((door) => item.apparatus?.[door.stateKey] ?? "").join(",");
+    const key = `${item.form ?? ""}|${item.wet ? "wet" : "dry"}|${doorKey}`;
     if (!model || view.formKey === key) return;
     view.formKey = key;
+    this.applyDoors(view, item);
     const forms = item.model?.forms;
     if (forms) {
       const shown = new Set(forms[item.form ?? ""] ?? []);
@@ -496,6 +502,52 @@ export class BenchEngine {
       wet.opacity = 0.86;
       mesh.material = wet;
     });
+  }
+
+  /**
+   * Hinged doors (Pack 2: the drying oven's): each door's parts are gathered once under a pivot on its
+   * hinge, then swung out toward the viewer while the runtime records it open, over 0.45 s (at once under
+   * reduced motion). Presentation only (G-3).
+   */
+  private applyDoors(view: ItemView, item: SceneItem): void {
+    const model = view.model;
+    const doors = item.model?.doors;
+    if (!model || !doors?.length) return;
+    if (!view.doors) {
+      model.updateMatrixWorld(true);
+      view.doors = doors.map((door) => {
+        const pivot = new THREE.Group();
+        pivot.name = `door-pivot:${door.id}`;
+        pivot.position.set(door.hingeMm[0] * MM, 0, -door.hingeMm[1] * MM);
+        model.add(pivot);
+        pivot.updateMatrixWorld(true);
+        const parts: THREE.Object3D[] = [];
+        model.traverse((object) => { if (door.objects.includes(object.name)) parts.push(object); });
+        for (const part of parts) pivot.attach(part);
+        return { id: door.id, pivot, stateKey: door.stateKey, openRad: -door.openDeg * DEG, angle: 0, goal: 0 };
+      });
+    }
+    for (const door of view.doors) {
+      door.goal = item.apparatus?.[door.stateKey] === "open" ? door.openRad : 0;
+      if (this.options.reducedMotion) { door.angle = door.goal; door.pivot.rotation.y = door.angle; }
+    }
+    this.requestRender();
+  }
+
+  /** Turns doors toward their goals; returns whether any is still moving. */
+  private tickDoors(dt: number): boolean {
+    let moving = false;
+    for (const view of this.items.values()) {
+      for (const door of view.doors ?? []) {
+        if (door.angle === door.goal) continue;
+        const step = (Math.abs(door.openRad) / 0.45) * dt;
+        door.angle = Math.abs(door.goal - door.angle) <= step ? door.goal : door.angle + Math.sign(door.goal - door.angle) * step;
+        door.pivot.rotation.y = door.angle;
+        this.shadowsDirty = true;
+        moving = moving || door.angle !== door.goal;
+      }
+    }
+    return moving;
   }
 
   private updateItem(item: SceneItem): void {
@@ -582,6 +634,50 @@ export class BenchEngine {
     if (!view || !rest) return undefined;
     const offset = new THREE.Vector3(rest[0] * MM, 0, -rest[1] * MM).applyEuler(view.root.rotation);
     return { xMm: offset.x / MM, yMm: -offset.z / MM };
+  }
+
+  /** A tool's working end (`tipMm`: tongs' jaws, a scoop's end) from its centre, in bench mm, as it lies now. */
+  tipOffsetMm(instanceId: string): { xMm: number; yMm: number } | undefined {
+    const view = this.items.get(instanceId);
+    const tip = view?.entry?.tipMm;
+    if (!view || !tip) return undefined;
+    const offset = new THREE.Vector3(tip[0] * MM, 0, -tip[1] * MM).applyEuler(view.root.rotation);
+    return { xMm: offset.x / MM, yMm: -offset.z / MM };
+  }
+
+  /**
+   * An item held in a carried tool's jaws (Pack 2: a hot watch glass in the crucible tongs), or none.
+   * While the tool is carried the item hangs from its working end; it goes back where the runtime has it
+   * when let go.
+   */
+  setToolHeld(toolId: string | null, heldId?: string): void {
+    const before = this.toolHeld;
+    this.toolHeld = toolId && heldId ? { toolId, heldId } : undefined;
+    if (before && !this.toolHeld && this.lastScene) void this.sync(this.lastScene);
+    this.poseToolHeld();
+    this.requestRender();
+  }
+
+  private toolHeld?: { toolId: string; heldId: string };
+
+  private poseToolHeld(): void {
+    const held = this.toolHeld;
+    const tool = held ? this.items.get(held.toolId) : undefined;
+    const item = held ? this.items.get(held.heldId) : undefined;
+    const tip = tool?.entry?.tipMm;
+    if (!held || !tool || !item || !tip) return;
+    tool.root.updateMatrixWorld(true);
+    const tipWorld = new THREE.Vector3(tip[0] * MM, tip[2] * MM, -tip[1] * MM).applyMatrix4(tool.root.matrixWorld);
+    const forward = new THREE.Vector3(1, 0, 0).applyQuaternion(tool.root.quaternion).setY(0).normalize();
+    // Gripped at its rim: its centre lies one radius beyond the jaws, a little below them.
+    item.root.position.copy(tipWorld).addScaledVector(forward, this.footprintRadius(held.heldId) * 0.85);
+    item.root.position.y = Math.max(0, tipWorld.y - 6 * MM);
+    item.root.quaternion.copy(this.restQuaternions.get(held.heldId) ?? item.root.quaternion);
+    item.benchShift = undefined;
+    item.benchLift = undefined;
+    this.poseSeatedChildren(held.heldId);
+    this.itemLayer.updateMatrixWorld(true);
+    this.shadowsDirty = true;
   }
 
   /** The control (a TARE key) under a client point, if the first item surface there is one. */
@@ -1361,6 +1457,7 @@ export class BenchEngine {
       }
     }
     this.itemLayer.updateMatrixWorld(true);
+    if (this.toolHeld?.toolId === instanceId) this.poseToolHeld();
     this.carried = { instanceId, position: base, lift: liftMm };
     this.signals.setFootprint(base, this.footprintRadius(instanceId));
     this.shadowsDirty = true;

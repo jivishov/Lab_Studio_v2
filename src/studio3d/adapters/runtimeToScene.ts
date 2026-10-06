@@ -187,11 +187,19 @@ export const runtimeToScene = (state: RuntimeState, definition: SceneDefinition)
       tray.push({ instanceId: instance.id, definitionId: instance.definitionId, label: instance.label, ...(model ? { model } : {}) });
       continue;
     }
-    if (instance.location === "storage" || instance.location === "oven") {
+    // Inside an instrument (Pack 2: a watch glass on the drying oven's shelf): drawn at the instrument's
+    // anchor for that zone, as a seated item is; with no such instrument on the bench, not drawn.
+    const oven = instance.location === "oven" && instance.snapZoneId
+      ? state.equipmentInstances.find((candidate) => candidate.location === "workbench"
+        && equipment3dEntry(candidate.definitionId)?.anchors[instance.snapZoneId!] !== undefined)
+      : undefined;
+    if (instance.location === "storage" || (instance.location === "oven" && !oven)) {
       hidden.push(instance.id);
       continue;
     }
-    const relation = relationByChild.get(instance.id);
+    const relation = oven
+      ? { parentInstanceId: oven.id, zoneId: instance.snapZoneId!, relationType: "placedOn" as const, renderMode: "independent" as const, locked: false }
+      : relationByChild.get(instance.id);
     const parent = relation ? byId.get(relation.parentInstanceId) : undefined;
     const anchor = relation && parent ? equipment3dEntry(parent.definitionId)?.anchors[relation.zoneId] : undefined;
     const placement: ScenePlacement = relation && anchor
