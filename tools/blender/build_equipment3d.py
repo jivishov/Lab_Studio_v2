@@ -135,6 +135,7 @@ COMPOSITES = [
     ('volumetric-flask-with-stopper', 'volumetric-flask', 'volumetric-flask-stopper-seat', 'rubber-stopper-set'),
     ('test-tube-in-rack', 'test-tube-rack', 'seat:1', 'test-tube'),
     ('test-tube-with-stopper', 'test-tube', 'test-tube-stopper-seat', 'rubber-stopper-set'),
+    ('beaker-with-stirring-rod', 'beaker-250ml', 'beaker-250ml-stirring-rod-rest', 'stirring-rod'),
 ]
 
 
@@ -150,13 +151,15 @@ def build_composite(name, parent_id, anchor, child_id, mods, args):
         colls[def_id], registries[def_id] = (coll, root), registry
     if anchor.startswith('seat:'):
         pos = registries[parent_id]['sceneryFor']['seatsMm'][int(anchor.split(':')[1])]
-        yaw = 0.0
+        yaw, lean = 0.0, 0.0
     else:
         a = registries[parent_id]['anchors'][anchor]
-        pos, yaw = a['positionMm'], a.get('yawDeg', 0.0)
+        pos, yaw, lean = a['positionMm'], a.get('yawDeg', 0.0), a.get('leanDeg', 0.0)
     child_root = colls[child_id][1]
     child_root.location = [v * MM for v in pos]
-    child_root.rotation_euler = Euler((0.0, 0.0, yaw * 3.141592653589793 / 180.0))
+    # A lean tips the child's top toward its +y (a rod resting against a beaker's rim), then the yaw turns it.
+    deg = 3.141592653589793 / 180.0
+    child_root.rotation_euler = Euler((-lean * deg, 0.0, yaw * deg))
     bpy.context.view_layer.update()
     objs = list(colls[parent_id][0].all_objects) + list(colls[child_id][0].all_objects)
     lo, hi = bounds_mm(objs)

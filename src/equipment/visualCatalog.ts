@@ -343,6 +343,9 @@ export const v1VisualCatalog: VisualCatalog = {
   "beaker-250ml": profile("beaker-250ml", asset("beaker-250ml"), rect(0, 0, 102, 132), {
     footprint: rect(15, 105, 72, 22),
     hitBox: rect(0, 0, 102, 132),
+    visualZones: [
+      { id: "beaker-250ml-stirring-rod-rest", bounds: rect(54, -30, 30, 90), anchor: { x: 66, y: 40 } },
+    ],
     contentRegions: [liquidRect(rect(24, 38, 54, 60), "wide-bottom")],
     liquidVisualProfile: liquidProfile(
       "beaker-250ml-v1",

@@ -58,6 +58,7 @@ const PATHS: Record<string, string> = {
   chev: "m6 9 6 6 6-6",
   up: "m6 15 6-6 6 6",
   arrow: "M4 12h15M14 7l5 5-5 5",
+  clock: "M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18M12 7v5l3 2",
 };
 
 export const Icon = ({ name, className, size = 16 }: { name: keyof typeof PATHS | string; className?: string; size?: number }) => (

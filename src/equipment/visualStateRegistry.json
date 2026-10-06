@@ -90,9 +90,9 @@
     "defaultSolidState": "powder"
   },
   "counts": {
-    "total": 95,
+    "total": 96,
     "byDisposition": {
-      "liquid-style": 50,
+      "liquid-style": 51,
       "unresolved": 0,
       "solid-style": 19,
       "state-asset": 20,
@@ -877,6 +877,30 @@
         "technique:hard-water-gravimetry"
       ],
       "runtimeAssignment": "unconditional"
+    },
+    {
+      "id": "settled-precipitate",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": false,
+      "selectors": [
+        "runtime-assigned"
+      ],
+      "provenance": "Pack 2 (decided 2026-10-05): a precipitate left to stand until the solid has settled under clear liquid, so a test drop of reagent can show any new cloudiness. The reducer assigns it as a default when the settle operation declares no state; the particles are qualitative and never quantify the solid.",
+      "renderStyleKey": "settled-precipitate",
+      "renderStyle": {
+        "fill": "rgba(150, 190, 206, 0.30)",
+        "stroke": "rgba(80, 120, 138, 0.46)",
+        "highlight": "rgba(248, 255, 255, 0.5)",
+        "meniscus": "rgba(236, 248, 252, 0.88)",
+        "opacity": 0.94,
+        "particles": true
+      },
+      "owners": [
+        "runtime:settle-precipitate"
+      ],
+      "runtimeAssignment": "default"
     },
     {
       "id": "cooled-dry-precipitate",

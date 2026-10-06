@@ -15,6 +15,7 @@ import { BenchList, EquipmentTray, ExamineCard, HelpDialog, NOTEBOOK_WIDTH, Note
 import { SimulationSwitcher } from "./SimulationSwitcher";
 import { DropPanel } from "./DropPanel";
 import { StepCard } from "./StepCard";
+import { StepClock } from "./StepClock";
 import { fillLevelMm } from "../adapters/runtimeToScene";
 import { usePlayer3D, type Player3DController } from "./usePlayer3D";
 
@@ -221,8 +222,9 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     invertTarget: (instanceId) => isInvertTarget(instanceId),
     // Only while the step is current: a hand still turning or circling never acts on the next step.
     invert: () => { if (invertVesselId) player.recordEvidence(); },
-    swirlTarget: (instanceId) => isSwirlTarget(instanceId),
-    swirl: () => { if (swirlVesselId) player.recordEvidence(); },
+    swirlTarget: (instanceId) => isSwirlTarget(instanceId) || isStirTarget(instanceId),
+    // A closed hand moved in a circle swirls the flask, or stirs with the rod (Pack 2).
+    swirl: () => { if (swirlVesselId || stirVesselId) player.recordEvidence(); },
     dropMode: () => Boolean(dropMode),
     drop: () => addDropRef.current(1),
     squirtMode: () => squirtHeldRef.current,
@@ -247,7 +249,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   // is staged: a shelf source must not appear beside the target for a frame.
   // A committed swirl is staged the same way: the vessel holds what it held until the swirl is drawn.
   const displayScene = player.pour && !reducedMotion ? player.pour.staging
-    : player.swirl && !reducedMotion ? player.swirl.staging : scene;
+    : player.swirl && !reducedMotion ? player.swirl.staging
+    : player.benchOpRun && !reducedMotion ? player.benchOpRun.staging : scene;
   useEffect(() => {
     const pour = player.pour;
     if (!pour) return;
@@ -270,6 +273,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
       // The pour is framed where it happens, unless the learner has taken the camera (§5.9) or the
       // bottle is already held there.
       if (autoViewRef.current && !reducedMotion && !continuing) engine.frameItems([pour.sourceId, pour.targetId, ...(pour.via ? [pour.via] : [])], 1.4);
+      // A reagent portion goes in while the rod standing in the beaker stirs it (Pack 2, decided 2026-10-05).
+      if (pour.stir) void engine.animateStir(pour.targetId, 2.8);
       if (source && target) {
         await engine.animatePour({ sourceId: pour.sourceId, targetId: pour.targetId,
           sourceBefore: source.contents, sourceAfter: pour.sourceAfter,
@@ -298,6 +303,31 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
       .then(() => player.finishSwirl(swirl.id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [player.swirl?.id, engine]);
+
+  // A committed bench operation (Pack 2, decided 2026-10-05): the rod stirs, or the precipitate settles,
+  // while the fast step clock runs the stated minutes; or the dropping pipette is held over the beaker and
+  // one drop falls. Under reduced motion the end state is shown at once (§3.5).
+  useEffect(() => {
+    const run = player.benchOpRun;
+    if (!run) return;
+    if (reducedMotion || !engine) { player.finishBenchOp(run.id); return; }
+    const pause = (ms: number) => new Promise((resolve) => window.setTimeout(resolve, ms));
+    const draw = async () => {
+      await engine.sync(run.staging);
+      if (run.operation === "stir") await engine.animateStir(run.vesselId, run.clockSeconds ?? 3);
+      else if (run.operation === "settle-precipitate") await engine.animateContentsChange(run.vesselId, { before: run.before, after: run.after }, run.clockSeconds ?? 3);
+      else if (run.toolId) {
+        engine.holdOver(run.toolId, run.vesselId);
+        await pause(700);
+        engine.dropFromHeld();
+        await pause(900);
+        engine.holdOver(null);
+      }
+      player.finishBenchOp(run.id);
+    };
+    void draw();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [player.benchOpRun?.id, engine]);
 
   // A committed weighing (handoff §5.7): the vessel is shown on the pan, then back where the runtime
   // keeps it. Under reduced motion the end state is shown at once (§3.5).
@@ -554,6 +584,14 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     ? runtime.expectedAction.parameters : undefined;
   const swirlVesselId = typeof swirlParams?.targetInstanceId === "string" ? swirlParams.targetInstanceId : undefined;
   const isSwirlTarget = (id: string): boolean => Boolean(swirlVesselId) && id === swirlVesselId;
+  // Stirring with the rod (Pack 2): a click on the beaker or the rod standing in it, Enter on either,
+  // the step card's Stir, or a closed hand moved in a circle.
+  const stirVesselId = player.benchOp?.operation === "stir" ? player.benchOp.vesselInstanceId : undefined;
+  const isStirTarget = (id: string): boolean => {
+    if (!stirVesselId || player.benchOpRun) return false;
+    const item = scene.bench.find((i) => i.instanceId === id);
+    return id === stirVesselId || (item?.placement.kind === "seated" && item.placement.parentInstanceId === stirVesselId);
+  };
   const inversions = runtime.state.mixInversions ?? {};
   const inversionTotal = Object.values(inversions).reduce((sum, n) => sum + n, 0);
   const lastInversions = useRef<Record<string, number>>({});
@@ -603,11 +641,16 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     const working = new Set(showGuidance
       ? scene.bench.filter((i) => i.definitionId === flow.source.definitionId || i.definitionId === targetDef || i.definitionId === toolDef).map((i) => i.instanceId)
       : []);
+    // A bench operation (Pack 2) frames what it is done to and with.
+    const benchOp = player.benchOp;
+    if (showGuidance && benchOp) {
+      for (const id of [benchOp.vesselInstanceId, benchOp.toolInstanceId]) if (id && scene.bench.some((i) => i.instanceId === id)) working.add(id);
+    }
     for (const item of scene.bench) {
       if (working.has(item.instanceId) && item.placement.kind === "seated") working.add(item.placement.parentInstanceId);
     }
     engine.frameItems(working.size ? [...working] : "all", working.size ? 1.6 : 1.05);
-  }, [engine, flow.source.definitionId, flow.target.definitionId, player.toolTransfer, scene, showGuidance]);
+  }, [engine, flow.source.definitionId, flow.target.definitionId, player.benchOp, player.toolTransfer, scene, showGuidance]);
   useEffect(() => {
     if (runtime.currentNode.id !== lastNode.current) {
       lastNode.current = runtime.currentNode.id;
@@ -620,7 +663,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   // set is kept through new steps until they choose Auto view again (decided 2026-10-05; it no
   // longer ends at each step, §5.9).
   // A committed pour, weighing or tool transfer being drawn holds the framing back, as a carry does (§5.9).
-  const pouring = Boolean(player.pour || player.weighing || player.toolDeposit || player.swirl);
+  const pouring = Boolean(player.pour || player.weighing || player.toolDeposit || player.swirl || player.benchOpRun);
   const frameRef = useRef(frame);
   frameRef.current = frame;
   const autoViewRef = useRef(autoView);
@@ -688,7 +731,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
         e.preventDefault();
       } else if (e.key === "Enter") {
         // At an inversion or swirl step, Enter on the flask inverts or swirls it once.
-        if (selected && (isInvertTarget(selected) || isSwirlTarget(selected))) { player.recordEvidence(); e.preventDefault(); }
+        if (selected && (isInvertTarget(selected) || isSwirlTarget(selected) || isStirTarget(selected))) { player.recordEvidence(); e.preventDefault(); }
         else if (selected && scene.bench.some((item) => item.instanceId === selected)) { startMove(selected); e.preventDefault(); }
       } else if (e.key === "e" || e.key === "E") { if (selected) examine(selected); }
       else if (e.key === "s" || e.key === "S") { if (selected) player.setSelectedSource(selected); }
@@ -770,7 +813,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   tapRef.current = (id, pointerType, x, y) => {
     // At an inversion step, a tap on the stoppered vessel (or its stopper) inverts it once; at a swirl
     // step, a tap on the flask swirls it.
-    if (isInvertTarget(id) || isSwirlTarget(id)) {
+    if (isInvertTarget(id) || isSwirlTarget(id) || isStirTarget(id)) {
       player.recordEvidence();
       return true;
     }
@@ -858,6 +901,10 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     : markStep ? `Pick up the pipette and click the ${markVesselLabel} to hold it there, or use the step card. Right-drag to look around.`
     : invertVesselId ? `Click the stoppered ${invertVesselNoun} to invert it, or use Invert in the step card. Right-drag to look around.`
     : swirlVesselId ? "Click the flask to swirl it until the solid dissolves, or use Swirl in the step card. Right-drag to look around."
+    : player.benchOpRun?.minutes ? `${player.benchOpRun.label}: the clock runs the ${player.benchOpRun.minutes} minutes fast.`
+    : stirVesselId ? "Click the beaker to stir it with the rod, or use Stir in the step card. Right-drag to look around."
+    : player.benchOp?.operation === "settle-precipitate" ? "Leave the beaker still: use Wait in the step card while the precipitate settles."
+    : player.benchOp?.operation === "precipitation-drop-test" ? "Pick up the dropping pipette and click the beaker to add one drop, or use Add a drop in the step card. Right-drag to look around."
     : flow.canConfirm ? "Click an item to pick it up, then click where it goes; or use Source, Target and Confirm. Right-drag to look around."
       : player.runtime.expectedAction?.parameters.balanceOperation === "zero" ? "Press TARE on the balance, or Tare in the step card. Right-drag to look around."
       : "Fill in the step card, then record. Right-drag to look around.";
@@ -885,6 +932,10 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
 
       <StepCard player={player} controls={panelControls} onShowMe={showMe}
         onHoldOver={markStep && !dropMode ? holdFromCard : undefined} holdOverReady={Boolean(markStep && onBenchNow(markStep.pipetteInstanceId) && onBenchNow(markStep.vesselInstanceId))} />
+      {player.benchOpRun?.minutes && player.benchOpRun.clockSeconds ? (
+        <StepClock label={player.benchOpRun.label} minutes={player.benchOpRun.minutes} seconds={player.benchOpRun.clockSeconds}
+          reducedMotion={reducedMotion} startedAt={player.benchOpRun.id} />
+      ) : null}
       {dropMode ? (
         <DropPanel title={`Pipette over the ${markVesselLabel || "vessel"}`} onDrop={() => addDrop(1)} onRunStart={startRun} onRunEnd={endRun}
           onAccept={acceptAtLine} onPutDown={exitDropMode} />

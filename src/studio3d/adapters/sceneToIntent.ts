@@ -1,4 +1,5 @@
 import type { ActionDefinition, ActionInteractionSpec, EquipmentInstance, RuntimeActionRequest } from "../../domain/types";
+import { benchOperationSpec, type BenchOperationId } from "../../domain/benchOperations";
 import { equipmentById } from "../../equipment/catalog";
 import { equipment3dEntry } from "../equipment3d/readiness";
 import { getBenchSize } from "../../equipment/visualCatalog";
@@ -377,3 +378,36 @@ export const markStepFor = (
   return { pipetteInstanceId: pipette.id, pipetteDefinitionId: pipette.definitionId, vesselInstanceId: vessel.id,
     vesselDefinitionId: vessel.definitionId, bySource, goalMl };
 };
+
+/**
+ * A step done as a bench operation (Pack 2, decided 2026-10-05; `src/domain/benchOperations.ts`): what
+ * it is done to, what it is done with, and the time it states for the fast step clock (decision 9).
+ */
+export interface BenchOpStep {
+  operation: BenchOperationId;
+  /** The step card's button, and what a click on the vessel or a hand gesture does. */
+  control: string;
+  vesselInstanceId?: string;
+  /** The item it is done with: the dropping pipette of the drop test. */
+  toolInstanceId?: string;
+  /** Minutes the step states (stirring, settling), shown on the step clock. */
+  minutes?: number;
+}
+
+export const benchOpStepFor = (action: ActionDefinition | undefined, nodeCompleted: boolean): BenchOpStep | undefined => {
+  const operation = action?.parameters.benchOperation;
+  const spec = benchOperationSpec(operation);
+  if (!action || !spec || nodeCompleted) return undefined;
+  const text = (key: string) => (typeof action.parameters[key] === "string" ? action.parameters[key] as string : undefined);
+  const minutes = [action.parameters.stirMinutes, action.parameters.settleMinutes].find((value): value is number => typeof value === "number");
+  return {
+    operation: operation as BenchOperationId,
+    control: spec.control,
+    ...(text("vesselInstanceId") ? { vesselInstanceId: text("vesselInstanceId") } : {}),
+    ...(text("sourceInstanceId") ? { toolInstanceId: text("sourceInstanceId") } : {}),
+    ...(minutes !== undefined ? { minutes } : {}),
+  };
+};
+
+/** How long the fast step clock takes to show `minutes` (decision 9: minutes run in a few seconds). */
+export const stepClockSeconds = (minutes: number): number => Math.min(8, Math.max(3, minutes * 1.5));

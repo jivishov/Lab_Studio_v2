@@ -11272,6 +11272,253 @@
           "actionId": "swirl-to-dissolve"
         }
       ]
+    },
+    {
+      "id": "atom.place.stirring-rod-in-vessel",
+      "family": "gravimetry",
+      "documentationLabel": "Stand the stirring rod in the precipitation vessel",
+      "verb": "place",
+      "allowedInteractionTypes": [
+        "snapIntoTarget"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "instrument"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "stirring-device",
+        "precipitation-vessel"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "The rod stands in the vessel so the mixture can be stirred while the reagent goes in; the source says stir but lists no stirring tool (its §7, real practice).",
+        "Decided by the teacher on 2026-10-05 (Pack 2, the 3D practice of Hard-Water Calcium Carbonate Precipitation); no dated plan states this step, so no source example is cited."
+      ],
+      "evidence": "stirring rod standing in the vessel",
+      "sourceExamples": [],
+      "contentExamples": []
+    },
+    {
+      "id": "atom.place.remove-stirring-rod",
+      "family": "gravimetry",
+      "documentationLabel": "Lift the stirring rod out of the vessel and set it down",
+      "verb": "place",
+      "allowedInteractionTypes": [
+        "dragToZone"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "instrument"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "stirring-device",
+        "precipitation-vessel"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "The rod is lifted out once stirring is done, so the precipitate can settle undisturbed.",
+        "Decided by the teacher on 2026-10-05 (Pack 2, the 3D practice of Hard-Water Calcium Carbonate Precipitation); no dated plan states this step, so no source example is cited."
+      ],
+      "evidence": "stirring rod set down on the workbench",
+      "sourceExamples": [],
+      "contentExamples": []
+    },
+    {
+      "id": "atom.precipitate.add-reagent-in-portions",
+      "family": "gravimetry",
+      "documentationLabel": "Add the precipitating reagent in counted portions while stirring",
+      "verb": "precipitate",
+      "allowedInteractionTypes": [
+        "pourInto"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "instrument"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "precipitating-reagent-source",
+        "precipitation-vessel",
+        "stirring-device"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "Each portion is a stated fraction of the teacher-set reagent volume (`portionIndex` of `portionCount`), poured while the rod stands in the vessel; portions go in order.",
+        "The precipitate grows to the same fraction of the teacher-set mass, which is the model's value, never a measurement.",
+        "The portions are the practice procedure's technique (PR-11 to PR-14) applied to the hard-water sample, whose method the inquiry leaves to the student's approved plan (INQ-02)."
+      ],
+      "evidence": "reagent portion added; precipitate visible",
+      "sourceExamples": [
+        {
+          "sourceFile": "what-makes-hard-water-hard_2026-07-27.md",
+          "sourceTable": "phase",
+          "step": "PR-11",
+          "basis": "M"
+        },
+        {
+          "sourceFile": "what-makes-hard-water-hard_2026-07-27.md",
+          "sourceTable": "phase",
+          "step": "PR-14",
+          "basis": "M"
+        }
+      ],
+      "contentExamples": []
+    },
+    {
+      "id": "atom.mix.stir-with-rod",
+      "family": "gravimetry",
+      "documentationLabel": "Stir a vessel with the stirring rod",
+      "verb": "mix",
+      "allowedInteractionTypes": [
+        "recordNotebook"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state",
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "precipitation-vessel",
+        "stirring-device"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "The rod must be standing in the vessel (the step's attachment gate).",
+        "A stated stirring time (`stirMinutes`) is recorded; the 3D player shows it on a fast step clock (Pack 2 decision 9)."
+      ],
+      "evidence": "mixture stirred for the stated time",
+      "sourceExamples": [
+        {
+          "sourceFile": "what-makes-hard-water-hard_2026-07-27.md",
+          "sourceTable": "phase",
+          "step": "PR-15",
+          "basis": "M"
+        }
+      ],
+      "contentExamples": []
+    },
+    {
+      "id": "atom.settle.let-precipitate-settle",
+      "family": "gravimetry",
+      "documentationLabel": "Let a precipitate settle",
+      "verb": "settle",
+      "allowedInteractionTypes": [
+        "recordNotebook"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state",
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "precipitation-vessel"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "The vessel stands undisturbed until the solid has settled and clear liquid stands above it, so a test drop can show any new cloudiness.",
+        "Decided by the teacher on 2026-10-05 (Pack 2, the 3D practice of Hard-Water Calcium Carbonate Precipitation), with the complete-precipitation test (Pack 2 decision 7); real practice the source leaves implicit, so no source example is cited."
+      ],
+      "evidence": "clear liquid above the settled solid",
+      "sourceExamples": [],
+      "contentExamples": []
+    },
+    {
+      "id": "atom.observe.complete-precipitation-test",
+      "family": "gravimetry",
+      "documentationLabel": "Test that precipitation is complete with one more drop of reagent",
+      "verb": "observe",
+      "allowedInteractionTypes": [
+        "recordNotebook"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state",
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "transfer-pipette",
+        "precipitation-vessel"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "One drop of the reagent from a dropping pipette falls onto the clear liquid above the settled solid; no new cloudiness means the calcium is all precipitated (the real check behind INQ-02's 'completely').",
+        "The observation is the teacher's configured text; nothing is inferred.",
+        "Decided by the teacher on 2026-10-05 (Pack 2, the 3D practice of Hard-Water Calcium Carbonate Precipitation) (Pack 2 decision 7); real practice the source leaves implicit, so no source example is cited."
+      ],
+      "evidence": "observation of the clear liquid after one drop",
+      "sourceExamples": [],
+      "contentExamples": []
     }
   ]
 }

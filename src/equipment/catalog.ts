@@ -186,12 +186,22 @@ export const v1EquipmentCatalog: EquipmentDefinition[] = [
   // (`purify-a-mixture-green-chemistry_2026-07-27.md` EX-08) and "Product Made from Heating
   // Samples" (EX-19) - are 250 mL beakers that receive a recovered solid, and the catalog must not
   // deny a content kind the route actually reaches.
+  // The stirring rod rests standing in the beaker while a reagent is added and stirred in (Pack 2's
+  // precipitation practice, decided 2026-10-05).
   equipment("beaker-250ml", "250 mL beaker", "container", [
     "draggable",
     "fillable",
     "pourable",
     "measurable",
-  ], 250, 5, ["empty", "liquid", "solid", "solution", "mixture", "precipitate"]),
+  ], 250, 5, ["empty", "liquid", "solid", "solution", "mixture", "precipitate"], [
+    {
+      id: "beaker-250ml-stirring-rod-rest",
+      label: "Stirring rod standing in the beaker",
+      accepts: ["stirring-rod"],
+      x: 66,
+      y: 40,
+    },
+  ]),
   equipment("graduated-cylinder", "Graduated cylinder", "measurement", [
     "draggable",
     "fillable",

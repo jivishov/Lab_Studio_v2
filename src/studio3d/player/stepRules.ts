@@ -209,7 +209,10 @@ export const stepFlow = (args: {
     || typeof supplied === "number");
   const base = !configurationLock && inputReady && prerequisitesReady && !nodeCompleted;
   const canRecord = action?.verb === "record" && interaction?.type === "recordNotebook" && base && recordEvidence;
-  const typedNotebookOperation = Boolean(action?.parameters.titrationOperation || action?.parameters.mixOperation || action?.fractionHandling || action?.extractionOperation
+  // A bench operation (Pack 2, decided 2026-10-05) is a typed process-control action too: the 3D player
+  // performs it from the step card, a click on the vessel or a hand gesture.
+  const typedNotebookOperation = Boolean(action?.parameters.titrationOperation || action?.parameters.mixOperation || action?.parameters.benchOperation
+    || action?.fractionHandling || action?.extractionOperation
     || action?.extractionObservation || action?.extractionIdentity || action?.choiceObservation);
   const configuredObservation = action?.verb === "observe" && inputField !== undefined && inputField !== null;
   const scoped = (action?.verb === "observe" || action?.verb === "record") && typeof action.parameters.evidenceScopeSlotId === "string" && !canRecord;

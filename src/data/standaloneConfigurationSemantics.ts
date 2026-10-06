@@ -262,6 +262,20 @@ export const validateStandaloneConfigurationSemantics = (
     }
   }
 
+  if (definition.id === "hard-water-precipitation-practice") {
+    // Pack 2's precipitation practice (decided 2026-10-05): the reagent is added from a working portion,
+    // and some must be left in it for the drop test; the sample and the reagent must fit the 250 mL beaker.
+    const sample = numeric(values, "sampleVolumeMl");
+    const stock = numeric(values, "reagentStockVolumeMl");
+    const reagent = numeric(values, "reagentVolumeMl");
+    if (stock !== undefined && reagent !== undefined && reagent > stock - 1) {
+      add(["reagentVolumeMl", "reagentStockVolumeMl"], "reagentVolumeMl must leave at least 1 mL of the working portion for the drop test.");
+    }
+    if (sample !== undefined && reagent !== undefined && sample + reagent > 250) {
+      add(["sampleVolumeMl", "reagentVolumeMl"], "The sample and the reagent together must fit the 250 mL beaker.");
+    }
+  }
+
   if (definition.id === "hard-water-gravimetry") {
     const oven = numeric(values, "ovenTemperatureC");
     const cooled = numeric(values, "coolingTemperatureC");

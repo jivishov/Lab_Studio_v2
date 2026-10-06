@@ -19,6 +19,8 @@ const out = join(root, "public", "techniques-3d");
 const PRACTICE = [
   { module: "./transferPractice.mjs", basedOn: "transfer", pack: 2,
     description: "Pour a measured sample into a beaker, let the cylinder drain, and rinse it in." },
+  { module: "./precipitationPractice.mjs", basedOn: "hard-water-precipitation", pack: 2,
+    description: "Add sodium carbonate in portions while stirring, then test that precipitation is complete." },
 ];
 
 const check = process.argv.includes("--check");

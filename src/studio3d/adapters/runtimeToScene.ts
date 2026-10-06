@@ -32,6 +32,8 @@ export type ScenePlacement =
       zoneId: string;
       anchorMm: number[];
       yawDeg: number;
+      /** The anchor's lean (Equipment3DAnchor.leanDeg), when it has one. */
+      leanDeg?: number;
       relation: AttachmentRelation["relationType"];
       renderMode: AttachmentRelation["renderMode"];
       locked: boolean;
@@ -184,6 +186,7 @@ export const runtimeToScene = (state: RuntimeState, definition: SceneDefinition)
           zoneId: relation.zoneId,
           anchorMm: anchor.positionMm,
           yawDeg: anchor.yawDeg ?? 0,
+          ...(anchor.leanDeg ? { leanDeg: anchor.leanDeg } : {}),
           relation: relation.relationType,
           renderMode: relation.renderMode,
           locked: Boolean(relation.locked),

@@ -378,7 +378,7 @@ export class BenchEngine {
         if (parentItem) place(parentItem, depth + 1);
         if (parent) {
           // The parent's whole orientation, so a pump on a pipette lying on the bench lies with it.
-          this.poseOnParent(view, parent, item.placement.anchorMm, item.placement.yawDeg);
+          this.poseOnParent(view, parent, item.placement.anchorMm, item.placement.yawDeg, item.placement.leanDeg);
         }
       }
       placed.add(item.instanceId);
@@ -708,11 +708,13 @@ export class BenchEngine {
   }
 
   /** Pose an item on its parent's anchor, in the parent's whole orientation. */
-  private poseOnParent(view: ItemView, parent: ItemView, anchorMm: number[], yawDeg: number): void {
+  private poseOnParent(view: ItemView, parent: ItemView, anchorMm: number[], yawDeg: number, leanDeg = 0): void {
     const [ax, ay, az] = anchorMm;
     const local = new THREE.Vector3(ax * MM, az * MM, -ay * MM).applyQuaternion(parent.root.quaternion);
     view.root.position.copy(parent.root.position).add(local);
     view.root.quaternion.copy(parent.root.quaternion).multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), yawDeg * DEG));
+    // A lean tips the child's top toward its own +y before the yaw turns it (a rod resting on a rim).
+    if (leanDeg) view.root.quaternion.multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -leanDeg * DEG));
   }
 
   /** Re-pose what is seated on `parentId` (and on that, in turn) from where the parent is now. */
@@ -723,7 +725,7 @@ export class BenchEngine {
       if (item.placement.kind !== "seated" || item.placement.parentInstanceId !== parentId) continue;
       const child = this.items.get(item.instanceId);
       if (!child) continue;
-      this.poseOnParent(child, parent, item.placement.anchorMm, item.placement.yawDeg);
+      this.poseOnParent(child, parent, item.placement.anchorMm, item.placement.yawDeg, item.placement.leanDeg);
       this.poseSeatedChildren(item.instanceId, depth + 1);
     }
   }
@@ -911,6 +913,78 @@ export class BenchEngine {
         this.poseSeatedChildren(vesselId);
         this.shadowsDirty = true;
         return elapsed < LIFT + SWIRL + DOWN;
+      };
+      this.mixRun = { tick, finish };
+      this.requestRender();
+    });
+  }
+
+  /**
+   * A stirring rod standing in a vessel stirs it (Pack 2, decided 2026-10-05): its tip sweeps round the
+   * floor of the vessel while its top circles near the rim, `turns` times in `seconds`; presentation
+   * only, after the runtime has recorded the stir, or while a portion is poured in. Resolves at once
+   * under reduced motion or when nothing stands in the vessel to stir with.
+   */
+  animateStir(vesselId: string, seconds: number, turns = Math.max(2, Math.round(seconds * 1.2))): Promise<void> {
+    this.stopMixRun();
+    const vessel = this.items.get(vesselId);
+    const rods = (this.lastScene?.bench ?? []).filter((item) => item.placement.kind === "seated"
+      && item.placement.parentInstanceId === vesselId && item.definitionId === "stirring-rod");
+    const views = rods.map((item) => this.items.get(item.instanceId)).filter((view): view is ItemView => Boolean(view));
+    if (!vessel || !views.length || this.options.reducedMotion || seconds <= 0) return Promise.resolve();
+    const axis = vessel.root.position.clone();
+    const ease = (u: number): number => (u < 0.5 ? 2 * u * u : 1 - (-2 * u + 2) ** 2 / 2);
+    let elapsed = 0;
+    return new Promise((resolve) => {
+      const finish = () => {
+        this.poseSeatedChildren(vesselId);
+        this.shadowsDirty = true;
+        this.requestRender();
+        resolve();
+      };
+      const tick = (dt: number): boolean => {
+        if (this.items.get(vesselId) !== vessel) return false;
+        elapsed += dt;
+        const u = Math.min(1, elapsed / seconds);
+        // Starts and ends where it rests; the sweep eases in and out.
+        const angle = 2 * Math.PI * turns * ease(u);
+        const turn = new THREE.Quaternion().setFromAxisAngle(UP, angle);
+        this.poseSeatedChildren(vesselId);
+        for (const view of views) {
+          view.root.position.sub(axis).applyQuaternion(turn).add(axis);
+          view.root.quaternion.premultiply(turn);
+        }
+        this.shadowsDirty = true;
+        return elapsed < seconds;
+      };
+      this.mixRun = { tick, finish };
+      this.requestRender();
+    });
+  }
+
+  /**
+   * A vessel's contents changing while time passes on the step clock (a precipitate settling): drawn as
+   * they were, then as the runtime has them once `seconds` have passed. Presentation only.
+   */
+  animateContentsChange(vesselId: string, contents: { before: SceneContents; after: SceneContents }, seconds: number): Promise<void> {
+    this.stopMixRun();
+    const view = this.items.get(vesselId);
+    const entry = view?.entry;
+    if (!view || !entry || this.options.reducedMotion || seconds <= 0) return Promise.resolve();
+    this.replaceContents(view, buildContents(entry, contents.before));
+    let elapsed = 0;
+    return new Promise((resolve) => {
+      const finish = () => {
+        if (this.items.get(vesselId) === view) this.replaceContents(view, buildContents(entry, contents.after));
+        view.contentsKey = "animating";
+        this.shadowsDirty = true;
+        this.requestRender();
+        resolve();
+      };
+      const tick = (dt: number): boolean => {
+        if (this.items.get(vesselId) !== view) return false;
+        elapsed += dt;
+        return elapsed < seconds;
       };
       this.mixRun = { tick, finish };
       this.requestRender();

@@ -1,4 +1,5 @@
 import { titrationOperations } from "./titrationOperations";
+import { benchOperationSpec } from "./benchOperations";
 import rawAtomRegistry from "./atomRegistry.json";
 import rawEquipmentRoleRegistry from "./equipmentRoleRegistry.json";
 import type {
@@ -464,6 +465,13 @@ export const deriveActionEffectContract = (
   } else if (action.verb === "mix" && action.parameters.mixOperation === "invert") {
     // A stoppered vessel inverted to mix (decided 2026-10-02): the reducer's inversion handler
     // counts inversions on the vessel and records the mix once they are done.
+    handler = {
+      classes: ["apparatus-material-instrument-state", "evidence-recording"],
+      targets: [{ domain: "equipment" }, { domain: "material" }, { domain: "evidence" }],
+    };
+  } else if (benchOperationSpec(action.parameters.benchOperation) && interaction.type === "recordNotebook") {
+    // A bench operation (Pack 2, decided 2026-10-05): the reducer's bench-operation handler changes the
+    // apparatus or material (a stir, a settled precipitate, a drop of reagent) and records it.
     handler = {
       classes: ["apparatus-material-instrument-state", "evidence-recording"],
       targets: [{ domain: "equipment" }, { domain: "material" }, { domain: "evidence" }],

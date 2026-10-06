@@ -50,7 +50,9 @@ def build(coll, M):
         # A settled precipitate lies on the floor (Precipitation's drop test).
         'solidRest': {'centreMm': [0.0, 0.0, FLOOR], 'radiusMm': BORE - 3.0},
         'graduations': None,
-        'anchors': {},
+        # The stirring rod stands in the beaker with its tip on the floor on the spout's side and leans
+        # across to rest against the far rim (30 degrees from upright), seen side-on from the front.
+        'anchors': {'beaker-250ml-stirring-rod-rest': {'positionMm': [-(BORE - 9.0), 0.0, FLOOR], 'yawDeg': -90.0, 'leanDeg': 30.0}},
         'displays': [],
         'states': {},
     }

@@ -152,7 +152,11 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
   const { scene, interaction, showGuidance, flow } = player;
   // Nothing is picked up while a committed pour, weighing or tool transfer is being drawn.
   const pouringRef = useRef(false);
-  pouringRef.current = Boolean(player.pour || player.weighing || player.toolDeposit || player.swirl);
+  pouringRef.current = Boolean(player.pour || player.weighing || player.toolDeposit || player.swirl || player.benchOpRun);
+  // The drop test (Pack 2): the dropping pipette carried to the beaker adds one drop there.
+  const benchOp = player.benchOp;
+  const dropTest = useMemo(() => (benchOp?.operation === "precipitation-drop-test" && benchOp.toolInstanceId && benchOp.vesselInstanceId
+    ? { pipetteId: benchOp.toolInstanceId, vesselId: benchOp.vesselInstanceId } : undefined), [benchOp]);
 
   // A solid transfer this step makes with a tool (the spatula), decided 2026-09-25.
   const toolTransfer = player.toolTransfer;
@@ -209,6 +213,10 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     const footprint = asTip ? { xMm: point.xMm, yMm: point.yMm, widthMm: TIP_MM, depthMm: TIP_MM } : footprintOf(item?.model, point.xMm, point.yMm);
     return classifyOverlap({ instanceId, definitionId, footprint }, candidates(instanceId), judged, snap);
   }, [candidates, interaction, scene]);
+
+  /** Whether a carried item's tip is over a bench item's footprint (the dropping pipette over the beaker). */
+  const tipOver = useCallback((vesselId: string, carriedId: string, point: BenchPoint): boolean =>
+    candidates(carriedId).some((candidate) => candidate.instanceId === vesselId && pointInFootprint(candidate.footprint, point)), [candidates]);
 
   // A step done with a pipette (decided 2026-09-26): the pipette is carried, upright by its tip, to
   // the liquid it draws from or the vessel it empties into. Judged as the pipette being the pour's
@@ -352,6 +360,25 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       }
       return show(shown, action);
     }
+    if (dropTest && carry.instanceId === dropTest.pipetteId) {
+      // The drop test: the dropping pipette, upright by its tip, adds one drop where it is released.
+      carry.tipPoint = point;
+      carry.liftMm = surfaceMm + LIFT_MM;
+      engine.previewCarry(carry.instanceId, point.xMm, point.yMm, carry.liftMm);
+      const top = screenAt ? undefined : engine.screenPoint(carry.instanceId, 1);
+      const screen = screenAt ?? (top ? { x: top.x, y: top.y - 30 } : { x: 0, y: 0 });
+      const vessel = scene.bench.find((i) => i.instanceId === dropTest.vesselId);
+      const vesselLabel = vessel ? lowerFirst(vessel.label) : "beaker";
+      let shown: CarryCallout;
+      if (tipOver(dropTest.vesselId, carry.instanceId, point)) {
+        engine.setTargetRing(dropTest.vesselId, "valid");
+        shown = { ...screen, ...acceptedDropCallout(showGuidance, flow.inputReady, `Release to add one drop to the ${vesselLabel}`) };
+      } else {
+        engine.setTargetRing(null);
+        shown = showGuidance ? { ...screen, text: `Carry the pipette to the ${vesselLabel}`, kind: "free" } : { ...screen, text: "Release to set down", kind: "free" };
+      }
+      return show(shown, "commit");
+    }
     const mark = markStep;
     if (mark && carry.instanceId === mark.pipetteInstanceId) {
       // A drop-to-the-line step: the pipette, upright by its tip, is held over the vessel on release.
@@ -448,7 +475,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       shown = holder ? { ...screen, text: `Release to take it off ${holder.label}`, kind: "detach" } : { ...screen, text: "Release to set down", kind: "free" };
     }
     return show(shown, action);
-  }, [engine, flow.inputReady, interaction, labelOf, markStep, overlapAt, pipette, pipetteSpec, placesForStep, scene, scoopFor, showGuidance, toolTransfer]);
+  }, [dropTest, engine, flow.inputReady, interaction, labelOf, markStep, overlapAt, pipette, pipetteSpec, placesForStep, scene, scoopFor, showGuidance, tipOver, toolTransfer]);
 
   /**
    * Pointing at an item with a seat for the carried item (a registry zone that accepts it, with a 3D
@@ -522,6 +549,12 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
         return;
       }
     }
+    if (dropTest && carry.instanceId === dropTest.pipetteId && tipOver(dropTest.vesselId, carry.instanceId, carry.tipPoint ?? point)) {
+      // The runtime adds the drop; the pipette is then drawn held over the beaker while it falls.
+      void engine.sync(scene);
+      player.recordEvidence();
+      return;
+    }
     const mark = markStep;
     if (mark && carry.instanceId === mark.pipetteInstanceId) {
       const markOverlap = overlapAt(carry.instanceId, mark.pipetteDefinitionId, carry.tipPoint ?? point, true);
@@ -591,7 +624,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       accepted = true;
     }
     if (!accepted) void engine.sync(scene);
-  }, [cancel, endCarry, engine, interaction, labelOf, markStep, onHoldOver, overlapAt, pipette, pipetteSpec, player, scene, scoopFor, toolTransfer]);
+  }, [cancel, dropTest, endCarry, engine, interaction, labelOf, markStep, onHoldOver, overlapAt, pipette, pipetteSpec, player, scene, scoopFor, tipOver, toolTransfer]);
 
   /**
    * Keyboard carry (§5.6): the item lifts where it stands. Probes do not free-move (parity), so

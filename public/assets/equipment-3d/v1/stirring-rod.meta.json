@@ -6,13 +6,21 @@
   "registry": {
     "footprintMm": {
       "shape": "rect",
-      "width": 200.0,
-      "depth": 6.0
+      "width": 6.0,
+      "depth": 200.0
     },
     "grip": {
-      "heightMm": 3.0
+      "heightMm": 140.0
     },
     "graduations": null,
+    "benchRest": {
+      "rollDeg": -90.0,
+      "liftMm": 3.0,
+      "shiftMm": [
+        0.0,
+        -100.0
+      ]
+    },
     "anchors": {},
     "displays": [],
     "states": {}
@@ -20,14 +28,14 @@
   "build": {
     "boundsMm": {
       "min": [
-        -100.0,
         -3.0,
-        -0.0
+        -3.0,
+        0.0
       ],
       "max": [
-        100.0,
         3.0,
-        6.0
+        3.0,
+        200.0
       ]
     },
     "triangles": 1152,
@@ -40,7 +48,7 @@
     "blender": "5.2.2",
     "generator": "tools/blender/equipment/stirring_rod.py",
     "library": "tools/blender/labeq",
-    "sourceHash": "855c22043e182b373bb731b32432e7bff4115c0a30b5c18d4581f76b9963cd33",
+    "sourceHash": "68fe9f5b441fe350259f3b17d53dd1dc2911e7f8b67e47012577ba2928a6c4c5",
     "markingFont": {
       "family": "Inter",
       "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",

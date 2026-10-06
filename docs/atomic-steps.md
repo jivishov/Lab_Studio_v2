@@ -29,7 +29,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 
 ## Atoms
 
-218 atoms across 15 families.
+224 atoms across 15 families.
 
 | Atom | Family | Verb | Interactions | Required roles |
 |---|---|---|---|---|
@@ -251,6 +251,12 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 | `atom.transfer.weighed-solid-through-funnel` | measurement | `transfer` | `pourInto` | `weighed-sample-source`, `narrow-necked-vessel`, `filling-funnel` |
 | `atom.observe.zero-balance` | weighing | `observe` | `recordNotebook` | `balance-instrument`, `weighed-vessel` |
 | `atom.dissolve.swirl-to-dissolve` | foundational | `dissolve` | `recordNotebook` | `final-volume-vessel` |
+| `atom.place.stirring-rod-in-vessel` | gravimetry | `place` | `snapIntoTarget` | `stirring-device`, `precipitation-vessel` |
+| `atom.place.remove-stirring-rod` | gravimetry | `place` | `dragToZone` | `stirring-device`, `precipitation-vessel` |
+| `atom.precipitate.add-reagent-in-portions` | gravimetry | `precipitate` | `pourInto` | `precipitating-reagent-source`, `precipitation-vessel`, `stirring-device` |
+| `atom.mix.stir-with-rod` | gravimetry | `mix` | `recordNotebook` | `precipitation-vessel`, `stirring-device` |
+| `atom.settle.let-precipitate-settle` | gravimetry | `settle` | `recordNotebook` | `precipitation-vessel` |
+| `atom.observe.complete-precipitation-test` | gravimetry | `observe` | `recordNotebook` | `transfer-pipette`, `precipitation-vessel` |
 
 ### Family: calorimetry
 
@@ -1618,6 +1624,91 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 - Content examples:
   - `technique:two-stage-precipitate-drying` action `transfer-practice-paper-to-watch`
   - `technique:quick-ache-extraction-recovery` action `qar-transfer-solid-to-watch-glass`
+
+#### `atom.place.stirring-rod-in-vessel`
+
+**Stand the stirring rod in the precipitation vessel**
+
+- Verb: `place`
+- Allowed interaction types: `snapIntoTarget`
+- Required roles: `stirring-device`, `precipitation-vessel`
+- Optional roles: none
+- Evidence: stirring rod standing in the vessel
+- Procedural constraints:
+  - The rod stands in the vessel so the mixture can be stirred while the reagent goes in; the source says stir but lists no stirring tool (its §7, real practice).
+  - Decided by the teacher on 2026-10-05 (Pack 2, the 3D practice of Hard-Water Calcium Carbonate Precipitation); no dated plan states this step, so no source example is cited.
+
+#### `atom.place.remove-stirring-rod`
+
+**Lift the stirring rod out of the vessel and set it down**
+
+- Verb: `place`
+- Allowed interaction types: `dragToZone`
+- Required roles: `stirring-device`, `precipitation-vessel`
+- Optional roles: none
+- Evidence: stirring rod set down on the workbench
+- Procedural constraints:
+  - The rod is lifted out once stirring is done, so the precipitate can settle undisturbed.
+  - Decided by the teacher on 2026-10-05 (Pack 2, the 3D practice of Hard-Water Calcium Carbonate Precipitation); no dated plan states this step, so no source example is cited.
+
+#### `atom.precipitate.add-reagent-in-portions`
+
+**Add the precipitating reagent in counted portions while stirring**
+
+- Verb: `precipitate`
+- Allowed interaction types: `pourInto`
+- Required roles: `precipitating-reagent-source`, `precipitation-vessel`, `stirring-device`
+- Optional roles: none
+- Evidence: reagent portion added; precipitate visible
+- Procedural constraints:
+  - Each portion is a stated fraction of the teacher-set reagent volume (`portionIndex` of `portionCount`), poured while the rod stands in the vessel; portions go in order.
+  - The precipitate grows to the same fraction of the teacher-set mass, which is the model's value, never a measurement.
+  - The portions are the practice procedure's technique (PR-11 to PR-14) applied to the hard-water sample, whose method the inquiry leaves to the student's approved plan (INQ-02).
+- Source examples:
+  - `what-makes-hard-water-hard_2026-07-27.md` phase step `PR-11` (M)
+  - `what-makes-hard-water-hard_2026-07-27.md` phase step `PR-14` (M)
+
+#### `atom.mix.stir-with-rod`
+
+**Stir a vessel with the stirring rod**
+
+- Verb: `mix`
+- Allowed interaction types: `recordNotebook`
+- Required roles: `precipitation-vessel`, `stirring-device`
+- Optional roles: none
+- Evidence: mixture stirred for the stated time
+- Procedural constraints:
+  - The rod must be standing in the vessel (the step's attachment gate).
+  - A stated stirring time (`stirMinutes`) is recorded; the 3D player shows it on a fast step clock (Pack 2 decision 9).
+- Source examples:
+  - `what-makes-hard-water-hard_2026-07-27.md` phase step `PR-15` (M)
+
+#### `atom.settle.let-precipitate-settle`
+
+**Let a precipitate settle**
+
+- Verb: `settle`
+- Allowed interaction types: `recordNotebook`
+- Required roles: `precipitation-vessel`
+- Optional roles: none
+- Evidence: clear liquid above the settled solid
+- Procedural constraints:
+  - The vessel stands undisturbed until the solid has settled and clear liquid stands above it, so a test drop can show any new cloudiness.
+  - Decided by the teacher on 2026-10-05 (Pack 2, the 3D practice of Hard-Water Calcium Carbonate Precipitation), with the complete-precipitation test (Pack 2 decision 7); real practice the source leaves implicit, so no source example is cited.
+
+#### `atom.observe.complete-precipitation-test`
+
+**Test that precipitation is complete with one more drop of reagent**
+
+- Verb: `observe`
+- Allowed interaction types: `recordNotebook`
+- Required roles: `transfer-pipette`, `precipitation-vessel`
+- Optional roles: none
+- Evidence: observation of the clear liquid after one drop
+- Procedural constraints:
+  - One drop of the reagent from a dropping pipette falls onto the clear liquid above the settled solid; no new cloudiness means the calcium is all precipitated (the real check behind INQ-02's 'completely').
+  - The observation is the teacher's configured text; nothing is inferred.
+  - Decided by the teacher on 2026-10-05 (Pack 2, the 3D practice of Hard-Water Calcium Carbonate Precipitation) (Pack 2 decision 7); real practice the source leaves implicit, so no source example is cited.
 
 ### Family: kinetics
 
@@ -4110,7 +4201,7 @@ A role is a constraint, not a synonym for one apparatus id. Capacity, tolerance,
 | `filtration-receiver` | vessel | `beaker-150ml`, `beaker-250ml`, `erlenmeyer-flask-250ml`, `side-arm-filter-flask` | — | GRAV-04 aligns the receiver under the outlet before any pour. A side-arm flask is required only in the vacuum configuration. |
 | `filtration-vacuum-source` | tool | `vacuum-source` | — | Investigation 3 lists a vacuum filtration apparatus but never illustrates or enumerates it (finding 3, M/C), and confirmation point 1 leaves gravity versus vacuum open. The role exists so the vacuum configuration can be assembled explicitly rather than implied, and it is unfilled in the gravity configuration. |
 | `mixture-source` | delivery | `beaker-150ml`, `beaker-250ml`, `erlenmeyer-flask-250ml` | — | FD-06 requires a slow pour without overflow, so the source vessel is part of the validated behaviour. |
-| `rinsed-vessel` | vessel | `beaker-150ml`, `beaker-250ml`, `erlenmeyer-flask-250ml`, `funnel`, `test-tube`, `weigh-boat` | — | FD-07 rinses the beaker for quantitative transfer; the same role covers conditioning rinses elsewhere. Make a Solution rinses the weighing boat, then the funnel, into the volumetric flask after tipping the weighed solid (decided by the teacher on 2026-10-04; no dated plan states it). |
+| `rinsed-vessel` | vessel | `beaker-150ml`, `beaker-250ml`, `erlenmeyer-flask-250ml`, `funnel`, `graduated-cylinder`, `test-tube`, `weigh-boat` | — | FD-07 rinses the beaker for quantitative transfer; the same role covers conditioning rinses elsewhere. Make a Solution rinses the weighing boat, then the funnel, into the volumetric flask after tipping the weighed solid (decided by the teacher on 2026-10-04; no dated plan states it). The 3D practice of Transfer Liquid rinses the measuring cylinder into the beaker in three squirts, so the sample left on its walls goes in too (decided by the teacher on 2026-10-05, Pack 2 decision 2; real practice the source leaves implicit). |
 | `drying-instrument` | instrument | `drying-oven` | — | FD-13 states 110-120 C. The range is source-stated; the exact setpoint stays configurable. |
 | `dried-assembly` | vessel | `crucible-with-lid`, `watch-glass`, `weigh-boat` | — | DRY-00 and DRY-01 put the pre-weighed, labelled watch glass under the paper and precipitate. |
 | `cooling-tool` | tool | `crucible-tongs` | — | S-05 and S-06 require heat-safe handling and full cooling before the assembly is weighed. |

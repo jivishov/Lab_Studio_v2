@@ -1,0 +1,1095 @@
+{
+  "id": "hard-water-precipitation-practice",
+  "title": "Hard-Water Calcium Carbonate Precipitation",
+  "learningGoal": "Precipitate the calcium in a hard-water sample completely: add the carbonate in portions while stirring, then test that no more precipitate forms.",
+  "requiredEquipment": [
+    "beaker-250ml",
+    "beaker-150ml",
+    "stirring-rod",
+    "beral-pipette"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "beaker-250ml-1",
+        "definitionId": "beaker-250ml",
+        "label": "Sample beaker",
+        "location": "workbench",
+        "contents": {
+          "kind": "liquid",
+          "label": "Hard water sample",
+          "volumeMl": "{{config.sampleVolumeMl}}",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      },
+      {
+        "id": "reagent-beaker-1",
+        "definitionId": "beaker-150ml",
+        "label": "Sodium carbonate solution",
+        "location": "workbench",
+        "contents": {
+          "kind": "solution",
+          "label": "Sodium carbonate solution",
+          "volumeMl": "{{config.reagentStockVolumeMl}}",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-solution"
+        }
+      },
+      {
+        "id": "stirring-rod-1",
+        "definitionId": "stirring-rod",
+        "label": "Stirring rod",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "beral-pipette-1",
+        "definitionId": "beral-pipette",
+        "label": "Dropping pipette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "place-stirring-rod",
+      "verb": "place",
+      "label": "Stand the stirring rod in the beaker",
+      "parameters": {
+        "equipmentDefinitionId": "stirring-rod",
+        "equipmentInstanceId": "stirring-rod-1",
+        "targetDefinitionId": "beaker-250ml",
+        "targetInstanceId": "beaker-250ml-1",
+        "location": "snapZone",
+        "snapZoneId": "beaker-250ml-stirring-rod-rest"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Stand the stirring rod in the beaker: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The rod stands in the beaker.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.stirring-rod-in-vessel",
+      "equipmentRoleBindings": {
+        "stirring-device": "stirring-rod",
+        "precipitation-vessel": "beaker-250ml"
+      }
+    },
+    {
+      "id": "add-reagent-portion-1",
+      "verb": "precipitate",
+      "label": "Add the first portion while stirring",
+      "parameters": {
+        "sourceDefinitionId": "beaker-150ml",
+        "sourceInstanceId": "reagent-beaker-1",
+        "targetDefinitionId": "beaker-250ml",
+        "targetInstanceId": "beaker-250ml-1",
+        "portionIndex": 1,
+        "portionCount": 3,
+        "reagentVolumeMl": "{{config.reagentVolumeMl}}",
+        "precipitateMassG": "{{config.precipitateMassG}}",
+        "requiredAttachmentState": "attached",
+        "attachmentParentDefinitionId": "beaker-250ml",
+        "attachmentChildDefinitionId": "stirring-rod",
+        "attachmentSnapZoneId": "beaker-250ml-stirring-rod-rest",
+        "attachmentParentInstanceId": "beaker-250ml-1",
+        "attachmentChildInstanceId": "stirring-rod-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Add the first portion while stirring: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The first portion is in: a white precipitate forms.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "precipitate"
+      ],
+      "interaction": {
+        "accessibleLabel": "Add the first portion while stirring",
+        "type": "pourInto",
+        "sourceDefinitionId": "beaker-150ml",
+        "targetDefinitionId": "beaker-250ml"
+      },
+      "atomId": "atom.precipitate.add-reagent-in-portions",
+      "equipmentRoleBindings": {
+        "precipitating-reagent-source": "beaker-150ml",
+        "precipitation-vessel": "beaker-250ml",
+        "stirring-device": "stirring-rod"
+      }
+    },
+    {
+      "id": "observe-precipitate",
+      "verb": "observe",
+      "label": "Record what you see",
+      "parameters": {
+        "note": "{{config.precipitateObservation}}",
+        "tag": "precipitate-observation"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record what you see: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Observation recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ]
+    },
+    {
+      "id": "add-reagent-portion-2",
+      "verb": "precipitate",
+      "label": "Add the second portion while stirring",
+      "parameters": {
+        "sourceDefinitionId": "beaker-150ml",
+        "sourceInstanceId": "reagent-beaker-1",
+        "targetDefinitionId": "beaker-250ml",
+        "targetInstanceId": "beaker-250ml-1",
+        "portionIndex": 2,
+        "portionCount": 3,
+        "reagentVolumeMl": "{{config.reagentVolumeMl}}",
+        "precipitateMassG": "{{config.precipitateMassG}}",
+        "requiredAttachmentState": "attached",
+        "attachmentParentDefinitionId": "beaker-250ml",
+        "attachmentChildDefinitionId": "stirring-rod",
+        "attachmentSnapZoneId": "beaker-250ml-stirring-rod-rest",
+        "attachmentParentInstanceId": "beaker-250ml-1",
+        "attachmentChildInstanceId": "stirring-rod-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Add the second portion while stirring: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The second portion is in; the precipitate grows.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "precipitate"
+      ],
+      "interaction": {
+        "accessibleLabel": "Add the second portion while stirring",
+        "type": "pourInto",
+        "sourceDefinitionId": "beaker-150ml",
+        "targetDefinitionId": "beaker-250ml"
+      },
+      "atomId": "atom.precipitate.add-reagent-in-portions",
+      "equipmentRoleBindings": {
+        "precipitating-reagent-source": "beaker-150ml",
+        "precipitation-vessel": "beaker-250ml",
+        "stirring-device": "stirring-rod"
+      }
+    },
+    {
+      "id": "add-reagent-portion-3",
+      "verb": "precipitate",
+      "label": "Add the last portion while stirring",
+      "parameters": {
+        "sourceDefinitionId": "beaker-150ml",
+        "sourceInstanceId": "reagent-beaker-1",
+        "targetDefinitionId": "beaker-250ml",
+        "targetInstanceId": "beaker-250ml-1",
+        "portionIndex": 3,
+        "portionCount": 3,
+        "reagentVolumeMl": "{{config.reagentVolumeMl}}",
+        "precipitateMassG": "{{config.precipitateMassG}}",
+        "requiredAttachmentState": "attached",
+        "attachmentParentDefinitionId": "beaker-250ml",
+        "attachmentChildDefinitionId": "stirring-rod",
+        "attachmentSnapZoneId": "beaker-250ml-stirring-rod-rest",
+        "attachmentParentInstanceId": "beaker-250ml-1",
+        "attachmentChildInstanceId": "stirring-rod-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Add the last portion while stirring: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "All the reagent is in.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "precipitate"
+      ],
+      "interaction": {
+        "accessibleLabel": "Add the last portion while stirring",
+        "type": "pourInto",
+        "sourceDefinitionId": "beaker-150ml",
+        "targetDefinitionId": "beaker-250ml"
+      },
+      "atomId": "atom.precipitate.add-reagent-in-portions",
+      "equipmentRoleBindings": {
+        "precipitating-reagent-source": "beaker-150ml",
+        "precipitation-vessel": "beaker-250ml",
+        "stirring-device": "stirring-rod"
+      }
+    },
+    {
+      "id": "stir-two-minutes",
+      "verb": "mix",
+      "label": "Keep stirring for two more minutes",
+      "parameters": {
+        "benchOperation": "stir",
+        "vesselInstanceId": "beaker-250ml-1",
+        "vesselDefinitionId": "beaker-250ml",
+        "stirMinutes": 2,
+        "tag": "stirred-two-more-minutes",
+        "requiredAttachmentState": "attached",
+        "attachmentParentDefinitionId": "beaker-250ml",
+        "attachmentChildDefinitionId": "stirring-rod",
+        "attachmentSnapZoneId": "beaker-250ml-stirring-rod-rest",
+        "attachmentParentInstanceId": "beaker-250ml-1",
+        "attachmentChildInstanceId": "stirring-rod-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Keep stirring for two more minutes: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Stirred for two more minutes.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "mix"
+      ],
+      "interaction": {
+        "accessibleLabel": "Keep stirring for two more minutes",
+        "type": "recordNotebook",
+        "valueParameter": "note"
+      },
+      "atomId": "atom.mix.stir-with-rod",
+      "equipmentRoleBindings": {
+        "precipitation-vessel": "beaker-250ml",
+        "stirring-device": "stirring-rod"
+      }
+    },
+    {
+      "id": "remove-stirring-rod",
+      "verb": "place",
+      "label": "Lift the stirring rod out",
+      "parameters": {
+        "equipmentDefinitionId": "stirring-rod",
+        "equipmentInstanceId": "stirring-rod-1",
+        "location": "workbench"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Lift the stirring rod out: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The rod is on the bench.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.remove-stirring-rod",
+      "equipmentRoleBindings": {
+        "stirring-device": "stirring-rod",
+        "precipitation-vessel": "beaker-250ml"
+      }
+    },
+    {
+      "id": "settle-precipitate",
+      "verb": "settle",
+      "label": "Let the precipitate settle",
+      "parameters": {
+        "benchOperation": "settle-precipitate",
+        "vesselInstanceId": "beaker-250ml-1",
+        "vesselDefinitionId": "beaker-250ml",
+        "settleMinutes": 2,
+        "tag": "precipitate-settled"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Let the precipitate settle: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The solid has settled; the liquid above it is clear.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "settle"
+      ],
+      "interaction": {
+        "accessibleLabel": "Let the precipitate settle",
+        "type": "recordNotebook",
+        "valueParameter": "note"
+      },
+      "atomId": "atom.settle.let-precipitate-settle",
+      "equipmentRoleBindings": {
+        "precipitation-vessel": "beaker-250ml"
+      }
+    },
+    {
+      "id": "fill-dropping-pipette",
+      "verb": "transfer",
+      "label": "Fill the dropping pipette with reagent",
+      "parameters": {
+        "sourceDefinitionId": "beaker-150ml",
+        "sourceInstanceId": "reagent-beaker-1",
+        "targetDefinitionId": "beral-pipette",
+        "targetInstanceId": "beral-pipette-1",
+        "volumeMl": 1
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Fill the dropping pipette with reagent: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The pipette holds a little reagent.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "transfer"
+      ],
+      "atomId": "atom.transfer.draw-into-transfer-pipette",
+      "equipmentRoleBindings": {
+        "pipette-liquid-source": "beaker-150ml",
+        "transfer-pipette": "beral-pipette"
+      }
+    },
+    {
+      "id": "drop-test",
+      "verb": "observe",
+      "label": "Add one drop and look",
+      "parameters": {
+        "benchOperation": "precipitation-drop-test",
+        "sourceDefinitionId": "beral-pipette",
+        "sourceInstanceId": "beral-pipette-1",
+        "vesselInstanceId": "beaker-250ml-1",
+        "vesselDefinitionId": "beaker-250ml",
+        "note": "{{config.completenessObservation}}",
+        "tag": "precipitation-complete-test"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Add one drop and look: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Observation recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "interaction": {
+        "accessibleLabel": "Add one drop and look",
+        "type": "recordNotebook",
+        "valueParameter": "note"
+      },
+      "atomId": "atom.observe.complete-precipitation-test",
+      "equipmentRoleBindings": {
+        "transfer-pipette": "beral-pipette",
+        "precipitation-vessel": "beaker-250ml"
+      }
+    }
+  ],
+  "process": {
+    "startNodeId": "place-stirring-rod-node",
+    "nodes": [
+      {
+        "id": "place-stirring-rod-node",
+        "type": "action",
+        "title": "Stand the rod in the beaker",
+        "description": "Stand the glass stirring rod in the beaker of hard-water sample, ready to stir.",
+        "actionId": "place-stirring-rod",
+        "config": {},
+        "validation": [
+          {
+            "id": "place-stirring-rod-node-done",
+            "type": "actionEvidence",
+            "label": "Action place-stirring-rod was completed.",
+            "actionId": "place-stirring-rod"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Stand the rod in the beaker complete.",
+          "retry": "Review Stand the rod in the beaker and try again."
+        }
+      },
+      {
+        "id": "add-reagent-portion-1-node",
+        "type": "action",
+        "title": "Add the first portion (1 of 3)",
+        "description": "Pour about a third of the sodium carbonate solution into the beaker while you stir with the rod.",
+        "actionId": "add-reagent-portion-1",
+        "config": {},
+        "validation": [
+          {
+            "id": "add-reagent-portion-1-node-done",
+            "type": "actionEvidence",
+            "label": "Action add-reagent-portion-1 was completed.",
+            "actionId": "add-reagent-portion-1"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Add the first portion (1 of 3) complete.",
+          "retry": "Review Add the first portion (1 of 3) and try again."
+        }
+      },
+      {
+        "id": "observe-precipitate-node",
+        "type": "observation",
+        "title": "Record what you see",
+        "description": "Look at the mixture and record what forms.",
+        "actionId": "observe-precipitate",
+        "config": {},
+        "validation": [
+          {
+            "id": "observe-precipitate-node-done",
+            "type": "actionEvidence",
+            "label": "Action observe-precipitate was completed.",
+            "actionId": "observe-precipitate"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record what you see complete.",
+          "retry": "Review Record what you see and try again."
+        }
+      },
+      {
+        "id": "add-reagent-portion-2-node",
+        "type": "action",
+        "title": "Add the second portion (2 of 3)",
+        "description": "Pour the next third of the solution in while you stir.",
+        "actionId": "add-reagent-portion-2",
+        "config": {},
+        "validation": [
+          {
+            "id": "add-reagent-portion-2-node-done",
+            "type": "actionEvidence",
+            "label": "Action add-reagent-portion-2 was completed.",
+            "actionId": "add-reagent-portion-2"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Add the second portion (2 of 3) complete.",
+          "retry": "Review Add the second portion (2 of 3) and try again."
+        }
+      },
+      {
+        "id": "add-reagent-portion-3-node",
+        "type": "action",
+        "title": "Add the last portion (3 of 3)",
+        "description": "Pour in the rest of the measured solution while you stir.",
+        "actionId": "add-reagent-portion-3",
+        "config": {},
+        "validation": [
+          {
+            "id": "add-reagent-portion-3-node-done",
+            "type": "actionEvidence",
+            "label": "Action add-reagent-portion-3 was completed.",
+            "actionId": "add-reagent-portion-3"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Add the last portion (3 of 3) complete.",
+          "retry": "Review Add the last portion (3 of 3) and try again."
+        }
+      },
+      {
+        "id": "stir-two-minutes-node",
+        "type": "action",
+        "title": "Keep stirring",
+        "description": "Keep stirring the mixture for another couple of minutes.",
+        "actionId": "stir-two-minutes",
+        "config": {},
+        "validation": [
+          {
+            "id": "stir-two-minutes-node-done",
+            "type": "notebookEntry",
+            "label": "Keep stirring was completed.",
+            "notebookTag": "stirred-two-more-minutes"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Keep stirring complete.",
+          "retry": "Review Keep stirring and try again."
+        }
+      },
+      {
+        "id": "remove-stirring-rod-node",
+        "type": "action",
+        "title": "Lift the rod out",
+        "description": "Lift the stirring rod out and set it down on the bench.",
+        "actionId": "remove-stirring-rod",
+        "config": {},
+        "validation": [
+          {
+            "id": "remove-stirring-rod-node-done",
+            "type": "actionEvidence",
+            "label": "Action remove-stirring-rod was completed.",
+            "actionId": "remove-stirring-rod"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Lift the rod out complete.",
+          "retry": "Review Lift the rod out and try again."
+        }
+      },
+      {
+        "id": "settle-precipitate-node",
+        "type": "action",
+        "title": "Let it settle",
+        "description": "Leave the beaker still until the white solid has settled and the liquid above it is clear.",
+        "actionId": "settle-precipitate",
+        "config": {},
+        "validation": [
+          {
+            "id": "settle-precipitate-node-done",
+            "type": "notebookEntry",
+            "label": "Let it settle was completed.",
+            "notebookTag": "precipitate-settled"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Let it settle complete.",
+          "retry": "Review Let it settle and try again."
+        }
+      },
+      {
+        "id": "fill-dropping-pipette-node",
+        "type": "action",
+        "title": "Fill a dropping pipette",
+        "description": "Draw a little of the sodium carbonate solution into the dropping pipette.",
+        "actionId": "fill-dropping-pipette",
+        "config": {},
+        "validation": [
+          {
+            "id": "fill-dropping-pipette-node-done",
+            "type": "actionEvidence",
+            "label": "Action fill-dropping-pipette was completed.",
+            "actionId": "fill-dropping-pipette"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Fill a dropping pipette complete.",
+          "retry": "Review Fill a dropping pipette and try again."
+        }
+      },
+      {
+        "id": "drop-test-node",
+        "type": "action",
+        "title": "Test that it is complete",
+        "description": "Add one drop of the solution to the clear liquid above the solid and look closely. No new cloudiness means all the calcium has precipitated.",
+        "actionId": "drop-test",
+        "config": {},
+        "validation": [
+          {
+            "id": "drop-test-node-done",
+            "type": "notebookEntry",
+            "label": "Test that it is complete was completed.",
+            "notebookTag": "precipitation-complete-test"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Test that it is complete complete.",
+          "retry": "Review Test that it is complete and try again."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "place-stirring-rod-node",
+        "to": "add-reagent-portion-1-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "add-reagent-portion-1-node",
+        "to": "observe-precipitate-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "observe-precipitate-node",
+        "to": "add-reagent-portion-2-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "add-reagent-portion-2-node",
+        "to": "add-reagent-portion-3-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "add-reagent-portion-3-node",
+        "to": "stir-two-minutes-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "stir-two-minutes-node",
+        "to": "remove-stirring-rod-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "remove-stirring-rod-node",
+        "to": "settle-precipitate-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "settle-precipitate-node",
+        "to": "fill-dropping-pipette-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "fill-dropping-pipette-node",
+        "to": "drop-test-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [
+    {
+      "id": "hard-water-precipitation-practice-success",
+      "type": "actionEvidence",
+      "label": "Action add-reagent-portion-3 was completed.",
+      "actionId": "add-reagent-portion-3"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "current node expects a different action",
+      "message": "That action is out of sequence for the current technique step.",
+      "recovery": "Check the process map and perform the highlighted step first."
+    },
+    {
+      "id": "missing-source",
+      "when": "source equipment or contents are missing",
+      "message": "The selected source does not contain the material required for this action.",
+      "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+    },
+    {
+      "id": "overflow",
+      "when": "target capacity would be exceeded",
+      "message": "The target equipment cannot hold the requested volume.",
+      "recovery": "Use a larger container or transfer a smaller measured amount."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.0.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-10-05T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "practice-3d",
+      "hard-water",
+      "precipitation"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry",
+        "kind": "entry",
+        "nodeId": "place-stirring-rod-node",
+        "label": "Entry"
+      },
+      {
+        "id": "exit",
+        "kind": "exit",
+        "nodeId": "drop-test-node",
+        "label": "Exit"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "stirring-device",
+        "required": true,
+        "allowedDefinitionIds": [
+          "stirring-rod"
+        ],
+        "sourceInstanceIds": [
+          "stirring-rod-1"
+        ]
+      },
+      {
+        "roleId": "precipitation-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beaker-250ml"
+        ],
+        "sourceInstanceIds": [
+          "beaker-250ml-1"
+        ]
+      },
+      {
+        "roleId": "precipitating-reagent-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beaker-150ml"
+        ],
+        "sourceInstanceIds": [
+          "reagent-beaker-1"
+        ]
+      },
+      {
+        "roleId": "pipette-liquid-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beaker-150ml"
+        ],
+        "sourceInstanceIds": [
+          "reagent-beaker-1"
+        ]
+      },
+      {
+        "roleId": "transfer-pipette",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beral-pipette"
+        ],
+        "sourceInstanceIds": [
+          "beral-pipette-1"
+        ]
+      }
+    ],
+    "modelSlots": [],
+    "configurationSlots": [
+      {
+        "id": "sampleVolumeMl",
+        "valueType": "number",
+        "required": true,
+        "defaultValue": 20
+      },
+      {
+        "id": "reagentStockVolumeMl",
+        "valueType": "number",
+        "required": true,
+        "defaultValue": 50
+      },
+      {
+        "id": "reagentVolumeMl",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "precipitateMassG",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "precipitateObservation",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "id": "completenessObservation",
+        "valueType": "string",
+        "required": true
+      }
+    ],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [
+      {
+        "id": "precipitate-observation",
+        "kind": "notebook",
+        "actionId": "observe-precipitate",
+        "referenceId": "precipitate-observation"
+      },
+      {
+        "id": "precipitation-complete-test",
+        "kind": "notebook",
+        "actionId": "drop-test",
+        "referenceId": "precipitation-complete-test"
+      }
+    ],
+    "completion": {
+      "exitPortIds": [
+        "exit"
+      ],
+      "requiredEvidenceOutputIds": [
+        "precipitate-observation",
+        "precipitation-complete-test"
+      ],
+      "requiredValidationRuleIds": [
+        "hard-water-precipitation-practice-success"
+      ]
+    },
+    "catalogDisposition": "standalone-practice",
+    "legacyActionEffects": [
+      {
+        "actionId": "observe-precipitate",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

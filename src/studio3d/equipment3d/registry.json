@@ -183,13 +183,23 @@
         "radiusMm": 30.4
       },
       "graduations": null,
-      "anchors": {},
+      "anchors": {
+        "beaker-250ml-stirring-rod-rest": {
+          "positionMm": [
+            -24.4,
+            0.0,
+            2.2
+          ],
+          "yawDeg": -90.0,
+          "leanDeg": 30.0
+        }
+      },
       "displays": [],
       "states": {},
       "provenance": {
         "blender": "5.2.2",
         "generator": "tools/blender/equipment/beaker_250ml.py",
-        "sourceHash": "242111e08c963b3a10e7e838334c3dfa64fa92b7e837c49e604d277f02ec431f"
+        "sourceHash": "38295a24eab018c4cc3c510ebd229aaeca52b2164417b22312b6b62f504a4a57"
       }
     },
     {
@@ -864,20 +874,28 @@
       "thumbnail": "thumbs/stirring-rod.png",
       "footprintMm": {
         "shape": "rect",
-        "width": 200.0,
-        "depth": 6.0
+        "width": 6.0,
+        "depth": 200.0
       },
       "grip": {
-        "heightMm": 3.0
+        "heightMm": 140.0
       },
       "graduations": null,
+      "benchRest": {
+        "rollDeg": -90.0,
+        "liftMm": 3.0,
+        "shiftMm": [
+          0.0,
+          -100.0
+        ]
+      },
       "anchors": {},
       "displays": [],
       "states": {},
       "provenance": {
         "blender": "5.2.2",
         "generator": "tools/blender/equipment/stirring_rod.py",
-        "sourceHash": "855c22043e182b373bb731b32432e7bff4115c0a30b5c18d4581f76b9963cd33"
+        "sourceHash": "68fe9f5b441fe350259f3b17d53dd1dc2911e7f8b67e47012577ba2928a6c4c5"
       }
     },
     {

@@ -1,4 +1,5 @@
 import { equipmentRoleById } from "./atomRegistry";
+import { benchOperationAtomIds, benchOperationSpec } from "./benchOperations";
 import { equipmentById } from "../equipment/catalog";
 import {
   compatibleInteractionVerbs,
@@ -769,8 +770,27 @@ const validateActionContract15 = (
       for (const key of Object.keys(input.sourceInventory)) if (!inventoryKeys.includes(key)) errors.push(`${p} contains unsupported field "${key}".`);
     }
   }
+  // A bench operation (Pack 2, decided 2026-10-05) is its own typed handler: it names its operation,
+  // the operation's verb and atom imply each other, and it is done through the process control.
+  const benchOperation = isObject(input.parameters) ? input.parameters.benchOperation : undefined;
+  const benchSpec = benchOperationSpec(benchOperation);
+  if (benchOperation !== undefined && !benchSpec) errors.push(`${path}.parameters.benchOperation "${String(benchOperation)}" is not a registered bench operation.`);
+  if (benchSpec && (actionVerb !== benchSpec.verb || input.atomId !== benchSpec.atomId)) {
+    errors.push(`${path} bench operation "${String(benchOperation)}" requires verb "${benchSpec.verb}" and atom "${benchSpec.atomId}".`);
+  }
+  if (benchSpec && isObject(input.interaction) && input.interaction.type !== "recordNotebook") errors.push(`${path} bench operation must use the recordNotebook process control.`);
+  if (typeof input.atomId === "string" && benchOperationAtomIds.has(input.atomId) && !benchSpec) errors.push(`${path} atom "${input.atomId}" requires its bench operation.`);
+  if (benchSpec) requireString(errors, stringRecordField(input.parameters, "tag"), `${path}.parameters.tag`);
+  // Reagent added in counted portions (Pack 2 decision 6): whole numbers, the index within the count.
+  if (isObject(input.parameters) && (input.parameters.portionCount !== undefined || input.parameters.portionIndex !== undefined)) {
+    const count = input.parameters.portionCount;
+    const index = input.parameters.portionIndex;
+    if (actionVerb !== "precipitate") errors.push(`${path}.parameters.portionCount is legal only on precipitate actions.`);
+    if (typeof count !== "number" || !Number.isInteger(count) || count < 1 || count > 10) errors.push(`${path}.parameters.portionCount must be a whole number from 1 to 10.`);
+    if (typeof index !== "number" || !Number.isInteger(index) || index < 1 || (typeof count === "number" && index > count)) errors.push(`${path}.parameters.portionIndex must be a whole number from 1 to portionCount.`);
+  }
   if (["mix", "vent", "settle"].includes(String(actionVerb)) && input.extractionOperation === undefined && !["mix", "practice-mix"].includes(stringRecordField(input.parameters, "titrationOperation") ?? "")
-    && !(actionVerb === "mix" && stringRecordField(input.parameters, "mixOperation") === "invert")) errors.push(`${path} requires extractionOperation for this verb.`);
+    && !(actionVerb === "mix" && stringRecordField(input.parameters, "mixOperation") === "invert") && !benchSpec) errors.push(`${path} requires extractionOperation for this verb.`);
   // Swirling to dissolve (decided 2026-10-04) is the one dissolve done through the process control: it
   // names the vessel and the solid already in it, and the runtime dissolves that solid, never a new one.
   const processControlDissolve = actionVerb === "dissolve" && isObject(input.interaction) && input.interaction.type === "recordNotebook";

@@ -57,6 +57,8 @@ export interface Equipment3DAnchor {
   positionMm: Vec3Mm;
   /** Rotation of the seated child about z, in degrees. */
   yawDeg?: number;
+  /** Tilt of the seated child's top toward its own +y before the yaw, in degrees (a rod resting on a rim). */
+  leanDeg?: number;
 }
 
 /** A display surface; `policy` names an entry in displayPolicies.json. */

@@ -105,6 +105,7 @@ import {
   type RuntimeDefinition,
 } from "./createRuntime";
 import { configurationLockFor } from "./configurationGate";
+import { benchOperationSpec } from "../domain/benchOperations";
 import {
   currentEvidenceScopeGeneration,
   evaluateNode,
@@ -1613,6 +1614,154 @@ const executeInversion = (
   return { ok: true, state: next, message: count >= required ? actionDefinition.feedback.success : `Inversion ${count} of ${required}.` };
 };
 
+/** One drop from a dropping (Beral) pipette, as the drop-dispense records assume. */
+const BENCH_DROP_ML = 0.05;
+
+/**
+ * Bench operations (Pack 2, decided 2026-10-05; `src/domain/benchOperations.ts`): a physical action
+ * on apparatus through the process control. Each records the step's own tag once; a repeat is
+ * refused. Gates on parts (the stirring rod standing in the beaker) are the action's attachment gate.
+ */
+const executeBenchOperation = (
+  state: RuntimeState,
+  action: RuntimeActionRequest,
+  actionDefinition: ActionDefinition,
+  nodeId: string,
+  params: Record<string, string | number | boolean | string[] | undefined>,
+): ActionResult => {
+  const operation = stringSetting(actionDefinition.parameters, "benchOperation");
+  const tag = stringSetting(actionDefinition.parameters, "tag");
+  if (tag && state.notebook.some((entry) => entry.tags.includes(tag))) {
+    return fail(state, "This step is already done.", "Go on to the next step.", nodeId);
+  }
+  const vessel = findInstance(state, stringSetting(params, "vesselInstanceId") ?? action.targetInstanceId,
+    String(params.vesselDefinitionId ?? params.targetDefinitionId ?? ""));
+  const record = (next: RuntimeState, note: string, kind: string): ActionResult => ({
+    ok: true,
+    state: addNotebook(next, nodeId, actionDefinition.label, note, [kind, ...(tag ? [tag] : [])]),
+    message: actionDefinition.feedback.success,
+  });
+  const minutes = (key: string): string => {
+    const value = numberSetting(params, key, Number.NaN);
+    return Number.isFinite(value) ? ` for ${value} minute${value === 1 ? "" : "s"}` : "";
+  };
+  if (operation === "stir") {
+    if (!vessel || (vessel.contents.volumeMl ?? 0) <= 0) {
+      return fail(state, "There is nothing in the vessel to stir.", "Stir the beaker that holds the mixture.", nodeId);
+    }
+    return record(state, `Stirred the ${vessel.label} with the stirring rod${minutes("stirMinutes")}.`, "stir");
+  }
+  if (operation === "settle-precipitate") {
+    if (!vessel?.contents.precipitate) {
+      return fail(state, "There is no precipitate in the vessel to settle.", "Precipitate the solid in the beaker first.", nodeId);
+    }
+    const settled = updateInstance(state, vessel.id, (instance) => ({
+      ...instance,
+      contents: { ...instance.contents, visualState: stringSetting(params, "visualState") ?? "settled-precipitate" },
+    }));
+    return record(settled, `Left the ${vessel.label} to stand${minutes("settleMinutes")}; the solid settled with clear liquid above it.`, "settle");
+  }
+  if (operation === "precipitation-drop-test") {
+    const pipette = findInstance(state, action.sourceInstanceId ?? stringSetting(params, "sourceInstanceId"), String(params.sourceDefinitionId ?? ""));
+    if (!pipette || (pipette.contents.volumeMl ?? 0) < BENCH_DROP_ML) {
+      return fail(state, "The dropping pipette holds no reagent.", "Fill the dropping pipette from the reagent bottle first.", nodeId);
+    }
+    if (!vessel?.contents.precipitate) {
+      return fail(state, "There is no precipitate in the vessel to test.", "Precipitate the solid in the beaker first.", nodeId);
+    }
+    if (vessel.contents.visualState !== "settled-precipitate") {
+      return fail(state, "The liquid above the solid is not clear yet.", "Let the precipitate settle, so the drop lands in clear liquid where any new cloudiness shows.", nodeId);
+    }
+    const capacity = equipmentById.get(vessel.definitionId)?.capacity;
+    if (capacity?.unit === "mL" && (vessel.contents.volumeMl ?? 0) + BENCH_DROP_ML > capacity.amount) {
+      return fail(state, `The ${vessel.label} would overflow.`, "Use a larger vessel.", nodeId);
+    }
+    const { remainingContents, transferredContents } = splitContentForVolume(pipette.contents, BENCH_DROP_ML);
+    const fromPipette = updateInstance(state, pipette.id, (instance) => ({
+      ...instance,
+      contents: (remainingContents.volumeMl ?? 0) > 1e-9 ? remainingContents : { ...emptyContents(), wetState: "wet" },
+    }));
+    // The drop joins the clear liquid; the settled state and the vessel's name stay as they were.
+    const intoVessel = updateInstance(fromPipette, vessel.id, (instance) => ({
+      ...instance,
+      contents: {
+        ...instance.contents,
+        volumeMl: roundToRuntimeMl((instance.contents.volumeMl ?? 0) + BENCH_DROP_ML),
+        solutes: [...instance.contents.solutes, ...transferredContents.solutes],
+      },
+    }));
+    const observation = stringSetting(params, "note") ?? "One drop of reagent was added to the clear liquid.";
+    return record(intoVessel, observation, "observe");
+  }
+  return fail(state, `Unknown bench operation "${operation ?? ""}".`, "Check the step's authored operation.", nodeId);
+};
+
+/**
+ * A precipitating reagent added in counted portions while the rod stirs (Pack 2 decision 6; PR-11 to
+ * PR-14 applied to the hard-water sample): portion `portionIndex` of `portionCount` pours a
+ * `portionCount`th of `reagentVolumeMl` from the source, and the precipitate grows to that fraction of
+ * the teacher-set `precipitateMassG`. The precipitate's mass is the model's value, never a measurement.
+ */
+const addPrecipitatingPortion = (
+  state: RuntimeState,
+  action: RuntimeActionRequest,
+  actionDefinition: ActionDefinition,
+  nodeId: string,
+  params: Record<string, string | number | boolean | string[] | undefined>,
+): ActionResult => {
+  const source = findInstance(state, action.sourceInstanceId, String(params.sourceDefinitionId ?? ""));
+  const target = findInstance(state, action.targetInstanceId, String(params.targetDefinitionId ?? ""));
+  const count = Math.round(numberSetting(actionDefinition.parameters, "portionCount", Number.NaN));
+  const index = Math.round(numberSetting(actionDefinition.parameters, "portionIndex", Number.NaN));
+  const reagentVolumeMl = numberSetting(params, "reagentVolumeMl", Number.NaN);
+  const totalMassG = numberSetting(params, "precipitateMassG", Number.NaN);
+  if (!source || !target) return fail(state, "The reagent or the beaker is missing.", "Pour from the reagent bottle into the beaker.", nodeId);
+  if (!(count >= 1) || !(index >= 1) || index > count || !(reagentVolumeMl > 0) || !(totalMassG > 0)) {
+    return fail(state, "The reagent portion is not set up.", "Complete the technique's setup before starting it.", nodeId);
+  }
+  const done = state.precipitationPortions?.[target.id] ?? 0;
+  if (done !== index - 1) {
+    return fail(state, done >= index ? "That portion is already in." : "An earlier portion has not been added.",
+      "Add the portions in order, one at a time.", nodeId);
+  }
+  if ((target.contents.volumeMl ?? 0) <= 0) {
+    return fail(state, "The beaker does not hold the sample.", "Pour the sample into the beaker before adding the reagent.", nodeId);
+  }
+  const portionMl = roundToRuntimeMl(reagentVolumeMl / count);
+  if ((source.contents.volumeMl ?? 0) + 1e-9 < portionMl) {
+    return fail(state, `The ${source.label} does not hold enough reagent for this portion.`, "Ask your teacher for more reagent.", nodeId);
+  }
+  const capacity = equipmentById.get(target.definitionId)?.capacity;
+  const volumeMl = roundToRuntimeMl((target.contents.volumeMl ?? 0) + portionMl);
+  if (capacity?.unit === "mL" && volumeMl > capacity.amount) {
+    return fail(state, `The ${target.label} would overflow.`, "Use a larger beaker.", nodeId);
+  }
+  const substance = stringSetting(params, "precipitateSubstance") ?? "Calcium carbonate";
+  const soluteId = stringSetting(params, "precipitateSoluteId") ?? "calcium-carbonate";
+  const massG = Number(((totalMassG * index) / count).toFixed(6));
+  const { remainingContents } = splitContentForVolume(source.contents, Math.min(portionMl, source.contents.volumeMl ?? 0));
+  const fromSource = updateInstance(state, source.id, (instance) => ({ ...instance, contents: remainingContents }));
+  const intoTarget = updateInstance(fromSource, target.id, (instance) => ({
+    ...instance,
+    contents: {
+      ...instance.contents,
+      kind: "mixture",
+      label: stringSetting(params, "precipitateMixtureLabel") ?? `${substance} precipitate mixture`,
+      volumeMl,
+      solutes: [...instance.contents.solutes.filter((solute) => solute.id !== soluteId), { id: soluteId, label: substance, amount: massG, unit: "g" as const }],
+      precipitate: { substance, massG, rinsed: false, dryness: "wet" as const },
+      wetState: "wet" as const,
+      visualState: "cloudy-precipitate",
+    },
+  }));
+  const next = { ...intoTarget, precipitationPortions: { ...intoTarget.precipitationPortions, [target.id]: index } };
+  return {
+    ok: true,
+    state: next,
+    message: index < count ? `Portion ${index} of ${count} is in; the white precipitate grows as you stir.` : actionDefinition.feedback.success,
+  };
+};
+
 const executeAction = (
   definition: RuntimeDefinition,
   state: RuntimeState,
@@ -1667,6 +1816,12 @@ const executeAction = (
   }
   if (actionDefinition.verb === "mix" && actionDefinition.parameters.mixOperation === "invert") {
     return executeInversion(state, action, actionDefinition, nodeId, params);
+  }
+  if (benchOperationSpec(actionDefinition.parameters.benchOperation)) {
+    return executeBenchOperation(state, action, actionDefinition, nodeId, params);
+  }
+  if (actionDefinition.verb === "precipitate" && actionDefinition.parameters.portionCount !== undefined) {
+    return addPrecipitatingPortion(state, action, actionDefinition, nodeId, params);
   }
 
   if (actionDefinition.parameters.tipInspectionOperation === true && action.note === "Bubbles remain: purge again") {

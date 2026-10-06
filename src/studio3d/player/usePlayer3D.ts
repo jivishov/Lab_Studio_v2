@@ -10,7 +10,7 @@ import { footprintOf, nearestFreeSpot, type FootprintMm } from "../adapters/foot
 import { readingShownFor } from "../adapters/instrumentDisplay";
 import { pourStagingScene, runtimeToScene, sceneContents, type SceneContents, type SceneDescription } from "../adapters/runtimeToScene";
 import { heldOnSeat, readingSeatZone } from "../bench/scene/setOn";
-import { benchMoveRequest, intentTypeForInteraction, markStepFor, mergeActionInput, pipetteStepFor, resolveTrayDrop, toolTransferFor, type ReleaseOrigin } from "../adapters/sceneToIntent";
+import { benchMoveRequest, benchOpStepFor, intentTypeForInteraction, markStepFor, mergeActionInput, pipetteStepFor, resolveTrayDrop, stepClockSeconds, toolTransferFor, type ReleaseOrigin } from "../adapters/sceneToIntent";
 import { nextPlacementPoint, parkPointAfterInteraction } from "../adapters/twoDPlacement";
 import { equipment3dEntry } from "../equipment3d/readiness";
 import { stepFlow, type StepFlow, placedInstanceId } from "./stepRules";
@@ -44,6 +44,27 @@ export interface PourAnimation {
   via?: string;
   /** A measuring vessel held over the target to drain once it is empty (Pack 2's Transfer Liquid). */
   drain?: boolean;
+  /** A reagent portion poured while the rod standing in the target stirs it (Pack 2's precipitation). */
+  stir?: boolean;
+  id: number;
+}
+
+/**
+ * A committed bench operation being drawn (Pack 2, decided 2026-10-05): the rod stirring, a precipitate
+ * settling, or a drop falling from the dropping pipette. Timed ones run on the fast step clock
+ * (decision 9), with the vessel drawn as it was until the time is up.
+ */
+export interface BenchOpAnimation {
+  operation: string;
+  vesselId: string;
+  toolId?: string;
+  /** What the step clock shows: the stated minutes, run in `clockSeconds`. */
+  minutes?: number;
+  clockSeconds?: number;
+  label: string;
+  staging: SceneDescription;
+  before: SceneContents;
+  after: SceneContents;
   id: number;
 }
 
@@ -103,6 +124,7 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
   const [weighing, setWeighing] = useState<WeighAnimation>();
   const [toolDeposit, setToolDeposit] = useState<ToolDeposit>();
   const [swirl, setSwirl] = useState<SwirlAnimation>();
+  const [benchOpRun, setBenchOpRun] = useState<BenchOpAnimation>();
   // What each instrument showed when a reading was recorded, by measurement id (results only).
   const [displayedReadings, setDisplayedReadings] = useState<Record<string, string>>({});
   const pourSeq = useRef(0);
@@ -139,6 +161,8 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
       runtime.state.equipmentInstances, flow.nodeCompleted),
     [flow.nodeCompleted, runtime.expectedAction, runtime.state],
   );
+  // A step done as a bench operation: a stir, a settle, a drop test (Pack 2, decided 2026-10-05).
+  const benchOp = useMemo(() => benchOpStepFor(runtime.expectedAction, flow.nodeCompleted), [flow.nodeCompleted, runtime.expectedAction]);
   // The run is complete when the current node is done and nothing follows it.
   const complete = useMemo(
     () => runtime.state.completedNodes.includes(runtime.currentNode.id)
@@ -233,7 +257,8 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
       const { sourceInstanceId: sourceId, targetInstanceId: targetId } = result.request;
       setPour({ sourceId, targetId, staging: pourStagingScene(before, next, definition, { sourceId, targetId }),
         sourceAfter: contentsIn(next, sourceId), targetAfter: contentsIn(next, targetId),
-        ...(result.action.parameters.drainMeasuringVessel === true ? { drain: true } : {}), id: pourSeq.current });
+        ...(result.action.parameters.drainMeasuringVessel === true ? { drain: true } : {}),
+        ...(result.action.parameters.portionCount !== undefined ? { stir: true } : {}), id: pourSeq.current });
     } else if (!failed && result.interaction.type === "rinseTarget" && result.request.sourceInstanceId && result.request.targetInstanceId
       && typeof result.action.parameters.washingsReceiverInstanceId === "string") {
       // A rinse whose washings run into a receiver (decided 2026-10-04) is drawn as the wash bottle
@@ -245,6 +270,19 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
       const seated = next.attachments.some((relation) => relation.childInstanceId === rinsedId && relation.parentInstanceId === targetId);
       setPour({ sourceId, targetId, staging: pourStagingScene(before, next, definition, { sourceId, targetId }),
         sourceAfter: contentsIn(next, sourceId), targetAfter: contentsIn(next, targetId), ...(seated ? {} : { via: rinsedId }), id: pourSeq.current });
+    } else if (!failed && typeof result.action.parameters.benchOperation === "string") {
+      // A bench operation (Pack 2): drawn after the runtime has recorded it, the vessel as it was until then.
+      const step = benchOpStepFor(result.action, false);
+      const vesselId = step?.vesselInstanceId;
+      if (step && vesselId) {
+        pourSeq.current += 1;
+        const labels: Record<string, string> = { stir: "Stirring", "settle-precipitate": "Settling", "precipitation-drop-test": "One drop" };
+        setBenchOpRun({ operation: step.operation, vesselId, ...(step.toolInstanceId ? { toolId: step.toolInstanceId } : {}),
+          ...(step.minutes !== undefined ? { minutes: step.minutes, clockSeconds: stepClockSeconds(step.minutes) } : {}),
+          label: labels[step.operation] ?? step.control,
+          staging: pourStagingScene(before, next, definition, { sourceId: step.toolInstanceId ?? vesselId, targetId: vesselId }),
+          before: contentsIn(before, vesselId), after: contentsIn(next, vesselId), id: pourSeq.current });
+      }
     } else if (!failed && result.action.verb === "dissolve" && result.action.parameters.mixOperation === "swirl") {
       // A swirl (decided 2026-10-04): the vessel is drawn swirling with its contents as they were, then as the runtime has them.
       const vesselId = result.request.targetInstanceId;
@@ -370,6 +408,7 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     setWeighing(undefined);
     setToolDeposit(undefined);
     setSwirl(undefined);
+    setBenchOpRun(undefined);
     setDisplayedReadings({});
     setInputValues({});
     setCorrection(undefined);
@@ -407,6 +446,10 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     toolTransfer,
     pipetteStep,
     markStep,
+    benchOp,
+    benchOpRun,
+    /** Ends bench operation `id`'s animation; a later one that has already replaced it is left running. */
+    finishBenchOp: (id: number) => setBenchOpRun((current) => (current?.id === id ? undefined : current)),
     addDrops,
     acceptMark,
     announcement,
