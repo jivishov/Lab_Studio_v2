@@ -29,7 +29,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 
 ## Atoms
 
-239 atoms across 15 families.
+240 atoms across 15 families.
 
 | Atom | Family | Verb | Interactions | Required roles |
 |---|---|---|---|---|
@@ -252,6 +252,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 | `atom.observe.zero-balance` | weighing | `observe` | `recordNotebook` | `balance-instrument`, `weighed-vessel` |
 | `atom.dissolve.swirl-to-dissolve` | foundational | `dissolve` | `recordNotebook` | `final-volume-vessel` |
 | `atom.place.stirring-rod-in-vessel` | gravimetry | `place` | `snapIntoTarget` | `stirring-device`, `precipitation-vessel` |
+| `atom.rinse.stirring-rod-into-vessel` | gravimetry | `rinse` | `rinseTarget` | `rinse-water-source`, `stirring-device`, `receiving-vessel` |
 | `atom.place.remove-stirring-rod` | gravimetry | `place` | `dragToZone` | `stirring-device`, `precipitation-vessel` |
 | `atom.precipitate.add-reagent-in-portions` | gravimetry | `precipitate` | `pourInto` | `precipitating-reagent-source`, `precipitation-vessel`, `stirring-device` |
 | `atom.mix.stir-with-rod` | gravimetry | `mix` | `recordNotebook` | `precipitation-vessel`, `stirring-device` |
@@ -1654,6 +1655,20 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
   - The rod stands in the vessel so the mixture can be stirred while the reagent goes in; the source says stir but lists no stirring tool (its §7, real practice).
   - Decided by the teacher on 2026-10-05 (Pack 2, the 3D practice of Hard-Water Calcium Carbonate Precipitation); no dated plan states this step, so no source example is cited.
 
+#### `atom.rinse.stirring-rod-into-vessel`
+
+**Rinse the stirring rod back into its vessel**
+
+- Verb: `rinse`
+- Allowed interaction types: `rinseTarget`
+- Required roles: `rinse-water-source`, `stirring-device`, `receiving-vessel`
+- Optional roles: none
+- Evidence: rod rinsed, washings in the vessel
+- Procedural constraints:
+  - Before the rod leaves the vessel it stirred, it is rinsed down into it with the wash bottle, so the precipitate on it is not carried away; the washings go into that vessel (`washingsReceiverInstanceId`).
+  - The rinse volume is not a stated measured quantity.
+  - Decided by the teacher on 2026-10-06 (the Pack 2 fidelity review, the 3D practice of Hard-Water Calcium Carbonate Precipitation); real practice the source leaves implicit, so no source example is cited.
+
 #### `atom.place.remove-stirring-rod`
 
 **Lift the stirring rod out of the vessel and set it down**
@@ -1664,7 +1679,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 - Optional roles: none
 - Evidence: stirring rod set down on the workbench
 - Procedural constraints:
-  - The rod is lifted out once stirring is done, so the precipitate can settle undisturbed.
+  - The rod is lifted out once stirring is done and it has been rinsed back into the vessel (decided by the teacher on 2026-10-06), so the precipitate can settle undisturbed and none is carried away on the rod.
   - Decided by the teacher on 2026-10-05 (Pack 2, the 3D practice of Hard-Water Calcium Carbonate Precipitation); no dated plan states this step, so no source example is cited.
 
 #### `atom.precipitate.add-reagent-in-portions`

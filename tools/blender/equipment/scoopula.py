@@ -20,7 +20,7 @@ SCOOP_LEN = 95.0
 def build(coll, M):
     root = new_root('Scoopula_210mm', coll)
     handle = box_mesh('Scoopula_handle', L - SCOOP_LEN, W_HANDLE, T, bevel=0.5, segs=2)
-    transform_mesh(handle, Matrix.Translation(((-L / 2 + (L - SCOOP_LEN) / 2) * MM, 0, (T / 2 + 2.0) * MM)))
+    transform_mesh(handle, Matrix.Translation(((-L / 2 + (L - SCOOP_LEN) / 2) * MM, 0, (T / 2) * MM)))
     make_obj('Scoopula_handle', handle, coll, M['Brushed stainless'], root, uv='box')
     # The scoop: a thin sheet curved across its width (a shallow trough), rising a little at its tip.
     bm = bmesh.new()
@@ -35,7 +35,8 @@ def build(coll, M):
         for j in range(ny + 1):
             v = j / ny * 2 - 1
             y = v * half
-            z = 2.0 + 3.2 * v * v + 2.5 * u * u
+            # The trough's middle lies on the bench; its sides and tip curve up.
+            z = 3.2 * v * v + 2.5 * u * u
             row.append(bm.verts.new((x * MM, y * MM, z * MM)))
         verts.append(row)
     for i in range(nx):
@@ -48,7 +49,7 @@ def build(coll, M):
         'footprintMm': {'shape': 'rect', 'width': L, 'depth': W_SCOOP},
         'grip': {'heightMm': 4.0},
         'graduations': None,
-        'tipMm': [L / 2 - 6.0, 0.0, 4.0],
+        'tipMm': [L / 2 - 6.0, 0.0, 2.2],
         'anchors': {},
         'displays': [],
         'states': {},

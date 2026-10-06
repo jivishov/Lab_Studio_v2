@@ -6,8 +6,9 @@ import { action, evidenceEffect, item, node, technique } from "./common.mjs";
  *
  * The sample is already in the beaker. The rod stands in it; the sodium carbonate solution goes in
  * three portions while the rod stirs, the first followed by the observation; the mixture is stirred
- * two more minutes (PR-15, on the fast step clock); the rod comes out; the precipitate settles; one
- * drop of reagent from a dropping pipette on the clear liquid shows no new cloudiness.
+ * two more minutes (PR-15, on the fast step clock); the rod is rinsed back into the beaker, so the solid
+ * on it is not lost, and comes out (decided 2026-10-06 in the Pack 2 fidelity review); the precipitate
+ * settles; one drop of reagent from a dropping pipette on the clear liquid shows no new cloudiness.
  *
  * The reagent is a working portion in a 150 mL beaker, so the pipette never enters a stock bottle
  * (the teacher's rule of 2026-09-26). The precipitate's mass stays a teacher setting, the model's
@@ -32,6 +33,8 @@ const ROD_GATE = {
   attachmentChildInstanceId: "stirring-rod-1",
 };
 
+const water = liquid("Deionized water", 500);
+
 const equipment = [
   item("beaker-250ml-1", "beaker-250ml", "Sample beaker", liquid("Hard water sample", "{{config.sampleVolumeMl}}"), "workbench"),
   item("reagent-beaker-1", "beaker-150ml", "Sodium carbonate solution", {
@@ -41,6 +44,7 @@ const equipment = [
   }, "workbench"),
   item("stirring-rod-1", "stirring-rod", "Stirring rod"),
   item("beral-pipette-1", "beral-pipette", "Dropping pipette"),
+  item("wash-bottle-1", "wash-bottle", "Wash bottle", water),
 ];
 
 const portion = (index, label, success) => action(`add-reagent-portion-${index}`, "precipitate", label, {
@@ -89,6 +93,21 @@ const actions = [
     interaction: { type: "recordNotebook", valueParameter: "note" },
     roles: { "precipitation-vessel": "beaker-250ml", "stirring-device": "stirring-rod" },
     success: "Stirred for two more minutes.",
+  }),
+  action("rinse-stirring-rod", "rinse", "Rinse the rod into the beaker", {
+    sourceDefinitionId: "wash-bottle",
+    sourceInstanceId: "wash-bottle-1",
+    targetDefinitionId: "stirring-rod",
+    targetInstanceId: "stirring-rod-1",
+    washingsReceiverInstanceId: "beaker-250ml-1",
+    washingsReceiverDefinitionId: "beaker-250ml",
+    rinseType: "quantitative-transfer",
+    tag: "stirring-rod-rinsed",
+  }, {
+    atomId: "atom.rinse.stirring-rod-into-vessel",
+    interaction: { type: "rinseTarget", sourceDefinitionId: "wash-bottle", targetDefinitionId: "stirring-rod" },
+    roles: { "rinse-water-source": "wash-bottle", "stirring-device": "stirring-rod", "receiving-vessel": "beaker-250ml" },
+    success: "The solid on the rod is washed back into the beaker.",
   }),
   action("remove-stirring-rod", "place", "Lift the stirring rod out", {
     equipmentDefinitionId: "stirring-rod",
@@ -139,12 +158,14 @@ const actions = [
 const nodes = [
   node("place-stirring-rod", "Stand the rod in the beaker", "Stand the glass stirring rod in the beaker of hard-water sample, ready to stir."),
   node("add-reagent-portion-1", "Add the first portion (1 of 3)",
-    "Pour about a third of the sodium carbonate solution into the beaker while you stir with the rod."),
+    "Pour a third of the {{config.reagentVolumeMl}} mL of sodium carbonate solution into the beaker while you stir with the rod."),
   node("observe-precipitate", "Record what you see", "Look at the mixture and record what forms.", { action: "observe-precipitate" }, "observation"),
-  node("add-reagent-portion-2", "Add the second portion (2 of 3)", "Pour the next third of the solution in while you stir."),
-  node("add-reagent-portion-3", "Add the last portion (3 of 3)", "Pour in the rest of the measured solution while you stir."),
+  node("add-reagent-portion-2", "Add the second portion (2 of 3)", "Pour the next third in while you stir."),
+  node("add-reagent-portion-3", "Add the last portion (3 of 3)", "Pour in the last third while you stir. Keep what is left in the working beaker for the test at the end."),
   node("stir-two-minutes", "Keep stirring", "Keep stirring the mixture for another couple of minutes.", { notebookTag: "stirred-two-more-minutes" }),
-  node("remove-stirring-rod", "Lift the rod out", "Lift the stirring rod out and set it down on the bench."),
+  node("rinse-stirring-rod", "Rinse the rod", "Lift the rod a little and rinse it down into the beaker with a squirt from the wash bottle, so the solid on it stays in the beaker.",
+    { notebookTag: "stirring-rod-rinsed" }),
+  node("remove-stirring-rod", "Lift the rod out", "Lift the rinsed rod out and lay it on the bench."),
   node("settle-precipitate", "Let it settle", "Leave the beaker still until the white solid has settled and the liquid above it is clear.",
     { notebookTag: "precipitate-settled" }),
   node("fill-dropping-pipette", "Fill a dropping pipette", "Draw a little of the sodium carbonate solution into the dropping pipette."),

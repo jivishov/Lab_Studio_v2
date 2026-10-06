@@ -8,7 +8,7 @@ import { pointInFootprint, resolvePipetteRelease, resolveRelease, resolveToolRel
 import type { ActionInteractionSpec } from "../../../domain/types";
 import type { RuntimeInteractionIntent } from "../../../runtime/interactionIntents";
 import type { SceneContents, SceneItem } from "../../adapters/runtimeToScene";
-import type { Player3DController } from "../../player/usePlayer3D";
+import { FILTER_OVERFLOW, type Player3DController } from "../../player/usePlayer3D";
 import type { BenchEngine } from "../BenchEngine";
 import { arrowDirection, cycleIndex, nudgePoint, spatialOrder, type BenchPoint } from "./keyboard";
 import { placedInstanceId, seatNeededLater } from "../../player/stepRules";
@@ -153,17 +153,17 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
   const [keyCarrying, setKeyCarrying] = useState(false);
   const [toolLoaded, setToolLoaded] = useState(false);
   const { scene, interaction, showGuidance, flow } = player;
-  // Nothing is picked up while a committed pour, weighing or tool transfer is being drawn.
+  // Nothing is picked up while a committed pour, weighing or tool transfer is being drawn, or while a
+  // timed stage's minutes run on the step clock (Pack 2 decision 9; under reduced motion too).
   const pouringRef = useRef(false);
-  pouringRef.current = Boolean(player.pour || player.weighing || player.toolDeposit || player.swirl || player.benchOpRun);
+  pouringRef.current = Boolean(player.pour || player.weighing || player.toolDeposit || player.swirl || player.benchOpRun || player.stepClock);
   /**
    * Pouring again into a filter that has not drained would overflow the paper (Pack 2 decision 4): the
    * beaker cannot be picked up while the funnel drains, and a correction says why. Returns whether refused.
    */
   const overflowRefused = useCallback((instanceId: string | undefined): boolean => {
     if (!instanceId || !player.pour?.drainInto || instanceId !== player.pour.sourceId) return false;
-    player.correct("The funnel is still full: pouring now would overflow the paper.",
-      "Wait until the liquid has drained well below the paper's rim, then pour the next portion.");
+    player.correct(FILTER_OVERFLOW.message, FILTER_OVERFLOW.recovery);
     return true;
   }, [player]);
   // The drop test (Pack 2): the dropping pipette carried to the beaker adds one drop there.

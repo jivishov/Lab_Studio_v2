@@ -106,8 +106,10 @@ export const validateStandaloneConfigurationSemantics = (
   }
 
   // A teacher-set starting volume must fit the item that starts holding it (the 3D practice versions'
-  // cylinder holds the measured sample, decided 2026-10-05).
-  for (const instance of definition.initialState.equipment) {
+  // cylinder holds the measured sample, decided 2026-10-05). Only the practice versions: the 2D
+  // techniques' setups stay as they were until D8.
+  const practiceVersion = definition.composition?.catalogDisposition === "standalone-practice";
+  for (const instance of practiceVersion ? definition.initialState.equipment : []) {
     const slotId = directConfigSlot(instance.contents.volumeMl);
     const value = slotId ? numeric(values, slotId) : undefined;
     const capacity = equipmentById.get(instance.definitionId)?.capacity;

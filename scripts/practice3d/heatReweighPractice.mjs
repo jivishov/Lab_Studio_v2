@@ -4,20 +4,22 @@ import { action, evidenceEffect, item, node, technique } from "./common.mjs";
  * Heat and Reweigh a Carbonate Mixture, 3D practice version (PACK2_ATOMIZATION.md, "Heat and Reweigh";
  * decisions 9 and 10, the renamed warming step, and the heat-safe pad as the cooling surface).
  *
- * The student weighs the empty crucible and lid, tips the working portion of the mixture in and weighs it
- * again; builds the support (ring stand, clay triangle, burner beneath); seats the crucible, sets the lid
- * askew, lights the burner and opens its air collar to a blue flame; warms gently, then heats; turns the
- * burner off, moves the crucible with tongs to the heat-safe pad to cool, and weighs it. A second heating
- * (relit, flame set) checks for constant mass. The product goes to its labelled beaker, and the mass loss
- * gives the mixture's composition. The plan approval, the master stock and the replicate bookkeeping stay
- * with the lab (the original technique); this practice runs one replicate from a prepared portion.
+ * The student chooses one of the two balances and makes every weighing on it (EX-01); weighs the empty
+ * crucible and lid, taps the planned mass of the issued mixture in and weighs it again, then returns what
+ * is left to the "Unused Sample" beaker (EX-08, S-07); builds the support (ring stand, clay triangle,
+ * burner beneath); seats the crucible, sets the lid askew, lights the burner and opens its air collar to a
+ * blue flame; warms gently, then heats; turns the burner off, moves the crucible with tongs to the
+ * heat-safe pad to cool, and weighs it. A second heating (relit, flame set) checks for constant mass. The
+ * product goes to its own labelled beaker, and the mass loss gives the mixture's composition. The plan
+ * approval, the master stock and the replicate bookkeeping stay with the lab (the original technique);
+ * this practice runs one replicate (decided 2026-10-06 in the Pack 2 fidelity review).
  */
 const SEAT = "ring-stand-crucible-seat";
 const BAY = "ring-stand-burner-bay";
 const mixture = {
   kind: "solid",
   label: "NaHCO3 / Na2CO3 mixture",
-  massG: "{{config.sampleMassG}}",
+  massG: "{{config.issuedMassG}}",
   solutes: [],
   contamination: [],
   wetState: "dry",
@@ -26,14 +28,16 @@ const mixture = {
 const at = (instance, x, y) => ({ ...instance, x, y });
 
 const equipment = [
-  at(item("analytical-balance-1", "analytical-balance", "Analytical balance", undefined, "workbench"), 495, 198),
   at(item("heat-safe-pad-1", "heat-safe-pad", "Heat-safe pad", undefined, "workbench"), 212, 300),
+  item("analytical-balance-a", "analytical-balance", "Analytical balance A"),
+  item("analytical-balance-b", "analytical-balance", "Analytical balance B"),
   item("crucible-with-lid-1", "crucible-with-lid", "Crucible with lid"),
-  item("working-sample-portion-1", "small-vial", "Mixture portion", mixture),
+  item("working-sample-portion-1", "small-vial", "Mixture issued to you", mixture),
   item("ring-stand-1", "ring-stand", "Ring stand"),
   item("clay-triangle-1", "clay-triangle", "Clay triangle"),
   item("bunsen-burner-1", "bunsen-burner", "Bunsen burner"),
   item("crucible-tongs-1", "crucible-tongs", "Crucible tongs"),
+  item("unused-sample-recovery-1", "beaker-250ml", "Unused Sample — unheated"),
   item("heated-product-recovery-1", "beaker-250ml", "Product Made from Heating Samples"),
 ];
 
@@ -49,7 +53,7 @@ const crucibleTo = (id, label, target, zoneId, options, extra = {}) => action(id
   moveFromHolder: true,
   ...extra,
 }, options);
-const BALANCE = { definitionId: "analytical-balance", instanceId: "analytical-balance-1" };
+const BALANCE = { definitionId: "analytical-balance", instanceId: "analytical-balance-a" };
 const STAND = { definitionId: "ring-stand", instanceId: "ring-stand-1" };
 const PAD = { definitionId: "heat-safe-pad", instanceId: "heat-safe-pad-1" };
 
@@ -85,15 +89,21 @@ const cool = (id) => action(id, "cool", "Let it cool", {
   roles: { "dried-assembly": "crucible-with-lid", "cooling-surface": "heat-safe-pad" },
   success: "It is cool enough to weigh.",
 });
+// Every weighing is made on balance A (EX-01): balance B, a free move away on the tray, is refused.
 const onBalance = (id, label, extra = {}) => crucibleTo(id, label, BALANCE, "analytical-balance-pan", {
   atomId: "atom.place.weighed-vessel", roles: { "weighed-vessel": "crucible-with-lid" }, success: "The crucible is on the pan.",
-}, extra);
+}, {
+  requireNamedTarget: true,
+  namedTargetMessage: "Every weighing in this run is made on balance A.",
+  namedTargetRecovery: "Put the crucible on balance A's pan: two balances never read exactly alike.",
+  ...extra,
+});
 const read = (id, label, inputLabel, measurementId, extra = {}) => ({
   ...action(id, "weigh", label, {
     sourceDefinitionId: "crucible-with-lid",
     sourceInstanceId: "crucible-with-lid-1",
     targetDefinitionId: "analytical-balance",
-    targetInstanceId: "analytical-balance-1",
+    targetInstanceId: "analytical-balance-a",
     instrumentDefinitionId: "analytical-balance",
     maxSafeTemperatureC: 40,
     inputMode: "numeric",
@@ -118,10 +128,16 @@ const onTriangle = (id, label, extra = {}) => crucibleTo(id, label, STAND, SEAT,
 }, extra);
 
 const actions = [
+  action("place-balance", "place", "Put balance A on the bench", {
+    equipmentDefinitionId: "analytical-balance",
+    equipmentInstanceId: "analytical-balance-a",
+    location: "workbench",
+  }, { atomId: "atom.place.balance-instrument", roles: { "balance-instrument": "analytical-balance" },
+    success: "Balance A is on the bench; every weighing in this run is made on it." }),
   onBalance("crucible-on-balance", "Put the crucible and lid on the balance pan", { supportEmptyMassG: "{{config.crucibleMassG}}" }),
   read("read-empty-crucible", "Read the empty crucible and lid mass", "Balance display for the empty crucible and lid (g)", "empty-crucible-mass"),
   record("record-empty-crucible", "Record the empty crucible and lid mass", "empty-crucible-mass", "Empty crucible and lid"),
-  action("add-sample", "transfer", "Tip the mixture portion into the crucible", {
+  { ...action("add-sample", "transfer", "Tap the mixture into the crucible", {
     sourceDefinitionId: "small-vial",
     sourceInstanceId: "working-sample-portion-1",
     targetDefinitionId: "crucible-with-lid",
@@ -133,8 +149,20 @@ const actions = [
   }, { atomId: "atom.transfer.solid-portion", roles: { "solid-reagent-source": "small-vial", "receiving-vessel": "crucible-with-lid" },
     interaction: { type: "pourInto", sourceDefinitionId: "small-vial", targetDefinitionId: "crucible-with-lid" },
     success: "The mixture is in the crucible." }),
+  solidTransfer: { mode: "measured-portion", destinationRepresentation: "physical" } },
   read("read-loaded-crucible", "Read the loaded crucible and lid mass", "Balance display for the crucible, lid and mixture (g)", "loaded-crucible-mass"),
   record("record-loaded-crucible", "Record the loaded crucible and lid mass", "loaded-crucible-mass", "Crucible, lid and mixture"),
+  // EX-08 and S-07: the unheated mixture left over has a labelled beaker of its own, never the product's.
+  { ...action("return-unused-mixture", "transfer", "Return the rest to Unused Sample", {
+    sourceInstanceId: "working-sample-portion-1",
+    sourceDefinitionId: "small-vial",
+    targetInstanceId: "unused-sample-recovery-1",
+    targetDefinitionId: "beaker-250ml",
+    targetLabel: "Unused Sample — unheated",
+  }, { atomId: "atom.transfer.unheated-mixture-to-labeled-recovery", roles: { "solid-reagent-source": "small-vial", "recovery-vessel": "beaker-250ml" },
+    interaction: { type: "pourInto", sourceDefinitionId: "small-vial", targetDefinitionId: "beaker-250ml" },
+    success: "The unheated mixture left over is in the Unused Sample beaker." }),
+  solidTransfer: { mode: "whole-remaining", destinationRepresentation: "physical", requireNonEmptySource: false } },
   action("place-ring-stand", "place", "Stand the ring stand on the bench", {
     equipmentDefinitionId: "ring-stand", equipmentInstanceId: "ring-stand-1", location: "workbench",
   }, { atomId: "atom.place.thermal-support", roles: { "thermal-support": "ring-stand" }, success: "The ring stand is on the bench." }),
@@ -205,12 +233,15 @@ const actions = [
 ];
 
 const nodes = [
-  node("crucible-on-balance", "Put the crucible on the balance", "Put the clean, dry, cool crucible with its lid on the balance pan."),
+  node("place-balance", "Choose a balance", "Put balance A on the bench and make every weighing in this run on it: two balances never read exactly alike."),
+  node("crucible-on-balance", "Put the crucible on the balance", "Put the clean, dry, cool crucible with its lid on balance A's pan."),
   node("read-empty-crucible", "Read its mass", "Read the balance and enter the empty crucible and lid's mass.", { measurementId: "empty-crucible-mass" }),
   node("record-empty-crucible", "Record the mass", "Record the empty crucible and lid's mass in your notebook.", { measurementId: "empty-crucible-mass" }),
-  node("add-sample", "Add the mixture", "Tip the mixture portion from its vial into the crucible."),
+  node("add-sample", "Add the mixture", "With the crucible on the pan, tap about {{config.sampleMassG}} g of the mixture from its vial into the crucible."),
   node("read-loaded-crucible", "Read the loaded mass", "Read the balance and enter the crucible, lid and mixture's mass.", { measurementId: "loaded-crucible-mass" }),
   node("record-loaded-crucible", "Record the loaded mass", "Record the loaded mass in your notebook.", { measurementId: "loaded-crucible-mass" }),
+  node("return-unused-mixture", "Return the unused mixture",
+    "Tip what is left in the vial into the beaker labelled \"Unused Sample\". Unheated mixture and heated product go to separate labelled beakers."),
   node("place-ring-stand", "Stand the ring stand", "Stand the ring stand on the bench."),
   node("seat-triangle", "Seat the clay triangle", "Rest the clay triangle on the iron ring."),
   node("place-burner", "Place the burner", "Stand the Bunsen burner on the base beneath the ring."),
@@ -223,7 +254,7 @@ const nodes = [
   node("turn-off-1", "Turn off the burner", "Turn the gas off before you move the crucible.", { notebookTag: "turn-off-1-done" }),
   node("first-to-pad", "Move it with tongs", "Lift the hot crucible with the crucible tongs onto the heat-safe pad."),
   node("cool-1", "Let it cool", "Leave it on the pad until it is cool enough to weigh.", { notebookTag: "cool-1-done" }),
-  node("first-on-balance", "Put it on the balance", "Put the cool crucible on the balance pan."),
+  node("first-on-balance", "Put it on the balance", "Put the cool crucible on balance A's pan."),
   node("read-first-cycle", "Read the cooled mass", "Read the balance and enter the mass.", { measurementId: "cooled-cycle-mass" }),
   node("record-first-cycle", "Record the cooled mass", "Record the mass in your notebook.", { measurementId: "cooled-cycle-mass" }),
   node("crucible-back-on-triangle", "Set it back on the support", "Stand the crucible back in the clay triangle, the lid still askew."),
@@ -233,8 +264,8 @@ const nodes = [
   node("turn-off-2", "Turn off the burner", "Turn the gas off.", { notebookTag: "turn-off-2-done" }),
   node("second-to-pad", "Move it with tongs", "Lift the crucible with the tongs onto the heat-safe pad."),
   node("cool-2", "Let it cool", "Leave it on the pad until it is cool enough to weigh.", { notebookTag: "cool-2-done" }),
-  node("second-on-balance", "Put it on the balance", "Put the cool crucible on the balance pan."),
-  node("read-final", "Read the mass again", "Read the balance and enter the mass. It should match the first cooled mass: constant mass.", { measurementId: "final-cooled-crucible-mass" }),
+  node("second-on-balance", "Put it on the balance", "Put the cool crucible on balance A's pan."),
+  node("read-final", "Read the mass again", "Read the balance and enter the mass, then compare it with the first cooled mass. When the two agree, the mass is constant.", { measurementId: "final-cooled-crucible-mass" }),
   node("record-final", "Record the final mass", "Record the constant final mass in your notebook.", { measurementId: "final-cooled-crucible-mass" }),
   node("recover-product", "Recover the product", "Tip the cool product into the beaker labelled \"Product Made from Heating Samples\"."),
   node("calculate-composition", "Work out the composition",
@@ -250,6 +281,7 @@ export default technique({
   nodes,
   slots: [
     { id: "crucibleMassG", valueType: "number", required: true, defaultValue: 25 },
+    { id: "issuedMassG", valueType: "number", required: true, defaultValue: 2.5 },
     { id: "sampleMassG", valueType: "number", required: true, defaultValue: 2 },
     { id: "residueMassG", valueType: "number", required: true, defaultValue: 1.557 },
     { id: "warmMinutes", valueType: "number", required: true, defaultValue: 2 },

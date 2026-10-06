@@ -6,7 +6,8 @@
     "beaker-250ml",
     "beaker-150ml",
     "stirring-rod",
-    "beral-pipette"
+    "beral-pipette",
+    "wash-bottle"
   ],
   "initialState": {
     "equipment": [
@@ -66,6 +67,21 @@
           "contamination": [],
           "wetState": "dry",
           "visualState": "empty"
+        }
+      },
+      {
+        "id": "wash-bottle-1",
+        "definitionId": "wash-bottle",
+        "label": "Wash bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Deionized water",
+          "volumeMl": 500,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
         }
       }
     ]
@@ -413,6 +429,64 @@
       }
     },
     {
+      "id": "rinse-stirring-rod",
+      "verb": "rinse",
+      "label": "Rinse the rod into the beaker",
+      "parameters": {
+        "sourceDefinitionId": "wash-bottle",
+        "sourceInstanceId": "wash-bottle-1",
+        "targetDefinitionId": "stirring-rod",
+        "targetInstanceId": "stirring-rod-1",
+        "washingsReceiverInstanceId": "beaker-250ml-1",
+        "washingsReceiverDefinitionId": "beaker-250ml",
+        "rinseType": "quantitative-transfer",
+        "tag": "stirring-rod-rinsed"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Rinse the rod into the beaker: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The solid on the rod is washed back into the beaker.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "rinse"
+      ],
+      "interaction": {
+        "accessibleLabel": "Rinse the rod into the beaker",
+        "type": "rinseTarget",
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "stirring-rod"
+      },
+      "atomId": "atom.rinse.stirring-rod-into-vessel",
+      "equipmentRoleBindings": {
+        "rinse-water-source": "wash-bottle",
+        "stirring-device": "stirring-rod",
+        "receiving-vessel": "beaker-250ml"
+      }
+    },
+    {
       "id": "remove-stirring-rod",
       "verb": "place",
       "label": "Lift the stirring rod out",
@@ -643,7 +717,7 @@
         "id": "add-reagent-portion-1-node",
         "type": "action",
         "title": "Add the first portion (1 of 3)",
-        "description": "Pour about a third of the sodium carbonate solution into the beaker while you stir with the rod.",
+        "description": "Pour a third of the {{config.reagentVolumeMl}} mL of sodium carbonate solution into the beaker while you stir with the rod.",
         "actionId": "add-reagent-portion-1",
         "config": {},
         "validation": [
@@ -685,7 +759,7 @@
         "id": "add-reagent-portion-2-node",
         "type": "action",
         "title": "Add the second portion (2 of 3)",
-        "description": "Pour the next third of the solution in while you stir.",
+        "description": "Pour the next third in while you stir.",
         "actionId": "add-reagent-portion-2",
         "config": {},
         "validation": [
@@ -706,7 +780,7 @@
         "id": "add-reagent-portion-3-node",
         "type": "action",
         "title": "Add the last portion (3 of 3)",
-        "description": "Pour in the rest of the measured solution while you stir.",
+        "description": "Pour in the last third while you stir. Keep what is left in the working beaker for the test at the end.",
         "actionId": "add-reagent-portion-3",
         "config": {},
         "validation": [
@@ -745,10 +819,31 @@
         }
       },
       {
+        "id": "rinse-stirring-rod-node",
+        "type": "action",
+        "title": "Rinse the rod",
+        "description": "Lift the rod a little and rinse it down into the beaker with a squirt from the wash bottle, so the solid on it stays in the beaker.",
+        "actionId": "rinse-stirring-rod",
+        "config": {},
+        "validation": [
+          {
+            "id": "rinse-stirring-rod-node-done",
+            "type": "notebookEntry",
+            "label": "Rinse the rod was completed.",
+            "notebookTag": "stirring-rod-rinsed"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Rinse the rod complete.",
+          "retry": "Review Rinse the rod and try again."
+        }
+      },
+      {
         "id": "remove-stirring-rod-node",
         "type": "action",
         "title": "Lift the rod out",
-        "description": "Lift the stirring rod out and set it down on the bench.",
+        "description": "Lift the rinsed rod out and lay it on the bench.",
         "actionId": "remove-stirring-rod",
         "config": {},
         "validation": [
@@ -872,6 +967,14 @@
       },
       {
         "from": "stir-two-minutes-node",
+        "to": "rinse-stirring-rod-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "rinse-stirring-rod-node",
         "to": "remove-stirring-rod-node",
         "label": "Next",
         "condition": {
@@ -989,6 +1092,26 @@
         ],
         "sourceInstanceIds": [
           "reagent-beaker-1"
+        ]
+      },
+      {
+        "roleId": "rinse-water-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "wash-bottle"
+        ],
+        "sourceInstanceIds": [
+          "wash-bottle-1"
+        ]
+      },
+      {
+        "roleId": "receiving-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beaker-250ml"
+        ],
+        "sourceInstanceIds": [
+          "beaker-250ml-1"
         ]
       },
       {

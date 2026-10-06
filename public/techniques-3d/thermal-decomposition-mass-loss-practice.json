@@ -3,8 +3,8 @@
   "title": "Heat and Reweigh a Carbonate Mixture",
   "learningGoal": "Heat a carbonate mixture in a vented crucible over a Bunsen flame, cool and reweigh it to constant mass, and find its composition from the mass lost.",
   "requiredEquipment": [
-    "analytical-balance",
     "heat-safe-pad",
+    "analytical-balance",
     "crucible-with-lid",
     "small-vial",
     "ring-stand",
@@ -15,22 +15,6 @@
   ],
   "initialState": {
     "equipment": [
-      {
-        "id": "analytical-balance-1",
-        "definitionId": "analytical-balance",
-        "label": "Analytical balance",
-        "location": "workbench",
-        "contents": {
-          "kind": "empty",
-          "label": "empty",
-          "solutes": [],
-          "contamination": [],
-          "wetState": "dry",
-          "visualState": "empty"
-        },
-        "x": 495,
-        "y": 198
-      },
       {
         "id": "heat-safe-pad-1",
         "definitionId": "heat-safe-pad",
@@ -46,6 +30,34 @@
         },
         "x": 212,
         "y": 300
+      },
+      {
+        "id": "analytical-balance-a",
+        "definitionId": "analytical-balance",
+        "label": "Analytical balance A",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "analytical-balance-b",
+        "definitionId": "analytical-balance",
+        "label": "Analytical balance B",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
       },
       {
         "id": "crucible-with-lid-1",
@@ -64,12 +76,12 @@
       {
         "id": "working-sample-portion-1",
         "definitionId": "small-vial",
-        "label": "Mixture portion",
+        "label": "Mixture issued to you",
         "location": "shelf",
         "contents": {
           "kind": "solid",
           "label": "NaHCO3 / Na2CO3 mixture",
-          "massG": "{{config.sampleMassG}}",
+          "massG": "{{config.issuedMassG}}",
           "solutes": [],
           "contamination": [],
           "wetState": "dry",
@@ -133,6 +145,20 @@
         }
       },
       {
+        "id": "unused-sample-recovery-1",
+        "definitionId": "beaker-250ml",
+        "label": "Unused Sample — unheated",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
         "id": "heated-product-recovery-1",
         "definitionId": "beaker-250ml",
         "label": "Product Made from Heating Samples",
@@ -150,6 +176,51 @@
   },
   "actions": [
     {
+      "id": "place-balance",
+      "verb": "place",
+      "label": "Put balance A on the bench",
+      "parameters": {
+        "equipmentDefinitionId": "analytical-balance",
+        "equipmentInstanceId": "analytical-balance-a",
+        "location": "workbench"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Put balance A on the bench: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Balance A is on the bench; every weighing in this run is made on it.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.balance-instrument",
+      "equipmentRoleBindings": {
+        "balance-instrument": "analytical-balance"
+      }
+    },
+    {
       "id": "crucible-on-balance",
       "verb": "place",
       "label": "Put the crucible and lid on the balance pan",
@@ -157,10 +228,13 @@
         "equipmentDefinitionId": "crucible-with-lid",
         "equipmentInstanceId": "crucible-with-lid-1",
         "targetDefinitionId": "analytical-balance",
-        "targetInstanceId": "analytical-balance-1",
+        "targetInstanceId": "analytical-balance-a",
         "location": "snapZone",
         "snapZoneId": "analytical-balance-pan",
         "moveFromHolder": true,
+        "requireNamedTarget": true,
+        "namedTargetMessage": "Every weighing in this run is made on balance A.",
+        "namedTargetRecovery": "Put the crucible on balance A's pan: two balances never read exactly alike.",
         "supportEmptyMassG": "{{config.crucibleMassG}}"
       },
       "prerequisites": [],
@@ -207,7 +281,7 @@
         "sourceDefinitionId": "crucible-with-lid",
         "sourceInstanceId": "crucible-with-lid-1",
         "targetDefinitionId": "analytical-balance",
-        "targetInstanceId": "analytical-balance-1",
+        "targetInstanceId": "analytical-balance-a",
         "instrumentDefinitionId": "analytical-balance",
         "maxSafeTemperatureC": 40,
         "inputMode": "numeric",
@@ -316,7 +390,7 @@
     {
       "id": "add-sample",
       "verb": "transfer",
-      "label": "Tip the mixture portion into the crucible",
+      "label": "Tap the mixture into the crucible",
       "parameters": {
         "sourceDefinitionId": "small-vial",
         "sourceInstanceId": "working-sample-portion-1",
@@ -329,7 +403,7 @@
       },
       "prerequisites": [],
       "stateChanges": [
-        "Tip the mixture portion into the crucible: changes the named equipment and contents only."
+        "Tap the mixture into the crucible: changes the named equipment and contents only."
       ],
       "invalidCases": [
         {
@@ -359,7 +433,7 @@
         "transfer"
       ],
       "interaction": {
-        "accessibleLabel": "Tip the mixture portion into the crucible",
+        "accessibleLabel": "Tap the mixture into the crucible",
         "type": "pourInto",
         "sourceDefinitionId": "small-vial",
         "targetDefinitionId": "crucible-with-lid"
@@ -368,6 +442,10 @@
       "equipmentRoleBindings": {
         "solid-reagent-source": "small-vial",
         "receiving-vessel": "crucible-with-lid"
+      },
+      "solidTransfer": {
+        "mode": "measured-portion",
+        "destinationRepresentation": "physical"
       }
     },
     {
@@ -378,7 +456,7 @@
         "sourceDefinitionId": "crucible-with-lid",
         "sourceInstanceId": "crucible-with-lid-1",
         "targetDefinitionId": "analytical-balance",
-        "targetInstanceId": "analytical-balance-1",
+        "targetInstanceId": "analytical-balance-a",
         "instrumentDefinitionId": "analytical-balance",
         "maxSafeTemperatureC": 40,
         "inputMode": "numeric",
@@ -482,6 +560,65 @@
         "accessibleLabel": "Record the loaded crucible and lid mass",
         "type": "recordNotebook",
         "valueParameter": "measurementId"
+      }
+    },
+    {
+      "id": "return-unused-mixture",
+      "verb": "transfer",
+      "label": "Return the rest to Unused Sample",
+      "parameters": {
+        "sourceInstanceId": "working-sample-portion-1",
+        "sourceDefinitionId": "small-vial",
+        "targetInstanceId": "unused-sample-recovery-1",
+        "targetDefinitionId": "beaker-250ml",
+        "targetLabel": "Unused Sample — unheated"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Return the rest to Unused Sample: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The unheated mixture left over is in the Unused Sample beaker.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "transfer"
+      ],
+      "interaction": {
+        "accessibleLabel": "Return the rest to Unused Sample",
+        "type": "pourInto",
+        "sourceDefinitionId": "small-vial",
+        "targetDefinitionId": "beaker-250ml"
+      },
+      "atomId": "atom.transfer.unheated-mixture-to-labeled-recovery",
+      "equipmentRoleBindings": {
+        "solid-reagent-source": "small-vial",
+        "recovery-vessel": "beaker-250ml"
+      },
+      "solidTransfer": {
+        "mode": "whole-remaining",
+        "destinationRepresentation": "physical",
+        "requireNonEmptySource": false
       }
     },
     {
@@ -1138,10 +1275,13 @@
         "equipmentDefinitionId": "crucible-with-lid",
         "equipmentInstanceId": "crucible-with-lid-1",
         "targetDefinitionId": "analytical-balance",
-        "targetInstanceId": "analytical-balance-1",
+        "targetInstanceId": "analytical-balance-a",
         "location": "snapZone",
         "snapZoneId": "analytical-balance-pan",
         "moveFromHolder": true,
+        "requireNamedTarget": true,
+        "namedTargetMessage": "Every weighing in this run is made on balance A.",
+        "namedTargetRecovery": "Put the crucible on balance A's pan: two balances never read exactly alike.",
         "refuseHotByHand": true
       },
       "prerequisites": [],
@@ -1188,7 +1328,7 @@
         "sourceDefinitionId": "crucible-with-lid",
         "sourceInstanceId": "crucible-with-lid-1",
         "targetDefinitionId": "analytical-balance",
-        "targetInstanceId": "analytical-balance-1",
+        "targetInstanceId": "analytical-balance-a",
         "instrumentDefinitionId": "analytical-balance",
         "maxSafeTemperatureC": 40,
         "inputMode": "numeric",
@@ -1685,10 +1825,13 @@
         "equipmentDefinitionId": "crucible-with-lid",
         "equipmentInstanceId": "crucible-with-lid-1",
         "targetDefinitionId": "analytical-balance",
-        "targetInstanceId": "analytical-balance-1",
+        "targetInstanceId": "analytical-balance-a",
         "location": "snapZone",
         "snapZoneId": "analytical-balance-pan",
         "moveFromHolder": true,
+        "requireNamedTarget": true,
+        "namedTargetMessage": "Every weighing in this run is made on balance A.",
+        "namedTargetRecovery": "Put the crucible on balance A's pan: two balances never read exactly alike.",
         "refuseHotByHand": true
       },
       "prerequisites": [],
@@ -1735,7 +1878,7 @@
         "sourceDefinitionId": "crucible-with-lid",
         "sourceInstanceId": "crucible-with-lid-1",
         "targetDefinitionId": "analytical-balance",
-        "targetInstanceId": "analytical-balance-1",
+        "targetInstanceId": "analytical-balance-a",
         "instrumentDefinitionId": "analytical-balance",
         "maxSafeTemperatureC": 40,
         "inputMode": "numeric",
@@ -1945,13 +2088,34 @@
     }
   ],
   "process": {
-    "startNodeId": "crucible-on-balance-node",
+    "startNodeId": "place-balance-node",
     "nodes": [
+      {
+        "id": "place-balance-node",
+        "type": "action",
+        "title": "Choose a balance",
+        "description": "Put balance A on the bench and make every weighing in this run on it: two balances never read exactly alike.",
+        "actionId": "place-balance",
+        "config": {},
+        "validation": [
+          {
+            "id": "place-balance-node-done",
+            "type": "actionEvidence",
+            "label": "Action place-balance was completed.",
+            "actionId": "place-balance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Choose a balance complete.",
+          "retry": "Review Choose a balance and try again."
+        }
+      },
       {
         "id": "crucible-on-balance-node",
         "type": "action",
         "title": "Put the crucible on the balance",
-        "description": "Put the clean, dry, cool crucible with its lid on the balance pan.",
+        "description": "Put the clean, dry, cool crucible with its lid on balance A's pan.",
         "actionId": "crucible-on-balance",
         "config": {},
         "validation": [
@@ -2014,7 +2178,7 @@
         "id": "add-sample-node",
         "type": "action",
         "title": "Add the mixture",
-        "description": "Tip the mixture portion from its vial into the crucible.",
+        "description": "With the crucible on the pan, tap about {{config.sampleMassG}} g of the mixture from its vial into the crucible.",
         "actionId": "add-sample",
         "config": {},
         "validation": [
@@ -2071,6 +2235,27 @@
         "feedback": {
           "success": "Record the loaded mass complete.",
           "retry": "Review Record the loaded mass and try again."
+        }
+      },
+      {
+        "id": "return-unused-mixture-node",
+        "type": "action",
+        "title": "Return the unused mixture",
+        "description": "Tip what is left in the vial into the beaker labelled \"Unused Sample\". Unheated mixture and heated product go to separate labelled beakers.",
+        "actionId": "return-unused-mixture",
+        "config": {},
+        "validation": [
+          {
+            "id": "return-unused-mixture-node-done",
+            "type": "actionEvidence",
+            "label": "Action return-unused-mixture was completed.",
+            "actionId": "return-unused-mixture"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Return the unused mixture complete.",
+          "retry": "Review Return the unused mixture and try again."
         }
       },
       {
@@ -2329,7 +2514,7 @@
         "id": "first-on-balance-node",
         "type": "action",
         "title": "Put it on the balance",
-        "description": "Put the cool crucible on the balance pan.",
+        "description": "Put the cool crucible on balance A's pan.",
         "actionId": "first-on-balance",
         "config": {},
         "validation": [
@@ -2539,7 +2724,7 @@
         "id": "second-on-balance-node",
         "type": "action",
         "title": "Put it on the balance",
-        "description": "Put the cool crucible on the balance pan.",
+        "description": "Put the cool crucible on balance A's pan.",
         "actionId": "second-on-balance",
         "config": {},
         "validation": [
@@ -2560,7 +2745,7 @@
         "id": "read-final-node",
         "type": "action",
         "title": "Read the mass again",
-        "description": "Read the balance and enter the mass. It should match the first cooled mass: constant mass.",
+        "description": "Read the balance and enter the mass, then compare it with the first cooled mass. When the two agree, the mass is constant.",
         "actionId": "read-final",
         "config": {},
         "validation": [
@@ -2643,6 +2828,14 @@
     ],
     "edges": [
       {
+        "from": "place-balance-node",
+        "to": "crucible-on-balance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
         "from": "crucible-on-balance-node",
         "to": "read-empty-crucible-node",
         "label": "Next",
@@ -2684,6 +2877,14 @@
       },
       {
         "from": "record-loaded-crucible-node",
+        "to": "return-unused-mixture-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "return-unused-mixture-node",
         "to": "place-ring-stand-node",
         "label": "Next",
         "condition": {
@@ -2947,7 +3148,7 @@
       {
         "id": "entry",
         "kind": "entry",
-        "nodeId": "crucible-on-balance-node",
+        "nodeId": "place-balance-node",
         "label": "Entry"
       },
       {
@@ -2959,6 +3160,16 @@
     ],
     "equipmentRoles": [
       {
+        "roleId": "balance-instrument",
+        "required": true,
+        "allowedDefinitionIds": [
+          "analytical-balance"
+        ],
+        "sourceInstanceIds": [
+          "analytical-balance-a"
+        ]
+      },
+      {
         "roleId": "weighed-vessel",
         "required": true,
         "allowedDefinitionIds": [
@@ -2966,16 +3177,6 @@
         ],
         "sourceInstanceIds": [
           "crucible-with-lid-1"
-        ]
-      },
-      {
-        "roleId": "balance-instrument",
-        "required": true,
-        "allowedDefinitionIds": [
-          "analytical-balance"
-        ],
-        "sourceInstanceIds": [
-          "analytical-balance-1"
         ]
       },
       {
@@ -2996,6 +3197,17 @@
         ],
         "sourceInstanceIds": [
           "crucible-with-lid-1"
+        ]
+      },
+      {
+        "roleId": "recovery-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beaker-250ml"
+        ],
+        "sourceInstanceIds": [
+          "unused-sample-recovery-1",
+          "heated-product-recovery-1"
         ]
       },
       {
@@ -3049,16 +3261,6 @@
         "sourceInstanceIds": [
           "crucible-tongs-1"
         ]
-      },
-      {
-        "roleId": "recovery-vessel",
-        "required": true,
-        "allowedDefinitionIds": [
-          "beaker-250ml"
-        ],
-        "sourceInstanceIds": [
-          "heated-product-recovery-1"
-        ]
       }
     ],
     "modelSlots": [],
@@ -3068,6 +3270,12 @@
         "valueType": "number",
         "required": true,
         "defaultValue": 25
+      },
+      {
+        "id": "issuedMassG",
+        "valueType": "number",
+        "required": true,
+        "defaultValue": 2.5
       },
       {
         "id": "sampleMassG",

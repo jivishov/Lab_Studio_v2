@@ -74,7 +74,19 @@ interface PourRun {
 interface SetOnRun {
   tick: (dt: number) => boolean;
   finish: () => void;
+  /** Called before `finish` when the run is cut short, so it leaves its end state undrawn. */
+  cancel?: () => void;
 }
+
+/**
+ * A material cloned for a look (wet paper, a glowing crucible) is disposed once the model's own one, or a
+ * fresh clone, replaces it; the model's own materials are shared and never disposed here.
+ */
+const releaseLookMaterial = (current: THREE.Material | THREE.Material[], own: THREE.Material | THREE.Material[]): void => {
+  if (current === own) return;
+  const owned = new Set(Array.isArray(own) ? own : [own]);
+  for (const material of Array.isArray(current) ? current : [current]) if (!owned.has(material)) material.dispose();
+};
 
 const MM = 0.001;
 export const toWorld = (xMm: number, yMm: number, zMm = 0): THREE.Vector3 => new THREE.Vector3(xMm * MM, zMm * MM, -yMm * MM);
@@ -512,6 +524,7 @@ export class BenchEngine {
       if (!mesh.isMesh || object.name === "pick-proxy") return;
       if (!view.dryMaterials!.has(mesh)) view.dryMaterials!.set(mesh, mesh.material);
       const dry = view.dryMaterials!.get(mesh)!;
+      releaseLookMaterial(mesh.material, dry);
       if (!item.wet) { mesh.material = dry; return; }
       // Wet paper: greyer and translucent, as water fills its pores.
       const wet = (Array.isArray(dry) ? dry[0] : dry).clone() as THREE.MeshStandardMaterial;
@@ -553,6 +566,7 @@ export class BenchEngine {
       if (!mesh.isMesh || !(parts.has(object.name) || parts.has(object.parent?.name ?? ""))) return;
       if (!view.coolMaterials!.has(mesh)) view.coolMaterials!.set(mesh, mesh.material);
       const cool = view.coolMaterials!.get(mesh)!;
+      releaseLookMaterial(mesh.material, cool);
       if (!glowing) { mesh.material = cool; return; }
       const heat = (material: THREE.Material): THREE.Material => {
         const hot = material.clone() as THREE.MeshStandardMaterial;
@@ -1249,9 +1263,12 @@ export class BenchEngine {
     if (!view || !entry || this.options.reducedMotion || seconds <= 0) return Promise.resolve();
     this.replaceContents(view, buildContents(entry, contents.before));
     let elapsed = 0;
+    let cancelled = false;
     return new Promise((resolve) => {
       const finish = () => {
-        if (this.items.get(vesselId) === view) this.replaceContents(view, buildContents(entry, contents.after));
+        // Cut short (its clock ran out first, or the bench was restarted), it draws nothing more: the next
+        // sync draws the vessel as the runtime has it then.
+        if (!cancelled && this.items.get(vesselId) === view) this.replaceContents(view, buildContents(entry, contents.after));
         view.contentsKey = "animating";
         this.shadowsDirty = true;
         this.requestRender();
@@ -1262,9 +1279,18 @@ export class BenchEngine {
         elapsed += dt;
         return elapsed < seconds;
       };
-      this.mixRun = { tick, finish };
+      this.mixRun = { tick, finish, cancel: () => { cancelled = true; } };
       this.requestRender();
     });
+  }
+
+  /**
+   * Cut short a timed stage being drawn (its step clock has run out, or the bench was restarted): a rod
+   * stops stirring and is set back in the beaker; a vessel's contents are left for the next sync to draw.
+   */
+  cancelTimedAnimation(): void {
+    this.mixRun?.cancel?.();
+    this.stopMixRun();
   }
 
   /**
@@ -1758,6 +1784,17 @@ export class BenchEngine {
     // A pour down a stirring rod: its lower end inside the target's mouth, leaning on the source's lip.
     const guideRod = args.guideRodId && args.guideRodId !== args.sourceId ? this.items.get(args.guideRodId) : undefined;
     const rodFoot = mouth.clone().addScaledVector(away, mouthR * 0.35).add(new THREE.Vector3(0, -0.012, 0));
+    // Where the rod rests, so it is laid back there once the beaker is upright again.
+    const rodRest = guideRod ? { position: guideRod.root.position.clone(), quaternion: guideRod.root.quaternion.clone(),
+      benchShift: guideRod.benchShift?.clone(), benchLift: guideRod.benchLift } : undefined;
+    const putRodBack = () => {
+      if (!guideRod || !rodRest || this.items.get(guideRod.instanceId) !== guideRod) return;
+      guideRod.root.position.copy(rodRest.position);
+      guideRod.root.quaternion.copy(rodRest.quaternion);
+      guideRod.benchShift = rodRest.benchShift?.clone();
+      guideRod.benchLift = rodRest.benchLift;
+      guideRod.root.updateMatrixWorld(true);
+    };
     // While a measuring vessel drains, single drops fall from its lip.
     const drip = material && drain > 0 && !solid ? new THREE.Mesh(new THREE.BufferGeometry(), material) : undefined;
     for (const mesh of [stream, runoff, drip]) {
@@ -1830,7 +1867,7 @@ export class BenchEngine {
           guideRod.benchShift = undefined;
           guideRod.benchLift = undefined;
           guideRod.root.updateMatrixWorld(true);
-        }
+        } else if (t >= at.untilt + T.untilt) putRodBack();
       }
       if (viaView && viaRest && viaHold) {
         // Held over the mouth from the approach until the source is back upright, then set down again:
@@ -1929,6 +1966,8 @@ export class BenchEngine {
         this.scene.remove(drip);
         drip.geometry.dispose();
       }
+      // The guide rod goes back where it rests, also when the pour is cut short.
+      putRodBack();
       if (rack) {
         source.root.add(rack.object);
         rack.object.position.copy(rack.position);
@@ -2332,6 +2371,7 @@ export class BenchEngine {
     this.stopSetOn();
     this.stopToolRun();
     this.stopMixRun();
+    this.stopDrainRun();
     this.setToolLoad(null);
     for (const drop of this.droplets) { this.scene.remove(drop.mesh); drop.mesh.geometry.dispose(); }
     this.droplets = [];

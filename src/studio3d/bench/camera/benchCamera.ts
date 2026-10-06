@@ -187,11 +187,18 @@ export const safeRects = (size: Size, obstacles: readonly Rect[], bottomLimit = 
   return rects.length ? rects : [base];
 };
 
-/** Fit into each free rectangle and keep the one that frames the points largest (`framing.js:66-67`). */
+/**
+ * Fit into each free rectangle and keep the one that frames the points largest (`framing.js:66-67`).
+ * A fit that ran away is dropped: with a point close behind the camera its projection flips, and the
+ * look-at point can be driven tens of metres off the bench (seen in Heat and Reweigh's practice, the
+ * clay triangle placed with the ring stand at the bench's front edge), leaving an empty view. A real
+ * framing keeps the look-at point within twice the manual limits; with none left the view stays.
+ */
 export const fitBest = (points: readonly THREE.Vector3[], base: OrbitView, size: Size, rects: readonly Rect[],
   limits?: { min: number; max: number }): OrbitView | undefined => rects
   .map((rect) => fit(points, base, size, rect, limits))
   .filter((c) => [c.at.x, c.at.y, c.at.z, c.distance, c.pitch].every(Number.isFinite))
+  .filter((c) => Math.abs(c.at.x) <= 2 * MANUAL.atX && Math.abs(c.at.z) <= 2 * MANUAL.atZ)
   .sort((a, b) => a.distance - b.distance)[0];
 
 /** The source's tween easing (`framing.js:7`, easeInOutCubic). */

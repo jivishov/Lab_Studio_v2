@@ -10,7 +10,7 @@ import { hostLabsForTechnique } from "../../data/techniqueHosts";
 import type { TechniqueDefinition } from "../../domain/types";
 import { slotLabel } from "../copy/slotLabels";
 import { equipment3dReadiness } from "../equipment3d/readiness";
-import { load3DTechnique, pack3D, practiceSummary } from "../practice";
+import { fallback2DTechniqueId, load3DTechnique, pack3D, practiceSummary } from "../practice";
 import { studio3DFallbackHash } from "../routes3d";
 import { ProvenanceChip } from "../ui/ProvenanceChip";
 import { Player3D } from "./Player3D";
@@ -32,10 +32,15 @@ export const Technique3DRoute = ({ techniqueId }: { techniqueId: string }) => {
   const [configured, setConfigured] = useState<TechniqueDefinition>();
   const [setupError, setSetupError] = useState<string>();
   const [pack, setPack] = useState<number>();
-  // A practice version (Pack 2 decision 1A) has no 2D route of its own: its 2D fallback is the
-  // lab-bound original's, which names the labs that play it.
   const [basedOn, setBasedOn] = useState<string>();
-  const fallbackHash = studio3DFallbackHash({ view: "technique", techniqueId: basedOn ?? techniqueId });
+  // A practice version (Pack 2 decision 1A) has no 2D route of its own: its 2D fallback is the
+  // lab-bound original's, which names the labs that play it. Until that is known (or when it cannot
+  // be), no 2D link is offered, so a practice id never reaches the 2D player.
+  const [fallbackId, setFallbackId] = useState<string>();
+  const fallbackHash = fallbackId ? studio3DFallbackHash({ view: "technique", techniqueId: fallbackId }) : undefined;
+  const twoD = (className?: string) => (fallbackHash
+    ? <a className={className} href={fallbackHash}>Open the 2D version</a>
+    : <span className="s3d-small">2D version not available</span>);
 
   // The top bar's source badge names the technique's pack (§5.4): catalogue order, in fives, for
   // Pack 1; a practice version's own pack.
@@ -43,6 +48,7 @@ export const Technique3DRoute = ({ techniqueId }: { techniqueId: string }) => {
     let active = true;
     pack3D(techniqueId).then((p) => { if (active) setPack(p); }, () => undefined);
     practiceSummary(techniqueId).then((p) => { if (active) setBasedOn(p?.basedOn); }, () => undefined);
+    fallback2DTechniqueId(techniqueId).then((id) => { if (active) setFallbackId(id); }, () => undefined);
     return () => { active = false; };
   }, [techniqueId]);
 
@@ -66,8 +72,8 @@ export const Technique3DRoute = ({ techniqueId }: { techniqueId: string }) => {
   const quantities = slots.filter((s) => s.kind === "classroom-quantity");
   const readiness = definition ? equipment3dReadiness(definition.initialState.equipment.map((e) => e.definitionId)) : undefined;
 
-  if (error) return <main className="s3d-gate-page"><div className="s3d-gate"><h1>Technique unavailable</h1><p>{error}</p><a href={fallbackHash}>Open the 2D version</a></div></main>;
-  if (!definition) return <main className="s3d-gate-page"><div className="s3d-gate" aria-live="polite"><p className="s3d-eyebrow">Technique</p><p>Preparing the bench…</p><a href={fallbackHash}>Open the 2D version</a></div></main>;
+  if (error) return <main className="s3d-gate-page"><div className="s3d-gate"><h1>Technique unavailable</h1><p>{error}</p>{twoD()}</div></main>;
+  if (!definition) return <main className="s3d-gate-page"><div className="s3d-gate" aria-live="polite"><p className="s3d-eyebrow">Technique</p><p>Preparing the bench…</p>{twoD()}</div></main>;
 
   if (page === "play" && (configured ?? (missing.length === 0 ? definition : undefined))) {
     return <Player3D definition={configured ?? definition} authoredDefinition={definition} title={definition.title}
@@ -135,14 +141,14 @@ export const Technique3DRoute = ({ techniqueId }: { techniqueId: string }) => {
             // Readiness is necessary (plan §2.7): without every model the bench would be missing items.
             <>
               <p className="s3d-note">Not yet in 3D: {readiness.missing.join(", ")}.</p>
-              <div className="s3d-gate__actions"><a className="s3d-button s3d-button--primary" href={fallbackHash}>Open the 2D version</a></div>
+              <div className="s3d-gate__actions">{twoD("s3d-button s3d-button--primary")}</div>
             </>
           ) : (
             <>
               {setupError ? <p className="s3d-field__error" role="alert">{setupError}</p> : null}
               {missing.length > 0 && quantities.length > 0 ? <p className="s3d-note">A teacher sets {quantities.length === 1 ? "one classroom value" : `${quantities.length} classroom values`} before this technique can start.</p> : null}
               <div className="s3d-gate__actions">
-                <a href={fallbackHash}>Open the 2D version</a>
+                {twoD()}
                 <button type="button" className="s3d-button s3d-button--primary" onClick={start}>{missing.length > 0 && quantities.length > 0 ? "Next: setup" : "Start"}</button>
               </div>
             </>

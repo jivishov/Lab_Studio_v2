@@ -6,17 +6,17 @@ cup stand on or in the same ring elsewhere in the catalogue. Every anchor follow
 dimensions in _fits.py: the funnel's stem tip where its cone rests in the ring; the clay triangle on
 the ring; the crucible standing in the triangle with its base just above a Bunsen flame's inner cone.
 """
-from equipment._fits import FUNNEL, RING_STAND as S, ring_funnel_tip_z
+from equipment._fits import FUNNEL, RING_STAND as S, crucible_foot_below_triangle, ring_funnel_tip_z
 from equipment._stand import build_stand, ring_centre, stand_registry_base
 from labeq.geometry import new_root
 
 DEFINITION_ID = 'ring-stand'
 THUMB_ELEVATION_DEG = 18
 
-# The clay triangle's wires rest on the ring; a 30 mL crucible stands in it, its base about 18 mm
-# below the triangle (where its wall meets the pipe-clay tubes).
+# The clay triangle's pipe-clay tubes cross the ring and rest on its top; the crucible stands in the
+# triangle, its foot below the tubes where its tapered wall meets them (_fits.crucible_foot_below_triangle).
 TRIANGLE_Z = S['ring_z'] + S['ring_wire'] / 2
-CRUCIBLE_BASE_BELOW_TRIANGLE = 18.0
+CRUCIBLE_BASE_BELOW_TRIANGLE = crucible_foot_below_triangle()
 
 
 def build(coll, M):

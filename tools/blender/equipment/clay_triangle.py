@@ -1,25 +1,27 @@
 """`clay-triangle`: pipe-clay triangle, 2 inch, on twisted nichrome wire (Pack 2, decided 2026-10-05).
 
 Three pipe-clay tubes threaded on nichrome wire, the wires twisted together at each corner into a leg.
-It rests by its wires on the ring stand's iron ring, the tubes inside the ring, where a crucible stands
-on them (ring_stand.py's `ring-stand-crucible-seat`). Its origin is the centre, at the wires' underside.
+Its tubes cross the ring stand's 48 mm iron ring and rest on it, and a crucible stands on them
+(ring_stand.py's `ring-stand-crucible-seat`). Its origin is the centre, at the tubes' underside.
 """
 import math
 
+from equipment._fits import CLAY_TRIANGLE
 from labeq.geometry import MM, Matrix, Vector, curve_tube_mesh, lathe, make_obj, new_root, rounded, transform_mesh
 
 DEFINITION_ID = 'clay-triangle'
 THUMB_ELEVATION_DEG = 40
 
-INRADIUS = 20.5        # the tube axes' inscribed circle: a 30 mL crucible stands about 18 mm into it
-TUBE_R, TUBE_LEN = 3.25, 56.0
+INRADIUS = CLAY_TRIANGLE['inradius']    # the tube axes' inscribed circle, which the crucible's wall meets
+TUBE_R, TUBE_LEN = CLAY_TRIANGLE['tube_r'], 56.0
 WIRE_R = 0.6
-LEG_OUT = 60.0         # the twisted legs reach out past the ring; the wires between the tubes rest on it
+LEG_OUT = 60.0         # the twisted legs reach out past the ring
 
 
 def build(coll, M):
     root = new_root('Clay_triangle', coll)
-    z = WIRE_R
+    # The wires run through the tubes' axes, a tube's radius above the tubes' underside.
+    z = TUBE_R
     side = 2 * math.sqrt(3) * INRADIUS
     tube = lathe(rounded([(0, 0), (TUBE_R, 0), (TUBE_R, TUBE_LEN), (0, TUBE_LEN)], [0, 0.8, 0.8, 0]), segs=24)
     corners = []

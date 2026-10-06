@@ -4,11 +4,15 @@ A round cast-iron base, a brass barrel 13 mm across with its top 162 mm above th
 collar near its foot, and a ribbed hose inlet. The flame is drawn from the runtime's apparatus state: off;
 `yellow` when just lit with the air collar nearly closed (a tall, luminous flame); `blue` once the collar
 is opened (a pale blue cone with a brighter inner cone), smaller while warming gently. The collar's air
-ports show open only when it is opened. Standing on the ring stand's base, the inner cone's tip is just
-below a crucible in the clay triangle (ring_stand.py), the hottest part of the flame.
+ports show open only when it is opened. The burner is lit only standing in the ring stand's burner bay under
+a crucible in the clay triangle (ring_stand.py), so the yellow and blue flames are drawn meeting it: they
+spread under its foot and lick up the outside of its wall, never inside it. The inner cone's tip is about
+1 cm below the foot, so the crucible sits just above the hottest part of the flame; the gentle flame for
+warming stays clear of it.
 """
 import math
 
+from equipment._fits import CRUCIBLE, RING_STAND as S, crucible_foot_below_triangle
 from labeq.geometry import MM, Matrix, box_mesh, lathe, make_obj, new_root, rounded, transform_mesh
 
 DEFINITION_ID = 'bunsen-burner'
@@ -18,6 +22,8 @@ BASE_R, BASE_H = 47.5, 14.0
 BARREL_R, BARREL_TOP = 6.5, 162.0
 COLLAR_R, COLLAR_Z0, COLLAR_H = 8.5, 34.0, 18.0
 INLET_Z = BASE_H + 9.0
+# How far above the barrel's mouth the foot of a crucible in the clay triangle is, the burner in its bay.
+CRUCIBLE_ABOVE_MOUTH = S['ring_z'] + S['ring_wire'] / 2 - crucible_foot_below_triangle() - S['base_h'] - BARREL_TOP
 
 
 def _flame(name, height, radius, coll, M, mat, root):
@@ -31,6 +37,23 @@ def _flame(name, height, radius, coll, M, mat, root):
     pts[-1] = (0, height)
     me = lathe(pts, segs=48, name=name)
     # Its origin is the barrel's mouth, so a flicker scales it from there.
+    return make_obj(name, me, coll, M[mat], root, sharp_deg=0, loc=(0, 0, BARREL_TOP))
+
+
+def _flame_on_crucible(name, sheath, lick, coll, M, mat, root):
+    # A flame meeting the crucible's foot: it widens from the mouth to spread under the foot, then licks up
+    # the outside of the wall as a thinning sheath `lick` mm high, a small gap off the glaze.
+    gap, n, m = 0.8, 10, 10
+    top = CRUCIBLE_ABOVE_MOUTH - 0.4
+    taper = (CRUCIBLE['r_top'] - CRUCIBLE['r_foot']) / CRUCIBLE['height']
+    wall = lambda z: CRUCIBLE['r_foot'] + taper * z + gap
+    mouth = BARREL_R - 1.0
+    pts = [(0.0, 0.0)]
+    pts += [(mouth + (wall(0) + sheath - mouth) * (i / n) ** 0.6, top * i / n) for i in range(n + 1)]
+    pts += [(wall(lick * j / m) + sheath * (1 - j / m) ** 0.7, top + lick * j / m) for j in range(1, m + 1)]
+    pts += [(wall(lick * j / m), top + lick * j / m) for j in range(m - 1, -1, -1)]
+    pts.append((0.0, top))
+    me = lathe(pts, segs=48, name=name)
     return make_obj(name, me, coll, M[mat], root, sharp_deg=0, loc=(0, 0, BARREL_TOP))
 
 
@@ -60,12 +83,14 @@ def build(coll, M):
     transform_mesh(inlet, Matrix.Rotation(-math.pi / 2, 4, 'Y'))
     transform_mesh(inlet, Matrix.Translation((-8.0 * MM, 0, INLET_Z * MM)))
     make_obj('Burner_inlet', inlet, coll, M['Burner brass'], root)
-    # The flames spread as they meet a crucible's base above the inner cone, so they are drawn wide.
-    _flame('Flame_yellow', 110.0, 14.0, coll, M, 'Flame yellow', root)
-    _flame('Flame_blue_outer', 78.0, 15.0, coll, M, 'Flame blue', root)
-    _flame('Flame_blue_inner', 22.0, 5.2, coll, M, 'Flame inner cone', root)
-    _flame('Flame_gentle_outer', 42.0, 10.0, coll, M, 'Flame blue', root)
-    _flame('Flame_gentle_inner', 12.0, 3.8, coll, M, 'Flame inner cone', root)
+    # Just lit, the collar nearly closed, the luminous yellow flame is lazy and large: it spreads wide and
+    # licks well up the crucible's side. Opened to blue, the flame is tighter, its inner cone's tip about
+    # 1 cm below the foot. Warming gently, a small flame stays clear of the crucible.
+    _flame_on_crucible('Flame_yellow', 4.5, 24.0, coll, M, 'Flame yellow', root)
+    _flame_on_crucible('Flame_blue_outer', 2.2, 9.0, coll, M, 'Flame blue', root)
+    _flame('Flame_blue_inner', CRUCIBLE_ABOVE_MOUTH - 10.0, 5.2, coll, M, 'Flame inner cone', root)
+    _flame('Flame_gentle_outer', CRUCIBLE_ABOVE_MOUTH - 8.0, 8.0, coll, M, 'Flame blue', root)
+    _flame('Flame_gentle_inner', 10.0, 3.4, coll, M, 'Flame inner cone', root)
     registry = {
         'footprintMm': {'shape': 'circle', 'radius': BASE_R},
         'grip': {'heightMm': 80.0},

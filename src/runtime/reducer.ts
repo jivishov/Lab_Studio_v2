@@ -2668,15 +2668,23 @@ const executeAction = (
             ? interactionSnapZoneId
             : equipment.snapZoneId
         : undefined;
+    // One instrument for every reading (Pack 2's Heat and Reweigh, EX-01): a step that opts in is done on
+    // the instance it names, never on another of the same kind (balance B for balance A).
+    const namedTargetId = booleanSetting(params, "requireNamedTarget") ? stringSetting(params, "targetInstanceId") : undefined;
     const target =
       snapZoneId && nextLocation === "snapZone"
         ? findParentForSnap(
             state,
-            action.targetInstanceId,
+            action.targetInstanceId ?? namedTargetId,
             String(params.targetDefinitionId ?? actionDefinition.interaction?.targetDefinitionId ?? ""),
             snapZoneId,
           )
         : undefined;
+    if (target && namedTargetId && target.id !== namedTargetId) {
+      const named = findInstance(state, namedTargetId);
+      return fail(state, stringSetting(params, "namedTargetMessage") ?? `That is not the ${named?.label ?? namedTargetId} this step names.`,
+        stringSetting(params, "namedTargetRecovery") ?? `Use the ${named?.label ?? namedTargetId}.`, nodeId);
+    }
     // A target that must stand on the bench to receive this (Pack 2: the watch glass off the balance
     // before the wet paper goes on it).
     const targetHolder = target && booleanSetting(params, "requireTargetUnseated")

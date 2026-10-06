@@ -109,6 +109,21 @@ describe("Pack 2 3D practice versions", () => {
     expect(value("composition-analysis")).toBeCloseTo(0.443, 3);
     expect(value("composition-analysis-nahco3-percent")).toBeCloseTo(60, 0);
   });
+
+  it("Precipitation rinses the rod back into the beaker, losing none of the precipitate", () => {
+    const { state } = playTo("hard-water-precipitation-practice", "remove-stirring-rod");
+    const byId = (id: string) => state.equipmentInstances.find((instance) => instance.id === id)!;
+    expect(byId("beaker-250ml-1").contents.precipitate?.massG).toBeCloseTo(0.15, 6);
+    expect(byId("stirring-rod-1").contents.wetState).toBe("rinsed");
+  });
+
+  it("Heat and Reweigh returns the left-over mixture to Unused Sample, apart from the product (EX-08, S-07)", () => {
+    const { state } = playTo("thermal-decomposition-mass-loss-practice");
+    const byId = (id: string) => state.equipmentInstances.find((instance) => instance.id === id)!;
+    expect(byId("working-sample-portion-1").contents.kind).toBe("empty");
+    expect(byId("unused-sample-recovery-1").contents.massG).toBeCloseTo(0.5, 6);
+    expect(byId("heated-product-recovery-1").contents.massG).toBeCloseTo(1.557, 6);
+  });
 });
 
 describe("Heat and Reweigh's burner and crucible", () => {
@@ -153,6 +168,20 @@ describe("Heat and Reweigh's burner and crucible", () => {
     expect(result.refusal).toBe("The burner is still lit.");
     expect(result.state.attachments.some((relation) => relation.childInstanceId === "crucible-with-lid-1"
       && relation.zoneId === "ring-stand-crucible-seat")).toBe(true);
+  });
+
+  it("refuses a weighing on the other balance (EX-01) and leaves the crucible where it was", () => {
+    const { technique, state } = playTo(id, "first-on-balance");
+    const withB = performRuntimeAction(technique, state, benchMoveRequest("analytical-balance-b", { x: 600, y: 198 }, 50));
+    const action = technique.actions.find((candidate) => candidate.id === "first-on-balance")!;
+    const intent = mergeActionInput({ origin: "keyboard", type: intentTypeForInteraction[resolveActionInteraction(action)!.type],
+      targetInstanceId: "analytical-balance-b" } as RuntimeInteractionIntent, resolveActionInput(action, ""), action);
+    const resolved = resolveInteractionIntent(technique, withB, intent);
+    expect(resolved.ok).toBe(true);
+    if (!resolved.ok) return;
+    const next = performRuntimeAction(technique, withB, resolved.request);
+    expect(errorAdded(withB, next)?.message).toBe("Every weighing in this run is made on balance A.");
+    expect(next.attachments.some((relation) => relation.childInstanceId === "crucible-with-lid-1" && relation.parentInstanceId === "heat-safe-pad-1")).toBe(true);
   });
 
   it("refuses to take the hot crucible to the pad by hand", () => {

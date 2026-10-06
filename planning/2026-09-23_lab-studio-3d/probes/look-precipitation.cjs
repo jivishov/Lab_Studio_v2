@@ -1,6 +1,6 @@
 // One G1 look at Hard-Water Precipitation's 3D practice (Pack 2): the rod stood in the beaker, the three
-// portions poured while it stirs, the observation, two minutes' stirring on the step clock, the rod lifted
-// out, the precipitate settling, the dropping pipette filled, and the drop test.
+// portions poured while it stirs, the observation, two minutes' stirring on the step clock, the rod rinsed
+// into the beaker and lifted out, the precipitate settling, the dropping pipette filled, and the drop test.
 const { openLook } = require("./look-common.cjs");
 (async () => {
   const look = await openLook("hard-water-precipitation-practice", process.argv[2]);
@@ -20,7 +20,10 @@ const { openLook } = require("./look-common.cjs");
   }
   look.log(await look.run(async () => [await window.__card("Stir"), window.__step()].join(" | ")));
   for (let i = 0; i < 3; i++) { await look.shot("4-stirring-clock-" + i); await look.page.waitForTimeout(1500); }
-  look.log(await look.run(async () => { await window.__sleep(4000); return [await window.__carry(/^Stirring rod/, /^Release to/), window.__step()].join(" | "); }));
+  look.log(await look.run(async () => { await window.__sleep(4000); return [await window.__tray("wash-bottle-1"), await window.__carry(/^Wash bottle/, /^Release to rinse/), window.__step()].join(" | "); }));
+  await look.page.waitForTimeout(3000);
+  await look.shot("4b-rod-rinsed");
+  look.log(await look.run(async () => [await window.__carry(/^Stirring rod/, /^Release to/), window.__step()].join(" | ")));
   await look.page.waitForTimeout(2000);
   look.log(await look.run(async () => [await window.__card("Wait"), window.__step()].join(" | ")));
   await look.shot("5-settling");

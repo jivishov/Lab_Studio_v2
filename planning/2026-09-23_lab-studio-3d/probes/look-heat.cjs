@@ -1,5 +1,5 @@
-// One G1 look at Heat and Reweigh's 3D practice (Pack 2): the crucible weighed empty and loaded, the
-// support built (ring stand, clay triangle, burner beneath), the lid set askew, the burner lit (yellow) and
+// One G1 look at Heat and Reweigh's 3D practice (Pack 2): balance A chosen, the crucible weighed empty and
+// loaded, the rest of the mixture returned to Unused Sample, the support built (ring stand, clay triangle, burner beneath), the lid set askew, the burner lit (yellow) and
 // its collar opened (blue), the gentle warming and the strong heating on the step clock with the dull red
 // glow, the burner off, the crucible moved with tongs to the pad, cooled and weighed once.
 const { openLook } = require("./look-common.cjs");
@@ -8,11 +8,14 @@ const { openLook } = require("./look-common.cjs");
   const step = (fn) => look.run(fn).then((r) => look.log(r));
   await step(() => window.__setup({}));
   await look.shot("0-start");
+  await step(async () => [await window.__tray("analytical-balance-a"), window.__step()].join(" | "));
   await step(async () => [await window.__tray("crucible-with-lid-1"), await window.__carry(/^Crucible with lid/, /^Release/), window.__step()].join(" | "));
   await step(async () => [await window.__input("25.000"), await window.__card("Confirm"), await window.__card("Record"), window.__step()].join(" | "));
-  await step(async () => [await window.__tray("working-sample-portion-1"), await window.__carry(/^Mixture portion/, /^Release/), window.__step()].join(" | "));
+  await step(async () => [await window.__tray("working-sample-portion-1"), await window.__carry(/^Mixture issued/, /^Release/), window.__step()].join(" | "));
   await look.page.waitForTimeout(3000);
   await step(async () => [await window.__input("27.000"), await window.__card("Confirm"), await window.__card("Record"), window.__step()].join(" | "));
+  await step(async () => [await window.__tray("unused-sample-recovery-1"), await window.__carry(/^Mixture issued/, /^Release/), window.__step()].join(" | "));
+  await look.page.waitForTimeout(3000);
   // The ring stand is carried by the arrow keys to open bench left of the balance (] would aim it at the balance).
   await step(async () => {
     const tray = await window.__tray("ring-stand-1");

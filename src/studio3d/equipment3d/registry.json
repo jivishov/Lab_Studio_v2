@@ -326,7 +326,7 @@
       "provenance": {
         "blender": "5.2.2",
         "generator": "tools/blender/equipment/bunsen_burner.py",
-        "sourceHash": "47299cdf282b42a100a98171c5e55fc506c28f09930c65765e6b4ad08359b7c3"
+        "sourceHash": "259bebcbb625df1322fd26b42834bdce6529d7d04ac8b300a4f9233e68bdc4dd"
       }
     },
     {
@@ -347,7 +347,7 @@
       "provenance": {
         "blender": "5.2.2",
         "generator": "tools/blender/equipment/clay_triangle.py",
-        "sourceHash": "99038bfe0a12d3af9c2091383624e348e8a6e266f3e6d72e6119fb3978e97ce2"
+        "sourceHash": "b01829ad1685dbfb846da570295046068452344d0b226e55fc42b15e784815c0"
       }
     },
     {
@@ -436,7 +436,7 @@
       "provenance": {
         "blender": "5.2.2",
         "generator": "tools/blender/equipment/crucible_with_lid.py",
-        "sourceHash": "b250aff95ec851b661acdf89469be96dca3681598cab6ff547796fc0ff3780b1"
+        "sourceHash": "0fec14b06f4351e8ffe83263b0cb78331aefdd9b8fb77abab16a233adf7180dd"
       }
     },
     {
@@ -680,21 +680,32 @@
         ],
         "cone": [
           "Paper_cone"
+        ],
+        "dished": [
+          "Paper_dished"
         ]
       },
       "defaultForm": "flat",
       "formBySeat": {
         "funnel-stand-paper-seat": "cone",
-        "watch-glass-paper-seat": "flat"
+        "watch-glass-paper-seat": "dished"
       },
       "formSolidRest": {
         "cone": {
           "centreMm": [
             0.0,
             0.0,
-            6.0
+            11.0
           ],
           "radiusMm": 7.0
+        },
+        "dished": {
+          "centreMm": [
+            0.0,
+            0.0,
+            0.35
+          ],
+          "radiusMm": 12.0
         },
         "flat": {
           "centreMm": [
@@ -728,7 +739,7 @@
       "provenance": {
         "blender": "5.2.2",
         "generator": "tools/blender/equipment/filter_paper.py",
-        "sourceHash": "4c8aeee8c6c36f8902c7cc98549e1439544f9a590f7a72c12f62cc7995341606"
+        "sourceHash": "8de10ca8255aa86b17bf5e19040017a8c02e3465a9e8f7e6216f2ca479b829d9"
       }
     },
     {
@@ -1192,7 +1203,7 @@
           "positionMm": [
             0.0,
             0.0,
-            205.0
+            208.14
           ]
         },
         "ring-stand-calorimeter-support": {
@@ -1220,7 +1231,7 @@
       "provenance": {
         "blender": "5.2.2",
         "generator": "tools/blender/equipment/ring_stand.py",
-        "sourceHash": "085bcc0dadc23b0558b32c022cc96e83bfb1ae7b3fb49bf28f23aa50550cddf3"
+        "sourceHash": "2c140d804d113c92eafcf96415aaa6e06b30fffa1f1ec3443e29fc13a9c5f8b1"
       }
     },
     {
@@ -1408,7 +1419,7 @@
       "tipMm": [
         99.0,
         0.0,
-        4.0
+        2.2
       ],
       "anchors": {},
       "displays": [],
@@ -1416,7 +1427,7 @@
       "provenance": {
         "blender": "5.2.2",
         "generator": "tools/blender/equipment/scoopula.py",
-        "sourceHash": "fe4db8a0ee90bc18faba13eb72e78a8be154677ffd2a0cea26d21f7308ab264b"
+        "sourceHash": "33078318aefca57e0c8454ef946196f9402ba7ffc7a1c8bc820cadf8261a04dc"
       }
     },
     {

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { RuntimeActionRequest, RuntimeState } from "../../domain/types";
 import { resolveActionInteraction } from "../../domain/interactions";
 import { getBenchSize } from "../../equipment/visualCatalog";
@@ -63,15 +63,55 @@ export interface BenchOpAnimation {
   operation: string;
   vesselId: string;
   toolId?: string;
-  /** What the step clock shows: the stated minutes, run in `clockSeconds`. */
+  /** What the step clock shows: the stated minutes, run in `clockSeconds` from `startedAt` (performance.now()). */
   minutes?: number;
   clockSeconds?: number;
+  startedAt?: number;
   label: string;
   staging: SceneDescription;
   before: SceneContents;
   after: SceneContents;
   id: number;
 }
+
+/**
+ * A timed stage on the fast step clock (Pack 2 decision 9): its stated minutes run in `seconds`. While
+ * it is set the next action waits, as a student waits out the minutes at the bench; it is cleared by the
+ * same timer that moves the clock face, so the face and the wait always agree.
+ */
+export interface StepClockRun {
+  id: number;
+  operation: string;
+  label: string;
+  minutes: number;
+  seconds: number;
+  startedAt: number;
+}
+
+/** The clock face's progress (0 to 1), kept outside React state so only the face redraws as it runs. */
+export interface StepClockProgress {
+  get: () => number;
+  subscribe: (listener: () => void) => () => void;
+}
+
+const createClockProgress = (): StepClockProgress & { set: (value: number) => void } => {
+  let value = 0;
+  const listeners = new Set<() => void>();
+  return {
+    get: () => value,
+    set: (next) => { value = next; listeners.forEach((listener) => listener()); },
+    subscribe: (listener) => { listeners.add(listener); return () => { listeners.delete(listener); }; },
+  };
+};
+
+/**
+ * Pouring into a filter that has not drained would overflow the paper (Pack 2 decision 4): the same
+ * correction whichever way the next portion is sent (the beaker picked up, the step card, the hand).
+ */
+export const FILTER_OVERFLOW = {
+  message: "The funnel is still full: pouring now would overflow the paper.",
+  recovery: "Wait until the liquid has drained well below the paper's rim, then pour the next portion.",
+};
 
 /** A committed swirl being drawn (decided 2026-10-04): the vessel's contents before, while it swirls, then after. */
 export interface SwirlAnimation {
@@ -130,6 +170,12 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
   const [toolDeposit, setToolDeposit] = useState<ToolDeposit>();
   const [swirl, setSwirl] = useState<SwirlAnimation>();
   const [benchOpRun, setBenchOpRun] = useState<BenchOpAnimation>();
+  const [stepClock, setStepClock] = useState<StepClockRun>();
+  // The refs are what a commit checks, so two presses in one moment cannot both get through.
+  const stepClockRef = useRef<StepClockRun | undefined>(undefined);
+  const clockProgress = useRef(createClockProgress()).current;
+  // The id of a portion poured into a filter while it is drawn pouring and draining.
+  const drainingPourRef = useRef<number | undefined>(undefined);
   // What each instrument showed when a reading was recorded, by measurement id (results only).
   const [displayedReadings, setDisplayedReadings] = useState<Record<string, string>>({});
   const pourSeq = useRef(0);
@@ -218,6 +264,52 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     announce(feedback.message);
   }, [announce, runtime]);
 
+  /**
+   * The next action waits (Pack 2): while a timed stage's minutes are still on the step clock (decision
+   * 9), and while the last portion poured into the filter is still in the paper, which more liquid would
+   * overflow (decision 4). A 3D rule on top of the runtime, which has already recorded the stage: shown as
+   * a correction, not an attempt. Returns whether the action was held back.
+   */
+  const holdBackNext = useCallback((): boolean => {
+    const clock = stepClockRef.current;
+    const wait = clock ? { message: `The ${clock.minutes} minutes are not up yet.`, recovery: "Wait until the clock has run, then go on." }
+      : drainingPourRef.current !== undefined ? FILTER_OVERFLOW : undefined;
+    if (!wait) return false;
+    setCorrection({ ...wait, attempt: false });
+    announce(wait.message);
+    return true;
+  }, [announce]);
+
+  /** Starts the fast step clock for a timed stage the runtime has just recorded. */
+  const startClock = useCallback((run: StepClockRun) => {
+    stepClockRef.current = run;
+    clockProgress.set(0);
+    setStepClock(run);
+  }, [clockProgress]);
+
+  // One timer moves the clock face and ends the wait, so the two always agree. It reads the time that
+  // has passed, so a tab left in the background finds the stage over as soon as it is shown again.
+  useEffect(() => {
+    if (!stepClock) return undefined;
+    const tick = () => {
+      if (stepClockRef.current?.id !== stepClock.id) return;
+      const u = (performance.now() - stepClock.startedAt) / (stepClock.seconds * 1000);
+      if (u < 1) { clockProgress.set(u); return; }
+      // The face is never drawn full while the wait holds: both end here, together.
+      stepClockRef.current = undefined;
+      setStepClock((current) => (current?.id === stepClock.id ? undefined : current));
+      // A stage's drawing ends with its clock (the bench then shows it as the runtime has it).
+      setBenchOpRun((current) => (current?.id === stepClock.id ? undefined : current));
+    };
+    const timer = window.setInterval(tick, 100);
+    document.addEventListener("visibilitychange", tick);
+    tick();
+    return () => {
+      window.clearInterval(timer);
+      document.removeEventListener("visibilitychange", tick);
+    };
+  }, [clockProgress, stepClock]);
+
   const nextZIndex = useCallback(
     () => Math.max(0, ...runtime.getState().equipmentInstances.map((instance) => instance.zIndex ?? 0)) + 1,
     [runtime],
@@ -240,6 +332,8 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
    * same source-to-target transfer, and the tool, not the source, is drawn tipping its scoop.
    */
   const runIntent = useCallback((intent: RuntimeInteractionIntent, tool?: { instanceId: string; scoop?: SceneContents; motion?: "roll" | "dip" }): RuntimeState | undefined => {
+    // Every way in (the step card, a key, a click on the bench, the hand) waits for the clock and the filter.
+    if (holdBackNext()) return undefined;
     const merged = mergeActionInput(intent, flow.inputResolution, runtime.expectedAction);
     const before = runtime.getState();
     const result = resolveInteractionIntent(definition, before, merged);
@@ -283,6 +377,8 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
       const staging = receiverId && coneAfter
         ? { ...staged, bench: staged.bench.map((item) => (item.instanceId === receiverId ? { ...item, contents: contentsIn(before, receiverId) } : item)) }
         : staged;
+      // Until it has drained, the next portion would overflow the paper.
+      if (receiverId && coneAfter) drainingPourRef.current = pourSeq.current;
       setPour({ sourceId, targetId, staging,
         sourceAfter: contentsIn(next, sourceId), targetAfter: coneAfter ?? contentsIn(next, targetId),
         ...(receiverId && coneAfter ? { drainInto: { receiverId, receiverBefore: contentsIn(before, receiverId), receiverAfter: contentsIn(next, receiverId),
@@ -313,16 +409,24 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
         // The scoop is drawn dipping into the solid, as a pipette dips (decided 2026-10-05).
         pourSeq.current += 1;
         setToolDeposit({ toolId: step.toolInstanceId, motion: "dip", id: pourSeq.current });
-      } else if (step && vesselId) {
+      } else if (step) {
         pourSeq.current += 1;
         const labels: Record<string, string> = { stir: "Stirring", "settle-precipitate": "Settling", "precipitation-drop-test": "One drop",
           "dry-in-oven": "Drying", "cool-on-pad": "Cooling", "heat-crucible": "Heating" };
-        const sourceId = step.operation === "precipitation-drop-test" ? step.toolInstanceId ?? vesselId : vesselId;
-        setBenchOpRun({ operation: step.operation, vesselId, ...(step.toolInstanceId ? { toolId: step.toolInstanceId } : {}),
-          ...(step.minutes !== undefined ? { minutes: step.minutes, clockSeconds: stepClockSeconds(step.minutes) } : {}),
-          label: labels[step.operation] ?? step.control,
-          staging: pourStagingScene(before, next, definition, { sourceId, targetId: vesselId }),
-          before: contentsIn(before, vesselId), after: contentsIn(next, vesselId), id: pourSeq.current });
+        const label = labels[step.operation] ?? step.control;
+        // A timed stage's minutes go on the step clock, which the next action waits for (decision 9).
+        const clock = step.minutes !== undefined && step.minutes > 0
+          ? { id: pourSeq.current, operation: step.operation, label, minutes: step.minutes, seconds: stepClockSeconds(step.minutes), startedAt: performance.now() }
+          : undefined;
+        if (clock) startClock(clock);
+        if (vesselId) {
+          const sourceId = step.operation === "precipitation-drop-test" ? step.toolInstanceId ?? vesselId : vesselId;
+          setBenchOpRun({ operation: step.operation, vesselId, ...(step.toolInstanceId ? { toolId: step.toolInstanceId } : {}),
+            ...(clock ? { minutes: clock.minutes, clockSeconds: clock.seconds, startedAt: clock.startedAt } : {}),
+            label,
+            staging: pourStagingScene(before, next, definition, { sourceId, targetId: vesselId }),
+            before: contentsIn(before, vesselId), after: contentsIn(next, vesselId), id: pourSeq.current });
+        }
       }
     } else if (!failed && result.action.verb === "dissolve" && result.action.parameters.mixOperation === "swirl") {
       // A swirl (decided 2026-10-04): the vessel is drawn swirling with its contents as they were, then as the runtime has them.
@@ -347,7 +451,7 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
       }
     }
     return failed ? undefined : next;
-  }, [definition, flow.inputResolution, refuse, reportCommit, runtime]);
+  }, [definition, flow.inputResolution, holdBackNext, refuse, reportCommit, runtime, startClock]);
 
   /**
    * A free bench move (2D movePlacedEquipment): never an attempt; the set-down slides to the
@@ -383,8 +487,13 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
    * 2D `placeEquipment` would give it. A hand-control drop is tagged "vision", as in 2D.
    */
   const dropFromTray = useCallback((definitionId: string, at?: { xMm: number; yMm: number }, origin: ReleaseOrigin = "pointer", instanceId?: string) => {
-    const spot = at ? nearestFreeSpot(footprintOf(equipment3dEntry(definitionId), at.xMm, at.yMm), occupiedFootprints()) : undefined;
-    const point = spot ? fromBench(definitionId, spot.xMm, spot.yMm) : nextPlacementPoint(runtime.getState().equipmentInstances, definitionId);
+    // The bench stays as it is while a timed stage's minutes pass (a tray tile's Enter is not a carry).
+    if (stepClockRef.current && holdBackNext()) return;
+    // A tile's Enter has no point of its own: it starts from the 2D default slot, whose picture sizes are
+    // not the 3D footprints, so it too takes the nearest free spot (a ring stand never stands in a balance).
+    const start = at ?? toBench(definitionId, nextPlacementPoint(runtime.getState().equipmentInstances, definitionId));
+    const spot = nearestFreeSpot(footprintOf(equipment3dEntry(definitionId), start.xMm, start.yMm), occupiedFootprints());
+    const point = fromBench(definitionId, spot.xMm, spot.yMm);
     const actionDefinitionId = runtime.expectedAction?.parameters.equipmentDefinitionId;
     const resolution = resolveTrayDrop(interaction, nodeCompletedIn(runtime.getState(), runtime.currentNode.id),
       typeof actionDefinitionId === "string" ? actionDefinitionId : undefined, definitionId, point, nextZIndex(), origin, instanceId,
@@ -400,7 +509,7 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     const wasOnShelf = new Set(before.equipmentInstances.filter((i) => i.location === "shelf").map((i) => i.id));
     const label = next.equipmentInstances.find((i) => wasOnShelf.has(i.id) && i.location !== "shelf")?.label ?? definitionId;
     reportCommit(before, next, `${label} placed at the ${benchPositionWords(placedAt.xMm, placedAt.yMm)}`);
-  }, [interaction, nextZIndex, occupiedFootprints, reportCommit, runIntent, runtime]);
+  }, [holdBackNext, interaction, nextZIndex, occupiedFootprints, reportCommit, runIntent, runtime]);
 
   /**
    * The accessible action flow's Confirm (StudentPlayer.runKeyboardFlow): only the learner's own
@@ -450,6 +559,9 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     setToolDeposit(undefined);
     setSwirl(undefined);
     setBenchOpRun(undefined);
+    stepClockRef.current = undefined;
+    setStepClock(undefined);
+    drainingPourRef.current = undefined;
     setDisplayedReadings({});
     setInputValues({});
     setCorrection(undefined);
@@ -492,13 +604,20 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     tongsStep,
     /** Ends bench operation `id`'s animation; a later one that has already replaced it is left running. */
     finishBenchOp: (id: number) => setBenchOpRun((current) => (current?.id === id ? undefined : current)),
+    /** The timed stage on the fast step clock, if one is running: the next action waits until it is cleared. */
+    stepClock,
+    clockProgress: clockProgress as StepClockProgress,
     addDrops,
     acceptMark,
     announcement,
     announce,
     pour,
     /** Ends pour `id`'s animation; a later pour that has already replaced it is left running. */
-    finishPour: (id: number) => setPour((current) => (current?.id === id ? undefined : current)),
+    finishPour: (id: number) => {
+      // A filter's portion has drained once it is drawn: the next can go in.
+      if (drainingPourRef.current === id) drainingPourRef.current = undefined;
+      setPour((current) => (current?.id === id ? undefined : current));
+    },
     weighing,
     toolDeposit,
     swirl,

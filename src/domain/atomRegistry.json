@@ -11314,6 +11314,45 @@
       "contentExamples": []
     },
     {
+      "id": "atom.rinse.stirring-rod-into-vessel",
+      "family": "gravimetry",
+      "documentationLabel": "Rinse the stirring rod back into its vessel",
+      "verb": "rinse",
+      "allowedInteractionTypes": [
+        "rinseTarget"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "instrument"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "rinse-water-source",
+        "stirring-device",
+        "receiving-vessel"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "Before the rod leaves the vessel it stirred, it is rinsed down into it with the wash bottle, so the precipitate on it is not carried away; the washings go into that vessel (`washingsReceiverInstanceId`).",
+        "The rinse volume is not a stated measured quantity.",
+        "Decided by the teacher on 2026-10-06 (the Pack 2 fidelity review, the 3D practice of Hard-Water Calcium Carbonate Precipitation); real practice the source leaves implicit, so no source example is cited."
+      ],
+      "evidence": "rod rinsed, washings in the vessel",
+      "sourceExamples": [],
+      "contentExamples": []
+    },
+    {
       "id": "atom.place.remove-stirring-rod",
       "family": "gravimetry",
       "documentationLabel": "Lift the stirring rod out of the vessel and set it down",
@@ -11343,7 +11382,7 @@
       ],
       "optionalRoles": [],
       "proceduralConstraints": [
-        "The rod is lifted out once stirring is done, so the precipitate can settle undisturbed.",
+        "The rod is lifted out once stirring is done and it has been rinsed back into the vessel (decided by the teacher on 2026-10-06), so the precipitate can settle undisturbed and none is carried away on the rod.",
         "Decided by the teacher on 2026-10-05 (Pack 2, the 3D practice of Hard-Water Calcium Carbonate Precipitation); no dated plan states this step, so no source example is cited."
       ],
       "evidence": "stirring rod set down on the workbench",

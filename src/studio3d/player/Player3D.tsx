@@ -60,7 +60,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   authoredDefinition?: RuntimeDefinition;
   title: string;
   sourceTag: string;
-  fallbackHash: string;
+  /** The 2D route that plays the same steps; none for a 3D practice version whose original is not known yet. */
+  fallbackHash?: string;
   backHref: string;
   /** "preview": inside the Studio's stage (handoff §4.6), which supplies its own toolbar. */
   variant?: "full" | "preview";
@@ -272,6 +273,15 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     const holdAfter = portions > 1 && squirted > 0 && squirted < portions && !flow.nodeCompleted;
     const continuing = engine.squirtHolding() === pour.sourceId;
     const run = async () => {
+      try {
+        await draw();
+      } catch { /* the end state is drawn by the next sync */ } finally {
+        // Drawn or not (a model that failed to load), the pour ends, so the bench and the filter are never left waiting.
+        setSquirtHeld(holdAfter && engine.squirtHolding() === pour.sourceId);
+        player.finishPour(pour.id);
+      }
+    };
+    const draw = async () => {
       await engine.sync(pour.staging);
       // The pour is framed where it happens, unless the learner has taken the camera (§5.9) or the
       // bottle is already held there.
@@ -295,8 +305,6 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
         await engine.animateDrain({ funnelId: pour.targetId, cone: pour.targetAfter, receiverId: pour.drainInto.receiverId,
           receiverBefore: pour.drainInto.receiverBefore, receiverAfter: pour.drainInto.receiverAfter });
       }
-      setSquirtHeld(holdAfter && engine.squirtHolding() === pour.sourceId);
-      player.finishPour(pour.id);
     };
     void run();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -316,18 +324,23 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
 
   // A committed bench operation (Pack 2, decided 2026-10-05): the rod stirs, or the precipitate settles,
   // while the fast step clock runs the stated minutes; or the dropping pipette is held over the beaker and
-  // one drop falls. Under reduced motion the end state is shown at once (§3.5).
+  // one drop falls. Under reduced motion the end state is shown at once (§3.5); the clock still runs.
   useEffect(() => {
     const run = player.benchOpRun;
-    if (!run) return;
-    if (reducedMotion || !engine) { player.finishBenchOp(run.id); return; }
+    if (!run) return undefined;
+    if (reducedMotion || !engine) { player.finishBenchOp(run.id); return undefined; }
+    const timed = run.clockSeconds !== undefined;
+    let drawing = true;
     const pause = (ms: number) => new Promise((resolve) => window.setTimeout(resolve, ms));
     const draw = async () => {
       await engine.sync(run.staging);
-      if (run.operation === "stir") await engine.animateStir(run.vesselId, run.clockSeconds ?? 3);
+      // Drawn over what is left of the clock, so the bench and the clock end together.
+      const seconds = run.clockSeconds !== undefined
+        ? Math.max(0.1, run.clockSeconds - (performance.now() - (run.startedAt ?? performance.now())) / 1000) : 3;
+      if (run.operation === "stir") await engine.animateStir(run.vesselId, seconds);
       else if (run.operation === "settle-precipitate" || run.operation === "dry-in-oven" || run.operation === "cool-on-pad"
         || run.operation === "heat-crucible") {
-        await engine.animateContentsChange(run.vesselId, { before: run.before, after: run.after }, run.clockSeconds ?? 3);
+        await engine.animateContentsChange(run.vesselId, { before: run.before, after: run.after }, seconds);
       }
       else if (run.toolId) {
         engine.holdOver(run.toolId, run.vesselId);
@@ -336,9 +349,16 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
         await pause(900);
         engine.holdOver(null);
       }
-      player.finishBenchOp(run.id);
     };
-    void draw();
+    void draw().catch(() => undefined).finally(() => {
+      drawing = false;
+      // A timed stage ends with its clock (usePlayer3D); anything else ends here, drawn or not, so a model
+      // that failed to load never leaves the bench waiting.
+      if (!timed) player.finishBenchOp(run.id);
+    });
+    // The clock ran out first (a tab in the background), or the bench was restarted: the drawing stops,
+    // and the next sync draws the bench as the runtime has it, never this stage's end on a reset bench.
+    return () => { if (drawing) engine.cancelTimedAnimation(); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [player.benchOpRun?.id, engine]);
 
@@ -409,10 +429,11 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     const control = scene.bench.find((item) => item.instanceId === instanceId)?.model?.controls?.find((c) => c.operation === "zero");
     return control ? { instanceId, controlId: control.id } : undefined;
   }, [flow.nodeCompleted, player.benchOp, runtime.expectedAction, scene]);
-  // Guided only (G-7): the key the step asks for is lit.
+  // Guided only (G-7): the key the step asks for is lit; not while the step clock runs, when it must wait.
+  const clockRunning = Boolean(player.stepClock);
   useEffect(() => {
-    engine?.setControlCue(showGuidance && expectedControl ? expectedControl : null);
-  }, [engine, expectedControl, showGuidance, displayScene]);
+    engine?.setControlCue(showGuidance && expectedControl && !clockRunning ? expectedControl : null);
+  }, [clockRunning, engine, expectedControl, showGuidance, displayScene]);
   // Drop mode (decided 2026-10-02): the step's pipette is held over its vessel, the camera is level with
   // the line, and each tap or run of drops goes to the runtime; nothing is judged until "At the line".
   const [dropMode, setDropMode] = useState<{ pipetteId: string; vesselId: string }>();
@@ -611,11 +632,13 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   const stirVesselId = player.benchOp?.operation === "stir" ? player.benchOp.vesselInstanceId : undefined;
   // A drying stage's time on the clock (Pack 2 decision 9): the oven is not opened before it is up.
   const refuseEarlyOpen = (instanceId: string): boolean => {
-    const run = player.benchOpRun;
-    if (run?.operation !== "dry-in-oven" || scene.bench.find((i) => i.instanceId === instanceId)?.definitionId !== "drying-oven") return false;
-    player.correct(`The ${run.minutes ?? ""} minutes are not up yet.`.replace("  ", " "), "Leave the door shut until the clock has run, then open it.");
+    const clock = player.stepClock;
+    if (clock?.operation !== "dry-in-oven" || scene.bench.find((i) => i.instanceId === instanceId)?.definitionId !== "drying-oven") return false;
+    player.correct(`The ${clock.minutes} minutes are not up yet.`, "Leave the door shut until the clock has run, then open it.");
     return true;
   };
+  // A timed stage being drawn, or its minutes still on the clock: the bench's own shortcuts wait too.
+  const benchBusy = Boolean(player.benchOpRun || player.stepClock);
   busyRef.current = (instanceId) => { refuseEarlyOpen(instanceId); };
   // The oven's door by a click on the oven at a door or drying step (its door key and dial are controls too).
   const ovenDoorStep = player.benchOp && (player.benchOp.operation === "open-oven-door" || player.benchOp.operation === "dry-in-oven")
@@ -625,7 +648,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   // turns it off, as the step says; a click on the crucible sets its lid askew.
   const burnerOperation = player.benchOp && ["light-burner", "set-flame", "heat-crucible", "turn-off-burner"].includes(player.benchOp.operation)
     ? player.benchOp : undefined;
-  const isBurnerTarget = (id: string): boolean => Boolean(burnerOperation) && !player.benchOpRun
+  const isBurnerTarget = (id: string): boolean => Boolean(burnerOperation) && !benchBusy
     && (id === burnerOperation!.deviceInstanceId || (burnerOperation!.operation === "heat-crucible" && id === burnerOperation!.vesselInstanceId));
   const isLidTarget = (id: string): boolean => player.benchOp?.operation === "set-crucible-lid" && id === player.benchOp.vesselInstanceId;
   // Folding the filter paper (Pack 2): a click on it once it is on the bench, Enter on it, or the step card's Fold.
@@ -633,7 +656,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   const isFoldTarget = (id: string): boolean => Boolean(foldPaperId) && id === foldPaperId
     && scene.bench.find((i) => i.instanceId === id)?.placement.kind === "bench";
   const isStirTarget = (id: string): boolean => {
-    if (!stirVesselId || player.benchOpRun) return false;
+    if (!stirVesselId || benchBusy) return false;
     const item = scene.bench.find((i) => i.instanceId === id);
     return id === stirVesselId || (item?.placement.kind === "seated" && item.placement.parentInstanceId === stirVesselId);
   };
@@ -787,9 +810,11 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
         if (next) setSelected(next);
         e.preventDefault();
       } else if (e.key === "Enter") {
-        // At an inversion or swirl step, Enter on the flask inverts or swirls it once.
-        if (selected && (isInvertTarget(selected) || isSwirlTarget(selected) || isStirTarget(selected) || isFoldTarget(selected)
-          || isBurnerTarget(selected) || isLidTarget(selected))) { player.recordEvidence(); e.preventDefault(); }
+        // At an inversion or swirl step, Enter on the flask inverts or swirls it once; on the oven at a
+        // door step it works the door, as a click does (and is refused while a drying stage's time runs).
+        if (selected && refuseEarlyOpen(selected)) e.preventDefault();
+        else if (selected && (isInvertTarget(selected) || isSwirlTarget(selected) || isStirTarget(selected) || isFoldTarget(selected)
+          || isOvenTarget(selected) || isBurnerTarget(selected) || isLidTarget(selected))) { player.recordEvidence(); e.preventDefault(); }
         else if (selected && scene.bench.some((item) => item.instanceId === selected)) { startMove(selected); e.preventDefault(); }
       } else if (e.key === "e" || e.key === "E") { if (selected) examine(selected); }
       else if (e.key === "s" || e.key === "S") { if (selected) player.setSelectedSource(selected); }
@@ -862,9 +887,13 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   // Show me (§5.9, guided only): frame the working set, then the engine's pulse-and-ghost demo. A
   // step done with a tool shows the tool going to the source, then to the target.
   const showMe = () => {
+    if (clockRunning) return;
     // The demo plays where the learner is looking; only the auto view frames it (decided 2026-10-05).
     if (autoViewRef.current) frame();
-    if (tool) engine?.showMe(toolId, expectedTargetId, expectedSourceId);
+    // A hot item is shown handled as a tool's load (Pack 2, S-05): the tongs go to it, then on to its place.
+    const tongs = player.tongsStep;
+    if (tongs && onBench(tongs.toolInstanceId)) engine?.showMe(tongs.toolInstanceId, onBench(tongs.targetInstanceId) ?? expectedTargetId, tongs.vesselInstanceId);
+    else if (tool) engine?.showMe(toolId, expectedTargetId, expectedSourceId);
     else if (drawIds) engine?.showMe(drawIds.tool, drawIds.liquid);
     else engine?.showMe(expectedSourceId, expectedTargetId);
   };
@@ -955,12 +984,12 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     : carry.clickCarrying ? "Click where it goes, or press on the target, drag down and let go. Esc or a right click puts it back."
     : carry.gestureCarrying ? "Open your palm over the spot to set it down; over a target, pause until it locks, then lower your hand or turn your palm."
     : carry.carrying ? "Release to set down. Esc cancels."
+    : player.stepClock ? `${player.stepClock.label}: the clock runs the ${player.stepClock.minutes} minutes fast. The next step waits for it.`
     : tool && flow.canConfirm ? "Pick up the spatula, press it into the source and drag down to scoop, then click the target; or use Source, Target and Confirm. Right-drag to look around."
     : pipette && flow.canConfirm ? "Pick up the pipette, then press over the liquid or the cuvette, drag down and let go; or use Source, Target and Confirm. Right-drag to look around."
     : markStep ? `Pick up the pipette and click the ${markVesselLabel} to hold it there, or use the step card. Right-drag to look around.`
     : invertVesselId ? `Click the stoppered ${invertVesselNoun} to invert it, or use Invert in the step card. Right-drag to look around.`
     : swirlVesselId ? "Click the flask to swirl it until the solid dissolves, or use Swirl in the step card. Right-drag to look around."
-    : player.benchOpRun?.minutes ? `${player.benchOpRun.label}: the clock runs the ${player.benchOpRun.minutes} minutes fast.`
     : stirVesselId ? "Click the beaker to stir it with the rod, or use Stir in the step card. Right-drag to look around."
     : player.benchOp?.operation === "settle-precipitate" ? "Leave the beaker still: use Wait in the step card while the precipitate settles."
     : foldPaperId ? (scene.bench.find((i) => i.instanceId === foldPaperId)?.placement.kind === "bench"
@@ -1005,9 +1034,9 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
 
       <StepCard player={player} controls={panelControls} onShowMe={showMe}
         onHoldOver={markStep && !dropMode ? holdFromCard : undefined} holdOverReady={Boolean(markStep && onBenchNow(markStep.pipetteInstanceId) && onBenchNow(markStep.vesselInstanceId))} />
-      {player.benchOpRun?.minutes && player.benchOpRun.clockSeconds ? (
-        <StepClock label={player.benchOpRun.label} minutes={player.benchOpRun.minutes} seconds={player.benchOpRun.clockSeconds}
-          reducedMotion={reducedMotion} startedAt={player.benchOpRun.id} />
+      {player.stepClock ? (
+        <StepClock key={player.stepClock.id} label={player.stepClock.label} minutes={player.stepClock.minutes} progress={player.clockProgress}
+          reducedMotion={reducedMotion} />
       ) : null}
       {dropMode ? (
         <DropPanel title={`Pipette over the ${markVesselLabel || "vessel"}`} onDrop={() => addDrop(1)} onRunStart={startRun} onRunEnd={endRun}
@@ -1019,7 +1048,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
         options={options}
         onEngine={setEngine}
         label={`3D bench for ${title}. Every item is also listed in the Bench list.`}
-        fallback={<div className="s3d-fallback"><p>This browser cannot draw the 3D bench. The 2D version runs the same steps and checks.</p><a className="s3d-button s3d-button--primary" href={fallbackHash}>Open the 2D version</a></div>}
+        fallback={<div className="s3d-fallback"><p>This browser cannot draw the 3D bench.{fallbackHash ? " The 2D version runs the same steps and checks." : ""}</p>{fallbackHash ? <a className="s3d-button s3d-button--primary" href={fallbackHash}>Open the 2D version</a> : null}</div>}
       >
         {hoverItem && hoverPoint?.visible ? (
           <div className="s3d-label" style={{ left: hoverPoint.x, top: hoverPoint.y + 8 }}>{hoverItem.label} · {hoverItem.contentsText}</div>
@@ -1049,7 +1078,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
               aria-valuenow={loading && loading.total > 0 ? Math.round((100 * loading.loaded) / loading.total) : 0}>
               <span style={{ width: `${loading && loading.total > 0 ? (100 * loading.loaded) / loading.total : 0}%` }} />
             </div>
-            <a href={fallbackHash}>Open the 2D version</a>
+            {fallbackHash ? <a href={fallbackHash}>Open the 2D version</a> : null}
           </div>
         </div>
       ) : null}
@@ -1108,7 +1137,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
           <button type="button" onClick={() => setConfirmMode(showGuidance ? "assessment" : "guided")}>Switch to {showGuidance ? "assessment" : "guided"}</button>
           <button type="button" onClick={() => updatePrefs({ panels: {} })}>Reset panel layout</button>
           <button type="button" onClick={() => setConfirmMode("restart")}>Restart</button>
-          <a href={fallbackHash}>Open the 2D version</a>
+          {fallbackHash ? <a href={fallbackHash}>Open the 2D version</a> : null}
           <a href={backHref}>Exit</a>
         </div>
       ) : null}

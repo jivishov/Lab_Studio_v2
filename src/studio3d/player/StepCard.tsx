@@ -29,6 +29,8 @@ export const StepCard = ({ player, controls, onShowMe, onHoldOver, holdOverReady
   const errorId = "s3d-step-input-error";
 
   const badge = <span className={`s3d-step__badge${showGuidance ? "" : " is-assess"}`}>{n}</span>;
+  // While a timed stage's minutes run on the step clock the next action waits (Pack 2 decision 9).
+  const waiting = Boolean(player.stepClock);
 
   return (
     <FloatPanel id="step" label="Current step" className="s3d-step" controls={controls}
@@ -104,17 +106,17 @@ export const StepCard = ({ player, controls, onShowMe, onHoldOver, holdOverReady
 
         {flow.canConfirm ? (
           <div className="s3d-flow" role="group" aria-label="Accessible action flow">
-            <EndpointSelect label="Source" value={player.selectedSource} placeholder={flow.source.label} missing={flow.source.missing}
+            <EndpointSelect label="Source" value={player.selectedSource} placeholder={flow.source.label} missing={flow.source.missing} disabled={waiting}
               options={runtime.state.equipmentInstances.filter((i) => i.location !== "storage")} onChange={player.setSelectedSource} />
             <Icon name="arrow-right" className="s3d-flow__arrow" />
-            <EndpointSelect label="Target" value={player.selectedTarget} placeholder={flow.target.label} missing={flow.target.missing}
+            <EndpointSelect label="Target" value={player.selectedTarget} placeholder={flow.target.label} missing={flow.target.missing} disabled={waiting}
               options={runtime.state.equipmentInstances.filter((i) => i.location !== "storage")} onChange={player.setSelectedTarget} />
           </div>
         ) : null}
 
         <div className="s3d-step__actions">
           <div className="s3d-step__links">
-            {showGuidance && flow.canConfirm ? <button type="button" className="s3d-button s3d-button--guide" onClick={onShowMe}><Icon name="play" />Show me</button> : null}
+            {showGuidance && flow.canConfirm ? <button type="button" className="s3d-button s3d-button--guide" disabled={waiting} onClick={onShowMe}><Icon name="play" />Show me</button> : null}
             <details className="s3d-about">
               <summary>About this step</summary>
               <p>{runtime.currentNode.description}</p>
@@ -123,23 +125,23 @@ export const StepCard = ({ player, controls, onShowMe, onHoldOver, holdOverReady
           </div>
           {player.markStep ? (
             onHoldOver ? (
-              <button type="button" className="s3d-button s3d-button--primary" disabled={!holdOverReady} onClick={onHoldOver}
+              <button type="button" className="s3d-button s3d-button--primary" disabled={!holdOverReady || waiting} onClick={onHoldOver}
                 title={holdOverReady ? undefined : "Put the pipette and the vessel on the bench first."}>Hold the pipette over it</button>
             ) : null
           ) : flow.canConfirm ? (
             <button type="button" className="s3d-button s3d-button--primary" data-hand-press="confirm-accessible-action"
-              disabled={!flow.confirmEnabled || (runtime.expectedAction?.verb === "rinse" && Boolean(player.pour))} onClick={player.confirm}>
+              disabled={!flow.confirmEnabled || waiting || (runtime.expectedAction?.verb === "rinse" && Boolean(player.pour))} onClick={player.confirm}>
               {runtime.expectedAction?.verb === "rinse" && Number(runtime.expectedAction.parameters.rinsePortions ?? 1) > 1
                 ? `Rinse (${runtime.state.rinsePortions?.[runtime.expectedAction.id] ?? 0} of ${Number(runtime.expectedAction.parameters.rinsePortions)})`
                 : pourPortions(player) ?? "Confirm"}
             </button>
           ) : flow.canSubmitCalculation || (runtime.expectedAction?.verb === "calculate" && !flow.nodeCompleted) ? (
-            <button type="button" className="s3d-button s3d-button--primary" data-hand-press="submit-calculation" disabled={!flow.canSubmitCalculation} onClick={player.submitCalculation}>
+            <button type="button" className="s3d-button s3d-button--primary" data-hand-press="submit-calculation" disabled={!flow.canSubmitCalculation || waiting} onClick={player.submitCalculation}>
               {submitCalculationLabel(runtime.expectedAction?.label ?? "calculation")}
             </button>
           ) : flow.interaction?.type === "recordNotebook" ? (
             <button type="button" className="s3d-button s3d-button--primary" data-hand-press="record-evidence"
-              disabled={!(flow.canRecord || flow.canRecordObservation) || Boolean(player.benchOpRun)} onClick={player.recordEvidence}>
+              disabled={!(flow.canRecord || flow.canRecordObservation) || waiting || Boolean(player.benchOpRun)} onClick={player.recordEvidence}>
               {runtime.expectedAction?.parameters.balanceOperation === "zero" ? "Tare"
                 : player.benchOp ? player.benchOp.control
                 : runtime.expectedAction?.parameters.mixOperation === "swirl" ? "Swirl"
@@ -171,19 +173,20 @@ const pourPortions = (player: Player3DController): string | undefined => {
 const nodeTypeLabel = (type: string): string =>
   ({ observation: "Observation", calculation: "Calculation", checkpoint: "Checkpoint", decision: "Decision", technique: "Technique", teacherNote: "Teacher note" } as Record<string, string>)[type] ?? type;
 
-const EndpointSelect = ({ label, value, placeholder, missing, options, onChange }: {
+const EndpointSelect = ({ label, value, placeholder, missing, options, onChange, disabled }: {
   label: string;
   value?: string;
   placeholder: string;
   missing: boolean;
   options: Array<{ id: string; label: string }>;
   onChange: (id: string | undefined) => void;
+  disabled?: boolean;
 }) => {
   const id = `s3d-endpoint-${label.toLowerCase()}`;
   return (
     <div className="s3d-field s3d-field--compact">
       <label htmlFor={id}>{label}</label>
-      <select id={id} className={missing && !value ? "is-missing" : undefined} value={value ?? ""} onChange={(e) => onChange(e.target.value || undefined)}>
+      <select id={id} className={missing && !value ? "is-missing" : undefined} value={value ?? ""} disabled={disabled} onChange={(e) => onChange(e.target.value || undefined)}>
         <option value="">{placeholder}</option>
         {options.map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}
       </select>

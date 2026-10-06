@@ -680,7 +680,7 @@
     {
       "id": "rinse-beaker-into-funnel",
       "verb": "rinse",
-      "label": "Rinse the beaker into the funnel",
+      "label": "Rinse the beaker and rod into the funnel",
       "parameters": {
         "sourceDefinitionId": "wash-bottle",
         "sourceInstanceId": "wash-bottle-1",
@@ -694,7 +694,7 @@
       },
       "prerequisites": [],
       "stateChanges": [
-        "Rinse the beaker into the funnel: changes the named equipment and contents only."
+        "Rinse the beaker and rod into the funnel: changes the named equipment and contents only."
       ],
       "invalidCases": [
         {
@@ -724,7 +724,7 @@
         "rinse"
       ],
       "interaction": {
-        "accessibleLabel": "Rinse the beaker into the funnel",
+        "accessibleLabel": "Rinse the beaker and rod into the funnel",
         "type": "rinseTarget",
         "sourceDefinitionId": "wash-bottle",
         "targetDefinitionId": "beaker-250ml"
@@ -1011,22 +1011,22 @@
       {
         "id": "rinse-beaker-into-funnel-node",
         "type": "action",
-        "title": "Rinse the beaker",
-        "description": "Rinse the beaker into the funnel with three small squirts, bringing the last of the solid across.",
+        "title": "Rinse the beaker and rod",
+        "description": "Rinse the beaker into the funnel with three small squirts, washing the stirring rod down over it too, so the last of the solid comes across.",
         "actionId": "rinse-beaker-into-funnel",
         "config": {},
         "validation": [
           {
             "id": "rinse-beaker-into-funnel-node-done",
             "type": "notebookEntry",
-            "label": "Rinse the beaker was completed.",
+            "label": "Rinse the beaker and rod was completed.",
             "notebookTag": "beaker-rinsed-into-funnel"
           }
         ],
         "hints": [],
         "feedback": {
-          "success": "Rinse the beaker complete.",
-          "retry": "Review Rinse the beaker and try again."
+          "success": "Rinse the beaker and rod complete.",
+          "retry": "Review Rinse the beaker and rod and try again."
         }
       },
       {

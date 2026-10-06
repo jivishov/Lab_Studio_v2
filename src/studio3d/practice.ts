@@ -51,11 +51,17 @@ const isSummary = (entry: unknown): entry is PracticeSummary => {
 let summaries: Promise<PracticeSummary[]> | undefined;
 const practiceCache = new Map<string, Promise<TechniqueDefinition>>();
 
-/** The practice list, in the order it is shown. A list that cannot be read is an empty list. */
+/**
+ * The practice list, in the order it is shown. A list that cannot be read rejects, and is not kept, so
+ * the next call (a reload of the route, the switcher opened again) asks for it again.
+ */
 export const loadPracticeSummaries = (): Promise<PracticeSummary[]> => {
   summaries ??= fetchJson("index.json").then(
     (entries) => (Array.isArray(entries) ? entries.filter(isSummary).map((e) => ({ ...e, description: e.description ?? "" })) : []),
-    () => [],
+    (error: unknown) => {
+      summaries = undefined;
+      throw error;
+    },
   );
   return summaries;
 };
@@ -72,25 +78,51 @@ const loadPracticeTechnique = (summary: PracticeSummary): Promise<TechniqueDefin
     return validation.value;
   })();
   practiceCache.set(summary.id, load);
+  // A load that failed is not kept: the next try fetches it again.
+  load.catch(() => { if (practiceCache.get(summary.id) === load) practiceCache.delete(summary.id); });
   return load;
 };
 
-/** A technique for the 3D routes: a practice version by its id, else the bundled technique. */
+/** Whether an id is in the 2D catalogue (`public/techniques/index.json`); false when it cannot be read. */
+const inCatalogue = async (id: string): Promise<boolean> =>
+  (await loadBundledTechniqueSummaries().catch(() => [])).some((summary) => summary.id === id);
+
+/**
+ * A technique for the 3D routes: a practice version by its id, else the bundled technique. Without the
+ * practice list only a catalogue technique can be told apart, so anything else is reported unavailable.
+ */
 export const load3DTechnique = async (id: string): Promise<TechniqueDefinition> => {
-  const practice = (await loadPracticeSummaries()).find((entry) => entry.id === id);
-  return practice ? loadPracticeTechnique(practice) : loadBundledTechnique(id);
+  const list = await loadPracticeSummaries().catch(() => undefined);
+  const practice = list?.find((entry) => entry.id === id);
+  if (practice) return loadPracticeTechnique(practice);
+  if (!list && !(await inCatalogue(id))) throw new Error("The list of 3D practice techniques could not be loaded. Reload the page to try again.");
+  return loadBundledTechnique(id);
 };
 
-/** The practice summary for an id, if it is one. */
+/** The practice summary for an id, if it is one; rejects when the practice list cannot be read. */
 export const practiceSummary = async (id: string): Promise<PracticeSummary | undefined> =>
   (await loadPracticeSummaries()).find((entry) => entry.id === id);
+
+/**
+ * The 2D technique that plays the same steps, or undefined when there is none to offer. A practice version
+ * is never sent to the 2D player, which does not list it: its fallback is the lab-bound original it is
+ * based on (whose 2D page names the labs that play it). While that cannot be known (the practice list
+ * failed), only a catalogue technique has one.
+ */
+export const fallback2DTechniqueId = async (id: string): Promise<string | undefined> => {
+  const list = await loadPracticeSummaries().catch(() => undefined);
+  const practice = list?.find((entry) => entry.id === id);
+  if (practice) return practice.basedOn;
+  return (await inCatalogue(id)) ? id : undefined;
+};
 
 /**
  * The 3D simulations a learner can move between, in packs: Pack 1 is the 2D catalogue's first five
  * (catalogue order, Q4); later packs are the practice versions, in their list's order.
  */
 export const loadSimulations3D = async (): Promise<Simulation3D[]> => {
-  const [catalogue, practice] = await Promise.all([loadBundledTechniqueSummaries(), loadPracticeSummaries()]);
+  // Without the practice list, Pack 1 is still listed.
+  const [catalogue, practice] = await Promise.all([loadBundledTechniqueSummaries(), loadPracticeSummaries().catch(() => [])]);
   const ids = catalogue.map((summary) => summary.id);
   return [
     ...catalogue.filter((summary) => packNumber(ids, summary.id) === 1)
@@ -101,7 +133,7 @@ export const loadSimulations3D = async (): Promise<Simulation3D[]> => {
 
 /** The pack a 3D simulation belongs to: a practice version's own, else the catalogue's (Pack 1). */
 export const pack3D = async (id: string): Promise<number | undefined> => {
-  const practice = await practiceSummary(id);
+  const practice = await practiceSummary(id).catch(() => undefined);
   if (practice) return practice.pack;
   const catalogue = await loadBundledTechniqueSummaries();
   return packNumber(catalogue.map((summary) => summary.id), id);

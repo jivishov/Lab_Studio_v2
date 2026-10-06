@@ -8,7 +8,7 @@ import { action, evidenceEffect, item, node, technique } from "./common.mjs";
  * The student stands the ring stand on the bench and seats the funnel in its ring; weighs the dry paper
  * flat on the balance and records it; folds it; opens it into the funnel; wets it; puts the flask under
  * the stem; pours the clear liquid, then the solid, down the stirring rod in portions the funnel can hold;
- * rinses the beaker into the funnel and washes the solid, three squirts each.
+ * rinses the beaker and the rod into the funnel and washes the solid, three squirts each.
  */
 const settledMixture = {
   kind: "mixture",
@@ -142,7 +142,7 @@ const actions = [
     roles: { "mixture-source": "beaker-250ml", "filtration-funnel": "funnel-stand", "filtration-receiver": "erlenmeyer-flask-250ml", "stirring-device": "stirring-rod" },
     success: "All the solid is on the paper.",
   }),
-  action("rinse-beaker-into-funnel", "rinse", "Rinse the beaker into the funnel", {
+  action("rinse-beaker-into-funnel", "rinse", "Rinse the beaker and rod into the funnel", {
     sourceDefinitionId: "wash-bottle",
     sourceInstanceId: "wash-bottle-1",
     targetDefinitionId: "beaker-250ml",
@@ -190,7 +190,8 @@ const nodes = [
   node("pour-through-filter", "Pour the mixture through",
     "Hold the stirring rod to the beaker's lip and pour down it: the clear liquid first, then the solid, a little at a time so the liquid stays about 1 cm below the paper's rim. Let the funnel drain between pours.",
     { notebookTag: "mixture-filtered" }),
-  node("rinse-beaker-into-funnel", "Rinse the beaker", "Rinse the beaker into the funnel with three small squirts, bringing the last of the solid across.",
+  node("rinse-beaker-into-funnel", "Rinse the beaker and rod",
+    "Rinse the beaker into the funnel with three small squirts, washing the stirring rod down over it too, so the last of the solid comes across.",
     { notebookTag: "beaker-rinsed-into-funnel" }),
   node("wash-precipitate", "Wash the solid", "Wash the solid on the paper with three small squirts of water.", { notebookTag: "precipitate-washed" }),
 ];
