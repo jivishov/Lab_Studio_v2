@@ -781,6 +781,13 @@ const validateActionContract15 = (
   if (benchSpec && isObject(input.interaction) && input.interaction.type !== "recordNotebook") errors.push(`${path} bench operation must use the recordNotebook process control.`);
   if (typeof input.atomId === "string" && benchOperationAtomIds.has(input.atomId) && !benchSpec) errors.push(`${path} atom "${input.atomId}" requires its bench operation.`);
   if (benchSpec) requireString(errors, stringRecordField(input.parameters, "tag"), `${path}.parameters.tag`);
+  // A mixture filtered in portions (Pack 2 decision 4): a positive portion, on filter actions, judged on its tag.
+  if (isObject(input.parameters) && input.parameters.pourPortionMl !== undefined) {
+    const portion = input.parameters.pourPortionMl;
+    if (actionVerb !== "filter") errors.push(`${path}.parameters.pourPortionMl is legal only on filter actions.`);
+    if (typeof portion !== "number" || !(portion > 0)) errors.push(`${path}.parameters.pourPortionMl must be a positive volume in mL.`);
+    requireString(errors, stringRecordField(input.parameters, "tag"), `${path}.parameters.tag`);
+  }
   // Reagent added in counted portions (Pack 2 decision 6): whole numbers, the index within the count.
   if (isObject(input.parameters) && (input.parameters.portionCount !== undefined || input.parameters.portionIndex !== undefined)) {
     const count = input.parameters.portionCount;

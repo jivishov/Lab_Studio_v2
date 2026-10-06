@@ -1401,6 +1401,14 @@ export interface RuntimeState {
   rinsePortions?: Record<string, number>;
   /** Reagent portions added so far to a vessel (Pack 2's precipitation, `portionCount`), keyed by vessel id. */
   precipitationPortions?: Record<string, number>;
+  /** Portions poured so far through a filter (Pack 2's filtration, `pourPortionMl`), keyed by action id. */
+  filterPortions?: Record<string, number>;
+  /**
+   * Apparatus states a bench operation sets (Pack 2, decided 2026-10-05), keyed by instance id: a filter
+   * paper's `form` once folded, an oven's setpoint and door, a burner's gas and flame. Absent in state
+   * built before them.
+   */
+  apparatusStates?: Record<string, Record<string, string | number | boolean>>;
   repeatProgress: Record<string, {
     groupId: string;
     completedIterations: number[];

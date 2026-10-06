@@ -25,6 +25,8 @@ export const benchOperations = {
   "settle-precipitate": { verb: "settle", atomId: "atom.settle.let-precipitate-settle", control: "Wait" },
   /** One drop of reagent from a dropping pipette onto the clear liquid above a settled precipitate. */
   "precipitation-drop-test": { verb: "observe", atomId: "atom.observe.complete-precipitation-test", control: "Add a drop" },
+  /** Fold a dry filter paper in half and in half again, ready to open into a cone in the funnel. */
+  "fold-filter-paper": { verb: "observe", atomId: "atom.observe.fold-filter-paper", control: "Fold" },
 } as const satisfies Record<string, BenchOperationSpec>;
 
 export type BenchOperationId = keyof typeof benchOperations;

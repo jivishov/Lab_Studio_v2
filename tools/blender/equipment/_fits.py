@@ -45,3 +45,31 @@ def flask_funnel_seat_depth(f=FUNNEL):
     """How far the funnel's stem tip sits below the volumetric flask's mouth: the cone rests on the
     mouth where its outer radius equals the 14.5 mm bore, and the 7 mm stem hangs free in the neck."""
     return funnel_rim_contact_z(f, bore_r=FLASK_BORE_D / 2)
+
+
+# Pack 2 (decided 2026-10-05). The support stand: a cast base, a rod at the back, and a 48 mm iron ring
+# clamped over the middle of the base, so the ring's axis is the stand's origin (a vessel's fill profile
+# and a funnel's cone share it). The ring takes the 55 mm funnel for gravity filtration (its cone
+# rests where its outer radius equals the ring's inner radius) and a clay triangle for heating a crucible.
+RING_STAND = dict(base_w=130.0, base_d=210.0, base_h=12.0, rod_d=12.7, rod_h=500.0, rod_y=80.0,
+                  ring_y=0.0, ring_z=220.0, ring_id=48.0, ring_wire=6.0)
+# 250 mL narrow-neck Erlenmeyer flask; its origin is the centre of its base.
+ERLENMEYER_250 = dict(base_r=42.5, height=145.0, neck_od=34.0, neck_id=30.0, neck_h=25.0, wall=1.6, floor=2.2)
+# 9 cm filter paper, folded in quarters and opened into a 60 degree cone, as the funnel is.
+FILTER_PAPER = dict(radius=45.0, thickness=0.2)
+
+
+def ring_funnel_tip_z(stand=RING_STAND, f=FUNNEL):
+    """The funnel's stem tip height above the bench when its cone rests in the ring."""
+    ring_top = stand['ring_z'] + stand['ring_wire'] / 2 - 1.0
+    return ring_top - funnel_rim_contact_z(f, bore_r=stand['ring_id'] / 2)
+
+
+def funnel_paper_apex_above_tip(f=FUNNEL):
+    """Where a filter paper cone's apex sits above the funnel's stem tip: the inner glass surface,
+    extrapolated down the cone to the axis (the paper lies against the glass all the way up)."""
+    import math
+    tan = math.tan(math.radians(f['half_angle_deg']))
+    si, ls, w = f['stem_id'] / 2, f['stem_len'], f['wall']
+    z_inner_start = ls + w / tan * 0.5
+    return z_inner_start - si / tan

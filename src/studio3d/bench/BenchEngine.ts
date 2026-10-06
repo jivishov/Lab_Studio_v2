@@ -51,6 +51,10 @@ interface ItemView {
   benchLift?: number;
   /** The item's yaw on the bench, for carrying a `benchRest` item upright. */
   restYaw?: number;
+  /** The form drawn and whether it is drawn wet (Pack 2), so they are applied only when they change. */
+  formKey?: string;
+  /** The model's own materials, kept while a wet look replaces them. */
+  dryMaterials?: Map<THREE.Mesh, THREE.Material | THREE.Material[]>;
 }
 
 /** A committed pour being drawn: advanced by the render loop, cleaned up when it ends or is cut short. */
@@ -263,6 +267,10 @@ export class BenchEngine {
       if (this.mixRun.tick(dt)) animating = true;
       else this.stopMixRun();
     }
+    if (this.drainRun) {
+      if (this.drainRun.tick(dt)) animating = true;
+      else this.stopDrainRun();
+    }
     if (this.droplets.length) {
       for (const drop of this.droplets) {
         drop.t = Math.min(1, drop.t + dt / 0.22);
@@ -457,9 +465,43 @@ export class BenchEngine {
     }
   }
 
+  /**
+   * Show the item's form (a filter paper flat, folded or as a cone) and its wet look (Pack 2, decided
+   * 2026-10-05): presentation only, from the scene the runtime state gives (G-3).
+   */
+  private applyForm(view: ItemView, item: SceneItem): void {
+    const model = view.model;
+    const key = `${item.form ?? ""}|${item.wet ? "wet" : "dry"}`;
+    if (!model || view.formKey === key) return;
+    view.formKey = key;
+    const forms = item.model?.forms;
+    if (forms) {
+      const shown = new Set(forms[item.form ?? ""] ?? []);
+      const formed = new Set(Object.values(forms).flat());
+      model.traverse((object) => { if (formed.has(object.name)) object.visible = shown.has(object.name); });
+    }
+    if (!item.model?.wetLook) return;
+    view.dryMaterials ??= new Map();
+    model.traverse((object) => {
+      const mesh = object as THREE.Mesh;
+      if (!mesh.isMesh || object.name === "pick-proxy") return;
+      if (!view.dryMaterials!.has(mesh)) view.dryMaterials!.set(mesh, mesh.material);
+      const dry = view.dryMaterials!.get(mesh)!;
+      if (!item.wet) { mesh.material = dry; return; }
+      // Wet paper: greyer and translucent, as water fills its pores.
+      const wet = (Array.isArray(dry) ? dry[0] : dry).clone() as THREE.MeshStandardMaterial;
+      wet.color?.multiplyScalar(0.78);
+      wet.roughness = 0.55;
+      wet.transparent = true;
+      wet.opacity = 0.86;
+      mesh.material = wet;
+    });
+  }
+
   private updateItem(item: SceneItem): void {
     const view = this.items.get(item.instanceId);
     if (!view || !item.model) return;
+    this.applyForm(view, item);
     const key = JSON.stringify(item.contents);
     if (key !== view.contentsKey) {
       if (view.contents) {
@@ -963,6 +1005,67 @@ export class BenchEngine {
   }
 
   /**
+   * A filter draining (Pack 2's filtration): the liquid just poured into the paper cone falls as the flask
+   * under the funnel fills, over `seconds`. Presentation only: the runtime has already moved it.
+   */
+  animateDrain(args: { funnelId: string; cone: SceneContents; receiverId: string; receiverBefore: SceneContents; receiverAfter: SceneContents },
+    seconds = 2.6): Promise<void> {
+    this.stopDrainRun();
+    const funnel = this.items.get(args.funnelId);
+    const receiver = this.items.get(args.receiverId);
+    if (!funnel?.entry?.fill || !receiver?.entry || args.cone.kind !== "liquid" || this.options.reducedMotion) return Promise.resolve();
+    const funnelEntry = funnel.entry;
+    const funnelFill = funnelEntry.fill!;
+    const receiverEntry = receiver.entry;
+    const cone = args.cone;
+    const startMl = cone.volumeMl;
+    const liquidOf = (c: SceneContents) => (c.kind === "liquid" ? c.volumeMl : 0);
+    const fromMl = liquidOf(args.receiverBefore);
+    const toMl = liquidOf(args.receiverAfter);
+    const ease = (u: number): number => 1 - (1 - u) * (1 - u);
+    let elapsed = 0;
+    let lastKey = "";
+    return new Promise((resolve) => {
+      const finish = () => {
+        funnel.contentsKey = "animating";
+        receiver.contentsKey = "animating";
+        if (this.lastScene) void this.sync(this.lastScene);
+        resolve();
+      };
+      const tick = (dt: number): boolean => {
+        if (this.items.get(args.funnelId) !== funnel) return false;
+        elapsed += dt;
+        const u = ease(Math.min(1, elapsed / seconds));
+        const inCone = Math.round(startMl * (1 - u) * 10) / 10;
+        const inFlask = Math.round((fromMl + (toMl - fromMl) * u) * 10) / 10;
+        const key = `${inCone}|${inFlask}`;
+        if (key !== lastKey) {
+          lastKey = key;
+          this.replaceContents(funnel, inCone > 0.05 ? buildContents(funnelEntry, { ...cone, volumeMl: inCone, ...fillLevelMm(funnelFill, inCone) }) : undefined);
+          if (args.receiverAfter.kind === "liquid" && receiverEntry.fill) {
+            this.replaceContents(receiver, inFlask > 0.05
+              ? buildContents(receiverEntry, { ...args.receiverAfter, volumeMl: inFlask, ...fillLevelMm(receiverEntry.fill, inFlask) })
+              : buildContents(receiverEntry, args.receiverBefore));
+          }
+          this.shadowsDirty = true;
+        }
+        return elapsed < seconds;
+      };
+      this.drainRun = { tick, finish };
+      this.requestRender();
+    });
+  }
+
+  private drainRun?: SetOnRun;
+
+  private stopDrainRun(): void {
+    const run = this.drainRun;
+    if (!run) return;
+    this.drainRun = undefined;
+    run.finish();
+  }
+
+  /**
    * A vessel's contents changing while time passes on the step clock (a precipitate settling): drawn as
    * they were, then as the runtime has them once `seconds` have passed. Presentation only.
    */
@@ -1321,6 +1424,11 @@ export class BenchEngine {
      * Transfer Liquid, decided 2026-10-05): the last drops fall from its lip before it is set upright.
      */
     drainS?: number;
+    /**
+     * A stirring rod held against the source's lip with its lower end in the target, so the pour runs down
+     * it (Pack 2's filtration, decision 4); it goes back where it rests when the pour ends.
+     */
+    guideRodId?: string;
   }): Promise<void> {
     this.stopPour();
     const released = this.releasedCarry?.instanceId === args.sourceId && performance.now() - this.releasedCarry.at < 2000
@@ -1470,6 +1578,9 @@ export class BenchEngine {
     const stream = material ? new THREE.Mesh(new THREE.BufferGeometry(), material) : undefined;
     // With an item held over the mouth, a second stream: its washings running down into the target.
     const runoff = material && viaHold ? new THREE.Mesh(new THREE.BufferGeometry(), material) : undefined;
+    // A pour down a stirring rod: its lower end inside the target's mouth, leaning on the source's lip.
+    const guideRod = args.guideRodId && args.guideRodId !== args.sourceId ? this.items.get(args.guideRodId) : undefined;
+    const rodFoot = mouth.clone().addScaledVector(away, mouthR * 0.35).add(new THREE.Vector3(0, -0.012, 0));
     // While a measuring vessel drains, single drops fall from its lip.
     const drip = material && drain > 0 && !solid ? new THREE.Mesh(new THREE.BufferGeometry(), material) : undefined;
     for (const mesh of [stream, runoff, drip]) {
@@ -1531,6 +1642,19 @@ export class BenchEngine {
       source.root.quaternion.copy(q);
       source.root.updateMatrixWorld(true);
       lip.copy(geometry.lip).applyQuaternion(q).add(pos);
+      if (guideRod) {
+        // Held from the start of the tilt until the source is upright again.
+        const holding = t >= at.tilt && t < at.untilt + T.untilt;
+        guideRod.root.visible = true;
+        if (holding) {
+          const along = lip.clone().add(new THREE.Vector3(0, 0.004, 0)).sub(rodFoot).normalize();
+          guideRod.root.position.copy(rodFoot);
+          guideRod.root.quaternion.setFromUnitVectors(UP, along);
+          guideRod.benchShift = undefined;
+          guideRod.benchLift = undefined;
+          guideRod.root.updateMatrixWorld(true);
+        }
+      }
       if (viaView && viaRest && viaHold) {
         // Held over the mouth from the approach until the source is back upright, then set down again:
         // lifted clear of the funnel, carried across, lowered onto its hold, and back the same way.

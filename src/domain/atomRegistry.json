@@ -1371,10 +1371,12 @@
         "filtration-funnel"
       ],
       "optionalRoles": [
-        "filtration-receiver"
+        "filtration-receiver",
+        "stirring-device"
       ],
       "proceduralConstraints": [
-        "The pour is slow and must not overflow the paper; overflow is an invalid case with a stated recovery, not a silent success."
+        "The pour is slow and must not overflow the paper; overflow is an invalid case with a stated recovery, not a silent success.",
+        "Poured in portions (`pourPortionMl`, each no more than the paper cone holds about 1 cm below its rim), the clear liquid decanted first and the solid with the last portion, down a stirring rod held to the beaker's lip; the funnel drains between portions, and pouring into a full funnel is refused (decided by the teacher on 2026-10-05, Pack 2 decision 4)."
       ],
       "evidence": "precipitate retained on the medium, filtrate in the receiver",
       "sourceExamples": [
@@ -11517,6 +11519,86 @@
         "Decided by the teacher on 2026-10-05 (Pack 2, the 3D practice of Hard-Water Calcium Carbonate Precipitation) (Pack 2 decision 7); real practice the source leaves implicit, so no source example is cited."
       ],
       "evidence": "observation of the clear liquid after one drop",
+      "sourceExamples": [],
+      "contentExamples": []
+    },
+    {
+      "id": "atom.place.filter-medium-on-balance",
+      "family": "gravimetry",
+      "documentationLabel": "Lay the dry filter paper on the balance pan",
+      "verb": "place",
+      "allowedInteractionTypes": [
+        "snapIntoTarget"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "instrument"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "filter-medium",
+        "balance-instrument"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "The paper is weighed dry and flat, before it is folded, seated or wetted (FD-01: preweigh paper before wetting)."
+      ],
+      "evidence": "dry paper on the balance pan",
+      "sourceExamples": [
+        {
+          "sourceFile": "what-makes-hard-water-hard_2026-07-27.md",
+          "sourceTable": "phase",
+          "step": "FD-01",
+          "basis": "M"
+        }
+      ],
+      "contentExamples": []
+    },
+    {
+      "id": "atom.observe.fold-filter-paper",
+      "family": "gravimetry",
+      "documentationLabel": "Fold a filter paper in half and in half again",
+      "verb": "observe",
+      "allowedInteractionTypes": [
+        "recordNotebook"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state",
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "filter-medium"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "A dry, weighed paper is folded in half and in half again on the bench; it is opened into a cone as it is seated in the funnel.",
+        "Decided by the teacher on 2026-10-05 (Pack 2, the 3D practice of Filter a Precipitate) (decision 3, one fold step); real practice the source leaves implicit, so no source example is cited."
+      ],
+      "evidence": "paper folded in quarters",
       "sourceExamples": [],
       "contentExamples": []
     }

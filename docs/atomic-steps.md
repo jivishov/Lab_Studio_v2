@@ -29,7 +29,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 
 ## Atoms
 
-224 atoms across 15 families.
+226 atoms across 15 families.
 
 | Atom | Family | Verb | Interactions | Required roles |
 |---|---|---|---|---|
@@ -257,6 +257,8 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 | `atom.mix.stir-with-rod` | gravimetry | `mix` | `recordNotebook` | `precipitation-vessel`, `stirring-device` |
 | `atom.settle.let-precipitate-settle` | gravimetry | `settle` | `recordNotebook` | `precipitation-vessel` |
 | `atom.observe.complete-precipitation-test` | gravimetry | `observe` | `recordNotebook` | `transfer-pipette`, `precipitation-vessel` |
+| `atom.place.filter-medium-on-balance` | gravimetry | `place` | `snapIntoTarget` | `filter-medium`, `balance-instrument` |
+| `atom.observe.fold-filter-paper` | gravimetry | `observe` | `recordNotebook` | `filter-medium` |
 
 ### Family: calorimetry
 
@@ -1100,10 +1102,11 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 - Verb: `filter`
 - Allowed interaction types: `pourInto`
 - Required roles: `mixture-source`, `filtration-funnel`
-- Optional roles: `filtration-receiver`
+- Optional roles: `filtration-receiver`, `stirring-device`
 - Evidence: precipitate retained on the medium, filtrate in the receiver
 - Procedural constraints:
   - The pour is slow and must not overflow the paper; overflow is an invalid case with a stated recovery, not a silent success.
+  - Poured in portions (`pourPortionMl`, each no more than the paper cone holds about 1 cm below its rim), the clear liquid decanted first and the solid with the last portion, down a stirring rod held to the beaker's lip; the funnel drains between portions, and pouring into a full funnel is refused (decided by the teacher on 2026-10-05, Pack 2 decision 4).
 - Source examples:
   - `what-makes-hard-water-hard_2026-07-27.md` phase step `FD-06` (M)
 - Content examples:
@@ -1709,6 +1712,33 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
   - One drop of the reagent from a dropping pipette falls onto the clear liquid above the settled solid; no new cloudiness means the calcium is all precipitated (the real check behind INQ-02's 'completely').
   - The observation is the teacher's configured text; nothing is inferred.
   - Decided by the teacher on 2026-10-05 (Pack 2, the 3D practice of Hard-Water Calcium Carbonate Precipitation) (Pack 2 decision 7); real practice the source leaves implicit, so no source example is cited.
+
+#### `atom.place.filter-medium-on-balance`
+
+**Lay the dry filter paper on the balance pan**
+
+- Verb: `place`
+- Allowed interaction types: `snapIntoTarget`
+- Required roles: `filter-medium`, `balance-instrument`
+- Optional roles: none
+- Evidence: dry paper on the balance pan
+- Procedural constraints:
+  - The paper is weighed dry and flat, before it is folded, seated or wetted (FD-01: preweigh paper before wetting).
+- Source examples:
+  - `what-makes-hard-water-hard_2026-07-27.md` phase step `FD-01` (M)
+
+#### `atom.observe.fold-filter-paper`
+
+**Fold a filter paper in half and in half again**
+
+- Verb: `observe`
+- Allowed interaction types: `recordNotebook`
+- Required roles: `filter-medium`
+- Optional roles: none
+- Evidence: paper folded in quarters
+- Procedural constraints:
+  - A dry, weighed paper is folded in half and in half again on the bench; it is opened into a cone as it is seated in the funnel.
+  - Decided by the teacher on 2026-10-05 (Pack 2, the 3D practice of Filter a Precipitate) (decision 3, one fold step); real practice the source leaves implicit, so no source example is cited.
 
 ### Family: kinetics
 
@@ -4191,7 +4221,7 @@ A role is a constraint, not a synonym for one apparatus id. Capacity, tolerance,
 | `solid-reagent-source` | delivery | `reagent-bottle`, `sample-bottle`, `small-vial` | — | Named solids may be supplied in a small vial or stock bottle. The source delivers the approximate portion; the balance produces the recorded mass. |
 | `precipitating-reagent-source` | delivery | `beaker-150ml`, `beaker-250ml`, `burette-50ml`, `graduated-cylinder`, `graduated-cylinder-25ml`, `reagent-bottle` | — | The two Investigation 3 phases deliver carbonate from different vessels: PR-11 pours prepared Na2CO3 solution out of the practice beaker, INQ-02 draws 0.50 M Na2CO3 from a reagent container. Finding 12 (R/C) leaves the excess to the student within teacher-approved constraints, so the role admits both and fixes neither the vessel nor the amount. |
 | `precipitation-vessel` | vessel | `beaker-150ml`, `beaker-250ml`, `erlenmeyer-flask-250ml` | — | PR-11 through PR-15 and INQ-06/INQ-07 form and age CaCO3 in the vessel that later feeds FD-06. It is distinct from reaction-vessel, whose gas-collection sealing constraint belongs to Investigation 10. |
-| `receiving-vessel` | vessel | `beaker-150ml`, `beaker-250ml`, `crucible-with-lid`, `erlenmeyer-flask-250ml`, `hand-warmer-calorimeter`, `polystyrene-cup-8oz`, `side-arm-filter-flask`, `test-tube`, `volumetric-flask`, `watch-glass` | — | General destination for a transfer where the source does not constrain the vessel further. Investigation 12 PR-08 and CA-07 receive weighed solid or measured hot water in the inner nested cup; the hand-warmer-calorimeter definition is the runtime identity of that assembled vessel so its visible state, contents, and hit target remain one object. |
+| `receiving-vessel` | vessel | `beaker-150ml`, `beaker-250ml`, `crucible-with-lid`, `erlenmeyer-flask-250ml`, `hand-warmer-calorimeter`, `polystyrene-cup-8oz`, `side-arm-filter-flask`, `test-tube`, `volumetric-flask`, `watch-glass`, `funnel-stand` | — | General destination for a transfer where the source does not constrain the vessel further. Investigation 12 PR-08 and CA-07 receive weighed solid or measured hot water in the inner nested cup; the hand-warmer-calorimeter definition is the runtime identity of that assembled vessel so its visible state, contents, and hit target remain one object. The 3D practice of Filter a Precipitate rinses the beaker into the funnel, whose washings run through the paper into the flask under it (FD-07; decided by the teacher on 2026-10-05). |
 | `analyte-receiver` | vessel | `beaker-150ml`, `beaker-250ml`, `erlenmeyer-flask-250ml` | `foam-cup-calorimeter`, `polystyrene-cup-8oz`, `hand-warmer-calorimeter` | Holds the measured aliquot being titrated and must be swirlable under a burette tip. An insulated calorimeter cup is a thermal vessel, not a titration receiver. |
 | `acidifying-reagent-source` | delivery | `graduated-cylinder`, `graduated-cylinder-25ml`, `graduated-pipette-10ml`, `reagent-bottle` | `wash-bottle`, `distilled-water-bottle`, `beral-pipette` | Investigation 8 PA-03 adds no more than 10 mL of 6 M H2SO4 to acidify the standard, and HP-02 acidifies each peroxide aliquot with the approved volume. The volume is bounded but never fixed, so the role requires a device that reads a volume and refuses uncalibrated streams. mustNotContactSolidOxidiser records S-05: the acid is delivered to the analyte, never to solid KMnO4. |
 | `waste-receiver` | vessel | `waste-beaker` | — | Every dated plan routes waste through a named destination. The destination itself stays a configuration point. |

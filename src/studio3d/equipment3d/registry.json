@@ -303,6 +303,149 @@
       }
     },
     {
+      "definitionId": "erlenmeyer-flask-250ml",
+      "model": "erlenmeyer-flask-250ml.glb",
+      "thumbnail": "thumbs/erlenmeyer-flask-250ml.png",
+      "footprintMm": {
+        "shape": "circle",
+        "radius": 42.5
+      },
+      "grip": {
+        "heightMm": 115.0
+      },
+      "pour": {
+        "lipMm": [
+          -18.0,
+          0.0,
+          145.0
+        ],
+        "tiltDeg": 115.0,
+        "style": "pour"
+      },
+      "fill": {
+        "innerProfileMm": [
+          [
+            0.0,
+            2.2
+          ],
+          [
+            35.9,
+            2.2
+          ],
+          [
+            40.9,
+            4.5
+          ],
+          [
+            15.0,
+            121.0
+          ],
+          [
+            15.0,
+            145.0
+          ]
+        ],
+        "capacityMl": 250,
+        "meniscus": "concave"
+      },
+      "graduations": null,
+      "anchors": {
+        "erlenmeyer-stopper-neck": {
+          "positionMm": [
+            0.0,
+            0.0,
+            133.0
+          ]
+        },
+        "erlenmeyer-ph-probe-zone": {
+          "positionMm": [
+            0.0,
+            0.0,
+            155.0
+          ]
+        }
+      },
+      "displays": [],
+      "states": {},
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/erlenmeyer_flask_250ml.py",
+        "sourceHash": "cfb81be36833857680c165c4b4056fbc1fcda4178197ef6bd55383f52cf87112"
+      }
+    },
+    {
+      "definitionId": "filter-paper",
+      "model": "filter-paper.glb",
+      "thumbnail": "thumbs/filter-paper.png",
+      "footprintMm": {
+        "shape": "circle",
+        "radius": 45.0
+      },
+      "grip": {
+        "heightMm": 2.0
+      },
+      "graduations": null,
+      "forms": {
+        "flat": [
+          "Paper_flat"
+        ],
+        "folded": [
+          "Paper_folded"
+        ],
+        "cone": [
+          "Paper_cone"
+        ]
+      },
+      "defaultForm": "flat",
+      "formBySeat": {
+        "funnel-stand-paper-seat": "cone",
+        "watch-glass-paper-seat": "flat"
+      },
+      "formSolidRest": {
+        "cone": {
+          "centreMm": [
+            0.0,
+            0.0,
+            6.0
+          ],
+          "radiusMm": 7.0
+        },
+        "flat": {
+          "centreMm": [
+            0.0,
+            0.0,
+            0.2
+          ],
+          "radiusMm": 16.0
+        },
+        "folded": {
+          "centreMm": [
+            0.0,
+            0.0,
+            0.8
+          ],
+          "radiusMm": 10.0
+        }
+      },
+      "solidRest": {
+        "centreMm": [
+          0.0,
+          0.0,
+          0.2
+        ],
+        "radiusMm": 16.0
+      },
+      "wetLook": true,
+      "anchors": {},
+      "displays": [],
+      "states": {},
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/filter_paper.py",
+        "sourceHash": "4c8aeee8c6c36f8902c7cc98549e1439544f9a590f7a72c12f62cc7995341606"
+      }
+    },
+    {
       "definitionId": "funnel",
       "model": "funnel.glb",
       "thumbnail": "thumbs/funnel.png",
@@ -329,6 +472,57 @@
         "blender": "5.2.2",
         "generator": "tools/blender/equipment/funnel.py",
         "sourceHash": "91e407aa50412b9da5c634552402799b2d111c518626aba82be32171aa2a7bc9"
+      }
+    },
+    {
+      "definitionId": "funnel-stand",
+      "model": "funnel-stand.glb",
+      "thumbnail": "thumbs/funnel-stand.png",
+      "footprintMm": {
+        "shape": "rect",
+        "width": 130.0,
+        "depth": 210.0
+      },
+      "grip": {
+        "heightMm": 260.0
+      },
+      "graduations": null,
+      "displays": [],
+      "states": {},
+      "anchors": {
+        "funnel-stand-paper-seat": {
+          "positionMm": [
+            0.0,
+            0.0,
+            183.38
+          ]
+        },
+        "funnel-receiving-vessel-zone": {
+          "positionMm": [
+            -11.5,
+            0.0,
+            12.0
+          ]
+        }
+      },
+      "fill": {
+        "innerProfileMm": [
+          [
+            0.0,
+            183.38
+          ],
+          [
+            22.5,
+            222.35
+          ]
+        ],
+        "capacityMl": 20.7,
+        "meniscus": "concave"
+      },
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/funnel_stand.py",
+        "sourceHash": "fce546ab2caa2f207edbce5ee968d21612fdddee2559fe847a8666ea04676424"
       }
     },
     {
@@ -614,6 +808,64 @@
         "blender": "5.2.2",
         "generator": "tools/blender/equipment/reagent_bottle.py",
         "sourceHash": "53c097f71c3fee322a399588c225b467c9f11de3c3e02ae4c3dc85c429aeb435"
+      }
+    },
+    {
+      "definitionId": "ring-stand",
+      "model": "ring-stand.glb",
+      "thumbnail": "thumbs/ring-stand.png",
+      "footprintMm": {
+        "shape": "rect",
+        "width": 130.0,
+        "depth": 210.0
+      },
+      "grip": {
+        "heightMm": 260.0
+      },
+      "graduations": null,
+      "displays": [],
+      "states": {},
+      "anchors": {
+        "ring-stand-funnel-seat": {
+          "positionMm": [
+            0.0,
+            0.0,
+            141.49
+          ]
+        },
+        "ring-stand-clay-triangle-seat": {
+          "positionMm": [
+            0.0,
+            0.0,
+            223.0
+          ]
+        },
+        "ring-stand-crucible-seat": {
+          "positionMm": [
+            0.0,
+            0.0,
+            205.0
+          ]
+        },
+        "ring-stand-calorimeter-support": {
+          "positionMm": [
+            0.0,
+            0.0,
+            223.0
+          ]
+        },
+        "ring-stand-stirrer-bay": {
+          "positionMm": [
+            0.0,
+            0.0,
+            12.0
+          ]
+        }
+      },
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/ring_stand.py",
+        "sourceHash": "e87edd904b13b2bcf640a34ad4c416d9f241450ddc18a1fe32a7f0d8cab49104"
       }
     },
     {

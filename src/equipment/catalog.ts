@@ -176,7 +176,8 @@ export const v1EquipmentCatalog: EquipmentDefinition[] = [
       {
         id: "analytical-balance-pan",
         label: "Balance pan",
-        accepts: ["watch-glass", "weigh-boat", "beaker-250ml", "crucible-with-lid"],
+        // A dry filter paper is weighed flat on the pan before it is folded (FD-01; Pack 2, 2026-10-05).
+        accepts: ["watch-glass", "weigh-boat", "beaker-250ml", "crucible-with-lid", "filter-paper"],
         x: 54,
         y: 58,
       },

@@ -9,7 +9,7 @@ const { applyTechniqueConfiguration } = await import(root + "src/data/techniqueC
 const { createRuntimeState, performRuntimeAction } = await import(root + "src/runtime/index.ts");
 const { resolveInteractionIntent } = await import(root + "src/runtime/interactionIntents.ts");
 const { resolveActionInteraction } = await import(root + "src/domain/interactions.ts");
-const { intentTypeForInteraction, mergeActionInput } = await import(root + "src/studio3d/adapters/sceneToIntent.ts");
+const { benchMoveRequest, intentTypeForInteraction, mergeActionInput } = await import(root + "src/studio3d/adapters/sceneToIntent.ts");
 const { resolveActionInput } = await import(root + "src/runtime/actionInputs.ts");
 const { validateTechniqueDefinition } = await import(root + "src/domain/validation.ts");
 const { validateTechniqueCompositionContract } = await import(root + "src/domain/compositionValidation.ts");
@@ -51,13 +51,19 @@ const send = (action: any, intent: any, input = "") => {
   return err ? "ERROR " + err.message + " / " + (err.recovery ?? "") : (added.at(-1)?.message ?? "ok(no feedback)");
 };
 const inputs: Record<string, string> = JSON.parse(process.env.PROBE_INPUTS ?? "{}");
+// Free moves made before a step (a paper lifted off the balance pan before it is folded): action id -> instance id.
+const moves: Record<string, string> = JSON.parse(process.env.PROBE_MOVES ?? "{}");
 for (const n of def.process.nodes) {
   if (state.currentNodeId !== n.id) { console.log(`stuck before ${n.id} (current ${state.currentNodeId})`); break; }
   const action = def.actions.find((a: any) => a.id === n.actionId);
   const interaction = resolveActionInteraction(action);
   const type = intentTypeForInteraction[interaction.type];
   const notes: string[] = [];
-  const repeats = Number(action.parameters.rinsePortions ?? action.parameters.inversions ?? action.parameters.portionsThisStep ?? 1);
+  if (moves[action.id]) {
+    state = performRuntimeAction(def, state, benchMoveRequest(moves[action.id], { x: 300, y: 300 }, 50));
+    notes.push(`(moved ${moves[action.id]} to the bench)`);
+  }
+  const repeats = Number(action.parameters.rinsePortions ?? action.parameters.inversions ?? action.parameters.portionsThisStep ?? (action.parameters.pourPortionMl ? 20 : 1));
   for (let i = 0; i < repeats * (action.parameters.stirBetweenPortions ? 2 : 1) && !state.completedNodes.includes(n.id); i += 1) {
     const stir = action.parameters.stirBetweenPortions && i % 2 === 1;
     notes.push(send(action, stir ? { type: "notebookRecordIntent", runtimeParameters: { portionOperation: "stir" } } : { type }, inputs[action.id] ?? ""));

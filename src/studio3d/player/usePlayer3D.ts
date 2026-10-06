@@ -8,7 +8,7 @@ import { resolveInteractionIntent, type InteractionInvalidFeedback, type Runtime
 import { fromBench, benchPositionWords, runtimeBenchPointsMm, toBench } from "../adapters/benchCoordinates";
 import { footprintOf, nearestFreeSpot, type FootprintMm } from "../adapters/footprints";
 import { readingShownFor } from "../adapters/instrumentDisplay";
-import { pourStagingScene, runtimeToScene, sceneContents, type SceneContents, type SceneDescription } from "../adapters/runtimeToScene";
+import { fillLevelMm, pourStagingScene, runtimeToScene, sceneContents, type SceneContents, type SceneDescription } from "../adapters/runtimeToScene";
 import { heldOnSeat, readingSeatZone } from "../bench/scene/setOn";
 import { benchMoveRequest, benchOpStepFor, intentTypeForInteraction, markStepFor, mergeActionInput, pipetteStepFor, resolveTrayDrop, stepClockSeconds, toolTransferFor, type ReleaseOrigin } from "../adapters/sceneToIntent";
 import { nextPlacementPoint, parkPointAfterInteraction } from "../adapters/twoDPlacement";
@@ -46,6 +46,11 @@ export interface PourAnimation {
   drain?: boolean;
   /** A reagent portion poured while the rod standing in the target stirs it (Pack 2's precipitation). */
   stir?: boolean;
+  /**
+   * A portion poured into a filter (Pack 2's filtration): it is drawn filling the paper cone, poured
+   * down the stirring rod (`guideRodId`), then draining through into the receiver under the funnel.
+   */
+  drainInto?: { receiverId: string; receiverBefore: SceneContents; receiverAfter: SceneContents; guideRodId?: string };
   id: number;
 }
 
@@ -255,8 +260,30 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     } else if (!failed && result.interaction.type === "pourInto" && result.request.sourceInstanceId && result.request.targetInstanceId) {
       pourSeq.current += 1;
       const { sourceInstanceId: sourceId, targetInstanceId: targetId } = result.request;
-      setPour({ sourceId, targetId, staging: pourStagingScene(before, next, definition, { sourceId, targetId }),
-        sourceAfter: contentsIn(next, sourceId), targetAfter: contentsIn(next, targetId),
+      // A portion poured through a filter: the paper cone holds what was poured until it drains into the receiver.
+      const receiverId = result.action.verb === "filter" && typeof result.action.parameters.receiverInstanceId === "string"
+        ? result.action.parameters.receiverInstanceId : undefined;
+      const moved = receiverId ? (next.equipmentInstances.find((i) => i.id === receiverId)?.contents.volumeMl ?? 0)
+        - (before.equipmentInstances.find((i) => i.id === receiverId)?.contents.volumeMl ?? 0) : 0;
+      const sourceBefore = contentsIn(before, sourceId);
+      const coneAfter: SceneContents | undefined = receiverId && moved > 0 && sourceBefore.kind === "liquid"
+        ? (() => {
+            const funnel = next.equipmentInstances.find((i) => i.id === targetId);
+            const entry = funnel ? equipment3dEntry(funnel.definitionId) : undefined;
+            return entry?.fill ? { kind: "liquid", volumeMl: moved, ...fillLevelMm(entry.fill, moved), style: sourceBefore.style } : undefined;
+          })()
+        : undefined;
+      const guideRodId = receiverId ? Object.values(result.action.equipmentRoleBindings ?? {}).includes("stirring-rod")
+        ? next.equipmentInstances.find((i) => i.definitionId === "stirring-rod" && i.location === "workbench")?.id : undefined : undefined;
+      const staged = pourStagingScene(before, next, definition, { sourceId, targetId });
+      // The receiver under a filter is drawn as it was until the funnel drains into it.
+      const staging = receiverId && coneAfter
+        ? { ...staged, bench: staged.bench.map((item) => (item.instanceId === receiverId ? { ...item, contents: contentsIn(before, receiverId) } : item)) }
+        : staged;
+      setPour({ sourceId, targetId, staging,
+        sourceAfter: contentsIn(next, sourceId), targetAfter: coneAfter ?? contentsIn(next, targetId),
+        ...(receiverId && coneAfter ? { drainInto: { receiverId, receiverBefore: contentsIn(before, receiverId), receiverAfter: contentsIn(next, receiverId),
+          ...(guideRodId ? { guideRodId } : {}) } } : {}),
         ...(result.action.parameters.drainMeasuringVessel === true ? { drain: true } : {}),
         ...(result.action.parameters.portionCount !== undefined ? { stir: true } : {}), id: pourSeq.current });
     } else if (!failed && result.interaction.type === "rinseTarget" && result.request.sourceInstanceId && result.request.targetInstanceId
@@ -266,10 +293,14 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
       // is seated; a weighing boat is held tipped over the funnel while it is rinsed.
       pourSeq.current += 1;
       const { sourceInstanceId: sourceId, targetInstanceId: rinsedId } = result.request;
-      const targetId = result.action.parameters.washingsReceiverInstanceId;
-      const seated = next.attachments.some((relation) => relation.childInstanceId === rinsedId && relation.parentInstanceId === targetId);
+      const receiverId = result.action.parameters.washingsReceiverInstanceId;
+      const seated = next.attachments.some((relation) => relation.childInstanceId === rinsedId && relation.parentInstanceId === receiverId);
+      // Washings that run out from under what is rinsed (a precipitate washed on the paper, the flask under the
+      // funnel; Pack 2): the jet goes into the funnel, and the receiver fills as the sync shows.
+      const under = next.attachments.some((relation) => relation.childInstanceId === receiverId && relation.parentInstanceId === rinsedId);
+      const targetId = under ? rinsedId : receiverId;
       setPour({ sourceId, targetId, staging: pourStagingScene(before, next, definition, { sourceId, targetId }),
-        sourceAfter: contentsIn(next, sourceId), targetAfter: contentsIn(next, targetId), ...(seated ? {} : { via: rinsedId }), id: pourSeq.current });
+        sourceAfter: contentsIn(next, sourceId), targetAfter: contentsIn(next, targetId), ...(seated || under ? {} : { via: rinsedId }), id: pourSeq.current });
     } else if (!failed && typeof result.action.parameters.benchOperation === "string") {
       // A bench operation (Pack 2): drawn after the runtime has recorded it, the vessel as it was until then.
       const step = benchOpStepFor(result.action, false);

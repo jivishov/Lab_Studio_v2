@@ -1,0 +1,100 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "filter-paper",
+  "model": "filter-paper.glb",
+  "thumbnail": "thumbs/filter-paper.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "circle",
+      "radius": 45.0
+    },
+    "grip": {
+      "heightMm": 2.0
+    },
+    "graduations": null,
+    "forms": {
+      "flat": [
+        "Paper_flat"
+      ],
+      "folded": [
+        "Paper_folded"
+      ],
+      "cone": [
+        "Paper_cone"
+      ]
+    },
+    "defaultForm": "flat",
+    "formBySeat": {
+      "funnel-stand-paper-seat": "cone",
+      "watch-glass-paper-seat": "flat"
+    },
+    "formSolidRest": {
+      "cone": {
+        "centreMm": [
+          0.0,
+          0.0,
+          6.0
+        ],
+        "radiusMm": 7.0
+      },
+      "flat": {
+        "centreMm": [
+          0.0,
+          0.0,
+          0.2
+        ],
+        "radiusMm": 16.0
+      },
+      "folded": {
+        "centreMm": [
+          0.0,
+          0.0,
+          0.8
+        ],
+        "radiusMm": 10.0
+      }
+    },
+    "solidRest": {
+      "centreMm": [
+        0.0,
+        0.0,
+        0.2
+      ],
+      "radiusMm": 16.0
+    },
+    "wetLook": true,
+    "anchors": {},
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -45.0,
+        -45.0,
+        0.0
+      ],
+      "max": [
+        45.0,
+        45.0,
+        38.97
+      ]
+    },
+    "triangles": 864,
+    "materials": [
+      "Filter paper"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/filter_paper.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "4c8aeee8c6c36f8902c7cc98549e1439544f9a590f7a72c12f62cc7995341606",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

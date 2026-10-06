@@ -1,0 +1,87 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "ring-stand",
+  "model": "ring-stand.glb",
+  "thumbnail": "thumbs/ring-stand.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "rect",
+      "width": 130.0,
+      "depth": 210.0
+    },
+    "grip": {
+      "heightMm": 260.0
+    },
+    "graduations": null,
+    "displays": [],
+    "states": {},
+    "anchors": {
+      "ring-stand-funnel-seat": {
+        "positionMm": [
+          0.0,
+          0.0,
+          141.49
+        ]
+      },
+      "ring-stand-clay-triangle-seat": {
+        "positionMm": [
+          0.0,
+          0.0,
+          223.0
+        ]
+      },
+      "ring-stand-crucible-seat": {
+        "positionMm": [
+          0.0,
+          0.0,
+          205.0
+        ]
+      },
+      "ring-stand-calorimeter-support": {
+        "positionMm": [
+          0.0,
+          0.0,
+          223.0
+        ]
+      },
+      "ring-stand-stirrer-bay": {
+        "positionMm": [
+          0.0,
+          0.0,
+          12.0
+        ]
+      }
+    }
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -65.0,
+        -105.0,
+        0.0
+      ],
+      "max": [
+        65.0,
+        111.0,
+        512.0
+      ]
+    },
+    "triangles": 5804,
+    "materials": [
+      "Black powder coat",
+      "Cast clamp chrome"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/ring_stand.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "e87edd904b13b2bcf640a34ad4c416d9f241450ddc18a1fe32a7f0d8cab49104",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

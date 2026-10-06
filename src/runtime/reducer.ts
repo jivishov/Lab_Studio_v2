@@ -1614,6 +1614,102 @@ const executeInversion = (
   return { ok: true, state: next, message: count >= required ? actionDefinition.feedback.success : `Inversion ${count} of ${required}.` };
 };
 
+/**
+ * A mixture poured into a filter in portions (Pack 2 decision 4, 2026-10-05; FD-06): the clear liquid is
+ * decanted first, a portion at a time no larger than the paper cone holds about 1 cm below its rim
+ * (`pourPortionMl`), so it never overflows; the solid goes in with the last portion. Each portion's
+ * filtrate runs into the receiver. A small part of the solid (`residueFraction`) clings to the beaker until
+ * it is rinsed in (FD-07). The step is judged on its tag, recorded with the last portion.
+ */
+const filterInPortions = (
+  state: RuntimeState,
+  actionDefinition: ActionDefinition,
+  nodeId: string,
+  params: Record<string, string | number | boolean | string[] | undefined>,
+  parts: { source: EquipmentInstance; target: EquipmentInstance; paper: EquipmentInstance; receiver: EquipmentInstance },
+  pourPortionMl: number,
+): ActionResult => {
+  const { source, paper, receiver } = parts;
+  const precipitate = source.contents.precipitate!;
+  const liquidMl = source.contents.volumeMl ?? 0;
+  if (liquidMl <= 1e-9) return fail(state, "There is nothing left to pour.", "Go on to the next step.", nodeId);
+  const last = liquidMl <= pourPortionMl + 1e-9;
+  const moved = roundToRuntimeMl(last ? liquidMl : pourPortionMl);
+  const receiverDefinition = equipmentById.get(receiver.definitionId);
+  if (receiverDefinition?.capacity.unit === "mL" && (receiver.contents.volumeMl ?? 0) + moved > receiverDefinition.capacity.amount) {
+    return fail(state, "The filtrate would overflow the receiving vessel.", "Use an empty receiving vessel with enough capacity.", nodeId);
+  }
+  const liquidPart: ContentState = {
+    ...cloneContent(source.contents),
+    kind: "liquid",
+    precipitate: undefined,
+    massG: undefined,
+    solutes: source.contents.solutes.filter((solute) => !isPrecipitatedSolute(solute, precipitate)),
+  };
+  const { transferredContents, remainingContents } = splitContentForVolume(liquidPart, moved);
+  const filtrateContent: ContentState = {
+    ...transferredContents,
+    kind: "liquid",
+    label: "Filtrate",
+    volumeMl: moved,
+    contamination: [...source.contents.contamination],
+    wetState: "wet",
+    visualState: stringSetting(params, "filtrateVisualState") ?? "clear-filtrate",
+  };
+  let next = updateInstance(state, receiver.id, (instance) => ({
+    ...instance,
+    location: "snapZone",
+    // Filtrate added to filtrate is still the filtrate.
+    contents: { ...mergeContents(filtrateContent, instance.contents, moved), ...(instance.contents.kind === "empty" || instance.contents.label === "Filtrate" ? { label: "Filtrate" } : {}) },
+  }));
+  const tag = stringSetting(actionDefinition.parameters, "tag");
+  const count = (state.filterPortions?.[actionDefinition.id] ?? 0) + 1;
+  if (!last) {
+    // Decanting: the clear liquid leaves; the settled solid stays in the beaker.
+    next = updateInstance(next, source.id, (instance) => ({
+      ...instance,
+      contents: { ...instance.contents, volumeMl: remainingContents.volumeMl, solutes: [...remainingContents.solutes,
+        ...instance.contents.solutes.filter((solute) => isPrecipitatedSolute(solute, precipitate))] },
+    }));
+    return {
+      ok: true,
+      state: { ...next, filterPortions: { ...next.filterPortions, [actionDefinition.id]: count } },
+      message: `Portion ${count} is through the paper; let the funnel drain before you pour again.`,
+    };
+  }
+  const residueFraction = Math.min(0.5, Math.max(0, numberSetting(params, "residueFraction", 0)));
+  const residueMassG = Number((precipitate.massG * residueFraction).toFixed(6));
+  const collectedMassG = Number((precipitate.massG - residueMassG).toFixed(6));
+  next = updateInstance(next, paper.id, (instance) => ({
+    ...instance,
+    contents: {
+      kind: "precipitate",
+      label: precipitate.substance,
+      massG: collectedMassG,
+      solutes: [],
+      precipitate: { ...precipitate, massG: collectedMassG },
+      contamination: [],
+      wetState: "wet",
+      visualState: stringSetting(params, "retainedVisualState") ?? "filter-cake",
+    },
+  }));
+  next = updateInstance(next, source.id, (instance) => ({
+    ...instance,
+    contents: residueMassG > 0
+      ? { kind: "precipitate", label: `${precipitate.substance} left on the glass`, massG: residueMassG, solutes: [], contamination: [],
+          precipitate: { ...precipitate, massG: residueMassG }, wetState: "wet", visualState: "filter-cake" }
+      : emptyContents(),
+  }));
+  next = { ...next, filterPortions: { ...next.filterPortions, [actionDefinition.id]: count } };
+  return {
+    ok: true,
+    state: addNotebook(next, nodeId, actionDefinition.label,
+      `Decanted the clear liquid and poured the solid through the paper in ${count} portions, none above the paper's rim.`,
+      ["filter", ...(tag ? [tag] : [])]),
+    message: actionDefinition.feedback.success,
+  };
+};
+
 /** One drop from a dropping (Beral) pipette, as the drop-dispense records assume. */
 const BENCH_DROP_ML = 0.05;
 
@@ -1692,6 +1788,18 @@ const executeBenchOperation = (
     }));
     const observation = stringSetting(params, "note") ?? "One drop of reagent was added to the clear liquid.";
     return record(intoVessel, observation, "observe");
+  }
+  if (operation === "fold-filter-paper") {
+    const paper = findInstance(state, action.sourceInstanceId ?? stringSetting(params, "sourceInstanceId"), String(params.sourceDefinitionId ?? ""));
+    if (!paper) return fail(state, "The filter paper is missing.", "Take a filter paper from the tray.", nodeId);
+    if (paper.location === "shelf") return fail(state, "The filter paper is still in the tray.", "Put the paper on the bench, then fold it.", nodeId);
+    if (state.attachments.some((relation) => relation.childInstanceId === paper.id)) {
+      return fail(state, "The filter paper is still on the balance.", "Lift the paper off the pan onto the bench, then fold it.", nodeId);
+    }
+    if (paper.contents.wetState !== "dry") return fail(state, "The filter paper is wet.", "Fold a dry paper; a wet one tears.", nodeId);
+    if (state.apparatusStates?.[paper.id]?.form === "folded") return fail(state, "The paper is already folded.", "Go on to the next step.", nodeId);
+    const folded = { ...state, apparatusStates: { ...state.apparatusStates, [paper.id]: { ...state.apparatusStates?.[paper.id], form: "folded" } } };
+    return record(folded, `Folded the ${paper.label.toLowerCase()} in half and in half again, ready to open into a cone.`, "fold");
   }
   return fail(state, `Unknown bench operation "${operation ?? ""}".`, "Check the step's authored operation.", nodeId);
 };
@@ -2425,6 +2533,12 @@ const executeAction = (
     if (nextLocation !== "snapZone" && currentParent) {
       const closedParent = closedChamberAccessRefusal(currentParent);
       if (closedParent) return fail(state, closedParent.message, closedParent.recovery, nodeId);
+    }
+    // A part that must first be shaped (Pack 2: the filter paper folded before it is opened into the funnel).
+    const requiredForm = stringSetting(params, "requiredForm");
+    if (requiredForm && state.apparatusStates?.[equipment.id]?.form !== requiredForm) {
+      return fail(state, `The ${equipment.label.toLowerCase()} is not ${requiredForm} yet.`,
+        stringSetting(params, "requiredFormRecovery") ?? `Make it ${requiredForm} first.`, nodeId);
     }
     const compositeDefinitionId = stringSetting(params, "compositeDefinitionId");
     // The registry, not the action parameter, decides what these pieces assemble into and what the
@@ -4076,6 +4190,10 @@ const executeAction = (
       return { ok: true, state: updateInstance(withFiltrate, source.id, (entry) => ({ ...entry, contents: emptyContents() })), message: "Observed residue collected; filtrate retained. No component distribution or mass inferred." };
     }
     if (!source.contents.precipitate) return fail(state, "The recovered solid evidence is missing.", "Observe this fraction again.", nodeId);
+    const pourPortionMl = numberSetting(actionDefinition.parameters, "pourPortionMl", Number.NaN);
+    if (Number.isFinite(pourPortionMl) && pourPortionMl > 0) {
+      return filterInPortions(state, actionDefinition, nodeId, params, { source, target, paper, receiver }, pourPortionMl);
+    }
     const precipitateContent: ContentState = {
       kind: "precipitate",
       label: source.contents.precipitate.substance,
@@ -4224,7 +4342,22 @@ const executeAction = (
         return fail(state, `The ${receiver.label} would overflow.`, "Use less rinse water.", nodeId);
       }
     }
-    const residue = receiver && target.contents.kind === "solid" && (target.contents.massG ?? 0) > 0 ? target.contents : undefined;
+    // Washings sent into a filter (Pack 2: the beaker rinsed into the funnel, FD-07) run through the paper
+    // into the flask under it; solid left on the beaker is caught on the paper.
+    const throughFilter = receiver && isFilterTargetDefinition(receiver.definitionId) ? receiver : undefined;
+    const filterPaper = throughFilter ? childAttachmentByRelation(state, throughFilter.id, "inserted")?.child : undefined;
+    const filtrateReceiver = throughFilter ? childAttachmentByRelation(state, throughFilter.id, "receiving")?.child : undefined;
+    if (throughFilter && (!filterPaper || !filtrateReceiver)) {
+      return fail(state, "The funnel needs its paper seated and a flask under it.", "Seat the paper and place the receiving flask before rinsing into the funnel.", nodeId);
+    }
+    if (filtrateReceiver) {
+      const capacity = equipmentById.get(filtrateReceiver.definitionId)?.capacity;
+      if (capacity?.unit === "mL" && (filtrateReceiver.contents.volumeMl ?? 0) + rinseVolumeMl > capacity.amount) {
+        return fail(state, `The ${filtrateReceiver.label} would overflow.`, "Empty it through the approved route first.", nodeId);
+      }
+    }
+    const caught = throughFilter && target.contents.precipitate ? target.contents.precipitate : undefined;
+    const residue = receiver && !throughFilter && target.contents.kind === "solid" && (target.contents.massG ?? 0) > 0 ? target.contents : undefined;
     const rinseSplit = (retainedRinse || receiver) && source ? splitContentForVolume(source.contents, rinseVolumeMl) : undefined;
     const afterSource =
       explicitLiquidRinse && source && typeof source.contents.volumeMl === "number"
@@ -4255,18 +4388,31 @@ const executeAction = (
               volumeMl: rinseVolumeMl,
               visualState: stringSetting(params, "resultVisualState") ?? "clear-liquid",
             })
-          : residue ? emptyContents() : instance.contents),
+          : residue || caught ? emptyContents() : instance.contents),
         wetState: "rinsed",
-        precipitate: instance.contents.precipitate
+        // A solid rinsed off into a receiver has left the item.
+        precipitate: instance.contents.precipitate && !residue && !caught
           ? { ...instance.contents.precipitate, rinsed: true }
-          : instance.contents.precipitate,
+          : undefined,
         visualState:
           stringSetting(params, "resultVisualState") ??
           stringSetting(params, "visualState") ??
           (instance.contents.precipitate ? "rinsed-precipitate" : "wet-equipment"),
       },
     }));
-    const washed = receiver && rinseSplit
+    const washed = throughFilter && rinseSplit && filtrateReceiver && filterPaper
+      ? updateInstance(updateInstance(next, filtrateReceiver.id, (instance) => ({
+          ...instance,
+          contents: mergeWashings(instance.contents, { ...rinseSplit.transferredContents, wetState: "wet" }, params),
+        })), filterPaper.id, (instance) => (caught && instance.contents.precipitate ? {
+          ...instance,
+          contents: {
+            ...instance.contents,
+            massG: Number(((instance.contents.massG ?? 0) + caught.massG).toFixed(6)),
+            precipitate: { ...instance.contents.precipitate, massG: Number((instance.contents.precipitate.massG + caught.massG).toFixed(6)) },
+          },
+        } : instance))
+      : receiver && rinseSplit
       ? updateInstance(next, receiver.id, (instance) => {
           const withResidue = residue
             ? mergeTransferredSolid(instance.contents, {
@@ -4291,7 +4437,8 @@ const executeAction = (
         counted,
         nodeId,
         actionDefinition.label,
-        receiver ? `${rinsed}; the washings ran into the ${receiver.label}.` : `${rinsed}.`,
+        throughFilter && filtrateReceiver ? `${rinsed}; the washings ran through the paper into the ${filtrateReceiver.label}.`
+          : receiver ? `${rinsed}; the washings ran into the ${receiver.label}.` : `${rinsed}.`,
         ["rinse", rinseType, ...(tag ? [tag] : [])],
       ),
       message: actionDefinition.feedback.success,
@@ -8047,7 +8194,8 @@ export const performRuntimeAction = (
     ((actionDefinition.interaction?.type === "dispenseDrops" &&
       normalizedRequest.parameters?.dispenseMode === "drop") ||
       (actionDefinition.verb === "mix" && actionDefinition.parameters.mixOperation === "invert") ||
-      (actionDefinition.verb === "rinse" && Number(actionDefinition.parameters.rinsePortions ?? 1) > 1));
+      (actionDefinition.verb === "rinse" && Number(actionDefinition.parameters.rinsePortions ?? 1) > 1) ||
+      (actionDefinition.verb === "filter" && actionDefinition.parameters.pourPortionMl !== undefined));
   const repeatProgress = { ...result.state.repeatProgress };
   if (passed && runtimeRepeat && runtimeRepeatIteration !== undefined && runtimeRepeatExpected !== undefined) {
     const completedIterations = Array.from(new Set([

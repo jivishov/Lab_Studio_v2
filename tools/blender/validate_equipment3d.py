@@ -45,6 +45,11 @@ DISPLAY_POLICIES = EQ3D / 'displayPolicies.json'
 BUDGET_ITEM = 250_000
 BUDGET_INSTRUMENT = 600_000
 BUDGET_PACK = 4_000_000
+# Items that hold liquid only while it passes through (Pack 2, decided 2026-10-05): their fill profile
+# is what they really hold, not the catalogue's capacity, which is the 2D player's transient allowance.
+TRANSIENT_FILL = {
+    'funnel-stand': 'the seated paper cone holds what drains through it; the catalogue 150 mL is a 2D allowance',
+}
 FLOAT = 5126
 # Operations a model control may declare; the viewer maps each to a technique step (src/studio3d).
 CONTROL_OPERATIONS = {'zero'}
@@ -157,10 +162,15 @@ def main():
                 errors.append(f'{where} catalogue capacity {cap["amount"]} mL but no fill profile')
             else:
                 vol = fill_volume_ml(fill)
-                if vol + 1e-6 < cap['amount']:
-                    errors.append(f'{where} fill profile holds {vol:.1f} mL, below catalogue capacity {cap["amount"]} mL')
-                if fill.get('capacityMl') != cap['amount']:
-                    errors.append(f'{where} fill.capacityMl {fill.get("capacityMl")} != catalogue {cap["amount"]} mL')
+                if def_id in TRANSIENT_FILL:
+                    notes.append(f'{where} transient fill: {TRANSIENT_FILL[def_id]}')
+                    if abs(vol - fill.get('capacityMl', 0)) > 0.5:
+                        errors.append(f'{where} fill.capacityMl {fill.get("capacityMl")} != the {vol:.1f} mL its profile holds')
+                else:
+                    if vol + 1e-6 < cap['amount']:
+                        errors.append(f'{where} fill profile holds {vol:.1f} mL, below catalogue capacity {cap["amount"]} mL')
+                    if fill.get('capacityMl') != cap['amount']:
+                        errors.append(f'{where} fill.capacityMl {fill.get("capacityMl")} != catalogue {cap["amount"]} mL')
                 notes.append(f'{where} fill profile holds {vol:.1f} mL (catalogue {cap["amount"]} mL)')
         elif fill:
             errors.append(f'{where} declares a fill profile but has no catalogue capacity in mL')

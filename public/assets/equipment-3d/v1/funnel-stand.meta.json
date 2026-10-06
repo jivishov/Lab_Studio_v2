@@ -1,0 +1,82 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "funnel-stand",
+  "model": "funnel-stand.glb",
+  "thumbnail": "thumbs/funnel-stand.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "rect",
+      "width": 130.0,
+      "depth": 210.0
+    },
+    "grip": {
+      "heightMm": 260.0
+    },
+    "graduations": null,
+    "displays": [],
+    "states": {},
+    "anchors": {
+      "funnel-stand-paper-seat": {
+        "positionMm": [
+          0.0,
+          0.0,
+          183.38
+        ]
+      },
+      "funnel-receiving-vessel-zone": {
+        "positionMm": [
+          -11.5,
+          0.0,
+          12.0
+        ]
+      }
+    },
+    "fill": {
+      "innerProfileMm": [
+        [
+          0.0,
+          183.38
+        ],
+        [
+          22.5,
+          222.35
+        ]
+      ],
+      "capacityMl": 20.7,
+      "meniscus": "concave"
+    }
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -65.0,
+        -105.0,
+        0.0
+      ],
+      "max": [
+        65.0,
+        111.0,
+        512.0
+      ]
+    },
+    "triangles": 19884,
+    "materials": [
+      "Black powder coat",
+      "Borosilicate glass",
+      "Borosilicate glass thick",
+      "Cast clamp chrome"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/funnel_stand.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "fce546ab2caa2f207edbce5ee968d21612fdddee2559fe847a8666ea04676424",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

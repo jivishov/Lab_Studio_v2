@@ -283,7 +283,14 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
           ...(sourceAfter?.placement.kind === "bench" ? { returnTo: sourceAfter.placement.point } : {}),
           ...(pour.via ? { via: pour.via } : {}), holdAfter,
           // A measuring cylinder is held over the beaker for a few seconds so it drains (decided 2026-10-05).
-          ...(pour.drain ? { drainS: 2.4 } : {}) });
+          ...(pour.drain ? { drainS: 2.4 } : {}),
+          // Poured down the stirring rod into the filter (decided 2026-10-05).
+          ...(pour.drainInto?.guideRodId ? { guideRodId: pour.drainInto.guideRodId } : {}) });
+      }
+      // The filter drains into the flask before the next portion can go in.
+      if (pour.drainInto) {
+        await engine.animateDrain({ funnelId: pour.targetId, cone: pour.targetAfter, receiverId: pour.drainInto.receiverId,
+          receiverBefore: pour.drainInto.receiverBefore, receiverAfter: pour.drainInto.receiverAfter });
       }
       setSquirtHeld(holdAfter && engine.squirtHolding() === pour.sourceId);
       player.finishPour(pour.id);
@@ -587,6 +594,10 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   // Stirring with the rod (Pack 2): a click on the beaker or the rod standing in it, Enter on either,
   // the step card's Stir, or a closed hand moved in a circle.
   const stirVesselId = player.benchOp?.operation === "stir" ? player.benchOp.vesselInstanceId : undefined;
+  // Folding the filter paper (Pack 2): a click on it once it is on the bench, Enter on it, or the step card's Fold.
+  const foldPaperId = player.benchOp?.operation === "fold-filter-paper" ? player.benchOp.toolInstanceId : undefined;
+  const isFoldTarget = (id: string): boolean => Boolean(foldPaperId) && id === foldPaperId
+    && scene.bench.find((i) => i.instanceId === id)?.placement.kind === "bench";
   const isStirTarget = (id: string): boolean => {
     if (!stirVesselId || player.benchOpRun) return false;
     const item = scene.bench.find((i) => i.instanceId === id);
@@ -731,7 +742,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
         e.preventDefault();
       } else if (e.key === "Enter") {
         // At an inversion or swirl step, Enter on the flask inverts or swirls it once.
-        if (selected && (isInvertTarget(selected) || isSwirlTarget(selected) || isStirTarget(selected))) { player.recordEvidence(); e.preventDefault(); }
+        if (selected && (isInvertTarget(selected) || isSwirlTarget(selected) || isStirTarget(selected) || isFoldTarget(selected))) { player.recordEvidence(); e.preventDefault(); }
         else if (selected && scene.bench.some((item) => item.instanceId === selected)) { startMove(selected); e.preventDefault(); }
       } else if (e.key === "e" || e.key === "E") { if (selected) examine(selected); }
       else if (e.key === "s" || e.key === "S") { if (selected) player.setSelectedSource(selected); }
@@ -813,7 +824,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   tapRef.current = (id, pointerType, x, y) => {
     // At an inversion step, a tap on the stoppered vessel (or its stopper) inverts it once; at a swirl
     // step, a tap on the flask swirls it.
-    if (isInvertTarget(id) || isSwirlTarget(id) || isStirTarget(id)) {
+    if (isInvertTarget(id) || isSwirlTarget(id) || isStirTarget(id) || isFoldTarget(id)) {
       player.recordEvidence();
       return true;
     }
@@ -904,6 +915,9 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     : player.benchOpRun?.minutes ? `${player.benchOpRun.label}: the clock runs the ${player.benchOpRun.minutes} minutes fast.`
     : stirVesselId ? "Click the beaker to stir it with the rod, or use Stir in the step card. Right-drag to look around."
     : player.benchOp?.operation === "settle-precipitate" ? "Leave the beaker still: use Wait in the step card while the precipitate settles."
+    : foldPaperId ? (scene.bench.find((i) => i.instanceId === foldPaperId)?.placement.kind === "bench"
+      ? "Click the paper to fold it in half and in half again, or use Fold in the step card. Right-drag to look around."
+      : "Lift the paper off the balance onto the bench, then click it to fold it. Right-drag to look around.")
     : player.benchOp?.operation === "precipitation-drop-test" ? "Pick up the dropping pipette and click the beaker to add one drop, or use Add a drop in the step card. Right-drag to look around."
     : flow.canConfirm ? "Click an item to pick it up, then click where it goes; or use Source, Target and Confirm. Right-drag to look around."
       : player.runtime.expectedAction?.parameters.balanceOperation === "zero" ? "Press TARE on the balance, or Tare in the step card. Right-drag to look around."

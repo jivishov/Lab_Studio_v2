@@ -108,6 +108,15 @@ def build_one(def_id, mod, args):
 
     if args.no_render:
         return
+    # An item drawn in forms (a filter paper) renders its default form; the GLB keeps them all.
+    forms = registry.get('forms')
+    if forms:
+        shown = set(forms[registry.get('defaultForm', next(iter(forms)))])
+        formed = {name for names in forms.values() for name in names}
+        for ob in coll.all_objects:
+            if ob.name in formed:
+                ob.hide_render = ob.name not in shown
+        lo, hi = bounds_mm([ob for ob in coll.all_objects if ob.name not in formed or ob.name in shown])
     studio = bpy.data.collections.new('studio')
     scene.collection.children.link(studio)
     build_studio(studio)
@@ -136,6 +145,9 @@ COMPOSITES = [
     ('test-tube-in-rack', 'test-tube-rack', 'seat:1', 'test-tube'),
     ('test-tube-with-stopper', 'test-tube', 'test-tube-stopper-seat', 'rubber-stopper-set'),
     ('beaker-with-stirring-rod', 'beaker-250ml', 'beaker-250ml-stirring-rod-rest', 'stirring-rod'),
+    ('ring-stand-with-funnel', 'ring-stand', 'ring-stand-funnel-seat', 'funnel'),
+    ('funnel-stand-with-paper', 'funnel-stand', 'funnel-stand-paper-seat', 'filter-paper'),
+    ('funnel-stand-with-flask', 'funnel-stand', 'funnel-receiving-vessel-zone', 'erlenmeyer-flask-250ml'),
 ]
 
 
@@ -156,6 +168,13 @@ def build_composite(name, parent_id, anchor, child_id, mods, args):
         a = registries[parent_id]['anchors'][anchor]
         pos, yaw, lean = a['positionMm'], a.get('yawDeg', 0.0), a.get('leanDeg', 0.0)
     child_root = colls[child_id][1]
+    # A child drawn in forms (a filter paper flat, folded or as a cone) shows the form its seat takes.
+    form = registries[child_id].get('formBySeat', {}).get(anchor)
+    if form:
+        shown = set(registries[child_id]['forms'][form])
+        for ob in colls[child_id][0].all_objects:
+            if ob.type == 'MESH' and any(ob.name in names for names in registries[child_id]['forms'].values()):
+                ob.hide_render = ob.name not in shown
     child_root.location = [v * MM for v in pos]
     # A lean tips the child's top toward its +y (a rod resting against a beaker's rim), then the yaw turns it.
     deg = 3.141592653589793 / 180.0
@@ -197,6 +216,9 @@ def main():
         build_one(def_id, mod, args)
     if args.composites:
         for name, parent_id, anchor, child_id in COMPOSITES:
+            # With --only, just the composites that involve a rebuilt part.
+            if only and parent_id not in only and child_id not in only:
+                continue
             build_composite(name, parent_id, anchor, child_id, mods, args)
 
 

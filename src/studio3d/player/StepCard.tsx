@@ -131,7 +131,7 @@ export const StepCard = ({ player, controls, onShowMe, onHoldOver, holdOverReady
               disabled={!flow.confirmEnabled || (runtime.expectedAction?.verb === "rinse" && Boolean(player.pour))} onClick={player.confirm}>
               {runtime.expectedAction?.verb === "rinse" && Number(runtime.expectedAction.parameters.rinsePortions ?? 1) > 1
                 ? `Rinse (${runtime.state.rinsePortions?.[runtime.expectedAction.id] ?? 0} of ${Number(runtime.expectedAction.parameters.rinsePortions)})`
-                : "Confirm"}
+                : pourPortions(player) ?? "Confirm"}
             </button>
           ) : flow.canSubmitCalculation || (runtime.expectedAction?.verb === "calculate" && !flow.nodeCompleted) ? (
             <button type="button" className="s3d-button s3d-button--primary" data-hand-press="submit-calculation" disabled={!flow.canSubmitCalculation} onClick={player.submitCalculation}>
@@ -152,6 +152,20 @@ export const StepCard = ({ player, controls, onShowMe, onHoldOver, holdOverReady
       </div>
     </FloatPanel>
   );
+};
+
+/**
+ * A mixture filtered in portions (Pack 2 decision 4): "Pour (done of all)", all being the portions poured
+ * so far and those the beaker's liquid still needs at the step's portion size.
+ */
+const pourPortions = (player: Player3DController): string | undefined => {
+  const action = player.runtime.expectedAction;
+  const portion = Number(action?.parameters.pourPortionMl);
+  if (!action || action.verb !== "filter" || !(portion > 0)) return undefined;
+  const done = player.runtime.state.filterPortions?.[action.id] ?? 0;
+  const source = player.runtime.state.equipmentInstances.find((instance) => instance.id === action.parameters.sourceInstanceId);
+  const left = Math.ceil(Math.max(0, (source?.contents.volumeMl ?? 0) - 1e-9) / portion);
+  return `Pour (${done} of ${done + left})`;
 };
 
 const nodeTypeLabel = (type: string): string =>

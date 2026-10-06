@@ -21,6 +21,8 @@ const PRACTICE = [
     description: "Pour a measured sample into a beaker, let the cylinder drain, and rinse it in." },
   { module: "./precipitationPractice.mjs", basedOn: "hard-water-precipitation", pack: 2,
     description: "Add sodium carbonate in portions while stirring, then test that precipitation is complete." },
+  { module: "./filtrationPractice.mjs", basedOn: "filtration", pack: 2,
+    description: "Weigh and fold the paper, then filter by gravity: decant, pour down a rod, rinse and wash." },
 ];
 
 const check = process.argv.includes("--check");

@@ -18,7 +18,7 @@ export const v1InteractionZones: InteractionZone[] = [
   zone(
     "analytical-balance-pan",
     "analytical-balance",
-    ["watch-glass", "weigh-boat", "beaker-250ml", "crucible-with-lid"],
+    ["watch-glass", "weigh-boat", "beaker-250ml", "crucible-with-lid", "filter-paper"],
     "placedOn",
   ),
   zone("drying-oven-chamber", "drying-oven", ["watch-glass"], "insideInstrument"),

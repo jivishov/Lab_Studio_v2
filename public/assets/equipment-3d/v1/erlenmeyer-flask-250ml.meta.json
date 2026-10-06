@@ -1,0 +1,101 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "erlenmeyer-flask-250ml",
+  "model": "erlenmeyer-flask-250ml.glb",
+  "thumbnail": "thumbs/erlenmeyer-flask-250ml.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "circle",
+      "radius": 42.5
+    },
+    "grip": {
+      "heightMm": 115.0
+    },
+    "pour": {
+      "lipMm": [
+        -18.0,
+        0.0,
+        145.0
+      ],
+      "tiltDeg": 115.0,
+      "style": "pour"
+    },
+    "fill": {
+      "innerProfileMm": [
+        [
+          0.0,
+          2.2
+        ],
+        [
+          35.9,
+          2.2
+        ],
+        [
+          40.9,
+          4.5
+        ],
+        [
+          15.0,
+          121.0
+        ],
+        [
+          15.0,
+          145.0
+        ]
+      ],
+      "capacityMl": 250,
+      "meniscus": "concave"
+    },
+    "graduations": null,
+    "anchors": {
+      "erlenmeyer-stopper-neck": {
+        "positionMm": [
+          0.0,
+          0.0,
+          133.0
+        ]
+      },
+      "erlenmeyer-ph-probe-zone": {
+        "positionMm": [
+          0.0,
+          0.0,
+          155.0
+        ]
+      }
+    },
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -41.97,
+        -41.97,
+        0.03
+      ],
+      "max": [
+        41.97,
+        41.97,
+        144.91
+      ]
+    },
+    "triangles": 24113,
+    "materials": [
+      "Borosilicate glass",
+      "Borosilicate glass thick",
+      "White enamel print"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/erlenmeyer_flask_250ml.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "cfb81be36833857680c165c4b4056fbc1fcda4178197ef6bd55383f52cf87112",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

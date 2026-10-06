@@ -60,6 +60,12 @@ export interface SceneItem {
   definitionId: string;
   label: string;
   placement: ScenePlacement;
+  /** The form drawn, for a model with forms (Equipment3DEntry.forms). */
+  form?: string;
+  /** Drawn wet (Equipment3DEntry.wetLook). */
+  wet?: boolean;
+  /** Apparatus state the runtime records for it (an oven's door, a burner's flame), for drawing. */
+  apparatus?: Record<string, string | number | boolean>;
   contents: SceneContents;
   /** The same contents text the 2D player shows (contentDisplay), for hover labels. */
   contentsText: string;
@@ -128,8 +134,17 @@ const volumeOf = (contents: ContentState): number | undefined =>
   typeof contents.volumeMl === "number" ? contents.volumeMl
     : typeof contents.finalVolumeMl === "number" ? contents.finalVolumeMl : undefined;
 
-export const sceneContents = (instance: EquipmentInstance, model?: Equipment3DEntry): SceneContents => {
+/** The form an item with forms is drawn in: its seat's, else the runtime's, else the default. */
+export const sceneForm = (model: Equipment3DEntry | undefined, zoneId: string | undefined, recorded: unknown): string | undefined => {
+  if (!model?.forms) return undefined;
+  const bySeat = zoneId ? model.formBySeat?.[zoneId] : undefined;
+  const form = bySeat ?? (typeof recorded === "string" ? recorded : undefined) ?? model.defaultForm;
+  return form && model.forms[form] ? form : Object.keys(model.forms)[0];
+};
+
+export const sceneContents = (instance: EquipmentInstance, model?: Equipment3DEntry, form?: string): SceneContents => {
   const contents = instance.contents;
+  const rest = (form ? model?.formSolidRest?.[form] : undefined) ?? model?.solidRest;
   const definition = equipmentById.get(instance.definitionId);
   if (isVisibleLiquid(contents)) {
     const volumeMl = volumeOf(contents);
@@ -145,7 +160,7 @@ export const sceneContents = (instance: EquipmentInstance, model?: Equipment3DEn
     return {
       kind: "solid",
       ...(typeof contents.massG === "number" ? { massG: contents.massG } : {}),
-      ...(model?.solidRest ? { restMm: model.solidRest.centreMm, radiusMm: model.solidRest.radiusMm } : {}),
+      ...(rest ? { restMm: rest.centreMm, radiusMm: rest.radiusMm } : {}),
       style: resolveSolidStyle(contents),
     };
   }
@@ -192,12 +207,17 @@ export const runtimeToScene = (state: RuntimeState, definition: SceneDefinition)
           locked: Boolean(relation.locked),
         }
       : { kind: "bench", point: benchPoints.get(instance.id) ?? toBench(instance.definitionId, instance) };
+    const apparatus = state.apparatusStates?.[instance.id];
+    const form = sceneForm(model, placement.kind === "seated" ? placement.zoneId : undefined, apparatus?.form);
     const item: SceneItem = {
       instanceId: instance.id,
       definitionId: instance.definitionId,
       label: instance.label,
       placement,
-      contents: sceneContents(instance, model),
+      ...(form ? { form } : {}),
+      ...(model?.wetLook && instance.contents.wetState !== "dry" ? { wet: true } : {}),
+      ...(apparatus ? { apparatus } : {}),
+      contents: sceneContents(instance, model, form),
       contentsText: formatContentLabel(instance.contents),
       ...(model ? { model } : {}),
     };
@@ -234,7 +254,7 @@ export const pourStagingScene = (
   const bench = scene.bench.map((item) => {
     const instance = item.instanceId === pour.sourceId || item.instanceId === pour.targetId ? prior.get(item.instanceId) : undefined;
     return instance
-      ? { ...item, contents: sceneContents(instance, item.model), contentsText: formatContentLabel(instance.contents) }
+      ? { ...item, contents: sceneContents(instance, item.model, item.form), contentsText: formatContentLabel(instance.contents) }
       : item;
   });
   const source = prior.get(pour.sourceId);

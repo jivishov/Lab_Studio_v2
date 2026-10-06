@@ -153,6 +153,16 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
   // Nothing is picked up while a committed pour, weighing or tool transfer is being drawn.
   const pouringRef = useRef(false);
   pouringRef.current = Boolean(player.pour || player.weighing || player.toolDeposit || player.swirl || player.benchOpRun);
+  /**
+   * Pouring again into a filter that has not drained would overflow the paper (Pack 2 decision 4): the
+   * beaker cannot be picked up while the funnel drains, and a correction says why. Returns whether refused.
+   */
+  const overflowRefused = useCallback((instanceId: string | undefined): boolean => {
+    if (!instanceId || !player.pour?.drainInto || instanceId !== player.pour.sourceId) return false;
+    player.correct("The funnel is still full: pouring now would overflow the paper.",
+      "Wait until the liquid has drained well below the paper's rim, then pour the next portion.");
+    return true;
+  }, [player]);
   // The drop test (Pack 2): the dropping pipette carried to the beaker adds one drop there.
   const benchOp = player.benchOp;
   const dropTest = useMemo(() => (benchOp?.operation === "precipitation-drop-test" && benchOp.toolInstanceId && benchOp.vesselInstanceId
@@ -634,6 +644,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     const item = scene.bench.find((i) => i.instanceId === instanceId);
     const base = engine?.basePosition(instanceId);
     // Nothing is picked up while a committed pour, weighing, tool transfer or swirl is being drawn.
+    if (overflowRefused(item?.instanceId)) return true;
     if (!engine || !item || !base || pouringRef.current || getVisualProfile(item.definitionId)?.probePresentation) return false;
     if (keptSeated(instanceId)) return true;
     if (carryRef.current) cancel();
@@ -646,7 +657,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     carryTo({ xMm: base.x / MM + (offset?.xMm ?? 0), yMm: -base.z / MM + (offset?.yMm ?? 0) });
     player.announce(`Carrying ${item.label}. Arrow keys move it, Shift moves further, [ and ] step through targets. Enter sets it down; Escape cancels.`);
     return true;
-  }, [cancel, carryTo, engine, player, scene, toolTransfer]);
+  }, [cancel, carryTo, engine, overflowRefused, player, scene, toolTransfer]);
 
   /** Keys while a keyboard carry is under way; returns whether the key was used. */
   const handleCarryKey = useCallback((event: KeyboardEvent): boolean => {
@@ -763,8 +774,13 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     };
 
     const down = (event: PointerEvent) => {
-      // Nothing is picked up while a committed pour is still being drawn.
-      if (event.button !== 0 || pouringRef.current) return;
+      // Nothing is picked up while a committed pour is still being drawn; reaching for the beaker while
+      // the filter drains is refused as an overflow.
+      if (event.button !== 0) return;
+      if (pouringRef.current) {
+        if (!carryRef.current) overflowRefused(engine.pick(event.clientX, event.clientY));
+        return;
+      }
       const current = carryRef.current;
       if (current?.click && isMouse(event)) {
         pressWhileCarrying(current, event);
@@ -894,7 +910,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       window.removeEventListener("pointercancel", up);
       window.removeEventListener("keydown", key);
     };
-  }, [cancel, carryTo, carryToPointer, drawDepth, engine, onControl, onHover, onTap, player, release, scene, scoopFor, toolTransfer]);
+  }, [cancel, carryTo, carryToPointer, drawDepth, engine, onControl, onHover, onTap, overflowRefused, player, release, scene, scoopFor, toolTransfer]);
 
   /** Start carrying a tray item (pointer down on its tile): with a mouse it then follows the pointer until a press on the bench. */
   const startTrayCarry = useCallback((definitionId: string, pointerType = "mouse", instanceId?: string) => {
@@ -922,6 +938,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
   /** Hand control: a closed grip held on a bench item lifts it. */
   const startGestureCarry = useCallback((instanceId: string): boolean => {
     const item = scene.bench.find((i) => i.instanceId === instanceId);
+    if (overflowRefused(item?.instanceId)) return false;
     if (!item || !canCarry(instanceId)) return false;
     // A keyboard carry gives way, as it does to the pointer.
     if (carryRef.current) cancel();
@@ -929,7 +946,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       startX: 0, startY: 0, active: true, pointerType: "gesture" };
     setCarrying(true);
     return true;
-  }, [canCarry, cancel, scene]);
+  }, [canCarry, cancel, overflowRefused, scene]);
 
   /** Hand control: a closed grip held on a tray tile starts the same tray carry a pointer press does. */
   const startGestureTrayCarry = useCallback((definitionId: string, instanceId?: string): boolean => {

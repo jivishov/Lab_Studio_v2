@@ -115,6 +115,18 @@ export interface Equipment3DEntry {
   benchRest?: { rollDeg: number; liftMm: number; shiftMm: number[] };
   /** A pipette, carried upright and judged by its tip (its origin): it draws up and delivers liquid. */
   carriedByTip?: boolean;
+  /**
+   * An item drawn in one of several forms (Pack 2, decided 2026-10-05: a filter paper flat, folded or
+   * opened into a cone): the model's node names for each form. One form shows at a time: the one its
+   * seat takes (`formBySeat`), else the one the runtime records for it (`apparatusStates`), else
+   * `defaultForm`. A form may have its own solid rest (`formSolidRest`).
+   */
+  forms?: Record<string, string[]>;
+  defaultForm?: string;
+  formBySeat?: Record<string, string>;
+  formSolidRest?: Record<string, Equipment3DSolidRest>;
+  /** Darkened and translucent while wet (a filter paper wetted, or holding a wet precipitate). */
+  wetLook?: boolean;
   anchors: Record<string, Equipment3DAnchor>;
   displays: Equipment3DDisplay[];
   controls?: Equipment3DControl[];
