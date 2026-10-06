@@ -1,0 +1,163 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import { describe, expect, it } from "vitest";
+import { assessBundledTechniqueCatalogPolicy } from "../../data/bundledCatalogPolicyBoundary";
+import { applyTechniqueConfiguration } from "../../data/techniqueConfiguration";
+import { resolveActionInteraction } from "../../domain/interactions";
+import type { RuntimeState, TechniqueDefinition } from "../../domain/types";
+import { validateTechniqueDefinition } from "../../domain/validation";
+import { createRuntimeState, performRuntimeAction } from "../../runtime";
+import { resolveActionInput } from "../../runtime/actionInputs";
+import { resolveInteractionIntent, type RuntimeInteractionIntent } from "../../runtime/interactionIntents";
+import { benchMoveRequest, intentTypeForInteraction, mergeActionInput } from "../adapters/sceneToIntent";
+
+/**
+ * Pack 2's 3D practice versions (decided 2026-10-05, PACK2_ATOMIZATION.md): each is listed only in the
+ * 3D practice list, validates and passes the catalogue policy, and plays to completion through the
+ * process control with the free moves a student makes; the Heat and Reweigh burner refuses what a lab
+ * refuses. Written; run with the suite.
+ */
+const read = (path: string) => JSON.parse(readFileSync(join(process.cwd(), ...path.split("/")), "utf8"));
+const practiceIndex = read("public/techniques-3d/index.json") as Array<{ id: string; file: string; basedOn: string; pack: number }>;
+const catalogue = read("public/techniques/index.json") as Array<{ id: string }>;
+
+/** Each practice version's setup, the student's entries, and the items moved to the bench before a step. */
+const PLAYS: Record<string, { config: Record<string, string>; inputs?: Record<string, string>; moves?: Record<string, string> }> = {
+  "transfer-practice": { config: { transferObservation: "The cylinder drained into the beaker." } },
+  "hard-water-precipitation-practice": {
+    config: { reagentVolumeMl: "15", precipitateMassG: "0.15", precipitateObservation: "A white precipitate formed.", completenessObservation: "No new cloudiness." },
+  },
+  "filtration-practice": {
+    config: { precipitateMassG: "0.15", paperMassG: "0.552" },
+    inputs: { "weigh-paper": "0.552" },
+    moves: { "fold-paper": "filter-paper-1" },
+  },
+  "drying-practice": {
+    config: { precipitateMassG: "0.15", paperMassG: "0.552", watchGlassMassG: "30", firstDryingMinutes: "12" },
+    inputs: { "weigh-glass": "30.000", "set-oven": "115", "weigh-combined": "30.702" },
+    moves: { "paper-onto-glass": "watch-glass-1", "first-to-pad": "crucible-tongs-1", "break-up": "scoopula-1" },
+  },
+  "thermal-decomposition-mass-loss-practice": {
+    config: {},
+    inputs: { "read-empty-crucible": "25.000", "read-loaded-crucible": "27.000", "read-first-cycle": "26.557", "read-final": "26.557", "calculate-composition": "0.443" },
+    moves: { "first-to-pad": "crucible-tongs-1" },
+  },
+};
+
+const load = (id: string): TechniqueDefinition =>
+  applyTechniqueConfiguration(read(`public/techniques-3d/${practiceIndex.find((entry) => entry.id === id)!.file}`) as TechniqueDefinition, PLAYS[id].config);
+
+const errorAdded = (before: RuntimeState, after: RuntimeState) =>
+  after.feedbackQueue.slice(before.feedbackQueue.length).find((entry) => entry.severity === "error");
+
+/** One attempt at the current step through the process control; returns the state and any refusal. */
+const attempt = (technique: TechniqueDefinition, state: RuntimeState, id: string) => {
+  const action = technique.actions.find((candidate) => candidate.id === technique.process.nodes.find((n) => n.id === state.currentNodeId)!.actionId)!;
+  const interaction = resolveActionInteraction(action)!;
+  const intent = mergeActionInput({ origin: "keyboard", type: intentTypeForInteraction[interaction.type] } as RuntimeInteractionIntent,
+    resolveActionInput(action, PLAYS[id].inputs?.[action.id] ?? ""), action);
+  const resolved = resolveInteractionIntent(technique, state, intent);
+  if (!resolved.ok) return { state, refusal: resolved.feedback.message };
+  const next = performRuntimeAction(technique, state, resolved.request);
+  return { state: next, refusal: errorAdded(state, next)?.message };
+};
+
+/** Plays the technique up to (not including) the node of `stopBefore`, or to its end. */
+const playTo = (id: string, stopBefore?: string): { technique: TechniqueDefinition; state: RuntimeState } => {
+  const technique = load(id);
+  let state = createRuntimeState(technique);
+  for (const node of technique.process.nodes) {
+    if (node.actionId === stopBefore) break;
+    const action = technique.actions.find((candidate) => candidate.id === node.actionId)!;
+    const moved = PLAYS[id].moves?.[action.id];
+    if (moved) state = performRuntimeAction(technique, state, benchMoveRequest(moved, { x: 300, y: 380 }, 50));
+    for (let i = 0; i < 40 && !state.completedNodes.includes(node.id); i += 1) {
+      const result = attempt(technique, state, id);
+      if (result.refusal) throw new Error(`${id} ${node.id}: ${result.refusal}`);
+      state = result.state;
+    }
+    expect(state.completedNodes, `${id} ${node.id}`).toContain(node.id);
+  }
+  return { technique, state };
+};
+
+describe("Pack 2 3D practice versions", () => {
+  it("lists five practice versions, none of them in the 2D catalogue", () => {
+    expect(practiceIndex.map((entry) => entry.id)).toEqual(Object.keys(PLAYS));
+    for (const entry of practiceIndex) {
+      expect(entry.pack).toBe(2);
+      expect(catalogue.some((technique) => technique.id === entry.id)).toBe(false);
+      expect(catalogue.some((technique) => technique.id === entry.basedOn)).toBe(true);
+    }
+  });
+
+  it.each(Object.keys(PLAYS))("%s validates and passes the catalogue policy", async (id) => {
+    const raw = read(`public/techniques-3d/${id}.json`);
+    expect(validateTechniqueDefinition(raw).errors ?? []).toEqual([]);
+    await expect(assessBundledTechniqueCatalogPolicy("public-bundle", `public/techniques-3d/${id}.json`, raw)).resolves.toBeDefined();
+    expect(validateTechniqueDefinition(load(id)).ok).toBe(true);
+  });
+
+  it.each(Object.keys(PLAYS))("%s plays to completion", (id) => {
+    const { technique, state } = playTo(id);
+    expect(state.completedNodes).toHaveLength(technique.process.nodes.length);
+  });
+
+  it("Heat and Reweigh works out the configured composition from the recorded masses", () => {
+    const { state } = playTo("thermal-decomposition-mass-loss-practice");
+    const value = (calculationId: string) => state.calculations.find((entry) => entry.id === calculationId)?.value;
+    expect(value("composition-analysis")).toBeCloseTo(0.443, 3);
+    expect(value("composition-analysis-nahco3-percent")).toBeCloseTo(60, 0);
+  });
+});
+
+describe("Heat and Reweigh's burner and crucible", () => {
+  const id = "thermal-decomposition-mass-loss-practice";
+  const patch = (state: RuntimeState, instanceId: string, values: Record<string, string | boolean>): RuntimeState =>
+    ({ ...state, apparatusStates: { ...state.apparatusStates, [instanceId]: { ...state.apparatusStates?.[instanceId], ...values } } });
+
+  it("records the burner lit yellow, then blue, then off", () => {
+    const { state } = playTo(id, "warm-gently");
+    expect(state.apparatusStates?.["bunsen-burner-1"]).toMatchObject({ gas: "on", collar: "open", flame: "blue" });
+    expect(state.apparatusStates?.["crucible-with-lid-1"]).toMatchObject({ lid: "askew" });
+    const off = playTo(id, "first-to-pad").state;
+    expect(off.apparatusStates?.["bunsen-burner-1"]).toMatchObject({ gas: "off", flame: "off" });
+    expect(off.apparatusStates?.["crucible-with-lid-1"]).toMatchObject({ glow: false });
+  });
+
+  it("glows under strong heat and leaves the sodium carbonate residue", () => {
+    const { state } = playTo(id, "turn-off-1");
+    const crucible = state.equipmentInstances.find((instance) => instance.id === "crucible-with-lid-1")!;
+    expect(state.apparatusStates?.["crucible-with-lid-1"]?.glow).toBe(true);
+    expect(crucible.contents.massG).toBeCloseTo(1.557, 6);
+    expect(crucible.contents.solutes).toEqual([{ id: "sodium-carbonate", label: "Sodium carbonate", amount: 1.557, unit: "g" }]);
+  });
+
+  it("refuses to light the burner with the lid not askew", () => {
+    const { technique, state } = playTo(id, "light-burner-1");
+    const result = attempt(technique, patch(state, "crucible-with-lid-1", { lid: "closed" }), id);
+    expect(result.refusal).toBe("The crucible's lid is not askew.");
+  });
+
+  it("refuses to heat over a yellow flame", () => {
+    const { technique, state } = playTo(id, "warm-gently");
+    const result = attempt(technique, patch(state, "bunsen-burner-1", { flame: "yellow", collar: "nearly-closed" }), id);
+    expect(result.refusal).toBe("The flame is still yellow.");
+  });
+
+  it("refuses to move the crucible off a lit burner and leaves it seated", () => {
+    const { technique, state } = playTo(id, "first-to-pad");
+    const lit = performRuntimeAction(technique, patch(state, "bunsen-burner-1", { flame: "blue" }),
+      benchMoveRequest("crucible-tongs-1", { x: 300, y: 380 }, 50));
+    const result = attempt(technique, lit, id);
+    expect(result.refusal).toBe("The burner is still lit.");
+    expect(result.state.attachments.some((relation) => relation.childInstanceId === "crucible-with-lid-1"
+      && relation.zoneId === "ring-stand-crucible-seat")).toBe(true);
+  });
+
+  it("refuses to take the hot crucible to the pad by hand", () => {
+    const { technique, state } = playTo(id, "first-to-pad");
+    const result = attempt(technique, state, id);
+    expect(result.refusal).toBe("Use the crucible tongs.");
+  });
+});

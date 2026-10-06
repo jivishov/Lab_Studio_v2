@@ -1512,6 +1512,17 @@ export const v1VisualCatalog: VisualCatalog = {
     hitBox: rect(0, 0, 98, 70),
     noLiquidRender: true,
   }),
+  // Pack 2's 3D practice (decided 2026-10-05): plain 2D outlines, as the catalogue requires a profile for every item.
+  "heat-safe-pad": profile("heat-safe-pad", asset("heat-safe-pad"), rect(0, 0, 120, 40), {
+    footprint: rect(6, 14, 108, 16),
+    hitBox: rect(0, 0, 120, 40),
+    noLiquidRender: true,
+  }),
+  "lab-sink": profile("lab-sink", asset("lab-sink"), rect(0, 0, 160, 90), {
+    footprint: rect(6, 20, 148, 64),
+    hitBox: rect(0, 0, 160, 90),
+    noLiquidRender: true,
+  }),
   "wire-gauze": profile("wire-gauze", asset("wire-gauze"), rect(0, 0, 104, 76), {
     shelfSize: rect(0, 0, 78, 58),
     footprint: rect(10, 54, 84, 10),

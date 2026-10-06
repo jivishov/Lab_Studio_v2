@@ -1834,6 +1834,7 @@ const executeBenchOperation = (
     if (!precipitate) return fail(state, "There is no precipitate to dry.", "Put the paper with the solid on the watch glass first.", nodeId);
     if (!precipitate.rinsed) return fail(state, "The precipitate must be washed before drying.", "Wash the solid on the paper first.", nodeId);
     const dryness = stringSetting(params, "drynessResult") === "damp" ? "damp" : "dry";
+    const stillDamp = dryness === "damp";
     const warm = (base: RuntimeState, id: string) => updateInstance(base, id, (instance) => ({
       ...instance, contents: { ...instance.contents, temperatureC: setpoint },
     }));
@@ -1843,7 +1844,7 @@ const executeBenchOperation = (
       contents: {
         ...instance.contents,
         wetState: dryness === "dry" ? "dry" : "wet",
-        visualState: stringSetting(params, "visualState") ?? (dryness === "dry" ? "dry-precipitate" : "partially-dry-precipitate"),
+        visualState: stringSetting(params, "visualState") ?? (stillDamp ? "partially-dry-precipitate" : "dry-precipitate"),
         precipitate: { ...instance.contents.precipitate!, dryness, dryMassG: instance.contents.precipitate!.massG },
       },
     }));
@@ -1868,11 +1869,13 @@ const executeBenchOperation = (
       return fail(state, `The ${holder?.label.toLowerCase() ?? "hot item"} is not on the heat-safe pad.`, "Set it on the pad with the tongs to cool.", nodeId);
     }
     const cooledC = numberSetting(params, "cooledTemperatureC", 25);
-    const cool = (base: RuntimeState, id: string, visual?: string) => updateInstance(base, id, (instance) => ({
-      ...instance, contents: { ...instance.contents, temperatureC: cooledC, ...(visual ? { visualState: visual } : {}) },
-    }));
-    let next = cool(state, holder.id);
-    if (carrier) next = cool(next, carrier.id, stringSetting(params, "visualState") ?? "cooled-dry-precipitate");
+    let next = updateInstance(state, holder.id, (instance) => ({ ...instance, contents: { ...instance.contents, temperatureC: cooledC } }));
+    if (carrier) {
+      next = updateInstance(next, carrier.id, (instance) => ({
+        ...instance,
+        contents: { ...instance.contents, temperatureC: cooledC, visualState: stringSetting(params, "visualState") ?? "cooled-dry-precipitate" },
+      }));
+    }
     return record(next, `Left the assembly on the heat-safe pad${minutes("coolMinutes")} until cool enough to weigh (${cooledC} °C).`, "cool");
   }
   // The Bunsen burner and the crucible over it (Pack 2's Heat and Reweigh, EX-09 to EX-16 and decision 10).

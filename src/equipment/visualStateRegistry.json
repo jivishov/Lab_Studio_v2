@@ -392,9 +392,10 @@
       "quantitativeClaim": "ordinal",
       "authoredToday": true,
       "selectors": [
-        "authored"
+        "authored",
+        "runtime-assigned"
       ],
-      "provenance": "Stage 3 of the Inv. 3 dryness sequence (manual step 7, basis M), after breaking the cake into small pieces. Appearance conveys dryness order only.",
+      "provenance": "Stage 3 of the Inv. 3 dryness sequence (manual step 7, basis M), after breaking the cake into small pieces. Appearance conveys dryness order only. Pack 2 (decided 2026-10-05): the reducer also assigns it as the default when the solid is broken up with the scoop and the step declares no state.",
       "solidStyle": {
         "fill": "rgba(238, 234, 220, 0.96)",
         "stroke": "rgba(110, 104, 84, 0.36)",
@@ -410,7 +411,8 @@
         "lab:hard-water-analysis/technique:two-stage-precipitate-drying",
         "technique:hard-water-two-sample-inquiry",
         "technique:two-stage-precipitate-drying"
-      ]
+      ],
+      "runtimeAssignment": "default"
     },
     {
       "id": "CAL-00",
@@ -909,9 +911,10 @@
       "quantitativeClaim": "ordinal",
       "authoredToday": true,
       "selectors": [
-        "authored"
+        "authored",
+        "runtime-assigned"
       ],
-      "provenance": "Stage 4 of the Inv. 3 dryness sequence (manual step 7, basis M), after cooling. Deliberately identical in appearance to broken-dry-precipitate and dry-precipitate: temperature has no honest visual signature. Cycle 08 made the distinction reachable in state rather than colour — the dry handler now carries the oven temperature onto the assembly and the weigh handler refuses a source above maxSafeTemperatureC, so the cooled and uncooled assemblies differ by what the balance will accept, not by how they look.",
+      "provenance": "Stage 4 of the Inv. 3 dryness sequence (manual step 7, basis M), after cooling. Deliberately identical in appearance to broken-dry-precipitate and dry-precipitate: temperature has no honest visual signature. Cycle 08 made the distinction reachable in state rather than colour — the dry handler now carries the oven temperature onto the assembly and the weigh handler refuses a source above maxSafeTemperatureC, so the cooled and uncooled assemblies differ by what the balance will accept, not by how they look. Pack 2 (decided 2026-10-05): the reducer also assigns it as the default when the assembly cools on the heat-safe pad and the step declares no state.",
       "solidStyle": {
         "fill": "rgba(238, 234, 220, 0.96)",
         "stroke": "rgba(110, 104, 84, 0.36)",
@@ -930,7 +933,8 @@
         "technique:hard-water-two-sample-inquiry",
         "technique:quick-ache-extraction-recovery",
         "technique:two-stage-precipitate-drying"
-      ]
+      ],
+      "runtimeAssignment": "default"
     },
     {
       "id": "cooled-residue",
@@ -1713,9 +1717,10 @@
       "quantitativeClaim": "ordinal",
       "authoredToday": true,
       "selectors": [
-        "authored"
+        "authored",
+        "runtime-assigned"
       ],
-      "provenance": "Stage 2 of the Inv. 3 dryness sequence (manual step 7, basis M). Appearance conveys dryness order only; the manual states no colour.",
+      "provenance": "Stage 2 of the Inv. 3 dryness sequence (manual step 7, basis M). Appearance conveys dryness order only; the manual states no colour. Pack 2 (decided 2026-10-05): the reducer also assigns it as the default after the first oven stage of Dry and Weigh's practice, when the step declares no state.",
       "solidStyle": {
         "fill": "rgba(220, 214, 190, 0.95)",
         "stroke": "rgba(100, 94, 68, 0.4)",
@@ -1727,7 +1732,8 @@
         "lab:hard-water-analysis/technique:two-stage-precipitate-drying",
         "technique:hard-water-two-sample-inquiry",
         "technique:two-stage-precipitate-drying"
-      ]
+      ],
+      "runtimeAssignment": "default"
     },
     {
       "id": "permanganate-faint-pink",

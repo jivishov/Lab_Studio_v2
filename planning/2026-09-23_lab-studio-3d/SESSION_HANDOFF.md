@@ -74,10 +74,13 @@ wait for confirmation (`DECISIONS.md`, the "built" row). G3 has still not run.
    **D8 (how experiments are assembled from the atomic steps) is open for a separate discussion with the
    user**, so nothing in Phase B is built before it. Pre-existing failures that do not affect the 3D
    work are ignored. What remains is G3 (webcam), which needs the user or Claude in Chrome.
-5. **Pack 2, decided 2026-10-05, not built** (`proposals/PACK2_ATOMIZATION.md`, revision 2): Transfer Liquid,
-   Precipitation, Filter a Precipitate, Dry and Weigh, and Heat and Reweigh, as 3D practice versions with the
-   2D labs untouched until D8. The user chose all ten recommendations and will run the build in a new thread;
-   start from the proposal's "For the build thread". Hand control (G3) is set aside for now (user, 2026-10-05).
+5. **Done 2026-10-06: Pack 2 built** (`evidence/PACK2_EVIDENCE.md`; `proposals/PACK2_ATOMIZATION.md`, revision 2):
+   Transfer Liquid (4 steps), Precipitation (10), Filter a Precipitate (12), Dry and Weigh (22) and Heat and
+   Reweigh (33), as 3D practice versions listed in `public/techniques-3d/index.json` (written by
+   `scripts/practice3d/build.mjs`), never in the 2D catalogue; the lab-bound originals and their 2D labs are
+   untouched until D8. Core: bench operations (`src/domain/benchOperations.ts`) and apparatus states; 3D: fifteen
+   models, the step clock, the oven, tongs, flames. Seven groups of interpretations wait for confirmation (the
+   evidence note). Hand control (G3) is set aside for now (user, 2026-10-05).
 
 **How the work has been checked** (the user's validation policy: source review, `npx tsc -p
 tsconfig.app.json --noEmit`, `python tools/blender/validate_equipment3d.py --pack 1`, and narrow

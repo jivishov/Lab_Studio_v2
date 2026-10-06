@@ -29,7 +29,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 
 ## Atoms
 
-234 atoms across 15 families.
+239 atoms across 15 families.
 
 | Atom | Family | Verb | Interactions | Required roles |
 |---|---|---|---|---|
@@ -233,7 +233,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 | `atom.transfer.measured-liquid-aliquot` | measurement | `transfer` | `pourInto` | `measured-liquid-source`, `receiving-vessel` |
 | `atom.place.balance-instrument` | thermal-decomposition | `place` | `dragToZone` | `balance-instrument` |
 | `atom.place.thermal-support` | thermal-decomposition | `place` | `dragToZone`, `snapIntoTarget` | `thermal-support` |
-| `atom.place.thermal-heating-instrument` | thermal-decomposition | `place` | `dragToZone` | `thermal-heating-instrument` |
+| `atom.place.thermal-heating-instrument` | thermal-decomposition | `place` | `dragToZone`, `snapIntoTarget` | `thermal-heating-instrument` |
 | `atom.place.thermal-crucible-assembly` | thermal-decomposition | `place` | `dragToZone`, `snapIntoTarget` | `weighed-vessel` |
 | `atom.heat.thermal-decomposition-stage` | thermal-decomposition | `dry` | `placeInInstrument` | `thermal-heating-instrument`, `weighed-vessel` |
 | `atom.control.thermal-burner` | thermal-decomposition | `reset` | `dragToZone` | `thermal-heating-instrument` |
@@ -267,6 +267,11 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 | `atom.observe.break-up-precipitate` | gravimetry | `observe` | `recordNotebook` | `dried-assembly`, `solid-transfer-tool` |
 | `atom.cool.on-heat-safe-pad` | gravimetry | `cool` | `recordNotebook` | `dried-assembly`, `cooling-surface` |
 | `atom.transfer.filtrate-to-drain` | gravimetry | `transfer` | `pourInto` | `filtration-receiver`, `waste-drain` |
+| `atom.observe.set-crucible-lid-askew` | thermal-decomposition | `observe` | `recordNotebook` | `weighed-vessel` |
+| `atom.control.light-burner` | thermal-decomposition | `observe` | `recordNotebook` | `thermal-heating-instrument` |
+| `atom.control.set-burner-flame` | thermal-decomposition | `observe` | `recordNotebook` | `thermal-heating-instrument` |
+| `atom.heat.crucible-over-burner` | thermal-decomposition | `heat` | `recordNotebook` | `thermal-heating-instrument`, `weighed-vessel` |
+| `atom.control.turn-off-burner` | thermal-decomposition | `observe` | `recordNotebook` | `thermal-heating-instrument` |
 
 ### Family: calorimetry
 
@@ -3269,7 +3274,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 **Place the Bunsen burner for the thermal route**
 
 - Verb: `place`
-- Allowed interaction types: `dragToZone`
+- Allowed interaction types: `dragToZone`, `snapIntoTarget`
 - Required roles: `thermal-heating-instrument`
 - Optional roles: none
 - Evidence: Bunsen burner placed at the heating station
@@ -3320,6 +3325,84 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 - Evidence: burner extinguished before cooling
 - Procedural constraints:
   - The burner must be off before the hot crucible is moved with tongs.
+- Source examples:
+  - `purify-a-mixture-green-chemistry_2026-07-27.md` phase step `EX-11` (R)
+
+#### `atom.observe.set-crucible-lid-askew`
+
+**Set the crucible's lid askew, its vent gap open**
+
+- Verb: `observe`
+- Allowed interaction types: `recordNotebook`
+- Required roles: `weighed-vessel`
+- Optional roles: `thermal-support`
+- Evidence: lid askew with the vent gap open
+- Procedural constraints:
+  - The crucible stands in the clay triangle; the lid rests across it with a visible gap, so the gases escape (Figure 1).
+  - A fully covered crucible is never heated (S-02); the lid is askew before ignition and stays so while heating (S-03).
+- Source examples:
+  - `purify-a-mixture-green-chemistry_2026-07-27.md` phase step `EX-09` (M/F)
+  - `purify-a-mixture-green-chemistry_2026-07-27.md` safety step `S-03` (M/F)
+
+#### `atom.control.light-burner`
+
+**Light the Bunsen burner**
+
+- Verb: `observe`
+- Allowed interaction types: `recordNotebook`
+- Required roles: `thermal-heating-instrument`
+- Optional roles: `weighed-vessel`
+- Evidence: burner lit with a yellow flame
+- Procedural constraints:
+  - The air collar is nearly closed, the gas is turned on, and the striker is held at the top of the barrel; the flame is yellow.
+  - The crucible's lid is already askew (S-03).
+  - Decided by the teacher on 2026-10-05 (Pack 2, the 3D practice of Heat and Reweigh a Carbonate Mixture).
+- Source examples:
+  - `purify-a-mixture-green-chemistry_2026-07-27.md` phase step `EX-10` (M/C)
+
+#### `atom.control.set-burner-flame`
+
+**Open the air collar to a blue flame**
+
+- Verb: `observe`
+- Allowed interaction types: `recordNotebook`
+- Required roles: `thermal-heating-instrument`
+- Optional roles: none
+- Evidence: blue flame with an inner cone
+- Procedural constraints:
+  - Opening the air collar turns the flame from yellow to blue with a pale inner cone; the crucible sits just above the cone's tip, the hottest part.
+  - Decision 10 (2026-10-05): a flame-setting step for the approved heating intensity.
+  - Decided by the teacher on 2026-10-05 (Pack 2, the 3D practice of Heat and Reweigh a Carbonate Mixture).
+- Source examples:
+  - `purify-a-mixture-green-chemistry_2026-07-27.md` phase step `EX-10` (M/C)
+
+#### `atom.heat.crucible-over-burner`
+
+**Heat the crucible over the blue flame for a stated time**
+
+- Verb: `heat`
+- Allowed interaction types: `recordNotebook`
+- Required roles: `thermal-heating-instrument`, `weighed-vessel`
+- Optional roles: `thermal-support`
+- Evidence: crucible heated for the stated time
+- Procedural constraints:
+  - The crucible stands in the clay triangle with its lid askew, over a lit blue flame.
+  - Gentle warming, the approved heating and each repeat are distinct stages; the time passes on the 3D player's fast step clock (decision 9). A dull red glow shows only under strong heating.
+- Source examples:
+  - `purify-a-mixture-green-chemistry_2026-07-27.md` phase step `EX-10` (M/C)
+  - `purify-a-mixture-green-chemistry_2026-07-27.md` phase step `EX-16` (M/C)
+
+#### `atom.control.turn-off-burner`
+
+**Turn off the Bunsen burner**
+
+- Verb: `observe`
+- Allowed interaction types: `recordNotebook`
+- Required roles: `thermal-heating-instrument`
+- Optional roles: none
+- Evidence: burner off
+- Procedural constraints:
+  - The gas is turned off before the hot crucible is moved with tongs.
 - Source examples:
   - `purify-a-mixture-green-chemistry_2026-07-27.md` phase step `EX-11` (R)
 
