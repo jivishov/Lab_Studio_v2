@@ -8,7 +8,8 @@ graduations, so it is never read as a measurement, and the catalogue's 5 mL prec
 """
 import math
 
-from labeq.geometry import FRONT, MM, bm_to_mesh, lathe_bmesh, level_for_volume_mm, make_obj, new_root, rounded, set_material_index
+from equipment._scales import approximate_scale
+from labeq.geometry import FRONT, MM, bm_to_mesh, lathe_bmesh, make_obj, new_root, rounded, set_material_index
 from labeq.markings import markings
 
 DEFINITION_ID = 'beaker-250ml'
@@ -17,20 +18,6 @@ THUMB_ELEVATION_DEG = 18
 R, T, H, FLOOR = 35.0, 1.6, 95.0, 2.2
 BORE = R - T
 SPOUT = 5.5
-
-
-def approximate_scale(inner):
-    """The printed approximate scale (decided 2026-10-06, look only): 50 to 200 mL in 25 mL steps, every
-    50 mL numbered, beside the capacity print. Each line sits where the inner profile holds that volume."""
-    pieces = []
-    for ml in range(50, 201, 25):
-        z = level_for_volume_mm(inner, ml)
-        if ml % 50 == 0:
-            pieces.append(('rect', -24.0, -16.0, z - 0.28, z + 0.28, 6))
-            pieces.append(('text', str(ml), 3.2, -25.5, z, 'RIGHT'))
-        else:
-            pieces.append(('rect', -24.0, -19.0, z - 0.22, z + 0.22, 4))
-    return pieces
 
 
 def build(coll, M):
@@ -55,7 +42,7 @@ def build(coll, M):
     set_material_index(glass, lambda x, y, z: z > H - 1.5 or z < FLOOR + 0.3)
     make_obj('Beaker_glass', glass, coll, [M['Borosilicate glass'], M['Borosilicate glass thick']], root)
     inner = [[0.0, FLOOR], [BORE - 2.5, FLOOR], [BORE, FLOOR + 2.5], [BORE, H]]
-    markings('Beaker_print', [('text', '250 mL', 4.5, 0.0, H - 18.0, 'CENTER')] + approximate_scale(inner),
+    markings('Beaker_print', [('text', '250 mL', 4.5, 0.0, H - 18.0, 'CENTER')] + approximate_scale(inner, 50, 200),
              lambda z: R, FRONT, 0.06, coll, M['White enamel print'], root)
     registry = {
         'footprintMm': {'shape': 'circle', 'radius': R},

@@ -1,11 +1,13 @@
 """`beaker-150ml`: 150 mL low-form (Griffin) borosilicate beaker, 60 x 80 mm, with a spout.
 
 It holds a working portion of a liquid so a pipette never enters a stock bottle (transmittance-dilution's
-blank, decided 2026-09-26). Beaker graduations are approximate and the catalogue's 5 mL precision is
-not one they carry, so none are printed or claimed; only the true "150 mL" capacity print is.
+blank, decided 2026-09-26). As on a real Griffin beaker, an approximate white scale is printed beside the
+"150 mL" capacity print (25 to 125 mL in 25 mL steps, matching the 250 mL beaker; decided 2026-10-06). It
+is for looks only (`_scales.py`): the registry claims no graduations, so it is never read as a measurement.
 """
 import math
 
+from equipment._scales import approximate_scale
 from labeq.geometry import FRONT, MM, bm_to_mesh, lathe_bmesh, make_obj, new_root, rounded, set_material_index
 from labeq.markings import markings
 
@@ -37,9 +39,9 @@ def build(coll, M):
     glass = bm_to_mesh(bm, 'Beaker_glass')
     set_material_index(glass, lambda x, y, z: z > H - 1.5 or z < FLOOR + 0.3)
     make_obj('Beaker_glass', glass, coll, [M['Borosilicate glass'], M['Borosilicate glass thick']], root)
-    markings('Beaker_print', [('text', '150 mL', 4.0, 0.0, H - 16.0, 'CENTER')],
-             lambda z: R, FRONT, 0.06, coll, M['White enamel print'], root)
     inner = [[0.0, FLOOR], [BORE - 2.5, FLOOR], [BORE, FLOOR + 2.5], [BORE, H]]
+    markings('Beaker_print', [('text', '150 mL', 4.0, 0.0, H - 16.0, 'CENTER')] + approximate_scale(inner, 25, 125),
+             lambda z: R, FRONT, 0.06, coll, M['White enamel print'], root)
     registry = {
         'footprintMm': {'shape': 'circle', 'radius': R},
         'grip': {'heightMm': 45.0},
