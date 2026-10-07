@@ -1823,6 +1823,11 @@ const executeBenchOperation = (
     if (ovenState.door === "open") return fail(state, "The oven door is already open.", "Go on to the next step.", nodeId);
     return record(withOven(state, { door: "open" }), "Opened the oven door.", "oven-door");
   }
+  if (operation === "close-oven-door") {
+    if (!oven) return fail(state, "The drying oven is missing.", "Use the drying oven on the bench.", nodeId);
+    if (ovenState.door !== "open") return fail(state, "The oven door is already closed.", "Go on to the next step.", nodeId);
+    return record(withOven(state, { door: "closed" }), "Closed the oven door, so the oven keeps its temperature.", "oven-door");
+  }
   if (operation === "dry-in-oven") {
     if (!oven) return fail(state, "The drying oven is missing.", "Use the drying oven on the bench.", nodeId);
     const setpoint = typeof ovenState.setpointC === "number" ? ovenState.setpointC : undefined;

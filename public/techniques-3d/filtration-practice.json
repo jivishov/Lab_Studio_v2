@@ -255,6 +255,56 @@
       }
     },
     {
+      "id": "zero-balance",
+      "verb": "observe",
+      "label": "Zero the balance",
+      "parameters": {
+        "instrumentInstanceId": "analytical-balance-1",
+        "instrumentDefinitionId": "analytical-balance",
+        "balanceOperation": "zero",
+        "tag": "zero-balance-done",
+        "note": "The empty balance reads 0.000 g."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Zero the balance: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The empty balance reads zero.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [],
+      "interaction": {
+        "accessibleLabel": "Zero the balance",
+        "type": "recordNotebook",
+        "valueParameter": "tag"
+      },
+      "atomId": "atom.observe.zero-empty-balance",
+      "equipmentRoleBindings": {
+        "balance-instrument": "analytical-balance"
+      }
+    },
+    {
       "id": "place-paper-on-balance",
       "verb": "place",
       "label": "Lay the dry paper on the balance pan",
@@ -841,6 +891,27 @@
         }
       },
       {
+        "id": "zero-balance-node",
+        "type": "action",
+        "title": "Zero the balance",
+        "description": "With the pan empty and the draft-shield doors closed, check that the balance reads 0.000 g, and press TARE if it does not.",
+        "actionId": "zero-balance",
+        "config": {},
+        "validation": [
+          {
+            "id": "zero-balance-node-done",
+            "type": "notebookEntry",
+            "label": "Zero the balance was completed.",
+            "notebookTag": "zero-balance-done"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Zero the balance complete.",
+          "retry": "Review Zero the balance and try again."
+        }
+      },
+      {
         "id": "place-paper-on-balance-node",
         "type": "action",
         "title": "Put the paper on the balance",
@@ -1062,6 +1133,14 @@
       },
       {
         "from": "seat-funnel-node",
+        "to": "zero-balance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "zero-balance-node",
         "to": "place-paper-on-balance-node",
         "label": "Next",
         "condition": {
@@ -1222,16 +1301,6 @@
         ]
       },
       {
-        "roleId": "filter-medium",
-        "required": true,
-        "allowedDefinitionIds": [
-          "filter-paper"
-        ],
-        "sourceInstanceIds": [
-          "filter-paper-1"
-        ]
-      },
-      {
         "roleId": "balance-instrument",
         "required": true,
         "allowedDefinitionIds": [
@@ -1239,6 +1308,16 @@
         ],
         "sourceInstanceIds": [
           "analytical-balance-1"
+        ]
+      },
+      {
+        "roleId": "filter-medium",
+        "required": true,
+        "allowedDefinitionIds": [
+          "filter-paper"
+        ],
+        "sourceInstanceIds": [
+          "filter-paper-1"
         ]
       },
       {

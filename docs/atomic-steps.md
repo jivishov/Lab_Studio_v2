@@ -29,7 +29,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 
 ## Atoms
 
-240 atoms across 15 families.
+242 atoms across 15 families.
 
 | Atom | Family | Verb | Interactions | Required roles |
 |---|---|---|---|---|
@@ -249,6 +249,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 | `atom.mix.invert-stoppered-vessel` | foundational | `mix` | `recordNotebook` | `final-volume-vessel`, `vessel-stopper` |
 | `atom.place.remove-stopper` | foundational | `place` | `dragToZone` | `final-volume-vessel`, `vessel-stopper` |
 | `atom.transfer.weighed-solid-through-funnel` | measurement | `transfer` | `pourInto` | `weighed-sample-source`, `narrow-necked-vessel`, `filling-funnel` |
+| `atom.observe.zero-empty-balance` | weighing | `observe` | `recordNotebook` | `balance-instrument` |
 | `atom.observe.zero-balance` | weighing | `observe` | `recordNotebook` | `balance-instrument`, `weighed-vessel` |
 | `atom.dissolve.swirl-to-dissolve` | foundational | `dissolve` | `recordNotebook` | `final-volume-vessel` |
 | `atom.place.stirring-rod-in-vessel` | gravimetry | `place` | `snapIntoTarget` | `stirring-device`, `precipitation-vessel` |
@@ -261,6 +262,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 | `atom.place.filter-medium-on-balance` | gravimetry | `place` | `snapIntoTarget` | `filter-medium`, `balance-instrument` |
 | `atom.observe.fold-filter-paper` | gravimetry | `observe` | `recordNotebook` | `filter-medium` |
 | `atom.observe.set-drying-oven` | gravimetry | `observe` | `recordNotebook` | `drying-instrument` |
+| `atom.observe.close-oven-door` | gravimetry | `observe` | `recordNotebook` | `drying-instrument` |
 | `atom.observe.open-oven-door` | gravimetry | `observe` | `recordNotebook` | `drying-instrument` |
 | `atom.place.drying-assembly-into-oven` | gravimetry | `place` | `snapIntoTarget` | `drying-instrument`, `dried-assembly` |
 | `atom.dry.close-oven-and-dry` | gravimetry | `dry` | `recordNotebook` | `drying-instrument`, `dried-assembly` |
@@ -1781,6 +1783,19 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
   - The student turns the oven's control and enters the setting; a setting outside the stated range (110-120 C) is refused.
 - Source examples:
   - `what-makes-hard-water-hard_2026-07-27.md` phase step `FD-13` (M)
+
+#### `atom.observe.close-oven-door`
+
+**Close the drying oven's door**
+
+- Verb: `observe`
+- Allowed interaction types: `recordNotebook`
+- Required roles: `drying-instrument`
+- Optional roles: none
+- Evidence: oven door closed
+- Procedural constraints:
+  - Once the assembly has been taken out, the door is closed straight away, so the oven stays at its set temperature while the solid is broken up or cools.
+  - Decided by the teacher on 2026-10-06 (the Pack 2 fidelity review, the 3D practice of Dry and Weigh a Precipitate); real practice the source leaves implicit, so no source example is cited.
 
 #### `atom.observe.open-oven-door`
 
@@ -4409,6 +4424,21 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
   - `how-can-color-determine-copper-in-brass_2026-07-27.md` phase step `B-01` (M)
 - Content examples:
   - `technique:brass-spectrophotometry` action `load-brass-onto-weighing-support-action`
+
+#### `atom.observe.zero-empty-balance`
+
+**Zero the balance with its pan empty**
+
+- Verb: `observe`
+- Allowed interaction types: `recordNotebook`
+- Required roles: `balance-instrument`
+- Optional roles: none
+- Evidence: the empty balance reading zero
+- Procedural constraints:
+  - Before the first weighing of a run, with the pan empty, the draft-shield doors closed and the display settled, the balance is checked to read zero and TARE is pressed if it does not, so each later reading is the mass on the pan.
+  - Unlike atom.observe.zero-balance, nothing is on the pan: the item weighed next (a filter paper, a watch glass, a crucible) is itself the mass to be read, so a tare with it on the pan would hide it.
+  - The step records the check; it acquires no reading and never asserts a displayed precision, which stays teacher-configured.
+  - Decided by the teacher on 2026-10-06 (the Pack 2 fidelity review: one check per technique, before its first weighing); real practice the source leaves implicit, so no source example is cited.
 
 #### `atom.observe.zero-balance`
 

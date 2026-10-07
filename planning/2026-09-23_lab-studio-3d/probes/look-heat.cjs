@@ -8,7 +8,7 @@ const { openLook } = require("./look-common.cjs");
   const step = (fn) => look.run(fn).then((r) => look.log(r));
   await step(() => window.__setup({}));
   await look.shot("0-start");
-  await step(async () => [await window.__tray("analytical-balance-a"), window.__step()].join(" | "));
+  await step(async () => [await window.__tray("analytical-balance-a"), await window.__card("Tare"), window.__step()].join(" | "));
   await step(async () => [await window.__tray("crucible-with-lid-1"), await window.__carry(/^Crucible with lid/, /^Release/), window.__step()].join(" | "));
   await step(async () => [await window.__input("25.000"), await window.__card("Confirm"), await window.__card("Record"), window.__step()].join(" | "));
   await step(async () => [await window.__tray("working-sample-portion-1"), await window.__carry(/^Mixture issued/, /^Release/), window.__step()].join(" | "));

@@ -1,18 +1,19 @@
-import { action, evidenceEffect, item, node, technique } from "./common.mjs";
+import { action, evidenceEffect, item, node, technique, zeroEmptyBalance } from "./common.mjs";
 
 /**
  * Heat and Reweigh a Carbonate Mixture, 3D practice version (PACK2_ATOMIZATION.md, "Heat and Reweigh";
  * decisions 9 and 10, the renamed warming step, and the heat-safe pad as the cooling surface).
  *
- * The student chooses one of the two balances and makes every weighing on it (EX-01); weighs the empty
- * crucible and lid, taps the planned mass of the issued mixture in and weighs it again, then returns what
- * is left to the "Unused Sample" beaker (EX-08, S-07); builds the support (ring stand, clay triangle,
- * burner beneath); seats the crucible, sets the lid askew, lights the burner and opens its air collar to a
- * blue flame; warms gently, then heats; turns the burner off, moves the crucible with tongs to the
- * heat-safe pad to cool, and weighs it. A second heating (relit, flame set) checks for constant mass. The
- * product goes to its own labelled beaker, and the mass loss gives the mixture's composition. The plan
- * approval, the master stock and the replicate bookkeeping stay with the lab (the original technique);
- * this practice runs one replicate (decided 2026-10-06 in the Pack 2 fidelity review).
+ * The student chooses one of the two balances and makes every weighing on it (EX-01), checking first that
+ * it reads zero with its pan empty; weighs the empty crucible and lid, taps the planned mass of the issued
+ * mixture in and weighs it again, then returns what is left to the "Unused Sample" beaker (EX-08, S-07);
+ * builds the support (ring stand, clay triangle, burner beneath); seats the crucible, sets the lid askew,
+ * lights the burner and opens its air collar to a blue flame; warms gently, then heats; turns the burner
+ * off, moves the crucible with tongs to the heat-safe pad to cool, and weighs it. A second heating
+ * (relit, flame set) checks for constant mass. The product goes to its own labelled beaker, and the mass
+ * loss gives the mixture's composition. The plan approval, the master stock and the replicate bookkeeping
+ * stay with the lab (the original technique); this practice runs one replicate (decided 2026-10-06 in the
+ * Pack 2 fidelity review).
  */
 const SEAT = "ring-stand-crucible-seat";
 const BAY = "ring-stand-burner-bay";
@@ -127,6 +128,8 @@ const onTriangle = (id, label, extra = {}) => crucibleTo(id, label, STAND, SEAT,
   success: "The crucible stands in the clay triangle.",
 }, extra);
 
+const [zeroAction, zeroNode] = zeroEmptyBalance("zero-balance", "analytical-balance-a");
+
 const actions = [
   action("place-balance", "place", "Put balance A on the bench", {
     equipmentDefinitionId: "analytical-balance",
@@ -134,6 +137,7 @@ const actions = [
     location: "workbench",
   }, { atomId: "atom.place.balance-instrument", roles: { "balance-instrument": "analytical-balance" },
     success: "Balance A is on the bench; every weighing in this run is made on it." }),
+  zeroAction,
   onBalance("crucible-on-balance", "Put the crucible and lid on the balance pan", { supportEmptyMassG: "{{config.crucibleMassG}}" }),
   read("read-empty-crucible", "Read the empty crucible and lid mass", "Balance display for the empty crucible and lid (g)", "empty-crucible-mass"),
   record("record-empty-crucible", "Record the empty crucible and lid mass", "empty-crucible-mass", "Empty crucible and lid"),
@@ -234,6 +238,7 @@ const actions = [
 
 const nodes = [
   node("place-balance", "Choose a balance", "Put balance A on the bench and make every weighing in this run on it: two balances never read exactly alike."),
+  zeroNode,
   node("crucible-on-balance", "Put the crucible on the balance", "Put the clean, dry, cool crucible with its lid on balance A's pan."),
   node("read-empty-crucible", "Read its mass", "Read the balance and enter the empty crucible and lid's mass.", { measurementId: "empty-crucible-mass" }),
   node("record-empty-crucible", "Record the mass", "Record the empty crucible and lid's mass in your notebook.", { measurementId: "empty-crucible-mass" }),

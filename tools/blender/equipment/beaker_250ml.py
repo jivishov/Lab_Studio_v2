@@ -2,12 +2,13 @@
 
 Pack 2's working beaker (decided 2026-10-05): the hard-water sample is poured into it and rinsed in,
 the calcium carbonate is precipitated in it, and it is poured and rinsed into the filter funnel. As
-for the 150 mL beaker, beaker graduations are approximate and the catalogue's 5 mL precision is not
-one they carry, so none are printed or claimed; only the true "250 mL" capacity print is.
+for a real Griffin beaker, an approximate white scale is printed beside the "250 mL" capacity print
+(50 to 200 mL in 25 mL steps; decided 2026-10-06). It is for looks only: the registry claims no
+graduations, so it is never read as a measurement, and the catalogue's 5 mL precision is not its own.
 """
 import math
 
-from labeq.geometry import FRONT, MM, bm_to_mesh, lathe_bmesh, make_obj, new_root, rounded, set_material_index
+from labeq.geometry import FRONT, MM, bm_to_mesh, lathe_bmesh, level_for_volume_mm, make_obj, new_root, rounded, set_material_index
 from labeq.markings import markings
 
 DEFINITION_ID = 'beaker-250ml'
@@ -16,6 +17,20 @@ THUMB_ELEVATION_DEG = 18
 R, T, H, FLOOR = 35.0, 1.6, 95.0, 2.2
 BORE = R - T
 SPOUT = 5.5
+
+
+def approximate_scale(inner):
+    """The printed approximate scale (decided 2026-10-06, look only): 50 to 200 mL in 25 mL steps, every
+    50 mL numbered, beside the capacity print. Each line sits where the inner profile holds that volume."""
+    pieces = []
+    for ml in range(50, 201, 25):
+        z = level_for_volume_mm(inner, ml)
+        if ml % 50 == 0:
+            pieces.append(('rect', -24.0, -16.0, z - 0.28, z + 0.28, 6))
+            pieces.append(('text', str(ml), 3.2, -25.5, z, 'RIGHT'))
+        else:
+            pieces.append(('rect', -24.0, -19.0, z - 0.22, z + 0.22, 4))
+    return pieces
 
 
 def build(coll, M):
@@ -39,9 +54,9 @@ def build(coll, M):
     glass = bm_to_mesh(bm, 'Beaker_glass')
     set_material_index(glass, lambda x, y, z: z > H - 1.5 or z < FLOOR + 0.3)
     make_obj('Beaker_glass', glass, coll, [M['Borosilicate glass'], M['Borosilicate glass thick']], root)
-    markings('Beaker_print', [('text', '250 mL', 4.5, 0.0, H - 18.0, 'CENTER')],
-             lambda z: R, FRONT, 0.06, coll, M['White enamel print'], root)
     inner = [[0.0, FLOOR], [BORE - 2.5, FLOOR], [BORE, FLOOR + 2.5], [BORE, H]]
+    markings('Beaker_print', [('text', '250 mL', 4.5, 0.0, H - 18.0, 'CENTER')] + approximate_scale(inner),
+             lambda z: R, FRONT, 0.06, coll, M['White enamel print'], root)
     registry = {
         'footprintMm': {'shape': 'circle', 'radius': R},
         'grip': {'heightMm': 52.0},

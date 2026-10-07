@@ -162,6 +162,30 @@ export const technique = ({ id, title, learningGoal, equipment, actions, nodes, 
   };
 };
 
+/**
+ * Checking the empty balance reads zero before a technique's first weighing (decided 2026-10-06, the Pack 2
+ * fidelity review): nothing is on the pan, so the item weighed next is itself the mass read. The action and
+ * its process node; the 3D player lights the balance's TARE key for it.
+ */
+export const zeroEmptyBalance = (id, balanceInstanceId) => [
+  action(id, "observe", "Zero the balance", {
+    instrumentInstanceId: balanceInstanceId,
+    instrumentDefinitionId: "analytical-balance",
+    balanceOperation: "zero",
+    tag: `${id}-done`,
+    note: "The empty balance reads 0.000 g.",
+  }, {
+    atomId: "atom.observe.zero-empty-balance",
+    evidence: [],
+    interaction: { type: "recordNotebook", valueParameter: "tag" },
+    roles: { "balance-instrument": "analytical-balance" },
+    success: "The empty balance reads zero.",
+  }),
+  node(id, "Zero the balance",
+    "With the pan empty and the draft-shield doors closed, check that the balance reads 0.000 g, and press TARE if it does not.",
+    { notebookTag: `${id}-done` }),
+];
+
 /** The legacy effect of a record or observation that writes only evidence (the policy allows these for records). */
 export const evidenceEffect = (actionId) => ({
   actionId,

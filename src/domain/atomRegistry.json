@@ -11196,6 +11196,38 @@
       ]
     },
     {
+      "id": "atom.observe.zero-empty-balance",
+      "family": "weighing",
+      "documentationLabel": "Zero the balance with its pan empty",
+      "verb": "observe",
+      "allowedInteractionTypes": [
+        "recordNotebook"
+      ],
+      "effectContract": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "balance-instrument"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "Before the first weighing of a run, with the pan empty, the draft-shield doors closed and the display settled, the balance is checked to read zero and TARE is pressed if it does not, so each later reading is the mass on the pan.",
+        "Unlike atom.observe.zero-balance, nothing is on the pan: the item weighed next (a filter paper, a watch glass, a crucible) is itself the mass to be read, so a tare with it on the pan would hide it.",
+        "The step records the check; it acquires no reading and never asserts a displayed precision, which stays teacher-configured.",
+        "Decided by the teacher on 2026-10-06 (the Pack 2 fidelity review: one check per technique, before its first weighing); real practice the source leaves implicit, so no source example is cited."
+      ],
+      "evidence": "the empty balance reading zero",
+      "sourceExamples": [],
+      "contentExamples": []
+    },
+    {
       "id": "atom.observe.zero-balance",
       "family": "weighing",
       "documentationLabel": "Zero the balance with the empty vessel on the pan",
@@ -11683,6 +11715,43 @@
           "basis": "M"
         }
       ],
+      "contentExamples": []
+    },
+    {
+      "id": "atom.observe.close-oven-door",
+      "family": "gravimetry",
+      "documentationLabel": "Close the drying oven's door",
+      "verb": "observe",
+      "allowedInteractionTypes": [
+        "recordNotebook"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state",
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "evidence"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "drying-instrument"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "Once the assembly has been taken out, the door is closed straight away, so the oven stays at its set temperature while the solid is broken up or cools.",
+        "Decided by the teacher on 2026-10-06 (the Pack 2 fidelity review, the 3D practice of Dry and Weigh a Precipitate); real practice the source leaves implicit, so no source example is cited."
+      ],
+      "evidence": "oven door closed",
+      "sourceExamples": [],
       "contentExamples": []
     },
     {

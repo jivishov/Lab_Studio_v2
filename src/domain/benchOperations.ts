@@ -31,6 +31,8 @@ export const benchOperations = {
   "set-oven-temperature": { verb: "observe", atomId: "atom.observe.set-drying-oven", control: "Set" },
   /** Open the drying oven's door. */
   "open-oven-door": { verb: "observe", atomId: "atom.observe.open-oven-door", control: "Open the door" },
+  /** Close the drying oven's door once nothing more goes in or out, so the oven keeps its temperature. */
+  "close-oven-door": { verb: "observe", atomId: "atom.observe.close-oven-door", control: "Close the door" },
   /** Close the door on the sample and dry it for a stated time (FD-14, FD-17), on the fast step clock. */
   "dry-in-oven": { verb: "dry", atomId: "atom.dry.close-oven-and-dry", control: "Close and dry" },
   /** Break a partly dried solid into small pieces with the metal scoop (FD-16). */

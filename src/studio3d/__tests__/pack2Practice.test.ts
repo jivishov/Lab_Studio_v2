@@ -117,6 +117,25 @@ describe("Pack 2 3D practice versions", () => {
     expect(byId("stirring-rod-1").contents.wetState).toBe("rinsed");
   });
 
+  it("each weighing practice zeros the empty balance before its first weighing", () => {
+    for (const id of ["filtration-practice", "drying-practice", "thermal-decomposition-mass-loss-practice"]) {
+      const technique = load(id);
+      const order = technique.process.nodes.map((node) => technique.actions.find((candidate) => candidate.id === node.actionId)!);
+      const zero = order.findIndex((action) => action.atomId === "atom.observe.zero-empty-balance");
+      const firstWeighing = order.findIndex((action) => action.verb === "weigh");
+      expect(zero, id).toBeGreaterThanOrEqual(0);
+      expect(zero, id).toBeLessThan(firstWeighing);
+      expect(order[zero].parameters.sourceInstanceId, id).toBeUndefined();
+    }
+  });
+
+  it("Dry and Weigh keeps the oven door shut while the solid is broken up and while it cools", () => {
+    const breakUp = playTo("drying-practice", "break-up").state;
+    expect(breakUp.apparatusStates?.["drying-oven-1"]?.door).toBe("closed");
+    const cooling = playTo("drying-practice", "cool").state;
+    expect(cooling.apparatusStates?.["drying-oven-1"]?.door).toBe("closed");
+  });
+
   it("Heat and Reweigh returns the left-over mixture to Unused Sample, apart from the product (EX-08, S-07)", () => {
     const { state } = playTo("thermal-decomposition-mass-loss-practice");
     const byId = (id: string) => state.equipmentInstances.find((instance) => instance.id === id)!;

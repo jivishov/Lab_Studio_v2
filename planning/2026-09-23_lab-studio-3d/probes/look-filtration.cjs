@@ -10,7 +10,7 @@ const { openLook } = require("./look-common.cjs");
     await window.__carry(/^Glass funnel/, /^Release to seat/), window.__step()].join(" | ")));
   await look.page.waitForTimeout(2000);
   await look.shot("1-funnel-in-ring");
-  look.log(await look.run(async () => [await window.__tray("filter-paper-1"), await window.__carry(/^Filter paper/, /^Release to lay/), window.__step()].join(" | ")));
+  look.log(await look.run(async () => [await window.__card("Tare"), await window.__tray("filter-paper-1"), await window.__carry(/^Filter paper/, /^Release to lay/), window.__step()].join(" | ")));
   await look.page.waitForTimeout(1500);
   await look.shot("2-paper-on-balance");
   look.log(await look.run(async () => [await window.__input("0.552"), await window.__card("Confirm"), await window.__card("Record"), window.__step()].join(" | ")));

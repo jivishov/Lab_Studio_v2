@@ -425,7 +425,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
             engine.setToolHeld(carry.instanceId, vesselId);
             shown = { ...screen, text: `Gripped the ${vesselLabel}`, kind: "valid" };
           } else {
-            shown = { ...screen, text: carry.via === "gesture" ? `Pause here, then close your hand to grip the ${vesselLabel}` : `Click to grip the ${vesselLabel}`, kind: "valid" };
+            shown = { ...screen, text: carry.via === "gesture" ? `Show your open palm here and hold it to grip the ${vesselLabel}` : `Click to grip the ${vesselLabel}`, kind: "valid" };
           }
         } else {
           engine.setTargetRing(null);

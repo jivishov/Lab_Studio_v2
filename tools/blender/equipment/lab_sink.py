@@ -1,8 +1,9 @@
-"""`lab-sink`: a black epoxy-resin cup sink set at the bench's back edge, with a gooseneck tap (Pack 2,
+"""`lab-sink`: a black epoxy-resin sink basin at the bench's back edge, with a gooseneck tap (Pack 2,
 decided 2026-10-05: the filtrate is poured down a sink at the bench edge, decision 8).
 
 The bench top here is one solid slab, so the basin is modelled standing on it, its rim raised, rather
-than let into it: 360 x 280 mm outside, 110 mm high, with a drain grid in its floor. A liquid poured
+than let into it as a real sink is (kept so, decided 2026-10-06): 360 x 280 mm outside, 110 mm high,
+with a round drain in its floor. A liquid poured
 in runs away (the runtime keeps nothing in it); `fill` is the basin's true inside, so a pour is aimed
 at its mouth.
 """

@@ -76,13 +76,14 @@ wait for confirmation (`DECISIONS.md`, the "built" row). G3 has still not run.
    work are ignored. What remains is G3 (webcam), which needs the user or Claude in Chrome.
 5. **Done 2026-10-06: Pack 2 built and reviewed for fidelity** (`evidence/PACK2_EVIDENCE.md`, with its "Fidelity
    review" section; `proposals/PACK2_ATOMIZATION.md`, revision 2): Transfer Liquid (4 steps), Precipitation (11),
-   Filter a Precipitate (12), Dry and Weigh (22) and Heat and Reweigh (35), as 3D practice versions listed in
+   Filter a Precipitate (13), Dry and Weigh (26) and Heat and Reweigh (36), as 3D practice versions listed in
    `public/techniques-3d/index.json` (written by `scripts/practice3d/build.mjs`), never in the 2D catalogue; the
    lab-bound originals and their 2D labs are untouched until D8. Core: bench operations
    (`src/domain/benchOperations.ts`) and apparatus states; 3D: fourteen models, the step clock, the oven, tongs,
    flames. The review restored Heat and Reweigh's balance choice and Unused Sample return, added the rod rinse,
    fixed the flames, paper, triangle, lid and scoopula models, and made every path wait for the clock and the
-   drain. Seven groups of interpretations wait for confirmation (the evidence note). `hard-water-demo` cannot be
+   drain. The interpretations were all answered on 2026-10-06 (a zero check per technique, the oven door closed,
+   the reduced-motion drain wait, printed scales, wider tong jaws; the rest confirmed). `hard-water-demo` cannot be
    finished in the 2D runtime (found in the review; before Pack 2 too). Hand control (G3) is set aside for now
    (user, 2026-10-05).
 

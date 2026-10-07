@@ -53,6 +53,8 @@ const windowSize = () => ({ width: window.innerWidth, height: window.innerHeight
 /** A tray item carried by hand control: its thumbnail follows the hand, centred on it. */
 interface TrayGrabPreview { definitionId: string; instanceId?: string; label: string; offsetX: number; offsetY: number; x: number; y: number }
 const TRAY_PREVIEW_PX = 72;
+/** Under reduced motion, how long a filter's portion takes to drain before the next can go in (the drawn drain's time). */
+const REDUCED_MOTION_DRAIN_MS = 2600;
 
 export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fallbackHash, backHref, variant = "full", focusNodeId, focusVersion, onPlayer, simulationId }: {
   definition: RuntimeDefinition;
@@ -258,7 +260,13 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   useEffect(() => {
     const pour = player.pour;
     if (!pour) return;
-    if (reducedMotion) { player.finishPour(pour.id); return; }
+    if (reducedMotion) {
+      // Nothing is drawn, but a filter still takes its time to drain: the next portion waits for it as
+      // it does when the drain is drawn (decided 2026-10-06).
+      if (!pour.drainInto) { player.finishPour(pour.id); return; }
+      const drained = window.setTimeout(() => player.finishPour(pour.id), REDUCED_MOTION_DRAIN_MS);
+      return () => window.clearTimeout(drained);
+    }
     if (!engine) return;
     const staged = (id: string) => pour.staging.bench.find((i) => i.instanceId === id);
     const committed = (id: string) => scene.bench.find((i) => i.instanceId === id);
@@ -419,7 +427,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     // The drying oven's dial at the setting step, its door at a door or drying step (Pack 2).
     const oven = player.benchOp?.deviceInstanceId;
     const ovenOperation = player.benchOp?.operation === "set-oven-temperature" ? "set-temperature"
-      : player.benchOp?.operation === "open-oven-door" || player.benchOp?.operation === "dry-in-oven" ? "door" : undefined;
+      : ["open-oven-door", "close-oven-door", "dry-in-oven"].includes(player.benchOp?.operation ?? "") ? "door" : undefined;
     if (oven && ovenOperation) {
       const control = scene.bench.find((item) => item.instanceId === oven)?.model?.controls?.find((c) => c.operation === ovenOperation);
       return control ? { instanceId: oven, controlId: control.id } : undefined;
@@ -641,7 +649,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   const benchBusy = Boolean(player.benchOpRun || player.stepClock);
   busyRef.current = (instanceId) => { refuseEarlyOpen(instanceId); };
   // The oven's door by a click on the oven at a door or drying step (its door key and dial are controls too).
-  const ovenDoorStep = player.benchOp && (player.benchOp.operation === "open-oven-door" || player.benchOp.operation === "dry-in-oven")
+  const ovenDoorStep = player.benchOp && ["open-oven-door", "close-oven-door", "dry-in-oven"].includes(player.benchOp.operation)
     ? player.benchOp.deviceInstanceId : undefined;
   const isOvenTarget = (id: string): boolean => Boolean(ovenDoorStep) && id === ovenDoorStep;
   // The Bunsen burner (Heat and Reweigh): a click on it lights it, opens its air collar, starts the heating or
@@ -997,6 +1005,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
       : "Lift the paper off the balance onto the bench, then click it to fold it. Right-drag to look around.")
     : player.benchOp?.operation === "set-oven-temperature" ? "Enter the setting in the step card, then turn the oven's SET dial (or use Set). Right-drag to look around."
     : player.benchOp?.operation === "open-oven-door" ? "Click the oven door to open it, or use Open the door. Right-drag to look around."
+    : player.benchOp?.operation === "close-oven-door" ? "Click the oven door to close it, or use Close the door. Right-drag to look around."
     : player.benchOp?.operation === "dry-in-oven" ? "Click the oven door to close it and start the clock, or use Close and dry. Right-drag to look around."
     : player.benchOp?.operation === "break-up-precipitate" ? "Pick up the metal scoop and click the watch glass to break up the solid, or use Break it up. Right-drag to look around."
     : player.benchOp?.operation === "cool-on-pad" ? "Leave it on the pad: use Wait while it cools. Right-drag to look around."

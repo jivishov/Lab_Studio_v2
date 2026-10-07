@@ -1,15 +1,16 @@
-import { action, evidenceEffect, item, node, technique } from "./common.mjs";
+import { action, evidenceEffect, item, node, technique, zeroEmptyBalance } from "./common.mjs";
 
 /**
  * Dry and Weigh a Precipitate, 3D practice version (PACK2_ATOMIZATION.md, "Dry and Weigh"; decisions 3, 8
  * and 9, and the manual's two timed stages with no constant-mass loop).
  *
  * The bench starts where filtration ends: the washed precipitate on its paper in the funnel, the filtrate
- * in the flask under it. The student notes the paper's mass from filtration, weighs the labelled watch
- * glass (its tare), lifts the paper onto it, pours the filtrate down the sink, sets the oven, and dries the
- * assembly in two timed stages (the door opened and closed, the hot glass moved with tongs onto a heat-safe
- * pad, the solid broken up between them), lets it cool, weighs it, records it, and works out the
- * precipitate's mass by difference, which Calculate Hardness (Pack 3) takes as its one precipitate mass.
+ * in the flask under it. The student notes the paper's mass from filtration, checks the empty balance reads
+ * zero and weighs the labelled watch glass (its tare), lifts the paper onto it, pours the filtrate down the
+ * sink, sets the oven, and dries the assembly in two timed stages (the door opened, and closed again as soon
+ * as the hot glass is out, the glass moved with tongs onto a heat-safe pad, the solid broken up between
+ * them), lets it cool, weighs it, records it, and works out the precipitate's mass by difference, which
+ * Calculate Hardness (Pack 3) takes as its one precipitate mass.
  */
 const OVEN = { ovenInstanceId: "drying-oven-1", ovenDefinitionId: "drying-oven" };
 const ASSEMBLY = { vesselInstanceId: "watch-glass-1", precipitateCarrierInstanceId: "filter-paper-1" };
@@ -57,6 +58,10 @@ const PAD = { definitionId: "heat-safe-pad", instanceId: "heat-safe-pad-1" };
 const openDoor = (id) => action(id, "observe", "Open the oven door", { benchOperation: "open-oven-door", ...OVEN, tag: `${id}-done` }, {
   atomId: "atom.observe.open-oven-door", evidence: ["observe", "notebook"],
   interaction: { type: "recordNotebook", valueParameter: "note" }, roles: { "drying-instrument": "drying-oven" }, success: "The door is open." });
+// The door is closed as soon as the glass is out, so the oven keeps its temperature (decided 2026-10-06).
+const closeDoor = (id) => action(id, "observe", "Close the oven door", { benchOperation: "close-oven-door", ...OVEN, tag: `${id}-done` }, {
+  atomId: "atom.observe.close-oven-door", evidence: ["observe", "notebook"],
+  interaction: { type: "recordNotebook", valueParameter: "note" }, roles: { "drying-instrument": "drying-oven" }, success: "The door is closed." });
 // The first stage's time is the teacher's, within the manual's 10-15 minutes; the second is the manual's 5.
 const dryStage = (id, minutes, dryness, provenance) => action(id, "dry", "Close the door and dry", {
   benchOperation: "dry-in-oven",
@@ -84,6 +89,8 @@ const intoOven = (id, label, extra) => glassOn(id, "drying-oven-chamber", OVEN_T
   success: "The watch glass is on the oven's shelf.",
 }, extra);
 
+const [zeroAction, zeroNode] = zeroEmptyBalance("zero-balance", "analytical-balance-1");
+
 const actions = [
   action("note-paper-mass", "observe", "Note the filter paper's mass", {
     measurementId: "filter-paper-mass",
@@ -98,6 +105,7 @@ const actions = [
     configurationProvenance: "teacher-configured",
     tag: "filter-paper-mass-noted",
   }, { atomId: "atom.observe.record-teacher-configured-numeric-value", evidence: ["observe", "notebook"], success: "Paper mass noted." }),
+  zeroAction,
   glassOn("glass-on-balance", "analytical-balance-pan", BALANCE, "Put the watch glass on the balance pan", {
     atomId: "atom.place.weighed-vessel", roles: { "weighed-vessel": "watch-glass" }, success: "The watch glass is on the pan.",
   }, { supportEmptyMassG: "{{config.watchGlassMassG}}" }),
@@ -170,6 +178,7 @@ const actions = [
   dryStage("dry-first", "{{config.firstDryingMinutes}}", "damp", "Investigation 3 FD-14: dry within 10-15 minutes"),
   openDoor("open-oven-2"),
   toPad("first-to-pad"),
+  closeDoor("close-oven-1"),
   action("break-up", "observe", "Break up the solid", {
     benchOperation: "break-up-precipitate",
     sourceDefinitionId: "scoopula",
@@ -183,10 +192,12 @@ const actions = [
     roles: { "dried-assembly": "watch-glass", "solid-transfer-tool": "scoopula" },
     success: "The solid is in small pieces.",
   }),
+  openDoor("reopen-oven"),
   intoOven("glass-back-into-oven", "Put it back in the oven with tongs", { handledWithDefinitionId: "crucible-tongs" }),
   dryStage("dry-second", 5, "dry"),
   openDoor("open-oven-3"),
   toPad("second-to-pad"),
+  closeDoor("close-oven-2"),
   action("cool", "cool", "Let it cool", {
     benchOperation: "cool-on-pad",
     sourceDefinitionId: "watch-glass",
@@ -239,6 +250,7 @@ const actions = [
 
 const nodes = [
   node("note-paper-mass", "Note the paper's mass", "Note the dry filter paper's mass, which you weighed before filtering.", { measurementId: "filter-paper-mass" }, "observation"),
+  zeroNode,
   node("glass-on-balance", "Put the watch glass on the balance", "Put the clean, dry, labelled watch glass on the balance pan."),
   node("weigh-glass", "Read its mass", "Read the balance and enter the empty watch glass's mass.", { measurementId: "watch-glass-mass" }),
   node("record-glass", "Record the mass", "Record the watch glass's mass in your notebook.", { measurementId: "watch-glass-mass" }),
@@ -250,11 +262,14 @@ const nodes = [
   node("dry-first", "Dry it", "Close the door and dry the solid for 10 to 15 minutes.", { notebookTag: "dry-first-done" }),
   node("open-oven-2", "Open the oven", "When the time is up, open the oven door.", { notebookTag: "open-oven-2-done" }),
   node("first-to-pad", "Take it out with tongs", "Lift the warm watch glass out with the crucible tongs and set it on the heat-safe pad."),
+  node("close-oven-1", "Close the oven", "Close the oven door, so the oven keeps its temperature while you work.", { notebookTag: "close-oven-1-done" }),
   node("break-up", "Break up the solid", "Break the solid into small pieces with the metal scoop.", { notebookTag: "solid-broken-up" }),
+  node("reopen-oven", "Open the oven", "Open the oven door again.", { notebookTag: "reopen-oven-done" }),
   node("glass-back-into-oven", "Put it back in the oven", "With the tongs, put the watch glass back on the oven's shelf."),
   node("dry-second", "Dry it again", "Close the door and dry for 5 more minutes.", { notebookTag: "dry-second-done" }),
   node("open-oven-3", "Open the oven", "When the time is up, open the oven door.", { notebookTag: "open-oven-3-done" }),
   node("second-to-pad", "Take it out with tongs", "Lift the watch glass out with the tongs and set it on the heat-safe pad."),
+  node("close-oven-2", "Close the oven", "Close the oven door.", { notebookTag: "close-oven-2-done" }),
   node("cool", "Let it cool", "Leave it on the pad until it is cool enough to weigh.", { notebookTag: "assembly-cooled" }),
   node("combined-on-balance", "Put it on the balance", "Put the cool watch glass, with the paper and dry solid, on the balance pan."),
   node("weigh-combined", "Read the combined mass", "Read the balance and enter the combined mass.", { measurementId: "combined-mass" }),

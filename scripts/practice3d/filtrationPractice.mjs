@@ -1,12 +1,12 @@
-import { action, evidenceEffect, item, node, technique } from "./common.mjs";
+import { action, evidenceEffect, item, node, technique, zeroEmptyBalance } from "./common.mjs";
 
 /**
  * Filter a Precipitate, 3D practice version (PACK2_ATOMIZATION.md, "Filter a Precipitate"; decisions 3,
  * 4 and 5: the dry paper weighed and folded, a guided pour decanting first, gravity filtration).
  *
  * The beaker starts with the settled calcium carbonate mixture (in the labs, from the precipitation).
- * The student stands the ring stand on the bench and seats the funnel in its ring; weighs the dry paper
- * flat on the balance and records it; folds it; opens it into the funnel; wets it; puts the flask under
+ * The student stands the ring stand on the bench and seats the funnel in its ring; checks the empty balance
+ * reads zero, weighs the dry paper flat on it and records it; folds it; opens it into the funnel; wets it; puts the flask under
  * the stem; pours the clear liquid, then the solid, down the stirring rod in portions the funnel can hold;
  * rinses the beaker and the rod into the funnel and washes the solid, three squirts each.
  */
@@ -34,6 +34,8 @@ const equipment = [
   item("wash-bottle-1", "wash-bottle", "Wash bottle", water),
 ];
 
+const [zeroAction, zeroNode] = zeroEmptyBalance("zero-balance", "analytical-balance-1");
+
 const actions = [
   action("place-ring-stand", "place", "Stand the ring stand on the bench", {
     equipmentDefinitionId: "ring-stand",
@@ -50,6 +52,7 @@ const actions = [
     compositeDefinitionId: "funnel-stand",
   }, { atomId: "atom.place.filtration-funnel", roles: { "filtration-funnel": "funnel", "filtration-support": "ring-stand" },
     success: "The funnel rests in the ring." }),
+  zeroAction,
   action("place-paper-on-balance", "place", "Lay the dry paper on the balance pan", {
     equipmentDefinitionId: "filter-paper",
     equipmentInstanceId: "filter-paper-1",
@@ -179,6 +182,7 @@ const actions = [
 const nodes = [
   node("place-ring-stand", "Set up the stand", "Stand the ring stand on the bench, its iron ring over the base."),
   node("seat-funnel", "Seat the funnel", "Rest the glass funnel in the iron ring."),
+  zeroNode,
   node("place-paper-on-balance", "Put the paper on the balance", "Lay a dry filter paper flat on the balance pan."),
   node("weigh-paper", "Read the paper's mass", "Read the balance and enter the dry paper's mass.", { measurementId: "filter-paper-mass" }),
   node("record-paper-mass", "Record the mass", "Record the dry filter paper's mass in your notebook.", { measurementId: "filter-paper-mass" }),
