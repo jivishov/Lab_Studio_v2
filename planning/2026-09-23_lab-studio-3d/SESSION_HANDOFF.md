@@ -86,6 +86,11 @@ wait for confirmation (`DECISIONS.md`, the "built" row). G3 has still not run.
    the reduced-motion drain wait, printed scales, wider tong jaws; the rest confirmed). `hard-water-demo` cannot be
    finished in the 2D runtime (found in the review; before Pack 2 too). Hand control (G3) is set aside for now
    (user, 2026-10-05).
+6. **Done 2026-10-08: Pack 1 and Pack 2 published** at https://virtuallab.az/experiments/lab-studio-3d/
+   (virtual_lab `e2ab6c2`, built from `97e791d` by `PAGES_3D_PUBLISH.md`; republish with its section 9, only
+   when the user asks). This branch is still unpushed past `713c248`.
+7. **Next: the Pack 3 proposal** (catalogue items 11–15), to be proposed and decided before any build;
+   `NEXT_THREAD_PROMPT.md` is the prompt for it. D8 stays open for its separate discussion.
 
 **How the work has been checked** (the user's validation policy: source review, `npx tsc -p
 tsconfig.app.json --noEmit`, `python tools/blender/validate_equipment3d.py --pack 1`, and narrow
