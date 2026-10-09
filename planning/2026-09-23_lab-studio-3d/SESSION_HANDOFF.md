@@ -89,8 +89,12 @@ wait for confirmation (`DECISIONS.md`, the "built" row). G3 has still not run.
 6. **Done 2026-10-08: Pack 1 and Pack 2 published** at https://virtuallab.az/experiments/lab-studio-3d/
    (virtual_lab `e2ab6c2`, built from `97e791d` by `PAGES_3D_PUBLISH.md`; republish with its section 9, only
    when the user asks). This branch is still unpushed past `713c248`.
-7. **Next: the Pack 3 proposal** (catalogue items 11–15), to be proposed and decided before any build;
-   `NEXT_THREAD_PROMPT.md` is the prompt for it. D8 stays open for its separate discussion.
+7. **Next: the D8 discussion** (how experiments are assembled from the atomic steps). The user chose it on
+   2026-10-08 to come before Pack 3, because three of Pack 3's five techniques run only inside 2D labs.
+   `NEXT_THREAD_PROMPT.md` is the prompt: a brief, the discussion, and the recorded decision; no build.
+8. **Then: the Pack 3 proposal** (catalogue items 11–15), proposed and decided before any build.
+   `PACK3_PROPOSAL_PROMPT.md` is its prompt. It was checked against an evaluated inventory, and the D8
+   decision replaces its first decision's options.
 
 **How the work has been checked** (the user's validation policy: source review, `npx tsc -p
 tsconfig.app.json --noEmit`, `python tools/blender/validate_equipment3d.py --pack 1`, and narrow
