@@ -14,7 +14,7 @@ Continue Lab Studio 3D. The next step is **the Pack 3 proposal**. Propose it, bu
   - When I do ask, follow `planning/2026-09-23_lab-studio-3d/PAGES_3D_PUBLISH.md`, section 9.
 
 **Read first, in this order** (all under `planning/2026-09-23_lab-studio-3d/`):
-1. `SESSION_HANDOFF.md`, section "State on 2026-10-04". Its items 5 (Pack 2) and 6 (published) are the latest.
+1. `SESSION_HANDOFF.md`, section "State on 2026-10-04". Its items 5 (Pack 2), 6 (published) and 7 (this task) are the latest.
 2. `DECISIONS.md`: every decision. D8 is still open.
 3. `proposals/PACK2_ATOMIZATION.md`: the model for this proposal. Follow its structure:
    - the M/F/R/C basis labels;
