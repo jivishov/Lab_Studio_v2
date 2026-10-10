@@ -60,7 +60,7 @@ Governing documents: `IMPLEMENTATION_PLAN.md` (revision 2.1) and `UI_UX_HANDOFF.
 Work that depends on these stays reversible until you confirm.
 
 **Confirmed 2026-10-05** (you: "For the decisions go with the defaults, except for the how the experiments will be assembled from the atomic steps. The latter will be decided later in a separate discussion with you."):
-- **D8 stays open** for that separate discussion; nothing in Phase B is built until then.
+- **D8 stays open** for that separate discussion; nothing in Phase B is built until then. (Decided 2026-10-10; see the D8 row below.)
 - **Q4, Q5, U2, U3 and U5–U8 are decided as their provisional defaults** in the table below.
 - **Q6:** no linter is added. You authorised the test suite and `content:check` on 2026-10-05; pre-existing failures that do not affect the 3D work are ignored (your words: "ignore them if they don't affect the 3D work"). `content:check`'s baseline is left as it is (your answer: "Leave it as is").
 - **The other M8 items, at their defaults:**
@@ -72,7 +72,7 @@ Work that depends on these stays reversible until you confirm.
 
 | # | Decision | Provisional default | Blocks |
 |---|---|---|---|
-| D8 | How experiments are compiled from techniques | (a) flattening append from M6; (b) composition-source authoring as Phase B's main deliverable | Phase B only |
+| D8 | How experiments are compiled from techniques | **Decided 2026-10-10** (`proposals/D8_EXPERIMENT_ASSEMBLY.md`, "Decisions"). You: "I need real atomized steps to use in 3D. Ignore the 2D version at all."; then "Beside 2D", and the recommendations on the rest. (1) 3D experiments compose the real atomized steps: each `scripts/practice3d/*` module also writes a `composable` twin (no stand-in steps, no slots that only fill the practice bench) in `public/techniques-3d/`, and 3D labs are generated in `public/labs-3d/`; 2D is neither read nor written, and no core change is needed (a probe compiled and played the 3D `intro-filtration-demo` this way). (2) `#/3d/play/<labId>` compiles through `compileBundledLabCompositionWithPolicy` with a 3D resolver and plays in Player3D, with part labels, a 3D lab setup page, provenance from the bindings and an Experiments group in the switcher. (3) Studio: (a) only for now; (b) is decided again after the first 3D experiment plays; Studio 3D keeps not listing the practice versions. (4) Order: E0 (a short design, put to you), E3 `intro-filtration-demo`, `hard-water-demo` after Pack 3, green chemistry (E4). (5) `hard-water-demo`'s 2D faults are left as they are. (6) The `filterInPortions` defect the review found (the last filter portion can round above what is left and throw; live for some teacher volumes) is fixed first in the build thread. | Phase B (decided) |
 | Q4 | Pack grouping | Catalog order, in packs of five | Pack 2 onward |
 | Q5 | Visual direction | The handoff's design system, proposed in the M0 mock-ups for your approval | M3 onward (through mock-up approval) |
 | Q6 | Gates G1–G4 and a linter | None authorised. No linter is added. Under `AGENTS.md`, validation is source review plus typecheck; tests are written but not run. | Authorised exits only |

@@ -71,8 +71,8 @@ wait for confirmation (`DECISIONS.md`, the "built" row). G3 has still not run.
    standing, per-item tray drops, seated parts kept seated while a step needs them, and more.
 4. **M8 acceptance.** On 2026-10-05 the provisional decisions and every interpretation were confirmed at
    their defaults (`DECISIONS.md`, "Open decisions"), and `content:check`'s baseline is left as it is.
-   **D8 (how experiments are assembled from the atomic steps) is open for a separate discussion with the
-   user**, so nothing in Phase B is built before it. Pre-existing failures that do not affect the 3D
+   D8 (how experiments are assembled from the atomic steps) was left for a separate discussion with the
+   user; it was decided on 2026-10-10 (item 7). Pre-existing failures that do not affect the 3D
    work are ignored. What remains is G3 (webcam), which needs the user or Claude in Chrome.
 5. **Done 2026-10-06: Pack 2 built and reviewed for fidelity** (`evidence/PACK2_EVIDENCE.md`, with its "Fidelity
    review" section; `proposals/PACK2_ATOMIZATION.md`, revision 2): Transfer Liquid (4 steps), Precipitation (11),
@@ -89,12 +89,26 @@ wait for confirmation (`DECISIONS.md`, the "built" row). G3 has still not run.
 6. **Done 2026-10-08: Pack 1 and Pack 2 published** at https://virtuallab.az/experiments/lab-studio-3d/
    (virtual_lab `e2ab6c2`, built from `97e791d` by `PAGES_3D_PUBLISH.md`; republish with its section 9, only
    when the user asks). This branch is still unpushed past `713c248`.
-7. **Next: the D8 discussion** (how experiments are assembled from the atomic steps). The user chose it on
-   2026-10-08 to come before Pack 3, because three of Pack 3's five techniques run only inside 2D labs.
-   `NEXT_THREAD_PROMPT.md` is the prompt: a brief, the discussion, and the recorded decision; no build.
-8. **Then: the Pack 3 proposal** (catalogue items 11–15), proposed and decided before any build.
-   `PACK3_PROPOSAL_PROMPT.md` is its prompt. It was checked against an evaluated inventory, and the D8
-   decision replaces its first decision's options.
+7. **Done 2026-10-10: D8 decided** (`proposals/D8_EXPERIMENT_ASSEMBLY.md`, "Decisions"; `DECISIONS.md`, the D8
+   row). 3D experiments compose the real atomized steps, beside 2D:
+   - Each practice module also writes a `composable` twin in `public/techniques-3d/`.
+   - The 3D labs are generated in `public/labs-3d/`, and 2D is neither read nor written.
+   - `#/3d/play/<labId>` compiles through the loader's seam with a 3D resolver and plays in Player3D.
+   - Studio stays (a) for now.
+   - The order: E0, E3 `intro-filtration-demo`, `hard-water-demo` after Pack 3, then green chemistry.
+   - `hard-water-demo`'s 2D faults are left as they are.
+   - Probes: `probes/probe-d8-compile.mts` and `probes/probe-d8-twins.mts`. The second compiles and plays the 3D
+     `intro-filtration-demo` from twins with no core change.
+   - **Found:** `filterInPortions` (`src/runtime/reducer.ts`) can round the last filter portion above what is
+     left and throw. The probe hit it in the lab at 54.05 mL, and it is live in the published standalone Filter a
+     Precipitate for some teacher volumes. It is fixed first in the build thread.
+8. **Next: the build thread** (`NEXT_THREAD_PROMPT.md`, 2026-10-10):
+   - the `filterInPortions` fix;
+   - E0, a short design put to the user;
+   - E3, `intro-filtration-demo` in 3D.
+9. **Then: the Pack 3 proposal** (catalogue items 11–15), proposed and decided before any build.
+   - `PACK3_PROPOSAL_PROMPT.md` is its prompt. It was checked against an evaluated inventory.
+   - The note at its top says how D8 replaces its first decision's options.
 
 **How the work has been checked** (the user's validation policy: source review, `npx tsc -p
 tsconfig.app.json --noEmit`, `python tools/blender/validate_equipment3d.py --pack 1`, and narrow

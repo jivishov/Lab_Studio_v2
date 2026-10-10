@@ -4,6 +4,20 @@ Paste everything below the line into a fresh Claude Code thread. Every fact in i
 
 **Run this after the D8 discussion** (`NEXT_THREAD_PROMPT.md`; on 2026-10-08 the user chose to settle D8 first). It was written while D8 was open. Where it says D8 is open, read the D8 row in `DECISIONS.md` and the note the D8 session adds below this one. The D8 decision replaces the options in decision 1 here.
 
+**D8 note (2026-10-10).** D8 is decided (`proposals/D8_EXPERIMENT_ASSEMBLY.md`, "Decisions"). Run this proposal after the build thread that fixes `filterInPortions` and builds E3 (`intro-filtration-demo` in 3D); the user put intro filtration first.
+- **What replaces decision 1.** The user's words: "I need real atomized steps to use in 3D. Ignore the 2D version at all." So:
+  - 3D uses only the real atomized steps.
+  - 2D is neither read nor written, and it never constrains a 3D design.
+  - Options that keep a 2D lab working are no longer a reason to choose them.
+- **For the three lab-bound techniques** (Paper Chromatography, Calculate Hardness and Brass Spectrophotometry):
+  - Follow Pack 2's route: one module per technique in `scripts/practice3d/` writes a 3D practice version and a `composable` twin.
+  - Their 3D labs (`paper-chromatography`, `brass-colorimetry`, `hard-water-demo`) are generated in `public/labs-3d/`.
+  - Propose the twins' stand-in steps and dropped slots too.
+- **Beer's Law and Hard Water Gravimetry** are composed by no lab. Changing them in place (Pack 1's route) is still possible, but now offers nothing over the practice route except a single file. Recommend between the two.
+- **Holding Pack 3 until D8** is no longer an option.
+- **Calculate Hardness** (decision 3) is now needed: `hard-water-demo` in 3D composes its twin.
+- **Lab setup and models.** Paper chromatography's lab needs a 3D setup page. 14 of those two labs' equipment definitions have no 3D model yet: 8 for chromatography and 6 for brass (`equipment3d/registry.json`, checked 2026-10-10). Count them in the size and order (decision 5).
+
 ---
 
 Continue Lab Studio 3D. The next step is **the Pack 3 proposal**. Propose it, but don't build anything yet. Pack 2 went through the same stages: proposal, a fidelity review, my decisions, then a separate build thread.
