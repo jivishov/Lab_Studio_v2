@@ -1,3 +1,4 @@
+import type { Lab3DPartLabel } from "../labs3d";
 import { ProvenanceChip } from "../ui/ProvenanceChip";
 import { Icon } from "../ui/Icon";
 import { FloatPanel, type PanelControls } from "./panels";
@@ -8,15 +9,17 @@ import type { Player3DController } from "./usePlayer3D";
  * The step card (handoff §5.5): step count, title, progress, the instruction verbatim on the
  * guidance band, the input field above the action (G-2), the accessible action flow with the 2D
  * enabling rules (G-6), Show me in guided mode only (G-7), and the correction block (§5.13).
- * It is a floating panel; collapsed, it is one line: "Step n · <title>" (§5.5.9).
+ * It is a floating panel; collapsed, it is one line: "Step n · <title>" (§5.5.9). In a 3D experiment
+ * (D8, E0 decision C) the eyebrow names the part first: "Part 2 of 4 · Transfer · Step 7 of 31".
  */
-export const StepCard = ({ player, controls, onShowMe, onHoldOver, holdOverReady }: {
+export const StepCard = ({ player, controls, onShowMe, onHoldOver, holdOverReady, part }: {
   player: Player3DController;
   controls: PanelControls;
   onShowMe: () => void;
   /** A drop-to-the-line step: hold the pipette over the vessel, as releasing it there on the bench does. */
   onHoldOver?: () => void;
   holdOverReady?: boolean;
+  part?: Lab3DPartLabel;
 }) => {
   const { runtime, flow, showGuidance, correction } = player;
   const nodes = runtime.process.nodes;
@@ -36,7 +39,7 @@ export const StepCard = ({ player, controls, onShowMe, onHoldOver, holdOverReady
     <FloatPanel id="step" label="Current step" className="s3d-step" controls={controls}
       head={<>
         {badge}
-        <span className="s3d-eyebrow s3d-grow">Step {n} of {N}</span>
+        <span className="s3d-eyebrow s3d-grow">{part ? `Part ${part.index} of ${part.count} · ${part.title} · ` : ""}Step {n} of {N}</span>
         {runtime.currentNode.type !== "action" ? <span className="s3d-chip s3d-chip--neutral">{nodeTypeLabel(runtime.currentNode.type)}</span> : null}
       </>}
       collapsedHead={<>{badge}<span className="s3d-step__line s3d-grow">Step {n} · {runtime.currentNode.title}</span></>}

@@ -1,4 +1,4 @@
-import { action, evidenceEffect, item, node, technique } from "./common.mjs";
+import { action, evidenceEffect, item, node, technique, twinOf } from "./common.mjs";
 
 /**
  * Hard-Water Calcium Carbonate Precipitation, 3D practice version (PACK2_ATOMIZATION.md,
@@ -174,7 +174,7 @@ const nodes = [
     { notebookTag: "precipitation-complete-test" }),
 ];
 
-export default technique({
+const practice = technique({
   id: "hard-water-precipitation-practice",
   title: "Hard-Water Calcium Carbonate Precipitation",
   learningGoal: "Precipitate the calcium in a hard-water sample completely: add the carbonate in portions while stirring, then test that no more precipitate forms.",
@@ -197,3 +197,8 @@ export default technique({
   tags: ["hard-water", "precipitation"],
   legacyActionEffects: [evidenceEffect("observe-precipitate")],
 });
+
+export default practice;
+
+/** The composable twin a 3D lab composes (D8 E0, 2026-10-10). It drops the sample and reagent volumes that only fill the practice bench. */
+export const twin = twinOf(practice, { id: "hard-water-precipitation-3d", dropSlots: ["sampleVolumeMl", "reagentStockVolumeMl"] });

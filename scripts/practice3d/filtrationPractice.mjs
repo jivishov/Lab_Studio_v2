@@ -1,4 +1,4 @@
-import { action, evidenceEffect, item, node, technique, zeroEmptyBalance } from "./common.mjs";
+import { action, evidenceEffect, item, node, technique, twinOf, zeroEmptyBalance } from "./common.mjs";
 
 /**
  * Filter a Precipitate, 3D practice version (PACK2_ATOMIZATION.md, "Filter a Precipitate"; decisions 3,
@@ -200,7 +200,7 @@ const nodes = [
   node("wash-precipitate", "Wash the solid", "Wash the solid on the paper with three small squirts of water.", { notebookTag: "precipitate-washed" }),
 ];
 
-export default technique({
+const practice = technique({
   id: "filtration-practice",
   title: "Filter a Precipitate",
   learningGoal: "Collect a precipitate by gravity filtration: weigh and fold the paper, pour without overflowing, and rinse every grain onto the paper.",
@@ -221,3 +221,8 @@ export default technique({
   tags: ["filtration", "gravimetry"],
   legacyActionEffects: [evidenceEffect("record-paper-mass")],
 });
+
+export default practice;
+
+/** The composable twin a 3D lab composes (D8 E0, 2026-10-10). It drops the mixture that only fills the practice bench; `paperMassG` stays, as the balance's reading for the paper. */
+export const twin = twinOf(practice, { id: "filtration-3d", dropSlots: ["mixtureVolumeMl", "precipitateMassG"] });

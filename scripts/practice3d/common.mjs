@@ -191,3 +191,68 @@ export const evidenceEffect = (actionId) => ({
   actionId,
   effect: { classes: ["evidence-recording"], targets: [{ domain: "evidence" }] },
 });
+
+const CONFIG_REFERENCE = /\{\{config\.([A-Za-z0-9]+)\}\}/g;
+
+/** Every `{{config.*}}` reference in a value, with the JSON path it is at. */
+const configReferences = (value, path = "") => {
+  if (typeof value === "string") return [...value.matchAll(CONFIG_REFERENCE)].map((match) => ({ slotId: match[1], path }));
+  if (Array.isArray(value)) return value.flatMap((entry, index) => configReferences(entry, `${path}[${index}]`));
+  if (value && typeof value === "object") return Object.entries(value).flatMap(([key, entry]) => configReferences(entry, `${path}.${key}`));
+  return [];
+};
+
+/**
+ * The composable twin of a practice version (D8, decided 2026-10-10; `proposals/D8_EXPERIMENT_ASSEMBLY.md`,
+ * "E0 design"): the same steps for a 3D lab to compose, without the steps that stand in for a technique
+ * played before it (`dropSteps`, action ids) and without the slots that only fill the practice bench
+ * (`dropSlots`). The starting items stay as the roles' source instances; a lab binds each to its own item
+ * and the compiler drops the technique's bench, so contents that name a dropped slot are emptied.
+ * Throws when a dropped slot is used anywhere but the bench or a dropped step, or a reference is undeclared.
+ */
+export const twinOf = (practice, { id, dropSteps = [], dropSlots = [] }) => {
+  const twin = structuredClone(practice);
+  twin.id = id;
+  twin.metadata.tags = twin.metadata.tags.map((tag) => (tag === "practice-3d" ? "twin-3d" : tag));
+  const composition = twin.composition;
+  composition.catalogDisposition = "composable";
+
+  const dropped = new Set(dropSteps);
+  for (const actionId of dropped) {
+    if (!twin.actions.some((entry) => entry.id === actionId)) throw new Error(`${id}: no step "${actionId}" to drop.`);
+  }
+  if (twin.successCriteria.some((criterion) => dropped.has(criterion.actionId))) throw new Error(`${id}: a dropped step is the success step.`);
+  twin.actions = twin.actions.filter((entry) => !dropped.has(entry.id));
+  const nodes = twin.process.nodes.filter((entry) => !dropped.has(entry.actionId));
+  twin.process.nodes = nodes;
+  twin.process.startNodeId = nodes[0].id;
+  twin.process.edges = nodes.slice(1).map((next, i) => ({ from: nodes[i].id, to: next.id, label: "Next", condition: { type: "validationPassed" } }));
+  composition.ports = composition.ports.map((port) => ({ ...port, nodeId: port.kind === "entry" ? nodes[0].id : nodes.at(-1).id }));
+  composition.evidenceOutputs = composition.evidenceOutputs.filter((output) => !dropped.has(output.actionId));
+  const outputIds = new Set(composition.evidenceOutputs.map((output) => output.id));
+  composition.completion.requiredEvidenceOutputIds = composition.completion.requiredEvidenceOutputIds.filter((outputId) => outputIds.has(outputId));
+  composition.legacyActionEffects = composition.legacyActionEffects.filter((entry) => !dropped.has(entry.actionId));
+
+  const droppedSlots = new Set(dropSlots);
+  for (const slotId of droppedSlots) {
+    if (!composition.configurationSlots.some((slot) => slot.id === slotId)) throw new Error(`${id}: no slot "${slotId}" to drop.`);
+  }
+  composition.configurationSlots = composition.configurationSlots.filter((slot) => !droppedSlots.has(slot.id));
+  twin.initialState.equipment = twin.initialState.equipment.map((entry) =>
+    (configReferences(entry.contents).some((reference) => droppedSlots.has(reference.slotId)) ? { ...entry, contents: emptyContents() } : entry));
+  const declared = new Set(composition.configurationSlots.map((slot) => slot.id));
+  for (const reference of configReferences(twin)) {
+    if (droppedSlots.has(reference.slotId)) throw new Error(`${id}: dropped slot "${reference.slotId}" is still used at ${reference.path}.`);
+    if (!declared.has(reference.slotId)) throw new Error(`${id}: "{{config.${reference.slotId}}}" at ${reference.path} has no slot.`);
+  }
+  for (const slot of composition.configurationSlots) {
+    if (!configReferences(twin).some((reference) => reference.slotId === slot.id)) throw new Error(`${id}: slot "${slot.id}" is kept but nothing uses it.`);
+  }
+  return twin;
+};
+
+/** A setup field's value in a 3D lab module: a part's slot or a bench volume filled from the setup page. */
+export const setup = (fieldId) => ({ setup: fieldId });
+
+/** A Pack 1 original a 3D lab composes as it is, read from `public/techniques/` by the build. */
+export const original = (techniqueId) => ({ original: techniqueId });

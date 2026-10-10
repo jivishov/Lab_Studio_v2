@@ -1,3 +1,4 @@
+import { Lab3DRoute } from "./player/Lab3DRoute";
 import { Technique3DRoute } from "./player/Technique3DRoute";
 import { studio3DFallbackHash, type Studio3DRoute } from "./routes3d";
 import { Studio3D } from "./studio/Studio3D";
@@ -13,8 +14,9 @@ const viewTitles: Record<Studio3DRoute["view"], string> = {
 
 /**
  * Entry point of the additive Lab Studio 3D app (plan §4.2), mounted by the shell only while
- * `studio3dV1` is on. `#/3d/technique/:id` runs Player3D and `#/3d/studio` runs Studio 3D (M6);
- * experiments (Phase B) replace the remaining placeholders, linking to the 2D route meanwhile.
+ * `studio3dV1` is on. `#/3d/technique/:id` runs Player3D, `#/3d/studio` runs Studio 3D (M6), and
+ * `#/3d/play/:labId` runs a 3D experiment from `public/labs-3d/` (D8, 2026-10-10). The home view
+ * remains a placeholder, linking to the 2D route.
  */
 export const Studio3DApp = ({ route }: { route: Studio3DRoute }) => {
   if (route.view === "studio") {
@@ -31,11 +33,16 @@ export const Studio3DApp = ({ route }: { route: Studio3DRoute }) => {
       </div>
     );
   }
-  const subject = route.view === "play" ? route.labId : undefined;
+  if (route.view === "play") {
+    return (
+      <div className="s3d">
+        <Lab3DRoute key={route.labId} labId={route.labId} />
+      </div>
+    );
+  }
   return (
     <main className="route-status" data-studio3d-view={route.view}>
       <h1>{viewTitles[route.view]}</h1>
-      {subject ? <p><code>{subject}</code></p> : null}
       <p>Lab Studio 3D is in development. This route does not run anything yet.</p>
       <p>
         <a href={studio3DFallbackHash(route)}>Open the 2D version</a>

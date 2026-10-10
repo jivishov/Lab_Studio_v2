@@ -1,13 +1,27 @@
 import { Fragment, useEffect, useRef, useState, type KeyboardEvent } from "react";
-import { loadSimulations3D, type Simulation3D as Simulation } from "../practice";
+import { loadLab3DSummaries } from "../labs3d";
+import { loadSimulations3D, type Simulation3D } from "../practice";
 import { studio3DRouteHash } from "../routes3d";
 import { Icon } from "../ui/Icon";
 
+/** A switcher entry: a technique or practice version (`#/3d/technique/<id>`), or a 3D experiment (`#/3d/play/<id>`). */
+type Simulation = Pick<Simulation3D, "id" | "title" | "description"> & { group: string; hash: string };
+
 /**
  * The 3D simulations a learner can move between: Pack 1's techniques in catalogue order, then each
- * later pack's practice versions (Pack 2 decision 1A, 2026-10-05), under a heading per pack.
+ * later pack's practice versions (Pack 2 decision 1A, 2026-10-05), under a heading per pack; then the
+ * 3D experiments (D8, 2026-10-10) under "Experiments". An experiment list that cannot be read leaves
+ * the techniques listed.
  */
-const loadSimulations = (): Promise<Simulation[]> => loadSimulations3D();
+const loadSimulations = async (): Promise<Simulation[]> => {
+  const [techniques, labs] = await Promise.all([loadSimulations3D(), loadLab3DSummaries().catch(() => [])]);
+  return [
+    ...techniques.map((t) => ({ id: t.id, title: t.title, description: t.description, group: `Pack ${t.pack}${t.pack > 1 ? " · practice" : ""}`,
+      hash: studio3DRouteHash({ view: "technique", techniqueId: t.id }) })),
+    ...labs.map((lab) => ({ id: lab.id, title: lab.title, description: lab.description, group: "Experiments",
+      hash: studio3DRouteHash({ view: "play", labId: lab.id }) })),
+  ];
+};
 
 /**
  * The top bar's title as a switcher (decided 2026-09-26): it opens a list of the 3D simulations,
@@ -50,7 +64,7 @@ export const SimulationSwitcher = ({ currentId, title, hasProgress, onLeave }: {
   const go = (simulation: Simulation) => {
     onLeave?.();
     close();
-    window.location.hash = studio3DRouteHash({ view: "technique", techniqueId: simulation.id });
+    window.location.hash = simulation.hash;
   };
   const choose = (simulation: Simulation) => {
     if (simulation.id === currentId) close();
@@ -69,7 +83,7 @@ export const SimulationSwitcher = ({ currentId, title, hasProgress, onLeave }: {
     items[(at + (event.key === "ArrowDown" ? 1 : items.length - 1)) % items.length]?.focus();
     event.preventDefault();
   };
-  const packs = [...new Set(simulations.map((simulation) => simulation.pack))];
+  const groups = [...new Set(simulations.map((simulation) => simulation.group))];
 
   return (
     <div className="s3d-switcher" ref={rootRef} onKeyDown={onKey}>
@@ -91,15 +105,15 @@ export const SimulationSwitcher = ({ currentId, title, hasProgress, onLeave }: {
             </div>
           ) : (
             <ul className="s3d-switcher__list" ref={listRef}>
-              {packs.map((pack) => (
-                <Fragment key={pack}>
-                  {packs.length > 1 ? <li className="s3d-switcher__pack" aria-hidden="true">Pack {pack}{pack > 1 ? " · practice" : ""}</li> : null}
-                  {simulations.filter((simulation) => simulation.pack === pack).map((simulation, index) => {
+              {groups.map((group) => (
+                <Fragment key={group}>
+                  {groups.length > 1 ? <li className="s3d-switcher__pack" aria-hidden="true">{group}</li> : null}
+                  {simulations.filter((simulation) => simulation.group === group).map((simulation, index) => {
                     const current = simulation.id === currentId;
                     return (
                       <li key={simulation.id}>
                         <button type="button" className={`s3d-switcher__item${current ? " is-current" : ""}`}
-                          aria-current={current ? "true" : undefined} aria-label={`Pack ${pack}, ${simulation.title}`} onClick={() => choose(simulation)}>
+                          aria-current={current ? "true" : undefined} aria-label={`${group}, ${simulation.title}`} onClick={() => choose(simulation)}>
                           <span className="s3d-switcher__index">{index + 1}</span>
                           <span className="s3d-switcher__text">
                             <span className="s3d-switcher__name">{simulation.title}</span>

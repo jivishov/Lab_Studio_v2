@@ -18,6 +18,7 @@ import { StepCard } from "./StepCard";
 import { StepClock } from "./StepClock";
 import { fillLevelMm } from "../adapters/runtimeToScene";
 import { usePlayer3D, type Player3DController } from "./usePlayer3D";
+import type { Lab3DPartLabel } from "../labs3d";
 
 /**
  * Player3D (handoff §5): the live bench full-bleed, with floating panels. It commits only through
@@ -56,7 +57,7 @@ const TRAY_PREVIEW_PX = 72;
 /** Under reduced motion, how long a filter's portion takes to drain before the next can go in (the drawn drain's time). */
 const REDUCED_MOTION_DRAIN_MS = 2600;
 
-export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fallbackHash, backHref, variant = "full", focusNodeId, focusVersion, onPlayer, simulationId }: {
+export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fallbackHash, backHref, variant = "full", focusNodeId, focusVersion, onPlayer, simulationId, parts }: {
   definition: RuntimeDefinition;
   /** The definition before teacher setup, for provenance chips (see usePlayer3D). */
   authoredDefinition?: RuntimeDefinition;
@@ -73,6 +74,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   onPlayer?: (player: Player3DController) => void;
   /** A standalone technique: its title opens the switcher between the 3D simulations. */
   simulationId?: string;
+  /** A 3D experiment (D8): each compiled node's part, which the step card names. */
+  parts?: ReadonlyMap<string, Lab3DPartLabel>;
 }) => {
   const player = usePlayer3D(definition, "guided", authoredDefinition, { nodeId: focusNodeId, version: focusVersion });
   // The Studio's preview Restart also stops the camera tracks, as the player's own Restart does.
@@ -1041,7 +1044,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
         </span>
       </header>
 
-      <StepCard player={player} controls={panelControls} onShowMe={showMe}
+      <StepCard player={player} controls={panelControls} onShowMe={showMe} part={parts?.get(player.runtime.currentNode.id)}
         onHoldOver={markStep && !dropMode ? holdFromCard : undefined} holdOverReady={Boolean(markStep && onBenchNow(markStep.pipetteInstanceId) && onBenchNow(markStep.vesselInstanceId))} />
       {player.stepClock ? (
         <StepClock key={player.stepClock.id} label={player.stepClock.label} minutes={player.stepClock.minutes} progress={player.clockProgress}

@@ -493,3 +493,18 @@ a technique, whether the lab fixes the value or the setup page sets it.
 6. **Float noise elsewhere.** After the washes the flask reads 72.0500000001 mL (`roundToRuntimeMl` adds at 10
    decimals). It throws nothing. Whether a panel shows the noise is checked in the G1 look. It is not fixed here: it is
    core, and outside the decided fix.
+
+### E0 decisions (you, 2026-10-10, in line)
+
+- **A. Twins:** only the three that E3 uses (recommended). Drying's comes with `hard-water-demo`, Heat and
+  Reweigh's with green chemistry.
+- **B. Defaults: fill in every field** (not the recommendation). The setup page proposes a default for each field:
+  - 20 mL sample;
+  - 50 mL working portion;
+  - 20 mL of reagent added;
+  - 0.0075 g of precipitate (the model's value);
+  - 0.553 g for the paper;
+  - short observation texts.
+
+  The teacher approves them or changes any.
+- **C. Part labels:** on the step card's eyebrow and as headings in the intro's journey (recommended).

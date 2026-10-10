@@ -1,4 +1,4 @@
-import { action, evidenceEffect, item, node, technique } from "./common.mjs";
+import { action, evidenceEffect, item, node, technique, twinOf } from "./common.mjs";
 
 /**
  * Transfer Liquid, 3D practice version (PACK2_ATOMIZATION.md, "Transfer Liquid"; decision 2).
@@ -83,7 +83,7 @@ const nodes = [
   node("observe-transfer", "Record the observation", "Record what you see in the beaker.", { action: "observe-transfer" }, "observation"),
 ];
 
-export default technique({
+const practice = technique({
   id: "transfer-practice",
   title: "Transfer Liquid",
   learningGoal: "Move a measured liquid sample completely into a beaker: pour, drain and rinse the measuring cylinder.",
@@ -99,3 +99,8 @@ export default technique({
   tags: ["transfer"],
   legacyActionEffects: [evidenceEffect("observe-transfer")],
 });
+
+export default practice;
+
+/** The composable twin a 3D lab composes (D8 E0, 2026-10-10). It drops nothing: every slot is used by a step, and no step stands in for an earlier technique. */
+export const twin = twinOf(practice, { id: "transfer-3d" });

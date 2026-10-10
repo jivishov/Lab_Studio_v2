@@ -325,11 +325,16 @@
 .s3d-journey li { background: var(--guide-band); border-radius: var(--radius-button); padding: 8px; text-align: center; font-size: 12px; color: var(--ink-2); line-height: 1.35; }
 .s3d-journey b { display: block; color: var(--guide-strong); font-size: 15px; }
 .s3d-journey__more { font-style: italic; }
+/* A 3D experiment's intro (D8): the journey under each part's heading. */
+.s3d-journey-part { display: grid; gap: 6px; }
+.s3d-journey-part__title { margin: 4px 0 0; font-size: 13px; font-weight: 600; color: var(--ink-2); }
 .s3d-blocker { background: var(--warn-tint); border: 1px solid #ecdcb0; border-radius: var(--radius-button); padding: 10px 12px; font-size: 13px; }
 .s3d-hosts ul { margin: 6px 0 0; padding-left: 18px; }
 .s3d-hosts a, .s3d-gate a { color: var(--brand); font-weight: 600; }
 .s3d-gate__actions { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .s3d-setup-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+.s3d-field--wide { grid-column: 1 / -1; }
+.s3d-textarea { width: 100%; box-sizing: border-box; padding: 6px 10px; border: 1px solid var(--line-strong); border-radius: var(--radius-input); background: var(--panel-solid); font: 14px var(--font-sans); color: var(--ink); resize: vertical; }
 
 /* ---------------------------------------------------------------- tablet (handoff §7) */
 @media (max-width: 1100px) {

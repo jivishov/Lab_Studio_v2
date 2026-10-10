@@ -1,0 +1,1430 @@
+{
+  "id": "filtration-3d",
+  "title": "Filter a Precipitate",
+  "learningGoal": "Collect a precipitate by gravity filtration: weigh and fold the paper, pour without overflowing, and rinse every grain onto the paper.",
+  "requiredEquipment": [
+    "beaker-250ml",
+    "stirring-rod",
+    "analytical-balance",
+    "ring-stand",
+    "funnel",
+    "funnel-stand",
+    "filter-paper",
+    "erlenmeyer-flask-250ml",
+    "wash-bottle"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "beaker-250ml-1",
+        "definitionId": "beaker-250ml",
+        "label": "Sample beaker",
+        "location": "workbench",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "stirring-rod-1",
+        "definitionId": "stirring-rod",
+        "label": "Stirring rod",
+        "location": "workbench",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "analytical-balance-1",
+        "definitionId": "analytical-balance",
+        "label": "Analytical balance",
+        "location": "workbench",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "ring-stand-1",
+        "definitionId": "ring-stand",
+        "label": "Ring stand",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "funnel-1",
+        "definitionId": "funnel",
+        "label": "Glass funnel",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "funnel-stand-1",
+        "definitionId": "funnel-stand",
+        "label": "Funnel in the ring stand",
+        "location": "storage",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "filter-paper-1",
+        "definitionId": "filter-paper",
+        "label": "Filter paper",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "erlenmeyer-flask-250ml-1",
+        "definitionId": "erlenmeyer-flask-250ml",
+        "label": "Receiving flask",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "wash-bottle-1",
+        "definitionId": "wash-bottle",
+        "label": "Wash bottle",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Deionized water",
+          "volumeMl": 500,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "place-ring-stand",
+      "verb": "place",
+      "label": "Stand the ring stand on the bench",
+      "parameters": {
+        "equipmentDefinitionId": "ring-stand",
+        "equipmentInstanceId": "ring-stand-1",
+        "location": "workbench"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Stand the ring stand on the bench: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The ring stand is on the bench.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.filtration-support",
+      "equipmentRoleBindings": {
+        "filtration-support": "ring-stand"
+      }
+    },
+    {
+      "id": "seat-funnel",
+      "verb": "place",
+      "label": "Seat the funnel in the ring",
+      "parameters": {
+        "equipmentDefinitionId": "funnel",
+        "equipmentInstanceId": "funnel-1",
+        "targetDefinitionId": "ring-stand",
+        "targetInstanceId": "ring-stand-1",
+        "location": "snapZone",
+        "snapZoneId": "ring-stand-funnel-seat",
+        "compositeDefinitionId": "funnel-stand"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Seat the funnel in the ring: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The funnel rests in the ring.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.filtration-funnel",
+      "equipmentRoleBindings": {
+        "filtration-funnel": "funnel",
+        "filtration-support": "ring-stand"
+      }
+    },
+    {
+      "id": "zero-balance",
+      "verb": "observe",
+      "label": "Zero the balance",
+      "parameters": {
+        "instrumentInstanceId": "analytical-balance-1",
+        "instrumentDefinitionId": "analytical-balance",
+        "balanceOperation": "zero",
+        "tag": "zero-balance-done",
+        "note": "The empty balance reads 0.000 g."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Zero the balance: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The empty balance reads zero.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [],
+      "interaction": {
+        "accessibleLabel": "Zero the balance",
+        "type": "recordNotebook",
+        "valueParameter": "tag"
+      },
+      "atomId": "atom.observe.zero-empty-balance",
+      "equipmentRoleBindings": {
+        "balance-instrument": "analytical-balance"
+      }
+    },
+    {
+      "id": "place-paper-on-balance",
+      "verb": "place",
+      "label": "Lay the dry paper on the balance pan",
+      "parameters": {
+        "equipmentDefinitionId": "filter-paper",
+        "equipmentInstanceId": "filter-paper-1",
+        "targetDefinitionId": "analytical-balance",
+        "targetInstanceId": "analytical-balance-1",
+        "location": "snapZone",
+        "snapZoneId": "analytical-balance-pan",
+        "supportEmptyMassG": "{{config.paperMassG}}"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Lay the dry paper on the balance pan: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The paper lies flat on the pan.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.filter-medium-on-balance",
+      "equipmentRoleBindings": {
+        "filter-medium": "filter-paper",
+        "balance-instrument": "analytical-balance"
+      }
+    },
+    {
+      "id": "weigh-paper",
+      "verb": "weigh",
+      "label": "Read the paper's mass",
+      "parameters": {
+        "sourceDefinitionId": "filter-paper",
+        "sourceInstanceId": "filter-paper-1",
+        "targetDefinitionId": "analytical-balance",
+        "targetInstanceId": "analytical-balance-1",
+        "instrumentDefinitionId": "analytical-balance",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Balance display for the dry filter paper (g)",
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "inputStep": 0.001,
+        "inputRequired": true,
+        "unit": "g"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Read the paper's mass: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Reading taken.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "weigh"
+      ],
+      "atomId": "atom.weigh.filter-medium-tare",
+      "equipmentRoleBindings": {
+        "balance-instrument": "analytical-balance",
+        "filter-medium": "filter-paper"
+      },
+      "mass": {
+        "source": "action-input",
+        "outputMeasurementId": "filter-paper-mass"
+      }
+    },
+    {
+      "id": "record-paper-mass",
+      "verb": "record",
+      "label": "Record the paper's mass",
+      "parameters": {
+        "measurementId": "filter-paper-mass",
+        "label": "Filter paper mass",
+        "unit": "g",
+        "copyExistingMeasurementOnly": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record the paper's mass: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Mass recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "record",
+        "notebook"
+      ],
+      "interaction": {
+        "accessibleLabel": "Record the paper's mass",
+        "type": "recordNotebook",
+        "valueParameter": "measurementId"
+      }
+    },
+    {
+      "id": "fold-paper",
+      "verb": "observe",
+      "label": "Fold the paper",
+      "parameters": {
+        "benchOperation": "fold-filter-paper",
+        "sourceDefinitionId": "filter-paper",
+        "sourceInstanceId": "filter-paper-1",
+        "tag": "filter-paper-folded"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Fold the paper: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The paper is folded in quarters.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "interaction": {
+        "accessibleLabel": "Fold the paper",
+        "type": "recordNotebook",
+        "valueParameter": "note"
+      },
+      "atomId": "atom.observe.fold-filter-paper",
+      "equipmentRoleBindings": {
+        "filter-medium": "filter-paper"
+      }
+    },
+    {
+      "id": "seat-paper",
+      "verb": "place",
+      "label": "Open the paper into the funnel",
+      "parameters": {
+        "equipmentDefinitionId": "filter-paper",
+        "equipmentInstanceId": "filter-paper-1",
+        "targetDefinitionId": "funnel-stand",
+        "targetInstanceId": "funnel-stand-1",
+        "location": "snapZone",
+        "snapZoneId": "funnel-stand-paper-seat",
+        "requiredForm": "folded",
+        "requiredFormRecovery": "Fold the paper in half and in half again first, then open it into a cone in the funnel."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Open the paper into the funnel: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The paper cone sits in the funnel.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.filter-medium",
+      "equipmentRoleBindings": {
+        "filtration-funnel": "funnel-stand",
+        "filter-medium": "filter-paper"
+      }
+    },
+    {
+      "id": "wet-paper",
+      "verb": "rinse",
+      "label": "Wet the paper",
+      "parameters": {
+        "sourceDefinitionId": "wash-bottle",
+        "sourceInstanceId": "wash-bottle-1",
+        "targetDefinitionId": "filter-paper",
+        "targetInstanceId": "filter-paper-1",
+        "rinseType": "pre-wet"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Wet the paper: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The wet paper seals against the glass.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "rinse"
+      ],
+      "interaction": {
+        "accessibleLabel": "Wet the paper",
+        "type": "rinseTarget",
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "filter-paper"
+      },
+      "atomId": "atom.rinse.wet-filter-medium",
+      "equipmentRoleBindings": {
+        "rinse-water-source": "wash-bottle",
+        "filter-medium": "filter-paper"
+      }
+    },
+    {
+      "id": "place-flask",
+      "verb": "place",
+      "label": "Put the flask under the funnel",
+      "parameters": {
+        "equipmentDefinitionId": "erlenmeyer-flask-250ml",
+        "equipmentInstanceId": "erlenmeyer-flask-250ml-1",
+        "targetDefinitionId": "funnel-stand",
+        "targetInstanceId": "funnel-stand-1",
+        "location": "snapZone",
+        "snapZoneId": "funnel-receiving-vessel-zone"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Put the flask under the funnel: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The stem touches the inside of the flask's neck.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.filtration-receiver",
+      "equipmentRoleBindings": {
+        "filtration-receiver": "erlenmeyer-flask-250ml"
+      }
+    },
+    {
+      "id": "pour-through-filter",
+      "verb": "filter",
+      "label": "Pour the mixture through the filter",
+      "parameters": {
+        "sourceDefinitionId": "beaker-250ml",
+        "sourceInstanceId": "beaker-250ml-1",
+        "targetDefinitionId": "funnel-stand",
+        "targetInstanceId": "funnel-stand-1",
+        "receiverInstanceId": "erlenmeyer-flask-250ml-1",
+        "filtrationMode": "gravity",
+        "pourPortionMl": 8,
+        "residueFraction": 0.05,
+        "tag": "mixture-filtered"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Pour the mixture through the filter: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "All the solid is on the paper.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "filter"
+      ],
+      "interaction": {
+        "accessibleLabel": "Pour the mixture through the filter",
+        "type": "pourInto",
+        "sourceDefinitionId": "beaker-250ml",
+        "targetDefinitionId": "funnel-stand"
+      },
+      "atomId": "atom.filter.pour-through-medium",
+      "equipmentRoleBindings": {
+        "mixture-source": "beaker-250ml",
+        "filtration-funnel": "funnel-stand",
+        "filtration-receiver": "erlenmeyer-flask-250ml",
+        "stirring-device": "stirring-rod"
+      }
+    },
+    {
+      "id": "rinse-beaker-into-funnel",
+      "verb": "rinse",
+      "label": "Rinse the beaker and rod into the funnel",
+      "parameters": {
+        "sourceDefinitionId": "wash-bottle",
+        "sourceInstanceId": "wash-bottle-1",
+        "targetDefinitionId": "beaker-250ml",
+        "targetInstanceId": "beaker-250ml-1",
+        "washingsReceiverInstanceId": "funnel-stand-1",
+        "washingsReceiverDefinitionId": "funnel-stand",
+        "rinseType": "quantitative-transfer",
+        "rinsePortions": 3,
+        "tag": "beaker-rinsed-into-funnel"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Rinse the beaker and rod into the funnel: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The last of the solid is in the funnel.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "rinse"
+      ],
+      "interaction": {
+        "accessibleLabel": "Rinse the beaker and rod into the funnel",
+        "type": "rinseTarget",
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "beaker-250ml"
+      },
+      "atomId": "atom.rinse.quantitative-transfer",
+      "equipmentRoleBindings": {
+        "rinse-water-source": "wash-bottle",
+        "rinsed-vessel": "beaker-250ml",
+        "receiving-vessel": "funnel-stand"
+      }
+    },
+    {
+      "id": "wash-precipitate",
+      "verb": "rinse",
+      "label": "Wash the solid on the paper",
+      "parameters": {
+        "sourceDefinitionId": "wash-bottle",
+        "sourceInstanceId": "wash-bottle-1",
+        "targetDefinitionId": "funnel-stand",
+        "targetInstanceId": "funnel-stand-1",
+        "washingsReceiverInstanceId": "erlenmeyer-flask-250ml-1",
+        "washingsReceiverDefinitionId": "erlenmeyer-flask-250ml",
+        "rinseType": "precipitate",
+        "rinsePortions": 3,
+        "tag": "precipitate-washed"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Wash the solid on the paper: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The solid is washed.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "rinse"
+      ],
+      "interaction": {
+        "accessibleLabel": "Wash the solid on the paper",
+        "type": "rinseTarget",
+        "sourceDefinitionId": "wash-bottle",
+        "targetDefinitionId": "funnel-stand"
+      },
+      "atomId": "atom.rinse.wash-precipitate",
+      "equipmentRoleBindings": {
+        "rinse-water-source": "wash-bottle",
+        "filter-medium": "filter-paper"
+      }
+    }
+  ],
+  "process": {
+    "startNodeId": "place-ring-stand-node",
+    "nodes": [
+      {
+        "id": "place-ring-stand-node",
+        "type": "action",
+        "title": "Set up the stand",
+        "description": "Stand the ring stand on the bench, its iron ring over the base.",
+        "actionId": "place-ring-stand",
+        "config": {},
+        "validation": [
+          {
+            "id": "place-ring-stand-node-done",
+            "type": "actionEvidence",
+            "label": "Action place-ring-stand was completed.",
+            "actionId": "place-ring-stand"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Set up the stand complete.",
+          "retry": "Review Set up the stand and try again."
+        }
+      },
+      {
+        "id": "seat-funnel-node",
+        "type": "action",
+        "title": "Seat the funnel",
+        "description": "Rest the glass funnel in the iron ring.",
+        "actionId": "seat-funnel",
+        "config": {},
+        "validation": [
+          {
+            "id": "seat-funnel-node-done",
+            "type": "actionEvidence",
+            "label": "Action seat-funnel was completed.",
+            "actionId": "seat-funnel"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Seat the funnel complete.",
+          "retry": "Review Seat the funnel and try again."
+        }
+      },
+      {
+        "id": "zero-balance-node",
+        "type": "action",
+        "title": "Zero the balance",
+        "description": "With the pan empty and the draft-shield doors closed, check that the balance reads 0.000 g, and press TARE if it does not.",
+        "actionId": "zero-balance",
+        "config": {},
+        "validation": [
+          {
+            "id": "zero-balance-node-done",
+            "type": "notebookEntry",
+            "label": "Zero the balance was completed.",
+            "notebookTag": "zero-balance-done"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Zero the balance complete.",
+          "retry": "Review Zero the balance and try again."
+        }
+      },
+      {
+        "id": "place-paper-on-balance-node",
+        "type": "action",
+        "title": "Put the paper on the balance",
+        "description": "Lay a dry filter paper flat on the balance pan.",
+        "actionId": "place-paper-on-balance",
+        "config": {},
+        "validation": [
+          {
+            "id": "place-paper-on-balance-node-done",
+            "type": "actionEvidence",
+            "label": "Action place-paper-on-balance was completed.",
+            "actionId": "place-paper-on-balance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Put the paper on the balance complete.",
+          "retry": "Review Put the paper on the balance and try again."
+        }
+      },
+      {
+        "id": "weigh-paper-node",
+        "type": "action",
+        "title": "Read the paper's mass",
+        "description": "Read the balance and enter the dry paper's mass.",
+        "actionId": "weigh-paper",
+        "config": {},
+        "validation": [
+          {
+            "id": "weigh-paper-node-done",
+            "type": "measurementRecorded",
+            "label": "Read the paper's mass was recorded.",
+            "measurementId": "filter-paper-mass"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read the paper's mass complete.",
+          "retry": "Review Read the paper's mass and try again."
+        }
+      },
+      {
+        "id": "record-paper-mass-node",
+        "type": "action",
+        "title": "Record the mass",
+        "description": "Record the dry filter paper's mass in your notebook.",
+        "actionId": "record-paper-mass",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-paper-mass-node-done",
+            "type": "measurementRecorded",
+            "label": "Record the mass was recorded.",
+            "measurementId": "filter-paper-mass"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record the mass complete.",
+          "retry": "Review Record the mass and try again."
+        }
+      },
+      {
+        "id": "fold-paper-node",
+        "type": "action",
+        "title": "Fold the paper",
+        "description": "Lift the paper off the pan onto the bench, then fold it in half and in half again.",
+        "actionId": "fold-paper",
+        "config": {},
+        "validation": [
+          {
+            "id": "fold-paper-node-done",
+            "type": "notebookEntry",
+            "label": "Fold the paper was completed.",
+            "notebookTag": "filter-paper-folded"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Fold the paper complete.",
+          "retry": "Review Fold the paper and try again."
+        }
+      },
+      {
+        "id": "seat-paper-node",
+        "type": "action",
+        "title": "Open it into the funnel",
+        "description": "Open the folded paper into a cone, three layers on one side, and seat it in the funnel.",
+        "actionId": "seat-paper",
+        "config": {},
+        "validation": [
+          {
+            "id": "seat-paper-node-done",
+            "type": "actionEvidence",
+            "label": "Action seat-paper was completed.",
+            "actionId": "seat-paper"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Open it into the funnel complete.",
+          "retry": "Review Open it into the funnel and try again."
+        }
+      },
+      {
+        "id": "wet-paper-node",
+        "type": "action",
+        "title": "Wet the paper",
+        "description": "Wet the paper with a little water from the wash bottle so it seals against the glass.",
+        "actionId": "wet-paper",
+        "config": {},
+        "validation": [
+          {
+            "id": "wet-paper-node-done",
+            "type": "actionEvidence",
+            "label": "Action wet-paper was completed.",
+            "actionId": "wet-paper"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Wet the paper complete.",
+          "retry": "Review Wet the paper and try again."
+        }
+      },
+      {
+        "id": "place-flask-node",
+        "type": "action",
+        "title": "Put the flask under the stem",
+        "description": "Stand the flask under the funnel, the stem touching the inside of its neck.",
+        "actionId": "place-flask",
+        "config": {},
+        "validation": [
+          {
+            "id": "place-flask-node-done",
+            "type": "actionEvidence",
+            "label": "Action place-flask was completed.",
+            "actionId": "place-flask"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Put the flask under the stem complete.",
+          "retry": "Review Put the flask under the stem and try again."
+        }
+      },
+      {
+        "id": "pour-through-filter-node",
+        "type": "action",
+        "title": "Pour the mixture through",
+        "description": "Hold the stirring rod to the beaker's lip and pour down it: the clear liquid first, then the solid, a little at a time so the liquid stays about 1 cm below the paper's rim. Let the funnel drain between pours.",
+        "actionId": "pour-through-filter",
+        "config": {},
+        "validation": [
+          {
+            "id": "pour-through-filter-node-done",
+            "type": "notebookEntry",
+            "label": "Pour the mixture through was completed.",
+            "notebookTag": "mixture-filtered"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Pour the mixture through complete.",
+          "retry": "Review Pour the mixture through and try again."
+        }
+      },
+      {
+        "id": "rinse-beaker-into-funnel-node",
+        "type": "action",
+        "title": "Rinse the beaker and rod",
+        "description": "Rinse the beaker into the funnel with three small squirts, washing the stirring rod down over it too, so the last of the solid comes across.",
+        "actionId": "rinse-beaker-into-funnel",
+        "config": {},
+        "validation": [
+          {
+            "id": "rinse-beaker-into-funnel-node-done",
+            "type": "notebookEntry",
+            "label": "Rinse the beaker and rod was completed.",
+            "notebookTag": "beaker-rinsed-into-funnel"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Rinse the beaker and rod complete.",
+          "retry": "Review Rinse the beaker and rod and try again."
+        }
+      },
+      {
+        "id": "wash-precipitate-node",
+        "type": "action",
+        "title": "Wash the solid",
+        "description": "Wash the solid on the paper with three small squirts of water.",
+        "actionId": "wash-precipitate",
+        "config": {},
+        "validation": [
+          {
+            "id": "wash-precipitate-node-done",
+            "type": "notebookEntry",
+            "label": "Wash the solid was completed.",
+            "notebookTag": "precipitate-washed"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Wash the solid complete.",
+          "retry": "Review Wash the solid and try again."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "place-ring-stand-node",
+        "to": "seat-funnel-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "seat-funnel-node",
+        "to": "zero-balance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "zero-balance-node",
+        "to": "place-paper-on-balance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "place-paper-on-balance-node",
+        "to": "weigh-paper-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "weigh-paper-node",
+        "to": "record-paper-mass-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-paper-mass-node",
+        "to": "fold-paper-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "fold-paper-node",
+        "to": "seat-paper-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "seat-paper-node",
+        "to": "wet-paper-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "wet-paper-node",
+        "to": "place-flask-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "place-flask-node",
+        "to": "pour-through-filter-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "pour-through-filter-node",
+        "to": "rinse-beaker-into-funnel-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "rinse-beaker-into-funnel-node",
+        "to": "wash-precipitate-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [
+    {
+      "id": "filtration-practice-success",
+      "type": "actionEvidence",
+      "label": "Action pour-through-filter was completed.",
+      "actionId": "pour-through-filter"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "current node expects a different action",
+      "message": "That action is out of sequence for the current technique step.",
+      "recovery": "Check the process map and perform the highlighted step first."
+    },
+    {
+      "id": "missing-source",
+      "when": "source equipment or contents are missing",
+      "message": "The selected source does not contain the material required for this action.",
+      "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+    },
+    {
+      "id": "overflow",
+      "when": "target capacity would be exceeded",
+      "message": "The target equipment cannot hold the requested volume.",
+      "recovery": "Use a larger container or transfer a smaller measured amount."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.0.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-10-05T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "twin-3d",
+      "filtration",
+      "gravimetry"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry",
+        "kind": "entry",
+        "nodeId": "place-ring-stand-node",
+        "label": "Entry"
+      },
+      {
+        "id": "exit",
+        "kind": "exit",
+        "nodeId": "wash-precipitate-node",
+        "label": "Exit"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "filtration-support",
+        "required": true,
+        "allowedDefinitionIds": [
+          "ring-stand"
+        ],
+        "sourceInstanceIds": [
+          "ring-stand-1"
+        ]
+      },
+      {
+        "roleId": "filtration-funnel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "funnel",
+          "funnel-stand"
+        ],
+        "sourceInstanceIds": [
+          "funnel-1",
+          "funnel-stand-1"
+        ]
+      },
+      {
+        "roleId": "balance-instrument",
+        "required": true,
+        "allowedDefinitionIds": [
+          "analytical-balance"
+        ],
+        "sourceInstanceIds": [
+          "analytical-balance-1"
+        ]
+      },
+      {
+        "roleId": "filter-medium",
+        "required": true,
+        "allowedDefinitionIds": [
+          "filter-paper"
+        ],
+        "sourceInstanceIds": [
+          "filter-paper-1"
+        ]
+      },
+      {
+        "roleId": "rinse-water-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "wash-bottle"
+        ],
+        "sourceInstanceIds": [
+          "wash-bottle-1"
+        ]
+      },
+      {
+        "roleId": "filtration-receiver",
+        "required": true,
+        "allowedDefinitionIds": [
+          "erlenmeyer-flask-250ml"
+        ],
+        "sourceInstanceIds": [
+          "erlenmeyer-flask-250ml-1"
+        ]
+      },
+      {
+        "roleId": "mixture-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beaker-250ml"
+        ],
+        "sourceInstanceIds": [
+          "beaker-250ml-1"
+        ]
+      },
+      {
+        "roleId": "stirring-device",
+        "required": true,
+        "allowedDefinitionIds": [
+          "stirring-rod"
+        ],
+        "sourceInstanceIds": [
+          "stirring-rod-1"
+        ]
+      },
+      {
+        "roleId": "rinsed-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beaker-250ml"
+        ],
+        "sourceInstanceIds": [
+          "beaker-250ml-1"
+        ]
+      },
+      {
+        "roleId": "receiving-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "funnel-stand"
+        ],
+        "sourceInstanceIds": [
+          "funnel-stand-1"
+        ]
+      }
+    ],
+    "modelSlots": [],
+    "configurationSlots": [
+      {
+        "id": "paperMassG",
+        "valueType": "number",
+        "required": true
+      }
+    ],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [
+      {
+        "id": "filter-paper-reading",
+        "kind": "measurement",
+        "actionId": "weigh-paper",
+        "referenceId": "filter-paper-mass"
+      },
+      {
+        "id": "filter-paper-mass",
+        "kind": "notebook",
+        "actionId": "record-paper-mass",
+        "referenceId": "filter-paper-mass"
+      },
+      {
+        "id": "mixture-filtered",
+        "kind": "notebook",
+        "actionId": "pour-through-filter",
+        "referenceId": "mixture-filtered"
+      }
+    ],
+    "completion": {
+      "exitPortIds": [
+        "exit"
+      ],
+      "requiredEvidenceOutputIds": [
+        "filter-paper-reading",
+        "filter-paper-mass",
+        "mixture-filtered"
+      ],
+      "requiredValidationRuleIds": [
+        "filtration-practice-success"
+      ]
+    },
+    "catalogDisposition": "composable",
+    "legacyActionEffects": [
+      {
+        "actionId": "record-paper-mass",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
