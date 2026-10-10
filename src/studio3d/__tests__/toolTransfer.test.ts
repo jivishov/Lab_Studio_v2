@@ -112,9 +112,10 @@ describe("drop-to-the-line steps and pipettes (decided 2026-10-02)", () => {
   it("describes the graduated pipette's delivery to its line, and the flask's mark", () => {
     expect(step("deliver-aliquot-to-line")).toEqual({
       pipetteInstanceId: "graduated-pipette-1", pipetteDefinitionId: "graduated-pipette-10ml",
-      vesselInstanceId: "volumetric-flask-1", vesselDefinitionId: "volumetric-flask", bySource: true, goalMl: 5,
+      vesselInstanceId: "volumetric-flask-1", vesselDefinitionId: "volumetric-flask", bySource: true, goalMl: 5, drawBack: false,
     });
-    expect(step("bring-to-mark-dropwise")).toMatchObject({ pipetteInstanceId: "water-pipette-1", bySource: false, goalMl: 100 });
+    // A flask's mark is final: nothing is drawn back there (decided 2026-10-10).
+    expect(step("bring-to-mark-dropwise")).toMatchObject({ pipetteInstanceId: "water-pipette-1", bySource: false, goalMl: 100, drawBack: false });
     expect(step("fill-water-below-mark")).toBeUndefined();
   });
 

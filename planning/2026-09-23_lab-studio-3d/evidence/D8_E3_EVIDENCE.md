@@ -128,6 +128,8 @@ The index keeps the offset on the target, and the loader applies it rounded to 1
 
    (c) is what a student would do; (b) is the smallest change.
 
+   **Decided and built the same day:** (c), in the 25 mL cylinder ("Draw-back and the 25 mL cylinder", below).
+
 **Checked and found right:**
 - The reading is recorded as typed: 20.1 mL with the line at 20 mL (test).
 - The pipette draws from the small beaker, never from the bottle.
@@ -182,6 +184,79 @@ One headless look (`probes/look-lab3d.cjs`, Playwright with SwiftShader at 1280 
   - The first full run stopped at step 33. Under SwiftShader, with the tests running alongside, a squirt's Rinse button stayed disabled past the look's two fixed clicks. The look now clicks Rinse until the step moves on.
   - The second run stopped at step 8 on that helper's own error: a function sent into the page lost its patterns. They now go in as their sources.
   - The third run finished.
+
+## Draw-back and the 25 mL cylinder (2026-10-10)
+
+Your decisions, the same day: "Go with (c), the pipette draw-back." Then, asked about the pipette's reach, "25 mL cylinder (Recommended)". They answer review item 6 above. `DECISIONS.md`, the D8 row, records them as (9). Where this section differs from the one above (the 100 mL cylinder, the tolerance's figures, the field's help), it replaces it.
+
+### The reach
+
+The dropping pipette is 154 mm long, its bulb 108 to 154 mm from the tip. In the 100 mL cylinder (rim 212 mm, bore 26.8 mm) a 20 mL level is 166 mm below the rim, out of the tip's reach. A lab measures 20 mL in the smallest cylinder that holds it, the 25 mL one (rim 150 mm, bore 18.4 mm): there a 20 mL level is 65 mm below the rim and a 5 mL level 122 mm. The bulb, 15 mm across, fits the bore, so even at 5 mL the tip reaches the liquid while the bulb is squeezed at the rim.
+
+### What was built
+
+**Runtime (core, by your decision):**
+- A drop-to-the-line step at a target's graduation can be marked `markDrawBack` (`src/runtime/reducer.ts`, `executeMarkDispense`). The runtime reads it from the step as authored, never from the request. There an overshoot is not kept: "At the line" judges the level as it stands. Refused past the line, the student reads "Draw the excess back up into the pipette, then bring the level back to the line a drop at a time."
+- `dispenseDrawBackIntent` (`src/runtime/interactionIntents.ts`, `dispenseMode: "drawBack"`) moves a drop's worth, or a run (`dropCount`, at most 40), from the vessel back into the pipette, as far as the pipette has room, with the liquid's content conserved. It is refused on any other step ("Nothing is drawn back at this step.") and when the pipette is full. Like a drop, it is progress within the step, with no "try again".
+- `MarkDispenseRecord.deliveredMl` is net of what was drawn back.
+- A flask's mark and a graduated pipette's line are unchanged: past them is still final, with the original message (test).
+
+**Registries (core, by your decision):**
+- `atom.transfer.dropwise-to-graduation` gains two procedural constraints, the draw-back and the smallest cylinder. It is not a new atom. In a lab, drawing back is part of bringing the level to the line: the same step, with the same pipette. My report before your decision called it a new step; folding it in keeps the step as the student does it.
+- `rinsed-vessel` allows `graduated-cylinder-25ml`, which Transfer's twin rinses.
+- `docs/atomic-steps.md` is regenerated.
+
+**Content:**
+- The twin and the lab use the 25 mL cylinder. The bench item reads "25 mL graduated cylinder", and the first step "Stand the clean, dry 25 mL graduated cylinder upright on the bench."
+- The drops step adds "If it goes past, draw the excess back up with the pipette."
+- `twinOf` gains `swapEquipment`. Transfer's twin pours from the 25 mL cylinder; `transfer-practice` keeps the 100 mL one, and its file is unchanged.
+- The sample volume is set from 5 to 25 mL (was 5 to 100), default 20. The help reads "The line the student fills the 25 mL cylinder to: poured to 1 mL below it, then drop by drop."
+- The setup's flask rule can no longer be broken within the bounds (25 mL, 140 mL and the rinses fit in 250 mL). It stays as a guard; a test shows it still names the problem under a lower limit.
+- The tolerance stays 0.2 mL. In the 25 mL cylinder a drop lifts the meniscus about 0.19 mm, about a pixel at the drop view; 0.2 mL is 0.75 mm, about 4 px, under half the 0.5 mL division.
+
+**3D:**
+- `MarkStep.drawBack` (`sceneToIntent.ts`) and `usePlayer3D`'s `drawBack`.
+- The drop panel's **Draw back** (`DropPanel.tsx`) is there at every such step, past the line or not, so it never tells where the level is. A tap is a drop's worth. A press held 300 ms runs, three drops' worth every 140 ms, until it is let go or the pipette is full (`usePlayer3D`'s `drawBack` says whether it can take more). Space or Enter does the same while it has focus. Hand control's grip over it is a tap (`data-hand-press="draw-back"`). The panel's help, the hint line and the hand guide name it at such steps only.
+- **The dip** (`BenchEngine.dipHeld`). The held pipette's tip goes 3 mm under the surface over 0.22 s, never closer than 2 mm to the floor. It follows the level down as it is drawn back, and rises over the line 0.45 s after a tap's draw (0.3 s after a run). The runtime is asked only once the tip is in, since `dipHeld` resolves on arrival. Putting the pipette down cancels a dip still on its way. Under reduced motion the pose is set at once. While it is held over the vessel, the pipette has no beacon or selection ring (`BenchEngine.ringAt`).
+
+### Fidelity review
+
+**Fixed:**
+1. **The dip was timed by the clock.** In the first look, under SwiftShader's slow frames, the screenshot caught the tip still on its way down when the draw-back was due. `dipHeld` now resolves when the tip arrives, and the draw-back waits for it.
+2. **A draw-back showed "Review Add drops to the line and try again."** That is the runtime's retry feedback, which a drop is spared. A draw-back is now spared too: a core line, part of the behaviour you decided (test).
+3. **The atom said the bulb is squeezed above the liquid.** With sample in the pipette, a firm squeeze there would add liquid. When the bulb is released after a drop, it draws a little air into the tip. The constraint now says the bulb is squeezed gently, only enough to push that air out, before the tip goes in. A tap's single drop's worth matches that small stroke.
+4. **The atom said the bulb stays above the rim.** At 5 mL it is partly inside the bore. It now reads "at or above the rim".
+5. **A draw-back limited by the pipette's room said "40 drops' worth drawn back."** It now says "Drawn back until the Dropping pipette is full." (test).
+6. **A band across the drop view after the first dip** (G1 look). The guidance beacon follows the pipette's root, its tip. With the tip at the surface it lay at eye level, and the pipette's footprint is its length on the bench, so the ring was about 8 cm across the vessel, seen edge-on. It stayed after the lift, as rings are placed at each sync. A pipette held over a vessel is in the hand, so it now has no beacon or selection ring; the sync puts them back when it is put down. Before the dip the same ring floated at the rim, out of the drop view.
+7. **A held Draw back went on past a full pipette.** Each request after that was refused and recorded as an attempt ("The Dropping pipette (sample) is full."). A run now ends by itself once the pipette is full and lifts the pipette. A tap on a full pipette is still refused, as One drop is on an empty one.
+
+**Not drawn:** the bulb is not shown squeezing. The dip, the falling level and the pipette's rising fill show the draw-back.
+
+**Checked and found right:**
+- The flask still receives what the cylinder held: 72.05 mL after ten drops over and ten back, and 71.85 mL after fourteen back, 0.2 mL under (tests).
+- Five back from ten over (0.25 mL over) is refused as past the line, and sixteen back (0.3 mL under) as not yet at it (tests).
+- What was drawn back is in the pipette again (test).
+- 2D is untouched: `public/labs/`, `public/techniques/`, `src/player/**` and `src/styles/app.css`.
+
+### Checks
+
+| Check | Result |
+|---|---|
+| `npx tsc -p tsconfig.app.json --noEmit` | 0 errors |
+| `npx vitest run --config vite.config.ts --maxWorkers=3 src/studio3d src/runtime/__tests__/markDispense.test.ts src/runtime/__tests__/makingSolution.test.ts` | 26 files, 277 tests pass |
+| `src/domain/__tests__/atomRegistry.test.ts` | 33 of 34 pass; the one failure is the `sample-bottle-1l` binding listed above, unchanged |
+| `npm run content:check` | 22 violations, equal to the baseline (exit 1, as on main) |
+| `node scripts/practice3d/build.mjs --check` | 0 |
+| `probes/probe-lab3d.mts` | 33/33 with the defaults (72.05 mL in the flask). Ten drops over, then: ten back is accepted (72.05 mL); fourteen back is accepted 0.2 mL under (71.85 mL); five back is refused as past the line, sixteen back as not yet at it. Twenty over and twenty back (two requests) is accepted. A 25 mL sample gives 33/33 (77.05 mL), a 5 mL sample 33/33 (57.05 mL), and 26 mL is refused: "Sample volume must be at most 25 mL." |
+
+### G1 look
+
+`look-lab3d.cjs`, headless Chromium with SwiftShader, at 1280 × 800:
+- **Run:** 33 of 33, "Precipitate and Filter Calcium Carbonate · complete", with no page errors. A scan with the results, the notebook and the bench list open found no number with five or more decimals.
+- **Part 1:** Draw back is on the drop panel before any overshoot. Twenty-eight drops, then "At the line", is refused: "The meniscus is past the line. Draw the excess back up into the pipette, then bring the level back to the line a drop at a time. Recorded as an attempt." Eight drops' worth drawn back by taps brings the meniscus to the 20 mL line, with no retry message. "At the line" is accepted, and the reading, typed 20.0, is chipped "Your entry".
+- **The dip:** one shot catches the tip just under the surface. That run's shots after the dip showed fix 6's band, and the rerun of part 1 has none.
+- **A held Draw back** (a short look of part 1 only): held, the tip is under the surface. Let go after the pipette is full, the run has stopped by itself, the pipette is lifted, the level is under the line, and there is no correction (fix 7).
+- **Tooling:** a function the look sends to the page must not use the look's own names; the draw-back tap is installed as a page helper (`window.__drawBack`).
 
 ## For later
 

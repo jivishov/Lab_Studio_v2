@@ -100,6 +100,11 @@ export type CameraPose = OrbitView;
 /** Show me's timeline (§5.9), seconds: pulse the source, carry the ghost, pulse the target. */
 const DEMO = { source: 0.7, travel: 1.2, target: 0.8 };
 /**
+ * A held pipette dipped to draw a level back up (decided 2026-10-10): its tip goes this far under the surface,
+ * over this long each way. The tip stays clear of the vessel's floor.
+ */
+const DIP = { depthMm: 3, seconds: 0.22, floorMm: 2 };
+/**
  * A slender item lying on the bench (a spatula, a stirring rod) is a few pixels tall on screen, so
  * an invisible box over it takes the pick: at least this tall and this wide, in millimetres.
  */
@@ -175,6 +180,12 @@ export class BenchEngine {
   private toolRun?: SetOnRun;
   /** A pipette held over a vessel while liquid is added a drop at a time (decided 2026-10-02). */
   private held?: { itemId: string; overId: string };
+  /**
+   * How far the held pipette is lowered into its dip (0 over the vessel, 1 in), where it is going, and who waits
+   * for it to get there.
+   */
+  private heldDip: { at: number; goal: number; waiting: Array<{ goal: number; resolve: (arrived: boolean) => void }> } =
+    { at: 0, goal: 0, waiting: [] };
   /**
    * A wash bottle held over what it rinses between the squirts of a counted rinse (decided
    * 2026-10-05), with the boat it rinses held tipped over the funnel, and where each goes back to
@@ -288,6 +299,14 @@ export class BenchEngine {
     if (this.drainRun) {
       if (this.drainRun.tick(dt)) animating = true;
       else this.stopDrainRun();
+    }
+    if (this.held && this.heldDip.at !== this.heldDip.goal) {
+      const dip = this.heldDip;
+      const step = dt / DIP.seconds;
+      dip.at = dip.goal > dip.at ? Math.min(dip.goal, dip.at + step) : Math.max(dip.goal, dip.at - step);
+      this.poseHeld();
+      this.settleDip();
+      animating = true;
     }
     if (this.tickDoors(dt)) animating = true;
     if (this.tickFlicker(time)) animating = true;
@@ -412,7 +431,7 @@ export class BenchEngine {
       placed.add(item.instanceId);
     };
     description.bench.forEach((item) => place(item));
-    if (this.held) this.poseHeld();
+    if (this.held) this.poseHeld(description);
     if (this.squirtHold) this.poseSquirtHold();
     if (this.toolHeld) this.poseToolHeld();
     for (const item of description.bench) this.updateItem(item);
@@ -966,8 +985,14 @@ export class BenchEngine {
    */
   holdOver(itemId: string | null, overId?: string): void {
     this.held = itemId && overId ? { itemId, overId } : undefined;
-    if (this.held) this.poseHeld();
-    else if (this.lastScene) void this.sync(this.lastScene);
+    for (const waiter of this.heldDip.waiting) waiter.resolve(false);
+    this.heldDip = { at: 0, goal: 0, waiting: [] };
+    if (this.held) {
+      this.poseHeld();
+      // The pipette in the hand loses its rings; let go, the sync puts them back at its foot.
+      if (!this.demo) this.placeBeacon(this.beaconId);
+      if (this.selectedId) this.setSelected(this.selectedId);
+    } else if (this.lastScene) void this.sync(this.lastScene);
     this.requestRender();
   }
 
@@ -1002,14 +1027,50 @@ export class BenchEngine {
     this.shadowsDirty = true;
   }
 
-  private poseHeld(): void {
+  /**
+   * Lower the held pipette's tip just under the liquid's surface, where its bulb is eased to draw the level back up
+   * (decided 2026-10-10), or raise it back over the vessel. Resolves once it is there, so nothing is drawn up before
+   * the tip is in however slowly frames come; false if it was sent the other way or let go first. At once under
+   * reduced motion.
+   */
+  dipHeld(on: boolean): Promise<boolean> {
+    if (!this.held) return Promise.resolve(false);
+    const dip = this.heldDip;
+    dip.goal = on ? 1 : 0;
+    if (this.options.reducedMotion) dip.at = dip.goal;
+    const arrived = new Promise<boolean>((resolve) => dip.waiting.push({ goal: dip.goal, resolve }));
+    this.poseHeld();
+    this.settleDip();
+    this.requestRender();
+    return arrived;
+  }
+
+  /** Once the dip is where it was going, those waiting for that are told it got there, and the rest that it did not. */
+  private settleDip(): void {
+    const dip = this.heldDip;
+    if (dip.at !== dip.goal) return;
+    for (const waiter of dip.waiting) waiter.resolve(waiter.goal === dip.goal);
+    dip.waiting = [];
+  }
+
+  /** The held pipette over its vessel, its tip lowered toward the surface by its dip; the scene being drawn gives the level. */
+  private poseHeld(scene = this.lastScene): void {
     const held = this.held;
     const view = held ? this.items.get(held.itemId) : undefined;
     const over = held ? this.items.get(held.overId) : undefined;
     if (!view || !over) return;
     over.root.updateWorldMatrix(true, true);
     const top = new THREE.Box3().setFromObject(over.model ?? over.root).max.y;
-    view.root.position.set(over.root.position.x, top + 6 * MM, over.root.position.z);
+    let y = top + 6 * MM;
+    if (this.heldDip.at > 0) {
+      // The tip follows the surface down as the level is drawn back.
+      const contents = scene?.bench.find((item) => item.instanceId === over.instanceId)?.contents;
+      const base = over.root.position.y;
+      const surface = base + (contents?.kind === "liquid" ? contents.levelMm * MM : 0);
+      const dipped = Math.max(base + DIP.floorMm * MM, surface - DIP.depthMm * MM);
+      y += (dipped - y) * easeInOutCubic(this.heldDip.at);
+    }
+    view.root.position.set(over.root.position.x, y, over.root.position.z);
     view.root.quaternion.setFromEuler(new THREE.Euler(0, view.restYaw ?? 0, 0));
     view.benchShift = undefined;
     view.benchLift = undefined;
@@ -1413,9 +1474,18 @@ export class BenchEngine {
   }
 
   private placeBeacon(instanceId: string | null): void {
-    const at = instanceId ? this.basePosition(instanceId) ?? null : null;
-    this.signals.setBeacon(at, instanceId ? this.footprintRadius(instanceId) : 0.05);
+    this.signals.setBeacon(this.ringAt(instanceId), instanceId ? this.footprintRadius(instanceId) : 0.05);
     this.requestRender();
+  }
+
+  /**
+   * Where a ring marks an item: at its foot, but nowhere for the pipette held over a vessel, which is in the hand.
+   * Its footprint is its length on the bench, so its ring would circle the vessel 8 cm out; with the tip dipped to
+   * the surface it lay at eye level, a band across the drop view (G1 look, 2026-10-10).
+   */
+  private ringAt(instanceId: string | null): THREE.Vector3 | null {
+    if (!instanceId || this.held?.itemId === instanceId) return null;
+    return this.basePosition(instanceId) ?? null;
   }
 
   /**
@@ -1493,8 +1563,7 @@ export class BenchEngine {
 
   setSelected(instanceId: string | null): void {
     this.selectedId = instanceId;
-    const at = instanceId ? this.basePosition(instanceId) ?? null : null;
-    this.signals.setSelected(at, instanceId ? this.footprintRadius(instanceId) : 0.05);
+    this.signals.setSelected(this.ringAt(instanceId), instanceId ? this.footprintRadius(instanceId) : 0.05);
     this.requestRender();
   }
 

@@ -3,7 +3,7 @@
   "title": "Transfer Liquid",
   "learningGoal": "Move a measured liquid sample completely into a beaker: pour, drain and rinse the measuring cylinder.",
   "requiredEquipment": [
-    "graduated-cylinder",
+    "graduated-cylinder-25ml",
     "beaker-250ml",
     "wash-bottle"
   ],
@@ -11,7 +11,7 @@
     "equipment": [
       {
         "id": "graduated-cylinder-1",
-        "definitionId": "graduated-cylinder",
+        "definitionId": "graduated-cylinder-25ml",
         "label": "Graduated cylinder",
         "location": "workbench",
         "contents": {
@@ -105,7 +105,7 @@
       "verb": "transfer",
       "label": "Pour the sample into the beaker",
       "parameters": {
-        "sourceDefinitionId": "graduated-cylinder",
+        "sourceDefinitionId": "graduated-cylinder-25ml",
         "sourceInstanceId": "graduated-cylinder-1",
         "targetDefinitionId": "beaker-250ml",
         "targetInstanceId": "beaker-250ml-1",
@@ -145,12 +145,12 @@
       "interaction": {
         "accessibleLabel": "Pour the sample into the beaker",
         "type": "pourInto",
-        "sourceDefinitionId": "graduated-cylinder",
+        "sourceDefinitionId": "graduated-cylinder-25ml",
         "targetDefinitionId": "beaker-250ml"
       },
       "atomId": "atom.transfer.measured-liquid-to-precipitation-vessel",
       "equipmentRoleBindings": {
-        "measured-solvent-source": "graduated-cylinder",
+        "measured-solvent-source": "graduated-cylinder-25ml",
         "precipitation-vessel": "beaker-250ml"
       }
     },
@@ -161,7 +161,7 @@
       "parameters": {
         "sourceDefinitionId": "wash-bottle",
         "sourceInstanceId": "wash-bottle-1",
-        "targetDefinitionId": "graduated-cylinder",
+        "targetDefinitionId": "graduated-cylinder-25ml",
         "targetInstanceId": "graduated-cylinder-1",
         "washingsReceiverInstanceId": "beaker-250ml-1",
         "washingsReceiverDefinitionId": "beaker-250ml",
@@ -204,12 +204,12 @@
         "accessibleLabel": "Rinse the cylinder into the beaker",
         "type": "rinseTarget",
         "sourceDefinitionId": "wash-bottle",
-        "targetDefinitionId": "graduated-cylinder"
+        "targetDefinitionId": "graduated-cylinder-25ml"
       },
       "atomId": "atom.rinse.quantitative-transfer",
       "equipmentRoleBindings": {
         "rinse-water-source": "wash-bottle",
-        "rinsed-vessel": "graduated-cylinder",
+        "rinsed-vessel": "graduated-cylinder-25ml",
         "receiving-vessel": "beaker-250ml"
       }
     },
@@ -440,7 +440,7 @@
         "roleId": "measured-solvent-source",
         "required": true,
         "allowedDefinitionIds": [
-          "graduated-cylinder"
+          "graduated-cylinder-25ml"
         ],
         "sourceInstanceIds": [
           "graduated-cylinder-1"
@@ -460,7 +460,7 @@
         "roleId": "rinsed-vessel",
         "required": true,
         "allowedDefinitionIds": [
-          "graduated-cylinder"
+          "graduated-cylinder-25ml"
         ],
         "sourceInstanceIds": [
           "graduated-cylinder-1"

@@ -14,7 +14,9 @@ import { twin as transfer } from "../transferPractice.mjs";
  * starts on the bench, as in the practice versions. The reagent is the precipitation's working portion in
  * a 150 mL beaker, so the dropping pipette never enters a stock bottle (the teacher's rule of 2026-09-26);
  * the sample has its own small beaker and pipette for the drops to the line, so neither liquid carries
- * into the other. Each part has a short title for the step card and the intro (you, 2026-10-10).
+ * into the other. Each part has a short title for the step card and the intro (you, 2026-10-10). The sample is
+ * measured in the 25 mL cylinder, the smallest that holds it, so the pipette reaches the liquid to draw back an
+ * overshoot (you, 2026-10-10); the sample volume is set from 5 to 25 mL.
  */
 const liquid = (label, volumeMl, kind = "liquid", visualState = "clear-liquid") => ({
   ...emptyContents(), kind, label, volumeMl, wetState: "wet", visualState,
@@ -48,7 +50,7 @@ export default {
     item("sample-bottle-1", "sample-bottle", "Hard water sample", liquid("Hard water sample", 120), "workbench"),
     item("sample-portion-1", "beaker-150ml", "Sample for the dropper", liquid("Hard water sample", 10), "workbench"),
     item("sample-pipette-1", "beral-pipette", "Dropping pipette (sample)"),
-    item("graduated-cylinder-1", "graduated-cylinder", "Graduated cylinder"),
+    item("graduated-cylinder-1", "graduated-cylinder-25ml", "25 mL graduated cylinder"),
     item("beaker-250ml-1", "beaker-250ml", "Sample beaker"),
     item("wash-bottle-1", "wash-bottle", "Wash bottle", liquid("Deionized water", 500), "workbench"),
     item("reagent-beaker-1", "beaker-150ml", "Sodium carbonate solution",
@@ -121,8 +123,8 @@ export default {
   ],
   /** The teacher's values (E0 choice B, 2026-10-10: every field has a proposed default the teacher approves or changes). */
   setup: [
-    { id: "sampleVolumeMl", label: "Sample volume", unit: "mL", kind: "number", defaultValue: 20, min: 5, max: 100,
-      help: "The line the student fills the 100 mL cylinder to: poured to 1 mL below it, then drop by drop." },
+    { id: "sampleVolumeMl", label: "Sample volume", unit: "mL", kind: "number", defaultValue: 20, min: 5, max: 25,
+      help: "The line the student fills the 25 mL cylinder to: poured to 1 mL below it, then drop by drop." },
     { id: "transferObservation", label: "Observation after the transfer", kind: "text",
       defaultValue: "The sample is clear and colourless, and none was spilled." },
     { id: "workingPortionMl", label: "Sodium carbonate working portion", unit: "mL", kind: "number", defaultValue: 50, min: 5, max: 150,

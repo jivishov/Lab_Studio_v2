@@ -23,7 +23,7 @@ atomized (D4 exception 9, `63096ed`) and its fidelity review. Push only when the
 | Analyze Transmittance of a Dilution | 28 steps; 25 mL cylinder with a filling funnel; working beaker and Beral pipettes for the cuvettes; cuvettes seat in the photometer | `READINGS_EVIDENCE.md`, `PIPETTE_FUNNEL_EVIDENCE.md` |
 | Dilute a Stock Solution | 12 atomized steps: pipette pump, delivery to the line drop by drop, flask to the mark drop by drop, stopper, invert ×10, two calculations | `DILUTION_ATOMIZATION_EVIDENCE.md` |
 | Make a Solution | 14 atomized steps: a pre-weighed weighing boat, a funnel in the flask's neck, the solid tipped in, the boat and funnel rinsed into the flask, half full, swirled to dissolve the solid in the flask, to the mark drop by drop, stopper, invert ×10, appearance recorded | `MAKE_SOLUTION_ATOMIZATION_EVIDENCE.md` |
-| Measure Liquid Volume | Unchanged in Pack 1. Host-bound: it can't play on its own (its 3D route shows only the gate). Its 3D twin `measuring-volume-3d` (2026-10-10; five atomized steps: stand the cylinder, pour to just below the line, fill a dropping pipette, drops to the line, a typed reading) is part 1 of the 3D Precipitate and Filter Calcium Carbonate | `proposals/PACK1_ATOMIZATION.md`, `evidence/D8_E3_EVIDENCE.md` |
+| Measure Liquid Volume | Unchanged in Pack 1. Host-bound: it can't play on its own (its 3D route shows only the gate). Its 3D twin `measuring-volume-3d` (2026-10-10; five atomized steps in the 25 mL cylinder: stand the cylinder, pour to just below the line, fill a dropping pipette, drops to the line with any overshoot drawn back, a typed reading) is part 1 of the 3D Precipitate and Filter Calcium Carbonate | `proposals/PACK1_ATOMIZATION.md`, `evidence/D8_E3_EVIDENCE.md` |
 
 Also built: the top bar's title is a switcher listing the five Pack 1 techniques (a slim bar does the
 same on the intro and setup pages), and hover labels hang below items.
@@ -125,8 +125,21 @@ wait for confirmation (`DECISIONS.md`, the "built" row). G3 has still not run.
    - That review fixed in 3D: `{{config.*}}` left in compiled step text (`labs3d.ts` `fillStepText`; E3's step 11
      had it too), a pour callout that named the amount, the reading step's view (eye level with the cylinder,
      `stepRules.readingVesselId`), the level's interim value chipped "Your entry", and notebook rows reading
-     "20 mL" beside "20.0 mL". **Open for the user (core):** the overshoot message says the solution "would be
-     remade. Restart the technique", wrong for a cylinder and, in a lab, a restart of the whole run.
+     "20 mL" beside "20.0 mL". It left for the user (core) the overshoot message, which said the solution "would
+     be remade. Restart the technique", wrong for a cylinder and, in a lab, a restart of the whole run.
+   - **Decided and built the same day** (the user: "Go with (c), the pipette draw-back." and "25 mL cylinder
+     (Recommended)"; `DECISIONS.md`, D8 (9); the evidence note's "Draw-back and the 25 mL cylinder"). Core, by
+     that decision: a drop-to-the-line step marked `markDrawBack` keeps no overshoot; `dispenseDrawBackIntent`
+     (refused on any other step) moves a drop's worth or a run from the vessel back into the pipette, as far as
+     it has room, and a draw-back is progress within the step, as a drop is. A flask's mark and a graduated
+     pipette's line are unchanged. `rinsed-vessel` allows `graduated-cylinder-25ml`. The draw-back is folded
+     into `atom.transfer.dropwise-to-graduation` (no new atom). The sample is measured in the 25 mL cylinder
+     (the 154 mm pipette cannot reach a 20 mL level in the 100 mL one, 166 mm below its rim); Transfer's twin
+     pours from it (`twinOf`'s `swapEquipment`); the sample volume is set from 5 to 25 mL. In 3D the drop
+     panel has Draw back at every such step, which lowers the tip just under the surface
+     (`BenchEngine.dipHeld`) before drawing; a held run ends once the pipette is full. The G1 look found the
+     held pipette's beacon ring lying at eye level once the tip dipped; a pipette held over a vessel now has
+     no ring (`BenchEngine.ringAt`).
    - For Drying's twin later: compiled measurement ids are scoped by instance, so its calculation needs
      `preserveIds.references` or a binding to reach Filtration's paper mass.
 9. **Then: the Pack 3 proposal** (catalogue items 11–15), proposed and decided before any build.

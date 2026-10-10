@@ -54,6 +54,11 @@ export interface DispenseCompleteInteractionIntent extends BaseInteractionIntent
   type: "dispenseCompleteIntent";
 }
 
+/** Liquid drawn back up into the pipette at a graduation (`markDrawBack`, decided 2026-10-10). */
+export interface DispenseDrawBackInteractionIntent extends BaseInteractionIntent {
+  type: "dispenseDrawBackIntent";
+}
+
 export interface SpotInteractionIntent extends BaseInteractionIntent {
   type: "spotIntent";
 }
@@ -84,6 +89,7 @@ export type RuntimeInteractionIntent =
   | PourInteractionIntent
   | DispenseDropInteractionIntent
   | DispenseCompleteInteractionIntent
+  | DispenseDrawBackInteractionIntent
   | SpotInteractionIntent
   | RinseInteractionIntent
   | InstrumentReadInteractionIntent
@@ -127,7 +133,7 @@ const intentTypesByInteraction: Record<ActionInteractionSpec["type"], RuntimeInt
   dragToZone: ["placeIntent"],
   snapIntoTarget: ["snapIntent"],
   pourInto: ["pourIntent"],
-  dispenseDrops: ["dispenseDropIntent", "dispenseCompleteIntent"],
+  dispenseDrops: ["dispenseDropIntent", "dispenseCompleteIntent", "dispenseDrawBackIntent"],
   spotOnto: ["spotIntent"],
   rinseTarget: ["rinseIntent"],
   placeInInstrument: ["instrumentReadIntent"],
@@ -412,7 +418,9 @@ const buildRequest = (
       ? "drop"
       : intent.type === "dispenseCompleteIntent"
         ? "acceptEndpoint"
-        : undefined;
+        : intent.type === "dispenseDrawBackIntent"
+          ? "drawBack"
+          : undefined;
   const defaultValue =
     interaction.type === "dispenseDrops" || action.parameters.copyExistingMeasurementOnly === true
       ? undefined
@@ -492,6 +500,16 @@ export const resolveInteractionIntent = (
       "incompatibleIntent",
       "That interaction type does not match the expected physical operation.",
       interaction.invalidCue ?? action.feedback.invalid,
+      currentNode.id,
+      action.id,
+    );
+  }
+  // Only a level at a graduation is drawn back: never a flask's mark or a burette (decided 2026-10-10).
+  if (intent.type === "dispenseDrawBackIntent" && (action.parameters.markDrawBack !== true || action.parameters.markDispense !== "target")) {
+    return fail(
+      "incompatibleIntent",
+      "Nothing is drawn back at this step.",
+      "Add drops until the bottom of the meniscus touches the line.",
       currentNode.id,
       action.id,
     );

@@ -1469,8 +1469,12 @@ const executeStressEquilibrium = (
  * the volume delivered against `deliverMl`). Each request moves one drop, or a short run of drops
  * while the pipette is squeezed (`dropCount`); `acceptEndpoint` judges the level within one drop.
  * Going past the line cannot be undone: it is kept, and accepting is refused, as a real solution
- * would be remade. On acceptance the line's value is recorded (`outputMeasurementId`) and the
- * node's notebook tag is written, which is what completes the step.
+ * would be remade. At a graduation (`markDrawBack`, decided 2026-10-10 for the 3D Measure Liquid
+ * Volume's cylinder) the excess is drawn back up into the pipette instead: a `drawBack` request
+ * moves a drop's worth, or a run, from the vessel into the pipette, as far as the pipette has room,
+ * and the level is judged as it stands when it is accepted. On acceptance the line's value is
+ * recorded (`outputMeasurementId`) and the node's notebook tag is written, which is what completes
+ * the step.
  */
 const MARK_DROP_ML = 0.05;
 const MARK_MAX_RUN_DROPS = 40;
@@ -1488,6 +1492,8 @@ const executeMarkDispense = (
     return fail(state, "The pipette or the receiving vessel was not found.", "Hold the pipette over the vessel this step names.", nodeId);
   }
   const bySource = params.markDispense === "source";
+  // Read from the step as authored, never from the request: a flask's mark stays final.
+  const drawBackAllowed = !bySource && actionDefinition.parameters.markDrawBack === true;
   const goal = numberSetting(params, bySource ? "deliverMl" : "markVolumeMl", Number.NaN);
   if (!Number.isFinite(goal) || goal <= 0) {
     return fail(state, "This step's line is not set up.", "Ask your teacher to set up this technique before running it.", nodeId);
@@ -1507,11 +1513,13 @@ const executeMarkDispense = (
       return fail(state, "The level is already at the line.", "Go on to the next step.", nodeId);
     }
     const level = levelFor(record.deliveredMl, target.contents.volumeMl ?? 0);
-    if (record.overshot || level > goal + toleranceMl + 1e-9) {
+    if ((record.overshot && !drawBackAllowed) || level > goal + toleranceMl + 1e-9) {
       return fail(
         state,
         "The meniscus is past the line.",
-        "In the lab this solution would be remade. Restart the technique, and stop adding when the bottom of the meniscus touches the line.",
+        drawBackAllowed
+          ? "Draw the excess back up into the pipette, then bring the level back to the line a drop at a time."
+          : "In the lab this solution would be remade. Restart the technique, and stop adding when the bottom of the meniscus touches the line.",
         nodeId,
       );
     }
@@ -1538,6 +1546,56 @@ const executeMarkDispense = (
     return fail(state, "The level is already at the line.", "Go on to the next step.", nodeId);
   }
   const drops = Math.max(1, Math.min(MARK_MAX_RUN_DROPS, Math.round(numberSetting(params, "dropCount", 1))));
+  if (params.dispenseMode === "drawBack") {
+    if (!drawBackAllowed) {
+      return fail(state, "Nothing is drawn back at this step.", "Add drops until the bottom of the meniscus touches the line.", nodeId);
+    }
+    const pipetteDefinition = equipmentById.get(source.definitionId);
+    const roomMl = pipetteDefinition?.capacity.unit === "mL"
+      ? Math.max(0, roundToRuntimeMl(pipetteDefinition.capacity.amount - (source.contents.volumeMl ?? 0)))
+      : Number.POSITIVE_INFINITY;
+    if (roomMl <= 0) {
+      return fail(state, `The ${source.label} is full.`, "It cannot draw up any more; bring the level to the line with drops.", nodeId);
+    }
+    const drawnMl = roundToRuntimeMl(Math.min(target.contents.volumeMl ?? 0, drops * dropMl, roomMl));
+    if (target.contents.kind === "empty" || drawnMl <= 0) {
+      return fail(state, `The ${target.label} is empty.`, "There is nothing to draw back.", nodeId);
+    }
+    let drawn: RuntimeState;
+    if (canConserveOrdinaryContent(target.contents, source.contents, actionDefinition)) {
+      const { transferredContents, remainingContents } = splitContentForVolume(target.contents, drawnMl);
+      const merged = mergeTransferredContents(source.contents, transferredContents);
+      // Drawn back into a pipette of the same liquid, it keeps its name.
+      const named = source.contents.kind !== "empty" && source.contents.label.split(" + ").includes(target.contents.label);
+      drawn = updateInstance(state, source.id, (instance) => ({
+        ...instance,
+        contents: { ...merged, label: named ? source.contents.label : merged.label,
+          volumeMl: roundToRuntimeMl((source.contents.volumeMl ?? 0) + drawnMl), wetState: "wet" },
+      }));
+      drawn = updateInstance(drawn, target.id, (instance) => ({
+        ...instance,
+        contents: remainingContents.kind === "empty" ? remainingContents : { ...remainingContents, volumeMl: roundToRuntimeMl(remainingContents.volumeMl ?? 0) },
+      }));
+    } else {
+      drawn = updateInstance(state, source.id, (instance) => ({
+        ...instance,
+        contents: { ...mergeContents(target.contents, instance.contents, drawnMl), volumeMl: roundToRuntimeMl((instance.contents.volumeMl ?? 0) + drawnMl) },
+      }));
+      drawn = updateInstance(drawn, target.id, (instance) => {
+        const remaining = Math.max(0, roundToRuntimeMl((instance.contents.volumeMl ?? 0) - drawnMl));
+        return { ...instance, contents: remaining === 0 ? emptyContents() : { ...instance.contents, volumeMl: remaining } };
+      });
+    }
+    const levelAfter = roundToRuntimeMl((target.contents.volumeMl ?? 0) - drawnMl);
+    return {
+      ok: true,
+      // `deliveredMl` is net of what was drawn back; past the line is the level as it now stands.
+      state: withRecord(drawn, { ...record, deliveredMl: roundToRuntimeMl(record.deliveredMl - drawnMl),
+        overshot: levelAfter > goal + toleranceMl + 1e-9 }),
+      message: drawnMl < roundToRuntimeMl(drops * dropMl) ? `Drawn back until the ${source.label} is full.`
+        : drops === 1 ? "A drop's worth drawn back." : `${drops} drops' worth drawn back.`,
+    };
+  }
   const volumeMl = roundToRuntimeMl(Math.min(source.contents.volumeMl ?? 0, drops * dropMl));
   if (source.contents.kind === "empty" || volumeMl <= 0) {
     return fail(state, `The ${source.label} is empty.`, "Draw more liquid into the pipette first.", nodeId);
@@ -1577,7 +1635,7 @@ const executeMarkDispense = (
   }
   const deliveredMl = roundToRuntimeMl(record.deliveredMl + volumeMl);
   const level = levelFor(deliveredMl, roundToRuntimeMl((target.contents.volumeMl ?? 0) + volumeMl));
-  const overshot = record.overshot || level > goal + toleranceMl + 1e-9;
+  const overshot = (record.overshot && !drawBackAllowed) || level > goal + toleranceMl + 1e-9;
   return {
     ok: true,
     state: withRecord(next, { ...record, deliveredMl, overshot }),
@@ -8430,12 +8488,12 @@ export const performRuntimeAction = (
   const nextId = requestedNext && passed && process.edges.some(edge => edge.from === currentNode.id && edge.to === requestedNext)
     ? requestedNext
     : runtimeRepeatComplete ? nextNodeId(currentNode.id, process.edges, result.state, passed) : currentNode.id;
-  // A drop, an inversion or a rinse squirt short of the count is progress within the step: no retry
-  // feedback.
+  // A drop, a draw-back at a graduation, an inversion or a rinse squirt short of the count is progress
+  // within the step: no retry feedback.
   const pendingDispenseDrop =
     !passed &&
     ((actionDefinition.interaction?.type === "dispenseDrops" &&
-      normalizedRequest.parameters?.dispenseMode === "drop") ||
+      (normalizedRequest.parameters?.dispenseMode === "drop" || normalizedRequest.parameters?.dispenseMode === "drawBack")) ||
       (actionDefinition.verb === "mix" && actionDefinition.parameters.mixOperation === "invert") ||
       (actionDefinition.verb === "rinse" && Number(actionDefinition.parameters.rinsePortions ?? 1) > 1) ||
       (actionDefinition.verb === "filter" && actionDefinition.parameters.pourPortionMl !== undefined));

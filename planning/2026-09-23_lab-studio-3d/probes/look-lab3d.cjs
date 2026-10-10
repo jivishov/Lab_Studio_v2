@@ -1,7 +1,8 @@
 // One G1 look at the D8 3D experiment `intro-filtration-demo` (E3): the intro by part, the setup page with
-// the approved defaults, then the whole run of 33 steps: measure the sample (the 3D twin: pour to below the
-// line, drops to the line, a typed reading), transfer it, precipitate calcium carbonate, and filter it. Each
-// step logs the step card's eyebrow, so the short part titles are checked.
+// the approved defaults, then the whole run of 33 steps: measure the sample (the 3D twin, in the 25 mL cylinder:
+// pour to below the line, drops past the line, refused, drawn back to it, a typed reading), transfer it,
+// precipitate calcium carbonate, and filter it. Each step logs the step card's eyebrow, so the short part titles
+// are checked.
 //   node look-lab3d.cjs <out-prefix>        (LOOK_PART1_ONLY=1 stops after part 1)
 const { openLook } = require("./look-common.cjs");
 (async () => {
@@ -44,20 +45,40 @@ const { openLook } = require("./look-common.cjs");
   await step(async () => [await window.__carry(/^Dropping pipette \(sample\)/, /^Release to hold/), window.__step(), "drop panel " + !!document.querySelector(".s3d-drop")].join(" | "));
   await look.page.waitForTimeout(1500);
   await look.shot("2b-held-over-the-cylinder");
-  // 19 mL poured: twenty drops of 0.05 mL bring the meniscus to the 20 mL line.
+  // 19 mL poured: twenty drops of 0.05 mL bring the meniscus to the 20 mL line. Twenty-eight go 0.4 mL past it,
+  // which is refused; eight drops' worth drawn back up into the pipette bring it to the line (you, 2026-10-10).
+  // Draw back is on the panel before the overshoot too, so it never tells where the level is.
   await step(async () => {
     const btn = (t) => [...document.querySelectorAll(".s3d-drop button")].find((b) => b.textContent.trim() === t);
-    for (let i = 0; i < 20; i++) { btn("One drop")?.click(); await window.__sleep(40); }
+    const shown = "draw back shown " + !!btn("Draw back");
+    for (let i = 0; i < 28; i++) { btn("One drop")?.click(); await window.__sleep(40); }
     await window.__sleep(1200);
-    return "20 drops | " + window.__step();
+    return [shown, "28 drops", window.__step()].join(" | ");
   });
-  await look.shot("2c-at-the-line");
+  await look.shot("2c-past-the-line");
+  await step(async () => {
+    [...document.querySelectorAll(".s3d-drop button")].find((b) => b.textContent.trim() === "At the line")?.click(); await window.__sleep(1500);
+    return ["refused: " + (document.querySelector(".s3d-correction")?.textContent.replace(/\s+/g, " ").trim() ?? "none"), window.__step()].join(" | ");
+  });
+  // A click with no press count is a tap, as hand control's grip gives: one drop's worth each, drawn once the tip
+  // is under the surface. The last one is shot in quick succession, to catch the tip in the liquid.
+  // The tap is a page helper: a function from here would not carry its names into the page.
+  await look.run(() => { window.__drawBack = () => [...document.querySelectorAll(".s3d-drop button")].find((b) => b.textContent.trim() === "Draw back")?.click(); });
+  await step(async () => {
+    for (let i = 0; i < 7; i++) { window.__drawBack(); await window.__sleep(60); }
+    await window.__sleep(2500);
+    return "7 drawn back | " + window.__step();
+  });
+  await look.run(() => window.__drawBack());
+  for (const n of ["a", "b", "c"]) await look.shot("2d-drawing-back-" + n);
+  await look.page.waitForTimeout(2500);
+  await look.shot("2e-back-at-the-line");
   await step(async () => {
     [...document.querySelectorAll(".s3d-drop button")].find((b) => b.textContent.trim() === "At the line")?.click(); await window.__sleep(2500);
     return window.__step();
   });
   look.log("rows before the reading: " + await rows());
-  await look.shot("2d-read-the-volume");
+  await look.shot("2f-read-the-volume");
   await step(async () => [await window.__input("20.0"), await window.__card("Confirm"), await window.__card("Record"), window.__step()].join(" | "));
   look.log("rows after the reading: " + await rows());
   look.log("at: " + await look.run(at));
@@ -65,7 +86,7 @@ const { openLook } = require("./look-common.cjs");
 
   // Part 2 · Transfer the sample
   await step(async () => [await window.__tray("beaker-250ml-1"), window.__step()].join(" | "));
-  await step(async () => [await window.__carry(/^Graduated cylinder/, /^Release to pour/), window.__step()].join(" | "));
+  await step(async () => [await window.__carry(/^25 mL graduated cylinder/, /^Release to pour/), window.__step()].join(" | "));
   await look.page.waitForTimeout(9000);
   await look.shot("3-transferred");
   await rinse(/^Wash bottle/, /^Release to rinse/);

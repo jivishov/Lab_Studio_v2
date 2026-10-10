@@ -83,6 +83,68 @@ describe("drop to the line", () => {
     const state = send(drops(playTo("bring-to-mark-dropwise"), 21), { type: "dispenseCompleteIntent" });
     expect(state.measurements.find((m) => m.id === "final-volume")).toMatchObject({ value: 100 });
   });
+
+  it("never draws back at a flask's mark: the solution would be remade", () => {
+    const over = drops(playTo("bring-to-mark-dropwise"), 23);
+    expect(() => send(over, { type: "dispenseDrawBackIntent" })).toThrow("Nothing is drawn back at this step.");
+    const refused = send(over, { type: "dispenseCompleteIntent" });
+    expect(refused.feedbackQueue.at(-1)?.recovery).toMatch(/^In the lab this solution would be remade\./);
+  });
+});
+
+/**
+ * At a graduation (decided 2026-10-10): the 3D Measure Liquid Volume's cylinder, where a level past the line is drawn
+ * back up into the dropping pipette (`markDrawBack`) and judged as it stands when it is accepted.
+ */
+describe("drawing a level back at a graduation", () => {
+  const twin = applyTechniqueConfiguration(
+    JSON.parse(readFileSync(join(process.cwd(), "public", "techniques-3d", "measuring-volume-3d.json"), "utf8")) as TechniqueDefinition,
+    { targetVolumeMl: "20", pourVolumeMl: "19" },
+  );
+  const sendTwin = (state: RuntimeState, intent: Record<string, unknown>): RuntimeState => {
+    const result = resolveInteractionIntent(twin, state, { origin: "keyboard", ...intent } as RuntimeInteractionIntent);
+    if (!result.ok) throw new Error(result.feedback.message);
+    return performRuntimeAction(twin, state, result.request);
+  };
+  /** The cylinder poured to 19 mL and the pipette filled, at the drops step. */
+  const atDrops = (): RuntimeState => {
+    let state = createRuntimeState(twin);
+    for (const node of twin.process.nodes.slice(0, 3)) {
+      const action = twin.actions.find((candidate) => candidate.id === node.actionId)!;
+      const type = resolveActionInteraction(action)!.type === "pourInto" ? "pourIntent" : "placeIntent";
+      for (let i = 0; i < 10 && !state.completedNodes.includes(node.id); i += 1) state = sendTwin(state, { type });
+    }
+    expect(state.currentNodeId).toBe("drops-to-line-node");
+    return state;
+  };
+  const dropsTwin = (state: RuntimeState, type: string, dropCount: number) => sendTwin(state, { type, runtimeParameters: { dropCount } });
+
+  it("draws an overshoot back into the pipette, and judges the level as it stands", () => {
+    const start = atDrops();
+    const pipette = volume(start, "beral-pipette-1");
+    const over = dropsTwin(start, "dispenseDropIntent", 30);
+    const refused = sendTwin(over, { type: "dispenseCompleteIntent" });
+    expect(lastError(over, refused)).toBe("The meniscus is past the line.");
+    expect(refused.feedbackQueue.at(-1)?.recovery).toMatch(/^Draw the excess back up into the pipette/);
+    const back = dropsTwin(refused, "dispenseDrawBackIntent", 10);
+    // Progress within the step, as a drop is: no "try again".
+    expect(back.feedbackQueue).toHaveLength(refused.feedbackQueue.length);
+    expect(volume(back, "graduated-cylinder-1")).toBeCloseTo(20, 6);
+    expect(volume(back, "beral-pipette-1")).toBeCloseTo(pipette - 1, 6);
+    expect(back.markDispenses?.["drops-to-line"]).toMatchObject({ deliveredMl: 1, overshot: false });
+    const done = sendTwin(back, { type: "dispenseCompleteIntent" });
+    expect(done.measurements.find((m) => m.id === "sample-volume")).toMatchObject({ value: 20, unit: "mL" });
+  });
+
+  it("draws back only as much as the pipette has room for", () => {
+    const over = dropsTwin(atDrops(), "dispenseDropIntent", 30);
+    const full = dropsTwin(over, "dispenseDrawBackIntent", 40);
+    expect(volume(full, "beral-pipette-1")).toBeCloseTo(3, 6);
+    expect(volume(full, "graduated-cylinder-1")).toBeCloseTo(19 + 1.5 - (3 - volume(over, "beral-pipette-1")), 6);
+    expect(full.attemptHistory.at(-1)?.message).toMatch(/^Drawn back until the .* is full\.$/);
+    const again = dropsTwin(full, "dispenseDrawBackIntent", 1);
+    expect(lastError(full, again)).toMatch(/is full\.$/);
+  });
 });
 
 describe("invert to mix", () => {

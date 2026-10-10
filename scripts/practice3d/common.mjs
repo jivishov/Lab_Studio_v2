@@ -202,16 +202,29 @@ const configReferences = (value, path = "") => {
   return [];
 };
 
+/** A value with every string equal to a key of `swaps` replaced by its value (exact matches only). */
+const swapValues = (value, swaps) => {
+  if (typeof value === "string") return Object.hasOwn(swaps, value) ? swaps[value] : value;
+  if (Array.isArray(value)) return value.map((entry) => swapValues(entry, swaps));
+  if (value && typeof value === "object") return Object.fromEntries(Object.entries(value).map(([key, entry]) => [key, swapValues(entry, swaps)]));
+  return value;
+};
+
 /**
  * The composable twin of a practice version (D8, decided 2026-10-10; `proposals/D8_EXPERIMENT_ASSEMBLY.md`,
  * "E0 design"): the same steps for a 3D lab to compose, without the steps that stand in for a technique
  * played before it (`dropSteps`, action ids) and without the slots that only fill the practice bench
  * (`dropSlots`). The starting items stay as the roles' source instances; a lab binds each to its own item
  * and the compiler drops the technique's bench, so contents that name a dropped slot are emptied.
+ * `swapEquipment` ({ from: to } catalogue ids) puts another item in a twin's place everywhere the
+ * practice version names it: the lab's 25 mL cylinder in Transfer Liquid (2026-10-10).
  * Throws when a dropped slot is used anywhere but the bench or a dropped step, or a reference is undeclared.
  */
-export const twinOf = (practice, { id, dropSteps = [], dropSlots = [] }) => {
-  const twin = structuredClone(practice);
+export const twinOf = (practice, { id, dropSteps = [], dropSlots = [], swapEquipment = {} }) => {
+  const twin = swapValues(structuredClone(practice), swapEquipment);
+  for (const from of Object.keys(swapEquipment)) {
+    if (!JSON.stringify(practice).includes(JSON.stringify(from))) throw new Error(`${id}: no "${from}" to swap.`);
+  }
   twin.id = id;
   twin.metadata.tags = twin.metadata.tags.map((tag) => (tag === "practice-3d" ? "twin-3d" : tag));
   const composition = twin.composition;

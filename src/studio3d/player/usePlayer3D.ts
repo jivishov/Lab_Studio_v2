@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { RuntimeActionRequest, RuntimeState } from "../../domain/types";
 import { resolveActionInteraction } from "../../domain/interactions";
+import { equipmentById } from "../../equipment/catalog";
 import { getBenchSize } from "../../equipment/visualCatalog";
 import { usePlayerRuntime } from "../../player/usePlayerRuntime";
 import type { RuntimeDefinition } from "../../runtime";
@@ -532,6 +533,18 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     if (!markStep) return undefined;
     return runIntent({ type: "dispenseDropIntent", origin, runtimeParameters: { dropCount } } as RuntimeInteractionIntent);
   }, [markStep, runIntent]);
+  /**
+   * At a graduation, a level past the line drawn back up into the pipette, a drop's worth at a time (decided 2026-10-10).
+   * True while the pipette can take more, so a held press stops once it is full instead of asking again.
+   */
+  const drawBack = useCallback((dropCount: number, origin: ReleaseOrigin | "keyboard" = "pointer"): boolean => {
+    if (!markStep?.drawBack) return false;
+    const next = runIntent({ type: "dispenseDrawBackIntent", origin, runtimeParameters: { dropCount } } as RuntimeInteractionIntent);
+    if (!next) return false;
+    const capacity = equipmentById.get(markStep.pipetteDefinitionId)?.capacity;
+    const heldMl = next.equipmentInstances.find((instance) => instance.id === markStep.pipetteInstanceId)?.contents.volumeMl ?? 0;
+    return capacity?.unit !== "mL" || heldMl < capacity.amount - 1e-9;
+  }, [markStep, runIntent]);
   /** The student says the meniscus is at the line; the runtime judges it within one drop. */
   const acceptMark = useCallback((origin: ReleaseOrigin | "keyboard" = "pointer") => {
     if (!markStep) return undefined;
@@ -608,6 +621,7 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     stepClock,
     clockProgress: clockProgress as StepClockProgress,
     addDrops,
+    drawBack,
     acceptMark,
     announcement,
     announce,

@@ -1233,7 +1233,9 @@ export type DropDispenseColorState = "clear" | "palePink" | "darkPink";
 
 /**
  * A level brought to a line drop by drop (decided 2026-10-02): what has been delivered, whether the
- * level has gone past the line (which cannot be undone), and whether the level was accepted.
+ * level has gone past the line (which cannot be undone), and whether the level was accepted. At a
+ * graduation where the excess is drawn back (`markDrawBack`, decided 2026-10-10), `deliveredMl` is
+ * net of what was drawn back and `overshot` is whether the level is past the line now.
  */
 export interface MarkDispenseRecord {
   actionId: string;

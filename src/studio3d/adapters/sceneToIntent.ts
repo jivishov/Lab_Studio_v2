@@ -357,6 +357,11 @@ export interface MarkStep {
   bySource: boolean;
   /** The volume delivered (by source) or the vessel's volume at the mark (by target), in mL. */
   goalMl: number;
+  /**
+   * A level past a graduation is drawn back up into the pipette (`markDrawBack`, decided 2026-10-10). Offered at
+   * every such step, overshot or not, so the control never says where the level is; never at a flask's mark.
+   */
+  drawBack: boolean;
 }
 
 export const markStepFor = (
@@ -376,7 +381,7 @@ export const markStepFor = (
   const goalMl = Number(action.parameters[bySource ? "deliverMl" : "markVolumeMl"]);
   if (!Number.isFinite(goalMl)) return undefined;
   return { pipetteInstanceId: pipette.id, pipetteDefinitionId: pipette.definitionId, vesselInstanceId: vessel.id,
-    vesselDefinitionId: vessel.definitionId, bySource, goalMl };
+    vesselDefinitionId: vessel.definitionId, bySource, goalMl, drawBack: !bySource && action.parameters.markDrawBack === true };
 };
 
 /**

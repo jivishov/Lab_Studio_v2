@@ -49,9 +49,10 @@ afterEach(() => { vi.unstubAllGlobals(); });
 
 /**
  * Plays a compiled lab through the process control; `inputs` and `moves` by compiled action id. A drop-to-the-line
- * step adds the drops that bring the level to the line, `dropsOff` more, then says it is at the line.
+ * step adds the drops that bring the level to the line and `dropsOff` more, draws `drawnBack` drops' worth back up
+ * into the pipette, then says it is at the line.
  */
-const playLab = (lab: LabDefinition, inputs: Record<string, string>, moves: Record<string, string>, dropsOff = 0): RuntimeState => {
+const playLab = (lab: LabDefinition, inputs: Record<string, string>, moves: Record<string, string>, dropsOff = 0, drawnBack = 0): RuntimeState => {
   let state = createRuntimeState(lab);
   const send = (nodeId: string, intent: RuntimeInteractionIntent) => {
     const resolved = resolveInteractionIntent(lab, state, intent);
@@ -69,6 +70,7 @@ const playLab = (lab: LabDefinition, inputs: Record<string, string>, moves: Reco
       const level = contents(state, String(action.parameters.targetInstanceId))?.volumeMl ?? 0;
       const dropCount = Math.round((Number(action.parameters.markVolumeMl) - level) / Number(action.parameters.dropVolumeMl)) + dropsOff;
       send(node.id, { origin: "keyboard", type: "dispenseDropIntent", runtimeParameters: { dropCount } } as RuntimeInteractionIntent);
+      if (drawnBack) send(node.id, { origin: "keyboard", type: "dispenseDrawBackIntent", runtimeParameters: { dropCount: drawnBack } } as RuntimeInteractionIntent);
       send(node.id, { origin: "keyboard", type: "dispenseCompleteIntent" } as RuntimeInteractionIntent);
     }
     for (let i = 0; i < 40 && !state.completedNodes.includes(node.id); i += 1) {
@@ -111,7 +113,9 @@ describe("D8 twins", () => {
       "atom.transfer.dropwise-to-graduation", "record"]);
     // The pipette draws from the small beaker, never from the bottle.
     expect(steps[2].parameters.sourceInstanceId).toBe("sample-portion-1");
-    expect(steps[3].parameters).toMatchObject({ markDispense: "target", markToleranceMl: 0.2, dropVolumeMl: 0.05 });
+    // An overshoot is drawn back up into the pipette, in the 25 mL cylinder its tip reaches (you, 2026-10-10).
+    expect(steps[3].parameters).toMatchObject({ markDispense: "target", markToleranceMl: 0.2, dropVolumeMl: 0.05, markDrawBack: true,
+      targetDefinitionId: "graduated-cylinder-25ml" });
     // The reading is the student's, typed and never checked against the level.
     expect(steps[4].parameters).toMatchObject({ inputRole: "studentResponse", studentValueRequired: true, inputStep: 0.1 });
     expect(steps[4].parameters.copyExistingMeasurementOnly).toBeUndefined();
@@ -124,8 +128,13 @@ describe("D8 twins", () => {
     expect(slots("filtration-3d")).not.toContain("mixtureVolumeMl");
     expect(slots("filtration-3d")).not.toContain("precipitateMassG");
     expect(slots("filtration-3d")).toContain("paperMassG");
-    // Transfer pours all the cylinder holds, so the line's tolerance carries through to the flask.
+    // Transfer pours all the cylinder holds, so the line's tolerance carries through to the flask; its twin pours
+    // from the 25 mL cylinder the sample was measured in, and the practice version keeps the 100 mL one.
     expect(slots("transfer-3d")).not.toContain("transferVolumeMl");
+    const cylinders = (file: string) => (read(file) as TechniqueDefinition).initialState!.equipment
+      .filter((item) => item.definitionId.startsWith("graduated-cylinder")).map((item) => item.definitionId);
+    expect(cylinders("public/techniques-3d/transfer-3d.json")).toEqual(["graduated-cylinder-25ml"]);
+    expect(cylinders("public/techniques-3d/transfer-practice.json")).toEqual(["graduated-cylinder"]);
     expect(slots("measuring-volume-3d")).toEqual(["targetVolumeMl", "pourVolumeMl"]);
   });
 
@@ -153,6 +162,9 @@ describe("D8 3D lab: Precipitate and Filter Calcium Carbonate", () => {
     expect(loaded.lab.process.nodes).toHaveLength(33);
     expect(loaded.lab.initialState?.equipment).toHaveLength(15);
     expect(equipment3dReadiness(loaded.lab.initialState!.equipment.map((item) => item.definitionId)).ready).toBe(true);
+    // The sample is measured in the smallest cylinder that holds it (you, 2026-10-10).
+    expect(loaded.lab.initialState!.equipment.find((item) => item.id === "graduated-cylinder-1"))
+      .toMatchObject({ definitionId: "graduated-cylinder-25ml", label: "25 mL graduated cylinder" });
     const counts = demo.parts.map((_, index) => loaded.lab.process.nodes.filter((node) => loaded.parts.get(node.id)?.index === index + 1).length);
     expect(counts).toEqual([5, 4, 11, 13]);
     expect(loaded.parts.get(loaded.lab.process.nodes[5].id)).toEqual({ index: 2, count: 4, title: "Transfer the sample" });
@@ -185,16 +197,31 @@ describe("D8 3D lab: Precipitate and Filter Calcium Carbonate", () => {
   });
 
   it("carries the teacher's values into the run", async () => {
-    const values = { ...defaults, sampleVolumeMl: "50", workingPortionMl: "40", reagentVolumeMl: "30", paperMassG: "0.912" };
+    const values = { ...defaults, sampleVolumeMl: "24", workingPortionMl: "40", reagentVolumeMl: "30", paperMassG: "0.912" };
     const { lab } = await labs3d.loadLab3D(demo, values);
     expect(lab.initialState?.equipment.find((item) => item.id === "reagent-beaker-1")?.contents?.volumeMl).toBe(40);
-    expect(lab.actions.find((action) => action.id === "measuring-volume--pour-below-line")?.parameters.volumeMl).toBe(49);
-    expect(lab.process.nodes[1].description).toMatch(/just below the 50 mL line\.$/);
+    expect(lab.actions.find((action) => action.id === "measuring-volume--pour-below-line")?.parameters.volumeMl).toBe(23);
+    expect(lab.process.nodes[1].description).toMatch(/just below the 24 mL line\.$/);
     expect(lab.process.nodes.find((node) => node.id === "hard-water-precipitation--add-reagent-portion-1-node")?.description).toMatch(/a third of the 30 mL/);
     const state = playLab(lab, typed(values), moves);
     expect(state.completedNodes).toHaveLength(33);
     expect(contents(state, "reagent-beaker-1")?.volumeMl).toBeCloseTo(9, 6);
-    expect(contents(state, "erlenmeyer-flask-250ml-1")?.volumeMl).toBeCloseTo(112.05, 6);
+    expect(contents(state, "erlenmeyer-flask-250ml-1")?.volumeMl).toBeCloseTo(86.05, 6);
+  });
+
+  it("draws a level past the line back up into the pipette, then judges it at the line", async () => {
+    const { lab } = await labs3d.loadLab3D(demo, defaults);
+    // Ten drops over (0.5 mL) is past the line until it is drawn back; what was drawn back is in the pipette again.
+    expect(() => playLab(lab, typed(defaults), moves, 10)).toThrow(/past the line/);
+    const back = playLab(lab, typed(defaults), moves, 10, 10);
+    expect(back.completedNodes).toHaveLength(33);
+    expect(contents(back, "erlenmeyer-flask-250ml-1")?.volumeMl).toBeCloseTo(72.05, 6);
+    const plain = playLab(lab, typed(defaults), moves);
+    expect(contents(back, "sample-pipette-1")?.volumeMl).toBeCloseTo(contents(plain, "sample-pipette-1")?.volumeMl ?? NaN, 6);
+    // Drawn back to 0.2 mL under the line is on it; 0.25 over, or 0.3 under, is not.
+    expect(contents(playLab(lab, typed(defaults), moves, 10, 14), "erlenmeyer-flask-250ml-1")?.volumeMl).toBeCloseTo(71.85, 6);
+    expect(() => playLab(lab, typed(defaults), moves, 10, 5)).toThrow(/past the line/);
+    expect(() => playLab(lab, typed(defaults), moves, 10, 16)).toThrow(/not reached the line/);
   });
 
   it("judges the level within the line's tolerance, and records the reading as typed", async () => {
@@ -215,8 +242,14 @@ describe("D8 3D lab: Precipitate and Filter Calcium Carbonate", () => {
     expect(() => parseLab3DValues(demo, defaults)).not.toThrow();
     expect(() => parseLab3DValues(demo, { ...defaults, paperMassG: "" })).toThrow(/Enter dry filter paper's mass/);
     expect(() => parseLab3DValues(demo, { ...defaults, sampleVolumeMl: "two" })).toThrow(/must be a number/);
-    expect(() => parseLab3DValues(demo, { ...defaults, sampleVolumeMl: "101" })).toThrow(/at most 100 mL/);
-    expect(() => parseLab3DValues(demo, { ...defaults, sampleVolumeMl: "100", reagentVolumeMl: "120", workingPortionMl: "150" })).toThrow(/250 mL receiving flask/);
+    // The 25 mL cylinder holds the sample (you, 2026-10-10).
+    expect(() => parseLab3DValues(demo, { ...defaults, sampleVolumeMl: "26" })).toThrow(/at most 25 mL/);
+    expect(() => parseLab3DValues(demo, { ...defaults, sampleVolumeMl: "4" })).toThrow(/at least 5 mL/);
+    // At the bounds, everything fits in the receiving flask; the rule stays as a guard, and still names the problem.
+    const most = { ...defaults, sampleVolumeMl: "25", reagentVolumeMl: "140", workingPortionMl: "150" };
+    expect(() => parseLab3DValues(demo, most)).not.toThrow();
+    const smallerFlask = { ...demo, rules: demo.rules.map((rule, i) => (i === 0 ? { ...rule, atMost: 150 } : rule)) };
+    expect(() => parseLab3DValues(smallerFlask, most)).toThrow(/250 mL receiving flask/);
     expect(() => parseLab3DValues(demo, { ...defaults, reagentVolumeMl: "50" })).toThrow(/working portion/);
   });
 

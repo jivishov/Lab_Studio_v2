@@ -466,10 +466,59 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   };
   const addDropRef = useRef(addDrop);
   addDropRef.current = addDrop;
+  // A level past a graduation drawn back (decided 2026-10-10): the tip goes just under the surface first, the
+  // bulb is eased once it is in, and the pipette rises back over the line soon after the last of it. Putting the
+  // pipette down tells a dip still on its way that it never arrived, so nothing more is drawn.
+  const backRun = useRef<number | undefined>(undefined); // -1 while the tip goes in; then the run's interval
+  const backLift = useRef<number | undefined>(undefined);
+  const drawBackRef = useRef(player.drawBack);
+  drawBackRef.current = player.drawBack;
+  const dipIn = () => {
+    window.clearTimeout(backLift.current);
+    return engine?.dipHeld(true) ?? Promise.resolve(true);
+  };
+  const liftAfter = (ms: number) => {
+    window.clearTimeout(backLift.current);
+    backLift.current = window.setTimeout(() => { backLift.current = undefined; void engine?.dipHeld(false); }, ms);
+  };
+  const drawBackTap = () => {
+    if (backRun.current !== undefined) return;
+    void dipIn().then((arrived) => {
+      if (!arrived || backRun.current !== undefined) return;
+      drawBackRef.current(1);
+      liftAfter(450);
+    });
+  };
+  // A run ends by itself once the pipette is full or a draw is refused, so a press still held asks no more.
+  const backRunStep = () => { if (!drawBackRef.current(3)) endBackRun(); };
+  const startBackRun = () => {
+    if (backRun.current !== undefined) return;
+    backRun.current = -1;
+    void dipIn().then((arrived) => {
+      if (!arrived || backRun.current !== -1) return;
+      backRunStep();
+      if (backRun.current === -1) backRun.current = window.setInterval(backRunStep, 140);
+    });
+  };
+  const endBackRun = () => {
+    if (backRun.current === undefined) return;
+    window.clearInterval(backRun.current);
+    backRun.current = undefined;
+    liftAfter(300);
+  };
+  // Only refs: the first render's copy clears what a later one started.
+  const stopDrawBack = () => {
+    window.clearInterval(backRun.current);
+    window.clearTimeout(backLift.current);
+    backRun.current = backLift.current = undefined;
+  };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => stopDrawBack, []);
   // The view from before the eye-level view at the line, returned to when the pipette is put down.
   const dropPose = useRef<(CameraPose & { auto: boolean }) | undefined>(undefined);
   const exitDropMode = () => {
     endRun();
+    stopDrawBack();
     setDropMode(undefined);
     engine?.holdOver(null);
     const before = dropPose.current;
@@ -482,6 +531,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   };
   const acceptAtLine = () => {
     endRun();
+    endBackRun();
     player.acceptMark();
   };
   holdOverRef.current = (pipetteId, vesselId) => {
@@ -982,7 +1032,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   const { invertHold, swirlHold } = hand.controller;
   const handCarryAction = carry.gestureAction();
   const handGuideContext: HandGuideContext = {
-    carrying: carry.carrying, dropMode: Boolean(dropMode),
+    carrying: carry.carrying, dropMode: Boolean(dropMode), drawBack: Boolean(dropMode && player.markStep?.drawBack),
     invertHolding: Boolean(invertHold && isInvertTarget(invertHold.id)), swirlHolding: Boolean(swirlHold && isSwirlTarget(swirlHold.id)),
     holdDone: Boolean((invertHold && !isInvertTarget(invertHold.id)) || (swirlHold && !isSwirlTarget(swirlHold.id))),
     ...(squirtHeld && squirtCount ? { squirtHolding: squirtCount } : {}),
@@ -997,7 +1047,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   const markStep = player.markStep;
   const markVesselLabel = markStep ? lowerFirstLetter(scene.bench.find((i) => i.instanceId === markStep.vesselInstanceId)?.label ?? "vessel") : "";
   const invertVesselNoun = scene.bench.find((i) => i.instanceId === invertVesselId)?.definitionId === "test-tube" ? "test tube" : "flask";
-  const hint = dropMode ? "Space: tap for a drop, hold to let it run. Enter: at the line. Esc puts the pipette down."
+  const hint = dropMode
+    ? `Space: tap for a drop, hold to let it run.${markStep?.drawBack ? " Draw back takes up an overshoot." : ""} Enter: at the line. Esc puts the pipette down.`
     : squirtHeld && squirtCount ? `Squirt ${squirtCount.done} of ${squirtCount.total}: click the bench, press Space or squeeze to squirt again. Esc puts the bottle down.`
     : carry.keyCarrying ? "Arrows move it (Shift: further). [ ] step through targets. Enter sets it down; Esc cancels."
     : carry.clickCarrying ? "Click where it goes, or press on the target, drag down and let go. Esc or a right click puts it back."
@@ -1060,7 +1111,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
       ) : null}
       {dropMode ? (
         <DropPanel title={`Pipette over the ${markVesselLabel || "vessel"}`} onDrop={() => addDrop(1)} onRunStart={startRun} onRunEnd={endRun}
-          onAccept={acceptAtLine} onPutDown={exitDropMode} />
+          onAccept={acceptAtLine} onPutDown={exitDropMode}
+          drawBack={markStep?.drawBack ? { onTap: drawBackTap, onRunStart: startBackRun, onRunEnd: endBackRun } : undefined} />
       ) : null}
 
       <BenchView

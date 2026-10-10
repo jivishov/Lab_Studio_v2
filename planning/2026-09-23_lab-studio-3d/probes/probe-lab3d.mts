@@ -5,7 +5,8 @@
 //   node --experimental-strip-types --experimental-loader ./scripts/tsCompositionLoader.mjs \
 //     planning/2026-09-23_lab-studio-3d/probes/probe-lab3d.mts [labId] ['{"field":"value"}']
 // Env: PROBE_INPUTS and PROBE_MOVES by compiled action id (filtration--weigh-paper), PROBE_TITLES=1.
-// A drop-to-the-line step is played as the drops it needs plus PROBE_DROPS_OFF (default 0), then accepted.
+// A drop-to-the-line step is played as the drops it needs plus PROBE_DROPS_OFF (default 0), then accepted; with
+// PROBE_DRAW_BACK (drops' worth) it is also accepted after that much is drawn back up into the pipette.
 import { readFile } from "node:fs/promises";
 const root = "file:///C:/Users/EmilJivishov/Projects/Lab_studio/tmp/lab-studio-3d/";
 const { compileBundledLabCompositionWithPolicy } = await import(root + "src/data/bundledCatalogPolicyBoundary.ts");
@@ -68,6 +69,11 @@ try {
         + Number(process.env.PROBE_DROPS_OFF ?? 0);
       notes.push(`${drops} drops ` + send(action, { type, runtimeParameters: { dropCount: drops } }));
       notes.push("accept " + send(action, { type: "dispenseCompleteIntent" }));
+      const back = Number(process.env.PROBE_DRAW_BACK ?? 0);
+      if (back && !state.completedNodes.includes(n.id)) {
+        notes.push(`${back} back ` + send(action, { type: "dispenseDrawBackIntent", runtimeParameters: { dropCount: back } }));
+        notes.push("accept " + send(action, { type: "dispenseCompleteIntent" }));
+      }
     }
     const repeats = Number(action.parameters.rinsePortions ?? action.parameters.inversions ?? action.parameters.portionsThisStep ?? (action.parameters.pourPortionMl ? 40 : 1));
     for (let i = 0; i < repeats * (action.parameters.stirBetweenPortions ? 2 : 1) && !state.completedNodes.includes(n.id); i += 1) {
@@ -78,7 +84,7 @@ try {
     console.log(`${action.id}: ${[...new Set(notes)].join(" / ")}`);
     if (!state.completedNodes.includes(n.id)) { console.log("   (node not completed)"); break; }
   }
-  for (const id of ["sample-bottle-1", "graduated-cylinder-1", "beaker-250ml-1", "reagent-beaker-1", "beral-pipette-1", "filter-paper-1", "erlenmeyer-flask-250ml-1"]) {
+  for (const id of ["sample-bottle-1", "sample-portion-1", "sample-pipette-1", "graduated-cylinder-1", "beaker-250ml-1", "reagent-beaker-1", "beral-pipette-1", "filter-paper-1", "erlenmeyer-flask-250ml-1"]) {
     console.log(`  ${id}: ${describe(state.equipmentInstances.find((e: any) => e.id === id)?.contents)}`);
   }
   console.log("measurements", JSON.stringify(state.measurements.map((m: any) => [m.id, m.value, m.unit])));

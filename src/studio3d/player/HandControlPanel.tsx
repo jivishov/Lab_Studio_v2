@@ -44,6 +44,8 @@ export interface HandGuideContext {
   squirtHolding?: { done: number; total: number };
   /** A wash bottle over what it rinses: squeezed once locked (decided 2026-10-04). */
   rinse?: boolean;
+  /** Drop mode at a graduation: the drop panel's Draw back takes up an overshoot (decided 2026-10-10). */
+  drawBack?: boolean;
 }
 
 export type GestureKey = "grab" | "put" | "lock" | "lower" | "turn" | "draw" | "deliver" | "rinse" | "drops" | "invert" | "swirl" | "key" | "leave";
@@ -67,7 +69,10 @@ export const handGuide = (s: HandControlState, g: HandGuideContext, now: number)
   if (!pinch && !s.profiles.rest) return { text: "Hold a relaxed grip, thumb resting, then press Capture Rest.", warn: false };
   if (!pinch && !s.profiles.press) return { text: "Keep the grip, press your thumb fully down, then press Capture Press.", warn: false };
   if (pinch && !s.homeSet) return { text: "Hold your hand where it feels comfortable. That spot becomes the centre of the bench.", warn: false };
-  if (g.dropMode) return { text: `Each ${pinch ? "pinch" : "thumb press"} adds one drop; hold it to let the drops run. Grip over At the line when the meniscus meets it.`, gesture: "drops", warn: false };
+  if (g.dropMode) {
+    return { text: `Each ${pinch ? "pinch" : "thumb press"} adds one drop; hold it to let the drops run.${g.drawBack ? " Past the line, grip over Draw back." : ""} Grip over At the line when the meniscus meets it.`,
+      gesture: "drops", warn: false };
+  }
   if (g.invertHolding) return { text: "Turn your palm over and back to invert it once. Open your hand to let go.", gesture: "invert", warn: false };
   if (g.swirlHolding) return { text: "Move your closed hand in a small circle to swirl the flask. Open your hand to let go.", gesture: "swirl", warn: false };
   if (g.holdDone) return { text: "Done. Open your hand to let go.", gesture: "put", warn: false };

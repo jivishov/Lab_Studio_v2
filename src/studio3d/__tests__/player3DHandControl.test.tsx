@@ -98,6 +98,9 @@ describe("the guide line and badge (app.js:378-421)", () => {
     expect(handGuide(base, { ...idle, carrying: true, locked: true, stroke: "turn" }, 1100)).toMatchObject({ gesture: "turn" });
     expect(handGuide(base, { ...idle, carrying: true, locked: true, draw: true, armed: "bubbles" }, 1100)).toMatchObject({ gesture: "draw", warn: true });
     expect(handGuide(base, { ...idle, dropMode: true }, 1100)).toMatchObject({ gesture: "drops" });
+    // Draw back is named only at a graduation, where the drop panel has it (decided 2026-10-10).
+    expect(handGuide(base, { ...idle, dropMode: true }, 1100).text).not.toMatch(/Draw back/);
+    expect(handGuide(base, { ...idle, dropMode: true, drawBack: true }, 1100).text).toMatch(/Past the line, grip over Draw back\./);
     expect(handGuide(base, { ...idle, invertHolding: true }, 1100)).toMatchObject({ gesture: "invert" });
     expect(handGuide(base, { ...idle, carrying: true, locked: true, squeeze: true }, 1100)).toMatchObject({ gesture: "deliver" });
     expect(handGuide(base, { ...idle, keyLocked: true }, 1100)).toMatchObject({ gesture: "key" });

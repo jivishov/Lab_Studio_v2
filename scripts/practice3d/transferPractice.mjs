@@ -104,5 +104,11 @@ const practice = technique({
 
 export default practice;
 
-/** The composable twin a 3D lab composes (D8 E0, 2026-10-10). It drops the sample volume, which only fills the practice bench: in a lab, the cylinder holds what Measure Liquid Volume measured. */
-export const twin = twinOf(practice, { id: "transfer-3d", dropSlots: ["transferVolumeMl"] });
+/**
+ * The composable twin a 3D lab composes (D8 E0, 2026-10-10). It drops the sample volume, which only fills the
+ * practice bench: in a lab, the cylinder holds what Measure Liquid Volume measured. That is the 25 mL cylinder,
+ * the smallest that holds the sample, so the dropping pipette reaches its liquid to draw back an overshoot (you,
+ * 2026-10-10); the practice version keeps the 100 mL one.
+ */
+export const twin = twinOf(practice, { id: "transfer-3d", dropSlots: ["transferVolumeMl"],
+  swapEquipment: { "graduated-cylinder": "graduated-cylinder-25ml" } });

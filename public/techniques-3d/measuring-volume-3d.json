@@ -3,7 +3,7 @@
   "title": "Measure Liquid Volume",
   "learningGoal": "Measure a liquid sample with a graduated cylinder: pour to just below the line, finish drop by drop, and read the bottom of the meniscus at eye level.",
   "requiredEquipment": [
-    "graduated-cylinder",
+    "graduated-cylinder-25ml",
     "sample-bottle",
     "beaker-150ml",
     "beral-pipette"
@@ -12,8 +12,8 @@
     "equipment": [
       {
         "id": "graduated-cylinder-1",
-        "definitionId": "graduated-cylinder",
-        "label": "Graduated cylinder",
+        "definitionId": "graduated-cylinder-25ml",
+        "label": "25 mL graduated cylinder",
         "location": "shelf",
         "contents": {
           "kind": "empty",
@@ -76,7 +76,7 @@
       "verb": "place",
       "label": "Stand the cylinder on the bench",
       "parameters": {
-        "equipmentDefinitionId": "graduated-cylinder",
+        "equipmentDefinitionId": "graduated-cylinder-25ml",
         "equipmentInstanceId": "graduated-cylinder-1",
         "location": "workbench"
       },
@@ -113,7 +113,7 @@
       ],
       "atomId": "atom.place.variable-volume-device",
       "equipmentRoleBindings": {
-        "variable-volume-measuring-device": "graduated-cylinder"
+        "variable-volume-measuring-device": "graduated-cylinder-25ml"
       }
     },
     {
@@ -123,7 +123,7 @@
       "parameters": {
         "sourceDefinitionId": "sample-bottle",
         "sourceInstanceId": "sample-bottle-1",
-        "targetDefinitionId": "graduated-cylinder",
+        "targetDefinitionId": "graduated-cylinder-25ml",
         "targetInstanceId": "graduated-cylinder-1",
         "volumeMl": "{{config.pourVolumeMl}}"
       },
@@ -162,12 +162,12 @@
         "accessibleLabel": "Pour the sample to just below the line",
         "type": "pourInto",
         "sourceDefinitionId": "sample-bottle",
-        "targetDefinitionId": "graduated-cylinder"
+        "targetDefinitionId": "graduated-cylinder-25ml"
       },
       "atomId": "atom.transfer.fill-below-graduation",
       "equipmentRoleBindings": {
         "liquid-source": "sample-bottle",
-        "variable-volume-measuring-device": "graduated-cylinder"
+        "variable-volume-measuring-device": "graduated-cylinder-25ml"
       }
     },
     {
@@ -234,12 +234,13 @@
       "parameters": {
         "sourceDefinitionId": "beral-pipette",
         "sourceInstanceId": "beral-pipette-1",
-        "targetDefinitionId": "graduated-cylinder",
+        "targetDefinitionId": "graduated-cylinder-25ml",
         "targetInstanceId": "graduated-cylinder-1",
         "markDispense": "target",
         "markVolumeMl": "{{config.targetVolumeMl}}",
         "dropVolumeMl": 0.05,
         "markToleranceMl": 0.2,
+        "markDrawBack": true,
         "outputMeasurementId": "sample-volume",
         "outputLabel": "Sample volume"
       },
@@ -278,12 +279,12 @@
         "accessibleLabel": "Add sample drop by drop to the line",
         "type": "dispenseDrops",
         "sourceDefinitionId": "beral-pipette",
-        "targetDefinitionId": "graduated-cylinder"
+        "targetDefinitionId": "graduated-cylinder-25ml"
       },
       "atomId": "atom.transfer.dropwise-to-graduation",
       "equipmentRoleBindings": {
         "transfer-pipette": "beral-pipette",
-        "variable-volume-measuring-device": "graduated-cylinder"
+        "variable-volume-measuring-device": "graduated-cylinder-25ml"
       }
     },
     {
@@ -344,7 +345,7 @@
         "id": "place-cylinder-node",
         "type": "action",
         "title": "Stand the cylinder",
-        "description": "Stand the clean, dry 100 mL graduated cylinder upright on the bench.",
+        "description": "Stand the clean, dry 25 mL graduated cylinder upright on the bench.",
         "actionId": "place-cylinder",
         "config": {},
         "validation": [
@@ -407,7 +408,7 @@
         "id": "drops-to-line-node",
         "type": "action",
         "title": "Add drops to the line",
-        "description": "Hold the pipette over the cylinder and add sample a drop at a time until, at eye level, the bottom of the meniscus sits on the line.",
+        "description": "Hold the pipette over the cylinder and add sample a drop at a time until, at eye level, the bottom of the meniscus sits on the line. If it goes past, draw the excess back up with the pipette.",
         "actionId": "drops-to-line",
         "config": {},
         "validation": [
@@ -542,7 +543,7 @@
         "roleId": "variable-volume-measuring-device",
         "required": true,
         "allowedDefinitionIds": [
-          "graduated-cylinder"
+          "graduated-cylinder-25ml"
         ],
         "sourceInstanceIds": [
           "graduated-cylinder-1"
