@@ -102,10 +102,21 @@ wait for confirmation (`DECISIONS.md`, the "built" row). G3 has still not run.
    - **Found:** `filterInPortions` (`src/runtime/reducer.ts`) can round the last filter portion above what is
      left and throw. The probe hit it in the lab at 54.05 mL, and it is live in the published standalone Filter a
      Precipitate for some teacher volumes. It is fixed first in the build thread.
-8. **Next: the build thread** (`NEXT_THREAD_PROMPT.md`, 2026-10-10):
-   - the `filterInPortions` fix;
-   - E0, a short design put to the user;
-   - E3, `intro-filtration-demo` in 3D.
+8. **Done 2026-10-10: the D8 build** (`NEXT_THREAD_PROMPT.md`; `evidence/D8_E3_EVIDENCE.md`):
+   - `filterInPortions` fixed (`353f159`): the last portion pours exactly what is left; test at 54.05 mL.
+   - E0 answered in line (`proposals/D8_EXPERIMENT_ASSEMBLY.md`, "E0 decisions"): three twins, every setup
+     field filled in with an approved default, the part on the step card and the intro.
+   - E3 built (`1a955d5`, then the review commit): `scripts/practice3d/build.mjs` writes the twins
+     (`public/techniques-3d/*-3d.json`, `twins.json`) and the lab (`public/labs-3d/`), from
+     `labs/introFiltrationDemo.mjs` through `composeLab.mjs`; `src/studio3d/labs3d.ts` and `labs3dSetup.ts`
+     load it; `player/Lab3DRoute.tsx` is `#/3d/play/<labId>` (intro by part, setup, Player3D with the part
+     eyebrow); the switcher has an "Experiments" group. 31 steps play in the app (G1, `probes/look-lab3d.cjs`)
+     and in `probes/probe-lab3d.mts`; tests in `__tests__/lab3d.test.ts`.
+   - The review fixed one chip (a record-only step copies its measurement's provenance) and left for the
+     user: a 3D twin of Measure Liquid Volume (its Pack 1 text reads "Record the the configured volume…"; its
+     steps are not atomized), and short part titles (the longest eyebrow wraps to three lines).
+   - For Drying's twin later: compiled measurement ids are scoped by instance, so its calculation needs
+     `preserveIds.references` or a binding to reach Filtration's paper mass.
 9. **Then: the Pack 3 proposal** (catalogue items 11–15), proposed and decided before any build.
    - `PACK3_PROPOSAL_PROMPT.md` is its prompt. It was checked against an evaluated inventory.
    - The note at its top says how D8 replaces its first decision's options.

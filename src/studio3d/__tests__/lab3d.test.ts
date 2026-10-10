@@ -156,8 +156,13 @@ describe("D8 3D lab: Precipitate and Filter Calcium Carbonate", () => {
     expect(notebookProvenance(lab, authored, entry(node("hard-water-precipitation--observe-precipitate")))).toBe("teacher");
     // Compiled, the binding is gone: without the authored view the chip falls back to the bench.
     expect(notebookProvenance(lab, undefined, entry(node("hard-water-precipitation--observe-precipitate")))).toBe("bench");
+    // "Record volume" only records the cylinder's teacher-set reading: its row is a teacher setting, not an entry.
+    const record = node("measuring-volume--record-volume");
+    expect(notebookProvenance(lab, authored, { ...entry(record), type: "measurement" })).toBe("teacher");
     // The paper's mass is read off the balance by the student, not shown as a teacher's value.
     const weigh = lab.actions.find((action) => action.id === "filtration--weigh-paper")!;
     expect(measurementProvenance(lab, authored, String(weigh.parameters.measurementId))).not.toBe("teacher");
+    const recordMass = node("filtration--record-paper-mass");
+    expect(notebookProvenance(lab, authored, { ...entry(recordMass), type: "measurement" })).toBe("entry");
   });
 });

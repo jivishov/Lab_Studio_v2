@@ -56,8 +56,8 @@ const HELPERS = `
   window.__setup = async (values) => {
     [...document.querySelectorAll("button")].find(x => /Next: setup|Start/.test(x.textContent.trim()))?.click(); await window.__sleep(600);
     for (const [id, v] of Object.entries(values)) {
-      const el = document.getElementById("s3d-slot-" + id); if (!el) continue;
-      Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value").set.call(el, v);
+      const el = document.getElementById("s3d-slot-" + id) ?? document.getElementById("s3d-lab-" + id); if (!el) continue;
+      Object.getOwnPropertyDescriptor(el instanceof HTMLTextAreaElement ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype, "value").set.call(el, v);
       el.dispatchEvent(new Event("input", { bubbles: true }));
     }
     await window.__sleep(200);
@@ -66,15 +66,18 @@ const HELPERS = `
     return document.querySelector(".s3d-field__error")?.textContent ?? "set up";
   };`;
 
-/** Opens the technique's 3D route and returns { page, shot, log, run, close, errors }. */
-const openLook = async (techniqueId, out, viewport = { width: 1280, height: 800 }) => {
+/**
+ * Opens the technique's 3D route (or `hash`, such as a 3D experiment's `#/3d/play/<labId>`) and returns
+ * { page, shot, log, run, close, errors }.
+ */
+const openLook = async (techniqueId, out, viewport = { width: 1280, height: 800 }, hash = `#/3d/technique/${techniqueId}`) => {
   const browser = await chromium.launch({ args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"] });
   const page = await browser.newPage({ viewport, deviceScaleFactor: 1 });
   await page.addInitScript(() => { try { localStorage.setItem("lab-studio:3d:v1:player-ui", JSON.stringify({ quality: "low", beacon: true })); } catch {} });
   const errors = [];
   page.on("pageerror", (e) => errors.push(String(e)));
   page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
-  await page.goto(`http://localhost:5182/#/3d/technique/${techniqueId}`);
+  await page.goto(`http://localhost:5182/${hash}`);
   await page.waitForTimeout(4000);
   await page.evaluate(HELPERS);
   return {

@@ -49,5 +49,10 @@ export const notebookProvenance = (configured: ProvenanceSource, authored: Prove
   const byRole = action ? roleProvenance(action) : undefined;
   if (byRole) return byRole;
   if (actionId && boundToSetup(authored, actionId, ["note", "value"])) return "teacher";
+  // A step that only records a measurement taken earlier (Measure Liquid Volume's "Record volume") has no
+  // field of its own: its row is that measurement's, so a teacher-set reading stays a teacher setting.
+  const recorded = action?.parameters.measurementId;
+  if (entry.type === "measurement" && typeof recorded === "string" && !actionInputField(action!)
+    && measurementProvenance(configured, authored, recorded) === "teacher") return "teacher";
   return entry.type === "measurement" ? "entry" : "bench";
 };
