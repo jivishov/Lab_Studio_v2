@@ -6,7 +6,7 @@ import { action, emptyContents, evidenceEffect, item, node, technique, twinOf } 
  * the volume in one step and records the cylinder's volume for the student. Here the student:
  * 1. stands the 25 mL cylinder on the bench: the smallest that holds the sample, as in a lab, and one whose
  *    liquid the dropping pipette reaches (you, 2026-10-10; in the 100 mL cylinder a 20 mL level is 166 mm below
- *    the rim, deeper than the 154 mm pipette);
+ *    the rim, deeper than the 155 mm pipette);
  * 2. pours the sample from its bottle to just below the line (`pourVolumeMl`, set 1 mL under the line by the lab);
  * 3. fills a dropping pipette from a small beaker of the sample, never from the bottle (the teacher's rule of
  *    2026-09-26: a pipette draws from an open vessel);

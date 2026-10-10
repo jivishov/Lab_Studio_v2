@@ -191,7 +191,7 @@ Your decisions, the same day: "Go with (c), the pipette draw-back." Then, asked 
 
 ### The reach
 
-The dropping pipette is 154 mm long, its bulb 108 to 154 mm from the tip. In the 100 mL cylinder (rim 212 mm, bore 26.8 mm) a 20 mL level is 166 mm below the rim, out of the tip's reach. A lab measures 20 mL in the smallest cylinder that holds it, the 25 mL one (rim 150 mm, bore 18.4 mm): there a 20 mL level is 65 mm below the rim and a 5 mL level 122 mm. The bulb, 15 mm across, fits the bore, so even at 5 mL the tip reaches the liquid while the bulb is squeezed at the rim.
+The dropping pipette is 155 mm long, its bulb 108 to 155 mm from the tip. In the 100 mL cylinder (rim 212 mm, bore 26.8 mm) a 20 mL level is 166 mm below the rim, out of the tip's reach. A lab measures 20 mL in the smallest cylinder that holds it, the 25 mL one (rim 150 mm, bore 18.4 mm): there a 20 mL level is 65 mm below the rim and a 5 mL level 122 mm. The bulb, 15 mm across, fits the bore, so even at 5 mL the tip reaches the liquid while the bulb is squeezed at the rim.
 
 ### What was built
 

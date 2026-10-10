@@ -18,7 +18,7 @@ Paste everything below the line into a fresh Claude Code thread. Every fact in i
 - **Beer's Law and Hard Water Gravimetry** are composed by no lab. Changing them in place (Pack 1's route) is still possible, but now offers nothing over the practice route except a single file. Recommend between the two.
 - **Holding Pack 3 until D8** is no longer an option.
 - **Calculate Hardness** (decision 3) is now needed: `hard-water-demo` in 3D composes its twin.
-- **Lab setup and models.** Paper chromatography's lab needs a 3D setup page. 14 of those two labs' equipment definitions have no 3D model yet: 8 for chromatography and 6 for brass (`equipment3d/registry.json`, checked 2026-10-10). Count them in the size and order (decision 5).
+- **Lab setup and models.** Paper chromatography's lab needs a 3D setup page. 14 of those two labs' equipment definitions have no 3D model yet: 8 for chromatography and 6 for brass (`equipment3d/registry.json`, checked 2026-10-10). With Hard Water Gravimetry's vacuum filtration (Büchner funnel, side-arm filter flask, vacuum source), `validate_equipment3d.py --pack 3` lists 17 definitions with no model. Count them in the size and order (decision 5).
 
 ---
 
