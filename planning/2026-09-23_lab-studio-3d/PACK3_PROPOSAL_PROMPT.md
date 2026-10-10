@@ -4,6 +4,8 @@ Paste everything below the line into a fresh Claude Code thread. Every fact in i
 
 **Run this after the D8 discussion** (`NEXT_THREAD_PROMPT.md`; on 2026-10-08 the user chose to settle D8 first). It was written while D8 was open. Where it says D8 is open, read the D8 row in `DECISIONS.md` and the note the D8 session adds below this one. The D8 decision replaces the options in decision 1 here.
 
+**Order note (2026-10-10).** The D8 build is done (`SESSION_HANDOFF.md`, item 8). Run this proposal after the 3D model review and refinement thread (`NEXT_THREAD_PROMPT.md`), and build Pack 3's new models to the standard it sets. Publishing the D8 experiment and G3 wait until the user asks.
+
 **D8 note (2026-10-10).** D8 is decided (`proposals/D8_EXPERIMENT_ASSEMBLY.md`, "Decisions"). Run this proposal after the build thread that fixes `filterInPortions` and builds E3 (`intro-filtration-demo` in 3D); the user put intro filtration first.
 - **What replaces decision 1.** The user's words: "I need real atomized steps to use in 3D. Ignore the 2D version at all." So:
   - 3D uses only the real atomized steps.
