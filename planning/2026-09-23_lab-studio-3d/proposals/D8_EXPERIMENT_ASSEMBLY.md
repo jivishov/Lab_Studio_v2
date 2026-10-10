@@ -269,3 +269,227 @@ The prompt is `NEXT_THREAD_PROMPT.md` (2026-10-10). In order:
    - tests;
    - one G1 look of the whole run.
 4. **Then the Pack 3 proposal** (`PACK3_PROPOSAL_PROMPT.md`, with its D8 note).
+
+## E0 design (2026-10-10, before the E3 build)
+
+Written in the build thread after the `filterInPortions` fix (`353f159`). Every fact below was read from the
+modules and core code, or run, on 2026-10-10. Once the fix is in, `probe-d8-twins.mts` plays all 31 steps
+without `PROBE_ROUND`.
+
+### 1. The twins
+
+**How a module writes its twin.**
+- `common.mjs` gets one helper, `twinOf(practice, { id, dropSteps, dropSlots })`. A module exports its
+  practice version as now (default export) and its twin as a named export, `twin`.
+- The helper deep-copies the practice version, then:
+  - sets `catalogDisposition: "composable"`;
+  - removes the dropped steps' actions and nodes, joins the process edges again, and moves the entry or exit
+    port if it pointed at a dropped node;
+  - removes the dropped slots;
+  - removes evidence outputs, legacy effects and required evidence that name a dropped action.
+- **The starting items stay.** They are the source instances of the twin's roles, and a lab binds each one to
+  its own item. The compiler then drops the technique's bench, so contents never reach a lab. Contents that
+  name a dropped slot are emptied.
+- **The build checks each twin** and fails when:
+  - a dropped slot is used anywhere other than the starting bench or a dropped step;
+  - a `{{config.*}}` is left that no slot declares;
+  - the twin fails validation, the composition contract or the catalogue policy (the same checks as a
+    practice version).
+- **Naming.**
+  - Id `<original>-3d`, for example `filtration-3d` and `hard-water-precipitation-3d`. The title is the
+    practice version's. Tag `twin-3d`.
+  - The file is `public/techniques-3d/<id>.json`.
+  - The twins are listed in a new `public/techniques-3d/twins.json` (id, file, practice id, original id).
+    They are never in the practice list `index.json`, so the switcher never offers a twin, which cannot play
+    alone.
+
+**What each twin drops.** The audit read every `{{config.*}}` use in the five practice files.
+
+| Technique | Stand-in steps dropped | Slots dropped (they only fill the practice bench) | Slots kept (a step uses them) |
+|---|---|---|---|
+| Transfer Liquid → `transfer-3d` | none | none | `transferVolumeMl` (the pour), `transferObservation` |
+| Precipitation → `hard-water-precipitation-3d` | none | `sampleVolumeMl`, `reagentStockVolumeMl` | `reagentVolumeMl`, `precipitateMassG` (the model's mass), `precipitateObservation`, `completenessObservation` |
+| Filter a Precipitate → `filtration-3d` | none | `mixtureVolumeMl`, `precipitateMassG` | **`paperMassG`** |
+| Dry and Weigh → `drying-3d` | "Note the paper's mass" (`note-paper-mass`): in a lab, Filtration has just weighed and recorded it | `precipitateMassG` | `paperMassG` (the combined reading on the glass), `watchGlassMassG`, `firstDryingMinutes` |
+| Heat and Reweigh → `thermal-decomposition-mass-loss-3d` | none | `issuedMassG` (the vial's contents) | the other six |
+
+**Two corrections to the brief:**
+- **Filtration's `paperMassG` is not bench-only.** It is the mass the balance shows for the paper
+  (`place-paper-on-balance`, `supportEmptyMassG`). The twin keeps it, and the lab binds it as a teacher value.
+- **Three slots that only fill the bench were not counted.** Filtration's `mixtureVolumeMl` was missed
+  because it has a default; Precipitation's `sampleVolumeMl` and `reagentStockVolumeMl` were also missed.
+  All three are dropped. A lab supplies its own contents.
+
+**Choice A: which twins are written now.**
+- **(recommended)** Only the three that `intro-filtration-demo` composes. Drying's twin comes with
+  `hard-water-demo`, and Heat and Reweigh's with green chemistry. Each twin is then proved by a lab that plays
+  it.
+  - Drying's open question belongs to its lab: whether its by-difference calculation finds Filtration's
+    `filter-paper-mass` once compiled.
+  - `hard-water-demo` failed in 2D on exactly such a reference (`drying--dry-precipitate-mass`).
+- All five now. The two unused twins pass the static checks, but no lab plays them.
+
+### 2. The 3D lab modules
+
+**Format.** One module per lab, `scripts/practice3d/labs/<labId>.mjs`, written by a new `lab()` helper in
+`common.mjs`. It declares:
+- the title, description and learning goals (its own words; the 2D lab is not read);
+- **the bench:** the lab's own items and starting contents;
+- **the parts,** in order: each names its technique (a twin, or a Pack 1 original from `techniques/`) and an
+  explicit **item map**, from each of the technique's starting items to a lab item. For example, Transfer's
+  is `graduated-cylinder-1 → graduated-cylinder-1`, `beaker-250ml-1 → beaker-250ml-1` and
+  `wash-bottle-1 → wash-bottle-1`.
+- **the configuration of each part:** a fixed value, or `setup("<field>")`, which names a field of the setup
+  page.
+- **the setup fields:** label, unit, kind, default if any, bounds, and where each value goes (part slots, or a
+  bench item's starting volume).
+
+**What the build does with a lab:**
+- It derives every role binding from the item map and the technique's own roles (`sourceInstanceId`,
+  `definitionId` and the lab's `instanceId`). It fails on a role whose item is not mapped, a definition that
+  differs, or a slot left unbound. This replaces the probe's mechanical "k-th item of a definition" mapping:
+  every binding is written down and reviewed.
+- It chains the parts' exit and entry ports in order, and gives the source one default reachability witness.
+- **It writes:**
+  - `public/labs-3d/<labId>.json`: a plain composition source, with the setup fields' defaults filled in, so
+    it compiles as it stands;
+  - `public/labs-3d/index.json`: one entry per lab, with id, title, description, file, the parts (instance id,
+    technique id, title) and the setup fields.
+- **`--check`** covers `techniques-3d/` and `labs-3d/` alike. A test compiles each lab through
+  `compileBundledLabCompositionWithPolicy`, with the 3D resolver's order, and plays it.
+
+**The bench of `intro-filtration-demo`** (13 items, as the probe found):
+
+| Item | Starting contents | Where it starts |
+|---|---|---|
+| `sample-bottle-1` (sample bottle) | Hard water sample, 120 mL | bench |
+| `graduated-cylinder-1` (100 mL) | empty | tray |
+| `beaker-250ml-1` | empty | tray |
+| `wash-bottle-1` | Deionized water, 500 mL | bench |
+| `reagent-beaker-1` (150 mL beaker) | Sodium carbonate solution, the working portion (setup; 50 mL) | bench |
+| `stirring-rod-1`, `beral-pipette-1` | empty | tray |
+| `analytical-balance-1` | — | bench |
+| `ring-stand-1`, `funnel-1`, `filter-paper-1`, `erlenmeyer-flask-250ml-1` | empty | tray |
+| `funnel-stand-1` | — | storage (created when the funnel is seated) |
+
+- **The rule for where an item starts:** an item that a step places starts on the tray; an item that no step
+  places starts on the bench, as in the practice versions.
+- **The 150 mL reagent beaker is checked.** It is Precipitation's working portion (Pack 2 interpretation,
+  confirmed 2026-10-06: the dropping pipette never enters a stock bottle). The probe took it from the twin's
+  own bench, not from the 2D lab, which has a 20 mL reagent bottle. 50 mL holds three portions of 20 mL with
+  10 mL left for the 1 mL pipette fill. The lab keeps it, and its volume becomes a setup field.
+- **Measure Liquid Volume** is Pack 1's unchanged original from `techniques/` (Pack 1 decision: unchanged), with
+  a 1 mL tolerance and its measurement id fixed by the lab.
+
+### 3. The resolver and the loader
+
+- **`src/studio3d/labs3d.ts`**, modelled on `practice.ts`:
+  - `loadLab3DSummaries()` reads `labs-3d/index.json`; a failed read is not cached;
+  - `resolve3DTechnique(id)`: a twin in `twins.json` is read from `techniques-3d/`, then validated and checked
+    against the policy, as a practice version is. Anything else goes to `loadBundledTechnique` (`techniques/`).
+    It never fetches blindly, so there are no 404s;
+  - `loadLab3D(id, values)`:
+    1. reads and validates the source;
+    2. applies the setup values to a copy (the part slots and bench volumes the index names);
+    3. compiles through `compileBundledLabCompositionWithPolicy({ authority: "public-bundle", artifact:
+       "public/labs-3d/<file>", catalogSource: source, compilationSource: configured, resolveTechnique:
+       resolve3DTechnique })`;
+    4. returns the compiled lab, the parts and the authored view (§6).
+- **2D is neither read nor written.**
+  - The resolver reads `techniques/` only for Pack 1's measuring-volume (decided).
+  - The fallback link is `#/play/<labId>`, the existing 2D route for the same id, as for techniques.
+
+### 4. The setup page (3D only)
+
+It is the technique route's pattern:
+- an intro with the journey in parts;
+- then "Classroom values", with approved defaults filled in, an approval box, and "Save setup and start".
+
+The values are checked before compiling, against the lab's capacities:
+- the cylinder holds 100 mL;
+- the beaker holds 250 mL, and it takes the sample, the reagent, the 9 mL cylinder rinse and the 5 mL rod rinse;
+- the flask holds 250 mL, and it takes all of that, plus 18 mL of rinses and washes;
+- the working portion must hold the reagent plus the 1 mL pipette fill.
+
+| Field | Goes to | Default |
+|---|---|---|
+| Sample volume (mL) | measuring-volume `targetVolumeMl`, transfer `transferVolumeMl` | 20 |
+| Transfer observation | transfer `transferObservation` | see choice B |
+| Sodium carbonate working portion (mL) | `reagent-beaker-1` starting volume | 50 |
+| Sodium carbonate added (mL) | precipitation `reagentVolumeMl` | see choice B |
+| Precipitate mass, the model's value (g) | precipitation `precipitateMassG` | see choice B |
+| Observation after the first portion | precipitation `precipitateObservation` | see choice B |
+| Observation at the drop test | precipitation `completenessObservation` | see choice B |
+| Dry filter paper's mass (g) | filtration `paperMassG` | see choice B |
+
+These are fixed by the lab and not offered:
+- the volume tolerance (1 mL);
+- record ids;
+- the sample bottle (120 mL) and wash bottle (500 mL);
+- the pour portion (8 mL) and the residue (5 %), which belong to the technique.
+
+**Choice B: defaults.**
+- **(recommended)** As in the practice versions, which the user confirmed on 2026-10-06:
+  - defaults only where a practice version has one: the sample (20 mL) and the working portion (50 mL);
+  - the teacher enters the reagent volume, the precipitate mass, the paper's mass and the three observations
+    (teacher-prepared values).
+- Fill in every field with a proposed default, so the lab starts after one approval:
+  - 20 mL of reagent and 0.0075 g of precipitate;
+  - 0.553 g for the paper: a 9 cm grade 1 paper, at 87 g/m², weighs about 0.55 g. The probe's 0.912 g is
+    heavy for that paper;
+  - short observation texts.
+
+### 5. Part labels and the switcher
+
+- **Parts** come from `compositionManifest.origins` (node → `instanceId`) and the index's part titles:
+  "Measure Liquid Volume", "Transfer Liquid", "Hard-Water Calcium Carbonate Precipitation" and "Filter a
+  Precipitate".
+- **Choice C: where the parts show.**
+  - **(recommended)** On the step card's eyebrow ("Part 2 of 4 · Transfer Liquid · Step 5 of 31"), and as
+    headings in the intro's journey.
+  - The step card only.
+- **Switcher.**
+  - An "Experiments" group after the packs, listing `labs-3d/index.json`. Choosing one opens
+    `#/3d/play/<id>`.
+  - The top bar's source tag reads "EXPERIMENT".
+  - Leaving a run in progress asks first, as now.
+
+### 6. The provenance rule
+
+A compiled lab keeps no `{{config.*}}`. The loader gives Player3D an **authored view** of the lab instead:
+- the compiled lab, where each action's parameters are replaced by those of the action it came from, as its
+  technique authored them;
+- the actions are matched through `compositionManifest.origins` (`actionId` → `instanceId`, `sourceActionId`)
+  and the resolved techniques.
+
+A value that a technique binds to a slot (`{{config.x}}`) is then a teacher value. This is the same rule as for
+a technique, whether the lab fixes the value or the setup page sets it.
+- `player/provenance.ts` is unchanged.
+- Player3D already takes `authoredDefinition`, and uses it only for provenance.
+
+### 7. Not in E3
+
+- Studio (b).
+- `hard-water-demo` and green chemistry.
+- The other two twins, if choice A is taken.
+- Any 2D file.
+- **Core changes: none.** The `filterInPortions` fix is done.
+
+### Review for fidelity (before putting it to you)
+
+1. **The paper's mass.** The brief would have dropped `paperMassG`, leaving the balance with no reading for the
+   paper. It is kept.
+2. **Bench-only slots.** Three were missed (above). Without dropping them, a lab would have to bind values that
+   fill nothing.
+3. **Drying's twin.** Dropping "Note the paper's mass" moves the paper's mass to Filtration's measurement. Whether
+   the compiled calculation finds it is not proved, so the twin waits for its lab (choice A).
+4. **The reagent.** The lab uses the working portion, not the 2D lab's stock bottle. This keeps the
+   teacher's rule of 2026-09-26.
+5. **Capacities.**
+   - The setup's bounds follow the volumes the runtime actually adds: the 3 mL squirts and the 5 mL rod
+     rinse.
+   - The 54.05 mL found in the probe was 20 mL of sample, 20 mL of reagent, 14 mL of rinses and one 0.05 mL
+     drop.
+6. **Float noise elsewhere.** After the washes the flask reads 72.0500000001 mL (`roundToRuntimeMl` adds at 10
+   decimals). It throws nothing. Whether a panel shows the noise is checked in the G1 look. It is not fixed here: it is
+   core, and outside the decided fix.
