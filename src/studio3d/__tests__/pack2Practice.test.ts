@@ -44,18 +44,20 @@ const PLAYS: Record<string, { config: Record<string, string>; inputs?: Record<st
   },
 };
 
-const load = (id: string): TechniqueDefinition =>
-  applyTechniqueConfiguration(read(`public/techniques-3d/${practiceIndex.find((entry) => entry.id === id)!.file}`) as TechniqueDefinition, PLAYS[id].config);
+type Play = (typeof PLAYS)[string];
+
+const load = (id: string, play: Play = PLAYS[id]): TechniqueDefinition =>
+  applyTechniqueConfiguration(read(`public/techniques-3d/${practiceIndex.find((entry) => entry.id === id)!.file}`) as TechniqueDefinition, play.config);
 
 const errorAdded = (before: RuntimeState, after: RuntimeState) =>
   after.feedbackQueue.slice(before.feedbackQueue.length).find((entry) => entry.severity === "error");
 
 /** One attempt at the current step through the process control; returns the state and any refusal. */
-const attempt = (technique: TechniqueDefinition, state: RuntimeState, id: string) => {
+const attempt = (technique: TechniqueDefinition, state: RuntimeState, id: string, play: Play = PLAYS[id]) => {
   const action = technique.actions.find((candidate) => candidate.id === technique.process.nodes.find((n) => n.id === state.currentNodeId)!.actionId)!;
   const interaction = resolveActionInteraction(action)!;
   const intent = mergeActionInput({ origin: "keyboard", type: intentTypeForInteraction[interaction.type] } as RuntimeInteractionIntent,
-    resolveActionInput(action, PLAYS[id].inputs?.[action.id] ?? ""), action);
+    resolveActionInput(action, play.inputs?.[action.id] ?? ""), action);
   const resolved = resolveInteractionIntent(technique, state, intent);
   if (!resolved.ok) return { state, refusal: resolved.feedback.message };
   const next = performRuntimeAction(technique, state, resolved.request);
@@ -63,16 +65,16 @@ const attempt = (technique: TechniqueDefinition, state: RuntimeState, id: string
 };
 
 /** Plays the technique up to (not including) the node of `stopBefore`, or to its end. */
-const playTo = (id: string, stopBefore?: string): { technique: TechniqueDefinition; state: RuntimeState } => {
-  const technique = load(id);
+const playTo = (id: string, stopBefore?: string, play: Play = PLAYS[id]): { technique: TechniqueDefinition; state: RuntimeState } => {
+  const technique = load(id, play);
   let state = createRuntimeState(technique);
   for (const node of technique.process.nodes) {
     if (node.actionId === stopBefore) break;
     const action = technique.actions.find((candidate) => candidate.id === node.actionId)!;
-    const moved = PLAYS[id].moves?.[action.id];
+    const moved = play.moves?.[action.id];
     if (moved) state = performRuntimeAction(technique, state, benchMoveRequest(moved, { x: 300, y: 380 }, 50));
     for (let i = 0; i < 40 && !state.completedNodes.includes(node.id); i += 1) {
-      const result = attempt(technique, state, id);
+      const result = attempt(technique, state, id, play);
       if (result.refusal) throw new Error(`${id} ${node.id}: ${result.refusal}`);
       state = result.state;
     }
@@ -108,6 +110,17 @@ describe("Pack 2 3D practice versions", () => {
     const value = (calculationId: string) => state.calculations.find((entry) => entry.id === calculationId)?.value;
     expect(value("composition-analysis")).toBeCloseTo(0.443, 3);
     expect(value("composition-analysis-nahco3-percent")).toBeCloseTo(60, 0);
+  });
+
+  it("Filter a Precipitate pours the last portion exactly, at a mixture volume that leaves float noise (54.05 mL)", () => {
+    // The decanted portions leave 6.049999999999997 mL; the last portion used to round to 6.05 mL and throw.
+    const play = { ...PLAYS["filtration-practice"], config: { mixtureVolumeMl: "54.05", precipitateMassG: "0.0075", paperMassG: "0.912" },
+      inputs: { "weigh-paper": "0.912" } };
+    const { technique, state } = playTo("filtration-practice", undefined, play);
+    expect(state.completedNodes).toHaveLength(technique.process.nodes.length);
+    const byId = (id: string) => state.equipmentInstances.find((instance) => instance.id === id)!;
+    expect(byId("filter-paper-1").contents.precipitate?.massG).toBeCloseTo(0.0075, 6);
+    expect(byId("erlenmeyer-flask-250ml-1").contents.volumeMl).toBeCloseTo(54.05 + 18, 6);
   });
 
   it("Precipitation rinses the rod back into the beaker, losing none of the precipitate", () => {

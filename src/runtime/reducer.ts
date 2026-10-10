@@ -1635,7 +1635,8 @@ const filterInPortions = (
   const liquidMl = source.contents.volumeMl ?? 0;
   if (liquidMl <= 1e-9) return fail(state, "There is nothing left to pour.", "Go on to the next step.", nodeId);
   const last = liquidMl <= pourPortionMl + 1e-9;
-  const moved = roundToRuntimeMl(last ? liquidMl : pourPortionMl);
+  // The last portion pours exactly what is left: rounding it could put it above the liquid in the beaker.
+  const moved = last ? liquidMl : roundToRuntimeMl(pourPortionMl);
   const receiverDefinition = equipmentById.get(receiver.definitionId);
   if (receiverDefinition?.capacity.unit === "mL" && (receiver.contents.volumeMl ?? 0) + moved > receiverDefinition.capacity.amount) {
     return fail(state, "The filtrate would overflow the receiving vessel.", "Use an empty receiving vessel with enough capacity.", nodeId);
@@ -1669,7 +1670,7 @@ const filterInPortions = (
     // Decanting: the clear liquid leaves; the settled solid stays in the beaker.
     next = updateInstance(next, source.id, (instance) => ({
       ...instance,
-      contents: { ...instance.contents, volumeMl: remainingContents.volumeMl, solutes: [...remainingContents.solutes,
+      contents: { ...instance.contents, volumeMl: roundToRuntimeMl(remainingContents.volumeMl ?? 0), solutes: [...remainingContents.solutes,
         ...instance.contents.solutes.filter((solute) => isPrecipitatedSolute(solute, precipitate))] },
     }));
     return {
