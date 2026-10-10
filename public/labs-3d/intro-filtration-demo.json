@@ -16,12 +16,12 @@
   ],
   "equipment": [
     "sample-bottle",
+    "beaker-150ml",
+    "beral-pipette",
     "graduated-cylinder",
     "beaker-250ml",
     "wash-bottle",
-    "beaker-150ml",
     "stirring-rod",
-    "beral-pipette",
     "analytical-balance",
     "ring-stand",
     "funnel",
@@ -45,6 +45,35 @@
           "wetState": "wet",
           "visualState": "clear-liquid",
           "volumeMl": 120
+        }
+      },
+      {
+        "id": "sample-portion-1",
+        "definitionId": "beaker-150ml",
+        "label": "Sample for the dropper",
+        "location": "workbench",
+        "contents": {
+          "kind": "liquid",
+          "label": "Hard water sample",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid",
+          "volumeMl": 10
+        }
+      },
+      {
+        "id": "sample-pipette-1",
+        "definitionId": "beral-pipette",
+        "label": "Dropping pipette (sample)",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
         }
       },
       {
@@ -122,7 +151,7 @@
       {
         "id": "beral-pipette-1",
         "definitionId": "beral-pipette",
-        "label": "Dropping pipette",
+        "label": "Dropping pipette (carbonate)",
         "location": "shelf",
         "contents": {
           "kind": "empty",
@@ -238,8 +267,8 @@
   "techniqueInstances": [
     {
       "instanceId": "measuring-volume",
-      "techniqueId": "measuring-volume",
-      "version": "1.2.0",
+      "techniqueId": "measuring-volume-3d",
+      "version": "1.0.0",
       "bindings": {
         "equipment": {
           "variable-volume-measuring-device": {
@@ -259,13 +288,30 @@
                 "instanceId": "sample-bottle-1"
               }
             ]
+          },
+          "pipette-liquid-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "sample-portion-1",
+                "definitionId": "beaker-150ml",
+                "instanceId": "sample-portion-1"
+              }
+            ]
+          },
+          "transfer-pipette": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "beral-pipette-1",
+                "definitionId": "beral-pipette",
+                "instanceId": "sample-pipette-1"
+              }
+            ]
           }
         },
         "models": {},
         "configuration": {
           "targetVolumeMl": 20,
-          "volumeToleranceMl": 1,
-          "volumeMeasurementId": "sample-volume"
+          "pourVolumeMl": 19
         }
       }
     },
@@ -323,7 +369,6 @@
         },
         "models": {},
         "configuration": {
-          "transferVolumeMl": 20,
           "transferObservation": "The sample is clear and colourless, and none was spilled."
         }
       }

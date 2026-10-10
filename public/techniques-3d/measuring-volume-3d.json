@@ -1,0 +1,633 @@
+{
+  "id": "measuring-volume-3d",
+  "title": "Measure Liquid Volume",
+  "learningGoal": "Measure a liquid sample with a graduated cylinder: pour to just below the line, finish drop by drop, and read the bottom of the meniscus at eye level.",
+  "requiredEquipment": [
+    "graduated-cylinder",
+    "sample-bottle",
+    "beaker-150ml",
+    "beral-pipette"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "graduated-cylinder-1",
+        "definitionId": "graduated-cylinder",
+        "label": "Graduated cylinder",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "sample-bottle-1",
+        "definitionId": "sample-bottle",
+        "label": "Hard water sample",
+        "location": "workbench",
+        "contents": {
+          "kind": "liquid",
+          "label": "Hard water sample",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid",
+          "volumeMl": 120
+        }
+      },
+      {
+        "id": "sample-portion-1",
+        "definitionId": "beaker-150ml",
+        "label": "Sample for the dropper",
+        "location": "workbench",
+        "contents": {
+          "kind": "liquid",
+          "label": "Hard water sample",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid",
+          "volumeMl": 10
+        }
+      },
+      {
+        "id": "beral-pipette-1",
+        "definitionId": "beral-pipette",
+        "label": "Dropping pipette",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "place-cylinder",
+      "verb": "place",
+      "label": "Stand the cylinder on the bench",
+      "parameters": {
+        "equipmentDefinitionId": "graduated-cylinder",
+        "equipmentInstanceId": "graduated-cylinder-1",
+        "location": "workbench"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Stand the cylinder on the bench: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The cylinder stands on the bench.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.variable-volume-device",
+      "equipmentRoleBindings": {
+        "variable-volume-measuring-device": "graduated-cylinder"
+      }
+    },
+    {
+      "id": "pour-below-line",
+      "verb": "transfer",
+      "label": "Pour the sample to just below the line",
+      "parameters": {
+        "sourceDefinitionId": "sample-bottle",
+        "sourceInstanceId": "sample-bottle-1",
+        "targetDefinitionId": "graduated-cylinder",
+        "targetInstanceId": "graduated-cylinder-1",
+        "volumeMl": "{{config.pourVolumeMl}}"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Pour the sample to just below the line: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The sample is just below the line.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "transfer"
+      ],
+      "interaction": {
+        "accessibleLabel": "Pour the sample to just below the line",
+        "type": "pourInto",
+        "sourceDefinitionId": "sample-bottle",
+        "targetDefinitionId": "graduated-cylinder"
+      },
+      "atomId": "atom.transfer.fill-below-graduation",
+      "equipmentRoleBindings": {
+        "liquid-source": "sample-bottle",
+        "variable-volume-measuring-device": "graduated-cylinder"
+      }
+    },
+    {
+      "id": "fill-pipette",
+      "verb": "transfer",
+      "label": "Fill the dropping pipette with sample",
+      "parameters": {
+        "sourceDefinitionId": "beaker-150ml",
+        "sourceInstanceId": "sample-portion-1",
+        "targetDefinitionId": "beral-pipette",
+        "targetInstanceId": "beral-pipette-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Fill the dropping pipette with sample: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The dropping pipette holds sample.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "transfer"
+      ],
+      "interaction": {
+        "accessibleLabel": "Fill the dropping pipette with sample",
+        "type": "pourInto",
+        "sourceDefinitionId": "beaker-150ml",
+        "targetDefinitionId": "beral-pipette"
+      },
+      "atomId": "atom.transfer.draw-into-transfer-pipette",
+      "equipmentRoleBindings": {
+        "pipette-liquid-source": "beaker-150ml",
+        "transfer-pipette": "beral-pipette"
+      },
+      "volume": {
+        "source": "target-fill-fraction",
+        "fraction": 1
+      }
+    },
+    {
+      "id": "drops-to-line",
+      "verb": "transfer",
+      "label": "Add sample drop by drop to the line",
+      "parameters": {
+        "sourceDefinitionId": "beral-pipette",
+        "sourceInstanceId": "beral-pipette-1",
+        "targetDefinitionId": "graduated-cylinder",
+        "targetInstanceId": "graduated-cylinder-1",
+        "markDispense": "target",
+        "markVolumeMl": "{{config.targetVolumeMl}}",
+        "dropVolumeMl": 0.05,
+        "markToleranceMl": 0.2,
+        "outputMeasurementId": "sample-volume",
+        "outputLabel": "Sample volume"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Add sample drop by drop to the line: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The bottom of the meniscus is on the line.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "transfer"
+      ],
+      "interaction": {
+        "accessibleLabel": "Add sample drop by drop to the line",
+        "type": "dispenseDrops",
+        "sourceDefinitionId": "beral-pipette",
+        "targetDefinitionId": "graduated-cylinder"
+      },
+      "atomId": "atom.transfer.dropwise-to-graduation",
+      "equipmentRoleBindings": {
+        "transfer-pipette": "beral-pipette",
+        "variable-volume-measuring-device": "graduated-cylinder"
+      }
+    },
+    {
+      "id": "read-volume",
+      "verb": "record",
+      "label": "Read and record the volume",
+      "parameters": {
+        "measurementId": "sample-volume",
+        "label": "Sample volume",
+        "unit": "mL",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Volume at the bottom of the meniscus (mL)",
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "inputStep": 0.1,
+        "inputRequired": true,
+        "studentValueRequired": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Read and record the volume: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Volume recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "record",
+        "notebook"
+      ]
+    }
+  ],
+  "process": {
+    "startNodeId": "place-cylinder-node",
+    "nodes": [
+      {
+        "id": "place-cylinder-node",
+        "type": "action",
+        "title": "Stand the cylinder",
+        "description": "Stand the clean, dry 100 mL graduated cylinder upright on the bench.",
+        "actionId": "place-cylinder",
+        "config": {},
+        "validation": [
+          {
+            "id": "place-cylinder-node-done",
+            "type": "actionEvidence",
+            "label": "Action place-cylinder was completed.",
+            "actionId": "place-cylinder"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Stand the cylinder complete.",
+          "retry": "Review Stand the cylinder and try again."
+        }
+      },
+      {
+        "id": "pour-below-line-node",
+        "type": "action",
+        "title": "Pour to below the line",
+        "description": "Pour the hard-water sample from its bottle into the cylinder until the level is just below the {{config.targetVolumeMl}} mL line.",
+        "actionId": "pour-below-line",
+        "config": {},
+        "validation": [
+          {
+            "id": "pour-below-line-node-done",
+            "type": "actionEvidence",
+            "label": "Action pour-below-line was completed.",
+            "actionId": "pour-below-line"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Pour to below the line complete.",
+          "retry": "Review Pour to below the line and try again."
+        }
+      },
+      {
+        "id": "fill-pipette-node",
+        "type": "action",
+        "title": "Fill the dropping pipette",
+        "description": "Draw sample from the small beaker into the dropping pipette.",
+        "actionId": "fill-pipette",
+        "config": {},
+        "validation": [
+          {
+            "id": "fill-pipette-node-done",
+            "type": "actionEvidence",
+            "label": "Action fill-pipette was completed.",
+            "actionId": "fill-pipette"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Fill the dropping pipette complete.",
+          "retry": "Review Fill the dropping pipette and try again."
+        }
+      },
+      {
+        "id": "drops-to-line-node",
+        "type": "action",
+        "title": "Add drops to the line",
+        "description": "Hold the pipette over the cylinder and add sample a drop at a time until, at eye level, the bottom of the meniscus sits on the line.",
+        "actionId": "drops-to-line",
+        "config": {},
+        "validation": [
+          {
+            "id": "drops-to-line-node-done",
+            "type": "measurementRecorded",
+            "label": "Add drops to the line was recorded.",
+            "measurementId": "sample-volume"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Add drops to the line complete.",
+          "retry": "Review Add drops to the line and try again."
+        }
+      },
+      {
+        "id": "read-volume-node",
+        "type": "observation",
+        "title": "Read the volume",
+        "description": "With your eye level with the meniscus, read the volume at the bottom of the curve to the nearest 0.1 mL and record it.",
+        "actionId": "read-volume",
+        "config": {},
+        "validation": [
+          {
+            "id": "read-volume-node-done",
+            "type": "notebookEntry",
+            "label": "Read the volume was completed.",
+            "notebookTag": "sample-volume"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read the volume complete.",
+          "retry": "Review Read the volume and try again."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "place-cylinder-node",
+        "to": "pour-below-line-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "pour-below-line-node",
+        "to": "fill-pipette-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "fill-pipette-node",
+        "to": "drops-to-line-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "drops-to-line-node",
+        "to": "read-volume-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [
+    {
+      "id": "measuring-volume-3d-success",
+      "type": "actionEvidence",
+      "label": "Action read-volume was completed.",
+      "actionId": "read-volume"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "current node expects a different action",
+      "message": "That action is out of sequence for the current technique step.",
+      "recovery": "Check the process map and perform the highlighted step first."
+    },
+    {
+      "id": "missing-source",
+      "when": "source equipment or contents are missing",
+      "message": "The selected source does not contain the material required for this action.",
+      "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+    },
+    {
+      "id": "overflow",
+      "when": "target capacity would be exceeded",
+      "message": "The target equipment cannot hold the requested volume.",
+      "recovery": "Use a larger container or transfer a smaller measured amount."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.0.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-10-05T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "twin-3d",
+      "measurement",
+      "volume"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry",
+        "kind": "entry",
+        "nodeId": "place-cylinder-node",
+        "label": "Entry"
+      },
+      {
+        "id": "exit",
+        "kind": "exit",
+        "nodeId": "read-volume-node",
+        "label": "Exit"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "variable-volume-measuring-device",
+        "required": true,
+        "allowedDefinitionIds": [
+          "graduated-cylinder"
+        ],
+        "sourceInstanceIds": [
+          "graduated-cylinder-1"
+        ]
+      },
+      {
+        "roleId": "liquid-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "sample-bottle"
+        ],
+        "sourceInstanceIds": [
+          "sample-bottle-1"
+        ]
+      },
+      {
+        "roleId": "pipette-liquid-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beaker-150ml"
+        ],
+        "sourceInstanceIds": [
+          "sample-portion-1"
+        ]
+      },
+      {
+        "roleId": "transfer-pipette",
+        "required": true,
+        "allowedDefinitionIds": [
+          "beral-pipette"
+        ],
+        "sourceInstanceIds": [
+          "beral-pipette-1"
+        ]
+      }
+    ],
+    "modelSlots": [],
+    "configurationSlots": [
+      {
+        "id": "targetVolumeMl",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "pourVolumeMl",
+        "valueType": "number",
+        "required": true
+      }
+    ],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [
+      {
+        "id": "sample-volume",
+        "kind": "notebook",
+        "actionId": "read-volume",
+        "referenceId": "sample-volume"
+      }
+    ],
+    "completion": {
+      "exitPortIds": [
+        "exit"
+      ],
+      "requiredEvidenceOutputIds": [
+        "sample-volume"
+      ],
+      "requiredValidationRuleIds": [
+        "measuring-volume-3d-success"
+      ]
+    },
+    "catalogDisposition": "composable",
+    "legacyActionEffects": [
+      {
+        "actionId": "read-volume",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -61,12 +61,127 @@ Reviewed after the look, against the policies (atomization, teacher-prepared val
 2. **The look's pour loop** allowed six pours; the default mixture needs seven. Raised to ten (tooling only).
 
 **Seen and left, for your decision (each touches content outside E3's scope):**
-3. **Measure Liquid Volume is the Pack 1 original, in its 2D wording.** Step 3 reads "Record the the configured volume sample volume in the notebook."; the pour's callout and feedback say "the configured sample" and "the configured volume". The text is in `public/techniques/measuring-volume.json`, which D8 leaves to 2D. Its steps are also not atomized (place the cylinder, one pour to the volume, record), unlike the Pack 2 parts. A 3D twin of it (corrected wording, and a drop-to-the-line finish like Dilute a Stock Solution's) would fix both inside 3D; it is a content change, so it needs your decision.
-4. **"Sample volume" appears twice in the results** (the cylinder's reading, 20.0 mL, and the recorded row, 20 mL). This is how Pack 1's technique records it. A twin as in 3 could record it once.
+3. **Measure Liquid Volume is the Pack 1 original, in its 2D wording.** Step 3 reads "Record the the configured volume sample volume in the notebook."; the pour's callout and feedback say "the configured sample" and "the configured volume". The text is in `public/techniques/measuring-volume.json`, which D8 leaves to 2D. Its steps are also not atomized (place the cylinder, one pour to the volume, record), unlike the Pack 2 parts. A 3D twin of it (corrected wording, and a drop-to-the-line finish like Dilute a Stock Solution's) would fix both inside 3D; it is a content change, so it needs your decision. **Decided and built (2026-10-10):** the twin `measuring-volume-3d`, five atomized steps; see the section below.
+4. **"Sample volume" appears twice in the results** (the cylinder's reading, 20.0 mL, and the recorded row, 20 mL). This is how Pack 1's technique records it. A twin as in 3 could record it once. **2026-10-10:** with the twin, the two rows agree: the typed reading, "20.0 mL", chipped "Your entry" on both. It is still listed twice, as the measurement and as its notebook entry, as every record step lists its value (the paper's mass too).
 5. **The step card's Source list names the catalogue item** ("250 mL beaker") where the bench says "Sample beaker". The practice versions do the same; not new in E3.
-6. **The eyebrow wraps to three lines** for the longest part title ("Hard-Water Calcium Carbonate Precipitation") at 1280 px. It stays readable; a short part title per lab part would keep it to two lines, if you want one.
+6. **The eyebrow wraps to three lines** for the longest part title ("Hard-Water Calcium Carbonate Precipitation") at 1280 px. It stays readable; a short part title per lab part would keep it to two lines, if you want one. **Decided and built (2026-10-10):** "Part 1 of 4 · Measure the sample · Step 1 of 33" takes two lines.
 
 **Checked and found right:** the paper's mass is the balance reading the student types (`paperMassG` kept in the twin, not shown as a teacher's value); the precipitate's mass is never shown; the drop test draws from the working portion, which the setup rule keeps 1 mL above the reagent added; every bench item is used by a part; nothing in `public/labs/`, `public/techniques/`, `src/player/**` or `src/styles/app.css` changed.
+
+## Measure Liquid Volume twin and short part titles (2026-10-10)
+
+Your decisions, the same day: "Build 3D twin of measure liquid volume, ensure to have atomized steps." and "Use short part title, as you suggest." They answer review items 3, 4 and 6 above. `DECISIONS.md`, the D8 row, records them as (8).
+
+### What was built
+
+**The twin.** `scripts/practice3d/measuringVolumeTwin.mjs` writes `public/techniques-3d/measuring-volume-3d.json`. `build.mjs` lists it in `twins.json` through a new `TWINS` list, with `basedOn: "measuring-volume"` and no `practiceId`: it is a twin only, with no practice version. Pack 1's original (place, one pour to the volume, record the cylinder's volume) stays in `public/techniques/` for 2D and for Pack 1 in 3D. The twin's five steps:
+
+| # | Step | Atom | What the student does |
+|---|---|---|---|
+| 1 | Stand the cylinder | `atom.place.variable-volume-device` | Brings the 100 mL cylinder from the tray to the bench. |
+| 2 | Pour to below the line | `atom.transfer.fill-below-graduation` (new) | Pours from the sample bottle. The runtime pours `pourVolumeMl`, 1 mL under the line. |
+| 3 | Fill the dropping pipette | `atom.transfer.draw-into-transfer-pipette` | Draws from "Sample for the dropper", a 150 mL beaker holding 10 mL. A pipette draws from an open vessel, never the bottle (2026-09-26). |
+| 4 | Add drops to the line | `atom.transfer.dropwise-to-graduation` (new) | Holds the pipette over the cylinder at eye level with the line: One drop, Hold to run, then At the line. Judged within 0.2 mL. |
+| 5 | Read the volume | none (a record step, as in every practice version) | Reads at eye level and types the volume to 0.1 mL. It is recorded as typed and never checked (2026-09-25). |
+
+**Two atoms.** This is a core registry change, made by your decision: `src/domain/atomRegistry.json` now has 244 atoms, and `docs/atomic-steps.md` is regenerated. `atom.dilute.dropwise-to-mark` needs a final-volume vessel (a flask's mark), but a cylinder is a variable-volume device, so the cylinder needed atoms of its own:
+- `fill-below-graduation`: pour to just below the graduation; no volume is read.
+- `dropwise-to-graduation`: finish drop by drop; the level is judged within the graduation's reading tolerance, then read.
+
+No dated plan states these steps, so neither atom cites a source example. Their constraint text records the basis: your decision.
+
+**Tolerance.** A 0.05 mL drop lifts the meniscus about 0.09 mm in the 100 mL cylinder (inner radius 13.4 mm). At the drop mode's 0.2 m that is under half a pixel, so judging to one drop would ask for a level the student cannot see. `markToleranceMl` is 0.2, a fifth of the cylinder's 1 mL division. The setup's first rule (the 250 mL flask) adds the 0.2 mL.
+
+**Setup offset.** `sampleVolumeMl` fills two slots:
+- `targetVolumeMl`, the line;
+- `pourVolumeMl`, the line less 1 mL, through `setup("sampleVolumeMl", -1)`.
+
+The index keeps the offset on the target, and the loader applies it rounded to 1e-6 (`common.mjs`, `composeLab.mjs`, `labs3dSetup.ts`). The field's help reads "The line the student fills the 100 mL cylinder to: poured to 1 mL below it, then drop by drop."
+
+**Transfer pours all the cylinder holds** (`transfer-practice` and `transfer-3d`; `transferVolumeMl` is dropped from the twin). Before, it poured the configured volume. A level accepted at 20.15 mL would then have left 0.15 mL in the cylinder, and a level accepted at 19.9 mL would have been refused at the pour.
+
+**Short part titles.** In `composeLab.mjs`, a part has its own `title`, and the index keeps the technique's as `techniqueTitle`. The four parts are "Measure the sample", "Transfer the sample", "Precipitate the calcium" and "Filter the precipitate". The step card's eyebrow and the intro's headings use them.
+
+**The bench has 15 items.** Two are new: `sample-portion-1` ("Sample for the dropper") and `sample-pipette-1` ("Dropping pipette (sample)"). The carbonate pipette is renamed "Dropping pipette (carbonate)", so the bench list tells the two apart.
+
+### Fidelity review
+
+**Fixed, in 3D:**
+1. **Compiled step text kept `{{config.*}}`.** The composition compiler binds configuration in the parameters but not in a node's text. Two step cards were affected:
+   - the new pour step would read "just below the {{config.targetVolumeMl}} mL line";
+   - E3's step 11 already read "Pour a third of the {{config.reagentVolumeMl}} mL…". It shipped in E3, and its look logged titles only.
+
+   `labs3d.ts` `fillStepText` now fills each node's title and description from its part's configured values. `probe-lab3d.mts` lists what the compiler leaves. Test: no `{{` in any step, with the defaults and with the teacher's values (50 mL and 30 mL).
+2. **The pour's callout gave the amount** ("Release to pour 19 mL from the sample bottle…"). The student pours by eye to just below the line, so the step carries its own label: "Release to pour the sample to just below the line". Transfer's callout had become "pour the requested volume" and now reads "pour the sample into the beaker".
+3. **The reading step framed the whole bench,** too far away to read a meniscus. `stepRules.readingVesselId` names the vessel a reading step reads: a record step taking the student's reading of a measurement made on a vessel. The auto view then puts the eye level with its liquid (`BenchEngine.eyeLevel`, 0.2 m). Other record steps, such as the balance's mass, are unaffected, and a view the student set is kept.
+4. **The level's interim value was chipped "Your entry"** before the student had read anything. The level step records the line under the reading's id, and the chip took the first action naming that id, which was the reading. `measurementProvenance` now takes the step that wrote the value (`MeasurementRecord.nodeId`):
+   - a level judged at a line bound to setup is a teacher setting;
+   - the reading that replaces it is "Your entry".
+5. **Notebook rows read "20 mL" beside the measurement's "20.0 mL".** A notebook row that records a measurement now reads as the measurement does (`panels.tsx` `entryValue`), as long as the two agree.
+
+**Left for you (core):**
+
+6. **The overshoot message.** Once the level is more than 0.2 mL past the line, "At the line" is refused for good, with "The meniscus is past the line." and "In the lab this solution would be remade. Restart the technique, and stop adding when the bottom of the meniscus touches the line." (`src/runtime/reducer.ts`, `executeMarkDispense`). That is right for a volumetric flask. For a cylinder it is wrong: the excess is drawn back out with the pipette, and in a lab "restart" means the whole 33-step run. The options:
+   - (a) leave it;
+   - (b) a message for a graduation, a core string;
+   - (c) let the pipette draw the excess back at a graduation, core behaviour with a new atom.
+
+   (c) is what a student would do; (b) is the smallest change.
+
+**Checked and found right:**
+- The reading is recorded as typed: 20.1 mL with the line at 20 mL (test).
+- The pipette draws from the small beaker, never from the bottle.
+- The flask receives what the cylinder held: 72.2 mL with three drops over the line (test).
+- A 5 mL sample plays through. So does a 100 mL sample with four drops over: 100.2 mL in the cylinder, then 152.25 mL in the flask.
+- The reading step has no atom, like every practice version's record steps.
+- The level step's "accept" finishes the step, judged by its recorded measurement, never by `actionEvidence`.
+- 2D is untouched: `public/labs/`, `public/techniques/`, `src/player/**` and `src/styles/app.css`.
+
+### Checks
+
+| Check | Result |
+|---|---|
+| `npx tsc -p tsconfig.app.json --noEmit` | 0 errors |
+| `npx vitest run --config vite.config.ts --maxWorkers=3 src/studio3d` | 24 files, 251 tests pass |
+| `npm run content:check` | 22 violations, equal to the baseline (exit 1, as on main) |
+| `node scripts/practice3d/build.mjs --check` | 0 |
+| `probes/probe-lab3d.mts` | 33/33 with the defaults (72.05 mL in the flask). With `PROBE_DROPS_OFF` ±3 the level is accepted (72.2 and 71.9 mL); at +5 it is refused as past the line, at −5 as not yet at it. A 20.3 mL sample gives 33/33 and records 20.3 mL. 5 mL and 100 mL (+4 drops) give 33/33. |
+
+`lab3d.test.ts` gains or changes these cases:
+- four twins, one with no practice version;
+- the twin's five steps and their atoms;
+- `transferVolumeMl` dropped;
+- short titles, with the technique titles kept;
+- 33 steps on 15 items, parts of 5, 4, 11 and 13;
+- the pour 1 mL under the line (19, and 49 for a 50 mL sample);
+- step text filled;
+- the level's tolerance both ways;
+- the reading as typed;
+- the chips for the level and for the reading;
+- the reading's vessel.
+
+Three files outside `src/studio3d`, which the policy's run does not cover, fail without any change of ours:
+- `techniqueConfiguration.test.ts`: paper chromatography's slots;
+- `atomRegistry.test.ts`: a `sample-bottle-1l` binding; it fails the same way with the committed registry;
+- `bundles.test.ts`: a harness URL error.
+
+### G1 look
+
+One headless look (`probes/look-lab3d.cjs`, Playwright with SwiftShader at 1280 × 800), by keyboard carries, the drop panel and the step card, with the setup's defaults:
+- **Intro:** "Before you start · 4 parts, 33 steps", headed "Part 1 · Measure the sample", "Part 2 · Transfer the sample", "Part 3 · Precipitate the calcium" and "Part 4 · Filter the precipitate". Part 1 shows four of its steps and "and 1 more".
+- **Eyebrows:** "Part 1 of 4 · Measure the sample · Step 1 of 33" takes two lines; Part 2 begins at step 6, Part 3 at step 10 and Part 4 at step 21.
+- **Part 1:**
+  - The pour's callout reads "Release to pour the sample to just below the line".
+  - The pipette's reads "Release to draw up from the sample for the dropper"; held over the cylinder, it opens the drop panel.
+  - Twenty "One drop"s, then "At the line": "The bottom of the meniscus is on the line."
+  - At "Read the volume" the auto view stands with the eye level with the cylinder's 20 mL line (screenshot `2d`).
+  - Before the reading, the notebook's "Sample volume" reads 20.0 mL, "Teacher setting". After 20.0 is typed and recorded, both rows read 20.0 mL, "Your entry".
+- **Part 2:** "Release to pour the sample into the beaker", then the cylinder rinsed with three squirts.
+- **Run:** 33 of 33, "Precipitate and Filter Calcium Carbonate · complete", with no page errors. The filter takes seven pours. The results list "Sample volume 20.0 mL, Your entry" first; a scan with the results, the notebook and the bench list open found no number with five or more decimals.
+- **The look's own fixes (tooling only):**
+  - The first full run stopped at step 33. Under SwiftShader, with the tests running alongside, a squirt's Rinse button stayed disabled past the look's two fixed clicks. The look now clicks Rinse until the step moves on.
+  - The second run stopped at step 8 on that helper's own error: a function sent into the page lost its patterns. They now go in as their sources.
+  - The third run finished.
 
 ## For later
 

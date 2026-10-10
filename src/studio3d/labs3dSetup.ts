@@ -7,7 +7,10 @@ import type { BundledLabSourceDefinition } from "../domain/types";
  * defaults; the setup page's values replace them on a copy before compiling. 3D only: the 2D lab setups
  * (`src/data/labSetup.ts`) are not used.
  */
-export type Lab3DSetupTarget = { instanceId: string; slotId: string } | { itemId: string; contents: "volumeMl" };
+export type Lab3DSetupTarget = ({ instanceId: string; slotId: string } | { itemId: string; contents: "volumeMl" }) & {
+  /** Added to a number field's value: Measure Liquid Volume's pour stops 1 mL under the sample's line. */
+  offset?: number;
+};
 
 export interface Lab3DSetupField {
   id: string;
@@ -32,7 +35,10 @@ export interface Lab3DRule {
 export interface Lab3DPart {
   instanceId: string;
   techniqueId: string;
+  /** The part's short title (you, 2026-10-10: "Use short part title"), on the step card and the intro. */
   title: string;
+  /** The composed technique's own title. */
+  techniqueTitle?: string;
 }
 
 export interface Lab3DSummary {
@@ -46,6 +52,10 @@ export interface Lab3DSummary {
 }
 
 const formatNumber = (value: number, unit?: string): string => `${value}${unit ? ` ${unit}` : ""}`;
+
+/** A value as a target takes it: plus its offset, without float noise (20.3 - 1 is 19.299999999999997). */
+const targetValue = (value: number | string, target: Lab3DSetupTarget): number | string =>
+  target.offset && typeof value === "number" ? Math.round((value + target.offset) * 1e6) / 1e6 : value;
 
 /** The page's values as the lab takes them; throws with a message for the teacher naming the field. */
 export const parseLab3DValues = (summary: Lab3DSummary, values: Record<string, string>): Record<string, number | string> => {
@@ -77,11 +87,11 @@ export const applyLab3DSetup = <T extends BundledLabSourceDefinition>(source: T,
       if ("slotId" in target) {
         const instance = configured.techniqueInstances?.find((entry) => entry.instanceId === target.instanceId);
         if (!instance) throw new Error(`The lab has no part "${target.instanceId}".`);
-        instance.bindings.configuration[target.slotId] = parsed[field.id];
+        instance.bindings.configuration[target.slotId] = targetValue(parsed[field.id], target);
       } else {
         const item = configured.initialState?.equipment.find((entry) => entry.id === target.itemId);
         if (!item) throw new Error(`The lab has no item "${target.itemId}".`);
-        item.contents = { ...item.contents, volumeMl: Number(parsed[field.id]) };
+        item.contents = { ...item.contents, volumeMl: Number(targetValue(parsed[field.id], target)) };
       }
     }
   }

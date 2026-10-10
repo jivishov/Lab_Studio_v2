@@ -10,7 +10,8 @@
  *
  * D8 (decided 2026-10-10; `proposals/D8_EXPERIMENT_ASSEMBLY.md`, "E0 design") adds, from the same modules:
  * - each composed practice version's twin, `public/techniques-3d/<original>-3d.json`, listed in
- *   `public/techniques-3d/twins.json` (never in the practice list, so the switcher never offers one);
+ *   `public/techniques-3d/twins.json` (never in the practice list, so the switcher never offers one), and the
+ *   twins with no practice version (`TWINS`);
  * - the 3D labs, `public/labs-3d/<labId>.json` (composition sources) and `public/labs-3d/index.json`
  *   (their parts and setup fields), from `labs/*.mjs`. A Pack 1 original a lab composes as it is
  *   (`original(id)`) is read from `public/techniques/`; the 2D labs are not read.
@@ -36,6 +37,9 @@ const PRACTICE = [
     description: "Heat a carbonate mixture over a blue flame, lid askew, then cool and reweigh it to constant mass." },
 ];
 
+/** Twins with no practice version of their own, composed by the 3D labs only (you, 2026-10-10). */
+const TWINS = [{ module: "./measuringVolumeTwin.mjs", basedOn: "measuring-volume" }];
+
 /** The 3D labs, in the order the switcher's Experiments group shows them. */
 const LABS = ["./labs/introFiltrationDemo.mjs"];
 
@@ -56,6 +60,12 @@ for (const entry of PRACTICE) {
     twins.push({ id: module.twin.id, file: `${module.twin.id}.json`, practiceId: definition.id, basedOn: entry.basedOn });
     twinsById.set(module.twin.id, module.twin);
   }
+}
+for (const entry of TWINS) {
+  const { twin } = await import(entry.module);
+  files.set(`techniques-3d/${twin.id}.json`, json(twin));
+  twins.push({ id: twin.id, file: `${twin.id}.json`, basedOn: entry.basedOn });
+  twinsById.set(twin.id, twin);
 }
 files.set("techniques-3d/index.json", json(index));
 files.set("techniques-3d/twins.json", json(twins));

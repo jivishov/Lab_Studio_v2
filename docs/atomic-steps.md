@@ -29,7 +29,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 
 ## Atoms
 
-242 atoms across 15 families.
+244 atoms across 15 families.
 
 | Atom | Family | Verb | Interactions | Required roles |
 |---|---|---|---|---|
@@ -245,6 +245,8 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 | `atom.transfer.fill-pipette-to-zero-mark` | measurement | `transfer` | `pourInto` | `pipette-liquid-source`, `variable-volume-measuring-device` |
 | `atom.transfer.deliver-pipette-to-line` | measurement | `transfer` | `dispenseDrops` | `variable-volume-measuring-device`, `receiving-vessel` |
 | `atom.dilute.dropwise-to-mark` | measurement | `transfer` | `dispenseDrops` | `transfer-pipette`, `final-volume-vessel` |
+| `atom.transfer.fill-below-graduation` | measurement | `transfer` | `pourInto` | `liquid-source`, `variable-volume-measuring-device` |
+| `atom.transfer.dropwise-to-graduation` | measurement | `transfer` | `dispenseDrops` | `transfer-pipette`, `variable-volume-measuring-device` |
 | `atom.place.stopper-vessel` | foundational | `place` | `snapIntoTarget` | `vessel-stopper`, `final-volume-vessel` |
 | `atom.mix.invert-stoppered-vessel` | foundational | `mix` | `recordNotebook` | `final-volume-vessel`, `vessel-stopper` |
 | `atom.place.remove-stopper` | foundational | `place` | `dragToZone` | `final-volume-vessel`, `vessel-stopper` |
@@ -2328,6 +2330,35 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 - Content examples:
   - `technique:dilution` action `bring-to-mark-dropwise`
   - `technique:making-solution` action `bring-to-mark-dropwise`
+
+#### `atom.transfer.fill-below-graduation`
+
+**Pour a liquid into a graduated cylinder to just below the graduation wanted**
+
+- Verb: `transfer`
+- Allowed interaction types: `pourInto`
+- Required roles: `liquid-source`, `variable-volume-measuring-device`
+- Optional roles: none
+- Evidence: liquid just below the graduation
+- Procedural constraints:
+  - The liquid is poured from its bottle until the level is just below the graduation the measurement needs; the last of it goes in drop by drop.
+  - No volume is read or recorded at this step: the level is only approached.
+  - Decided by the teacher on 2026-10-10 (D8, the 3D twin of Measure Liquid Volume); real practice no dated plan states, so no source example is cited.
+
+#### `atom.transfer.dropwise-to-graduation`
+
+**Bring a graduated cylinder to a graduation drop by drop**
+
+- Verb: `transfer`
+- Allowed interaction types: `dispenseDrops`
+- Required roles: `transfer-pipette`, `variable-volume-measuring-device`
+- Optional roles: none
+- Evidence: the bottom of the meniscus on the graduation
+- Procedural constraints:
+  - The last of the liquid is added from a dropping pipette, one drop at a time, until the bottom of the meniscus sits on the graduation at eye level.
+  - The level is judged within the graduation's reading tolerance (`markToleranceMl`), not to one drop: a drop barely moves the meniscus in a wide cylinder.
+  - The step is judged by the level, not by a reading: the volume is read at eye level and recorded afterwards.
+  - Decided by the teacher on 2026-10-10 (D8, the 3D twin of Measure Liquid Volume); real practice no dated plan states, so no source example is cited.
 
 #### `atom.transfer.weighed-solid-through-funnel`
 

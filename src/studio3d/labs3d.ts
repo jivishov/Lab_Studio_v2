@@ -11,15 +11,16 @@ export type { Lab3DSummary } from "./labs3dSetup";
  * The 3D experiments (D8, decided 2026-10-10; `proposals/D8_EXPERIMENT_ASSEMBLY.md`, "E0 design" §3), as
  * `practice.ts` is for the practice versions.
  *
- * A 3D lab in `public/labs-3d/` composes twins (the practice versions' composable copies, listed in
- * `public/techniques-3d/twins.json`) and Pack 1 originals from `public/techniques/`. It compiles through the
+ * A 3D lab in `public/labs-3d/` composes twins (the practice versions' composable copies, and twins with no
+ * practice version, listed in `public/techniques-3d/twins.json`) and Pack 1 originals from `public/techniques/`. It compiles through the
  * bundled loader's own seam, `compileBundledLabCompositionWithPolicy`, with a resolver that takes a listed
  * twin from `techniques-3d/` and anything else from the bundled catalogue. The 2D labs are not read.
  */
 interface TwinSummary {
   id: string;
   file: string;
-  practiceId: string;
+  /** The practice version it is the twin of; none for a twin with no practice of its own (Measure Liquid Volume). */
+  practiceId?: string;
   basedOn: string;
 }
 
@@ -134,6 +135,31 @@ export const authoredLabView = (lab: LabDefinition, techniques: ReadonlyMap<stri
   };
 };
 
+const CONFIG_TEXT = /\{\{\s*config\.([A-Za-z0-9_-]+)\s*\}\}/g;
+
+/**
+ * The step text with each part's setup values in place. The compiler binds `{{config.*}}` in the parameters
+ * but leaves a node's title and description as its technique wrote them, so "just below the
+ * {{config.targetVolumeMl}} mL line" would reach the step card (fidelity review, 2026-10-10). The values are
+ * the part's configuration in the configured source; a name the part does not configure is left as written.
+ */
+export const fillStepText = (lab: LabDefinition, configured: LabCompositionSourceDefinition): LabDefinition => {
+  const values = new Map(configured.techniqueInstances.map((instance) => [instance.instanceId, instance.bindings.configuration]));
+  const partOf = new Map((lab.compositionManifest?.origins ?? []).map((origin) => [origin.nodeId, origin.instanceId]));
+  return {
+    ...lab,
+    process: {
+      ...lab.process,
+      nodes: lab.process.nodes.map((node) => {
+        const configuration = values.get(partOf.get(node.id) ?? "");
+        if (!configuration) return node;
+        const fill = (text: string) => text.replace(CONFIG_TEXT, (whole, key: string) => (key in configuration ? String(configuration[key]) : whole));
+        return { ...node, title: fill(node.title), ...(node.description ? { description: fill(node.description) } : {}) };
+      }),
+    },
+  };
+};
+
 /** Each compiled node's part, in the order the parts run. */
 export const labPartLabels = (lab: LabDefinition, summary: Lab3DSummary): Map<string, Lab3DPartLabel> => {
   const labels = new Map<string, Lab3DPartLabel>();
@@ -152,7 +178,7 @@ export const loadLab3D = async (summary: Lab3DSummary, values: Record<string, st
   const source = await loadLab3DSource(summary);
   const configured = applyLab3DSetup(source, summary, values);
   const techniques = new Map<string, TechniqueDefinition>();
-  const lab = await compileBundledLabCompositionWithPolicy({
+  const compiled = await compileBundledLabCompositionWithPolicy({
     authority: "public-bundle",
     artifact: `public/labs-3d/${summary.file}`,
     catalogSource: source,
@@ -163,5 +189,6 @@ export const loadLab3D = async (summary: Lab3DSummary, values: Record<string, st
       return structuredClone(technique);
     },
   });
+  const lab = fillStepText(compiled, configured);
   return { summary, lab, authored: authoredLabView(lab, techniques), parts: labPartLabels(lab, summary) };
 };

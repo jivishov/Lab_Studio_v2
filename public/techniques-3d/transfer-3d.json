@@ -15,13 +15,12 @@
         "label": "Graduated cylinder",
         "location": "workbench",
         "contents": {
-          "kind": "liquid",
-          "label": "Hard water sample",
-          "volumeMl": "{{config.transferVolumeMl}}",
+          "kind": "empty",
+          "label": "empty",
           "solutes": [],
           "contamination": [],
-          "wetState": "wet",
-          "visualState": "clear-liquid"
+          "wetState": "dry",
+          "visualState": "empty"
         }
       },
       {
@@ -110,7 +109,6 @@
         "sourceInstanceId": "graduated-cylinder-1",
         "targetDefinitionId": "beaker-250ml",
         "targetInstanceId": "beaker-250ml-1",
-        "volumeMl": "{{config.transferVolumeMl}}",
         "drainMeasuringVessel": true
       },
       "prerequisites": [],
@@ -144,6 +142,12 @@
       "evidence": [
         "transfer"
       ],
+      "interaction": {
+        "accessibleLabel": "Pour the sample into the beaker",
+        "type": "pourInto",
+        "sourceDefinitionId": "graduated-cylinder",
+        "targetDefinitionId": "beaker-250ml"
+      },
       "atomId": "atom.transfer.measured-liquid-to-precipitation-vessel",
       "equipmentRoleBindings": {
         "measured-solvent-source": "graduated-cylinder",
@@ -475,12 +479,6 @@
     ],
     "modelSlots": [],
     "configurationSlots": [
-      {
-        "id": "transferVolumeMl",
-        "valueType": "number",
-        "required": true,
-        "defaultValue": 20
-      },
       {
         "id": "transferObservation",
         "valueType": "string",

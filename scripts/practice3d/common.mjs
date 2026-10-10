@@ -251,8 +251,11 @@ export const twinOf = (practice, { id, dropSteps = [], dropSlots = [] }) => {
   return twin;
 };
 
-/** A setup field's value in a 3D lab module: a part's slot or a bench volume filled from the setup page. */
-export const setup = (fieldId) => ({ setup: fieldId });
+/**
+ * A setup field's value in a 3D lab module: a part's slot or a bench volume filled from the setup page.
+ * `offset` is added to a number field's value: Measure Liquid Volume's pour stops 1 mL under the sample's line.
+ */
+export const setup = (fieldId, offset) => ({ setup: fieldId, ...(offset ? { offset } : {}) });
 
 /** A Pack 1 original a 3D lab composes as it is, read from `public/techniques/` by the build. */
 export const original = (techniqueId) => ({ original: techniqueId });

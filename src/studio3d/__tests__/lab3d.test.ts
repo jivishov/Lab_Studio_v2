@@ -14,13 +14,15 @@ import { equipment3dReadiness } from "../equipment3d/readiness";
 import type * as Labs3D from "../labs3d";
 import { parseLab3DValues, type Lab3DSummary } from "../labs3dSetup";
 import { measurementProvenance, notebookProvenance } from "../player/provenance";
+import { readingVesselId } from "../player/stepRules";
 
 /**
  * D8 E3 (decided 2026-10-10; `proposals/D8_EXPERIMENT_ASSEMBLY.md`, "E0 design"): the twins and the
  * generated 3D lab, loaded the way `#/3d/play/<labId>` loads them (the public files served by a stub fetch).
+ * Part 1 is the 3D twin of Measure Liquid Volume and the parts carry short titles (you, 2026-10-10).
  */
 const read = (path: string) => JSON.parse(readFileSync(join(process.cwd(), ...path.split("/")), "utf8"));
-const twins = read("public/techniques-3d/twins.json") as Array<{ id: string; file: string; practiceId: string; basedOn: string }>;
+const twins = read("public/techniques-3d/twins.json") as Array<{ id: string; file: string; practiceId?: string; basedOn: string }>;
 const practiceIndex = read("public/techniques-3d/index.json") as Array<{ id: string }>;
 const catalogue = read("public/techniques/index.json") as Array<{ id: string }>;
 const labIndex = read("public/labs-3d/index.json") as Lab3DSummary[];
@@ -45,32 +47,47 @@ beforeEach(async () => {
 });
 afterEach(() => { vi.unstubAllGlobals(); });
 
-/** Plays a compiled lab through the process control; `inputs` and `moves` by compiled action id. */
-const playLab = (lab: LabDefinition, inputs: Record<string, string>, moves: Record<string, string>): RuntimeState => {
+/**
+ * Plays a compiled lab through the process control; `inputs` and `moves` by compiled action id. A drop-to-the-line
+ * step adds the drops that bring the level to the line, `dropsOff` more, then says it is at the line.
+ */
+const playLab = (lab: LabDefinition, inputs: Record<string, string>, moves: Record<string, string>, dropsOff = 0): RuntimeState => {
   let state = createRuntimeState(lab);
+  const send = (nodeId: string, intent: RuntimeInteractionIntent) => {
+    const resolved = resolveInteractionIntent(lab, state, intent);
+    if (!resolved.ok) throw new Error(`${nodeId}: ${resolved.feedback.message}`);
+    const before = state.feedbackQueue.length;
+    state = performRuntimeAction(lab, state, resolved.request);
+    const error = state.feedbackQueue.slice(before).find((entry) => entry.severity === "error");
+    if (error) throw new Error(`${nodeId}: ${error.message}`);
+  };
   for (const node of lab.process.nodes) {
     const action = lab.actions.find((candidate) => candidate.id === node.actionId)!;
+    const interaction = resolveActionInteraction(action)!;
     if (moves[action.id]) state = performRuntimeAction(lab, state, benchMoveRequest(moves[action.id], { x: 300, y: 380 }, 50));
+    if (interaction.type === "dispenseDrops") {
+      const level = contents(state, String(action.parameters.targetInstanceId))?.volumeMl ?? 0;
+      const dropCount = Math.round((Number(action.parameters.markVolumeMl) - level) / Number(action.parameters.dropVolumeMl)) + dropsOff;
+      send(node.id, { origin: "keyboard", type: "dispenseDropIntent", runtimeParameters: { dropCount } } as RuntimeInteractionIntent);
+      send(node.id, { origin: "keyboard", type: "dispenseCompleteIntent" } as RuntimeInteractionIntent);
+    }
     for (let i = 0; i < 40 && !state.completedNodes.includes(node.id); i += 1) {
-      const interaction = resolveActionInteraction(action)!;
-      const intent = mergeActionInput({ origin: "keyboard", type: intentTypeForInteraction[interaction.type] } as RuntimeInteractionIntent,
-        resolveActionInput(action, inputs[action.id] ?? ""), action);
-      const resolved = resolveInteractionIntent(lab, state, intent);
-      if (!resolved.ok) throw new Error(`${node.id}: ${resolved.feedback.message}`);
-      const before = state.feedbackQueue.length;
-      state = performRuntimeAction(lab, state, resolved.request);
-      const error = state.feedbackQueue.slice(before).find((entry) => entry.severity === "error");
-      if (error) throw new Error(`${node.id}: ${error.message}`);
+      send(node.id, mergeActionInput({ origin: "keyboard", type: intentTypeForInteraction[interaction.type] } as RuntimeInteractionIntent,
+        resolveActionInput(action, inputs[action.id] ?? ""), action));
     }
     expect(state.completedNodes, node.id).toContain(node.id);
   }
   return state;
 };
-const contents = (state: RuntimeState, id: string) => state.equipmentInstances.find((item) => item.id === id)?.contents;
+function contents(state: RuntimeState, id: string) { return state.equipmentInstances.find((item) => item.id === id)?.contents; }
+/** What the student types: the cylinder read at the line, and the balance's mass. */
+const typed = (values: Record<string, string>, reading = values.sampleVolumeMl) =>
+  ({ "measuring-volume--read-volume": reading, "filtration--weigh-paper": values.paperMassG });
+const moves = { "filtration--fold-paper": "filter-paper-1" };
 
 describe("D8 twins", () => {
-  it("lists the three twins E3 composes, each a composable copy of a practice version", async () => {
-    expect(twins.map((twin) => twin.id)).toEqual(["transfer-3d", "hard-water-precipitation-3d", "filtration-3d"]);
+  it("lists the four twins the lab composes, each a composable copy of a practice version or a Pack 1 original", async () => {
+    expect(twins.map((twin) => twin.id)).toEqual(["transfer-3d", "hard-water-precipitation-3d", "filtration-3d", "measuring-volume-3d"]);
     for (const twin of twins) {
       const raw = read(`public/techniques-3d/${twin.file}`) as TechniqueDefinition;
       expect(validateTechniqueDefinition(raw).errors ?? []).toEqual([]);
@@ -79,8 +96,25 @@ describe("D8 twins", () => {
       // Never offered on its own: not a practice version, not in the 2D catalogue.
       expect(practiceIndex.some((entry) => entry.id === twin.id)).toBe(false);
       expect(catalogue.some((entry) => entry.id === twin.id)).toBe(false);
-      expect(practiceIndex.some((entry) => entry.id === twin.practiceId)).toBe(true);
+      // Measure Liquid Volume has no practice version: its twin is built on the Pack 1 original.
+      if (twin.practiceId) expect(practiceIndex.some((entry) => entry.id === twin.practiceId)).toBe(true);
+      else expect(catalogue.some((entry) => entry.id === twin.basedOn)).toBe(true);
     }
+    expect(twins.find((twin) => twin.id === "measuring-volume-3d")).toEqual({ id: "measuring-volume-3d", file: "measuring-volume-3d.json", basedOn: "measuring-volume" });
+  });
+
+  it("atomizes Measure Liquid Volume: pour to below the line, fill a dropping pipette, drops to the line, read", () => {
+    const twin = read("public/techniques-3d/measuring-volume-3d.json") as TechniqueDefinition;
+    const steps = twin.process.nodes.map((node) => twin.actions.find((action) => action.id === node.actionId)!);
+    expect(steps.map((action) => action.atomId ?? action.verb)).toEqual([
+      "atom.place.variable-volume-device", "atom.transfer.fill-below-graduation", "atom.transfer.draw-into-transfer-pipette",
+      "atom.transfer.dropwise-to-graduation", "record"]);
+    // The pipette draws from the small beaker, never from the bottle.
+    expect(steps[2].parameters.sourceInstanceId).toBe("sample-portion-1");
+    expect(steps[3].parameters).toMatchObject({ markDispense: "target", markToleranceMl: 0.2, dropVolumeMl: 0.05 });
+    // The reading is the student's, typed and never checked against the level.
+    expect(steps[4].parameters).toMatchObject({ inputRole: "studentResponse", studentValueRequired: true, inputStep: 0.1 });
+    expect(steps[4].parameters.copyExistingMeasurementOnly).toBeUndefined();
   });
 
   it("drops the values the lab's own bench carries, and keeps the balance reading", () => {
@@ -90,6 +124,9 @@ describe("D8 twins", () => {
     expect(slots("filtration-3d")).not.toContain("mixtureVolumeMl");
     expect(slots("filtration-3d")).not.toContain("precipitateMassG");
     expect(slots("filtration-3d")).toContain("paperMassG");
+    // Transfer pours all the cylinder holds, so the line's tolerance carries through to the flask.
+    expect(slots("transfer-3d")).not.toContain("transferVolumeMl");
+    expect(slots("measuring-volume-3d")).toEqual(["targetVolumeMl", "pourVolumeMl"]);
   });
 
   it("resolves a twin from techniques-3d and anything else from the bundled catalogue", async () => {
@@ -102,28 +139,45 @@ describe("D8 twins", () => {
 });
 
 describe("D8 3D lab: Precipitate and Filter Calcium Carbonate", () => {
-  it("is listed with its four parts, and its 2D fallback exists", () => {
+  it("is listed with its four parts under short titles, and its 2D fallback exists", () => {
     expect(labIndex.map((entry) => entry.id)).toEqual(["intro-filtration-demo"]);
-    expect(demo.parts.map((part) => part.techniqueId)).toEqual(["measuring-volume", "transfer-3d", "hard-water-precipitation-3d", "filtration-3d"]);
+    expect(demo.parts.map((part) => part.techniqueId)).toEqual(["measuring-volume-3d", "transfer-3d", "hard-water-precipitation-3d", "filtration-3d"]);
+    expect(demo.parts.map((part) => part.title)).toEqual(["Measure the sample", "Transfer the sample", "Precipitate the calcium", "Filter the precipitate"]);
+    expect(demo.parts.map((part) => part.techniqueTitle)).toEqual(["Measure Liquid Volume", "Transfer Liquid", "Hard-Water Calcium Carbonate Precipitation", "Filter a Precipitate"]);
     expect(read("public/labs/index.json").some((entry: { id: string }) => entry.id === demo.id)).toBe(true);
   });
 
   it("compiles with the defaults through the policy seam, every step labelled with its part", async () => {
     const loaded = await labs3d.loadLab3D(demo, defaults);
     expect(loaded.lab.compositionManifest?.status).toBeDefined();
-    expect(loaded.lab.process.nodes).toHaveLength(31);
-    expect(loaded.lab.initialState?.equipment).toHaveLength(13);
+    expect(loaded.lab.process.nodes).toHaveLength(33);
+    expect(loaded.lab.initialState?.equipment).toHaveLength(15);
     expect(equipment3dReadiness(loaded.lab.initialState!.equipment.map((item) => item.definitionId)).ready).toBe(true);
     const counts = demo.parts.map((_, index) => loaded.lab.process.nodes.filter((node) => loaded.parts.get(node.id)?.index === index + 1).length);
-    expect(counts).toEqual([3, 4, 11, 13]);
-    expect(loaded.parts.get(loaded.lab.process.nodes[3].id)).toEqual({ index: 2, count: 4, title: "Transfer Liquid" });
+    expect(counts).toEqual([5, 4, 11, 13]);
+    expect(loaded.parts.get(loaded.lab.process.nodes[5].id)).toEqual({ index: 2, count: 4, title: "Transfer the sample" });
+    // The pour stops 1 mL below the line the teacher set (a setup offset).
+    const action = (id: string) => loaded.lab.actions.find((entry) => entry.id === id)!;
+    expect(action("measuring-volume--pour-below-line").parameters.volumeMl).toBe(19);
+    expect(action("measuring-volume--drops-to-line").parameters.markVolumeMl).toBe(20);
+    // The step text carries each part's values: the compiler leaves `{{config.*}}` in node text, the loader fills it.
+    expect(loaded.lab.process.nodes[1].description).toBe("Pour the hard-water sample from its bottle into the cylinder until the level is just below the 20 mL line.");
+    expect(loaded.lab.process.nodes.find((node) => node.id === "hard-water-precipitation--add-reagent-portion-1-node")?.description)
+      .toMatch(/^Pour a third of the 20 mL of sodium carbonate solution/);
+    expect(loaded.lab.process.nodes.filter((node) => `${node.title} ${node.description ?? ""}`.includes("{{"))).toEqual([]);
     expect(fetched.some((path) => path.startsWith("labs/"))).toBe(false);
   });
 
-  it("plays all 31 steps with the defaults", async () => {
+  it("plays all 33 steps with the defaults", async () => {
     const { lab } = await labs3d.loadLab3D(demo, defaults);
-    const state = playLab(lab, { "filtration--weigh-paper": defaults.paperMassG }, { "filtration--fold-paper": "filter-paper-1" });
-    expect(state.completedNodes).toHaveLength(31);
+    const state = playLab(lab, typed(defaults), moves);
+    expect(state.completedNodes).toHaveLength(33);
+    expect(state.measurements.find((m) => m.id === "measuring-volume--sample-volume")?.value).toBe(20);
+    expect(contents(state, "sample-portion-1")?.volumeMl).toBeCloseTo(7, 6);
+    // The reading is taken at the cylinder, so the auto view puts the eye level with it; the balance's mass is not.
+    const action = (id: string) => lab.actions.find((entry) => entry.id === id);
+    expect(readingVesselId(action("measuring-volume--read-volume"), state.measurements)).toBe("graduated-cylinder-1");
+    expect(readingVesselId(action("filtration--record-paper-mass"), state.measurements)).toBeUndefined();
     expect(contents(state, "filter-paper-1")?.precipitate?.massG).toBeCloseTo(0.0075, 6);
     // 20 mL sample + 20 mL reagent + the cylinder's 9 mL and 5 mL rinses + the 18 mL of rod and beaker washes, less nothing.
     expect(contents(state, "erlenmeyer-flask-250ml-1")?.volumeMl).toBeCloseTo(72.05, 6);
@@ -134,10 +188,27 @@ describe("D8 3D lab: Precipitate and Filter Calcium Carbonate", () => {
     const values = { ...defaults, sampleVolumeMl: "50", workingPortionMl: "40", reagentVolumeMl: "30", paperMassG: "0.912" };
     const { lab } = await labs3d.loadLab3D(demo, values);
     expect(lab.initialState?.equipment.find((item) => item.id === "reagent-beaker-1")?.contents?.volumeMl).toBe(40);
-    const state = playLab(lab, { "filtration--weigh-paper": "0.912" }, { "filtration--fold-paper": "filter-paper-1" });
-    expect(state.completedNodes).toHaveLength(31);
+    expect(lab.actions.find((action) => action.id === "measuring-volume--pour-below-line")?.parameters.volumeMl).toBe(49);
+    expect(lab.process.nodes[1].description).toMatch(/just below the 50 mL line\.$/);
+    expect(lab.process.nodes.find((node) => node.id === "hard-water-precipitation--add-reagent-portion-1-node")?.description).toMatch(/a third of the 30 mL/);
+    const state = playLab(lab, typed(values), moves);
+    expect(state.completedNodes).toHaveLength(33);
     expect(contents(state, "reagent-beaker-1")?.volumeMl).toBeCloseTo(9, 6);
     expect(contents(state, "erlenmeyer-flask-250ml-1")?.volumeMl).toBeCloseTo(112.05, 6);
+  });
+
+  it("judges the level within the line's tolerance, and records the reading as typed", async () => {
+    const { lab } = await labs3d.loadLab3D(demo, defaults);
+    // Three drops over (0.15 mL) is still on the line; the flask takes what the cylinder held.
+    const over = playLab(lab, typed(defaults, "20.1"), moves, 3);
+    expect(over.completedNodes).toHaveLength(33);
+    expect(contents(over, "erlenmeyer-flask-250ml-1")?.volumeMl).toBeCloseTo(72.2, 6);
+    // The reading is the student's: 20.1 mL is recorded although the line is 20 mL.
+    expect(over.measurements.find((m) => m.id === "measuring-volume--sample-volume")).toMatchObject({ value: 20.1, unit: "mL" });
+    expect(over.notebook.find((e) => e.tags.includes("measuring-volume--sample-volume"))?.value).toBe("20.1 mL");
+    // Five over (0.25 mL) or five short is not on the line.
+    expect(() => playLab(lab, typed(defaults), moves, 5)).toThrow(/past the line/);
+    expect(() => playLab(lab, typed(defaults), moves, -5)).toThrow(/not reached the line/);
   });
 
   it("refuses setup values out of bounds or that break a rule, naming the problem", () => {
@@ -156,9 +227,12 @@ describe("D8 3D lab: Precipitate and Filter Calcium Carbonate", () => {
     expect(notebookProvenance(lab, authored, entry(node("hard-water-precipitation--observe-precipitate")))).toBe("teacher");
     // Compiled, the binding is gone: without the authored view the chip falls back to the bench.
     expect(notebookProvenance(lab, undefined, entry(node("hard-water-precipitation--observe-precipitate")))).toBe("bench");
-    // "Record volume" only records the cylinder's teacher-set reading: its row is a teacher setting, not an entry.
-    const record = node("measuring-volume--record-volume");
-    expect(notebookProvenance(lab, authored, { ...entry(record), type: "measurement" })).toBe("teacher");
+    // The level step records the line, the teacher's setting, until the student's reading replaces it.
+    const level = node("measuring-volume--drops-to-line");
+    const reading = node("measuring-volume--read-volume");
+    expect(measurementProvenance(lab, authored, "measuring-volume--sample-volume", level)).toBe("teacher");
+    expect(measurementProvenance(lab, authored, "measuring-volume--sample-volume", reading)).toBe("entry");
+    expect(notebookProvenance(lab, authored, { ...entry(reading), type: "measurement" })).toBe("entry");
     // The paper's mass is read off the balance by the student, not shown as a teacher's value.
     const weigh = lab.actions.find((action) => action.id === "filtration--weigh-paper")!;
     expect(measurementProvenance(lab, authored, String(weigh.parameters.measurementId))).not.toBe("teacher");

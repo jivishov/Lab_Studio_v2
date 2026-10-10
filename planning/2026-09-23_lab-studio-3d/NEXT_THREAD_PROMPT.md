@@ -2,8 +2,9 @@
 
 > **Done 2026-10-10.** All three stages were built in the thread this prompt started: the fix (`353f159`),
 > E0 (answered in line; `proposals/D8_EXPERIMENT_ASSEMBLY.md`, "E0 decisions") and E3 (`1a955d5` and its
-> review; `evidence/D8_E3_EVIDENCE.md`). Kept as the record of the brief; `SESSION_HANDOFF.md`, item 8, has
-> the state and the open items.
+> review; `evidence/D8_E3_EVIDENCE.md`). The review's two open items were then decided and built: the 3D
+> twin of Measure Liquid Volume and short part titles (`DECISIONS.md`, D8 (8)). Kept as the record of the brief;
+> `SESSION_HANDOFF.md`, item 8, has the state and the open items.
 
 Paste everything below the line into a fresh Claude Code thread. Every fact in it was checked against the repository on 2026-10-10, by reading the code and running probes. Re-check before relying on any of it. The Pack 3 proposal comes after this, from `PACK3_PROPOSAL_PROMPT.md`.
 

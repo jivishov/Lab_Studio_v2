@@ -11008,6 +11008,83 @@
       ]
     },
     {
+      "id": "atom.transfer.fill-below-graduation",
+      "family": "measurement",
+      "documentationLabel": "Pour a liquid into a graduated cylinder to just below the graduation wanted",
+      "verb": "transfer",
+      "allowedInteractionTypes": [
+        "pourInto"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "instrument"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "liquid-source",
+        "variable-volume-measuring-device"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "The liquid is poured from its bottle until the level is just below the graduation the measurement needs; the last of it goes in drop by drop.",
+        "No volume is read or recorded at this step: the level is only approached.",
+        "Decided by the teacher on 2026-10-10 (D8, the 3D twin of Measure Liquid Volume); real practice no dated plan states, so no source example is cited."
+      ],
+      "evidence": "liquid just below the graduation",
+      "sourceExamples": [],
+      "contentExamples": []
+    },
+    {
+      "id": "atom.transfer.dropwise-to-graduation",
+      "family": "measurement",
+      "documentationLabel": "Bring a graduated cylinder to a graduation drop by drop",
+      "verb": "transfer",
+      "allowedInteractionTypes": [
+        "dispenseDrops"
+      ],
+      "effectContract": {
+        "classes": [
+          "apparatus-material-instrument-state"
+        ],
+        "targets": [
+          {
+            "domain": "equipment"
+          },
+          {
+            "domain": "material"
+          },
+          {
+            "domain": "instrument"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "transfer-pipette",
+        "variable-volume-measuring-device"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "The last of the liquid is added from a dropping pipette, one drop at a time, until the bottom of the meniscus sits on the graduation at eye level.",
+        "The level is judged within the graduation's reading tolerance (`markToleranceMl`), not to one drop: a drop barely moves the meniscus in a wide cylinder.",
+        "The step is judged by the level, not by a reading: the volume is read at eye level and recorded afterwards.",
+        "Decided by the teacher on 2026-10-10 (D8, the 3D twin of Measure Liquid Volume); real practice no dated plan states, so no source example is cited."
+      ],
+      "evidence": "the bottom of the meniscus on the graduation",
+      "sourceExamples": [],
+      "contentExamples": []
+    },
+    {
       "id": "atom.place.stopper-vessel",
       "family": "foundational",
       "documentationLabel": "Stopper a vessel",

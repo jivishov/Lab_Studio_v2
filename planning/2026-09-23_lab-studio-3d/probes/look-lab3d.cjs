@@ -1,13 +1,30 @@
 // One G1 look at the D8 3D experiment `intro-filtration-demo` (E3): the intro by part, the setup page with
-// the approved defaults, then the whole run of 31 steps: measure the sample, transfer it, precipitate
-// calcium carbonate, and filter it. Each step logs the step card's eyebrow, so the part labels are checked.
-//   node look-lab3d.cjs <out-prefix>
+// the approved defaults, then the whole run of 33 steps: measure the sample (the 3D twin: pour to below the
+// line, drops to the line, a typed reading), transfer it, precipitate calcium carbonate, and filter it. Each
+// step logs the step card's eyebrow, so the short part titles are checked.
+//   node look-lab3d.cjs <out-prefix>        (LOOK_PART1_ONLY=1 stops after part 1)
 const { openLook } = require("./look-common.cjs");
 (async () => {
   const look = await openLook("intro-filtration-demo", process.argv[2], { width: 1280, height: 800 }, "#/3d/play/intro-filtration-demo");
   const eyebrow = () => document.querySelector(".s3d-step .s3d-eyebrow")?.textContent;
   const step = async (fn) => look.log(await look.run(fn));
   const at = () => [document.querySelector(".s3d-step .s3d-eyebrow")?.textContent, window.__step()].join(" :: ");
+  // A counted rinse: the carry gives the first squirt, then Rinse until the step moves on (a slow frame can
+  // leave a squirt's button disabled past one click, so a fixed count of clicks falls behind).
+  // The function runs in the page, so the patterns go in as their sources.
+  const rinse = async (rowRe, calloutRe) => look.log(await look.run(async ([row, callout]) => {
+    const start = window.__step();
+    const out = [await window.__carry(new RegExp(row), new RegExp(callout))];
+    for (let i = 0; i < 5 && window.__step() === start; i++) out.push(await window.__card("Rinse"));
+    return [...out, window.__step()].join(" | ");
+  }, [rowRe.source, calloutRe.source]));
+  // The notebook's measurement and entry rows, with their chips.
+  const rows = () => look.run(async () => {
+    [...document.querySelectorAll("button")].find((b) => b.textContent.trim() === "Notebook")?.click(); await window.__sleep(700);
+    const text = [...document.querySelectorAll(".s3d-sheet .s3d-nb-row")].map((r) => r.textContent.replace(/\s+/g, " ").trim()).join(" ; ");
+    document.querySelector('[aria-label="Close the notebook"]')?.click(); await window.__sleep(300);
+    return text;
+  });
   await look.page.waitForTimeout(4000);
   await look.shot("0-intro");
   await look.run(async () => { [...document.querySelectorAll("button")].find((b) => b.textContent.trim() === "Next: setup")?.click(); await window.__sleep(800); });
@@ -17,25 +34,46 @@ const { openLook } = require("./look-common.cjs");
   await look.shot("1-start");
   look.log("eyebrow: " + await look.run(eyebrow));
 
-  // Part 1 · Measure Liquid Volume
+  // Part 1 · Measure the sample (the 3D twin of Measure Liquid Volume)
   await step(async () => [await window.__tray("graduated-cylinder-1"), window.__step()].join(" | "));
   await step(async () => [await window.__carry(/^Hard water sample/, /^Release to pour/), window.__step()].join(" | "));
   await look.page.waitForTimeout(4000);
-  await look.shot("2-measured");
-  await step(async () => [await window.__input("20"), await window.__card("Confirm"), await window.__card("Record"), window.__step()].join(" | "));
+  await look.shot("2-below-the-line");
+  await step(async () => [await window.__tray("sample-pipette-1"), await window.__carry(/^Dropping pipette \(sample\)/, /^Release to draw/), window.__step()].join(" | "));
+  await look.page.waitForTimeout(3000);
+  await step(async () => [await window.__carry(/^Dropping pipette \(sample\)/, /^Release to hold/), window.__step(), "drop panel " + !!document.querySelector(".s3d-drop")].join(" | "));
+  await look.page.waitForTimeout(1500);
+  await look.shot("2b-held-over-the-cylinder");
+  // 19 mL poured: twenty drops of 0.05 mL bring the meniscus to the 20 mL line.
+  await step(async () => {
+    const btn = (t) => [...document.querySelectorAll(".s3d-drop button")].find((b) => b.textContent.trim() === t);
+    for (let i = 0; i < 20; i++) { btn("One drop")?.click(); await window.__sleep(40); }
+    await window.__sleep(1200);
+    return "20 drops | " + window.__step();
+  });
+  await look.shot("2c-at-the-line");
+  await step(async () => {
+    [...document.querySelectorAll(".s3d-drop button")].find((b) => b.textContent.trim() === "At the line")?.click(); await window.__sleep(2500);
+    return window.__step();
+  });
+  look.log("rows before the reading: " + await rows());
+  await look.shot("2d-read-the-volume");
+  await step(async () => [await window.__input("20.0"), await window.__card("Confirm"), await window.__card("Record"), window.__step()].join(" | "));
+  look.log("rows after the reading: " + await rows());
   look.log("at: " + await look.run(at));
+  if (process.env.LOOK_PART1_ONLY) { await look.close(); return; }
 
-  // Part 2 · Transfer Liquid
+  // Part 2 · Transfer the sample
   await step(async () => [await window.__tray("beaker-250ml-1"), window.__step()].join(" | "));
   await step(async () => [await window.__carry(/^Graduated cylinder/, /^Release to pour/), window.__step()].join(" | "));
   await look.page.waitForTimeout(9000);
   await look.shot("3-transferred");
-  await step(async () => [await window.__carry(/^Wash bottle/, /^Release to rinse/), await window.__card("Rinse"), await window.__card("Rinse"), window.__step()].join(" | "));
+  await rinse(/^Wash bottle/, /^Release to rinse/);
   await look.page.waitForTimeout(8000);
   await step(async () => [await window.__card("Record"), window.__step()].join(" | "));
   look.log("at: " + await look.run(at));
 
-  // Part 3 · Hard-Water Calcium Carbonate Precipitation
+  // Part 3 · Precipitate the calcium
   await step(async () => [await window.__tray("stirring-rod-1"), await window.__carry(/^Stirring rod/, /^Release to (stand|place)/i), window.__step()].join(" | "));
   await look.page.waitForTimeout(2000);
   await step(async () => [await window.__carry(/^Sodium carbonate solution/, /^Release to/), window.__step()].join(" | "));
@@ -55,14 +93,14 @@ const { openLook } = require("./look-common.cjs");
   await look.page.waitForTimeout(2000);
   await step(async () => [await window.__card("Wait"), window.__step()].join(" | "));
   await look.page.waitForTimeout(6000);
-  await step(async () => [await window.__tray("beral-pipette-1"), await window.__carry(/^Dropping pipette/, /^Release to draw/), window.__step()].join(" | "));
+  await step(async () => [await window.__tray("beral-pipette-1"), await window.__carry(/^Dropping pipette \(carbonate\)/, /^Release to draw/), window.__step()].join(" | "));
   await look.page.waitForTimeout(4000);
-  await step(async () => [await window.__carry(/^Dropping pipette/, /^Release to add one drop/), window.__step()].join(" | "));
+  await step(async () => [await window.__carry(/^Dropping pipette \(carbonate\)/, /^Release to add one drop/), window.__step()].join(" | "));
   await look.page.waitForTimeout(4000);
   await look.shot("6-drop-test");
   look.log("at: " + await look.run(at));
 
-  // Part 4 · Filter a Precipitate
+  // Part 4 · Filter the precipitate
   await step(async () => [await window.__tray("ring-stand-1"), await window.__tray("funnel-1"),
     await window.__carry(/^Glass funnel/, /^Release to seat/), window.__step()].join(" | "));
   await look.page.waitForTimeout(2000);
@@ -83,9 +121,9 @@ const { openLook } = require("./look-common.cjs");
     await look.page.waitForTimeout(9000);
     if (!/Pour the mixture/.test(await look.run(() => window.__step()))) break;
   }
-  await step(async () => [await window.__carry(/^Wash bottle/, /^Release to rinse the/), await window.__card("Rinse"), await window.__card("Rinse"), window.__step()].join(" | "));
+  await rinse(/^Wash bottle/, /^Release to rinse the/);
   await look.page.waitForTimeout(6000);
-  await step(async () => [await window.__carry(/^Wash bottle/, /^Release to (wash|rinse)/), await window.__card("Rinse"), await window.__card("Rinse"), window.__step()].join(" | "));
+  await rinse(/^Wash bottle/, /^Release to (wash|rinse)/);
   await look.page.waitForTimeout(8000);
   await look.shot("10-results");
   look.log("at: " + await look.run(at));

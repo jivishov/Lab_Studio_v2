@@ -23,7 +23,7 @@ atomized (D4 exception 9, `63096ed`) and its fidelity review. Push only when the
 | Analyze Transmittance of a Dilution | 28 steps; 25 mL cylinder with a filling funnel; working beaker and Beral pipettes for the cuvettes; cuvettes seat in the photometer | `READINGS_EVIDENCE.md`, `PIPETTE_FUNNEL_EVIDENCE.md` |
 | Dilute a Stock Solution | 12 atomized steps: pipette pump, delivery to the line drop by drop, flask to the mark drop by drop, stopper, invert ×10, two calculations | `DILUTION_ATOMIZATION_EVIDENCE.md` |
 | Make a Solution | 14 atomized steps: a pre-weighed weighing boat, a funnel in the flask's neck, the solid tipped in, the boat and funnel rinsed into the flask, half full, swirled to dissolve the solid in the flask, to the mark drop by drop, stopper, invert ×10, appearance recorded | `MAKE_SOLUTION_ATOMIZATION_EVIDENCE.md` |
-| Measure Liquid Volume | Unchanged. Host-bound: it can't play on its own (its 3D route shows only the gate). It is composed into two labs, Precipitate and Filter Calcium Carbonate and the Hard-Water Reference Demo, so it waits for them (Phase B) | `proposals/PACK1_ATOMIZATION.md` |
+| Measure Liquid Volume | Unchanged in Pack 1. Host-bound: it can't play on its own (its 3D route shows only the gate). Its 3D twin `measuring-volume-3d` (2026-10-10; five atomized steps: stand the cylinder, pour to just below the line, fill a dropping pipette, drops to the line, a typed reading) is part 1 of the 3D Precipitate and Filter Calcium Carbonate | `proposals/PACK1_ATOMIZATION.md`, `evidence/D8_E3_EVIDENCE.md` |
 
 Also built: the top bar's title is a switcher listing the five Pack 1 techniques (a slim bar does the
 same on the intro and setup pages), and hover labels hang below items.
@@ -113,8 +113,20 @@ wait for confirmation (`DECISIONS.md`, the "built" row). G3 has still not run.
      eyebrow); the switcher has an "Experiments" group. 31 steps play in the app (G1, `probes/look-lab3d.cjs`)
      and in `probes/probe-lab3d.mts`; tests in `__tests__/lab3d.test.ts`.
    - The review fixed one chip (a record-only step copies its measurement's provenance) and left for the
-     user: a 3D twin of Measure Liquid Volume (its Pack 1 text reads "Record the the configured volume…"; its
-     steps are not atomized), and short part titles (the longest eyebrow wraps to three lines).
+     user: a 3D twin of Measure Liquid Volume, and short part titles.
+   - **Both decided and built the same day** (the user: "Build 3D twin of measure liquid volume, ensure to have
+     atomized steps." and "Use short part title, as you suggest."; `DECISIONS.md`, D8 (8); the evidence note's
+     last section). Part 1 is the twin `measuring-volume-3d` (`scripts/practice3d/measuringVolumeTwin.mjs`,
+     listed in `twins.json` with no `practiceId`), on two new atoms (`atom.transfer.fill-below-graduation`,
+     `atom.transfer.dropwise-to-graduation`; a core registry change by that decision). A setup field can fill a
+     slot with an offset (`setup("sampleVolumeMl", -1)` pours 1 mL under the line). Transfer pours all the
+     cylinder holds. The parts read "Measure the sample", "Transfer the sample", "Precipitate the calcium",
+     "Filter the precipitate". The lab plays 33 steps on 15 items.
+   - That review fixed in 3D: `{{config.*}}` left in compiled step text (`labs3d.ts` `fillStepText`; E3's step 11
+     had it too), a pour callout that named the amount, the reading step's view (eye level with the cylinder,
+     `stepRules.readingVesselId`), the level's interim value chipped "Your entry", and notebook rows reading
+     "20 mL" beside "20.0 mL". **Open for the user (core):** the overshoot message says the solution "would be
+     remade. Restart the technique", wrong for a cylinder and, in a lab, a restart of the whole run.
    - For Drying's twin later: compiled measurement ids are scoped by instance, so its calculation needs
      `preserveIds.references` or a binding to reach Filtration's paper mass.
 9. **Then: the Pack 3 proposal** (catalogue items 11–15), proposed and decided before any build.

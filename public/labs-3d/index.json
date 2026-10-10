@@ -7,23 +7,27 @@
     "parts": [
       {
         "instanceId": "measuring-volume",
-        "techniqueId": "measuring-volume",
-        "title": "Measure Liquid Volume"
+        "techniqueId": "measuring-volume-3d",
+        "title": "Measure the sample",
+        "techniqueTitle": "Measure Liquid Volume"
       },
       {
         "instanceId": "transfer",
         "techniqueId": "transfer-3d",
-        "title": "Transfer Liquid"
+        "title": "Transfer the sample",
+        "techniqueTitle": "Transfer Liquid"
       },
       {
         "instanceId": "hard-water-precipitation",
         "techniqueId": "hard-water-precipitation-3d",
-        "title": "Hard-Water Calcium Carbonate Precipitation"
+        "title": "Precipitate the calcium",
+        "techniqueTitle": "Hard-Water Calcium Carbonate Precipitation"
       },
       {
         "instanceId": "filtration",
         "techniqueId": "filtration-3d",
-        "title": "Filter a Precipitate"
+        "title": "Filter the precipitate",
+        "techniqueTitle": "Filter a Precipitate"
       }
     ],
     "setup": [
@@ -35,15 +39,16 @@
         "defaultValue": 20,
         "min": 5,
         "max": 100,
-        "help": "Measured in the 100 mL cylinder and poured into the beaker.",
+        "help": "The line the student fills the 100 mL cylinder to: poured to 1 mL below it, then drop by drop.",
         "targets": [
           {
             "instanceId": "measuring-volume",
             "slotId": "targetVolumeMl"
           },
           {
-            "instanceId": "transfer",
-            "slotId": "transferVolumeMl"
+            "instanceId": "measuring-volume",
+            "slotId": "pourVolumeMl",
+            "offset": -1
           }
         ]
       },
@@ -154,7 +159,7 @@
           "sampleVolumeMl",
           "reagentVolumeMl"
         ],
-        "plus": 32.05,
+        "plus": 32.25,
         "atMost": 250,
         "message": "The sample, the reagent and the rinses must fit in the 250 mL receiving flask: lower the sample or the reagent."
       },

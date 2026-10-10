@@ -88,6 +88,21 @@ export const currentStepInstanceIds = (parameters?: Record<string, unknown>): st
     .map((key) => parameters?.[key])
     .filter((id): id is string => typeof id === "string" && id.length > 0);
 
+/**
+ * The vessel a reading step is read from, if any (fidelity review, 2026-10-10): a `record` step whose field takes
+ * the student's reading (`inputRole: "studentResponse"`) of a measurement already taken on a vessel, as the 3D
+ * Measure Liquid Volume's "Read the volume" reads the cylinder its level step brought to the line. The auto view
+ * puts the eye level with that vessel's liquid, so the bottom of the meniscus can be read.
+ */
+export const readingVesselId = (
+  action: ActionDefinition | undefined,
+  measurements: RuntimeState["measurements"],
+): string | undefined => {
+  if (action?.verb !== "record" || action.parameters.inputRole !== "studentResponse") return undefined;
+  const id = stringParam(action, "measurementId");
+  return id ? measurements.find((measurement) => measurement.id === id)?.equipmentInstanceId : undefined;
+};
+
 /** The one item a placement step names, if any: its `equipmentInstanceId`, else its `sourceInstanceId`. */
 export const placedInstanceId = (parameters?: Record<string, unknown>): string | undefined => {
   const named = parameters?.equipmentInstanceId ?? parameters?.sourceInstanceId;

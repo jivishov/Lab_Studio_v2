@@ -5,11 +5,16 @@
  * - Every role of every part is bound from the part's item map (technique item → lab item); a role item that
  *   is not mapped, a lab item that does not exist, or one of another kind is an error.
  * - Every slot a part's technique declares must be configured, and nothing else.
- * - `setup("<field>")` marks a value the setup page sets. The source carries the field's default, and the
- *   index entry names where each field goes, so the 3D loader can put the teacher's value there.
+ * - `setup("<field>", offset?)` marks a value the setup page sets. The source carries the field's default (plus
+ *   the offset), and the index entry names where each field goes, so the 3D loader can put the teacher's value there.
+ * - A part may name a short `title` for the step card and the intro (you, 2026-10-10: "Use short part title");
+ *   the index keeps the technique's own as `techniqueTitle`.
  * - The parts run in order, exit port to entry port.
  */
 const isSetup = (value) => Boolean(value && typeof value === "object" && typeof value.setup === "string");
+
+/** A setup value plus its offset, without float noise (20.3 - 1 is 19.299999999999997). */
+export const withOffset = (value, offset) => Math.round((value + offset) * 1e6) / 1e6;
 
 export const composeLab = (declaration, techniqueFor) => {
   const fields = new Map(declaration.setup.map((field) => [field.id, { ...field, targets: [] }]));
@@ -17,9 +22,14 @@ export const composeLab = (declaration, techniqueFor) => {
     if (!isSetup(value)) return value;
     const field = fields.get(value.setup);
     if (!field) throw new Error(`${declaration.id}: no setup field "${value.setup}".`);
-    field.targets.push(target);
     if (field.defaultValue === undefined) throw new Error(`${declaration.id}: setup field "${field.id}" has no default.`);
-    return field.defaultValue;
+    if (!value.offset) {
+      field.targets.push(target);
+      return field.defaultValue;
+    }
+    if (field.kind !== "number" || !Number.isFinite(value.offset)) throw new Error(`${declaration.id}: an offset needs a number field and a number ("${field.id}").`);
+    field.targets.push({ ...target, offset: value.offset });
+    return withOffset(field.defaultValue, value.offset);
   };
 
   const benchById = new Map(declaration.bench.map((entry) => [entry.id, entry]));
@@ -58,7 +68,7 @@ export const composeLab = (declaration, techniqueFor) => {
     if (missing.length || extra.length) throw new Error(`${at}: slots not configured [${missing}], not declared [${extra}].`);
     const configuration = Object.fromEntries(Object.entries(part.configuration)
       .map(([slotId, value]) => [slotId, fill(value, { instanceId: part.instanceId, slotId })]));
-    parts.push({ instanceId: part.instanceId, techniqueId: technique.id, title: technique.title });
+    parts.push({ instanceId: part.instanceId, techniqueId: technique.id, title: part.title ?? technique.title, techniqueTitle: technique.title });
     return { instanceId: part.instanceId, techniqueId: technique.id, version: technique.metadata.version,
       bindings: { equipment, models: {}, configuration } };
   });

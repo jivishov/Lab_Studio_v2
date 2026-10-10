@@ -6,7 +6,8 @@ import { action, evidenceEffect, item, node, technique, twinOf } from "./common.
  * The cylinder starts holding the measured hard-water sample (in the labs, Measure Liquid Volume
  * fills it first). The student places the beaker, pours the sample in and holds the cylinder over
  * the beaker until it drains (one step: the drain is drawn as part of the pour), rinses the
- * cylinder into the beaker with three squirts, and records the observation.
+ * cylinder into the beaker with three squirts, and records the observation. The pour takes all the
+ * cylinder holds (D8, 2026-10-10): in a lab that is the volume measured, within the line's tolerance.
  */
 const sample = {
   kind: "liquid",
@@ -44,10 +45,11 @@ const actions = [
     sourceInstanceId: "graduated-cylinder-1",
     targetDefinitionId: "beaker-250ml",
     targetInstanceId: "beaker-250ml-1",
-    volumeMl: "{{config.transferVolumeMl}}",
     drainMeasuringVessel: true,
   }, {
     atomId: "atom.transfer.measured-liquid-to-precipitation-vessel",
+    // With no volume the default callout would read "pour the requested volume"; all of it is poured.
+    interaction: { type: "pourInto", sourceDefinitionId: "graduated-cylinder", targetDefinitionId: "beaker-250ml" },
     roles: { "measured-solvent-source": "graduated-cylinder", "precipitation-vessel": "beaker-250ml" },
     success: "The sample is in the beaker; the cylinder has drained.",
   }),
@@ -102,5 +104,5 @@ const practice = technique({
 
 export default practice;
 
-/** The composable twin a 3D lab composes (D8 E0, 2026-10-10). It drops nothing: every slot is used by a step, and no step stands in for an earlier technique. */
-export const twin = twinOf(practice, { id: "transfer-3d" });
+/** The composable twin a 3D lab composes (D8 E0, 2026-10-10). It drops the sample volume, which only fills the practice bench: in a lab, the cylinder holds what Measure Liquid Volume measured. */
+export const twin = twinOf(practice, { id: "transfer-3d", dropSlots: ["transferVolumeMl"] });

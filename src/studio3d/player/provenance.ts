@@ -33,8 +33,19 @@ const boundToSetup = (authored: ProvenanceSource | undefined, actionId: string, 
   return Boolean(action && keys.some((key) => isConfigurationBinding(action.parameters[key])));
 };
 
-/** A measurement's chip; `authored` is the definition before setup, when there was one. */
-export const measurementProvenance = (configured: ProvenanceSource, authored: ProvenanceSource | undefined, measurementId: string): ProvenanceKind => {
+/**
+ * A measurement's chip; `authored` is the definition before setup, when there was one. `nodeId` is the step
+ * that last wrote it (`MeasurementRecord.nodeId`): a level judged at a line (`markDispense`) records the
+ * line's volume, the teacher's setting, until a reading replaces it (the 3D Measure Liquid Volume's level
+ * step, then its typed reading). Any other writer is found as before.
+ */
+export const measurementProvenance = (configured: ProvenanceSource, authored: ProvenanceSource | undefined, measurementId: string,
+  nodeId?: string): ProvenanceKind => {
+  const writerId = nodeId ? configured.process.nodes.find((node) => node.id === nodeId)?.actionId : undefined;
+  const writer = writerId ? configured.actions.find((a) => a.id === writerId) : undefined;
+  if (writer?.parameters.markDispense && writer.parameters.outputMeasurementId === measurementId) {
+    return roleProvenance(writer) ?? (boundToSetup(authored, writer.id, ["markVolumeMl"]) ? "teacher" : "bench");
+  }
   const action = configured.actions.find((a) => a.parameters.measurementId === measurementId
     || (a.mass && "outputMeasurementId" in a.mass && a.mass.outputMeasurementId === measurementId)
     || a.volume?.outputMeasurementId === measurementId);

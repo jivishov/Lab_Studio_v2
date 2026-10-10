@@ -17,6 +17,7 @@ import { DropPanel } from "./DropPanel";
 import { StepCard } from "./StepCard";
 import { StepClock } from "./StepClock";
 import { fillLevelMm } from "../adapters/runtimeToScene";
+import { readingVesselId } from "./stepRules";
 import { usePlayer3D, type Player3DController } from "./usePlayer3D";
 import type { Lab3DPartLabel } from "../labs3d";
 
@@ -727,6 +728,13 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     const obstacles = [...(root?.querySelectorAll("[data-panel], .s3d-examine, .s3d-sheet, .s3d-drop") ?? [])].map(rel).filter((r) => r !== undefined);
     const below = [rel(root?.querySelector(".s3d-hint")), rel(root?.querySelector(".s3d-dock"))].filter((r) => r !== undefined).map((r) => r.top);
     engine.safeAreas = safeRects({ w: canvasRect.width, h: canvasRect.height }, obstacles, below.length ? Math.min(...below) : canvasRect.height);
+    // A reading of a vessel's level is taken with the eye level with the liquid (stepRules.readingVesselId).
+    const readId = readingVesselId(runtime.expectedAction, runtime.state.measurements);
+    const read = readId ? scene.bench.find((i) => i.instanceId === readId) : undefined;
+    if (read?.model?.fill && read.contents.kind === "liquid") {
+      engine.eyeLevel(read.instanceId, fillLevelMm(read.model.fill, read.contents.volumeMl).levelMm, 0.2);
+      return;
+    }
     const targetDef = flow.target.definitionId;
     const toolDef = player.toolTransfer?.toolDefinitionId;
     const working = new Set(showGuidance
@@ -741,7 +749,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
       if (working.has(item.instanceId) && item.placement.kind === "seated") working.add(item.placement.parentInstanceId);
     }
     engine.frameItems(working.size ? [...working] : "all", working.size ? 1.6 : 1.05);
-  }, [engine, flow.source.definitionId, flow.target.definitionId, player.benchOp, player.toolTransfer, scene, showGuidance]);
+  }, [engine, flow.source.definitionId, flow.target.definitionId, player.benchOp, player.toolTransfer, runtime.expectedAction, runtime.state.measurements, scene, showGuidance]);
   useEffect(() => {
     if (runtime.currentNode.id !== lastNode.current) {
       lastNode.current = runtime.currentNode.id;

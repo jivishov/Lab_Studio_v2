@@ -351,8 +351,19 @@ export const HelpDialog = ({ onClose }: { onClose: () => void }) => (
   </div>
 );
 
-const provenanceForMeasurement = (player: Player3DController, id: string) => measurementProvenance(player.definition, player.authoredDefinition, id);
-const provenanceForEntry = (player: Player3DController, entry: Parameters<typeof notebookProvenance>[2]) =>
+const provenanceForMeasurement = (player: Player3DController, m: { id: string; nodeId: string }) =>
+  measurementProvenance(player.definition, player.authoredDefinition, m.id, m.nodeId);
+type Entry = Parameters<typeof notebookProvenance>[2];
+/**
+ * A notebook row that records a measurement reads as that measurement does ("20.0 mL", not the raw
+ * "20 mL" the runtime writes); any other row, or one the measurement has since moved on from, as written.
+ */
+const entryValue = (player: Player3DController, e: Entry): string => {
+  if (e.type !== "measurement") return e.value;
+  const m = player.runtime.state.measurements.find((candidate) => e.tags.includes(candidate.id));
+  return m && `${m.value} ${m.unit}`.trim() === e.value ? evidenceValue(m.value, m.unit) : e.value;
+};
+const provenanceForEntry = (player: Player3DController, entry: Entry) =>
   notebookProvenance(player.definition, player.authoredDefinition, entry);
 
 export const NOTEBOOK_WIDTH = Object.freeze({ min: 320, initial: 420 });
@@ -408,7 +419,7 @@ export const NotebookSheet = ({ player, width, onResize, onClose }: {
           <div key={m.id} className="s3d-nb-row">
             <span className="s3d-nb-row__label">{m.label}</span>
             <span className="s3d-nb-row__value s3d-mono">{evidenceValue(m.value, m.unit)}</span>
-            <span className="s3d-nb-row__meta"><ProvenanceChip kind={provenanceForMeasurement(player, m.id)} /></span>
+            <span className="s3d-nb-row__meta"><ProvenanceChip kind={provenanceForMeasurement(player, m)} /></span>
           </div>
         ))}
         <h3 className="s3d-eyebrow">Calculations</h3>
@@ -425,7 +436,7 @@ export const NotebookSheet = ({ player, width, onResize, onClose }: {
         {state.notebook.map((e) => (
           <div key={e.id} className="s3d-nb-row">
             <span className="s3d-nb-row__label">{e.label}</span>
-            <span className="s3d-nb-row__value">{e.value}</span>
+            <span className="s3d-nb-row__value">{entryValue(player, e)}</span>
             <span className="s3d-nb-row__meta"><ProvenanceChip kind={provenanceForEntry(player, e)} /></span>
           </div>
         ))}
@@ -475,7 +486,7 @@ export const ResultsSheet = ({ player, onPlayAgain, backHref }: { player: Player
             <span className="s3d-nb-row__label">{m.label}</span>
             <span className="s3d-nb-row__value s3d-mono">{evidenceValue(m.value, m.unit)}</span>
             <span className="s3d-nb-row__meta">
-              <ProvenanceChip kind={provenanceForMeasurement(player, m.id)} />
+              <ProvenanceChip kind={provenanceForMeasurement(player, m)} />
               {/* What the instrument showed, beside the entry; neither is judged (decided 2026-09-25). */}
               {player.displayedReadings[m.id] ? <span className="s3d-small">Display showed <span className="s3d-mono">{player.displayedReadings[m.id]}</span></span> : null}
             </span>
@@ -498,7 +509,7 @@ export const ResultsSheet = ({ player, onPlayAgain, backHref }: { player: Player
         {state.notebook.map((e) => (
           <div key={e.id} className="s3d-nb-row">
             <span className="s3d-nb-row__label">{e.label}</span>
-            <span className="s3d-nb-row__value">{e.value}</span>
+            <span className="s3d-nb-row__value">{entryValue(player, e)}</span>
             <span className="s3d-nb-row__meta"><ProvenanceChip kind={provenanceForEntry(player, e)} /></span>
           </div>
         ))}

@@ -5,6 +5,7 @@
 //   node --experimental-strip-types --experimental-loader ./scripts/tsCompositionLoader.mjs \
 //     planning/2026-09-23_lab-studio-3d/probes/probe-lab3d.mts [labId] ['{"field":"value"}']
 // Env: PROBE_INPUTS and PROBE_MOVES by compiled action id (filtration--weigh-paper), PROBE_TITLES=1.
+// A drop-to-the-line step is played as the drops it needs plus PROBE_DROPS_OFF (default 0), then accepted.
 import { readFile } from "node:fs/promises";
 const root = "file:///C:/Users/EmilJivishov/Projects/Lab_studio/tmp/lab-studio-3d/";
 const { compileBundledLabCompositionWithPolicy } = await import(root + "src/data/bundledCatalogPolicyBoundary.ts");
@@ -38,9 +39,12 @@ try {
   const parts = new Map<string, number>();
   for (const origin of lab.compositionManifest.origins) parts.set(origin.instanceId, (parts.get(origin.instanceId) ?? 0) + 1);
   console.log("steps per part:", JSON.stringify([...parts]));
+  const unfilled = lab.process.nodes.filter((n: any) => /\{\{/.test(`${n.title} ${n.description ?? ""}`)).map((n: any) => `${n.id}: ${n.description}`);
+  console.log("{{config}} left in compiled step text (the 3D loader fills it, fillStepText):", unfilled.length ? "\n  " + unfilled.join("\n  ") : "none");
   if (process.env.PROBE_TITLES) console.log("titles:\n" + lab.process.nodes.map((n: any, i: number) => `${i + 1}. ${n.title}`).join("\n"));
   let state = createRuntimeState(lab);
-  const inputs: Record<string, string> = JSON.parse(process.env.PROBE_INPUTS ?? '{"filtration--weigh-paper":"' + values.paperMassG + '"}');
+  const inputs: Record<string, string> = JSON.parse(process.env.PROBE_INPUTS
+    ?? JSON.stringify({ "measuring-volume--read-volume": values.sampleVolumeMl, "filtration--weigh-paper": values.paperMassG }));
   const moves: Record<string, string | string[]> = JSON.parse(process.env.PROBE_MOVES ?? '{"filtration--fold-paper":"filter-paper-1"}');
   const send = (action: any, intent: any, input = "") => {
     const merged = mergeActionInput({ origin: "keyboard", ...intent }, resolveActionInput(action, input), action);
@@ -58,6 +62,13 @@ try {
     const type = intentTypeForInteraction[resolveActionInteraction(action).type];
     const notes: string[] = [];
     for (const [i, id] of [moves[action.id] ?? []].flat().entries()) state = performRuntimeAction(lab, state, benchMoveRequest(id, { x: 300 + 90 * i, y: 380 }, 50 + i));
+    if (resolveActionInteraction(action).type === "dispenseDrops") {
+      const vessel = state.equipmentInstances.find((e: any) => e.id === action.parameters.targetInstanceId);
+      const drops = Math.round((Number(action.parameters.markVolumeMl) - (vessel?.contents.volumeMl ?? 0)) / Number(action.parameters.dropVolumeMl ?? 0.05))
+        + Number(process.env.PROBE_DROPS_OFF ?? 0);
+      notes.push(`${drops} drops ` + send(action, { type, runtimeParameters: { dropCount: drops } }));
+      notes.push("accept " + send(action, { type: "dispenseCompleteIntent" }));
+    }
     const repeats = Number(action.parameters.rinsePortions ?? action.parameters.inversions ?? action.parameters.portionsThisStep ?? (action.parameters.pourPortionMl ? 40 : 1));
     for (let i = 0; i < repeats * (action.parameters.stirBetweenPortions ? 2 : 1) && !state.completedNodes.includes(n.id); i += 1) {
       const stir = action.parameters.stirBetweenPortions && i % 2 === 1;
