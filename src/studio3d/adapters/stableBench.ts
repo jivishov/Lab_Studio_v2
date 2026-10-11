@@ -106,6 +106,23 @@ export const stableWorkbenchNodes = (state: Pick<RuntimeState, "equipmentInstanc
   });
 };
 
+/**
+ * Where an item held by another (a strip hanging in its chamber) would lie if it were loose on the bench now: its own
+ * position, else its slot. Scenery it lies on stays there meanwhile (a strip's white tile, decided 2026-10-11).
+ */
+export const stableRestPoint = (
+  state: Pick<RuntimeState, "equipmentInstances" | "attachments">,
+  instanceId: string,
+): { x: number; y: number } | undefined => {
+  const loose = {
+    equipmentInstances: state.equipmentInstances.map((instance) =>
+      instance.id === instanceId ? { ...instance, location: "workbench" as const, snapZoneId: undefined } : instance),
+    attachments: state.attachments.filter((attachment) => attachment.childInstanceId !== instanceId),
+  };
+  const node = stableWorkbenchNodes(loose).find((candidate) => candidate.primaryInstanceId === instanceId);
+  return node ? { x: node.transform.x, y: node.transform.y } : undefined;
+};
+
 /** 2D's tray rule stands a ring stand at its own spot at the back (`StudentPlayer.nextPlacementPoint`). */
 const RING_STAND_POINT = { x: 270, y: 36 };
 

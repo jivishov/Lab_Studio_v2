@@ -105,6 +105,12 @@ export interface Equipment3DEntry {
   calibration?: Equipment3DCalibration;
   /** The scenery id that holds this item upright when it stands on the bench (decision D9). */
   requiresSupport?: string;
+  /**
+   * The scenery id that lies flat under this item when it lies on the bench (decision D9; a chromatography strip's
+   * white tile, decided 2026-10-11). Unlike a support, it stays where the item lay while the item is elsewhere on
+   * the bench (a strip hanging in its chamber); the item rests on its seat.
+   */
+  restsOn?: string;
   solidRest?: Equipment3DSolidRest;
   /**
    * How the item rests on the bench when its model is authored in its working pose (decided

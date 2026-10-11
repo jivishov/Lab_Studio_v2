@@ -245,6 +245,9 @@ def main():
         support = (entries.get(def_id) or {}).get('requiresSupport')
         if support and not (entries.get(support) or {}).get('scenery'):
             errors.append(f'[{def_id}] requiresSupport "{support}" is not a scenery entry')
+        rests_on = (entries.get(def_id) or {}).get('restsOn')
+        if rests_on and not (entries.get(rests_on) or {}).get('scenery'):
+            errors.append(f'[{def_id}] restsOn "{rests_on}" is not a scenery entry')
     for def_id, entry in entries.items():
         if entry.get('scenery'):
             where = f'[{def_id}]'

@@ -46,6 +46,8 @@ interface ItemView {
   contentsKey: string;
   display?: DisplayFace;
   scenery?: THREE.Object3D;
+  /** Scenery lying flat on the bench (a strip's white tile): in the item layer, so it never moves with the item. */
+  benchScenery?: THREE.Object3D;
   entry?: Equipment3DEntry;
   /** Resting per `benchRest`: the origin's offset from the footprint centre on the bench, and its lift. */
   benchShift?: THREE.Vector3;
@@ -392,6 +394,7 @@ export class BenchEngine {
     for (const [id, view] of this.items) {
       if (!wanted.has(id)) {
         this.itemLayer.remove(view.root);
+        if (view.benchScenery) this.itemLayer.remove(view.benchScenery);
         if (view.contents) disposeObject(view.contents);
         this.items.delete(id);
       }
@@ -406,6 +409,11 @@ export class BenchEngine {
       if (!view) return;
       view.benchShift = undefined;
       view.benchLift = undefined;
+      // Scenery lying on the bench (a strip's white tile) lies flat at its own point, under the item or where it lay.
+      if (item.benchScenery && view.benchScenery) {
+        view.benchScenery.position.copy(toWorld(item.benchScenery.point.xMm, item.benchScenery.point.yMm));
+        view.benchScenery.rotation.set(0, item.benchScenery.point.yawDeg * DEG, 0);
+      }
       if (item.placement.kind === "bench") {
         const yaw = item.placement.point.yawDeg * DEG;
         view.root.position.copy(toWorld(item.placement.point.xMm, item.placement.point.yMm));
@@ -425,6 +433,8 @@ export class BenchEngine {
         // An item standing in scenery (a tube in its rack) rests on the seat, above the bench.
         const seat = item.scenery?.model.sceneryFor?.seatsMm[item.scenery.seatIndex];
         if (seat) view.root.position.y = seat[2] * MM;
+        // An item lying on scenery (a strip, and the ruler beside it, on the white tile) lies on its top.
+        if (item.restOnMm) view.root.position.y += item.restOnMm * MM;
       } else {
         const parentItem = byId.get(item.placement.parentInstanceId);
         const parent = this.items.get(item.placement.parentInstanceId);
@@ -510,6 +520,20 @@ export class BenchEngine {
       rack.position.set(-seat[0] * MM, -seat[2] * MM, seat[1] * MM);
       view.scenery = rack;
       view.root.add(rack);
+    }
+    if (item.benchScenery && !view.benchScenery) {
+      const tile = await this.models.instance(item.benchScenery.model);
+      if (this.disposed || this.items.get(item.instanceId) !== view) return;
+      if (!view.benchScenery) {
+        // Never picked (decision D9), and outside the item's root, so a carry or a hang leaves it lying where it is.
+        tile.traverse((object) => { (object as THREE.Mesh).raycast = () => undefined; });
+        tile.name = `scenery:${item.benchScenery.sceneryId}`;
+        view.benchScenery = tile;
+        this.itemLayer.add(tile);
+      }
+    } else if (!item.benchScenery && view.benchScenery) {
+      this.itemLayer.remove(view.benchScenery);
+      view.benchScenery = undefined;
     }
   }
 

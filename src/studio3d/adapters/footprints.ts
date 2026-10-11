@@ -1,6 +1,7 @@
 import type { ActionInteractionSpec } from "../../domain/types";
 import { getSnapSourceAnchor, getVisualProfile } from "../../equipment/visualCatalog";
 import { resolveBenchOverlap, type BenchBounds, type BenchOverlapResult } from "../../player/benchOverlap";
+import { equipment3dRegistry } from "../equipment3d/readiness";
 import type { Equipment3DEntry } from "../equipment3d/types";
 import { BENCH_MM, MM_PER_PX_DEPTH, MM_PER_PX_X } from "./benchCoordinates";
 
@@ -24,6 +25,15 @@ export const footprintOf = (entry: Equipment3DEntry | undefined, xMm: number, yM
   if (fp?.shape === "rect") return { xMm, yMm, widthMm: fp.width, depthMm: fp.depth };
   const d = fp?.shape === "circle" ? fp.radius * 2 : 80;
   return { xMm, yMm, widthMm: d, depthMm: d };
+};
+
+/**
+ * The room an item takes on the bench where it is set down: the scenery it lies on when it has some (a strip's white
+ * tile, decided 2026-10-11, centred under the strip), else its own footprint. For finding a free spot only.
+ */
+export const benchFootprintOf = (entry: Equipment3DEntry | undefined, xMm: number, yMm: number): FootprintMm => {
+  const under = entry?.restsOn ? equipment3dRegistry.entries.find((candidate) => candidate.scenery && candidate.definitionId === entry.restsOn) : undefined;
+  return footprintOf(under ?? entry, xMm, yMm);
 };
 
 /** A footprint as runtime-unit bounds; bench depth runs down the 2D y axis (front is larger y). */

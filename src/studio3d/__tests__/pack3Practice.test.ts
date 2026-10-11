@@ -11,7 +11,7 @@ import { resolveLiquidStyle } from "../../equipment/liquidRendering";
 import { createRuntimeState, performRuntimeAction } from "../../runtime";
 import { resolveActionInput } from "../../runtime/actionInputs";
 import { resolveInteractionIntent, type RuntimeInteractionIntent } from "../../runtime/interactionIntents";
-import { runtimeToScene } from "../adapters/runtimeToScene";
+import { runtimeToScene, type SceneItem } from "../adapters/runtimeToScene";
 import { benchMoveRequest, intentTypeForInteraction, mergeActionInput } from "../adapters/sceneToIntent";
 import { stepFlow } from "../player/stepRules";
 import { solventDepthAboveStripMm, withDerived3D } from "../prepared3d";
@@ -226,6 +226,35 @@ describe("Paper Chromatography", () => {
     // The strip's lower edge is 55 mm before its centre; the ruler's zero is 76 mm before, and 14 mm left of, its own.
     expect(ruler.yMm - 76).toBeCloseTo(paper.yMm - 55 + 15, 6);
     expect(ruler.xMm - 14).toBeCloseTo(paper.xMm + 7.5 + 0.6, 6);
+  });
+
+  it("lays the strip on a white tile (scenery), left where the strip lay while it hangs in the chamber (2026-10-11)", () => {
+    const scene = (stop: string) => {
+      const { technique, state } = playTo(id, stop);
+      return runtimeToScene(state, technique).bench;
+    };
+    const item = (bench: SceneItem[], instanceId: string) => bench.find((candidate) => candidate.instanceId === instanceId);
+    const benchPoint = (found: SceneItem | undefined) => {
+      if (found?.placement.kind !== "bench") throw new Error("the strip is not lying on the bench");
+      return found.placement.point;
+    };
+    // In the tray, no tile.
+    expect(item(scene("place-paper"), "paper-1")).toBeUndefined();
+    const flat = item(scene("draw-baseline"), "paper-1");
+    const lay = benchPoint(flat);
+    expect(flat?.benchScenery).toMatchObject({ sceneryId: "white-tile", point: lay });
+    expect(flat?.restOnMm).toBe(6);
+    // Hung in the chamber, the strip is off the tile; the tile stays.
+    const hung = item(scene("close-chamber"), "paper-1");
+    expect(hung?.placement.kind).toBe("seated");
+    expect(hung?.benchScenery?.point).toEqual(lay);
+    expect(hung?.restOnMm).toBeUndefined();
+    // Back on the bench, it lies on the same tile, and the ruler laid beside it lies on the tile too.
+    const back = scene("read-front");
+    expect(benchPoint(item(back, "paper-1"))).toEqual(lay);
+    expect(item(back, "paper-1")?.benchScenery?.point).toEqual(lay);
+    expect(item(back, "ruler-1")?.restOnMm).toBe(6);
+    expect(item(back, "ruler-1")?.benchScenery).toBeUndefined();
   });
 
   it("draws the spot in the dye mixture's own colour, from the one liquid palette (G-9)", () => {

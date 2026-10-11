@@ -174,6 +174,9 @@ _FACTORIES = {
     # a moulded clear ruler: clear polystyrene whose faces carry a faint satin from the mould (decided 2026-10-11)
     'Polystyrene ruler clear': lambda n: principled(n, **{'Base Color': (0.97, 0.98, 0.98, 1), 'Roughness': 0.14,
                                                           'IOR': 1.59, 'Transmission Weight': 1.0}),
+    # a white glazed tile (decided 2026-10-11): a cool, glossy white, so the warm, matte paper lying on it reads
+    'Glazed tile white': lambda n: principled(n, **{'Base Color': (0.82, 0.85, 0.89, 1), 'Roughness': 0.1,
+                                                    'Coat Weight': 0.8, 'Coat Roughness': 0.05}),
 }
 
 

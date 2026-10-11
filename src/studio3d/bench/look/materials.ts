@@ -16,7 +16,7 @@ import type { BenchTextures } from "./textures";
  */
 type Role =
   | "glass-thin" | "glass-thick" | "frosted" | "print" | "metal-brushed" | "metal" | "coating" | "rubber"
-  | "plastic-opaque" | "plastic-translucent" | "plastic-clear" | "paper" | "display" | "porcelain" | "brass" | "flame";
+  | "plastic-opaque" | "plastic-translucent" | "plastic-clear" | "paper" | "display" | "porcelain" | "tile" | "brass" | "flame";
 
 const roleByName = new Map<string, Role>(
   Object.entries(viewerMaterials.materials as Record<string, { role: string }>).map(([name, value]) => [name, value.role as Role]),
@@ -161,6 +161,15 @@ const tune = (src: THREE.Material, T: BenchTextures, enclosureGlass: boolean, en
       const m = toPhysical(src);
       Object.assign(m, { roughness: 0.16, metalness: 0, clearcoat: 0.8, clearcoatRoughness: 0.06, sheen: 0.1 });
       m.color.setRGB(0.86, 0.85, 0.82);
+      return m;
+    }
+    // A white glazed tile under a chromatography strip (decided 2026-10-11): a cool, glossy white set well below the
+    // porcelain's. Under the room's lights it still reads white, and the warm, matte paper on it reads as a strip
+    // rather than vanishing white on white (G1: 0.74 left the strip 12 levels above the tile; this, 16-19).
+    case "tile": {
+      const m = toPhysical(src);
+      Object.assign(m, { roughness: 0.1, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.04 });
+      m.color.setRGB(0.64, 0.68, 0.74);
       return m;
     }
     case "brass": {

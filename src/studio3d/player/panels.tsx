@@ -279,6 +279,7 @@ export const ExamineCard = ({ item, holderLabel, onClose, onEyeLevel }: {
           </ul>
         ) : null}
         {item.scenery ? <p className="s3d-small">Stands in a rack <span className="s3d-chip s3d-chip--neutral">Scenery</span></p> : null}
+        {item.benchScenery && item.placement.kind === "bench" ? <p className="s3d-small">Lies on a white tile <span className="s3d-chip s3d-chip--neutral">Scenery</span></p> : null}
         {onEyeLevel && item.contents.kind === "liquid" ? <button type="button" className="s3d-button" onClick={onEyeLevel}><Icon name="eye" />Eye level</button> : null}
         <p className="s3d-small s3d-examine__prov">3D model built in Blender · <span className="s3d-mono">{entry?.provenance.generator ?? "no model yet"}</span></p>
       </div>

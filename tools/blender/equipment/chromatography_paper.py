@@ -3,7 +3,8 @@
 Cut to size before the lab (cutting is not a student step), with a hole punched 5 mm below its top for the hook
 under the chamber's cap. Modelled upright, as it hangs in the chamber, with its origin at the centre of its lower
 edge and its face toward the viewer (-Y); off the hook it lies flat on the bench, face up, its lower edge nearest
-the student (`benchRest`). Nothing is printed on it: the pencil baseline, the spots, the rising solvent front, the
+the student (`benchRest`), on a white tile the viewer draws as scenery (`restsOn`, decided 2026-10-11). Nothing is
+printed on it: the pencil baseline, the spots, the rising solvent front, the
 bands and the front mark are drawn by the viewer from the runtime's chromatogram state, on the face that
 `stripFace` describes (its width, length and thickness, the face's outward normal, and the hole). The bands come
 from the prepared values, never baked in. Wet paper darkens (`wetLook`).
@@ -33,6 +34,7 @@ def build(coll, M):
         'grip': {'heightMm': L - 12.0},
         'graduations': None,
         'benchRest': {'rollDeg': -90.0, 'liftMm': T / 2, 'shiftMm': [0.0, -L / 2]},
+        'restsOn': 'white-tile',
         'stripFace': {'widthMm': W, 'lengthMm': L, 'thicknessMm': T, 'normalMm': [0.0, -1.0, 0.0],
                       'hole': {'centreZMm': HOLE_Z, 'radiusMm': S['hole_r']}},
         'wetLook': True,

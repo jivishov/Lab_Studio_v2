@@ -479,6 +479,7 @@
           -55.0
         ]
       },
+      "restsOn": "white-tile",
       "stripFace": {
         "widthMm": 15.0,
         "lengthMm": 110.0,
@@ -500,7 +501,7 @@
       "provenance": {
         "blender": "5.2.2",
         "generator": "tools/blender/equipment/chromatography_paper.py",
-        "sourceHash": "fe9b2778bec03ef327ee75b7c82ddeb42e9e4bf401c45153015af84acc85a9f6"
+        "sourceHash": "c05aaea1ac6ab2e47dd7130889afe0008f876be5e7c4249f44bf7423d8d2802d"
       }
     },
     {
@@ -2532,6 +2533,39 @@
         "generator": "tools/blender/equipment/weigh_boat.py",
         "sourceHash": "a4bb69b0d9768f37cea062f1beec8e662585dd678a7123b89779f9691aab19fc"
       }
+    },
+    {
+      "definitionId": "white-tile",
+      "model": "white-tile.glb",
+      "thumbnail": "thumbs/white-tile.png",
+      "footprintMm": {
+        "shape": "rect",
+        "width": 150.0,
+        "depth": 150.0
+      },
+      "grip": {
+        "heightMm": 6.0
+      },
+      "graduations": null,
+      "sceneryFor": {
+        "definitionId": "chromatography-paper",
+        "seatsMm": [
+          [
+            0.0,
+            0.0,
+            6.0
+          ]
+        ]
+      },
+      "anchors": {},
+      "displays": [],
+      "states": {},
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/white_tile.py",
+        "sourceHash": "eade5d4c0b154a96795dd2be73ce0c6a223682b984529ead43feb7a274eac622"
+      },
+      "scenery": true
     }
   ]
 }

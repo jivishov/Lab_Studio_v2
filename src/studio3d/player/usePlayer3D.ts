@@ -7,9 +7,9 @@ import { usePlayerRuntime } from "../../player/usePlayerRuntime";
 import type { RuntimeDefinition } from "../../runtime";
 import { resolveInteractionIntent, type InteractionInvalidFeedback, type RuntimeInteractionIntent } from "../../runtime/interactionIntents";
 import { fromBench, benchPositionWords, runtimeBenchPointsMm, toBench } from "../adapters/benchCoordinates";
-import { footprintOf, nearestFreeSpot, type FootprintMm } from "../adapters/footprints";
+import { benchFootprintOf, footprintOf, nearestFreeSpot, type FootprintMm } from "../adapters/footprints";
 import { readingShownFor } from "../adapters/instrumentDisplay";
-import { fillLevelMm, pourStagingScene, runtimeToScene, sceneContents, type SceneContents, type SceneDescription, type SceneStrip } from "../adapters/runtimeToScene";
+import { fillLevelMm, pourStagingScene, runtimeToScene, sceneContents, sceneryUnder, type SceneContents, type SceneDescription, type SceneStrip } from "../adapters/runtimeToScene";
 import { heldOnSeat, readingSeatZone } from "../bench/scene/setOn";
 import { benchMoveRequest, benchOpStepFor, chromStepFor, intentTypeForInteraction, markStepFor, mergeActionInput, pipetteStepFor, resolveTrayDrop, stepClockSeconds, tongsStepFor, toolTransferFor, type ReleaseOrigin } from "../adapters/sceneToIntent";
 import { stablePlacementPoint } from "../adapters/stableBench";
@@ -325,10 +325,15 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     const state = runtime.getState();
     const points = runtimeBenchPointsMm(state);
     return state.equipmentInstances
-      .filter((instance) => instance.location === "workbench" && instance.id !== exceptId)
+      .filter((instance) => instance.id !== exceptId)
       .flatMap((instance) => {
-        const p = points.get(instance.id);
-        return p ? [footprintOf(equipment3dEntry(instance.definitionId), p.xMm, p.yMm)] : [];
+        const p = instance.location === "workbench" ? points.get(instance.id) : undefined;
+        // Scenery an item lies on takes room too, also where the item lay while it hangs elsewhere (a strip's tile).
+        const under = sceneryUnder(state, instance, points);
+        return [
+          ...(p ? [footprintOf(equipment3dEntry(instance.definitionId), p.xMm, p.yMm)] : []),
+          ...(under ? [footprintOf(under.model, under.point.xMm, under.point.yMm)] : []),
+        ];
       });
   }, [runtime]);
 
@@ -487,7 +492,7 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     const before = runtime.getState();
     const instance = before.equipmentInstances.find((i) => i.id === instanceId);
     if (!instance) return;
-    const spot = nearestFreeSpot(footprintOf(equipment3dEntry(instance.definitionId), xMm, yMm), occupiedFootprints(instanceId));
+    const spot = nearestFreeSpot(benchFootprintOf(equipment3dEntry(instance.definitionId), xMm, yMm), occupiedFootprints(instanceId));
     const next = runtime.performAction(benchMoveRequest(instanceId, fromBench(instance.definitionId, spot.xMm, spot.yMm), nextZIndex()));
     reportCommit(before, next, `${instance.label} moved to the ${benchPositionWords(spot.xMm, spot.yMm)}`);
   }, [nextZIndex, occupiedFootprints, reportCommit, runtime]);
@@ -517,7 +522,7 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     // A tile's Enter has no point of its own: it starts from its slot, whose picture sizes are not the 3D
     // footprints, so it too takes the nearest free spot (a ring stand never stands in a balance).
     const start = at ?? toBench(definitionId, stablePlacementPoint(runtime.getState(), definitionId, instanceId));
-    const spot = nearestFreeSpot(footprintOf(equipment3dEntry(definitionId), start.xMm, start.yMm), occupiedFootprints());
+    const spot = nearestFreeSpot(benchFootprintOf(equipment3dEntry(definitionId), start.xMm, start.yMm), occupiedFootprints());
     const point = fromBench(definitionId, spot.xMm, spot.yMm);
     const actionDefinitionId = runtime.expectedAction?.parameters.equipmentDefinitionId;
     const resolution = resolveTrayDrop(interaction, nodeCompletedIn(runtime.getState(), runtime.currentNode.id),

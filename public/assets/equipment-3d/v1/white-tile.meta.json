@@ -1,0 +1,60 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "white-tile",
+  "model": "white-tile.glb",
+  "thumbnail": "thumbs/white-tile.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "rect",
+      "width": 150.0,
+      "depth": 150.0
+    },
+    "grip": {
+      "heightMm": 6.0
+    },
+    "graduations": null,
+    "sceneryFor": {
+      "definitionId": "chromatography-paper",
+      "seatsMm": [
+        [
+          0.0,
+          0.0,
+          6.0
+        ]
+      ]
+    },
+    "anchors": {},
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -75.0,
+        -75.0,
+        0.0
+      ],
+      "max": [
+        75.0,
+        75.0,
+        6.0
+      ]
+    },
+    "triangles": 188,
+    "materials": [
+      "Glazed tile white"
+    ],
+    "scenery": true
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/white_tile.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "eade5d4c0b154a96795dd2be73ce0c6a223682b984529ead43feb7a274eac622",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

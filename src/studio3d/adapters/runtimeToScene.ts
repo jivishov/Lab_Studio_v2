@@ -1,3 +1,4 @@
+import { isVisibleWorkbenchLocation } from "../../domain/equipmentLocations";
 import type { ActionDefinition, AttachmentRelation, ContentState, EquipmentInstance, RuntimeState } from "../../domain/types";
 import { equipmentById } from "../../equipment/catalog";
 import { resolveLiquidStyle } from "../../equipment/liquidRendering";
@@ -8,6 +9,7 @@ import { equipment3dEntry, equipment3dRegistry } from "../equipment3d/readiness"
 import type { Equipment3DEntry, Equipment3DFill } from "../equipment3d/types";
 import { BENCH_MM, runtimeBenchPointsMm, toBench, type BenchPointMm } from "./benchCoordinates";
 import { instrumentDisplay, type InstrumentDisplayModel } from "./instrumentDisplay";
+import { stableRestPoint } from "./stableBench";
 
 /**
  * Runtime state -> a scene description the bench engine draws (plan §4.4). Pure: it reads runtime
@@ -22,6 +24,7 @@ import { instrumentDisplay, type InstrumentDisplayModel } from "./instrumentDisp
  * | ContentState                         | level from the 3D fill profile; colour from the one      |
  * |                                      | liquid palette (resolveLiquidStyle); powder when solid   |
  * | an instrument                        | display lines from instrumentDisplay only                 |
+ * | an item that `restsOn` scenery       | the scenery drawn under it, or where it lay (D9)          |
  */
 
 export type ScenePlacement =
@@ -97,6 +100,13 @@ export interface SceneItem {
   display?: InstrumentDisplayModel;
   /** Visual-only scenery drawn with this item, never a runtime object (decision D9). */
   scenery?: { sceneryId: string; model: Equipment3DEntry; seatIndex: number };
+  /**
+   * Visual-only scenery lying flat on the bench at `point` (`restsOn`; a strip's white tile, decided 2026-10-11):
+   * under the item while it lies on the bench, and left where it lay while the item is held elsewhere on the bench.
+   */
+  benchScenery?: { sceneryId: string; model: Equipment3DEntry; point: BenchPointMm };
+  /** The height of the scenery top this item lies on, mm (a strip or the ruler beside it on the tile). */
+  restOnMm?: number;
 }
 
 export interface SceneTrayItem {
@@ -262,7 +272,7 @@ const chamberApparatus = (instance: EquipmentInstance, state: RuntimeState): Rec
  */
 const alignedPoint = (
   instance: EquipmentInstance, state: RuntimeState, definition: SceneDefinition, points: Map<string, BenchPointMm>,
-): BenchPointMm | undefined => {
+): (BenchPointMm & { restOnMm?: number }) | undefined => {
   const scale = equipment3dEntry(instance.definitionId)?.scaleMm;
   if (!scale) return undefined;
   let alignWith: unknown;
@@ -283,15 +293,35 @@ const alignedPoint = (
   const dx = halfWidth + 0.6 - scale.zeroMm[0];
   const dy = stripModel.benchRest.shiftMm[1] + baselineMm - scale.zeroMm[1];
   const yaw = at.yawDeg * (Math.PI / 180);
+  // On the strip's tile, the ruler lies on the tile too.
+  const tileTop = stripModel.restsOn ? sceneryEntry(stripModel.restsOn)?.sceneryFor?.seatsMm[0]?.[2] : undefined;
   return {
     xMm: at.xMm + dx * Math.cos(yaw) - dy * Math.sin(yaw),
     yMm: at.yMm + dx * Math.sin(yaw) + dy * Math.cos(yaw),
     yawDeg: at.yawDeg,
+    ...(tileTop ? { restOnMm: tileTop } : {}),
   };
 };
 
 const sceneryEntry = (id: string): Equipment3DEntry | undefined =>
   equipment3dRegistry.entries.find((entry) => entry.scenery && entry.definitionId === id);
+
+/**
+ * The scenery an item lies on (`restsOn`; a chromatography strip's white tile, decided 2026-10-11) and where it
+ * lies: under the item on the bench, and while the item is held elsewhere on the bench (a strip hanging in its
+ * chamber) where it lay, which is the item's own position, else its slot (stableBench.ts). None while the item is
+ * in the tray, in storage or in an instrument. Scenery only: never a runtime object (D9, G-8).
+ */
+export const sceneryUnder = (
+  state: RuntimeState, instance: EquipmentInstance, points: Map<string, BenchPointMm>,
+): { model: Equipment3DEntry; point: BenchPointMm } | undefined => {
+  const restsOn = equipment3dEntry(instance.definitionId)?.restsOn;
+  const model = restsOn ? sceneryEntry(restsOn) : undefined;
+  if (!model || !isVisibleWorkbenchLocation(instance.location)) return undefined;
+  const lay = points.get(instance.id) ?? stableRestPoint(state, instance.id);
+  const point = lay && "xMm" in lay ? lay : lay ? toBench(instance.definitionId, lay) : undefined;
+  return point ? { model, point } : undefined;
+};
 
 export const runtimeToScene = (state: RuntimeState, definition: SceneDefinition): SceneDescription => {
   const byId = new Map(state.equipmentInstances.map((instance) => [instance.id, instance]));
@@ -327,6 +357,7 @@ export const runtimeToScene = (state: RuntimeState, definition: SceneDefinition)
     // A strip on the hook of a lid held up (`liftedWithLidMm`): raised with the lid, its edge out of the solvent.
     const parentModel = parent ? equipment3dEntry(parent.definitionId) : undefined;
     const lifted = parent && parentModel?.liftedWithLidMm && parent.contents.developingChamberClosed === false ? parentModel.liftedWithLidMm : 0;
+    const aligned = relation && anchor ? undefined : alignedPoint(instance, state, definition, benchPoints);
     const placement: ScenePlacement = relation && anchor
       ? {
           kind: "seated",
@@ -339,7 +370,7 @@ export const runtimeToScene = (state: RuntimeState, definition: SceneDefinition)
           renderMode: relation.renderMode,
           locked: Boolean(relation.locked),
         }
-      : { kind: "bench", point: alignedPoint(instance, state, definition, benchPoints) ?? benchPoints.get(instance.id) ?? toBench(instance.definitionId, instance) };
+      : { kind: "bench", point: aligned ? { xMm: aligned.xMm, yMm: aligned.yMm, yawDeg: aligned.yawDeg } : benchPoints.get(instance.id) ?? toBench(instance.definitionId, instance) };
     const chamber = chamberApparatus(instance, state);
     const apparatus = chamber ? { ...state.apparatusStates?.[instance.id], ...chamber } : state.apparatusStates?.[instance.id];
     const strip = model?.stripFace ? sceneStrip(instance, state, definition) : undefined;
@@ -365,6 +396,14 @@ export const runtimeToScene = (state: RuntimeState, definition: SceneDefinition)
       const scenery = sceneryEntry(model.requiresSupport);
       if (scenery) item.scenery = { sceneryId: scenery.definitionId, model: scenery, seatIndex: 1 };
     }
+    const under = sceneryUnder(state, instance, benchPoints);
+    if (under) {
+      // Lying on the bench, the item lies on it; elsewhere, the scenery stays where the item lay.
+      const point = placement.kind === "bench" ? placement.point : under.point;
+      item.benchScenery = { sceneryId: under.model.definitionId, model: under.model, point };
+      if (placement.kind === "bench") item.restOnMm = under.model.sceneryFor?.seatsMm[0]?.[2] ?? 0;
+    }
+    if (aligned?.restOnMm) item.restOnMm = aligned.restOnMm;
     bench.push(item);
   }
   return { bench, tray, hidden, missingModels: [...missing].sort() };
