@@ -38,7 +38,11 @@ export const MANUAL = {
   distanceMin: 3.2 * S,
   distanceMax: 20 * S,
   atX: 7 * S,
-  atZ: 4.5 * S,
+  /**
+   * Forward and back: the source's 4.5 units, doubled (decided 2026-10-11) so a left-drag can slide the bench well
+   * up or down the screen. Right-drag clamps to the same range, so it never snaps a slid view back.
+   */
+  atZ: 9 * S,
   /** Radians per pixel: orbit yaw, and pitch (orbit and pan-tilt alike). */
   yawPerPx: 0.006,
   pitchPerPx: 0.005,
@@ -115,6 +119,19 @@ export const panTiltBy = (view: OrbitView, from: THREE.Vector3 | null, to: THREE
   return { ...view, at: from && to ? clampAt(at) : at, pitch: clampPitch(view.pitch + dy * MANUAL.pitchPerPx) };
 };
 
+/**
+ * Left-drag on empty bench (decided 2026-10-11): the bench slides with the pointer, up and down as well as sideways,
+ * the bench point under the pointer staying under it (`from` and `to` are the bench points under the pointer before
+ * and after). Near the horizon a pixel spans metres of bench, so one move goes at most a quarter of the distance.
+ */
+export const slideBy = (view: OrbitView, from: THREE.Vector3 | null, to: THREE.Vector3 | null): OrbitView => {
+  if (!from || !to) return view;
+  const step = from.clone().sub(to).setY(0);
+  const most = view.distance / 4;
+  if (step.length() > most) step.setLength(most);
+  return { ...view, at: clampAt(view.at.clone().add(step)) };
+};
+
 /** The wheel (`app.js:146-151`): zoom by e^(deltaY·k); `refit` then keeps the bench point under the pointer fixed. */
 export const zoomBy = (view: OrbitView, deltaY: number): OrbitView =>
   ({ ...copyView(view), distance: clamp(view.distance * Math.exp(deltaY * MANUAL.zoomPerDelta), MANUAL.distanceMin, MANUAL.distanceMax) });
@@ -188,17 +205,23 @@ export const safeRects = (size: Size, obstacles: readonly Rect[], bottomLimit = 
 };
 
 /**
+ * How far a real framing's look-at point can lie: twice the source's manual limits (7 and 4.5 units), kept when the
+ * manual forward-and-back range was doubled for the slide.
+ */
+const FRAME_REACH = { x: 14 * S, z: 9 * S };
+
+/**
  * Fit into each free rectangle and keep the one that frames the points largest (`framing.js:66-67`).
  * A fit that ran away is dropped: with a point close behind the camera its projection flips, and the
  * look-at point can be driven tens of metres off the bench (seen in Heat and Reweigh's practice, the
  * clay triangle placed with the ring stand at the bench's front edge), leaving an empty view. A real
- * framing keeps the look-at point within twice the manual limits; with none left the view stays.
+ * framing keeps the look-at point within `FRAME_REACH`; with none left the view stays.
  */
 export const fitBest = (points: readonly THREE.Vector3[], base: OrbitView, size: Size, rects: readonly Rect[],
   limits?: { min: number; max: number }): OrbitView | undefined => rects
   .map((rect) => fit(points, base, size, rect, limits))
   .filter((c) => [c.at.x, c.at.y, c.at.z, c.distance, c.pitch].every(Number.isFinite))
-  .filter((c) => Math.abs(c.at.x) <= 2 * MANUAL.atX && Math.abs(c.at.z) <= 2 * MANUAL.atZ)
+  .filter((c) => Math.abs(c.at.x) <= FRAME_REACH.x && Math.abs(c.at.z) <= FRAME_REACH.z)
   .sort((a, b) => a.distance - b.distance)[0];
 
 /** The source's tween easing (`framing.js:7`, easeInOutCubic). */

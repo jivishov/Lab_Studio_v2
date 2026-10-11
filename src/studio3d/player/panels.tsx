@@ -294,6 +294,7 @@ const CONTROLS: Record<string, Array<[string, string]>> = {
     ["Click the flask at a swirl or invert step", "Swirl it, or turn it over and back once"],
     ["Esc or right-click while holding it", "Put it back"],
     ["Double-click an item", "Examine it"],
+    ["Drag on empty bench", "Slide the bench up, down or sideways"],
     ["Right-drag", "Pan sideways; drag up or down to tilt"],
     ["Shift or Alt + right-drag, or middle-drag", "Orbit"],
     ["Wheel", "Zoom toward the pointer"],

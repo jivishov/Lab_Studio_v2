@@ -6,7 +6,7 @@ import { ModelLibrary } from "../equipment3d/loadModels";
 import type { Equipment3DEntry } from "../equipment3d/types";
 import {
   applyView, clampAt, clampManual, copyView, DEFAULT_VIEW, easeInOutCubic, FAR, fitBest, FOV, lerpView, MANUAL, NEAR,
-  orbitBy, panTiltBy, PRESETS, safeRects, zoomBy, type OrbitView, type Rect,
+  orbitBy, panTiltBy, PRESETS, safeRects, slideBy, zoomBy, type OrbitView, type Rect,
 } from "./camera/benchCamera";
 import { makeComposer } from "./look/composer";
 import { ContactShadows } from "./look/contactShadows";
@@ -142,7 +142,7 @@ export class BenchEngine {
   /** Set while an item is held, so a touch drag carries it instead of moving the camera. */
   private cameraHeld = false;
   private turntable = false;
-  private camDrag?: { id: number; button: number; mode: "orbit" | "pan"; x: number; y: number; startX: number; startY: number; drag: boolean };
+  private camDrag?: { id: number; button: number; mode: "orbit" | "pan" | "slide"; x: number; y: number; startX: number; startY: number; drag: boolean };
   private readonly touches = new Map<number, { x: number; y: number }>();
   private touchGesture?: { startX: number; startY: number; x: number; y: number; drag: boolean; span?: number; manual: boolean };
   private detachCameraInput?: () => void;
@@ -219,6 +219,8 @@ export class BenchEngine {
   onCameraClick?: () => void;
   /** Any mouse press or wheel on the bench: mouse and hand control exclude each other (`app.js:78`). */
   onMouseInput?: () => void;
+  /** Whether a left press on empty bench may slide the view: not while an item is carried (a press then sets it down). */
+  canSlideBench?: () => boolean;
   /** GLB bytes downloaded of those requested, and how many models are still loading (§5.2). */
   onLoadProgress?: (loadedBytes: number, totalBytes: number, pending: number) => void;
   /** The free rectangles of the canvas around open panels (`safeRects`); framing fits into them. */
@@ -2215,7 +2217,9 @@ export class BenchEngine {
    * pans sideways (the bench point under the pointer stays under it) and tilts with up/down; Shift
    * or Alt + right-drag, or middle-drag, orbits; the wheel zooms toward the bench point under the
    * pointer. Drags start after 3 px; a right click without a drag calls `onCameraClick`. The left
-   * button is never the camera's. Touch (choice 5, tablets): one finger on empty bench pans and
+   * button is the camera's only on empty bench with nothing carried (decided 2026-10-11): a left-drag there slides
+   * the bench with the pointer (`slideBy`); a left press on an item or a control is the item's. Touch (choice 5,
+   * tablets): one finger on empty bench pans and
    * tilts like a right-drag, a pinch zooms and a two-finger drag orbits; a touch that picks up an
    * item holds the camera (`holdCameraInput`).
    */
@@ -2234,6 +2238,14 @@ export class BenchEngine {
         canvas.setPointerCapture(e.pointerId);
         if (this.cameraHeld) return;
         this.startTouchGesture();
+        return;
+      }
+      if (e.button === 0) {
+        const p = point(e);
+        if (!(this.canSlideBench?.() ?? false) || this.pick(e.clientX, e.clientY) || this.pickControl(e.clientX, e.clientY)) return;
+        if (!this.onBench(p.x, p.y)) return;
+        this.camDrag = { id: e.pointerId, button: 0, mode: "slide", x: p.x, y: p.y, startX: p.x, startY: p.y, drag: false };
+        canvas.setPointerCapture(e.pointerId);
         return;
       }
       if (e.button !== 1 && e.button !== 2) return;
@@ -2259,6 +2271,7 @@ export class BenchEngine {
       }
       if (d.drag) {
         if (d.mode === "orbit") this.setView(orbitBy(this.view, p.x - d.x, p.y - d.y));
+        else if (d.mode === "slide") this.setView(slideBy(this.view, this.onBench(d.x, d.y), this.onBench(p.x, p.y)));
         else this.setView(panTiltBy(this.view, this.onBench(d.x, d.y), this.onBench(p.x, d.y), p.y - d.y));
       }
       d.x = p.x;

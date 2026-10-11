@@ -916,7 +916,12 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     engine.onCameraClick = () => { if (carryCancelRef.current.carrying) carryCancelRef.current.cancel(); };
     // Mouse and hand exclude each other: a mouse press or the wheel stops the camera (decided 2026-10-04).
     engine.onMouseInput = () => { if (handStopRef.current.running) handStopRef.current.stop(); };
-    return () => { engine.onManualCamera = undefined; engine.onChange = undefined; engine.onCameraClick = undefined; engine.onMouseInput = undefined; };
+    // A left-drag on empty bench slides it, unless an item is carried: a press then sets the item down (decided 2026-10-11).
+    engine.canSlideBench = () => !carryCancelRef.current.carrying;
+    return () => {
+      engine.onManualCamera = undefined; engine.onChange = undefined; engine.onCameraClick = undefined; engine.onMouseInput = undefined;
+      engine.canSlideBench = undefined;
+    };
   }, [engine]);
 
   // The loader (§5.2): the bar counts the technique's GLB bytes until the first bench is drawn.

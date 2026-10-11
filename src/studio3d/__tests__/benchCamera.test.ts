@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { describe, expect, it } from "vitest";
 import {
-  applyView, clampManual, DEFAULT_VIEW, eyeOf, fit, fitBest, frontYaw, MANUAL, orbitBy, panTiltBy, PRESETS, safeRects, zoomBy,
+  applyView, clampManual, DEFAULT_VIEW, eyeOf, fit, fitBest, frontYaw, MANUAL, orbitBy, panTiltBy, PRESETS, safeRects, slideBy, zoomBy,
 } from "../bench/camera/benchCamera";
 import { ROOM_SCALE } from "../bench/look/room";
 
@@ -58,6 +58,22 @@ describe("manual input (app.js:111-151)", () => {
     const view = panTiltBy(DEFAULT_VIEW(), from, to, -10);
     expect(view.at.x).toBeCloseTo(DEFAULT_VIEW().at.x - 0.2, 9);
     expect(view.pitch).toBeCloseTo(0.72 - 0.05, 9);
+  });
+
+  it("slides the bench with a left-drag, up and down as well as sideways, over twice the source's range (2026-10-11)", () => {
+    expect(MANUAL.atZ).toBeCloseTo(9 * ROOM_SCALE, 9);
+    const start = DEFAULT_VIEW();
+    const view = slideBy(start, new THREE.Vector3(0.1, 0, 0.2), new THREE.Vector3(0.05, 0, 0.1));
+    expect(view.at.x).toBeCloseTo(start.at.x + 0.05, 9);
+    expect(view.at.z).toBeCloseTo(start.at.z + 0.1, 9);
+    expect(view.at.y).toBe(start.at.y);
+    expect([view.yaw, view.pitch, view.distance]).toEqual([start.yaw, start.pitch, start.distance]);
+    // A move near the horizon goes at most a quarter of the distance; the range stops at the limit.
+    expect(slideBy(start, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -50)).at.z).toBeCloseTo(start.at.z + start.distance / 4, 9);
+    let far = start;
+    for (let i = 0; i < 40; i += 1) far = slideBy(far, new THREE.Vector3(0, 0, 0.5), new THREE.Vector3(0, 0, 0.4));
+    expect(far.at.z).toBeCloseTo(MANUAL.atZ, 9);
+    expect(slideBy(start, null, new THREE.Vector3())).toBe(start);
   });
 
   it("clamps only what each input changes, so a close programmatic view is not thrown out by an orbit", () => {
