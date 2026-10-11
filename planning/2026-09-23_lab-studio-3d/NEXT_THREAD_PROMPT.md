@@ -8,6 +8,10 @@ file in full, including the notes at its top, then follow the prompt below its l
 where they differ from the prompt. The "Model refinement note (2026-10-10)" says what the refined model library
 means for Pack 3: the size room for its new models, and the standard to build them to.
 
+The final, authoritative code for the 3D version is branch `claude/lab-studio-3d` in the worktree
+`C:\Users\EmilJivishov\Projects\Lab_studio\tmp\lab-studio-3d`, kept completely separate from the 2D version
+(the user, 2026-10-10). Commit there. Never merge, fast-forward or push it into `main`, which is the 2D version.
+
 Held until the user asks:
 - pushing the branch (`origin/claude/lab-studio-3d` is at `713c248`; every later commit is local);
 - publishing the D8 experiment to virtuallab.az;

@@ -214,6 +214,12 @@ static validators; tests are written but not run):
 - **Its main checkout** is `C:\Users\EmilJivishov\Projects\Lab_studio\tmp\github-export\Lab_Studio_v2`
   (`git rev-parse --git-common-dir`). The main checkout and our worktree share branches and the stash.
   Don't work in it, and don't change its branch.
+- **The authoritative 3D code** (the user, 2026-10-10: "keep everything final in lab-studio-3d and completely
+  separate from 2D version"). The final code for the 3D version is branch `claude/lab-studio-3d` in this
+  worktree, committed there.
+  - `main`, local or on GitHub, is the 2D version. Never merge, fast-forward or push the 3D branch into it.
+  - On 2026-10-10, local `main` was fast-forwarded to `5a46492` by mistake. It was put back at `f5ea303` the same
+    day, with its checkout clean.
 - **Baseline:** GitHub main `1d28429` (decision D1).
 - **Hands off.** Don't modify the authoritative working copy `C:\Users\EmilJivishov\Projects\Lab_studio`
   (Projects branch `codex/Lab_Studio`). The only exception is the git-ignored `tmp\` worktrees above,
