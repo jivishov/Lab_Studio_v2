@@ -16,32 +16,33 @@ describe("a committed pour is staged on the committed layout (handoff §5.7, G-3
   const after = result.ok ? performRuntimeAction(making, before, result.request) : before;
   const request = result.ok ? result.request : undefined;
 
-  it("has both vessels on the bench, holding what they held before the pour", () => {
+  it("has both vessels drawn, holding what they held before the pour", () => {
     expect(request?.sourceInstanceId && request.targetInstanceId).toBeTruthy();
     const staging = pourStagingScene(before, after, making, { sourceId: request!.sourceInstanceId!, targetId: request!.targetInstanceId! });
-    const source = staging.bench.find((i) => i.instanceId === request!.sourceInstanceId);
+    const source = [...staging.bench, ...staging.tray].find((i) => i.instanceId === request!.sourceInstanceId);
     const target = staging.bench.find((i) => i.instanceId === request!.targetInstanceId);
     expect(target?.contents.kind).toBe("none");
     expect(source?.contents).toMatchObject({ kind: "liquid", volumeMl: 500 });
   });
 
-  it("stands a shelf source beside the target for the animation only", () => {
+  it("leaves a shelf source on its shelf spot, holding what it held, for the animation to lift from and return to", () => {
     const sourceId = request!.sourceInstanceId!;
     // The runtime pours from the wash bottle where it stands: it stays on the shelf.
     expect(after.equipmentInstances.find((i) => i.id === sourceId)?.location).toBe("shelf");
-    expect(runtimeToScene(after, making).bench.some((i) => i.instanceId === sourceId)).toBe(false);
-    const staging = pourStagingScene(before, after, making, { sourceId, targetId: request!.targetInstanceId! });
-    const target = staging.bench.find((i) => i.instanceId === request!.targetInstanceId)!;
-    const source = staging.bench.find((i) => i.instanceId === sourceId)!;
-    expect(source.placement.kind).toBe("bench");
-    if (source.placement.kind === "bench" && target.placement.kind === "bench") {
-      expect(source.placement.point.yMm).toBe(target.placement.point.yMm);
-      expect(Math.abs(source.placement.point.xMm - target.placement.point.xMm)).toBeGreaterThan(80);
-    }
-    // Every other item is exactly as the committed scene has it.
     const committed = runtimeToScene(after, making);
+    expect(committed.bench.some((i) => i.instanceId === sourceId)).toBe(false);
+    const staging = pourStagingScene(before, after, making, { sourceId, targetId: request!.targetInstanceId! });
+    expect(staging.bench.some((i) => i.instanceId === sourceId)).toBe(false);
+    const source = staging.tray.find((i) => i.instanceId === sourceId)!;
+    // On its own spot, with its contents from before the pour.
+    expect(source.spot).toEqual(committed.tray.find((i) => i.instanceId === sourceId)!.spot);
+    expect(source.contents).toMatchObject({ kind: "liquid", volumeMl: 500 });
+    // Every other item is exactly as the committed scene has it.
     for (const item of committed.bench.filter((i) => i.instanceId !== request!.targetInstanceId)) {
       expect(staging.bench.find((i) => i.instanceId === item.instanceId)).toEqual(item);
+    }
+    for (const item of committed.tray.filter((i) => i.instanceId !== sourceId)) {
+      expect(staging.tray.find((i) => i.instanceId === item.instanceId)).toEqual(item);
     }
   });
 });
