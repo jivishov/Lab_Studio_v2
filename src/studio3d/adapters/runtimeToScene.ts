@@ -65,6 +65,8 @@ export interface SceneStrip {
   baselineMm?: number;
   /** Touches of the capillary on the baseline (the spot grows with each). */
   spots: number;
+  /** The spot's colour: the spotted liquid's, from the one palette (resolveLiquidStyle, G-9). */
+  spotColor?: string;
   /** The front's distance from the baseline once developed, in mm. */
   frontMm?: number;
   frontMarked: boolean;
@@ -189,16 +191,42 @@ export const sceneContents = (instance: EquipmentInstance, model?: Equipment3DEn
   return { kind: "none" };
 };
 
+/**
+ * The colour of what was spotted (G-9: one liquid palette): the spotter's liquid, or, once the spotter is empty, the
+ * liquid it was last filled from.
+ */
+const spotColour = (state: RuntimeState, definition: SceneDefinition, spotterId: unknown): string | undefined => {
+  const fillOf = (id: unknown): string | undefined => {
+    const instance = typeof id === "string" ? state.equipmentInstances.find((candidate) => candidate.id === id) : undefined;
+    return instance && isVisibleLiquid(instance.contents)
+      ? resolveLiquidStyle(instance.contents, equipmentById.get(instance.definitionId)).fill : undefined;
+  };
+  if (typeof spotterId !== "string") return undefined;
+  const own = fillOf(spotterId);
+  if (own) return own;
+  for (const attempt of [...state.attemptHistory].reverse()) {
+    const parameters = attempt.success ? definition.actions.find((action) => action.id === attempt.actionId)?.parameters : undefined;
+    if (parameters?.targetInstanceId !== spotterId) continue;
+    const source = fillOf(parameters.sourceInstanceId);
+    if (source) return source;
+  }
+  return undefined;
+};
+
 /** The strip's marks from its chromatogram and the spotting touches the runtime accepted (Pack 3a). */
 const sceneStrip = (instance: EquipmentInstance, state: RuntimeState, definition: SceneDefinition): SceneStrip | undefined => {
   const chromatogram = instance.contents.chromatogram;
   if (!chromatogram) return undefined;
-  const spots = state.attemptHistory.filter((attempt) => attempt.success && attempt.verb === "spotSample"
-    && definition.actions.find((action) => action.id === attempt.actionId)?.parameters.targetInstanceId === instance.id).length;
+  const touches = state.attemptHistory
+    .filter((attempt) => attempt.success && attempt.verb === "spotSample")
+    .map((attempt) => definition.actions.find((action) => action.id === attempt.actionId))
+    .filter((action) => action?.parameters.targetInstanceId === instance.id);
+  const spotColor = chromatogram.spotted ? spotColour(state, definition, touches[0]?.parameters.sourceInstanceId) : undefined;
   const developed = chromatogram.solventFrontMm !== undefined;
   return {
     ...(chromatogram.baselineMarked && chromatogram.originDistanceMm !== undefined ? { baselineMm: chromatogram.originDistanceMm } : {}),
-    spots: chromatogram.spotted ? Math.max(1, spots) : 0,
+    spots: chromatogram.spotted ? Math.max(1, touches.length) : 0,
+    ...(spotColor ? { spotColor } : {}),
     ...(developed ? { frontMm: chromatogram.solventFrontMm } : {}),
     frontMarked: Boolean(chromatogram.solventFrontMarked),
     bands: developed ? chromatogram.bands.map((band) => ({ color: band.color, distanceMm: band.distanceMm })) : [],

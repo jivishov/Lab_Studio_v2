@@ -6,12 +6,15 @@ import { applyTechniqueConfiguration } from "../../data/techniqueConfiguration";
 import { resolveActionInteraction } from "../../domain/interactions";
 import type { RuntimeState, TechniqueDefinition } from "../../domain/types";
 import { validateTechniqueDefinition } from "../../domain/validation";
+import { equipmentById } from "../../equipment/catalog";
+import { resolveLiquidStyle } from "../../equipment/liquidRendering";
 import { createRuntimeState, performRuntimeAction } from "../../runtime";
 import { resolveActionInput } from "../../runtime/actionInputs";
 import { resolveInteractionIntent, type RuntimeInteractionIntent } from "../../runtime/interactionIntents";
 import { runtimeToScene } from "../adapters/runtimeToScene";
 import { benchMoveRequest, intentTypeForInteraction, mergeActionInput } from "../adapters/sceneToIntent";
 import { stepFlow } from "../player/stepRules";
+import { solventDepthAboveStripMm, withDerived3D } from "../prepared3d";
 
 /**
  * Pack 3's 3D practice versions (decided 2026-10-10, PACK3_ATOMIZATION.md), on `pack2Practice.test.ts`'s pattern: each
@@ -223,5 +226,26 @@ describe("Paper Chromatography", () => {
     // The strip's lower edge is 55 mm before its centre; the ruler's zero is 76 mm before, and 14 mm left of, its own.
     expect(ruler.yMm - 76).toBeCloseTo(paper.yMm - 55 + 15, 6);
     expect(ruler.xMm - 14).toBeCloseTo(paper.xMm + 7.5 + 0.6, 6);
+  });
+
+  it("draws the spot in the dye mixture's own colour, from the one liquid palette (G-9)", () => {
+    const { technique, state } = playTo(id, "dry-spot-1");
+    const strip = runtimeToScene(state, technique).bench.find((item) => item.instanceId === "paper-1")!.strip!;
+    const vial = state.equipmentInstances.find((instance) => instance.id === "dye-vial-1")!;
+    expect(strip.spots).toBe(1);
+    expect(strip.spotColor).toBe(resolveLiquidStyle(vial.contents, equipmentById.get(vial.definitionId)).fill);
+  });
+
+  it("works the solvent's depth out from its volume, and refuses values the strip or the capillary cannot take", () => {
+    const technique = read("public/techniques-3d/paper-chromatography-practice.json") as TechniqueDefinition;
+    const values = { solventVolumeMl: "4", baselineHeightMm: "15", spotterLoadVolumeMl: "0.03", spotVolumeMl: "0.005" };
+    const depth = Number(withDerived3D(technique, values).solventDepthMm);
+    expect(depth).toBe(solventDepthAboveStripMm(4));
+    expect(depth).toBeGreaterThan(0);
+    expect(depth).toBeLessThan(15);
+    expect(() => withDerived3D(technique, { ...values, solventVolumeMl: "20" })).toThrow(/over its 15 mm baseline/);
+    // Three touches of 0.02 mL need more than the 0.03 mL drawn up; 0.07 mL is more than the tube holds.
+    expect(() => withDerived3D(technique, { ...values, spotVolumeMl: "0.02" })).toThrow(/3 touches of 0.02 mL need 0.06 mL/);
+    expect(() => withDerived3D(technique, { ...values, spotterLoadVolumeMl: "0.07" })).toThrow(/holds 0.059 mL/);
   });
 });

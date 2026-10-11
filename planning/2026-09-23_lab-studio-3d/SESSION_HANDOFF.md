@@ -15,7 +15,8 @@ the evidence notes have what was built and checked.
 2026-10-04 (`9798de1` P0 to the P5 records commit, and the fidelity review `b886175`), then Make a Solution
 atomized (D4 exception 9, `63096ed`) and its fidelity review, and everything since: the D8 draw-back
 (`690a063`), then the model refinement (2026-10-10), the Pack 3 proposal (`9923202`, revision 3 `af50318`) and
-the Submit fix (`0fa32ee`), then the Pack 3a build (`5123159` to `fe817ec`, 2026-10-11, and its records commit);
+the Submit fix (`0fa32ee`), then the Pack 3a build (`5123159` to `fe817ec`, 2026-10-11, its records commit
+`9b45727`, and the second fidelity review's commit);
 `git log -1` names the latest. Push only when the user asks.
 
 **Pack 1, technique by technique:**
@@ -173,7 +174,8 @@ wait for confirmation (`DECISIONS.md`, the "built" row). G3 has still not run.
    - Also fixed: the 3D step card offers Submit again after a wrong calculation (`0fa32ee`).
 11. **Done 2026-10-11: the Pack 3a build** (`PACK3A_BUILD_PROMPT.md`; `evidence/PACK3A_EVIDENCE.md`, with its
    fidelity review; `DECISIONS.md`, the "Pack 3a build interpretations", "Pack 3a step 4", "Pack 3a step 5" and
-   "Pack 3a built" rows). Five local commits, none pushed or published:
+   "Pack 3a built" rows). Five local commits, then the records and a second fidelity review, none pushed or
+   published:
    - `5123159`: Calculate Hardness's practice version (6 steps, pack 3) and twin, Dry and Weigh's twin with the
      paper mass's id as a slot, Pack 2's weighings at 0.0001 g, and `hard-water-demo` (six parts, 59 steps, plays
      to 375 mg/L).
@@ -189,7 +191,19 @@ wait for confirmation (`DECISIONS.md`, the "built" row). G3 has still not run.
    - `fe817ec`: the lab `paper-chromatography` (`#/3d/play/paper-chromatography`): six parts, 17 lab steps,
      81 steps in all, 13 items, a setup page with the prepared distances. A 3D-only transform
      (`preparedLab3DSource`, `withLabStopDistances`) sets each expected Rf and the stop distance from them.
-   - Waiting for the user: the step 5 interpretations and the review's findings (the "Pack 3a built" row).
+   - The user confirmed the step 5 interpretations as built, then asked for a second fidelity review
+     (evidence note, "Second fidelity review"). It fixed:
+     - the spot now takes the dye mixture's palette colour (G-9);
+     - the capillary's limits: at most 0.05 mL drawn, under the tube's 0.059 mL, and enough for three
+       touches, now checked on the practice version too (`checkSpotting`, `prepared3d.ts`);
+     - the develop step's text;
+     - the lab's texts against the source and 2D's lab;
+     - the evidence's guardrail list, its lid-early item and a step 4 look.
+   - Waiting for the user (the "Pack 3a built" row, "Still to decide"):
+     - no tile under the strip;
+     - bench items shifting between steps in a lab;
+     - the lab's 11-item tray covering its step card at 1024 × 700;
+     - the dye mixture drawn blue.
 12. **Next (only when the user asks):** Pack 3b (brass, in six techniques; the proposal's "Brass
    Spectrophotometry"), with a build prompt written first if the user asks for one. Also held: publishing Pack 3
    and the D8 experiments, pushing, and G3.
@@ -209,8 +223,8 @@ static validators; tests are written but not run):
   - SwiftShader frames are slow, so allow seconds for a 650 ms camera tween.
 - Dev server: `preview_start` "lab-studio-3d-dev" (port 5182), configured in the session folder's
   `C:\Users\EmilJivishov\Projects\virtual_lab\experiments\lab-studio\.claude\launch.json`, which
-  is temporary; remove it and stop the server when the work is done. It was removed at the 2026-10-11 Pack 3a
-  handoff. To run the app again, re-create it with one configuration: `"name": "lab-studio-3d-dev"`,
+  is temporary; remove it and stop the server when the work is done. It was removed again after the 2026-10-11
+  second fidelity review. To run the app again, re-create it with one configuration: `"name": "lab-studio-3d-dev"`,
   `"runtimeExecutable": "pwsh"`, `"runtimeArgs": ["-NoProfile", "-Command", "Set-Location
   'C:/Users/EmilJivishov/Projects/Lab_studio/tmp/lab-studio-3d'; npx vite --host 127.0.0.1 --port $env:PORT
   --strictPort"]`, `"port": 5182`, `"autoPort": true`. Headless G1 looks used Playwright with

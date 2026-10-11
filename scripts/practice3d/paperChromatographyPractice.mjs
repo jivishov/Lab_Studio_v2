@@ -385,8 +385,9 @@ const trial = (solvent, id, title, learningGoal) => {
       "Lower the strip in and seat the lid: its lower edge in the solvent, the spot above it, the strip clear of the walls.",
       { notebookTag: `${prefix}-chamber-closed` }),
     node("develop", "Let the solvent rise",
-      // No distance named: the lab's teacher sets the stop distance (labs3d.ts), and the student measures the front.
-      "Leave the chamber closed while the solvent climbs the strip, to the stop distance your teacher set. The clock runs the wait ({{config.developMinutes}} min) fast."),
+      // TR-08, "the approved stop condition": no distance named, since a lab's teacher sets it (labs3d.ts) and the
+      // student measures the front.
+      "Leave the closed chamber undisturbed while the solvent climbs the strip, until its front reaches the stop distance. The clock runs the wait ({{config.developMinutes}} min) fast."),
     node("open-chamber", "Lift the lid with the strip",
       "Lift the lid straight up; the strip comes out with it.", { notebookTag: `${prefix}-chamber-opened` }),
     node("remove-strip", "Unhook the strip and lay it flat", "Unhook the wet strip and lay it flat on the bench."),

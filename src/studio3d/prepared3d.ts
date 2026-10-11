@@ -10,6 +10,7 @@ import { equipment3dEntry } from "./equipment3d/readiness";
  */
 const CHAMBER = "chromatography-chamber";
 const PAPER_SLOT = "chromatography-chamber-paper-slot";
+const SPOTTER = "capillary-spotter";
 
 const hasSlots = (definition: TechniqueDefinition, ...ids: string[]): boolean => {
   const declared = new Set((definition.composition?.configurationSlots ?? []).map((slot) => slot.id));
@@ -34,9 +35,10 @@ export const solventDepthAboveStripMm = (volumeMl: number): number | undefined =
 
 /**
  * The teacher's values with the derived ones added. Throws, naming the value to change, when the solvent would not
- * reach the strip or would cover its baseline.
+ * reach the strip or would cover its baseline, or when the capillary could not make every touch the steps make.
  */
 export const withDerived3D = (definition: TechniqueDefinition, values: Record<string, string>): Record<string, string> => {
+  checkSpotting(definition, values);
   if (!derivedSlots3D(definition).includes("solventDepthMm")) return values;
   return { ...values, solventDepthMm: String(checkedDepth(Number(values.solventVolumeMl), Number(values.baselineHeightMm))) };
 };
@@ -53,6 +55,26 @@ const checkedDepth = (volumeMl: number, baselineMm: number): number => {
 };
 
 const round4 = (value: number): number => Math.round(value * 1e4) / 1e4;
+
+/**
+ * The capillary must hold what the teacher has it draw up, and that must cover every touch the steps make (three,
+ * decision 8): otherwise the run cannot finish. The lab's setup page checks the same with its rules.
+ */
+const checkSpotting = (definition: TechniqueDefinition, values: Record<string, string>): void => {
+  if (!hasSlots(definition, "spotterLoadVolumeMl", "spotVolumeMl")) return;
+  const load = Number(values.spotterLoadVolumeMl);
+  const spot = Number(values.spotVolumeMl);
+  // A missing or unreadable number is the setup page's own message.
+  if (!(load > 0) || !(spot > 0)) return;
+  const capacity = equipment3dEntry(SPOTTER)?.fill?.capacityMl;
+  if (capacity !== undefined && load > capacity) {
+    throw new Error(`Dye drawn into the capillary: the tube holds ${capacity} mL. Draw up less.`);
+  }
+  const touches = definition.actions.filter((action) => action.verb === "spotSample").length;
+  if (touches * spot > load + 1e-9) {
+    throw new Error(`Dye drawn into the capillary: ${touches} touches of ${spot} mL need ${round4(touches * spot)} mL. Draw up more, or leave less with each touch.`);
+  }
+};
 
 /**
  * A 3D lab's configured source with its prepared values worked out (Pack 3a, decided 2026-10-11: "3D transform in

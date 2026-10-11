@@ -475,5 +475,8 @@ describe("Pack 3a 3D lab: Paper Chromatography", () => {
     expect(() => parseLab3DValues(chrom, { ...chromDefaults, propanolYellowMm: "80" })).toThrow(/below the solvent front/);
     expect(() => parseLab3DValues(chrom, { ...chromDefaults, frontMm: "85", baselineHeightMm: "20" })).toThrow(/top of the 110 mm strip/);
     expect(() => parseLab3DValues(chrom, { ...chromDefaults, spotVolumeMl: "0.02", spotterLoadVolumeMl: "0.03" })).toThrow(/three touches/);
+    // The 1 mm tube holds 0.059 mL.
+    expect(() => parseLab3DValues(chrom, { ...chromDefaults, spotterLoadVolumeMl: "0.06" })).toThrow();
+    expect(parseLab3DValues(chrom, { ...chromDefaults, spotterLoadVolumeMl: "0.05" }).spotterLoadVolumeMl).toBe(0.05);
   });
 });

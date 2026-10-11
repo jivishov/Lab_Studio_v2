@@ -166,7 +166,9 @@ Headless Chromium with SwiftShader at 1024 × 700, driven through the step card 
 - **Step 4:** `#/3d/paper-chromatography-practice` played 31 of 31 to the results. Seen on the bench:
   - the tape reading "Water";
   - the baseline and the spot;
-  - the bands appearing as the front climbs;
+  - the closed chamber with its "Developing" clock, and the lid step held until it ends;
+  - the bands on the lifted strip (the front and bands climb with the clock's progress, but at this size the climb
+    could not be made out inside the closed chamber);
   - the lid raised with the strip (15 mm, subtle);
   - the ruler laid beside the flat strip.
 
@@ -189,20 +191,41 @@ What was built was checked against the proposal's Paper Chromatography sequence,
 5. **No tile under the strip.** The proposal's bench has "a fresh paper strip on a clean tile". The strip lies on the bench top. A tile would be a new equipment item, which the build was not to add.
 6. **Bench items move between steps in the lab.** Items without a set position take 2D's default grid slot by their index among the items on the bench (`resolveWorkbenchScene`, shared code). So when an item leaves the tray, the items after it shift. For example, the sink-waste beaker stands at three different places during the water trial. Nothing overlaps, but a student sees items jump. It is M3's known limit ("drawn as the runtime has it, never moved"), now visible because the lab has 13 items. A 3D-only layout (fixed slots for a lab's bench) would be a change to propose.
 7. **The glass draw-order issue** (model refinement, item 9) shows on the chamber and the bottles: glass writes no depth, so which surface shows depends on triangle order. Noted only, as the prompt says; it is for the polish pass.
-8. **"Lifting the lid early is refused"** (the proposal's step 16) was not tested separately. The step clock holds the next step until development ends, and the lid step follows it.
-9. **The develop step's text** no longer names 80 mm. It says "to the stop distance your teacher set", because the lab's teacher can change it. The practice version still stops at 80 mm.
+8. **"Lifting the lid early is refused"** (the proposal's step 16) is not a refusal. Lifting early is impossible by order: the step clock holds the next step until development ends ("The next step waits for it"), and the lid step follows it. A shot at 3:27 of 10:00 shows the "Lift the lid" button disabled.
+9. **The develop step's text** no longer names 80 mm, because the lab's teacher can change the stop distance. The practice version still stops at 80 mm. The second review reworded it (below).
 10. **HP-05.** The bench always holds water and 2-propanol, a departure the proposal already marks **T**. The student still records a choice and its reasons ("Give a reason for each solvent").
 
-**Guardrails:**
-- **G-1:** the 2D player and its styles are unchanged.
-- **G-3:** every mark on the strip and tape comes from the runtime's state.
-- **G-8, G-9:** the readings and the Rf are the student's own entries, judged by the runtime.
-- **G-11:** no outcome shows before development; the bands rise only during "Let the solvent rise".
-- **Measurement-neutral instruments:** the ruler shows its scale and never a reading.
+**Guardrails** (as `UI_UX_HANDOFF.md` defines them; the first review's list had them wrong and was corrected in the second):
+- **G-1, instruments are measurement-neutral:** the ruler shows only its scale, never a reading. The student reads the front and each band.
+- **G-3, the resting scene equals the runtime state:** the tape, the baseline, the spot, the front, the bands, the front mark, the lid and the strip on its hook are all drawn from the runtime's state. The ruler lies along the strip only once the runtime has aligned it (`alignWithInstanceId`).
+- **G-8, physical plausibility never creates runtime objects:** the two waste beakers are runtime items, placed by steps. No scenery was added. A tile under the strip could be scenery (item 5).
+- **G-9, one liquid palette:** the solvents and the dye mixture come from `resolveLiquidStyle`. Since the second review the spot does too. The bands are dyes on paper, coloured by the chromatography model.
+- **G-11, no sound:** none was added.
 - **Faint visuals:** the bands and spot are drawn a little stronger than real dyes.
+
+## Second fidelity review (2026-10-11)
+
+You confirmed the step 5 interpretations as built ("Confirm the step 5 interpretations as built."). The whole session's work was then reviewed again for fidelity, and refined:
+- **The spot's colour.** The spot was a fixed dark purple. It now takes the spotted liquid's colour from the one palette (G-9): the capillary's own contents, or the liquid it last drew up. The dark purple stays only as a fallback. A test checks the spot against the vial's palette colour, and the practice version was seen again with a blue spot on the baseline.
+- **The capillary's limits.** The registry's capillary holds 0.059 mL (1 mm bore × 75 mm). The lab's load field allowed 0.06 mL; its maximum is now 0.05 mL, and its help names the 0.059 mL. The practice version had no such check. Its setup now refuses a load over the tube's capacity, or touches that need more than the load (three touches × the spot volume), naming the value to change. Both are tested.
+- **The develop step's text** now reads "Leave the closed chamber undisturbed while the solvent climbs the strip, until its front reaches the stop distance." TR-08 calls for the approved stop condition.
+- **The lab's texts, against the source and 2D's lab:**
+  - **Safety:** goggles at all times; washing skin and the teacher's handling rules; 2-propanol is flammable; each chamber stays closed while it develops; the waste streams.
+  - **Prelab Part I:** the teacher's demonstration of water creeping up paper, then the manual's questions 1 to 3, including baking powder's three parts.
+  - **The structures review:** adds dipole-dipole attractions, and that structures are "evidence for a prediction, not a result".
+  - **The procedure:** adds the strip's size, the baseline, the solvent's volume and depth, the spotting, the stop distance, and a fresh strip and fresh solvent for each trial.
+  - **The data table:** adds the reason for each solvent, the settings, overlap and streaking, and notes.
+  - **The approval:** checks that another student could repeat the procedure "without inventing a step".
+  - **The analysis:** adds temperature to what an Rf depends on, and the structures and phases to the explanation. The drawing gains its terms, and the green-chemistry question names the 2011 GSK guide as a historical reference. The limits gain the solvent's composition and the Rf-identity note, and the postlab asks about pyridine and benzene as the manual does.
+- **This record:** the guardrail list, item 8 and the step 4 look were corrected to match what was built and seen.
+
+Found in the second review, not fixed (recorded for you):
+11. **The lab's tray covers its step card at 1024 × 700.** The tray is anchored bottom-left and grows with its items. The lab has 11, so the tray reaches up over the lower half of the step card, even on short steps. The student can collapse or move either panel (handoff §5.1). A tray height limit or docking would be a shared 3D player change.
+12. **The dye mixture is drawn blue.** Its contents use the shared palette state `blue-dye-solution` for a mixture of three dyes. Its own palette entry would be a shared change.
 
 ## Not seen
 
 - Hand control (G3) on the chromatography gestures: set aside.
 - Tablet widths: the looks were at 1024 × 700 only.
+- The front and bands climbing inside the closed chamber during the step clock: seen only on the lifted strip.
 - The 2-propanol practice object on its own: it is unlisted and plays only inside the lab, which was seen.

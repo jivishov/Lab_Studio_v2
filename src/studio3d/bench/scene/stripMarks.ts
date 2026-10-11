@@ -14,8 +14,8 @@ import type { Equipment3DEntry } from "../../equipment3d/types";
 const MM = 0.001;
 const PX_PER_MM = 12;
 const GRAPHITE = "rgba(58, 60, 68, 0.9)";
-/** The mixed food dyes on the baseline before they separate: a dark violet-brown. */
-const SPOT = "rgba(60, 34, 84, 0.92)";
+/** The spot when the scene names no colour for it: the mixed food dyes, a dark violet-brown. */
+const SPOT = "#3c2254";
 
 export interface MarksLayer {
   mesh: THREE.Mesh;
@@ -118,9 +118,11 @@ export const drawStrip = (layer: MarksLayer, face: StripFace, strip: SceneStrip 
     g.stroke();
   }
   if (strip.spots > 0 && base !== undefined) {
-    // Each touch spreads the spot a little; once developed only a faint trace stays at the origin.
+    // Each touch spreads the spot a little; once developed only a faint trace stays at the origin. The colour is the
+    // spotted liquid's (G-9), drawn denser than the liquid in its vial, as a dried spot reads.
     const radius = [0.95, 1.25, 1.5][Math.min(strip.spots, 3) - 1];
-    g.fillStyle = developed ? withAlpha("#3c2254", 0.9 * (1 - 0.75 * p)) : SPOT;
+    const colour = strip.spotColor ?? SPOT;
+    g.fillStyle = withAlpha(colour, developed ? 0.9 * (1 - 0.75 * p) : 0.92);
     g.beginPath();
     g.arc(W / 2, y(base), px(radius), 0, Math.PI * 2);
     g.fill();
@@ -172,9 +174,11 @@ export const drawTape = (layer: MarksLayer, label: string | undefined): void => 
   layer.texture.needsUpdate = true;
 };
 
-/** A CSS hex colour (#rgb or #rrggbb) at an alpha. */
-const withAlpha = (hex: string, alpha: number): string => {
-  const h = hex.replace("#", "");
+/** A CSS colour (#rgb, #rrggbb, or rgb()/rgba() as the palette writes them) at an alpha. */
+const withAlpha = (colour: string, alpha: number): string => {
+  const rgb = /^rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)/i.exec(colour);
+  if (rgb) return `rgba(${rgb[1]}, ${rgb[2]}, ${rgb[3]}, ${alpha})`;
+  const h = colour.replace("#", "");
   const full = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
   const n = Number.parseInt(full, 16);
   return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${alpha})`;
