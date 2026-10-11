@@ -16,6 +16,7 @@ import { SimulationSwitcher } from "./SimulationSwitcher";
 import { DropPanel } from "./DropPanel";
 import { StepCard } from "./StepCard";
 import { StepClock } from "./StepClock";
+import { guideItemId } from "../adapters/guideTargets";
 import { fillLevelMm } from "../adapters/runtimeToScene";
 import { readingVesselId } from "./stepRules";
 import { usePlayer3D, type Player3DController } from "./usePlayer3D";
@@ -399,28 +400,19 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   // Guidance in the world (guided only, G-7): the beacon marks the expected source, then the
   // expected target while something is being carried (§5.9). A step done with a tool (the spatula,
   // decided 2026-09-25) marks the tool, then the source to dip it into, then the target.
-  // The instance the step names when it is on the bench (two strips, two chambers), else the first of its kind.
-  const expectedSourceId = useMemo(() => {
-    const def = flow.source.definitionId;
-    const named = flow.source.instanceId;
-    if (named && scene.bench.some((i) => i.instanceId === named)) return named;
-    return def ? scene.bench.find((i) => i.definitionId === def)?.instanceId : undefined;
-  }, [flow.source.definitionId, flow.source.instanceId, scene]);
-  const expectedTargetId = useMemo(() => {
-    const def = flow.target.definitionId;
-    const named = flow.target.instanceId;
-    if (named && named !== expectedSourceId && scene.bench.some((i) => i.instanceId === named)) return named;
-    return def ? scene.bench.find((i) => i.definitionId === def && i.instanceId !== expectedSourceId)?.instanceId : undefined;
-  }, [expectedSourceId, flow.target.definitionId, flow.target.instanceId, scene]);
+  // The instance the step names, else the first of its kind; one still on the shelf is marked on its tier
+  // (the shelf in place of the tray, decided 2026-10-11; guideItemId).
+  const present = useMemo(() => [...scene.bench, ...scene.tray], [scene]);
+  const expectedSourceId = useMemo(() => guideItemId(scene, flow.source.definitionId, flow.source.instanceId),
+    [flow.source.definitionId, flow.source.instanceId, scene]);
+  const expectedTargetId = useMemo(() => guideItemId(scene, flow.target.definitionId, flow.target.instanceId, expectedSourceId),
+    [expectedSourceId, flow.target.definitionId, flow.target.instanceId, scene]);
   const tool = player.toolTransfer;
-  const toolId = useMemo(
-    () => (tool ? scene.bench.find((i) => i.definitionId === tool.toolDefinitionId)?.instanceId : undefined),
-    [scene, tool],
-  );
+  const toolId = useMemo(() => (tool ? guideItemId(scene, tool.toolDefinitionId) : undefined), [scene, tool]);
   // A draw into a pipette (decided 2026-09-26): the pipette first, then the liquid it draws from.
   const pipette = player.pipetteStep;
-  const onBench = (id?: string) => (id && scene.bench.some((i) => i.instanceId === id) ? id : undefined);
-  const drawIds = pipette?.kind === "draw" ? { tool: onBench(pipette.toolInstanceId), liquid: onBench(pipette.otherInstanceId) } : undefined;
+  const drawn = (id?: string) => (id && present.some((i) => i.instanceId === id) ? id : undefined);
+  const drawIds = pipette?.kind === "draw" ? { tool: drawn(pipette.toolInstanceId), liquid: drawn(pipette.otherInstanceId) } : undefined;
   const beaconId = drawIds ? (!carry.carrying ? drawIds.tool : carry.carriedDefinitionId === pipette!.toolDefinitionId ? drawIds.liquid : undefined)
     : !tool ? (carry.carrying ? expectedTargetId : expectedSourceId)
     : !carry.carrying ? toolId
@@ -803,16 +795,22 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
       return;
     }
     const toolDef = player.toolTransfer?.toolDefinitionId;
-    // A step's named instance alone, when it is on the bench; else every item of the kind.
-    const ends = (definitionId?: string, instanceId?: string): string[] => instanceId && scene.bench.some((i) => i.instanceId === instanceId) ? [instanceId]
-      : scene.bench.filter((i) => i.definitionId === definitionId).map((i) => i.instanceId);
+    // A step's named instance alone, when it is on the bench; else every item of the kind. One not yet on the bench
+    // is framed where it stands on the shelf, the first of its kind there (the shelf in place of the tray, 2026-10-11).
+    const ends = (definitionId?: string, instanceId?: string): string[] => {
+      if (instanceId && scene.bench.some((i) => i.instanceId === instanceId)) return [instanceId];
+      const out = scene.bench.filter((i) => i.definitionId === definitionId).map((i) => i.instanceId);
+      if (out.length) return out;
+      const shelf = scene.tray.find((i) => (instanceId ? i.instanceId === instanceId : i.definitionId === definitionId));
+      return shelf ? [shelf.instanceId] : [];
+    };
     const working = new Set(showGuidance
-      ? [...ends(flow.source.definitionId, flow.source.instanceId), ...ends(flow.target.definitionId, flow.target.instanceId), ...scene.bench.filter((i) => i.definitionId === toolDef).map((i) => i.instanceId)]
+      ? [...ends(flow.source.definitionId, flow.source.instanceId), ...ends(flow.target.definitionId, flow.target.instanceId), ...(toolDef ? ends(toolDef) : [])]
       : []);
     // A bench operation (Pack 2) frames what it is done to and with.
     const benchOp = player.benchOp;
     if (showGuidance && benchOp) {
-      for (const id of [benchOp.vesselInstanceId, benchOp.toolInstanceId]) if (id && scene.bench.some((i) => i.instanceId === id)) working.add(id);
+      for (const id of [benchOp.vesselInstanceId, benchOp.toolInstanceId]) if (id && [...scene.bench, ...scene.tray].some((i) => i.instanceId === id)) working.add(id);
     }
     for (const item of scene.bench) {
       if (working.has(item.instanceId) && item.placement.kind === "seated") working.add(item.placement.parentInstanceId);
@@ -939,6 +937,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     void engine.settled().then(() => { if (active) setBenchReady(true); });
     return () => { active = false; engine.onLoadProgress = undefined; };
   }, [engine]);
+  // The shelf's items load once the loader has gone, so they never hold the first step back.
+  useEffect(() => { if (benchReady) engine?.showShelf(); }, [benchReady, engine]);
 
   // Double-click (or double-tap) an item to examine it (§5.8).
   const examineRef = useRef<(id: string) => void>(() => undefined);
@@ -985,7 +985,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     if (autoViewRef.current) frame();
     // A hot item is shown handled as a tool's load (Pack 2, S-05): the tongs go to it, then on to its place.
     const tongs = player.tongsStep;
-    if (tongs && onBench(tongs.toolInstanceId)) engine?.showMe(tongs.toolInstanceId, onBench(tongs.targetInstanceId) ?? expectedTargetId, tongs.vesselInstanceId);
+    if (tongs && drawn(tongs.toolInstanceId)) engine?.showMe(tongs.toolInstanceId, drawn(tongs.targetInstanceId) ?? expectedTargetId, tongs.vesselInstanceId);
     else if (tool) engine?.showMe(toolId, expectedTargetId, expectedSourceId);
     else if (drawIds) engine?.showMe(drawIds.tool, drawIds.liquid);
     else engine?.showMe(expectedSourceId, expectedTargetId);
@@ -1019,7 +1019,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     const item = examined ? scene.bench.find((i) => i.instanceId === examined) : undefined;
     return item?.placement.kind === "seated" ? scene.bench.find((i) => i.instanceId === (item.placement as { parentInstanceId: string }).parentInstanceId)?.label : undefined;
   })();
-  const hoverItem = hovered && !carry.carrying ? scene.bench.find((i) => i.instanceId === hovered) : undefined;
+  const hoverItem = hovered && !carry.carrying ? [...scene.bench, ...scene.tray].find((i) => i.instanceId === hovered) : undefined;
   const hoverPoint = hoverItem && engine ? engine.labelPoint(hoverItem.instanceId) : undefined;
   const examinedItem = examined ? scene.bench.find((i) => i.instanceId === examined) : undefined;
   const n = Math.max(0, runtime.process.nodes.findIndex((node) => node.id === runtime.currentNode.id)) + 1;

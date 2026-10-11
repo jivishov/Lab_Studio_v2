@@ -5,11 +5,13 @@ import { resolveLiquidStyle } from "../../equipment/liquidRendering";
 import type { LiquidRenderStyle } from "../../equipment/liquidRendering";
 import { resolveSolidStyle, type SolidRenderStyle } from "../../equipment/solidRendering";
 import { formatContentLabel, isVisibleLiquid, isVisibleSolidContent } from "../../player/contentDisplay";
+import { getInitialEquipment, type RuntimeDefinition } from "../../runtime/createRuntime";
 import { equipment3dEntry, equipment3dRegistry } from "../equipment3d/readiness";
 import type { Equipment3DEntry, Equipment3DFill } from "../equipment3d/types";
 import { BENCH_MM, runtimeBenchPointsMm, toBench, type BenchPointMm } from "./benchCoordinates";
 import { heldRelations } from "./heldRelations";
 import { instrumentDisplay, type InstrumentDisplayModel } from "./instrumentDisplay";
+import { shelfSpots, stableShelfOrder, type ShelfSpot } from "./shelfSpots";
 import { stableRestPoint } from "./stableBench";
 
 /**
@@ -18,7 +20,8 @@ import { stableRestPoint } from "./stableBench";
  *
  * | Runtime fact                         | Scene result                                             |
  * |--------------------------------------|----------------------------------------------------------|
- * | location "shelf"                     | the tray, as the 2D shelf                                 |
+ * | location "shelf"                     | on its spot on the reagent shelf or the side station      |
+ * |                                      | (shelfSpots.ts), drawn as on the bench but not on it      |
  * | location "storage" or "oven"         | not drawn (oven arrives with Pack 2)                     |
  * | location "workbench"                 | on the bench through benchCoordinates                    |
  * | an AttachmentRelation (or snapZone)  | seated at the parent's anchor for that zone              |
@@ -110,11 +113,13 @@ export interface SceneItem {
   restOnMm?: number;
 }
 
-export interface SceneTrayItem {
-  instanceId: string;
-  definitionId: string;
-  label: string;
-  model?: Equipment3DEntry;
+/**
+ * An item on the runtime's `shelf`, drawn on its spot (the shelf in place of the tray, decided 2026-10-11). Its
+ * placement is the spot's point, standing on the tier or the side station at `spot.zMm`; it is never on the bench.
+ */
+export interface SceneTrayItem extends SceneItem {
+  placement: { kind: "bench"; point: BenchPointMm };
+  spot: ShelfSpot;
 }
 
 export interface SceneDescription {
@@ -130,6 +135,26 @@ export interface SceneDefinition {
   actions: ActionDefinition[];
   process?: { nodes: Array<{ id: string; actionId?: string }> };
 }
+
+const startShelfCache = new WeakMap<object, string[]>();
+/**
+ * The ids that start on the shelf, in the run's start order (the runtime's start state, `getInitialEquipment`), so
+ * each keeps its shelf spot for the whole run. Undefined for a bare scene definition: the shelf is then laid out
+ * from what is on it now.
+ */
+export const startShelfOf = (definition: SceneDefinition): string[] | undefined => {
+  if (!("initialState" in definition) && !("techniques" in definition)) return undefined;
+  let ids = startShelfCache.get(definition);
+  if (!ids) {
+    try {
+      ids = getInitialEquipment(definition as unknown as RuntimeDefinition).filter((i) => i.location === "shelf").map((i) => i.id);
+    } catch {
+      return undefined;
+    }
+    startShelfCache.set(definition, ids);
+  }
+  return ids;
+};
 
 /** Height (mm) at which a fill profile holds `ml`; the brim when it cannot. */
 export const fillLevelMm = (fill: Equipment3DFill, ml: number): { levelMm: number; overfull: boolean } => {
@@ -332,12 +357,14 @@ export const runtimeToScene = (state: RuntimeState, definition: SceneDefinition)
   const tray: SceneTrayItem[] = [];
   const hidden: string[] = [];
   const missing = new Set<string>();
+  const spots = shelfSpots(stableShelfOrder(state.equipmentInstances, startShelfOf(definition)));
 
   for (const instance of state.equipmentInstances) {
     const model = equipment3dEntry(instance.definitionId);
     if (!model) missing.add(instance.definitionId);
-    if (instance.location === "shelf") {
-      tray.push({ instanceId: instance.id, definitionId: instance.definitionId, label: instance.label, ...(model ? { model } : {}) });
+    const spot = instance.location === "shelf" ? spots.get(instance.id) : undefined;
+    if (spot) {
+      tray.push(shelfItem(instance, model, spot));
       continue;
     }
     // Inside an instrument (Pack 2: a watch glass on the drying oven's shelf): drawn at the instrument's
@@ -410,6 +437,26 @@ export const runtimeToScene = (state: RuntimeState, definition: SceneDefinition)
   return { bench, tray, hidden, missingModels: [...missing].sort() };
 };
 
+/** An item on its shelf spot: as it would stand on the bench (in its rack, if it needs one), its contents shown. */
+const shelfItem = (instance: EquipmentInstance, model: Equipment3DEntry | undefined, spot: ShelfSpot): SceneTrayItem => {
+  const form = sceneForm(model, undefined, undefined);
+  const item: SceneTrayItem = {
+    instanceId: instance.id,
+    definitionId: instance.definitionId,
+    label: instance.label,
+    placement: { kind: "bench", point: spot.point },
+    spot,
+    ...(form ? { form } : {}),
+    ...(model?.wetLook && instance.contents.wetState !== "dry" ? { wet: true } : {}),
+    contents: sceneContents(instance, model, form),
+    contentsText: formatContentLabel(instance.contents),
+    ...(model ? { model } : {}),
+  };
+  const support = model?.requiresSupport ? sceneryEntry(model.requiresSupport) : undefined;
+  if (support) item.scenery = { sceneryId: support.definitionId, model: support, seatIndex: 1 };
+  return item;
+};
+
 /**
  * The bench a committed pour animates on (handoff §5.7): the committed layout, with the pour's
  * source and target still holding what they held before it. A pour often brings its source or
@@ -451,6 +498,7 @@ export const pourStagingScene = (
       contentsText: formatContentLabel(source.contents),
       model,
     });
+    return { ...scene, bench, tray: scene.tray.filter((item) => item.instanceId !== source.id) };
   }
   return { ...scene, bench };
 };

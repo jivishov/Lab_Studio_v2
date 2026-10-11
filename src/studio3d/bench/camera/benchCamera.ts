@@ -36,8 +36,14 @@ export const MANUAL = {
   pitchMin: 0.35,
   pitchMax: 1.55,
   distanceMin: 3.2 * S,
-  distanceMax: 20 * S,
-  atX: 7 * S,
+  /** Out to past the Home view, which takes in the shelf and the side station (2026-10-11; the source's 20 units). */
+  distanceMax: 30 * S,
+  /**
+   * Sideways: the source's 7 units to the left; to the right as far as the side station's far end (decided
+   * 2026-10-11), so a slide can bring the large items to the middle of the view.
+   */
+  atXMin: -7 * S,
+  atXMax: 14 * S,
   /**
    * Forward and back: the source's 4.5 units, doubled (decided 2026-10-11) so a left-drag can slide the bench well
    * up or down the screen. Right-drag clamps to the same range, so it never snaps a slid view back.
@@ -53,7 +59,12 @@ export const MANUAL = {
 };
 
 const v = (x: number, y: number, z: number) => new THREE.Vector3(x * S, y * S, z * S);
-export const DEFAULT_VIEW = (): OrbitView => ({ at: v(0, 0.35, 0.65), yaw: 0, pitch: 0.72, distance: 11.2 * S });
+/**
+ * Home (decided 2026-10-11, the shelf in place of the tray): the working area, the reagent shelf behind it and the side
+ * station at its right end together, from a little lower than the source's 0.72 rad so the shelf's tiers face the
+ * eye. Fitted at 1024 × 700 (the source's own view, `renderer.js:119`, was at(0, .35, .65), pitch .72, 11.2 units).
+ */
+export const DEFAULT_VIEW = (): OrbitView => ({ at: v(3.2, 0, -3.6), yaw: 0, pitch: 0.62, distance: 24 * S });
 export const PRESETS = {
   /** "Whole bench" */
   bench: (): OrbitView => ({ at: v(0, 0.24, -0.6), yaw: 0, pitch: 0.89, distance: 15.5 * S }),
@@ -102,7 +113,7 @@ export const clampManual = (view: OrbitView): OrbitView => ({
  * pan or a zoom.
  */
 const clampPitch = (pitch: number) => clamp(pitch, MANUAL.pitchMin, MANUAL.pitchMax);
-export const clampAt = (at: THREE.Vector3) => new THREE.Vector3(clamp(at.x, -MANUAL.atX, MANUAL.atX), at.y, clamp(at.z, -MANUAL.atZ, MANUAL.atZ));
+export const clampAt = (at: THREE.Vector3) => new THREE.Vector3(clamp(at.x, MANUAL.atXMin, MANUAL.atXMax), at.y, clamp(at.z, -MANUAL.atZ, MANUAL.atZ));
 
 /** Shift/Alt + right-drag or middle-drag (`app.js:125`). */
 export const orbitBy = (view: OrbitView, dx: number, dy: number): OrbitView =>

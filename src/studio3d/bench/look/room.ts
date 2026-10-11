@@ -1,6 +1,5 @@
 import * as THREE from "three";
-import { REFLECTION } from "./roomLighting";
-import { packedBevelBox, packedCylinder, packedLathe, packedPlane, toBufferGeometry } from "./microarrayGeometry";
+import { packedBevelBox, packedPlane, toBufferGeometry } from "./microarrayGeometry";
 import type { BenchTextures } from "./textures";
 
 /**
@@ -15,6 +14,16 @@ import type { BenchTextures } from "./textures";
  * this lab.
  */
 export const ROOM_SCALE = 1.4 / 15; // metres per microarray unit (about 0.093)
+
+/**
+ * The worktop, in room units. The source's 15 × 10 top is Lab Studio's 1400 × 700 mm working area with its margins.
+ * For the shelf in place of the tray (decided 2026-10-11) it runs on past the working area: about 130 mm further
+ * back, where the reagent shelf stands against the wall (shelfSpots.ts, `SHELF`), and 620 mm past its right end,
+ * the side station for the large items (`SIDE_STATION`). Its front edge and left end are the source's.
+ */
+export const WORKTOP = Object.freeze({ left: -10.5, right: 14.25, front: 5, back: -6.1 });
+/** The back wall's front face (room units): just behind the shelf. */
+const WALL_FACE = -6.0;
 
 /** Source hex colours are linearised with a plain 2.2 gamma (`renderer.js` `rgb`). */
 export const linearHex = (hex: string): THREE.Color => {
@@ -46,8 +55,6 @@ interface RoomOptions {
   shadowMapSize: number;
   /** Called when a texture changes after the room is built (the wall text, once its font loads). */
   onTextureChange?: () => void;
-  /** The room's reflection map, for the glass bottles at the source's glass reflection factor (roomLighting.ts). */
-  environment?: THREE.Texture;
 }
 
 export interface Room {
@@ -57,7 +64,7 @@ export interface Room {
   dispose: () => void;
 }
 
-export const buildRoom = ({ textures, shadowMapSize, onTextureChange, environment }: RoomOptions): Room => {
+export const buildRoom = ({ textures, shadowMapSize, onTextureChange }: RoomOptions): Room => {
   const group = new THREE.Group();
   group.name = "room (scenery)";
   group.scale.setScalar(ROOM_SCALE);
@@ -94,29 +101,41 @@ export const buildRoom = ({ textures, shadowMapSize, onTextureChange, environmen
   };
   disposables.push(m.bench);
 
-  // Worktop and its wooden front lip. On the bevelled box's top face u runs along z (10 units) and v
-  // along x (15 units); the resin texture's repeat is set for that (textures.ts).
-  const top = mesh(packedBevelBox(15, 0.22, 10), m.bench, [0, -0.13, 0]);
+  // Worktop and its wooden front lip. On the bevelled box's top face u runs along z (its depth) and v
+  // along x (its width); the resin texture's repeat is set for that (textures.ts).
+  const width = WORKTOP.right - WORKTOP.left, depth = WORKTOP.front - WORKTOP.back;
+  const midX = (WORKTOP.left + WORKTOP.right) / 2, midZ = (WORKTOP.front + WORKTOP.back) / 2;
+  const top = mesh(packedBevelBox(width, 0.22, depth), m.bench, [midX, -0.13, midZ]);
   top.castShadow = false;
   top.name = "bench";
-  box(15, 0.08, 0.14, m.edge, [0, -0.06, 4.97]);
+  box(width, 0.08, 0.14, m.edge, [midX, -0.06, 4.97]);
   // Cabinets below the worktop, so steep views never show empty space.
   const cabinet = mat("#c9c3b6", { roughness: 0.6 });
-  box(15, 3.2, 0.1, cabinet, [0, -1.72, 4.9]);
+  box(width, 3.2, 0.1, cabinet, [midX, -1.72, 4.9]);
   const gap = mat("#9f998d", { roughness: 0.6 });
-  for (let x = -7.5 + 1.875; x < 7.5; x += 3.75) box(0.03, 3.0, 0.03, gap, [x, -1.72, 4.96]);
-  for (let x = -7.5 + 0.94; x < 7.5; x += 1.875) box(0.36, 0.05, 0.06, m.steel, [x, -0.55, 4.99]);
-  // Back wall, skirting rail, window and sill.
-  box(15, 4.4, 0.13, m.wall, [0, 2.0, -4.6]);
-  box(15, 0.14, 0.2, m.trim, [0, 0.05, -4.47]);
-  // Emission 0.85, dimmed from the source's 1.9 (decided 2026-10-05): below the bloom threshold
-  // (1.05), so the window no longer glares across the bench and the balance's draft shield.
+  for (let x = WORKTOP.left + 1.875; x < WORKTOP.right - 0.5; x += 3.75) box(0.03, 3.0, 0.03, gap, [x, -1.72, 4.96]);
+  for (let x = WORKTOP.left + 0.94; x < WORKTOP.right - 0.5; x += 1.875) box(0.36, 0.05, 0.06, m.steel, [x, -0.55, 4.99]);
+  // Back wall, taller than the source's so it stands behind the shelf, with its skirting rail.
+  box(width, 9.2, 0.13, m.wall, [midX, 4.4, WALL_FACE - 0.065]);
+  box(width, 0.14, 0.2, m.trim, [midX, 0.05, WALL_FACE + 0.065]);
+  // The Home view takes in the whole run of bench (2026-10-11), so its ends are finished: a side wall at each end
+  // and the floor below, where the source's closer view never looked.
+  const floorY = -3.32;
+  const endDepth = WORKTOP.front + 0.4 - WALL_FACE;
+  for (const x of [WORKTOP.left - 0.065, WORKTOP.right + 0.065]) {
+    // It casts no shadow: the key light comes from the left, and the left wall's shadow would darken half the bench.
+    box(0.13, 9.2 - floorY + 0.2, endDepth, m.wall, [x, (9.0 + floorY) / 2, WALL_FACE + endDepth / 2]).castShadow = false;
+  }
+  box(width, 0.04, 16, mat("#a59f93", { roughness: 0.85 }), [midX, floorY - 0.02, WALL_FACE + 8]);
+  // The window and its sill, above the shelf. Emission 0.85, dimmed from the source's 1.9 (decided 2026-10-05):
+  // below the bloom threshold (1.05), so the window no longer glares across the bench and the balance's draft shield.
   const glow = new THREE.MeshBasicMaterial({ color: linearHex("#e3ecef").multiplyScalar(0.85), side: THREE.DoubleSide });
   disposables.push(glow);
-  mesh(packedBevelBox(4.6, 2.1, 0.02), glow, [-4.1, 2.25, -4.52], group, false);
-  for (const x of [-6.4, -4.1, -1.8]) box(0.07, 2.2, 0.05, m.trim, [x, 2.25, -4.48]);
-  for (const y of [1.2, 2.25, 3.3]) box(4.7, 0.07, 0.05, m.trim, [-4.1, y, -4.48]);
-  box(4.9, 0.06, 0.28, m.trim, [-4.1, 1.17, -4.4]);
+  const windowY = 7.6;
+  mesh(packedBevelBox(4.6, 2.1, 0.02), glow, [-4.1, windowY, WALL_FACE + 0.015], group, false);
+  for (const x of [-6.4, -4.1, -1.8]) box(0.07, 2.2, 0.05, m.trim, [x, windowY, WALL_FACE + 0.055]);
+  for (const y of [-1.05, 0, 1.05]) box(4.7, 0.07, 0.05, m.trim, [-4.1, windowY + y, WALL_FACE + 0.055]);
+  box(4.9, 0.06, 0.28, m.trim, [-4.1, windowY - 1.08, WALL_FACE + 0.135]);
 
   // The wall text, drawn on a canvas as the source draws its decals.
   const canvas = document.createElement("canvas");
@@ -141,7 +160,8 @@ export const buildRoom = ({ textures, shadowMapSize, onTextureChange, environmen
   disposables.push(textMap);
   const textMaterial = new THREE.MeshStandardMaterial({ map: textMap, transparent: true, roughness: 0.75, depthWrite: false, side: THREE.DoubleSide });
   disposables.push(textMaterial);
-  const text = mesh(packedPlane(3.4, 0.22), textMaterial, [3.1, 3.45, -4.52], group, false);
+  // Over the side station, above its tallest item (the ring stand, 512 mm).
+  const text = mesh(packedPlane(3.4, 0.22), textMaterial, [10.9, 6.6, WALL_FACE + 0.015], group, false);
   text.renderOrder = 1;
   if (typeof document !== "undefined" && document.fonts?.load) {
     void document.fonts.load(PLEX.replace("{px}", "32")).then(() => {
@@ -149,31 +169,6 @@ export const buildRoom = ({ textures, shadowMapSize, onTextureChange, environmen
       textMap.needsUpdate = true;
       onTextureChange?.();
     }).catch(() => undefined);
-  }
-
-  // The shelf and its five bottles: amber and clear glass, and one white plastic bottle.
-  const shelf = new THREE.Group();
-  shelf.position.set(3.1, 2.45, -4.33);
-  group.add(shelf);
-  box(3.8, 0.07, 0.42, mat("#b08a60", { roughness: 0.6 }), [0, 0, 0], shelf);
-  const bottles: Array<[number, string, string, number]> = [
-    [-1.35, "#a8662c", "#2f3437", 0.62], [-0.75, "#f2f4f1", "#3f6fb3", 0.5], [-0.2, "#e9ebe4", "#e9ebe4", 0.7],
-    [0.45, "#a8662c", "#2f3437", 0.48], [1.1, "#f2f4f1", "#7b5fae", 0.56],
-  ];
-  for (const [x, glass, cap, h] of bottles) {
-    const g = new THREE.Group();
-    g.position.set(x, 0.03, 0);
-    shelf.add(g);
-    const profile: Array<[number, number]> = [[0.001, 0], [0.14, 0], [0.15, 0.02], [0.15, h * 0.72], [0.07, h * 0.9], [0.06, h]];
-    const plastic = glass === "#e9ebe4";
-    // The source's thin-shell glass (glass 1, opacity .55, roughness .14) as three's transmissive glass.
-    const material = plastic ? mat(glass, { roughness: 0.45 })
-      : new THREE.MeshPhysicalMaterial({ color: linearHex(glass), roughness: 0.14, transmission: 0.45, thickness: 0.25, ior: 1.47, side: THREE.FrontSide, depthWrite: false,
-        ...(environment ? { envMap: environment, envMapIntensity: REFLECTION.glass } : {}) });
-    if (!plastic) disposables.push(material);
-    const body = mesh(packedLathe(profile, 28), material, [0, 0, 0], g, plastic);
-    if (!plastic) body.renderOrder = 2;
-    mesh(packedCylinder(0.068, 0.08, 28), mat(cap, { roughness: 0.4 }), [0, h, 0], g);
   }
 
   // Lights, in metres. The key casts the source's shadow box, scaled (`renderer.js:126`).
@@ -184,10 +179,11 @@ export const buildRoom = ({ textures, shadowMapSize, onTextureChange, environmen
   key.intensity = 1;
   const s = ROOM_SCALE;
   key.position.set(-12 * s, 18 * s, 7 * s);
-  key.target.position.set(0, 0, -0.5 * s);
+  key.target.position.set(midX * s, 0, -0.5 * s);
   key.castShadow = shadowMapSize > 0;
   key.shadow.mapSize.set(shadowMapSize || 1024, shadowMapSize || 1024);
-  Object.assign(key.shadow.camera, { left: -10.5 * s, right: 10.5 * s, top: 8.5 * s, bottom: -8.5 * s, near: 0.1 * s, far: 45 * s });
+  // The source's box, widened for the side station and deepened for the shelf (2026-10-11).
+  Object.assign(key.shadow.camera, { left: -14.5 * s, right: 14.5 * s, top: 10 * s, bottom: -10 * s, near: 0.1 * s, far: 45 * s });
   key.shadow.camera.updateProjectionMatrix();
   key.shadow.intensity = 1 - ROOM_LIGHTS.shadowLeft;
   key.shadow.bias = -0.0004;

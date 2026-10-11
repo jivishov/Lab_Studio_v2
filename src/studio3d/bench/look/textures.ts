@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { ROOM_SCALE, WORKTOP } from "./room";
 
 /**
  * Tileable procedural surface textures, generated at load time so no image files ship for them
@@ -142,8 +143,8 @@ export const makeTextures = (size: "full" | "reduced" = "full"): BenchTextures =
   const resinBase = [0x5e, 0x6a, 0x71].map((c) => Math.pow(c / 255, 2.2));
   const speckColour = [0.62, 0.61, 0.58];
   const lightCells = Math.round(tileUnits * 240), darkCells = Math.round(tileUnits * 170);
-  // The worktop's top face runs u along its 10-unit depth and v along its 15-unit width (room.ts).
-  const resinRepeat: [number, number] = [(10 * 1.4) / 15 / 0.2, 1.4 / 0.2];
+  // The worktop's top face runs u along its depth and v along its width (room.ts); one tile is 0.2 m.
+  const resinRepeat: [number, number] = [((WORKTOP.front - WORKTOP.back) * ROOM_SCALE) / 0.2, ((WORKTOP.right - WORKTOP.left) * ROOM_SCALE) / 0.2];
   return {
     brushedN: normalTex(brushed, n(512), 1.4, [3.3, 3.3]),
     brushedR: greyTex(brushed, n(512), 0.2, 0.36, [3.3, 3.3]),

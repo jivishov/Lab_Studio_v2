@@ -30,8 +30,9 @@ describe("camera model (renderer.js:12)", () => {
     expect(eyeOf(view, 2).z).toBeCloseTo(1, 9);
   });
 
-  it("scales the source's default view and presets into metres", () => {
-    expect(DEFAULT_VIEW().distance).toBeCloseTo(11.2 * ROOM_SCALE, 9);
+  it("scales the source's presets into metres, and Home takes in the shelf and the side station (2026-10-11)", () => {
+    expect(DEFAULT_VIEW().distance).toBeCloseTo(24 * ROOM_SCALE, 9);
+    expect(DEFAULT_VIEW().distance).toBeLessThanOrEqual(MANUAL.distanceMax);
     expect(PRESETS.bench()).toMatchObject({ pitch: 0.89, distance: 15.5 * ROOM_SCALE });
     expect(PRESETS.top().pitch).toBe(1.535);
   });
@@ -42,7 +43,8 @@ describe("manual input (app.js:111-151)", () => {
     const view = clampManual({ at: new THREE.Vector3(9, 0.1, -9), yaw: 12, pitch: 0, distance: 99 });
     expect(view.pitch).toBe(MANUAL.pitchMin);
     expect(view.distance).toBe(MANUAL.distanceMax);
-    expect(view.at.x).toBe(MANUAL.atX);
+    expect(view.at.x).toBe(MANUAL.atXMax);
+    expect(clampManual({ ...view, at: new THREE.Vector3(-9, 0, 0) }).at.x).toBe(MANUAL.atXMin);
     expect(view.at.z).toBe(-MANUAL.atZ);
     expect(view.yaw).toBe(12);
   });
@@ -50,14 +52,14 @@ describe("manual input (app.js:111-151)", () => {
   it("orbits at 0.006 rad/px of yaw and 0.005 rad/px of pitch", () => {
     const view = orbitBy(DEFAULT_VIEW(), 100, 20);
     expect(view.yaw).toBeCloseTo(-0.6, 9);
-    expect(view.pitch).toBeCloseTo(0.72 + 0.1, 9);
+    expect(view.pitch).toBeCloseTo(DEFAULT_VIEW().pitch + 0.1, 9);
   });
 
   it("pans by the bench points under the pointer, and tilts with up/down", () => {
     const from = new THREE.Vector3(0.1, 0, 0), to = new THREE.Vector3(0.3, 0, 0);
     const view = panTiltBy(DEFAULT_VIEW(), from, to, -10);
     expect(view.at.x).toBeCloseTo(DEFAULT_VIEW().at.x - 0.2, 9);
-    expect(view.pitch).toBeCloseTo(0.72 - 0.05, 9);
+    expect(view.pitch).toBeCloseTo(DEFAULT_VIEW().pitch - 0.05, 9);
   });
 
   it("slides the bench with a left-drag, up and down as well as sideways, over twice the source's range (2026-10-11)", () => {

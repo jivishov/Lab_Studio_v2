@@ -1,8 +1,10 @@
 import * as THREE from "three";
 import type { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { BENCH_MM } from "../adapters/benchCoordinates";
-import { fillLevelMm, type SceneContents, type SceneDescription, type SceneItem, type SceneStrip } from "../adapters/runtimeToScene";
+import { fillLevelMm, type SceneContents, type SceneDescription, type SceneItem, type SceneStrip, type SceneTrayItem } from "../adapters/runtimeToScene";
+import { SHELF, type ShelfSpot } from "../adapters/shelfSpots";
 import { ModelLibrary } from "../equipment3d/loadModels";
+import { equipment3dRegistry } from "../equipment3d/readiness";
 import type { Equipment3DEntry } from "../equipment3d/types";
 import {
   applyView, clampAt, clampManual, copyView, DEFAULT_VIEW, easeInOutCubic, FAR, fitBest, FOV, lerpView, MANUAL, NEAR,
@@ -18,6 +20,7 @@ import { buildContents, buildTiltingLiquid, disposeObject, liquidOpacity3D, pars
 import { buildDisplayFace, type DisplayFace } from "./scene/displays";
 import { onsetTilt, pourGeometry, pourQuaternion, rootForLip, streamGeometry, surfaceHeight, UP, vesselSlices } from "./scene/pour";
 import { seatPoint, setOnPosition } from "./scene/setOn";
+import { ShelfTags } from "./scene/shelfTags";
 import { buildStripLayer, buildTapeLayer, drawStrip, drawTape, type MarksLayer } from "./scene/stripMarks";
 import { Signals, TOKENS, type TargetRingKind } from "./scene/signals";
 
@@ -67,6 +70,10 @@ interface ItemView {
   /** What is drawn on a chromatography strip's face and a chamber's label tape (Pack 3a). */
   marks?: MarksLayer;
   tape?: MarksLayer;
+  /** On the shelf or the side station (the runtime's `shelf`): its spot, while it is there. */
+  shelf?: ShelfSpot;
+  /** The enlarged, never-drawn hit box it has while on the shelf. */
+  shelfProxy?: THREE.Mesh;
 }
 
 /** A committed pour being drawn: advanced by the render loop, cleaned up when it ends or is cut short. */
@@ -115,6 +122,11 @@ const DIP = { depthMm: 3, seconds: 0.22, floorMm: 2 };
  * an invisible box over it takes the pick: at least this tall and this wide, in millimetres.
  */
 const PICK_PROXY = { belowHeightMm: 10, heightMm: 16, minWidthMm: 24 };
+/**
+ * On the shelf every item is farther away than on the bench: its hit box is its drawn extent grown to at least this
+ * size (mm), and up to `padMm` wider than the item (the shelf in place of the tray, decided 2026-10-11).
+ */
+const SHELF_PICK = { minWidthMm: 44, minHeightMm: 60, padMm: 10 };
 const PICK_PROXY_MATERIAL = new THREE.MeshBasicMaterial();
 
 /**
@@ -157,6 +169,12 @@ export class BenchEngine {
   private readonly signals = new Signals();
   private readonly items = new Map<string, ItemView>();
   private readonly itemLayer = new THREE.Group();
+  /** Items on the runtime's shelf, drawn on their spots: never picked as bench items (`pickShelf`). */
+  private readonly shelfLayer = new THREE.Group();
+  /** The bench's own furniture, loaded once and tied to no item: the reagent shelf (D9 scenery). */
+  private readonly furniture = new THREE.Group();
+  private readonly shelfTags = new ShelfTags();
+  private readonly furnitureReady: Promise<void>;
   private readonly raycaster = new THREE.Raycaster();
   private readonly benchPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
   private frame = 0;
@@ -249,14 +267,51 @@ export class BenchEngine {
     this.models = new ModelLibrary(this.textures);
     this.models.environment = environment;
     this.models.onProgress = (loaded, total, pending) => this.onLoadProgress?.(loaded, total, pending);
-    this.room = buildRoom({ textures: this.textures, shadowMapSize: q.shadowMap, onTextureChange: () => this.requestRender(), environment });
+    this.room = buildRoom({ textures: this.textures, shadowMapSize: q.shadowMap, onTextureChange: () => this.requestRender() });
     this.scene.add(this.room.group, this.room.lights);
     this.contact = new ContactShadows({ width: BENCH_MM.width * MM, depth: BENCH_MM.depth * MM, resolution: q.contact, blur: 2.2, opacity: 0.72 });
-    this.scene.add(this.contact.group, this.itemLayer, this.signals.group);
+    this.furniture.name = "bench furniture (scenery)";
+    this.shelfLayer.name = "shelf items";
+    this.scene.add(this.contact.group, this.furniture, this.shelfTags.group, this.itemLayer, this.shelfLayer, this.signals.group);
+    this.shelfShown = new Promise((resolve) => {
+      this.releaseShelf = () => { window.clearTimeout(this.shelfFallback); resolve(); };
+    });
+    this.furnitureReady = this.shelfShown.then(() => this.loadFurniture());
 
     this.detachCameraInput = this.attachCameraInput();
     this.composer = makeComposer(this.renderer, this.scene, this.camera, { samples: q.samples, bloom: q.bloom });
     this.resize();
+  }
+
+  /** The reagent shelf, once (decision D9 scenery): its model from the registry, never picked. */
+  /**
+   * The shelf's items load once the bench has been shown (`showShelf`, called by the player when its loader has gone),
+   * or 1.5 s after the first sync has drawn the bench, for a host that never calls it. Loaded with the bench, they held the first step back by about a
+   * second on transmittance-dilution, whose 13 start on the shelf (SwiftShader, 2026-10-11).
+   */
+  private readonly shelfShown: Promise<void>;
+  private releaseShelf: () => void = () => undefined;
+  private shelfFallback?: number;
+
+  showShelf(): void {
+    this.releaseShelf();
+  }
+
+  private async loadFurniture(): Promise<void> {
+    const entry = equipment3dRegistry.entries.find((candidate) => candidate.scenery && candidate.definitionId === SHELF.id);
+    if (!entry) return;
+    try {
+      const shelf = await this.models.instance(entry);
+      if (this.disposed) return;
+      shelf.traverse((object) => { (object as THREE.Mesh).raycast = () => undefined; });
+      shelf.name = `scenery:${SHELF.id}`;
+      shelf.position.copy(toWorld(SHELF.centre.xMm, SHELF.centre.yMm));
+      this.furniture.add(shelf);
+      this.shadowsDirty = true;
+      this.requestRender();
+    } catch {
+      // Without its model the items still stand on their spots; the room is unchanged.
+    }
   }
 
   get canvasElement(): HTMLCanvasElement {
@@ -356,10 +411,12 @@ export class BenchEngine {
     // Every material is lit as the microarray lab lights its surfaces (patched once, when first drawn).
     applyRoomLighting(this.scene);
     if (this.shadowsDirty) {
-      // Contact shadows are cast by equipment only, never by the room.
+      // Contact shadows are cast by equipment on the bench only, never by the room, the shelf or what stands on it.
       this.room.group.visible = false;
+      this.furniture.visible = this.shelfLayer.visible = this.shelfTags.group.visible = false;
       this.contact.update(this.renderer, this.scene);
       this.room.group.visible = true;
+      this.furniture.visible = this.shelfLayer.visible = this.shelfTags.group.visible = true;
       this.shadowsDirty = false;
     }
     this.composer.render();
@@ -390,17 +447,21 @@ export class BenchEngine {
     const generation = ++this.syncGeneration;
     this.stopPour();
     this.carried = undefined;
-    const wanted = new Set(description.bench.map((item) => item.instanceId));
+    const tray = description.tray ?? [];
+    const wanted = new Set([...description.bench, ...tray].map((item) => item.instanceId));
     for (const [id, view] of this.items) {
       if (!wanted.has(id)) {
-        this.itemLayer.remove(view.root);
+        view.root.removeFromParent();
         if (view.benchScenery) this.itemLayer.remove(view.benchScenery);
         if (view.contents) disposeObject(view.contents);
         this.items.delete(id);
       }
     }
+    // The shelf's models load after the bench's and are not waited for: the bench is ready, and the step can start, as
+    // soon as its own items are drawn; each shelf item appears on its spot as its model arrives (`shelfShown`).
     await Promise.all(description.bench.map((item) => this.ensureItem(item)));
     if (generation !== this.syncGeneration || this.disposed) return;
+    const shelfLoading = Promise.all([...tray.map((item) => this.ensureItem(item, item.spot)), this.furnitureReady]);
     const byId = new Map(description.bench.map((item) => [item.instanceId, item]));
     const placed = new Set<string>();
     const place = (item: SceneItem, depth = 0): void => {
@@ -447,13 +508,27 @@ export class BenchEngine {
       placed.add(item.instanceId);
     };
     description.bench.forEach((item) => place(item));
+    // On the shelf: stood on its spot as on the bench, then raised to its tier (or the side station's worktop).
+    for (const item of tray) {
+      place(item);
+      const view = this.items.get(item.instanceId);
+      if (view) view.root.position.y += item.spot.zMm * MM;
+    }
+    // The tags too wait for the bench to be shown (their first frame compiles their material).
+    void this.shelfShown.then(() => {
+      if (generation !== this.syncGeneration || this.disposed) return;
+      this.shelfTags.update(tray);
+      this.requestRender();
+    });
     if (this.held) this.poseHeld(description);
     if (this.squirtHold) this.poseSquirtHold();
     if (this.toolHeld) this.poseToolHeld();
     for (const item of description.bench) this.updateItem(item);
+    for (const item of tray) if (this.items.get(item.instanceId)?.model) this.updateItem(item);
     // World matrices normally refresh at the next render; picking, labels and framing can run
     // before it, so they are brought up to date with the scene now.
     this.itemLayer.updateMatrixWorld(true);
+    this.shelfLayer.updateMatrixWorld(true);
     this.lastScene = description;
     this.restPositions.clear();
     this.restQuaternions.clear();
@@ -469,9 +544,19 @@ export class BenchEngine {
     this.shadowsDirty = true;
     this.requestRender();
     this.onChange?.();
+    this.shelfFallback ??= window.setTimeout(() => this.releaseShelf(), 1500);
+    void shelfLoading.then(() => {
+      if (generation !== this.syncGeneration || this.disposed) return;
+      for (const item of tray) this.updateItem(item);
+      this.shelfLayer.updateMatrixWorld(true);
+      if (!this.demo) this.placeBeacon(this.beaconId);
+      this.shadowsDirty = true;
+      this.requestRender();
+      this.onChange?.();
+    });
   }
 
-  private async ensureItem(item: SceneItem): Promise<void> {
+  private async ensureItem(item: SceneItem, shelf?: ShelfSpot): Promise<void> {
     let view = this.items.get(item.instanceId);
     if (!view) {
       const root = new THREE.Group();
@@ -479,8 +564,18 @@ export class BenchEngine {
       root.userData.instanceId = item.instanceId;
       view = { instanceId: item.instanceId, definitionId: item.definitionId, root, contentsKey: "", entry: item.model };
       this.items.set(item.instanceId, view);
-      this.itemLayer.add(root);
     }
+    // On the shelf its own layer, else the bench's; an item taken off the shelf (or put back) changes layer.
+    const layer = shelf ? this.shelfLayer : this.itemLayer;
+    if (view.root.parent !== layer) layer.add(view.root);
+    view.shelf = shelf;
+    if (!shelf && view.shelfProxy) {
+      view.shelfProxy.removeFromParent();
+      view.shelfProxy.geometry.dispose();
+      view.shelfProxy = undefined;
+    }
+    // A shelf model waits until the bench has been shown: parsed alongside, the shelf held the first step back.
+    if (shelf && item.model && !view.model) await this.shelfShown;
     if (item.model && !view.model) {
       const model = await this.models.instance(item.model);
       if (this.disposed || this.items.get(item.instanceId) !== view) return;
@@ -510,6 +605,26 @@ export class BenchEngine {
       }
       view.model = model;
       view.root.add(model);
+    }
+    if (shelf && view.model && !view.shelfProxy) {
+      // A shelf item's hit box: its drawn extent, grown so a capillary or a pencil is as easy to take as a bottle.
+      view.model.updateWorldMatrix(true, false);
+      const bounds = new THREE.Box3().setFromObject(view.model);
+      bounds.applyMatrix4(view.model.matrixWorld.clone().invert());
+      if (!bounds.isEmpty()) {
+        const size = bounds.getSize(new THREE.Vector3());
+        const grow = (v: number, min: number) => Math.max(v + SHELF_PICK.padMm * MM, min * MM);
+        const proxy = new THREE.Mesh(new THREE.BoxGeometry(grow(size.x, SHELF_PICK.minWidthMm), grow(size.y, SHELF_PICK.minHeightMm),
+          grow(size.z, SHELF_PICK.minWidthMm)), PICK_PROXY_MATERIAL);
+        const centre = bounds.getCenter(new THREE.Vector3());
+        proxy.position.set(centre.x, bounds.min.y + grow(size.y, SHELF_PICK.minHeightMm) / 2, centre.z);
+        proxy.visible = false;
+        proxy.castShadow = false;
+        proxy.name = "shelf-pick-proxy";
+        proxy.userData.instanceId = item.instanceId;
+        view.model.add(proxy);
+        view.shelfProxy = proxy;
+      }
     }
     if (item.scenery && !view.scenery) {
       const rack = await this.models.instance(item.scenery.model);
@@ -786,6 +901,25 @@ export class BenchEngine {
     this.raycaster.setFromCamera(this.ndc(clientX, clientY), this.camera);
     const hit = this.firstItemHit(this.raycaster.intersectObject(this.itemLayer, true));
     return hit?.object.userData.instanceId as string | undefined;
+  }
+
+  /**
+   * The item on the shelf or the side station under a client point, if any, and only when no bench item is nearer
+   * along the ray (the shelf in place of the tray). Its hit box is enlarged (`SHELF_PICK`); scenery is never picked.
+   */
+  pickShelf(clientX: number, clientY: number): string | undefined {
+    this.raycaster.setFromCamera(this.ndc(clientX, clientY), this.camera);
+    const shelfHit = this.firstItemHit(this.raycaster.intersectObject(this.shelfLayer, true));
+    if (!shelfHit) return undefined;
+    const benchHit = this.firstItemHit(this.raycaster.intersectObject(this.itemLayer, true));
+    // A bench item's own pick proxy is not a surface in front of the shelf.
+    if (benchHit && benchHit.distance < shelfHit.distance && benchHit.object.name !== "pick-proxy") return undefined;
+    return shelfHit.object.userData.instanceId as string | undefined;
+  }
+
+  /** Whether an item is drawn on the shelf or the side station now. */
+  onShelf(instanceId: string): boolean {
+    return Boolean(this.items.get(instanceId)?.shelf);
   }
 
   /**
@@ -2430,7 +2564,13 @@ export class BenchEngine {
   frameItems(instanceIds: string[] | "all", marginFactor = 1.1, safe: Rect[] | undefined = this.safeAreas): void {
     const box = new THREE.Box3();
     const views = instanceIds === "all" ? [...this.items.values()] : instanceIds.map((id) => this.items.get(id)).filter(Boolean) as ItemView[];
-    views.forEach((view) => box.expandByObject(view.root));
+    // A shelf item whose model has not arrived yet (it loads after the bench is shown) is framed by its spot.
+    views.forEach((view) => {
+      if (view.model || !view.shelf) { box.expandByObject(view.root); return; }
+      const { centre, zMm, widthMm, depthMm, heightMm } = view.shelf;
+      box.expandByPoint(toWorld(centre.xMm - widthMm / 2, centre.yMm - depthMm / 2, zMm))
+        .expandByPoint(toWorld(centre.xMm + widthMm / 2, centre.yMm + depthMm / 2, zMm + heightMm));
+    });
     if (instanceIds === "all") {
       const w = (BENCH_MM.width * MM) / 2, d = (BENCH_MM.depth * MM) / 2;
       box.expandByPoint(new THREE.Vector3(-w, 0, -d)).expandByPoint(new THREE.Vector3(w, 0, d));
@@ -2546,8 +2686,13 @@ export class BenchEngine {
     this.disposed = true;
     if (this.frame) cancelAnimationFrame(this.frame);
     this.detachCameraInput?.();
-    this.items.forEach((view) => { if (view.contents) disposeObject(view.contents); });
+    this.items.forEach((view) => {
+      if (view.contents) disposeObject(view.contents);
+      view.shelfProxy?.geometry.dispose();
+    });
     this.items.clear();
+    this.shelfTags.dispose();
+    window.clearTimeout(this.shelfFallback);
     this.contact.dispose();
     this.models.dispose();
     disposeTextures(this.textures);

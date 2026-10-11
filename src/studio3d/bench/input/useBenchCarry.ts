@@ -963,7 +963,8 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       }
       if (!carry || carry.via !== "pointer") {
         if (!carry) {
-          onHover(engine.pick(event.clientX, event.clientY));
+          // A shelf item names itself on hover too (the shelf in place of the tray).
+          onHover(engine.pick(event.clientX, event.clientY) ?? engine.pickShelf(event.clientX, event.clientY));
           canvas.style.cursor = onControl && engine.pickControl(event.clientX, event.clientY) ? "pointer" : "";
         }
         return;
