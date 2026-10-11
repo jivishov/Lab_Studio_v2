@@ -399,14 +399,19 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   // Guidance in the world (guided only, G-7): the beacon marks the expected source, then the
   // expected target while something is being carried (§5.9). A step done with a tool (the spatula,
   // decided 2026-09-25) marks the tool, then the source to dip it into, then the target.
+  // The instance the step names when it is on the bench (two strips, two chambers), else the first of its kind.
   const expectedSourceId = useMemo(() => {
     const def = flow.source.definitionId;
+    const named = flow.source.instanceId;
+    if (named && scene.bench.some((i) => i.instanceId === named)) return named;
     return def ? scene.bench.find((i) => i.definitionId === def)?.instanceId : undefined;
-  }, [flow.source.definitionId, scene]);
+  }, [flow.source.definitionId, flow.source.instanceId, scene]);
   const expectedTargetId = useMemo(() => {
     const def = flow.target.definitionId;
+    const named = flow.target.instanceId;
+    if (named && named !== expectedSourceId && scene.bench.some((i) => i.instanceId === named)) return named;
     return def ? scene.bench.find((i) => i.definitionId === def && i.instanceId !== expectedSourceId)?.instanceId : undefined;
-  }, [expectedSourceId, flow.target.definitionId, scene]);
+  }, [expectedSourceId, flow.target.definitionId, flow.target.instanceId, scene]);
   const tool = player.toolTransfer;
   const toolId = useMemo(
     () => (tool ? scene.bench.find((i) => i.definitionId === tool.toolDefinitionId)?.instanceId : undefined),
@@ -797,10 +802,12 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
       engine.eyeLevel(read.instanceId, fillLevelMm(read.model.fill, read.contents.volumeMl).levelMm, 0.2);
       return;
     }
-    const targetDef = flow.target.definitionId;
     const toolDef = player.toolTransfer?.toolDefinitionId;
+    // A step's named instance alone, when it is on the bench; else every item of the kind.
+    const ends = (definitionId?: string, instanceId?: string): string[] => instanceId && scene.bench.some((i) => i.instanceId === instanceId) ? [instanceId]
+      : scene.bench.filter((i) => i.definitionId === definitionId).map((i) => i.instanceId);
     const working = new Set(showGuidance
-      ? scene.bench.filter((i) => i.definitionId === flow.source.definitionId || i.definitionId === targetDef || i.definitionId === toolDef).map((i) => i.instanceId)
+      ? [...ends(flow.source.definitionId, flow.source.instanceId), ...ends(flow.target.definitionId, flow.target.instanceId), ...scene.bench.filter((i) => i.definitionId === toolDef).map((i) => i.instanceId)]
       : []);
     // A bench operation (Pack 2) frames what it is done to and with.
     const benchOp = player.benchOp;
@@ -811,7 +818,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
       if (working.has(item.instanceId) && item.placement.kind === "seated") working.add(item.placement.parentInstanceId);
     }
     engine.frameItems(working.size ? [...working] : "all", working.size ? 1.6 : 1.05);
-  }, [engine, flow.source.definitionId, flow.target.definitionId, player.benchOp, player.toolTransfer, runtime.expectedAction, runtime.state.measurements, scene, showGuidance]);
+  }, [engine, flow.source.definitionId, flow.source.instanceId, flow.target.definitionId, flow.target.instanceId, player.benchOp, player.toolTransfer, runtime.expectedAction, runtime.state.measurements, scene, showGuidance]);
   useEffect(() => {
     if (runtime.currentNode.id !== lastNode.current) {
       lastNode.current = runtime.currentNode.id;

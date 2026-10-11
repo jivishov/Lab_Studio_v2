@@ -7,6 +7,7 @@ import type { ActionDefinition, EquipmentInstance, RuntimeState, TechniqueDefini
 import { equipmentById } from "../../equipment/catalog";
 import { resolveLiquidStyle } from "../../equipment/liquidRendering";
 import { createRuntimeState, performRuntimeAction } from "../../runtime";
+import { makeAttachmentRelation, withResolvedAttachments } from "../../runtime/attachments";
 import { resolveInteractionIntent, type RuntimeInteractionIntent } from "../../runtime/interactionIntents";
 import { BENCH_MM, fromBench, RUNTIME_BENCH_PX, runtimeBenchPointsMm, toBench, benchPositionWords } from "../adapters/benchCoordinates";
 import { instrumentDisplay } from "../adapters/instrumentDisplay";
@@ -103,6 +104,26 @@ describe("runtimeToScene: contents and scenery", () => {
     expect(scene.bench).toHaveLength(1);
     expect(scene.bench[0].scenery?.sceneryId).toBe("test-tube-rack");
     expect(scene.bench.map((item) => item.definitionId)).not.toContain("test-tube-rack");
+  });
+
+  it("keeps a strip in its own chamber when the runtime also lists it in the first chamber (2026-10-11)", () => {
+    // Each action merges in a relation derived from the strip's zone, naming the first chamber; with two, the
+    // 2-propanol strip was drawn in the water chamber while its own was closed and opened.
+    const closed = { ...instance({}).contents, developingChamberClosed: true };
+    const state = withResolvedAttachments({
+      ...stateWith([
+        instance({ id: "chamber-1", definitionId: "chromatography-chamber", label: "Water", x: 100, contents: closed }),
+        instance({ id: "chamber-2", definitionId: "chromatography-chamber", label: "2-Propanol", x: 400, contents: closed }),
+        instance({ id: "strip-2", definitionId: "chromatography-paper", label: "Strip", location: "snapZone", snapZoneId: "chromatography-chamber-paper-slot" }),
+      ]),
+      attachments: [makeAttachmentRelation("chamber-2", "strip-2", "chromatography-chamber-paper-slot")!],
+    });
+    expect(state.attachments.map((relation) => relation.parentInstanceId)).toEqual(["chamber-2", "chamber-1"]);
+    const scene = runtimeToScene(state, { actions: [] });
+    const at = (id: string) => scene.bench.find((item) => item.instanceId === id)!;
+    expect(at("strip-2").placement).toMatchObject({ kind: "seated", parentInstanceId: "chamber-2" });
+    expect(at("chamber-2").apparatus).toMatchObject({ lid: "closed", strip: "hung" });
+    expect(at("chamber-1").apparatus).toMatchObject({ lid: "closed", strip: "" });
   });
 
   it("hides storage and oven items, as the 2D player does", () => {

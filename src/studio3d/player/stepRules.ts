@@ -158,22 +158,33 @@ export const submitCalculationLabel = (label: string): string => {
 
 export interface Endpoint {
   definitionId?: string;
+  /**
+   * The student's choice, else the instance the step names (2026-10-11): with two of a kind on the bench, a lab's
+   * 2-propanol trial names its own strip and chamber, and the beacon and the framing follow those, not the first.
+   */
+  instanceId?: string;
   label: string;
   missing: boolean;
 }
 
+/** The instance a step names for its source (a place step's item) or its target. */
+const namedInstanceId = (action: ActionDefinition | undefined, end: "source" | "target"): string | undefined =>
+  end === "source" ? placedInstanceId(action?.parameters) : stringParam(action, "targetInstanceId");
+
 const endpoint = (state: RuntimeState, selected: string | undefined, expectedDefinitionId: string | undefined,
-  required: boolean, optionalLabel: string, showGuidance: boolean): Endpoint => {
+  required: boolean, optionalLabel: string, showGuidance: boolean, namedId?: string): Endpoint => {
   if (selected) {
     const instance = state.equipmentInstances.find((i) => i.id === selected);
     if (!instance) return { label: "Selected equipment is unavailable", missing: true };
     const mismatched = Boolean(expectedDefinitionId && instance.definitionId !== expectedDefinitionId);
-    return { definitionId: instance.definitionId, label: mismatched ? `${instance.label} (does not match required equipment)` : instance.label, missing: mismatched };
+    return { definitionId: instance.definitionId, instanceId: instance.id,
+      label: mismatched ? `${instance.label} (does not match required equipment)` : instance.label, missing: mismatched };
   }
   const expected = showGuidance && expectedDefinitionId ? equipmentById.get(expectedDefinitionId)?.label ?? expectedDefinitionId : undefined;
   if (expected) {
     const available = state.equipmentInstances.some((i) => i.definitionId === expectedDefinitionId);
-    return { definitionId: expectedDefinitionId, label: available ? expected : `${expected} unavailable`, missing: !available };
+    const named = state.equipmentInstances.find((i) => i.id === namedId && i.definitionId === expectedDefinitionId)?.id;
+    return { definitionId: expectedDefinitionId, ...(named ? { instanceId: named } : {}), label: available ? expected : `${expected} unavailable`, missing: !available };
   }
   return required ? { label: showGuidance ? "Not selected" : "Choose…", missing: true } : { label: optionalLabel, missing: false };
 };
@@ -249,8 +260,10 @@ export const stepFlow = (args: {
   const canConfirm = usesAccessibleConfirmation(interaction);
   const sourceRequired = interactionRequiresSource(interaction);
   const targetRequired = interactionRequiresTarget(interaction);
-  const source = endpoint(state, args.selectedSource, sourceDefinitionFor(action, interaction), sourceRequired, "No source required", showGuidance);
-  const target = endpoint(state, args.selectedTarget, targetDefinitionFor(action, interaction), targetRequired, stationLabel(interaction?.stationId), showGuidance);
+  const source = endpoint(state, args.selectedSource, sourceDefinitionFor(action, interaction), sourceRequired, "No source required", showGuidance,
+    namedInstanceId(action, "source"));
+  const target = endpoint(state, args.selectedTarget, targetDefinitionFor(action, interaction), targetRequired, stationLabel(interaction?.stationId), showGuidance,
+    namedInstanceId(action, "target"));
   const missingRequired = canConfirm && ((sourceRequired && source.missing) || (targetRequired && target.missing));
   const confirmEnabled = canConfirm && !configurationLock && inputReady && prerequisitesReady && !nodeCompleted && !missingRequired;
   return { node, action, interaction, nodeCompleted, inputField: inputField ?? undefined, inputResolution, inputReady, configurationLock,

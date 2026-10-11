@@ -8,6 +8,7 @@ import { formatContentLabel, isVisibleLiquid, isVisibleSolidContent } from "../.
 import { equipment3dEntry, equipment3dRegistry } from "../equipment3d/readiness";
 import type { Equipment3DEntry, Equipment3DFill } from "../equipment3d/types";
 import { BENCH_MM, runtimeBenchPointsMm, toBench, type BenchPointMm } from "./benchCoordinates";
+import { heldRelations } from "./heldRelations";
 import { instrumentDisplay, type InstrumentDisplayModel } from "./instrumentDisplay";
 import { stableRestPoint } from "./stableBench";
 
@@ -260,7 +261,7 @@ const tapeLabelFor = (instance: EquipmentInstance, state: RuntimeState, definiti
 const chamberApparatus = (instance: EquipmentInstance, state: RuntimeState): Record<string, string> | undefined => {
   const closed = instance.contents.developingChamberClosed;
   if (closed === undefined) return undefined;
-  const hung = state.attachments.some((relation) => relation.parentInstanceId === instance.id && relation.zoneId === "chromatography-chamber-paper-slot");
+  const hung = heldRelations(state).some((relation) => relation.parentInstanceId === instance.id && relation.zoneId === "chromatography-chamber-paper-slot");
   return { lid: closed ? "closed" : "open", strip: hung ? "hung" : "" };
 };
 
@@ -325,7 +326,7 @@ export const sceneryUnder = (
 
 export const runtimeToScene = (state: RuntimeState, definition: SceneDefinition): SceneDescription => {
   const byId = new Map(state.equipmentInstances.map((instance) => [instance.id, instance]));
-  const relationByChild = new Map(state.attachments.map((relation) => [relation.childInstanceId, relation]));
+  const relationByChild = new Map(heldRelations(state).map((relation) => [relation.childInstanceId, relation]));
   const benchPoints = runtimeBenchPointsMm(state);
   const bench: SceneItem[] = [];
   const tray: SceneTrayItem[] = [];

@@ -1,6 +1,7 @@
 import { v1InteractionZones } from "../../domain/interactionZones";
 import type { ActionDefinition, EquipmentInstance, RuntimeState } from "../../domain/types";
 import { actionInputField } from "../../runtime/actionInputs";
+import { heldRelations } from "./heldRelations";
 
 /**
  * What an instrument's display shows (displayPolicies.json; teacher-prepared readings, decided
@@ -91,7 +92,7 @@ const emptyMassG = (definition: DefinitionWithActions, instance: EquipmentInstan
 
 /** Instances seated directly on `holder` in one of its own zones. */
 const seatedOn = (state: RuntimeState, holder: EquipmentInstance, zoneIds: readonly string[]): EquipmentInstance[] =>
-  state.attachments
+  heldRelations(state)
     .filter((relation) => relation.parentInstanceId === holder.id && zoneIds.includes(relation.zoneId))
     .flatMap((relation) => state.equipmentInstances.filter((instance) => instance.id === relation.childInstanceId));
 
@@ -107,7 +108,7 @@ const loadG = (definition: DefinitionWithActions, state: RuntimeState, item: Equ
   const liquid = (contents.volumeMl ?? 0) > 0 && num(contents.massG) === undefined;
   if (liquid) return undefined;
   let total = empty + (num(contents.massG) ?? 0);
-  for (const child of state.attachments.filter((relation) => relation.parentInstanceId === item.id)) {
+  for (const child of heldRelations(state).filter((relation) => relation.parentInstanceId === item.id)) {
     const instance = state.equipmentInstances.find((candidate) => candidate.id === child.childInstanceId);
     const load = instance ? loadG(definition, state, instance, depth + 1) : undefined;
     if (load === undefined) return undefined;

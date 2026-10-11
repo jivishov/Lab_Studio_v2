@@ -14,7 +14,7 @@ import { equipment3dReadiness } from "../equipment3d/readiness";
 import type * as Labs3D from "../labs3d";
 import { parseLab3DValues, type Lab3DSummary } from "../labs3dSetup";
 import { measurementProvenance, notebookProvenance } from "../player/provenance";
-import { readingVesselId } from "../player/stepRules";
+import { readingVesselId, stepFlow } from "../player/stepRules";
 
 /**
  * D8 E3 (decided 2026-10-10; `proposals/D8_EXPERIMENT_ASSEMBLY.md`, "E0 design"): the twins and the
@@ -469,6 +469,27 @@ describe("Pack 3a 3D lab: Paper Chromatography", () => {
     const { lab: four } = await labs3d.loadLab3D(chrom, chromDefaults);
     const depth = (definition: LabDefinition) => Number(definition.actions.find((action) => action.id === "trial-water--develop")!.parameters.solventDepthMm);
     expect(depth(lab)).toBeGreaterThan(depth(four));
+  });
+
+  it("names each trial's own strip and chamber, which the beacon and the framing follow (2026-10-11)", async () => {
+    const { lab } = await labs3d.loadLab3D(chrom, chromDefaults);
+    const state = createRuntimeState(lab);
+    const flowOf = (id: string) => {
+      const action = lab.actions.find((entry) => entry.id === id)!;
+      return stepFlow({ state, node: lab.process.nodes.find((node) => node.actionId === id)!, action,
+        interaction: resolveActionInteraction(action), inputValue: "", showGuidance: true });
+    };
+    expect(flowOf("trial-propanol--draw-baseline").source).toMatchObject({ definitionId: "chromatography-paper", instanceId: "propanol-strip" });
+    expect(flowOf("trial-propanol--spot-1").target).toMatchObject({ definitionId: "chromatography-paper", instanceId: "propanol-strip" });
+    expect(flowOf("trial-propanol--hang-strip")).toMatchObject({ source: { instanceId: "propanol-strip" }, target: { instanceId: "propanol-chamber" } });
+    expect(flowOf("trial-propanol--remove-strip").source.instanceId).toBe("propanol-strip");
+    expect(flowOf("trial-propanol--read-front").source.instanceId).toBe("propanol-strip");
+    expect(flowOf("trial-water--close-chamber").target.instanceId).toBe("water-chamber");
+    expect(flowOf("trial-propanol--close-chamber").target.instanceId).toBe("propanol-chamber");
+    // The student's own choice wins.
+    expect(stepFlow({ state, node: lab.process.nodes[0], action: lab.actions.find((entry) => entry.id === "trial-propanol--spot-1"),
+      interaction: resolveActionInteraction(lab.actions.find((entry) => entry.id === "trial-propanol--spot-1")!), inputValue: "",
+      selectedTarget: "water-strip", showGuidance: true }).target.instanceId).toBe("water-strip");
   });
 
   it("refuses a band at or past the front, a front too near the strip's top, and more dye than the capillary holds", () => {
