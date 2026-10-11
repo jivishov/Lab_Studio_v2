@@ -8,7 +8,7 @@ import { angle, Contact, HAND_GAP_MS, type HandFrame } from "./handCore";
  *
  * | Action | Hand |
  * |---|---|
- * | Pick up an item or a tray item | a closed grip held 350 ms over it |
+ * | Pick up an item, on the bench or the shelf | a closed grip held 350 ms over it |
  * | Set it down, place it, hold a pipette over a vessel | an open palm held 450 ms over the spot |
  * | Pour | lock on the target, then turn the palm past 60° |
  * | Seat | lock on the seat, then lower the palm (insertion depth 0.85) |
@@ -31,7 +31,8 @@ import { angle, Contact, HAND_GAP_MS, type HandFrame } from "./handCore";
  */
 export interface HandTarget {
   id: string;
-  kind: "item" | "control" | "tile" | "button";
+  /** A bench item, an instrument key, an item on the shelf or the side station, or a hand button. */
+  kind: "item" | "control" | "shelf" | "button";
   /** Canvas pixels, and the pick radius before the hand's enlargement. */
   x: number;
   y: number;
@@ -60,8 +61,8 @@ export interface HandApi {
   assist: () => boolean;
   carrying: () => boolean;
   pickUpItem: (instanceId: string) => boolean;
-  /** A tray tile: its kind, and the item itself (per-item tiles, decided 2026-10-05). */
-  pickUpTile: (definitionId: string, instanceId?: string) => boolean;
+  /** An item on the shelf or the side station: its kind, and the item itself (the shelf in place of the tray, decided 2026-10-11). */
+  pickUpShelf: (definitionId: string, instanceId?: string) => boolean;
   /** Move the carried item to canvas point (x, y); returns what a press there would do. */
   aimCarry: (x: number, y: number) => CarryAction | undefined;
   /** Draw the carried item lowered by `depth` (0..1), or a pour source tipped further. */
@@ -396,7 +397,7 @@ export class HandController {
       return;
     }
 
-    // Nothing held: a closed grip held over an item (or a tray tile, or a hand button) takes it; the
+    // Nothing held: a closed grip held over an item (on the bench or the shelf, or a hand button) takes it; the
     // aim settling on an instrument key locks it for a plunger press.
     this.target = t;
     if (t?.kind === "control") {
@@ -416,7 +417,7 @@ export class HandController {
 
   private take(t: HandTarget, f: HandFrame): void {
     if (t.kind === "button") { this.a.pressButton(t); return; }
-    if (t.kind === "tile" && t.definitionId) { this.a.pickUpTile(t.definitionId, t.instanceId); return; }
+    if (t.kind === "shelf" && t.definitionId) { this.a.pickUpShelf(t.definitionId, t.instanceId); return; }
     if (t.kind === "item" && t.instanceId) {
       if (this.a.invertTarget(t.instanceId)) {
         this.invertHold = { id: t.instanceId, base: f.normal ? [...f.normal] : [0, 0, 1], over: false };

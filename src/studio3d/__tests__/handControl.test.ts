@@ -8,12 +8,12 @@ import { HAND_AIM, HAND_TIMING, HandController, IMMERSED, INVERT, pickTarget, TU
  * `3d-v3/tests/hand-aim.test.cjs`; written, not run.
  */
 
-// A screen-space bench: two beakers 60 px apart, a balance with its TARE key, and a tray tile.
+// A screen-space bench: two beakers 60 px apart, a balance with its TARE key, and a flask on the shelf above them.
 const TARGETS: HandTarget[] = [
   { id: "beaker-a", kind: "item", instanceId: "beaker-a", x: 300, y: 300, r: 24 },
   { id: "beaker-b", kind: "item", instanceId: "beaker-b", x: 360, y: 300, r: 24 },
   { id: "control:balance:tare", kind: "control", instanceId: "balance", controlId: "tare", x: 600, y: 420, r: 5 },
-  { id: "tile:flask", kind: "tile", definitionId: "flask", x: 80, y: 600, r: 26 },
+  { id: "flask-1", kind: "shelf", definitionId: "flask", instanceId: "flask-1", x: 80, y: 60, r: 14 },
 ];
 
 interface Rig { c: HandController; api: HandApi; log: string[]; set: (patch: Partial<RigState>) => void }
@@ -28,7 +28,7 @@ const rig = (initial: Partial<RigState> = {}): Rig => {
     assist: () => state.assist,
     carrying: () => state.carrying,
     pickUpItem: (id) => { log.push(`pick:${id}`); state.carrying = true; return true; },
-    pickUpTile: (id) => { log.push(`tile:${id}`); state.carrying = true; return true; },
+    pickUpShelf: (id, instanceId) => { log.push(`shelf:${id}:${instanceId}`); state.carrying = true; return true; },
     aimCarry: () => state.action,
     carryDepth: vi.fn(),
     commitCarry: () => { log.push("commit"); state.carrying = false; },
@@ -121,10 +121,10 @@ describe("taking and setting down", () => {
     expect(log).toEqual(["pick:beaker-a"]);
   });
 
-  it("takes a tray item from its tile the same way", () => {
+  it("takes an item off the shelf the same way", () => {
     const { c, log } = rig();
-    still(c, 0, 80, 600, HAND_TIMING.gripMs + 40);
-    expect(log).toEqual(["tile:flask"]);
+    still(c, 0, 80, 60, HAND_TIMING.gripMs + 40);
+    expect(log).toEqual(["shelf:flask:flask-1"]);
   });
 
   it("sets an item down with an open palm held 450 ms, where a press would set it down", () => {

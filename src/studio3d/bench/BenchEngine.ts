@@ -2,7 +2,7 @@ import * as THREE from "three";
 import type { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { BENCH_MM } from "../adapters/benchCoordinates";
 import { fillLevelMm, type SceneContents, type SceneDescription, type SceneItem, type SceneStrip, type SceneTrayItem } from "../adapters/runtimeToScene";
-import { SHELF, type ShelfSpot } from "../adapters/shelfSpots";
+import { SHELF, SIDE_STATION, type ShelfSpot } from "../adapters/shelfSpots";
 import { ModelLibrary } from "../equipment3d/loadModels";
 import { equipment3dRegistry } from "../equipment3d/readiness";
 import type { Equipment3DEntry } from "../equipment3d/types";
@@ -127,6 +127,11 @@ const PICK_PROXY = { belowHeightMm: 10, heightMm: 16, minWidthMm: 24 };
  * size (mm), and up to `padMm` wider than the item (the shelf in place of the tray, decided 2026-10-11).
  */
 const SHELF_PICK = { minWidthMm: 44, minHeightMm: 60, padMm: 10 };
+/**
+ * Seen from Home a shelf item is a few millimetres a pixel, so a press within this many pixels of its centre takes it
+ * too (a 44 px touch target), the nearest when two are that close; the ray and its hit box come first.
+ */
+const SHELF_REACH_PX = 22;
 const PICK_PROXY_MATERIAL = new THREE.MeshBasicMaterial();
 
 /**
@@ -910,11 +915,51 @@ export class BenchEngine {
   pickShelf(clientX: number, clientY: number): string | undefined {
     this.raycaster.setFromCamera(this.ndc(clientX, clientY), this.camera);
     const shelfHit = this.firstItemHit(this.raycaster.intersectObject(this.shelfLayer, true));
-    if (!shelfHit) return undefined;
     const benchHit = this.firstItemHit(this.raycaster.intersectObject(this.itemLayer, true));
-    // A bench item's own pick proxy is not a surface in front of the shelf.
-    if (benchHit && benchHit.distance < shelfHit.distance && benchHit.object.name !== "pick-proxy") return undefined;
-    return shelfHit.object.userData.instanceId as string | undefined;
+    if (shelfHit) {
+      // A bench item's own pick proxy is not a surface in front of the shelf.
+      if (benchHit && benchHit.distance < shelfHit.distance && benchHit.object.name !== "pick-proxy") return undefined;
+      return shelfHit.object.userData.instanceId as string | undefined;
+    }
+    if (benchHit) return undefined;
+    // Within reach of a shelf item's centre on screen: the nearest (`SHELF_REACH_PX`).
+    const rect = this.canvas.getBoundingClientRect();
+    let best: { id: string; d: number } | undefined;
+    for (const view of this.items.values()) {
+      if (!view.shelf) continue;
+      const at = this.shelfCentre(view).project(this.camera);
+      const dx = ((at.x + 1) / 2) * rect.width + rect.left - clientX;
+      const dy = ((1 - at.y) / 2) * rect.height + rect.top - clientY;
+      const d = Math.hypot(dx, dy);
+      if (d <= SHELF_REACH_PX && (!best || d < best.d)) best = { id: view.instanceId, d };
+    }
+    return best?.id;
+  }
+
+  /** A shelf item's centre in the world: its drawn bounds, or its spot until its model has arrived. */
+  private shelfCentre(view: ItemView): THREE.Vector3 {
+    if (view.model) {
+      const box = new THREE.Box3().setFromObject(view.model);
+      if (!box.isEmpty()) return box.getCenter(new THREE.Vector3());
+    }
+    const spot = view.shelf!;
+    return toWorld(spot.centre.xMm, spot.centre.yMm, spot.zMm + spot.heightMm / 2);
+  }
+
+  /**
+   * Whether a client point is on the shelf or the side station, with no bench item in front: where an item carried
+   * from the shelf is put back (the shelf in place of the tray, decided 2026-10-11).
+   */
+  overShelf(clientX: number, clientY: number): boolean {
+    this.raycaster.setFromCamera(this.ndc(clientX, clientY), this.camera);
+    if (this.firstItemHit(this.raycaster.intersectObject(this.itemLayer, true))) return false;
+    const half = SHELF.lengthMm / 2, d = SHELF.depthMm / 2;
+    const frame = new THREE.Box3(toWorld(SHELF.centre.xMm - half, SHELF.centre.yMm + d, 0),
+      toWorld(SHELF.centre.xMm + half, SHELF.centre.yMm - d, SHELF.tierTopsMm[1] + 60));
+    if (this.raycaster.ray.intersectsBox(frame)) return true;
+    const at = this.benchPointAt(clientX, clientY);
+    return Boolean(at && at.xMm >= SIDE_STATION.xMinMm && at.xMm <= SIDE_STATION.xMaxMm && at.yMm >= SIDE_STATION.yMinMm
+      && at.yMm <= SIDE_STATION.yMaxMm);
   }
 
   /** Whether an item is drawn on the shelf or the side station now. */

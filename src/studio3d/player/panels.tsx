@@ -3,7 +3,7 @@ import { equipmentById } from "../../equipment/catalog";
 import { formatEvidenceValue } from "../../player/evidenceFormatting";
 import { benchPositionWords } from "../adapters/benchCoordinates";
 import { displaySourceLabel } from "../adapters/instrumentDisplay";
-import type { SceneItem } from "../adapters/runtimeToScene";
+import type { SceneItem, SceneTrayItem } from "../adapters/runtimeToScene";
 import { equipment3dAssetUrl, equipment3dEntry } from "../equipment3d/readiness";
 import { Icon } from "../ui/Icon";
 import { ProvenanceChip } from "../ui/ProvenanceChip";
@@ -145,50 +145,20 @@ export const FloatPanel = ({ id, label, className, controls, head, collapsedHead
 };
 
 /**
- * Tray (§5.10): shelf items only; guided mode marks what the current step needs, as the 2D shelf does.
- * One tile per item (decided 2026-10-05): two of a kind (a blank and a sample cuvette) are two tiles,
- * each named and each placing its own item.
+ * What the current step needs from the shelf, guided mode only, as the 2D shelf marks it (§5.10). Where the step
+ * names one item of a kind, only that one is needed now (decided 2026-10-05).
  */
-export const EquipmentTray = ({ player, controls, onPointerDownTile, gestureGrabbedInstanceId }: {
-  player: Player3DController;
-  controls: PanelControls;
-  onPointerDownTile: (definitionId: string, pointerType: string, instanceId: string) => void;
-  /** The tile a hand-control pinch is carrying from, dimmed while its preview follows the pinch. */
-  gestureGrabbedInstanceId?: string;
-}) => {
-  const items = player.scene.tray;
-  const needed = new Set(player.showGuidance ? currentStepEquipmentIds(player.interaction, player.toolTransfer?.toolDefinitionId) : []);
-  // Where the step names one item of a kind, only that one is needed now (decided 2026-10-05).
-  const named = new Set(player.showGuidance ? currentStepInstanceIds(player.runtime.expectedAction?.parameters) : []);
+const neededOnShelf = (player: Player3DController): ((item: { instanceId: string; definitionId: string }) => boolean) => {
+  if (!player.showGuidance) return () => false;
+  const needed = new Set(currentStepEquipmentIds(player.interaction, player.toolTransfer?.toolDefinitionId));
+  const named = new Set(currentStepInstanceIds(player.runtime.expectedAction?.parameters));
   const namedKinds = new Set(player.runtime.state.equipmentInstances.filter((i) => named.has(i.id)).map((i) => i.definitionId));
-  const isNeeded = (item: { instanceId: string; definitionId: string }) =>
-    needed.has(item.definitionId) && (!namedKinds.has(item.definitionId) || named.has(item.instanceId));
-  if (items.length === 0) return null;
-  return (
-    <FloatPanel id="tray" label="Tray" className="s3d-tray" controls={controls}
-      head={<h2 className="s3d-float__title">Tray · {items.length}</h2>}>
-      <ul className="s3d-tray__tiles" data-gesture-scroll-region="vertical">
-        {items.map((item) => (
-          <li key={item.instanceId}>
-            <button
-              type="button"
-              className={`s3d-tile${gestureGrabbedInstanceId === item.instanceId ? " is-gesture-grabbed" : ""}`}
-              data-definition-id={item.definitionId}
-              data-instance-id={item.instanceId}
-              onPointerDown={(e) => { if (e.button === 0) { e.preventDefault(); onPointerDownTile(item.definitionId, e.pointerType, item.instanceId); } }}
-              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); player.dropFromTray(item.definitionId, undefined, undefined, item.instanceId); } }}
-              aria-label={`${item.label}${isNeeded(item) ? ", needed now" : ""}. Pick it up and set it on the bench, or press Enter to place it.`}
-            >
-              {isNeeded(item) ? <span className="s3d-tile__need" aria-hidden="true" /> : null}
-              <Thumb definitionId={item.definitionId} />
-              <span>{item.label}</span>
-            </button>
-          </li>
-        ))}
-      </ul>
-    </FloatPanel>
-  );
+  return (item) => needed.has(item.definitionId) && (!namedKinds.has(item.definitionId) || named.has(item.instanceId));
 };
+
+/** Where a shelf item stands, in words: its tier, or the side station. */
+export const shelfPlaceWords = (item: SceneTrayItem): string =>
+  item.spot.place === "station" ? "side station" : item.spot.tier === 1 ? "upper shelf" : "lower shelf";
 
 const positionWords = (item: SceneItem): string =>
   item.placement.kind === "bench" ? benchPositionWords(item.placement.point.xMm, item.placement.point.yMm) : "seated";
@@ -205,6 +175,7 @@ export const BenchList = ({ player, controls, selected, onSelect, onExamine, onM
 }) => {
   const onBench = player.scene.bench.filter((i) => i.placement.kind === "bench");
   const seated = player.scene.bench.filter((i) => i.placement.kind === "seated");
+  const isNeeded = neededOnShelf(player);
   const row = (item: SceneItem) => (
     <li key={item.instanceId} className={`s3d-bl-row${selected === item.instanceId ? " is-selected" : ""}`}>
       <button type="button" className="s3d-bl-row__main" onClick={() => onSelect(item.instanceId)}>
@@ -229,8 +200,29 @@ export const BenchList = ({ player, controls, selected, onSelect, onExamine, onM
         <h3 className="s3d-bl-group">On the bench</h3>
         <ul>{onBench.map(row)}</ul>
         {seated.length ? <><h3 className="s3d-bl-group">Seated</h3><ul>{seated.map(row)}</ul></> : null}
-        <h3 className="s3d-bl-group">On the shelf · {player.scene.tray.length}</h3>
-        <ul className="s3d-bl-shelf">{player.scene.tray.map((t) => <li key={t.instanceId}>{t.label}</li>)}</ul>
+        {/* The Shelf list (the shelf in place of the tray, decided 2026-10-11): the keyboard and screen-reader way to
+            take an item off the shelf; Enter places it as a click on the shelf does (G-6). */}
+        <h3 className="s3d-bl-group" id="s3d-bl-shelf-head">On the shelf · {player.scene.tray.length}</h3>
+        <ul className="s3d-bl-shelf" aria-labelledby="s3d-bl-shelf-head">
+          {player.scene.tray.map((item) => {
+            const needed = isNeeded(item);
+            return (
+              <li key={item.instanceId}>
+                <button type="button" className="s3d-bl-shelf__item" data-instance-id={item.instanceId}
+                  onClick={() => player.dropFromTray(item.definitionId, undefined, undefined, item.instanceId)}
+                  aria-label={`${item.label}, on the ${shelfPlaceWords(item)}${needed ? ", needed now" : ""}. Press Enter to place it on the bench.`}>
+                  <Thumb definitionId={item.definitionId} size={28} />
+                  <span>
+                    <span className="s3d-bl-row__name">{item.label}</span>
+                    <span className="s3d-bl-row__meta">{shelfPlaceWords(item)}{needed ? " · needed now" : ""}</span>
+                  </span>
+                  {needed ? <span className="s3d-bl-shelf__need" aria-hidden="true" /> : null}
+                  <span className="s3d-bl-shelf__place" aria-hidden="true">Place</span>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
       </div>
       <p className="s3d-bl-foot">The same checks apply here as on the bench.</p>
     </FloatPanel>

@@ -4,12 +4,12 @@ import { clampBox, PANEL_MIN, PANEL_TOP, resizeBox, sanitizeLayout } from "../pl
 const viewport = { width: 1280, height: 720 };
 
 describe("panel layout (handoff §5.1)", () => {
-  it("keeps only well-formed entries for known panels from storage", () => {
+  it("keeps only well-formed entries for known panels from storage (a stored tray, gone since 2026-10-11, is dropped)", () => {
     expect(sanitizeLayout(null)).toEqual({});
     expect(sanitizeLayout("junk")).toEqual({});
     expect(sanitizeLayout({
       step: { box: { x: 10, y: 80, w: 400, h: "tall" }, collapsed: true },
-      tray: { box: { x: Number.NaN, y: 3 } },
+      tray: { box: { x: 10, y: 3 } },
       list: { collapsed: "yes" },
       notebook: { box: { x: 1, y: 2 } },
     })).toEqual({ step: { box: { x: 10, y: 80, w: 400 }, collapsed: true } });

@@ -314,7 +314,7 @@ export const BenchSetupView = ({ studio, onToast, onInspectEquipment }: {
             </div>
           ))}
         </div>
-        <span className="s3d-small s3d-shelf-strip__note">Drag between the bench and this shelf. The runtime starts shelf items in the learner's tray.</span>
+        <span className="s3d-small s3d-shelf-strip__note">Drag between the bench and this shelf. The learner finds shelf items on the reagent shelf, and large ones at the side station.</span>
       </div>
       <div className="s3d-tbar s3d-tbar--stage" role="toolbar" aria-label="Bench tools">
         <button type="button" className="is-on" aria-pressed="true"><Icon name="move" />Arrange</button>

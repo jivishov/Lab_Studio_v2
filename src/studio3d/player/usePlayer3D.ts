@@ -512,14 +512,15 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
   }, [nextZIndex, reportCommit, runtime]);
 
   /**
-   * A tray item onto the bench: the step's placement when expected, else a free move. Dropped at a
+   * A shelf item onto the bench (the runtime's `shelf`; the name is the tray's, decided 2026-10-11): the step's
+   * placement when expected, else a free move. Dropped at a
    * point, it slides to the nearest free spot; clicked or chosen with Enter, it takes its own slot of the
    * 3D layout when clear (stableBench.ts, decided 2026-10-11). A hand-control drop is tagged "vision", as in 2D.
    */
   const dropFromTray = useCallback((definitionId: string, at?: { xMm: number; yMm: number }, origin: ReleaseOrigin = "pointer", instanceId?: string) => {
-    // The bench stays as it is while a timed stage's minutes pass (a tray tile's Enter is not a carry).
+    // The bench stays as it is while a timed stage's minutes pass (the Shelf list's Enter is not a carry).
     if (stepClockRef.current && holdBackNext()) return;
-    // A tile's Enter has no point of its own: it starts from its slot, whose picture sizes are not the 3D
+    // The Shelf list's Enter has no point of its own: it starts from its slot, whose picture sizes are not the 3D
     // footprints, so it too takes the nearest free spot (a ring stand never stands in a balance).
     const start = at ?? toBench(definitionId, stablePlacementPoint(runtime.getState(), definitionId, instanceId));
     const spot = nearestFreeSpot(benchFootprintOf(equipment3dEntry(definitionId), start.xMm, start.yMm), occupiedFootprints());
@@ -532,7 +533,7 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
       runIntent(resolution.intent);
       return;
     }
-    // A tray item the step does not expect (2D moveEquipmentToBench): a move, never an attempt.
+    // A shelf item the step does not expect (2D moveEquipmentToBench): a move, never an attempt.
     const before = runtime.getState();
     const next = runtime.performAction(resolution.request as RuntimeActionRequest);
     const placedAt = toBench(definitionId, point);

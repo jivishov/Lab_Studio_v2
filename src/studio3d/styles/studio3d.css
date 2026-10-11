@@ -152,12 +152,6 @@
 .s3d-correction__k { font-size: 11px; font-weight: 600; letter-spacing: .6px; text-transform: uppercase; color: var(--error); padding-top: 2px; }
 .s3d-correction__attempt { font-size: 12px; color: var(--ink-2); border-top: 1px solid #efd5ca; padding-top: 6px; }
 
-.s3d-tray { left: 14px; bottom: 14px; width: 300px; }
-.s3d-tray__tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 6px; margin: 0; padding: 0 10px 10px; list-style: none; min-height: 0; overflow: auto; }
-.s3d-tile { position: relative; display: grid; justify-items: center; gap: 2px; width: 100%; border: 1px solid var(--line); border-radius: var(--radius-button); background: var(--panel-solid);
-  padding: 4px 4px 6px; font: 11px/1.25 var(--font-sans); color: var(--ink); text-align: center; cursor: grab; touch-action: none; }
-.s3d-tile:hover { border-color: var(--line-strong); }
-.s3d-tile__need { position: absolute; top: 5px; right: 5px; width: 8px; height: 8px; border-radius: 50%; background: var(--guide); box-shadow: 0 0 0 2px #fff; }
 .s3d-thumb { display: block; border-radius: 6px; background: #eef1ea; object-fit: contain; }
 
 .s3d-benchlist { top: 66px; right: 14px; width: 340px; max-height: calc(100% - 180px); display: flex; flex-direction: column; }
@@ -171,7 +165,12 @@
 .s3d-bl-row__meta { display: block; font-size: 11.5px; color: var(--muted); }
 .s3d-bl-row__actions { display: flex; flex-wrap: wrap; gap: 4px; margin: 5px 0 0 42px; }
 .s3d-bl-row__actions button { font: 11px var(--font-sans); border: 1px solid var(--line-strong); border-radius: 6px; padding: 2px 6px; background: var(--panel-solid); color: var(--ink-2); cursor: pointer; }
-.s3d-bl-shelf li { padding: 3px 12px; font-size: 12px; color: var(--ink-2); }
+.s3d-bl-shelf { margin: 0; padding: 0; list-style: none; }
+.s3d-bl-shelf__item { position: relative; display: grid; grid-template-columns: 30px 1fr auto; gap: 8px; align-items: center; width: 100%; min-height: 44px; border: 0; border-top: 1px solid var(--line);
+  background: none; padding: 4px 12px; text-align: left; cursor: pointer; color: var(--ink); font: inherit; }
+.s3d-bl-shelf__item:hover, .s3d-bl-shelf__item:focus-visible { background: var(--brand-tint); }
+.s3d-bl-shelf__need { position: absolute; top: 8px; left: 34px; width: 8px; height: 8px; border-radius: 50%; background: var(--guide); box-shadow: 0 0 0 2px #fff; }
+.s3d-bl-shelf__place { font: 11px var(--font-sans); border: 1px solid var(--line-strong); border-radius: 6px; padding: 2px 8px; background: var(--panel-solid); color: var(--ink-2); }
 .s3d-bl-foot { margin: 0; padding: 8px 12px 10px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); }
 
 .s3d-examine { right: 14px; top: 66px; width: 340px; }
@@ -244,9 +243,6 @@
 .s3d-hand__gestures span { font-size: 11px; line-height: 1.4; color: var(--muted); }
 .s3d-hand__speed { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; align-items: center; font-size: 12px; color: var(--ink-2); }
 .s3d-hand__speed strong { min-width: 76px; text-align: right; font: 500 12px var(--font-mono); color: var(--ink); }
-.s3d-tile.is-gesture-grabbed { opacity: .42; }
-/* A tray item carried by hand control: its thumbnail, decorative and never focusable (AGENTS.md). */
-.s3d-gesture-preview img { display: block; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 14px #1b3a3340); }
 
 /* The hint only informs; like the scene labels it lets pointers and hand control reach the bench. */
 .s3d-hint { position: absolute; z-index: var(--z-bar); left: 50%; bottom: 84px; transform: translateX(-50%); margin: 0; font-size: 12.5px; color: var(--ink-2);
@@ -344,7 +340,6 @@
   .s3d-step { top: auto; left: 0; right: 0; bottom: 0; width: auto; max-height: 40%; border-radius: 14px 14px 0 0; }
   .s3d-dock { bottom: calc(40% + 12px); }
   .s3d-hint { display: none; }
-  .s3d-tray { bottom: calc(40% + 84px); }
   .s3d-hand { bottom: calc(40% + 84px); }
   .s3d-sheet { width: 100% !important; max-width: none; }
   .s3d-sheet__edge { display: none; }

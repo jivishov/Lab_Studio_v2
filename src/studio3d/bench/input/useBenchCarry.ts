@@ -23,8 +23,9 @@ import { getActions, getProcess } from "../../../runtime/createRuntime";
  * in the Bench list) starts one, arrows move it and `[` `]` step through candidate targets. While
  * carrying, the item is drawn lifted with its footprint, and overlap is classified by the shared
  * 2D rule; nothing commits until release or Enter (G-5). Both ways in release through the same
- * `resolveRelease`, in the 2D order. Esc cancels. Tray tiles start a carry of an item that is not
- * yet on the bench. Hand control (the microarray lab's controller, src/studio3d/hand/) carries through the same path:
+ * `resolveRelease`, in the 2D order. Esc cancels. A press on an item on the shelf (or at the side station) starts
+ * a carry of an item that is not yet on the bench, which a press back on the shelf, Esc or a right click puts back on
+ * its spot (the shelf in place of the tray, decided 2026-10-11). Hand control (the microarray lab's controller, src/studio3d/hand/) carries through the same path:
  * a closed grip lifts the item, the hand moves it over the bench, and letting go over the bench
  * commits through the pointer's release, tagged "vision" as the 2D player tags its camera releases.
  * Releasing over a panel, the tray or the dock changes nothing, as releasing off the 2D workbench does.
@@ -107,7 +108,9 @@ type Carry =
       /** The kind of the last callout: "valid" when over a target the step accepts. */
       lastKind?: CarryCallout["kind"] }
   | { kind: "tray"; via: "pointer" | "gesture"; definitionId: string; instanceId?: string; point?: BenchPoint; click?: boolean; pressAction?: PressAction; stroke?: Stroke;
-      pourToward?: string; liftMm?: number };
+      pourToward?: string; liftMm?: number; pickedAt?: { x: number; y: number; t: number };
+      /** Over the shelf or the side station: a release there puts it back on its spot. */
+      back?: boolean };
 
 interface Stroke { kind: Exclude<PressAction, "commit">; startY: number; depth: number }
 
@@ -340,6 +343,12 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     // Over the expected station (§5.6): "Release to place" in guided mode, neutral in assessment.
     const placing = acceptedDropCallout(showGuidance, flow.inputReady, "Release to place");
     if (carry.kind === "tray") {
+      carry.back = false;
+      // The item itself follows, lifted from its spot on the shelf.
+      if (carry.instanceId && engine.onShelf(carry.instanceId)) {
+        carry.liftMm = surfaceMm + LIFT_MM;
+        engine.previewCarry(carry.instanceId, point.xMm, point.yMm, carry.liftMm);
+      }
       const shown: CarryCallout = placesForStep(carry.definitionId, carry.instanceId)
         ? { ...(screenAt ?? { x: 0, y: 0 }), ...placing }
         : { ...(screenAt ?? { x: 0, y: 0 }), text: "Release to set down", kind: "free" };
@@ -593,6 +602,17 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
   const carryToPointer = useCallback((clientX: number, clientY: number) => {
     const carry = carryRef.current;
     if (!engine || !carry) return;
+    if (carry.kind === "tray" && engine.overShelf(clientX, clientY)) {
+      // Back over the shelf: the item waits where it was, and letting go puts it back on its spot.
+      const rect = engine.canvasElement.getBoundingClientRect();
+      carry.back = true;
+      carry.pressAction = "commit";
+      engine.setTargetRing(null);
+      const shown: CarryCallout = { x: clientX - rect.left, y: clientY - rect.top - 44, text: "Release to put it back", kind: "free" };
+      setCallout(carry.click ? { ...shown, text: clickCallout(shown.text, "commit") }
+        : carry.via === "gesture" ? { ...shown, text: handCallout(shown.text, "commit", { turn: false, squeeze: false }) } : shown);
+      return;
+    }
     // Aimed at the surface under the pointer, so a raised target is reached by pointing at it.
     const hit = engine.carryPointAt(clientX, clientY, carry.kind === "bench" ? carry.instanceId : undefined);
     if (!hit) return;
@@ -600,6 +620,24 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     const rect = engine.canvasElement.getBoundingClientRect();
     carryTo({ xMm: aim.xMm, yMm: aim.yMm }, { x: clientX - rect.left, y: clientY - rect.top - 44 }, aim.surfaceMm, hit.instanceId);
   }, [carryTo, engine, seatAim]);
+
+  /** A carry from the shelf put back: nothing moved, and the item is drawn on its spot again. */
+  const putBack = useCallback(() => {
+    cancel();
+    player.announce("Put back on the shelf. Nothing moved.");
+  }, [cancel, player]);
+
+  /**
+   * A shelf item set on the bench, through the tray's own intents (`dropFromTray`). When the runtime keeps it on the
+   * shelf (a timed stage's minutes are passing) nothing changed, so the item is drawn back on its spot.
+   */
+  const dropFromShelf = useCallback((definitionId: string, point?: BenchPoint, origin?: "pointer" | "vision", instanceId?: string) => {
+    player.dropFromTray(definitionId, point, origin, instanceId);
+    const after = player.runtime.getState().equipmentInstances;
+    const stillThere = instanceId ? after.find((i) => i.id === instanceId)?.location === "shelf"
+      : !after.some((i) => i.definitionId === definitionId && i.location !== "shelf");
+    if (stillThere && engine) void engine.sync(scene);
+  }, [engine, player, scene]);
 
   const release = useCallback(() => {
     const carry = carryRef.current;
@@ -638,9 +676,13 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     }
     if (engine && carry?.kind === "bench" && carry.toolLoaded && tongs && carry.instanceId === tongs.toolInstanceId) engine.setToolHeld(null);
     endCarry();
-    // A tray tile pressed and released without moving is a click: the 2D next free slot (§5.10).
+    if (carry?.kind === "tray" && carry.back) {
+      putBack();
+      return;
+    }
+    // A shelf item pressed and released without moving is a click: the 2D next free slot (§5.10).
     if (engine && carry?.kind === "tray" && !carry.point) {
-      player.dropFromTray(carry.definitionId, undefined, undefined, carry.instanceId);
+      dropFromShelf(carry.definitionId, undefined, undefined, carry.instanceId);
       return;
     }
     if (!engine || !carry || !carry.point) {
@@ -651,7 +693,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     const origin = carry.via === "gesture" ? "vision" : "pointer";
     engine.endCarryPreview(true);
     if (carry.kind === "tray") {
-      player.dropFromTray(carry.definitionId, point, origin, carry.instanceId);
+      dropFromShelf(carry.definitionId, point, origin, carry.instanceId);
       return;
     }
     if (toolTransfer) {
@@ -752,7 +794,8 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       accepted = true;
     }
     if (!accepted) void engine.sync(scene);
-  }, [breakUp, cancel, carryTo, dropTest, endCarry, engine, interaction, labelOf, markStep, onHoldOver, overlapAt, pipette, pipetteSpec, player, scene, scoopFor, tipOver, tongs, toolTransfer]);
+  }, [breakUp, cancel, carryTo, dropFromShelf, dropTest, endCarry, engine, interaction, labelOf, markStep, onHoldOver, overlapAt, pipette, pipetteSpec, player,
+    putBack, scene, scoopFor, tipOver, tongs, toolTransfer]);
 
   /**
    * Keyboard carry (§5.6): the item lifts where it stands. Probes do not free-move (parity), so
@@ -836,11 +879,30 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     let pressed: { instanceId: string; controlId: string; x: number; y: number } | undefined;
     const isMouse = (event: PointerEvent) => event.pointerType !== "touch";
 
+    /**
+     * A press on an item on the shelf takes it, as the tray's tile did: with a mouse it follows the pointer until the
+     * next press; on touch it follows the finger and is set down where the finger lifts, or a tap places it.
+     */
+    const takeFromShelf = (shelfItem: SceneItem, event: PointerEvent) => {
+      if (carryRef.current) cancel();
+      const mouse = isMouse(event);
+      carryRef.current = { kind: "tray", via: "pointer", definitionId: shelfItem.definitionId, instanceId: shelfItem.instanceId, click: mouse,
+        pickedAt: mouse ? { x: event.clientX, y: event.clientY, t: performance.now() } : undefined };
+      setCarrying(true);
+      if (mouse) {
+        canvas.style.cursor = "grabbing";
+        carryToPointer(event.clientX, event.clientY);
+        return;
+      }
+      canvas.setPointerCapture(event.pointerId);
+      engine.holdCameraInput(true);
+    };
+
     /** A press with an item held by a mouse carry. */
     const pressWhileCarrying = (carry: Carry, event: PointerEvent) => {
       const { clientX: x, clientY: y } = event;
       // A second press at once where it was picked up is a double-click: it goes back, and Examine opens.
-      if (carry.kind === "bench" && carry.pickedAt && performance.now() - carry.pickedAt.t < 450
+      if (carry.pickedAt && performance.now() - carry.pickedAt.t < 450
         && Math.hypot(x - carry.pickedAt.x, y - carry.pickedAt.y) < 6) {
         cancel();
         return;
@@ -914,7 +976,12 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       }
       const id = engine.pick(event.clientX, event.clientY);
       const item = id ? scene.bench.find((i) => i.instanceId === id) : undefined;
-      if (!item) return;
+      if (!item) {
+        const shelfId = engine.pickShelf(event.clientX, event.clientY);
+        const onShelf = shelfId ? scene.tray.find((i) => i.instanceId === shelfId) : undefined;
+        if (onShelf) takeFromShelf(onShelf, event);
+        return;
+      }
       if (isMouse(event)) {
         // A press selects the item; at an inversion step it inverts the stoppered vessel instead.
         if (onTap?.(item.instanceId, event.pointerType, event.clientX, event.clientY) === true) return;
@@ -956,7 +1023,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
           carryToPointer(event.clientX, event.clientY);
           return;
         }
-        // Over a panel, the tray or the dock the item waits where it was, and no target is cued.
+        // Over a panel or the dock the item waits where it was, and no target is cued.
         engine.setTargetRing(null);
         setCallout(undefined);
         return;
@@ -1033,14 +1100,6 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     };
   }, [cancel, carryTo, carryToPointer, drawDepth, engine, onBusyPress, onControl, onHover, onTap, overflowRefused, player, release, scene, scoopFor, toolTransfer]);
 
-  /** Start carrying a tray item (pointer down on its tile): with a mouse it then follows the pointer until a press on the bench. */
-  const startTrayCarry = useCallback((definitionId: string, pointerType = "mouse", instanceId?: string) => {
-    if (pouringRef.current) return;
-    if (carryRef.current) cancel();
-    carryRef.current = { kind: "tray", via: "pointer", definitionId, instanceId, click: pointerType !== "touch" };
-    setCarrying(true);
-  }, [cancel]);
-
   /** Whether a bench item can be carried now: probes move only as part of their interaction (parity). */
   const canCarry = useCallback((instanceId: string): boolean => {
     const item = scene.bench.find((i) => i.instanceId === instanceId);
@@ -1069,7 +1128,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     return true;
   }, [canCarry, cancel, overflowRefused, scene]);
 
-  /** Hand control: a closed grip held on a tray tile starts the same tray carry a pointer press does. */
+  /** Hand control: a closed grip held on a shelf item starts the same carry a pointer press on it does. */
   const startGestureTrayCarry = useCallback((definitionId: string, instanceId?: string): boolean => {
     if (pouringRef.current) return false;
     if (carryRef.current) cancel();
@@ -1154,7 +1213,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
   // A mouse carry in the microarray model (it follows the pointer until the next press).
   const clickCarrying = Boolean(carrying && carryRef.current?.click);
   const gestureCarrying = Boolean(carrying && carryRef.current?.via === "gesture");
-  return { callout, carrying, clickCarrying, gestureCarrying, carriedDefinitionId, keyCarrying, toolTransfer, toolLoaded, startTrayCarry, startKeyCarry, handleCarryKey, cancel,
+  return { callout, carrying, clickCarrying, gestureCarrying, carriedDefinitionId, keyCarrying, toolTransfer, toolLoaded, startKeyCarry, handleCarryKey, cancel,
     canCarry, startGestureCarry, startGestureTrayCarry, gestureCarryTo, releaseGesture, cancelGesture, gestureAction, gestureDepth, loadGestureTool };
 };
 

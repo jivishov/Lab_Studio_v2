@@ -97,7 +97,7 @@ export const handGuide = (s: HandControlState, g: HandGuideContext, now: number)
 };
 
 const GESTURES: Array<{ key: GestureKey; icon: "grip" | "hand" | "lock" | "seat" | "pour" | "pencil" | "flask" | "retry" | "reset" | "gauge" | "up" | "beaker"; title: string; thumb: string; pinch: string }> = [
-  { key: "grab", icon: "grip", title: "Pick up", thumb: "Close your grip over an item or a tray item and hold", pinch: "Close your grip over an item or a tray item and hold" },
+  { key: "grab", icon: "grip", title: "Pick up", thumb: "Close your grip over an item on the bench or the shelf and hold", pinch: "Close your grip over an item on the bench or the shelf and hold" },
   { key: "put", icon: "hand", title: "Set down", thumb: "Show your open palm over the spot and hold", pinch: "Show your open palm over the spot and hold" },
   { key: "lock", icon: "lock", title: "Aim", thumb: "Pause over the target until it locks", pinch: "Pause over the target until it locks" },
   { key: "lower", icon: "seat", title: "Seat", thumb: "Lower your hand", pinch: "Lower your hand" },
