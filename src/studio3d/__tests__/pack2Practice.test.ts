@@ -10,6 +10,7 @@ import { createRuntimeState, performRuntimeAction } from "../../runtime";
 import { resolveActionInput } from "../../runtime/actionInputs";
 import { resolveInteractionIntent, type RuntimeInteractionIntent } from "../../runtime/interactionIntents";
 import { benchMoveRequest, intentTypeForInteraction, mergeActionInput } from "../adapters/sceneToIntent";
+import { stepFlow } from "../player/stepRules";
 
 /**
  * Pack 2's 3D practice versions (decided 2026-10-05, PACK2_ATOMIZATION.md): each is listed only in the
@@ -110,6 +111,30 @@ describe("Pack 2 3D practice versions", () => {
     const value = (calculationId: string) => state.calculations.find((entry) => entry.id === calculationId)?.value;
     expect(value("composition-analysis")).toBeCloseTo(0.443, 3);
     expect(value("composition-analysis-nahco3-percent")).toBeCloseTo(60, 0);
+  });
+
+  it("offers Submit again after a wrong calculation, and takes the corrected one (2026-10-10)", () => {
+    const id = "drying-practice";
+    const played = playTo(id, "precipitate-by-difference");
+    // Asked of the student, as Pack 3's hardness will be (`requireStudentValue`); the practice version works it out.
+    const technique = { ...played.technique, actions: played.technique.actions.map((candidate) => candidate.id === "precipitate-by-difference"
+      ? { ...candidate, parameters: { ...candidate.parameters, requireStudentValue: true } } : candidate) };
+    const state = played.state;
+    const node = technique.process.nodes.find((candidate) => candidate.id === state.currentNodeId)!;
+    const action = technique.actions.find((candidate) => candidate.id === node.actionId)!;
+    const flowAt = (current: RuntimeState) =>
+      stepFlow({ state: current, node, action, interaction: resolveActionInteraction(action), inputValue: "0.150", showGuidance: true });
+    const answer = (current: RuntimeState, value: string) =>
+      attempt(technique, current, id, { ...PLAYS[id], inputs: { "precipitate-by-difference": value } }).state;
+    expect(flowAt(state).canSubmitCalculation).toBe(true);
+    const wrong = answer(state, "0.250");
+    expect(wrong.calculations.find((entry) => entry.id === "precipitate-mass")?.passed).toBe(false);
+    expect(wrong.completedNodes).not.toContain(node.id);
+    expect(flowAt(wrong).canSubmitCalculation).toBe(true);
+    const corrected = answer(wrong, "0.150");
+    expect(corrected.calculations.find((entry) => entry.id === "precipitate-mass")?.passed).toBe(true);
+    expect(corrected.completedNodes).toContain(node.id);
+    expect(flowAt(corrected).canSubmitCalculation).toBe(false);
   });
 
   it("Filter a Precipitate pours the last portion exactly, at a mixture volume that leaves float noise (54.05 mL)", () => {

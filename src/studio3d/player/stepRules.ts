@@ -10,8 +10,9 @@ import { configurationLockFor, type ConfigurationLock } from "../../runtime/conf
  * stationLabel, usesAccessibleConfirmation, interactionRequiresSource/Target, and the canRecord /
  * canRecordObservation / canSubmitCalculation / Confirm conditions). They are private to that UI
  * file; exporting them would be a 2D refactor outside plan §4.7, so they are copied here with this
- * note. The one intended difference is presentation: in assessment mode an unselected required
- * endpoint reads "Choose…" where 2D reads "Not selected" (handoff §5.5). The drop-dispense and
+ * note. Two differences are intended. In assessment mode an unselected required endpoint reads
+ * "Choose…" where 2D reads "Not selected" (handoff §5.5). And a calculation answered wrongly can be
+ * submitted again, where 2D's sidebar leaves the step no way through (2026-10-10). The drop-dispense and
  * time-series controls are not copied: no Pack 1 action uses them. The drift risk and a proposal
  * to extract the rules into a shared module are recorded in evidence/M5_EVIDENCE.md.
  */
@@ -236,9 +237,12 @@ export const stepFlow = (args: {
   const canRecordObservation = interaction?.type === "recordNotebook"
     && (typedNotebookOperation || scoped || configuredObservation || action?.verb === "stressEquilibrium" || (action?.verb === "observe" && Boolean(stringParam(action, "note"))))
     && base;
+  // A wrong answer is kept as a failed calculation and the step stays open; the runtime replaces it on the next
+  // submission. So only a calculation that did not fail (passed, or written by another step) settles the step's id.
+  // 2D blocks any recorded one, which leaves a wrong answer stuck (fidelity review, 2026-10-10).
   const calculationId = stringParam(action, "calculationId");
-  const calculationExists = calculationId ? state.calculations.some((c) => c.id === calculationId) : false;
-  const canSubmitCalculation = action?.verb === "calculate" && interaction?.type === "submitCalculation" && base && !calculationExists
+  const calculationSettled = calculationId ? state.calculations.some((c) => c.id === calculationId && c.passed !== false) : false;
+  const canSubmitCalculation = action?.verb === "calculate" && interaction?.type === "submitCalculation" && base && !calculationSettled
     && rulesPass(prerequisites, state, "measurementRecorded") && rulesPass(prerequisites, state, "notebookEntry") && rulesPass(prerequisites, state, "dataSeriesRecorded");
   const canConfirm = usesAccessibleConfirmation(interaction);
   const sourceRequired = interactionRequiresSource(interaction);
