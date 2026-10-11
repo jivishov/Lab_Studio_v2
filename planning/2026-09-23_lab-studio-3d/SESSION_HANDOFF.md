@@ -423,8 +423,11 @@ and template rules. `scripts/checkCycle04Foundations.mjs` can't run in this expo
   building M3–M5. The user asked to see the Studio in M6, so looks were taken there too. Full G1
   playthroughs, G2 (performance), G3 (webcam) and G4 (publishing) stay closed without the user's go-ahead.
 - **Pushing.** The user asks for pushes explicitly. Commit locally; push only when asked.
-- **The tray (2026-10-11).** `proposals/SHELF_INSTEAD_OF_TRAY.md` evaluates a reagent shelf over the bench in
-  place of the tray panel and leaves four decisions open. Nothing is built.
+- **The tray (2026-10-11).** `proposals/SHELF_INSTEAD_OF_TRAY.md` (a reagent shelf over the bench in place of the
+  tray panel) is approved in full: option B with every recommended answer ("The full tray proposal is valid.";
+  `DECISIONS.md`, "The shelf in place of the tray"). Nothing is built yet. The build is a separate thread:
+  `TRAY_SHELF_BUILD_PROMPT.md`, which stops after phase 2 for the user's look. The G1 scripts it uses are in
+  `probes/` (`play-steps.cjs`, `place-from-tray.cjs`, `slide-bench.cjs`).
 - **A runtime question (2026-10-11).** On every action `withResolvedAttachments` merges in a relation derived from
   a child's snap zone that names the first instance of the parent's definition, even when the child already holds
   its own. With two chambers the 2-propanol strip was also listed in the water chamber. 3D now keeps each child's
