@@ -1,8 +1,9 @@
 # Proposal: a reagent shelf over the bench instead of the tray (3D only)
 
-Status: evaluation only, nothing built (you, 2026-10-11: "Evaluate replacing the tray with making a shelf over the
-bench with required equipment. Getting rid of the tray in favor of more realistic lab environment."). The decisions
-at the end are yours.
+Status: **approved in full, 2026-10-11** ("The full tray proposal is valid."): option B with every recommended
+answer. Not built; the build prompt is `TRAY_SHELF_BUILD_PROMPT.md`. Read the "Notes after approval" at the end,
+which correct some facts below. Asked for on 2026-10-11: "Evaluate replacing the tray with making a shelf over the
+bench with required equipment. Getting rid of the tray in favor of more realistic lab environment."
 
 ## What the tray is today
 
@@ -89,3 +90,28 @@ the hand work.
    start. The second changes what the student sees as "already set out", so it is a content question.
 3. Keep a text Shelf list for keyboard and screen readers (recommended yes).
 4. Hand reach: a raised-hand tier mapping (recommended), or a separate shelf mode.
+
+All four answered as recommended (2026-10-11).
+
+## Notes after approval (fidelity review, 2026-10-11)
+
+The build prompt was checked against the repository. These facts above were wrong or incomplete:
+1. **The counts.** The most on the shelf at the start is 13, in Pack 1's `transmittance-dilution`, not 12. The
+   techniques range from 0 to 13, not 3 to 10. The labs: `hard-water-demo` 12, `paper-chromatography` 11,
+   `intro-filtration-demo` 9. Counted from the runtime's start state.
+2. **A fourth large station.** `transmittance-dilution` puts a spectrophotometer (320 × 300 mm) on the shelf. It
+   goes to the side station by decision 2's rule.
+3. **The side station's load.** Heat and Reweigh starts with two analytical balances, a ring stand and a Bunsen
+   burner on the shelf, so the side station must hold four large items at once.
+4. **Long items.** The 10 mL graduated pipette (330 mm), the crucible tongs (230 mm), the stirring rod (200 mm),
+   the pencil and the ruler are longer than the shelf is deep (180 mm), so they lie along a tier.
+5. **The hand.** The hand does not work in the bench plane for picking. The cursor is the palm's position in the
+   camera image mapped onto the canvas, and its targets are in screen space; only the carry moves in the bench
+   plane. A pick-up is a closed grip held 350 ms; a pinch is the plunger, and lowering the palm after a lock is the
+   insertion depth. So the raised-hand tier mapping is screen-space reach: shelf items become hand targets where
+   they are drawn. The cost is lower than "biggest" above.
+6. **A gap between phases.** The hand takes items from the tray's tiles today. Removing the tray in phase 2
+   therefore has to give the hand the shelf items as targets in the same change.
+7. **The hand's look.** A browser look with the hand needs a webcam, which is G3, set aside. Phase 3's proof is
+   unit tests and the jsdom player test until G3 is authorized.
+8. **More than about 14 items** is already in sight: Pack 3b's brass content has 29 items on the 2D shelf.
