@@ -90,9 +90,9 @@
     "defaultSolidState": "powder"
   },
   "counts": {
-    "total": 96,
+    "total": 97,
     "byDisposition": {
-      "liquid-style": 51,
+      "liquid-style": 52,
       "unresolved": 0,
       "solid-style": 19,
       "state-asset": 20,
@@ -147,6 +147,31 @@
       ],
       "sharesAppearanceWith": [
         "blue1-10-0"
+      ]
+    },
+    {
+      "id": "food-dye-mixture",
+      "disposition": "liquid-style",
+      "evidenceKind": "qualitative",
+      "quantitativeClaim": "none",
+      "authoredToday": true,
+      "selectors": [
+        "authored"
+      ],
+      "provenance": "Lab Studio 3D, Pack 3a (decided 2026-10-11): the teacher's mixture of food dyes that paper chromatography separates into blue, red and yellow bands, drawn as the dark brown-violet such a mixture looks rather than as one dye's blue. Authored only by the 3D chromatography content (scripts/practice3d); 2D's chromatography keeps blue-dye-solution. The colour is qualitative and never a concentration.",
+      "renderStyleKey": "food-dye-mixture",
+      "renderStyle": {
+        "fill": "rgba(78, 42, 64, 0.62)",
+        "stroke": "rgba(48, 24, 40, 0.7)",
+        "highlight": "rgba(236, 214, 228, 0.45)",
+        "meniscus": "rgba(222, 196, 214, 0.9)",
+        "opacity": 0.99
+      },
+      "owners": [
+        "lab-3d:paper-chromatography",
+        "technique-3d:paper-chromatography-practice",
+        "technique-3d:paper-chromatography-propanol-3d",
+        "technique-3d:paper-chromatography-water-3d"
       ]
     },
     {

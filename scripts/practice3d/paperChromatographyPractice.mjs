@@ -29,7 +29,9 @@ const dye = {
   volumeMl: 5,
   solutes: [{ id: "teacher-food-dye-mixture", label: "Teacher-provided food dye mixture", amount: 1, unit: "mg" }],
   wetState: "wet",
-  visualState: "blue-dye-solution",
+  // Its own palette state (decided 2026-10-11): the mixed dyes look dark brown-violet, not one dye's blue. 2D keeps
+  // blue-dye-solution.
+  visualState: "food-dye-mixture",
 };
 const freshStrip = { ...emptyContents(), visualState: "paper-unspotted" };
 
