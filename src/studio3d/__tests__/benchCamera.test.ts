@@ -31,10 +31,38 @@ describe("camera model (renderer.js:12)", () => {
   });
 
   it("scales the source's presets into metres, and Home takes in the shelf and the side station (2026-10-11)", () => {
-    expect(DEFAULT_VIEW().distance).toBeCloseTo(24 * ROOM_SCALE, 9);
-    expect(DEFAULT_VIEW().distance).toBeLessThanOrEqual(MANUAL.distanceMax);
+    expect(DEFAULT_VIEW().distance).toBeCloseTo(32 * ROOM_SCALE, 9);
+    expect(DEFAULT_VIEW().distance).toBeLessThan(MANUAL.distanceMax);
     expect(PRESETS.bench()).toMatchObject({ pitch: 0.89, distance: 15.5 * ROOM_SCALE });
     expect(PRESETS.top().pitch).toBe(1.535);
+  });
+});
+
+describe("Home at 1024 × 700 (the shelf in place of the tray, 2026-10-11)", () => {
+  const w = 1024, h = 700;
+  const at = (xMm: number, yMm: number, zMm: number) => {
+    const camera = new THREE.PerspectiveCamera();
+    applyView(camera, DEFAULT_VIEW(), w / h);
+    const q = new THREE.Vector3(xMm / 1000, zMm / 1000, -yMm / 1000).project(camera);
+    return { x: (q.x + 1) * 0.5 * w, y: (1 - q.y) * 0.5 * h };
+  };
+  // The step card opens at the top left (14 px in, about 372 px wide and 400 px down); the top bar is 52 px; the dock
+  // stands at the bottom middle, from about 616 px down.
+  it("shows the whole shelf right of the step card and below the top bar", () => {
+    for (const x of [-600, 600]) for (const z of [0, 580]) {
+      const p = at(x, 460 - 90, z);
+      expect(p.x).toBeGreaterThan(390);
+      expect(p.x).toBeLessThan(w);
+      expect(p.y).toBeGreaterThan(52);
+    }
+  });
+
+  it("shows what stands at the side station and the working area's front edge above the dock", () => {
+    // Heat and Reweigh's four, the most it holds (shelfSpots.test): the second balance reaches x 1224 mm, from y 21 mm
+    // back; the ring stand stands in front of the balances, out to x 870 mm and y -181 mm.
+    for (const [x, y, z] of [[1224, 21, 0], [1224, 479, 297], [870, -181, 0]]) expect(at(x, y, z).x).toBeLessThan(w);
+    for (const x of [-700, 0, 700]) expect(at(x, -350, 0).y).toBeLessThan(600);
+    expect(at(-700, -350, 0).x).toBeGreaterThan(0);
   });
 });
 
@@ -87,7 +115,8 @@ describe("manual input (app.js:111-151)", () => {
   });
 
   it("zooms by e^(deltaY · 0.0012)", () => {
-    expect(zoomBy(DEFAULT_VIEW(), 100).distance).toBeCloseTo(DEFAULT_VIEW().distance * Math.exp(0.12), 9);
+    // Zooms in from Home: out from it, the zoom meets distanceMax.
+    expect(zoomBy(DEFAULT_VIEW(), -100).distance).toBeCloseTo(DEFAULT_VIEW().distance * Math.exp(-0.12), 9);
   });
 
   it("returns to the front the short way (choice 11)", () => {

@@ -37,7 +37,7 @@ export const MANUAL = {
   pitchMax: 1.55,
   distanceMin: 3.2 * S,
   /** Out to past the Home view, which takes in the shelf and the side station (2026-10-11; the source's 20 units). */
-  distanceMax: 30 * S,
+  distanceMax: 34 * S,
   /**
    * Sideways: the source's 7 units to the left; to the right as far as the side station's far end (decided
    * 2026-10-11), so a slide can bring the large items to the middle of the view.
@@ -62,9 +62,10 @@ const v = (x: number, y: number, z: number) => new THREE.Vector3(x * S, y * S, z
 /**
  * Home (decided 2026-10-11, the shelf in place of the tray): the working area, the reagent shelf behind it and the side
  * station at its right end together, from a little lower than the source's 0.72 rad so the shelf's tiers face the
- * eye. Fitted at 1024 × 700 (the source's own view, `renderer.js:119`, was at(0, .35, .65), pitch .72, 11.2 units).
+ * eye. Aimed left of the bench's middle so the whole shelf stands clear of the step card, which opens at the top left.
+ * Fitted at 1024 × 700 (the source's own view, `renderer.js:119`, was at(0, .35, .65), pitch .72, 11.2 units).
  */
-export const DEFAULT_VIEW = (): OrbitView => ({ at: v(3.2, 0, -3.6), yaw: 0, pitch: 0.62, distance: 24 * S });
+export const DEFAULT_VIEW = (): OrbitView => ({ at: v(-3.2, 0, -2.4), yaw: 0, pitch: 0.66, distance: 32 * S });
 export const PRESETS = {
   /** "Whole bench" */
   bench: (): OrbitView => ({ at: v(0, 0.24, -0.6), yaw: 0, pitch: 0.89, distance: 15.5 * S }),
