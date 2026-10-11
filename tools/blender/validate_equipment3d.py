@@ -235,8 +235,8 @@ def main():
         # 8. registry equals meta
         if meta_path.is_file():
             meta = json.loads(meta_path.read_text(encoding='utf-8'))
-            expected = {k: v for k, v in entry.items() if k not in ('definitionId', 'model', 'thumbnail', 'provenance', 'scenery')}
-            if meta['registry'] != expected:
+            expected = {k: v for k, v in entry.items() if k not in ('definitionId', 'model', 'thumbnail', 'provenance', 'scenery', 'boundsMm')}
+            if meta['registry'] != expected or entry.get('boundsMm') != meta['build'].get('boundsMm'):
                 errors.append(f'{where} registry entry differs from meta.json: run pack_models.py --registry-only')
             if meta['provenance']['sourceHash'] != entry.get('provenance', {}).get('sourceHash'):
                 errors.append(f'{where} registry provenance hash differs from meta.json')

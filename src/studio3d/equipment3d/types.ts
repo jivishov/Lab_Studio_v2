@@ -98,6 +98,8 @@ export interface Equipment3DEntry {
   model: string;
   thumbnail: string;
   footprintMm: Equipment3DFootprint;
+  /** The built model's extent, model-local mm (the build's `boundsMm`); the shelf spaces items by it. */
+  boundsMm?: { min: number[]; max: number[] };
   grip: { heightMm: number };
   pour?: Equipment3DPour;
   fill?: Equipment3DFill;

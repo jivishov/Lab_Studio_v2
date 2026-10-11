@@ -70,6 +70,8 @@ def registry_entry(meta):
         'model': meta['model'],
         'thumbnail': meta['thumbnail'],
         **reg,
+        # The model's measured extent (the shelf spaces its items by it, decided 2026-10-11).
+        'boundsMm': meta['build']['boundsMm'],
         'provenance': {k: meta['provenance'][k] for k in ('blender', 'generator', 'sourceHash')},
     }
     if meta['build'].get('scenery'):
