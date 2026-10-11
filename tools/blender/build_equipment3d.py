@@ -15,6 +15,7 @@ For each module in tools/blender/equipment/ (one per catalogue definition id):
 import argparse
 import importlib
 import json
+import math
 import os
 import sys
 
@@ -70,6 +71,27 @@ def material_names(coll):
     return sorted(names)
 
 
+def apply_states(coll, registry, chosen=()):
+    """Hide the parts drawn for states not shown (a crucible's askew lid, a burner's flames): each
+    state group shows the variant named in `chosen` if it has one, else its default. Returns the
+    hidden object names."""
+    hidden = set()
+    for group in registry.get('stateObjects') or []:
+        variants = group['objects']
+        pick = next((c for c in chosen if c in variants), group.get('default', ''))
+        shown_now = set(variants.get(pick, []))
+        hidden |= {name for names in variants.values() for name in names} - shown_now
+    for ob in coll.all_objects:
+        if ob.name in hidden:
+            ob.hide_render = True
+    return hidden
+
+
+# An upright item more than this many times as tall as it is wide (a 10 mL pipette, a stirring rod)
+# leans in its thumbnail, so it reads across the square tile rather than as a hairline (2026-10-10).
+THUMB_LEAN_ASPECT, THUMB_LEAN_DEG = 8.0, 38.0
+
+
 def build_one(def_id, mod, args):
     scene = fresh_scene()
     coll = bpy.data.collections.new(def_id)
@@ -118,15 +140,8 @@ def build_one(def_id, mod, args):
                 ob.hide_render = ob.name not in shown
         lo, hi = bounds_mm([ob for ob in coll.all_objects if ob.name not in formed or ob.name in shown])
     # Parts drawn by apparatus state (a crucible's lid askew, a burner's flames) render in their default state.
-    stated = registry.get('stateObjects')
-    if stated:
-        hidden = set()
-        for group in stated:
-            shown_now = set(group['objects'].get(group.get('default', ''), []))
-            hidden |= {name for names in group['objects'].values() for name in names} - shown_now
-        for ob in coll.all_objects:
-            if ob.name in hidden:
-                ob.hide_render = True
+    if registry.get('stateObjects'):
+        hidden = apply_states(coll, registry)
         lo, hi = bounds_mm([ob for ob in coll.all_objects if ob.name not in hidden])
     studio = bpy.data.collections.new('studio')
     scene.collection.children.link(studio)
@@ -139,8 +154,20 @@ def build_one(def_id, mod, args):
     lo_m = [v * MM for v in lo]
     hi_m = [v * MM for v in hi]
     elev = getattr(mod, 'THUMB_ELEVATION_DEG', 10)
-    render_item(scene, cam, lo_m, hi_m, os.path.join(ASSETS, 'thumbs', f'{def_id}.png'),
+    width = min(hi[0] - lo[0], hi[1] - lo[1])
+    lean = (hi[2] - lo[2]) > THUMB_LEAN_ASPECT * max(width, 0.1)
+    if lean:  # thumbnail only: the GLB is already exported, and the review render stays upright
+        root.rotation_euler.y = math.radians(THUMB_LEAN_DEG)
+        bpy.context.view_layer.update()
+        t_lo, t_hi = bounds_mm([ob for ob in coll.all_objects if not ob.hide_render])
+        t_lo_m, t_hi_m = [v * MM for v in t_lo], [v * MM for v in t_hi]
+    else:
+        t_lo_m, t_hi_m = lo_m, hi_m
+    render_item(scene, cam, t_lo_m, t_hi_m, os.path.join(ASSETS, 'thumbs', f'{def_id}.png'),
                 (256, 256), elev, 48 if args.preview else 160)
+    if lean:
+        root.rotation_euler.y = 0.0
+        bpy.context.view_layer.update()
     if args.review:
         render_item(scene, cam, lo_m, hi_m, os.path.join(BUILD, 'review', f'{def_id}.png'),
                     (1200, 1500), elev, 64 if args.preview else 384)
@@ -163,6 +190,11 @@ COMPOSITES = [
     ('ring-stand-with-crucible', 'ring-stand', 'ring-stand-crucible-seat', 'crucible-with-lid'),
     ('ring-stand-with-burner', 'ring-stand', 'ring-stand-burner-bay', 'bunsen-burner'),
 ]
+# States a composite shows other than the defaults (a burner heating under the ring): composite name ->
+# the state variants to show; every other group shows its default, as in the thumbnails (2026-10-10).
+COMPOSITE_STATES = {
+    'ring-stand-with-burner': ('blue', 'open'),
+}
 
 
 def build_composite(name, parent_id, anchor, child_id, mods, args):
@@ -189,13 +221,15 @@ def build_composite(name, parent_id, anchor, child_id, mods, args):
         for ob in colls[child_id][0].all_objects:
             if ob.type == 'MESH' and any(ob.name in names for names in registries[child_id]['forms'].values()):
                 ob.hide_render = ob.name not in shown
+    for def_id in (parent_id, child_id):
+        apply_states(colls[def_id][0], registries[def_id], COMPOSITE_STATES.get(name, ()))
     child_root.location = [v * MM for v in pos]
     # A lean tips the child's top toward its +y (a rod resting against a beaker's rim), then the yaw turns it.
     deg = 3.141592653589793 / 180.0
     child_root.rotation_euler = Euler((-lean * deg, 0.0, yaw * deg))
     bpy.context.view_layer.update()
     objs = list(colls[parent_id][0].all_objects) + list(colls[child_id][0].all_objects)
-    lo, hi = bounds_mm(objs)
+    lo, hi = bounds_mm([ob for ob in objs if not ob.hide_render])
     studio = bpy.data.collections.new('studio')
     scene.collection.children.link(studio)
     build_studio(studio)

@@ -7,6 +7,7 @@ been delivered. Each line is placed from the bore's own profile at the volume it
 pipette. The pump seat (`graduated-pipette-pump-seat`) is where the pump's open end sits on the top
 of the tube (decided 2026-10-02). No tolerance class is claimed.
 """
+from equipment._scales import graduation_scale
 from labeq.geometry import FRONT, lathe, level_for_volume_mm, make_obj, new_root, rounded, set_material_index
 from labeq.markings import markings
 
@@ -27,17 +28,9 @@ def build(coll, M):
     make_obj('Pipette_glass', glass, coll, [M['Borosilicate glass'], M['Borosilicate glass thick']], root)
 
     fill = [[TIP_IN, 0.6], [R_IN, TAPER + 0.8], [R_IN, TOP]]
-    pieces = []
-    for tenth in range(0, 100):
-        label = tenth / 10
-        z = level_for_volume_mm(fill, 10.0 - label)
-        if tenth % 10 == 0:
-            pieces.append(('rect', -2.6, 2.6, z - 0.16, z + 0.16, 3))
-            pieces.append(('text', str(int(label)), 2.0, 3.0, z, 'LEFT'))
-        elif tenth % 5 == 0:
-            pieces.append(('rect', -1.9, 1.9, z - 0.13, z + 0.13, 2))
-        else:
-            pieces.append(('rect', -1.2, 1.2, z - 0.11, z + 0.11, 2))
+    # each line at the volume it leaves in the pipette, labelled with what has been delivered
+    pieces = graduation_scale(fill, range(0, 100), lambda tenth: 10.0 - tenth / 10, lambda tenth: str(tenth // 10), 10, 5,
+                              ((2.6, 0.16, 3), (1.9, 0.13, 2), (1.2, 0.11, 2)), 2.0, 3.0)
     top_line = level_for_volume_mm(fill, 10.0)
     pieces.append(('text', '10 mL', 2.0, 0.0, top_line + 9.0, 'CENTER'))
     markings('Pipette_graduations', pieces, lambda z: R_OUT, FRONT, 0.05, coll, M['Blue print ink'], root)

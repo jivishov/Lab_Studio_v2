@@ -59,8 +59,9 @@ def _flame_on_crucible(name, sheath, lick, coll, M, mat, root):
 
 def build(coll, M):
     root = new_root('Bunsen_burner', coll)
-    base = lathe(rounded([(0, 0), (BASE_R, 0), (BASE_R, 4.0), (BASE_R - 18.0, BASE_H - 2.0), (12.0, BASE_H), (0, BASE_H)],
-                         [0, 1.0, 2.0, 6.0, 3.0, 0]), segs=96)
+    # a cast base: a short upright rim, then a domed top rising to the barrel's foot
+    base = lathe(rounded([(0, 0), (BASE_R, 0), (BASE_R, 3.5), (BASE_R - 9.0, 8.5), (BASE_R - 22.0, 12.6), (12.0, BASE_H), (0, BASE_H)],
+                         [0, 1.0, 1.6, 6.0, 8.0, 3.0, 0]), segs=96)
     make_obj('Burner_base', base, coll, M['Black powder coat'], root)
     # The barrel, with a thicker union where it screws into the base.
     # The barrel's foot: a brass block that takes the gas from the inlet, the barrel screwed into its top.

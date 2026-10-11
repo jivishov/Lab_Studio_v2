@@ -10,7 +10,7 @@ different reagents in different techniques, so a contents label would be false f
 """
 import math
 
-from labeq.geometry import FRONT, lathe, make_obj, new_root, rounded, set_material_index
+from labeq.geometry import FRONT, helix_thread_mesh, lathe, make_obj, new_root, rounded, set_material_index
 from labeq.markings import markings
 
 
@@ -30,13 +30,12 @@ def build_lab_bottle(coll, M, spec):
     glass = lathe(rounded(pts, rad), segs=spec.get('segs', 160))
     set_material_index(glass, lambda x, y, z: z > top - 1.5 or z < fl + 0.3)
     make_obj(spec['name'] + '_glass', glass, coll, [M['Borosilicate glass'], M['Borosilicate glass thick']], root)
-    # GL thread: three turns approximated as raised rings (a helix reads the same at bench scale)
-    turns = spec.get('thread_turns', 3)
-    for k in range(turns):
-        z0 = top - 3.0 - k * spec.get('thread_pitch', 4.0)
-        ring = lathe(rounded([(nr - 0.2, z0 - 1.0), (nr + 1.1, z0 - 0.4), (nr + 1.1, z0 + 0.4), (nr - 0.2, z0 + 1.0)],
-                             [0, 0.4, 0.4, 0]), segs=spec.get('segs', 160) // 2)
-        make_obj(f'{spec["name"]}_thread_{k}', ring, coll, M['Borosilicate glass thick'], root)
+    # GL thread: one moulded helix of two turns, faded in and out at its ends, rising `thread_pitch` a
+    # turn to 3 mm below the lip (the span the three stacked rings it replaced covered, clear of the shoulder)
+    turns = spec.get('thread_turns', 2)
+    pitch = spec.get('thread_pitch', 4.0)
+    thread = helix_thread_mesh(spec['name'] + '_thread', nr, 1.1, top - 3.0 - turns * pitch, pitch, turns, 2.0)
+    make_obj(spec['name'] + '_thread', thread, coll, M['Borosilicate glass thick'], root)
     # capacity print and a frosted writing spot, in white enamel as on real bottles
     body_r = lambda z: R
     markings(spec['name'] + '_print', [('text', spec['print'], spec.get('print_size', 5.0), 0.0, H * 0.72, 'CENTER')],

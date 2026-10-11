@@ -3,6 +3,10 @@
 The studio is the prototype's: a seamless cove backdrop, a key softbox, fill, top strip and
 backdrop wash, plus black flags that only reflections and refractions see, which give glass its
 dark edge definition. The studio world uses one of Blender's bundled studio-light EXRs.
+
+The cove is a mid grey, not near white (2026-10-10): white enamel prints, LDPE, filter paper,
+porcelain and thin glass all washed out against a white cove, so tray tiles of white or clear items
+looked empty. The backdrop's tone is the only change; the key, fill and flags are as before.
 """
 import math
 import os
@@ -13,6 +17,9 @@ from mathutils import Vector
 
 from .geometry import bm_to_mesh, box_mesh, make_obj
 from .materials import principled
+
+BACKDROP_GREY = 0.24     # albedo of the cove (was 0.6, which the wash lit to near white)
+BACKDROP_WASH = 70       # W, the light on the cove behind the item (was 110)
 
 
 def look_at(ob, target):
@@ -72,13 +79,14 @@ def build_studio(coll):
     for i in range(len(prof) - 1):
         bm.faces.new((rows[0][i], rows[1][i], rows[1][i + 1], rows[0][i + 1]))
     me = bm_to_mesh(bm, 'Backdrop')
-    mat = principled('Studio backdrop paper', **{'Base Color': (0.6, 0.6, 0.6, 1), 'Roughness': 1.0,
+    g = BACKDROP_GREY
+    mat = principled('Studio backdrop paper', **{'Base Color': (g, g, g, 1), 'Roughness': 1.0,
                                                  'Specular IOR Level': 0.0})
     make_obj('Backdrop', me, coll, mat, sharp_deg=0)
     area_light(coll, 'Key softbox', (-1.5, -0.9, 1.1), (0, 0, 0.1), 1.1, 130)
     area_light(coll, 'Fill', (1.4, -1.0, 0.6), (0, 0, 0.1), 1.0, 12)
     area_light(coll, 'Top strip', (0.0, 0.25, 1.4), (0, 0, 0), 0.25, 60, size_y=1.4)
-    area_light(coll, 'Backdrop wash', (0.0, -0.2, 1.6), (0, 1.1, 0.5), 1.5, 110)
+    area_light(coll, 'Backdrop wash', (0.0, -0.2, 1.6), (0, 1.1, 0.5), 1.5, BACKDROP_WASH)
     flag_mat = principled('Studio flag black', **{'Base Color': (0.0, 0.0, 0.0, 1), 'Roughness': 1.0})
     for sx in (-1, 1):
         f = make_obj('Flag', box_mesh('Flag', 10, 700, 1500), coll, flag_mat, sharp_deg=0,

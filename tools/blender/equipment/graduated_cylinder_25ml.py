@@ -13,7 +13,8 @@ import math
 import bmesh
 
 from equipment._fits import CYLINDER_25, funnel_rim_contact_z
-from labeq.geometry import FRONT, MM, bm_to_mesh, lathe_bmesh, level_for_volume_mm, make_obj, new_root, rounded, set_material_index
+from equipment._scales import graduation_scale
+from labeq.geometry import FRONT, MM, bm_to_mesh, lathe_bmesh, level_for_volume_mm, make_obj, new_root, pull_spout, rounded, set_material_index
 from labeq.markings import markings
 
 DEFINITION_ID = 'graduated-cylinder-25ml'
@@ -31,18 +32,7 @@ def build(coll, M):
            (BORE, TOP - 1.0), (BORE, z_floor + 1.2), (BORE - 1.2, z_floor), (0, z_floor)]
     rad = [0, 1.6, 0.6, 0.5, 0.5, 0.5, 0.8, 0.8, 0]
     bm = lathe_bmesh(rounded(pts, rad), segs=112)
-    for v in bm.verts:  # a pouring spout pulled out of the rim, facing -X, as on the 100 mL cylinder
-        z = v.co.z / MM
-        if z < TOP - 9:
-            continue
-        a = math.atan2(v.co.y, v.co.x)
-        da = math.atan2(math.sin(a - math.pi), math.cos(a - math.pi))
-        w = math.exp(-(da / 0.32) ** 2)
-        h = min(1.0, (z - (TOP - 9)) / 9.0) ** 2.2
-        r = math.hypot(v.co.x, v.co.y)
-        nr = r + 3.5 * MM * w * h
-        v.co.x, v.co.y = nr * math.cos(a), nr * math.sin(a)
-        v.co.z += 0.9 * MM * w * h
+    pull_spout(bm, TOP, 9.0, 3.5, 0.9, width=0.32)  # a pouring spout, facing -X, as on the 100 mL cylinder
     glass = bm_to_mesh(bm, 'Cylinder_glass')
     set_material_index(glass, lambda x, y, z: z > TOP - 1.5 or z < z_floor + 0.3)
     make_obj('Cylinder_glass', glass, coll, [M['Borosilicate glass'], M['Borosilicate glass thick']], root)
@@ -62,17 +52,8 @@ def build(coll, M):
     make_obj('Cylinder_foot', bm_to_mesh(fb, 'Cylinder_foot'), coll, M['Borosilicate glass thick'], root, uv='box')
 
     inner = [[0.0, z_floor], [BORE - 1.2, z_floor], [BORE, z_floor + 1.2], [BORE, TOP]]
-    pieces = []
-    for half in range(1, 51):
-        ml = half / 2
-        z = level_for_volume_mm(inner, ml)
-        if half % 10 == 0:
-            pieces.append(('rect', -4.5, 4.5, z - 0.24, z + 0.24, 5))
-            pieces.append(('text', str(int(ml)), 2.8, 5.8, z, 'LEFT'))
-        elif half % 2 == 0:
-            pieces.append(('rect', -3.2, 3.2, z - 0.18, z + 0.18, 3))
-        else:
-            pieces.append(('rect', -1.8, 1.8, z - 0.15, z + 0.15, 2))
+    pieces = graduation_scale(inner, range(1, 51), lambda half: half / 2, lambda half: str(half // 2), 10, 2,
+                              ((4.5, 0.24, 5), (3.2, 0.18, 3), (1.8, 0.15, 2)), 2.8, 5.8)
     pieces.append(('text', 'mL', 2.8, 0.0, level_for_volume_mm(inner, 25) + 8.0, 'CENTER'))
     markings('Cylinder_graduations', pieces, lambda z: R, FRONT, 0.06, coll, M['Blue print ink'], root)
 

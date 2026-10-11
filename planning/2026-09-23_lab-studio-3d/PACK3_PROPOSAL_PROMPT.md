@@ -4,7 +4,20 @@ Paste everything below the line into a fresh Claude Code thread. Every fact in i
 
 **Run this after the D8 discussion** (`NEXT_THREAD_PROMPT.md`; on 2026-10-08 the user chose to settle D8 first). It was written while D8 was open. Where it says D8 is open, read the D8 row in `DECISIONS.md` and the note the D8 session adds below this one. The D8 decision replaces the options in decision 1 here.
 
-**Order note (2026-10-10).** The D8 build is done (`SESSION_HANDOFF.md`, item 8). Run this proposal after the 3D model review and refinement thread (`NEXT_THREAD_PROMPT.md`), and build Pack 3's new models to the standard it sets. Publishing the D8 experiment and G3 wait until the user asks.
+**Order note (2026-10-10).** The D8 build is done (`SESSION_HANDOFF.md`, item 8). Run this proposal after the 3D model review and refinement thread, which is now done too (the next note), and build Pack 3's new models to the standard it sets. Publishing the D8 experiment and G3 wait until the user asks.
+
+**Model refinement note (2026-10-10).** The model review and refinement is done (`proposals/MODEL_REFINEMENT.md`; `evidence/MODEL_REFINEMENT_EVIDENCE.md`; `SESSION_HANDOFF.md`, item 9). What it means here:
+- **Size (decision 5).** Pack 3's 19 reused models and the rack's scenery now pack to 1,222,176 bytes, where they were 2,120,232. That leaves about 2.78 MB of the 4 MB pack budget: about 163 KB for each of the 17 new models.
+- **The standard for new models.** Build them with the refined library:
+  - lathes and fillets by tolerance (`segments_for`, through `lathe` and `rounded`);
+  - real holes by an exact boolean (`cut()`);
+  - screw finishes by `helix_thread_mesh()`;
+  - beaker-style spouts by `pull_spout()`;
+  - printed scales by `graduation_scale()` (`equipment/_scales.py`);
+  - composites that name a state (`COMPOSITE_STATES`).
+
+  Thumbnails come out of the grey cove, with very tall items leaning.
+- **Open viewer issue.** Which glass surface shows depends on triangle order: glass writes no depth. It is in the proposal's UI issues, for the polish pass. New glass models (the side-arm flask, the waste beaker, a glass chromatography chamber, any glass bottle) will show it too. Note it, but don't fix it in Pack 3.
 
 **D8 note (2026-10-10).** D8 is decided (`proposals/D8_EXPERIMENT_ASSEMBLY.md`, "Decisions"). Run this proposal after the build thread that fixes `filterInPortions` and builds E3 (`intro-filtration-demo` in 3D); the user put intro filtration first.
 - **What replaces decision 1.** The user's words: "I need real atomized steps to use in 3D. Ignore the 2D version at all." So:

@@ -5,10 +5,8 @@ blank, decided 2026-09-26). As on a real Griffin beaker, an approximate white sc
 "150 mL" capacity print (25 to 125 mL in 25 mL steps, matching the 250 mL beaker; decided 2026-10-06). It
 is for looks only (`_scales.py`): the registry claims no graduations, so it is never read as a measurement.
 """
-import math
-
 from equipment._scales import approximate_scale
-from labeq.geometry import FRONT, MM, bm_to_mesh, lathe_bmesh, make_obj, new_root, rounded, set_material_index
+from labeq.geometry import FRONT, bm_to_mesh, lathe_bmesh, make_obj, new_root, pull_spout, rounded, set_material_index
 from labeq.markings import markings
 
 DEFINITION_ID = 'beaker-150ml'
@@ -24,18 +22,7 @@ def build(coll, M):
            (BORE, H - 1.0), (BORE, FLOOR + 2.5), (BORE - 2.5, FLOOR), (0, FLOOR)]
     rad = [0, 1.5, 1.5, 0.8, 0.6, 0.6, 0.6, 1.5, 1.5, 0]
     bm = lathe_bmesh(rounded(pts, rad), segs=128)
-    for v in bm.verts:  # the spout, facing -X
-        z = v.co.z / MM
-        if z < H - 10:
-            continue
-        a = math.atan2(v.co.y, v.co.x)
-        da = math.atan2(math.sin(a - math.pi), math.cos(a - math.pi))
-        wgt = math.exp(-(da / 0.3) ** 2)
-        h = min(1.0, (z - (H - 10)) / 10.0) ** 2.2
-        r = math.hypot(v.co.x, v.co.y)
-        nr = r + 5.0 * MM * wgt * h
-        v.co.x, v.co.y = nr * math.cos(a), nr * math.sin(a)
-        v.co.z += 1.0 * MM * wgt * h
+    pull_spout(bm, H, 10.0, 5.0, 1.0)  # the spout, facing -X
     glass = bm_to_mesh(bm, 'Beaker_glass')
     set_material_index(glass, lambda x, y, z: z > H - 1.5 or z < FLOOR + 0.3)
     make_obj('Beaker_glass', glass, coll, [M['Borosilicate glass'], M['Borosilicate glass thick']], root)

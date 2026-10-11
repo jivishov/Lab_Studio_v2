@@ -6,7 +6,9 @@ glass: the viewer draws only what `balance-status-and-entry` allows, the teacher
 the pan (decided 2026-09-25). The front panel has three plain keys and a wider TARE key, the one
 control the viewer operates (`controls`: pressing it performs the technique's zero step). Its
 legend is true of any balance. The right-hand draft-shield door is shown slid back, so a vessel
-can plausibly reach the pan. Not a particular manufacturer's product.
+can plausibly reach the pan. The doors have pull handles, the base stands on four levelling feet,
+and a level bubble sits on the deck in front of the shield (refined 2026-10-10). Not a particular
+manufacturer's product.
 """
 from labeq.geometry import MM, Matrix, box_mesh, lathe, make_obj, new_root, rounded, transform_mesh
 from labeq.markings import text_mesh
@@ -15,6 +17,7 @@ DEFINITION_ID = 'analytical-balance'
 THUMB_ELEVATION_DEG = 14
 
 W, D, BASE_H = 220.0, 330.0, 78.0
+FOOT_H = 4.0
 SHIELD = dict(w=196.0, d=200.0, h=210.0, y=40.0, t=3.0)
 PAN_R, PAN_Z = 45.0, BASE_H + 12.0
 KEY_Z = 42.0
@@ -24,8 +27,8 @@ TARE_W, TARE_X = 20.0, 81.0  # right of the three plain keys, inside the bezel
 def build(coll, M):
     root = new_root('Analytical_balance', coll)
     housing, dark, glass = M['Instrument housing light grey'], M['Instrument housing dark grey'], M['Borosilicate glass']
-    base = box_mesh('Balance_base', W, D, BASE_H, bevel=6.0, segs=3)
-    transform_mesh(base, Matrix.Translation((0, 0, BASE_H / 2 * MM)))
+    base = box_mesh('Balance_base', W, D, BASE_H - FOOT_H, bevel=6.0, segs=3)
+    transform_mesh(base, Matrix.Translation((0, 0, (FOOT_H + (BASE_H - FOOT_H) / 2) * MM)))
     make_obj('Balance_base', base, coll, housing, root, uv='box', sharp_deg=30)
 
     # front panel: dark bezel, blank display face, three plain keys and the TARE key
@@ -75,10 +78,21 @@ def build(coll, M):
         for py in (-1, 1):
             panel('Shield_post', 6.0, 6.0, s['h'], px * (s['w'] / 2 + 1.5), s['y'] + py * (s['d'] / 2 + 1.5), zc, housing)
     panel('Shield_door_rail', 6.0, s['d'] + 150.0, 5.0, s['w'] / 2 + 4.0, s['y'] + 75.0, top_z + 3.5, housing)
+    # pull handles: on the closed left door and on the open right door, near their front edges
+    for name, x, y in (('Shield_handle_left', -(s['w'] / 2 + 3.5), s['y'] - s['d'] / 2 + 22.0),
+                       ('Shield_handle_right', s['w'] / 2 + 7.5, s['y'] + 140.0 - s['d'] / 2 + 22.0)):
+        panel(name, 4.0, 6.0, 70.0, x, y, zc, housing)
+    # four levelling feet under the base (it stands FOOT_H clear of the bench on them)
     for sx in (-1, 1):
         for sy in (-1, 1):
-            foot = lathe([(0, -3), (8, -3), (8, 0.5), (0, 0.5)], segs=32)
-            make_obj('Balance_foot', foot, coll, M['Black rubber'], root, loc=(sx * (W / 2 - 22), sy * (D / 2 - 22), 3.0))
+            foot = lathe(rounded([(0, 0), (9.0, 0), (9.0, 2.5), (6.5, FOOT_H + 1.0), (0, FOOT_H + 1.0)], [0, 0.8, 1.0, 0.5, 0]), segs=32)
+            make_obj('Balance_foot', foot, coll, M['Black rubber'], root, loc=(sx * (W / 2 - 22), sy * (D / 2 - 22), 0.0))
+    # the level bubble on the deck, front left, outside the shield
+    level = lathe(rounded([(0, BASE_H), (7.5, BASE_H), (7.5, BASE_H + 2.0), (5.5, BASE_H + 2.0), (5.5, BASE_H + 0.8), (0, BASE_H + 0.8)],
+                          [0, 0.4, 0.6, 0.4, 0.3, 0]), segs=32)
+    make_obj('Balance_level', level, coll, dark, root, loc=(-70.0, -(D / 2) + 35.0, 0.0))
+    dome = lathe(rounded([(0, BASE_H + 0.8), (5.5, BASE_H + 0.8), (4.5, BASE_H + 2.2), (0, BASE_H + 2.5)], [0, 0, 1.2, 0]), segs=32)
+    make_obj('Balance_level_glass', dome, coll, glass, root, loc=(-70.0, -(D / 2) + 35.0, 0.0))
 
     registry = {
         'footprintMm': {'shape': 'rect', 'width': W, 'depth': D},

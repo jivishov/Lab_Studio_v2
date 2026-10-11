@@ -19,10 +19,28 @@ TAU = 2 * math.pi
 TAN30 = math.tan(math.radians(30))
 FRONT = -math.pi / 2  # surface angle facing a camera on -Y
 UV_SCALE = 10.0       # 1 UV unit = 10 cm, so viewer textures tile in physical units
+# Tessellation by size (decided 2026-10-10): a lathe gets as many segments as keep its largest
+# radius within CHORD_TOL of the true circle, and a fillet one point about every FILLET_STEP of
+# arc, so small parts are no longer cut as finely as large ones. Positions are unchanged: only
+# how finely a curve between the same points is drawn.
+CHORD_TOL = 0.03      # mm
+FILLET_STEP = 0.25    # mm of arc
 
 
-def rounded(pts, radii, n=8, closed=False):
-    """Polyline (r, z in mm) with each corner replaced by a quadratic fillet."""
+def segments_for(radius_mm, asked, angle=TAU, tol=CHORD_TOL):
+    """Lathe segments for a sweep of `angle` that keep a circle of `radius_mm` within `tol` mm:
+    a multiple of 8, at least 16 for a full turn, never more than `asked`. `tol=0` keeps `asked`."""
+    if tol <= 0 or radius_mm <= tol:
+        return asked
+    full = math.ceil(math.pi / math.acos(1 - tol / radius_mm))
+    full = max(16, (full + 7) // 8 * 8)
+    n = max(4, math.ceil(full * angle / TAU))
+    return min(asked, n)
+
+
+def rounded(pts, radii, n=8, closed=False, step=FILLET_STEP):
+    """Polyline (r, z in mm) with each corner replaced by a quadratic fillet, sampled about every
+    `step` mm of arc (2 to `n` intervals); `step=0` gives every fillet `n` intervals."""
     count = len(pts)
     out = []
     for i in range(count):
@@ -38,13 +56,20 @@ def rounded(pts, radii, n=8, closed=False):
         t = min(r, a.length * 0.49, b.length * 0.49)
         s = p1 + a.normalized() * t
         e = p1 + b.normalized() * t
-        for k in range(n + 1):
-            u = k / n
+        k_n = n
+        if step > 0:
+            turn = math.pi - a.angle(b) if a.length and b.length else 0.0
+            k_n = max(2, min(n, math.ceil(turn * t / step)))
+        for k in range(k_n + 1):
+            u = k / k_n
             out.append(tuple((1 - u) ** 2 * s + 2 * (1 - u) * u * p1 + u * u * e))
     return out
 
 
-def lathe_bmesh(prof, segs=192, closed=False, angle=TAU):
+def lathe_bmesh(prof, segs=192, closed=False, angle=TAU, tol=CHORD_TOL):
+    """Profile (r, z in mm) spun about Z. `segs` is the most segments wanted; the count actually
+    used follows the largest radius (segments_for), unless `tol=0`."""
+    segs = segments_for(max(r for r, z in prof), segs, angle, tol)
     bm = bmesh.new()
     vs = [bm.verts.new((r * MM, 0, z * MM)) for r, z in prof]
     es = [bm.edges.new((vs[i], vs[i + 1])) for i in range(len(vs) - 1)]
@@ -66,8 +91,102 @@ def bm_to_mesh(bm, name):
     return me
 
 
-def lathe(prof, segs=192, closed=False, angle=TAU, name='lathe'):
-    return bm_to_mesh(lathe_bmesh(prof, segs, closed, angle), name)
+def lathe(prof, segs=192, closed=False, angle=TAU, name='lathe', tol=CHORD_TOL):
+    return bm_to_mesh(lathe_bmesh(prof, segs, closed, angle, tol), name)
+
+
+def pull_spout(bm, top_z, depth, out, lift, width=0.3, facing=math.pi):
+    """Pull a pouring spout out of a lathed rim (the prototype beaker's method): vertices in the top
+    `depth` mm move outward by up to `out` mm and up by `lift` mm, most at angle `facing` (default -X),
+    falling off over about `width` radians."""
+    for v in bm.verts:
+        z = v.co.z / MM
+        if z < top_z - depth:
+            continue
+        a = math.atan2(v.co.y, v.co.x)
+        da = math.atan2(math.sin(a - facing), math.cos(a - facing))
+        wgt = math.exp(-(da / width) ** 2)
+        h = min(1.0, (z - (top_z - depth)) / depth) ** 2.2
+        r = math.hypot(v.co.x, v.co.y)
+        nr = r + out * MM * wgt * h
+        v.co.x, v.co.y = nr * math.cos(a), nr * math.sin(a)
+        v.co.z += lift * MM * wgt * h
+
+
+def helix_thread_mesh(name, r_root, depth, z_start, pitch, turns, width, runout=0.3, segs_per_turn=None,
+                      start_deg=0.0):
+    """A single-start screw thread on a neck of radius `r_root` (mm): a rounded trapezoid ridge
+    `depth` mm high and `width` mm wide at its root, rising `pitch` mm a turn from `z_start` for
+    `turns` turns, faded in and out over `runout` turns at each end as a moulded or ground thread
+    is. The ridge's root sits 0.2 mm inside the neck so it joins it without a gap."""
+    if segs_per_turn is None:
+        segs_per_turn = segments_for(r_root + depth, 128)
+    steps = max(8, int(round(turns * segs_per_turn)))
+    # cross-section (radial offset, z offset), from the lower root round the crest to the upper root
+    section = [(-0.2, -width / 2), (0.55, -width * 0.36), (1.0, -width * 0.14), (1.0, width * 0.14),
+               (0.55, width * 0.36), (-0.2, width / 2)]
+    bm = bmesh.new()
+    rows = []
+    for i in range(steps + 1):
+        f = i / steps
+        tt = f * turns
+        fade = min(1.0, tt / runout, (turns - tt) / runout) if runout > 0 else 1.0
+        fade = 0.5 - 0.5 * math.cos(math.pi * max(0.0, fade))
+        a = math.radians(start_deg) + tt * TAU
+        z0 = z_start + tt * pitch
+        row = []
+        for dr, dz in section:
+            rr = r_root + (dr * depth * fade if dr > 0 else dr)
+            zz = z0 + dz * (0.35 + 0.65 * fade)
+            row.append(bm.verts.new((rr * math.cos(a) * MM, rr * math.sin(a) * MM, zz * MM)))
+        rows.append(row)
+    for i in range(steps):
+        for j in range(len(section) - 1):
+            bm.faces.new((rows[i][j], rows[i + 1][j], rows[i + 1][j + 1], rows[i][j + 1]))
+    bm.faces.new(list(reversed(rows[0])))
+    bm.faces.new(rows[-1])
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    return bm_to_mesh(bm, name)
+
+
+def cut(me, cutters, name=None):
+    """Exact boolean difference: `me` less each mesh in `cutters` (all in the same frame), applied
+    at build time, so a plate gets real holes and a deck a real well. The cutter meshes are freed."""
+    tmp = bpy.data.objects.new('tmp_cut', me)
+    bpy.context.scene.collection.objects.link(tmp)
+    tools = []
+    for k, c in enumerate(cutters):
+        ob = bpy.data.objects.new(f'tmp_cutter_{k}', c)
+        bpy.context.scene.collection.objects.link(ob)
+        ob.hide_render = True
+        tools.append(ob)
+        mod = tmp.modifiers.new(f'cut_{k}', 'BOOLEAN')
+        mod.operation = 'DIFFERENCE'
+        mod.solver = 'EXACT'
+        mod.object = ob
+    dg = bpy.context.evaluated_depsgraph_get()
+    out = bpy.data.meshes.new_from_object(tmp.evaluated_get(dg))
+    out.name = name or me.name
+    out.materials.clear()  # the evaluated mesh carries empty slots; make_obj assigns the real ones
+    for poly in out.polygons:
+        poly.material_index = 0
+    bpy.data.objects.remove(tmp)
+    bpy.data.meshes.remove(me)
+    for ob in tools:
+        c = ob.data
+        bpy.data.objects.remove(ob)
+        bpy.data.meshes.remove(c)
+    return out
+
+
+def cylinder_mesh(name, r, z0, z1, x=0.0, y=0.0, segs=None):
+    """A closed cylinder (mm) about a vertical axis at (x, y), for cutters and pins."""
+    segs = segs or segments_for(r, 64)
+    bm = bmesh.new()
+    bmesh.ops.create_cone(bm, cap_ends=True, cap_tris=False, segments=segs,
+                          radius1=r * MM, radius2=r * MM, depth=(z1 - z0) * MM)
+    bmesh.ops.translate(bm, vec=(x * MM, y * MM, (z0 + z1) / 2 * MM), verts=bm.verts)
+    return bm_to_mesh(bm, name)
 
 
 def box_mesh(name, sx, sy, sz, bevel=0.0, segs=4, chamfer=0.0):
@@ -224,8 +343,9 @@ def bounds_mm(objs):
 
 
 __all__ = [
-    'MM', 'TAU', 'TAN30', 'FRONT', 'UV_SCALE', 'Matrix', 'Vector', 'rounded', 'lathe_bmesh',
-    'bm_to_mesh', 'lathe', 'box_mesh', 'transform_mesh', 'add_uvs', 'set_material_index',
+    'MM', 'TAU', 'TAN30', 'FRONT', 'UV_SCALE', 'CHORD_TOL', 'FILLET_STEP', 'Matrix', 'Vector',
+    'segments_for', 'rounded', 'lathe_bmesh', 'bm_to_mesh', 'lathe', 'pull_spout', 'helix_thread_mesh',
+    'cut', 'cylinder_mesh', 'box_mesh', 'transform_mesh', 'add_uvs', 'set_material_index',
     'make_obj', 'new_root', 'curve_tube_mesh', 'profile_volume_ml', 'level_for_volume_mm',
     'bounds_mm',
 ]

@@ -134,15 +134,20 @@ const tune = (src: THREE.Material, T: BenchTextures, enclosureGlass: boolean, en
       m.sheenColor = new THREE.Color(0.9, 0.9, 0.9);
       return m;
     }
+    // A print or a bottle's writing spot lies on the glass. three.js renders the opaque scene into the buffer that
+    // transmissive glass samples, so an opaque print was refracted by the glass round it and showed
+    // twice ("200" read "2200"). Marked transparent (fully opaque still), it stays out of that buffer
+    // and is drawn once, after the glass (decided 2026-10-10).
     case "frosted": {
       const m = toPhysical(src);
       if (/polystyrene/i.test(name)) Object.assign(m, { transmission: 0.55, roughness: 0.6, ior: 1.59, thickness: 0.0012, side: THREE.FrontSide });
-      else m.roughness = 0.95;
+      else if (/marking spot/i.test(name)) Object.assign(m, { roughness: 0.95, transparent: true });
+      else m.roughness = 0.95; // pipe clay: a solid part, not a mark on glass
       return m;
     }
     case "print": {
       const m = toPhysical(src);
-      m.roughness = 0.55;
+      Object.assign(m, { roughness: 0.55, transparent: true });
       return m;
     }
     case "display": {
