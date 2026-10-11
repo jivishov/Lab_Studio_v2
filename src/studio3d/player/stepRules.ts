@@ -229,7 +229,9 @@ export const stepFlow = (args: {
   const canRecord = action?.verb === "record" && interaction?.type === "recordNotebook" && base && recordEvidence;
   // A bench operation (Pack 2, decided 2026-10-05) is a typed process-control action too: the 3D player
   // performs it from the step card, a click on the vessel or a hand gesture.
+  // So is a chromatography operation (Pack 3a): the pencil's lines, a drying wait, the lid, the development.
   const typedNotebookOperation = Boolean(action?.parameters.titrationOperation || action?.parameters.mixOperation || action?.parameters.benchOperation
+    || action?.parameters.chromatographyOperation || action?.parameters.chamberOperation || action?.verb === "developChromatogram"
     || action?.fractionHandling || action?.extractionOperation
     || action?.extractionObservation || action?.extractionIdentity || action?.choiceObservation);
   const configuredObservation = action?.verb === "observe" && inputField !== undefined && inputField !== null;

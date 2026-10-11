@@ -13,6 +13,7 @@ import { equipment3dReadiness } from "../equipment3d/readiness";
 import { fallback2DTechniqueId, load3DTechnique, pack3D, practiceSummary } from "../practice";
 import { studio3DFallbackHash } from "../routes3d";
 import { ProvenanceChip } from "../ui/ProvenanceChip";
+import { derivedSlots3D, withDerived3D } from "../prepared3d";
 import { Player3D } from "./Player3D";
 import { SimulationSwitcher } from "./SimulationSwitcher";
 import { Icon } from "../ui/Icon";
@@ -59,7 +60,7 @@ export const Technique3DRoute = ({ techniqueId }: { techniqueId: string }) => {
       setDefinition(d);
       // As the 2D TechniqueSetupForm does: authored slot defaults pre-fill; nothing else is supplied.
       setValues(Object.fromEntries(configurationSlots(d)
-        .filter((slot) => slot.kind === "classroom-quantity" && slot.defaultValue !== undefined)
+        .filter((slot) => slot.kind === "classroom-quantity" && slot.defaultValue !== undefined && !derivedSlots3D(d).includes(slot.id))
         .map((slot) => [slot.id, String(slot.defaultValue)])));
     },
       (e: unknown) => { if (active) setError(e instanceof Error ? e.message : String(e)); });
@@ -69,7 +70,9 @@ export const Technique3DRoute = ({ techniqueId }: { techniqueId: string }) => {
   const missing = useMemo(() => (definition ? unresolvedConfigurationSlots(definition) : []), [definition]);
   const blocker = definition ? standaloneTechniqueConfigurationBlocker(definition) : null;
   const slots = definition ? configurationSlots(definition) : [];
-  const quantities = slots.filter((s) => s.kind === "classroom-quantity");
+  // A value the 3D version works out (Paper Chromatography's solvent depth, from its volume) is never asked for.
+  const derived = definition ? derivedSlots3D(definition) : [];
+  const quantities = slots.filter((s) => s.kind === "classroom-quantity" && !derived.includes(s.id));
   const readiness = definition ? equipment3dReadiness(definition.initialState.equipment.map((e) => e.definitionId)) : undefined;
 
   if (error) return <main className="s3d-gate-page"><div className="s3d-gate"><h1>Technique unavailable</h1><p>{error}</p>{twoD()}</div></main>;
@@ -101,7 +104,7 @@ export const Technique3DRoute = ({ techniqueId }: { techniqueId: string }) => {
   const submit = (event: FormEvent) => {
     event.preventDefault();
     try {
-      const next = applyTechniqueConfiguration(definition, values);
+      const next = applyTechniqueConfiguration(definition, withDerived3D(definition, values));
       const still = unresolvedConfigurationSlots(next);
       if (still.length > 0) { setSetupError(unresolvedConfigurationMessage(still)); return; }
       setConfigured(next);

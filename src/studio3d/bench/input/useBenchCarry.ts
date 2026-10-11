@@ -229,8 +229,18 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
 
   // A hot item moved with the tongs, and the solid broken up with the scoop (Pack 2, decided 2026-10-05).
   const tongs = player.tongsStep;
-  const breakUp = useMemo(() => (benchOp?.operation === "break-up-precipitate" && benchOp.toolInstanceId && benchOp.vesselInstanceId
-    ? { toolId: benchOp.toolInstanceId, vesselId: benchOp.vesselInstanceId } : undefined), [benchOp]);
+  // The pencil works the same way (Pack 3a): carried by its point to the strip for a line, or to the chamber's tape.
+  const chromStep = player.chromStep;
+  const breakUp = useMemo((): { toolId: string; vesselId: string; tool: string; doing: string } | undefined => {
+    if (benchOp?.operation === "break-up-precipitate" && benchOp.toolInstanceId && benchOp.vesselInstanceId) {
+      return { toolId: benchOp.toolInstanceId, vesselId: benchOp.vesselInstanceId, tool: "scoop", doing: "break up the solid on" };
+    }
+    const pencil = chromStep?.toolDefinitionId ? scene.bench.find((item) => item.definitionId === chromStep.toolDefinitionId) : undefined;
+    if (!chromStep || !pencil) return undefined;
+    const doing = chromStep.operation === "markBaseline" ? "draw the baseline on" : chromStep.operation === "markSolventFront" ? "mark the front on"
+      : "write the label on";
+    return { toolId: pencil.instanceId, vesselId: chromStep.targetInstanceId, tool: "pencil", doing };
+  }, [benchOp, chromStep, scene]);
   /** Whether a carried item's tip is over a bench item's footprint (the dropping pipette over the beaker). */
   const tipOver = useCallback((vesselId: string, carriedId: string, point: BenchPoint): boolean =>
     candidates(carriedId).some((candidate) => candidate.instanceId === vesselId && pointInFootprint(candidate.footprint, point)), [candidates]);
@@ -407,10 +417,10 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
       if (breakUp && carry.instanceId === breakUp.toolId) {
         if (tipOver(vesselId, carry.instanceId, point)) {
           engine.setTargetRing(vesselId, "valid");
-          shown = { ...screen, ...acceptedDropCallout(showGuidance, flow.inputReady, `Release to break up the solid on the ${vesselLabel}`) };
+          shown = { ...screen, ...acceptedDropCallout(showGuidance, flow.inputReady, `Release to ${breakUp.doing} the ${vesselLabel}`) };
         } else {
           engine.setTargetRing(null);
-          shown = showGuidance ? { ...screen, text: `Carry the scoop to the ${vesselLabel}`, kind: "free" } : { ...screen, text: "Release to set down", kind: "free" };
+          shown = showGuidance ? { ...screen, text: `Carry the ${breakUp.tool} to the ${vesselLabel}`, kind: "free" } : { ...screen, text: "Release to set down", kind: "free" };
         }
         return show(shown, action);
       }

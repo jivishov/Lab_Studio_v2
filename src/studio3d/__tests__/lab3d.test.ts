@@ -88,10 +88,11 @@ const typed = (values: Record<string, string>, reading = values.sampleVolumeMl) 
 const moves = { "filtration--fold-paper": "filter-paper-1" };
 
 describe("D8 twins", () => {
-  it("lists the six twins the labs compose, each a composable copy of a practice version or a Pack 1 original", async () => {
-    // Pack 3a adds Dry and Weigh's and Calculate Hardness's, in the practice list's order (2026-10-10).
+  it("lists the eight twins the labs compose, each a composable copy of a practice version or a Pack 1 original", async () => {
+    // Pack 3a adds Dry and Weigh's and Calculate Hardness's, in the practice list's order (2026-10-10), and Paper
+    // Chromatography's two trials, water then 2-propanol, both from its one module (2026-10-11).
     expect(twins.map((twin) => twin.id)).toEqual(["transfer-3d", "hard-water-precipitation-3d", "filtration-3d", "drying-3d",
-      "hard-water-calculation-3d", "measuring-volume-3d"]);
+      "paper-chromatography-water-3d", "paper-chromatography-propanol-3d", "hard-water-calculation-3d", "measuring-volume-3d"]);
     for (const twin of twins) {
       const raw = read(`public/techniques-3d/${twin.file}`) as TechniqueDefinition;
       expect(validateTechniqueDefinition(raw).errors ?? []).toEqual([]);

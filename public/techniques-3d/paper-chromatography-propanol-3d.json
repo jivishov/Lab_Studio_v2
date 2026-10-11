@@ -1,0 +1,3342 @@
+{
+  "id": "paper-chromatography-propanol-3d",
+  "title": "Paper Chromatography (2-propanol)",
+  "learningGoal": "Separate a food-dye mixture on paper with 2-propanol as the mobile phase, and measure each band's Rf.",
+  "requiredEquipment": [
+    "chromatography-chamber",
+    "graduated-cylinder",
+    "chromatography-paper",
+    "pencil",
+    "capillary-spotter",
+    "small-vial",
+    "propanol-bottle",
+    "metric-ruler",
+    "waste-beaker"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "chamber-1",
+        "definitionId": "chromatography-chamber",
+        "label": "Chromatography chamber",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty",
+          "developingChamberClosed": false
+        }
+      },
+      {
+        "id": "graduated-cylinder-1",
+        "definitionId": "graduated-cylinder",
+        "label": "100 mL graduated cylinder",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "paper-1",
+        "definitionId": "chromatography-paper",
+        "label": "Fresh chromatography strip",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "paper-unspotted"
+        }
+      },
+      {
+        "id": "pencil-1",
+        "definitionId": "pencil",
+        "label": "Pencil",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "capillary-1",
+        "definitionId": "capillary-spotter",
+        "label": "Capillary tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "dye-vial-1",
+        "definitionId": "small-vial",
+        "label": "Food dye mixture",
+        "location": "shelf",
+        "contents": {
+          "kind": "mixture",
+          "label": "Food dye mixture",
+          "solutes": [
+            {
+              "id": "teacher-food-dye-mixture",
+              "label": "Teacher-provided food dye mixture",
+              "amount": 1,
+              "unit": "mg"
+            }
+          ],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "blue-dye-solution",
+          "volumeMl": 5
+        }
+      },
+      {
+        "id": "propanol-bottle-1",
+        "definitionId": "propanol-bottle",
+        "label": "2-Propanol",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "2-Propanol",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid",
+          "volumeMl": 200
+        }
+      },
+      {
+        "id": "ruler-1",
+        "definitionId": "metric-ruler",
+        "label": "Metric ruler",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "organic-waste-1",
+        "definitionId": "waste-beaker",
+        "label": "Organic waste",
+        "location": "workbench",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "place-chamber",
+      "verb": "place",
+      "label": "Place the chamber",
+      "parameters": {
+        "equipmentDefinitionId": "chromatography-chamber",
+        "equipmentInstanceId": "chamber-1",
+        "location": "workbench"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Place the chamber: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The empty chamber stands on the bench.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.developing-chamber",
+      "equipmentRoleBindings": {
+        "developing-chamber": "chromatography-chamber"
+      }
+    },
+    {
+      "id": "label-chamber",
+      "verb": "observe",
+      "label": "Label the chamber",
+      "parameters": {
+        "targetDefinitionId": "chromatography-chamber",
+        "targetInstanceId": "chamber-1",
+        "tag": "propanol-chamber-labelled",
+        "note": "Written on the chamber's tape in pencil: 2-Propanol.",
+        "tapeLabel": "2-Propanol",
+        "markingToolDefinitionId": "pencil"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Label the chamber: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The tape reads \"2-Propanol\".",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe"
+      ],
+      "interaction": {
+        "accessibleLabel": "Label the chamber",
+        "type": "recordNotebook"
+      },
+      "atomId": "atom.observe.label-developing-chamber",
+      "equipmentRoleBindings": {
+        "developing-chamber": "chromatography-chamber"
+      }
+    },
+    {
+      "id": "measure-solvent",
+      "verb": "measureVolume",
+      "label": "Measure the solvent",
+      "parameters": {
+        "sourceDefinitionId": "propanol-bottle",
+        "sourceInstanceId": "propanol-bottle-1",
+        "targetDefinitionId": "graduated-cylinder",
+        "targetInstanceId": "graduated-cylinder-1",
+        "measurementId": "propanol-solvent-volume",
+        "volumeMl": "{{config.solventVolumeMl}}",
+        "tolerance": 0.5
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Measure the solvent: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The cylinder holds the 2-propanol.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "measureVolume"
+      ],
+      "interaction": {
+        "accessibleLabel": "Measure the solvent",
+        "type": "pourInto",
+        "sourceDefinitionId": "propanol-bottle",
+        "targetDefinitionId": "graduated-cylinder",
+        "valueParameter": "volumeMl"
+      },
+      "atomId": "atom.measure.variable-volume",
+      "equipmentRoleBindings": {
+        "variable-volume-measuring-device": "graduated-cylinder",
+        "liquid-source": "propanol-bottle"
+      }
+    },
+    {
+      "id": "charge-chamber",
+      "verb": "transfer",
+      "label": "Pour the solvent into the chamber",
+      "parameters": {
+        "sourceDefinitionId": "graduated-cylinder",
+        "sourceInstanceId": "graduated-cylinder-1",
+        "targetDefinitionId": "chromatography-chamber",
+        "targetInstanceId": "chamber-1",
+        "volumeMl": "{{config.solventVolumeMl}}",
+        "solventDepthMm": "{{config.solventDepthMm}}",
+        "solventIdentity": "2-propanol",
+        "depthProvenance": "teacher-configured",
+        "drainMeasuringVessel": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Pour the solvent into the chamber: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "A shallow layer of solvent covers the chamber's floor.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "transfer"
+      ],
+      "interaction": {
+        "accessibleLabel": "Pour the solvent into the chamber",
+        "type": "pourInto",
+        "sourceDefinitionId": "graduated-cylinder",
+        "targetDefinitionId": "chromatography-chamber",
+        "valueParameter": "volumeMl"
+      },
+      "atomId": "atom.transfer.charge-developing-chamber",
+      "equipmentRoleBindings": {
+        "liquid-source": "propanol-bottle",
+        "measured-solvent-source": "graduated-cylinder",
+        "developing-chamber": "chromatography-chamber"
+      }
+    },
+    {
+      "id": "place-paper",
+      "verb": "place",
+      "label": "Lay the strip flat",
+      "parameters": {
+        "equipmentDefinitionId": "chromatography-paper",
+        "equipmentInstanceId": "paper-1",
+        "location": "workbench"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Lay the strip flat: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The fresh strip lies flat.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.stationary-phase",
+      "equipmentRoleBindings": {
+        "stationary-phase": "chromatography-paper"
+      }
+    },
+    {
+      "id": "draw-baseline",
+      "verb": "observe",
+      "label": "Draw the baseline",
+      "parameters": {
+        "sourceDefinitionId": "chromatography-paper",
+        "sourceInstanceId": "paper-1",
+        "chromatographyOperation": "markBaseline",
+        "chromatographyModelId": "propanol-food-dyes-paper",
+        "baselineHeightMm": "{{config.baselineHeightMm}}",
+        "markingToolDefinitionId": "pencil",
+        "baselineProvenance": "teacher-configured",
+        "tag": "propanol-baseline"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Draw the baseline: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "A thin pencil line crosses the strip.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe"
+      ],
+      "interaction": {
+        "accessibleLabel": "Draw the baseline",
+        "type": "recordNotebook"
+      },
+      "atomId": "atom.observe.mark-chromatography-baseline",
+      "equipmentRoleBindings": {
+        "stationary-phase": "chromatography-paper"
+      }
+    },
+    {
+      "id": "load-capillary",
+      "verb": "transfer",
+      "label": "Fill the capillary",
+      "parameters": {
+        "sourceDefinitionId": "small-vial",
+        "sourceInstanceId": "dye-vial-1",
+        "targetDefinitionId": "capillary-spotter",
+        "targetInstanceId": "capillary-1",
+        "volumeMl": "{{config.spotterLoadVolumeMl}}",
+        "sampleProvenance": "teacher-provided food dye mixture",
+        "toolProvenance": "inferred spotting tool, not listed in the source materials"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Fill the capillary: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Dye rises into the capillary.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "transfer"
+      ],
+      "interaction": {
+        "accessibleLabel": "Fill the capillary",
+        "type": "pourInto",
+        "sourceDefinitionId": "small-vial",
+        "targetDefinitionId": "capillary-spotter",
+        "valueParameter": "volumeMl"
+      },
+      "atomId": "atom.transfer.load-spotting-tool",
+      "equipmentRoleBindings": {
+        "sample-source": "small-vial",
+        "spotting-tool": "capillary-spotter"
+      }
+    },
+    {
+      "id": "spot-1",
+      "verb": "spotSample",
+      "label": "Spot 1 of 3",
+      "parameters": {
+        "sourceDefinitionId": "capillary-spotter",
+        "sourceInstanceId": "capillary-1",
+        "targetDefinitionId": "chromatography-paper",
+        "targetInstanceId": "paper-1",
+        "chromatographyModelId": "propanol-food-dyes-paper",
+        "sampleProvenance": "teacher-provided food dye mixture",
+        "originDistanceMm": "{{config.baselineHeightMm}}",
+        "spotVolumeMl": "{{config.spotVolumeMl}}",
+        "requiresDrying": true,
+        "requiresBaselineMarked": true,
+        "spottedLabel": "Food dye spot on the 2-propanol strip's baseline"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Spot 1 of 3: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Spot 1 is on the baseline.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "spotSample"
+      ],
+      "interaction": {
+        "accessibleLabel": "Spot 1 of 3",
+        "type": "spotOnto",
+        "sourceDefinitionId": "capillary-spotter",
+        "targetDefinitionId": "chromatography-paper"
+      },
+      "atomId": "atom.spotSample.apply-baseline-spot",
+      "equipmentRoleBindings": {
+        "spotting-tool": "capillary-spotter",
+        "stationary-phase": "chromatography-paper",
+        "sample-source": "small-vial"
+      }
+    },
+    {
+      "id": "dry-spot-1",
+      "verb": "observe",
+      "label": "Let spot 1 dry",
+      "parameters": {
+        "sourceDefinitionId": "chromatography-paper",
+        "sourceInstanceId": "paper-1",
+        "chromatographyOperation": "drySpot",
+        "tag": "propanol-spot-1-dry",
+        "dryMinutes": "{{config.spotDryMinutes}}",
+        "dryingIntervalProvenance": "teacher-configured"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Let spot 1 dry: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Spot 1 is dry.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe"
+      ],
+      "interaction": {
+        "accessibleLabel": "Let spot 1 dry",
+        "type": "recordNotebook"
+      },
+      "atomId": "atom.observe.dry-chromatography-spot",
+      "equipmentRoleBindings": {
+        "stationary-phase": "chromatography-paper"
+      }
+    },
+    {
+      "id": "spot-2",
+      "verb": "spotSample",
+      "label": "Spot 2 of 3",
+      "parameters": {
+        "sourceDefinitionId": "capillary-spotter",
+        "sourceInstanceId": "capillary-1",
+        "targetDefinitionId": "chromatography-paper",
+        "targetInstanceId": "paper-1",
+        "chromatographyModelId": "propanol-food-dyes-paper",
+        "sampleProvenance": "teacher-provided food dye mixture",
+        "originDistanceMm": "{{config.baselineHeightMm}}",
+        "spotVolumeMl": "{{config.spotVolumeMl}}",
+        "requiresDrying": true,
+        "requiresBaselineMarked": true,
+        "spottedLabel": "Food dye spot on the 2-propanol strip's baseline"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Spot 2 of 3: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Spot 2 is on the baseline.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "spotSample"
+      ],
+      "interaction": {
+        "accessibleLabel": "Spot 2 of 3",
+        "type": "spotOnto",
+        "sourceDefinitionId": "capillary-spotter",
+        "targetDefinitionId": "chromatography-paper"
+      },
+      "atomId": "atom.spotSample.apply-baseline-spot",
+      "equipmentRoleBindings": {
+        "spotting-tool": "capillary-spotter",
+        "stationary-phase": "chromatography-paper",
+        "sample-source": "small-vial"
+      }
+    },
+    {
+      "id": "dry-spot-2",
+      "verb": "observe",
+      "label": "Let spot 2 dry",
+      "parameters": {
+        "sourceDefinitionId": "chromatography-paper",
+        "sourceInstanceId": "paper-1",
+        "chromatographyOperation": "drySpot",
+        "tag": "propanol-spot-2-dry",
+        "dryMinutes": "{{config.spotDryMinutes}}",
+        "dryingIntervalProvenance": "teacher-configured"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Let spot 2 dry: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Spot 2 is dry.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe"
+      ],
+      "interaction": {
+        "accessibleLabel": "Let spot 2 dry",
+        "type": "recordNotebook"
+      },
+      "atomId": "atom.observe.dry-chromatography-spot",
+      "equipmentRoleBindings": {
+        "stationary-phase": "chromatography-paper"
+      }
+    },
+    {
+      "id": "spot-3",
+      "verb": "spotSample",
+      "label": "Spot 3 of 3",
+      "parameters": {
+        "sourceDefinitionId": "capillary-spotter",
+        "sourceInstanceId": "capillary-1",
+        "targetDefinitionId": "chromatography-paper",
+        "targetInstanceId": "paper-1",
+        "chromatographyModelId": "propanol-food-dyes-paper",
+        "sampleProvenance": "teacher-provided food dye mixture",
+        "originDistanceMm": "{{config.baselineHeightMm}}",
+        "spotVolumeMl": "{{config.spotVolumeMl}}",
+        "requiresDrying": true,
+        "requiresBaselineMarked": true,
+        "spottedLabel": "Food dye spot on the 2-propanol strip's baseline"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Spot 3 of 3: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The third touch is on the same spot.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "spotSample"
+      ],
+      "interaction": {
+        "accessibleLabel": "Spot 3 of 3",
+        "type": "spotOnto",
+        "sourceDefinitionId": "capillary-spotter",
+        "targetDefinitionId": "chromatography-paper"
+      },
+      "atomId": "atom.spotSample.apply-baseline-spot",
+      "equipmentRoleBindings": {
+        "spotting-tool": "capillary-spotter",
+        "stationary-phase": "chromatography-paper",
+        "sample-source": "small-vial"
+      }
+    },
+    {
+      "id": "dry-spot-3",
+      "verb": "observe",
+      "label": "Let spot 3 dry",
+      "parameters": {
+        "sourceDefinitionId": "chromatography-paper",
+        "sourceInstanceId": "paper-1",
+        "chromatographyOperation": "drySpot",
+        "tag": "propanol-spot-3-dry",
+        "dryMinutes": "{{config.spotDryMinutes}}",
+        "dryingIntervalProvenance": "teacher-configured"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Let spot 3 dry: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Spot 3 is dry.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe"
+      ],
+      "interaction": {
+        "accessibleLabel": "Let spot 3 dry",
+        "type": "recordNotebook"
+      },
+      "atomId": "atom.observe.dry-chromatography-spot",
+      "equipmentRoleBindings": {
+        "stationary-phase": "chromatography-paper"
+      }
+    },
+    {
+      "id": "hang-strip",
+      "verb": "place",
+      "label": "Hang the strip from the lid's hook",
+      "parameters": {
+        "equipmentDefinitionId": "chromatography-paper",
+        "equipmentInstanceId": "paper-1",
+        "sourceDefinitionId": "chromatography-paper",
+        "sourceInstanceId": "paper-1",
+        "targetDefinitionId": "chromatography-chamber",
+        "targetInstanceId": "chamber-1",
+        "snapZoneId": "chromatography-chamber-paper-slot",
+        "baselineHeightMm": "{{config.baselineHeightMm}}",
+        "solventDepthMm": "{{config.solventDepthMm}}"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Hang the strip from the lid's hook: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The strip hangs from the hook under the lid.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "interaction": {
+        "accessibleLabel": "Hang the strip from the lid's hook",
+        "type": "snapIntoTarget",
+        "sourceDefinitionId": "chromatography-paper",
+        "targetDefinitionId": "chromatography-chamber",
+        "snapZoneId": "chromatography-chamber-paper-slot"
+      },
+      "atomId": "atom.place.insert-strip-into-chamber",
+      "equipmentRoleBindings": {
+        "stationary-phase": "chromatography-paper",
+        "developing-chamber": "chromatography-chamber"
+      }
+    },
+    {
+      "id": "close-chamber",
+      "verb": "observe",
+      "label": "Lower the strip and seat the lid",
+      "parameters": {
+        "targetDefinitionId": "chromatography-chamber",
+        "targetInstanceId": "chamber-1",
+        "chamberOperation": "closeChamber",
+        "tag": "propanol-chamber-closed"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Lower the strip and seat the lid: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The lid is on; the strip's foot is in the solvent and the spot above it.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe"
+      ],
+      "interaction": {
+        "accessibleLabel": "Lower the strip and seat the lid",
+        "type": "recordNotebook"
+      },
+      "atomId": "atom.observe.close-developing-chamber",
+      "equipmentRoleBindings": {
+        "developing-chamber": "chromatography-chamber"
+      }
+    },
+    {
+      "id": "develop",
+      "verb": "developChromatogram",
+      "label": "Let the solvent rise",
+      "parameters": {
+        "sourceDefinitionId": "chromatography-paper",
+        "sourceInstanceId": "paper-1",
+        "targetDefinitionId": "chromatography-chamber",
+        "targetInstanceId": "chamber-1",
+        "snapZoneId": "chromatography-chamber-paper-slot",
+        "chromatographyModelId": "propanol-food-dyes-paper",
+        "measurementPrefix": "propanol",
+        "baselineHeightMm": "{{config.baselineHeightMm}}",
+        "solventDepthMm": "{{config.solventDepthMm}}",
+        "stopCondition": "front-mm:80",
+        "chamberSealed": true,
+        "originAboveSolvent": true,
+        "requireDrySpot": true,
+        "recordMeasurementsOnDevelop": false,
+        "trackWetState": true,
+        "developMinutes": "{{config.developMinutes}}",
+        "developedLabel": "Developed 2-propanol chromatogram",
+        "stopConditionProvenance": "teacher-configured"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Let the solvent rise: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The solvent front has reached the stop distance.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "developChromatogram"
+      ],
+      "interaction": {
+        "accessibleLabel": "Let the solvent rise",
+        "type": "recordNotebook"
+      },
+      "atomId": "atom.developChromatogram.develop-strip",
+      "equipmentRoleBindings": {
+        "stationary-phase": "chromatography-paper",
+        "developing-chamber": "chromatography-chamber"
+      }
+    },
+    {
+      "id": "open-chamber",
+      "verb": "observe",
+      "label": "Lift the lid with the strip",
+      "parameters": {
+        "targetDefinitionId": "chromatography-chamber",
+        "targetInstanceId": "chamber-1",
+        "chamberOperation": "openChamber",
+        "tag": "propanol-chamber-opened"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Lift the lid with the strip: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The lid is up, the wet strip hanging from it.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe"
+      ],
+      "interaction": {
+        "accessibleLabel": "Lift the lid with the strip",
+        "type": "recordNotebook"
+      },
+      "atomId": "atom.observe.open-developing-chamber",
+      "equipmentRoleBindings": {
+        "developing-chamber": "chromatography-chamber"
+      }
+    },
+    {
+      "id": "remove-strip",
+      "verb": "place",
+      "label": "Unhook the strip and lay it flat",
+      "parameters": {
+        "equipmentDefinitionId": "chromatography-paper",
+        "equipmentInstanceId": "paper-1",
+        "location": "workbench"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Unhook the strip and lay it flat: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The wet strip lies flat.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.remove-developed-strip",
+      "equipmentRoleBindings": {
+        "stationary-phase": "chromatography-paper"
+      }
+    },
+    {
+      "id": "mark-front",
+      "verb": "observe",
+      "label": "Mark the solvent front",
+      "parameters": {
+        "sourceDefinitionId": "chromatography-paper",
+        "sourceInstanceId": "paper-1",
+        "chromatographyOperation": "markSolventFront",
+        "markingToolDefinitionId": "pencil",
+        "tag": "propanol-front-marked"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Mark the solvent front: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "A pencil line marks the front.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe"
+      ],
+      "interaction": {
+        "accessibleLabel": "Mark the solvent front",
+        "type": "recordNotebook"
+      },
+      "atomId": "atom.observe.mark-chromatography-solvent-front",
+      "equipmentRoleBindings": {
+        "stationary-phase": "chromatography-paper"
+      }
+    },
+    {
+      "id": "dry-strip",
+      "verb": "observe",
+      "label": "Let the strip dry",
+      "parameters": {
+        "sourceDefinitionId": "chromatography-paper",
+        "sourceInstanceId": "paper-1",
+        "chromatographyOperation": "dryDevelopedPaper",
+        "tag": "propanol-strip-dry",
+        "dryMinutes": "{{config.stripDryMinutes}}"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Let the strip dry: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The strip is dry.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe"
+      ],
+      "interaction": {
+        "accessibleLabel": "Let the strip dry",
+        "type": "recordNotebook"
+      },
+      "atomId": "atom.observe.dry-developed-chromatography-paper",
+      "equipmentRoleBindings": {
+        "stationary-phase": "chromatography-paper"
+      }
+    },
+    {
+      "id": "identify-bands",
+      "verb": "observe",
+      "label": "Identify the bands",
+      "parameters": {
+        "sourceDefinitionId": "chromatography-paper",
+        "sourceInstanceId": "paper-1",
+        "tag": "propanol-bands-identified",
+        "overlapPolicy": "record an unresolved overlap as one region; never split it into assumed components",
+        "inputMode": "text",
+        "inputRole": "studentResponse",
+        "inputLabel": "Each band's colour, from the baseline up; note any overlap",
+        "inputRequired": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Identify the bands: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Bands recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "propanol-bands-identified"
+      ]
+    },
+    {
+      "id": "place-ruler",
+      "verb": "place",
+      "label": "Lay the ruler along the strip",
+      "parameters": {
+        "equipmentDefinitionId": "metric-ruler",
+        "equipmentInstanceId": "ruler-1",
+        "location": "workbench",
+        "rulerPrecisionMm": 1,
+        "alignWithInstanceId": "paper-1"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Lay the ruler along the strip: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The ruler lies along the strip, its zero on the baseline.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.measuring-ruler",
+      "equipmentRoleBindings": {
+        "distance-measuring-instrument": "metric-ruler"
+      }
+    },
+    {
+      "id": "read-front",
+      "verb": "observe",
+      "label": "Solvent front distance",
+      "parameters": {
+        "sourceDefinitionId": "chromatography-paper",
+        "sourceInstanceId": "paper-1",
+        "targetDefinitionId": "metric-ruler",
+        "targetInstanceId": "ruler-1",
+        "measurementId": "propanol-solvent-front",
+        "label": "Solvent front distance",
+        "unit": "mm",
+        "chromatographyMeasurementType": "solventFront",
+        "measurementPoint": "the pencil solvent-front mark",
+        "rulerPrecisionMm": 1,
+        "measurementToleranceMm": 0.5,
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Solvent front, from the baseline (mm)",
+        "inputMin": 0,
+        "inputStep": 1,
+        "inputRequired": true,
+        "requireStudentValue": true,
+        "evidenceProvenance": "student ruler reading"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Solvent front distance: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Reading entered.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "measurement",
+        "propanol-solvent-front"
+      ],
+      "interaction": {
+        "accessibleLabel": "Solvent front distance",
+        "type": "readInstrument",
+        "sourceDefinitionId": "chromatography-paper",
+        "targetDefinitionId": "metric-ruler",
+        "stationId": "metric-ruler",
+        "valueParameter": "measurementId"
+      },
+      "atomId": "atom.observe.measure-chromatography-distance",
+      "equipmentRoleBindings": {
+        "stationary-phase": "chromatography-paper",
+        "distance-measuring-instrument": "metric-ruler"
+      }
+    },
+    {
+      "id": "record-front",
+      "verb": "record",
+      "label": "Solvent front distance",
+      "parameters": {
+        "measurementId": "propanol-solvent-front",
+        "label": "Solvent front distance",
+        "unit": "mm",
+        "sourceDefinitionId": "chromatography-paper",
+        "sourceInstanceId": "paper-1",
+        "evidenceProvenance": "student ruler reading"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Solvent front distance: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Solvent front distance recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "record",
+        "measurement",
+        "propanol-solvent-front"
+      ]
+    },
+    {
+      "id": "read-blue",
+      "verb": "observe",
+      "label": "Blue distance",
+      "parameters": {
+        "sourceDefinitionId": "chromatography-paper",
+        "sourceInstanceId": "paper-1",
+        "targetDefinitionId": "metric-ruler",
+        "targetInstanceId": "ruler-1",
+        "measurementId": "propanol-band-blue",
+        "label": "Blue distance",
+        "unit": "mm",
+        "chromatographyMeasurementType": "band",
+        "chromatographyBandId": "blue",
+        "measurementPoint": "the centre of the blue band",
+        "rulerPrecisionMm": 1,
+        "measurementToleranceMm": 0.5,
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Blue, centre from the baseline (mm)",
+        "inputMin": 0,
+        "inputStep": 1,
+        "inputRequired": true,
+        "requireStudentValue": true,
+        "evidenceProvenance": "student ruler reading"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Blue distance: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Reading entered.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "measurement",
+        "propanol-band-blue"
+      ],
+      "interaction": {
+        "accessibleLabel": "Blue distance",
+        "type": "readInstrument",
+        "sourceDefinitionId": "chromatography-paper",
+        "targetDefinitionId": "metric-ruler",
+        "stationId": "metric-ruler",
+        "valueParameter": "measurementId"
+      },
+      "atomId": "atom.observe.measure-chromatography-distance",
+      "equipmentRoleBindings": {
+        "stationary-phase": "chromatography-paper",
+        "distance-measuring-instrument": "metric-ruler"
+      }
+    },
+    {
+      "id": "record-blue",
+      "verb": "record",
+      "label": "Blue distance",
+      "parameters": {
+        "measurementId": "propanol-band-blue",
+        "label": "Blue distance",
+        "unit": "mm",
+        "sourceDefinitionId": "chromatography-paper",
+        "sourceInstanceId": "paper-1",
+        "evidenceProvenance": "student ruler reading"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Blue distance: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Blue distance recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "record",
+        "measurement",
+        "propanol-band-blue"
+      ]
+    },
+    {
+      "id": "read-red",
+      "verb": "observe",
+      "label": "Red distance",
+      "parameters": {
+        "sourceDefinitionId": "chromatography-paper",
+        "sourceInstanceId": "paper-1",
+        "targetDefinitionId": "metric-ruler",
+        "targetInstanceId": "ruler-1",
+        "measurementId": "propanol-band-red",
+        "label": "Red distance",
+        "unit": "mm",
+        "chromatographyMeasurementType": "band",
+        "chromatographyBandId": "red",
+        "measurementPoint": "the centre of the red band",
+        "rulerPrecisionMm": 1,
+        "measurementToleranceMm": 0.5,
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Red, centre from the baseline (mm)",
+        "inputMin": 0,
+        "inputStep": 1,
+        "inputRequired": true,
+        "requireStudentValue": true,
+        "evidenceProvenance": "student ruler reading"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Red distance: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Reading entered.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "measurement",
+        "propanol-band-red"
+      ],
+      "interaction": {
+        "accessibleLabel": "Red distance",
+        "type": "readInstrument",
+        "sourceDefinitionId": "chromatography-paper",
+        "targetDefinitionId": "metric-ruler",
+        "stationId": "metric-ruler",
+        "valueParameter": "measurementId"
+      },
+      "atomId": "atom.observe.measure-chromatography-distance",
+      "equipmentRoleBindings": {
+        "stationary-phase": "chromatography-paper",
+        "distance-measuring-instrument": "metric-ruler"
+      }
+    },
+    {
+      "id": "record-red",
+      "verb": "record",
+      "label": "Red distance",
+      "parameters": {
+        "measurementId": "propanol-band-red",
+        "label": "Red distance",
+        "unit": "mm",
+        "sourceDefinitionId": "chromatography-paper",
+        "sourceInstanceId": "paper-1",
+        "evidenceProvenance": "student ruler reading"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Red distance: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Red distance recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "record",
+        "measurement",
+        "propanol-band-red"
+      ]
+    },
+    {
+      "id": "read-yellow",
+      "verb": "observe",
+      "label": "Yellow distance",
+      "parameters": {
+        "sourceDefinitionId": "chromatography-paper",
+        "sourceInstanceId": "paper-1",
+        "targetDefinitionId": "metric-ruler",
+        "targetInstanceId": "ruler-1",
+        "measurementId": "propanol-band-yellow",
+        "label": "Yellow distance",
+        "unit": "mm",
+        "chromatographyMeasurementType": "band",
+        "chromatographyBandId": "yellow",
+        "measurementPoint": "the centre of the yellow band",
+        "rulerPrecisionMm": 1,
+        "measurementToleranceMm": 0.5,
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Yellow, centre from the baseline (mm)",
+        "inputMin": 0,
+        "inputStep": 1,
+        "inputRequired": true,
+        "requireStudentValue": true,
+        "evidenceProvenance": "student ruler reading"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Yellow distance: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Reading entered.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "measurement",
+        "propanol-band-yellow"
+      ],
+      "interaction": {
+        "accessibleLabel": "Yellow distance",
+        "type": "readInstrument",
+        "sourceDefinitionId": "chromatography-paper",
+        "targetDefinitionId": "metric-ruler",
+        "stationId": "metric-ruler",
+        "valueParameter": "measurementId"
+      },
+      "atomId": "atom.observe.measure-chromatography-distance",
+      "equipmentRoleBindings": {
+        "stationary-phase": "chromatography-paper",
+        "distance-measuring-instrument": "metric-ruler"
+      }
+    },
+    {
+      "id": "record-yellow",
+      "verb": "record",
+      "label": "Yellow distance",
+      "parameters": {
+        "measurementId": "propanol-band-yellow",
+        "label": "Yellow distance",
+        "unit": "mm",
+        "sourceDefinitionId": "chromatography-paper",
+        "sourceInstanceId": "paper-1",
+        "evidenceProvenance": "student ruler reading"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Yellow distance: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Yellow distance recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "record",
+        "measurement",
+        "propanol-band-yellow"
+      ]
+    },
+    {
+      "id": "calculate-rf",
+      "verb": "calculate",
+      "label": "Calculate each band's Rf",
+      "parameters": {
+        "calculationId": "propanol-rf",
+        "template": "chromatographyRf",
+        "chromatographyModelId": "propanol-food-dyes-paper",
+        "measurementPrefix": "propanol",
+        "solventFrontMeasurementId": "propanol-solvent-front",
+        "bandIds": [
+          "blue",
+          "red",
+          "yellow"
+        ],
+        "bandMeasurementIds": [
+          "propanol-band-blue",
+          "propanol-band-red",
+          "propanol-band-yellow"
+        ],
+        "tolerance": 0.005,
+        "significantFigures": 2,
+        "requireRecordedMeasurements": true,
+        "interpretationLimit": "Rf comparisons are solvent-system and condition dependent; matching Rf alone does not prove identity.",
+        "evidenceProvenance": "student ruler readings only"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Calculate each band's Rf: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Each band's Rf is worked out.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "calculate",
+        "rf",
+        "propanol"
+      ],
+      "interaction": {
+        "accessibleLabel": "Calculate each band's Rf",
+        "type": "submitCalculation",
+        "stationId": "calculator",
+        "valueParameter": "rf"
+      }
+    },
+    {
+      "id": "record-quality",
+      "verb": "observe",
+      "label": "Record the separation",
+      "parameters": {
+        "tag": "propanol-separation-quality",
+        "inputMode": "choice",
+        "inputRole": "studentResponse",
+        "inputLabel": "How the bands separated",
+        "inputOptions": [
+          "Resolved",
+          "Overlapping",
+          "Streaked"
+        ],
+        "inputRequired": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record the separation: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Separation recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "propanol-separation-quality"
+      ]
+    },
+    {
+      "id": "dispose-solvent",
+      "verb": "transfer",
+      "label": "Pour the used 2-propanol into the organic waste",
+      "parameters": {
+        "sourceDefinitionId": "chromatography-chamber",
+        "sourceInstanceId": "chamber-1",
+        "targetDefinitionId": "waste-beaker",
+        "targetInstanceId": "organic-waste-1",
+        "volumeMl": "{{config.solventVolumeMl}}",
+        "wasteStream": "organic",
+        "disposalProvenance": "teacher-approved waste stream"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Pour the used 2-propanol into the organic waste: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The used 2-propanol is in the organic waste.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "transfer"
+      ],
+      "interaction": {
+        "accessibleLabel": "Pour the used 2-propanol into the organic waste",
+        "type": "pourInto",
+        "sourceDefinitionId": "chromatography-chamber",
+        "targetDefinitionId": "waste-beaker",
+        "valueParameter": "volumeMl"
+      },
+      "atomId": "atom.transfer.route-solvent-waste",
+      "equipmentRoleBindings": {
+        "developing-chamber": "chromatography-chamber",
+        "waste-receiver": "waste-beaker"
+      }
+    }
+  ],
+  "process": {
+    "startNodeId": "place-chamber-node",
+    "nodes": [
+      {
+        "id": "place-chamber-node",
+        "type": "action",
+        "title": "Place the chamber",
+        "description": "Stand the clean, empty chamber upright on the bench.",
+        "actionId": "place-chamber",
+        "config": {},
+        "validation": [
+          {
+            "id": "place-chamber-node-done",
+            "type": "actionEvidence",
+            "label": "Action place-chamber was completed.",
+            "actionId": "place-chamber"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Place the chamber complete.",
+          "retry": "Review Place the chamber and try again."
+        }
+      },
+      {
+        "id": "label-chamber-node",
+        "type": "action",
+        "title": "Label the chamber",
+        "description": "Write \"2-Propanol\" on the chamber's label tape with the pencil, so the trial keeps its solvent's name.",
+        "actionId": "label-chamber",
+        "config": {},
+        "validation": [
+          {
+            "id": "label-chamber-node-done",
+            "type": "notebookEntry",
+            "label": "Label the chamber was completed.",
+            "notebookTag": "propanol-chamber-labelled"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Label the chamber complete.",
+          "retry": "Review Label the chamber and try again."
+        }
+      },
+      {
+        "id": "measure-solvent-node",
+        "type": "action",
+        "title": "Measure the solvent",
+        "description": "Pour {{config.solventVolumeMl}} mL of 2-propanol from its bottle into the graduated cylinder, reading the bottom of the meniscus.",
+        "actionId": "measure-solvent",
+        "config": {},
+        "validation": [
+          {
+            "id": "measure-solvent-node-done",
+            "type": "actionEvidence",
+            "label": "Action measure-solvent was completed.",
+            "actionId": "measure-solvent"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Measure the solvent complete.",
+          "retry": "Review Measure the solvent and try again."
+        }
+      },
+      {
+        "id": "charge-chamber-node",
+        "type": "action",
+        "title": "Pour the solvent into the chamber",
+        "description": "Pour it into the chamber and let the cylinder drain. The layer must stay below where the baseline will hang.",
+        "actionId": "charge-chamber",
+        "config": {},
+        "validation": [
+          {
+            "id": "charge-chamber-node-done",
+            "type": "actionEvidence",
+            "label": "Action charge-chamber was completed.",
+            "actionId": "charge-chamber"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Pour the solvent into the chamber complete.",
+          "retry": "Review Pour the solvent into the chamber and try again."
+        }
+      },
+      {
+        "id": "place-paper-node",
+        "type": "action",
+        "title": "Lay the strip flat",
+        "description": "Lay a fresh strip flat on the bench. Handle it by its edges.",
+        "actionId": "place-paper",
+        "config": {},
+        "validation": [
+          {
+            "id": "place-paper-node-done",
+            "type": "actionEvidence",
+            "label": "Action place-paper was completed.",
+            "actionId": "place-paper"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Lay the strip flat complete.",
+          "retry": "Review Lay the strip flat and try again."
+        }
+      },
+      {
+        "id": "draw-baseline-node",
+        "type": "action",
+        "title": "Draw the baseline",
+        "description": "Draw a thin pencil line across the strip {{config.baselineHeightMm}} mm above its lower edge. Pencil, not ink: graphite does not run.",
+        "actionId": "draw-baseline",
+        "config": {},
+        "validation": [
+          {
+            "id": "draw-baseline-node-done",
+            "type": "notebookEntry",
+            "label": "Draw the baseline was completed.",
+            "notebookTag": "propanol-baseline"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Draw the baseline complete.",
+          "retry": "Review Draw the baseline and try again."
+        }
+      },
+      {
+        "id": "load-capillary-node",
+        "type": "action",
+        "title": "Fill the capillary",
+        "description": "Dip the capillary's tip into the dye mixture; it fills by capillary action.",
+        "actionId": "load-capillary",
+        "config": {},
+        "validation": [
+          {
+            "id": "load-capillary-node-done",
+            "type": "actionEvidence",
+            "label": "Action load-capillary was completed.",
+            "actionId": "load-capillary"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Fill the capillary complete.",
+          "retry": "Review Fill the capillary and try again."
+        }
+      },
+      {
+        "id": "spot-1-node",
+        "type": "action",
+        "title": "Spot 1 of 3",
+        "description": "Touch the capillary's tip to the centre of the baseline, briefly, so the spot stays small.",
+        "actionId": "spot-1",
+        "config": {},
+        "validation": [
+          {
+            "id": "spot-1-node-done",
+            "type": "actionEvidence",
+            "label": "Action spot-1 was completed.",
+            "actionId": "spot-1"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Spot 1 of 3 complete.",
+          "retry": "Review Spot 1 of 3 and try again."
+        }
+      },
+      {
+        "id": "dry-spot-1-node",
+        "type": "action",
+        "title": "Let spot 1 dry",
+        "description": "Leave the strip flat until the spot is dry. The clock runs the wait ({{config.spotDryMinutes}} min) fast.",
+        "actionId": "dry-spot-1",
+        "config": {},
+        "validation": [
+          {
+            "id": "dry-spot-1-node-done",
+            "type": "notebookEntry",
+            "label": "Let spot 1 dry was completed.",
+            "notebookTag": "propanol-spot-1-dry"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Let spot 1 dry complete.",
+          "retry": "Review Let spot 1 dry and try again."
+        }
+      },
+      {
+        "id": "spot-2-node",
+        "type": "action",
+        "title": "Spot 2 of 3",
+        "description": "Touch the tip to the same spot again, briefly.",
+        "actionId": "spot-2",
+        "config": {},
+        "validation": [
+          {
+            "id": "spot-2-node-done",
+            "type": "actionEvidence",
+            "label": "Action spot-2 was completed.",
+            "actionId": "spot-2"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Spot 2 of 3 complete.",
+          "retry": "Review Spot 2 of 3 and try again."
+        }
+      },
+      {
+        "id": "dry-spot-2-node",
+        "type": "action",
+        "title": "Let spot 2 dry",
+        "description": "Leave the strip flat until the spot is dry. The clock runs the wait ({{config.spotDryMinutes}} min) fast.",
+        "actionId": "dry-spot-2",
+        "config": {},
+        "validation": [
+          {
+            "id": "dry-spot-2-node-done",
+            "type": "notebookEntry",
+            "label": "Let spot 2 dry was completed.",
+            "notebookTag": "propanol-spot-2-dry"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Let spot 2 dry complete.",
+          "retry": "Review Let spot 2 dry and try again."
+        }
+      },
+      {
+        "id": "spot-3-node",
+        "type": "action",
+        "title": "Spot 3 of 3",
+        "description": "Touch the tip to the same spot again, briefly.",
+        "actionId": "spot-3",
+        "config": {},
+        "validation": [
+          {
+            "id": "spot-3-node-done",
+            "type": "actionEvidence",
+            "label": "Action spot-3 was completed.",
+            "actionId": "spot-3"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Spot 3 of 3 complete.",
+          "retry": "Review Spot 3 of 3 and try again."
+        }
+      },
+      {
+        "id": "dry-spot-3-node",
+        "type": "action",
+        "title": "Let spot 3 dry",
+        "description": "Leave the strip flat until the spot is dry. The clock runs the wait ({{config.spotDryMinutes}} min) fast.",
+        "actionId": "dry-spot-3",
+        "config": {},
+        "validation": [
+          {
+            "id": "dry-spot-3-node-done",
+            "type": "notebookEntry",
+            "label": "Let spot 3 dry was completed.",
+            "notebookTag": "propanol-spot-3-dry"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Let spot 3 dry complete.",
+          "retry": "Review Let spot 3 dry and try again."
+        }
+      },
+      {
+        "id": "hang-strip-node",
+        "type": "action",
+        "title": "Hang the strip from the hook",
+        "description": "Hang the strip from the hook under the chamber's lid, spot end down, holding the lid above the chamber.",
+        "actionId": "hang-strip",
+        "config": {},
+        "validation": [
+          {
+            "id": "hang-strip-node-done",
+            "type": "actionEvidence",
+            "label": "Action hang-strip was completed.",
+            "actionId": "hang-strip"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Hang the strip from the hook complete.",
+          "retry": "Review Hang the strip from the hook and try again."
+        }
+      },
+      {
+        "id": "close-chamber-node",
+        "type": "action",
+        "title": "Lower the strip and seat the lid",
+        "description": "Lower the strip in and seat the lid: its lower edge in the solvent, the spot above it, the strip clear of the walls.",
+        "actionId": "close-chamber",
+        "config": {},
+        "validation": [
+          {
+            "id": "close-chamber-node-done",
+            "type": "notebookEntry",
+            "label": "Lower the strip and seat the lid was completed.",
+            "notebookTag": "propanol-chamber-closed"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Lower the strip and seat the lid complete.",
+          "retry": "Review Lower the strip and seat the lid and try again."
+        }
+      },
+      {
+        "id": "develop-node",
+        "type": "action",
+        "title": "Let the solvent rise",
+        "description": "Leave the chamber closed while the solvent climbs to 80 mm above the baseline. The clock runs the wait ({{config.developMinutes}} min) fast.",
+        "actionId": "develop",
+        "config": {},
+        "validation": [
+          {
+            "id": "develop-node-done",
+            "type": "actionEvidence",
+            "label": "Action develop was completed.",
+            "actionId": "develop"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Let the solvent rise complete.",
+          "retry": "Review Let the solvent rise and try again."
+        }
+      },
+      {
+        "id": "open-chamber-node",
+        "type": "action",
+        "title": "Lift the lid with the strip",
+        "description": "Lift the lid straight up; the strip comes out with it.",
+        "actionId": "open-chamber",
+        "config": {},
+        "validation": [
+          {
+            "id": "open-chamber-node-done",
+            "type": "notebookEntry",
+            "label": "Lift the lid with the strip was completed.",
+            "notebookTag": "propanol-chamber-opened"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Lift the lid with the strip complete.",
+          "retry": "Review Lift the lid with the strip and try again."
+        }
+      },
+      {
+        "id": "remove-strip-node",
+        "type": "action",
+        "title": "Unhook the strip and lay it flat",
+        "description": "Unhook the wet strip and lay it flat on the bench.",
+        "actionId": "remove-strip",
+        "config": {},
+        "validation": [
+          {
+            "id": "remove-strip-node-done",
+            "type": "actionEvidence",
+            "label": "Action remove-strip was completed.",
+            "actionId": "remove-strip"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Unhook the strip and lay it flat complete.",
+          "retry": "Review Unhook the strip and lay it flat and try again."
+        }
+      },
+      {
+        "id": "mark-front-node",
+        "type": "action",
+        "title": "Mark the solvent front",
+        "description": "At once, before it evaporates, draw a pencil line along the wet edge the solvent reached.",
+        "actionId": "mark-front",
+        "config": {},
+        "validation": [
+          {
+            "id": "mark-front-node-done",
+            "type": "notebookEntry",
+            "label": "Mark the solvent front was completed.",
+            "notebookTag": "propanol-front-marked"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Mark the solvent front complete.",
+          "retry": "Review Mark the solvent front and try again."
+        }
+      },
+      {
+        "id": "dry-strip-node",
+        "type": "action",
+        "title": "Let the strip dry",
+        "description": "Leave it flat until it is dry: bands keep moving while it is wet. The clock runs the wait ({{config.stripDryMinutes}} min) fast.",
+        "actionId": "dry-strip",
+        "config": {},
+        "validation": [
+          {
+            "id": "dry-strip-node-done",
+            "type": "notebookEntry",
+            "label": "Let the strip dry was completed.",
+            "notebookTag": "propanol-strip-dry"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Let the strip dry complete.",
+          "retry": "Review Let the strip dry and try again."
+        }
+      },
+      {
+        "id": "identify-bands-node",
+        "type": "observation",
+        "title": "Identify the bands",
+        "description": "Record each band's colour, from the baseline up. Where bands run together, record the overlap as one region.",
+        "actionId": "identify-bands",
+        "config": {},
+        "validation": [
+          {
+            "id": "identify-bands-node-done",
+            "type": "notebookEntry",
+            "label": "Identify the bands was completed.",
+            "notebookTag": "propanol-bands-identified"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Identify the bands complete.",
+          "retry": "Review Identify the bands and try again."
+        }
+      },
+      {
+        "id": "place-ruler-node",
+        "type": "action",
+        "title": "Lay the ruler along the strip",
+        "description": "Lay the ruler beside the strip with its zero on the baseline.",
+        "actionId": "place-ruler",
+        "config": {},
+        "validation": [
+          {
+            "id": "place-ruler-node-done",
+            "type": "actionEvidence",
+            "label": "Action place-ruler was completed.",
+            "actionId": "place-ruler"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Lay the ruler along the strip complete.",
+          "retry": "Review Lay the ruler along the strip and try again."
+        }
+      },
+      {
+        "id": "read-front-node",
+        "type": "observation",
+        "title": "Read the front",
+        "description": "Read the distance from the baseline to the front's pencil line, to the nearest millimetre, and enter it.",
+        "actionId": "read-front",
+        "config": {},
+        "validation": [
+          {
+            "id": "read-front-node-done",
+            "type": "measurementRecorded",
+            "label": "Read the front was recorded.",
+            "measurementId": "propanol-solvent-front"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read the front complete.",
+          "retry": "Review Read the front and try again."
+        }
+      },
+      {
+        "id": "record-front-node",
+        "type": "observation",
+        "title": "Record the front",
+        "description": "Record the front's distance in your data table.",
+        "actionId": "record-front",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-front-node-done",
+            "type": "actionEvidence",
+            "label": "Action record-front was completed.",
+            "actionId": "record-front"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record the front complete.",
+          "retry": "Review Record the front and try again."
+        }
+      },
+      {
+        "id": "read-blue-node",
+        "type": "observation",
+        "title": "Read the blue band",
+        "description": "Read the distance from the baseline to the centre of the blue band, to the nearest millimetre, and enter it.",
+        "actionId": "read-blue",
+        "config": {},
+        "validation": [
+          {
+            "id": "read-blue-node-done",
+            "type": "measurementRecorded",
+            "label": "Read the blue band was recorded.",
+            "measurementId": "propanol-band-blue"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read the blue band complete.",
+          "retry": "Review Read the blue band and try again."
+        }
+      },
+      {
+        "id": "record-blue-node",
+        "type": "observation",
+        "title": "Record the blue band",
+        "description": "Record the band and its distance in your data table.",
+        "actionId": "record-blue",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-blue-node-done",
+            "type": "actionEvidence",
+            "label": "Action record-blue was completed.",
+            "actionId": "record-blue"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record the blue band complete.",
+          "retry": "Review Record the blue band and try again."
+        }
+      },
+      {
+        "id": "read-red-node",
+        "type": "observation",
+        "title": "Read the red band",
+        "description": "Read the distance from the baseline to the centre of the red band, to the nearest millimetre, and enter it.",
+        "actionId": "read-red",
+        "config": {},
+        "validation": [
+          {
+            "id": "read-red-node-done",
+            "type": "measurementRecorded",
+            "label": "Read the red band was recorded.",
+            "measurementId": "propanol-band-red"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read the red band complete.",
+          "retry": "Review Read the red band and try again."
+        }
+      },
+      {
+        "id": "record-red-node",
+        "type": "observation",
+        "title": "Record the red band",
+        "description": "Record the band and its distance in your data table.",
+        "actionId": "record-red",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-red-node-done",
+            "type": "actionEvidence",
+            "label": "Action record-red was completed.",
+            "actionId": "record-red"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record the red band complete.",
+          "retry": "Review Record the red band and try again."
+        }
+      },
+      {
+        "id": "read-yellow-node",
+        "type": "observation",
+        "title": "Read the yellow band",
+        "description": "Read the distance from the baseline to the centre of the yellow band, to the nearest millimetre, and enter it.",
+        "actionId": "read-yellow",
+        "config": {},
+        "validation": [
+          {
+            "id": "read-yellow-node-done",
+            "type": "measurementRecorded",
+            "label": "Read the yellow band was recorded.",
+            "measurementId": "propanol-band-yellow"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read the yellow band complete.",
+          "retry": "Review Read the yellow band and try again."
+        }
+      },
+      {
+        "id": "record-yellow-node",
+        "type": "observation",
+        "title": "Record the yellow band",
+        "description": "Record the band and its distance in your data table.",
+        "actionId": "record-yellow",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-yellow-node-done",
+            "type": "actionEvidence",
+            "label": "Action record-yellow was completed.",
+            "actionId": "record-yellow"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record the yellow band complete.",
+          "retry": "Review Record the yellow band and try again."
+        }
+      },
+      {
+        "id": "calculate-rf-node",
+        "type": "calculation",
+        "title": "Calculate each band's Rf",
+        "description": "Rf is the band's distance divided by the front's distance, both from the baseline. Work it out for each band from your recorded readings.",
+        "actionId": "calculate-rf",
+        "config": {},
+        "validation": [
+          {
+            "id": "calculate-rf-node--blue",
+            "type": "calculationWithinTolerance",
+            "label": "Blue Rf is within tolerance.",
+            "calculationId": "propanol-rf-blue",
+            "tolerance": 0.005
+          },
+          {
+            "id": "calculate-rf-node--red",
+            "type": "calculationWithinTolerance",
+            "label": "Red Rf is within tolerance.",
+            "calculationId": "propanol-rf-red",
+            "tolerance": 0.005
+          },
+          {
+            "id": "calculate-rf-node--yellow",
+            "type": "calculationWithinTolerance",
+            "label": "Yellow Rf is within tolerance.",
+            "calculationId": "propanol-rf-yellow",
+            "tolerance": 0.005
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Calculate each band's Rf complete.",
+          "retry": "Review Calculate each band's Rf and try again."
+        }
+      },
+      {
+        "id": "record-quality-node",
+        "type": "observation",
+        "title": "Record the separation",
+        "description": "Record how well the bands separated: resolved, overlapping or streaked.",
+        "actionId": "record-quality",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-quality-node-done",
+            "type": "notebookEntry",
+            "label": "Record the separation was completed.",
+            "notebookTag": "propanol-separation-quality"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record the separation complete.",
+          "retry": "Review Record the separation and try again."
+        }
+      },
+      {
+        "id": "dispose-solvent-node",
+        "type": "action",
+        "title": "Pour the 2-propanol into the waste",
+        "description": "Pour the used 2-propanol into the organic waste beaker: never down the sink.",
+        "actionId": "dispose-solvent",
+        "config": {},
+        "validation": [
+          {
+            "id": "dispose-solvent-node-done",
+            "type": "actionEvidence",
+            "label": "Action dispose-solvent was completed.",
+            "actionId": "dispose-solvent"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Pour the 2-propanol into the waste complete.",
+          "retry": "Review Pour the 2-propanol into the waste and try again."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "place-chamber-node",
+        "to": "label-chamber-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "label-chamber-node",
+        "to": "measure-solvent-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "measure-solvent-node",
+        "to": "charge-chamber-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "charge-chamber-node",
+        "to": "place-paper-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "place-paper-node",
+        "to": "draw-baseline-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "draw-baseline-node",
+        "to": "load-capillary-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "load-capillary-node",
+        "to": "spot-1-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "spot-1-node",
+        "to": "dry-spot-1-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "dry-spot-1-node",
+        "to": "spot-2-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "spot-2-node",
+        "to": "dry-spot-2-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "dry-spot-2-node",
+        "to": "spot-3-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "spot-3-node",
+        "to": "dry-spot-3-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "dry-spot-3-node",
+        "to": "hang-strip-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "hang-strip-node",
+        "to": "close-chamber-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "close-chamber-node",
+        "to": "develop-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "develop-node",
+        "to": "open-chamber-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "open-chamber-node",
+        "to": "remove-strip-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "remove-strip-node",
+        "to": "mark-front-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "mark-front-node",
+        "to": "dry-strip-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "dry-strip-node",
+        "to": "identify-bands-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "identify-bands-node",
+        "to": "place-ruler-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "place-ruler-node",
+        "to": "read-front-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "read-front-node",
+        "to": "record-front-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-front-node",
+        "to": "read-blue-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "read-blue-node",
+        "to": "record-blue-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-blue-node",
+        "to": "read-red-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "read-red-node",
+        "to": "record-red-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-red-node",
+        "to": "read-yellow-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "read-yellow-node",
+        "to": "record-yellow-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-yellow-node",
+        "to": "calculate-rf-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "calculate-rf-node",
+        "to": "record-quality-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-quality-node",
+        "to": "dispose-solvent-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [
+    {
+      "id": "paper-chromatography-propanol-practice-success",
+      "type": "actionEvidence",
+      "label": "Action dispose-solvent was completed.",
+      "actionId": "dispose-solvent"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "current node expects a different action",
+      "message": "That action is out of sequence for the current technique step.",
+      "recovery": "Check the process map and perform the highlighted step first."
+    },
+    {
+      "id": "missing-source",
+      "when": "source equipment or contents are missing",
+      "message": "The selected source does not contain the material required for this action.",
+      "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+    },
+    {
+      "id": "overflow",
+      "when": "target capacity would be exceeded",
+      "message": "The target equipment cannot hold the requested volume.",
+      "recovery": "Use a larger container or transfer a smaller measured amount."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.0.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-10-05T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "twin-3d",
+      "chromatography",
+      "rf",
+      "propanol"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry",
+        "kind": "entry",
+        "nodeId": "place-chamber-node",
+        "label": "Entry"
+      },
+      {
+        "id": "exit",
+        "kind": "exit",
+        "nodeId": "dispose-solvent-node",
+        "label": "Exit"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "developing-chamber",
+        "required": true,
+        "allowedDefinitionIds": [
+          "chromatography-chamber"
+        ],
+        "sourceInstanceIds": [
+          "chamber-1"
+        ]
+      },
+      {
+        "roleId": "variable-volume-measuring-device",
+        "required": true,
+        "allowedDefinitionIds": [
+          "graduated-cylinder"
+        ],
+        "sourceInstanceIds": [
+          "graduated-cylinder-1"
+        ]
+      },
+      {
+        "roleId": "liquid-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "propanol-bottle"
+        ],
+        "sourceInstanceIds": [
+          "propanol-bottle-1"
+        ]
+      },
+      {
+        "roleId": "measured-solvent-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "graduated-cylinder"
+        ],
+        "sourceInstanceIds": [
+          "graduated-cylinder-1"
+        ]
+      },
+      {
+        "roleId": "stationary-phase",
+        "required": true,
+        "allowedDefinitionIds": [
+          "chromatography-paper"
+        ],
+        "sourceInstanceIds": [
+          "paper-1"
+        ]
+      },
+      {
+        "roleId": "sample-source",
+        "required": true,
+        "allowedDefinitionIds": [
+          "small-vial"
+        ],
+        "sourceInstanceIds": [
+          "dye-vial-1"
+        ]
+      },
+      {
+        "roleId": "spotting-tool",
+        "required": true,
+        "allowedDefinitionIds": [
+          "capillary-spotter"
+        ],
+        "sourceInstanceIds": [
+          "capillary-1"
+        ]
+      },
+      {
+        "roleId": "distance-measuring-instrument",
+        "required": true,
+        "allowedDefinitionIds": [
+          "metric-ruler"
+        ],
+        "sourceInstanceIds": [
+          "ruler-1"
+        ]
+      },
+      {
+        "roleId": "waste-receiver",
+        "required": true,
+        "allowedDefinitionIds": [
+          "waste-beaker"
+        ],
+        "sourceInstanceIds": [
+          "organic-waste-1"
+        ]
+      }
+    ],
+    "modelSlots": [],
+    "configurationSlots": [
+      {
+        "id": "solventVolumeMl",
+        "valueType": "number",
+        "required": true,
+        "defaultValue": 4
+      },
+      {
+        "id": "solventDepthMm",
+        "valueType": "number",
+        "required": true,
+        "defaultValue": 5
+      },
+      {
+        "id": "baselineHeightMm",
+        "valueType": "number",
+        "required": true,
+        "defaultValue": 15
+      },
+      {
+        "id": "spotterLoadVolumeMl",
+        "valueType": "number",
+        "required": true,
+        "defaultValue": 0.03
+      },
+      {
+        "id": "spotVolumeMl",
+        "valueType": "number",
+        "required": true,
+        "defaultValue": 0.005
+      },
+      {
+        "id": "spotDryMinutes",
+        "valueType": "number",
+        "required": true,
+        "defaultValue": 1
+      },
+      {
+        "id": "developMinutes",
+        "valueType": "number",
+        "required": true,
+        "defaultValue": 10
+      },
+      {
+        "id": "stripDryMinutes",
+        "valueType": "number",
+        "required": true,
+        "defaultValue": 5
+      }
+    ],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [
+      {
+        "id": "propanol-solvent-front",
+        "kind": "measurement",
+        "actionId": "read-front",
+        "referenceId": "propanol-solvent-front"
+      },
+      {
+        "id": "propanol-band-blue",
+        "kind": "measurement",
+        "actionId": "read-blue",
+        "referenceId": "propanol-band-blue"
+      },
+      {
+        "id": "propanol-band-red",
+        "kind": "measurement",
+        "actionId": "read-red",
+        "referenceId": "propanol-band-red"
+      },
+      {
+        "id": "propanol-band-yellow",
+        "kind": "measurement",
+        "actionId": "read-yellow",
+        "referenceId": "propanol-band-yellow"
+      },
+      {
+        "id": "propanol-rf-blue",
+        "kind": "calculation",
+        "actionId": "calculate-rf",
+        "referenceId": "propanol-rf-blue"
+      },
+      {
+        "id": "propanol-rf-red",
+        "kind": "calculation",
+        "actionId": "calculate-rf",
+        "referenceId": "propanol-rf-red"
+      },
+      {
+        "id": "propanol-rf-yellow",
+        "kind": "calculation",
+        "actionId": "calculate-rf",
+        "referenceId": "propanol-rf-yellow"
+      }
+    ],
+    "completion": {
+      "exitPortIds": [
+        "exit"
+      ],
+      "requiredEvidenceOutputIds": [
+        "propanol-solvent-front",
+        "propanol-band-blue",
+        "propanol-band-red",
+        "propanol-band-yellow",
+        "propanol-rf-blue",
+        "propanol-rf-red",
+        "propanol-rf-yellow"
+      ],
+      "requiredValidationRuleIds": [
+        "paper-chromatography-propanol-practice-success"
+      ]
+    },
+    "catalogDisposition": "composable",
+    "legacyActionEffects": [
+      {
+        "actionId": "identify-bands",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-front",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-blue",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-red",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-yellow",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "calculate-rf",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-quality",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "chromatographyModels": [
+    {
+      "id": "propanol-food-dyes-paper",
+      "solventFrontMm": 80,
+      "bands": [
+        {
+          "id": "blue",
+          "label": "Blue",
+          "color": "#2563eb",
+          "distanceMm": 28,
+          "expectedRf": 0.35
+        },
+        {
+          "id": "red",
+          "label": "Red",
+          "color": "#dc2626",
+          "distanceMm": 49,
+          "expectedRf": 0.6125
+        },
+        {
+          "id": "yellow",
+          "label": "Yellow",
+          "color": "#facc15",
+          "distanceMm": 68,
+          "expectedRf": 0.85
+        }
+      ]
+    }
+  ]
+}

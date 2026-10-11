@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import type { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { BENCH_MM } from "../adapters/benchCoordinates";
-import { fillLevelMm, type SceneContents, type SceneDescription, type SceneItem } from "../adapters/runtimeToScene";
+import { fillLevelMm, type SceneContents, type SceneDescription, type SceneItem, type SceneStrip } from "../adapters/runtimeToScene";
 import { ModelLibrary } from "../equipment3d/loadModels";
 import type { Equipment3DEntry } from "../equipment3d/types";
 import {
@@ -18,6 +18,7 @@ import { buildContents, buildTiltingLiquid, disposeObject, liquidOpacity3D, pars
 import { buildDisplayFace, type DisplayFace } from "./scene/displays";
 import { onsetTilt, pourGeometry, pourQuaternion, rootForLip, streamGeometry, surfaceHeight, UP, vesselSlices } from "./scene/pour";
 import { seatPoint, setOnPosition } from "./scene/setOn";
+import { buildStripLayer, buildTapeLayer, drawStrip, drawTape, type MarksLayer } from "./scene/stripMarks";
 import { Signals, TOKENS, type TargetRingKind } from "./scene/signals";
 
 /**
@@ -61,6 +62,9 @@ interface ItemView {
   coolMaterials?: Map<THREE.Mesh, THREE.Material | THREE.Material[]>;
   /** Parts that flicker while shown (a flame), with their resting scale. */
   flicker?: Array<{ object: THREE.Object3D; phase: number }>;
+  /** What is drawn on a chromatography strip's face and a chamber's label tape (Pack 3a). */
+  marks?: MarksLayer;
+  tape?: MarksLayer;
 }
 
 /** A committed pour being drawn: advanced by the render loop, cleaned up when it ends or is cut short. */
@@ -660,10 +664,61 @@ export class BenchEngine {
     return moving;
   }
 
+  /**
+   * A strip's pencil marks, spot, bands and front, and a chamber's label tape, as the scene has them (Pack 3a). Drawn
+   * on layers added to the model once, and redrawn only when what they show changes.
+   */
+  private applyMarks(view: ItemView, item: SceneItem): void {
+    const model = view.model;
+    if (!model) return;
+    const face = item.model?.stripFace;
+    if (face) {
+      if (!view.marks) { view.marks = buildStripLayer(face); model.add(view.marks.mesh); }
+      drawStrip(view.marks, face, item.strip, Boolean(item.wet));
+    }
+    if (item.tapeLabel !== undefined || view.tape) {
+      if (!view.tape) { view.tape = buildTapeLayer(); model.add(view.tape.mesh); }
+      drawTape(view.tape, item.tapeLabel);
+    }
+    this.requestRender();
+  }
+
+  /**
+   * A strip developing while the step clock runs (Pack 3a): the solvent front and the bands climb from the baseline
+   * to `strip`'s, the strip as the runtime has it, in `seconds`. Presentation only: cut short, the next sync draws
+   * the strip as the runtime has it then.
+   */
+  animateStripDevelop(paperId: string, strip: SceneStrip, seconds: number): Promise<void> {
+    this.stopMixRun();
+    const view = this.items.get(paperId);
+    const face = view?.entry?.stripFace;
+    if (!view || !face || !view.marks || this.options.reducedMotion || seconds <= 0) return Promise.resolve();
+    const marks = view.marks;
+    let elapsed = 0;
+    return new Promise((resolve) => {
+      const finish = () => {
+        marks.key = "";
+        const now = this.lastScene?.bench.find((item) => item.instanceId === paperId);
+        if (now && this.items.get(paperId) === view) this.applyMarks(view, now);
+        this.requestRender();
+        resolve();
+      };
+      const tick = (dt: number): boolean => {
+        if (this.items.get(paperId) !== view) return false;
+        elapsed += dt;
+        drawStrip(marks, face, strip, true, Math.min(1, elapsed / seconds));
+        return elapsed < seconds;
+      };
+      this.mixRun = { tick, finish };
+      this.requestRender();
+    });
+  }
+
   private updateItem(item: SceneItem): void {
     const view = this.items.get(item.instanceId);
     if (!view || !item.model) return;
     this.applyForm(view, item);
+    this.applyMarks(view, item);
     const key = JSON.stringify(item.contents);
     if (key !== view.contentsKey) {
       if (view.contents) {
@@ -896,7 +951,7 @@ export class BenchEngine {
    * (`revealIn`) shows it only as the scoop lands. Resolves at once under reduced motion or when
    * the release is not known.
    */
-  animateToolDeposit(args: { toolId: string; scoop?: SceneContents; revealIn?: string; motion?: "roll" | "dip" }): Promise<void> {
+  animateToolDeposit(args: { toolId: string; scoop?: SceneContents; revealIn?: string; motion?: "roll" | "dip" | "draw" }): Promise<void> {
     this.stopToolRun();
     const tool = this.items.get(args.toolId);
     const released = this.releasedCarry?.instanceId === args.toolId && performance.now() - this.releasedCarry.at < 2000
@@ -907,7 +962,7 @@ export class BenchEngine {
     const startQuaternion = released.quaternion.clone();
     const scoop = args.scoop && tool.entry ? buildContents(tool.entry, args.scoop) : undefined;
     if (scoop) tool.root.add(scoop);
-    const TIP = 0.28, HOLD = 0.18, BACK = 0.22, ROLL = 1.35;
+    const TIP = 0.28, HOLD = args.motion === "draw" ? 0.6 : 0.18, BACK = 0.22, ROLL = 1.35;
     // The target's contents may be built by a sync after this starts, so they are hidden each frame.
     const reveal = (shown: boolean) => {
       const target = args.revealIn ? this.items.get(args.revealIn) : undefined;
@@ -937,7 +992,13 @@ export class BenchEngine {
           : elapsed < TIP + HOLD ? 1
             : Math.max(0, 1 - ease((elapsed - TIP - HOLD) / BACK));
         tool.root.position.copy(start);
-        if (args.motion === "dip") {
+        if (args.motion === "draw") {
+          // A pencil (Pack 3a): its point goes down onto the paper or the tape, draws a short stroke across, and lifts.
+          tool.root.position.y -= u * 3 * MM;
+          const stroke = elapsed < TIP ? 0 : Math.min(1, (elapsed - TIP) / HOLD);
+          tool.root.position.x += stroke * 10 * MM;
+          tool.root.quaternion.copy(startQuaternion);
+        } else if (args.motion === "dip") {
           // A pipette: its tip goes 12 mm down into the liquid (or the cuvette) and back, upright.
           tool.root.position.y -= u * 12 * MM;
           tool.root.quaternion.copy(startQuaternion);

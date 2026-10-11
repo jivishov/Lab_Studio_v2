@@ -42,6 +42,14 @@ const LABELS: Record<string, SlotLabel> = {
   stockAliquotVolumeMl: { label: "Stock aliquot volume", unit: "mL" },
   waterVolumeMl: { label: "Water volume", unit: "mL" },
   samplePercentTransmittance: { label: "Sample transmittance", unit: "%T", help: "What the photometer shows for the diluted sample once it is zeroed on the blank." },
+  // paper-chromatography (3D, Pack 3a)
+  solventVolumeMl: { label: "Solvent in the chamber", unit: "mL", help: "Measured in the graduated cylinder and poured in. Its depth up the strip is worked out from the chamber's shape and must stay below the baseline." },
+  baselineHeightMm: { label: "Baseline height", unit: "mm", help: "How far above the strip's lower edge the pencil baseline is drawn." },
+  spotterLoadVolumeMl: { label: "Dye drawn into the capillary", unit: "mL" },
+  spotVolumeMl: { label: "Dye left by each touch", unit: "mL" },
+  spotDryMinutes: { label: "Time for a spot to dry", unit: "min", help: "Run fast on the step clock." },
+  developMinutes: { label: "Development time", unit: "min", help: "Run fast on the step clock while the solvent rises." },
+  stripDryMinutes: { label: "Time for the strip to dry", unit: "min", help: "Run fast on the step clock." },
 };
 
 const UNIT_SUFFIXES: Array<[RegExp, string]> = [[/PercentTransmittance$/, "%T"], [/Ml$/, "mL"], [/Nm$/, "nm"], [/G$/, "g"], [/M$/, "M"], [/C$/, "°C"], [/Min$/, "min"], [/S$/, "s"]];

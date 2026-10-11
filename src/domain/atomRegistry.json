@@ -4298,6 +4298,44 @@
       ]
     },
     {
+      "id": "atom.observe.label-developing-chamber",
+      "family": "chromatography",
+      "documentationLabel": "Write the solvent's name on the chamber's label tape",
+      "verb": "observe",
+      "allowedInteractionTypes": [
+        "recordNotebook"
+      ],
+      "effectContract": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence"
+          }
+        ]
+      },
+      "requiredRoles": [
+        "developing-chamber"
+      ],
+      "optionalRoles": [],
+      "proceduralConstraints": [
+        "The label is written in pencil on the named chamber's tape, so each trial's chamber keeps its solvent's name; the source lists \"Tape to make labels\".",
+        "Records evidence only: the label changes no contents and authorizes no chamber operation.",
+        "Added by addition for the 3D Paper Chromatography (Pack 3 decision 12, 2026-10-10); 2D content does not use it."
+      ],
+      "evidence": "a labelled developing chamber",
+      "sourceExamples": [
+        {
+          "sourceFile": "sticky-question-paper-chromatography_2026-07-27.md",
+          "sourceTable": "phase",
+          "step": "TR-01",
+          "basis": "M"
+        }
+      ],
+      "contentExamples": []
+    },
+    {
       "id": "atom.transfer.weighed-sample-to-vessel",
       "family": "separation",
       "documentationLabel": "Transfer the pre-weighed sample portion into the working vessel",

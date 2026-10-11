@@ -9,9 +9,9 @@ import { resolveInteractionIntent, type InteractionInvalidFeedback, type Runtime
 import { fromBench, benchPositionWords, runtimeBenchPointsMm, toBench } from "../adapters/benchCoordinates";
 import { footprintOf, nearestFreeSpot, type FootprintMm } from "../adapters/footprints";
 import { readingShownFor } from "../adapters/instrumentDisplay";
-import { fillLevelMm, pourStagingScene, runtimeToScene, sceneContents, type SceneContents, type SceneDescription } from "../adapters/runtimeToScene";
+import { fillLevelMm, pourStagingScene, runtimeToScene, sceneContents, type SceneContents, type SceneDescription, type SceneStrip } from "../adapters/runtimeToScene";
 import { heldOnSeat, readingSeatZone } from "../bench/scene/setOn";
-import { benchMoveRequest, benchOpStepFor, intentTypeForInteraction, markStepFor, mergeActionInput, pipetteStepFor, resolveTrayDrop, stepClockSeconds, tongsStepFor, toolTransferFor, type ReleaseOrigin } from "../adapters/sceneToIntent";
+import { benchMoveRequest, benchOpStepFor, chromStepFor, intentTypeForInteraction, markStepFor, mergeActionInput, pipetteStepFor, resolveTrayDrop, stepClockSeconds, tongsStepFor, toolTransferFor, type ReleaseOrigin } from "../adapters/sceneToIntent";
 import { nextPlacementPoint, parkPointAfterInteraction } from "../adapters/twoDPlacement";
 import { equipment3dEntry } from "../equipment3d/readiness";
 import { stepFlow, type StepFlow, placedInstanceId } from "./stepRules";
@@ -72,6 +72,8 @@ export interface BenchOpAnimation {
   staging: SceneDescription;
   before: SceneContents;
   after: SceneContents;
+  /** A chromatography strip developing (Pack 3a): the strip as the runtime has it once the solvent has risen. */
+  strip?: SceneStrip;
   id: number;
 }
 
@@ -138,8 +140,8 @@ export interface ToolDeposit {
   scoop?: SceneContents;
   /** A target that was empty: its new contents are shown only as the scoop lands. */
   revealIn?: string;
-  /** How the tool is drawn: a spatula rolls its scoop off; a pipette dips its tip. */
-  motion?: "roll" | "dip";
+  /** How the tool is drawn: a spatula rolls its scoop off; a pipette dips its tip; a pencil draws a short line (Pack 3a). */
+  motion?: "roll" | "dip" | "draw";
   id: number;
 }
 
@@ -215,6 +217,8 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
   );
   // A step done as a bench operation: a stir, a settle, a drop test (Pack 2, decided 2026-10-05).
   const benchOp = useMemo(() => benchOpStepFor(runtime.expectedAction, flow.nodeCompleted), [flow.nodeCompleted, runtime.expectedAction]);
+  // A Paper Chromatography step: a pencil line or label, the chamber's lid, or a wait on the step clock (Pack 3a).
+  const chromStep = useMemo(() => chromStepFor(runtime.expectedAction, flow.nodeCompleted), [flow.nodeCompleted, runtime.expectedAction]);
   // A hot item moved with the crucible tongs (Pack 2, S-05).
   const tongsStep = useMemo(() => tongsStepFor(runtime.expectedAction, runtime.state.equipmentInstances, flow.nodeCompleted),
     [flow.nodeCompleted, runtime.expectedAction, runtime.state]);
@@ -332,7 +336,7 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
    * `tool` names the tool a solid transfer was made with (the spatula): the runtime records the
    * same source-to-target transfer, and the tool, not the source, is drawn tipping its scoop.
    */
-  const runIntent = useCallback((intent: RuntimeInteractionIntent, tool?: { instanceId: string; scoop?: SceneContents; motion?: "roll" | "dip" }): RuntimeState | undefined => {
+  const runIntent = useCallback((intent: RuntimeInteractionIntent, tool?: { instanceId: string; scoop?: SceneContents; motion?: "roll" | "dip" | "draw" }): RuntimeState | undefined => {
     // Every way in (the step card, a key, a click on the bench, the hand) waits for the clock and the filter.
     if (holdBackNext()) return undefined;
     const merged = mergeActionInput(intent, flow.inputResolution, runtime.expectedAction);
@@ -428,6 +432,25 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
             staging: pourStagingScene(before, next, definition, { sourceId, targetId: vesselId }),
             before: contentsIn(before, vesselId), after: contentsIn(next, vesselId), id: pourSeq.current });
         }
+      }
+    } else if (!failed && chromStepFor(result.action, false)) {
+      // A Paper Chromatography step (Pack 3a): the pencil drawn along the line where it was set down, or a wait on the
+      // step clock, the bench drawn as it was until the time is up and the solvent climbing the strip as it develops.
+      const step = chromStepFor(result.action, false)!;
+      pourSeq.current += 1;
+      const pencil = step.toolDefinitionId
+        ? next.equipmentInstances.find((i) => i.definitionId === step.toolDefinitionId && i.location === "workbench") : undefined;
+      if (pencil) setToolDeposit({ toolId: pencil.id, motion: "draw", id: pourSeq.current });
+      if (step.minutes !== undefined) {
+        const label = step.operation === "develop" ? "Developing" : "Drying";
+        const clock = { id: pourSeq.current, operation: step.operation, label, minutes: step.minutes, seconds: stepClockSeconds(step.minutes),
+          startedAt: performance.now() };
+        startClock(clock);
+        const strip = step.operation === "develop"
+          ? runtimeToScene(next, definition).bench.find((item) => item.instanceId === step.targetInstanceId)?.strip : undefined;
+        setBenchOpRun({ operation: step.operation, vesselId: step.targetInstanceId, minutes: clock.minutes, clockSeconds: clock.seconds,
+          startedAt: clock.startedAt, label, staging: runtimeToScene(before, definition), before: contentsIn(before, step.targetInstanceId),
+          after: contentsIn(next, step.targetInstanceId), ...(strip ? { strip } : {}), id: pourSeq.current });
       }
     } else if (!failed && result.action.verb === "dissolve" && result.action.parameters.mixOperation === "swirl") {
       // A swirl (decided 2026-10-04): the vessel is drawn swirling with its contents as they were, then as the runtime has them.
@@ -614,6 +637,7 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     markStep,
     benchOp,
     benchOpRun,
+    chromStep,
     tongsStep,
     /** Ends bench operation `id`'s animation; a later one that has already replaced it is left running. */
     finishBenchOp: (id: number) => setBenchOpRun((current) => (current?.id === id ? undefined : current)),

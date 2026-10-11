@@ -452,3 +452,69 @@ export const tongsStepFor = (action: ActionDefinition | undefined, instances: re
 
 /** How long the fast step clock takes to show `minutes` (decision 9: minutes run in a few seconds). */
 export const stepClockSeconds = (minutes: number): number => Math.min(8, Math.max(3, minutes * 1.5));
+
+/**
+ * A Paper Chromatography step at the bench (Pack 3a, decided 2026-10-10; no new bench operation): a pencil line or
+ * the label (the pencil carried to the strip or the chamber's tape, or the step card), the chamber's lid lowered or
+ * lifted (a click on the chamber), or a wait on the fast step clock (a spot or the strip drying, the solvent rising).
+ * Each is the runtime's own chromatography or chamber operation, or its develop step.
+ */
+export type ChromOperation = "markBaseline" | "markSolventFront" | "labelChamber" | "drySpot" | "dryDevelopedPaper" | "develop"
+  | "closeChamber" | "openChamber";
+
+export interface ChromStep {
+  operation: ChromOperation;
+  /** The step card's button. */
+  control: string;
+  /** What it is done to: the strip, or the chamber for the label and the lid. */
+  targetInstanceId: string;
+  /** The tool it is drawn or written with: the pencil. */
+  toolDefinitionId?: string;
+  /** The minutes the step states, run on the step clock. */
+  minutes?: number;
+  /** The chamber the strip develops in. */
+  chamberInstanceId?: string;
+}
+
+const CHROM_CONTROLS: Record<ChromOperation, string> = {
+  markBaseline: "Draw the line",
+  markSolventFront: "Mark the front",
+  labelChamber: "Write the label",
+  drySpot: "Let it dry",
+  dryDevelopedPaper: "Let it dry",
+  develop: "Leave it to develop",
+  closeChamber: "Lower it in",
+  openChamber: "Lift the lid",
+};
+
+export const chromStepFor = (action: ActionDefinition | undefined, nodeCompleted: boolean): ChromStep | undefined => {
+  if (!action || nodeCompleted) return undefined;
+  const parameters = action.parameters;
+  const text = (key: string) => (typeof parameters[key] === "string" && parameters[key] ? parameters[key] as string : undefined);
+  const minutesOf = (key: string) => {
+    const value = Number(parameters[key]);
+    return parameters[key] !== undefined && Number.isFinite(value) && value > 0 ? value : undefined;
+  };
+  const chromatography = text("chromatographyOperation");
+  const chamber = text("chamberOperation");
+  const operation: ChromOperation | undefined =
+    chromatography && ["markBaseline", "markSolventFront", "drySpot", "dryDevelopedPaper"].includes(chromatography) ? chromatography as ChromOperation
+      : chamber === "closeChamber" || chamber === "openChamber" ? chamber
+        : action.verb === "developChromatogram" ? "develop"
+          : text("tapeLabel") && text("targetInstanceId") ? "labelChamber" : undefined;
+  if (!operation) return undefined;
+  const onChamber = operation === "labelChamber" || operation === "closeChamber" || operation === "openChamber";
+  const targetInstanceId = onChamber ? text("targetInstanceId") : text("sourceInstanceId");
+  if (!targetInstanceId) return undefined;
+  const minutes = operation === "develop" ? minutesOf("developMinutes")
+    : operation === "drySpot" || operation === "dryDevelopedPaper" ? minutesOf("dryMinutes") : undefined;
+  const tool = text("markingToolDefinitionId");
+  return {
+    operation,
+    control: CHROM_CONTROLS[operation],
+    targetInstanceId,
+    ...(tool ? { toolDefinitionId: tool } : {}),
+    ...(minutes !== undefined ? { minutes } : {}),
+    ...(operation === "develop" && text("targetInstanceId") ? { chamberInstanceId: text("targetInstanceId") } : {}),
+  };
+};

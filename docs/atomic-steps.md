@@ -29,7 +29,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 
 ## Atoms
 
-244 atoms across 15 families.
+245 atoms across 15 families.
 
 | Atom | Family | Verb | Interactions | Required roles |
 |---|---|---|---|---|
@@ -108,6 +108,7 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 | `atom.place.remove-developed-strip` | chromatography | `place` | `dragToZone` | `stationary-phase` |
 | `atom.place.measuring-ruler` | chromatography | `place` | `dragToZone` | `distance-measuring-instrument` |
 | `atom.transfer.route-solvent-waste` | chromatography | `transfer` | `pourInto` | `developing-chamber`, `waste-receiver` |
+| `atom.observe.label-developing-chamber` | chromatography | `observe` | `recordNotebook` | `developing-chamber` |
 | `atom.transfer.weighed-sample-to-vessel` | separation | `transfer` | `pourInto` | `weighed-sample-source`, `receiving-vessel` |
 | `atom.transfer.residual-solid-completion` | separation | `transfer` | `pourInto` | `weighed-sample-source`, `receiving-vessel` |
 | `atom.transfer.charge-extraction-funnel` | separation | `transfer` | `pourInto` | `extraction-phase-source`, `extraction-funnel` |
@@ -751,6 +752,22 @@ A compound basis such as `M/F` or `R/C` is recorded verbatim and never simplifie
 - Content examples:
   - `technique:paper-chromatography` action `dispose-water-solvent`
   - `technique:paper-chromatography` action `dispose-propanol-solvent`
+
+#### `atom.observe.label-developing-chamber`
+
+**Write the solvent's name on the chamber's label tape**
+
+- Verb: `observe`
+- Allowed interaction types: `recordNotebook`
+- Required roles: `developing-chamber`
+- Optional roles: none
+- Evidence: a labelled developing chamber
+- Procedural constraints:
+  - The label is written in pencil on the named chamber's tape, so each trial's chamber keeps its solvent's name; the source lists "Tape to make labels".
+  - Records evidence only: the label changes no contents and authorizes no chamber operation.
+  - Added by addition for the 3D Paper Chromatography (Pack 3 decision 12, 2026-10-10); 2D content does not use it.
+- Source examples:
+  - `sticky-question-paper-chromatography_2026-07-27.md` phase step `TR-01` (M)
 
 #### `atom.observe.mark-chromatography-baseline`
 

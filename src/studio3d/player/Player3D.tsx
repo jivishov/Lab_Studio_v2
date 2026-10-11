@@ -350,6 +350,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
       const seconds = run.clockSeconds !== undefined
         ? Math.max(0.1, run.clockSeconds - (performance.now() - (run.startedAt ?? performance.now())) / 1000) : 3;
       if (run.operation === "stir") await engine.animateStir(run.vesselId, seconds);
+      // The solvent climbs the strip and carries the dyes up with it (Pack 3a).
+      else if (run.operation === "develop" && run.strip) await engine.animateStripDevelop(run.vesselId, run.strip, seconds);
       else if (run.operation === "settle-precipitate" || run.operation === "dry-in-oven" || run.operation === "cool-on-pad"
         || run.operation === "heat-crucible") {
         await engine.animateContentsChange(run.vesselId, { before: run.before, after: run.after }, seconds);
@@ -713,6 +715,16 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   const isBurnerTarget = (id: string): boolean => Boolean(burnerOperation) && !benchBusy
     && (id === burnerOperation!.deviceInstanceId || (burnerOperation!.operation === "heat-crucible" && id === burnerOperation!.vesselInstanceId));
   const isLidTarget = (id: string): boolean => player.benchOp?.operation === "set-crucible-lid" && id === player.benchOp.vesselInstanceId;
+  // The developing chamber (Pack 3a): a click on it, or on the strip hung in it, lowers the strip in and seats the lid,
+  // lifts the lid with the strip, or leaves it closed to develop, as the step says.
+  const chrom = player.chromStep;
+  const chamberStepId = chrom && !benchBusy ? (chrom.operation === "closeChamber" || chrom.operation === "openChamber" ? chrom.targetInstanceId
+    : chrom.operation === "develop" ? chrom.chamberInstanceId : undefined) : undefined;
+  const isChamberTarget = (id: string): boolean => {
+    if (!chamberStepId) return false;
+    const item = scene.bench.find((i) => i.instanceId === id);
+    return id === chamberStepId || (item?.placement.kind === "seated" && item.placement.parentInstanceId === chamberStepId);
+  };
   // Folding the filter paper (Pack 2): a click on it once it is on the bench, Enter on it, or the step card's Fold.
   const foldPaperId = player.benchOp?.operation === "fold-filter-paper" ? player.benchOp.toolInstanceId : undefined;
   const isFoldTarget = (id: string): boolean => Boolean(foldPaperId) && id === foldPaperId
@@ -883,7 +895,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
         // door step it works the door, as a click does (and is refused while a drying stage's time runs).
         if (selected && refuseEarlyOpen(selected)) e.preventDefault();
         else if (selected && (isInvertTarget(selected) || isSwirlTarget(selected) || isStirTarget(selected) || isFoldTarget(selected)
-          || isOvenTarget(selected) || isBurnerTarget(selected) || isLidTarget(selected))) { player.recordEvidence(); e.preventDefault(); }
+          || isOvenTarget(selected) || isBurnerTarget(selected) || isLidTarget(selected) || isChamberTarget(selected))) { player.recordEvidence(); e.preventDefault(); }
         else if (selected && scene.bench.some((item) => item.instanceId === selected)) { startMove(selected); e.preventDefault(); }
       } else if (e.key === "e" || e.key === "E") { if (selected) examine(selected); }
       else if (e.key === "s" || e.key === "S") { if (selected) player.setSelectedSource(selected); }
@@ -970,7 +982,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     // At an inversion step, a tap on the stoppered vessel (or its stopper) inverts it once; at a swirl
     // step, a tap on the flask swirls it.
     if (refuseEarlyOpen(id)) return true;
-    if (isInvertTarget(id) || isSwirlTarget(id) || isStirTarget(id) || isFoldTarget(id) || isOvenTarget(id) || isBurnerTarget(id) || isLidTarget(id)) {
+    if (isInvertTarget(id) || isSwirlTarget(id) || isStirTarget(id) || isFoldTarget(id) || isOvenTarget(id) || isBurnerTarget(id) || isLidTarget(id)
+      || isChamberTarget(id)) {
       player.recordEvidence();
       return true;
     }
@@ -1056,6 +1069,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     : carry.carrying ? "Release to set down. Esc cancels."
     : player.stepClock ? `${player.stepClock.label}: the clock runs the ${player.stepClock.minutes} minutes fast. The next step waits for it.`
     : tool && flow.canConfirm ? "Pick up the spatula, press it into the source and drag down to scoop, then click the target; or use Source, Target and Confirm. Right-drag to look around."
+    : pipette?.toolDefinitionId === "capillary-spotter" && flow.canConfirm ? "Pick up the capillary, then press over the dye or the strip's baseline, drag down and let go; or use Source, Target and Confirm. Right-drag to look around."
     : pipette && flow.canConfirm ? "Pick up the pipette, then press over the liquid or the cuvette, drag down and let go; or use Source, Target and Confirm. Right-drag to look around."
     : markStep ? `Pick up the pipette and click the ${markVesselLabel} to hold it there, or use the step card. Right-drag to look around.`
     : invertVesselId ? `Click the stoppered ${invertVesselNoun} to invert it, or use Invert in the step card. Right-drag to look around.`
@@ -1077,6 +1091,13 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     : player.benchOp?.operation === "heat-crucible" ? "Click the burner to heat for the set time, or use Heat. Right-drag to look around."
     : player.benchOp?.operation === "turn-off-burner" ? "Click the burner to turn the gas off, or use Turn off. Right-drag to look around."
     : player.tongsStep ? "Pick up the crucible tongs, click the watch glass to grip it, then click where it goes. Right-drag to look around."
+    : chrom?.toolDefinitionId ? `Pick up the pencil and click the ${chrom.operation === "labelChamber" ? "chamber's tape" : "strip"} to ${
+      chrom.operation === "markBaseline" ? "draw the baseline" : chrom.operation === "markSolventFront" ? "mark the front" : "write the label"
+    }, or use ${chrom.control}. Right-drag to look around.`
+    : chrom?.operation === "closeChamber" ? "Click the chamber to lower the strip in and seat the lid, or use Lower it in. Right-drag to look around."
+    : chrom?.operation === "openChamber" ? "Click the chamber to lift the lid with the strip, or use Lift the lid. Right-drag to look around."
+    : chrom?.operation === "develop" ? "Leave the chamber closed: click it or use Leave it to develop, and the clock runs. Right-drag to look around."
+    : chrom ? "Leave the strip flat: use Let it dry, and the clock runs. Right-drag to look around."
     : player.benchOp?.operation === "precipitation-drop-test" ? "Pick up the dropping pipette and click the beaker to add one drop, or use Add a drop in the step card. Right-drag to look around."
     : flow.canConfirm ? "Click an item to pick it up, then click where it goes; or use Source, Target and Confirm. Right-drag to look around."
       : player.runtime.expectedAction?.parameters.balanceOperation === "zero" ? "Press TARE on the balance, or Tare in the step card. Right-drag to look around."

@@ -55,6 +55,23 @@ export type SceneContents =
   | { kind: "solid"; massG?: number; restMm?: number[]; radiusMm?: number; style: SolidRenderStyle }
   | { kind: "wet" };
 
+/**
+ * What is drawn on a chromatography strip's face (`stripFace`, Pack 3a), from the runtime's chromatogram:
+ * the pencil baseline, the spot (larger with each touch), and once developed the bands and the solvent
+ * front, a pencil line once it is marked. Distances are from the strip's lower edge (origin) or the baseline.
+ */
+export interface SceneStrip {
+  /** The baseline's height above the lower edge, in mm, once drawn. */
+  baselineMm?: number;
+  /** Touches of the capillary on the baseline (the spot grows with each). */
+  spots: number;
+  /** The front's distance from the baseline once developed, in mm. */
+  frontMm?: number;
+  frontMarked: boolean;
+  /** Band centres from the baseline, in mm, once developed. */
+  bands: Array<{ color: string; distanceMm: number }>;
+}
+
 export interface SceneItem {
   instanceId: string;
   definitionId: string;
@@ -66,6 +83,10 @@ export interface SceneItem {
   wet?: boolean;
   /** Apparatus state the runtime records for it (an oven's door, a burner's flame), for drawing. */
   apparatus?: Record<string, string | number | boolean>;
+  /** A chromatography strip's marks (Pack 3a). */
+  strip?: SceneStrip;
+  /** What is written on the item's label tape (a developing chamber's solvent, Pack 3a). */
+  tapeLabel?: string;
   contents: SceneContents;
   /** The same contents text the 2D player shows (contentDisplay), for hover labels. */
   contentsText: string;
@@ -168,6 +189,79 @@ export const sceneContents = (instance: EquipmentInstance, model?: Equipment3DEn
   return { kind: "none" };
 };
 
+/** The strip's marks from its chromatogram and the spotting touches the runtime accepted (Pack 3a). */
+const sceneStrip = (instance: EquipmentInstance, state: RuntimeState, definition: SceneDefinition): SceneStrip | undefined => {
+  const chromatogram = instance.contents.chromatogram;
+  if (!chromatogram) return undefined;
+  const spots = state.attemptHistory.filter((attempt) => attempt.success && attempt.verb === "spotSample"
+    && definition.actions.find((action) => action.id === attempt.actionId)?.parameters.targetInstanceId === instance.id).length;
+  const developed = chromatogram.solventFrontMm !== undefined;
+  return {
+    ...(chromatogram.baselineMarked && chromatogram.originDistanceMm !== undefined ? { baselineMm: chromatogram.originDistanceMm } : {}),
+    spots: chromatogram.spotted ? Math.max(1, spots) : 0,
+    ...(developed ? { frontMm: chromatogram.solventFrontMm } : {}),
+    frontMarked: Boolean(chromatogram.solventFrontMarked),
+    bands: developed ? chromatogram.bands.map((band) => ({ color: band.color, distanceMm: band.distanceMm })) : [],
+  };
+};
+
+/** The last label the runtime accepted for the item's tape (a step naming `tapeLabel`, Pack 3a). */
+const tapeLabelFor = (instance: EquipmentInstance, state: RuntimeState, definition: SceneDefinition): string | undefined => {
+  for (const attempt of [...state.attemptHistory].reverse()) {
+    if (!attempt.success) continue;
+    const parameters = definition.actions.find((action) => action.id === attempt.actionId)?.parameters;
+    if (parameters?.targetInstanceId === instance.id && typeof parameters.tapeLabel === "string") return parameters.tapeLabel;
+  }
+  return undefined;
+};
+
+/**
+ * A developing chamber's lid and strip (Pack 3a): the lid from the runtime's closure, the strip hung while one is
+ * seated in the chamber's paper slot. With no lid modelled (`developingChamberClosed` absent), nothing.
+ */
+const chamberApparatus = (instance: EquipmentInstance, state: RuntimeState): Record<string, string> | undefined => {
+  const closed = instance.contents.developingChamberClosed;
+  if (closed === undefined) return undefined;
+  const hung = state.attachments.some((relation) => relation.parentInstanceId === instance.id && relation.zoneId === "chromatography-chamber-paper-slot");
+  return { lid: closed ? "closed" : "open", strip: hung ? "hung" : "" };
+};
+
+/**
+ * A ruler laid along a strip (a place step naming `alignWithInstanceId`, Pack 3a): beside the flat strip's right
+ * edge, its scale edge against the paper and its zero level with the pencil baseline, as a student lays it to read
+ * distances from the baseline. Only while that step is the ruler's last move and the strip lies flat on the bench;
+ * where the runtime put it otherwise. Presentation only: the reading is the student's (G-3).
+ */
+const alignedPoint = (
+  instance: EquipmentInstance, state: RuntimeState, definition: SceneDefinition, points: Map<string, BenchPointMm>,
+): BenchPointMm | undefined => {
+  const scale = equipment3dEntry(instance.definitionId)?.scaleMm;
+  if (!scale) return undefined;
+  let alignWith: unknown;
+  for (const attempt of [...state.attemptHistory].reverse()) {
+    if (!attempt.success) continue;
+    const parameters = definition.actions.find((action) => action.id === attempt.actionId)?.parameters;
+    if (parameters?.equipmentInstanceId !== instance.id) continue;
+    alignWith = parameters.alignWithInstanceId;
+    break;
+  }
+  const strip = typeof alignWith === "string" ? state.equipmentInstances.find((candidate) => candidate.id === alignWith) : undefined;
+  const stripModel = strip ? equipment3dEntry(strip.definitionId) : undefined;
+  const at = strip ? points.get(strip.id) : undefined;
+  if (!strip || strip.location !== "workbench" || !stripModel?.stripFace || !stripModel.benchRest || !at) return undefined;
+  // The flat strip's lower edge lies `shiftMm` from its point, its length running bench +y (benchRest -90 deg roll).
+  const baselineMm = strip.contents.chromatogram?.originDistanceMm ?? 0;
+  const halfWidth = stripModel.stripFace.widthMm / 2;
+  const dx = halfWidth + 0.6 - scale.zeroMm[0];
+  const dy = stripModel.benchRest.shiftMm[1] + baselineMm - scale.zeroMm[1];
+  const yaw = at.yawDeg * (Math.PI / 180);
+  return {
+    xMm: at.xMm + dx * Math.cos(yaw) - dy * Math.sin(yaw),
+    yMm: at.yMm + dx * Math.sin(yaw) + dy * Math.cos(yaw),
+    yawDeg: at.yawDeg,
+  };
+};
+
 const sceneryEntry = (id: string): Equipment3DEntry | undefined =>
   equipment3dRegistry.entries.find((entry) => entry.scenery && entry.definitionId === id);
 
@@ -202,20 +296,26 @@ export const runtimeToScene = (state: RuntimeState, definition: SceneDefinition)
       : relationByChild.get(instance.id);
     const parent = relation ? byId.get(relation.parentInstanceId) : undefined;
     const anchor = relation && parent ? equipment3dEntry(parent.definitionId)?.anchors[relation.zoneId] : undefined;
+    // A strip on the hook of a lid held up (`liftedWithLidMm`): raised with the lid, its edge out of the solvent.
+    const parentModel = parent ? equipment3dEntry(parent.definitionId) : undefined;
+    const lifted = parent && parentModel?.liftedWithLidMm && parent.contents.developingChamberClosed === false ? parentModel.liftedWithLidMm : 0;
     const placement: ScenePlacement = relation && anchor
       ? {
           kind: "seated",
           parentInstanceId: relation.parentInstanceId,
           zoneId: relation.zoneId,
-          anchorMm: anchor.positionMm,
+          anchorMm: lifted ? [anchor.positionMm[0], anchor.positionMm[1], anchor.positionMm[2] + lifted] : anchor.positionMm,
           yawDeg: anchor.yawDeg ?? 0,
           ...(anchor.leanDeg ? { leanDeg: anchor.leanDeg } : {}),
           relation: relation.relationType,
           renderMode: relation.renderMode,
           locked: Boolean(relation.locked),
         }
-      : { kind: "bench", point: benchPoints.get(instance.id) ?? toBench(instance.definitionId, instance) };
-    const apparatus = state.apparatusStates?.[instance.id];
+      : { kind: "bench", point: alignedPoint(instance, state, definition, benchPoints) ?? benchPoints.get(instance.id) ?? toBench(instance.definitionId, instance) };
+    const chamber = chamberApparatus(instance, state);
+    const apparatus = chamber ? { ...state.apparatusStates?.[instance.id], ...chamber } : state.apparatusStates?.[instance.id];
+    const strip = model?.stripFace ? sceneStrip(instance, state, definition) : undefined;
+    const tapeLabel = chamber ? tapeLabelFor(instance, state, definition) : undefined;
     const form = sceneForm(model, placement.kind === "seated" ? placement.zoneId : undefined, apparatus?.form);
     const item: SceneItem = {
       instanceId: instance.id,
@@ -225,6 +325,8 @@ export const runtimeToScene = (state: RuntimeState, definition: SceneDefinition)
       ...(form ? { form } : {}),
       ...(model?.wetLook && instance.contents.wetState !== "dry" ? { wet: true } : {}),
       ...(apparatus ? { apparatus } : {}),
+      ...(strip ? { strip } : {}),
+      ...(tapeLabel ? { tapeLabel } : {}),
       contents: sceneContents(instance, model, form),
       contentsText: formatContentLabel(instance.contents),
       ...(model ? { model } : {}),

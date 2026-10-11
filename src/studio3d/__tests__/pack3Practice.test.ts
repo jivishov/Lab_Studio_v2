@@ -9,7 +9,9 @@ import { validateTechniqueDefinition } from "../../domain/validation";
 import { createRuntimeState, performRuntimeAction } from "../../runtime";
 import { resolveActionInput } from "../../runtime/actionInputs";
 import { resolveInteractionIntent, type RuntimeInteractionIntent } from "../../runtime/interactionIntents";
+import { runtimeToScene } from "../adapters/runtimeToScene";
 import { benchMoveRequest, intentTypeForInteraction, mergeActionInput } from "../adapters/sceneToIntent";
+import { stepFlow } from "../player/stepRules";
 
 /**
  * Pack 3's 3D practice versions (decided 2026-10-10, PACK3_ATOMIZATION.md), on `pack2Practice.test.ts`'s pattern: each
@@ -23,7 +25,11 @@ const catalogue = read("public/techniques/index.json") as Array<{ id: string }>;
 
 /** Each practice version's setup, the student's entries, and the items moved to the bench before a step. */
 const PLAYS: Record<string, { config: Record<string, string>; inputs?: Record<string, string>; moves?: Record<string, string> }> = {
-  "paper-chromatography-practice": { config: {} },
+  "paper-chromatography-practice": {
+    config: {},
+    inputs: { "identify-bands": "Purple overlap, then yellow", "read-front": "80", "read-purple-overlap": "59", "read-yellow": "66",
+      "record-quality": "Overlapping" },
+  },
   "hard-water-calculation-practice": {
     config: { sampleVolumeMl: "20", watchGlassMassG: "30", paperMassG: "0.553", combinedMassG: "30.5605", calculationTolerance: "0.5" },
     inputs: { "calculate-hardness": "375" },
@@ -32,8 +38,10 @@ const PLAYS: Record<string, { config: Record<string, string>; inputs?: Record<st
 
 type Play = (typeof PLAYS)[string];
 
+/** A practice version, or a twin by its id (Paper Chromatography's 2-propanol trial has no practice version). */
 const load = (id: string, play: Play = PLAYS[id]): TechniqueDefinition =>
-  applyTechniqueConfiguration(read(`public/techniques-3d/${practiceIndex.find((entry) => entry.id === id)!.file}`) as TechniqueDefinition, play.config);
+  applyTechniqueConfiguration(read(`public/techniques-3d/${practiceIndex.find((entry) => entry.id === id)?.file ?? `${id}.json`}`) as TechniqueDefinition,
+    play.config);
 
 const errorAdded = (before: RuntimeState, after: RuntimeState) =>
   after.feedbackQueue.slice(before.feedbackQueue.length).find((entry) => entry.severity === "error");
@@ -130,5 +138,90 @@ describe("Calculate Hardness", () => {
     const play = { config: { ...PLAYS[id].config, sampleVolumeMl: "25", combinedMassG: "30.5680" }, inputs: { "calculate-hardness": "600" } };
     const { state } = playTo(id, undefined, play);
     expect(state.calculations.find((entry) => entry.id === "hardness-mg-l")?.expected).toBeCloseTo(600, 6);
+  });
+});
+
+describe("Paper Chromatography", () => {
+  const id = "paper-chromatography-practice";
+  const propanol: Play = {
+    config: {},
+    inputs: { "identify-bands": "Blue, red, yellow", "read-front": "80", "read-blue": "28", "read-red": "49", "read-yellow": "68",
+      "record-quality": "Resolved" },
+  };
+  const steps = (technique: TechniqueDefinition) => technique.process.nodes.map((node) => node.actionId);
+  const shared = ["place-chamber", "label-chamber", "measure-solvent", "charge-chamber", "place-paper", "draw-baseline", "load-capillary",
+    "spot-1", "dry-spot-1", "spot-2", "dry-spot-2", "spot-3", "dry-spot-3", "hang-strip", "close-chamber", "develop", "open-chamber",
+    "remove-strip", "mark-front", "dry-strip", "identify-bands", "place-ruler", "read-front", "record-front"];
+
+  it("is 31 steps for water and 33 for 2-propanol: place then label, spotting as six, the lid and the hook as two", () => {
+    expect(steps(load(id))).toEqual([...shared, "read-purple-overlap", "record-purple-overlap", "read-yellow", "record-yellow",
+      "calculate-rf", "record-quality", "dispose-solvent"]);
+    expect(steps(load("paper-chromatography-propanol-3d", propanol))).toEqual([...shared, "read-blue", "record-blue", "read-red", "record-red",
+      "read-yellow", "record-yellow", "calculate-rf", "record-quality", "dispose-solvent"]);
+    expect(steps(load("paper-chromatography-water-3d", PLAYS[id]))).toEqual(steps(load(id)));
+  });
+
+  it("adds no bench operation, and the new tape-label atom is used by no 2D technique", () => {
+    for (const technique of [load(id), load("paper-chromatography-propanol-3d", propanol)]) {
+      expect(technique.actions.filter((action) => action.parameters.benchOperation !== undefined)).toEqual([]);
+      expect(technique.actions.find((action) => action.id === "label-chamber")!.atomId).toBe("atom.observe.label-developing-chamber");
+    }
+    for (const entry of catalogue) {
+      expect(JSON.stringify(read(`public/techniques/${entry.id}.json`))).not.toContain("atom.observe.label-developing-chamber");
+    }
+  });
+
+  it("works each Rf from the student's recorded readings", () => {
+    const { state } = playTo(id);
+    expect(state.calculations.find((entry) => entry.id === "water-rf-purple-overlap")).toMatchObject({ passed: true });
+    expect(state.calculations.find((entry) => entry.id === "water-rf-purple-overlap")?.value).toBeCloseTo(0.7375, 4);
+    expect(state.calculations.find((entry) => entry.id === "water-rf-yellow")?.value).toBeCloseTo(0.825, 4);
+  });
+
+  it("plays the 2-propanol trial to completion, three bands into the organic waste", () => {
+    const { technique, state } = playTo("paper-chromatography-propanol-3d", undefined, propanol);
+    expect(state.completedNodes).toHaveLength(33);
+    expect(state.calculations.find((entry) => entry.id === "propanol-rf-blue")?.value).toBeCloseTo(0.35, 4);
+    expect(technique.actions.find((action) => action.id === "dispose-solvent")!.parameters).toMatchObject({ targetInstanceId: "organic-waste-1",
+      wasteStream: "organic" });
+  });
+
+  it("asks for the student's reading and does not pass one more than half a millimetre off", () => {
+    const played = playTo(id, "read-front");
+    expect(attempt(played.technique, played.state, id, { ...PLAYS[id], inputs: {} }).refusal).toBeDefined();
+    const off = attempt(played.technique, played.state, id, { ...PLAYS[id], inputs: { "read-front": "82" } }).state;
+    expect(off.completedNodes).not.toContain("read-front-node");
+    const right = attempt(played.technique, played.state, id, { ...PLAYS[id], inputs: { "read-front": "80" } }).state;
+    expect(right.completedNodes).toContain("read-front-node");
+  });
+
+  it("lets the step card perform each pencil, drying, lid and development step", () => {
+    const technique = load(id);
+    let state = createRuntimeState(technique);
+    for (const node of technique.process.nodes) {
+      const action = technique.actions.find((candidate) => candidate.id === node.actionId)!;
+      const typed = action.parameters.chromatographyOperation ?? action.parameters.chamberOperation ?? (action.verb === "developChromatogram" ? "develop" : undefined);
+      if (typed) {
+        const flow = stepFlow({ state, node, action, interaction: resolveActionInteraction(action), inputValue: "", showGuidance: false });
+        expect(flow.canRecordObservation || flow.canRecord, node.id).toBe(true);
+      }
+      for (let i = 0; i < 40 && !state.completedNodes.includes(node.id); i += 1) state = attempt(technique, state, id).state;
+    }
+    expect(state.completedNodes).toHaveLength(31);
+  });
+
+  it("lays the ruler beside the flat strip, its zero level with the baseline", () => {
+    const { technique, state } = playTo(id, "read-front");
+    const bench = runtimeToScene(state, technique).bench;
+    const point = (instanceId: string) => {
+      const placement = bench.find((item) => item.instanceId === instanceId)!.placement;
+      if (placement.kind !== "bench") throw new Error(`${instanceId} is not on the bench`);
+      return placement.point;
+    };
+    const paper = point("paper-1");
+    const ruler = point("ruler-1");
+    // The strip's lower edge is 55 mm before its centre; the ruler's zero is 76 mm before, and 14 mm left of, its own.
+    expect(ruler.yMm - 76).toBeCloseTo(paper.yMm - 55 + 15, 6);
+    expect(ruler.xMm - 14).toBeCloseTo(paper.xMm + 7.5 + 0.6, 6);
   });
 });

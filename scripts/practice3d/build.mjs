@@ -60,10 +60,11 @@ for (const entry of PRACTICE) {
   files.set(`techniques-3d/${definition.id}.json`, json(definition));
   index.push({ id: definition.id, title: definition.title, description: entry.description, file: `${definition.id}.json`,
     pack: entry.pack, basedOn: entry.basedOn, tags: definition.metadata.tags });
-  if (module.twin) {
-    files.set(`techniques-3d/${module.twin.id}.json`, json(module.twin));
-    twins.push({ id: module.twin.id, file: `${module.twin.id}.json`, practiceId: definition.id, basedOn: entry.basedOn });
-    twinsById.set(module.twin.id, module.twin);
+  // A module writes one twin (`twin`) or several (`twins`): Paper Chromatography's water and 2-propanol trials.
+  for (const twin of module.twins ?? (module.twin ? [module.twin] : [])) {
+    files.set(`techniques-3d/${twin.id}.json`, json(twin));
+    twins.push({ id: twin.id, file: `${twin.id}.json`, practiceId: definition.id, basedOn: entry.basedOn });
+    twinsById.set(twin.id, twin);
   }
 }
 for (const entry of TWINS) {

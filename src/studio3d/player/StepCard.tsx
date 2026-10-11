@@ -147,6 +147,7 @@ export const StepCard = ({ player, controls, onShowMe, onHoldOver, holdOverReady
               disabled={!(flow.canRecord || flow.canRecordObservation) || waiting || Boolean(player.benchOpRun)} onClick={player.recordEvidence}>
               {runtime.expectedAction?.parameters.balanceOperation === "zero" ? "Tare"
                 : player.benchOp ? player.benchOp.control
+                : player.chromStep ? player.chromStep.control
                 : runtime.expectedAction?.parameters.mixOperation === "swirl" ? "Swirl"
                 : runtime.expectedAction?.parameters.mixOperation === "invert"
                   ? `Invert (${runtime.state.mixInversions?.[runtime.expectedAction.id] ?? 0} of ${Number(runtime.expectedAction.parameters.inversions ?? 10)})`
