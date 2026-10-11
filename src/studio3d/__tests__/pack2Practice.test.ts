@@ -19,7 +19,9 @@ import { stepFlow } from "../player/stepRules";
  * refuses. Written; run with the suite.
  */
 const read = (path: string) => JSON.parse(readFileSync(join(process.cwd(), ...path.split("/")), "utf8"));
-const practiceIndex = read("public/techniques-3d/index.json") as Array<{ id: string; file: string; basedOn: string; pack: number }>;
+const listed = read("public/techniques-3d/index.json") as Array<{ id: string; file: string; basedOn: string; pack: number }>;
+/** Pack 2's entries; Pack 3's practice versions are tested in `pack3Practice.test.ts`. */
+const practiceIndex = listed.filter((entry) => entry.pack === 2);
 const catalogue = read("public/techniques/index.json") as Array<{ id: string }>;
 
 /** Each practice version's setup, the student's entries, and the items moved to the bench before a step. */
@@ -30,12 +32,12 @@ const PLAYS: Record<string, { config: Record<string, string>; inputs?: Record<st
   },
   "filtration-practice": {
     config: { precipitateMassG: "0.15", paperMassG: "0.552" },
-    inputs: { "weigh-paper": "0.552" },
+    inputs: { "weigh-paper": "0.5520" },
     moves: { "fold-paper": "filter-paper-1" },
   },
   "drying-practice": {
     config: { precipitateMassG: "0.15", paperMassG: "0.552", watchGlassMassG: "30", firstDryingMinutes: "12" },
-    inputs: { "weigh-glass": "30.000", "set-oven": "115", "weigh-combined": "30.702" },
+    inputs: { "weigh-glass": "30.0000", "set-oven": "115", "weigh-combined": "30.7020" },
     moves: { "paper-onto-glass": "watch-glass-1", "first-to-pad": "crucible-tongs-1", "break-up": "scoopula-1" },
   },
   "thermal-decomposition-mass-loss-practice": {
@@ -87,6 +89,8 @@ const playTo = (id: string, stopBefore?: string, play: Play = PLAYS[id]): { tech
 describe("Pack 2 3D practice versions", () => {
   it("lists five practice versions, none of them in the 2D catalogue", () => {
     expect(practiceIndex.map((entry) => entry.id)).toEqual(Object.keys(PLAYS));
+    // Pack 2's come first in the list, ahead of Pack 3's.
+    expect(listed.slice(0, 5).map((entry) => entry.id)).toEqual(Object.keys(PLAYS));
     for (const entry of practiceIndex) {
       expect(entry.pack).toBe(2);
       expect(catalogue.some((technique) => technique.id === entry.id)).toBe(false);
@@ -140,7 +144,7 @@ describe("Pack 2 3D practice versions", () => {
   it("Filter a Precipitate pours the last portion exactly, at a mixture volume that leaves float noise (54.05 mL)", () => {
     // The decanted portions leave 6.049999999999997 mL; the last portion used to round to 6.05 mL and throw.
     const play = { ...PLAYS["filtration-practice"], config: { mixtureVolumeMl: "54.05", precipitateMassG: "0.0075", paperMassG: "0.912" },
-      inputs: { "weigh-paper": "0.912" } };
+      inputs: { "weigh-paper": "0.9120" } };
     const { technique, state } = playTo("filtration-practice", undefined, play);
     expect(state.completedNodes).toHaveLength(technique.process.nodes.length);
     const byId = (id: string) => state.equipmentInstances.find((instance) => instance.id === id)!;
@@ -165,6 +169,16 @@ describe("Pack 2 3D practice versions", () => {
       expect(zero, id).toBeLessThan(firstWeighing);
       expect(order[zero].parameters.sourceInstanceId, id).toBeUndefined();
     }
+  });
+
+  it("reads Pack 2's analytical-balance weighings to 0.0001 g, and Heat and Reweigh's to 0.001 g (Pack 3 decision 9)", () => {
+    const steps = (id: string) => load(id).actions.filter((action) => action.verb === "weigh").map((action) => [action.id, action.parameters.inputStep]);
+    expect(steps("filtration-practice")).toEqual([["weigh-paper", 0.0001]]);
+    expect(steps("drying-practice")).toEqual([["weigh-glass", 0.0001], ["weigh-combined", 0.0001]]);
+    expect(new Set(steps("thermal-decomposition-mass-loss-practice").map(([, step]) => step))).toEqual(new Set([0.001]));
+    const zero = (id: string) => load(id).actions.find((action) => action.atomId === "atom.observe.zero-empty-balance")!.parameters.note;
+    expect(zero("drying-practice")).toBe("The empty balance reads 0.0000 g.");
+    expect(zero("thermal-decomposition-mass-loss-practice")).toBe("The empty balance reads 0.000 g.");
   });
 
   it("Dry and Weigh keeps the oven door shut while the solid is broken up and while it cools", () => {

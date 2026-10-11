@@ -1,0 +1,700 @@
+{
+  "id": "hard-water-calculation-practice",
+  "title": "Calculate Hardness",
+  "learningGoal": "Calculate a water sample's hardness in mg/L as CaCO3 from the precipitate's mass and the sample's volume.",
+  "requiredEquipment": [
+    "graduated-cylinder-25ml",
+    "watch-glass",
+    "filter-paper"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "graduated-cylinder-1",
+        "definitionId": "graduated-cylinder-25ml",
+        "label": "25 mL graduated cylinder",
+        "location": "workbench",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "watch-glass-1",
+        "definitionId": "watch-glass",
+        "label": "Labelled watch glass",
+        "location": "workbench",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "filter-paper-1",
+        "definitionId": "filter-paper",
+        "label": "Filter paper",
+        "location": "snapZone",
+        "contents": {
+          "kind": "precipitate",
+          "label": "Calcium carbonate",
+          "massG": 0.0075,
+          "solutes": [],
+          "precipitate": {
+            "substance": "Calcium carbonate",
+            "massG": 0.0075,
+            "rinsed": true,
+            "dryness": "dry",
+            "dryMassG": 0.0075
+          },
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "cooled-dry-precipitate"
+        },
+        "snapZoneId": "watch-glass-paper-seat"
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "note-sample-volume",
+      "verb": "observe",
+      "label": "Note the sample's volume",
+      "parameters": {
+        "measurementId": "{{config.sampleVolumeMeasurementId}}",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputLabel": "Sample volume, read on the cylinder (mL)",
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "mL",
+        "configuredValue": "{{config.sampleVolumeMl}}",
+        "configurationQuantity": "sample volume",
+        "configurationProvenance": "teacher-configured",
+        "tag": "note-sample-volume-done"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Note the sample's volume: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Sample volume noted.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "atomId": "atom.observe.record-teacher-configured-numeric-value"
+    },
+    {
+      "id": "note-watch-glass-mass",
+      "verb": "observe",
+      "label": "Note the watch glass's mass",
+      "parameters": {
+        "measurementId": "watch-glass-mass",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputLabel": "Empty watch glass, weighed before drying (g)",
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "g",
+        "configuredValue": "{{config.watchGlassMassG}}",
+        "configurationQuantity": "watch glass mass",
+        "configurationProvenance": "teacher-configured",
+        "tag": "note-watch-glass-mass-done"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Note the watch glass's mass: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Watch glass mass noted.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "atomId": "atom.observe.record-teacher-configured-numeric-value"
+    },
+    {
+      "id": "note-paper-mass",
+      "verb": "observe",
+      "label": "Note the filter paper's mass",
+      "parameters": {
+        "measurementId": "filter-paper-mass",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputLabel": "Filter paper, weighed dry before filtering (g)",
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "g",
+        "configuredValue": "{{config.paperMassG}}",
+        "configurationQuantity": "filter paper mass",
+        "configurationProvenance": "teacher-configured",
+        "tag": "note-paper-mass-done"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Note the filter paper's mass: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Filter paper mass noted.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "atomId": "atom.observe.record-teacher-configured-numeric-value"
+    },
+    {
+      "id": "note-combined-mass",
+      "verb": "observe",
+      "label": "Note the dry assembly's mass",
+      "parameters": {
+        "measurementId": "combined-mass",
+        "inputMode": "numeric",
+        "inputRole": "teacherConfiguration",
+        "inputLabel": "Watch glass, paper and dry precipitate, weighed cool (g)",
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "unit": "g",
+        "configuredValue": "{{config.combinedMassG}}",
+        "configurationQuantity": "dry assembly mass",
+        "configurationProvenance": "teacher-configured",
+        "tag": "note-combined-mass-done"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Note the dry assembly's mass: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Dry assembly mass noted.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "atomId": "atom.observe.record-teacher-configured-numeric-value"
+    },
+    {
+      "id": "precipitate-by-difference",
+      "verb": "calculate",
+      "label": "Work out the precipitate's mass",
+      "parameters": {
+        "calculationId": "{{config.precipitateMassCalculationId}}",
+        "template": "gravimetricPrecipitateMass",
+        "combinedMassMeasurementId": "combined-mass",
+        "watchGlassMassMeasurementId": "watch-glass-mass",
+        "filterPaperMassMeasurementId": "filter-paper-mass",
+        "tolerance": 0.001
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Work out the precipitate's mass: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Precipitate mass worked out.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "calculate"
+      ]
+    },
+    {
+      "id": "calculate-hardness",
+      "verb": "calculate",
+      "label": "Calculate the hardness",
+      "parameters": {
+        "calculationId": "hardness-mg-l",
+        "template": "hardnessMgLAsCaCO3",
+        "sampleVolumeMeasurementId": "{{config.sampleVolumeMeasurementId}}",
+        "precipitateMassCalculationId": "{{config.precipitateMassCalculationId}}",
+        "tolerance": "{{config.calculationTolerance}}",
+        "requireStudentValue": true,
+        "unit": "mg/L as CaCO3"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Calculate the hardness: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The hardness is within tolerance.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "calculate"
+      ]
+    }
+  ],
+  "process": {
+    "startNodeId": "note-sample-volume-node",
+    "nodes": [
+      {
+        "id": "note-sample-volume-node",
+        "type": "observation",
+        "title": "Note the sample's volume",
+        "description": "Note the volume of the water sample you measured in the cylinder.",
+        "actionId": "note-sample-volume",
+        "config": {},
+        "validation": [
+          {
+            "id": "note-sample-volume-node-done",
+            "type": "measurementRecorded",
+            "label": "Note the sample's volume was recorded.",
+            "measurementId": "{{config.sampleVolumeMeasurementId}}"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Note the sample's volume complete.",
+          "retry": "Review Note the sample's volume and try again."
+        }
+      },
+      {
+        "id": "note-watch-glass-mass-node",
+        "type": "observation",
+        "title": "Note the watch glass's mass",
+        "description": "Note the empty watch glass's mass, which you weighed before drying.",
+        "actionId": "note-watch-glass-mass",
+        "config": {},
+        "validation": [
+          {
+            "id": "note-watch-glass-mass-node-done",
+            "type": "measurementRecorded",
+            "label": "Note the watch glass's mass was recorded.",
+            "measurementId": "watch-glass-mass"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Note the watch glass's mass complete.",
+          "retry": "Review Note the watch glass's mass and try again."
+        }
+      },
+      {
+        "id": "note-paper-mass-node",
+        "type": "observation",
+        "title": "Note the paper's mass",
+        "description": "Note the dry filter paper's mass, which you weighed before filtering.",
+        "actionId": "note-paper-mass",
+        "config": {},
+        "validation": [
+          {
+            "id": "note-paper-mass-node-done",
+            "type": "measurementRecorded",
+            "label": "Note the paper's mass was recorded.",
+            "measurementId": "filter-paper-mass"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Note the paper's mass complete.",
+          "retry": "Review Note the paper's mass and try again."
+        }
+      },
+      {
+        "id": "note-combined-mass-node",
+        "type": "observation",
+        "title": "Note the dry assembly's mass",
+        "description": "Note the mass of the cool watch glass with the paper and the dry precipitate.",
+        "actionId": "note-combined-mass",
+        "config": {},
+        "validation": [
+          {
+            "id": "note-combined-mass-node-done",
+            "type": "measurementRecorded",
+            "label": "Note the dry assembly's mass was recorded.",
+            "measurementId": "combined-mass"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Note the dry assembly's mass complete.",
+          "retry": "Review Note the dry assembly's mass and try again."
+        }
+      },
+      {
+        "id": "precipitate-by-difference-node",
+        "type": "calculation",
+        "title": "Work out the precipitate's mass",
+        "description": "Subtract the watch glass's mass and the paper's mass from the combined mass.",
+        "actionId": "precipitate-by-difference",
+        "config": {},
+        "validation": [
+          {
+            "id": "precipitate-by-difference-node-done",
+            "type": "calculationWithinTolerance",
+            "label": "Work out the precipitate's mass was submitted.",
+            "calculationId": "{{config.precipitateMassCalculationId}}"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Work out the precipitate's mass complete.",
+          "retry": "Review Work out the precipitate's mass and try again."
+        }
+      },
+      {
+        "id": "calculate-hardness-node",
+        "type": "calculation",
+        "title": "Calculate the hardness",
+        "description": "Calculate the water's hardness in mg/L as CaCO3: the precipitate's mass in grams × 1,000,000 ÷ the sample's volume in millilitres. Enter it.",
+        "actionId": "calculate-hardness",
+        "config": {},
+        "validation": [
+          {
+            "id": "calculate-hardness-node-done",
+            "type": "calculationWithinTolerance",
+            "label": "Calculate the hardness was submitted.",
+            "calculationId": "hardness-mg-l"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Calculate the hardness complete.",
+          "retry": "Review Calculate the hardness and try again."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "note-sample-volume-node",
+        "to": "note-watch-glass-mass-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "note-watch-glass-mass-node",
+        "to": "note-paper-mass-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "note-paper-mass-node",
+        "to": "note-combined-mass-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "note-combined-mass-node",
+        "to": "precipitate-by-difference-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "precipitate-by-difference-node",
+        "to": "calculate-hardness-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [
+    {
+      "id": "hard-water-calculation-practice-success",
+      "type": "calculationWithinTolerance",
+      "label": "The hardness is within tolerance.",
+      "calculationId": "hardness-mg-l"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "current node expects a different action",
+      "message": "That action is out of sequence for the current technique step.",
+      "recovery": "Check the process map and perform the highlighted step first."
+    },
+    {
+      "id": "missing-source",
+      "when": "source equipment or contents are missing",
+      "message": "The selected source does not contain the material required for this action.",
+      "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+    },
+    {
+      "id": "overflow",
+      "when": "target capacity would be exceeded",
+      "message": "The target equipment cannot hold the requested volume.",
+      "recovery": "Use a larger container or transfer a smaller measured amount."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.0.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-10-05T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "practice-3d",
+      "calculation",
+      "gravimetry",
+      "hard-water"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry",
+        "kind": "entry",
+        "nodeId": "note-sample-volume-node",
+        "label": "Entry"
+      },
+      {
+        "id": "exit",
+        "kind": "exit",
+        "nodeId": "calculate-hardness-node",
+        "label": "Exit"
+      }
+    ],
+    "equipmentRoles": [],
+    "modelSlots": [],
+    "configurationSlots": [
+      {
+        "id": "sampleVolumeMl",
+        "valueType": "number",
+        "required": true,
+        "defaultValue": 20
+      },
+      {
+        "id": "watchGlassMassG",
+        "valueType": "number",
+        "required": true,
+        "defaultValue": 30
+      },
+      {
+        "id": "paperMassG",
+        "valueType": "number",
+        "required": true,
+        "defaultValue": 0.553
+      },
+      {
+        "id": "combinedMassG",
+        "valueType": "number",
+        "required": true,
+        "defaultValue": 30.5605
+      },
+      {
+        "id": "sampleVolumeMeasurementId",
+        "valueType": "string",
+        "required": true,
+        "defaultValue": "sample-volume"
+      },
+      {
+        "id": "precipitateMassCalculationId",
+        "valueType": "string",
+        "required": true,
+        "defaultValue": "precipitate-mass"
+      },
+      {
+        "id": "calculationTolerance",
+        "valueType": "number",
+        "required": true,
+        "defaultValue": 0.5
+      }
+    ],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [
+      {
+        "id": "precipitate-mass",
+        "kind": "calculation",
+        "actionId": "precipitate-by-difference",
+        "referenceId": "{{config.precipitateMassCalculationId}}"
+      },
+      {
+        "id": "hardness-mg-l",
+        "kind": "calculation",
+        "actionId": "calculate-hardness",
+        "referenceId": "hardness-mg-l"
+      }
+    ],
+    "completion": {
+      "exitPortIds": [
+        "exit"
+      ],
+      "requiredEvidenceOutputIds": [
+        "precipitate-mass",
+        "hardness-mg-l"
+      ],
+      "requiredValidationRuleIds": [
+        "hard-water-calculation-practice-success"
+      ]
+    },
+    "catalogDisposition": "standalone-practice",
+    "legacyActionEffects": [
+      {
+        "actionId": "precipitate-by-difference",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "calculate-hardness",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -172,5 +172,227 @@
         "message": "The working portion must hold the reagent added and 1 mL more for the dropping pipette."
       }
     ]
+  },
+  {
+    "id": "hard-water-demo",
+    "title": "Determine Water Hardness",
+    "description": "Measure a hard-water sample, precipitate its calcium as calcium carbonate, filter, dry and weigh the solid, and calculate the hardness in mg/L as CaCO3.",
+    "file": "hard-water-demo.json",
+    "parts": [
+      {
+        "instanceId": "measuring-volume",
+        "techniqueId": "measuring-volume-3d",
+        "title": "Measure the sample",
+        "techniqueTitle": "Measure Liquid Volume"
+      },
+      {
+        "instanceId": "transfer",
+        "techniqueId": "transfer-3d",
+        "title": "Transfer the sample",
+        "techniqueTitle": "Transfer Liquid"
+      },
+      {
+        "instanceId": "hard-water-precipitation",
+        "techniqueId": "hard-water-precipitation-3d",
+        "title": "Precipitate the calcium",
+        "techniqueTitle": "Hard-Water Calcium Carbonate Precipitation"
+      },
+      {
+        "instanceId": "filtration",
+        "techniqueId": "filtration-3d",
+        "title": "Filter the precipitate",
+        "techniqueTitle": "Filter a Precipitate"
+      },
+      {
+        "instanceId": "drying",
+        "techniqueId": "drying-3d",
+        "title": "Dry and weigh the solid",
+        "techniqueTitle": "Dry and Weigh a Precipitate"
+      },
+      {
+        "instanceId": "hard-water-calculation",
+        "techniqueId": "hard-water-calculation-3d",
+        "title": "Calculate the hardness",
+        "techniqueTitle": "Calculate Hardness"
+      }
+    ],
+    "setup": [
+      {
+        "id": "sampleVolumeMl",
+        "label": "Sample volume",
+        "unit": "mL",
+        "kind": "number",
+        "defaultValue": 20,
+        "min": 5,
+        "max": 25,
+        "help": "The line the student fills the 25 mL cylinder to: poured to 1 mL below it, then drop by drop.",
+        "targets": [
+          {
+            "instanceId": "measuring-volume",
+            "slotId": "targetVolumeMl"
+          },
+          {
+            "instanceId": "measuring-volume",
+            "slotId": "pourVolumeMl",
+            "offset": -1
+          }
+        ]
+      },
+      {
+        "id": "transferObservation",
+        "label": "Observation after the transfer",
+        "kind": "text",
+        "defaultValue": "The sample is clear and colourless, and none was spilled.",
+        "targets": [
+          {
+            "instanceId": "transfer",
+            "slotId": "transferObservation"
+          }
+        ]
+      },
+      {
+        "id": "workingPortionMl",
+        "label": "Sodium carbonate working portion",
+        "unit": "mL",
+        "kind": "number",
+        "defaultValue": 50,
+        "min": 5,
+        "max": 150,
+        "help": "Poured from the stock into the 150 mL beaker before class.",
+        "targets": [
+          {
+            "itemId": "reagent-beaker-1",
+            "contents": "volumeMl"
+          }
+        ]
+      },
+      {
+        "id": "reagentVolumeMl",
+        "label": "Sodium carbonate added",
+        "unit": "mL",
+        "kind": "number",
+        "defaultValue": 20,
+        "min": 3,
+        "max": 140,
+        "help": "Added in three equal portions while stirring.",
+        "targets": [
+          {
+            "instanceId": "hard-water-precipitation",
+            "slotId": "reagentVolumeMl"
+          }
+        ]
+      },
+      {
+        "id": "precipitateMassG",
+        "label": "Precipitate mass (the model's value)",
+        "unit": "g",
+        "kind": "number",
+        "defaultValue": 0.0075,
+        "min": 0.0001,
+        "max": 5,
+        "help": "The calcium carbonate the sample gives. It is never shown to the student as a measurement.",
+        "targets": [
+          {
+            "instanceId": "hard-water-precipitation",
+            "slotId": "precipitateMassG"
+          }
+        ]
+      },
+      {
+        "id": "precipitateObservation",
+        "label": "Observation after the first portion",
+        "kind": "text",
+        "defaultValue": "A white precipitate forms where the carbonate meets the sample.",
+        "targets": [
+          {
+            "instanceId": "hard-water-precipitation",
+            "slotId": "precipitateObservation"
+          }
+        ]
+      },
+      {
+        "id": "completenessObservation",
+        "label": "Observation at the drop test",
+        "kind": "text",
+        "defaultValue": "No new cloudiness where the drop meets the clear liquid.",
+        "targets": [
+          {
+            "instanceId": "hard-water-precipitation",
+            "slotId": "completenessObservation"
+          }
+        ]
+      },
+      {
+        "id": "paperMassG",
+        "label": "Dry filter paper's mass",
+        "unit": "g",
+        "kind": "number",
+        "defaultValue": 0.553,
+        "min": 0.1,
+        "max": 2,
+        "help": "What the balance shows for the dry 9 cm paper.",
+        "targets": [
+          {
+            "instanceId": "filtration",
+            "slotId": "paperMassG"
+          },
+          {
+            "instanceId": "drying",
+            "slotId": "paperMassG"
+          }
+        ]
+      },
+      {
+        "id": "watchGlassMassG",
+        "label": "Empty watch glass's mass",
+        "unit": "g",
+        "kind": "number",
+        "defaultValue": 30,
+        "min": 1,
+        "max": 100,
+        "help": "What the balance shows for the clean, dry, labelled watch glass.",
+        "targets": [
+          {
+            "instanceId": "drying",
+            "slotId": "watchGlassMassG"
+          }
+        ]
+      },
+      {
+        "id": "firstDryingMinutes",
+        "label": "First drying stage",
+        "unit": "min",
+        "kind": "number",
+        "defaultValue": 12,
+        "min": 10,
+        "max": 15,
+        "help": "Investigation 3: dry within 10 to 15 minutes; the second stage is 5 minutes.",
+        "targets": [
+          {
+            "instanceId": "drying",
+            "slotId": "firstDryingMinutes"
+          }
+        ]
+      }
+    ],
+    "rules": [
+      {
+        "fields": [
+          "sampleVolumeMl",
+          "reagentVolumeMl"
+        ],
+        "plus": 32.25,
+        "atMost": 250,
+        "message": "The sample, the reagent and the rinses must fit in the 250 mL receiving flask: lower the sample or the reagent."
+      },
+      {
+        "fields": [
+          "reagentVolumeMl"
+        ],
+        "plus": 1,
+        "atMost": "workingPortionMl",
+        "message": "The working portion must hold the reagent added and 1 mL more for the dropping pipette."
+      }
+    ]
   }
 ]

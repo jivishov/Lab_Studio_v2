@@ -184,7 +184,7 @@
       "verb": "observe",
       "label": "Note the filter paper's mass",
       "parameters": {
-        "measurementId": "filter-paper-mass",
+        "measurementId": "{{config.filterPaperMassMeasurementId}}",
         "inputMode": "numeric",
         "inputRole": "teacherConfiguration",
         "inputLabel": "Filter paper mass, weighed dry before filtering (g)",
@@ -239,7 +239,7 @@
         "instrumentDefinitionId": "analytical-balance",
         "balanceOperation": "zero",
         "tag": "zero-balance-done",
-        "note": "The empty balance reads 0.000 g."
+        "note": "The empty balance reads 0.0000 g."
       },
       "prerequisites": [],
       "stateChanges": [
@@ -345,7 +345,7 @@
         "inputLabel": "Balance display for the empty watch glass (g)",
         "inputMin": 0,
         "inputMinExclusive": true,
-        "inputStep": 0.001,
+        "inputStep": 0.0001,
         "inputRequired": true,
         "unit": "g"
       },
@@ -1417,7 +1417,7 @@
         "inputLabel": "Balance display for the watch glass, paper and dry solid (g)",
         "inputMin": 0,
         "inputMinExclusive": true,
-        "inputStep": 0.001,
+        "inputStep": 0.0001,
         "inputRequired": true,
         "unit": "g"
       },
@@ -1519,7 +1519,7 @@
         "template": "gravimetricPrecipitateMass",
         "combinedMassMeasurementId": "combined-mass",
         "watchGlassMassMeasurementId": "watch-glass-mass",
-        "filterPaperMassMeasurementId": "filter-paper-mass",
+        "filterPaperMassMeasurementId": "{{config.filterPaperMassMeasurementId}}",
         "tolerance": 0.001
       },
       "prerequisites": [],
@@ -1570,7 +1570,7 @@
             "id": "note-paper-mass-node-done",
             "type": "measurementRecorded",
             "label": "Note the paper's mass was recorded.",
-            "measurementId": "filter-paper-mass"
+            "measurementId": "{{config.filterPaperMassMeasurementId}}"
           }
         ],
         "hints": [],
@@ -1583,7 +1583,7 @@
         "id": "zero-balance-node",
         "type": "action",
         "title": "Zero the balance",
-        "description": "With the pan empty and the draft-shield doors closed, check that the balance reads 0.000 g, and press TARE if it does not.",
+        "description": "With the pan empty and the draft-shield doors closed, check that the balance reads 0.0000 g, and press TARE if it does not.",
         "actionId": "zero-balance",
         "config": {},
         "validation": [
@@ -2490,6 +2490,12 @@
         "valueType": "number",
         "required": true,
         "defaultValue": 12
+      },
+      {
+        "id": "filterPaperMassMeasurementId",
+        "valueType": "string",
+        "required": true,
+        "defaultValue": "filter-paper-mass"
       }
     ],
     "approvalGates": [],

@@ -1,0 +1,259 @@
+{
+  "id": "hard-water-calculation-3d",
+  "title": "Calculate Hardness",
+  "learningGoal": "Calculate a water sample's hardness in mg/L as CaCO3 from the precipitate's mass and the sample's volume.",
+  "requiredEquipment": [
+    "graduated-cylinder-25ml",
+    "watch-glass",
+    "filter-paper"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "graduated-cylinder-1",
+        "definitionId": "graduated-cylinder-25ml",
+        "label": "25 mL graduated cylinder",
+        "location": "workbench",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "watch-glass-1",
+        "definitionId": "watch-glass",
+        "label": "Labelled watch glass",
+        "location": "workbench",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "filter-paper-1",
+        "definitionId": "filter-paper",
+        "label": "Filter paper",
+        "location": "snapZone",
+        "contents": {
+          "kind": "precipitate",
+          "label": "Calcium carbonate",
+          "massG": 0.0075,
+          "solutes": [],
+          "precipitate": {
+            "substance": "Calcium carbonate",
+            "massG": 0.0075,
+            "rinsed": true,
+            "dryness": "dry",
+            "dryMassG": 0.0075
+          },
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "cooled-dry-precipitate"
+        },
+        "snapZoneId": "watch-glass-paper-seat"
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "calculate-hardness",
+      "verb": "calculate",
+      "label": "Calculate the hardness",
+      "parameters": {
+        "calculationId": "hardness-mg-l",
+        "template": "hardnessMgLAsCaCO3",
+        "sampleVolumeMeasurementId": "{{config.sampleVolumeMeasurementId}}",
+        "precipitateMassCalculationId": "{{config.precipitateMassCalculationId}}",
+        "tolerance": "{{config.calculationTolerance}}",
+        "requireStudentValue": true,
+        "unit": "mg/L as CaCO3"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Calculate the hardness: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The hardness is within tolerance.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "calculate"
+      ]
+    }
+  ],
+  "process": {
+    "startNodeId": "calculate-hardness-node",
+    "nodes": [
+      {
+        "id": "calculate-hardness-node",
+        "type": "calculation",
+        "title": "Calculate the hardness",
+        "description": "Calculate the water's hardness in mg/L as CaCO3: the precipitate's mass in grams × 1,000,000 ÷ the sample's volume in millilitres. Enter it.",
+        "actionId": "calculate-hardness",
+        "config": {},
+        "validation": [
+          {
+            "id": "calculate-hardness-node-done",
+            "type": "calculationWithinTolerance",
+            "label": "Calculate the hardness was submitted.",
+            "calculationId": "hardness-mg-l"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Calculate the hardness complete.",
+          "retry": "Review Calculate the hardness and try again."
+        }
+      }
+    ],
+    "edges": []
+  },
+  "successCriteria": [
+    {
+      "id": "hard-water-calculation-practice-success",
+      "type": "calculationWithinTolerance",
+      "label": "The hardness is within tolerance.",
+      "calculationId": "hardness-mg-l"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "current node expects a different action",
+      "message": "That action is out of sequence for the current technique step.",
+      "recovery": "Check the process map and perform the highlighted step first."
+    },
+    {
+      "id": "missing-source",
+      "when": "source equipment or contents are missing",
+      "message": "The selected source does not contain the material required for this action.",
+      "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+    },
+    {
+      "id": "overflow",
+      "when": "target capacity would be exceeded",
+      "message": "The target equipment cannot hold the requested volume.",
+      "recovery": "Use a larger container or transfer a smaller measured amount."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.0.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-10-05T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "twin-3d",
+      "calculation",
+      "gravimetry",
+      "hard-water"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry",
+        "kind": "entry",
+        "nodeId": "calculate-hardness-node",
+        "label": "Entry"
+      },
+      {
+        "id": "exit",
+        "kind": "exit",
+        "nodeId": "calculate-hardness-node",
+        "label": "Exit"
+      }
+    ],
+    "equipmentRoles": [],
+    "modelSlots": [],
+    "configurationSlots": [
+      {
+        "id": "sampleVolumeMeasurementId",
+        "valueType": "string",
+        "required": true,
+        "defaultValue": "sample-volume"
+      },
+      {
+        "id": "precipitateMassCalculationId",
+        "valueType": "string",
+        "required": true,
+        "defaultValue": "precipitate-mass"
+      },
+      {
+        "id": "calculationTolerance",
+        "valueType": "number",
+        "required": true,
+        "defaultValue": 0.5
+      }
+    ],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [
+      {
+        "id": "hardness-mg-l",
+        "kind": "calculation",
+        "actionId": "calculate-hardness",
+        "referenceId": "hardness-mg-l"
+      }
+    ],
+    "completion": {
+      "exitPortIds": [
+        "exit"
+      ],
+      "requiredEvidenceOutputIds": [
+        "hardness-mg-l"
+      ],
+      "requiredValidationRuleIds": [
+        "hard-water-calculation-practice-success"
+      ]
+    },
+    "catalogDisposition": "composable",
+    "legacyActionEffects": [
+      {
+        "actionId": "calculate-hardness",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

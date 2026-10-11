@@ -165,15 +165,16 @@ export const technique = ({ id, title, learningGoal, equipment, actions, nodes, 
 /**
  * Checking the empty balance reads zero before a technique's first weighing (decided 2026-10-06, the Pack 2
  * fidelity review): nothing is on the pan, so the item weighed next is itself the mass read. The action and
- * its process node; the 3D player lights the balance's TARE key for it.
+ * its process node; the 3D player lights the balance's TARE key for it. `decimals` is the balance's resolution: Pack 2's
+ * 3D weighings on the analytical balance read to 0.0001 g (Pack 3 decision 9, 2026-10-10), Heat and Reweigh's to 0.001 g.
  */
-export const zeroEmptyBalance = (id, balanceInstanceId) => [
+export const zeroEmptyBalance = (id, balanceInstanceId, decimals = 3) => [
   action(id, "observe", "Zero the balance", {
     instrumentInstanceId: balanceInstanceId,
     instrumentDefinitionId: "analytical-balance",
     balanceOperation: "zero",
     tag: `${id}-done`,
-    note: "The empty balance reads 0.000 g.",
+    note: `The empty balance reads ${(0).toFixed(decimals)} g.`,
   }, {
     atomId: "atom.observe.zero-empty-balance",
     evidence: [],
@@ -182,7 +183,7 @@ export const zeroEmptyBalance = (id, balanceInstanceId) => [
     success: "The empty balance reads zero.",
   }),
   node(id, "Zero the balance",
-    "With the pan empty and the draft-shield doors closed, check that the balance reads 0.000 g, and press TARE if it does not.",
+    `With the pan empty and the draft-shield doors closed, check that the balance reads ${(0).toFixed(decimals)} g, and press TARE if it does not.`,
     { notebookTag: `${id}-done` }),
 ];
 

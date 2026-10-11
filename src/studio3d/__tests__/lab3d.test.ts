@@ -88,8 +88,10 @@ const typed = (values: Record<string, string>, reading = values.sampleVolumeMl) 
 const moves = { "filtration--fold-paper": "filter-paper-1" };
 
 describe("D8 twins", () => {
-  it("lists the four twins the lab composes, each a composable copy of a practice version or a Pack 1 original", async () => {
-    expect(twins.map((twin) => twin.id)).toEqual(["transfer-3d", "hard-water-precipitation-3d", "filtration-3d", "measuring-volume-3d"]);
+  it("lists the six twins the labs compose, each a composable copy of a practice version or a Pack 1 original", async () => {
+    // Pack 3a adds Dry and Weigh's and Calculate Hardness's, in the practice list's order (2026-10-10).
+    expect(twins.map((twin) => twin.id)).toEqual(["transfer-3d", "hard-water-precipitation-3d", "filtration-3d", "drying-3d",
+      "hard-water-calculation-3d", "measuring-volume-3d"]);
     for (const twin of twins) {
       const raw = read(`public/techniques-3d/${twin.file}`) as TechniqueDefinition;
       expect(validateTechniqueDefinition(raw).errors ?? []).toEqual([]);
@@ -149,7 +151,7 @@ describe("D8 twins", () => {
 
 describe("D8 3D lab: Precipitate and Filter Calcium Carbonate", () => {
   it("is listed with its four parts under short titles, and its 2D fallback exists", () => {
-    expect(labIndex.map((entry) => entry.id)).toEqual(["intro-filtration-demo"]);
+    expect(labIndex.map((entry) => entry.id)).toEqual(["intro-filtration-demo", "hard-water-demo"]);
     expect(demo.parts.map((part) => part.techniqueId)).toEqual(["measuring-volume-3d", "transfer-3d", "hard-water-precipitation-3d", "filtration-3d"]);
     expect(demo.parts.map((part) => part.title)).toEqual(["Measure the sample", "Transfer the sample", "Precipitate the calcium", "Filter the precipitate"]);
     expect(demo.parts.map((part) => part.techniqueTitle)).toEqual(["Measure Liquid Volume", "Transfer Liquid", "Hard-Water Calcium Carbonate Precipitation", "Filter a Precipitate"]);
@@ -271,5 +273,100 @@ describe("D8 3D lab: Precipitate and Filter Calcium Carbonate", () => {
     expect(measurementProvenance(lab, authored, String(weigh.parameters.measurementId))).not.toBe("teacher");
     const recordMass = node("filtration--record-paper-mass");
     expect(notebookProvenance(lab, authored, { ...entry(recordMass), type: "measurement" })).toBe("entry");
+  });
+});
+
+describe("Pack 3a 3D lab: Determine Water Hardness", () => {
+  const hardWater = labIndex.find((entry) => entry.id === "hard-water-demo")!;
+  const hardWaterDefaults = Object.fromEntries(hardWater.setup.map((field) => [field.id, String(field.defaultValue)]));
+  /** What the student types: the cylinder, the three balance readings, the oven, and the hardness. */
+  const entries = (values: Record<string, string>, hardness: string, combined: string) => ({
+    ...typed(values),
+    "filtration--weigh-paper": Number(values.paperMassG).toFixed(4),
+    "drying--weigh-glass": Number(values.watchGlassMassG).toFixed(4),
+    "drying--set-oven": "115",
+    "drying--weigh-combined": combined,
+    "hard-water-calculation--calculate-hardness": hardness,
+  });
+  const hardWaterMoves = { ...moves, "drying--paper-onto-glass": "watch-glass-1", "drying--first-to-pad": "crucible-tongs-1", "drying--break-up": "scoopula-1" };
+  const hardnessOf = (state: RuntimeState) => state.calculations.find((entry) => entry.id === "hard-water-calculation--hardness-mg-l");
+
+  it("composes the 2D lab's six parts in its order, as twins under its instance ids", () => {
+    expect(hardWater.parts.map((part) => part.instanceId)).toEqual(["measuring-volume", "transfer", "hard-water-precipitation", "filtration",
+      "drying", "hard-water-calculation"]);
+    expect(hardWater.parts.map((part) => part.techniqueId)).toEqual(["measuring-volume-3d", "transfer-3d", "hard-water-precipitation-3d",
+      "filtration-3d", "drying-3d", "hard-water-calculation-3d"]);
+    expect(hardWaterDefaults).toMatchObject({ sampleVolumeMl: "20", precipitateMassG: "0.0075", paperMassG: "0.553", watchGlassMassG: "30" });
+    expect(read("public/labs/index.json").some((entry: { id: string }) => entry.id === hardWater.id)).toBe(true);
+  });
+
+  it("drops Dry and Weigh's noted paper mass, and keeps the hardness step alone", () => {
+    const drying = read("public/techniques-3d/drying-3d.json") as TechniqueDefinition;
+    expect(drying.actions.some((action) => action.id === "note-paper-mass")).toBe(false);
+    expect(drying.composition!.configurationSlots.map((slot) => slot.id)).toEqual(["paperMassG", "watchGlassMassG", "firstDryingMinutes",
+      "filterPaperMassMeasurementId"]);
+    const hardness = read("public/techniques-3d/hard-water-calculation-3d.json") as TechniqueDefinition;
+    expect(hardness.process.nodes.map((node) => node.actionId)).toEqual(["calculate-hardness"]);
+    expect(hardness.composition!.configurationSlots.map((slot) => slot.id)).toEqual(["sampleVolumeMeasurementId", "precipitateMassCalculationId",
+      "calculationTolerance"]);
+  });
+
+  it("compiles with the defaults, the ids meeting across parts", async () => {
+    const { lab, parts } = await labs3d.loadLab3D(hardWater, hardWaterDefaults);
+    expect(lab.process.nodes).toHaveLength(59);
+    expect(lab.initialState?.equipment).toHaveLength(21);
+    expect(equipment3dReadiness(lab.initialState!.equipment.map((item) => item.definitionId)).ready).toBe(true);
+    const counts = hardWater.parts.map((_, index) => lab.process.nodes.filter((node) => parts.get(node.id)?.index === index + 1).length);
+    expect(counts).toEqual([5, 4, 11, 13, 25, 1]);
+    const action = (id: string) => lab.actions.find((entry) => entry.id === id)!;
+    expect(action("drying--precipitate-by-difference").parameters.filterPaperMassMeasurementId).toBe("filtration--filter-paper-mass");
+    expect(action("hard-water-calculation--calculate-hardness").parameters).toMatchObject({
+      calculationId: "hard-water-calculation--hardness-mg-l", sampleVolumeMeasurementId: "measuring-volume--sample-volume",
+      precipitateMassCalculationId: "drying--precipitate-mass", tolerance: 0.5, requireStudentValue: true });
+    expect(lab.process.nodes.at(-1)!.validation[0]).toMatchObject({ calculationId: "hard-water-calculation--hardness-mg-l" });
+    // The balance reads to 0.0001 g from its first weighing, Filtration's paper (decision 9).
+    expect(lab.actions.filter((entry) => entry.verb === "weigh").map((entry) => entry.parameters.inputStep)).toEqual([0.0001, 0.0001, 0.0001]);
+  });
+
+  it("plays all 59 steps to 375 mg/L with the defaults", async () => {
+    const { lab } = await labs3d.loadLab3D(hardWater, hardWaterDefaults);
+    const state = playLab(lab, entries(hardWaterDefaults, "375", "30.5605"), hardWaterMoves);
+    expect(state.completedNodes).toHaveLength(59);
+    expect(state.calculations.find((entry) => entry.id === "drying--precipitate-mass")?.value).toBeCloseTo(0.0075, 6);
+    expect(hardnessOf(state)).toMatchObject({ value: 375, passed: true });
+    expect(hardnessOf(state)?.expected).toBeCloseTo(375, 6);
+  });
+
+  it("refuses a wrong hardness until it is corrected", async () => {
+    const { lab } = await labs3d.loadLab3D(hardWater, hardWaterDefaults);
+    // 400 mg/L is what the 0.001 g balance gave (30.561 g): it fails, and the step stays open.
+    expect(() => playLab(lab, entries(hardWaterDefaults, "400", "30.5605"), hardWaterMoves)).toThrow(/hard-water-calculation--calculate-hardness-node/);
+    const last = lab.process.nodes.at(-1)!;
+    const before = playLab({ ...lab, process: { ...lab.process, nodes: lab.process.nodes.slice(0, -1) } },
+      entries(hardWaterDefaults, "", "30.5605"), hardWaterMoves);
+    const action = lab.actions.find((entry) => entry.id === last.actionId)!;
+    const submit = (state: RuntimeState, value: string) => {
+      const interaction = resolveActionInteraction(action)!;
+      const resolved = resolveInteractionIntent(lab, state, mergeActionInput({ origin: "keyboard", type: intentTypeForInteraction[interaction.type] } as RuntimeInteractionIntent,
+        resolveActionInput(action, value), action));
+      if (!resolved.ok) throw new Error(resolved.feedback.message);
+      return performRuntimeAction(lab, state, resolved.request);
+    };
+    const wrong = submit(before, "400");
+    expect(hardnessOf(wrong)?.passed).toBe(false);
+    expect(wrong.completedNodes).not.toContain(last.id);
+    const corrected = submit(wrong, "375");
+    expect(hardnessOf(corrected)?.passed).toBe(true);
+    expect(corrected.completedNodes).toContain(last.id);
+    expect(corrected.completedNodes).toHaveLength(59);
+  });
+
+  it("carries the teacher's values into the hardness", async () => {
+    // 0.0150 g in 25 mL is 600 mg/L, with the paper and the watch glass as the teacher set them.
+    const values = { ...hardWaterDefaults, sampleVolumeMl: "25", precipitateMassG: "0.015", paperMassG: "0.912", watchGlassMassG: "31.2" };
+    const { lab } = await labs3d.loadLab3D(hardWater, values);
+    const state = playLab(lab, entries(values, "600", "32.1270"), hardWaterMoves);
+    expect(state.completedNodes).toHaveLength(59);
+    expect(hardnessOf(state)?.expected).toBeCloseTo(600, 6);
   });
 });

@@ -1,0 +1,2490 @@
+{
+  "id": "drying-3d",
+  "title": "Dry and Weigh a Precipitate",
+  "learningGoal": "Dry a collected precipitate in two timed oven stages, handling it hot with tongs, and find its mass by difference once it is cool.",
+  "requiredEquipment": [
+    "drying-oven",
+    "funnel-stand",
+    "filter-paper",
+    "erlenmeyer-flask-250ml",
+    "analytical-balance",
+    "heat-safe-pad",
+    "lab-sink",
+    "watch-glass",
+    "crucible-tongs",
+    "scoopula"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "drying-oven-1",
+        "definitionId": "drying-oven",
+        "label": "Drying oven",
+        "location": "workbench",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "x": 56,
+        "y": 42
+      },
+      {
+        "id": "funnel-stand-1",
+        "definitionId": "funnel-stand",
+        "label": "Funnel in the ring stand",
+        "location": "workbench",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "x": 296,
+        "y": 0
+      },
+      {
+        "id": "filter-paper-1",
+        "definitionId": "filter-paper",
+        "label": "Filter paper",
+        "location": "snapZone",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "snapZoneId": "funnel-stand-paper-seat"
+      },
+      {
+        "id": "erlenmeyer-flask-250ml-1",
+        "definitionId": "erlenmeyer-flask-250ml",
+        "label": "Receiving flask",
+        "location": "snapZone",
+        "contents": {
+          "kind": "liquid",
+          "label": "Filtrate",
+          "volumeMl": 50,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-filtrate"
+        },
+        "snapZoneId": "funnel-receiving-vessel-zone"
+      },
+      {
+        "id": "analytical-balance-1",
+        "definitionId": "analytical-balance",
+        "label": "Analytical balance",
+        "location": "workbench",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "x": 495,
+        "y": 198
+      },
+      {
+        "id": "heat-safe-pad-1",
+        "definitionId": "heat-safe-pad",
+        "label": "Heat-safe pad",
+        "location": "workbench",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "x": 212,
+        "y": 300
+      },
+      {
+        "id": "lab-sink-1",
+        "definitionId": "lab-sink",
+        "label": "Sink",
+        "location": "workbench",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "x": 604,
+        "y": 0
+      },
+      {
+        "id": "watch-glass-1",
+        "definitionId": "watch-glass",
+        "label": "Labelled watch glass",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "crucible-tongs-1",
+        "definitionId": "crucible-tongs",
+        "label": "Crucible tongs",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "scoopula-1",
+        "definitionId": "scoopula",
+        "label": "Metal scoop",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "zero-balance",
+      "verb": "observe",
+      "label": "Zero the balance",
+      "parameters": {
+        "instrumentInstanceId": "analytical-balance-1",
+        "instrumentDefinitionId": "analytical-balance",
+        "balanceOperation": "zero",
+        "tag": "zero-balance-done",
+        "note": "The empty balance reads 0.0000 g."
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Zero the balance: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The empty balance reads zero.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [],
+      "interaction": {
+        "accessibleLabel": "Zero the balance",
+        "type": "recordNotebook",
+        "valueParameter": "tag"
+      },
+      "atomId": "atom.observe.zero-empty-balance",
+      "equipmentRoleBindings": {
+        "balance-instrument": "analytical-balance"
+      }
+    },
+    {
+      "id": "glass-on-balance",
+      "verb": "place",
+      "label": "Put the watch glass on the balance pan",
+      "parameters": {
+        "equipmentDefinitionId": "watch-glass",
+        "equipmentInstanceId": "watch-glass-1",
+        "targetDefinitionId": "analytical-balance",
+        "targetInstanceId": "analytical-balance-1",
+        "location": "snapZone",
+        "snapZoneId": "analytical-balance-pan",
+        "moveFromHolder": true,
+        "supportEmptyMassG": "{{config.watchGlassMassG}}"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Put the watch glass on the balance pan: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The watch glass is on the pan.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.weighed-vessel",
+      "equipmentRoleBindings": {
+        "weighed-vessel": "watch-glass"
+      }
+    },
+    {
+      "id": "weigh-glass",
+      "verb": "weigh",
+      "label": "Read the watch glass's mass",
+      "parameters": {
+        "sourceDefinitionId": "watch-glass",
+        "sourceInstanceId": "watch-glass-1",
+        "targetDefinitionId": "analytical-balance",
+        "targetInstanceId": "analytical-balance-1",
+        "instrumentDefinitionId": "analytical-balance",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Balance display for the empty watch glass (g)",
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "inputStep": 0.0001,
+        "inputRequired": true,
+        "unit": "g"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Read the watch glass's mass: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Reading taken.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "weigh"
+      ],
+      "atomId": "atom.weigh.tare-vessel",
+      "equipmentRoleBindings": {
+        "balance-instrument": "analytical-balance",
+        "weighed-vessel": "watch-glass"
+      },
+      "mass": {
+        "source": "action-input",
+        "outputMeasurementId": "watch-glass-mass"
+      }
+    },
+    {
+      "id": "record-glass",
+      "verb": "record",
+      "label": "Record the watch glass's mass",
+      "parameters": {
+        "measurementId": "watch-glass-mass",
+        "label": "Watch glass mass",
+        "unit": "g",
+        "copyExistingMeasurementOnly": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record the watch glass's mass: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Mass recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "record",
+        "notebook"
+      ],
+      "interaction": {
+        "accessibleLabel": "Record the watch glass's mass",
+        "type": "recordNotebook",
+        "valueParameter": "measurementId"
+      }
+    },
+    {
+      "id": "paper-onto-glass",
+      "verb": "place",
+      "label": "Lift the paper onto the watch glass",
+      "parameters": {
+        "equipmentDefinitionId": "filter-paper",
+        "equipmentInstanceId": "filter-paper-1",
+        "targetDefinitionId": "watch-glass",
+        "targetInstanceId": "watch-glass-1",
+        "location": "snapZone",
+        "snapZoneId": "watch-glass-paper-seat",
+        "moveFromHolder": true,
+        "requireTargetUnseated": true,
+        "supportEmptyMassG": "{{config.paperMassG}}"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Lift the paper onto the watch glass: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The paper lies open on the watch glass, the solid on it.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.transfer-medium-to-drying-vessel",
+      "equipmentRoleBindings": {
+        "filter-medium": "filter-paper",
+        "dried-assembly": "watch-glass"
+      }
+    },
+    {
+      "id": "filtrate-to-sink",
+      "verb": "transfer",
+      "label": "Pour the filtrate down the sink",
+      "parameters": {
+        "sourceDefinitionId": "erlenmeyer-flask-250ml",
+        "sourceInstanceId": "erlenmeyer-flask-250ml-1",
+        "targetDefinitionId": "lab-sink",
+        "targetInstanceId": "lab-sink-1",
+        "toDrain": true,
+        "tag": "filtrate-disposed"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Pour the filtrate down the sink: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The filtrate is down the sink.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "transfer"
+      ],
+      "interaction": {
+        "accessibleLabel": "Pour the filtrate down the sink",
+        "type": "pourInto",
+        "sourceDefinitionId": "erlenmeyer-flask-250ml",
+        "targetDefinitionId": "lab-sink"
+      },
+      "atomId": "atom.transfer.filtrate-to-drain",
+      "equipmentRoleBindings": {
+        "filtration-receiver": "erlenmeyer-flask-250ml",
+        "waste-drain": "lab-sink"
+      }
+    },
+    {
+      "id": "set-oven",
+      "verb": "observe",
+      "label": "Set the oven",
+      "parameters": {
+        "benchOperation": "set-oven-temperature",
+        "ovenInstanceId": "drying-oven-1",
+        "ovenDefinitionId": "drying-oven",
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Oven setting (°C)",
+        "inputRequired": true,
+        "unit": "°C",
+        "temperatureMinC": 110,
+        "temperatureMaxC": 120,
+        "tag": "oven-set"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Set the oven: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The oven is set.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "interaction": {
+        "accessibleLabel": "Set the oven",
+        "type": "recordNotebook",
+        "valueParameter": "note"
+      },
+      "atomId": "atom.observe.set-drying-oven",
+      "equipmentRoleBindings": {
+        "drying-instrument": "drying-oven"
+      }
+    },
+    {
+      "id": "open-oven-1",
+      "verb": "observe",
+      "label": "Open the oven door",
+      "parameters": {
+        "benchOperation": "open-oven-door",
+        "ovenInstanceId": "drying-oven-1",
+        "ovenDefinitionId": "drying-oven",
+        "tag": "open-oven-1-done"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Open the oven door: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The door is open.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "interaction": {
+        "accessibleLabel": "Open the oven door",
+        "type": "recordNotebook",
+        "valueParameter": "note"
+      },
+      "atomId": "atom.observe.open-oven-door",
+      "equipmentRoleBindings": {
+        "drying-instrument": "drying-oven"
+      }
+    },
+    {
+      "id": "glass-into-oven",
+      "verb": "place",
+      "label": "Put the watch glass in the oven",
+      "parameters": {
+        "equipmentDefinitionId": "watch-glass",
+        "equipmentInstanceId": "watch-glass-1",
+        "targetDefinitionId": "drying-oven",
+        "targetInstanceId": "drying-oven-1",
+        "location": "snapZone",
+        "snapZoneId": "drying-oven-chamber",
+        "moveFromHolder": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Put the watch glass in the oven: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The watch glass is on the oven's shelf.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.drying-assembly-into-oven",
+      "equipmentRoleBindings": {
+        "drying-instrument": "drying-oven",
+        "dried-assembly": "watch-glass"
+      }
+    },
+    {
+      "id": "dry-first",
+      "verb": "dry",
+      "label": "Close the door and dry",
+      "parameters": {
+        "benchOperation": "dry-in-oven",
+        "ovenInstanceId": "drying-oven-1",
+        "ovenDefinitionId": "drying-oven",
+        "sampleInstanceId": "watch-glass-1",
+        "vesselInstanceId": "watch-glass-1",
+        "precipitateCarrierInstanceId": "filter-paper-1",
+        "durationMinutes": "{{config.firstDryingMinutes}}",
+        "durationProvenance": "Investigation 3 FD-14: dry within 10-15 minutes",
+        "drynessResult": "damp",
+        "tag": "dry-first-done"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Close the door and dry: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The first stage is done; the solid is still damp.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "dry"
+      ],
+      "interaction": {
+        "accessibleLabel": "Close the door and dry",
+        "type": "recordNotebook",
+        "valueParameter": "note"
+      },
+      "atomId": "atom.dry.close-oven-and-dry",
+      "equipmentRoleBindings": {
+        "drying-instrument": "drying-oven",
+        "dried-assembly": "watch-glass"
+      }
+    },
+    {
+      "id": "open-oven-2",
+      "verb": "observe",
+      "label": "Open the oven door",
+      "parameters": {
+        "benchOperation": "open-oven-door",
+        "ovenInstanceId": "drying-oven-1",
+        "ovenDefinitionId": "drying-oven",
+        "tag": "open-oven-2-done"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Open the oven door: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The door is open.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "interaction": {
+        "accessibleLabel": "Open the oven door",
+        "type": "recordNotebook",
+        "valueParameter": "note"
+      },
+      "atomId": "atom.observe.open-oven-door",
+      "equipmentRoleBindings": {
+        "drying-instrument": "drying-oven"
+      }
+    },
+    {
+      "id": "first-to-pad",
+      "verb": "place",
+      "label": "Lift the watch glass out with tongs onto the pad",
+      "parameters": {
+        "equipmentDefinitionId": "watch-glass",
+        "equipmentInstanceId": "watch-glass-1",
+        "targetDefinitionId": "heat-safe-pad",
+        "targetInstanceId": "heat-safe-pad-1",
+        "location": "snapZone",
+        "snapZoneId": "heat-safe-pad-surface",
+        "moveFromHolder": true,
+        "handledWithDefinitionId": "crucible-tongs"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Lift the watch glass out with tongs onto the pad: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The hot watch glass is on the pad.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.hot-assembly-onto-pad",
+      "equipmentRoleBindings": {
+        "dried-assembly": "watch-glass",
+        "cooling-surface": "heat-safe-pad",
+        "cooling-tool": "crucible-tongs",
+        "drying-instrument": "drying-oven"
+      }
+    },
+    {
+      "id": "close-oven-1",
+      "verb": "observe",
+      "label": "Close the oven door",
+      "parameters": {
+        "benchOperation": "close-oven-door",
+        "ovenInstanceId": "drying-oven-1",
+        "ovenDefinitionId": "drying-oven",
+        "tag": "close-oven-1-done"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Close the oven door: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The door is closed.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "interaction": {
+        "accessibleLabel": "Close the oven door",
+        "type": "recordNotebook",
+        "valueParameter": "note"
+      },
+      "atomId": "atom.observe.close-oven-door",
+      "equipmentRoleBindings": {
+        "drying-instrument": "drying-oven"
+      }
+    },
+    {
+      "id": "break-up",
+      "verb": "observe",
+      "label": "Break up the solid",
+      "parameters": {
+        "benchOperation": "break-up-precipitate",
+        "sourceDefinitionId": "scoopula",
+        "sourceInstanceId": "scoopula-1",
+        "vesselInstanceId": "watch-glass-1",
+        "precipitateCarrierInstanceId": "filter-paper-1",
+        "tag": "solid-broken-up"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Break up the solid: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The solid is in small pieces.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "interaction": {
+        "accessibleLabel": "Break up the solid",
+        "type": "recordNotebook",
+        "valueParameter": "note"
+      },
+      "atomId": "atom.observe.break-up-precipitate",
+      "equipmentRoleBindings": {
+        "dried-assembly": "watch-glass",
+        "solid-transfer-tool": "scoopula"
+      }
+    },
+    {
+      "id": "reopen-oven",
+      "verb": "observe",
+      "label": "Open the oven door",
+      "parameters": {
+        "benchOperation": "open-oven-door",
+        "ovenInstanceId": "drying-oven-1",
+        "ovenDefinitionId": "drying-oven",
+        "tag": "reopen-oven-done"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Open the oven door: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The door is open.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "interaction": {
+        "accessibleLabel": "Open the oven door",
+        "type": "recordNotebook",
+        "valueParameter": "note"
+      },
+      "atomId": "atom.observe.open-oven-door",
+      "equipmentRoleBindings": {
+        "drying-instrument": "drying-oven"
+      }
+    },
+    {
+      "id": "glass-back-into-oven",
+      "verb": "place",
+      "label": "Put it back in the oven with tongs",
+      "parameters": {
+        "equipmentDefinitionId": "watch-glass",
+        "equipmentInstanceId": "watch-glass-1",
+        "targetDefinitionId": "drying-oven",
+        "targetInstanceId": "drying-oven-1",
+        "location": "snapZone",
+        "snapZoneId": "drying-oven-chamber",
+        "moveFromHolder": true,
+        "handledWithDefinitionId": "crucible-tongs"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Put it back in the oven with tongs: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The watch glass is on the oven's shelf.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.drying-assembly-into-oven",
+      "equipmentRoleBindings": {
+        "drying-instrument": "drying-oven",
+        "dried-assembly": "watch-glass",
+        "cooling-tool": "crucible-tongs"
+      }
+    },
+    {
+      "id": "dry-second",
+      "verb": "dry",
+      "label": "Close the door and dry",
+      "parameters": {
+        "benchOperation": "dry-in-oven",
+        "ovenInstanceId": "drying-oven-1",
+        "ovenDefinitionId": "drying-oven",
+        "sampleInstanceId": "watch-glass-1",
+        "vesselInstanceId": "watch-glass-1",
+        "precipitateCarrierInstanceId": "filter-paper-1",
+        "durationMinutes": 5,
+        "drynessResult": "dry",
+        "tag": "dry-second-done"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Close the door and dry: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The second stage is done; the solid is dry.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "dry"
+      ],
+      "interaction": {
+        "accessibleLabel": "Close the door and dry",
+        "type": "recordNotebook",
+        "valueParameter": "note"
+      },
+      "atomId": "atom.dry.close-oven-and-dry",
+      "equipmentRoleBindings": {
+        "drying-instrument": "drying-oven",
+        "dried-assembly": "watch-glass"
+      }
+    },
+    {
+      "id": "open-oven-3",
+      "verb": "observe",
+      "label": "Open the oven door",
+      "parameters": {
+        "benchOperation": "open-oven-door",
+        "ovenInstanceId": "drying-oven-1",
+        "ovenDefinitionId": "drying-oven",
+        "tag": "open-oven-3-done"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Open the oven door: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The door is open.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "interaction": {
+        "accessibleLabel": "Open the oven door",
+        "type": "recordNotebook",
+        "valueParameter": "note"
+      },
+      "atomId": "atom.observe.open-oven-door",
+      "equipmentRoleBindings": {
+        "drying-instrument": "drying-oven"
+      }
+    },
+    {
+      "id": "second-to-pad",
+      "verb": "place",
+      "label": "Lift the watch glass out with tongs onto the pad",
+      "parameters": {
+        "equipmentDefinitionId": "watch-glass",
+        "equipmentInstanceId": "watch-glass-1",
+        "targetDefinitionId": "heat-safe-pad",
+        "targetInstanceId": "heat-safe-pad-1",
+        "location": "snapZone",
+        "snapZoneId": "heat-safe-pad-surface",
+        "moveFromHolder": true,
+        "handledWithDefinitionId": "crucible-tongs"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Lift the watch glass out with tongs onto the pad: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The hot watch glass is on the pad.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.hot-assembly-onto-pad",
+      "equipmentRoleBindings": {
+        "dried-assembly": "watch-glass",
+        "cooling-surface": "heat-safe-pad",
+        "cooling-tool": "crucible-tongs",
+        "drying-instrument": "drying-oven"
+      }
+    },
+    {
+      "id": "close-oven-2",
+      "verb": "observe",
+      "label": "Close the oven door",
+      "parameters": {
+        "benchOperation": "close-oven-door",
+        "ovenInstanceId": "drying-oven-1",
+        "ovenDefinitionId": "drying-oven",
+        "tag": "close-oven-2-done"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Close the oven door: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The door is closed.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook"
+      ],
+      "interaction": {
+        "accessibleLabel": "Close the oven door",
+        "type": "recordNotebook",
+        "valueParameter": "note"
+      },
+      "atomId": "atom.observe.close-oven-door",
+      "equipmentRoleBindings": {
+        "drying-instrument": "drying-oven"
+      }
+    },
+    {
+      "id": "cool",
+      "verb": "cool",
+      "label": "Let it cool",
+      "parameters": {
+        "benchOperation": "cool-on-pad",
+        "sourceDefinitionId": "watch-glass",
+        "targetDefinitionId": "heat-safe-pad",
+        "vesselInstanceId": "watch-glass-1",
+        "precipitateCarrierInstanceId": "filter-paper-1",
+        "padInstanceId": "heat-safe-pad-1",
+        "coolMinutes": 10,
+        "cooledTemperatureC": 25,
+        "tag": "assembly-cooled"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Let it cool: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "It is cool enough to weigh.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "cool"
+      ],
+      "interaction": {
+        "accessibleLabel": "Let it cool",
+        "type": "recordNotebook",
+        "valueParameter": "note"
+      },
+      "atomId": "atom.cool.on-heat-safe-pad",
+      "equipmentRoleBindings": {
+        "dried-assembly": "watch-glass",
+        "cooling-surface": "heat-safe-pad"
+      }
+    },
+    {
+      "id": "combined-on-balance",
+      "verb": "place",
+      "label": "Put the watch glass on the balance pan",
+      "parameters": {
+        "equipmentDefinitionId": "watch-glass",
+        "equipmentInstanceId": "watch-glass-1",
+        "targetDefinitionId": "analytical-balance",
+        "targetInstanceId": "analytical-balance-1",
+        "location": "snapZone",
+        "snapZoneId": "analytical-balance-pan",
+        "moveFromHolder": true,
+        "refuseHotByHand": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Put the watch glass on the balance pan: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The assembly is on the pan.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.weighed-vessel",
+      "equipmentRoleBindings": {
+        "weighed-vessel": "watch-glass"
+      }
+    },
+    {
+      "id": "weigh-combined",
+      "verb": "weigh",
+      "label": "Read the combined mass",
+      "parameters": {
+        "sourceDefinitionId": "watch-glass",
+        "sourceInstanceId": "watch-glass-1",
+        "targetDefinitionId": "analytical-balance",
+        "targetInstanceId": "analytical-balance-1",
+        "instrumentDefinitionId": "analytical-balance",
+        "maxSafeTemperatureC": 40,
+        "inputMode": "numeric",
+        "inputRole": "studentResponse",
+        "inputLabel": "Balance display for the watch glass, paper and dry solid (g)",
+        "inputMin": 0,
+        "inputMinExclusive": true,
+        "inputStep": 0.0001,
+        "inputRequired": true,
+        "unit": "g"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Read the combined mass: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Reading taken.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "weigh"
+      ],
+      "atomId": "atom.weigh.dry-assembly",
+      "equipmentRoleBindings": {
+        "balance-instrument": "analytical-balance",
+        "dried-assembly": "watch-glass"
+      },
+      "mass": {
+        "source": "action-input",
+        "outputMeasurementId": "combined-mass"
+      }
+    },
+    {
+      "id": "record-combined",
+      "verb": "record",
+      "label": "Record the combined mass",
+      "parameters": {
+        "measurementId": "combined-mass",
+        "label": "Watch glass, paper and dry precipitate",
+        "unit": "g",
+        "copyExistingMeasurementOnly": true
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record the combined mass: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Mass recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "record",
+        "notebook"
+      ],
+      "interaction": {
+        "accessibleLabel": "Record the combined mass",
+        "type": "recordNotebook",
+        "valueParameter": "measurementId"
+      }
+    },
+    {
+      "id": "precipitate-by-difference",
+      "verb": "calculate",
+      "label": "Work out the precipitate's mass",
+      "parameters": {
+        "calculationId": "precipitate-mass",
+        "template": "gravimetricPrecipitateMass",
+        "combinedMassMeasurementId": "combined-mass",
+        "watchGlassMassMeasurementId": "watch-glass-mass",
+        "filterPaperMassMeasurementId": "{{config.filterPaperMassMeasurementId}}",
+        "tolerance": 0.001
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Work out the precipitate's mass: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Precipitate mass worked out.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "calculate"
+      ]
+    }
+  ],
+  "process": {
+    "startNodeId": "zero-balance-node",
+    "nodes": [
+      {
+        "id": "zero-balance-node",
+        "type": "action",
+        "title": "Zero the balance",
+        "description": "With the pan empty and the draft-shield doors closed, check that the balance reads 0.0000 g, and press TARE if it does not.",
+        "actionId": "zero-balance",
+        "config": {},
+        "validation": [
+          {
+            "id": "zero-balance-node-done",
+            "type": "notebookEntry",
+            "label": "Zero the balance was completed.",
+            "notebookTag": "zero-balance-done"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Zero the balance complete.",
+          "retry": "Review Zero the balance and try again."
+        }
+      },
+      {
+        "id": "glass-on-balance-node",
+        "type": "action",
+        "title": "Put the watch glass on the balance",
+        "description": "Put the clean, dry, labelled watch glass on the balance pan.",
+        "actionId": "glass-on-balance",
+        "config": {},
+        "validation": [
+          {
+            "id": "glass-on-balance-node-done",
+            "type": "actionEvidence",
+            "label": "Action glass-on-balance was completed.",
+            "actionId": "glass-on-balance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Put the watch glass on the balance complete.",
+          "retry": "Review Put the watch glass on the balance and try again."
+        }
+      },
+      {
+        "id": "weigh-glass-node",
+        "type": "action",
+        "title": "Read its mass",
+        "description": "Read the balance and enter the empty watch glass's mass.",
+        "actionId": "weigh-glass",
+        "config": {},
+        "validation": [
+          {
+            "id": "weigh-glass-node-done",
+            "type": "measurementRecorded",
+            "label": "Read its mass was recorded.",
+            "measurementId": "watch-glass-mass"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read its mass complete.",
+          "retry": "Review Read its mass and try again."
+        }
+      },
+      {
+        "id": "record-glass-node",
+        "type": "action",
+        "title": "Record the mass",
+        "description": "Record the watch glass's mass in your notebook.",
+        "actionId": "record-glass",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-glass-node-done",
+            "type": "measurementRecorded",
+            "label": "Record the mass was recorded.",
+            "measurementId": "watch-glass-mass"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record the mass complete.",
+          "retry": "Review Record the mass and try again."
+        }
+      },
+      {
+        "id": "paper-onto-glass-node",
+        "type": "action",
+        "title": "Lift the paper onto the glass",
+        "description": "Take the watch glass off the balance, then lift the paper with its solid out of the funnel and open it flat on the glass.",
+        "actionId": "paper-onto-glass",
+        "config": {},
+        "validation": [
+          {
+            "id": "paper-onto-glass-node-done",
+            "type": "actionEvidence",
+            "label": "Action paper-onto-glass was completed.",
+            "actionId": "paper-onto-glass"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Lift the paper onto the glass complete.",
+          "retry": "Review Lift the paper onto the glass and try again."
+        }
+      },
+      {
+        "id": "filtrate-to-sink-node",
+        "type": "action",
+        "title": "Pour away the filtrate",
+        "description": "Pour the filtrate from the flask down the sink.",
+        "actionId": "filtrate-to-sink",
+        "config": {},
+        "validation": [
+          {
+            "id": "filtrate-to-sink-node-done",
+            "type": "notebookEntry",
+            "label": "Pour away the filtrate was completed.",
+            "notebookTag": "filtrate-disposed"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Pour away the filtrate complete.",
+          "retry": "Review Pour away the filtrate and try again."
+        }
+      },
+      {
+        "id": "set-oven-node",
+        "type": "action",
+        "title": "Set the oven",
+        "description": "Turn the oven's control to between 110 and 120 °C, and enter the setting.",
+        "actionId": "set-oven",
+        "config": {},
+        "validation": [
+          {
+            "id": "set-oven-node-done",
+            "type": "notebookEntry",
+            "label": "Set the oven was completed.",
+            "notebookTag": "oven-set"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Set the oven complete.",
+          "retry": "Review Set the oven and try again."
+        }
+      },
+      {
+        "id": "open-oven-1-node",
+        "type": "action",
+        "title": "Open the oven",
+        "description": "Open the oven door.",
+        "actionId": "open-oven-1",
+        "config": {},
+        "validation": [
+          {
+            "id": "open-oven-1-node-done",
+            "type": "notebookEntry",
+            "label": "Open the oven was completed.",
+            "notebookTag": "open-oven-1-done"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Open the oven complete.",
+          "retry": "Review Open the oven and try again."
+        }
+      },
+      {
+        "id": "glass-into-oven-node",
+        "type": "action",
+        "title": "Put it in the oven",
+        "description": "Put the watch glass with the paper and solid on the oven's shelf.",
+        "actionId": "glass-into-oven",
+        "config": {},
+        "validation": [
+          {
+            "id": "glass-into-oven-node-done",
+            "type": "actionEvidence",
+            "label": "Action glass-into-oven was completed.",
+            "actionId": "glass-into-oven"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Put it in the oven complete.",
+          "retry": "Review Put it in the oven and try again."
+        }
+      },
+      {
+        "id": "dry-first-node",
+        "type": "action",
+        "title": "Dry it",
+        "description": "Close the door and dry the solid for 10 to 15 minutes.",
+        "actionId": "dry-first",
+        "config": {},
+        "validation": [
+          {
+            "id": "dry-first-node-done",
+            "type": "notebookEntry",
+            "label": "Dry it was completed.",
+            "notebookTag": "dry-first-done"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Dry it complete.",
+          "retry": "Review Dry it and try again."
+        }
+      },
+      {
+        "id": "open-oven-2-node",
+        "type": "action",
+        "title": "Open the oven",
+        "description": "When the time is up, open the oven door.",
+        "actionId": "open-oven-2",
+        "config": {},
+        "validation": [
+          {
+            "id": "open-oven-2-node-done",
+            "type": "notebookEntry",
+            "label": "Open the oven was completed.",
+            "notebookTag": "open-oven-2-done"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Open the oven complete.",
+          "retry": "Review Open the oven and try again."
+        }
+      },
+      {
+        "id": "first-to-pad-node",
+        "type": "action",
+        "title": "Take it out with tongs",
+        "description": "Lift the warm watch glass out with the crucible tongs and set it on the heat-safe pad.",
+        "actionId": "first-to-pad",
+        "config": {},
+        "validation": [
+          {
+            "id": "first-to-pad-node-done",
+            "type": "actionEvidence",
+            "label": "Action first-to-pad was completed.",
+            "actionId": "first-to-pad"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Take it out with tongs complete.",
+          "retry": "Review Take it out with tongs and try again."
+        }
+      },
+      {
+        "id": "close-oven-1-node",
+        "type": "action",
+        "title": "Close the oven",
+        "description": "Close the oven door, so the oven keeps its temperature while you work.",
+        "actionId": "close-oven-1",
+        "config": {},
+        "validation": [
+          {
+            "id": "close-oven-1-node-done",
+            "type": "notebookEntry",
+            "label": "Close the oven was completed.",
+            "notebookTag": "close-oven-1-done"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Close the oven complete.",
+          "retry": "Review Close the oven and try again."
+        }
+      },
+      {
+        "id": "break-up-node",
+        "type": "action",
+        "title": "Break up the solid",
+        "description": "Break the solid into small pieces with the metal scoop.",
+        "actionId": "break-up",
+        "config": {},
+        "validation": [
+          {
+            "id": "break-up-node-done",
+            "type": "notebookEntry",
+            "label": "Break up the solid was completed.",
+            "notebookTag": "solid-broken-up"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Break up the solid complete.",
+          "retry": "Review Break up the solid and try again."
+        }
+      },
+      {
+        "id": "reopen-oven-node",
+        "type": "action",
+        "title": "Open the oven",
+        "description": "Open the oven door again.",
+        "actionId": "reopen-oven",
+        "config": {},
+        "validation": [
+          {
+            "id": "reopen-oven-node-done",
+            "type": "notebookEntry",
+            "label": "Open the oven was completed.",
+            "notebookTag": "reopen-oven-done"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Open the oven complete.",
+          "retry": "Review Open the oven and try again."
+        }
+      },
+      {
+        "id": "glass-back-into-oven-node",
+        "type": "action",
+        "title": "Put it back in the oven",
+        "description": "With the tongs, put the watch glass back on the oven's shelf.",
+        "actionId": "glass-back-into-oven",
+        "config": {},
+        "validation": [
+          {
+            "id": "glass-back-into-oven-node-done",
+            "type": "actionEvidence",
+            "label": "Action glass-back-into-oven was completed.",
+            "actionId": "glass-back-into-oven"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Put it back in the oven complete.",
+          "retry": "Review Put it back in the oven and try again."
+        }
+      },
+      {
+        "id": "dry-second-node",
+        "type": "action",
+        "title": "Dry it again",
+        "description": "Close the door and dry for 5 more minutes.",
+        "actionId": "dry-second",
+        "config": {},
+        "validation": [
+          {
+            "id": "dry-second-node-done",
+            "type": "notebookEntry",
+            "label": "Dry it again was completed.",
+            "notebookTag": "dry-second-done"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Dry it again complete.",
+          "retry": "Review Dry it again and try again."
+        }
+      },
+      {
+        "id": "open-oven-3-node",
+        "type": "action",
+        "title": "Open the oven",
+        "description": "When the time is up, open the oven door.",
+        "actionId": "open-oven-3",
+        "config": {},
+        "validation": [
+          {
+            "id": "open-oven-3-node-done",
+            "type": "notebookEntry",
+            "label": "Open the oven was completed.",
+            "notebookTag": "open-oven-3-done"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Open the oven complete.",
+          "retry": "Review Open the oven and try again."
+        }
+      },
+      {
+        "id": "second-to-pad-node",
+        "type": "action",
+        "title": "Take it out with tongs",
+        "description": "Lift the watch glass out with the tongs and set it on the heat-safe pad.",
+        "actionId": "second-to-pad",
+        "config": {},
+        "validation": [
+          {
+            "id": "second-to-pad-node-done",
+            "type": "actionEvidence",
+            "label": "Action second-to-pad was completed.",
+            "actionId": "second-to-pad"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Take it out with tongs complete.",
+          "retry": "Review Take it out with tongs and try again."
+        }
+      },
+      {
+        "id": "close-oven-2-node",
+        "type": "action",
+        "title": "Close the oven",
+        "description": "Close the oven door.",
+        "actionId": "close-oven-2",
+        "config": {},
+        "validation": [
+          {
+            "id": "close-oven-2-node-done",
+            "type": "notebookEntry",
+            "label": "Close the oven was completed.",
+            "notebookTag": "close-oven-2-done"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Close the oven complete.",
+          "retry": "Review Close the oven and try again."
+        }
+      },
+      {
+        "id": "cool-node",
+        "type": "action",
+        "title": "Let it cool",
+        "description": "Leave it on the pad until it is cool enough to weigh.",
+        "actionId": "cool",
+        "config": {},
+        "validation": [
+          {
+            "id": "cool-node-done",
+            "type": "notebookEntry",
+            "label": "Let it cool was completed.",
+            "notebookTag": "assembly-cooled"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Let it cool complete.",
+          "retry": "Review Let it cool and try again."
+        }
+      },
+      {
+        "id": "combined-on-balance-node",
+        "type": "action",
+        "title": "Put it on the balance",
+        "description": "Put the cool watch glass, with the paper and dry solid, on the balance pan.",
+        "actionId": "combined-on-balance",
+        "config": {},
+        "validation": [
+          {
+            "id": "combined-on-balance-node-done",
+            "type": "actionEvidence",
+            "label": "Action combined-on-balance was completed.",
+            "actionId": "combined-on-balance"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Put it on the balance complete.",
+          "retry": "Review Put it on the balance and try again."
+        }
+      },
+      {
+        "id": "weigh-combined-node",
+        "type": "action",
+        "title": "Read the combined mass",
+        "description": "Read the balance and enter the combined mass.",
+        "actionId": "weigh-combined",
+        "config": {},
+        "validation": [
+          {
+            "id": "weigh-combined-node-done",
+            "type": "measurementRecorded",
+            "label": "Read the combined mass was recorded.",
+            "measurementId": "combined-mass"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Read the combined mass complete.",
+          "retry": "Review Read the combined mass and try again."
+        }
+      },
+      {
+        "id": "record-combined-node",
+        "type": "action",
+        "title": "Record the combined mass",
+        "description": "Record the combined mass in your notebook.",
+        "actionId": "record-combined",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-combined-node-done",
+            "type": "measurementRecorded",
+            "label": "Record the combined mass was recorded.",
+            "measurementId": "combined-mass"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record the combined mass complete.",
+          "retry": "Review Record the combined mass and try again."
+        }
+      },
+      {
+        "id": "precipitate-by-difference-node",
+        "type": "calculation",
+        "title": "Work out the precipitate's mass",
+        "description": "Subtract the watch glass's mass and the paper's mass from the combined mass.",
+        "actionId": "precipitate-by-difference",
+        "config": {},
+        "validation": [
+          {
+            "id": "precipitate-by-difference-node-done",
+            "type": "calculationWithinTolerance",
+            "label": "Work out the precipitate's mass was submitted.",
+            "calculationId": "precipitate-mass"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Work out the precipitate's mass complete.",
+          "retry": "Review Work out the precipitate's mass and try again."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "zero-balance-node",
+        "to": "glass-on-balance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "glass-on-balance-node",
+        "to": "weigh-glass-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "weigh-glass-node",
+        "to": "record-glass-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-glass-node",
+        "to": "paper-onto-glass-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "paper-onto-glass-node",
+        "to": "filtrate-to-sink-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "filtrate-to-sink-node",
+        "to": "set-oven-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "set-oven-node",
+        "to": "open-oven-1-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "open-oven-1-node",
+        "to": "glass-into-oven-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "glass-into-oven-node",
+        "to": "dry-first-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "dry-first-node",
+        "to": "open-oven-2-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "open-oven-2-node",
+        "to": "first-to-pad-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "first-to-pad-node",
+        "to": "close-oven-1-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "close-oven-1-node",
+        "to": "break-up-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "break-up-node",
+        "to": "reopen-oven-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "reopen-oven-node",
+        "to": "glass-back-into-oven-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "glass-back-into-oven-node",
+        "to": "dry-second-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "dry-second-node",
+        "to": "open-oven-3-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "open-oven-3-node",
+        "to": "second-to-pad-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "second-to-pad-node",
+        "to": "close-oven-2-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "close-oven-2-node",
+        "to": "cool-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "cool-node",
+        "to": "combined-on-balance-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "combined-on-balance-node",
+        "to": "weigh-combined-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "weigh-combined-node",
+        "to": "record-combined-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-combined-node",
+        "to": "precipitate-by-difference-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [
+    {
+      "id": "drying-practice-success",
+      "type": "actionEvidence",
+      "label": "Action weigh-combined was completed.",
+      "actionId": "weigh-combined"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "current node expects a different action",
+      "message": "That action is out of sequence for the current technique step.",
+      "recovery": "Check the process map and perform the highlighted step first."
+    },
+    {
+      "id": "missing-source",
+      "when": "source equipment or contents are missing",
+      "message": "The selected source does not contain the material required for this action.",
+      "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+    },
+    {
+      "id": "overflow",
+      "when": "target capacity would be exceeded",
+      "message": "The target equipment cannot hold the requested volume.",
+      "recovery": "Use a larger container or transfer a smaller measured amount."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.0.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-10-05T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "twin-3d",
+      "drying",
+      "gravimetry",
+      "hard-water"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry",
+        "kind": "entry",
+        "nodeId": "zero-balance-node",
+        "label": "Entry"
+      },
+      {
+        "id": "exit",
+        "kind": "exit",
+        "nodeId": "precipitate-by-difference-node",
+        "label": "Exit"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "balance-instrument",
+        "required": true,
+        "allowedDefinitionIds": [
+          "analytical-balance"
+        ],
+        "sourceInstanceIds": [
+          "analytical-balance-1"
+        ]
+      },
+      {
+        "roleId": "weighed-vessel",
+        "required": true,
+        "allowedDefinitionIds": [
+          "watch-glass"
+        ],
+        "sourceInstanceIds": [
+          "watch-glass-1"
+        ]
+      },
+      {
+        "roleId": "filter-medium",
+        "required": true,
+        "allowedDefinitionIds": [
+          "filter-paper"
+        ],
+        "sourceInstanceIds": [
+          "filter-paper-1"
+        ]
+      },
+      {
+        "roleId": "dried-assembly",
+        "required": true,
+        "allowedDefinitionIds": [
+          "watch-glass"
+        ],
+        "sourceInstanceIds": [
+          "watch-glass-1"
+        ]
+      },
+      {
+        "roleId": "filtration-receiver",
+        "required": true,
+        "allowedDefinitionIds": [
+          "erlenmeyer-flask-250ml"
+        ],
+        "sourceInstanceIds": [
+          "erlenmeyer-flask-250ml-1"
+        ]
+      },
+      {
+        "roleId": "waste-drain",
+        "required": true,
+        "allowedDefinitionIds": [
+          "lab-sink"
+        ],
+        "sourceInstanceIds": [
+          "lab-sink-1"
+        ]
+      },
+      {
+        "roleId": "drying-instrument",
+        "required": true,
+        "allowedDefinitionIds": [
+          "drying-oven"
+        ],
+        "sourceInstanceIds": [
+          "drying-oven-1"
+        ]
+      },
+      {
+        "roleId": "cooling-surface",
+        "required": true,
+        "allowedDefinitionIds": [
+          "heat-safe-pad"
+        ],
+        "sourceInstanceIds": [
+          "heat-safe-pad-1"
+        ]
+      },
+      {
+        "roleId": "cooling-tool",
+        "required": true,
+        "allowedDefinitionIds": [
+          "crucible-tongs"
+        ],
+        "sourceInstanceIds": [
+          "crucible-tongs-1"
+        ]
+      },
+      {
+        "roleId": "solid-transfer-tool",
+        "required": true,
+        "allowedDefinitionIds": [
+          "scoopula"
+        ],
+        "sourceInstanceIds": [
+          "scoopula-1"
+        ]
+      }
+    ],
+    "modelSlots": [],
+    "configurationSlots": [
+      {
+        "id": "paperMassG",
+        "valueType": "number",
+        "required": true
+      },
+      {
+        "id": "watchGlassMassG",
+        "valueType": "number",
+        "required": true,
+        "defaultValue": 30
+      },
+      {
+        "id": "firstDryingMinutes",
+        "valueType": "number",
+        "required": true,
+        "defaultValue": 12
+      },
+      {
+        "id": "filterPaperMassMeasurementId",
+        "valueType": "string",
+        "required": true,
+        "defaultValue": "filter-paper-mass"
+      }
+    ],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [
+      {
+        "id": "watch-glass-mass",
+        "kind": "measurement",
+        "actionId": "weigh-glass",
+        "referenceId": "watch-glass-mass"
+      },
+      {
+        "id": "combined-mass",
+        "kind": "measurement",
+        "actionId": "weigh-combined",
+        "referenceId": "combined-mass"
+      },
+      {
+        "id": "precipitate-mass",
+        "kind": "calculation",
+        "actionId": "precipitate-by-difference",
+        "referenceId": "precipitate-mass"
+      }
+    ],
+    "completion": {
+      "exitPortIds": [
+        "exit"
+      ],
+      "requiredEvidenceOutputIds": [
+        "watch-glass-mass",
+        "combined-mass",
+        "precipitate-mass"
+      ],
+      "requiredValidationRuleIds": [
+        "drying-practice-success"
+      ]
+    },
+    "catalogDisposition": "composable",
+    "legacyActionEffects": [
+      {
+        "actionId": "record-glass",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "record-combined",
+        "effect": {
+          "classes": [
+            "evidence-recording"
+          ],
+          "targets": [
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "precipitate-by-difference",
+        "effect": {
+          "classes": [
+            "calculation-analysis"
+          ],
+          "targets": [
+            {
+              "domain": "analysis"
+            },
+            {
+              "domain": "evidence"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

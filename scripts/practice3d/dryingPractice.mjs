@@ -1,4 +1,4 @@
-import { action, evidenceEffect, item, node, technique, zeroEmptyBalance } from "./common.mjs";
+import { action, evidenceEffect, item, node, technique, twinOf, zeroEmptyBalance } from "./common.mjs";
 
 /**
  * Dry and Weigh a Precipitate, 3D practice version (PACK2_ATOMIZATION.md, "Dry and Weigh"; decisions 3, 8
@@ -11,6 +11,10 @@ import { action, evidenceEffect, item, node, technique, zeroEmptyBalance } from 
  * as the hot glass is out, the glass moved with tongs onto a heat-safe pad, the solid broken up between
  * them), lets it cool, weighs it, records it, and works out the precipitate's mass by difference, which
  * Calculate Hardness (Pack 3) takes as its one precipitate mass.
+ *
+ * Pack 3 (decided 2026-10-10, `proposals/PACK3_ATOMIZATION.md`): the watch glass and the assembly read to 0.0001 g
+ * (decision 9), and the paper's mass is read through the slot `filterPaperMassMeasurementId`, `filter-paper-mass`
+ * here; a 3D lab binds it to Filtration's scoped measurement.
  */
 const OVEN = { ovenInstanceId: "drying-oven-1", ovenDefinitionId: "drying-oven" };
 const ASSEMBLY = { vesselInstanceId: "watch-glass-1", precipitateCarrierInstanceId: "filter-paper-1" };
@@ -89,11 +93,12 @@ const intoOven = (id, label, extra) => glassOn(id, "drying-oven-chamber", OVEN_T
   success: "The watch glass is on the oven's shelf.",
 }, extra);
 
-const [zeroAction, zeroNode] = zeroEmptyBalance("zero-balance", "analytical-balance-1");
+const [zeroAction, zeroNode] = zeroEmptyBalance("zero-balance", "analytical-balance-1", 4);
 
 const actions = [
   action("note-paper-mass", "observe", "Note the filter paper's mass", {
-    measurementId: "filter-paper-mass",
+    // Bound to the slot the by-difference step reads, so the practice version produces what it consumes.
+    measurementId: "{{config.filterPaperMassMeasurementId}}",
     inputMode: "numeric",
     inputRole: "teacherConfiguration",
     inputLabel: "Filter paper mass, weighed dry before filtering (g)",
@@ -121,7 +126,7 @@ const actions = [
       inputLabel: "Balance display for the empty watch glass (g)",
       inputMin: 0,
       inputMinExclusive: true,
-      inputStep: 0.001,
+      inputStep: 0.0001,
       inputRequired: true,
       unit: "g",
     }, { atomId: "atom.weigh.tare-vessel", roles: { "balance-instrument": "analytical-balance", "weighed-vessel": "watch-glass" }, success: "Reading taken." }),
@@ -229,7 +234,7 @@ const actions = [
       inputLabel: "Balance display for the watch glass, paper and dry solid (g)",
       inputMin: 0,
       inputMinExclusive: true,
-      inputStep: 0.001,
+      inputStep: 0.0001,
       inputRequired: true,
       unit: "g",
     }, { atomId: "atom.weigh.dry-assembly", roles: { "balance-instrument": "analytical-balance", "dried-assembly": "watch-glass" }, success: "Reading taken." }),
@@ -243,13 +248,13 @@ const actions = [
     template: "gravimetricPrecipitateMass",
     combinedMassMeasurementId: "combined-mass",
     watchGlassMassMeasurementId: "watch-glass-mass",
-    filterPaperMassMeasurementId: "filter-paper-mass",
+    filterPaperMassMeasurementId: "{{config.filterPaperMassMeasurementId}}",
     tolerance: 0.001,
   }, { evidence: ["calculate"], success: "Precipitate mass worked out." }),
 ];
 
 const nodes = [
-  node("note-paper-mass", "Note the paper's mass", "Note the dry filter paper's mass, which you weighed before filtering.", { measurementId: "filter-paper-mass" }, "observation"),
+  node("note-paper-mass", "Note the paper's mass", "Note the dry filter paper's mass, which you weighed before filtering.", { measurementId: "{{config.filterPaperMassMeasurementId}}" }, "observation"),
   zeroNode,
   node("glass-on-balance", "Put the watch glass on the balance", "Put the clean, dry, labelled watch glass on the balance pan."),
   node("weigh-glass", "Read its mass", "Read the balance and enter the empty watch glass's mass.", { measurementId: "watch-glass-mass" }),
@@ -278,7 +283,7 @@ const nodes = [
     "Subtract the watch glass's mass and the paper's mass from the combined mass.", { calculationId: "precipitate-mass" }, "calculation"),
 ];
 
-export default technique({
+const practice = technique({
   id: "drying-practice",
   title: "Dry and Weigh a Precipitate",
   learningGoal: "Dry a collected precipitate in two timed oven stages, handling it hot with tongs, and find its mass by difference once it is cool.",
@@ -290,6 +295,7 @@ export default technique({
     { id: "paperMassG", valueType: "number", required: true },
     { id: "watchGlassMassG", valueType: "number", required: true, defaultValue: 30 },
     { id: "firstDryingMinutes", valueType: "number", required: true, defaultValue: 12 },
+    { id: "filterPaperMassMeasurementId", valueType: "string", required: true, defaultValue: "filter-paper-mass" },
   ],
   evidenceOutputs: [
     { id: "watch-glass-mass", kind: "measurement", actionId: "weigh-glass", referenceId: "watch-glass-mass" },
@@ -301,3 +307,13 @@ export default technique({
   legacyActionEffects: [evidenceEffect("record-glass"), evidenceEffect("record-combined"),
     { actionId: "precipitate-by-difference", effect: { classes: ["calculation-analysis"], targets: [{ domain: "analysis" }, { domain: "evidence" }] } }],
 });
+
+export default practice;
+
+/**
+ * The composable twin a 3D lab composes (Pack 3 3a, 2026-10-10; D8's table "What each twin drops"). It drops "Note the
+ * paper's mass", which stands in for Filtration's weighing, and the precipitate that only fills the practice bench;
+ * the paper's and watch glass's masses and the first stage's time stay. The lab binds `filterPaperMassMeasurementId`
+ * to Filtration's measurement.
+ */
+export const twin = twinOf(practice, { id: "drying-3d", dropSteps: ["note-paper-mass"], dropSlots: ["precipitateMassG"] });

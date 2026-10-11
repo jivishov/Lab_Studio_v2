@@ -263,7 +263,7 @@
         "instrumentDefinitionId": "analytical-balance",
         "balanceOperation": "zero",
         "tag": "zero-balance-done",
-        "note": "The empty balance reads 0.000 g."
+        "note": "The empty balance reads 0.0000 g."
       },
       "prerequisites": [],
       "stateChanges": [
@@ -369,7 +369,7 @@
         "inputLabel": "Balance display for the dry filter paper (g)",
         "inputMin": 0,
         "inputMinExclusive": true,
-        "inputStep": 0.001,
+        "inputStep": 0.0001,
         "inputRequired": true,
         "unit": "g"
       },
@@ -894,7 +894,7 @@
         "id": "zero-balance-node",
         "type": "action",
         "title": "Zero the balance",
-        "description": "With the pan empty and the draft-shield doors closed, check that the balance reads 0.000 g, and press TARE if it does not.",
+        "description": "With the pan empty and the draft-shield doors closed, check that the balance reads 0.0000 g, and press TARE if it does not.",
         "actionId": "zero-balance",
         "config": {},
         "validation": [

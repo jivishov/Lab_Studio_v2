@@ -34,7 +34,7 @@ const equipment = [
   item("wash-bottle-1", "wash-bottle", "Wash bottle", water),
 ];
 
-const [zeroAction, zeroNode] = zeroEmptyBalance("zero-balance", "analytical-balance-1");
+const [zeroAction, zeroNode] = zeroEmptyBalance("zero-balance", "analytical-balance-1", 4);
 
 const actions = [
   action("place-ring-stand", "place", "Stand the ring stand on the bench", {
@@ -75,7 +75,8 @@ const actions = [
       inputLabel: "Balance display for the dry filter paper (g)",
       inputMin: 0,
       inputMinExclusive: true,
-      inputStep: 0.001,
+      // 0.0001 g (Pack 3 decision 9): the first weighing on the balance sets its display's places.
+      inputStep: 0.0001,
       inputRequired: true,
       unit: "g",
     }, { atomId: "atom.weigh.filter-medium-tare", roles: { "balance-instrument": "analytical-balance", "filter-medium": "filter-paper" },

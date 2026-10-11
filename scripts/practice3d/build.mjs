@@ -23,7 +23,7 @@ import { composeLab } from "./composeLab.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 
-/** The practice list, in the order the 3D switcher shows Pack 2. `basedOn` names the lab-bound original. */
+/** The practice list, in the order the 3D switcher shows Packs 2 and 3. `basedOn` names the lab-bound original. */
 const PRACTICE = [
   { module: "./transferPractice.mjs", basedOn: "transfer", pack: 2,
     description: "Pour a measured sample into a beaker, let the cylinder drain, and rinse it in." },
@@ -35,13 +35,16 @@ const PRACTICE = [
     description: "Dry the precipitate in two oven stages, handle it hot with tongs, and weigh it by difference." },
   { module: "./heatReweighPractice.mjs", basedOn: "thermal-decomposition-mass-loss", pack: 2,
     description: "Heat a carbonate mixture over a blue flame, lid askew, then cool and reweigh it to constant mass." },
+  // Pack 3a (decided 2026-10-10, `proposals/PACK3_ATOMIZATION.md`).
+  { module: "./hardWaterCalculationPractice.mjs", basedOn: "hard-water-calculation", pack: 3,
+    description: "Work out the precipitate's mass by difference, then calculate the water's hardness in mg/L as CaCO3." },
 ];
 
 /** Twins with no practice version of their own, composed by the 3D labs only (you, 2026-10-10). */
 const TWINS = [{ module: "./measuringVolumeTwin.mjs", basedOn: "measuring-volume" }];
 
 /** The 3D labs, in the order the switcher's Experiments group shows them. */
-const LABS = ["./labs/introFiltrationDemo.mjs"];
+const LABS = ["./labs/introFiltrationDemo.mjs", "./labs/hardWaterDemo.mjs"];
 
 const json = (value) => `${JSON.stringify(value, null, 2)}\n`;
 const check = process.argv.includes("--check");
