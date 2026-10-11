@@ -14,7 +14,8 @@ the evidence notes have what was built and checked.
 (the pump stays on the pipette), the handoff commits of 2026-10-03, then the microarray adoption of
 2026-10-04 (`9798de1` P0 to the P5 records commit, and the fidelity review `b886175`), then Make a Solution
 atomized (D4 exception 9, `63096ed`) and its fidelity review, and everything since: the D8 draw-back
-(`690a063`), then the model refinement (2026-10-10; `git log -1` names it). Push only when the user asks.
+(`690a063`), then the model refinement (2026-10-10), the Pack 3 proposal (`9923202`, revision 3 `af50318`) and
+the Submit fix (`0fa32ee`); `git log -1` names the latest. Push only when the user asks.
 
 **Pack 1, technique by technique:**
 
@@ -159,11 +160,19 @@ wait for confirmation (`DECISIONS.md`, the "built" row). G3 has still not run.
    - **For the polish pass:** which glass surface shows depends on triangle order (glass writes no depth), so
      the GL bottles' shoulders now show the ceiling lights. Recorded in the proposal's UI issues.
    - V2 (edge legibility) was not built. Committed locally, not pushed.
-10. **Next: the Pack 3 proposal** (catalogue items 11–15), proposed and decided before any build. Its new models
-   are built with the refined library: `segments_for`, `cut()`, `helix_thread_mesh()`, `pull_spout()` and
-   `graduation_scale()`.
-   - `PACK3_PROPOSAL_PROMPT.md` is its prompt. It was checked against an evaluated inventory.
-   - The note at its top says how D8 replaces its first decision's options.
+10. **Done 2026-10-10: the Pack 3 proposal** (catalogue items 11–15; `proposals/PACK3_ATOMIZATION.md`, revision 3;
+   `DECISIONS.md`, the two Pack 3 rows). Proposed, decided (decisions 1–8), then reviewed again for fidelity
+   and corrected (revision 3, decisions 9–12), every decision as recommended. In short:
+   - Beer's Law and Hard Water Gravimetry are deferred to Packs 5 and 6.
+   - Paper Chromatography, Calculate Hardness and brass take Pack 2's route (practice versions and twins)
+     into the 3D labs `paper-chromatography`, `hard-water-demo` and `brass-colorimetry`.
+   - No new equipment definitions, bench operations or runtime changes; at most two atoms, by addition.
+   - Pack 2's 3D weighings move to 0.0001 g (decision 9), so `hard-water-demo` reaches 375 mg/L.
+   - Pack 3a first (hardness, `hard-water-demo`, chromatography), then 3b (brass, in six techniques).
+   - Also fixed: the 3D step card offers Submit again after a wrong calculation (`0fa32ee`).
+11. **Next: the Pack 3a build.** `PACK3A_BUILD_PROMPT.md` is its prompt; the proposal's "For the build thread"
+   lists what it will meet, each fact with its proof. New models are built with the refined library:
+   `segments_for`, `cut()`, `helix_thread_mesh()`, `pull_spout()` and `graduation_scale()`.
 
 **How the work has been checked** (the user's validation policy: source review, `npx tsc -p
 tsconfig.app.json --noEmit`, `python tools/blender/validate_equipment3d.py --pack 1`, and narrow
