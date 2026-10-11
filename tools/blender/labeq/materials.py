@@ -160,6 +160,20 @@ _FACTORIES = {
     'Flame yellow': lambda n: _flame(n, (1.0, 0.62, 0.16, 1), 0.55),
     'Flame blue': lambda n: _flame(n, (0.25, 0.42, 1.0, 1), 0.35),
     'Flame inner cone': lambda n: _flame(n, (0.45, 0.75, 1.0, 1), 0.6),
+    # Pack 3a's chromatography (decided 2026-10-10): a lacquered wooden pencil (its cedar, graphite, aluminium
+    # ferrule and eraser), the masking tape of a chamber's label, and a clear ruler's black scale.
+    'Pencil lacquer yellow': lambda n: principled(n, **{'Base Color': (0.86, 0.6, 0.04, 1), 'Roughness': 0.32,
+                                                        'Coat Weight': 0.4, 'Coat Roughness': 0.15}),
+    'Pencil cedar': lambda n: principled(n, **{'Base Color': (0.74, 0.53, 0.34, 1), 'Roughness': 0.8}),
+    'Pencil graphite': lambda n: principled(n, **{'Base Color': (0.07, 0.07, 0.075, 1), 'Roughness': 0.38,
+                                                  'Specular IOR Level': 0.6}),
+    'Pencil eraser': lambda n: principled(n, **{'Base Color': (0.82, 0.42, 0.42, 1), 'Roughness': 0.85}),
+    'Pencil ferrule': lambda n: principled(n, **{'Base Color': (0.75, 0.76, 0.77, 1), 'Metallic': 1.0, 'Roughness': 0.3}),
+    'Masking tape': lambda n: principled(n, **{'Base Color': (0.86, 0.8, 0.63, 1), 'Roughness': 0.85}),
+    'Black print ink': lambda n: principled(n, **{'Base Color': (0.015, 0.015, 0.017, 1), 'Roughness': 0.5}),
+    # a moulded clear ruler: clear polystyrene whose faces carry a faint satin from the mould (decided 2026-10-11)
+    'Polystyrene ruler clear': lambda n: principled(n, **{'Base Color': (0.97, 0.98, 0.98, 1), 'Roughness': 0.14,
+                                                          'IOR': 1.59, 'Transmission Weight': 1.0}),
 }
 
 

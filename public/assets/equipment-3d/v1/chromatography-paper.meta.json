@@ -1,0 +1,73 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "chromatography-paper",
+  "model": "chromatography-paper.glb",
+  "thumbnail": "thumbs/chromatography-paper.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "rect",
+      "width": 15.0,
+      "depth": 110.0
+    },
+    "grip": {
+      "heightMm": 98.0
+    },
+    "graduations": null,
+    "benchRest": {
+      "rollDeg": -90.0,
+      "liftMm": 0.09,
+      "shiftMm": [
+        0.0,
+        -55.0
+      ]
+    },
+    "stripFace": {
+      "widthMm": 15.0,
+      "lengthMm": 110.0,
+      "thicknessMm": 0.18,
+      "normalMm": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "hole": {
+        "centreZMm": 105.0,
+        "radiusMm": 1.0
+      }
+    },
+    "wetLook": true,
+    "anchors": {},
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -7.5,
+        -0.09,
+        0.0
+      ],
+      "max": [
+        7.5,
+        0.09,
+        110.0
+      ]
+    },
+    "triangles": 112,
+    "materials": [
+      "Filter paper"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/chromatography_paper.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "fe9b2778bec03ef327ee75b7c82ddeb42e9e4bf401c45153015af84acc85a9f6",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

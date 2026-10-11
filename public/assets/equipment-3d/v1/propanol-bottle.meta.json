@@ -1,0 +1,102 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "propanol-bottle",
+  "model": "propanol-bottle.glb",
+  "thumbnail": "thumbs/propanol-bottle.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "circle",
+      "radius": 35.0
+    },
+    "grip": {
+      "heightMm": 47.3
+    },
+    "pour": {
+      "lipMm": [
+        -21.8,
+        0.0,
+        124.0
+      ],
+      "tiltDeg": 110.0,
+      "style": "pour"
+    },
+    "fill": {
+      "innerProfileMm": [
+        [
+          0.0,
+          3.0
+        ],
+        [
+          30.0,
+          3.0
+        ],
+        [
+          33.0,
+          5.0
+        ],
+        [
+          33.0,
+          87.2
+        ],
+        [
+          20.0,
+          104.8
+        ],
+        [
+          20.0,
+          124.0
+        ]
+      ],
+      "capacityMl": 250,
+      "meniscus": "concave"
+    },
+    "graduations": null,
+    "solidRest": {
+      "centreMm": [
+        0.0,
+        0.0,
+        3.0
+      ],
+      "radiusMm": 26.4
+    },
+    "anchors": {},
+    "displays": [],
+    "states": {
+      "closure": "open"
+    }
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -35.0,
+        -35.12,
+        0.03
+      ],
+      "max": [
+        35.0,
+        35.0,
+        124.0
+      ]
+    },
+    "triangles": 17270,
+    "materials": [
+      "Blue print ink",
+      "Borosilicate glass",
+      "Borosilicate glass thick",
+      "Frosted marking spot",
+      "White enamel print"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/propanol_bottle.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "e9f5543f1fb4997b179792abc80679b051be08f7f6134a0e67cece167af17f62",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

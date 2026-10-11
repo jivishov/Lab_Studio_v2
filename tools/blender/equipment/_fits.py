@@ -87,3 +87,14 @@ def funnel_paper_apex_above_tip(f=FUNNEL):
     si, ls, w = f['stem_id'] / 2, f['stem_len'], f['wall']
     z_inner_start = ls + w / tan * 0.5
     return z_inner_start - si / tan
+
+
+# Pack 3a's paper chromatography (decided 2026-10-10): the strip hangs from a wire hook under the chamber's lid,
+# through a hole punched near its top, its lower edge in the shallow solvent just above the floor.
+CHROMATOGRAPHY_STRIP = {'width': 15.0, 'length': 110.0, 'thickness': 0.18, 'hole_r': 1.0, 'hole_below_top': 5.0}
+CHROMATOGRAPHY_CHAMBER = {'r': 15.0, 'wall': 1.4, 'height': 120.0, 'floor': 2.4, 'strip_above_floor': 2.0, 'hook_wire_r': 0.5}
+
+
+def strip_hole_z(chamber=CHROMATOGRAPHY_CHAMBER, strip=CHROMATOGRAPHY_STRIP):
+    """The hung strip's hole centre above the bench, where the hook's wire passes through it."""
+    return chamber['floor'] + chamber['strip_above_floor'] + strip['length'] - strip['hole_below_top']

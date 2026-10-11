@@ -49,6 +49,7 @@ BUDGET_PACK = 4_000_000
 # is what they really hold, not the catalogue's capacity, which is the 2D player's transient allowance.
 TRANSIENT_FILL = {
     'funnel-stand': 'the seated paper cone holds what drains through it; the catalogue 150 mL is a 2D allowance',
+    'capillary-spotter': 'a 1 mm bore, 75 mm capillary holds about 0.06 mL; the catalogue 1 mL is a 2D allowance (decided 2026-10-11)',
 }
 FLOAT = 5126
 # Operations a model control may declare; the viewer maps each to a technique step (src/studio3d).

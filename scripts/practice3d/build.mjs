@@ -36,6 +36,8 @@ const PRACTICE = [
   { module: "./heatReweighPractice.mjs", basedOn: "thermal-decomposition-mass-loss", pack: 2,
     description: "Heat a carbonate mixture over a blue flame, lid askew, then cool and reweigh it to constant mass." },
   // Pack 3a (decided 2026-10-10, `proposals/PACK3_ATOMIZATION.md`).
+  { module: "./paperChromatographyPractice.mjs", basedOn: "paper-chromatography", pack: 3,
+    description: "Separate a food-dye mixture on paper with water, mark the front, and measure each band's Rf." },
   { module: "./hardWaterCalculationPractice.mjs", basedOn: "hard-water-calculation", pack: 3,
     description: "Work out the precipitate's mass by difference, then calculate the water's hardness in mg/L as CaCO3." },
 ];

@@ -1,0 +1,92 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "waste-beaker",
+  "model": "waste-beaker.glb",
+  "thumbnail": "thumbs/waste-beaker.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "circle",
+      "radius": 35.0
+    },
+    "grip": {
+      "heightMm": 52.0
+    },
+    "pour": {
+      "lipMm": [
+        -40.5,
+        0.0,
+        96.0
+      ],
+      "tiltDeg": 100.0,
+      "style": "pour"
+    },
+    "fill": {
+      "innerProfileMm": [
+        [
+          0.0,
+          2.2
+        ],
+        [
+          30.9,
+          2.2
+        ],
+        [
+          33.4,
+          4.7
+        ],
+        [
+          33.4,
+          95.0
+        ]
+      ],
+      "capacityMl": 250,
+      "meniscus": "concave"
+    },
+    "solidRest": {
+      "centreMm": [
+        0.0,
+        0.0,
+        2.2
+      ],
+      "radiusMm": 30.4
+    },
+    "graduations": null,
+    "anchors": {},
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -40.77,
+        -35.57,
+        0.0
+      ],
+      "max": [
+        35.57,
+        35.57,
+        96.1
+      ]
+    },
+    "triangles": 11758,
+    "materials": [
+      "Blue print ink",
+      "Borosilicate glass",
+      "Borosilicate glass thick",
+      "Frosted marking spot",
+      "White enamel print"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/waste_beaker.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "2246fda5b9ccb7618770c5f195cd151c34ad0fc299e5e711d662a3bf790da11b",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

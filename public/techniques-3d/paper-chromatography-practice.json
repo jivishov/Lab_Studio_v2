@@ -1,0 +1,402 @@
+{
+  "id": "paper-chromatography-practice",
+  "title": "Paper Chromatography",
+  "learningGoal": "Separate a food-dye mixture on paper with water as the mobile phase, and measure each band's Rf.",
+  "requiredEquipment": [
+    "lab-sink",
+    "chromatography-chamber",
+    "graduated-cylinder",
+    "chromatography-paper",
+    "pencil",
+    "metric-ruler",
+    "capillary-spotter",
+    "small-vial",
+    "distilled-water-bottle"
+  ],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "lab-sink-1",
+        "definitionId": "lab-sink",
+        "label": "Sink",
+        "location": "workbench",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        },
+        "x": 604,
+        "y": 0
+      },
+      {
+        "id": "chamber-1",
+        "definitionId": "chromatography-chamber",
+        "label": "Chromatography chamber",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty",
+          "developingChamberClosed": false
+        }
+      },
+      {
+        "id": "graduated-cylinder-1",
+        "definitionId": "graduated-cylinder",
+        "label": "100 mL graduated cylinder",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "paper-1",
+        "definitionId": "chromatography-paper",
+        "label": "Fresh chromatography strip",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "paper-unspotted"
+        }
+      },
+      {
+        "id": "pencil-1",
+        "definitionId": "pencil",
+        "label": "Pencil",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "ruler-1",
+        "definitionId": "metric-ruler",
+        "label": "Metric ruler",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "capillary-1",
+        "definitionId": "capillary-spotter",
+        "label": "Capillary tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "dye-vial-1",
+        "definitionId": "small-vial",
+        "label": "Food dye mixture",
+        "location": "shelf",
+        "contents": {
+          "kind": "mixture",
+          "label": "Food dye mixture",
+          "volumeMl": 5,
+          "solutes": [
+            {
+              "id": "teacher-food-dye-mixture",
+              "label": "Teacher-provided food dye mixture",
+              "amount": 1,
+              "unit": "mg"
+            }
+          ],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "blue-dye-solution"
+        }
+      },
+      {
+        "id": "water-bottle-1",
+        "definitionId": "distilled-water-bottle",
+        "label": "Distilled water",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Distilled water",
+          "volumeMl": 250,
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid"
+        }
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "place-chamber",
+      "verb": "place",
+      "label": "Place the chamber",
+      "parameters": {
+        "equipmentDefinitionId": "chromatography-chamber",
+        "equipmentInstanceId": "chamber-1",
+        "location": "workbench"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Place the chamber: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The chamber stands on the bench.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.developing-chamber",
+      "equipmentRoleBindings": {
+        "developing-chamber": "chromatography-chamber"
+      }
+    },
+    {
+      "id": "place-paper",
+      "verb": "place",
+      "label": "Lay the strip flat",
+      "parameters": {
+        "equipmentDefinitionId": "chromatography-paper",
+        "equipmentInstanceId": "paper-1",
+        "location": "workbench"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Lay the strip flat: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "The fresh strip lies flat.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "place"
+      ],
+      "atomId": "atom.place.stationary-phase",
+      "equipmentRoleBindings": {
+        "stationary-phase": "chromatography-paper"
+      }
+    }
+  ],
+  "process": {
+    "startNodeId": "place-chamber-node",
+    "nodes": [
+      {
+        "id": "place-chamber-node",
+        "type": "action",
+        "title": "Place the chamber",
+        "description": "Stand the empty chamber upright on the bench.",
+        "actionId": "place-chamber",
+        "config": {},
+        "validation": [
+          {
+            "id": "place-chamber-node-done",
+            "type": "actionEvidence",
+            "label": "Action place-chamber was completed.",
+            "actionId": "place-chamber"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Place the chamber complete.",
+          "retry": "Review Place the chamber and try again."
+        }
+      },
+      {
+        "id": "place-paper-node",
+        "type": "action",
+        "title": "Lay the strip flat",
+        "description": "Lay a fresh strip flat on the bench, ready for its pencil line.",
+        "actionId": "place-paper",
+        "config": {},
+        "validation": [
+          {
+            "id": "place-paper-node-done",
+            "type": "actionEvidence",
+            "label": "Action place-paper was completed.",
+            "actionId": "place-paper"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Lay the strip flat complete.",
+          "retry": "Review Lay the strip flat and try again."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "place-chamber-node",
+        "to": "place-paper-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "successCriteria": [
+    {
+      "id": "paper-chromatography-practice-success",
+      "type": "actionEvidence",
+      "label": "Action place-paper was completed.",
+      "actionId": "place-paper"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "id": "wrong-order",
+      "when": "current node expects a different action",
+      "message": "That action is out of sequence for the current technique step.",
+      "recovery": "Check the process map and perform the highlighted step first."
+    },
+    {
+      "id": "missing-source",
+      "when": "source equipment or contents are missing",
+      "message": "The selected source does not contain the material required for this action.",
+      "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+    },
+    {
+      "id": "overflow",
+      "when": "target capacity would be exceeded",
+      "message": "The target equipment cannot hold the requested volume.",
+      "recovery": "Use a larger container or transfer a smaller measured amount."
+    }
+  ],
+  "resetBehavior": "resetTechnique",
+  "metadata": {
+    "version": "1.0.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-10-05T00:00:00.000Z",
+    "tags": [
+      "technique",
+      "practice-3d",
+      "chromatography",
+      "rf"
+    ]
+  },
+  "composition": {
+    "schemaVersion": 1,
+    "ports": [
+      {
+        "id": "entry",
+        "kind": "entry",
+        "nodeId": "place-chamber-node",
+        "label": "Entry"
+      },
+      {
+        "id": "exit",
+        "kind": "exit",
+        "nodeId": "place-paper-node",
+        "label": "Exit"
+      }
+    ],
+    "equipmentRoles": [
+      {
+        "roleId": "developing-chamber",
+        "required": true,
+        "allowedDefinitionIds": [
+          "chromatography-chamber"
+        ],
+        "sourceInstanceIds": [
+          "chamber-1"
+        ]
+      },
+      {
+        "roleId": "stationary-phase",
+        "required": true,
+        "allowedDefinitionIds": [
+          "chromatography-paper"
+        ],
+        "sourceInstanceIds": [
+          "paper-1"
+        ]
+      }
+    ],
+    "modelSlots": [],
+    "configurationSlots": [],
+    "approvalGates": [],
+    "variants": [],
+    "evidenceOutputs": [],
+    "completion": {
+      "exitPortIds": [
+        "exit"
+      ],
+      "requiredEvidenceOutputIds": [],
+      "requiredValidationRuleIds": [
+        "paper-chromatography-practice-success"
+      ]
+    },
+    "catalogDisposition": "standalone-practice",
+    "legacyActionEffects": []
+  }
+}

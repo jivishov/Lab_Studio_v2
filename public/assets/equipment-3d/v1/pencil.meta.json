@@ -1,0 +1,67 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "pencil",
+  "model": "pencil.glb",
+  "thumbnail": "thumbs/pencil.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "rect",
+      "width": 7.0,
+      "depth": 173.0
+    },
+    "grip": {
+      "heightMm": 45.0
+    },
+    "graduations": null,
+    "tipMm": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "benchRest": {
+      "rollDeg": -90.0,
+      "liftMm": 3.5,
+      "shiftMm": [
+        0.0,
+        -86.5
+      ]
+    },
+    "anchors": {},
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -4.1,
+        -4.1,
+        0.0
+      ],
+      "max": [
+        4.1,
+        4.1,
+        173.0
+      ]
+    },
+    "triangles": 2488,
+    "materials": [
+      "Pencil cedar",
+      "Pencil eraser",
+      "Pencil ferrule",
+      "Pencil graphite",
+      "Pencil lacquer yellow"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/pencil.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "35a1cc39a167dfc4588049fc42e4abb4ad388e98eca95c677be2621fff8a207d",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

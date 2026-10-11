@@ -142,6 +142,25 @@ export interface Equipment3DEntry {
    * not listed falls back to its first key's value alone, then to `default`. Every other listed part is hidden.
    */
   stateObjects?: Array<{ stateKeys: string[]; default: string; objects: Record<string, string[]> }>;
+  /**
+   * A chromatography strip's face (Pack 3a, decided 2026-10-10): modelled upright with its origin at the centre
+   * of its bottom edge, `widthMm` across and `lengthMm` up, its printed face toward `normalMm`, the hanging hole's
+   * centre `hole.centreZMm` above the bottom edge. Baseline, spots, front and bands are drawn on this face.
+   */
+  stripFace?: {
+    widthMm: number;
+    lengthMm: number;
+    thicknessMm: number;
+    normalMm: number[];
+    hole: { centreZMm: number; radiusMm: number };
+  };
+  /**
+   * A ruler's printed scale (Pack 3a): the zero on its measuring edge (`zeroMm`, model-local), the direction the
+   * scale runs, its length and smallest division, so a strip's distances line up with the printed lines.
+   */
+  scaleMm?: { zeroMm: Vec3Mm; directionMm: number[]; lengthMm: number; minorMm: number };
+  /** How far the lid rises when lifted from its seat before it is set aside (a chamber's cap and hook, Pack 3a). */
+  liftedWithLidMm?: number;
   /** A dull red glow on these parts while `stateKey` reads true (a crucible under strong heating). */
   glow?: { stateKey: string; objects: string[] };
   /** Parts that flicker slightly while shown (a flame), except under reduced motion. */

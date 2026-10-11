@@ -330,6 +330,180 @@
       }
     },
     {
+      "definitionId": "capillary-spotter",
+      "model": "capillary-spotter.glb",
+      "thumbnail": "thumbs/capillary-spotter.png",
+      "footprintMm": {
+        "shape": "rect",
+        "width": 2.6,
+        "depth": 75.0
+      },
+      "grip": {
+        "heightMm": 60.0
+      },
+      "fill": {
+        "innerProfileMm": [
+          [
+            0.5,
+            0.0
+          ],
+          [
+            0.5,
+            75.0
+          ]
+        ],
+        "capacityMl": 0.059,
+        "meniscus": "concave"
+      },
+      "graduations": null,
+      "carriedByTip": true,
+      "benchRest": {
+        "rollDeg": -90.0,
+        "liftMm": 0.8,
+        "shiftMm": [
+          0.0,
+          -37.5
+        ]
+      },
+      "anchors": {},
+      "displays": [],
+      "states": {},
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/capillary_spotter.py",
+        "sourceHash": "42b03edd79173a38ffd3371eecd20be2c1a82672a7bee5a4adfc87266f328bd4"
+      }
+    },
+    {
+      "definitionId": "chromatography-chamber",
+      "model": "chromatography-chamber.glb",
+      "thumbnail": "thumbs/chromatography-chamber.png",
+      "footprintMm": {
+        "shape": "circle",
+        "radius": 15.6
+      },
+      "grip": {
+        "heightMm": 55.0
+      },
+      "pour": {
+        "lipMm": [
+          -14.8,
+          0.0,
+          120.0
+        ],
+        "tiltDeg": 115.0,
+        "style": "pour"
+      },
+      "fill": {
+        "innerProfileMm": [
+          [
+            0.0,
+            2.4
+          ],
+          [
+            11.6,
+            2.4
+          ],
+          [
+            13.6,
+            4.4
+          ],
+          [
+            13.6,
+            120.0
+          ]
+        ],
+        "capacityMl": 50,
+        "meniscus": "concave"
+      },
+      "graduations": null,
+      "stateObjects": [
+        {
+          "stateKeys": [
+            "lid",
+            "strip"
+          ],
+          "default": "open",
+          "objects": {
+            "closed": [
+              "Chamber_cap",
+              "Chamber_hook"
+            ],
+            "open/hung": [
+              "Chamber_cap_raised",
+              "Chamber_hook_raised"
+            ],
+            "open": [
+              "Chamber_cap_aside",
+              "Chamber_hook_aside"
+            ]
+          }
+        }
+      ],
+      "liftedWithLidMm": 15.0,
+      "anchors": {
+        "chromatography-chamber-paper-slot": {
+          "positionMm": [
+            0.0,
+            0.0,
+            4.4
+          ]
+        }
+      },
+      "displays": [],
+      "states": {},
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/chromatography_chamber.py",
+        "sourceHash": "4ffdedaec8aa775d7e77b88a93ed2b163ad4afc5e570fb8340baf0ec404b8198"
+      }
+    },
+    {
+      "definitionId": "chromatography-paper",
+      "model": "chromatography-paper.glb",
+      "thumbnail": "thumbs/chromatography-paper.png",
+      "footprintMm": {
+        "shape": "rect",
+        "width": 15.0,
+        "depth": 110.0
+      },
+      "grip": {
+        "heightMm": 98.0
+      },
+      "graduations": null,
+      "benchRest": {
+        "rollDeg": -90.0,
+        "liftMm": 0.09,
+        "shiftMm": [
+          0.0,
+          -55.0
+        ]
+      },
+      "stripFace": {
+        "widthMm": 15.0,
+        "lengthMm": 110.0,
+        "thicknessMm": 0.18,
+        "normalMm": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "hole": {
+          "centreZMm": 105.0,
+          "radiusMm": 1.0
+        }
+      },
+      "wetLook": true,
+      "anchors": {},
+      "displays": [],
+      "states": {},
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/chromatography_paper.py",
+        "sourceHash": "fe9b2778bec03ef327ee75b7c82ddeb42e9e4bf401c45153015af84acc85a9f6"
+      }
+    },
+    {
       "definitionId": "clay-triangle",
       "model": "clay-triangle.glb",
       "thumbnail": "thumbs/clay-triangle.png",
@@ -472,6 +646,76 @@
         "blender": "5.2.2",
         "generator": "tools/blender/equipment/cuvette.py",
         "sourceHash": "cec773625c430ac4bc1a8067c2ac1579d30b7c28540947ed06351e7017570ea3"
+      }
+    },
+    {
+      "definitionId": "distilled-water-bottle",
+      "model": "distilled-water-bottle.glb",
+      "thumbnail": "thumbs/distilled-water-bottle.png",
+      "footprintMm": {
+        "shape": "circle",
+        "radius": 43.0
+      },
+      "grip": {
+        "heightMm": 61.6
+      },
+      "pour": {
+        "lipMm": [
+          -23.8,
+          0.0,
+          160.0
+        ],
+        "tiltDeg": 108.0,
+        "style": "pour"
+      },
+      "fill": {
+        "innerProfileMm": [
+          [
+            0.0,
+            3.2
+          ],
+          [
+            37.8,
+            3.2
+          ],
+          [
+            40.8,
+            5.2
+          ],
+          [
+            40.8,
+            113.2
+          ],
+          [
+            21.8,
+            138.8
+          ],
+          [
+            21.8,
+            160.0
+          ]
+        ],
+        "capacityMl": 500,
+        "meniscus": "concave"
+      },
+      "graduations": null,
+      "solidRest": {
+        "centreMm": [
+          0.0,
+          0.0,
+          3.2
+        ],
+        "radiusMm": 32.6
+      },
+      "anchors": {},
+      "displays": [],
+      "states": {
+        "closure": "open"
+      },
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/distilled_water_bottle.py",
+        "sourceHash": "70382511dd3e348dff206a84171662a2458c1416c7127625f64a0d5ceec16736"
       }
     },
     {
@@ -1070,6 +1314,77 @@
       }
     },
     {
+      "definitionId": "metric-ruler",
+      "model": "metric-ruler.glb",
+      "thumbnail": "thumbs/metric-ruler.png",
+      "footprintMm": {
+        "shape": "rect",
+        "width": 30.0,
+        "depth": 172.0
+      },
+      "grip": {
+        "heightMm": 2.0
+      },
+      "graduations": null,
+      "scaleMm": {
+        "zeroMm": [
+          -14.0,
+          -76.0,
+          2.0
+        ],
+        "directionMm": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "lengthMm": 150,
+        "minorMm": 1
+      },
+      "anchors": {},
+      "displays": [],
+      "states": {},
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/metric_ruler.py",
+        "sourceHash": "f0bcb753903f5cc21f0ea44d64180df6e9828ae4cecc444f67602285d396c4f3"
+      }
+    },
+    {
+      "definitionId": "pencil",
+      "model": "pencil.glb",
+      "thumbnail": "thumbs/pencil.png",
+      "footprintMm": {
+        "shape": "rect",
+        "width": 7.0,
+        "depth": 173.0
+      },
+      "grip": {
+        "heightMm": 45.0
+      },
+      "graduations": null,
+      "tipMm": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "benchRest": {
+        "rollDeg": -90.0,
+        "liftMm": 3.5,
+        "shiftMm": [
+          0.0,
+          -86.5
+        ]
+      },
+      "anchors": {},
+      "displays": [],
+      "states": {},
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/pencil.py",
+        "sourceHash": "35a1cc39a167dfc4588049fc42e4abb4ad388e98eca95c677be2621fff8a207d"
+      }
+    },
+    {
       "definitionId": "pipette-pump",
       "model": "pipette-pump.glb",
       "thumbnail": "thumbs/pipette-pump.png",
@@ -1097,6 +1412,76 @@
         "blender": "5.2.2",
         "generator": "tools/blender/equipment/pipette_pump.py",
         "sourceHash": "f41f882ad2c68cb26d1b081dcab80a69fe63810665595d4bff53d0de5bad968b"
+      }
+    },
+    {
+      "definitionId": "propanol-bottle",
+      "model": "propanol-bottle.glb",
+      "thumbnail": "thumbs/propanol-bottle.png",
+      "footprintMm": {
+        "shape": "circle",
+        "radius": 35.0
+      },
+      "grip": {
+        "heightMm": 47.3
+      },
+      "pour": {
+        "lipMm": [
+          -21.8,
+          0.0,
+          124.0
+        ],
+        "tiltDeg": 110.0,
+        "style": "pour"
+      },
+      "fill": {
+        "innerProfileMm": [
+          [
+            0.0,
+            3.0
+          ],
+          [
+            30.0,
+            3.0
+          ],
+          [
+            33.0,
+            5.0
+          ],
+          [
+            33.0,
+            87.2
+          ],
+          [
+            20.0,
+            104.8
+          ],
+          [
+            20.0,
+            124.0
+          ]
+        ],
+        "capacityMl": 250,
+        "meniscus": "concave"
+      },
+      "graduations": null,
+      "solidRest": {
+        "centreMm": [
+          0.0,
+          0.0,
+          3.0
+        ],
+        "radiusMm": 26.4
+      },
+      "anchors": {},
+      "displays": [],
+      "states": {
+        "closure": "open"
+      },
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/propanol_bottle.py",
+        "sourceHash": "e9f5543f1fb4997b179792abc80679b051be08f7f6134a0e67cece167af17f62"
       }
     },
     {
@@ -2010,6 +2395,66 @@
         "blender": "5.2.2",
         "generator": "tools/blender/equipment/wash_bottle.py",
         "sourceHash": "a959a5cb612109531774d27ba9c5a1a751f7ec1e9a5172ad7552f4a0f21064dd"
+      }
+    },
+    {
+      "definitionId": "waste-beaker",
+      "model": "waste-beaker.glb",
+      "thumbnail": "thumbs/waste-beaker.png",
+      "footprintMm": {
+        "shape": "circle",
+        "radius": 35.0
+      },
+      "grip": {
+        "heightMm": 52.0
+      },
+      "pour": {
+        "lipMm": [
+          -40.5,
+          0.0,
+          96.0
+        ],
+        "tiltDeg": 100.0,
+        "style": "pour"
+      },
+      "fill": {
+        "innerProfileMm": [
+          [
+            0.0,
+            2.2
+          ],
+          [
+            30.9,
+            2.2
+          ],
+          [
+            33.4,
+            4.7
+          ],
+          [
+            33.4,
+            95.0
+          ]
+        ],
+        "capacityMl": 250,
+        "meniscus": "concave"
+      },
+      "solidRest": {
+        "centreMm": [
+          0.0,
+          0.0,
+          2.2
+        ],
+        "radiusMm": 30.4
+      },
+      "graduations": null,
+      "anchors": {},
+      "displays": [],
+      "states": {},
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/waste_beaker.py",
+        "sourceHash": "2246fda5b9ccb7618770c5f195cd151c34ad0fc299e5e711d662a3bf790da11b"
       }
     },
     {

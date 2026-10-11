@@ -1,0 +1,65 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "metric-ruler",
+  "model": "metric-ruler.glb",
+  "thumbnail": "thumbs/metric-ruler.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "rect",
+      "width": 30.0,
+      "depth": 172.0
+    },
+    "grip": {
+      "heightMm": 2.0
+    },
+    "graduations": null,
+    "scaleMm": {
+      "zeroMm": [
+        -14.0,
+        -76.0,
+        2.0
+      ],
+      "directionMm": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lengthMm": 150,
+      "minorMm": 1
+    },
+    "anchors": {},
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -15.0,
+        -86.0,
+        0.0
+      ],
+      "max": [
+        15.0,
+        86.0,
+        2.02
+      ]
+    },
+    "triangles": 5357,
+    "materials": [
+      "Black print ink",
+      "Polystyrene ruler clear"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/metric_ruler.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "f0bcb753903f5cc21f0ea44d64180df6e9828ae4cecc444f67602285d396c4f3",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

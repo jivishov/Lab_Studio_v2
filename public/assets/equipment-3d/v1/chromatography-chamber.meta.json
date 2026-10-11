@@ -1,0 +1,116 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "chromatography-chamber",
+  "model": "chromatography-chamber.glb",
+  "thumbnail": "thumbs/chromatography-chamber.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "circle",
+      "radius": 15.6
+    },
+    "grip": {
+      "heightMm": 55.0
+    },
+    "pour": {
+      "lipMm": [
+        -14.8,
+        0.0,
+        120.0
+      ],
+      "tiltDeg": 115.0,
+      "style": "pour"
+    },
+    "fill": {
+      "innerProfileMm": [
+        [
+          0.0,
+          2.4
+        ],
+        [
+          11.6,
+          2.4
+        ],
+        [
+          13.6,
+          4.4
+        ],
+        [
+          13.6,
+          120.0
+        ]
+      ],
+      "capacityMl": 50,
+      "meniscus": "concave"
+    },
+    "graduations": null,
+    "stateObjects": [
+      {
+        "stateKeys": [
+          "lid",
+          "strip"
+        ],
+        "default": "open",
+        "objects": {
+          "closed": [
+            "Chamber_cap",
+            "Chamber_hook"
+          ],
+          "open/hung": [
+            "Chamber_cap_raised",
+            "Chamber_hook_raised"
+          ],
+          "open": [
+            "Chamber_cap_aside",
+            "Chamber_hook_aside"
+          ]
+        }
+      }
+    ],
+    "liftedWithLidMm": 15.0,
+    "anchors": {
+      "chromatography-chamber-paper-slot": {
+        "positionMm": [
+          0.0,
+          0.0,
+          4.4
+        ]
+      }
+    },
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -16.5,
+        -16.5,
+        -0.0
+      ],
+      "max": [
+        53.0,
+        16.5,
+        136.6
+      ]
+    },
+    "triangles": 12888,
+    "materials": [
+      "Borosilicate glass",
+      "Borosilicate glass thick",
+      "Brushed stainless",
+      "Masking tape",
+      "PP cap"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/chromatography_chamber.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "4ffdedaec8aa775d7e77b88a93ed2b163ad4afc5e570fb8340baf0ec404b8198",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "distilled-water-bottle",
+  "model": "distilled-water-bottle.glb",
+  "thumbnail": "thumbs/distilled-water-bottle.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "circle",
+      "radius": 43.0
+    },
+    "grip": {
+      "heightMm": 61.6
+    },
+    "pour": {
+      "lipMm": [
+        -23.8,
+        0.0,
+        160.0
+      ],
+      "tiltDeg": 108.0,
+      "style": "pour"
+    },
+    "fill": {
+      "innerProfileMm": [
+        [
+          0.0,
+          3.2
+        ],
+        [
+          37.8,
+          3.2
+        ],
+        [
+          40.8,
+          5.2
+        ],
+        [
+          40.8,
+          113.2
+        ],
+        [
+          21.8,
+          138.8
+        ],
+        [
+          21.8,
+          160.0
+        ]
+      ],
+      "capacityMl": 500,
+      "meniscus": "concave"
+    },
+    "graduations": null,
+    "solidRest": {
+      "centreMm": [
+        0.0,
+        0.0,
+        3.2
+      ],
+      "radiusMm": 32.6
+    },
+    "anchors": {},
+    "displays": [],
+    "states": {
+      "closure": "open"
+    }
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -43.0,
+        -43.12,
+        0.02
+      ],
+      "max": [
+        43.0,
+        43.0,
+        160.0
+      ]
+    },
+    "triangles": 19540,
+    "materials": [
+      "Blue print ink",
+      "Borosilicate glass",
+      "Borosilicate glass thick",
+      "Frosted marking spot",
+      "White enamel print"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/distilled_water_bottle.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "70382511dd3e348dff206a84171662a2458c1416c7127625f64a0d5ceec16736",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

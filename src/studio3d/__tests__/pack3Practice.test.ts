@@ -23,6 +23,7 @@ const catalogue = read("public/techniques/index.json") as Array<{ id: string }>;
 
 /** Each practice version's setup, the student's entries, and the items moved to the bench before a step. */
 const PLAYS: Record<string, { config: Record<string, string>; inputs?: Record<string, string>; moves?: Record<string, string> }> = {
+  "paper-chromatography-practice": { config: {} },
   "hard-water-calculation-practice": {
     config: { sampleVolumeMl: "20", watchGlassMassG: "30", paperMassG: "0.553", combinedMassG: "30.5605", calculationTolerance: "0.5" },
     inputs: { "calculate-hardness": "375" },

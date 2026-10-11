@@ -1,0 +1,75 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "capillary-spotter",
+  "model": "capillary-spotter.glb",
+  "thumbnail": "thumbs/capillary-spotter.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "rect",
+      "width": 2.6,
+      "depth": 75.0
+    },
+    "grip": {
+      "heightMm": 60.0
+    },
+    "fill": {
+      "innerProfileMm": [
+        [
+          0.5,
+          0.0
+        ],
+        [
+          0.5,
+          75.0
+        ]
+      ],
+      "capacityMl": 0.059,
+      "meniscus": "concave"
+    },
+    "graduations": null,
+    "carriedByTip": true,
+    "benchRest": {
+      "rollDeg": -90.0,
+      "liftMm": 0.8,
+      "shiftMm": [
+        0.0,
+        -37.5
+      ]
+    },
+    "anchors": {},
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -0.82,
+        -0.82,
+        0.0
+      ],
+      "max": [
+        0.82,
+        0.82,
+        75.0
+      ]
+    },
+    "triangles": 408,
+    "materials": [
+      "Blue print ink",
+      "Borosilicate glass",
+      "Borosilicate glass thick"
+    ],
+    "scenery": false
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/capillary_spotter.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "42b03edd79173a38ffd3371eecd20be2c1a82672a7bee5a4adfc87266f328bd4",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}
