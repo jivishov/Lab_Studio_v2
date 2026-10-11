@@ -2,6 +2,8 @@
 
 Paste everything below the line into a fresh Claude Code thread. Every fact in it was checked against the repository on 2026-10-08, by running the code where possible; re-check before relying on any of it.
 
+**Re-checked 2026-10-10**, after D8 and the model refinement: the files and sections it names exist, and the inventory still gives the step counts in the table (786 in all). The body below is brought in line with the notes: D8 is decided, so decision 1 no longer offers holding Pack 3.
+
 **Run this after the D8 discussion** (`NEXT_THREAD_PROMPT.md`; on 2026-10-08 the user chose to settle D8 first). It was written while D8 was open. Where it says D8 is open, read the D8 row in `DECISIONS.md` and the note the D8 session adds below this one. The D8 decision replaces the options in decision 1 here.
 
 **Order note (2026-10-10).** The D8 build is done (`SESSION_HANDOFF.md`, item 8). Run this proposal after the 3D model review and refinement thread, which is now done too (the next note), and build Pack 3's new models to the standard it sets. Publishing the D8 experiment and G3 wait until the user asks.
@@ -45,9 +47,11 @@ Continue Lab Studio 3D. The next step is **the Pack 3 proposal**. Propose it, bu
   - When I do ask, follow `planning/2026-09-23_lab-studio-3d/PAGES_3D_PUBLISH.md`, section 9.
 
 **Read first, in this order** (all under `planning/2026-09-23_lab-studio-3d/`):
-1. `SESSION_HANDOFF.md`, section "State on 2026-10-04". Its items 5 to 8 are the latest: Pack 2, the publication, D8 and this task.
-2. `DECISIONS.md`: every decision. D8 is still open.
-3. `proposals/PACK2_ATOMIZATION.md`: the model for this proposal. Follow its sections:
+1. `SESSION_HANDOFF.md`, section "State on 2026-10-04". Its items 5 to 10 are the latest: Pack 2, the publication, D8 decided, the D8 build, the model refinement and this task.
+2. `DECISIONS.md`: every decision. D8 was decided on 2026-10-10; its row has parts (1) to (9).
+3. `proposals/D8_EXPERIMENT_ASSEMBLY.md` ("Decisions" and "E0 decisions") and `evidence/D8_E3_EVIDENCE.md`: how a 3D lab is composed from `composable` twins (`scripts/practice3d/build.mjs`, `composeLab.mjs`, `public/labs-3d/`), and what E3 and the Measure Liquid Volume twin met.
+4. `proposals/MODEL_REFINEMENT.md`: the standard for new models.
+5. `proposals/PACK2_ATOMIZATION.md`: the model for this proposal. Follow its sections:
    - "The first decision";
    - "What the five do today";
    - "Proposed sequences", with the M/F/R/C basis labels;
@@ -58,15 +62,15 @@ Continue Lab Studio 3D. The next step is **the Pack 3 proposal**. Propose it, bu
    - "Decisions";
    - "For the build thread";
    - "Fidelity review (revision 2)".
-4. `evidence/PACK2_EVIDENCE.md`: what Pack 2 built and the interpretations I answered. It covers:
+6. `evidence/PACK2_EVIDENCE.md`: what Pack 2 built and the interpretations I answered. It covers:
    - the bench operations;
    - the practice versions in `public/techniques-3d/index.json`, built by `scripts/practice3d/`;
    - the step clock, oven, tongs and flames;
    - the zero check.
-5. `IMPLEMENTATION_PLAN.md`:
+7. `IMPLEMENTATION_PLAN.md`:
    - §2.7 (which experiments each pack unlocks) and §9 (the technique-pack recipe);
    - with `UI_UX_HANDOFF.md`, never edit either document.
-6. `probes/README.md`.
+8. `probes/README.md`.
 
 **First, inventory by evaluation** (plan §9, step 1). Run this from the worktree root:
 `node --experimental-strip-types --experimental-loader ./scripts/tsCompositionLoader.mjs tools/blender/inventory_pack.ts --pack 3 --markdown <file in your scratchpad>`.
@@ -110,19 +114,20 @@ What the table doesn't show:
   - Hard Water Gravimetry: `scripts/generatorInputs/apChem/gravimetrySeparation.mjs`, with the same script.
   
   I found no generator for `hard-water-calculation`; confirm.
-- **The plan's purpose for Pack 3** (§2.7): it delivers the last techniques of `hard-water-demo`, `paper-chromatography` and `brass-colorimetry`. Playing those labs in 3D is Phase B, which waits for D8.
+- **The plan's purpose for Pack 3** (§2.7): it delivers the last techniques of `hard-water-demo`, `paper-chromatography` and `brass-colorimetry`. Under D8 they play in 3D as generated labs in `public/labs-3d/` (Phase B). In D8's order, `hard-water-demo` comes after Pack 3.
 
 The source plans are in `C:\Users\EmilJivishov\Projects\AP_CHEM_LABS\atomic_steps`. Read them, but never edit anything there.
 
 **What the proposal must settle:**
-1. **The first decision: what Pack 3 is while D8 is open.** Three of the five run only inside a 2D lab, and the plan's payoff from Pack 3 is those three labs.
-   - Lay out the options as Pack 2's proposal did, and recommend one:
-     - 3D practice versions, with the 2D labs untouched (Pack 2's route);
-     - changing the two standalone techniques in place, Pack 1's route through D4-style exceptions. No lab composes them, so only their own 2D play is affected.
-     - holding Pack 3, or part of it, until D8 is decided.
+1. **The first decision: each technique's route, now that D8 is decided** (the D8 note at the top). Three of the five run only inside a lab, and the plan's payoff from Pack 3 is those three labs.
+   - The three lab-bound techniques take Pack 2's route: a 3D practice version and a `composable` twin, and their 3D labs generated in `public/labs-3d/`. Propose the twins' stand-in steps and dropped slots.
+   - For Beer's Law and Hard Water Gravimetry, lay out the two routes as Pack 2's proposal did, and recommend one:
+     - 3D practice versions (Pack 2's route);
+     - changing them in place, Pack 1's route through D4-style exceptions. No lab composes them, but this writes the shared catalogue (`public/techniques/`), which D8 otherwise leaves alone; say what that means.
    - Say plainly what each option delivers.
 2. **The stubs.** Say whether Beer's Law and Hard Water Gravimetry get atomized as they are, rebased on the nearest dated plan (marking what that plan does not state as R or as the teacher's decision), or deferred in favour of their source-traced counterparts. I decide.
-3. **Calculate Hardness.** It is a single calculation, bound to its lab. Say whether it gets a 3D version at all, and if so, what the bench shows.
+3. **Calculate Hardness.** It is a single calculation, bound to its lab, and `hard-water-demo` in 3D composes its twin, so it is needed. Say what the bench shows.
+   - In a 3D lab, compiled measurement ids are scoped by instance (`SESSION_HANDOFF.md`, item 8), so a calculation that reads another technique's mass needs `preserveIds.references` or a binding. Check whether this one does.
 4. **Atomized steps.** Break each technique you propose to build into the real physical actions, with source step IDs and basis labels.
    - Records and calculations may keep their legacy effects.
 5. **Size and order.** The five total 786 steps today, against Pack 2's 90 after atomization. Propose:
@@ -153,7 +158,7 @@ The source plans are in `C:\Users\EmilJivishov\Projects\AP_CHEM_LABS\atomic_step
   - Record my answers in the proposal's "Decisions" section and as a `DECISIONS.md` row.
   - `DECISIONS.md` is CRLF: edit it with a byte-aware script.
 - **End the proposal** with "For the build thread". It must include two things the build will meet:
-  - The 3D switcher lists only Pack 1's catalogue techniques and the practice versions (`loadSimulations3D` in `src/studio3d/practice.ts`), so a Pack 3 technique changed in place would not appear there without a change.
+  - The 3D switcher lists only Pack 1's catalogue techniques and the practice versions (`loadSimulations3D` in `src/studio3d/practice.ts`), so a Pack 3 technique changed in place would not appear there without a change. Its "Experiments" group lists the labs in `public/labs-3d/index.json` (`src/studio3d/labs3d.ts`).
   - Run `validate_equipment3d.py --pack 3`.
 - **Commit locally,** then report briefly.
 
@@ -170,6 +175,7 @@ The source plans are in `C:\Users\EmilJivishov\Projects\AP_CHEM_LABS\atomic_step
 - **Git:**
   - Never use a bare `git stash`; the stash is shared with the main checkout.
   - Never run `git clean -x`, a recursive `reset --hard`, or a whole-worktree checkout from the Projects root.
+  - The branch `claude/lab-studio-3d` is the final, authoritative code for the 3D version, kept completely separate from the 2D version (2026-10-10). Never merge, fast-forward or push it into `main`, local or on GitHub, which is the 2D version.
   - Commit locally. Every commit message ends with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`.
 - **Scope:**
   - 3D is independent of 2D, and the 2D player must not change: nothing under `src/player/**` or `src/styles/app.css`.
@@ -192,9 +198,10 @@ The source plans are in `C:\Users\EmilJivishov\Projects\AP_CHEM_LABS\atomic_step
   - the rest listed under "Gotchas" in `SESSION_HANDOFF.md`.
 
 **Open items outside this task.** Don't start any of them; mention one only where it bears on Pack 3:
-- D8 (how experiments are assembled from the atomic steps): a separate discussion with me. It bears on Pack 3 directly, through decision 1.
+- Publishing the D8 experiment to virtuallab.az, until I ask.
 - G3.
-- Measure Liquid Volume: it is host-bound, so 3D shows only its gate.
-- `hard-water-demo`, dilution and transmittance-dilution can't be finished in 2D.
+- Measure Liquid Volume: it is host-bound, so its own 3D route shows only its gate. Its 3D twin `measuring-volume-3d` (D8 (8)) is part 1 of `intro-filtration-demo`.
+- `hard-water-demo`, dilution and transmittance-dilution can't be finished in 2D. D8 (5) leaves `hard-water-demo`'s 2D faults as they are.
+- The glass draw-order issue (the Model refinement note), for the polish pass.
 
 Start by reading the files above and running the inventory, then draft the proposal and review it. Ask me the decisions after the review.
