@@ -1,6 +1,6 @@
-# Pack 3: the next five techniques in 3D (proposal, revision 2, 2026-10-10; decided)
+# Pack 3: the next five techniques in 3D (proposal, revision 3, 2026-10-10; decided)
 
-**Status: decided 2026-10-10; not built.** You chose every recommendation, in line ("Decisions" below). The build is for new threads, 3a then 3b; read "For the build thread" first. The fidelity review's changes are listed at the end.
+**Status: decided 2026-10-10; not built.** You took every recommendation in line: decisions 1–8 with revision 2, and 9–12 with revision 3 ("Decisions" below). Revision 3 corrects revision 2 after a fidelity review. The review checked it against the runtime, the 3D player, the atom registry, the model pipeline and the manual's own text. Its changes are listed at the end. The build is for new threads, 3a then 3b. Read "For the build thread" first.
 
 Pack 3 is the next five techniques in catalogue order (Q4), items 11–15 of `public/techniques/index.json`:
 - Paper Chromatography (`paper-chromatography`);
@@ -9,14 +9,15 @@ Pack 3 is the next five techniques in catalogue order (Q4), items 11–15 of `pu
 - Brass Spectrophotometry (`brass-spectrophotometry`);
 - Hard Water Gravimetry (`hard-water-gravimetry`).
 
-It applies the policy used for Packs 1 and 2: each step is a real physical action a student performs, with new atoms where needed ("muscle memory"). Records and calculations are not physical actions and may keep their legacy effects. And it applies D8 (2026-10-10): "I need real atomized steps to use in 3D. Ignore the 2D version at all." 2D is neither read nor written, and it never constrains a 3D design.
+It applies the policy used for Packs 1 and 2: each step is a real physical action a student performs, with new atoms where needed ("muscle memory"). Records and calculations are not physical actions and may keep their legacy effects. And it applies D8 (2026-10-10): "I need real atomized steps to use in 3D. Ignore the 2D version at all." 3D is designed without regard to 2D's content. 2D's shared code is still shared, though, so revision 3 keeps Pack 3 out of it (see "Core changes and effects on 2D").
 
-**Sources** (in `AP_CHEM_LABS/atomic_steps`, only read):
-- `sticky-question-paper-chromatography_2026-07-27.md`: Investigation 5, steps HP-, TR-, CP-, the composites CHR-00 to CHR-08, safety S-01 to S-07, and confirmation points 1–10;
-- `how-can-color-determine-copper-in-brass_2026-07-27.md`: Investigation 2, steps P-, B-, D-, S-, A-, V-, the composites BRASS-, DIGEST-, SPEC-, VIS-, and points 1–8. (Its procedure's S-01 to S-10 are the spectrophotometer steps; its safety list reuses the letter. Below, "S-" in brass means the procedure.)
-- `sports-drink-blue-dye-spectroscopy_2026-07-27.md` (Investigation 1, P-01 to P-12) and `what-makes-hard-water-hard_2026-07-27.md` (Investigation 3), for the two stubs only.
+**Sources** (in `AP_CHEM_LABS`, only read):
+- `atomic_steps/sticky-question-paper-chromatography_2026-07-27.md`: Investigation 5, steps HP-, TR-, CP-, the composites CHR-00 to CHR-08, safety S-01 to S-07, and confirmation points 1–10;
+- `atomic_steps/how-can-color-determine-copper-in-brass_2026-07-27.md`: Investigation 2, steps P-, B-, D-, S-, A-, V-, the composites BRASS-, DIGEST-, SPEC-, VIS-, and points 1–8. (Its procedure's S-01 to S-10 are the spectrophotometer steps; its safety list reuses the letter. Below, "S-" in brass means the procedure, and the safety list is written "safety S-".)
+- `atomic_steps/sports-drink-blue-dye-spectroscopy_2026-07-27.md` (Investigation 1, P-01 to P-12) and `atomic_steps/what-makes-hard-water-hard_2026-07-27.md` (Investigation 3), for the two stubs and the balance only;
+- **the student manual itself** (revision 3): `ap-chem-lab-manual-student-inv-2.pdf`, `-inv-3.pdf` and `-inv-5.pdf`, for the materials lists, the procedure's wording and Figures 1 and 2. Quotations below are from these.
 
-Basis labels, as in Pack 2: **M** stated in the manual; **F** from a figure or table; **R** real practice the manual leaves implicit; **C** a configuration choice. **T** marks a new step whose basis is the teacher's decision (the policy of 2026-10-02 allows new atoms not cited in the AP documents).
+Basis labels, as in Pack 2: **M** stated in the manual; **F** from a figure or table; **R** real practice the manual leaves implicit; **C** a configuration choice. **T** marks a new step whose basis is the teacher's decision (the policy of 2026-10-02 allows new atoms not cited in the AP documents). Where the atomic plan's composites already label a step, revision 3 uses their label.
 
 **Inventory** (plan §9, step 1): `tools/blender/inventory_pack.ts --pack 3`, run 2026-10-10; 786 steps in all.
 
@@ -30,7 +31,11 @@ Basis labels, as in Pack 2: **M** stated in the manual; **F** from a figure or t
 | 14 | Brass Spectrophotometry | 314 | No | `brass-colorimetry` | Investigation 2 |
 | 15 | Hard Water Gravimetry | 25 | Yes | none | none (a generator stub) |
 
-**The three lab-bound techniques take Pack 2's route** (decided by D8): a module per technique in `scripts/practice3d/` writes a 3D practice version (`standalone-practice`, listed in `public/techniques-3d/index.json`) and a `composable` twin (`<original>-3d`, listed in `twins.json`, written by `twinOf`). Their 3D labs are generated by `scripts/practice3d/labs/<labId>.mjs` into `public/labs-3d/`. Each twin's stand-in steps and dropped slots are given under its sequence below.
+**The three lab-bound techniques take Pack 2's route** (decided by D8):
+- A module per technique in `scripts/practice3d/` writes a 3D practice version (`standalone-practice`, listed in `public/techniques-3d/index.json`) and a `composable` twin (`<original>-3d`, listed in `twins.json`, written by `twinOf`).
+- Paper Chromatography's module writes two twins, one per trial (revision 3; see its sequence).
+- Their 3D labs are generated by `scripts/practice3d/labs/<labId>.mjs` into `public/labs-3d/`.
+- Each twin's stand-in steps and dropped slots are given under its sequence below.
 
 **Beer's Law and Hard Water Gravimetry: two routes.**
 - **A. 3D practice versions (Pack 2's route).** New files only, under `public/techniques-3d/`. They appear in the 3D switcher with the other practice versions. 2D's catalogue items 13 and 15 stay as they are.
@@ -39,354 +44,546 @@ Basis labels, as in Pack 2: **M** stated in the manual; **F** from a figure or t
   - the generators (`spectroscopy.mjs`, `gravimetrySeparation.mjs`) must be changed and rerun, so the change is a core content change in 2D's source;
   - the 3D switcher lists only Pack 1's catalogue techniques and the practice versions (`loadSimulations3D`, `src/studio3d/practice.ts`), so a Pack 3 technique changed in place would not appear in 3D without a change there too.
   - Its one gain over A is a single file per technique.
-- **Recommended: A, if they are built at all.** B costs a 2D change for nothing 3D needs. But see decision 2: I recommend not building either stub in Pack 3.
+- **Recommended: A, if they are built at all.** B costs a 2D change for nothing 3D needs. Decision 2 deferred both.
 
 ## What the five do today (read from the content)
 
 | Technique | Today | Gaps against the source and real practice |
 |---|---|---|
-| **Paper Chromatography** (428 steps) | 17 trial groups of 23–27 actions: two fixed trials (water, 2 bands; 2-propanol, 3 bands) and 15 choice trials (five solvents × 1, 2 or 3 bands, with placeholder bands needing a teacher dataset). The lab's host-only `selectedProcedure` picks at least two. Each trial: label (notebook), place chamber, pour solvent, place paper, draw baseline (notebook), load capillary (pour), spot (`spotOnto`), dry spot (notebook), insert paper (snap), close chamber (notebook flag `developingChamberClosed`), develop (checkpoint), open, remove, mark front, dry, identify bands, place ruler, read and record the front and each band, calculate Rf, record quality, dispose. | Most physical actions are notebook entries: the baseline, the drying, closing the lid (no lid object), the development. The ruler readings default to the model's value with no student entry, so the student never reads the ruler. The pencil is inert. `spotOnto` has only the generic 3D mapping. The 2D generator (`paperChromatography.mjs`) is a 41,600-line static map. The trial order is fixed by the dataset, though the source asks the student to choose (HP-05) and to see no outcome before development (its point 9). |
+| **Paper Chromatography** (428 steps) | 17 trial groups: two fixed trials (water, 2 bands; 2-propanol, 3 bands) and 15 choice trials (five solvents × 1, 2 or 3 bands, with placeholder bands needing a teacher dataset). The lab's host-only `selectedProcedure` picks at least two. Each trial: label, place chamber, pour solvent, place paper, draw baseline, load capillary, spot (`spotOnto`), dry spot, insert paper (snap), close chamber, develop, open, remove, mark front, dry, identify bands, record the front and each band, calculate Rf, record quality, dispose. The ruler is laid once, after the fixed trials, and every distance is read then. | The baseline, both dryings, the lid, the development and the front are notebook entries for the student (`recordNotebook`). The runtime's `chromatographyOperation` and `chamberOperation` sit under them, so the chamber's closed state is real state, but there is no lid to move. The ruler readings default to the model's value with no student entry, so the student never reads the ruler. The pencil is inert. `spotOnto` has only the generic 3D mapping. The 2D generator (`paperChromatography.mjs`) is a 41,600-line static map. The trial order is fixed by the dataset, though the source asks the student to choose (HP-05) and to see no outcome before development (its point 9). |
 | **Calculate Hardness** (1 step) | One calculation: hardness = precipitate mass × 10⁶ ÷ sample volume (template `hardnessMgLAsCaCO3`), reading a sample-volume measurement and a precipitate-mass **measurement**, all ids config-bound. 375 mg/L for the demo's 0.0075 g in 20 mL; tolerance 0.5. | The 2D `hard-water-demo`, compiled, cannot finish this step: the scoped ids don't meet (see "Calculate Hardness" below). Pack 2's Dry and Weigh writes the precipitate mass as a **calculation** (`precipitate-mass`), which this technique cannot read. No generator writes it today except `cycle04TechniqueCompositionTransform.mjs`. |
 | **Beer's Law Calibration** (18 steps) | Place the photometer; measure and transfer stock; measure water; dilute; configure the wavelength; fill the blank; record the optical-face rule; insert, blank, remove; fill, record rule, insert, read %T, record, remove; calculate absorbance. | A stub: its roles have no source instances, and it has no evidence outputs or success criteria. Every one of its 18 atoms is already in **transmittance-dilution** (catalogue item 5, Pack 1, 31 steps), which plays in 3D today at a finer grain (funnel, stopper and inversion, pipette). The data-collection interface is on the bench but no step uses it. Its dated counterparts are `blue1-standard-dilutions` (48 steps), `blue1-percent-transmittance` (86) and `blue1-class-calibration` (31), items 23–25, all in Pack 5. |
-| **Brass Spectrophotometry** (314 steps) | 11 parts with 24 ports, ordered by the lab: setup (10); a scan of salts A and B at 16 wavelengths, 400–700 nm (**204 steps**: 12 per wavelength, including a blank at each one); weigh the brass (7); transfer the completed digest, rinse four times, dilute to 100 mL, four aliquot calculations, the 0.400 M stock (20); four standards, 2 steps each (8); measurement: dark zero, blank and 100 %T, then 5 standards × 8 and the unknown (55); colour-depth comparison (6); waste (13, loops); disposal (1). | The scan is two-thirds of the technique, and its values feed only the student's wavelength choice. The standards are 2 steps each: no pump, no mixing, no stopper, no rack. The 0.625 mL aliquot can't be read on the 10 mL pipette's 0.1 mL divisions. Readings are typed by the student with no prepared value behind the display. The 3D spectrophotometer has a fixed raised lid and no controls (wavelength, 0 %T, 100 %T). The test tube has no rack in 3D (the rack is scenery, 4 places; D9). |
+| **Brass Spectrophotometry** (314 steps) | 11 parts with 24 ports, ordered by the lab: the setup and a scan of salts A and B at 16 wavelengths, 400–700 nm (**204 steps**: the setup's 10, 12 per wavelength including a blank at each one, and 2 returns); weigh the brass (7); transfer the completed digest, rinse four times, dilute to 100 mL, four aliquot calculations, the 0.400 M stock (20); four standards, 2 steps each (8); measurement: dark zero, blank and 100 %T, then 5 standards × 8 and the unknown (55); colour-depth comparison (6); waste (13, loops); disposal (1). | The scan is two-thirds of the technique, and its values feed only the student's wavelength choice. The standards are 2 steps each, each from the stock: no pump, no mixing, no stopper, no rack. The 0.625 mL aliquot can't be read on the 10 mL pipette's 0.1 mL divisions, and the four aliquots use 9.375 of the manual's 10.0 mL of stock. The content gives no prepared reading for the display; the student types each one. The 3D spectrophotometer's lid is fixed raised and its keys are unlabelled. The content's `sample-rack` (6 places) has no 3D model; the 3D rack is scenery (4 places; D9). |
 | **Hard Water Gravimetry** (25 steps) | Measure and transfer 20 mL; one 15 mL reagent pour; precipitate; tare the paper; Büchner funnel, paper seat, side-arm flask, vacuum source; wet, filter, wash; tare the watch glass; transfer the solid; two oven stages around a break-up; cool with tongs; weigh, record; precipitate mass; hardness. | A stub (empty roles, no evidence outputs). **21 of its 25 steps already have 3D counterparts** in Pack 2's practice versions (gravity mode). Not covered: the Büchner funnel, side-arm flask and vacuum source (steps 8–11) and the hardness step (25). The permanent marker is used by no step. The source leaves gravity versus vacuum open (its point 1); Pack 2 chose gravity. Its dated counterparts are `gravimetric-vacuum-filtration` (21 steps, with a gravity branch) and `two-stage-precipitate-drying` (69), items 27–28, in Pack 6. |
 
-## Decision 2 (you): the two stubs
+## Decision 2: the two stubs (decided: defer both)
 
-Beer's Law and Hard Water Gravimetry are not from a dated plan (source-trace registry, `nonSourceDerivedOwners`: "AP-fragment generator stub"). Three ways:
-- **A. Recommended: defer both in favour of their source-traced counterparts.** Pack 3 builds neither.
+Beer's Law and Hard Water Gravimetry are not from a dated plan (source-trace registry, `nonSourceDerivedOwners`: "AP-fragment generator stub"). The three ways that were offered:
+- **A. Chosen: defer both in favour of their source-traced counterparts.** Pack 3 builds neither.
   - Beer's Law's physical steps are all in transmittance-dilution, which plays in 3D now. Investigation 1's dated technique (eight ratios, P-01 to P-12) comes with items 23–25 in Pack 5.
   - Hard Water Gravimetry's steps are all in Pack 2's practice versions except the vacuum apparatus. That apparatus comes with `gravimetric-vacuum-filtration` in Pack 6, which carries the source's gravity-or-vacuum choice as a branch. The whole analysis plays in 3D as `hard-water-demo` (below).
-  - It saves the three vacuum models and the marker (four of the 17 missing models), and about 45 steps that would repeat other techniques.
+  - It saves the three vacuum models and the marker, and about 45 steps that would repeat other techniques.
   - Their catalogue items 13 and 15 then have no 3D entry; the 3D switcher shows Pack 3 as three techniques.
-- **B. Rebase them on the nearest dated plan,** as 3D practice versions.
-  - Beer's Law becomes one ratio of Investigation 1 (P-02 to P-11: label, measure stock, transfer, measure water, add and mix, instrument and blank, fill and insert, read %T, record), about 20 steps. What the plan leaves open (blank, cuvette conditioning, orientation; its point 3) is marked R or T.
-  - Hard Water Gravimetry becomes the vacuum variant of FD-01 to FD-21, about 40 steps, with GRAV-00 to GRAV-04's vacuum apparatus marked R and its components the teacher's decision (point 1).
-  - Both would be redone when Packs 5 and 6 bring the dated techniques.
+- **B. Rebase them on the nearest dated plan,** as 3D practice versions: Beer's Law as one ratio of Investigation 1 (about 20 steps), Hard Water Gravimetry as the vacuum variant of FD-01 to FD-21 (about 40), both redone when Packs 5 and 6 bring the dated techniques.
 - **C. Atomize them as they are,** keeping their sequences and filling the gaps by real practice: about 30 and 45 steps, with nothing source-traced.
 
 ## Proposed sequences
 
 ### Paper Chromatography
 
-**The practice version plays one trial**; the lab composes its twin once per solvent.
+**Two trials, each a fixed variant.** The practice version plays the water trial; the lab plays water, then 2-propanol (decision 3).
 - The source's minimum is two solvents (HP-05) with fresh paper, solvent and data each time (CP-01). One trial is the whole physical skill; the second trial in the lab repeats it, which is the "muscle memory".
-- **(you) Solvents** (decision 3): *recommended: water and 2-propanol,* the two with prepared band data, which also cover both disposal branches (sink, organic waste; S-03, S-04). The teacher's setup page orders them. Or all five, with the teacher entering the bands for ethanol, acetone and the chromatography solvent before play.
+- **The trials can't be one twin with the solvent as a setting** (revision 3). A twin's steps are fixed, and the lab's setup page has only number and text fields. Three things differ between the trials and are structure, not values:
+  - the number of bands: water 2, 2-propanol 3, one read and one record step each;
+  - the disposal: water down the sink, 2-propanol into the organic-waste beaker (S-03, S-04), which are different items;
+  - so the order is fixed too: the teacher can't swap the trials on the setup page.
+- **So the module writes two variants from one sequence:** the practice version `paper-chromatography-practice` (water, listed in the switcher) and two twins, `paper-chromatography-water-3d` and `paper-chromatography-propanol-3d`, the second built from an unlisted 2-propanol practice object. The 2D generator does the same: its 15 choice groups are one per solvent and band count.
+- **The bench holding water and 2-propanol is a departure from HP-05** (the student chooses at least two of five; finding 1, §10: "without forcing water and 2-propanol"). It is marked **T**. The student still records a choice and its reasons (HP-05, HP-06), and no outcome shows before development (point 9).
 
-**Bench (practice):** the chamber (a small glass jar, lid beside it), a paper strip on a clean tile, the pencil, the metric ruler, a capillary, the dye mixture in a small vial, the solvent bottle, and for disposal the sink (water) or an organic-waste beaker (2-propanol).
+**Bench (practice):** the chamber, a small clear container with a lid and a blank label tape on its side (the manual: "Small (25–50 mL) containers with lids", "Tape to make labels"); the 100 mL graduated cylinder; a fresh paper strip on a clean tile; the pencil; the metric ruler; a capillary; the dye mixture in a small vial (`small-vial`, 20 mL; the 2D content's 125 mL `sample-bottle` holds 1 mL); the solvent bottle; the sink (water) or the organic-waste beaker (2-propanol).
 
-Per trial:
-1. Write the solvent's name in pencil at the top of the strip. **M/R** (TR-01; in pencil, never ink, finding 5) The chamber's label tape (§7's components) is shown already written, as Pack 2's watch-glass label is.
-2. Place the empty chamber. **M** (CHR-00)
-3. Pour the solvent into the chamber to the teacher's depth. **M/C** (TR-02, CHR-01) The depth line shows on the glass; pouring past the depth that would reach the baseline is refused.
-4. Close the lid, so the air in the chamber saturates while the strip is prepared. **M/R** (finding 3: "sealed so solvent saturates")
-5. Draw the pencil baseline across the strip at the teacher's height. **M** (TR-03, CHR-02) A drag along the strip, the line drawn under the pencil's tip.
-6. Dip the capillary's tip into the dye mixture; it fills by capillary action. **R** (TR-04; the capillary is **R/C**, finding 4)
-7. **(you) Spot the dye** (decision 8): *recommended: touch the tip to the centre of the baseline three times, letting the spot dry between touches* (counted, "Spot (1 of 3)", with a short step clock). **M/R** (TR-04, TR-05 R/C) A small, concentrated spot is the real technique. *Or one touch, then dry.*
-8. Open the lid. **R**
-9. Lower the strip into the chamber, its lower edge in the solvent, the spot above it, the strip not touching the walls. **M/R** (TR-06, CHR-04) A spot below the solvent is refused (§9: "origin submerged").
-10. Close the lid. **M** (TR-07, CHR-05, S-07)
-11. Watch the solvent rise to the teacher's stop distance. **M/C** (TR-08, CHR-06) A fast step clock; the front rises and the bands appear only now (point 9: no outcome before development). Opening early is refused.
-12. Open the lid and lift the strip out by its top edge. **R** (TR-09, CHR-07)
-13. Mark the solvent front with the pencil at once, before it evaporates. **M/R** (TR-10, CHR-08)
-14. Lay the strip flat to dry (step clock). **R**
-15. Identify each band and record it: colour, and overlap where bands run together. **M** (TR-11; §9 "overlap recorded as overlap") A record.
-16. Lay the ruler along the strip, its zero on the baseline. **R** (TR-12)
-17. Read the front's distance to the nearest mm, and enter it. **M** (TR-12) The student reads the ruler; the value is not filled in.
-18. Record it. **M** (TR-13)
-19. For each band, counted: read its centre's distance and enter it, then record its identity and distance. **M** (TR-14 to TR-16)
-20. Calculate Rf for each band. **M** (TR-17) A calculation, student-entered, judged against the readings (template `chromatographyRf`, tolerance 0.005).
-21. Record the separation: resolved, overlapping, streaked. **M/R** (TR-18)
-22. Pour the used solvent into the right place: water down the sink, 2-propanol into the organic-waste beaker. **M** (TR-19, S-03, S-04)
+Per trial (the 2D water group's 26 steps are the starting point; the basis labels follow the registry's existing traces where they exist):
+1. Write the solvent's name on the chamber's label tape with the pencil. **M/R** (TR-01; the manual's tape)
+2. Place the empty chamber. **F** (CHR-00)
+3. Measure the teacher's volume of solvent in the graduated cylinder. **M/C** (TR-02, "Measure/pour"; the manual's 100 mL cylinders)
+4. Pour it into the chamber. **M** (TR-02, CHR-01) There is no line on the container: the depth is checked, and a level that would reach the baseline is refused (finding 7, §9).
+5. Lay the fresh strip flat on the tile. **M/R** (CP-01, "fresh paper")
+6. Draw the pencil baseline across the strip at the teacher's height. **M** (TR-03, CHR-02) A drag along the strip, the line drawn under the pencil's tip.
+7. Dip the capillary's tip into the dye mixture; it fills by capillary action. **F/R/C** (CHR-03; the capillary is inferred, finding 4)
+8. Touch the tip to the centre of the baseline: spot 1 of 3. **M/R** (TR-04, CHR-03: "centered and small")
+9. Let the spot dry. **R/C** (TR-05; a short step clock)
+10–13. Spot 2 of 3, dry; spot 3 of 3, dry. **T** (decision 8: three touches) As separate steps, decision 10 (revision 3).
+14. Hang the strip from the hook under the chamber's lid. **R** (the source is silent; 2D suspends the strip)
+15. Lower it into the chamber and seat the lid: the lower edge in the solvent, the spot above it, the strip clear of the walls. **M/R** (TR-06, TR-07, CHR-04, CHR-05, S-07) A spot below the solvent is refused (§9, "origin submerged").
+16. Watch the solvent rise to the teacher's stop distance. **M/C** (TR-08, CHR-06) A fast step clock; the front rises and the bands appear only now (point 9). Lifting the lid early is refused.
+17. Lift the lid with the strip out, and unhook the strip. **R** (TR-09, CHR-07)
+18. Mark the solvent front with the pencil at once, before it evaporates. **M/R** (TR-10, CHR-08)
+19. Lay the strip flat to dry. **R** (the 2D "Dry chromatogram"; step clock)
+20. Identify each band and record it: colour, and overlap where bands run together. **M** (TR-11; §9: overlap recorded as overlap) A record.
+21. Lay the ruler along the strip, its zero on the baseline. **M** (TR-12; the registry traces `place-metric-ruler` M)
+22. Read the front's distance to the nearest mm and enter it. **M** (TR-12) The student's entry is required and judged against the strip (±0.5 mm; revision 3, see "Ruler reading").
+23. Record it. **M** (TR-13)
+24–27. For each band: read its centre's distance and enter it; record its identity and distance. **M** (TR-14 to TR-16) Water: purple overlap, yellow. 2-propanol adds a third pair (29–30 there).
+28. Calculate Rf for each band. **M** (TR-17) A calculation keeping its legacy effect: the template works Rf out from the student's recorded readings (`requireRecordedMeasurements`) and checks it against the prepared Rf.
+29. Record the separation: resolved, overlapping, streaked. **M/R** (TR-18)
+30. Pour the used solvent into the right place: water down the sink, 2-propanol into the organic-waste beaker. **M** (TR-19, S-03, S-04)
 
-About 26 steps for water (two bands), 28 for 2-propanol (three).
+30 steps for water, 32 for 2-propanol.
 
-**Teacher-prepared values** (setup page, defaults filled, E0 B): baseline height, solvent depth, stop distance (the front, 80 mm), each band's colour and centre distance (water: purple overlap 59 mm, yellow 66 mm; 2-propanol: blue 28, red 49, yellow 68 mm; today's model values become the defaults). The strip shows them; the student measures them. The spot and solvent volumes are shown, not entered.
+**Teacher-prepared values:** the solvent volume, baseline height and stop distance (the front, 80 mm); each band's colour and centre distance (water: purple overlap 59 mm, yellow 66 mm; 2-propanol: blue 28, red 49, yellow 68 mm). Today's model values become the defaults. The strip shows them; the student measures them. The prepared Rf of each band is the band's distance over the front's, so a teacher's change to a distance must change it too (see "For the build thread").
 
-**The twin** (`paper-chromatography-3d`): drops no steps (each trial starts from an empty chamber). Slots dropped: none. Slots kept: the solvent identity, its disposal branch, and the prepared values above. `selectedProcedure` is gone: the lab composes the twin once per solvent, `trial-1` and `trial-2`, each with its own chamber, strip and bottle.
+**The twins:** drop no steps (each trial starts from an empty chamber) and no slots beyond those that only fill the practice bench. `selectedProcedure` is gone.
 
-**The lab** (`paper-chromatography`, 3D): the pre-trial and post-trial records are lab steps around the two trials:
-- before: safety (S-01, S-02, S-05, S-06), review the dye and solvent structures (HP-01, HP-02), predict attractions and state a hypothesis (HP-03, HP-04), choose the solvents and say why (HP-05, HP-06: the student records the choice; the teacher's setup decides which two the bench holds), the procedure and data table (HP-07, HP-08), and the teacher's approval (HP-09);
-- after: compare (CP-02), support or refute (CP-03), explain (CP-04), draw (CP-05), green chemistry from supplied evidence (CP-06), the most-retained dye (CP-07), the CER (CP-08).
+**The lab** (`paper-chromatography`, 3D): the two trials, `trial-water` and `trial-propanol`, each with its own chamber, strip and bottle. The pencil, ruler, cylinder, capillary and dye vial are shared by both parts (proved to compile and play). Lab steps around them (records, unless marked):
+- **before:** safety (S-01, S-02, S-05, S-06); Prelab Part I, the teacher's capillary demonstration and questions 1–3 (Inv5 §4, revision 3); the structures and solvents (HP-01, HP-02); attractions and the hypothesis (HP-03, HP-04); the choice and its reasons (HP-05, HP-06); the procedure and data table (HP-07, HP-08); the teacher's approval (HP-09, a teacher checkpoint);
+- **after:** compare (CP-02); support or refute (CP-03); explain, with the most-retained dye (CP-04, CP-07); draw (CP-05); green chemistry from supplied evidence (CP-06); the CER (CP-08); the limits of the interpretation (the 2D lab's); the Postlab Assessment, pyridine and benzene (revision 3).
 
-These are records; 3D labs can't carry them yet (see "Shared new capabilities").
+About 18 lab steps; the lab plays about 80.
 
 ### Calculate Hardness
 
-**What the bench shows.** In the lab, nothing new: it is the last step of `hard-water-demo`, and the bench holds what the student used (the drained cylinder, the watch glass with its dry precipitate beside the balance). The camera turns to the notebook, which lists the sample volume and the precipitate mass.
+**What the bench shows.** In the lab, nothing new: it is the last step of `hard-water-demo`, and the bench holds what the student used (the drained cylinder, the watch glass with its dry precipitate beside the balance). The camera turns to the notebook, which lists the sample volume and the precipitate's mass.
 
-**The practice version** (3 steps):
-1. Note the sample's volume (20 mL) from your notebook. A stand-in observation, as Dry and Weigh's "Note the paper's mass".
-2. Note the precipitate's mass. A stand-in observation.
-3. Calculate the hardness in mg/L as CaCO₃. **M** (the inquiry's INQ-09: "grams and mg/L for each sample") Student-entered, judged against the template.
+**Basis.** Calculate Hardness is not source-derived (the registry: "Original demo technique"). Its step is **T**, with the inquiry's INQ-08 ("Calculate grams precipitate and mg/L as CaCO3 for each") as context. The inquiry also preconcentrates its samples 200 times; the demo does not, so the runtime's `preconcentrationFactor` stays 1.
+
+**The practice version** (6 steps; the first five are stand-ins):
+1. Note the sample's volume (20 mL).
+2. Note the watch glass's mass, the paper's mass, and the dry assembly's mass (3 steps).
+3. Work out the precipitate's mass by difference (`gravimetricPrecipitateMass`), as Dry and Weigh's last step does. This gives the practice version the same calculation the lab gets from Dry and Weigh.
+4. Calculate the hardness in mg/L as CaCO₃. Student-entered (`requireStudentValue`), judged against the template (g × 10⁶ ÷ mL; 375 mg/L for 0.0075 g in 20 mL; tolerance 0.5).
 
 Its bench is the cylinder and the watch glass with the dried solid, so the numbers have a source in front of the student.
 
-**The twin** (`hard-water-calculation-3d`): drops steps 1 and 2. Slots kept: the two input ids and the tolerance.
+**The twin** (`hard-water-calculation-3d`): drops the five stand-ins. Slots kept: `sampleVolumeMeasurementId`, `precipitateMassCalculationId` and the tolerance.
 
-**The ids, checked by compiling** (`compileLabComposition`, replaying the action):
-- The 3D lab module writes no `preserveIds`, so every id is scoped by its part: Measure Liquid Volume's sample volume is `measuring-volume--sample-volume`; Dry and Weigh's mass is the calculation `drying--precipitate-mass`.
-- **Neither `preserveIds.references` nor a lab-level binding is needed.** `preserveIds.references` cannot help anyway: it names only literal owner-local ids, and every id here is config-bound (adding one fails validation, "preserves unknown owner-local reference id").
-- **A plain configuration binding does it.** A config-bound string under a key ending in a capitalised `MeasurementId` or `CalculationId` passes through unscoped. So the lab binds `sampleVolumeMeasurementId: "measuring-volume--sample-volume"` and the mass's id.
-- **The mass is a calculation, not a measurement.** The practice version reads it through `precipitateMassCalculationId`, which the runtime already supports (`reducer.ts`, the hardness branch) but the 2D technique doesn't declare. The 3D version declares it, and not `precipitateMassMeasurementId`.
-- **The hardness's own id stays a literal** in the 3D version (`hardness-mg-l`), so the action and its validation rule are scoped alike. (In 2D it is config-bound, which the action scopes and the rule doesn't; that is why the compiled 2D lab never completes.)
-- **Dry and Weigh's twin meets the same problem.** Its by-difference step reads the literal `filter-paper-mass`, which the lab scopes to `drying--filter-paper-mass`, while Filtration writes `filtration--filter-paper-mass`. Its module turns that id into a slot (default `filter-paper-mass` for the practice version), and the lab binds Filtration's. This is the open question E0 noted for `hard-water-demo`.
+**The ids** (proved by compiling and playing `hard-water-demo` in 3D in memory: 59 steps, completed):
+- The 3D lab module writes no `preserveIds`, so every id is scoped by its part: the sample volume is `measuring-volume--sample-volume`; Dry and Weigh's mass is the calculation `drying--precipitate-mass`.
+- **Neither `preserveIds.references` nor a lab-level binding is needed.** `preserveIds.references` names only literal ids, and every id here is config-bound. A plain configuration binding does it: a config-bound string under a key ending in a capitalised `MeasurementId` or `CalculationId` passes through unscoped.
+- **The mass is read as a calculation,** through `precipitateMassCalculationId`, which the runtime already supports but the 2D technique doesn't declare.
+- **The hardness's own id stays a literal** (`hardness-mg-l`), so the action and its validation rule both become `hardness--hardness-mg-l`. In 2D the id is config-bound: the action scopes it and the rule doesn't, which is why the compiled 2D lab never completes (left as it is, D8 (5)).
+- **Dry and Weigh's twin meets the same problem.** Its by-difference step reads the literal `filter-paper-mass`, scoped in a lab to `drying--filter-paper-mass`, while Filtration writes `filtration--filter-paper-mass`: refused, "Required mass evidence is missing". With the id as a slot (default `filter-paper-mass` for the practice version) bound to Filtration's, it completes.
+- **The balance's resolution** (revision 3, decision 9). Pack 2's 3D balance shows 0.001 g, so the dry assembly reads 30.561 g, the precipitate 0.008 g and the hardness 400 mg/L. 375 is reached only by typing 30.5605, which the balance doesn't show. The display takes its places from the first weighing on that balance (Filtration's paper). The manual allows "Analytical balances (±0.001 or ±0.0001 g)" (Inv3 materials). Decided: 0.0001 g on Pack 2's 3D weighings (Filtration's paper, Dry and Weigh's glass and assembly), practice versions and twins.
 
 ### Brass Spectrophotometry
 
-**(you) Split it** (decision 5). *Recommended: six 3D techniques, each with a practice version and a twin, which the brass lab composes in the source's order.* Each part already has its own ports; split, each plays alone at 8–35 steps instead of one sequence of about 170. *Or one practice version and one twin,* as the 2D technique is.
+**Six 3D techniques** (decision 5), each with a practice version and a twin, composed by the brass lab in the source's order. Each part already has its own ports in 2D.
 
-The six, in the source's order:
-
-**B1. Weigh the brass and make the unknown up to 100 mL** (18 steps)
+**B1. Weigh the brass and make the unknown up to 100 mL** (19 steps)
 1. Check the empty balance reads zero. **R** (Pack 1's zero step)
-2. Put the clean, dry watch glass on the pan and tare. **M/R** (BRASS-00; the 2D content's "weighing support")
-3. With forceps, move the brass from its vial onto the watch glass. **R**
-4. Read the mass to 0.001 g and enter it. **M** (B-01, BRASS-01: 1–2 g) The balance shows the teacher's prepared mass.
+2. Put the watch glass, the beaker's own cover (the manual's "50 mL beaker with watch glass"), on the pan and tare. **R** (B-01, B-03, §4; the plan's own BRASS-00 weighs in the beaker; both are R)
+3. Tip the brass from its vial onto the watch glass. **R** (`atom.transfer.load-solid-onto-weighing-support`; no forceps, revision 3)
+4. Read the mass to 0.001 g and enter it. **M** (B-01; the manual's "Digital balance, ±0.001 g") The balance shows the teacher's prepared mass.
 5. Record it. **R** (B-02)
-6. Slide the brass into the small beaker. **M** (B-03)
-7. Calculate the least volume of 15.8 M nitric acid, assuming pure copper. **M** (B-04) A calculation.
-8. Carry the beaker to the teacher's tray for the hood. **T** (B-05 to B-07 are the teacher's, finding 1; see decision 6)
-9. Teacher's checkpoint: the acid added with about 2 mL extra, the beaker covered, the metal dissolved, 50 mL water added. **M** (B-05 to B-07, DIGEST-01/02) The beaker comes back blue-green, covered.
-10. Lift the watch glass off and rinse its underside into the beaker. **R**
-11. Seat a funnel in the neck of the 100 mL volumetric flask. **R** (Pack 1's funnel atom)
-12. Pour the digest into the flask. **M** (B-08)
-13. Rinse the beaker with about 5 mL from the wash bottle and pour the rinse into the flask: three times, counted. **M** (B-09, B-10: "3–4 rinses"; three, as Pack 1's counted rinse)
-14. Rinse the funnel into the flask, and lift it out. **R**
-15. Add water to just below the mark. **M/R** (B-11; D8 (9)'s `atom.transfer.fill-below-graduation`)
-16. Add the last water dropwise to the mark, the meniscus at eye level. **M/R** (D8 (9)'s `atom.transfer.dropwise-to-graduation`)
-17. Stopper and invert to mix, counted. **M/R** (B-11 "mix"; Pack 1's inversion)
-18. Pour a portion into the labelled unknown tube in the rack. **R** (for S-10's measurement and V-01)
+6. Slide the brass into the beaker. **M** (B-03) A 150 mL beaker: the manual's 50 mL beaker would hold about 6 mL of acid and 50 mL of water, over its nominal volume. **C**
+7. Calculate the least volume of 15.8 M nitric acid, assuming pure copper. **M** (B-04) The source names NO as the gas (3 Cu + 8 HNO₃): 3.98 mL for 1.500 g.
+8. Carry the beaker to the teacher's tray beside the bench; the teacher's checkpoint: the acid added with about 2 mL extra, and the beaker covered with the watch glass. **M** (B-05, B-06, DIGEST-01/02; decision 6) The tray is scenery: the drag completes the checkpoint (revision 3).
+9. Teacher's checkpoint: the metal dissolved, and 50 mL of water added. **M** (B-07)
+10. Bring the beaker back from the tray. **M** (manual step 3: "you will remove the beaker from the fume hood")
+11. Lift the watch glass off and rinse its underside into the beaker. **R**
+12. Seat a funnel in the neck of the 100 mL volumetric flask. **R** (Pack 1's funnel atom)
+13. Pour the digest into the flask. **M** (B-08)
+14. Rinse the beaker with about 5 mL from the wash bottle into the flask, three times, counted in one step. **M** (B-09, B-10: "3–4 times"; Pack 1's counted rinse with a receiver)
+15. Rinse the funnel into the flask, and lift it out. **R**
+16. Add water to just below the mark. **M/R** (B-11)
+17. Add the last water dropwise from a Beral pipette to the mark, the meniscus at eye level. **M/R** (B-11; D8 (9)'s draw-back, which works for a dropper bringing a vessel to its mark)
+18. Stopper and invert to mix, counted. **R** (the manual says only "Dilute to a final volume of 100.0 mL")
+19. Pour a portion into the labelled unknown tube in the rack. **R** (for S-10 and V-01)
 
-**B2. Make the copper standards** (about 34 steps)
-1. Calculate the stock volume for each standard (four). **M** (D-01) Calculations: 5.00, 2.50, 1.25 and 0.625 mL to 10.00 mL.
-2. Pour about 10 mL of the 0.400 M stock into its labelled tube. **M** (D-04: the set includes 0.400 M)
-3. Fit the pump to the 10 mL graduated pipette. **R** (the 2D lab has the pump; Pack 1's pump seat)
-4. For each standard, counted (1 of 4 … 4 of 4):
-   - draw stock just above the volume, then let it back to the line; **M/R** (D-02; D8 (9)'s drop to the line)
-   - deliver it into the standard's labelled tube; **M** (D-02)
-   - draw distilled water to make 10.00 mL in all, and deliver it; **M/R** (D-03; the pipette is rinsed between stock and water, shown not stepped)
-   - stopper the tube and invert to mix; **M/R** (D-03 "mix")
+**B2. Make the copper standards by serial dilution** (about 33 steps; decision 11, revision 3)
+
+The manual (step 4): "Obtain 10.0 mL of 0.400 M Cu(NO3)2(aq) stock solution in a 10 mL graduated cylinder. Determine what volume is required to make 10.00 mL of 0.200 M… Repeat the dilution process to make 10.0 mL each of three more…" Its materials list only "10 mL of 0.400 M" stock.
+- **Diluting each from the stock** (the plan's D-01, and 2D) needs 5.00 + 2.50 + 1.25 + 0.625 = 9.375 mL of the 10.0 mL. That leaves 0.625 mL of 0.400 M: too little to rinse and fill a cuvette (about 5 mL) or for the colour-depth tube. And 0.625 mL can't be measured on the listed pipettes.
+- **Serial dilution** (each standard from the one before, 5.00 mL plus 5.00 mL of water) uses the same volume every time, which is "repeat the dilution process". It leaves 5.00 mL of every standard but the last, and 10.0 mL of 0.0250 M. Chosen (decision 11), **M/R**.
+
+The sequence:
+1. Pour the 0.400 M stock into the graduated cylinder to 10.0 mL. **M/C** (step 4; the 25 mL cylinder, the smallest modelled: the manual's 10 mL one is **C**)
+2. Calculate the volume for each standard: 5.00 mL of the one before, made up to 10.00 mL (four calculations). **M** (D-01, read as serial)
+3. Teacher's checkpoint: the dilution calculations verified. **M** ("Have your instructor verify your dilution calculations!")
+4. Fit a pump to each of the two 10 mL graduated pipettes, one for the solutions and one for water. **M/C** (the manual's pipettes and pump; two of each is **C**)
+5. For each standard, 0.200 to 0.0250 M (the step names it):
+   - rinse the solution pipette with a little of the solution it will draw; **R**
+   - draw the previous solution above the zero mark, then let it down to zero; **M/R** (Pack 1's `fill-pipette-to-zero-mark`)
+   - deliver 5.00 mL into the standard's labelled tube; **M** (D-02; Pack 1's `deliver-pipette-to-line`)
+   - fill the water pipette to zero and deliver 5.00 mL, making 10.00 mL; **M** (D-03)
+   - stopper the tube and invert to mix, counted; **M** ("Thoroughly mix")
    - stand it in the rack. **R**
-5. Teacher's approval of the five standards. **M** (D-04)
+6. Pour what is left of the 0.400 M stock into its labelled tube in the rack. **R**
 
-**B3. The visible spectrum of salts A and B** (about 32 steps; prelab P-01 to P-05)
-- **(you) The scan** (decision 4). The source states 16 wavelengths, 400 to 700 nm every 20 nm, for two salts (P-02 to P-05). *Recommended:*
-  - the full cycle at the first two wavelengths (400 and 420 nm): set the wavelength; insert the blank, close the lid, set 100 %T (**R**: a single-beam instrument is blanked at each wavelength; the source is silent), remove it; insert salt A, close, read, record; the same for salt B (about 8 steps each);
-  - then one step per remaining wavelength: "Run the cycle at 440 nm", which turns the control and shows the hands moving the three cuvettes fast, and writes the prepared readings into the table (14 steps);
-  - every wavelength is still measured and recorded, as P-05 states, and the student sees the whole spectrum.
-  - *Or the full cycle at all 16* (about 130 steps). *Or one wavelength practised and the spectrum given as the teacher's prepared data.*
-- The readings are the teacher's prepared absorbances for each salt at each wavelength (defaults supplied).
+The 10.00 and 10.0 mL notations (finding 4, point 4) are kept as the pipettes give them: 10.00 mL. The teacher can confirm.
 
-**B4. Measure the standards and the unknown** (zero and blank 5 steps; each solution 9)
-- Once: S-01's wavelength choice and S-02's approval are lab steps. Then:
-  1. Set the wavelength to the approved value. **M** (S-01)
-  2. With the compartment empty and closed, set 0 %T. **M** (S-03)
-  3. Fill the blank cuvette three-quarters with distilled water, wipe it with a tissue, insert it with its clear faces in the light path, close the lid. **M/R** (S-04, SPEC-01; orientation **C**)
-  4. Set 100 %T (absorbance 0). **M** (S-04)
-  5. Remove the blank. **M**
-- **For each solution, dilute to concentrated, then the unknown** (S-10):
-  1. Empty the cuvette into the waste beaker. **M** (S-05 "empty")
-  2. Rinse it with about 1 mL of the next solution from a Beral pipette, and empty it: twice, counted. **M** (S-05; **R** for each solution after the first, finding 7)
-  3. Fill it three-quarters. **M** (S-06)
-  4. Wipe it. **M** (S-06)
-  5. Insert it, clear faces in the path, and close the lid. **M** (S-06, SPEC-02)
-  6. Read the absorbance. **M** (S-07) The display shows the teacher's prepared value.
-  7. Record it. **M** (S-08)
-  8. Open the lid and lift the cuvette out. **R**
-  9. Pour its contents back into the solution's tube. **M** (S-09)
-- **(you) As one technique or composed per solution** (part of decision 5). *Recommended: two techniques,* "zero and blank the spectrophotometer" and "measure one solution", the lab composing the second six times. Each practice version is then short. The build must first prove that a photometer's zero and blank reach a later part (see "For the build thread"); if they don't, B4 stays one technique of about 60 steps.
+**B3. The visible spectrum of the assigned salts** (about 45 steps; prelab P-01 to P-05)
 
-**B5. Compare colour depth** (about 8 steps; V-01 to V-04, VIS-01, Figure 1)
-1. Fill one flat-bottomed tube with the unknown and one with the 0.400 M standard, to the same depth. **M** (V-01)
-2. Stand both in the viewer over its white field, beside the mm scale. **F** (VIS-01, Figure 1)
-3. Look down through both. **F**
-4. Draw standard out of its tube with a Beral pipette, a little at a time, until the two colours match from above: counted portions, ending at the teacher's prepared match depth. **M/F** (V-02) Overshooting is refused with "Too much: the standard is now paler" (point 6 leaves recovery to the teacher; refusing it is the simplest faithful rule).
-5. Read the unknown's depth on the scale and enter it. **M/F** (V-03)
-6. Read the standard's depth and enter it. **M/F** (V-03)
-7. Record both. **M/F** (V-03)
+The manual: "Your group will be given two different salt solutions… measure the absorbance… every 20 nanometers from 400–700 nm… sharing your absorption spectra with the rest of the class." The salts are two of six (copper, zinc and iron(III) sulfates and nitrates), 0.1 M. The class's spectra identify the absorbing species, and the student's wavelength choice (step 5) comes from them.
+1. Record the assigned salts. **M** (P-01) Default: copper(II) nitrate and zinc nitrate, the two ions of a brass digest (**C**). The class's other four spectra are given as the teacher's data.
+2. Fill three cuvettes three-quarters, the blank with distilled water and one with each salt, wiping each (6 steps). **R/C** (the materials list "1 cuvette"; three is **C**)
+3. The full cycle at 400 and at 420 nm (decision 4), 12 steps each:
+   - set the wavelength; **M** (P-02)
+   - insert the blank (the lid closes); set 100 %T; remove the blank; **R** (a single-beam instrument is blanked at each wavelength; the source is silent)
+   - insert salt A; read the absorbance; record it; remove it; **M** (P-03, P-04)
+   - the same for salt B. **M**
+4. One step per remaining wavelength, 440 to 700 nm: "Run the cycle at 440 nm", which turns the control and shows the hands moving the cuvettes fast, and writes the prepared readings into the table (14 steps). **M** (P-05)
+
+Then, as lab steps: compare with the class's spectra, identify the absorbing species, and write the relationship (prelab steps 4–6).
+
+**B4. Measure the standards and the unknown** (two techniques: zero and blank, 8 steps; one solution, 9 steps, composed six times)
+
+Zero and blank:
+1. Set the approved wavelength. **M** (step 5, S-01)
+2. With the compartment empty and the lid closed, set 0 %T. **M** (S-03: "with no cuvette")
+3. Fill the cuvette three-quarters with distilled water. **R** (the manual: "cuvette filled with distilled water")
+4. Wipe it with a tissue. **R**
+5. Insert it, clear faces in the light path; the lid closes. **M** (S-04, SPEC-01; orientation **C**)
+6. Set 100 %T. **M** (S-04)
+7. Remove the blank. **M**
+8. Empty the water from the cuvette. **M** (S-05; once, revision 3)
+
+One solution (dilute to concentrated, then the unknown; S-10):
+1–2. Rinse the cuvette with about 1 mL of the solution from a Beral pipette, and empty it: twice. **M** (S-05; **R** for each solution after the first, finding 7)
+3. Fill it three-quarters. **M** (S-06)
+4. Wipe the outside with a tissue. **M** (S-06; the manual's "Tissues (preferably lint free)")
+5. Insert it, clear faces in the path; the lid closes. **M** (S-06, SPEC-02)
+6. Read the absorbance. **M** (S-07) The display shows the teacher's prepared value for this solution.
+7. Record it. **M** (S-08)
+8. Lift the cuvette out (the lid opens). **R**
+9. Pour its contents back into the solution's tube. **M** (S-09)
+
+**Proved by compiling:** a zero part followed by six one-solution parts on the same instrument and cuvette completes (29 of 29), if the parts share the instrument's calibration state (brass's own `wavelength-scan` mode, keyed by the lab item) or bind one zero tag through configuration, and every part binds the zero part's wavelength id (`zero--wavelength`). The 3D display does not yet follow: it shows the first read's value for all six (see "For the build thread").
+
+**B5. Compare colour depth** (9 steps; manual steps 9–10, Figure 1, V-01 to V-04, VIS-01)
+1. Fill a 16 × 150 mm test tube with the unknown. **M** (step 10, V-01)
+2. Stand it in the comparison stand on its white card, the ruler standing beside it. **M/F** (Figure 1: "on top of a piece of white paper"; the ruler beside the tubes)
+3. Fill a second tube with the 0.400 M standard to a depth where the colour seems to match. **M** (step 10)
+4. Stand it beside the first. **M/F**
+5. Look down through both from above. **F** (Figure 1)
+6. Draw standard out with a Beral pipette, a little at a time, until the two match from above. **M/F** (step 9, V-02; the existing atom `atom.transfer.adjust-color-depth-standard`) Overshooting is refused (point 6 leaves recovery to the teacher). Where the removed standard goes is unstated: back to its tube (**R**).
+7. Read each depth on the ruler and enter it (2 steps). **M/F** (V-03)
 8. Calculate the unknown's molarity, M₁D₁ = M₂D₂. **M/F** (V-04)
 
-**B6. Neutralise the brass waste** (about 11 steps; the source's safety S-08, findings 6 and 9, point 7)
-1. Pour every copper solution into the waste beaker (tubes, flask, cuvettes): one step per container group, counted. **M**
-2. Add baking soda with the spatula, a little at a time, stirring: counted portions until the bubbling stops. **M/C** (safety S-08: small portions until bubbling subsides)
-3. Dip the stirring rod and touch it to a strip of pH paper. **M/R** (finding 6: pH paper or meter; touching a rod to the strip is R)
-4. Compare the colour with the chart and enter the pH (the teacher's prepared value, 5–9). **M** (S-08, finding 9)
+Round-bottomed tubes, as the source's (no flat-bottomed variant, revision 3).
+
+**B6. Waste and cleanup** (8 steps with the default three portions; safety S-08, findings 6 and 9, point 7, manual step 11)
+1. Pour the remaining brass solution and the standards into the waste beaker. **M/C** (S-08 names "the remaining brass solution"; pooling the standards with it is **C**, as the registry has it)
+2. Add baking soda with the spatula, stirring, a little at a time until the bubbling stops: each portion its own step, the number the teacher's (default 3). **M/C** (S-08; Pack 2's counted portions are for liquids only, so the portions are generated steps)
+3. Dip the stirring rod and touch it to a strip of pH paper. **M/R** (finding 6: pH paper or meter)
+4. Compare the colour with the chart and enter the pH (the teacher's prepared value, 5–9). **M** (S-08)
 5. Pour the neutralised waste into the teacher's designated receiver. **M/C** (point 7)
+6. Rinse the cuvettes with distilled water. **M** (step 11)
 
-**The twins:** each drops the stand-in steps that only make its practice bench (for example B4's "measure one solution" practice version zeroes and blanks first; its twin drops those steps, which the composed "zero and blank" part does). Slots dropped: those that only fill the practice bench (the starting volumes and the digest's colour). Slots kept: the prepared readings, masses, depths, wavelengths, and the measurement and calculation ids the lab binds.
+**The twins:** each drops the stand-in steps that only make its practice bench. For example, the one-solution practice version zeroes and blanks first, and its twin drops those steps, which the composed zero-and-blank part does. Slots dropped: those that only fill the practice bench. Slots kept: the prepared readings, masses, depths and wavelengths, and the ids the lab binds.
 
-**The lab** (`brass-colorimetry`, 3D): B3 → B1 → B2 → [S-01 wavelength choice, S-02 approval] → B4 (zero and blank, then six solutions) → [A-01 to A-03: plot, fit, unknown concentration; % copper; class statistics] → B5 → B6, with the safety notes and teacher checkpoints as lab steps. The calculations bind the scoped ids of the five standards' absorbances, as Calculate Hardness does.
+**The lab** (`brass-colorimetry`, 3D), in the source's order (revision 3):
+1. Safety: goggles and gloves; nitric acid's hazards; the fume hood (lab steps).
+2. **B3**, then the class's spectra compared (lab steps).
+3. **B1**, then **B2** (manual steps 1–4).
+4. The wavelength choice from the spectra, and the teacher's approval (S-01, S-02; lab steps). An absorbance above 1 at the choice is not branched (Not proposed).
+5. **B4**: zero and blank, then the five standards from most dilute, then the unknown.
+6. Plot, fit (slope, intercept), and the unknown's concentration (A-01 to A-03; lab calculations binding the six parts' scoped absorbance ids).
+7. **B5**, then **B6** (manual steps 9–11).
+8. Data analysis, for **both** methods: the unknown's molarity, the copper's mass and percent; then the two methods compared.
+9. Argumentation: the class's mean and standard deviation for both methods; precision; accuracy.
 
-**Teacher-prepared values** (setup page, defaults filled): the brass mass; the 32 scan absorbances; the six measurement absorbances (consistent with the standards and the unknown's concentration); the match depth; the waste pH. Defaults are authored in the build, consistent with each other (a linear calibration through the five standards; the unknown's concentration from the brass mass and 100 mL).
+About 20 lab steps; the lab plays about 200.
+
+**Teacher-prepared values** (defaults, consistent with each other; the teacher may change any):
+- brass 1.500 g at 65 % copper: the unknown is 0.1534 M in 100.0 mL, between the 0.100 and 0.200 M standards;
+- absorbances from the manual's Figure 2 calibration (slope 2.399 per M, intercept −0.0055): 0.054, 0.114, 0.234, 0.474 and 0.954 for 0.0250 to 0.400 M, and 0.363 for the unknown, all at or below 1, as step 5 asks;
+- the scan: copper(II) nitrate's absorbance rising toward 700 nm, zinc nitrate's near zero (authored in the build);
+- colour depth: the unknown at 50 mm, the standard matching at 19 mm;
+- the waste's pH: 7.
 
 ### Beer's Law Calibration and Hard Water Gravimetry
 
-Not built under the recommended decision 2 (A). If B or C is chosen, their sequences are written in the build thread from the outlines under decision 2, by Pack 2's route.
+Deferred (decision 2). Not built in Pack 3.
 
 ## Shared new capabilities
 
-| Capability | What the student does | What's needed |
-|---|---|---|
-| **Pencil** | Draw the baseline, mark the front, write the trial's label. | A pencil carry and a draw gesture along the strip (a drag; a closed hand moved along); paper states for the marks. A new bench operation `mark-with-pencil` and atoms `atom.mark.pencil-baseline`, `atom.mark.solvent-front`, `atom.label.pencil-trial`. |
-| **Capillary spotting** | Dip to fill; touch the baseline (counted). | The `spotOnto` interaction in 3D (it exists in the runtime; 3D has only the generic mapping); the capillary's fill state; a spot that grows a little per touch. Atoms `atom.transfer.capillary-fill`, `atom.transfer.spot-origin`. |
-| **Chamber lid** | Close, open. | A lid object with two states, replacing the content flag `developingChamberClosed`; bench operations `open-chamber` and `close-chamber`, as the oven door. |
-| **Development** | Watch the front rise. | The step clock with a stop distance; the front and bands drawn on the strip as it runs (the prepared values); early opening refused. |
-| **Ruler reading** | Lay the ruler, read and enter distances. | A ruler placement zone along the strip; a student-entered reading (no default fill). |
-| **Spectrophotometer controls** | Set the wavelength, 0 %T, 100 %T; open and close the lid. | Controls on the model (see "Models"); bench operations `set-wavelength`, `set-zero-transmittance`, `set-full-transmittance`, `open-sample-lid`, `close-sample-lid`. |
-| **Readings by step** | Read the value the display shows. | The 3D display adapter (`src/studio3d/adapters/instrumentDisplay.ts`, `photometerReadout`) keyed by the current step and wavelength, not by the first read action of each cuvette, with absorbance as well as %T. 3D only. |
-| **Cuvette care** | Wipe; rinse with the next solution twice; return it to its tube. | A lens tissue; atoms `atom.clean.wipe-cuvette`, `atom.rinse.condition-cuvette` (counted, Pack 1's pattern), `atom.transfer.return-to-source`. |
-| **Mixing in a tube** | Stopper and invert. | Pack 1's inversion on a test tube with a stopper from the existing stopper set. |
-| **Racks** | Stand tubes in a rack. | The rack as working equipment with seats (today scenery, D9). |
-| **Colour-depth viewer** | Stand two tubes, look down, draw out, read depths. | The viewer model; a top-down look; counted removal; depth readings. |
-| **pH paper** | Touch a wet rod to a strip; compare. | Paper colour states; a chart; atom `atom.observe.ph-paper`. |
-| **Portions of a solid** | Baking soda a little at a time until bubbling stops. | Pack 2's counted portions with the spatula; a bubbling state that stops on the last. |
-| **Lab steps in 3D labs** | Hypothesis, approvals, CER, regression and the other records and calculations. | **3D lab modules have only parts today** (`composeLab.mjs` writes no lab actions or nodes). `lab()` gains lab steps between parts: records, calculations and teacher checkpoints. The compiler already handles lab-owned steps (2D labs use them). Scripts only. |
-| **A part composed more than once** | The second solvent; the six solutions. | The compiler supports repeated instances; `composeLab.mjs` needs only distinct instance ids, which it has. Proven by the first lab that uses it. |
+Revision 3 checked each against the atom registry, the runtime and the 3D player. **Most already exist**; what is new is mostly 3D work.
+
+| Capability | What the student does | What exists | What's needed |
+|---|---|---|---|
+| **Pencil marks** | Draw the baseline, mark the front, write the label. | Atoms `mark-chromatography-baseline`, `mark-chromatography-solvent-front`; the runtime's `chromatographyOperation` (markBaseline, markSolventFront); the pencil as the marking tool. | A 3D draw gesture along the strip; the pencil model. The tape label has no atom: a new one (decision 12). |
+| **Capillary spotting** | Dip to fill; touch the baseline; let it dry. | Atoms `load-spotting-tool`, `apply-baseline-spot`, `dry-chromatography-spot`; `spotOnto` in the runtime (one touch per step). | A 3D handler for `spotOnto` (today only the generic Confirm). Three touches are three steps (decision 10). |
+| **Chamber lid** | Seat it with the strip; lift it out. | Atoms `open-` and `close-developing-chamber`; the runtime's `chamberOperation` keeps `developingChamberClosed` as real state. | The lid as a model part; the hook; 3D mapping. |
+| **Development and drying** | Watch the front rise; let a spot or strip dry. | Atoms `develop-strip`, `dry-developed-chromatography-paper`. | **The step clock runs only for bench operations** (`sceneToIntent.ts`): extend it to the chromatography operations. 3D only. |
+| **Ruler reading** | Lay the ruler; read and enter distances. | Atoms `place.measuring-ruler`, `measure-chromatography-distance`. Today the runtime fills the strip's value whatever is typed. | `requireStudentValue` (or `inputMode: "numeric"`) on the read: proved to require the entry, accept within 0.5 mm, and refuse 1 mm off. Content only. |
+| **Spectrophotometer** | Set the wavelength, 0 %T, 100 %T; insert, read, remove. | Atoms `set-active-photometer-wavelength`, `dark-zero-photometer`, `blank-photometer`, `read-photometer`, `insert-` and `remove-cuvette`, `fill-cuvette`, `condition-cuvette-with-sample`, `prepare-cuvette-optical-faces`, `return-cuvette-to-origin`; `photometerOperation`; calibration state per instrument. The display already shows %T or A and a prepared reading. | Model controls and a lid that closes with an insert and opens with a removal: 3D visuals only, no runtime lid state (the source's "place it in the SPEC 20, and close the lid" is one sentence). |
+| **Readings by step** | Read the value for this solution, at this wavelength. | `photometerReadout` (`instrumentDisplay.ts`) uses the first read of each cuvette, the first zero and the last wavelength in authored order. | Follow the current step: its read action, the latest zero, the current wavelength. 3D only. |
+| **Stopper and invert a tube** | Mix a standard. | Atoms `stopper-vessel`, `invert-stoppered-vessel`; Pack 1's inversion; the test tube's stopper seat. | Nothing new. |
+| **Pipettes** | Draw to zero; deliver to a line. | Pack 1's `fill-pipette-to-zero-mark`, `deliver-pipette-to-line`; the pump seat. D8 (9)'s draw-back is for a dropper bringing a vessel to its mark, not for a pipette. | Nothing new. |
+| **Rack** | Stand tubes in the rack. | `sample-rack` in the catalogue, 6 slots and zones. | Its 3D model. |
+| **Colour depth** | Two tubes on white, look down, draw out, read depths. | Atoms `fill-color-depth-pair`, `place.brass-color-depth-comparison`, `adjust-color-depth-standard`, `read-color-depth`. | The stand's model; a top-down look. |
+| **Waste** | Baking soda to the endpoint; pH paper. | Atoms `treat-waste-with-solid-to-endpoint`, `read-waste-ph-indicator`. | Portions as generated steps; the pH paper model. |
+| **Lab steps in 3D labs** | Hypothesis, approvals, CER, regression and the other records and calculations. | The compiler and runtime: proved (a record, a calculation and an approval between parts compiled and played; the step card handled each). | `composeLab.mjs` writes lab steps between parts (with their effects, naming scoped ids), and part labels for them. Scripts and 3D only. |
+| **A part composed more than once** | Two trials; six solutions. | Proved: one twin twice, and several parts on one lab item, compile and play. | Nothing new. |
+| **Teacher's tray, tissues** | Hand the beaker over; wipe a cuvette. | Scenery entries (D9 pattern, 3D only, not catalogue definitions). | Two scenery models; a 3D gesture that completes the checkpoint by the drag to the tray; an atom for the hand-off only if none fits (decision 12). |
 
 ## New models
 
-**Budget:** the pack's reused models pack to 1,222,176 bytes; about 2.78 MB of the 4 MB remain. Under decision 2A, 7 new models and 4 aliases replace the 17 the validator lists, leaving about 400 KB each.
+**Budget:** the pack's reused models pack to 1,222,176 bytes; about 2.78 MB of the 4 MB remain. The caps are 250,000 bytes for an item and 600,000 for an instrument (`validate_equipment3d.py`). Comparable models are small (the spectrophotometer 34,540 bytes, the reagent bottle 100,660, the test-tube rack 20,740), so Pack 3 fits easily.
 
 **New** (built to the refined standard: `segments_for` lathes and fillets, `cut()` holes, `graduation_scale()` for scales, `COMPOSITE_STATES` for states; thumbnails in the grey cove, tall items leaning):
-1. **Chromatography chamber.** A cylindrical glass chamber (the source's 25–50 mL, §7; the content's 50 mL) with a push-on lid as a separate part, states lid on and off; a depth line printed on the glass; the solvent's meniscus; the strip hung from the lid or leaning in. Glass: the draw-order issue applies (note only).
-2. **Chromatography paper strip.** Narrower and shorter than the chamber (finding 7), with states: blank; labelled; baseline; spotted; developing (wet front rising, bands); developed and wet; front marked; dry. Bands drawn from the prepared values, never baked in.
-3. **Capillary spotter.** A thin glass tube about 1 mm bore, 75 mm long, with a fill state (dye drawn up a few mm).
-4. **Pencil.** Hexagonal wooden body, sharpened graphite tip, eraser and ferrule; held tip down.
-5. **Metric ruler.** Clear or white plastic, 150 mm, mm divisions and numbered cm by `graduation_scale()`, the zero inset from the end as on a real ruler.
-6. **pH paper.** A dispenser or vial of strips, a single strip with colour states, and a printed colour chart.
-7. **Colour-depth viewer.** A white tile base with two tube seats and an upright mm scale beside them (Figure 1).
+1. **Chromatography chamber.** A small clear container with a lid (the manual's 25–50 mL), about 30 mm across and 120 mm tall so the strip fits inside and shorter than it (finding 7); a hook under the lid; the blank label tape; the solvent's meniscus. States: lid on and off, strip hung. Transparent: the draw-order issue applies (note only).
+2. **Chromatography paper strip.** About 15 × 110 mm, with states: blank; baseline; spotted (wet, dry); developing (wet front rising, bands); developed and wet; front marked; dry. Bands drawn from the prepared values, never baked in.
+3. **Capillary spotter.** A thin glass tube about 1 mm bore, 75 mm long, with a fill state.
+4. **Pencil.** Hexagonal wooden body, sharpened graphite tip, eraser and ferrule.
+5. **Metric ruler.** Clear plastic, 150 mm, mm divisions and numbered cm by `graduation_scale()`, the zero inset from the end. Used by both labs.
+6. **pH paper.** A vial of strips, a strip with colour states, and a printed chart.
+7. **Colour-depth stand** (`brass-color-depth-comparison`). A white card with seats for two tubes.
+8. **Sample rack** (`sample-rack`). 6 places for 16 mm tubes, like the existing rack but working equipment.
+9. **Distilled-water bottle, 2-propanol bottle, waste beaker.** Their own models from the existing bottle and beaker generators, sized to their catalogue capacities (500, 250 and 250 mL). The pipeline names each model by its definition, so there are no aliases (revision 3); together about 270 KB.
 
-**Aliases** (a registry entry pointing at an existing model, with its own label; no new geometry):
-- distilled-water bottle and 2-propanol bottle → `reagent-bottle`, labelled;
-- waste beaker → `beaker-250ml`, labelled "Waste" (which also avoids a new glass model);
-- the dye mixture → `small-vial` (the content's `sample-bottle`, a 1 L bottle, is far too big for a few drops of dye).
+**Scenery** (3D only, D9 pattern): the teacher's tray; a tissue box.
 
 **Changed models:**
-- **Spectrophotometer** (built for transmittance-dilution; Beer's Law calls it the photometer): a hinged sample-compartment lid with open and closed states; a wavelength control (knob or arrows) and a display that shows the wavelength and the reading in %T or absorbance; 0 %T and 100 %T controls; an orientation mark at the cuvette well. It stays measurement-neutral (G-1): the display shows only prepared values.
-- **Test-tube rack** (scenery today, D9; 4 places): a working rack with seats, 2 rows of 6, as `sample-rack`. Brass uses up to 10 tubes at once.
-- **Test tube:** a stopper state for inversion (the stopper from `rubber-stopper-set`), and a flat-bottom variant for the viewer if the round bottom misleads the depth.
-- **Cuvette:** clear and ribbed faces told apart, for orientation.
+- **Spectrophotometer** (built for transmittance-dilution; Beer's Law calls it the photometer). Today it has a real well, a lid fixed raised, a blank display and 8 unlabelled keys. It needs a lid that closes and opens, labelled keys for the wavelength, 0 %T and 100 %T, and an orientation mark at the well. It stays measurement-neutral (G-1): the display shows only prepared values.
+- **Test tube:** none (it has a stopper seat). **Cuvette:** none (its clear and frosted faces are already told apart).
 
-**Small new items:** lens tissue (a box and a sheet), forceps (for the brass), and a teacher's tray for the hood hand-off. Each well under 50 KB.
-
-**Not modelled:**
-- the **data-collection interface**: no step uses it in Beer's Law, and in brass the spectrophotometer's own display reads; recommended dropped from the 3D benches;
-- the **fume hood** (decision 6): the digest goes to the teacher's tray and comes back;
-- under decision 2A, the **Büchner funnel, side-arm filter flask, vacuum source and permanent marker**, which go to Pack 6 with `gravimetric-vacuum-filtration`.
+**Not modelled:** the data-collection interface (no step uses it); the fume hood (decision 6); forceps (the brass is tipped from its vial); under decision 2, the Büchner funnel, side-arm filter flask, vacuum source and permanent marker (Pack 6).
 
 ## Not proposed
 
 - Goggles and other PPE (S-01 in both plans), as in Packs 1 and 2; they stay safety notes.
-- Cutting the paper strip: it arrives cut to size (the source's "prepare paper" composite; the size is the teacher's).
+- Cutting the paper strip: it arrives cut to size.
 - The prelab Part II branch (chromatography point 4) and the optional simulations.
 - The nitric-acid digestion as student actions: the source gives it to the teacher (DIGEST-01/02).
-- Cleaning glassware between parts, and the paper strips' disposal.
-- Ethanol, acetone and the chromatography solvent with prepared data, unless chosen in decision 3.
-- Beer's Law and Hard Water Gravimetry, under decision 2A.
-- Any change to 2D content, the 2D player or `public/techniques/`.
+- An over-range branch for an absorbance above 1 (brass §9, point 3): the defaults stay below 1.
+- Cleaning glassware between parts, the strips' disposal, and returning equipment to the teacher.
+- Ethanol, acetone and the chromatography solvent (decision 3).
+- Beer's Law and Hard Water Gravimetry (decision 2).
+- A student-entered Rf: the template computes Rf from the student's readings; judging a typed Rf would be a shared runtime change.
 
 ## Size and order
 
-**Size after atomization** (practice versions; the twins are those less their stand-in steps):
-
-| Technique | Today | Proposed |
+| Technique | Today | Proposed (practice versions) |
 |---|---|---|
-| Paper Chromatography | 428 | about 26 per trial; the lab plays two |
-| Calculate Hardness | 1 | 3 (1 in the twin) |
-| Brass, split in six | 314 | B1 18, B2 about 34, B3 about 32, B4 9 + 9 per solution, B5 8, B6 about 11; the lab plays about 190 with its lab steps |
-| Beer's Law, Gravimetry | 18, 25 | deferred (decision 2A) |
+| Paper Chromatography | 428 | 30 (water); the 2-propanol twin 32 |
+| Calculate Hardness | 1 | 6 (1 in the twin) |
+| Brass, in six | 314 | B1 19, B2 about 33, B3 about 45, B4 8 and 9 (+8 stand-ins), B5 9, B6 8 |
+| Beer's Law, Gravimetry | 18, 25 | deferred |
 
-About 160 practice steps, against Pack 2's 90; the three labs play about 70, 190 and 60 steps (`paper-chromatography`, `brass-colorimetry`, `hard-water-demo`: Pack 2's five twins, 58 steps, and the hardness).
+About 175 practice steps, against Pack 2's 90. The three labs play about 80, 200 and 60 steps (`paper-chromatography`; `brass-colorimetry`; `hard-water-demo`, Pack 2's five twins and the hardness).
 
-**(you) Split the pack** (decision 7). *Recommended: Pack 3a then 3b.*
-- **3a:** Calculate Hardness; Dry and Weigh's twin with its id slot; `hard-water-demo` in 3D (D8's next lab); Paper Chromatography and its lab. Seven new models.
-- **3b:** Brass: the spectrophotometer refit, the rack, the viewer, the six techniques and `brass-colorimetry`.
-- Each is a build thread with its own looks. *Or one Pack 3 build.*
+**Pack 3a, then 3b** (decision 7).
 
-**Order of work** (3a, then 3b):
-1. **Calculate Hardness** and Dry and Weigh's twin; **`hard-water-demo` in 3D**, proving the bound ids by a compiled run to 375 mg/L.
-2. **Lab steps in 3D lab modules** (scripts only), proved on `hard-water-demo` or the chromatography lab.
-3. **Chromatography models:** chamber and lid, strip and its states, capillary, pencil, ruler; the aliases.
-4. **Chromatography practice version and twin:** pencil, spotting, lid, development, ruler reading, disposal.
-5. **The chromatography lab:** two trials (a part composed twice), the pre- and post-trial lab steps, its setup page with the prepared bands.
-6. **3b models:** spectrophotometer refit, rack, viewer, pH paper, tissue, forceps.
-7. **B1, B2:** balance, digest hand-off, quantitative transfer, dilution to the mark; standards.
-8. **B4:** controls, readings by step, cuvette care; the zero-and-blank reach test first.
-9. **B3, B5, B6.**
-10. **The brass lab.**
-11. **Records:** an evidence note per technique and lab, one G1 look per change, `DECISIONS.md` rows.
+**Order of work:**
+1. **3a, `hard-water-demo` first:** Calculate Hardness; Dry and Weigh's twin with its paper-mass id slot; the 0.0001 g balance (decision 9); the lab, proved by a compiled run to 375 mg/L.
+2. **Lab steps in `composeLab.mjs`**, proved on `hard-water-demo`'s safety notes or on the chromatography lab.
+3. **Chromatography models:** chamber and lid, strip and its states, capillary, pencil, ruler, the two bottles and the waste beaker.
+4. **Chromatography practice version and twins:** the pencil gesture, spotting, the lid and hook, the step clock for development and drying, the ruler reading.
+5. **The chromatography lab:** two trials, the lab steps, its setup page with the prepared values.
+6. **3b models:** the spectrophotometer refit, the rack, the colour-depth stand, pH paper, the scenery.
+7. **B1, B2;** then **B4** with the display by step (the reach of zero and blank is proved); then **B3, B5, B6.**
+8. **The brass lab.**
+9. **Records:** an evidence note per technique and lab, one G1 look per change, `DECISIONS.md` rows.
 
 ## Teacher-prepared values
 
 Every reading is set before play; no instrument computes one (G-1):
 - **Balance:** the brass mass; the masses in `hard-water-demo` (paper, watch glass, the model's 0.0075 g precipitate).
-- **Ruler:** the front and band distances drawn on the strip; the student reads them.
-- **Spectrophotometer:** the scan absorbances, the standards' and unknown's absorbances; the display shows only these.
-- **Viewer:** the match depth.
+- **Ruler:** the front and band distances drawn on the strip; the student reads them and must enter them.
+- **Spectrophotometer:** the scan's absorbances; the standards' and unknown's absorbances. The display shows only these. The runtime records what the student enters (`readingSource: "action-input"`).
+- **Colour depth:** the matching depth.
 - **pH paper:** the colour shown.
-- The student's own calculations (Rf, hardness, concentrations, % copper) are judged against the prepared values, as now.
+- The student's own calculations (Rf, hardness, concentrations, percent copper) are judged against values worked from their own readings, as now.
 
 ## Core changes and effects on 2D
 
-**Expected new 3D work:**
-- bench operations: `mark-with-pencil`, `open-chamber`, `close-chamber`, `set-wavelength`, `set-zero-transmittance`, `set-full-transmittance`, `open-sample-lid`, `close-sample-lid`;
-- about 15 new atoms (pencil marks, capillary fill and spot, chamber lid, development, ruler placement, wavelength and transmittance controls, cuvette wipe, conditioning and return, pH paper, forceps, the teacher's tray);
-- roles for the new items;
-- the 3D `spotOnto` handler;
-- the display adapter keyed by step;
-- lab steps and repeated parts in `scripts/practice3d/`.
+**3D work** (no shared file):
+- the 3D `spotOnto` handler; the pencil draw gesture; the chamber's lid and hook;
+- the step clock extended to the chromatography operations (`sceneToIntent.ts`, `usePlayer3D.ts`);
+- the display adapter following the current step (`instrumentDisplay.ts`);
+- the spectrophotometer's lid as a visual of insert and remove;
+- the teacher's tray and tissues as scenery, the tray drag completing its checkpoint;
+- lab steps and their part labels (`composeLab.mjs`, `labs3d.ts`); the setup page's derived values (the prepared Rf);
+- the models, and `validate_equipment3d.py`'s control list if the lid needs it.
 
-**Effects on 2D:** none intended. As in Pack 2, the atom registry and `benchOperations.ts` are shared but grow only by addition, and nothing in 2D reads the new entries. If the build finds it needs a change in the shared runtime (for example how a photometer's zero tag is scoped across parts, or a ruler reading that requires the student's entry), it stops and asks, with a test proving 2D unchanged. `public/techniques/` and `public/labs/` are not written.
+**3D content** (practice modules): the six brass techniques, chromatography's variants, Calculate Hardness, Dry and Weigh's id slot, and **Pack 2's balance at 0.0001 g** (decision 9). That last one changes Pack 2's published practice versions on the next publication.
+
+**Effects on 2D** (revision 3; revision 2 said "none intended", which was wrong as written):
+- **No new equipment definitions.** Every Pack 3 item is already in the 2D catalogue, or is 3D scenery. A new definition would have to go into the shared `catalog.ts`, `visualCatalog.ts`, the role, zone and visual-state registries, and a 2D SVG, and would show in 2D Studio's equipment list, as Pack 2's sink and pad did. Revision 2's forceps, tissue and tray did exactly that, and are gone.
+- **No new bench operations.** Revision 2's eight duplicated the runtime's `chromatographyOperation`, `chamberOperation` and `photometerOperation`; any new one would need a branch in the shared reducer.
+- **No runtime change.** Spotting is three steps rather than a counted step (decision 10); the Rf keeps its legacy calculation; the ruler, the hardness and the photometer's reach use existing parameters.
+- **At most two new atoms** in the shared `atomRegistry.json`, by addition: writing a trial's label, and the hand-off to the teacher's tray if no existing atom fits (decision 12). 2D content doesn't use them.
+- `public/techniques/` and `public/labs/` are not written.
 
 ## Interpretations (asked in line; the recommendation first)
 
-1. **The stubs:** defer Beer's Law and Hard Water Gravimetry to their source-traced counterparts (decision 2).
-2. **Chromatography's solvents:** water and 2-propanol, with prepared data (decision 3).
+Revision 2's (decided):
+1. **The stubs:** defer (decision 2).
+2. **Chromatography's solvents:** water and 2-propanol (decision 3).
 3. **Brass's scan:** two full cycles, then one step per wavelength (decision 4).
-4. **Brass split** into six techniques, B4 composed per solution if the reach test passes (decision 5).
+4. **Brass split** into six techniques, the measurement composed per solution (decision 5).
 5. **The digestion:** the teacher's tray, no hood model (decision 6).
 6. **The pack split:** 3a then 3b (decision 7).
 7. **Spotting:** three touches, drying between (decision 8).
-8. **Cuvette care:** wipe and condition twice for every solution, marked R where the source states it only once (finding 7). Not asked; recommended.
-9. **The 0.625 mL aliquot:** delivered to the 0.63 mL line, and the standard's concentration worked from what was delivered. Not asked; recommended. (Or a 1 mL pipette, a new model variant.)
-10. **The data-collection interface:** dropped from the 3D benches. Not asked; recommended.
+
+Revision 3's (decided in line, 2026-10-10):
+8. **The balance:** 0.0001 g on Pack 2's 3D weighings (decision 9).
+9. **Spotting as steps:** three spot steps each followed by a dry step, with no runtime change (decision 10).
+10. **The standards:** serial dilution, 5.00 mL each time (decision 11).
+11. **The shared atom registry:** up to two new atoms, by addition (decision 12).
+
+Recommended and not asked (now under "Decisions"): cuvettes wiped and conditioned twice for every solution; three cuvettes for the scan; copper(II) nitrate and zinc nitrate as the default salts; a 150 mL beaker for the digest; two pipettes and pumps for the standards; the data-collection interface dropped; Figure 2's calibration as the default absorbances.
 
 ## Decisions (decided 2026-10-10, in line: every recommendation)
 
+**Revision 2's:**
 1. **Routes.** The three lab-bound techniques take Pack 2's route: a practice version and a `composable` twin from `scripts/practice3d/`, and their labs (`paper-chromatography`, `brass-colorimetry`, `hard-water-demo`) in `public/labs-3d/`. Nothing writes `public/techniques/`.
 2. **The stubs:** "Defer both." Beer's Law and Hard Water Gravimetry are not built in Pack 3. Their source-traced counterparts come with Packs 5 (items 23–25) and 6 (items 27–28); the vacuum apparatus and the marker go to Pack 6.
-3. **Chromatography's solvents:** "Water and 2-propanol", with prepared bands. The practice version plays one trial; the lab composes the twin twice.
+3. **Chromatography's solvents:** "Water and 2-propanol", with prepared bands. The practice version plays water. (Revision 3: the lab composes two twins, water then 2-propanol, not one twin twice, because the trials differ in structure.)
 4. **Brass's scan:** "2 full cycles, then fast." The full cycle at 400 and 420 nm, then one step per remaining wavelength; all 16 measured and recorded.
-5. **Brass's structure:** "Six techniques." The measurement is composed per solution if a zero and blank reach a later part; otherwise it is one technique.
-6. **The digestion:** "Teacher's tray." No fume-hood model.
+5. **Brass's structure:** "Six techniques." The measurement is composed per solution. (Revision 3: the reach of a zero and blank into later parts is proved, with the conditions under B4.)
+6. **The digestion:** "Teacher's tray." No fume-hood model. (Revision 3: the tray is scenery, not a definition.)
 7. **The pack:** "3a then 3b." 3a: Calculate Hardness, Dry and Weigh's twin, `hard-water-demo` in 3D, Paper Chromatography and its lab. 3b: brass.
 8. **Spotting:** "Three touches, dry between."
 
-**Also decided with them** (recommended, not asked): lab steps in 3D lab modules (scripts only); cuvettes wiped and conditioned twice for every solution; the 0.625 mL aliquot delivered to the 0.63 mL line; the data-collection interface dropped; the aliases and changed models as listed under "New models".
+**Also decided with them** (recommended, not asked): lab steps in 3D lab modules (scripts only); cuvettes wiped and conditioned twice for every solution; the data-collection interface dropped. Two were withdrawn by revision 3: the 0.625 mL aliquot (decision 11 replaces it) and the model aliases (the pipeline has none; separate models instead).
+
+**Revision 3's:**
+
+9. **The balance:** "0.0001 g in Pack 2 3D." Filtration's paper and Dry and Weigh's watch glass and assembly read to 0.0001 g in the 3D practice versions and twins, so the demo's hardness is 375 mg/L (Inv3: "Analytical balances (±0.001 or ±0.0001 g)"). This changes Pack 2's 3D content; it reaches virtuallab.az only when you ask for a publication. 2D is not touched.
+10. **Spotting as steps:** "Six steps." Spot and dry, three times, each its own step; the runtime is unchanged.
+11. **The standards:** "Serial dilution." Each standard from the one before, 5.00 mL plus 5.00 mL of water.
+12. **New atoms:** "Up to two, by addition." The tape label, and a hand-off to the teacher's tray only if no existing atom fits, are added to the shared `atomRegistry.json`. 2D content doesn't use them.
+
+**Also decided with them** (recommended, not asked): three cuvettes for the scan; copper(II) nitrate and zinc nitrate as the default salts, with the class's other spectra as the teacher's data; a 150 mL beaker for the digest; two pipettes and pumps for the standards; Figure 2's calibration as the default absorbances; round-bottomed tubes for the colour depth; the overshoot in B5 refused.
 
 ## For the build thread
 
 **Start with 3a** (decision 7), in the order of work's steps 1–5; 3b is a later thread.
 
-**Read first:** this proposal; `DECISIONS.md` (the Pack 3 row); `SESSION_HANDOFF.md`; `proposals/D8_EXPERIMENT_ASSEMBLY.md` ("E0 design"); the source plans named at the top, for each step's ID and basis label.
+**Read first:** this proposal, both fidelity reviews included; `DECISIONS.md` (the two Pack 3 rows); `SESSION_HANDOFF.md`; `proposals/D8_EXPERIMENT_ASSEMBLY.md` ("E0 design"); the source plans and the manual's PDFs named at the top, for each step's ID, wording and basis label.
 
-**What the build will meet** (read on 2026-10-10, nothing changed):
-- **The 3D switcher** lists only Pack 1's catalogue techniques and the practice versions (`loadSimulations3D`, `src/studio3d/practice.ts`). A Pack 3 technique changed in place would not appear without a change there. Its "Experiments" group lists the labs in `public/labs-3d/index.json` (`src/studio3d/labs3d.ts`).
-- **`validate_equipment3d.py --pack 3`** takes its definitions from `inventory_pack.ts`, which reads the 2D catalogue's items 11–15 and their labs. Today it fails on the 17 definitions with no model. Under this proposal several of those are deferred, aliased or not modelled, and the 3D content uses items the 2D content doesn't (the tissue, forceps, tray, rack seats). Before building models, decide how the validator counts Pack 3 (for example from the practice versions and `public/labs-3d/`), and run it.
-- **3D lab modules have no lab steps** (`composeLab.mjs`: `actions: []`, `nodes: []`). Add them in `lab()`, scripts only.
-- **Scoped ids in compiled 3D labs.** Bind the producer's scoped id under a key ending in `MeasurementId` or `CalculationId` (passed through unscoped); keep a technique's own result ids literal. A bare `measurementId` or `calculationId` key is scoped even when config-bound. Calculate Hardness reads `precipitateMassCalculationId`; Dry and Weigh's twin needs its paper-mass id as a slot.
-- **The photometer across parts.** The read refuses without a zero and a 100 %T at the same wavelength (tags). Check, by compiling, whether a zero in one part satisfies a read in another before splitting B4.
-- **The display adapter** finds the first read action of each cuvette and the first zero; brass shares one cuvette across six solutions and reads at 16 wavelengths. Key it by the current step.
-- **`techniqueConfiguration.test.ts`** (lines 53–66) expects chromatography defaults the JSON lacks and fails today; a pre-existing 2D failure, not Pack 3's.
-- **Glass draw order:** the chamber and any new glass show the open viewer issue; note it, don't fix it here.
-- **Generators:** practice modules only (`scripts/practice3d/`). The 2D generators (`paperChromatography.mjs`, `spectroscopy.mjs`, `gravimetrySeparation.mjs`, `cycle04TechniqueCompositionTransform.mjs`) are not touched. No generator writes `hard-water-calculation` except the cycle-04 transform (confirmed).
+**What the build will meet** (read, and where it says so compiled and played, on 2026-10-10; nothing changed):
+- **The 3D switcher** lists only Pack 1's catalogue techniques and the practice versions (`loadSimulations3D`, `src/studio3d/practice.ts`). Its "Experiments" group lists the labs in `public/labs-3d/index.json` (`src/studio3d/labs3d.ts`).
+- **The validator.** `inventory_pack.ts --pack 3` evaluates the practice entries of `public/techniques-3d/index.json` whose `pack` is 3. Only while there are none does it fall back to the 2D catalogue's items 11–15 (today: 17 definitions with no model, several of them deferred). So write the practice entries, with `pack: 3`, before the models, and run `validate_equipment3d.py --pack 3` on them. The 2-propanol variant is unlisted, so the validator won't see its bottle or the organic-waste beaker: check those two by hand. The scenery (tray, tissue box) is outside the inventory: check it against the budget by hand.
+- **Models** are named by their definition (`<definitionId>.glb`), with no aliases. Caps: 250,000 bytes per item, 600,000 per instrument, 4 MB per pack.
+- **Lab steps.** `composeLab.mjs` writes `actions: []`, `nodes: []` and only exit-to-entry connections. Add lab actions (with their effects, naming the parts' scoped ids), their nodes, the connections into and out of them, and part labels for lab nodes (`labPartLabels`, `labs3d.ts`). An approval gate is checked only when compiling. Scripts and 3D only.
+- **Scoped ids** (`compileLabComposition.ts`):
+  - an id becomes `preserve[id]` if listed, otherwise `<scope>--<id>`;
+  - a config-bound string under a key ending in a capitalised `MeasurementId`, `CalculationId` or `Reference…Id(s)` passes through unscoped;
+  - a bare `measurementId` or `calculationId` key is scoped, even config-bound;
+  - literal ids are always scoped; a config-bound `tag` is not;
+  - `preserveIds.references` takes only literal owner-local ids.
+- **Calculate Hardness:**
+  - It reads `precipitateMassCalculationId`, bound to `drying--precipitate-mass`, and the sample volume bound to `measuring-volume--sample-volume`.
+  - Its own result id (`hardness-mg-l`) stays literal.
+  - Dry and Weigh's twin gets its paper-mass id as a slot, bound to `filtration--filter-paper-mass`.
+  - Prove the lab by a compiled run to 375 mg/L.
+- **The balance's places** come from the first weighing on that balance (its input step). Set 0.0001 g there, on Filtration's paper (decision 9), and on the later weighings.
+- **The photometer across parts** (proved: 29 of 29).
+  - A read refuses without a zero and a 100 %T at the same wavelength.
+  - Across parts it works when the parts share calibration state, either through the brass `wavelength-scan` mode, keyed by the lab item, or through one zero tag bound through configuration.
+  - Every part must also bind the zero part's wavelength id (`zero--wavelength`).
+- **The display follows the first read.** `photometerReadout` (`instrumentDisplay.ts`) uses the first read of each cuvette, the first zero and the last-authored wavelength. Key it by the current step, in 3D only, before B3 and B4.
+- **The step clock** runs only for bench operations (`sceneToIntent.ts`). Extend it to the chromatography operations, in 3D only.
+- **Spotting:** `spotOnto` is one touch per step (decision 10), and needs a 3D handler (today, the generic Confirm).
+- **The ruler:** use `requireStudentValue` (or `inputMode: "numeric"` with `inputRole: "studentResponse"`) on each read. Proved: the entry is required, within 0.5 mm is accepted, and 1 mm off is refused.
+- **Rf** keeps the legacy calculation with `requireRecordedMeasurements: true`. The template works from the recorded readings and rounds to 4 places (`calculations.ts`).
+- **The setup page** has number and text fields only. They target an instance's slot (with an optional offset) or an item's contents. It cannot change step counts or order, and it has no derived values. The prepared Rf (band ÷ front) therefore needs a 3D-only transform in `labs3d.ts`, or the distances must be fixed.
+- **Teacher-prepared readings** (`teacherPreparedReading`) are shown only. The runtime records what the student enters.
+- **Side finding:** after a wrong calculation, the 3D Submit button stays disabled (`stepRules.ts`, around line 240). Pack 3 has many calculations: raise it with the user before building them.
+- **`techniqueConfiguration.test.ts`** (lines 53–66) expects chromatography defaults the JSON lacks, and it fails today. This is a pre-existing 2D failure, not Pack 3's.
+- **Glass draw order:** the chamber and any new glass show the open viewer issue. Note it; don't fix it here.
+- **Generators:** practice modules only (`scripts/practice3d/`). The 2D generators (`paperChromatography.mjs`, `spectroscopy.mjs`, `gravimetrySeparation.mjs`, `cycle04TechniqueCompositionTransform.mjs`) are not touched.
+- **Stop and ask** if any step turns out to need a shared change beyond decision 12's atoms: a catalogue definition, a reducer branch, or a runtime parameter. Bring a test proving 2D unchanged.
 
-**Checks:** `npx tsc -p tsconfig.app.json --noEmit`; `npx vitest run --config vite.config.ts --maxWorkers=3 src/studio3d`; `npm run content:check` (baseline 22); `python tools/blender/validate_equipment3d.py --pack 3`; `node scripts/practice3d/build.mjs --check`; the probes in `probes/` as patterns; one G1 look per change.
+**Checks:**
+- `npx tsc -p tsconfig.app.json --noEmit`;
+- `npx vitest run --config vite.config.ts --maxWorkers=3 src/studio3d`;
+- `npm run content:check` (baseline 22);
+- `python tools/blender/validate_equipment3d.py --pack 3`;
+- `node scripts/practice3d/build.mjs --check`;
+- the probes in `probes/` as patterns;
+- one G1 look per change.
 
-**Working rules:** this worktree only, on `claude/lab-studio-3d`; commit locally, every message ending with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`; push only when asked; never merge into `main`; never a bare `git stash`; nothing under `src/player/**` or `src/styles/app.css`; no mobile layouts; CRLF files edited byte-aware.
+**Working rules:**
+- this worktree only, on `claude/lab-studio-3d`;
+- commit locally, every message ending with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`; push only when asked; never merge into `main`;
+- never a bare `git stash`;
+- nothing under `src/player/**` or `src/styles/app.css`; no mobile layouts;
+- CRLF files edited byte-aware.
+
+## Fidelity review (revision 3)
+
+Revision 2 was checked again, against:
+- the runtime (`reducer.ts`, `calculations.ts`, `actionInputs.ts`, `compileLabComposition.ts`);
+- the 3D player (`sceneToIntent.ts`, `instrumentDisplay.ts`, `labs3d.ts`, `composeLab.mjs`);
+- the atom registry;
+- the model pipeline and its validator;
+- the student manual's text and figures.
+
+Questions of behaviour were settled by compiling and playing in memory. Changes:
+
+**Effects on 2D and the shared code**
+1. **Effects on 2D were understated.** Revision 2's forceps, tissue, teacher's tray and 12-place rack would each have been a new definition in the shared catalogue, visual catalogue, registries and 2D SVGs, and would have shown in 2D Studio. Revision 3 adds no definitions:
+   - the forceps are dropped (the brass is tipped from its vial with an existing atom);
+   - the tray and the tissue box are scenery;
+   - the rack is the catalogue's `sample-rack`.
+2. **No new bench operations.** Revision 2's eight duplicated the runtime's `chromatographyOperation`, `chamberOperation` and `photometerOperation`, and each would have needed a branch in the shared reducer. Revision 3 uses those operations, through 3D adapters.
+3. **Atoms.** "About 15 new atoms" was wrong: the registry already has nearly all of them (see "Shared new capabilities"). At most two are new (decision 12).
+4. **The runtime stays unchanged.** Spotting is steps (decision 10), Rf keeps its calculation, and the ruler, the hardness and the photometer's reach use existing parameters (each proved).
+
+**Models**
+5. **No aliases.** A model is `<definitionId>.glb`, so the two bottles and the waste beaker get their own models from the same generators (about 270 KB).
+6. **Sizes.** Revision 2's "about 400 KB each" broke the 250 KB item cap; comparable models are 20–100 KB.
+7. **Existing models.** The small vial already has a model. The dye container in the content is `sample-bottle` (125 mL), not a litre bottle. The cuvette's clear and frosted faces are already told apart. The spectrophotometer's display already shows A and a prepared reading; it lacks only a moving lid and labelled keys.
+8. **The rack.** `sample-rack` has 6 places in the catalogue and needs only a 3D model; it is not a 12-place rack.
+
+**The build's facts**
+9. **The validator** evaluates a pack's practice entries when there are any, not the 2D items 11–15.
+10. **The photometer's reach, the display and the step clock** are now facts, not open checks (see "For the build thread").
+
+**Paper Chromatography**
+11. **Two variants, not one twin twice.** The setup page can't change band counts, the disposal route or the order.
+12. **Steps:**
+    - the label is written on the chamber's tape (TR-01; the manual's tape);
+    - the solvent is measured in the 100 mL cylinder and poured, with no line on the chamber (TR-02);
+    - a fresh strip is laid flat;
+    - spotting cites CHR-03, with each touch dried (TR-05);
+    - the strip hangs from a hook under the lid;
+    - the ruler is laid per trial;
+    - the basis labels follow the registry's traces (CHR-00 F; loading the capillary F/R/C; the ruler M).
+    The water trial is 30 steps and the 2-propanol trial 32 (about 26 in revision 2).
+13. **The early lid is dropped.** Revision 2 closed the chamber before the strip went in, on finding 3, which doesn't say so.
+14. **The chamber** is the manual's "Small (25–50 mL) containers with lids". Glass and cylindrical were the plan's reading; revision 3 sizes it at about 30 × 120 mm, with a strip of about 15 × 110 mm.
+15. **Lab steps added:**
+    - Prelab Part I (the teacher's capillary demonstration and questions 1–3) and the Postlab Assessment;
+    - the fixed solvents are marked **T** against HP-05.
+
+**Calculate Hardness**
+16. **Basis:** INQ-08 is cited as context only, the step is **T**, and the preconcentration factor stays 1.
+17. **The practice version** gets its own by-difference step (6 steps).
+18. **The balance:** at 0.001 g the demo gives 400 mg/L, not 375. Decision 9 changes it to 0.0001 g.
+
+**Brass**
+19. **The standards:** made from the stock, they used 9.375 of the 10.0 mL and needed an unmeasurable 0.625 mL. They are now a serial dilution (decision 11), and revision 2's "0.63 mL line" is gone.
+20. **B1:**
+    - the zero is checked (**R**);
+    - the watch glass is the beaker's own cover, and is tared;
+    - the brass is tipped from its vial;
+    - the beaker is 150 mL (**C**);
+    - the acid is worked out through NO (3.98 mL for 1.500 g);
+    - the student goes to the tray and comes back (**M**);
+    - the rinse is counted (3 × 5 mL);
+    - the volume is made up dropwise to the mark;
+    - 19 steps.
+21. **B3:**
+    - P-01 records the assigned salts;
+    - the class's spectra are the teacher's data;
+    - three cuvettes are used;
+    - inserting and closing is one step;
+    - about 45 steps.
+22. **B4:** the zero-and-blank part is 8 steps (the blank is emptied once), and each solution's part is 9.
+23. **B5:**
+    - the unknown is filled first;
+    - the ruler stands beside the tubes;
+    - the standard is drawn out with the existing atom;
+    - an overshoot is refused (**T**);
+    - the tubes are round-bottomed;
+    - 9 steps.
+24. **B6:**
+    - the waste is pooled (**C**);
+    - the baking soda goes in as generated portions, because Pack 2's counted portions are for liquids only;
+    - a rod is touched to the pH paper;
+    - the waste goes to the receiver;
+    - the cuvettes are rinsed (manual step 11);
+    - 8 steps.
+25. **The lab's order** follows the manual:
+    - the scan and the class's spectra first;
+    - then B1 and B2, the wavelength and its approval;
+    - then B4, the plot and fit, B5 and B6;
+    - then the data analysis for both methods, and the argumentation.
+26. **Defaults made consistent** (checked arithmetically):
+    - Figure 2's line;
+    - 1.500 g at 65 % copper gives 0.1534 M, with A 0.363;
+    - the colour depths match at 50 and 19 mm;
+    - the pH is 7.
+27. **Counts.** The 204 scan steps include the setup's 10 and 2 returns, so the setup is not counted again. There are about 175 practice steps in all.
 
 ## Fidelity review (revision 2)
+
+Kept as written. Revision 3 corrects its items 5, 6, 8 and 11 (the label, the chamber, the counts, the validator).
 
 Revision 1 was checked against the content JSON, the inventory, the source-trace registry and the two source plans, and by compiling `hard-water-demo` and `intro-filtration-demo`. Changes:
 1. **Brass's scan is 204 of 314 steps, not 138** (the prompt's figure): 12 per wavelength, including a blank at every wavelength, plus 10 of setup and 2 returns. The per-wavelength blank is not in the source; it is kept and marked **R** (a single-beam instrument is blanked at each wavelength), not dropped.
