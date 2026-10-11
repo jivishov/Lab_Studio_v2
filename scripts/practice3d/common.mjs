@@ -273,3 +273,51 @@ export const setup = (fieldId, offset) => ({ setup: fieldId, ...(offset ? { offs
 
 /** A Pack 1 original a 3D lab composes as it is, read from `public/techniques/` by the build. */
 export const original = (techniqueId) => ({ original: techniqueId });
+
+/**
+ * Lab steps: the records, calculations and teacher checkpoints a 3D lab module runs between its parts
+ * (Pack 3, decided 2026-10-10; `proposals/PACK3_ATOMIZATION.md`, "Lab steps in 3D labs"). Each returns
+ * `{ action, node }` for a group in the module's `steps` (`composeLab.mjs`). A lab step is not scoped: its ids
+ * stay as written, and it names a part's evidence by the part's scoped id (`<instanceId>--<id>`), which
+ * `composeLab` checks against the parts. Each action carries its own effect, as a lab-local action must.
+ */
+const labAction = (id, verb, label, parameters, effect, options = {}) => ({ ...action(id, verb, label, parameters, options), effect });
+
+/** A notebook record: a note to read and confirm, or, with `input`, the student's own words or choice. */
+export const labRecord = (id, title, description, { note = description, input, tag = `${id}-recorded` } = {}) => ({
+  action: labAction(id, "observe", title, { note, tag, ...(input ?? {}) },
+    { classes: ["evidence-recording"], targets: [{ domain: "evidence", reference: tag }] },
+    { evidence: ["observe", "notebook", tag], success: `${title} recorded.` }),
+  node: node(id, title, description, { notebookTag: tag }, "observation"),
+});
+
+/**
+ * A calculation on the parts' evidence. The effect names its result and every id it reads (each
+ * `…measurementId(s)` and `…calculationId(s)` parameter, in any case).
+ */
+export const labCalculation = (id, title, description, parameters) => {
+  const read = Object.entries(parameters)
+    .filter(([key]) => key !== "calculationId" && /(measurementids?|calculationids?)$/i.test(key))
+    .flatMap(([, value]) => (Array.isArray(value) ? value : [value]));
+  return {
+    action: labAction(id, "calculate", title, parameters, {
+      classes: ["calculation-analysis"],
+      targets: [{ domain: "analysis", reference: parameters.calculationId },
+        ...(read.length ? read.map((reference) => ({ domain: "evidence", reference })) : [{ domain: "evidence" }])],
+    }, { evidence: ["calculate"], success: `${title} worked out.` }),
+    node: node(id, title, description, { calculationId: parameters.calculationId }, "calculation"),
+  };
+};
+
+/**
+ * A teacher checkpoint: the teacher approves what the student has planned before the next part. At run time
+ * it is a record the teacher confirms; a composition's approval gates (`enabledWhen`) are chosen when
+ * compiling, not here.
+ */
+export const labApproval = (id, title, description, { option = "Approved by the teacher", tag = `${id}-approved` } = {}) => ({
+  action: labAction(id, "observe", title,
+    { note: description, tag, inputMode: "choice", inputLabel: title, inputOptions: [option] },
+    { classes: ["evidence-recording", "pedagogical-orchestration"], targets: [{ domain: "evidence", reference: tag }, { domain: "approval", reference: tag }] },
+    { evidence: ["observe", "notebook", tag], success: `${title}: approved.` }),
+  node: node(id, title, description, { notebookTag: tag }, "observation"),
+});

@@ -32,9 +32,15 @@ export interface Lab3DRule {
   message: string;
 }
 
+/**
+ * A part of a 3D lab, in run order: a composed technique, or a group of lab steps between the parts (Pack 3,
+ * 2026-10-10), which has its group id here, no technique, and its lab nodes' ids.
+ */
 export interface Lab3DPart {
   instanceId: string;
-  techniqueId: string;
+  techniqueId?: string;
+  /** A group of lab steps: its nodes, which keep their ids in the compiled lab. */
+  nodeIds?: string[];
   /** The part's short title (you, 2026-10-10: "Use short part title"), on the step card and the intro. */
   title: string;
   /** The composed technique's own title. */

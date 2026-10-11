@@ -10,6 +10,13 @@
  * - A part may name a short `title` for the step card and the intro (you, 2026-10-10: "Use short part title");
  *   the index keeps the technique's own as `techniqueTitle`.
  * - The parts run in order, exit port to entry port.
+ * - Lab steps (Pack 3, decided 2026-10-10; `proposals/PACK3_ATOMIZATION.md`, "Lab steps in 3D labs"): `steps` is a
+ *   list of groups `{ id, title, after?, steps: [{ action, node }] }` (`labRecord`, `labCalculation` and
+ *   `labApproval` in `common.mjs`). A group runs before the first part, or after the part named by `after`; groups
+ *   with the same place run in the order written. Lab steps keep their ids (the compiler scopes only the parts), and
+ *   every scoped id a lab step names (`<instanceId>--<id>`) must belong to a part. Lab step to lab step is a process
+ *   edge; into or out of a part it is a composition connection. The index lists each group among the parts, in run
+ *   order, with its node ids, so the step card labels a lab step by its group.
  */
 const isSetup = (value) => Boolean(value && typeof value === "object" && typeof value.setup === "string");
 
@@ -85,8 +92,44 @@ export const composeLab = (declaration, techniqueFor) => {
     }
   }
 
+  const groups = declaration.steps ?? [];
+  const partIds = new Set(declaration.parts.map((part) => part.instanceId));
+  const runIds = new Set(partIds);
+  const stepIds = new Set();
+  const namesNoPart = (value) => typeof value === "string" && value.includes("--") && !partIds.has(value.split("--")[0]);
+  const strings = (value) => (typeof value === "string" ? [value] : Array.isArray(value) ? value.flatMap(strings)
+    : value && typeof value === "object" ? Object.values(value).flatMap(strings) : []);
+  for (const group of groups) {
+    const at = `${declaration.id} lab steps "${group.id}"`;
+    if (runIds.has(group.id)) throw new Error(`${at}: the id is already a part's or another group's.`);
+    runIds.add(group.id);
+    if (group.after !== undefined && !partIds.has(group.after)) throw new Error(`${at}: no part "${group.after}" to follow.`);
+    if (!group.title || !group.steps?.length) throw new Error(`${at}: a group needs a title and at least one step.`);
+    for (const { action, node } of group.steps) {
+      if (node.actionId !== action.id) throw new Error(`${at}: node "${node.id}" runs "${node.actionId}", not "${action.id}".`);
+      for (const id of [action.id, node.id]) {
+        if (stepIds.has(id)) throw new Error(`${at}: "${id}" is used twice.`);
+        stepIds.add(id);
+      }
+      if (!action.effect) throw new Error(`${at}: action "${action.id}" declares no effect.`);
+      const stray = strings([action.parameters, action.effect.targets, node.validation]).filter(namesNoPart);
+      if (stray.length) throw new Error(`${at}: "${action.id}" names ${stray.join(", ")}, which no part scopes.`);
+    }
+  }
+
+  /** The run: groups before the first part, then each part followed by its groups. */
+  const placed = (after) => groups.filter((group) => group.after === after).map((group) => ({ group }));
+  const run = [...placed(undefined), ...declaration.parts.flatMap((part) => [{ part }, ...placed(part.instanceId)])];
+  const stops = run.flatMap((entry) => (entry.part ? [{ instanceId: entry.part.instanceId }]
+    : entry.group.steps.map(({ node }) => ({ nodeId: node.id }))));
   const port = (instanceId, portId) => ({ kind: "technique-port", instanceId, portId });
+  const endpoint = (stop, portId) => (stop.nodeId ? { kind: "lab-node", nodeId: stop.nodeId } : port(stop.instanceId, portId));
+  const next = { label: "Next", condition: { type: "validationPassed" } };
+  const pairs = stops.slice(1).map((stop, i) => [stops[i], stop]);
+  const labPairs = pairs.filter(([from, to]) => from.nodeId && to.nodeId);
+  const crossPairs = pairs.filter(([from, to]) => !(from.nodeId && to.nodeId));
   const ids = declaration.parts.map((part) => part.instanceId);
+  const steps = groups.flatMap((group) => group.steps);
   const source = {
     id: declaration.id,
     title: declaration.title,
@@ -97,14 +140,18 @@ export const composeLab = (declaration, techniqueFor) => {
     equipment: [...new Set(bench.map((entry) => entry.definitionId))],
     techniques: [],
     initialState: { equipment: bench },
-    actions: [],
-    process: { startNodeId: `${ids[0]}--start`, nodes: [], edges: [] },
+    actions: steps.map(({ action }) => action),
+    process: {
+      startNodeId: stops[0].nodeId ?? `${ids[0]}--start`,
+      nodes: steps.map(({ node }) => node),
+      edges: labPairs.map(([from, to]) => ({ from: from.nodeId, to: to.nodeId, ...next })),
+    },
     assessments: [],
     metadata: { version: "1.0.0", author: "Lab Studio", updatedAt: "2026-10-10T00:00:00.000Z", tags: ["lab", "lab-3d"] },
     techniqueInstances,
-    compositionStart: port(ids[0], "entry"),
-    compositionConnections: ids.slice(1).map((id, i) => ({
-      id: `${ids[i]}-to-${id}`, from: port(ids[i], "exit"), to: port(id, "entry"), label: "Next", condition: { type: "validationPassed" },
+    compositionStart: endpoint(stops[0], "entry"),
+    compositionConnections: crossPairs.map(([from, to]) => ({
+      id: `${from.nodeId ?? from.instanceId}-to-${to.nodeId ?? to.instanceId}`, from: endpoint(from, "exit"), to: endpoint(to, "entry"), ...next,
     })),
     reachabilityWitnesses: [{ id: "default", configuration: {}, approvalGates: {} }],
   };
@@ -113,7 +160,8 @@ export const composeLab = (declaration, techniqueFor) => {
     title: declaration.title,
     description: declaration.description,
     file: `${declaration.id}.json`,
-    parts,
+    parts: run.map((entry) => (entry.part ? parts.find((part) => part.instanceId === entry.part.instanceId)
+      : { instanceId: entry.group.id, title: entry.group.title, nodeIds: entry.group.steps.map(({ node }) => node.id) })),
     setup: [...fields.values()],
     rules: declaration.rules ?? [],
   };

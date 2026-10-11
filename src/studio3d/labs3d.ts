@@ -160,13 +160,32 @@ export const fillStepText = (lab: LabDefinition, configured: LabCompositionSourc
   };
 };
 
-/** Each compiled node's part, in the order the parts run. */
+/**
+ * The compiled nodes in the order they run, from the start along the edges (Pack 3, 2026-10-10). The compiler
+ * lists a lab's own steps before the parts' nodes, but the step card and the intro number the steps by their
+ * place in the list. Nodes no walk reaches keep their order, after the walk.
+ */
+export const inRunOrder = (lab: LabDefinition): LabDefinition => {
+  const byId = new Map(lab.process.nodes.map((node) => [node.id, node]));
+  const order: string[] = [];
+  for (let id: string | undefined = lab.process.startNodeId; id && byId.has(id) && !order.includes(id);
+    id = lab.process.edges.find((edge) => edge.from === id && !order.includes(edge.to))?.to) order.push(id);
+  const rest = lab.process.nodes.filter((node) => !order.includes(node.id));
+  return { ...lab, process: { ...lab.process, nodes: [...order.map((id) => byId.get(id)!), ...rest] } };
+};
+
+/** Each compiled node's part, in the order the parts run: a technique's node by its origin, a lab step by its group. */
 export const labPartLabels = (lab: LabDefinition, summary: Lab3DSummary): Map<string, Lab3DPartLabel> => {
   const labels = new Map<string, Lab3DPartLabel>();
+  const label = (index: number): Lab3DPartLabel => ({ index: index + 1, count: summary.parts.length, title: summary.parts[index].title });
   for (const origin of lab.compositionManifest?.origins ?? []) {
-    const index = summary.parts.findIndex((part) => part.instanceId === origin.instanceId);
-    if (index >= 0) labels.set(origin.nodeId, { index: index + 1, count: summary.parts.length, title: summary.parts[index].title });
+    const index = summary.parts.findIndex((part) => part.instanceId === origin.instanceId && !part.nodeIds);
+    if (index >= 0) labels.set(origin.nodeId, label(index));
   }
+  const nodeIds = new Set(lab.process.nodes.map((node) => node.id));
+  summary.parts.forEach((part, index) => {
+    for (const nodeId of part.nodeIds ?? []) if (nodeIds.has(nodeId)) labels.set(nodeId, label(index));
+  });
   return labels;
 };
 
@@ -189,6 +208,6 @@ export const loadLab3D = async (summary: Lab3DSummary, values: Record<string, st
       return structuredClone(technique);
     },
   });
-  const lab = fillStepText(compiled, configured);
+  const lab = inRunOrder(fillStepText(compiled, configured));
   return { summary, lab, authored: authoredLabView(lab, techniques), parts: labPartLabels(lab, summary) };
 };
