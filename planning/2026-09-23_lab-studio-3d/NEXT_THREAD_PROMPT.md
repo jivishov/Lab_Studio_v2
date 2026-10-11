@@ -5,7 +5,7 @@ The previous prompt (the Pack 3 proposal) is done: `proposals/PACK3_ATOMIZATION.
 
 The next thread is **the Pack 3a build**: Calculate Hardness, Dry and Weigh's twin, Pack 2's balance at
 0.0001 g, `hard-water-demo` in 3D, lab steps in 3D labs, then Paper Chromatography with its models and its
-lab. Its prompt is `PACK3A_BUILD_PROMPT.md`, in this folder. Paste everything below its line into a fresh
+lab. Its prompt is `PACK3A_BUILD_PROMPT.md`, in this folder. Paste everything between its two lines into a fresh
 thread. Pack 3b (brass) is a later thread.
 
 The final, authoritative code for the 3D version is branch `claude/lab-studio-3d` in the worktree

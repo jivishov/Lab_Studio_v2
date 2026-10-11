@@ -170,8 +170,9 @@ wait for confirmation (`DECISIONS.md`, the "built" row). G3 has still not run.
    - Pack 2's 3D weighings move to 0.0001 g (decision 9), so `hard-water-demo` reaches 375 mg/L.
    - Pack 3a first (hardness, `hard-water-demo`, chromatography), then 3b (brass, in six techniques).
    - Also fixed: the 3D step card offers Submit again after a wrong calculation (`0fa32ee`).
-11. **Next: the Pack 3a build.** `PACK3A_BUILD_PROMPT.md` is its prompt; the proposal's "For the build thread"
-   lists what it will meet, each fact with its proof. New models are built with the refined library:
+11. **Next: the Pack 3a build.** `PACK3A_BUILD_PROMPT.md` is its prompt, reviewed for fidelity on 2026-10-10
+   (its last section; the proposal's items 28–31). The proposal's "For the build thread" lists what it will
+   meet, each fact with its proof. New models are built with the refined library:
    `segments_for`, `cut()`, `helix_thread_mesh()`, `pull_spout()` and `graduation_scale()`.
 
 **How the work has been checked** (the user's validation policy: source review, `npx tsc -p

@@ -140,7 +140,7 @@ Its bench is the cylinder and the watch glass with the dried solid, so the numbe
 - The 3D lab module writes no `preserveIds`, so every id is scoped by its part: the sample volume is `measuring-volume--sample-volume`; Dry and Weigh's mass is the calculation `drying--precipitate-mass`.
 - **Neither `preserveIds.references` nor a lab-level binding is needed.** `preserveIds.references` names only literal ids, and every id here is config-bound. A plain configuration binding does it: a config-bound string under a key ending in a capitalised `MeasurementId` or `CalculationId` passes through unscoped.
 - **The mass is read as a calculation,** through `precipitateMassCalculationId`, which the runtime already supports but the 2D technique doesn't declare.
-- **The hardness's own id stays a literal** (`hardness-mg-l`), so the action and its validation rule both become `hardness--hardness-mg-l`. In 2D the id is config-bound: the action scopes it and the rule doesn't, which is why the compiled 2D lab never completes (left as it is, D8 (5)).
+- **The hardness's own id stays a literal** (`hardness-mg-l`), so the action and its validation rule both become `<part>--hardness-mg-l` (the proof named the part `hardness`; the 2D lab's instance id is `hard-water-calculation`). In 2D the id is config-bound: the action scopes it and the rule doesn't, which is why the compiled 2D lab never completes (left as it is, D8 (5)).
 - **Dry and Weigh's twin meets the same problem.** Its by-difference step reads the literal `filter-paper-mass`, scoped in a lab to `drying--filter-paper-mass`, while Filtration writes `filtration--filter-paper-mass`: refused, "Required mass evidence is missing". With the id as a slot (default `filter-paper-mass` for the practice version) bound to Filtration's, it completes.
 - **The balance's resolution** (revision 3, decision 9). Pack 2's 3D balance shows 0.001 g, so the dry assembly reads 30.561 g, the precipitate 0.008 g and the hardness 400 mg/L. 375 is reached only by typing 30.5605, which the balance doesn't show. The display takes its places from the first weighing on that balance (Filtration's paper). The manual allows "Analytical balances (±0.001 or ±0.0001 g)" (Inv3 materials). Decided: 0.0001 g on Pack 2's 3D weighings (Filtration's paper, Dry and Weigh's glass and assembly), practice versions and twins.
 
@@ -347,7 +347,7 @@ About 175 practice steps, against Pack 2's 90. The three labs play about 80, 200
 
 **Order of work:**
 1. **3a, `hard-water-demo` first:** Calculate Hardness; Dry and Weigh's twin with its paper-mass id slot; the 0.0001 g balance (decision 9); the lab, proved by a compiled run to 375 mg/L.
-2. **Lab steps in `composeLab.mjs`**, proved on `hard-water-demo`'s safety notes or on the chromatography lab.
+2. **Lab steps in `composeLab.mjs`**, proved on a small fixture (a record, a calculation and an approval between two parts), then used by the chromatography lab. `hard-water-demo` can't prove them: its 2D lab has none (its safety notes are a field, not steps).
 3. **Chromatography models:** chamber and lid, strip and its states, capillary, pencil, ruler, the two bottles and the waste beaker.
 4. **Chromatography practice version and twins:** the pencil gesture, spotting, the lid and hook, the step clock for development and drying, the ruler reading.
 5. **The chromatography lab:** two trials, the lab steps, its setup page with the prepared values.
@@ -436,7 +436,7 @@ Recommended and not asked (now under "Decisions"): cuvettes wiped and conditione
 
 **What the build will meet** (read, and where it says so compiled and played, on 2026-10-10; nothing changed):
 - **The 3D switcher** lists only Pack 1's catalogue techniques and the practice versions (`loadSimulations3D`, `src/studio3d/practice.ts`). Its "Experiments" group lists the labs in `public/labs-3d/index.json` (`src/studio3d/labs3d.ts`).
-- **The validator.** `inventory_pack.ts --pack 3` evaluates the practice entries of `public/techniques-3d/index.json` whose `pack` is 3. Only while there are none does it fall back to the 2D catalogue's items 11–15 (today: 17 definitions with no model, several of them deferred). So write the practice entries, with `pack: 3`, before the models, and run `validate_equipment3d.py --pack 3` on them. The 2-propanol variant is unlisted, so the validator won't see its bottle or the organic-waste beaker: check those two by hand. The scenery (tray, tissue box) is outside the inventory: check it against the budget by hand.
+- **The validator.** `inventory_pack.ts --pack 3` evaluates the practice entries of `public/techniques-3d/index.json` whose `pack` is 3. Only while there are none does it fall back to the 2D catalogue's items 11–15 (today: 17 definitions with no model, several of them deferred). So write the practice entries, with `pack: 3`, before the models, and run `validate_equipment3d.py --pack 3` on them. Calculate Hardness's practice version (step 1) ends the fallback, so the chromatography practice version must be listed before its models are validated. The 2-propanol variant is unlisted, so the validator won't see its bottle or the organic-waste beaker: check those two by hand. The scenery (tray, tissue box) is outside the inventory: check it against the budget by hand.
 - **Models** are named by their definition (`<definitionId>.glb`), with no aliases. Caps: 250,000 bytes per item, 600,000 per instrument, 4 MB per pack.
 - **Lab steps.** `composeLab.mjs` writes `actions: []`, `nodes: []` and only exit-to-entry connections. Add lab actions (with their effects, naming the parts' scoped ids), their nodes, the connections into and out of them, and part labels for lab nodes (`labPartLabels`, `labs3d.ts`). An approval gate is checked only when compiling. Scripts and 3D only.
 - **Scoped ids** (`compileLabComposition.ts`):
@@ -462,7 +462,7 @@ Recommended and not asked (now under "Decisions"): cuvettes wiped and conditione
 - **Rf** keeps the legacy calculation with `requireRecordedMeasurements: true`. The template works from the recorded readings and rounds to 4 places (`calculations.ts`).
 - **The setup page** has number and text fields only. They target an instance's slot (with an optional offset) or an item's contents. It cannot change step counts or order, and it has no derived values. The prepared Rf (band ÷ front) therefore needs a 3D-only transform in `labs3d.ts`, or the distances must be fixed.
 - **Teacher-prepared readings** (`teacherPreparedReading`) are shown only. The runtime records what the student enters.
-- **Side finding:** after a wrong calculation, the 3D Submit button stays disabled (`stepRules.ts`, around line 240). Pack 3 has many calculations: raise it with the user before building them.
+- **Side finding:** after a wrong calculation, the 3D Submit button stayed disabled (`stepRules.ts`). Fixed 2026-10-10 (`0fa32ee`), with the user: the card offers Submit again, and the runtime replaces the failed calculation.
 - **`techniqueConfiguration.test.ts`** (lines 53–66) expects chromatography defaults the JSON lacks, and it fails today. This is a pre-existing 2D failure, not Pack 3's.
 - **Glass draw order:** the chamber and any new glass show the open viewer issue. Note it; don't fix it here.
 - **Generators:** practice modules only (`scripts/practice3d/`). The 2D generators (`paperChromatography.mjs`, `spectroscopy.mjs`, `gravimetrySeparation.mjs`, `cycle04TechniqueCompositionTransform.mjs`) are not touched.
@@ -580,6 +580,12 @@ Questions of behaviour were settled by compiling and playing in memory. Changes:
     - the colour depths match at 50 and 19 mm;
     - the pH is 7.
 27. **Counts.** The 204 scan steps include the setup's 10 and 2 returns, so the setup is not counted again. There are about 175 practice steps in all.
+
+**After revision 3** (2026-10-10, the build prompt's fidelity review; nothing decided changes):
+28. **Lab steps' proof.** "Order of work" step 2 named `hard-water-demo`'s safety notes. Its 2D lab has no lab steps (`actions` and `process` are empty), so the proof is a small fixture, and the chromatography lab is the first real use.
+29. **The hardness part's id.** The 2D lab's instance ids are `measuring-volume`, `transfer`, `hard-water-precipitation`, `filtration`, `drying` and `hard-water-calculation`; the in-memory proof called the last one `hardness`.
+30. **The validator after step 1.** Calculate Hardness's practice version is the first with `pack: 3`, so from then on the validator sees only listed Pack 3 practice versions.
+31. **The Submit side finding** is fixed (`0fa32ee`).
 
 ## Fidelity review (revision 2)
 
