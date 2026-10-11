@@ -16,7 +16,8 @@ the evidence notes have what was built and checked.
 atomized (D4 exception 9, `63096ed`) and its fidelity review, and everything since: the D8 draw-back
 (`690a063`), then the model refinement (2026-10-10), the Pack 3 proposal (`9923202`, revision 3 `af50318`) and
 the Submit fix (`0fa32ee`), then the Pack 3a build (`5123159` to `fe817ec`, 2026-10-11, its records commit
-`9b45727`, and the second fidelity review's commit);
+`9b45727`, and the second fidelity review's commit), then the Pack 3a follow-ups (2026-10-11: the dye `d240373`,
+the slide `fb11986`, the stable layout `da07078`, then the tile with two fixes found at its look, and their records);
 `git log -1` names the latest. Push only when the user asks.
 
 **Pack 1, technique by technique:**
@@ -422,6 +423,13 @@ and template rules. `scripts/checkCycle04Foundations.mjs` can't run in this expo
   building M3–M5. The user asked to see the Studio in M6, so looks were taken there too. Full G1
   playthroughs, G2 (performance), G3 (webcam) and G4 (publishing) stay closed without the user's go-ahead.
 - **Pushing.** The user asks for pushes explicitly. Commit locally; push only when asked.
+- **The tray (2026-10-11).** `proposals/SHELF_INSTEAD_OF_TRAY.md` evaluates a reagent shelf over the bench in
+  place of the tray panel and leaves four decisions open. Nothing is built.
+- **A runtime question (2026-10-11).** On every action `withResolvedAttachments` merges in a relation derived from
+  a child's snap zone that names the first instance of the parent's definition, even when the child already holds
+  its own. With two chambers the 2-propanol strip was also listed in the water chamber. 3D now keeps each child's
+  first relation (`adapters/heldRelations.ts`). Whether 2D draws the same is not checked; a shared fix needs the
+  user's decision.
 
 ## Rules that apply to every change
 

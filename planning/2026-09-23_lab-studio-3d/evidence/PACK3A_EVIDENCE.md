@@ -223,6 +223,58 @@ Found in the second review, not fixed (recorded for you):
 11. **The lab's tray covers its step card at 1024 × 700.** The tray is anchored bottom-left and grows with its items. The lab has 11, so the tray reaches up over the lower half of the step card, even on short steps. The student can collapse or move either panel (handoff §5.1). A tray height limit or docking would be a shared 3D player change.
 12. **The dye mixture is drawn blue.** Its contents use the shared palette state `blue-dye-solution` for a mixture of three dyes. Its own palette entry would be a shared change.
 
+## Follow-ups (2026-10-11)
+
+Your five points, answered in line ("Yes, all 3D (Recommended)", "Mixture colour, 3D only (Recommended)", "Slide the
+bench (Recommended)", and for the tray an evaluation of a shelf over the bench). Items 11 and 12 above are settled by
+them: 12 by the dye's own palette state, and 11 waits on the tray decision.
+
+| Point | Built | Commit | Look (G1, 1024 × 700) |
+|---|---|---|---|
+| 4. The dye | The mixture is drawn dark brown-violet, through `food-dye-mixture` (3D content only; 2D keeps `blue-dye-solution`). | `d240373` | The practice's vial is dark brown-violet on the bench. |
+| 5. The slide | A left-drag on empty bench slides the bench toward or away from you, over a wider range; the help lists it, and Home resets the view. | `fb11986` | Left-drags up, down and further down on empty bench, each sliding the view. |
+| 2. The layout | Each item keeps one slot for the whole run (`stableBench.ts`); a student's own move wins. | `da07078` | Tray items placed with Enter land in their slots; the lab played to step 26 with no error. |
+| 1. The tile | `white-tile` (D9 scenery, 150 × 150 × 6 mm) under a strip lying on the bench, with the ruler on it; left where the strip lay while the strip hangs. | this follow-up | Practice, after step 14 (hang the strip): the empty tile while the strip hangs; step 24: the strip and the ruler on the tile. Lab, after step 45: both strips on their own tiles, 257 mm apart; after step 55: the 2-propanol tile empty while its strip hangs. |
+| 3. The tray | Not built: `proposals/SHELF_INSTEAD_OF_TRAY.md`. | — | — |
+
+**The tile's colour.** The first colour, 0.74 grey-white, left the paper only 12 levels brighter than the tile in the
+look, so white on white. It is now 0.64, a cool, glossy white; the paper reads 16 to 19 levels brighter, and the
+tile still reads white under the room's lights.
+
+**Found at these looks and fixed (3D only):**
+1. **The 2-propanol strip in the water chamber.**
+   - What was seen: while its own chamber was closed and opened (lab steps 55 and 57), the scene placed the strip in
+     the water chamber.
+   - The cause, in the runtime: on every action `withResolvedAttachments` merges in a relation derived from the
+     strip's snap zone. `deriveLegacyAttachments` names the first instance of the zone's parent definition, which is
+     the water chamber, even when the strip already holds its own relation. The scene took the last one listed.
+   - The fix: the scene now keeps each child's first relation, its own (`adapters/heldRelations.ts`). The chamber's
+     "strip hung" state and the balance's load use the same rule.
+   - Tested in `adapters.test.ts` with two chambers. A probe through the lab's 81 steps showed the strip in the
+     2-propanol chamber at steps 54 to 57.
+   - Not changed: the runtime itself (shared). Whether 2D draws the same is not checked; a shared fix would need your
+     decision.
+2. **The beacon and framing on the water strip.**
+   - What was seen: the guided beacon and the step's framing took the first item of a kind on the bench. So the
+     2-propanol trial's steps marked the water strip and chamber, and the framing took in both strips and both
+     chambers.
+   - The fix: the step flow's endpoints now carry the instance the step names, or the student's own choice
+     (`stepRules.ts`, `Endpoint.instanceId`). The beacon and the framing follow it when it is on the bench.
+   - Tested in `lab3d.test.ts`. In the look after step 45 the beacon is on the new strip; at step 48 it is on the
+     capillary. After step 55, once the bench settles, the step frames the labelled 2-propanol chamber with its strip
+     inside and the lid on, as the practice frames its one chamber (a shot taken while the camera was still moving
+     was off-centre).
+3. **A missing tile in one look.** A first overview after step 46 showed no 2-propanol tile. It was the camera caught
+   mid-move: the same view 2.5 to 18 s later shows both tiles, and the scene data placed them correctly throughout.
+
+**Checks.**
+- `tsc`: clean.
+- 3D tests: 297 pass.
+- `content:check`: 22, the known baseline.
+- Practice build check: up to date.
+- The Pack 3 asset validator: 0 failures, with `white-tile` noted as scenery.
+- No 2D paths changed.
+
 ## Not seen
 
 - Hand control (G3) on the chromatography gestures: set aside.
