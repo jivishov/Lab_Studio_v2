@@ -1,6 +1,6 @@
 # Lab Studio 3D: session handoff
 
-Written 2026-09-24 and updated through 2026-10-10, so a fresh session can continue the Pack 1 build without
+Written 2026-09-24 and updated through 2026-10-11, so a fresh session can continue the Pack 1 build without
 the previous conversation; checked claim by claim against the repository. Read this first, then the
 governing documents it names.
 
@@ -15,7 +15,8 @@ the evidence notes have what was built and checked.
 2026-10-04 (`9798de1` P0 to the P5 records commit, and the fidelity review `b886175`), then Make a Solution
 atomized (D4 exception 9, `63096ed`) and its fidelity review, and everything since: the D8 draw-back
 (`690a063`), then the model refinement (2026-10-10), the Pack 3 proposal (`9923202`, revision 3 `af50318`) and
-the Submit fix (`0fa32ee`); `git log -1` names the latest. Push only when the user asks.
+the Submit fix (`0fa32ee`), then the Pack 3a build (`5123159` to `fe817ec`, 2026-10-11, and its records commit);
+`git log -1` names the latest. Push only when the user asks.
 
 **Pack 1, technique by technique:**
 
@@ -170,10 +171,28 @@ wait for confirmation (`DECISIONS.md`, the "built" row). G3 has still not run.
    - Pack 2's 3D weighings move to 0.0001 g (decision 9), so `hard-water-demo` reaches 375 mg/L.
    - Pack 3a first (hardness, `hard-water-demo`, chromatography), then 3b (brass, in six techniques).
    - Also fixed: the 3D step card offers Submit again after a wrong calculation (`0fa32ee`).
-11. **Next: the Pack 3a build.** `PACK3A_BUILD_PROMPT.md` is its prompt, reviewed for fidelity on 2026-10-10
-   (its last section; the proposal's items 28–31). The proposal's "For the build thread" lists what it will
-   meet, each fact with its proof. New models are built with the refined library:
-   `segments_for`, `cut()`, `helix_thread_mesh()`, `pull_spout()` and `graduation_scale()`.
+11. **Done 2026-10-11: the Pack 3a build** (`PACK3A_BUILD_PROMPT.md`; `evidence/PACK3A_EVIDENCE.md`, with its
+   fidelity review; `DECISIONS.md`, the "Pack 3a build interpretations", "Pack 3a step 4", "Pack 3a step 5" and
+   "Pack 3a built" rows). Five local commits, none pushed or published:
+   - `5123159`: Calculate Hardness's practice version (6 steps, pack 3) and twin, Dry and Weigh's twin with the
+     paper mass's id as a slot, Pack 2's weighings at 0.0001 g, and `hard-water-demo` (six parts, 59 steps, plays
+     to 375 mg/L).
+   - `35b0919`: lab steps (`labRecord`, `labCalculation`, `labApproval` in `common.mjs`) in groups before the first
+     part or after a named part (`composeLab.mjs`); tests in `__tests__/labSteps.test.ts`.
+   - `2889a75`: eight chromatography models (chamber with lid, hook and tape; strip; capillary as the real 1 mm
+     tube; pencil; ruler; water and 2-propanol bottles; waste beaker). The registry gains `stripFace`, `scaleMm`
+     and `liftedWithLidMm`.
+   - `c22a503`: `paper-chromatography-practice` (water, 31 steps) and the twins `paper-chromatography-water-3d`
+     (31) and `-propanol-3d` (33); the atom `atom.observe.label-developing-chamber`; the strip's marks and the
+     tape drawn from runtime state (`bench/scene/stripMarks.ts`); the ruler aligned with the strip
+     (`alignWithInstanceId`); the solvent depth worked out from the volume (`prepared3d.ts`).
+   - `fe817ec`: the lab `paper-chromatography` (`#/3d/play/paper-chromatography`): six parts, 17 lab steps,
+     81 steps in all, 13 items, a setup page with the prepared distances. A 3D-only transform
+     (`preparedLab3DSource`, `withLabStopDistances`) sets each expected Rf and the stop distance from them.
+   - Waiting for the user: the step 5 interpretations and the review's findings (the "Pack 3a built" row).
+12. **Next (only when the user asks):** Pack 3b (brass, in six techniques; the proposal's "Brass
+   Spectrophotometry"), with a build prompt written first if the user asks for one. Also held: publishing Pack 3
+   and the D8 experiments, pushing, and G3.
 
 **How the work has been checked** (the user's validation policy: source review, `npx tsc -p
 tsconfig.app.json --noEmit`, `python tools/blender/validate_equipment3d.py --pack 1`, and narrow
@@ -190,7 +209,13 @@ static validators; tests are written but not run):
   - SwiftShader frames are slow, so allow seconds for a 650 ms camera tween.
 - Dev server: `preview_start` "lab-studio-3d-dev" (port 5182), configured in the session folder's
   `C:\Users\EmilJivishov\Projects\virtual_lab\experiments\lab-studio\.claude\launch.json`, which
-  is temporary; remove it and stop the server when the work is done. It was not running at this handoff.
+  is temporary; remove it and stop the server when the work is done. It was removed at the 2026-10-11 Pack 3a
+  handoff. To run the app again, re-create it with one configuration: `"name": "lab-studio-3d-dev"`,
+  `"runtimeExecutable": "pwsh"`, `"runtimeArgs": ["-NoProfile", "-Command", "Set-Location
+  'C:/Users/EmilJivishov/Projects/Lab_studio/tmp/lab-studio-3d'; npx vite --host 127.0.0.1 --port $env:PORT
+  --strictPort"]`, `"port": 5182`, `"autoPort": true`. Headless G1 looks used Playwright with
+  `NODE_PATH=C:/Users/EmilJivishov/Projects/Lab_studio/node_modules`, launched with `--use-angle=swiftshader
+  --enable-unsafe-swiftshader` at 1024 x 700 (larger viewports time out on screenshots).
 - To look at the microarray lab, add a static-server entry for its folder to the same launch file. The
   worktree's own `.claude/launch.json` has one, "microarray-reference" (port 8791).
 - G3 (real webcam) was authorised on 2026-09-24 but has not run. The built-in pane blocks the webcam,
@@ -488,7 +513,15 @@ and template rules. `scripts/checkCycle04Foundations.mjs` can't run in this expo
   - Glass draw order, as in item 9 above.
   - V2 was not built: clear plastic and thin glass read faintly in real time.
   - The 10 mL pipette, Beral pipette, stirring rod and test tube lean 38° in their thumbnails only.
-- **Cleanup.** At the 2026-09-24 handoff the temporary launch entry was removed and the dev server
+- **Pack 3a (2026-10-11):**
+  - Glass draw order shows on the chromatography chamber and bottles (item 9); noted, not fixed.
+  - In a 3D lab, items without a set position take 2D's grid slot by their order on the bench, so they shift
+    when an item leaves the tray (seen in `paper-chromatography`; nothing overlaps). A 3D-only layout would
+    need a proposal.
+  - No tile under the chromatography strip (the proposal's bench has one); it would be a new item.
+  - Heat and Reweigh's carbonate issue is left as it was.
+- **Cleanup.** At the 2026-10-11 Pack 3a handoff the dev server was stopped and the temporary launch entry was
+  removed. At the 2026-09-24 handoff the temporary launch entry was removed and the dev server
   stopped. At the 2026-10-03 handoff the entry in
   `C:\Users\EmilJivishov\Projects\virtual_lab\experiments\lab-studio\.claude\launch.json` was kept for the
   next thread, and no dev server was running. At the 2026-10-10 model-refinement handoff the entry was kept
