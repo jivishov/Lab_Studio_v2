@@ -3,8 +3,8 @@ import type { EquipmentInstance, RuntimeState } from "../../domain/types";
 import { getBenchSize } from "../../equipment/visualCatalog";
 import type { BenchBounds } from "../../player/benchOverlap";
 import { benchOccupiedBoundsFromNodes } from "../../player/benchTargeting";
-import { resolveWorkbenchScene } from "../../player/resolveWorkbenchScene";
 import { RUNTIME_BENCH_PX } from "./benchCoordinates";
+import { stableWorkbenchNodes } from "./stableBench";
 
 /**
  * The 2D player's placement rules, in runtime bench units, so that the 3D bench puts things where
@@ -15,7 +15,10 @@ import { RUNTIME_BENCH_PX } from "./benchCoordinates";
  *
  * Both rules are private to their 2D files. Exporting them would be a 2D edit outside plan §4.7, so
  * their bodies are copied here word for word; what they read (render nodes, occupied bounds) comes
- * from the exported 2D helpers. The drift risk, and the proposal to move the rules into a shared
+ * from the exported 2D helpers. The player's tray now places by the 3D layout's own slots
+ * (stableBench.ts `stablePlacementPoint`, decided 2026-10-11); `nextPlacementPoint` stays for the
+ * Studio's starting bench, where every item is given coordinates. The parking rule reads the 3D
+ * layout's positions, so it parks clear of items where they stand. The drift risk, and the proposal to move the rules into a shared
  * module both players import, are recorded in evidence/M5_EVIDENCE.md with `player/stepRules.ts`.
  */
 interface BenchPoint {
@@ -142,15 +145,16 @@ const parkAfterInteraction = (point: BenchPoint, occupied: BenchBounds[], limits
 
 /**
  * Where the 2D workbench would park `sourceInstanceId` after a completed interaction released at
- * `releasePoint`: sized by its render node, clear of every other node's hit box, on the 2D player's
- * minimum logical bench (the area benchCoordinates maps onto the 3D bench).
+ * `releasePoint`: sized by its render node, clear of every other node's hit box where the 3D bench
+ * stands it (stableBench.ts), on the 2D player's minimum logical bench (the area benchCoordinates
+ * maps onto the 3D bench).
  */
 export const parkPointAfterInteraction = (
   state: Pick<RuntimeState, "equipmentInstances" | "attachments">,
   sourceInstanceId: string,
   releasePoint: BenchPoint,
 ): BenchPoint => {
-  const nodes = resolveWorkbenchScene(state);
+  const nodes = stableWorkbenchNodes(state);
   const node = nodes.find((candidate) => candidate.primaryInstanceId === sourceInstanceId);
   const instance = state.equipmentInstances.find((candidate) => candidate.id === sourceInstanceId);
   const size = node ? { width: node.bounds.width, height: node.bounds.height } : getBenchSize(instance?.definitionId ?? "");

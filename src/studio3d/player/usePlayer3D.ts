@@ -12,7 +12,8 @@ import { readingShownFor } from "../adapters/instrumentDisplay";
 import { fillLevelMm, pourStagingScene, runtimeToScene, sceneContents, type SceneContents, type SceneDescription, type SceneStrip } from "../adapters/runtimeToScene";
 import { heldOnSeat, readingSeatZone } from "../bench/scene/setOn";
 import { benchMoveRequest, benchOpStepFor, chromStepFor, intentTypeForInteraction, markStepFor, mergeActionInput, pipetteStepFor, resolveTrayDrop, stepClockSeconds, tongsStepFor, toolTransferFor, type ReleaseOrigin } from "../adapters/sceneToIntent";
-import { nextPlacementPoint, parkPointAfterInteraction } from "../adapters/twoDPlacement";
+import { stablePlacementPoint } from "../adapters/stableBench";
+import { parkPointAfterInteraction } from "../adapters/twoDPlacement";
 import { equipment3dEntry } from "../equipment3d/readiness";
 import { stepFlow, type StepFlow, placedInstanceId } from "./stepRules";
 
@@ -507,15 +508,15 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
 
   /**
    * A tray item onto the bench: the step's placement when expected, else a free move. Dropped at a
-   * point, it slides to the nearest free spot; clicked or chosen with Enter, it takes the slot the
-   * 2D `placeEquipment` would give it. A hand-control drop is tagged "vision", as in 2D.
+   * point, it slides to the nearest free spot; clicked or chosen with Enter, it takes its own slot of the
+   * 3D layout when clear (stableBench.ts, decided 2026-10-11). A hand-control drop is tagged "vision", as in 2D.
    */
   const dropFromTray = useCallback((definitionId: string, at?: { xMm: number; yMm: number }, origin: ReleaseOrigin = "pointer", instanceId?: string) => {
     // The bench stays as it is while a timed stage's minutes pass (a tray tile's Enter is not a carry).
     if (stepClockRef.current && holdBackNext()) return;
-    // A tile's Enter has no point of its own: it starts from the 2D default slot, whose picture sizes are
-    // not the 3D footprints, so it too takes the nearest free spot (a ring stand never stands in a balance).
-    const start = at ?? toBench(definitionId, nextPlacementPoint(runtime.getState().equipmentInstances, definitionId));
+    // A tile's Enter has no point of its own: it starts from its slot, whose picture sizes are not the 3D
+    // footprints, so it too takes the nearest free spot (a ring stand never stands in a balance).
+    const start = at ?? toBench(definitionId, stablePlacementPoint(runtime.getState(), definitionId, instanceId));
     const spot = nearestFreeSpot(footprintOf(equipment3dEntry(definitionId), start.xMm, start.yMm), occupiedFootprints());
     const point = fromBench(definitionId, spot.xMm, spot.yMm);
     const actionDefinitionId = runtime.expectedAction?.parameters.equipmentDefinitionId;

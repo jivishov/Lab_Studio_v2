@@ -1,6 +1,6 @@
 import type { RuntimeState } from "../../domain/types";
 import { getBenchSize } from "../../equipment/visualCatalog";
-import { resolveWorkbenchScene } from "../../player/resolveWorkbenchScene";
+import { stableWorkbenchNodes } from "./stableBench";
 
 /**
  * The one conversion between runtime bench units and the 3D bench (plan §2.3, §4.1, §11).
@@ -69,16 +69,17 @@ export const toBench = (
 };
 
 /**
- * Where each bench item stands, in bench millimetres, read from the same scene resolver the 2D
- * workbench draws with. The runtime moves some items onto the bench without coordinates (a pour's
- * target leaves the shelf with no `x` or `y`); the 2D player then stands each one at its default
- * slot for its render order. Reading positions from the resolver, rather than from `x ?? 0`, keeps
- * both players showing the same bench, and copies no placement rule (G-3).
+ * Where each bench item stands, in runtime bench units. An item with coordinates of its own stands
+ * there, as in 2D. The runtime moves some items onto the bench without coordinates (a pour's target
+ * leaves the shelf with no `x` or `y`, as does a step's placement by Confirm); 2D stands each at the
+ * default slot of its render order, so items shifted as others came and went. The 3D bench keeps
+ * each such item in one slot for the whole run instead (stableBench.ts, decided 2026-10-11). The
+ * runtime's units are untouched, so a saved state loads in either player (G-3).
  */
 export const runtimeBenchPoints = (
   state: Pick<RuntimeState, "equipmentInstances" | "attachments">,
 ): Map<string, RuntimeBenchPoint> =>
-  new Map(resolveWorkbenchScene(state).map((node) => [node.primaryInstanceId, { x: node.transform.x, y: node.transform.y }]));
+  new Map(stableWorkbenchNodes(state).map((node) => [node.primaryInstanceId, { x: node.transform.x, y: node.transform.y }]));
 
 /** `runtimeBenchPoints` in bench millimetres. */
 export const runtimeBenchPointsMm = (

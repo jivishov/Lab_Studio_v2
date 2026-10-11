@@ -177,12 +177,12 @@ describe("weighing through the real runtime: the balance shows the teacher-prepa
   });
 });
 
-describe("bench positions follow the 2D workbench (G-3)", () => {
+describe("bench positions: the runtime's own, else the 3D bench's stable slot (G-3; decided 2026-10-11)", () => {
   // The fixture keeps Make a Solution's first step from before its atomization (decided 2026-10-04): a
   // pour from the wash bottle on the shelf into the flask on the shelf, the case this is about.
   const making = solutionTechnique;
 
-  it("stands an item the runtime moved onto the bench without coordinates at the 2D default slot", () => {
+  it("stands an item the runtime moved onto the bench without coordinates at its own slot", () => {
     // Step 1 by the accessible flow's Confirm: the runtime resolves the source and target itself,
     // and its transfer takes the flask off the shelf with no x or y.
     const start = createRuntimeState(making);
@@ -192,7 +192,8 @@ describe("bench positions follow the 2D workbench (G-3)", () => {
     const flask = state.equipmentInstances.find((instance) => instance.definitionId === "volumetric-flask")!;
     expect(flask.location).toBe("workbench");
     expect(flask.x).toBeUndefined();
-    // The 2D workbench (resolveWorkbenchScene) draws the first bench item at x 34, y 86.
+    // The flask is the run's first item, so it owns the first slot, x 34, y 86 (where 2D, too, draws the
+    // first bench item); stableBench.test.ts covers items that 2D would shift.
     const expected = toBench("volumetric-flask", { x: 34, y: 86 });
     expect(runtimeBenchPointsMm(state).get(flask.id)).toEqual(expected);
     const item = runtimeToScene(state, making).bench.find((i) => i.instanceId === flask.id)!;
