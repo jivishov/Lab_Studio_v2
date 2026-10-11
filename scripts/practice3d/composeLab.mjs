@@ -17,6 +17,11 @@
  *   every scoped id a lab step names (`<instanceId>--<id>`) must belong to a part. Lab step to lab step is a process
  *   edge; into or out of a part it is a composition connection. The index lists each group among the parts, in run
  *   order, with its node ids, so the step card labels a lab step by its group.
+ * - Chromatography models (Pack 3a, decided 2026-10-11): `chromatographyModels` are the lab's own, as 2D's lab carries
+ *   them, and a part binds its technique's model slots to them through `models` (slot id → lab model id). A model's
+ *   front and band distances may be `setup(…)` fields; each band's `expectedRf` is written as its distance over the
+ *   front, and the 3D loader works it out again from the teacher's values (`labs3d.ts`).
+ * - A part may keep ids as its technique wrote them (`preserveIds`, the compiler's own, as 2D's labs use it).
  */
 const isSetup = (value) => Boolean(value && typeof value === "object" && typeof value.setup === "string");
 
@@ -38,6 +43,20 @@ export const composeLab = (declaration, techniqueFor) => {
     field.targets.push({ ...target, offset: value.offset });
     return withOffset(field.defaultValue, value.offset);
   };
+
+  const round4 = (value) => Math.round(value * 1e4) / 1e4;
+  const chromatographyModels = (declaration.chromatographyModels ?? []).map((model) => {
+    const solventFrontMm = fill(model.solventFrontMm, { modelId: model.id });
+    return {
+      ...model,
+      solventFrontMm,
+      bands: model.bands.map((band) => {
+        const distanceMm = fill(band.distanceMm, { modelId: model.id, bandId: band.id });
+        return { ...band, distanceMm, expectedRf: round4(distanceMm / solventFrontMm) };
+      }),
+    };
+  });
+  const modelIds = new Set(chromatographyModels.map((model) => model.id));
 
   const benchById = new Map(declaration.bench.map((entry) => [entry.id, entry]));
   const bench = declaration.bench.map((entry) => ({
@@ -75,9 +94,17 @@ export const composeLab = (declaration, techniqueFor) => {
     if (missing.length || extra.length) throw new Error(`${at}: slots not configured [${missing}], not declared [${extra}].`);
     const configuration = Object.fromEntries(Object.entries(part.configuration)
       .map(([slotId, value]) => [slotId, fill(value, { instanceId: part.instanceId, slotId })]));
+    const models = part.models ?? {};
+    const modelSlots = technique.composition.modelSlots.map((slot) => slot.id);
+    const unbound = modelSlots.filter((slot) => !(slot in models));
+    const strayModels = Object.keys(models).filter((slot) => !modelSlots.includes(slot));
+    if (unbound.length || strayModels.length) throw new Error(`${at}: model slots not bound [${unbound}], not declared [${strayModels}].`);
+    for (const modelId of Object.values(models)) {
+      if (!modelIds.has(modelId)) throw new Error(`${at}: the lab has no model "${modelId}".`);
+    }
     parts.push({ instanceId: part.instanceId, techniqueId: technique.id, title: part.title ?? technique.title, techniqueTitle: technique.title });
     return { instanceId: part.instanceId, techniqueId: technique.id, version: technique.metadata.version,
-      bindings: { equipment, models: {}, configuration } };
+      bindings: { equipment, models, configuration }, ...(part.preserveIds ? { preserveIds: part.preserveIds } : {}) };
   });
 
   const mapped = new Set(declaration.parts.flatMap((part) => Object.values(part.items)));
@@ -140,6 +167,7 @@ export const composeLab = (declaration, techniqueFor) => {
     equipment: [...new Set(bench.map((entry) => entry.definitionId))],
     techniques: [],
     initialState: { equipment: bench },
+    ...(chromatographyModels.length ? { chromatographyModels } : {}),
     actions: steps.map(({ action }) => action),
     process: {
       startNodeId: stops[0].nodeId ?? `${ids[0]}--start`,

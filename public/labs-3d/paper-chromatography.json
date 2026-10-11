@@ -1,0 +1,1986 @@
+{
+  "id": "paper-chromatography",
+  "title": "Paper Chromatography",
+  "description": "Predict how water and 2-propanol will move a food-dye mixture up paper, run both trials, measure each band's Rf, and explain the separation from intermolecular attractions.",
+  "audience": "AP Chemistry students",
+  "learningGoals": [
+    "Predict a separation from the attractions among the dyes, the cellulose paper and the solvent",
+    "Run a paper chromatogram with water and with 2-propanol",
+    "Measure the front and each band's centre from the baseline, and calculate each Rf",
+    "Explain the separation with claim, evidence and reasoning"
+  ],
+  "safetyNotes": [
+    "Wear splash-proof goggles.",
+    "2-Propanol is flammable: no flames or hot plates near it, and keep its chamber closed.",
+    "Wash any skin contact with plenty of water.",
+    "Used water and food dye go to the sink stream; used 2-propanol goes to the organic waste, never down the sink."
+  ],
+  "equipment": [
+    "chromatography-chamber",
+    "chromatography-paper",
+    "distilled-water-bottle",
+    "propanol-bottle",
+    "graduated-cylinder",
+    "pencil",
+    "capillary-spotter",
+    "small-vial",
+    "metric-ruler",
+    "waste-beaker"
+  ],
+  "techniques": [],
+  "initialState": {
+    "equipment": [
+      {
+        "id": "water-chamber",
+        "definitionId": "chromatography-chamber",
+        "label": "Chamber for water",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty",
+          "developingChamberClosed": false
+        }
+      },
+      {
+        "id": "propanol-chamber",
+        "definitionId": "chromatography-chamber",
+        "label": "Chamber for 2-propanol",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty",
+          "developingChamberClosed": false
+        }
+      },
+      {
+        "id": "water-strip",
+        "definitionId": "chromatography-paper",
+        "label": "Strip for water",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "paper-unspotted"
+        }
+      },
+      {
+        "id": "propanol-strip",
+        "definitionId": "chromatography-paper",
+        "label": "Strip for 2-propanol",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "paper-unspotted"
+        }
+      },
+      {
+        "id": "water-bottle-1",
+        "definitionId": "distilled-water-bottle",
+        "label": "Distilled water",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "Distilled water",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid",
+          "volumeMl": 250
+        }
+      },
+      {
+        "id": "propanol-bottle-1",
+        "definitionId": "propanol-bottle",
+        "label": "2-Propanol",
+        "location": "shelf",
+        "contents": {
+          "kind": "liquid",
+          "label": "2-Propanol",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "clear-liquid",
+          "volumeMl": 200
+        }
+      },
+      {
+        "id": "graduated-cylinder-1",
+        "definitionId": "graduated-cylinder",
+        "label": "100 mL graduated cylinder",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "pencil-1",
+        "definitionId": "pencil",
+        "label": "Pencil",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "capillary-1",
+        "definitionId": "capillary-spotter",
+        "label": "Capillary tube",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "dye-vial-1",
+        "definitionId": "small-vial",
+        "label": "Food dye mixture",
+        "location": "shelf",
+        "contents": {
+          "kind": "mixture",
+          "label": "Food dye mixture",
+          "solutes": [
+            {
+              "id": "teacher-food-dye-mixture",
+              "label": "Teacher-provided food dye mixture",
+              "amount": 1,
+              "unit": "mg"
+            }
+          ],
+          "contamination": [],
+          "wetState": "wet",
+          "visualState": "blue-dye-solution",
+          "volumeMl": 5
+        }
+      },
+      {
+        "id": "ruler-1",
+        "definitionId": "metric-ruler",
+        "label": "Metric ruler",
+        "location": "shelf",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "sink-waste-1",
+        "definitionId": "waste-beaker",
+        "label": "Sink waste",
+        "location": "workbench",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      },
+      {
+        "id": "organic-waste-1",
+        "definitionId": "waste-beaker",
+        "label": "Organic waste",
+        "location": "workbench",
+        "contents": {
+          "kind": "empty",
+          "label": "empty",
+          "solutes": [],
+          "contamination": [],
+          "wetState": "dry",
+          "visualState": "empty"
+        }
+      }
+    ]
+  },
+  "chromatographyModels": [
+    {
+      "id": "water-food-dyes-paper",
+      "solventFrontMm": 80,
+      "bands": [
+        {
+          "id": "purple-overlap",
+          "label": "Purple unresolved overlap",
+          "color": "#7e22ce",
+          "distanceMm": 59,
+          "expectedRf": 0.7375
+        },
+        {
+          "id": "yellow",
+          "label": "Yellow",
+          "color": "#facc15",
+          "distanceMm": 66,
+          "expectedRf": 0.825
+        }
+      ]
+    },
+    {
+      "id": "propanol-food-dyes-paper",
+      "solventFrontMm": 80,
+      "bands": [
+        {
+          "id": "blue",
+          "label": "Blue",
+          "color": "#2563eb",
+          "distanceMm": 28,
+          "expectedRf": 0.35
+        },
+        {
+          "id": "red",
+          "label": "Red",
+          "color": "#dc2626",
+          "distanceMm": 49,
+          "expectedRf": 0.6125
+        },
+        {
+          "id": "yellow",
+          "label": "Yellow",
+          "color": "#facc15",
+          "distanceMm": 68,
+          "expectedRf": 0.85
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "id": "review-challenge-safety",
+      "verb": "observe",
+      "label": "Review the safety notes",
+      "parameters": {
+        "note": "Goggles on. 2-Propanol is flammable: no flames nearby, and keep its chamber closed. Wash skin contact with plenty of water. Water and food dye go to the sink stream; 2-propanol goes to the organic waste.",
+        "tag": "safety-review"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Review the safety notes: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Review the safety notes recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "safety-review"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence",
+            "reference": "safety-review"
+          }
+        ]
+      }
+    },
+    {
+      "id": "prelab-capillary-demo",
+      "verb": "observe",
+      "label": "Watch the capillary demonstration",
+      "parameters": {
+        "note": "Your teacher touches a strip's edge to coloured water and you watch the liquid climb the paper. Note what you see: how far it climbs, and whether the colour keeps up with the water.",
+        "tag": "prelab-demonstration"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Watch the capillary demonstration: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Watch the capillary demonstration recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "prelab-demonstration"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence",
+            "reference": "prelab-demonstration"
+          }
+        ]
+      }
+    },
+    {
+      "id": "prelab-questions",
+      "verb": "observe",
+      "label": "Answer Prelab Part I",
+      "parameters": {
+        "note": "Answer Prelab Part I, questions 1 to 3: what made the liquid climb, what the paper is made of and how it attracts water, and why a dye might lag behind the solvent.",
+        "tag": "prelab-questions-recorded",
+        "inputMode": "text",
+        "inputLabel": "Your answers to questions 1 to 3"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Answer Prelab Part I: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Answer Prelab Part I recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "prelab-questions-recorded"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence",
+            "reference": "prelab-questions-recorded"
+          }
+        ]
+      }
+    },
+    {
+      "id": "review-molecular-structures",
+      "verb": "observe",
+      "label": "Review the dye and solvent structures",
+      "parameters": {
+        "note": "Look at the supplied structures of the dyes, water, 2-propanol and cellulose. Mark where each can hydrogen bond, where it is polar or charged, and where only dispersion forces act.",
+        "tag": "structure-evidence"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Review the dye and solvent structures: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Review the dye and solvent structures recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "structure-evidence"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence",
+            "reference": "structure-evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "record-imf-hypothesis",
+      "verb": "observe",
+      "label": "Record your hypothesis",
+      "parameters": {
+        "note": "Before any trial, predict how each solvent will move the dyes, and why: connect each prediction to the attractions among the dye, the cellulose paper and the solvent.",
+        "tag": "imf-hypothesis",
+        "inputMode": "text",
+        "inputLabel": "Your hypothesis"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record your hypothesis: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Record your hypothesis recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "imf-hypothesis"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence",
+            "reference": "imf-hypothesis"
+          }
+        ]
+      }
+    },
+    {
+      "id": "select-solvents",
+      "verb": "observe",
+      "label": "Give a reason for each solvent",
+      "parameters": {
+        "note": "Your teacher has chosen water and 2-propanol for these two trials. For each, write a reason it could test your hypothesis, before you see a result.",
+        "tag": "solvent-selection",
+        "inputMode": "text",
+        "inputLabel": "A reason for each solvent"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Give a reason for each solvent: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Give a reason for each solvent recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "solvent-selection"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence",
+            "reference": "solvent-selection"
+          }
+        ]
+      }
+    },
+    {
+      "id": "configure-repeatable-procedure",
+      "verb": "observe",
+      "label": "Write the procedure",
+      "parameters": {
+        "note": "Write the steps another student could repeat: label the chamber, measure and pour the solvent, draw the pencil baseline, spot and dry three times, hang the strip with its foot in the solvent and the spot above it, close the lid, mark the front at once, and read to the nearest millimetre.",
+        "tag": "procedure-design",
+        "inputMode": "text",
+        "inputLabel": "Your procedure"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Write the procedure: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Write the procedure recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "procedure-design"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence",
+            "reference": "procedure-design"
+          }
+        ]
+      }
+    },
+    {
+      "id": "design-data-table",
+      "verb": "observe",
+      "label": "Design the data table",
+      "parameters": {
+        "note": "Make columns for the solvent, the front's distance in mm, each band's colour and centre distance in mm, its Rf, how well the bands separated, and where the solvent went.",
+        "tag": "data-table-design",
+        "inputMode": "text",
+        "inputLabel": "Your table's columns"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Design the data table: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Design the data table recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "data-table-design"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence",
+            "reference": "data-table-design"
+          }
+        ]
+      }
+    },
+    {
+      "id": "submit-procedure-approval",
+      "verb": "observe",
+      "label": "Teacher's approval",
+      "parameters": {
+        "note": "Your teacher checks your procedure and data table before you start the trials.",
+        "tag": "procedure-approved",
+        "inputMode": "choice",
+        "inputLabel": "Teacher's approval",
+        "inputOptions": [
+          "Approved by the teacher"
+        ]
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Teacher's approval: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Teacher's approval: approved.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "procedure-approved"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording",
+          "pedagogical-orchestration"
+        ],
+        "targets": [
+          {
+            "domain": "evidence",
+            "reference": "procedure-approved"
+          },
+          {
+            "domain": "approval",
+            "reference": "procedure-approved"
+          }
+        ]
+      }
+    },
+    {
+      "id": "compare-separation",
+      "verb": "observe",
+      "label": "Compare the two separations",
+      "parameters": {
+        "note": "Compare only what you measured: the number of bands, overlap and spacing, streaking, and each Rf to two significant figures. An Rf holds only for this paper, solvent and procedure.",
+        "tag": "separation-comparison"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Compare the two separations: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Compare the two separations recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "separation-comparison"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence",
+            "reference": "separation-comparison"
+          }
+        ]
+      }
+    },
+    {
+      "id": "evaluate-hypothesis",
+      "verb": "observe",
+      "label": "Evaluate your hypothesis",
+      "parameters": {
+        "note": "Does your evidence support, partly support or refute your hypothesis? Tell an unexpected result apart from a trial that went wrong.",
+        "tag": "hypothesis-evaluation",
+        "inputMode": "text",
+        "inputLabel": "Supports, partly supports or refutes, and why"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Evaluate your hypothesis: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Evaluate your hypothesis recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "hypothesis-evaluation"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence",
+            "reference": "hypothesis-evaluation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "explain-phase-interactions",
+      "verb": "observe",
+      "label": "Explain the phases' attractions",
+      "parameters": {
+        "note": "Explain how each dye's attraction to the cellulose against its attraction to the solvent sets how far it moved. Name the band that moved least in each trial: it spent the most time held by the paper.",
+        "tag": "phase-interactions"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Explain the phases' attractions: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Explain the phases' attractions recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "phase-interactions"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence",
+            "reference": "phase-interactions"
+          }
+        ]
+      }
+    },
+    {
+      "id": "draw-process-model",
+      "verb": "observe",
+      "label": "Draw a model of the chromatogram",
+      "parameters": {
+        "note": "Draw and label the pencil baseline, the solvent below it, the solvent rising through the paper, the front, the bands, and the two distances each Rf uses.",
+        "tag": "chromatography-model"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Draw a model of the chromatogram: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Draw a model of the chromatogram recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "chromatography-model"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence",
+            "reference": "chromatography-model"
+          }
+        ]
+      }
+    },
+    {
+      "id": "evaluate-green-chemistry",
+      "verb": "observe",
+      "label": "Weigh the solvents' greenness",
+      "parameters": {
+        "note": "Using only the solvent-guide evidence your teacher supplies, compare water and 2-propanol for safety and environmental impact.",
+        "tag": "green-chemistry-evidence"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Weigh the solvents' greenness: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Weigh the solvents' greenness recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "green-chemistry-evidence"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence",
+            "reference": "green-chemistry-evidence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "write-cer-conclusion",
+      "verb": "observe",
+      "label": "Write your claim, evidence and reasoning",
+      "parameters": {
+        "note": "Claim which solvent separated this mixture better. Cite the band count, overlap and spacing, your distances and Rf values, and reason from the attractions among dye, cellulose and solvent. An Rf alone does not identify a dye.",
+        "tag": "cer-claim",
+        "inputMode": "text",
+        "inputLabel": "Your CER"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Write your claim, evidence and reasoning: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Write your claim, evidence and reasoning recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "cer-claim"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence",
+            "reference": "cer-claim"
+          }
+        ]
+      }
+    },
+    {
+      "id": "record-interpretation-limits",
+      "verb": "observe",
+      "label": "Record the limits of your results",
+      "parameters": {
+        "note": "Note what limits your results: where you drew the baseline and the front, judging a band's centre, the ruler's millimetre, the spot's size, the lid's seal, the strip touching the wall, evaporation, and repeating the trial.",
+        "tag": "interpretation-limits"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Record the limits of your results: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Record the limits of your results recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "interpretation-limits"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence",
+            "reference": "interpretation-limits"
+          }
+        ]
+      }
+    },
+    {
+      "id": "complete-postlab-solubility",
+      "verb": "observe",
+      "label": "Complete the Postlab Assessment",
+      "parameters": {
+        "note": "Compare the solubility of pyridine and benzene in water from their structures and attractions, and relate it to chromatography, without taking solubility alone as proof of a band's identity.",
+        "tag": "postlab-solubility",
+        "inputMode": "text",
+        "inputLabel": "Your postlab answer"
+      },
+      "prerequisites": [],
+      "stateChanges": [
+        "Complete the Postlab Assessment: changes the named equipment and contents only."
+      ],
+      "invalidCases": [
+        {
+          "id": "wrong-order",
+          "when": "current node expects a different action",
+          "message": "That action is out of sequence for the current technique step.",
+          "recovery": "Check the process map and perform the highlighted step first."
+        },
+        {
+          "id": "missing-source",
+          "when": "source equipment or contents are missing",
+          "message": "The selected source does not contain the material required for this action.",
+          "recovery": "Select equipment that contains the required liquid, solid, solution, or precipitate."
+        },
+        {
+          "id": "overflow",
+          "when": "target capacity would be exceeded",
+          "message": "The target equipment cannot hold the requested volume.",
+          "recovery": "Use a larger container or transfer a smaller measured amount."
+        }
+      ],
+      "feedback": {
+        "success": "Complete the Postlab Assessment recorded.",
+        "invalid": "The simulator could not complete that action. Review the step requirements."
+      },
+      "evidence": [
+        "observe",
+        "notebook",
+        "postlab-solubility"
+      ],
+      "effect": {
+        "classes": [
+          "evidence-recording"
+        ],
+        "targets": [
+          {
+            "domain": "evidence",
+            "reference": "postlab-solubility"
+          }
+        ]
+      }
+    }
+  ],
+  "process": {
+    "startNodeId": "review-challenge-safety-node",
+    "nodes": [
+      {
+        "id": "review-challenge-safety-node",
+        "type": "observation",
+        "title": "Review the safety notes",
+        "description": "Goggles on. 2-Propanol is flammable: no flames nearby, and keep its chamber closed. Wash skin contact with plenty of water. Water and food dye go to the sink stream; 2-propanol goes to the organic waste.",
+        "actionId": "review-challenge-safety",
+        "config": {},
+        "validation": [
+          {
+            "id": "review-challenge-safety-node-done",
+            "type": "notebookEntry",
+            "label": "Review the safety notes was completed.",
+            "notebookTag": "safety-review"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Review the safety notes complete.",
+          "retry": "Review Review the safety notes and try again."
+        }
+      },
+      {
+        "id": "prelab-capillary-demo-node",
+        "type": "observation",
+        "title": "Watch the capillary demonstration",
+        "description": "Your teacher touches a strip's edge to coloured water and you watch the liquid climb the paper. Note what you see: how far it climbs, and whether the colour keeps up with the water.",
+        "actionId": "prelab-capillary-demo",
+        "config": {},
+        "validation": [
+          {
+            "id": "prelab-capillary-demo-node-done",
+            "type": "notebookEntry",
+            "label": "Watch the capillary demonstration was completed.",
+            "notebookTag": "prelab-demonstration"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Watch the capillary demonstration complete.",
+          "retry": "Review Watch the capillary demonstration and try again."
+        }
+      },
+      {
+        "id": "prelab-questions-node",
+        "type": "observation",
+        "title": "Answer Prelab Part I",
+        "description": "Answer Prelab Part I, questions 1 to 3: what made the liquid climb, what the paper is made of and how it attracts water, and why a dye might lag behind the solvent.",
+        "actionId": "prelab-questions",
+        "config": {},
+        "validation": [
+          {
+            "id": "prelab-questions-node-done",
+            "type": "notebookEntry",
+            "label": "Answer Prelab Part I was completed.",
+            "notebookTag": "prelab-questions-recorded"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Answer Prelab Part I complete.",
+          "retry": "Review Answer Prelab Part I and try again."
+        }
+      },
+      {
+        "id": "review-molecular-structures-node",
+        "type": "observation",
+        "title": "Review the dye and solvent structures",
+        "description": "Look at the supplied structures of the dyes, water, 2-propanol and cellulose. Mark where each can hydrogen bond, where it is polar or charged, and where only dispersion forces act.",
+        "actionId": "review-molecular-structures",
+        "config": {},
+        "validation": [
+          {
+            "id": "review-molecular-structures-node-done",
+            "type": "notebookEntry",
+            "label": "Review the dye and solvent structures was completed.",
+            "notebookTag": "structure-evidence"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Review the dye and solvent structures complete.",
+          "retry": "Review Review the dye and solvent structures and try again."
+        }
+      },
+      {
+        "id": "record-imf-hypothesis-node",
+        "type": "observation",
+        "title": "Record your hypothesis",
+        "description": "Before any trial, predict how each solvent will move the dyes, and why: connect each prediction to the attractions among the dye, the cellulose paper and the solvent.",
+        "actionId": "record-imf-hypothesis",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-imf-hypothesis-node-done",
+            "type": "notebookEntry",
+            "label": "Record your hypothesis was completed.",
+            "notebookTag": "imf-hypothesis"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record your hypothesis complete.",
+          "retry": "Review Record your hypothesis and try again."
+        }
+      },
+      {
+        "id": "select-solvents-node",
+        "type": "observation",
+        "title": "Give a reason for each solvent",
+        "description": "Your teacher has chosen water and 2-propanol for these two trials. For each, write a reason it could test your hypothesis, before you see a result.",
+        "actionId": "select-solvents",
+        "config": {},
+        "validation": [
+          {
+            "id": "select-solvents-node-done",
+            "type": "notebookEntry",
+            "label": "Give a reason for each solvent was completed.",
+            "notebookTag": "solvent-selection"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Give a reason for each solvent complete.",
+          "retry": "Review Give a reason for each solvent and try again."
+        }
+      },
+      {
+        "id": "configure-repeatable-procedure-node",
+        "type": "observation",
+        "title": "Write the procedure",
+        "description": "Write the steps another student could repeat: label the chamber, measure and pour the solvent, draw the pencil baseline, spot and dry three times, hang the strip with its foot in the solvent and the spot above it, close the lid, mark the front at once, and read to the nearest millimetre.",
+        "actionId": "configure-repeatable-procedure",
+        "config": {},
+        "validation": [
+          {
+            "id": "configure-repeatable-procedure-node-done",
+            "type": "notebookEntry",
+            "label": "Write the procedure was completed.",
+            "notebookTag": "procedure-design"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Write the procedure complete.",
+          "retry": "Review Write the procedure and try again."
+        }
+      },
+      {
+        "id": "design-data-table-node",
+        "type": "observation",
+        "title": "Design the data table",
+        "description": "Make columns for the solvent, the front's distance in mm, each band's colour and centre distance in mm, its Rf, how well the bands separated, and where the solvent went.",
+        "actionId": "design-data-table",
+        "config": {},
+        "validation": [
+          {
+            "id": "design-data-table-node-done",
+            "type": "notebookEntry",
+            "label": "Design the data table was completed.",
+            "notebookTag": "data-table-design"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Design the data table complete.",
+          "retry": "Review Design the data table and try again."
+        }
+      },
+      {
+        "id": "submit-procedure-approval-node",
+        "type": "observation",
+        "title": "Teacher's approval",
+        "description": "Your teacher checks your procedure and data table before you start the trials.",
+        "actionId": "submit-procedure-approval",
+        "config": {},
+        "validation": [
+          {
+            "id": "submit-procedure-approval-node-done",
+            "type": "notebookEntry",
+            "label": "Teacher's approval was completed.",
+            "notebookTag": "procedure-approved"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Teacher's approval complete.",
+          "retry": "Review Teacher's approval and try again."
+        }
+      },
+      {
+        "id": "compare-separation-node",
+        "type": "observation",
+        "title": "Compare the two separations",
+        "description": "Compare only what you measured: the number of bands, overlap and spacing, streaking, and each Rf to two significant figures. An Rf holds only for this paper, solvent and procedure.",
+        "actionId": "compare-separation",
+        "config": {},
+        "validation": [
+          {
+            "id": "compare-separation-node-done",
+            "type": "notebookEntry",
+            "label": "Compare the two separations was completed.",
+            "notebookTag": "separation-comparison"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Compare the two separations complete.",
+          "retry": "Review Compare the two separations and try again."
+        }
+      },
+      {
+        "id": "evaluate-hypothesis-node",
+        "type": "observation",
+        "title": "Evaluate your hypothesis",
+        "description": "Does your evidence support, partly support or refute your hypothesis? Tell an unexpected result apart from a trial that went wrong.",
+        "actionId": "evaluate-hypothesis",
+        "config": {},
+        "validation": [
+          {
+            "id": "evaluate-hypothesis-node-done",
+            "type": "notebookEntry",
+            "label": "Evaluate your hypothesis was completed.",
+            "notebookTag": "hypothesis-evaluation"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Evaluate your hypothesis complete.",
+          "retry": "Review Evaluate your hypothesis and try again."
+        }
+      },
+      {
+        "id": "explain-phase-interactions-node",
+        "type": "observation",
+        "title": "Explain the phases' attractions",
+        "description": "Explain how each dye's attraction to the cellulose against its attraction to the solvent sets how far it moved. Name the band that moved least in each trial: it spent the most time held by the paper.",
+        "actionId": "explain-phase-interactions",
+        "config": {},
+        "validation": [
+          {
+            "id": "explain-phase-interactions-node-done",
+            "type": "notebookEntry",
+            "label": "Explain the phases' attractions was completed.",
+            "notebookTag": "phase-interactions"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Explain the phases' attractions complete.",
+          "retry": "Review Explain the phases' attractions and try again."
+        }
+      },
+      {
+        "id": "draw-process-model-node",
+        "type": "observation",
+        "title": "Draw a model of the chromatogram",
+        "description": "Draw and label the pencil baseline, the solvent below it, the solvent rising through the paper, the front, the bands, and the two distances each Rf uses.",
+        "actionId": "draw-process-model",
+        "config": {},
+        "validation": [
+          {
+            "id": "draw-process-model-node-done",
+            "type": "notebookEntry",
+            "label": "Draw a model of the chromatogram was completed.",
+            "notebookTag": "chromatography-model"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Draw a model of the chromatogram complete.",
+          "retry": "Review Draw a model of the chromatogram and try again."
+        }
+      },
+      {
+        "id": "evaluate-green-chemistry-node",
+        "type": "observation",
+        "title": "Weigh the solvents' greenness",
+        "description": "Using only the solvent-guide evidence your teacher supplies, compare water and 2-propanol for safety and environmental impact.",
+        "actionId": "evaluate-green-chemistry",
+        "config": {},
+        "validation": [
+          {
+            "id": "evaluate-green-chemistry-node-done",
+            "type": "notebookEntry",
+            "label": "Weigh the solvents' greenness was completed.",
+            "notebookTag": "green-chemistry-evidence"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Weigh the solvents' greenness complete.",
+          "retry": "Review Weigh the solvents' greenness and try again."
+        }
+      },
+      {
+        "id": "write-cer-conclusion-node",
+        "type": "observation",
+        "title": "Write your claim, evidence and reasoning",
+        "description": "Claim which solvent separated this mixture better. Cite the band count, overlap and spacing, your distances and Rf values, and reason from the attractions among dye, cellulose and solvent. An Rf alone does not identify a dye.",
+        "actionId": "write-cer-conclusion",
+        "config": {},
+        "validation": [
+          {
+            "id": "write-cer-conclusion-node-done",
+            "type": "notebookEntry",
+            "label": "Write your claim, evidence and reasoning was completed.",
+            "notebookTag": "cer-claim"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Write your claim, evidence and reasoning complete.",
+          "retry": "Review Write your claim, evidence and reasoning and try again."
+        }
+      },
+      {
+        "id": "record-interpretation-limits-node",
+        "type": "observation",
+        "title": "Record the limits of your results",
+        "description": "Note what limits your results: where you drew the baseline and the front, judging a band's centre, the ruler's millimetre, the spot's size, the lid's seal, the strip touching the wall, evaporation, and repeating the trial.",
+        "actionId": "record-interpretation-limits",
+        "config": {},
+        "validation": [
+          {
+            "id": "record-interpretation-limits-node-done",
+            "type": "notebookEntry",
+            "label": "Record the limits of your results was completed.",
+            "notebookTag": "interpretation-limits"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Record the limits of your results complete.",
+          "retry": "Review Record the limits of your results and try again."
+        }
+      },
+      {
+        "id": "complete-postlab-solubility-node",
+        "type": "observation",
+        "title": "Complete the Postlab Assessment",
+        "description": "Compare the solubility of pyridine and benzene in water from their structures and attractions, and relate it to chromatography, without taking solubility alone as proof of a band's identity.",
+        "actionId": "complete-postlab-solubility",
+        "config": {},
+        "validation": [
+          {
+            "id": "complete-postlab-solubility-node-done",
+            "type": "notebookEntry",
+            "label": "Complete the Postlab Assessment was completed.",
+            "notebookTag": "postlab-solubility"
+          }
+        ],
+        "hints": [],
+        "feedback": {
+          "success": "Complete the Postlab Assessment complete.",
+          "retry": "Review Complete the Postlab Assessment and try again."
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "review-challenge-safety-node",
+        "to": "prelab-capillary-demo-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "prelab-capillary-demo-node",
+        "to": "prelab-questions-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "prelab-questions-node",
+        "to": "review-molecular-structures-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "review-molecular-structures-node",
+        "to": "record-imf-hypothesis-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-imf-hypothesis-node",
+        "to": "select-solvents-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "select-solvents-node",
+        "to": "configure-repeatable-procedure-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "configure-repeatable-procedure-node",
+        "to": "design-data-table-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "design-data-table-node",
+        "to": "submit-procedure-approval-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "compare-separation-node",
+        "to": "evaluate-hypothesis-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "evaluate-hypothesis-node",
+        "to": "explain-phase-interactions-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "explain-phase-interactions-node",
+        "to": "draw-process-model-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "draw-process-model-node",
+        "to": "evaluate-green-chemistry-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "evaluate-green-chemistry-node",
+        "to": "write-cer-conclusion-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "write-cer-conclusion-node",
+        "to": "record-interpretation-limits-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      },
+      {
+        "from": "record-interpretation-limits-node",
+        "to": "complete-postlab-solubility-node",
+        "label": "Next",
+        "condition": {
+          "type": "validationPassed"
+        }
+      }
+    ]
+  },
+  "assessments": [],
+  "metadata": {
+    "version": "1.0.0",
+    "author": "Lab Studio",
+    "updatedAt": "2026-10-10T00:00:00.000Z",
+    "tags": [
+      "lab",
+      "lab-3d"
+    ]
+  },
+  "techniqueInstances": [
+    {
+      "instanceId": "trial-water",
+      "techniqueId": "paper-chromatography-water-3d",
+      "version": "1.0.0",
+      "bindings": {
+        "equipment": {
+          "developing-chamber": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "chamber-1",
+                "definitionId": "chromatography-chamber",
+                "instanceId": "water-chamber"
+              }
+            ]
+          },
+          "variable-volume-measuring-device": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "graduated-cylinder-1",
+                "definitionId": "graduated-cylinder",
+                "instanceId": "graduated-cylinder-1"
+              }
+            ]
+          },
+          "liquid-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "water-bottle-1",
+                "definitionId": "distilled-water-bottle",
+                "instanceId": "water-bottle-1"
+              }
+            ]
+          },
+          "measured-solvent-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "graduated-cylinder-1",
+                "definitionId": "graduated-cylinder",
+                "instanceId": "graduated-cylinder-1"
+              }
+            ]
+          },
+          "stationary-phase": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "paper-1",
+                "definitionId": "chromatography-paper",
+                "instanceId": "water-strip"
+              }
+            ]
+          },
+          "sample-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "dye-vial-1",
+                "definitionId": "small-vial",
+                "instanceId": "dye-vial-1"
+              }
+            ]
+          },
+          "spotting-tool": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "capillary-1",
+                "definitionId": "capillary-spotter",
+                "instanceId": "capillary-1"
+              }
+            ]
+          },
+          "distance-measuring-instrument": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "ruler-1",
+                "definitionId": "metric-ruler",
+                "instanceId": "ruler-1"
+              }
+            ]
+          },
+          "waste-receiver": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "sink-waste-1",
+                "definitionId": "waste-beaker",
+                "instanceId": "sink-waste-1"
+              }
+            ]
+          }
+        },
+        "models": {
+          "chromatography-water-food-dyes-paper": "water-food-dyes-paper"
+        },
+        "configuration": {
+          "solventVolumeMl": 4,
+          "solventDepthMm": 5,
+          "baselineHeightMm": 15,
+          "spotterLoadVolumeMl": 0.03,
+          "spotVolumeMl": 0.005,
+          "spotDryMinutes": 1,
+          "developMinutes": 10,
+          "stripDryMinutes": 5
+        }
+      },
+      "preserveIds": {
+        "references": {
+          "water-solvent-front": "water-solvent-front",
+          "water-band-purple-overlap": "water-band-purple-overlap",
+          "water-band-yellow": "water-band-yellow"
+        }
+      }
+    },
+    {
+      "instanceId": "trial-propanol",
+      "techniqueId": "paper-chromatography-propanol-3d",
+      "version": "1.0.0",
+      "bindings": {
+        "equipment": {
+          "developing-chamber": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "chamber-1",
+                "definitionId": "chromatography-chamber",
+                "instanceId": "propanol-chamber"
+              }
+            ]
+          },
+          "variable-volume-measuring-device": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "graduated-cylinder-1",
+                "definitionId": "graduated-cylinder",
+                "instanceId": "graduated-cylinder-1"
+              }
+            ]
+          },
+          "liquid-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "propanol-bottle-1",
+                "definitionId": "propanol-bottle",
+                "instanceId": "propanol-bottle-1"
+              }
+            ]
+          },
+          "measured-solvent-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "graduated-cylinder-1",
+                "definitionId": "graduated-cylinder",
+                "instanceId": "graduated-cylinder-1"
+              }
+            ]
+          },
+          "stationary-phase": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "paper-1",
+                "definitionId": "chromatography-paper",
+                "instanceId": "propanol-strip"
+              }
+            ]
+          },
+          "sample-source": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "dye-vial-1",
+                "definitionId": "small-vial",
+                "instanceId": "dye-vial-1"
+              }
+            ]
+          },
+          "spotting-tool": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "capillary-1",
+                "definitionId": "capillary-spotter",
+                "instanceId": "capillary-1"
+              }
+            ]
+          },
+          "distance-measuring-instrument": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "ruler-1",
+                "definitionId": "metric-ruler",
+                "instanceId": "ruler-1"
+              }
+            ]
+          },
+          "waste-receiver": {
+            "sourceInstances": [
+              {
+                "sourceInstanceId": "organic-waste-1",
+                "definitionId": "waste-beaker",
+                "instanceId": "organic-waste-1"
+              }
+            ]
+          }
+        },
+        "models": {
+          "chromatography-propanol-food-dyes-paper": "propanol-food-dyes-paper"
+        },
+        "configuration": {
+          "solventVolumeMl": 4,
+          "solventDepthMm": 5,
+          "baselineHeightMm": 15,
+          "spotterLoadVolumeMl": 0.03,
+          "spotVolumeMl": 0.005,
+          "spotDryMinutes": 1,
+          "developMinutes": 10,
+          "stripDryMinutes": 5
+        }
+      },
+      "preserveIds": {
+        "references": {
+          "propanol-solvent-front": "propanol-solvent-front",
+          "propanol-band-blue": "propanol-band-blue",
+          "propanol-band-red": "propanol-band-red",
+          "propanol-band-yellow": "propanol-band-yellow"
+        }
+      }
+    }
+  ],
+  "compositionStart": {
+    "kind": "lab-node",
+    "nodeId": "review-challenge-safety-node"
+  },
+  "compositionConnections": [
+    {
+      "id": "submit-procedure-approval-node-to-trial-water",
+      "from": {
+        "kind": "lab-node",
+        "nodeId": "submit-procedure-approval-node"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "trial-water",
+        "portId": "entry"
+      },
+      "label": "Next",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "trial-water-to-trial-propanol",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "trial-water",
+        "portId": "exit"
+      },
+      "to": {
+        "kind": "technique-port",
+        "instanceId": "trial-propanol",
+        "portId": "entry"
+      },
+      "label": "Next",
+      "condition": {
+        "type": "validationPassed"
+      }
+    },
+    {
+      "id": "trial-propanol-to-compare-separation-node",
+      "from": {
+        "kind": "technique-port",
+        "instanceId": "trial-propanol",
+        "portId": "exit"
+      },
+      "to": {
+        "kind": "lab-node",
+        "nodeId": "compare-separation-node"
+      },
+      "label": "Next",
+      "condition": {
+        "type": "validationPassed"
+      }
+    }
+  ],
+  "reachabilityWitnesses": [
+    {
+      "id": "default",
+      "configuration": {},
+      "approvalGates": {}
+    }
+  ]
+}

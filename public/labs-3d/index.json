@@ -394,5 +394,367 @@
         "message": "The working portion must hold the reagent added and 1 mL more for the dropping pipette."
       }
     ]
+  },
+  {
+    "id": "paper-chromatography",
+    "title": "Paper Chromatography",
+    "description": "Predict how water and 2-propanol will move a food-dye mixture up paper, run both trials, measure each band's Rf, and explain the separation from intermolecular attractions.",
+    "file": "paper-chromatography.json",
+    "parts": [
+      {
+        "instanceId": "prelab",
+        "title": "Safety and prelab",
+        "nodeIds": [
+          "review-challenge-safety-node",
+          "prelab-capillary-demo-node",
+          "prelab-questions-node"
+        ]
+      },
+      {
+        "instanceId": "plan",
+        "title": "Plan the trials",
+        "nodeIds": [
+          "review-molecular-structures-node",
+          "record-imf-hypothesis-node",
+          "select-solvents-node",
+          "configure-repeatable-procedure-node",
+          "design-data-table-node",
+          "submit-procedure-approval-node"
+        ]
+      },
+      {
+        "instanceId": "trial-water",
+        "techniqueId": "paper-chromatography-water-3d",
+        "title": "Water trial",
+        "techniqueTitle": "Paper Chromatography"
+      },
+      {
+        "instanceId": "trial-propanol",
+        "techniqueId": "paper-chromatography-propanol-3d",
+        "title": "2-Propanol trial",
+        "techniqueTitle": "Paper Chromatography (2-propanol)"
+      },
+      {
+        "instanceId": "analysis",
+        "title": "Compare and explain",
+        "nodeIds": [
+          "compare-separation-node",
+          "evaluate-hypothesis-node",
+          "explain-phase-interactions-node",
+          "draw-process-model-node",
+          "evaluate-green-chemistry-node"
+        ]
+      },
+      {
+        "instanceId": "conclusion",
+        "title": "Conclude",
+        "nodeIds": [
+          "write-cer-conclusion-node",
+          "record-interpretation-limits-node",
+          "complete-postlab-solubility-node"
+        ]
+      }
+    ],
+    "setup": [
+      {
+        "id": "solventVolumeMl",
+        "label": "Solvent in each chamber",
+        "unit": "mL",
+        "kind": "number",
+        "defaultValue": 4,
+        "min": 2,
+        "max": 6,
+        "help": "Measured in the graduated cylinder and poured in. Its depth up the strip is worked out from the chamber's shape and must stay below the baseline.",
+        "targets": [
+          {
+            "instanceId": "trial-water",
+            "slotId": "solventVolumeMl"
+          },
+          {
+            "instanceId": "trial-propanol",
+            "slotId": "solventVolumeMl"
+          }
+        ]
+      },
+      {
+        "id": "baselineHeightMm",
+        "label": "Baseline height",
+        "unit": "mm",
+        "kind": "number",
+        "defaultValue": 15,
+        "min": 10,
+        "max": 25,
+        "help": "How far above the strip's lower edge the pencil baseline is drawn.",
+        "targets": [
+          {
+            "instanceId": "trial-water",
+            "slotId": "baselineHeightMm"
+          },
+          {
+            "instanceId": "trial-propanol",
+            "slotId": "baselineHeightMm"
+          }
+        ]
+      },
+      {
+        "id": "spotterLoadVolumeMl",
+        "label": "Dye drawn into the capillary",
+        "unit": "mL",
+        "kind": "number",
+        "defaultValue": 0.03,
+        "min": 0.01,
+        "max": 0.06,
+        "help": "The 1 mm capillary holds about 0.06 mL.",
+        "targets": [
+          {
+            "instanceId": "trial-water",
+            "slotId": "spotterLoadVolumeMl"
+          },
+          {
+            "instanceId": "trial-propanol",
+            "slotId": "spotterLoadVolumeMl"
+          }
+        ]
+      },
+      {
+        "id": "spotVolumeMl",
+        "label": "Dye left by each touch",
+        "unit": "mL",
+        "kind": "number",
+        "defaultValue": 0.005,
+        "min": 0.001,
+        "max": 0.02,
+        "help": "Three touches, each dried before the next.",
+        "targets": [
+          {
+            "instanceId": "trial-water",
+            "slotId": "spotVolumeMl"
+          },
+          {
+            "instanceId": "trial-propanol",
+            "slotId": "spotVolumeMl"
+          }
+        ]
+      },
+      {
+        "id": "spotDryMinutes",
+        "label": "Time for a spot to dry",
+        "unit": "min",
+        "kind": "number",
+        "defaultValue": 1,
+        "min": 0.5,
+        "max": 5,
+        "help": "Run fast on the step clock.",
+        "targets": [
+          {
+            "instanceId": "trial-water",
+            "slotId": "spotDryMinutes"
+          },
+          {
+            "instanceId": "trial-propanol",
+            "slotId": "spotDryMinutes"
+          }
+        ]
+      },
+      {
+        "id": "developMinutes",
+        "label": "Development time",
+        "unit": "min",
+        "kind": "number",
+        "defaultValue": 10,
+        "min": 3,
+        "max": 30,
+        "help": "Run fast on the step clock while the solvent rises.",
+        "targets": [
+          {
+            "instanceId": "trial-water",
+            "slotId": "developMinutes"
+          },
+          {
+            "instanceId": "trial-propanol",
+            "slotId": "developMinutes"
+          }
+        ]
+      },
+      {
+        "id": "stripDryMinutes",
+        "label": "Time for the strip to dry",
+        "unit": "min",
+        "kind": "number",
+        "defaultValue": 5,
+        "min": 1,
+        "max": 15,
+        "help": "Run fast on the step clock.",
+        "targets": [
+          {
+            "instanceId": "trial-water",
+            "slotId": "stripDryMinutes"
+          },
+          {
+            "instanceId": "trial-propanol",
+            "slotId": "stripDryMinutes"
+          }
+        ]
+      },
+      {
+        "id": "frontMm",
+        "label": "Solvent front, from the baseline",
+        "unit": "mm",
+        "kind": "number",
+        "defaultValue": 80,
+        "min": 40,
+        "max": 85,
+        "help": "Where each strip's front stops. The student reads it with the ruler; it is the denominator of every Rf.",
+        "targets": [
+          {
+            "modelId": "water-food-dyes-paper"
+          },
+          {
+            "modelId": "propanol-food-dyes-paper"
+          }
+        ]
+      },
+      {
+        "id": "waterPurpleOverlapMm",
+        "label": "Water: purple overlap's centre",
+        "unit": "mm",
+        "kind": "number",
+        "defaultValue": 59,
+        "min": 1,
+        "max": 85,
+        "help": "From the baseline, on the water strip. The student reads it; its Rf is this over the front.",
+        "targets": [
+          {
+            "modelId": "water-food-dyes-paper",
+            "bandId": "purple-overlap"
+          }
+        ]
+      },
+      {
+        "id": "waterYellowMm",
+        "label": "Water: yellow band's centre",
+        "unit": "mm",
+        "kind": "number",
+        "defaultValue": 66,
+        "min": 1,
+        "max": 85,
+        "help": "From the baseline, on the water strip.",
+        "targets": [
+          {
+            "modelId": "water-food-dyes-paper",
+            "bandId": "yellow"
+          }
+        ]
+      },
+      {
+        "id": "propanolBlueMm",
+        "label": "2-Propanol: blue band's centre",
+        "unit": "mm",
+        "kind": "number",
+        "defaultValue": 28,
+        "min": 1,
+        "max": 85,
+        "help": "From the baseline, on the 2-propanol strip.",
+        "targets": [
+          {
+            "modelId": "propanol-food-dyes-paper",
+            "bandId": "blue"
+          }
+        ]
+      },
+      {
+        "id": "propanolRedMm",
+        "label": "2-Propanol: red band's centre",
+        "unit": "mm",
+        "kind": "number",
+        "defaultValue": 49,
+        "min": 1,
+        "max": 85,
+        "help": "From the baseline, on the 2-propanol strip.",
+        "targets": [
+          {
+            "modelId": "propanol-food-dyes-paper",
+            "bandId": "red"
+          }
+        ]
+      },
+      {
+        "id": "propanolYellowMm",
+        "label": "2-Propanol: yellow band's centre",
+        "unit": "mm",
+        "kind": "number",
+        "defaultValue": 68,
+        "min": 1,
+        "max": 85,
+        "help": "From the baseline, on the 2-propanol strip.",
+        "targets": [
+          {
+            "modelId": "propanol-food-dyes-paper",
+            "bandId": "yellow"
+          }
+        ]
+      }
+    ],
+    "rules": [
+      {
+        "fields": [
+          "frontMm",
+          "baselineHeightMm"
+        ],
+        "plus": 0,
+        "atMost": 100,
+        "message": "The front must stop at least 10 mm below the top of the 110 mm strip: lower the front or the baseline."
+      },
+      {
+        "fields": [
+          "spotVolumeMl",
+          "spotVolumeMl",
+          "spotVolumeMl"
+        ],
+        "plus": 0,
+        "atMost": "spotterLoadVolumeMl",
+        "message": "The capillary must hold the three touches: draw up more dye or leave less with each touch."
+      },
+      {
+        "fields": [
+          "waterPurpleOverlapMm"
+        ],
+        "plus": 1,
+        "atMost": "frontMm",
+        "message": "Each band's centre must lie below the solvent front, at least 1 mm under it."
+      },
+      {
+        "fields": [
+          "waterYellowMm"
+        ],
+        "plus": 1,
+        "atMost": "frontMm",
+        "message": "Each band's centre must lie below the solvent front, at least 1 mm under it."
+      },
+      {
+        "fields": [
+          "propanolBlueMm"
+        ],
+        "plus": 1,
+        "atMost": "frontMm",
+        "message": "Each band's centre must lie below the solvent front, at least 1 mm under it."
+      },
+      {
+        "fields": [
+          "propanolRedMm"
+        ],
+        "plus": 1,
+        "atMost": "frontMm",
+        "message": "Each band's centre must lie below the solvent front, at least 1 mm under it."
+      },
+      {
+        "fields": [
+          "propanolYellowMm"
+        ],
+        "plus": 1,
+        "atMost": "frontMm",
+        "message": "Each band's centre must lie below the solvent front, at least 1 mm under it."
+      }
+    ]
   }
 ]

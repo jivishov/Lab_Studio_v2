@@ -3,11 +3,14 @@ import type { BundledLabSourceDefinition } from "../domain/types";
 /**
  * A 3D lab's teacher values (D8, decided 2026-10-10; `proposals/D8_EXPERIMENT_ASSEMBLY.md`, "E0 design", §4).
  * `public/labs-3d/index.json` (written by `scripts/practice3d/build.mjs`) names each setup field and where
- * its value goes: a part's configuration slot, or a bench item's starting volume. The source carries the
- * defaults; the setup page's values replace them on a copy before compiling. 3D only: the 2D lab setups
+ * its value goes: a part's configuration slot, a bench item's starting volume, or a chromatography model's prepared
+ * distance (Pack 3a). The source carries the defaults; the setup page's values replace them on a copy before
+ * compiling. 3D only: the 2D lab setups
  * (`src/data/labSetup.ts`) are not used.
  */
-export type Lab3DSetupTarget = ({ instanceId: string; slotId: string } | { itemId: string; contents: "volumeMl" }) & {
+export type Lab3DSetupTarget = ({ instanceId: string; slotId: string } | { itemId: string; contents: "volumeMl" }
+  /** A chromatography model's prepared distance (Pack 3a): its front, or with `bandId` that band's centre. */
+  | { modelId: string; bandId?: string }) & {
   /** Added to a number field's value: Measure Liquid Volume's pour stops 1 mL under the sample's line. */
   offset?: number;
 };
@@ -94,6 +97,17 @@ export const applyLab3DSetup = <T extends BundledLabSourceDefinition>(source: T,
         const instance = configured.techniqueInstances?.find((entry) => entry.instanceId === target.instanceId);
         if (!instance) throw new Error(`The lab has no part "${target.instanceId}".`);
         instance.bindings.configuration[target.slotId] = targetValue(parsed[field.id], target);
+      } else if ("modelId" in target) {
+        const model = configured.chromatographyModels?.find((entry) => entry.id === target.modelId);
+        if (!model) throw new Error(`The lab has no chromatography model "${target.modelId}".`);
+        const value = Number(targetValue(parsed[field.id], target));
+        if (target.bandId === undefined) {
+          model.solventFrontMm = value;
+        } else {
+          const band = model.bands.find((entry) => entry.id === target.bandId);
+          if (!band) throw new Error(`Model "${target.modelId}" has no band "${target.bandId}".`);
+          band.distanceMm = value;
+        }
       } else {
         const item = configured.initialState?.equipment.find((entry) => entry.id === target.itemId);
         if (!item) throw new Error(`The lab has no item "${target.itemId}".`);

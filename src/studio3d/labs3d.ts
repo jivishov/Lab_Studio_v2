@@ -4,6 +4,7 @@ import { isCompositionSource } from "../domain/compositionValidation";
 import type { LabCompositionSourceDefinition, LabDefinition, TechniqueDefinition } from "../domain/types";
 import { validateBundledLabSource, validateTechniqueDefinition } from "../domain/validation";
 import { applyLab3DSetup, type Lab3DSummary } from "./labs3dSetup";
+import { preparedLab3DSource, withLabStopDistances } from "./prepared3d";
 
 export type { Lab3DSummary } from "./labs3dSetup";
 
@@ -195,7 +196,8 @@ export const labPartLabels = (lab: LabDefinition, summary: Lab3DSummary): Map<st
  */
 export const loadLab3D = async (summary: Lab3DSummary, values: Record<string, string>): Promise<Loaded3DLab> => {
   const source = await loadLab3DSource(summary);
-  const configured = applyLab3DSetup(source, summary, values);
+  // The prepared values the 3D version works out (Pack 3a): a solvent's depth, each Rf, each stop distance.
+  const configured = preparedLab3DSource(applyLab3DSetup(source, summary, values));
   const techniques = new Map<string, TechniqueDefinition>();
   const compiled = await compileBundledLabCompositionWithPolicy({
     authority: "public-bundle",
@@ -208,6 +210,6 @@ export const loadLab3D = async (summary: Lab3DSummary, values: Record<string, st
       return structuredClone(technique);
     },
   });
-  const lab = inRunOrder(fillStepText(compiled, configured));
+  const lab = inRunOrder(fillStepText(withLabStopDistances(compiled), configured));
   return { summary, lab, authored: authoredLabView(lab, techniques), parts: labPartLabels(lab, summary) };
 };

@@ -385,7 +385,8 @@ const trial = (solvent, id, title, learningGoal) => {
       "Lower the strip in and seat the lid: its lower edge in the solvent, the spot above it, the strip clear of the walls.",
       { notebookTag: `${prefix}-chamber-closed` }),
     node("develop", "Let the solvent rise",
-      `Leave the chamber closed while the solvent climbs to ${FRONT_MM} mm above the baseline. The clock runs the wait ({{config.developMinutes}} min) fast.`),
+      // No distance named: the lab's teacher sets the stop distance (labs3d.ts), and the student measures the front.
+      "Leave the chamber closed while the solvent climbs the strip, to the stop distance your teacher set. The clock runs the wait ({{config.developMinutes}} min) fast."),
     node("open-chamber", "Lift the lid with the strip",
       "Lift the lid straight up; the strip comes out with it.", { notebookTag: `${prefix}-chamber-opened` }),
     node("remove-strip", "Unhook the strip and lay it flat", "Unhook the wet strip and lay it flat on the bench."),
@@ -449,6 +450,8 @@ const trial = (solvent, id, title, learningGoal) => {
   });
   // The strip's prepared values (the front and each band's centre, from the baseline): drawn on the strip, read by the
   // student. Numbers, as the validator requires: the lab's setup page changes them through its 3D transform (`labs3d.ts`).
+  // A lab binds the model through its slot, as 2D's technique does, and carries its own copy.
+  definition.composition.modelSlots = [{ id: `chromatography-${s.modelId}`, kind: "chromatography", sourceModelId: s.modelId, required: true }];
   definition.chromatographyModels = [{
     id: s.modelId,
     solventFrontMm: FRONT_MM,

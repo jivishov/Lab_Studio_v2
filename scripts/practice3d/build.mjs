@@ -46,7 +46,7 @@ const PRACTICE = [
 const TWINS = [{ module: "./measuringVolumeTwin.mjs", basedOn: "measuring-volume" }];
 
 /** The 3D labs, in the order the switcher's Experiments group shows them. */
-const LABS = ["./labs/introFiltrationDemo.mjs", "./labs/hardWaterDemo.mjs"];
+const LABS = ["./labs/introFiltrationDemo.mjs", "./labs/hardWaterDemo.mjs", "./labs/paperChromatography.mjs"];
 
 const json = (value) => `${JSON.stringify(value, null, 2)}\n`;
 const check = process.argv.includes("--check");

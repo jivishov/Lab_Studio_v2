@@ -152,7 +152,7 @@ describe("D8 twins", () => {
 
 describe("D8 3D lab: Precipitate and Filter Calcium Carbonate", () => {
   it("is listed with its four parts under short titles, and its 2D fallback exists", () => {
-    expect(labIndex.map((entry) => entry.id)).toEqual(["intro-filtration-demo", "hard-water-demo"]);
+    expect(labIndex.map((entry) => entry.id)).toEqual(["intro-filtration-demo", "hard-water-demo", "paper-chromatography"]);
     expect(demo.parts.map((part) => part.techniqueId)).toEqual(["measuring-volume-3d", "transfer-3d", "hard-water-precipitation-3d", "filtration-3d"]);
     expect(demo.parts.map((part) => part.title)).toEqual(["Measure the sample", "Transfer the sample", "Precipitate the calcium", "Filter the precipitate"]);
     expect(demo.parts.map((part) => part.techniqueTitle)).toEqual(["Measure Liquid Volume", "Transfer Liquid", "Hard-Water Calcium Carbonate Precipitation", "Filter a Precipitate"]);
@@ -369,5 +369,111 @@ describe("Pack 3a 3D lab: Determine Water Hardness", () => {
     const state = playLab(lab, entries(values, "600", "32.1270"), hardWaterMoves);
     expect(state.completedNodes).toHaveLength(59);
     expect(hardnessOf(state)?.expected).toBeCloseTo(600, 6);
+  });
+});
+
+describe("Pack 3a 3D lab: Paper Chromatography", () => {
+  const chrom = labIndex.find((entry) => entry.id === "paper-chromatography")!;
+  const chromDefaults = Object.fromEntries(chrom.setup.map((field) => [field.id, String(field.defaultValue)]));
+  /** What the student types and chooses: the lab's own records, then each trial's readings. */
+  const answers = (water: { front: string; purple: string; yellow: string }, propanol: { front: string; blue: string; red: string; yellow: string }) => ({
+    "prelab-questions": "The water climbs the paper by capillary action; cellulose hydrogen bonds to water; a dye held by the paper lags.",
+    "record-imf-hypothesis": "2-Propanol will separate the dyes more than water, because the dyes differ in how strongly they hold to the paper against it.",
+    "select-solvents": "Water: very polar, hydrogen bonds strongly. 2-Propanol: less polar, so the dyes' attraction to the paper matters more.",
+    "configure-repeatable-procedure": "Label, measure 4 mL, pour, baseline at 15 mm, spot and dry three times, hang, close, develop, mark the front, read.",
+    "design-data-table": "Solvent | front (mm) | band | centre (mm) | Rf | separation | waste",
+    "submit-procedure-approval": "Approved by the teacher",
+    "evaluate-hypothesis": "Supports it: 2-propanol gave three bands, water an overlap.",
+    "write-cer-conclusion": "2-Propanol separated the mixture better: three bands at Rf 0.35, 0.61 and 0.85, against water's overlap.",
+    "complete-postlab-solubility": "Pyridine hydrogen bonds with water through its nitrogen; benzene cannot, so pyridine is far more soluble.",
+    "trial-water--identify-bands": "Purple overlap, then yellow",
+    "trial-water--read-front": water.front,
+    "trial-water--read-purple-overlap": water.purple,
+    "trial-water--read-yellow": water.yellow,
+    "trial-water--record-quality": "Overlapping",
+    "trial-propanol--identify-bands": "Blue, red, yellow",
+    "trial-propanol--read-front": propanol.front,
+    "trial-propanol--read-blue": propanol.blue,
+    "trial-propanol--read-red": propanol.red,
+    "trial-propanol--read-yellow": propanol.yellow,
+    "trial-propanol--record-quality": "Resolved",
+  });
+  const defaultsRead = answers({ front: "80", purple: "59", yellow: "66" }, { front: "80", blue: "28", red: "49", yellow: "68" });
+  const rf = (state: RuntimeState, id: string) => state.calculations.find((entry) => entry.id === id);
+
+  it("runs the lab steps around the two trials, water then 2-propanol, with shared tools", () => {
+    expect(chrom.parts.map((part) => part.instanceId)).toEqual(["prelab", "plan", "trial-water", "trial-propanol", "analysis", "conclusion"]);
+    expect(chrom.parts.map((part) => part.techniqueId)).toEqual([undefined, undefined, "paper-chromatography-water-3d",
+      "paper-chromatography-propanol-3d", undefined, undefined]);
+    expect(chrom.parts.flatMap((part) => part.nodeIds ?? [])).toHaveLength(17);
+    // The 2D lab's fifteen steps keep their ids; Prelab Part I adds two (revision 3).
+    const twoD = (read("public/labs/paper-chromatography.json") as LabDefinition).actions.map((action) => `${action.id}-node`);
+    expect(twoD.filter((id) => !chrom.parts.some((part) => part.nodeIds?.includes(id)))).toEqual([]);
+    const source = read("public/labs-3d/paper-chromatography.json") as { initialState: { equipment: Array<{ id: string }> };
+      techniqueInstances: Array<{ instanceId: string; bindings: { equipment: Record<string, { sourceInstances: Array<{ instanceId: string }> }> } }> };
+    const bound = (part: string, role: string) => source.techniqueInstances.find((entry) => entry.instanceId === part)!
+      .bindings.equipment[role].sourceInstances.map((entry) => entry.instanceId);
+    for (const role of ["spotting-tool", "sample-source", "distance-measuring-instrument", "variable-volume-measuring-device"]) {
+      expect(bound("trial-water", role)).toEqual(bound("trial-propanol", role));
+    }
+    expect(bound("trial-water", "developing-chamber")).toEqual(["water-chamber"]);
+    expect(bound("trial-propanol", "developing-chamber")).toEqual(["propanol-chamber"]);
+    expect(source.initialState.equipment).toHaveLength(13);
+  });
+
+  it("compiles with the defaults: 81 steps, each labelled with its part, the prepared strip on the setup page", async () => {
+    const { lab, parts } = await labs3d.loadLab3D(chrom, chromDefaults);
+    expect(lab.process.nodes).toHaveLength(81);
+    expect(equipment3dReadiness(lab.initialState!.equipment.map((item) => item.definitionId)).ready).toBe(true);
+    const counts = chrom.parts.map((_, index) => lab.process.nodes.filter((node) => parts.get(node.id)?.index === index + 1).length);
+    expect(counts).toEqual([3, 6, 31, 33, 5, 3]);
+    expect(chrom.setup.map((field) => field.id)).not.toContain("solventDepthMm");
+    expect(chromDefaults).toMatchObject({ frontMm: "80", waterPurpleOverlapMm: "59", propanolBlueMm: "28" });
+    const action = (id: string) => lab.actions.find((entry) => entry.id === id)!;
+    // The ruler is laid along each trial's own strip.
+    expect(action("trial-water--place-ruler").parameters.alignWithInstanceId).toBe("water-strip");
+    expect(action("trial-propanol--place-ruler").parameters.alignWithInstanceId).toBe("propanol-strip");
+    // The depth is the one 4 mL gives in the chamber, below the 15 mm baseline.
+    expect(action("trial-water--develop").parameters.solventDepthMm).toBe(action("trial-propanol--develop").parameters.solventDepthMm);
+    expect(Number(action("trial-water--develop").parameters.solventDepthMm)).toBeGreaterThan(0);
+    expect(Number(action("trial-water--develop").parameters.solventDepthMm)).toBeLessThan(15);
+    expect(lab.process.nodes.filter((node) => `${node.title} ${node.description ?? ""}`.includes("{{"))).toEqual([]);
+    expect(fetched.some((path) => path.startsWith("labs/"))).toBe(false);
+  });
+
+  it("plays all 81 steps with the defaults, each Rf from the student's readings", async () => {
+    const { lab } = await labs3d.loadLab3D(chrom, chromDefaults);
+    const state = playLab(lab, defaultsRead, {});
+    expect(state.completedNodes).toHaveLength(81);
+    expect(rf(state, "trial-water--water-rf-purple-overlap")).toMatchObject({ passed: true });
+    expect(rf(state, "trial-water--water-rf-purple-overlap")?.value).toBeCloseTo(0.7375, 4);
+    expect(rf(state, "trial-propanol--propanol-rf-red")?.value).toBeCloseTo(0.6125, 4);
+    expect(contents(state, "sink-waste-1")?.volumeMl).toBeGreaterThan(0);
+    expect(contents(state, "organic-waste-1")?.volumeMl).toBeGreaterThan(0);
+  });
+
+  it("carries the teacher's prepared strip into the run: the stop distance, the bands, each Rf", async () => {
+    const values = { ...chromDefaults, frontMm: "70", waterPurpleOverlapMm: "50", waterYellowMm: "61", propanolBlueMm: "21",
+      propanolRedMm: "42", propanolYellowMm: "63", solventVolumeMl: "5" };
+    const { lab } = await labs3d.loadLab3D(chrom, values);
+    expect(lab.actions.filter((action) => action.verb === "developChromatogram").map((action) => action.parameters.stopCondition))
+      .toEqual(["front-mm:70", "front-mm:70"]);
+    expect(lab.chromatographyModels?.find((model) => model.id === "water-food-dyes-paper")?.bands.map((band) => band.expectedRf))
+      .toEqual([0.7143, 0.8714]);
+    // The practice's 80 mm no longer passes; the teacher's 70 does.
+    expect(() => playLab(lab, defaultsRead, {})).toThrow();
+    const state = playLab(lab, answers({ front: "70", purple: "50", yellow: "61" }, { front: "70", blue: "21", red: "42", yellow: "63" }), {});
+    expect(state.completedNodes).toHaveLength(81);
+    expect(rf(state, "trial-propanol--propanol-rf-blue")?.value).toBeCloseTo(0.3, 4);
+    // 5 mL stands higher up the strip than 4 mL.
+    const { lab: four } = await labs3d.loadLab3D(chrom, chromDefaults);
+    const depth = (definition: LabDefinition) => Number(definition.actions.find((action) => action.id === "trial-water--develop")!.parameters.solventDepthMm);
+    expect(depth(lab)).toBeGreaterThan(depth(four));
+  });
+
+  it("refuses a band at or past the front, a front too near the strip's top, and more dye than the capillary holds", () => {
+    expect(() => parseLab3DValues(chrom, { ...chromDefaults, propanolYellowMm: "80" })).toThrow(/below the solvent front/);
+    expect(() => parseLab3DValues(chrom, { ...chromDefaults, frontMm: "85", baselineHeightMm: "20" })).toThrow(/top of the 110 mm strip/);
+    expect(() => parseLab3DValues(chrom, { ...chromDefaults, spotVolumeMl: "0.02", spotterLoadVolumeMl: "0.03" })).toThrow(/three touches/);
   });
 });

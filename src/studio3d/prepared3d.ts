@@ -1,4 +1,4 @@
-import type { TechniqueDefinition } from "../domain/types";
+import type { LabCompositionSourceDefinition, LabDefinition, TechniqueDefinition } from "../domain/types";
 import { fillLevelMm } from "./adapters/runtimeToScene";
 import { equipment3dEntry } from "./equipment3d/readiness";
 
@@ -38,14 +38,53 @@ export const solventDepthAboveStripMm = (volumeMl: number): number | undefined =
  */
 export const withDerived3D = (definition: TechniqueDefinition, values: Record<string, string>): Record<string, string> => {
   if (!derivedSlots3D(definition).includes("solventDepthMm")) return values;
-  const volumeMl = Number(values.solventVolumeMl);
+  return { ...values, solventDepthMm: String(checkedDepth(Number(values.solventVolumeMl), Number(values.baselineHeightMm))) };
+};
+
+const checkedDepth = (volumeMl: number, baselineMm: number): number => {
   const depth = solventDepthAboveStripMm(volumeMl);
   if (depth === undefined || depth <= 0) {
     throw new Error("Solvent volume: too little to reach the strip's lower edge in the chamber. Use more solvent.");
   }
-  const baseline = Number(values.baselineHeightMm);
-  if (Number.isFinite(baseline) && depth >= baseline) {
-    throw new Error(`Solvent volume: ${volumeMl} mL stands ${depth} mm up the strip, over its ${baseline} mm baseline. Use less solvent.`);
+  if (Number.isFinite(baselineMm) && depth >= baselineMm) {
+    throw new Error(`Solvent volume: ${volumeMl} mL stands ${depth} mm up the strip, over its ${baselineMm} mm baseline. Use less solvent.`);
   }
-  return { ...values, solventDepthMm: String(depth) };
+  return depth;
+};
+
+const round4 = (value: number): number => Math.round(value * 1e4) / 1e4;
+
+/**
+ * A 3D lab's configured source with its prepared values worked out (Pack 3a, decided 2026-10-11: "3D transform in
+ * labs3d.ts"): each part that takes a solvent volume and depth gets the depth its volume gives, and each
+ * chromatography model's expected Rf is its band's distance over the front, from the teacher's distances, as 2D's
+ * `labSetup.ts` does for its own lab. Throws, for the setup page, when a volume misses the strip or covers its baseline.
+ */
+export const preparedLab3DSource = <T extends LabCompositionSourceDefinition>(configured: T): T => {
+  const prepared = structuredClone(configured);
+  for (const instance of prepared.techniqueInstances) {
+    const configuration = instance.bindings.configuration;
+    if (!("solventVolumeMl" in configuration) || !("solventDepthMm" in configuration)) continue;
+    configuration.solventDepthMm = checkedDepth(Number(configuration.solventVolumeMl), Number(configuration.baselineHeightMm));
+  }
+  for (const model of prepared.chromatographyModels ?? []) {
+    for (const band of model.bands) band.expectedRf = round4(band.distanceMm / model.solventFrontMm);
+  }
+  return prepared;
+};
+
+/**
+ * The compiled lab with each development stopping at its model's front: the techniques write the practice
+ * version's stop distance (`front-mm:80`) as a number, and the teacher's front replaces it.
+ */
+export const withLabStopDistances = (lab: LabDefinition): LabDefinition => {
+  const fronts = new Map((lab.chromatographyModels ?? []).map((model) => [model.id, model.solventFrontMm]));
+  return {
+    ...lab,
+    actions: lab.actions.map((action) => {
+      const front = fronts.get(String(action.parameters.chromatographyModelId ?? ""));
+      return action.verb === "developChromatogram" && front !== undefined && typeof action.parameters.stopCondition === "string"
+        ? { ...action, parameters: { ...action.parameters, stopCondition: `front-mm:${front}` } } : action;
+    }),
+  };
 };
