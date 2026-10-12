@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { RuntimeDefinition } from "../../runtime";
 import { BenchView } from "../bench/BenchView";
 import { safeRects } from "../bench/camera/benchCamera";
@@ -230,7 +230,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     focus: (t, locked) => {
       if (handFocus.current.id === t?.id && handFocus.current.locked === locked) return;
       handFocus.current = { id: t?.id, locked };
-      if (!carryingRef.current) setHovered(t?.kind === "item" ? t.instanceId : undefined);
+      if (!carryingRef.current) setHovered(t?.kind === "item" || t?.kind === "shelf" ? t.instanceId : undefined);
     },
     // A technique mistake (bubbles, a stroke left short) shows in the correction block; it is not a runtime attempt.
     say: (text, error, recovery) => (error ? player.correct(text, recovery ?? "") : player.notify(text)),
@@ -1007,6 +1007,24 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   })();
   const hoverItem = hovered && !carry.carrying ? [...scene.bench, ...scene.tray].find((i) => i.instanceId === hovered) : undefined;
   const hoverPoint = hoverItem && engine ? engine.labelPoint(hoverItem.instanceId) : undefined;
+  // The hover name is kept clear of the floating panels: an item beside the step card (the shelf's left end at Home)
+  // is named past the card's edge, not under it.
+  const hoverLabelRef = useRef<HTMLDivElement>(null);
+  const [hoverShift, setHoverShift] = useState(0);
+  useLayoutEffect(() => {
+    const label = hoverLabelRef.current;
+    let shift = 0;
+    if (label) {
+      const box = label.getBoundingClientRect();
+      const left = box.left - hoverShift, right = box.right - hoverShift, middle = (left + right) / 2;
+      for (const panel of playerRef.current?.querySelectorAll<HTMLElement>(".s3d-float") ?? []) {
+        const p = panel.getBoundingClientRect();
+        if (p.bottom <= box.top || p.top >= box.bottom || p.right <= left + shift || p.left >= right + shift) continue;
+        shift = middle >= (p.left + p.right) / 2 ? p.right + 8 - left : p.left - 8 - right;
+      }
+    }
+    if (Math.abs(shift - hoverShift) > 0.5) setHoverShift(shift);
+  });
   const examinedItem = examined ? scene.bench.find((i) => i.instanceId === examined) : undefined;
   const n = Math.max(0, runtime.process.nodes.findIndex((node) => node.id === runtime.currentNode.id)) + 1;
   const N = runtime.process.nodes.length;
@@ -1139,7 +1157,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
         fallback={<div className="s3d-fallback"><p>This browser cannot draw the 3D bench.{fallbackHash ? " The 2D version runs the same steps and checks." : ""}</p>{fallbackHash ? <a className="s3d-button s3d-button--primary" href={fallbackHash}>Open the 2D version</a> : null}</div>}
       >
         {hoverItem && hoverPoint?.visible ? (
-          <div className="s3d-label" style={{ left: hoverPoint.x, top: hoverPoint.y + 8 }}>{hoverItem.label} · {hoverItem.contentsText}</div>
+          <div ref={hoverLabelRef} className="s3d-label" style={{ left: hoverPoint.x + hoverShift, top: hoverPoint.y + 8 }}>{hoverItem.label} · {hoverItem.contentsText}</div>
         ) : null}
         {menuItem && itemMenu ? (
           <div className="s3d-itemmenu" role="menu" aria-label={menuItem.label} style={{ left: itemMenu.x, top: itemMenu.y }}>

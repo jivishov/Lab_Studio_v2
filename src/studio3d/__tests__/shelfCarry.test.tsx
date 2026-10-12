@@ -1,4 +1,4 @@
-import { act, fireEvent, renderHook } from "@testing-library/react";
+import { act, fireEvent, renderHook, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { filtrationTechnique } from "../../domain/fixtures";
 import type { BenchEngine } from "../bench/BenchEngine";
@@ -76,7 +76,7 @@ describe("taking an item off the shelf", () => {
     expect(t.location()).not.toBe("shelf");
   });
 
-  it("with the mouse: a press back on the shelf puts it back on its spot, and nothing changes", () => {
+  it("with the mouse: a press back on the shelf puts it back on its spot, and nothing changes", async () => {
     const t = setUp();
     const before = t.hook.result.current.player.runtime.getState();
     t.press(100, 80);
@@ -86,8 +86,10 @@ describe("taking an item off the shelf", () => {
     expect(t.hook.result.current.carry.carrying).toBe(false);
     expect(t.location()).toBe("shelf");
     expect(t.hook.result.current.player.runtime.getState().equipmentInstances).toEqual(before.equipmentInstances);
-    // Drawn on its spot again.
+    // Drawn on its spot again, and said where.
     expect(t.engine.sync).toHaveBeenCalled();
+    // Announced on a short timer (usePlayer3D's announce).
+    await waitFor(() => expect(t.hook.result.current.player.announcement).toMatch(/^Put back on the shelf\. Nothing moved\./));
   });
 
   it("with the mouse: Esc puts it back", () => {

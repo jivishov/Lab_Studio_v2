@@ -28,7 +28,7 @@ import { getActions, getProcess } from "../../../runtime/createRuntime";
  * its spot (the shelf in place of the tray, decided 2026-10-11). Hand control (the microarray lab's controller, src/studio3d/hand/) carries through the same path:
  * a closed grip lifts the item, the hand moves it over the bench, and letting go over the bench
  * commits through the pointer's release, tagged "vision" as the 2D player tags its camera releases.
- * Releasing over a panel, the tray or the dock changes nothing, as releasing off the 2D workbench does.
+ * Releasing over a panel or the dock changes nothing, as releasing off the 2D workbench does.
  */
 export interface CarryCallout {
   x: number;
@@ -621,11 +621,12 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     carryTo({ xMm: aim.xMm, yMm: aim.yMm }, { x: clientX - rect.left, y: clientY - rect.top - 44 }, aim.surfaceMm, hit.instanceId);
   }, [carryTo, engine, seatAim]);
 
-  /** A carry from the shelf put back: nothing moved, and the item is drawn on its spot again. */
-  const putBack = useCallback(() => {
+  /** A carry from the shelf put back: nothing moved, and the item is drawn on its spot again, which is named. */
+  const putBack = useCallback((instanceId?: string) => {
     cancel();
-    player.announce("Put back on the shelf. Nothing moved.");
-  }, [cancel, player]);
+    const station = scene.tray.find((item) => item.instanceId === instanceId)?.spot.place === "station";
+    player.announce(`Put back ${station ? "at the side station" : "on the shelf"}. Nothing moved.`);
+  }, [cancel, player, scene]);
 
   /**
    * A shelf item set on the bench, through the tray's own intents (`dropFromTray`). When the runtime keeps it on the
@@ -677,7 +678,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
     if (engine && carry?.kind === "bench" && carry.toolLoaded && tongs && carry.instanceId === tongs.toolInstanceId) engine.setToolHeld(null);
     endCarry();
     if (carry?.kind === "tray" && carry.back) {
-      putBack();
+      putBack(carry.instanceId);
       return;
     }
     // A shelf item pressed and released without moving is a click: the 2D next free slot (§5.10).
@@ -1108,7 +1109,7 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
 
   /**
    * Whether a client point is over the bench, where a gesture carry follows and can commit: the
-   * canvas itself is the element there (no panel, tray or dock covers it) and the ray meets the bench.
+   * canvas itself is the element there (no panel or the dock covers it) and the ray meets the bench.
    * Letting go anywhere else changes nothing.
    */
   const overBench = useCallback((clientX: number, clientY: number): boolean =>
