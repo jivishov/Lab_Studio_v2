@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { GTAOPass } from "three/addons/postprocessing/GTAOPass.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
@@ -44,12 +45,53 @@ const MicroarrayOutputShader = {
 
 export const BLOOM = { threshold: 1.05, knee: 0.5, strength: 0.45, radius: 0.55 };
 
+/**
+ * Live ambient occlusion on the High and Balanced tiers (the natural room, you 2026-10-12): three.js's GTAO, sized for
+ * bench equipment, darkens where things meet, such as a bottle's foot on its shelf or a cuvette in its holder. The room's
+ * own corners are darkened on every tier (roomOcclusion.ts).
+ */
+export const AO = Object.freeze({ radius: 0.07, thickness: 0.04, distanceExponent: 1.4, scale: 1, samples: 16, blend: 0.85 });
+
+/**
+ * See-through things are left out of the AO's depth and normals: glass, clear plastic, liquids drawn behind glass,
+ * labels and markers. three's pass leaves out only points and lines, and a beaker would otherwise shade what stands
+ * behind it.
+ */
+const seeThrough = (object: THREE.Object3D): boolean => {
+  if ((object as THREE.Sprite).isSprite) return true;
+  const mesh = object as THREE.Mesh;
+  if (!mesh.isMesh) return false;
+  const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+  return materials.some((m) => m.transparent || ((m as THREE.MeshPhysicalMaterial).transmission ?? 0) > 0);
+};
+
+class BenchAOPass extends GTAOPass {
+  private readonly hidden: THREE.Object3D[] = [];
+
+  override render(renderer: THREE.WebGLRenderer, writeBuffer: THREE.WebGLRenderTarget, readBuffer: THREE.WebGLRenderTarget, deltaTime: number, maskActive: boolean): void {
+    this.scene.traverseVisible((object) => { if (seeThrough(object)) this.hidden.push(object); });
+    this.hidden.forEach((object) => { object.visible = false; });
+    try {
+      super.render(renderer, writeBuffer, readBuffer, deltaTime, maskActive);
+    } finally {
+      this.hidden.forEach((object) => { object.visible = true; });
+      this.hidden.length = 0;
+    }
+  }
+}
+
 export const makeComposer = (renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera: THREE.Camera,
-  options: { samples: number; bloom: boolean }): EffectComposer => {
+  options: { samples: number; bloom: boolean; ao: boolean }): EffectComposer => {
   const size = renderer.getDrawingBufferSize(new THREE.Vector2());
   const target = new THREE.WebGLRenderTarget(size.x, size.y, { type: THREE.HalfFloatType, samples: options.samples });
   const composer = new EffectComposer(renderer, target);
   composer.addPass(new RenderPass(scene, camera));
+  if (options.ao) {
+    const ao = new BenchAOPass(scene, camera, size.x, size.y);
+    ao.updateGtaoMaterial({ radius: AO.radius, thickness: AO.thickness, distanceExponent: AO.distanceExponent, scale: AO.scale, samples: AO.samples });
+    ao.blendIntensity = AO.blend;
+    composer.addPass(ao);
+  }
   if (options.bloom) {
     const bloom = new UnrealBloomPass(new THREE.Vector2(size.x, size.y), BLOOM.strength, BLOOM.radius, BLOOM.threshold);
     (bloom.highPassUniforms as Record<string, THREE.IUniform<number>>).smoothWidth.value = BLOOM.knee;

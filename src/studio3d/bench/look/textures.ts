@@ -115,7 +115,18 @@ export interface BenchTextures {
   ldpeN: THREE.Texture;
   benchC: THREE.Texture;
   benchR: THREE.Texture;
+  /** The room's surfaces (the natural room, 2026-10-12): UVs in metres, so each repeat is 1 / the tile's size. */
+  wallC: THREE.Texture;
+  wallN: THREE.Texture;
+  floorC: THREE.Texture;
+  floorR: THREE.Texture;
+  floorN: THREE.Texture;
+  ceilingC: THREE.Texture;
+  laminateC: THREE.Texture;
 }
+
+/** Real sizes of the room's texture tiles, metres. */
+export const TILE_M = Object.freeze({ worktop: 0.5, wall: 0.5, floorTile: 0.3, ceilingTile: 0.6, laminate: 0.6 });
 
 export const makeTextures = (size: "full" | "reduced" = "full"): BenchTextures => {
   const k = size === "full" ? 1 : 0.5;
@@ -127,24 +138,81 @@ export const makeTextures = (size: "full" | "reduced" = "full"): BenchTextures =
   const fine = fbm(n(1024), [[96, 96, 1], [256, 256, 0.6]], 43);
   for (let i = 0; i < paperH.length; i += 1) paperH[i] = paperH[i] * 0.75 + fine[i] * 0.25;
   const ldpe = fbm(n(256), [[6, 6, 1], [18, 18, 0.35], [90, 90, 0.12]], 53);
-  // Worktop resin: the microarray lab's speckled slate-blue resin (renderer.js:58, pattern 1), as a
-  // 0.2 m tile. Its fbm is sampled at 7 cycles per microarray unit; light specks fill 1/240-unit cells
-  // and dark ones 1/170-unit cells. The tile spans 0.2 m / ROOM_SCALE units.
+  // Worktop: black-charcoal epoxy resin (you, 2026-10-12, in place of the microarray lab's slate-blue resin, so the
+  // equipment stands out): near-black with a faint cloudy mottle and sparse fine filler specks, in a 0.5 m tile.
   const benchN = n(1024);
-  const tileUnits = 0.2 / (1.4 / 15);
-  const cycles = (k: number) => Math.round(tileUnits * 7 * k);
-  const resin = fbm(benchN, [[cycles(1), cycles(1), 0.5], [cycles(2.07), cycles(2.07), 0.3], [cycles(4.3), cycles(4.3), 0.2]], 71);
   const cellHash = (x: number, y: number, salt: number) => {
     let h = Math.imul(x + salt * 7919, 374761393) ^ Math.imul(y + salt * 104729, 668265263);
     h = Math.imul(h ^ (h >>> 13), 1274126177);
     return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
   };
   const toSrgb = (v: number) => 255 * (v <= 0.0031308 ? 12.92 * v : 1.055 * Math.pow(v, 1 / 2.4) - 0.055);
-  const resinBase = [0x5e, 0x6a, 0x71].map((c) => Math.pow(c / 255, 2.2));
-  const speckColour = [0.62, 0.61, 0.58];
-  const lightCells = Math.round(tileUnits * 240), darkCells = Math.round(tileUnits * 170);
-  // The worktop's top face runs u along its depth and v along its width (room.ts); one tile is 0.2 m.
-  const resinRepeat: [number, number] = [((WORKTOP.front - WORKTOP.back) * ROOM_SCALE) / 0.2, ((WORKTOP.right - WORKTOP.left) * ROOM_SCALE) / 0.2];
+  const lin = (hex: number) => [hex >> 16, (hex >> 8) & 255, hex & 255].map((c) => Math.pow(c / 255, 2.2));
+  const epoxy = fbm(benchN, [[3, 3, 0.55], [7, 7, 0.3], [19, 19, 0.15]], 71);
+  const epoxyBase = lin(0x2a2c2e);
+  const speckCells = Math.round((TILE_M.worktop * 1000) / 0.9); // specks about 0.9 mm
+  // The worktop's top face runs u along its depth and v along its width (room.ts).
+  const worktopRepeat: [number, number] = [((WORKTOP.front - WORKTOP.back) * ROOM_SCALE) / TILE_M.worktop, ((WORKTOP.right - WORKTOP.left) * ROOM_SCALE) / TILE_M.worktop];
+  // Light wear in its sheen: satin roughness 0.36, a little hazier along a few fine scratches. (Wipe marks were tried:
+  // at this 0.5 m tile they repeat across the worktop like a stamp.)
+  const wear = canvasField(benchN, 0.36, (g, rand) => {
+    g.lineCap = "round";
+    for (let i = 0; i < 70; i += 1) {
+      const x = rand() * benchN, y = rand() * benchN, a = rand() * Math.PI * 2, len = benchN * (0.01 + rand() * 0.07);
+      g.strokeStyle = `rgba(255,255,255,${0.04 + rand() * 0.08})`;
+      g.lineWidth = 0.6 + rand() * 0.6;
+      wrapped(benchN, (ox, oy) => { g.beginPath(); g.moveTo(x + ox, y + oy); g.lineTo(x + ox + Math.cos(a) * len, y + oy + Math.sin(a) * len); g.stroke(); });
+    }
+  }, 72);
+
+  // Painted plaster: a faint roller mottle in the colour, and orange-peel stipple in the normal map (0.5 m tile).
+  const wallN = n(512);
+  const mottle = fbm(wallN, [[2, 2, 0.5], [5, 5, 0.3], [13, 13, 0.2]], 81);
+  const stipple = fbm(wallN, [[160, 160, 1], [330, 330, 0.5]], 83);
+
+  // Vinyl composition tiles, 300 mm, in the room's floor colour: a through-chip mottle stretched along each tile, laid
+  // quarter-turned, a slight shade difference from tile to tile, and fine seams (a texture of 2 × 2 tiles).
+  const floorN = n(1024), tilePx = floorN / 2;
+  const chipsAlong = fbm(floorN, [[40, 110, 0.6], [80, 200, 0.4]], 91);
+  const chipsAcross = fbm(floorN, [[110, 40, 0.6], [200, 80, 0.4]], 92);
+  const grain = fbm(floorN, [[180, 180, 1]], 93);
+  const floorBase = lin(0xa59f93), chipLight = lin(0xb9b4a8), chipDark = lin(0x8f897e);
+  const seamPx = Math.max(1, Math.round(floorN / 1024));
+  const tileShade = [0.985, 1.02, 1.01, 0.975];
+  const floorAt = (x: number, y: number) => {
+    const tx = Math.floor(x / tilePx), ty = Math.floor(y / tilePx);
+    const seam = x - tx * tilePx < seamPx || y - ty * tilePx < seamPx;
+    const i = y * floorN + x;
+    return { seam, chip: ((tx + ty) % 2 ? chipsAcross : chipsAlong)[i], shade: tileShade[(ty % 2) * 2 + (tx % 2)], i };
+  };
+
+  // Acoustic ceiling tiles, 600 mm, in their T-bar grid: fine fissures in white, the grid a little greyer.
+  const ceilN = n(512);
+  const ceilingField = canvasField(ceilN, 0.97, (g, rand) => {
+    g.lineCap = "round";
+    for (let i = 0; i < Math.round(900 * (ceilN / 512) ** 2); i += 1) {
+      const x = rand() * ceilN, y = rand() * ceilN, a = rand() * Math.PI * 2, len = 2 + rand() * 7;
+      g.strokeStyle = `rgba(0,0,0,${0.05 + rand() * 0.09})`;
+      g.lineWidth = 0.6 + rand() * 0.7;
+      g.beginPath();
+      g.moveTo(x, y);
+      g.quadraticCurveTo(x + Math.cos(a + 0.8) * len * 0.5, y + Math.sin(a + 0.8) * len * 0.5, x + Math.cos(a) * len, y + Math.sin(a) * len);
+      g.stroke();
+    }
+    // The T-bar: 24 mm wide, half of it along each edge of the tile, with the tile's shadow line beside it.
+    const bar = Math.max(1, Math.round(((0.024 / TILE_M.ceilingTile) * ceilN) / 2));
+    g.fillStyle = "rgb(232,232,230)";
+    for (const [x, y, w, h] of [[0, 0, ceilN, bar], [0, ceilN - bar, ceilN, bar], [0, 0, bar, ceilN], [ceilN - bar, 0, bar, ceilN]]) g.fillRect(x, y, w, h);
+    g.fillStyle = "rgba(0,0,0,0.22)";
+    const line = 1.5;
+    for (const [x, y, w, h] of [[bar, bar, ceilN - 2 * bar, line], [bar, ceilN - bar - line, ceilN - 2 * bar, line], [bar, bar, line, ceilN - 2 * bar], [ceilN - bar - line, bar, line, ceilN - 2 * bar]]) g.fillRect(x, y, w, h);
+  }, 95);
+
+  // Cabinet laminate: the faintest mottle (0.6 m tile).
+  const lamN = n(256);
+  const laminate = fbm(lamN, [[4, 4, 0.6], [24, 24, 0.4]], 97);
+
+  const per = (m: number): [number, number] => [1 / m, 1 / m];
   return {
     brushedN: normalTex(brushed, n(512), 1.4, [3.3, 3.3]),
     brushedR: greyTex(brushed, n(512), 0.2, 0.36, [3.3, 3.3]),
@@ -155,21 +223,66 @@ export const makeTextures = (size: "full" | "reduced" = "full"): BenchTextures =
     ldpeN: normalTex(ldpe, n(256), 1.1, [1, 1]),
     benchC: dataTexture(benchN, (d) => {
       for (let y = 0; y < benchN; y += 1) for (let x = 0; x < benchN; x += 1) {
-        const i = y * benchN + x, g = resin[i];
-        const light = cellHash(Math.floor((x / benchN) * lightCells), Math.floor((y / benchN) * lightCells), 1) > 0.986 ? 0.55 : 0;
-        const dark = cellHash(Math.floor((x / benchN) * darkCells), Math.floor((y / benchN) * darkCells), 9) > 0.991 ? 0.45 : 0;
+        const i = y * benchN + x;
+        const speck = cellHash(Math.floor((x / benchN) * speckCells), Math.floor((y / benchN) * speckCells), 3) > 0.994 ? 1 : 0;
+        for (let c = 0; c < 3; c += 1) d[i * 4 + c] = toSrgb(Math.min(1, epoxyBase[c] * (0.9 + 0.2 * epoxy[i]) * (1 + 0.3 * speck)));
+        d[i * 4 + 3] = 255;
+      }
+    }, worktopRepeat, true),
+    benchR: greyTex(wear, benchN, 0, 1, worktopRepeat),
+    wallC: greyTex(mottle, wallN, 0.955, 1, per(TILE_M.wall)),
+    wallN: normalTex(stipple, wallN, 0.9, per(TILE_M.wall)),
+    floorC: dataTexture(floorN, (d) => {
+      for (let y = 0; y < floorN; y += 1) for (let x = 0; x < floorN; x += 1) {
+        const { seam, chip, shade, i } = floorAt(x, y);
+        const light = smooth(0.58, 0.7, chip), dark = 1 - smooth(0.3, 0.42, chip);
         for (let c = 0; c < 3; c += 1) {
-          let v = resinBase[c] * (0.9 + 0.16 * g);
-          v += (speckColour[c] - v) * light;
-          v += (0.03 - v) * dark;
-          d[i * 4 + c] = toSrgb(Math.min(1, v));
+          let v = floorBase[c] * shade * (0.97 + 0.06 * grain[i]);
+          v += (chipLight[c] - v) * light * 0.6;
+          v += (chipDark[c] - v) * dark * 0.5;
+          d[i * 4 + c] = toSrgb(Math.min(1, seam ? v * 0.72 : v));
         }
         d[i * 4 + 3] = 255;
       }
-    }, resinRepeat, true),
-    // Roughness 0.5, varied by the same fbm (the source's rough + (g - .5) * .22).
-    benchR: greyTex(resin, benchN, 0.5 - 0.11, 0.5 + 0.11, resinRepeat),
+    }, per(2 * TILE_M.floorTile), true),
+    // Waxed: satin, the seams duller.
+    floorR: dataTexture(floorN, (d) => {
+      for (let y = 0; y < floorN; y += 1) for (let x = 0; x < floorN; x += 1) {
+        const { seam, i } = floorAt(x, y);
+        d[i * 4] = d[i * 4 + 1] = d[i * 4 + 2] = (seam ? 0.7 : 0.4 + 0.08 * grain[i] + 0.04 * chipsAlong[i]) * 255;
+        d[i * 4 + 3] = 255;
+      }
+    }, per(2 * TILE_M.floorTile)),
+    floorN: normalTex(Float32Array.from({ length: floorN * floorN }, (_, i) => (floorAt(i % floorN, Math.floor(i / floorN)).seam ? 0 : 1)),
+      floorN, 0.8, per(2 * TILE_M.floorTile)),
+    ceilingC: greyTex(ceilingField, ceilN, 0, 1, per(TILE_M.ceilingTile)),
+    laminateC: greyTex(laminate, lamN, 0.965, 1, per(TILE_M.laminate)),
   };
+};
+
+const smooth = (a: number, b: number, x: number) => {
+  const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
+  return t * t * (3 - 2 * t);
+};
+
+/** Strokes drawn over a flat grey of `base` (0–1) on an `N` × `N` canvas, read back as a field from its red channel. */
+const canvasField = (N: number, base: number, draw: (g: CanvasRenderingContext2D, rand: () => number) => void, seed: number): Float32Array => {
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = N;
+  const g = canvas.getContext("2d")!;
+  const b = Math.round(base * 255);
+  g.fillStyle = `rgb(${b},${b},${b})`;
+  g.fillRect(0, 0, N, N);
+  draw(g, rng(seed));
+  const px = g.getImageData(0, 0, N, N).data;
+  const h = new Float32Array(N * N);
+  for (let i = 0; i < N * N; i += 1) h[i] = px[i * 4] / 255;
+  return h;
+};
+
+/** A stroke repeated at the eight neighbouring offsets as well, so the tile wraps. */
+const wrapped = (N: number, stroke: (ox: number, oy: number) => void) => {
+  for (const ox of [-N, 0, N]) for (const oy of [-N, 0, N]) stroke(ox, oy);
 };
 
 export const disposeTextures = (textures: BenchTextures): void => {

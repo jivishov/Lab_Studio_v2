@@ -15,6 +15,7 @@ import { ContactShadows } from "./look/contactShadows";
 import { labEnvironment } from "./look/environment";
 import { applyRoomLighting } from "./look/roomLighting";
 import { buildRoom, roomBackground, type Room } from "./look/room";
+import { RoomReflections } from "./look/roomReflections";
 import { disposeTextures, makeTextures, type BenchTextures } from "./look/textures";
 import { buildContents, buildTiltingLiquid, disposeObject, liquidOpacity3D, parseCssColour } from "./scene/contents";
 import { buildDisplayFace, type DisplayFace } from "./scene/displays";
@@ -136,12 +137,13 @@ const PICK_PROXY_MATERIAL = new THREE.MeshBasicMaterial();
 
 /**
  * Graphics tiers. Pixel-ratio cap, MSAA, key shadow map and bloom are the DNA microarray 3D lab's
- * (`3d-v3/renderer.js:114`, adopted 2026-10-03/04); contact shadows and texture sizes are Lab Studio's.
+ * (`3d-v3/renderer.js:114`, adopted 2026-10-03/04); contact shadows and texture sizes are Lab Studio's. The natural
+ * room (2026-10-12) adds live ambient occlusion on High and Balanced, and sizes the cube its reflections are captured in.
  */
-const QUALITY: Record<GraphicsQuality, { pixelRatio: number; samples: number; shadowMap: number; bloom: boolean; contact: number; textures: "full" | "reduced" }> = {
-  high: { pixelRatio: 1.6, samples: 4, shadowMap: 2048, bloom: true, contact: 1024, textures: "full" },
-  balanced: { pixelRatio: 1.25, samples: 4, shadowMap: 2048, bloom: true, contact: 512, textures: "full" },
-  low: { pixelRatio: 1, samples: 0, shadowMap: 1024, bloom: false, contact: 256, textures: "reduced" },
+const QUALITY: Record<GraphicsQuality, { pixelRatio: number; samples: number; shadowMap: number; bloom: boolean; contact: number; textures: "full" | "reduced"; ao: boolean; reflections: number }> = {
+  high: { pixelRatio: 1.6, samples: 4, shadowMap: 2048, bloom: true, contact: 1024, textures: "full", ao: true, reflections: 256 },
+  balanced: { pixelRatio: 1.25, samples: 4, shadowMap: 2048, bloom: true, contact: 512, textures: "full", ao: true, reflections: 256 },
+  low: { pixelRatio: 1, samples: 0, shadowMap: 1024, bloom: false, contact: 256, textures: "reduced", ao: false, reflections: 128 },
 };
 
 export const webgl2Available = (): boolean => {
@@ -169,6 +171,7 @@ export class BenchEngine {
   private readonly textures: BenchTextures;
   private readonly models: ModelLibrary;
   private readonly contact: ContactShadows;
+  private readonly reflections: RoomReflections;
   /** The teaching-lab room and its lights (scenery, G-8). */
   private readonly room: Room;
   private readonly signals = new Signals();
@@ -260,20 +263,28 @@ export class BenchEngine {
     this.renderer.toneMappingExposure = 1;
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.shadowMap.enabled = true;
-    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    // Filtered over the key light's shadow radius (room.ts); three folds its old PCFSoftShadowMap into this.
+    this.renderer.shadowMap.type = THREE.PCFShadowMap;
     this.renderer.localClippingEnabled = true; // a tilting source's liquid is cut level (pour.ts)
 
     this.textures = makeTextures(q.textures);
-    // The microarray lab's room, lights and reflections (decided 2026-10-03/04); its clear colour behind.
-    // The map gives reflections only; the hemisphere light is the ambient (look/roomLighting.ts).
-    const environment = labEnvironment(this.renderer);
-    this.scene.environment = environment;
+    // The room, its lights and its reflections (the natural room, 2026-10-12): the room is captured into the
+    // reflection map once built, lit for that first capture by the microarray lab's analytic room (decided 2026-10-03/04),
+    // and again once the shelf has loaded. The map gives reflections only; the hemisphere light is the ambient
+    // (look/roomLighting.ts). The clear colour shows only from outside the room.
+    const firstLight = labEnvironment(this.renderer);
+    this.scene.environment = firstLight;
     this.scene.background = roomBackground();
+    this.room = buildRoom({ textures: this.textures, shadowMapSize: q.shadowMap, onTextureChange: () => this.requestRender() });
+    this.scene.add(this.room.group, this.room.lights);
+    applyRoomLighting(this.room.group);
+    this.reflections = new RoomReflections(this.renderer, q.reflections);
+    const environment = this.reflections.capture(this.scene, new Set([this.room.group, this.room.lights]));
+    this.scene.environment = environment;
+    firstLight.dispose();
     this.models = new ModelLibrary(this.textures);
     this.models.environment = environment;
     this.models.onProgress = (loaded, total, pending) => this.onLoadProgress?.(loaded, total, pending);
-    this.room = buildRoom({ textures: this.textures, shadowMapSize: q.shadowMap, onTextureChange: () => this.requestRender() });
-    this.scene.add(this.room.group, this.room.lights);
     this.contact = new ContactShadows({ width: BENCH_MM.width * MM, depth: BENCH_MM.depth * MM, resolution: q.contact, blur: 2.2, opacity: 0.72 });
     this.furniture.name = "bench furniture (scenery)";
     this.shelfLayer.name = "shelf items";
@@ -284,7 +295,7 @@ export class BenchEngine {
     this.furnitureReady = this.shelfShown.then(() => this.loadFurniture());
 
     this.detachCameraInput = this.attachCameraInput();
-    this.composer = makeComposer(this.renderer, this.scene, this.camera, { samples: q.samples, bloom: q.bloom });
+    this.composer = makeComposer(this.renderer, this.scene, this.camera, { samples: q.samples, bloom: q.bloom, ao: q.ao });
     this.resize();
   }
 
@@ -312,6 +323,9 @@ export class BenchEngine {
       shelf.name = `scenery:${SHELF.id}`;
       shelf.position.copy(toWorld(SHELF.centre.xMm, SHELF.centre.yMm));
       this.furniture.add(shelf);
+      // The room's reflections take the shelf in too (the same map, so every material keeps it).
+      applyRoomLighting(this.furniture);
+      this.reflections.capture(this.scene, new Set([this.room.group, this.room.lights, this.furniture]));
       this.shadowsDirty = true;
       this.requestRender();
     } catch {
@@ -2756,7 +2770,7 @@ export class BenchEngine {
     this.contact.dispose();
     this.models.dispose();
     disposeTextures(this.textures);
-    (this.scene.environment as THREE.Texture | null)?.dispose();
+    this.reflections.dispose();
     this.room.dispose();
     this.composer.dispose();
     this.renderer.dispose();
