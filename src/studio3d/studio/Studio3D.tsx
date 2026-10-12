@@ -8,6 +8,7 @@ import { collectStudioEquipmentIds } from "../../studio/studioValidation";
 import { workflowSourceId } from "../../studio/workflowConfiguration";
 import { equipment3dReadiness } from "../equipment3d/readiness";
 import { Icon } from "../ui/Icon";
+import { THEME_LABELS, useStudio3DTheme } from "../ui/theme";
 import { addStartingItem, BenchInventory, BenchSetupView, EquipmentInspector, nudgeStartingItem, returnStartingItemToShelf, startingState } from "./BenchSetupView";
 import { removeConnection } from "./draftEdits";
 import { EquipmentTurntable } from "./EquipmentTurntable";
@@ -58,6 +59,8 @@ export const Studio3D = () => {
   const [dialog, setDialog] = useState<DialogState>();
   const [newOpen, setNewOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
+  const [theme, setTheme] = useStudio3DTheme();
+  const otherTheme = theme === "hud" ? "light" : "hud";
   const [toast, setToast] = useState<{ text: string; action?: { label: string; run: () => void }; tone?: "error" }>();
   const [focus, setFocus] = useState<{ nodeId?: string; version: number }>({ version: 0 });
   const [flowFocusVersion, setFlowFocusVersion] = useState(0);
@@ -307,6 +310,7 @@ export const Studio3D = () => {
               <button type="button" role="menuitem" onClick={() => fileRef.current?.click()}><Icon name="upload" />Import…</button>
               <button type="button" role="menuitem" onClick={() => setDialog({ kind: "original" })}><Icon name="link" />Open in the original Studio…</button>
               <button type="button" role="menuitem" onClick={() => setDialog({ kind: "help" })}><Icon name="help" />Keyboard shortcuts</button>
+              <button type="button" role="menuitem" onClick={() => setTheme(otherTheme)}><Icon name="eye" />Use the {THEME_LABELS[otherTheme]} theme</button>
             </div>
           ) : null}
         </span>

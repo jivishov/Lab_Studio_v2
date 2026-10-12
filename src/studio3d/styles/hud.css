@@ -1,0 +1,180 @@
+/*
+ * The HUD theme on every 3D surface (you, 2026-10-12: "Everything in 3D and now actually you can make two themes:
+ * 1. Everything the old light one and 2. Everything the HUD look."). tokens.css remaps the colours under
+ * `.s3d[data-theme="hud"]`; this sheet adds what a colour cannot: the dark glass, the cyan corner brackets, the glow,
+ * the monospace captions, and the panels that step back while an item is carried ("make the bottom menu card also
+ * transparent when needed"). The step card, the dock and its hint keep their own rules in stepHud.css. Content, order
+ * and controls are unchanged everywhere; the Light theme matches no rule here, so it stays the original look.
+ *
+ * Loaded after studio3d.css and studio3d-studio.css (Studio3DApp), so a rule here wins a tie. The brackets here are
+ * background layers (the step card and the dock draw theirs with ::before), so they keep to the corners of a panel
+ * that scrolls, such as Help or Results.
+ */
+.s3d[data-theme="hud"] {
+  color-scheme: dark;
+  accent-color: var(--hud-primary);
+  scrollbar-color: var(--line-strong) transparent;
+  background: radial-gradient(ellipse 120% 80% at 50% 0%, var(--hud-core-top), var(--hud-core) 70%);
+  --hud-corners:
+    linear-gradient(var(--hud-edge) 0 0) top left / 14px 2px no-repeat,
+    linear-gradient(var(--hud-edge) 0 0) top left / 2px 14px no-repeat,
+    linear-gradient(var(--hud-edge) 0 0) top right / 14px 2px no-repeat,
+    linear-gradient(var(--hud-edge) 0 0) top right / 2px 14px no-repeat,
+    linear-gradient(var(--hud-edge) 0 0) bottom left / 14px 2px no-repeat,
+    linear-gradient(var(--hud-edge) 0 0) bottom left / 2px 14px no-repeat,
+    linear-gradient(var(--hud-edge) 0 0) bottom right / 14px 2px no-repeat,
+    linear-gradient(var(--hud-edge) 0 0) bottom right / 2px 14px no-repeat;
+  --hud-corners-sm:
+    linear-gradient(var(--hud-edge) 0 0) top left / 9px 2px no-repeat,
+    linear-gradient(var(--hud-edge) 0 0) top left / 2px 9px no-repeat,
+    linear-gradient(var(--hud-edge) 0 0) top right / 9px 2px no-repeat,
+    linear-gradient(var(--hud-edge) 0 0) top right / 2px 9px no-repeat,
+    linear-gradient(var(--hud-edge) 0 0) bottom left / 9px 2px no-repeat,
+    linear-gradient(var(--hud-edge) 0 0) bottom left / 2px 9px no-repeat,
+    linear-gradient(var(--hud-edge) 0 0) bottom right / 9px 2px no-repeat,
+    linear-gradient(var(--hud-edge) 0 0) bottom right / 2px 9px no-repeat;
+  --hud-scanlines: repeating-linear-gradient(0deg, var(--hud-scanline) 0 1px, transparent 1px 4px);
+  /* Glass the bench shows through, for what floats over it; near-solid for menus, dialogs and panels of text. */
+  --hud-glass-fill: var(--hud-scanlines), linear-gradient(160deg, var(--hud-glass-top), var(--hud-glass) 55%);
+  --hud-solid-fill: var(--hud-scanlines), linear-gradient(160deg, var(--hud-core-top), var(--hud-core) 55%);
+  --hud-frame: 0 0 0 1px #00000038, 0 0 22px var(--hud-glow), 0 14px 34px #02090d4d;
+}
+
+/* ---------------------------------------------------------------- glass over the bench */
+/* The Bench list, Examine and Hand control (the step card keeps stepHud.css's rules), the drop panel, the loader and
+   the gate's opening card. */
+.s3d[data-theme="hud"] .s3d-float,
+.s3d[data-theme="hud"] .s3d-drop,
+.s3d[data-theme="hud"] .s3d-loader__card,
+.s3d[data-theme="hud"] .s3d-gate,
+.s3d[data-theme="hud"] .s3d-stage .s3d-glass-card {
+  background: var(--hud-corners), var(--hud-glass-fill);
+  backdrop-filter: blur(12px) saturate(1.3);
+  border: 1px solid var(--hud-line);
+  box-shadow: var(--hud-frame);
+}
+
+/* While an item is carried the dock, the Bench list and Examine step back like the step card, so the bench under them
+   shows; the pointer or focus brings each back. Hand control and the drop panel stay as they are: they drive the
+   carry. */
+.s3d[data-theme="hud"] .s3d-player :is(.s3d-dock, .s3d-benchlist, .s3d-examine) { transition: opacity var(--dur-panel) var(--ease-standard); }
+.s3d[data-theme="hud"] .s3d-player.is-carrying :is(.s3d-dock, .s3d-benchlist, .s3d-examine):not(:hover):not(:focus-within) { opacity: .4; }
+
+/* ---------------------------------------------------------------- solid surfaces: menus, dialogs, sheets */
+.s3d[data-theme="hud"] .s3d-menu,
+.s3d[data-theme="hud"] .s3d-itemmenu,
+.s3d[data-theme="hud"] .s3d-switcher__panel,
+.s3d[data-theme="hud"] .s3d-popmenu {
+  background: var(--hud-corners-sm), var(--hud-solid-fill);
+  border: 1px solid var(--hud-line-strong);
+  box-shadow: 0 0 18px var(--hud-glow), 0 14px 34px #02090d66;
+}
+.s3d[data-theme="hud"] .s3d-dialog,
+.s3d[data-theme="hud"] .s3d-results__card,
+.s3d[data-theme="hud"] .s3d-sdialog {
+  background: var(--hud-corners), var(--hud-solid-fill);
+  border: 1px solid var(--hud-line);
+  box-shadow: 0 0 0 1px #00000038, 0 0 30px var(--hud-glow), 0 20px 60px #01080c99;
+}
+.s3d[data-theme="hud"] .s3d-sdialog-back { background: var(--scrim); }
+/* The Notebook: a sheet docked at the right, its open edge lit. */
+.s3d[data-theme="hud"] .s3d-sheet {
+  background: var(--hud-corners), var(--hud-solid-fill);
+  box-shadow: -1px 0 0 var(--hud-line), -10px 0 30px #01080c66, -4px 0 22px var(--hud-glow);
+}
+.s3d[data-theme="hud"] .s3d-toast { background: var(--hud-solid-fill); }
+.s3d[data-theme="hud"] .s3d-clock { border: 1px solid var(--hud-line); }
+
+/* ---------------------------------------------------------------- bars */
+.s3d[data-theme="hud"] .s3d-topbar,
+.s3d[data-theme="hud"] .s3d-studio-top {
+  background: var(--hud-scanlines), linear-gradient(180deg, var(--hud-glass-top), var(--bar-bg));
+  backdrop-filter: blur(10px) saturate(1.3);
+  border-bottom-color: var(--hud-line);
+  box-shadow: 0 1px 0 #00000038, 0 6px 18px var(--hud-glow);
+}
+.s3d[data-theme="hud"] .s3d-mark { box-shadow: 0 0 12px var(--hud-glow-strong); }
+.s3d[data-theme="hud"] .s3d-tbar { border: 1px solid var(--hud-line); }
+
+/* ---------------------------------------------------------------- captions, controls */
+/* Captions in the step card's monospace cyan. */
+.s3d[data-theme="hud"] .s3d-eyebrow,
+.s3d[data-theme="hud"] .s3d-float__title,
+.s3d[data-theme="hud"] .s3d-bl-group,
+.s3d[data-theme="hud"] .s3d-switcher__eyebrow,
+.s3d[data-theme="hud"] .s3d-lib-group__label,
+.s3d[data-theme="hud"] .s3d-table th {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--hud-cyan);
+}
+.s3d[data-theme="hud"] .s3d-float__title { font-size: 11.5px; }
+/* Help's row headings are content, not captions. */
+.s3d[data-theme="hud"] .s3d-help .s3d-table th[scope="row"] { font-family: var(--font-sans); letter-spacing: 0; text-transform: none; color: var(--ink); }
+
+.s3d[data-theme="hud"] .s3d-button { letter-spacing: .02em; }
+.s3d[data-theme="hud"] .s3d-button--primary {
+  background: linear-gradient(180deg, var(--hud-primary-hover), var(--hud-primary));
+  border-color: var(--hud-primary);
+  color: var(--hud-primary-ink);
+  font-weight: 600;
+  box-shadow: 0 0 14px var(--hud-glow-strong);
+}
+.s3d[data-theme="hud"] .s3d-button--primary:hover { background: var(--hud-primary-hover); }
+.s3d[data-theme="hud"] .s3d-button:disabled { box-shadow: none; }
+.s3d[data-theme="hud"] .s3d-button--guide { background: transparent; border-color: var(--hud-line-strong); color: var(--hud-cyan); }
+.s3d[data-theme="hud"] .s3d-button--guide:hover { background: var(--hud-hover); }
+/* Neutral chips and provenance chips are outlined, as on the step card. */
+.s3d[data-theme="hud"] .s3d-chip--neutral { background: transparent; box-shadow: inset 0 0 0 1px var(--hud-line-strong); color: var(--hud-cyan); font-family: var(--font-mono); letter-spacing: .6px; }
+.s3d[data-theme="hud"] .s3d-prov { box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 45%, transparent); }
+
+/* Scene labels and callouts: dark glass with a cyan edge. The edge is a border, so the callouts' green and red rings
+   (box-shadow) still show. */
+.s3d[data-theme="hud"] .s3d-label,
+.s3d[data-theme="hud"] .s3d-callout {
+  border: 1px solid var(--hud-line);
+  border-radius: 3px;
+  backdrop-filter: blur(6px);
+  letter-spacing: .02em;
+}
+.s3d[data-theme="hud"] .s3d-label--quiet { background: var(--label-bg); }
+.s3d[data-theme="hud"] .s3d-label--quiet.is-selected { background: var(--brand); color: var(--on-brand); }
+
+/* ---------------------------------------------------------------- panel contents */
+.s3d[data-theme="hud"] .s3d-hand__gestures li:not(.is-now) { background: transparent; }
+.s3d[data-theme="hud"] .s3d-hand__video { background: var(--hud-core); box-shadow: inset 0 0 0 1px var(--hud-line); }
+.s3d[data-theme="hud"] .s3d-loader__bar span { box-shadow: 0 0 6px var(--hud-glow-strong); }
+.s3d[data-theme="hud"] .s3d-journey li { box-shadow: inset 0 0 0 1px var(--hud-line); }
+.s3d[data-theme="hud"] .s3d-journey b { font-family: var(--font-mono); font-weight: 500; }
+
+/* ---------------------------------------------------------------- the gate */
+.s3d[data-theme="hud"] .s3d-gate-page {
+  background:
+    linear-gradient(#6fe3ff0f 1px, transparent 1px) 0 0 / 100% 32px,
+    linear-gradient(90deg, #6fe3ff0f 1px, transparent 1px) 0 0 / 32px 100%,
+    radial-gradient(ellipse 90% 70% at 50% 40%, #0c2d3a, var(--hud-core) 75%);
+}
+
+/* ---------------------------------------------------------------- Studio 3D */
+.s3d[data-theme="hud"] .s3d-studio { background: radial-gradient(ellipse 120% 80% at 50% 0%, var(--hud-core-top), var(--hud-core) 70%); }
+.s3d[data-theme="hud"] .s3d-panel { background: var(--hud-corners-sm), var(--hud-solid-fill); }
+.s3d[data-theme="hud"] .s3d-lib-card:hover { box-shadow: 0 0 12px var(--hud-glow); }
+/* The view switch (Flow, Starting bench, Preview): the light theme's raised pill would vanish on the dark panel. */
+.s3d[data-theme="hud"] .s3d-seg button.is-on { background: var(--hud-band); color: var(--hud-ink); box-shadow: inset 0 0 0 1px var(--hud-line-strong), 0 0 10px var(--hud-glow); }
+.s3d[data-theme="hud"] .s3d-lib-card__thumb,
+.s3d[data-theme="hud"] .s3d-lib-thumb,
+.s3d[data-theme="hud"] .s3d-composite,
+.s3d[data-theme="hud"] .s3d-eq-preview { background: var(--thumb-bg); }
+.s3d[data-theme="hud"] .s3d-eq-preview .s3d-lib-thumb { background: transparent; }
+.s3d[data-theme="hud"] .s3d-minimap { background: #04161fe6 !important; }
+.s3d[data-theme="hud"] .s3d-node.is-selected { box-shadow: 0 0 0 4px var(--hud-band), 0 0 18px var(--hud-glow-strong); }
+.s3d[data-theme="hud"] .s3d-node.is-selected.has-issue { box-shadow: inset 3px 0 0 var(--error), 0 0 0 4px var(--hud-band), 0 0 18px var(--hud-glow-strong); }
+.s3d[data-theme="hud"] .s3d-node--teacherNote { background: color-mix(in srgb, var(--warn) 7%, var(--panel-solid)); }
+.s3d[data-theme="hud"] .s3d-handle.is-ring { box-shadow: 0 0 0 4px var(--hud-ring); }
+.s3d[data-theme="hud"] .s3d-group-frame { border-color: var(--line-strong); background: #6fe3ff0a; }
+.s3d[data-theme="hud"] .s3d-edge--calculationResult { stroke: #9db7d9 !important; }
+.s3d[data-theme="hud"] .s3d-insert-marker { box-shadow: 0 0 0 6px var(--hud-band), 0 0 14px var(--hud-glow-strong); }
+.s3d[data-theme="hud"] .s3d-shelf-strip { background: #04161fd9; backdrop-filter: blur(8px); }
+.s3d[data-theme="hud"] .s3d-shelf-strip.is-over { box-shadow: 0 0 0 3px var(--hud-band), 0 0 14px var(--hud-glow-strong); }

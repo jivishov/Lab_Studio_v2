@@ -439,8 +439,8 @@ const FlowCanvas = ({ studio, onInspect, onAddFromLibrary, onToast, onHotEdge, f
         fitView
       >
         {/* The 24 px dot grid moves with the canvas (§4.4). */}
-        <Background variant={BackgroundVariant.Dots} gap={GRID} size={1.2} color="#dfe4da" bgColor="#f7f8f4" />
-        {minimap ? <MiniMap className="s3d-minimap" style={{ width: 150, height: 92 }} pannable zoomable nodeColor={(n) => (n.type === "frame" ? "transparent" : n.selected ? "#2a5a49" : "#cad5c7")} nodeStrokeWidth={0} maskColor="#f7f8f499" /> : null}
+        <Background variant={BackgroundVariant.Dots} gap={GRID} size={1.2} color="var(--canvas-dot)" bgColor="var(--canvas)" />
+        {minimap ? <MiniMap className="s3d-minimap" style={{ width: 150, height: 92 }} pannable zoomable nodeColor={(n) => (n.type === "frame" ? "transparent" : n.selected ? "var(--brand)" : "var(--line-strong)")} nodeStrokeWidth={0} maskColor="var(--canvas-mask)" /> : null}
         <Panel position="bottom-center" className="s3d-tbar-panel">
           <div className="s3d-tbar" role="toolbar" aria-label="Flow tools">
             <button type="button" className={mode === "select" ? "is-on" : ""} aria-pressed={mode === "select"} onClick={() => { setMode("select"); endConnection(); }}><Icon name="cursor" />Select</button>

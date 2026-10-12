@@ -2,6 +2,8 @@
  * Lab Studio 3D design tokens (UI_UX_HANDOFF.md §3). One token set for Studio 3D and Player3D;
  * the two apps differ in layout, not in vocabulary. Contrast pairs are verified by
  * scripts/studio3d/checkTokenContrast.mjs; do not change a colour without re-running it.
+ * Two themes (you, 2026-10-12): :root holds the Light theme, the original look; the block at the end
+ * remaps the same tokens for the HUD theme under `.s3d[data-theme="hud"]` (ui/theme.ts).
  *
  * Liquid colours never come from here: they come from resolveLiquidStyle (handoff G-9).
  */
@@ -25,8 +27,14 @@
   --toolbar: linear-gradient(160deg, #283b32f2, #1c3027eb);  --toolbar-ink: #f0f4ed;
   --label-bg: #183c43e6; --label-ink: #ffffff;
   --canvas: #f7f8f4;    --canvas-dot: #dfe4da;
-  /* The step card's and dock's sci-fi HUD (you, 2026-10-12; stepHud.css): dark glass the bench shows through, cyan light */
-  --hud-glass: #04161fbd;  --hud-glass-top: #0a2633b8;  --hud-core: #03131b;
+  /* Colours the stylesheets once wrote out, named so the HUD theme can remap them; their light values are unchanged */
+  --on-brand: #ffffff;  --on-accent: #ffffff;
+  --neutral-tint: #edf1ec;  --thumb-bg: #eef1ea;  --track: #dde3da;  --track-current: #bfdcd4;
+  --assess: #4b4a6e;  --assess-tint: #ecebf3;  --assess-ink: #3f3d63;
+  --bar-bg: #fbfcf8f0;  --hint-bg: #fafdfae6;  --scrim: #1d2b2559;  --loader-scrim: #d7ddd6b3;
+  --warn-line: #ecdcb0;  --error-line: #efd5ca;  --canvas-mask: #f7f8f499;
+  /* The sci-fi HUD (you, 2026-10-12; stepHud.css, hud.css): dark glass the bench shows through, cyan light */
+  --hud-glass: #04161fbd;  --hud-glass-top: #0a2633b8;  --hud-core: #03131b;  --hud-core-top: #0a2430;
   --hud-ink: #f1fbfe;  --hud-ink-2: #d3e9ee;  --hud-muted: #c6e0e6;
   --hud-cyan: #86ecff;  --hud-edge: #4fdcff;
   --hud-line: #6fe3ff47;  --hud-line-strong: #7ddff3e0;  --hud-track: #6fe3ff33;  --hud-ring: #6fe3ff6b;
@@ -60,6 +68,43 @@
   --ease-standard: cubic-bezier(.2, .7, .2, 1);
   --dur-hover: 120ms;  --dur-panel: 200ms;  --dur-snap: 150ms;  --dur-settle: 120ms;
   --dur-camera: 650ms;  --dur-step: 400ms;  --dur-toast-in: 160ms;  --dur-beacon: 1.6s;
+}
+
+/*
+ * The HUD theme (you, 2026-10-12: "make two themes: 1. Everything the old light one and 2. Everything the HUD look."):
+ * the tokens above, remapped, so every rule that reads one turns HUD without a rule of its own. hud.css and stepHud.css
+ * add the glass, the brackets and the glow. --bg is a tint here (hovers, wells); hud.css paints the pages themselves.
+ */
+.s3d[data-theme="hud"] {
+  --bg: #6fe3ff17;  --panel: #061c25;  --panel-solid: #04161f;
+  --line: var(--hud-line);  --line-strong: #6fe3ff8c;
+  --ink: var(--hud-ink);  --ink-2: var(--hud-ink-2);  --muted: var(--hud-muted);
+  --brand: var(--hud-primary);  --brand-hover: var(--hud-primary-hover);  --brand-tint: var(--hud-band);
+  --guide: var(--hud-edge);  --guide-strong: var(--hud-cyan);  --guide-tint: #3fd8ff24;  --guide-band: #3fd8ff1f;
+  --ok: #9af5d4;     --ok-tint: #4fe3a424;
+  --error: var(--hud-error);  --error-tint: var(--hud-error-band);
+  --warn: #ffd98a;   --warn-tint: #ffc24a26;
+  --focus: var(--hud-focus);
+  --glass: var(--hud-glass);  --glass-line: var(--hud-line);
+  --float: var(--hud-glass);  --float-line: var(--hud-line);
+  --toolbar: linear-gradient(160deg, #0a2633f2, #04161fed);  --toolbar-ink: var(--hud-ink);
+  --label-bg: #03131bd9;  --label-ink: var(--hud-ink);
+  --canvas: #04141b;  --canvas-dot: #6fe3ff2e;  --canvas-mask: #04141bb3;
+  --on-brand: var(--hud-primary-ink);  --on-accent: var(--hud-primary-ink);
+  --neutral-tint: #6fe3ff1a;  --thumb-bg: #6fe3ff14;  --track: var(--hud-track);  --track-current: var(--hud-track);
+  --assess: var(--hud-assess);  --assess-tint: #cbbfff24;  --assess-ink: var(--hud-assess);
+  --bar-bg: #04161fd9;  --hint-bg: var(--hud-glass);  --scrim: #01080ca6;  --loader-scrim: #03131bc7;
+  --warn-line: #ffd98a59;  --error-line: #ffcdbf4d;
+  /* Provenance chips are outlined in their own colour on the dark surfaces (hud.css) */
+  --prov-teacher-bg: transparent;  --prov-teacher-ink: var(--hud-prov-teacher);
+  --prov-entry-bg: transparent;    --prov-entry-ink: var(--hud-prov-entry);
+  --prov-bench-bg: transparent;    --prov-bench-ink: var(--hud-prov-bench);
+  --prov-sim-bg: transparent;      --prov-sim-ink: var(--hud-prov-sim);
+  --prov-calc-bg: transparent;     --prov-calc-ink: var(--hud-prov-calc);
+  --radius-input: 2px;  --radius-button: 3px;  --radius-panel: 3px;
+  --shadow-docked: 0 0 14px var(--hud-glow);
+  --shadow-float: 0 0 0 1px #00000038, 0 0 22px var(--hud-glow), 0 14px 34px #02090d4d;
+  --shadow-toolbar: 0 0 18px var(--hud-glow), 0 7px 28px #01080c80;
 }
 
 @media (prefers-reduced-motion: reduce) {

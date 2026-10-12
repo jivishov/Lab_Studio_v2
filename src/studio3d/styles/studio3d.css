@@ -55,17 +55,17 @@
   cursor: pointer; text-decoration: none; transition: background var(--dur-hover) ease-out; }
 .s3d-button:hover { background: var(--bg); }
 .s3d-button:disabled { opacity: .5; cursor: not-allowed; }
-.s3d-button--primary { background: var(--brand); border-color: var(--brand); color: #fff; }
+.s3d-button--primary { background: var(--brand); border-color: var(--brand); color: var(--on-brand); }
 .s3d-button--primary:hover { background: var(--brand-hover); }
 .s3d-button--guide { background: var(--guide-tint); border-color: transparent; color: var(--guide-strong); }
 .s3d-button--quiet { background: transparent; border-color: transparent; }
 .s3d-button.has-dot { position: relative; }
-.s3d-button.has-dot::after { content: ""; position: absolute; top: 5px; right: 6px; width: 7px; height: 7px; border-radius: 50%; background: var(--guide); box-shadow: 0 0 0 2px #fff; }
+.s3d-button.has-dot::after { content: ""; position: absolute; top: 5px; right: 6px; width: 7px; height: 7px; border-radius: 50%; background: var(--guide); box-shadow: 0 0 0 2px var(--panel-solid); }
 .s3d-icon-button { display: inline-grid; place-items: center; width: 28px; height: 28px; border: 0; border-radius: var(--radius-input); background: transparent; color: var(--ink-2); cursor: pointer; }
 .s3d-icon-button:hover { background: var(--bg); }
 .s3d-link { border: 0; background: none; color: var(--ink-2); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font: inherit; font-size: 12px; padding: 0; justify-self: start; }
 .s3d-chip { display: inline-flex; align-items: center; gap: 4px; min-height: 22px; padding: 0 8px; border-radius: var(--radius-input); font: 500 11px/1 var(--font-sans); white-space: nowrap; }
-.s3d-chip--neutral { background: #edf1ec; color: var(--ink-2); }
+.s3d-chip--neutral { background: var(--neutral-tint); color: var(--ink-2); }
 .s3d-chip--ok { background: var(--ok-tint); color: var(--ok); }
 .s3d-prov--teacher { background: var(--prov-teacher-bg); color: var(--prov-teacher-ink); }
 .s3d-prov--entry { background: var(--prov-entry-bg); color: var(--prov-entry-ink); }
@@ -101,10 +101,10 @@
    under the counter. */
 .s3d-topbar { position: absolute; top: 0; left: 0; right: 0; z-index: var(--z-bar); height: 52px; display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(max-content, 1fr); align-items: center; gap: 12px; padding: 0 14px;
-  background: #fbfcf8f0; backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  background: var(--bar-bg); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
 .s3d-topbar__left { display: flex; align-items: center; gap: 12px; min-width: 0; }
 .s3d-topbar__left > .s3d-mark, .s3d-topbar__left > .s3d-source { flex-shrink: 0; }
-.s3d-mark { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: var(--radius-button); background: var(--brand); color: #fff; }
+.s3d-mark { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: var(--radius-button); background: var(--brand); color: var(--on-brand); }
 .s3d-topbar__title { font-weight: 600; font-size: 15px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .s3d-source { font-size: 10px; font-weight: 600; letter-spacing: 1.2px; color: var(--muted); border: 1px solid var(--line-strong); border-radius: 5px; padding: 2px 6px; }
 .s3d-topbar__centre { justify-self: center; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--ink-2); white-space: nowrap; }
@@ -113,7 +113,7 @@
 /* Narrower screens give the title the room the source label took. */
 @media (max-width: 1439px) { .s3d-topbar .s3d-source { display: none; } }
 .s3d-mode { display: inline-flex; align-items: center; gap: 5px; height: 24px; padding: 0 9px; border-radius: 999px; font-size: 12px; font-weight: 500; background: var(--guide-tint); color: var(--guide-strong); }
-.s3d-mode.is-assess { background: #ecebf3; color: #3f3d63; }
+.s3d-mode.is-assess { background: var(--assess-tint); color: var(--assess-ink); }
 .s3d-float { position: absolute; z-index: var(--z-panel); display: flex; flex-direction: column; background: var(--float); backdrop-filter: blur(6px); border: 1px solid var(--float-line); border-radius: var(--radius-panel); box-shadow: var(--shadow-float); }
 .s3d-float__head { flex: none; display: flex; align-items: center; gap: 8px; padding: 8px 10px 6px 8px; touch-action: none; }
 .s3d-float__title { flex: 1; margin: 0; font-size: 13px; font-weight: 600; }
@@ -132,14 +132,16 @@
 
 .s3d-step { top: 66px; left: 14px; width: 372px; max-height: calc(100% - 180px); overflow: hidden; }
 .s3d-step__line { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
-.s3d-step__badge { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--guide); color: #fff; font-weight: 600; font-size: 13px; }
-.s3d-step__badge.is-assess { background: #4b4a6e; }
+.s3d-step__badge { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--guide); color: var(--on-accent); font-weight: 600; font-size: 13px; }
+.s3d-step__badge.is-assess { background: var(--assess); }
 .s3d-step__body { display: grid; gap: 10px; padding: 0 14px 12px; min-height: 0; overflow-x: hidden; overflow-y: auto; }
 .s3d-step__title { margin: 0; font-size: 16px; line-height: 1.4; font-weight: 600; }
+/* The HUD theme's scan line on a new step (stepHud.css); the Light theme has none. */
+.s3d-step__scan { display: none; }
 .s3d-progress { display: flex; gap: 3px; margin: 0; padding: 0; list-style: none; }
-.s3d-progress li { flex: 1; height: 5px; border-radius: 3px; background: #dde3da; transition: background var(--dur-step) var(--ease-standard); }
+.s3d-progress li { flex: 1; height: 5px; border-radius: 3px; background: var(--track); transition: background var(--dur-step) var(--ease-standard); }
 .s3d-progress li.is-done { background: var(--guide); }
-.s3d-progress li.is-current { background: linear-gradient(90deg, var(--guide) 0 35%, #bfdcd4 35%); }
+.s3d-progress li.is-current { background: linear-gradient(90deg, var(--guide) 0 35%, var(--track-current) 35%); }
 .s3d-next-action { margin: 0; background: var(--guide-band); border-left: 3px solid var(--guide); border-radius: 0 8px 8px 0; padding: 9px 12px; font-size: 17px; line-height: 1.4; font-weight: 600; color: var(--ink); }
 .s3d-flow { display: grid; grid-template-columns: minmax(0, 1fr) 14px minmax(0, 1fr); gap: 6px; align-items: end; }
 .s3d-flow__arrow { margin-bottom: 9px; color: var(--muted); }
@@ -151,9 +153,9 @@
 .s3d-correction p { margin: 0; }
 .s3d-correction__row { display: grid; grid-template-columns: 96px 1fr; gap: 8px; }
 .s3d-correction__k { font-size: 11px; font-weight: 600; letter-spacing: .6px; text-transform: uppercase; color: var(--error); padding-top: 2px; }
-.s3d-correction__attempt { font-size: 12px; color: var(--ink-2); border-top: 1px solid #efd5ca; padding-top: 6px; }
+.s3d-correction__attempt { font-size: 12px; color: var(--ink-2); border-top: 1px solid var(--error-line); padding-top: 6px; }
 
-.s3d-thumb { display: block; border-radius: 6px; background: #eef1ea; object-fit: contain; }
+.s3d-thumb { display: block; border-radius: 6px; background: var(--thumb-bg); object-fit: contain; }
 
 .s3d-benchlist { top: 66px; right: 14px; width: 340px; max-height: calc(100% - 180px); display: flex; flex-direction: column; }
 .s3d-bl-scroll { flex: 1; min-height: 0; overflow: auto; }
@@ -170,7 +172,7 @@
 .s3d-bl-shelf__item { position: relative; display: grid; grid-template-columns: 30px 1fr auto; gap: 8px; align-items: center; width: 100%; min-height: 44px; border: 0; border-top: 1px solid var(--line);
   background: none; padding: 4px 12px; text-align: left; cursor: pointer; color: var(--ink); font: inherit; }
 .s3d-bl-shelf__item:hover, .s3d-bl-shelf__item:focus-visible { background: var(--brand-tint); }
-.s3d-bl-shelf__need { position: absolute; top: 8px; left: 34px; width: 8px; height: 8px; border-radius: 50%; background: var(--guide); box-shadow: 0 0 0 2px #fff; }
+.s3d-bl-shelf__need { position: absolute; top: 8px; left: 34px; width: 8px; height: 8px; border-radius: 50%; background: var(--guide); box-shadow: 0 0 0 2px var(--panel-solid); }
 .s3d-bl-shelf__place { font: 11px var(--font-sans); border: 1px solid var(--line-strong); border-radius: 6px; padding: 2px 8px; background: var(--panel-solid); color: var(--ink-2); }
 .s3d-bl-foot { margin: 0; padding: 8px 12px 10px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); }
 
@@ -199,7 +201,7 @@
 .s3d-hand__body { display: grid; grid-auto-rows: max-content; align-content: start; gap: 10px; padding: 0 12px 12px; min-height: 0; overflow-x: hidden; overflow-y: auto; }
 /* Collapsed, the body stays mounted (the camera keeps its video) and is hidden. */
 .s3d-hand__body[hidden] { display: none; }
-.s3d-hand__badge { background: #edf1ec; color: var(--ink-2); }
+.s3d-hand__badge { background: var(--neutral-tint); color: var(--ink-2); }
 .s3d-hand__badge.is-on { background: var(--ok-tint); color: var(--ok); }
 .s3d-hand__badge.is-warn { background: var(--warn-tint); color: var(--warn); }
 .s3d-hand__badge.is-error { background: var(--error-tint); color: var(--error); }
@@ -232,9 +234,9 @@
 .s3d-handcursor.is-pressed { box-shadow: 0 0 0 4px var(--guide); }
 .s3d-hand__steps li.is-now { color: var(--ink); font-weight: 500; }
 .s3d-hand__mark { display: inline-grid; place-items: center; flex: none; width: 20px; height: 20px; border-radius: 50%; background: var(--bg); color: var(--muted); font: 600 11px var(--font-mono); }
-.s3d-hand__steps li.is-done .s3d-hand__mark { background: var(--ok); color: #fff; }
-.s3d-hand__steps li.is-now .s3d-hand__mark { background: var(--guide); color: #fff; }
-.s3d-hand__steps li.is-problem .s3d-hand__mark { background: var(--error); color: #fff; }
+.s3d-hand__steps li.is-done .s3d-hand__mark { background: var(--ok); color: var(--on-accent); }
+.s3d-hand__steps li.is-now .s3d-hand__mark { background: var(--guide); color: var(--on-accent); }
+.s3d-hand__steps li.is-problem .s3d-hand__mark { background: var(--error); color: var(--on-accent); }
 .s3d-hand__steps li.is-tip .s3d-hand__mark { background: transparent; }
 .s3d-hand__gestures { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 6px; margin: 0; padding: 0; list-style: none; }
 .s3d-hand__gestures li { display: grid; grid-template-columns: 24px 1fr; column-gap: 6px; row-gap: 2px; align-items: start; padding: 6px 8px;
@@ -247,13 +249,13 @@
 
 /* The hint only informs; like the scene labels it lets pointers and hand control reach the bench. */
 .s3d-hint { position: absolute; z-index: var(--z-bar); left: 50%; bottom: 84px; transform: translateX(-50%); margin: 0; font-size: 12.5px; color: var(--ink-2);
-  background: #fafdfae6; border: 1px solid var(--float-line); border-radius: var(--radius-button); padding: 5px 12px; white-space: nowrap; pointer-events: none; }
+  background: var(--hint-bg); border: 1px solid var(--float-line); border-radius: var(--radius-button); padding: 5px 12px; white-space: nowrap; pointer-events: none; }
 .s3d-dock { position: absolute; z-index: var(--z-bar); left: 50%; bottom: 14px; transform: translateX(-50%); display: flex; gap: 4px; padding: 6px; border-radius: 14px;
   background: var(--float); border: 1px solid var(--float-line); box-shadow: var(--shadow-float); }
 .s3d-dock button { display: grid; justify-items: center; align-content: center; gap: 4px; width: 76px; height: 56px; border: 0; border-radius: 10px; background: transparent;
   font: 11px var(--font-sans); color: var(--ink-2); cursor: pointer; }
 .s3d-dock button:hover { background: var(--bg); }
-.s3d-dock button.is-on { background: var(--brand); color: #fff; }
+.s3d-dock button.is-on { background: var(--brand); color: var(--on-brand); }
 .s3d-dock button:disabled { opacity: .45; cursor: not-allowed; }
 .s3d-dock__sep { width: 1px; background: var(--line); margin: 8px 2px; }
 .s3d-dock .s3d-dock__caret { width: 28px; margin-left: -3px; }
@@ -288,7 +290,7 @@
   border: 1px solid var(--line); border-radius: var(--radius-panel); box-shadow: var(--shadow-float); font-size: 13px; }
 .s3d-menu button, .s3d-menu a { text-align: left; border: 0; background: none; padding: 4px 0; font: inherit; color: var(--ink); cursor: pointer; text-decoration: none; }
 .s3d-menu label { display: flex; gap: 8px; align-items: center; }
-.s3d-dialog-back, .s3d-results { position: absolute; z-index: var(--z-dialog); inset: 52px 0 0 0; display: grid; place-items: center; background: #1d2b2559; }
+.s3d-dialog-back, .s3d-results { position: absolute; z-index: var(--z-dialog); inset: 52px 0 0 0; display: grid; place-items: center; background: var(--scrim); }
 .s3d-dialog { width: min(440px, calc(100% - 32px)); background: var(--panel-solid); border-radius: var(--radius-panel); padding: 18px 20px; box-shadow: 0 20px 60px #0d1a1440; display: grid; gap: 14px; }
 .s3d-dialog p { margin: 0; }
 .s3d-dialog__actions { display: flex; justify-content: flex-end; gap: 8px; }
@@ -305,11 +307,11 @@
 .s3d-itemmenu button { min-height: 40px; padding: 8px 12px; border: 0; border-radius: var(--radius-input); background: none; text-align: left; font: 14px var(--font-sans); color: var(--ink); cursor: pointer; }
 .s3d-itemmenu button:hover { background: var(--bg); }
 /* Loader (§5.2): a glass card over the bench backdrop while the equipment models download. */
-.s3d-loader { position: absolute; z-index: var(--z-dialog); inset: 0; display: grid; place-items: center; background: #d7ddd6b3; }
+.s3d-loader { position: absolute; z-index: var(--z-dialog); inset: 0; display: grid; place-items: center; background: var(--loader-scrim); }
 .s3d-loader__card { width: min(360px, calc(100% - 32px)); display: grid; gap: 10px; padding: 18px 20px; background: var(--glass); backdrop-filter: blur(15px);
   border: 1px solid var(--glass-line); border-radius: var(--radius-panel); box-shadow: var(--shadow-float); }
 .s3d-loader__card p { margin: 0; }
-.s3d-loader__bar { height: 6px; border-radius: 3px; background: #dde3da; overflow: hidden; }
+.s3d-loader__bar { height: 6px; border-radius: 3px; background: var(--track); overflow: hidden; }
 .s3d-loader__bar span { display: block; height: 100%; background: var(--guide); transition: width 120ms ease-out; }
 .s3d-fallback { position: absolute; inset: 0; display: grid; place-content: center; gap: 12px; text-align: center; padding: 16px; }
 
@@ -325,7 +327,7 @@
 /* A 3D experiment's intro (D8): the journey under each part's heading. */
 .s3d-journey-part { display: grid; gap: 6px; }
 .s3d-journey-part__title { margin: 4px 0 0; font-size: 13px; font-weight: 600; color: var(--ink-2); }
-.s3d-blocker { background: var(--warn-tint); border: 1px solid #ecdcb0; border-radius: var(--radius-button); padding: 10px 12px; font-size: 13px; }
+.s3d-blocker { background: var(--warn-tint); border: 1px solid var(--warn-line); border-radius: var(--radius-button); padding: 10px 12px; font-size: 13px; }
 .s3d-hosts ul { margin: 6px 0 0; padding-left: 18px; }
 .s3d-hosts a, .s3d-gate a { color: var(--brand); font-weight: 600; }
 .s3d-gate__actions { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
@@ -375,7 +377,7 @@
 .s3d-switcher__item:focus-visible { outline: 3px solid var(--focus); outline-offset: -3px; }
 .s3d-switcher__item.is-current { background: var(--guide-tint); }
 .s3d-switcher__index { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--brand-tint); color: var(--brand); font-size: 12.5px; font-weight: 600; }
-.s3d-switcher__item.is-current .s3d-switcher__index { background: var(--brand); color: #fff; }
+.s3d-switcher__item.is-current .s3d-switcher__index { background: var(--brand); color: var(--on-brand); }
 .s3d-switcher__text { display: grid; gap: 2px; min-width: 0; }
 .s3d-switcher__name { font-size: 13.5px; font-weight: 600; }
 .s3d-switcher__desc { font-size: 12px; color: var(--muted); line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }

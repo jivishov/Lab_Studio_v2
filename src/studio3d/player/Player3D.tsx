@@ -6,6 +6,7 @@ import type { BenchEngine, CameraPose, GraphicsQuality } from "../bench/BenchEng
 import { arrowDirection, spatialNeighbour } from "../bench/input/keyboard";
 import { useBenchCarry } from "../bench/input/useBenchCarry";
 import { Icon } from "../ui/Icon";
+import { STUDIO3D_THEMES, THEME_LABELS, useStudio3DTheme, type Studio3DTheme } from "../ui/theme";
 import type { HandTarget } from "../hand/handController";
 import { handSettings } from "../hand/handTuning";
 import { useHandControl } from "../hand/useHandControl";
@@ -86,6 +87,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   const [panel, setPanel] = useState<"list" | "none">("none");
   const [notebookOpen, setNotebookOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [theme, setTheme] = useStudio3DTheme();
   const [helpOpen, setHelpOpen] = useState(false);
   const [loading, setLoading] = useState<{ loaded: number; total: number }>();
   const [benchReady, setBenchReady] = useState(false);
@@ -1218,7 +1220,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
         </button>
         {viewsOpen ? (
           <div className="s3d-viewmenu" role="menu" aria-label="Camera views">
-            <button type="button" role="menuitem" className={autoView ? "is-on" : undefined} onClick={() => chooseView("auto")}>Auto · follow the step</button>
+            <button type="button" role="menuitem" className={autoView ? "is-current" : undefined} onClick={() => chooseView("auto")}>Auto · follow the step</button>
             <button type="button" role="menuitem" onClick={() => chooseView("bench")}>Whole bench</button>
             <button type="button" role="menuitem" disabled={!selected} onClick={() => chooseView("selected")}>Selected item</button>
             <button type="button" role="menuitem" onClick={() => chooseView("overhead")}>Overhead</button>
@@ -1237,6 +1239,11 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
           <label>Graphics quality
             <select value={prefs.quality} onChange={(e) => updatePrefs({ quality: e.target.value as GraphicsQuality })}>
               <option value="high">High</option><option value="balanced">Balanced</option><option value="low">Low</option>
+            </select>
+          </label>
+          <label>Theme
+            <select value={theme} onChange={(e) => setTheme(e.target.value as Studio3DTheme)}>
+              {STUDIO3D_THEMES.map((t) => <option key={t} value={t}>{THEME_LABELS[t]}</option>)}
             </select>
           </label>
           <button type="button" onClick={() => setConfirmMode(showGuidance ? "assessment" : "guided")}>Switch to {showGuidance ? "assessment" : "guided"}</button>
