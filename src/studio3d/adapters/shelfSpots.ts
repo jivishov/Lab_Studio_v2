@@ -7,16 +7,19 @@ import type { BenchPointMm } from "./benchCoordinates";
  * 2026-10-11; `proposals/SHELF_INSTEAD_OF_TRAY.md`). Presentation only: the runtime location stays `shelf`, and 2D
  * draws it as its sidebar (G-3).
  *
- * - **The reagent shelf** (D9 scenery, `reagent-shelf`) stands behind the working area on two tiers. Items stand on
- *   a tier left to right in start order. An item longer than the shelf is deep lies along the tier; one too tall for
- *   the gap under the upper tier stands on the upper tier. The rest fill the lower tier, then the upper.
+ * - **The reagent shelf** (D9 scenery, `reagent-shelf`) stands behind the working area on two tiers. An item longer
+ *   than the shelf is deep lies along the tier; one too tall for the gap under the upper tier stands on the upper
+ *   tier. Each of the rest goes to the tier holding fewer, so the two hold their share. On each tier the items
+ *   stand left to right in start order, spread evenly along it, as a stocked shelf is: apart enough to tell, tag and
+ *   take one at the Home view (touch targets of at least 44 px where the count allows).
  * - **The side station** is the bench's continuation past its right end (decided 2026-10-11). The large stations
  *   (ring stand, analytical balance, Bunsen burner, spectrophotometer; decision 2 and its fidelity note) stand
  *   there in rows, back to front, in start order.
  *
  * As the bench's slots (stableBench.ts), every item that starts on the shelf owns its spot for the whole run, held
  * free while it is on the bench, so an item put back goes back to its own spot and nothing on the shelf moves when
- * another item leaves. An item that first reaches the shelf later takes the next free place after them.
+ * another item leaves. An item that first reaches the shelf later takes the middle of the widest free gap left
+ * between them, so nothing that started there moves for it either.
  *
  * Bench millimetres as everywhere in 3D: x to the right, y away from the viewer, z up, origin at the working
  * area's centre (benchCoordinates.ts). `point` is where the item's origin stands, as on the bench; `zMm` is the
@@ -78,6 +81,8 @@ export interface ShelfSpot {
 export interface ShelfMember {
   instanceId: string;
   definitionId: string;
+  /** Not among the run's start items: it takes a free gap and moves none of them (stableShelfOrder). */
+  late?: true;
 }
 
 interface Extent {
@@ -149,12 +154,13 @@ export const shelfSpots = (
   entryFor: (definitionId: string) => Equipment3DEntry | undefined = equipment3dEntry,
 ): Map<string, ShelfSpot> => {
   const spots = new Map<string, ShelfSpot>();
+  type TierItem = ShelfMember & { extent: Extent; yawDeg: number };
   const station: Array<ShelfMember & { extent: Extent }> = [];
-  const lower: Array<ShelfMember & { extent: Extent; yawDeg: number }> = [];
-  const upper: Array<ShelfMember & { extent: Extent; yawDeg: number }> = [];
+  const items: TierItem[] = [];
+  const late: TierItem[] = [];
   const width = (extent: Extent) => extent.x[1] - extent.x[0];
-  let lowerUsed = 0;
   const tierRoom = tierXMax - tierXMin;
+  const isTall = (item: TierItem) => item.extent.height > LOWER_TIER_CLEAR_MM - HEADROOM_MM;
 
   for (const member of members) {
     const entry = entryFor(member.definitionId);
@@ -165,42 +171,86 @@ export const shelfSpots = (
     }
     // Longer than the shelf is deep: it lies along the tier.
     const along = raw.y[1] - raw.y[0] > TIER_DEPTH_MM && raw.y[1] - raw.y[0] > raw.x[1] - raw.x[0];
-    const extent = along ? turned(raw) : raw;
-    const item = { ...member, extent, yawDeg: along ? 90 : 0 };
-    const need = width(extent) + GAP_MM;
-    const tall = extent.height > LOWER_TIER_CLEAR_MM - HEADROOM_MM;
-    if (!tall && lowerUsed + need - GAP_MM <= tierRoom) {
-      lower.push(item);
-      lowerUsed += need;
-    } else {
-      upper.push(item);
-    }
+    const item = { ...member, extent: along ? turned(raw) : raw, yawDeg: along ? 90 : 0 };
+    (member.late ? late : items).push(item);
+  }
+
+  // Tall items stand on the upper tier. Each of the rest, in start order, goes to the tier holding fewer (the one with
+  // more room left on a tie, then the lower) if it fits there, else to the other: an even count keeps neighbours apart.
+  const used: [number, number] = [0, 0];
+  const count: [number, number] = [0, 0];
+  const tierOf = new Map<string, 0 | 1>();
+  for (const item of items.filter(isTall)) {
+    tierOf.set(item.instanceId, 1);
+    used[1] += width(item.extent) + GAP_MM;
+    count[1] += 1;
+  }
+  for (const item of items) {
+    if (tierOf.has(item.instanceId)) continue;
+    const need = width(item.extent) + GAP_MM;
+    const roomier: 0 | 1 = count[0] !== count[1] ? (count[0] < count[1] ? 0 : 1) : used[0] <= used[1] ? 0 : 1;
+    const other: 0 | 1 = roomier === 0 ? 1 : 0;
+    const tier = used[roomier] + need - GAP_MM <= tierRoom || used[other] + need - GAP_MM > tierRoom ? roomier : other;
+    tierOf.set(item.instanceId, tier);
+    used[tier] += need;
+    count[tier] += 1;
   }
 
   const shelfY = SHELF.centre.yMm;
-  const lay = (row: typeof lower, tier: 0 | 1) => {
-    let cursor = tierXMin;
-    for (const item of row) {
-      const w = width(item.extent);
-      const d = item.extent.y[1] - item.extent.y[0];
-      const overflow = cursor + w > tierXMax + 0.01;
-      const left = overflow ? tierXMax - w : cursor;
-      spots.set(item.instanceId, {
-        place: "tier",
-        tier,
-        point: { xMm: round1(left - item.extent.x[0]), yMm: round1(shelfY - (item.extent.y[0] + item.extent.y[1]) / 2), yawDeg: item.yawDeg },
-        zMm: SHELF.tierTopsMm[tier],
-        centre: { xMm: round1(left + w / 2), yMm: round1(shelfY) },
-        widthMm: round1(w),
-        depthMm: round1(d),
-        heightMm: round1(item.extent.height),
-        ...(overflow ? { overflow: true as const } : {}),
-      });
-      cursor += w + GAP_MM;
-    }
+  const place = (item: TierItem, tier: 0 | 1, left: number, overflow: boolean) => {
+    const w = width(item.extent);
+    spots.set(item.instanceId, {
+      place: "tier",
+      tier,
+      point: { xMm: round1(left - item.extent.x[0]), yMm: round1(shelfY - (item.extent.y[0] + item.extent.y[1]) / 2), yawDeg: item.yawDeg },
+      zMm: SHELF.tierTopsMm[tier],
+      centre: { xMm: round1(left + w / 2), yMm: round1(shelfY) },
+      widthMm: round1(w),
+      depthMm: round1(item.extent.y[1] - item.extent.y[0]),
+      heightMm: round1(item.extent.height),
+      ...(overflow ? { overflow: true as const } : {}),
+    });
   };
-  lay(lower, 0);
-  lay(upper, 1);
+  // Spread evenly: the centres an equal step apart along the tier, so neighbours stand as far apart as the count
+  // allows on screen too, then pushed apart where two would come closer than the clearance (right, then back from the
+  // far end). An item that still starts before the tier's start does not fit: it is packed and reported.
+  for (const tier of [0, 1] as const) {
+    const row = items.filter((item) => tierOf.get(item.instanceId) === tier);
+    const half = row.map((item) => width(item.extent) / 2);
+    const centres = row.map((_, i) => tierXMin + (tierRoom * (i + 0.5)) / row.length);
+    centres.forEach((_, i) => {
+      centres[i] = Math.max(centres[i], i === 0 ? tierXMin + half[0] : centres[i - 1] + half[i - 1] + GAP_MM + half[i]);
+    });
+    for (let i = row.length - 1; i >= 0; i--) {
+      centres[i] = Math.min(centres[i], i === row.length - 1 ? tierXMax - half[i] : centres[i + 1] - half[i + 1] - GAP_MM - half[i]);
+    }
+    const fits = !row.length || centres[0] - half[0] >= tierXMin - 0.01;
+    let cursor = tierXMin;
+    row.forEach((item, i) => {
+      const w = width(item.extent);
+      if (fits) return place(item, tier, centres[i] - half[i], false);
+      const overflow = cursor + w > tierXMax + 0.01;
+      place(item, tier, overflow ? tierXMax - w : cursor, overflow);
+      cursor += w + GAP_MM;
+    });
+  }
+
+  // A late item: the middle of the widest gap it fits with clearance, on either tier (a tall one, the upper only).
+  for (const item of late) {
+    const w = width(item.extent);
+    let best: { tier: 0 | 1; x0: number; x1: number } | undefined;
+    for (const tier of isTall(item) ? [1 as const] : [0 as const, 1 as const]) {
+      const taken = [...spots.values()].filter((s) => s.place === "tier" && s.tier === tier)
+        .map((s) => [s.centre.xMm - s.widthMm / 2, s.centre.xMm + s.widthMm / 2]).sort((p, q) => p[0] - q[0]);
+      let from = tierXMin - GAP_MM;
+      for (const [x0, x1] of [...taken, [tierXMax + GAP_MM, tierXMax + GAP_MM]]) {
+        if (x0 - from - 2 * GAP_MM >= w && (!best || x0 - from > best.x1 - best.x0)) best = { tier, x0: from, x1: x0 };
+        from = Math.max(from, x1);
+      }
+    }
+    if (best) place(item, best.tier, (best.x0 + best.x1) / 2 - w / 2, false);
+    else place(item, isTall(item) ? 1 : 0, tierXMax - w, true);
+  }
 
   // The side station: rows from the back, left to right.
   let rowTop = SIDE_STATION.yMaxMm;
@@ -253,7 +303,7 @@ export const stableShelfOrder = (
   for (const instance of instances) {
     if (instance.location !== "shelf" || seen.has(instance.id)) continue;
     seen.add(instance.id);
-    members.push({ instanceId: instance.id, definitionId: instance.definitionId });
+    members.push({ instanceId: instance.id, definitionId: instance.definitionId, ...(startShelf ? { late: true as const } : {}) });
   }
   return members;
 };

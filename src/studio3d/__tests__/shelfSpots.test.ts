@@ -1,8 +1,10 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import * as THREE from "three";
 import { describe, expect, it } from "vitest";
 import { createRuntimeState, type RuntimeDefinition } from "../../runtime";
 import { BENCH_MM } from "../adapters/benchCoordinates";
+import { applyView, DEFAULT_VIEW } from "../bench/camera/benchCamera";
 import { LOWER_TIER_CLEAR_MM, SHELF, SIDE_STATION, shelfSpots, stableShelfOrder, type ShelfSpot } from "../adapters/shelfSpots";
 import { equipment3dRegistry } from "../equipment3d/readiness";
 
@@ -118,19 +120,63 @@ describe("the shelf's spots (option B, approved 2026-10-11)", () => {
     }
   });
 
-  it("gives an item that reaches the shelf later the next free place, after the start items", () => {
+  it("gives an item that reaches the shelf later a free gap, moving none of the start items", () => {
     const instances = [
       { id: "a", definitionId: "beaker-150ml", location: "shelf" },
       { id: "b", definitionId: "volumetric-flask", location: "workbench" },
       { id: "c", definitionId: "beaker-250ml", location: "shelf" },
+      { id: "d", definitionId: "funnel", location: "shelf" },
     ];
-    const start = ["a", "c"];
+    const start = ["a", "c", "d"];
     const before = shelfSpots(stableShelfOrder(instances, start));
-    expect([...before.keys()]).toEqual(["a", "c"]);
+    expect([...before.keys()].sort()).toEqual(["a", "c", "d"]);
     const later = shelfSpots(stableShelfOrder(instances.map((i) => i.id === "b" ? { ...i, location: "shelf" } : i), start));
-    expect(later.get("a")).toEqual(before.get("a"));
-    expect(later.get("c")).toEqual(before.get("c"));
-    expect(later.get("b")!.point.xMm).toBeGreaterThan(later.get("c")!.point.xMm);
+    for (const id of start) expect(later.get(id)).toEqual(before.get(id));
+    const b = later.get("b")!;
+    expect(b.place).toBe("tier");
+    expect(b.overflow).toBeUndefined();
+    // Clear of every item on its tier.
+    for (const id of start) {
+      const s = later.get(id)!;
+      if (s.tier !== b.tier) continue;
+      expect(Math.abs(s.centre.xMm - b.centre.xMm)).toBeGreaterThanOrEqual((s.widthMm + b.widthMm) / 2);
+    }
+  });
+
+  it("spreads each tier's items along it, sharing them between the tiers, so neighbours stand at least 44 px apart at Home", () => {
+    // The labs' shelves, in start order (compiled with their default setup, 2026-10-11).
+    const labs: Record<string, string[]> = {
+      "hard-water-demo": ["beral-pipette", "graduated-cylinder-25ml", "beaker-250ml", "stirring-rod", "beral-pipette", "ring-stand",
+        "funnel", "filter-paper", "erlenmeyer-flask-250ml", "watch-glass", "crucible-tongs", "scoopula"],
+      "paper-chromatography": ["chromatography-chamber", "chromatography-chamber", "chromatography-paper", "chromatography-paper",
+        "distilled-water-bottle", "propanol-bottle", "graduated-cylinder", "pencil", "capillary-spotter", "small-vial", "metric-ruler"],
+    };
+    const shelves = [
+      ...["transmittance-dilution", "dilution", "making-solution", "paper-chromatography-practice", "thermal-decomposition-mass-loss-practice"]
+        .map((id) => ({ id, spots: startSpots(technique3d(id)).spots })),
+      ...Object.entries(labs).map(([id, items]) => ({ id, spots: shelfSpots(items.map((definitionId, i) => ({ instanceId: `${definitionId}-${i}`, definitionId }))) })),
+    ];
+    const camera = new THREE.PerspectiveCamera();
+    applyView(camera, DEFAULT_VIEW(), 1024 / 700);
+    const onScreen = (s: ShelfSpot) => {
+      const q = new THREE.Vector3(s.centre.xMm / 1000, (s.zMm + s.heightMm / 2) / 1000, -s.centre.yMm / 1000).project(camera);
+      return { x: (q.x + 1) * 512, y: (1 - q.y) * 350 };
+    };
+    for (const { id, spots } of shelves) {
+      const tiers = [...spots.values()].filter((s) => s.place === "tier");
+      const counts = [0, 1].map((tier) => tiers.filter((s) => s.tier === tier).length);
+      // Shared: the tiers hold within two of each other (the tall items alone may tip it).
+      expect(Math.abs(counts[0] - counts[1]), id).toBeLessThanOrEqual(2);
+      const points = tiers.map(onScreen);
+      points.forEach((a, i) => points.slice(i + 1).forEach((b) => {
+        expect(Math.hypot(a.x - b.x, a.y - b.y), id).toBeGreaterThanOrEqual(44);
+      }));
+      // Spread: each tier's items reach past the shelf's middle from its left half.
+      for (const tier of [0, 1]) {
+        const xs = tiers.filter((s) => s.tier === tier).map((s) => s.centre.xMm);
+        if (xs.length > 1) expect(Math.max(...xs) - Math.min(...xs), id).toBeGreaterThan(SHELF.lengthMm / 2);
+      }
+    }
   });
 
   it("matches the reagent shelf model the room draws", () => {
