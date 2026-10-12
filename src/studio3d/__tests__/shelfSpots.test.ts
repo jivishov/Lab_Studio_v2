@@ -187,5 +187,7 @@ describe("the shelf's spots (option B, approved 2026-10-11)", () => {
     // The board is the shelf's depth; the label rail stands 2 mm proud of its front edge.
     expect(Math.abs(bounds.max[1] - bounds.min[1] - SHELF.depthMm)).toBeLessThanOrEqual(3);
     expect(bounds.max[2]).toBeGreaterThanOrEqual(SHELF.tierTopsMm[1]);
+    // Its top, which Home keeps in view (camera/home.ts).
+    expect(Math.abs(bounds.max[2] - SHELF.heightMm)).toBeLessThanOrEqual(1);
   });
 });

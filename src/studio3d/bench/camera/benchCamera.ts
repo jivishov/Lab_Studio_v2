@@ -66,6 +66,8 @@ const v = (x: number, y: number, z: number) => new THREE.Vector3(x * S, y * S, z
  * Fitted at 1024 × 700 (the source's own view, `renderer.js:119`, was at(0, .35, .65), pitch .72, 11.2 units).
  * Lowered from 0.66 rad to 0.45 (you, 2026-10-12, with the natural room): the eye about 1.3 m over the worktop, not
  * 1.8 m, so the bench is seen more as one standing at it sees it, and the window shows over the shelf.
+ * Now Home's angle and its fallback (you, 2026-10-12): Home itself is fitted to the screen (home.ts), coming closer
+ * from this angle wherever the screen has room.
  */
 export const DEFAULT_VIEW = (): OrbitView => ({ at: v(-3.2, 0, -2.4), yaw: 0, pitch: 0.45, distance: 32 * S });
 export const PRESETS = {
@@ -156,14 +158,15 @@ export const frontYaw = (yaw: number): number => Math.round(yaw / (Math.PI * 2))
 const scratch = new THREE.PerspectiveCamera();
 const project = (view: OrbitView, size: Size, points: readonly THREE.Vector3[]) => {
   applyView(scratch, view, size.w / size.h);
-  let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+  let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity, inFront = true;
   const p = new THREE.Vector3();
   for (const point of points) {
     p.copy(point).project(scratch);
     const x = (p.x + 1) * 0.5 * size.w, y = (1 - p.y) * 0.5 * size.h;
     x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y);
+    if (!(p.z > -1 && p.z < 1)) inFront = false;
   }
-  return { x0, x1, y0, y1 };
+  return { x0, x1, y0, y1, inFront };
 };
 
 /**
@@ -222,7 +225,7 @@ export const safeRects = (size: Size, obstacles: readonly Rect[], bottomLimit = 
  * How far a real framing's look-at point can lie: twice the source's manual limits (7 and 4.5 units), kept when the
  * manual forward-and-back range was doubled for the slide.
  */
-const FRAME_REACH = { x: 14 * S, z: 9 * S };
+export const FRAME_REACH = { x: 14 * S, z: 9 * S };
 
 /**
  * Fit into each free rectangle and keep the one that frames the points largest (`framing.js:66-67`).
@@ -237,6 +240,47 @@ export const fitBest = (points: readonly THREE.Vector3[], base: OrbitView, size:
   .filter((c) => [c.at.x, c.at.y, c.at.z, c.distance, c.pitch].every(Number.isFinite))
   .filter((c) => Math.abs(c.at.x) <= FRAME_REACH.x && Math.abs(c.at.z) <= FRAME_REACH.z)
   .sort((a, b) => a.distance - b.distance)[0];
+
+/**
+ * A steady fit (2026-10-12): from `base`'s angle, the least distance within `limits` at which the points lie within
+ * `rect`, or none if they do not fit even at the farthest. The source's `fit` above moves the look-at point and the
+ * distance together. From a low pitch, with points spread far back and high (the shelf behind the working area), that
+ * overshoots and swings between too near and too far without settling: found with Home at pitch 0.45, where after its
+ * 14 steps the points could lie under the step card or past the screen's edge. Here, at a given distance the look-at
+ * point alone centres the points, a near-linear move that settles in a few steps, and the distance is found by
+ * bisection.
+ */
+export const fitSteady = (points: readonly THREE.Vector3[], base: OrbitView, size: Size, rect: Rect,
+  limits = { min: MANUAL.distanceMin, max: MANUAL.distanceMax }): OrbitView | undefined => {
+  const cx = (rect.left + rect.right) / 2, cy = (rect.top + rect.bottom) / 2;
+  const n = points.length || 1;
+  const start = new THREE.Vector3(points.reduce((s, p) => s + p.x, 0) / n, 0, points.reduce((s, p) => s + p.z, 0) / n);
+  const right = new THREE.Vector3(Math.cos(base.yaw), 0, -Math.sin(base.yaw));
+  const away = new THREE.Vector3(-Math.sin(base.yaw), 0, -Math.cos(base.yaw));
+  // A step along the bench moves the view by its length times the pitch's sine (the source's 0.35 floor, as in `fit`).
+  const k = 1 / Math.max(0.35, Math.sin(base.pitch));
+  const centred = (distance: number) => {
+    const view: OrbitView = { ...copyView(base), at: start.clone(), distance };
+    let b = project(view, size, points);
+    for (let i = 0; i < 16; i += 1) {
+      const dx = (b.x0 + b.x1) / 2 - cx, dy = (b.y0 + b.y1) / 2 - cy;
+      if (Math.abs(dx) < 0.25 && Math.abs(dy) < 0.25) break;
+      const upp = (2 * effectiveDistance(view, size.w / size.h) * Math.tan((FOV * Math.PI) / 360)) / size.h;
+      view.at.addScaledVector(right, dx * upp).addScaledVector(away, -dy * upp * k);
+      b = project(view, size, points);
+    }
+    const fits = b.inFront && b.x0 >= rect.left - 0.5 && b.x1 <= rect.right + 0.5 && b.y0 >= rect.top - 0.5 && b.y1 <= rect.bottom + 0.5;
+    return { view, fits };
+  };
+  let near = limits.min, far = limits.max;
+  let best = centred(far);
+  if (!best.fits) return undefined;
+  for (let i = 0; i < 24; i += 1) {
+    const mid = (near + far) / 2, at = centred(mid);
+    if (at.fits) { far = mid; best = at; } else near = mid;
+  }
+  return best.view;
+};
 
 /** The source's tween easing (`framing.js:7`, easeInOutCubic). */
 export const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);

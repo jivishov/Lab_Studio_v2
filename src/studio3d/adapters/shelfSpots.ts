@@ -38,6 +38,8 @@ export const SHELF = Object.freeze({
   uprightMm: 24,
   /** The tiers' top surfaces above the bench top, lower then upper. */
   tierTopsMm: Object.freeze([300, 520]),
+  /** Its top above the bench top: the back rod over the upper tier (55 mm up, 5 mm in radius). */
+  heightMm: 580,
 });
 
 /** The side station: the worktop past the working area's right end (bench mm). */

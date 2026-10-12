@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { RuntimeDefinition } from "../../runtime";
 import { BenchView } from "../bench/BenchView";
-import { safeRects } from "../bench/camera/benchCamera";
+import { safeRects, type Rect } from "../bench/camera/benchCamera";
 import type { BenchEngine, CameraPose, GraphicsQuality } from "../bench/BenchEngine";
 import { arrowDirection, spatialNeighbour } from "../bench/input/keyboard";
 import { useBenchCarry } from "../bench/input/useBenchCarry";
@@ -762,9 +762,10 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   // Auto-framing on a new step: the working set in guided mode, the whole bench in assessment (§5.9).
   // It fits the free area left by the open panels, wherever they have been moved, and never moves
   // the camera during a carry.
-  const frame = useCallback(() => {
-    if (!engine || carryingRef.current) return;
-    // The free stage around every open panel, above the hint and dock (the microarray lab's safeRects).
+  // The free stage around every open panel, above the hint and dock (the microarray lab's safeRects). Home also keeps
+  // below the top bar, as it frames up to the shelf's top (2026-10-12).
+  const freeStage = useCallback((belowTopBar = false): Rect[] | undefined => {
+    if (!engine) return undefined;
     const canvasRect = engine.canvasElement.getBoundingClientRect();
     const rel = (el: Element | null | undefined) => {
       if (!el || (el as HTMLElement).offsetParent === null) return undefined;
@@ -772,9 +773,16 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
       return { left: b.left - canvasRect.left, top: b.top - canvasRect.top, right: b.right - canvasRect.left, bottom: b.bottom - canvasRect.top };
     };
     const root = playerRef.current;
-    const obstacles = [...(root?.querySelectorAll("[data-panel], .s3d-examine, .s3d-sheet, .s3d-drop") ?? [])].map(rel).filter((r) => r !== undefined);
+    const panels = `[data-panel], .s3d-examine, .s3d-sheet, .s3d-drop${belowTopBar ? ", .s3d-topbar" : ""}`;
+    const obstacles = [...(root?.querySelectorAll(panels) ?? [])].map(rel).filter((r) => r !== undefined);
     const below = [rel(root?.querySelector(".s3d-hint")), rel(root?.querySelector(".s3d-dock"))].filter((r) => r !== undefined).map((r) => r.top);
-    engine.safeAreas = safeRects({ w: canvasRect.width, h: canvasRect.height }, obstacles, below.length ? Math.min(...below) : canvasRect.height);
+    return safeRects({ w: canvasRect.width, h: canvasRect.height }, obstacles, below.length ? Math.min(...below) : canvasRect.height);
+  }, [engine]);
+  /** Home, the Home key and Reset view: fitted to the free stage (you, 2026-10-12). */
+  const goHome = () => { setAutoView(false); engine?.resetView(freeStage(true)); };
+  const frame = useCallback(() => {
+    if (!engine || carryingRef.current) return;
+    engine.safeAreas = freeStage();
     // A reading of a vessel's level is taken with the eye level with the liquid (stepRules.readingVesselId).
     const readId = readingVesselId(runtime.expectedAction, runtime.state.measurements);
     const read = readId ? scene.bench.find((i) => i.instanceId === readId) : undefined;
@@ -804,7 +812,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
       if (working.has(item.instanceId) && item.placement.kind === "seated") working.add(item.placement.parentInstanceId);
     }
     engine.frameItems(working.size ? [...working] : "all", working.size ? 1.6 : 1.05);
-  }, [engine, flow.source.definitionId, flow.source.instanceId, flow.target.definitionId, flow.target.instanceId, player.benchOp, player.toolTransfer, runtime.expectedAction, runtime.state.measurements, scene, showGuidance]);
+  }, [engine, flow.source.definitionId, flow.source.instanceId, flow.target.definitionId, flow.target.instanceId, freeStage, player.benchOp, player.toolTransfer, runtime.expectedAction, runtime.state.measurements, scene, showGuidance]);
   useEffect(() => {
     if (runtime.currentNode.id !== lastNode.current) {
       lastNode.current = runtime.currentNode.id;
@@ -823,12 +831,17 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   const autoViewRef = useRef(autoView);
   autoViewRef.current = autoView;
   const framedNode = useRef<string | undefined>(undefined);
+  // The bench is first shown from Home, fitted to the screen (2026-10-12), and the first step is framed from there.
+  const homed = useRef<BenchEngine | undefined>(undefined);
   useEffect(() => {
     const nodeId = runtime.currentNode.id;
     if (!engine || pouring || framedNode.current === nodeId) return;
     framedNode.current = nodeId;
-    if (autoViewRef.current) void engine.settled().then(() => { if (framedNode.current === nodeId && autoViewRef.current) frameRef.current(); });
-  }, [engine, pouring, runtime.currentNode.id]);
+    void engine.settled().then(() => {
+      if (homed.current !== engine) { homed.current = engine; engine.resetView(freeStage(true), true); }
+      if (framedNode.current === nodeId && autoViewRef.current) frameRef.current();
+    });
+  }, [engine, freeStage, pouring, runtime.currentNode.id]);
   // Opening, closing, moving, resizing or collapsing a panel changes the free area, so the auto
   // view refits (§5.9).
   useEffect(() => {
@@ -895,7 +908,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
       else if (e.key === "t" || e.key === "T") { if (selected) player.setSelectedTarget(selected); }
       else if (e.key === "n" || e.key === "N") setNotebookOpen((v) => !v);
       else if (e.key === "a" || e.key === "A") { setAutoView(true); frame(); }
-      else if (e.key === "Home") { setAutoView(false); engine?.resetView(); }
+      else if (e.key === "Home") goHome();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -1226,7 +1239,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
             <button type="button" role="menuitem" onClick={() => chooseView("overhead")}>Overhead</button>
           </div>
         ) : null}
-        <button type="button" onClick={() => { setAutoView(false); engine?.resetView(); }}><Icon name="reset" size={20} />Reset view</button>
+        <button type="button" onClick={goHome}><Icon name="reset" size={20} />Reset view</button>
       </nav>
 
       {player.toast ? <div className="s3d-toast" role="status"><Icon name={player.toastKind === "info" ? "info" : "check"} />{player.toast}</div> : null}

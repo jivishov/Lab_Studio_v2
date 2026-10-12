@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { describe, expect, it } from "vitest";
 import {
-  applyView, clampManual, DEFAULT_VIEW, eyeOf, fit, fitBest, frontYaw, MANUAL, orbitBy, panTiltBy, PRESETS, safeRects, slideBy, zoomBy,
+  applyView, clampManual, DEFAULT_VIEW, eyeOf, fit, fitBest, fitSteady, frontYaw, MANUAL, orbitBy, panTiltBy, PRESETS, safeRects, slideBy, zoomBy,
 } from "../bench/camera/benchCamera";
 import { ROOM_SCALE } from "../bench/look/room";
 
@@ -38,7 +38,7 @@ describe("camera model (renderer.js:12)", () => {
   });
 });
 
-describe("Home at 1024 × 700 (the shelf in place of the tray, 2026-10-11)", () => {
+describe("the fixed Home at 1024 × 700, Home's fallback (the shelf in place of the tray, 2026-10-11)", () => {
   const w = 1024, h = 700;
   const at = (xMm: number, yMm: number, zMm: number) => {
     const camera = new THREE.PerspectiveCamera();
@@ -160,5 +160,22 @@ describe("auto-framing (framing.js:29-50, app.js:83-97)", () => {
     const view = fitBest(box, DEFAULT_VIEW(), size, [{ left: 12, top: 12, right: 300, bottom: 200 }, { left: 12, top: 12, right: 1268, bottom: 700 }]);
     const small = fit(box, DEFAULT_VIEW(), size, { left: 12, top: 12, right: 300, bottom: 200 });
     expect(view!.distance).toBeLessThan(small.distance);
+  });
+
+  it("settles at Home's low pitch, where the source's fit swings (the steady fit, 2026-10-12)", () => {
+    // From the bench's middle back to an item on the shelf's upper tier, beside the step card.
+    const tall = [-0.42, 0.1].flatMap((x) => [0, 0.73].flatMap((y) => [-0.5, 0.1].map((z) => new THREE.Vector3(x, y, z))));
+    const safe = { left: 398, top: 12, right: 1268, bottom: 706 };
+    const base = { ...DEFAULT_VIEW(), pitch: 0.45 };
+    const inside = (view: ReturnType<typeof DEFAULT_VIEW>) => tall.every((p) => {
+      const s = project(view, p);
+      return s.x >= safe.left - 1 && s.x <= safe.right + 1 && s.y >= safe.top - 1 && s.y <= safe.bottom + 1;
+    });
+    expect(inside(fit(tall, base, size, safe))).toBe(false);
+    const steady = fitSteady(tall, base, size, safe)!;
+    expect(inside(steady)).toBe(true);
+    expect(steady.pitch).toBe(0.45);
+    // As close as it fits: 3 % closer, it does not.
+    expect(fitSteady(tall, base, size, safe, { min: MANUAL.distanceMin, max: steady.distance * 0.97 })).toBeUndefined();
   });
 });

@@ -103,7 +103,13 @@ const tune = (src: THREE.Material, T: BenchTextures, enclosureGlass: boolean, en
     }
     case "plastic-opaque": {
       const m = toPhysical(src);
-      if (/phenolic/i.test(name)) Object.assign(m, { roughness: 0.3, clearcoat: 0.7, clearcoatRoughness: 0.18 });
+      // The reagent shelf's boards: the worktop's black-charcoal epoxy (you, 2026-10-12, in place of the model's grey), so
+      // what stands on them stands out as it does on the worktop. Its colour and satin sheen (textures.ts); the model has
+      // no UVs for the worktop's faint mottle, which is too fine to see at the shelf anyway.
+      if (/phenolic shelf board/i.test(name)) {
+        Object.assign(m, { roughness: 0.36, metalness: 0 });
+        m.color.setHex(0x2a2c2e);
+      } else if (/phenolic/i.test(name)) Object.assign(m, { roughness: 0.3, clearcoat: 0.7, clearcoatRoughness: 0.18 });
       else Object.assign(m, { roughness: Math.max(0.35, m.roughness), normalMap: T.peelN, normalScale: new THREE.Vector2(0.06, 0.06) });
       return m;
     }

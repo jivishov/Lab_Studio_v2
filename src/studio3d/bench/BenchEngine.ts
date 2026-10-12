@@ -10,6 +10,7 @@ import {
   applyView, clampAt, clampManual, copyView, DEFAULT_VIEW, easeInOutCubic, FAR, fitBest, FOV, lerpView, MANUAL, NEAR,
   orbitBy, panTiltBy, PRESETS, safeRects, slideBy, zoomBy, type OrbitView, type Rect,
 } from "./camera/benchCamera";
+import { homeView } from "./camera/home";
 import { makeComposer } from "./look/composer";
 import { ContactShadows } from "./look/contactShadows";
 import { labEnvironment } from "./look/environment";
@@ -2735,9 +2736,17 @@ export class BenchEngine {
     this.requestRender();
   }
 
-  /** Home: the microarray lab's starting view (`renderer.js:119`). */
-  resetView(): void {
-    this.tweenTo(DEFAULT_VIEW());
+  /**
+   * Home: the microarray lab's starting view (`renderer.js:119`), fitted to the screen (2026-10-12, camera/home.ts):
+   * from its angle, as close as still shows the working area, the shelf with what stands on it, and the side station
+   * when it holds items, within `safe` (the free stage; default the whole canvas). `cut` puts it in place at once.
+   */
+  resetView(safe?: Rect[], cut = false): void {
+    const spots = [...this.items.values()].flatMap((view) => (view.shelf ? [view.shelf] : []));
+    const goal = homeView(spots, this.canvasSize(), safe);
+    if (!cut) { this.tweenTo(goal); return; }
+    this.tween = undefined;
+    this.setView(goal);
   }
 
   private tweenTo(goal: OrbitView): void {
