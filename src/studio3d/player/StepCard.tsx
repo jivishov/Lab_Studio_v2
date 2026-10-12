@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import type { Lab3DPartLabel } from "../labs3d";
 import { ProvenanceChip } from "../ui/ProvenanceChip";
 import { Icon } from "../ui/Icon";
@@ -11,6 +12,8 @@ import type { Player3DController } from "./usePlayer3D";
  * enabling rules (G-6), Show me in guided mode only (G-7), and the correction block (§5.13).
  * It is a floating panel; collapsed, it is one line: "Step n · <title>" (§5.5.9). In a 3D experiment
  * (D8, E0 decision C) the eyebrow names the part first: "Part 2 of 4 · Transfer · Step 7 of 31".
+ * It wears the sci-fi HUD look (stepHud.css, you 2026-10-12): the badge's ring fills as the steps are done, and a
+ * scan line sweeps the card when a new step comes up.
  */
 export const StepCard = ({ player, controls, onShowMe, onHoldOver, holdOverReady, part }: {
   player: Player3DController;
@@ -27,11 +30,15 @@ export const StepCard = ({ player, controls, onShowMe, onHoldOver, holdOverReady
   const n = index + 1;
   const N = nodes.length;
   const instruction = runtime.currentNode.description || runtime.expectedAction?.label || runtime.currentNode.title;
+  // A title the instruction already begins with is an echo: the HUD shows it once (stepHud.css), the heading stays.
+  const words = (text: string) => text.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  const echoed = words(instruction).startsWith(words(runtime.currentNode.title));
   const field = flow.inputField;
   const inputId = "s3d-step-input";
   const errorId = "s3d-step-input-error";
 
-  const badge = <span className={`s3d-step__badge${showGuidance ? "" : " is-assess"}`}>{n}</span>;
+  const done = `${Math.round((runtime.state.completedNodes.length / Math.max(1, N)) * 100)}%`;
+  const badge = <span className={`s3d-step__badge${showGuidance ? "" : " is-assess"}`} style={{ "--s3d-done": done } as CSSProperties}>{n}</span>;
   // While a timed stage's minutes run on the step clock the next action waits (Pack 2 decision 9).
   const waiting = Boolean(player.stepClock);
 
@@ -45,7 +52,8 @@ export const StepCard = ({ player, controls, onShowMe, onHoldOver, holdOverReady
       collapsedHead={<>{badge}<span className="s3d-step__line s3d-grow">Step {n} · {runtime.currentNode.title}</span></>}
     >
       <div className="s3d-step__body" data-gesture-scroll-region="vertical">
-        <h2 className="s3d-step__title">{runtime.currentNode.title}</h2>
+        <span key={runtime.currentNode.id} className="s3d-step__scan" aria-hidden="true" />
+        <h2 className={`s3d-step__title${echoed ? " is-echo" : ""}`}>{runtime.currentNode.title}</h2>
         <ol className="s3d-progress" aria-label={`${runtime.state.completedNodes.length} of ${N} steps complete`}>
           {nodes.map((node) => (
             <li key={node.id} className={runtime.state.completedNodes.includes(node.id) ? "is-done" : node.id === runtime.currentNode.id ? "is-current" : ""} />

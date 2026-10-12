@@ -1117,7 +1117,9 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
       : "Fill in the step card, then record. Right-drag to look around.";
 
   return (
-    <div className={`s3d-player${reducedMotion ? " is-reduced-motion" : ""}${variant === "preview" ? " s3d-player--preview" : ""}`} ref={playerRef}>
+    // While an item is carried the step card steps back from the bench (stepHud.css).
+    <div className={`s3d-player${reducedMotion ? " is-reduced-motion" : ""}${variant === "preview" ? " s3d-player--preview" : ""}${carry.carrying ? " is-carrying" : ""}`}
+      ref={playerRef}>
       <header className="s3d-topbar">
         <span className="s3d-topbar__left">
           <span className="s3d-mark"><Icon name="flask" size={18} /></span>
