@@ -36,24 +36,26 @@
   .s3d .s3d-float.s3d-step { border-radius: 3px 3px 0 0; }
 }
 
-/* Corner brackets, inside the edge so the card's clipping keeps them; they never take a pointer. */
+/* Corner brackets, inside the edge so the card's clipping keeps them; they never take a pointer. The card's, the dock's
+   and a camera view menu item's when it is in use, under the pointer or under keyboard focus (--arm sets their size). */
 .s3d .s3d-float.s3d-step::before,
-.s3d .s3d-dock::before {
-  --arm: 16px;
-  --bar: 2px;
+.s3d .s3d-dock::before,
+.s3d .s3d-dock .s3d-viewmenu button.is-on::before,
+.s3d .s3d-dock .s3d-viewmenu button:not(:disabled):hover::before,
+.s3d .s3d-dock .s3d-viewmenu button:focus-visible::before {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(var(--hud-edge) 0 0) top left / var(--arm) var(--bar),
-    linear-gradient(var(--hud-edge) 0 0) top left / var(--bar) var(--arm),
-    linear-gradient(var(--hud-edge) 0 0) top right / var(--arm) var(--bar),
-    linear-gradient(var(--hud-edge) 0 0) top right / var(--bar) var(--arm),
-    linear-gradient(var(--hud-edge) 0 0) bottom left / var(--arm) var(--bar),
-    linear-gradient(var(--hud-edge) 0 0) bottom left / var(--bar) var(--arm),
-    linear-gradient(var(--hud-edge) 0 0) bottom right / var(--arm) var(--bar),
-    linear-gradient(var(--hud-edge) 0 0) bottom right / var(--bar) var(--arm);
+    linear-gradient(var(--hud-edge) 0 0) top left / var(--arm, 16px) var(--bar, 2px),
+    linear-gradient(var(--hud-edge) 0 0) top left / var(--bar, 2px) var(--arm, 16px),
+    linear-gradient(var(--hud-edge) 0 0) top right / var(--arm, 16px) var(--bar, 2px),
+    linear-gradient(var(--hud-edge) 0 0) top right / var(--bar, 2px) var(--arm, 16px),
+    linear-gradient(var(--hud-edge) 0 0) bottom left / var(--arm, 16px) var(--bar, 2px),
+    linear-gradient(var(--hud-edge) 0 0) bottom left / var(--bar, 2px) var(--arm, 16px),
+    linear-gradient(var(--hud-edge) 0 0) bottom right / var(--arm, 16px) var(--bar, 2px),
+    linear-gradient(var(--hud-edge) 0 0) bottom right / var(--bar, 2px) var(--arm, 16px);
   background-repeat: no-repeat;
   filter: drop-shadow(0 0 3px var(--hud-glow-strong));
 }
@@ -223,8 +225,11 @@
   border-radius: 3px;
   box-shadow: 0 0 18px var(--hud-glow), 0 14px 34px #02090d66;
 }
-.s3d .s3d-dock .s3d-viewmenu button { color: var(--hud-ink); letter-spacing: .02em; }
-.s3d .s3d-dock .s3d-viewmenu button:hover { background: var(--hud-hover); box-shadow: inset 2px 0 0 var(--hud-edge); }
+.s3d .s3d-dock .s3d-viewmenu button { --arm: 8px; position: relative; border-radius: 2px; color: var(--hud-ink); letter-spacing: .02em; }
+.s3d .s3d-dock .s3d-viewmenu button:hover,
+.s3d .s3d-dock .s3d-viewmenu button:focus-visible { background: var(--hud-hover); }
+/* The view in use (Auto, while it is on) is lit like the dock's On button, its brackets standing for the frame. */
+.s3d .s3d-dock .s3d-viewmenu button.is-on { background: linear-gradient(90deg, var(--hud-band), var(--hud-hover)); box-shadow: none; }
 .s3d .s3d-dock .s3d-viewmenu button:disabled { color: var(--hud-muted); opacity: .55; background: none; box-shadow: none; }
 .s3d .s3d-dock :focus-visible { outline-color: var(--hud-focus); }
 

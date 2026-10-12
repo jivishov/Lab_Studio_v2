@@ -1218,7 +1218,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
         </button>
         {viewsOpen ? (
           <div className="s3d-viewmenu" role="menu" aria-label="Camera views">
-            <button type="button" role="menuitem" onClick={() => chooseView("auto")}>Auto · follow the step</button>
+            <button type="button" role="menuitem" className={autoView ? "is-on" : undefined} onClick={() => chooseView("auto")}>Auto · follow the step</button>
             <button type="button" role="menuitem" onClick={() => chooseView("bench")}>Whole bench</button>
             <button type="button" role="menuitem" disabled={!selected} onClick={() => chooseView("selected")}>Selected item</button>
             <button type="button" role="menuitem" onClick={() => chooseView("overhead")}>Overhead</button>

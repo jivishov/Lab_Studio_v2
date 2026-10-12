@@ -118,6 +118,8 @@ const pairs = [
   ["HUD On button's underline on glass", "hud-edge", ["hud-band+hud-glass@scene"], 3, "ui"],
   ["HUD ink in the camera views menu", "hud-ink", ["hud-core", "hud-hover+hud-core@scene"], 4.5, "text"],
   ["HUD focus ring on the camera views menu", "hud-focus", ["hud-core"], 3, "focus"],
+  ["HUD ink on the view in use (Auto on)", "hud-ink", ["hud-band+hud-core@scene"], 4.5, "text"],
+  ["HUD menu item brackets", "hud-edge", ["hud-core", "hud-hover+hud-core@scene", "hud-band+hud-core@scene"], 3, "ui"],
 ];
 
 const surfaces = (name) => {
