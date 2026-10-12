@@ -64,8 +64,10 @@ const v = (x: number, y: number, z: number) => new THREE.Vector3(x * S, y * S, z
  * station at its right end together, from a little lower than the source's 0.72 rad so the shelf's tiers face the
  * eye. Aimed left of the bench's middle so the whole shelf stands clear of the step card, which opens at the top left.
  * Fitted at 1024 × 700 (the source's own view, `renderer.js:119`, was at(0, .35, .65), pitch .72, 11.2 units).
+ * Lowered from 0.66 rad to 0.45 (you, 2026-10-12, with the natural room): the eye about 1.3 m over the worktop, not
+ * 1.8 m, so the bench is seen more as one standing at it sees it, and the window shows over the shelf.
  */
-export const DEFAULT_VIEW = (): OrbitView => ({ at: v(-3.2, 0, -2.4), yaw: 0, pitch: 0.66, distance: 32 * S });
+export const DEFAULT_VIEW = (): OrbitView => ({ at: v(-3.2, 0, -2.4), yaw: 0, pitch: 0.45, distance: 32 * S });
 export const PRESETS = {
   /** "Whole bench" */
   bench: (): OrbitView => ({ at: v(0, 0.24, -0.6), yaw: 0, pitch: 0.89, distance: 15.5 * S }),
