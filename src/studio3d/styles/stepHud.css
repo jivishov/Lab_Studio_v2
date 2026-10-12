@@ -1,7 +1,8 @@
 /*
  * The step card's sci-fi HUD (you, 2026-10-12: "Make this step card less vision obscuring and also try to apply
- * Jarvis-like (from Iron Man) theme to it. Make the kids to feel in a sci fi lab."). The card's content, order and
- * controls are unchanged (handoff §5.5); only its look is.
+ * Jarvis-like (from Iron Man) theme to it. Make the kids to feel in a sci fi lab."), and the dock's under it ("Apply
+ * the same theme to the bottom menu card."). Their content, order and controls are unchanged (handoff §5.5, §5.7);
+ * only their look is.
  *
  * - Less in the way: dark glass the bench shows through (about three quarters opaque, blurred, where the light card was
  *   95 % opaque), a narrower card, a smaller title (none on the card when the instruction repeats it) and a 3 px
@@ -10,8 +11,9 @@
  *   cyan actions, and a scan line that sweeps the card when a new step comes up (none with reduced motion).
  *
  * Colours come from the --hud-* tokens, whose text pairs scripts/studio3d/checkTokenContrast.mjs checks over the
- * light and dark stage and the window's white. Every rule is scoped `.s3d … .s3d-step`, so it outranks the light
- * theme's single-class rules in studio3d.css whichever loads first.
+ * light and dark stage and the window's white. Every rule is scoped `.s3d … .s3d-step` (or `.s3d-dock`, `.s3d-hint`),
+ * so it outranks the light theme's single-class rules in studio3d.css whichever loads first. The dock's sizes stay
+ * studio3d.css's, so its tablet rules (icons only under 1100 px, raised over the sheet under 1024 px) still apply.
  */
 
 /* ---------------------------------------------------------------- the card */
@@ -35,7 +37,8 @@
 }
 
 /* Corner brackets, inside the edge so the card's clipping keeps them; they never take a pointer. */
-.s3d .s3d-float.s3d-step::before {
+.s3d .s3d-float.s3d-step::before,
+.s3d .s3d-dock::before {
   --arm: 16px;
   --bar: 2px;
   content: "";
@@ -178,3 +181,61 @@
 /* Focus: the amber ring, brightened for the dark glass. */
 .s3d .s3d-step :focus-visible { outline-color: var(--hud-focus); }
 .s3d .s3d-step .s3d-input:focus-within { outline-color: var(--hud-focus); }
+
+/* ---------------------------------------------------------------- the dock */
+.s3d .s3d-dock {
+  color-scheme: dark;
+  background:
+    repeating-linear-gradient(0deg, var(--hud-scanline) 0 1px, transparent 1px 4px),
+    linear-gradient(160deg, var(--hud-glass-top), var(--hud-glass) 55%);
+  backdrop-filter: blur(12px) saturate(1.3);
+  border: 1px solid var(--hud-line);
+  border-radius: 3px;
+  box-shadow: 0 0 0 1px #00000038, 0 0 22px var(--hud-glow), 0 14px 34px #02090d4d;
+}
+.s3d .s3d-dock::before { --arm: 12px; }
+/* Narrow side padding keeps each label on one line (the light dock wrapped "Hand control"). */
+.s3d .s3d-dock button {
+  padding-inline: 2px;
+  border-radius: 3px;
+  color: var(--hud-ink-2);
+  font-weight: 500;
+  letter-spacing: .02em;
+  transition: background var(--dur-hover) var(--ease-standard), box-shadow var(--dur-hover) var(--ease-standard);
+}
+.s3d .s3d-dock button > svg { color: var(--hud-cyan); }
+.s3d .s3d-dock button:hover { background: var(--hud-hover); color: var(--hud-ink); }
+/* On: lit from inside, a cyan frame and an underline that glows, rather than a solid fill that would rival the
+   step card's primary action. */
+.s3d .s3d-dock button.is-on {
+  background: linear-gradient(0deg, var(--hud-band), var(--hud-hover));
+  color: var(--hud-ink);
+  box-shadow: inset 0 0 0 1px var(--hud-line-strong), inset 0 -2px 0 var(--hud-edge), 0 0 12px var(--hud-glow-strong);
+}
+.s3d .s3d-dock button.is-on > svg { filter: drop-shadow(0 0 3px var(--hud-glow-strong)); }
+.s3d .s3d-dock button:disabled { background: transparent; box-shadow: none; }
+.s3d .s3d-dock .s3d-dock__sep { background: linear-gradient(180deg, transparent, var(--hud-line-strong), transparent); }
+
+/* The camera views menu: near-opaque, as a menu over the scene should be (the dock's own blur would not reach it). */
+.s3d .s3d-dock .s3d-viewmenu {
+  background: var(--hud-core);
+  border: 1px solid var(--hud-line-strong);
+  border-radius: 3px;
+  box-shadow: 0 0 18px var(--hud-glow), 0 14px 34px #02090d66;
+}
+.s3d .s3d-dock .s3d-viewmenu button { color: var(--hud-ink); letter-spacing: .02em; }
+.s3d .s3d-dock .s3d-viewmenu button:hover { background: var(--hud-hover); box-shadow: inset 2px 0 0 var(--hud-edge); }
+.s3d .s3d-dock .s3d-viewmenu button:disabled { color: var(--hud-muted); opacity: .55; background: none; box-shadow: none; }
+.s3d .s3d-dock :focus-visible { outline-color: var(--hud-focus); }
+
+/* The hint over the dock: a HUD caption on the same glass, lifted clear of the dock's brackets. */
+.s3d .s3d-hint {
+  bottom: 90px;
+  background: var(--hud-glass);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--hud-line);
+  border-radius: 3px;
+  color: var(--hud-ink-2);
+  letter-spacing: .02em;
+  box-shadow: 0 0 14px var(--hud-glow);
+}

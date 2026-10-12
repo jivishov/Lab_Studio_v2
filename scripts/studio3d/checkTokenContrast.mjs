@@ -109,6 +109,15 @@ const pairs = [
   ["HUD From the bench chip", "hud-prov-bench", ["hud-glass@scene"], 4.5, "text"],
   ["HUD Simulated chip", "hud-prov-sim", ["hud-glass@scene"], 4.5, "text"],
   ["HUD Calculated chip", "hud-prov-calc", ["hud-glass@scene"], 4.5, "text"],
+  // The dock and the hint over it (you, 2026-10-12): the same glass; an On button is lit from inside.
+  ["HUD ink-2 on the dock (button labels, hint)", "hud-ink-2", ["hud-glass@scene", "hud-glass-top@scene"], 4.5, "text"],
+  ["HUD cyan icons on the dock", "hud-cyan", ["hud-glass@scene", "hud-glass-top@scene"], 3, "ui"],
+  ["HUD ink on a dock button under the pointer", "hud-ink", ["hud-hover+hud-glass@scene"], 4.5, "text"],
+  ["HUD ink on an On dock button", "hud-ink", ["hud-band+hud-glass@scene", "hud-hover+hud-glass@scene"], 4.5, "text"],
+  ["HUD cyan icon on an On dock button", "hud-cyan", ["hud-band+hud-glass@scene"], 3, "ui"],
+  ["HUD On button's underline on glass", "hud-edge", ["hud-band+hud-glass@scene"], 3, "ui"],
+  ["HUD ink in the camera views menu", "hud-ink", ["hud-core", "hud-hover+hud-core@scene"], 4.5, "text"],
+  ["HUD focus ring on the camera views menu", "hud-focus", ["hud-core"], 3, "focus"],
 ];
 
 const surfaces = (name) => {
