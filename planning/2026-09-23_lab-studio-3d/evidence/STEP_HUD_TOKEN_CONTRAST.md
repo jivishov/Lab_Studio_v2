@@ -76,5 +76,7 @@ white as well; the lowest ratio counts.
 | HUD On button's underline on glass | ui | 3.88–7.84:1 | 3:1 |  | pass |
 | HUD ink in the camera views menu | text | 13.85–17.95:1 | 4.5:1 |  | pass |
 | HUD focus ring on the camera views menu | focus | 12.88:1 | 3:1 |  | pass |
+| HUD ink on the view in use (Auto on) | text | 13.47–13.47:1 | 4.5:1 |  | pass |
+| HUD menu item brackets | ui | 8.78–11.69:1 | 3:1 |  | pass |
 
-69 of 69 pairs pass.
+71 of 71 pairs pass.
