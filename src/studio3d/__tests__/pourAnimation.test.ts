@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { solutionTechnique } from "../../domain/fixtures";
 import { createRuntimeState, performRuntimeAction } from "../../runtime";
 import { resolveInteractionIntent } from "../../runtime/interactionIntents";
-import { pourStagingScene, runtimeToScene } from "../adapters/runtimeToScene";
+import { drawnItem, pourStagingScene, runtimeToScene } from "../adapters/runtimeToScene";
 import { onsetTilt, pourGeometry, pourQuaternion, rootForLip, UP, volumeBelow, vesselSlices } from "../bench/scene/pour";
 import { equipment3dEntry } from "../equipment3d/readiness";
 
@@ -19,8 +19,9 @@ describe("a committed pour is staged on the committed layout (handoff §5.7, G-3
   it("has both vessels drawn, holding what they held before the pour", () => {
     expect(request?.sourceInstanceId && request.targetInstanceId).toBeTruthy();
     const staging = pourStagingScene(before, after, making, { sourceId: request!.sourceInstanceId!, targetId: request!.targetInstanceId! });
-    const source = [...staging.bench, ...staging.tray].find((i) => i.instanceId === request!.sourceInstanceId);
-    const target = staging.bench.find((i) => i.instanceId === request!.targetInstanceId);
+    // Found where the Player looks for the pour's two vessels, the source on its shelf spot.
+    const source = drawnItem(staging, request!.sourceInstanceId!);
+    const target = drawnItem(staging, request!.targetInstanceId!);
     expect(target?.contents.kind).toBe("none");
     expect(source?.contents).toMatchObject({ kind: "liquid", volumeMl: 500 });
   });

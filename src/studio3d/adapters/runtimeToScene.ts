@@ -457,6 +457,10 @@ const shelfItem = (instance: EquipmentInstance, model: Equipment3DEntry | undefi
   return item;
 };
 
+/** An item drawn in a scene: on the bench, or on its spot on the shelf or the side station. */
+export const drawnItem = (scene: SceneDescription, instanceId: string): SceneItem | undefined =>
+  scene.bench.find((item) => item.instanceId === instanceId) ?? scene.tray.find((item) => item.instanceId === instanceId);
+
 /**
  * The bench a committed pour animates on (handoff §5.7): the committed layout, with the pour's
  * source and target still holding what they held before it. A pour often brings its source or

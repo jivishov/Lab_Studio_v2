@@ -17,7 +17,7 @@ import { DropPanel } from "./DropPanel";
 import { StepCard } from "./StepCard";
 import { StepClock } from "./StepClock";
 import { guideItemId } from "../adapters/guideTargets";
-import { fillLevelMm } from "../adapters/runtimeToScene";
+import { drawnItem, fillLevelMm } from "../adapters/runtimeToScene";
 import { readingVesselId } from "./stepRules";
 import { usePlayer3D, type Player3DController } from "./usePlayer3D";
 import type { Lab3DPartLabel } from "../labs3d";
@@ -258,7 +258,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
       return () => window.clearTimeout(drained);
     }
     if (!engine) return;
-    const staged = (id: string) => pour.staging.bench.find((i) => i.instanceId === id);
+    // A source poured from where it stands on the shelf is staged on its shelf spot (pourStagingScene).
+    const staged = (id: string) => drawnItem(pour.staging, id);
     const committed = (id: string) => scene.bench.find((i) => i.instanceId === id);
     const source = staged(pour.sourceId);
     const target = staged(pour.targetId);

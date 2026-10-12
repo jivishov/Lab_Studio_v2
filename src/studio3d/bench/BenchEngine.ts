@@ -1767,7 +1767,7 @@ export class BenchEngine {
     const target = targetId ? this.items.get(targetId) : undefined;
     const via = viaId && source ? this.items.get(viaId) : undefined;
     if (!source && !target) return;
-    // With no source on the bench (it is still in the tray), only the target pulses.
+    // With no source drawn (none named), only the target pulses; one on the shelf is reached where it stands.
     const demo: NonNullable<BenchEngine["demo"]> = source
       ? { sourceId: source.instanceId, targetId: target?.instanceId, viaId: via?.instanceId, t: 0 }
       : { sourceId: target!.instanceId, t: 0 };
@@ -2007,6 +2007,17 @@ export class BenchEngine {
       : args.returnTo ? toWorld(args.returnTo.xMm, args.returnTo.yMm).setY(restPos.y) : restPos.clone();
     const endQuat = holding ? holding.sourceRest.quat.clone()
       : args.returnTo ? new THREE.Quaternion().setFromAxisAngle(UP, args.returnTo.yawDeg * DEG) : source.root.quaternion.clone();
+    // A source on a shelf tier slides forward off it, just lifted, before it is brought down to the target, and back
+    // onto its spot the same way afterwards, as a hand takes a bottle from a shelf: never through the board above or
+    // below it (the shelf in place of the tray, decided 2026-10-11).
+    const tier = source.shelf?.place === "tier" ? source.shelf : undefined;
+    const offTier = (from: THREE.Vector3) => tier
+      ? from.clone().add(new THREE.Vector3(0, 0.005, (SHELF.depthMm / 2 + tier.depthMm / 2 + 15) * MM)) : undefined;
+    // A counted rinse's later squirts start where the bottle is held; only the last sets it back.
+    const outStart = released || holding ? undefined : offTier(startPos);
+    const outEnd = args.returnTo || args.holdAfter ? undefined : offTier(endPos);
+    /** The share of the carry in (or out) spent sliding off (or onto) the tier. */
+    const SLIDE = 0.4;
 
     // The target's mouth: the top of its fill profile, on its axis; or the rim of a filling funnel
     // seated in it (a zone ending "funnel-seat"), which is where a pour or a rinse goes in (decided 2026-10-04).
@@ -2094,8 +2105,8 @@ export class BenchEngine {
     // The carry in and out stays short, so the pour itself keeps most of the time: from a drag's drop
     // point the source is already over the target.
     const drain = Math.max(0, args.drainS ?? 0);
-    const T = { approach: holding ? 0.2 : (released ? 0.3 : 0.45) + (viaHold && !viaHeld ? 0.45 : 0), tilt: 0.35, flow, drain, untilt: 0.3,
-      back: 0.45 + (viaHold ? 0.45 : 0) };
+    const T = { approach: holding ? 0.2 : (released ? 0.3 : 0.45) + (viaHold && !viaHeld ? 0.45 : 0) + (outStart ? 0.3 : 0), tilt: 0.35, flow, drain,
+      untilt: 0.3, back: 0.45 + (viaHold ? 0.45 : 0) + (outEnd ? 0.3 : 0) };
     // Draining holds the emptied vessel at its last tilt between the pour and the untilt.
     const at = { tilt: T.approach, flow: T.approach + T.tilt, drain: T.approach + T.tilt + flow, untilt: T.approach + T.tilt + flow + drain,
       back: T.approach + T.tilt + flow + drain + T.untilt };
@@ -2165,9 +2176,11 @@ export class BenchEngine {
       let pos: THREE.Vector3;
       if (t < at.tilt) {
         const u = ease(span(t, 0, T.approach));
-        q = startQuat.clone().slerp(upright, u);
-        pos = startPos.clone().lerp(standPos, u);
-        pos.y += Math.sin(u * Math.PI) * 0.03;
+        // Off the tier first, still facing as it stood; then over to the target.
+        const w = outStart ? Math.max(0, (u - SLIDE) / (1 - SLIDE)) : u;
+        q = startQuat.clone().slerp(upright, w);
+        pos = outStart && u < SLIDE ? startPos.clone().lerp(outStart, u / SLIDE) : (outStart ?? startPos).clone().lerp(standPos, w);
+        pos.y += Math.sin(w * Math.PI) * 0.03;
       } else if (t < at.untilt + T.untilt) {
         const tipping = t < at.flow;
         const u = tipping ? span(t, at.tilt, T.tilt) : t < at.untilt ? span(t, at.flow, flow) : span(t, at.untilt, T.untilt);
@@ -2183,9 +2196,11 @@ export class BenchEngine {
         pos = rootForLip(geometry, q, standLip.clone().lerp(lipAt, lipU));
       } else {
         const u = ease(span(t, at.back, T.back));
-        q = upright.clone().slerp(endQuat, u);
-        pos = standPos.clone().lerp(endPos, u);
-        pos.y += Math.sin(u * Math.PI) * 0.03;
+        // Back in front of its spot, facing as it stood there; then onto the tier.
+        const w = outEnd ? Math.min(1, u / (1 - SLIDE)) : u;
+        q = upright.clone().slerp(endQuat, w);
+        pos = outEnd && u > 1 - SLIDE ? outEnd.clone().lerp(endPos, (u - (1 - SLIDE)) / SLIDE) : standPos.clone().lerp(outEnd ?? endPos, w);
+        pos.y += Math.sin(w * Math.PI) * 0.03;
       }
       source.root.position.copy(pos);
       source.root.quaternion.copy(q);
