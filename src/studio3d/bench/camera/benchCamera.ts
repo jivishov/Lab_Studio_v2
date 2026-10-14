@@ -49,7 +49,13 @@ export const MANUAL = {
    * up or down the screen. Right-drag clamps to the same range, so it never snaps a slid view back.
    */
   atZ: 9 * S,
-  /** Radians per pixel: orbit yaw, and pitch (orbit and pan-tilt alike). */
+  /**
+   * Up and down, metres over the worktop (you, 2026-10-13, right-drag moves the scene up and down): the camera rises
+   * with the look-at point up to 0.5 m, still under the ceiling from Home's angle, and goes down 0.3 m.
+   */
+  atYMin: -0.3,
+  atYMax: 0.5,
+  /** Radians per pixel: orbit yaw and pitch. */
   yawPerPx: 0.006,
   pitchPerPx: 0.005,
   /** Wheel zoom: distance × e^(deltaY · k). */
@@ -113,26 +119,37 @@ export const clampManual = (view: OrbitView): OrbitView => ({
 });
 /**
  * Each manual input clamps only what it changes, as the source does: an orbit its pitch, a pan its
- * look-at point and pitch, the wheel its distance and look-at point (`app.js:125-126, 136, 148-149`).
+ * look-at point, the wheel its distance and look-at point (`app.js:125-126, 136, 148-149`).
  * So a programmatic view outside the limits (eye level, close to a meniscus) is not thrown out by a
  * pan or a zoom.
  */
 const clampPitch = (pitch: number) => clamp(pitch, MANUAL.pitchMin, MANUAL.pitchMax);
 export const clampAt = (at: THREE.Vector3) => new THREE.Vector3(clamp(at.x, MANUAL.atXMin, MANUAL.atXMax), at.y, clamp(at.z, -MANUAL.atZ, MANUAL.atZ));
 
-/** Shift/Alt + right-drag or middle-drag (`app.js:125`). */
+/** Shift/Alt + right-drag or middle-drag (`app.js:125`); up and down tilt (with right-drag before 2026-10-13). */
 export const orbitBy = (view: OrbitView, dx: number, dy: number): OrbitView =>
   ({ ...copyView(view), yaw: view.yaw - dx * MANUAL.yawPerPx, pitch: clampPitch(view.pitch + dy * MANUAL.pitchPerPx) });
 
 /**
- * Right-drag (`app.js:126`, `panBy` at `:134-137`): the bench point under the pointer moves with it sideways
- * (`from` and `to` are the bench points under the pointer before and after, at the same screen
- * height), and moving up or down tilts the view.
+ * Right-drag, and one finger on empty bench: the view moves with the pointer. Sideways, the bench point under the
+ * pointer stays under it (`app.js:126`, `panBy` at `:134-137`; `from` and `to` are the bench points under the pointer
+ * before and after, at the same screen height). Up or down (you, 2026-10-13: "Allow user to the move the scene
+ * up-down vertically with the right-mouse button held clicked"; it tilted the view before), the camera slides along
+ * its own up direction, keeping its angle and distance, so the scene at the look-at point's depth follows the pointer
+ * `dy` pixels. The look-at point stays between `MANUAL.atYMin` and `atYMax`; one already outside is not pulled in.
  */
-export const panTiltBy = (view: OrbitView, from: THREE.Vector3 | null, to: THREE.Vector3 | null, dy: number): OrbitView => {
+export const panBy = (view: OrbitView, from: THREE.Vector3 | null, to: THREE.Vector3 | null, dy: number, size: Size): OrbitView => {
   const at = view.at.clone();
   if (from && to) at.add(from.clone().sub(to));
-  return { ...view, at: from && to ? clampAt(at) : at, pitch: clampPitch(view.pitch + dy * MANUAL.pitchPerPx) };
+  const sp = Math.sin(view.pitch), cp = Math.cos(view.pitch);
+  const up = new THREE.Vector3(-sp * Math.sin(view.yaw), cp, -sp * Math.cos(view.yaw));
+  let step = (dy * 2 * effectiveDistance(view, size.w / size.h) * Math.tan((FOV * Math.PI) / 360)) / Math.max(1, size.h);
+  if (Math.abs(up.y) > 1e-6) {
+    const y = clamp(at.y + step * up.y, Math.min(MANUAL.atYMin, at.y), Math.max(MANUAL.atYMax, at.y));
+    step = (y - at.y) / up.y;
+  }
+  at.addScaledVector(up, step);
+  return { ...view, at: (from && to) || step ? clampAt(at) : at };
 };
 
 /**

@@ -288,8 +288,8 @@ const CONTROLS: Record<string, Array<[string, string]>> = {
     ["Esc or right-click while holding it", "Put it back"],
     ["Double-click an item", "Examine it"],
     ["Drag on empty bench", "Slide the bench up, down or sideways"],
-    ["Right-drag", "Pan sideways; drag up or down to tilt"],
-    ["Shift or Alt + right-drag, or middle-drag", "Orbit"],
+    ["Right-drag", "Move the view sideways, up or down"],
+    ["Shift or Alt + right-drag, or middle-drag", "Orbit; drag up or down to tilt"],
     ["Wheel", "Zoom toward the pointer"],
   ],
   "Keyboard, while the bench has focus": [
@@ -305,8 +305,8 @@ const CONTROLS: Record<string, Array<[string, string]>> = {
   ],
   Touch: [
     ["Hold for 300 ms, then drag", "Carry"],
-    ["Drag on the empty bench", "Pan sideways; drag up or down to tilt"],
-    ["Two-finger drag / pinch", "Orbit / zoom"],
+    ["Drag on the empty bench", "Move the view sideways, up or down"],
+    ["Two-finger drag / pinch", "Orbit and tilt / zoom"],
   ],
 };
 

@@ -8,7 +8,7 @@ import { equipment3dRegistry } from "../equipment3d/readiness";
 import type { Equipment3DEntry } from "../equipment3d/types";
 import {
   applyView, clampAt, clampManual, copyView, DEFAULT_VIEW, easeInOutCubic, FAR, fitBest, fitBestSteady, FOV, lerpView, MANUAL, NEAR,
-  orbitBy, panTiltBy, PRESETS, safeRects, slideBy, zoomBy, type OrbitView, type Rect,
+  orbitBy, panBy, PRESETS, safeRects, slideBy, zoomBy, type OrbitView, type Rect,
 } from "./camera/benchCamera";
 import { homeView } from "./camera/home";
 import { makeComposer } from "./look/composer";
@@ -2447,13 +2447,14 @@ export class BenchEngine {
 
   /**
    * The microarray lab's mouse camera (`3d-v3/app.js:111-151`), decided 2026-10-03/04: right-drag
-   * pans sideways (the bench point under the pointer stays under it) and tilts with up/down; Shift
-   * or Alt + right-drag, or middle-drag, orbits; the wheel zooms toward the bench point under the
+   * moves the view with the pointer, sideways (the bench point under the pointer stays under it) and, since you asked
+   * on 2026-10-13, up and down at the same angle, where it tilted before (`panBy`); Shift
+   * or Alt + right-drag, or middle-drag, orbits and tilts; the wheel zooms toward the bench point under the
    * pointer. Drags start after 3 px; a right click without a drag calls `onCameraClick`. The left
    * button is the camera's only on empty bench with nothing carried (decided 2026-10-11): a left-drag there slides
    * the bench with the pointer (`slideBy`); a left press on an item or a control is the item's. Touch (choice 5,
-   * tablets): one finger on empty bench pans and
-   * tilts like a right-drag, a pinch zooms and a two-finger drag orbits; a touch that picks up an
+   * tablets): one finger on empty bench moves the view
+   * like a right-drag (you, 2026-10-13), a pinch zooms and a two-finger drag orbits and tilts; a touch that picks up an
    * item holds the camera (`holdCameraInput`).
    */
   private attachCameraInput(): () => void {
@@ -2505,7 +2506,7 @@ export class BenchEngine {
       if (d.drag) {
         if (d.mode === "orbit") this.setView(orbitBy(this.view, p.x - d.x, p.y - d.y));
         else if (d.mode === "slide") this.setView(slideBy(this.view, this.onBench(d.x, d.y), this.onBench(p.x, p.y)));
-        else this.setView(panTiltBy(this.view, this.onBench(d.x, d.y), this.onBench(p.x, d.y), p.y - d.y));
+        else this.setView(panBy(this.view, this.onBench(d.x, d.y), this.onBench(p.x, d.y), p.y - d.y, this.canvasSize()));
       }
       d.x = p.x;
       d.y = p.y;
@@ -2551,7 +2552,7 @@ export class BenchEngine {
     };
   }
 
-  /** A new touch baseline: one finger pans and tilts; two fingers pinch-zoom and orbit about their midpoint. */
+  /** A new touch baseline: one finger moves the view; two fingers pinch-zoom and orbit about their midpoint. */
   private startTouchGesture(): void {
     const pts = [...this.touches.values()];
     if (!pts.length) return;
@@ -2578,7 +2579,7 @@ export class BenchEngine {
     if (!g.drag && Math.hypot(p.x - g.startX, p.y - g.startY) > MANUAL.dragPx) g.drag = true;
     if (g.drag) {
       if (!g.manual) { g.manual = true; this.beginManualCamera(); }
-      this.setView(panTiltBy(this.view, this.onBench(g.x, g.y), this.onBench(p.x, g.y), p.y - g.y));
+      this.setView(panBy(this.view, this.onBench(g.x, g.y), this.onBench(p.x, g.y), p.y - g.y, this.canvasSize()));
     }
     g.x = p.x;
     g.y = p.y;

@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { describe, expect, it } from "vitest";
 import {
-  applyView, clampManual, DEFAULT_VIEW, eyeOf, fit, fitBest, fitBestSteady, fitSteady, frontYaw, MANUAL, orbitBy, panTiltBy, PRESETS, safeRects, slideBy, zoomBy,
+  applyView, clampManual, DEFAULT_VIEW, eyeOf, fit, fitBest, fitBestSteady, fitSteady, frontYaw, MANUAL, orbitBy, panBy, PRESETS, safeRects, slideBy, zoomBy,
 } from "../bench/camera/benchCamera";
 import { ROOM_SCALE } from "../bench/look/room";
 
@@ -83,11 +83,28 @@ describe("manual input (app.js:111-151)", () => {
     expect(view.pitch).toBeCloseTo(DEFAULT_VIEW().pitch + 0.1, 9);
   });
 
-  it("pans by the bench points under the pointer, and tilts with up/down", () => {
+  it("pans by the bench points under the pointer sideways, and moves the scene with it up and down (2026-10-13)", () => {
+    const start = DEFAULT_VIEW();
     const from = new THREE.Vector3(0.1, 0, 0), to = new THREE.Vector3(0.3, 0, 0);
-    const view = panTiltBy(DEFAULT_VIEW(), from, to, -10);
-    expect(view.at.x).toBeCloseTo(DEFAULT_VIEW().at.x - 0.2, 9);
-    expect(view.pitch).toBeCloseTo(DEFAULT_VIEW().pitch - 0.05, 9);
+    const sideways = panBy(start, from, to, 0, size);
+    expect(sideways.at.x).toBeCloseTo(start.at.x - 0.2, 9);
+    expect([sideways.at.y, sideways.at.z, sideways.pitch]).toEqual([start.at.y, start.at.z, start.pitch]);
+    // Down 40 px: the angle and distance are kept, and what was at the look-at point is now 40 px lower on the screen.
+    const down = panBy(start, null, null, 40, size);
+    expect([down.yaw, down.pitch, down.distance]).toEqual([start.yaw, start.pitch, start.distance]);
+    expect(down.at.y).toBeGreaterThan(start.at.y);
+    const was = project(down, start.at);
+    expect(was.x).toBeCloseTo(size.w / 2, 6);
+    expect(was.y).toBeCloseTo(size.h / 2 + 40, 6);
+    // It rises to atYMax and goes down to atYMin, and stops there; a view already higher is not pulled down.
+    let high = start, low = start;
+    for (let i = 0; i < 80; i += 1) { high = panBy(high, null, null, 30, size); low = panBy(low, null, null, -30, size); }
+    expect(high.at.y).toBeCloseTo(MANUAL.atYMax, 9);
+    expect(low.at.y).toBeCloseTo(MANUAL.atYMin, 9);
+    expect([high.pitch, low.pitch]).toEqual([start.pitch, start.pitch]);
+    const above = { ...start, at: new THREE.Vector3(0, 0.8, 0) };
+    expect(panBy(above, from, to, 30, size).at.y).toBeCloseTo(0.8, 9);
+    expect(panBy(above, null, null, -30, size).at.y).toBeLessThan(0.8);
   });
 
   it("slides the bench with a left-drag, up and down as well as sideways, over twice the source's range (2026-10-11)", () => {
@@ -109,7 +126,8 @@ describe("manual input (app.js:111-151)", () => {
   it("clamps only what each input changes, so a close programmatic view is not thrown out by an orbit", () => {
     const eyeLevel = { at: new THREE.Vector3(0, 0.05, 0), yaw: 0, pitch: 0, distance: 0.16 };
     expect(orbitBy(eyeLevel, 10, 0).distance).toBe(0.16); // an orbit clamps pitch only
-    expect(panTiltBy(eyeLevel, null, null, 0).distance).toBe(0.16); // a pan clamps pitch and the look-at point
+    expect(panBy(eyeLevel, null, null, 0, size).distance).toBe(0.16); // a pan clamps the look-at point only
+    expect(panBy(eyeLevel, null, null, 0, size).pitch).toBe(0);
     expect(zoomBy(eyeLevel, 0).pitch).toBe(0); // the wheel clamps distance only
     expect(zoomBy(eyeLevel, 0).distance).toBe(MANUAL.distanceMin);
   });
