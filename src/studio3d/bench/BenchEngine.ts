@@ -7,7 +7,7 @@ import { ModelLibrary } from "../equipment3d/loadModels";
 import { equipment3dRegistry } from "../equipment3d/readiness";
 import type { Equipment3DEntry } from "../equipment3d/types";
 import {
-  applyView, clampAt, clampManual, copyView, DEFAULT_VIEW, easeInOutCubic, FAR, fitBest, FOV, lerpView, MANUAL, NEAR,
+  applyView, clampAt, clampManual, copyView, DEFAULT_VIEW, easeInOutCubic, FAR, fitBest, fitBestSteady, FOV, lerpView, MANUAL, NEAR,
   orbitBy, panTiltBy, PRESETS, safeRects, slideBy, zoomBy, type OrbitView, type Rect,
 } from "./camera/benchCamera";
 import { homeView } from "./camera/home";
@@ -2634,9 +2634,10 @@ export class BenchEngine {
    * reduced motion. `marginFactor` grows the items' bounds about
    * their centre; `safe` are the free canvas rectangles (default `safeAreas`). "all" also takes in
    * the runtime bench, as the microarray's framing keeps its bench outline in view, so one item
-   * alone on the bench is not framed as a close-up.
+   * alone on the bench is not framed as a close-up. `steady` frames with the steady fit, as Auto view does (you,
+   * 2026-10-12): from Home's low pitch the source's fit swings.
    */
-  frameItems(instanceIds: string[] | "all", marginFactor = 1.1, safe: Rect[] | undefined = this.safeAreas): void {
+  frameItems(instanceIds: string[] | "all", marginFactor = 1.1, safe: Rect[] | undefined = this.safeAreas, steady = false): void {
     const box = new THREE.Box3();
     const views = instanceIds === "all" ? [...this.items.values()] : instanceIds.map((id) => this.items.get(id)).filter(Boolean) as ItemView[];
     // A shelf item whose model has not arrived yet (it loads after the bench is shown) is framed by its spot.
@@ -2651,7 +2652,7 @@ export class BenchEngine {
       box.expandByPoint(new THREE.Vector3(-w, 0, -d)).expandByPoint(new THREE.Vector3(w, 0, d));
     }
     if (box.isEmpty()) box.set(new THREE.Vector3(-0.5, 0, -0.3), new THREE.Vector3(0.5, 0.25, 0.3));
-    this.frameBox(box, marginFactor, safe);
+    this.frameBox(box, marginFactor, safe, steady);
   }
 
   /** "Whole bench": the microarray lab's preset (`app.js:108`). */
@@ -2710,7 +2711,7 @@ export class BenchEngine {
     this.tweenTo({ at: target, yaw, pitch: 0, distance: distanceM });
   }
 
-  private frameBox(box: THREE.Box3, marginFactor: number, safe: Rect[] | undefined): void {
+  private frameBox(box: THREE.Box3, marginFactor: number, safe: Rect[] | undefined, steady = false): void {
     const centre = box.getCenter(new THREE.Vector3());
     const half = box.getSize(new THREE.Vector3()).multiplyScalar(marginFactor / 2);
     const points: THREE.Vector3[] = [];
@@ -2722,7 +2723,7 @@ export class BenchEngine {
     // The angle the learner is looking from is kept (decided 2026-10-05, replacing choice 11's turn
     // back to the front at a fixed pitch): framing moves only the look-at point and the distance.
     const base: OrbitView = { ...copyView(this.view), pitch: clampManual(this.view).pitch };
-    const goal = fitBest(points, base, size, rects);
+    const goal = (steady ? fitBestSteady : fitBest)(points, base, size, rects);
     if (goal) this.tweenTo(goal);
   }
 

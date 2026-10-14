@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { describe, expect, it } from "vitest";
 import {
-  applyView, clampManual, DEFAULT_VIEW, eyeOf, fit, fitBest, fitSteady, frontYaw, MANUAL, orbitBy, panTiltBy, PRESETS, safeRects, slideBy, zoomBy,
+  applyView, clampManual, DEFAULT_VIEW, eyeOf, fit, fitBest, fitBestSteady, fitSteady, frontYaw, MANUAL, orbitBy, panTiltBy, PRESETS, safeRects, slideBy, zoomBy,
 } from "../bench/camera/benchCamera";
 import { ROOM_SCALE } from "../bench/look/room";
 
@@ -177,5 +177,22 @@ describe("auto-framing (framing.js:29-50, app.js:83-97)", () => {
     expect(steady.pitch).toBe(0.45);
     // As close as it fits: 3 % closer, it does not.
     expect(fitSteady(tall, base, size, safe, { min: MANUAL.distanceMin, max: steady.distance * 0.97 })).toBeUndefined();
+  });
+
+  it("frames Auto view with the steady fit, and with the source's where nothing fits (2026-10-12)", () => {
+    const tall = [-0.42, 0.1].flatMap((x) => [0, 0.73].flatMap((y) => [-0.5, 0.1].map((z) => new THREE.Vector3(x, y, z))));
+    const base = { ...DEFAULT_VIEW(), pitch: 0.45 };
+    const rects = safeRects(size, [{ left: 14, top: 66, right: 386, bottom: 400 }], 690);
+    const bounds = (view: ReturnType<typeof DEFAULT_VIEW>) => {
+      const s = tall.map((p) => project(view, p));
+      return { left: Math.min(...s.map((q) => q.x)), right: Math.max(...s.map((q) => q.x)), top: Math.min(...s.map((q) => q.y)), bottom: Math.max(...s.map((q) => q.y)) };
+    };
+    const view = fitBestSteady(tall, base, size, rects)!;
+    const b = bounds(view);
+    expect(rects.some((r) => b.left >= r.left - 1 && b.right <= r.right + 1 && b.top >= r.top - 1 && b.bottom <= r.bottom + 1)).toBe(true);
+    expect([view.yaw, view.pitch]).toEqual([base.yaw, base.pitch]);
+    // Held to 95 % of that distance, nothing fits: the source's fit, as before.
+    const limits = { min: MANUAL.distanceMin, max: view.distance * 0.95 };
+    expect(fitBestSteady(tall, base, size, rects, limits)).toEqual(fitBest(tall, base, size, rects, limits));
   });
 });

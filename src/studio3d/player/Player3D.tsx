@@ -286,7 +286,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
       await engine.sync(pour.staging);
       // The pour is framed where it happens, unless the learner has taken the camera (§5.9) or the
       // bottle is already held there.
-      if (autoViewRef.current && !reducedMotion && !continuing) engine.frameItems([pour.sourceId, pour.targetId, ...(pour.via ? [pour.via] : [])], 1.4);
+      if (autoViewRef.current && !reducedMotion && !continuing) engine.frameItems([pour.sourceId, pour.targetId, ...(pour.via ? [pour.via] : [])], 1.4, engine.safeAreas, true);
       // A reagent portion goes in while the rod standing in the beaker stirs it (Pack 2, decided 2026-10-05).
       if (pour.stir) void engine.animateStir(pour.targetId, 2.8);
       if (source && target) {
@@ -811,7 +811,8 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     for (const item of scene.bench) {
       if (working.has(item.instanceId) && item.placement.kind === "seated") working.add(item.placement.parentInstanceId);
     }
-    engine.frameItems(working.size ? [...working] : "all", working.size ? 1.6 : 1.05);
+    // With the steady fit, as Auto view frames from Home's low angle, where the source's fit swings (2026-10-12).
+    engine.frameItems(working.size ? [...working] : "all", working.size ? 1.6 : 1.05, engine.safeAreas, true);
   }, [engine, flow.source.definitionId, flow.source.instanceId, flow.target.definitionId, flow.target.instanceId, freeStage, player.benchOp, player.toolTransfer, runtime.expectedAction, runtime.state.measurements, scene, showGuidance]);
   useEffect(() => {
     if (runtime.currentNode.id !== lastNode.current) {

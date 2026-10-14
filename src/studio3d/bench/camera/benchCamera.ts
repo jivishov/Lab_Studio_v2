@@ -282,6 +282,21 @@ export const fitSteady = (points: readonly THREE.Vector3[], base: OrbitView, siz
   return best.view;
 };
 
+/**
+ * Auto view's fit (you, 2026-10-12: "Switch Auto view"): as `fitBest`, the free rectangle that frames the points
+ * largest, but with the steady fit. Auto view frames from the learner's angle, often Home's low pitch, where the
+ * source's fit swings. A view whose look-at point lies past `FRAME_REACH` is dropped. Where the points fit no rectangle
+ * even at the farthest, the source's fit frames them as before: centring alone does not settle on points larger than
+ * the rectangle.
+ */
+export const fitBestSteady = (points: readonly THREE.Vector3[], base: OrbitView, size: Size, rects: readonly Rect[],
+  limits = { min: MANUAL.distanceMin, max: MANUAL.distanceMax }): OrbitView | undefined => {
+  const real = (view: OrbitView | undefined): view is OrbitView => view !== undefined
+    && [view.at.x, view.at.z, view.distance].every(Number.isFinite) && Math.abs(view.at.x) <= FRAME_REACH.x && Math.abs(view.at.z) <= FRAME_REACH.z;
+  return rects.map((rect) => fitSteady(points, base, size, rect, limits)).filter(real).sort((a, b) => a.distance - b.distance)[0]
+    ?? fitBest(points, base, size, rects, limits);
+};
+
 /** The source's tween easing (`framing.js:7`, easeInOutCubic). */
 export const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
