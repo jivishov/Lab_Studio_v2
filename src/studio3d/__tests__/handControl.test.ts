@@ -127,6 +127,19 @@ describe("taking and setting down", () => {
     expect(log).toEqual(["shelf:flask:flask-1"]);
   });
 
+  it("aim assist takes the step's item off the shelf from up to 76 px away, only when guided (G-7)", () => {
+    // 58 px from the flask: outside its 22 px hit area, inside the assist radius.
+    const guided = rig({ expected: "flask-1", assist: true });
+    still(guided.c, 0, 130, 90, HAND_TIMING.gripMs + 40);
+    expect(guided.log).toEqual(["shelf:flask:flask-1"]);
+    // Player3D names no expected item outside guidance, and the assist can be switched off.
+    for (const state of [{ assist: true }, { expected: "flask-1", assist: false }]) {
+      const { c, log } = rig(state);
+      still(c, 0, 130, 90, HAND_TIMING.gripMs + 40);
+      expect(log.filter((l) => l.startsWith("shelf:"))).toEqual([]);
+    }
+  });
+
   it("sets an item down with an open palm held 450 ms, where a press would set it down", () => {
     const { c, log } = rig({ carrying: true, action: { action: "commit", pour: false, tip: false, squeeze: false } });
     still(c, 0, 500, 500, HAND_TIMING.openMs - 60, 0.3, { open: true, grip: false, hold: false });

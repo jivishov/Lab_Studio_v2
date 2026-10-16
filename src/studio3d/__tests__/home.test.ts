@@ -6,6 +6,8 @@ import { createRuntimeState, type RuntimeDefinition } from "../../runtime";
 import { shelfSpots, stableShelfOrder, type ShelfSpot } from "../adapters/shelfSpots";
 import { applyView, DEFAULT_VIEW, MANUAL, safeRects, type OrbitView, type Rect, type Size } from "../bench/camera/benchCamera";
 import { homeMarks, homeView } from "../bench/camera/home";
+import { DEFAULT_HAND_HOME, palmCursor } from "../hand/handTracker";
+import { HAND_DEFAULTS } from "../hand/handTuning";
 
 // Home fitted to the screen (you, 2026-10-12: "the equipment is small and difficult to notice").
 
@@ -90,5 +92,37 @@ describe("Home fitted to the screen", () => {
     const size = { w: 1280, h: 800 };
     const view = homeView(chromatography, size);
     expect(inOneRect(view, size, homeMarks(chromatography), safeRects(size, []))).toBe(true);
+  });
+});
+
+// Tray-to-shelf build, phase 3: a comfortable raise of the hand reaches the upper tier at Home.
+describe("the hand reaches the shelf's upper tier at Home", () => {
+  /** The highest centre on screen, in px, of the items that start on the upper tier. */
+  const upperTop = (spots: readonly ShelfSpot[], view: OrbitView, size: Size) => {
+    const camera = new THREE.PerspectiveCamera();
+    applyView(camera, view, size.w / size.h);
+    return Math.min(...spots.filter((s) => s.place === "tier" && s.tier === 1).map((s) => {
+      const corners = homeMarks([s]).slice(16); // after the working area's and the shelf's 8 corners each
+      const q = corners.reduce((sum, p) => sum.add(p), new THREE.Vector3()).multiplyScalar(1 / corners.length).project(camera);
+      return (1 - q.y) * 0.5 * size.h;
+    }));
+  };
+
+  it("at the default gain, a raise of 0.15 of the webcam frame takes the cursor above every upper-tier item; at the lowest, the palm stays in frame", () => {
+    const routes = ["transfer-practice", "hard-water-precipitation-practice", "filtration-practice", "drying-practice",
+      "thermal-decomposition-mass-loss-practice", "paper-chromatography-practice", "transmittance-dilution", "weighing"];
+    // Laptop and wide screens, and a tablet each way round (G-12).
+    const screens: Array<[number, number, number]> = [[1024, 700, 616], [1280, 800, 716], [1907, 897, 795], [1180, 820, 736], [834, 1112, 1028]];
+    const home = DEFAULT_HAND_HOME;
+    for (const id of routes) {
+      const spots = startSpots(id);
+      for (const [w, h, dock] of screens) {
+        const size = { w, h }, top = upperTop(spots, homeView(spots, size, stage(size, dock)), size);
+        // The highest needs about 0.13 of the frame (Weigh a Sample at 1907 × 897): some 6 cm at arm's length.
+        expect(palmCursor({ x: home.x, y: home.y - 0.15 }, home, HAND_DEFAULTS.gain).y * h, `${id} at ${w} × ${h}`).toBeLessThan(top);
+        // At gain 1 the highest needs a raise of about 0.3: the palm is still more than 0.1 of the frame below its top edge.
+        expect(palmCursor({ x: home.x, y: 0.1 }, home, 1).y * h, `${id} at ${w} × ${h}, gain 1`).toBeLessThan(top);
+      }
+    }
   });
 });

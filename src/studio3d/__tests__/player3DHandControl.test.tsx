@@ -70,6 +70,8 @@ describe("Player3D hand control panel", () => {
     for (const title of ["Pick up", "Set down", "Aim", "Seat", "Pour or tip", "Draw up", "Empty a pipette", "Rinse", "Drops", "Invert", "Swirl", "TARE", "Withdraw"]) {
       expect(within(panel).getByText(title)).toBeInTheDocument();
     }
+    // Items start on the shelf (tray-to-shelf build, phase 3).
+    expect(panel).toHaveTextContent("Close your grip over an item on the bench or the shelf and hold");
   });
 
   it("keeps the camera video mounted while the panel is collapsed", () => {

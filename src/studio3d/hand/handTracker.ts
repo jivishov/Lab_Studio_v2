@@ -22,6 +22,12 @@ const GRIP_RELEASE_MS = 220, OPEN_CONFIRM_MS = 150, THUMB_HOLD_MS = 200;
 export const THUMB_BANDS = { rest: 0.3, press: 0.55 };
 export const PINCH_BANDS = { rest: 0.28, press: 0.65 };
 
+/** The home position until the first 20 frames are measured (or Set centre is pressed). */
+export const DEFAULT_HAND_HOME = Object.freeze({ x: 0.5, y: 0.45 });
+/** The cursor, as a share of the canvas, for a smoothed palm point (a share of the mirrored webcam frame): around home, at the gain (×1.3 vertically). */
+export const palmCursor = (palm: { x: number; y: number }, home: { x: number; y: number }, gain: number) =>
+  ({ x: clamp(0.5 + (palm.x - home.x) * gain), y: clamp(0.5 + (palm.y - home.y) * gain * 1.3) });
+
 export type Handedness = "Auto" | "Right" | "Left";
 export interface CalibrationProfiles { rest?: number[]; press?: number[] }
 export interface HandStats { frames: number; inferenceMS: number; ageMS: number; lost: number; rejectedFrames: number }
@@ -441,9 +447,9 @@ export class HandTracker {
     }
     const tuning = handSettings(), params = filterParams(tuning.smoothing);
     for (const f of [this.fx, this.fy]) { f.minCutoff = params.minCutoff; f.beta = params.beta; }
-    const home = this.home ?? { x: 0.5, y: 0.45 }, sx = this.fx.update(rawX, now) ?? rawX, sy = this.fy.update(rawY, now) ?? rawY, bounds = this.o.bounds();
-    const nx = clamp(0.5 + (sx - home.x) * tuning.gain), ny = clamp(0.5 + (sy - home.y) * tuning.gain * 1.3);
-    const base: HandFrame = { x: nx * bounds.width, y: ny * bounds.height, rawX, palmY: rawY, now, source: "hand", normal: m.normal };
+    const home = this.home ?? DEFAULT_HAND_HOME, sx = this.fx.update(rawX, now) ?? rawX, sy = this.fy.update(rawY, now) ?? rawY, bounds = this.o.bounds();
+    const cursor = palmCursor({ x: sx, y: sy }, home, tuning.gain);
+    const base: HandFrame = { x: cursor.x * bounds.width, y: cursor.y * bounds.height, rawX, palmY: rawY, now, source: "hand", normal: m.normal };
     if (this.mode === "pinch") {
       // Pinch = plunger. Thumb-to-index distance over palm width: about 1 when open, under .4 when pinched.
       const depth = clamp((0.75 - m.pinchRatio) / 0.5), spread = m.extended >= 4 && m.pinchRatio > 0.9;

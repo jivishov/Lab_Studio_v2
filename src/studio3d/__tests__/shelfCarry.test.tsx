@@ -6,7 +6,7 @@ import { useBenchCarry } from "../bench/input/useBenchCarry";
 import { usePlayer3D } from "../player/usePlayer3D";
 
 /**
- * Taking an item off the shelf with the mouse and by touch (the shelf in place of the tray, approved 2026-10-11):
+ * Taking an item off the shelf with the mouse, by touch and by hand (the shelf in place of the tray, approved 2026-10-11):
  * a press on a shelf item starts the tray's own carry, setting it down runs `dropFromTray`'s intent or move, and a
  * press back on the shelf puts it back on its spot with nothing changed. jsdom has no WebGL, so the engine is a fake
  * that answers where the pointer is: over a shelf item, over the shelf, or over the bench.
@@ -126,5 +126,41 @@ describe("taking an item off the shelf", () => {
     t.up(110, 85, "touch");
     expect(t.hook.result.current.carry.carrying).toBe(false);
     expect(t.location()).toBe("shelf");
+  });
+});
+
+describe("taking an item off the shelf by hand (tray-to-shelf build, phase 3)", () => {
+  // jsdom has no layout: say which element is under the hand.
+  const under = (element: Element | null) => Object.defineProperty(document, "elementFromPoint", { value: () => element, configurable: true });
+  afterEach(() => { Reflect.deleteProperty(document, "elementFromPoint"); document.body.innerHTML = ""; });
+
+  it("a grip takes it, the item itself follows the hand onto the bench, and letting go there sets it down", () => {
+    const t = setUp();
+    under(t.canvas);
+    let taken = false;
+    act(() => { taken = t.hook.result.current.carry.startGestureTrayCarry(t.first.definitionId, t.first.instanceId); });
+    expect(taken).toBe(true);
+    expect(t.hook.result.current.carry.gestureCarrying).toBe(true);
+    act(() => { t.hook.result.current.carry.gestureCarryTo(300, 400); });
+    // The item drawn lifted toward the bench point under the hand, not a thumbnail.
+    expect(t.engine.previewCarry).toHaveBeenCalledWith(t.first.instanceId, 0, 120, expect.any(Number));
+    act(() => { t.hook.result.current.carry.releaseGesture(300, 400); });
+    expect(t.hook.result.current.carry.carrying).toBe(false);
+    expect(t.location()).not.toBe("shelf");
+  });
+
+  it("let go off the bench, it goes back on its spot and nothing changes", () => {
+    const t = setUp();
+    const before = t.hook.result.current.player.runtime.getState().equipmentInstances;
+    under(t.canvas);
+    act(() => { t.hook.result.current.carry.startGestureTrayCarry(t.first.definitionId, t.first.instanceId); });
+    act(() => { t.hook.result.current.carry.gestureCarryTo(300, 400); });
+    // Over a panel, say, not the bench.
+    under(document.body);
+    act(() => { t.hook.result.current.carry.gestureCarryTo(20, 20); });
+    act(() => { t.hook.result.current.carry.releaseGesture(20, 20); });
+    expect(t.hook.result.current.carry.carrying).toBe(false);
+    expect(t.location()).toBe("shelf");
+    expect(t.hook.result.current.player.runtime.getState().equipmentInstances).toEqual(before);
   });
 });
