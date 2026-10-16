@@ -231,11 +231,21 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
   );
 
   // Clear, then set on a short timer so a repeated message is announced again; a timer, not an
-  // animation frame, so announcements are not held back while the tab is not drawing.
+  // animation frame, so announcements are not held back while the tab is not drawing. The timers
+  // still pending are cleared when the player goes, so none sets state after it.
+  const announceTimers = useRef(new Set<number>()).current;
+  useEffect(() => () => {
+    announceTimers.forEach((id) => window.clearTimeout(id));
+    announceTimers.clear();
+  }, [announceTimers]);
   const announce = useCallback((text: string) => {
     setAnnouncement("");
-    window.setTimeout(() => setAnnouncement(text), 30);
-  }, []);
+    const id = window.setTimeout(() => {
+      announceTimers.delete(id);
+      setAnnouncement(text);
+    }, 30);
+    announceTimers.add(id);
+  }, [announceTimers]);
 
   const failedAttemptAdded = (before: RuntimeState, next: RuntimeState): boolean =>
     next.attemptHistory.slice(before.attemptHistory.length).some((attempt) => !attempt.success);
