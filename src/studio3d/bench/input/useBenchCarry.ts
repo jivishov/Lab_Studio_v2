@@ -1161,14 +1161,17 @@ export const useBenchCarry = (engine: BenchEngine | undefined, player: Player3DC
 
   /** The hand let go: over the bench it commits through the pointer's release; elsewhere nothing changes. */
   const releaseGesture = useCallback((clientX: number, clientY: number) => {
-    if (carryRef.current?.via !== "gesture") return;
+    const carry = carryRef.current;
+    if (carry?.via !== "gesture") return;
     if (!overBench(clientX, clientY)) {
-      cancel();
+      // A shelf item let go off the bench goes back on its spot, said where, as one pressed back on the shelf.
+      if (carry.kind === "tray") putBack(carry.instanceId);
+      else cancel();
       return;
     }
     carryToPointer(clientX, clientY);
     release();
-  }, [cancel, carryToPointer, overBench, release]);
+  }, [cancel, carryToPointer, overBench, putBack, release]);
 
   /** Drop an unfinished hand carry without committing. */
   const cancelGesture = useCallback(() => {

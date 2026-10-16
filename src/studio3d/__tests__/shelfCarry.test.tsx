@@ -149,7 +149,7 @@ describe("taking an item off the shelf by hand (tray-to-shelf build, phase 3)", 
     expect(t.location()).not.toBe("shelf");
   });
 
-  it("let go off the bench, it goes back on its spot and nothing changes", () => {
+  it("let go off the bench, it goes back on its spot and nothing changes", async () => {
     const t = setUp();
     const before = t.hook.result.current.player.runtime.getState().equipmentInstances;
     under(t.canvas);
@@ -162,5 +162,7 @@ describe("taking an item off the shelf by hand (tray-to-shelf build, phase 3)", 
     expect(t.hook.result.current.carry.carrying).toBe(false);
     expect(t.location()).toBe("shelf");
     expect(t.hook.result.current.player.runtime.getState().equipmentInstances).toEqual(before);
+    // Said where, on usePlayer3D's short timer (awaited, so it does not fire after the file ends).
+    await waitFor(() => expect(t.hook.result.current.player.announcement).toMatch(/^Put back on the shelf\. Nothing moved\./));
   });
 });
