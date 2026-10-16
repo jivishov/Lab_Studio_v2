@@ -11,6 +11,7 @@ import { resolveActionInput } from "../../runtime/actionInputs";
 import { resolveInteractionIntent, type RuntimeInteractionIntent } from "../../runtime/interactionIntents";
 import { benchMoveRequest, intentTypeForInteraction, mergeActionInput } from "../adapters/sceneToIntent";
 import { stepFlow } from "../player/stepRules";
+import { shelfLaidOut } from "./shelfLayout";
 
 /**
  * Pack 2's 3D practice versions (decided 2026-10-05, PACK2_ATOMIZATION.md): each is listed only in the
@@ -71,6 +72,8 @@ const attempt = (technique: TechniqueDefinition, state: RuntimeState, id: string
 const playTo = (id: string, stopBefore?: string, play: Play = PLAYS[id]): { technique: TechniqueDefinition; state: RuntimeState } => {
   const technique = load(id, play);
   let state = createRuntimeState(technique);
+  // The 3D shelf at every step (tray-to-shelf build, phase 4).
+  const start = shelfLaidOut(state, technique, `${id} start`);
   for (const node of technique.process.nodes) {
     if (node.actionId === stopBefore) break;
     const action = technique.actions.find((candidate) => candidate.id === node.actionId)!;
@@ -82,6 +85,7 @@ const playTo = (id: string, stopBefore?: string, play: Play = PLAYS[id]): { tech
       state = result.state;
     }
     expect(state.completedNodes, `${id} ${node.id}`).toContain(node.id);
+    shelfLaidOut(state, technique, `${id} ${node.id}`, start);
   }
   return { technique, state };
 };

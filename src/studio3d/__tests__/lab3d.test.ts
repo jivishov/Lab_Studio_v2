@@ -15,6 +15,7 @@ import type * as Labs3D from "../labs3d";
 import { parseLab3DValues, type Lab3DSummary } from "../labs3dSetup";
 import { measurementProvenance, notebookProvenance } from "../player/provenance";
 import { readingVesselId, stepFlow } from "../player/stepRules";
+import { shelfLaidOut } from "./shelfLayout";
 
 /**
  * D8 E3 (decided 2026-10-10; `proposals/D8_EXPERIMENT_ASSEMBLY.md`, "E0 design"): the twins and the
@@ -54,6 +55,8 @@ afterEach(() => { vi.unstubAllGlobals(); });
  */
 const playLab = (lab: LabDefinition, inputs: Record<string, string>, moves: Record<string, string>, dropsOff = 0, drawnBack = 0): RuntimeState => {
   let state = createRuntimeState(lab);
+  // The 3D shelf at every step (tray-to-shelf build, phase 4).
+  const start = shelfLaidOut(state, lab, `${lab.id} start`);
   const send = (nodeId: string, intent: RuntimeInteractionIntent) => {
     const resolved = resolveInteractionIntent(lab, state, intent);
     if (!resolved.ok) throw new Error(`${nodeId}: ${resolved.feedback.message}`);
@@ -78,6 +81,7 @@ const playLab = (lab: LabDefinition, inputs: Record<string, string>, moves: Reco
         resolveActionInput(action, inputs[action.id] ?? ""), action));
     }
     expect(state.completedNodes, node.id).toContain(node.id);
+    shelfLaidOut(state, lab, `${lab.id} ${node.id}`, start);
   }
   return state;
 };
