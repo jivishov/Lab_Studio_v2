@@ -1,6 +1,7 @@
 # Proposal: an open teaching lab around a longer island bench (3D only)
 
-Status: **plan only, nothing built.** The decisions at the end are yours. Asked for on 2026-10-16, with seven photos
+Status: **decided 2026-10-16, not built:** all four decisions answered as recommended ("Island in open lab",
+"2000 × 700, Home fits use", "Keep spots clear", "Both"). Asked for on 2026-10-16, with seven photos
 of a real teaching lab: "I propose to remove the immediate walls the bench has, extend the front view with lab view
 with maybe some cabinets by the wall, extend the bench horizontally and allow larger area for shelving, equipment
 placing and hence preventing the view blocked by any equipment. Just like in any lab there must be some comfortable
