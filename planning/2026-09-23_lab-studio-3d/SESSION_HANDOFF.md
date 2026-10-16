@@ -1,6 +1,6 @@
 # Lab Studio 3D: session handoff
 
-Written 2026-09-24 and updated through 2026-10-11, so a fresh session can continue the Pack 1 build without
+Written 2026-09-24 and updated through 2026-10-16, so a fresh session can continue the Pack 1 build without
 the previous conversation; checked claim by claim against the repository. Read this first, then the
 governing documents it names.
 
@@ -17,8 +17,11 @@ atomized (D4 exception 9, `63096ed`) and its fidelity review, and everything sin
 (`690a063`), then the model refinement (2026-10-10), the Pack 3 proposal (`9923202`, revision 3 `af50318`) and
 the Submit fix (`0fa32ee`), then the Pack 3a build (`5123159` to `fe817ec`, 2026-10-11, its records commit
 `9b45727`, and the second fidelity review's commit), then the Pack 3a follow-ups (2026-10-11: the dye `d240373`,
-the slide `fb11986`, the stable layout `da07078`, then the tile with two fixes found at its look, and their records);
-`git log -1` names the latest. Push only when the user asks.
+the slide `fb11986`, the stable layout `da07078`, then the tile with two fixes found at its look, and their records),
+then the shelf in place of the tray (phases 1 and 2 and their review, 2026-10-11, `82be9f1` to `b857de6`), the HUD,
+the natural room, the two themes and Home fitted to the screen (2026-10-12), Auto view's steady fit and right-drag
+(2026-10-13), and the shelf's phases 3 and 4 with their records (2026-10-16); `git log -1` names the latest. Push
+only when the user asks.
 
 **Pack 1, technique by technique:**
 
@@ -200,14 +203,49 @@ wait for confirmation (`DECISIONS.md`, the "built" row). G3 has still not run.
      - the develop step's text;
      - the lab's texts against the source and 2D's lab;
      - the evidence's guardrail list, its lid-early item and a step 4 look.
-   - Waiting for the user (the "Pack 3a built" row, "Still to decide"):
-     - no tile under the strip;
-     - bench items shifting between steps in a lab;
-     - the lab's 11-item tray covering its step card at 1024 × 700;
-     - the dye mixture drawn blue.
-12. **Next (only when the user asks):** Pack 3b (brass, in six techniques; the proposal's "Brass
-   Spectrophotometry"), with a build prompt written first if the user asks for one. Also held: publishing Pack 3
-   and the D8 experiments, pushing, and G3.
+   - The four things it left for the user (the "Pack 3a built" row, "Still to decide") were each settled on
+     2026-10-11 (`DECISIONS.md`, "Pack 3a follow-ups"):
+     - no tile under the strip: the `white-tile` scenery is built;
+     - bench items shifting between steps in a lab: each item keeps one slot for the whole run (`da07078`);
+     - the lab's 11-item tray covering its step card at 1024 × 700: the shelf replaced the tray (item 12);
+     - the dye mixture drawn blue: it is drawn in the mixture's own colour, 3D only.
+12. **Done 2026-10-11 to 2026-10-16: the shelf in place of the tray** (`TRAY_SHELF_BUILD_PROMPT.md`;
+   `evidence/TRAY_SHELF_EVIDENCE.md`; `DECISIONS.md`, "The shelf in place of the tray", "The shelf build's
+   interpretations" and "The shelf built"). All four phases, 3D only, none pushed or published:
+   - Phase 1 (`82be9f1`, `84f531b`): the two-tier reagent shelf (D9 scenery,
+     `tools/blender/equipment/reagent_shelf.py`) behind the working area, a side station past its right end for the
+     balances, the burner, the ring stand and the spectrophotometer, a stable spot per item
+     (`adapters/shelfSpots.ts`), and the items drawn there with tags, hit boxes and the guided beacon.
+   - Phase 2 (`b466757`, `f6d2039`, `c605551`) and its review (`32e2a82`, `177f5a5`, `b857de6`): items taken with
+     the bench's own carry, pours leaving from the shelf spot, the Shelf list inside the Bench list (Enter places,
+     G-6), the tray panel removed, and the shelf items as the hand's targets.
+   - Phase 3 (`705ef23`): tests prove the hand's reach at Home (a raise of 0.15 of the webcam frame at the default
+     gain), aim assist in guided mode only, the 3D item carried, and the guide's wording. The mapping is unchanged.
+     G3 stays set aside, so no real hand has reached the shelf.
+   - Phase 4 (`7e8b82f` to `09d39e5`): `__tests__/shelfLayout.ts` checks the shelf at the start and after every
+     step of all 14 3D routes (`shelfRoutes.test.ts`, `pack2Practice`, `pack3Practice`, `lab3d`), and all 14 were
+     looked at in the app at 1024 × 700. It fixed two things: a hand let go off the bench now says where the item
+     went back, as the mouse does, and an announcement still pending when the player closes is cleared.
+   - Reported, not built past: the drying oven, at the back of the bench, hides lower-tier items at Home (three
+     and half a fourth in `hard-water-demo`, one in Dry and Weigh); Pack 3b's 29 shelf items need a third tier or a
+     second bay; tiny items stay hard to see; at a step whose items are all on the shelf, Auto view keeps the
+     previous view. Each is the user's call.
+13. **Built 2026-10-12/13, waiting for the user's look** (each has its own `DECISIONS.md` row and evidence note):
+   - the step card and dock as a sci-fi HUD (`583aad6`, `4ddb3f3`, `9fd4eb7`; `evidence/STEP_HUD_TOKEN_CONTRAST.md`);
+   - the natural lab room, the charcoal epoxy worktop, and Home lowered to 0.45 rad (`4ba20ef`, `42c2fad`;
+     `evidence/NATURAL_ROOM_EVIDENCE.md`);
+   - two themes for all of 3D, Light and HUD (`f85c2aa`; `evidence/THEMES_EVIDENCE.md`);
+   - Home fitted to the screen with charcoal shelf boards (`74ceed7`), then Auto view's steady fit (`7e01cad`,
+     2026-10-13; both in `evidence/HOME_FIT_EVIDENCE.md`);
+   - right-drag moves the scene up and down (`d38f9a1`, 2026-10-13; `evidence/RIGHT_DRAG_EVIDENCE.md`).
+
+   Two questions from them wait for the user: what Auto view does at a step whose items are all on the shelf
+   (recommended: go to Home), and whether Examine, the Selected view and picking from the Bench list take the
+   steady fit too.
+14. **Next (only when the user asks):** Pack 3b (brass, in six techniques; the proposal's "Brass
+   Spectrophotometry"), with a build prompt written first if the user asks for one. Its 29 shelf items need a
+   third tier or a second bay first. Also held: publishing Pack 3, the D8 experiments and everything since,
+   pushing, and G3.
 
 **How the work has been checked** (the user's validation policy: source review, `npx tsc -p
 tsconfig.app.json --noEmit`, `python tools/blender/validate_equipment3d.py --pack 1`, and narrow
@@ -423,13 +461,12 @@ and template rules. `scripts/checkCycle04Foundations.mjs` can't run in this expo
   building M3–M5. The user asked to see the Studio in M6, so looks were taken there too. Full G1
   playthroughs, G2 (performance), G3 (webcam) and G4 (publishing) stay closed without the user's go-ahead.
 - **Pushing.** The user asks for pushes explicitly. Commit locally; push only when asked.
-- **The tray (2026-10-11).** `proposals/SHELF_INSTEAD_OF_TRAY.md` (a reagent shelf over the bench in place of the
-  tray panel) is approved in full: option B with every recommended answer ("The full tray proposal is valid.";
-  `DECISIONS.md`, "The shelf in place of the tray"). Nothing is built yet. The build is a separate thread:
-  `TRAY_SHELF_BUILD_PROMPT.md`, which stops after phase 2 for the user's look. The G1 scripts it uses are in
-  `probes/` (`play-steps.cjs`, `place-from-tray.cjs`, `slide-bench.cjs`). Its fidelity review corrected the
-  proposal (its "Notes after approval"): up to 13 items, a fourth large station (the spectrophotometer), and a hand
-  that picks in screen space.
+- **The shelf (2026-10-11 to 2026-10-16).** `proposals/SHELF_INSTEAD_OF_TRAY.md` (a reagent shelf over the bench in
+  place of the tray panel) was approved in full and is built, all four phases of `TRAY_SHELF_BUILD_PROMPT.md`
+  (`evidence/TRAY_SHELF_EVIDENCE.md`; item 12 above). Still open: G3 for the hand at the shelf; the oven hiding
+  lower-tier items; what Auto view does at a step whose items are all on the shelf; and Pack 3b's shelf room. Of
+  the G1 scripts in `probes/`, `place-from-tray.cjs` targets the removed tray panel; the Shelf list needs its own
+  selectors.
 - **A runtime question (2026-10-11).** On every action `withResolvedAttachments` merges in a relation derived from
   a child's snap zone that names the first instance of the parent's definition, even when the child already holds
   its own. With two chambers the 2-propanol strip was also listed in the water chamber. 3D now keeps each child's
@@ -531,7 +568,7 @@ and template rules. `scripts/checkCycle04Foundations.mjs` can't run in this expo
   `studio/PreviewView.tsx` copies StudentPlayer's preview-notice rule. Both are drift risks; propose
   extracting them as a reviewed change.
 - **M6:**
-  - On a narrow stage the Player3D floating tray can crowd its dock.
+  - On a narrow stage the Player3D floating tray could crowd its dock. The tray is gone (the shelf, item 12).
   - The equipment inspector shows the Blender thumbnail; the equipment dialog has the live turntable.
   - Per-technique composite renders are an asset task; the cards compose item thumbnails for now.
   - Not browser-exercised: HTML drag and drop, the Connect menu, the turntable, the tablet widths, and the
@@ -542,14 +579,22 @@ and template rules. `scripts/checkCycle04Foundations.mjs` can't run in this expo
   - The 10 mL pipette, Beral pipette, stirring rod and test tube lean 38° in their thumbnails only.
 - **Pack 3a (2026-10-11):**
   - Glass draw order shows on the chromatography chamber and bottles (item 9); noted, not fixed.
-  - In a 3D lab, items without a set position take 2D's grid slot by their order on the bench, so they shift
-    when an item leaves the tray (seen in `paper-chromatography`; nothing overlaps). A 3D-only layout would
-    need a proposal.
-  - No tile under the chromatography strip (the proposal's bench has one); it would be a new item.
+  - In a 3D lab, items without a set position took 2D's grid slot by their order on the bench, so they shifted
+    when an item left the tray. Settled: each keeps one slot for the whole run (`da07078`, 3D only).
+  - No tile under the chromatography strip. Settled: the `white-tile` scenery (the "Pack 3a follow-ups" row).
   - Heat and Reweigh's carbonate issue is left as it was.
+- **The shelf (2026-10-11 to 2026-10-16)** (`evidence/TRAY_SHELF_EVIDENCE.md`, "Risks"):
+  - The drying oven starts at the back of the bench, in front of the shelf, and hides lower-tier items at Home
+    (`hard-water-demo`, Dry and Weigh).
+  - Pack 3b's brass content has 29 items on the 2D shelf; two tiers hold about 14.
+  - Tiny items (cuvettes, stopper, pencil, capillary) stay hard to see at Home, most at 1024 × 700.
+  - In Heat and Reweigh the side station's four stand close: at Home the ring stand stands in front of balance A
+    and the burner in front of balance B.
+  - `probes/place-from-tray.cjs` is stale (it targets the tray panel).
 - **Cleanup.** At the 2026-10-11 Pack 3a handoff the dev server was stopped and the temporary launch entry was
   removed. At the 2026-09-24 handoff the temporary launch entry was removed and the dev server
   stopped. At the 2026-10-03 handoff the entry in
   `C:\Users\EmilJivishov\Projects\virtual_lab\experiments\lab-studio\.claude\launch.json` was kept for the
   next thread, and no dev server was running. At the 2026-10-10 model-refinement handoff the entry was kept
-  and the dev server stopped. Remove the entry when the 3D work ends.
+  and the dev server stopped. At the 2026-10-16 shelf records the dev server was stopped and the temporary entry
+  removed. Remove the entry when the 3D work ends.
