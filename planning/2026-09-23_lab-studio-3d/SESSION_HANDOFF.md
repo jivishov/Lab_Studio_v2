@@ -21,8 +21,8 @@ the slide `fb11986`, the stable layout `da07078`, then the tile with two fixes f
 then the shelf in place of the tray (phases 1 and 2 and their review, 2026-10-11, `82be9f1` to `b857de6`), the HUD,
 the natural room, the two themes and Home fitted to the screen (2026-10-12), Auto view's steady fit and right-drag
 (2026-10-13), the shelf's phases 3 and 4 with their records (2026-10-16), the lab room's phase 1 (`aa21b14` to
-`8c9cc20`, then its records commit, 2026-10-16), and the level view adjusted by hand (`67e94a9`) and At the
-bench (`6d186a5`, then its records commit, 2026-10-16); `git log -1` names the latest. Push only when the user asks.
+`8c9cc20`, then its records commit, 2026-10-16), the level view adjusted by hand (`67e94a9`), glassware's own
+look (`e59e848`) and At the bench (`6d186a5`, then the records commits, 2026-10-16); `git log -1` names the latest. Push only when the user asks.
 
 **Pack 1, technique by technique:**
 
@@ -503,7 +503,8 @@ and template rules. `scripts/checkCycle04Foundations.mjs` can't run in this expo
   clip (7.47 m, too short for the hall), which the proposal missed. Phase 1 was built on 2026-10-16
   (`evidence/LAB_ROOM_EVIDENCE.md`); its frame-time note is still to be read in the visible pane. Then the level
   view adjusted by hand and At the bench, a working view in the camera menu (`DECISIONS.md`, two rows, 2026-10-16),
-  both waiting for the user's look.
+  and glassware's own look, so empty vessels hold their shape against the windows (one row), all waiting for the
+  user's look.
 - **A runtime question (2026-10-11).** On every action `withResolvedAttachments` merges in a relation derived from
   a child's snap zone that names the first instance of the parent's definition, even when the child already holds
   its own. With two chambers the 2-propanol strip was also listed in the water chamber. 3D now keeps each child's
@@ -637,6 +638,9 @@ and template rules. `scripts/checkCycle04Foundations.mjs` can't run in this expo
     the Light theme is slow to screenshot: use `look-room.cjs`'s `LOOK_SETTLE` and `LOOK_SHOT_TIMEOUT`, one run at a
     time.
   - The frame-time note is unread.
+- **Glassware's own look (2026-10-16)** (`DECISIONS.md`, "Glassware's own look"):
+  - Bench glass with the new look has not been looked at; only the shelf view was.
+  - The stirring rod on the shelf's top tier is still hard to see: it lies level behind the rail.
 - **Cleanup.** At the 2026-10-11 Pack 3a handoff the dev server was stopped and the temporary launch entry was
   removed. At the 2026-09-24 handoff the temporary launch entry was removed and the dev server
   stopped. At the 2026-10-03 handoff the entry in
