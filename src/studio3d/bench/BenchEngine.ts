@@ -7,8 +7,8 @@ import { ModelLibrary } from "../equipment3d/loadModels";
 import { equipment3dRegistry } from "../equipment3d/readiness";
 import type { Equipment3DEntry } from "../equipment3d/types";
 import {
-  applyView, clampAt, clampManual, copyView, DEFAULT_VIEW, easeInOutCubic, FAR, fitBest, fitBestSteady, FOV, lerpView, MANUAL, NEAR,
-  orbitBy, panBy, PRESETS, safeRects, slideBy, zoomBy, type OrbitView, type Rect,
+  applyView, clamp, clampAt, clampManual, copyView, DEFAULT_VIEW, easeInOutCubic, effectiveDistance, FAR, fitBest, fitBestSteady, FOV,
+  LEVEL_PITCH, lerpView, MANUAL, NEAR, orbitBy, panBy, PRESETS, safeRects, slideBy, zoomBy, type OrbitView, type Rect,
 } from "./camera/benchCamera";
 import { homeView } from "./camera/home";
 import { makeComposer } from "./look/composer";
@@ -2493,7 +2493,7 @@ export class BenchEngine {
       if (e.button === 0) {
         const p = point(e);
         if (!(this.canSlideBench?.() ?? false) || this.pick(e.clientX, e.clientY) || this.pickControl(e.clientX, e.clientY)) return;
-        if (!this.onBench(p.x, p.y)) return;
+        if (!this.anchor(p.x, p.y)) return;
         this.camDrag = { id: e.pointerId, button: 0, mode: "slide", x: p.x, y: p.y, startX: p.x, startY: p.y, drag: false };
         canvas.setPointerCapture(e.pointerId);
         return;
@@ -2521,8 +2521,9 @@ export class BenchEngine {
       }
       if (d.drag) {
         if (d.mode === "orbit") this.setView(orbitBy(this.view, p.x - d.x, p.y - d.y));
-        else if (d.mode === "slide") this.setView(slideBy(this.view, this.onBench(d.x, d.y), this.onBench(p.x, p.y)));
-        else this.setView(panBy(this.view, this.onBench(d.x, d.y), this.onBench(p.x, d.y), p.y - d.y, this.canvasSize()));
+        // Near level the bench runs off toward the horizon: there a left-drag moves the view as a right-drag does.
+        else if (d.mode === "slide" && this.view.pitch >= LEVEL_PITCH) this.setView(slideBy(this.view, this.onBench(d.x, d.y), this.onBench(p.x, p.y)));
+        else this.setView(panBy(this.view, this.anchor(d.x, d.y), this.anchor(p.x, d.y), p.y - d.y, this.canvasSize()));
       }
       d.x = p.x;
       d.y = p.y;
@@ -2595,20 +2596,25 @@ export class BenchEngine {
     if (!g.drag && Math.hypot(p.x - g.startX, p.y - g.startY) > MANUAL.dragPx) g.drag = true;
     if (g.drag) {
       if (!g.manual) { g.manual = true; this.beginManualCamera(); }
-      this.setView(panBy(this.view, this.onBench(g.x, g.y), this.onBench(p.x, g.y), p.y - g.y, this.canvasSize()));
+      this.setView(panBy(this.view, this.anchor(g.x, g.y), this.anchor(p.x, g.y), p.y - g.y, this.canvasSize()));
     }
     g.x = p.x;
     g.y = p.y;
   }
 
-  /** Zoom keeping the bench point under (x, y) fixed (`app.js:146-151`). */
+  /**
+   * Zoom keeping the point under (x, y) fixed (`app.js:146-151`): the bench point, or near level the point at the
+   * look-at point's depth (`anchor`), which can move the look-at point up or down, within the pan's range.
+   */
   private zoomAt(x: number, y: number, deltaY: number): void {
-    const before = this.onBench(x, y);
+    const before = this.anchor(x, y);
     this.view = zoomBy(this.view, deltaY);
     this.updateCamera();
-    const after = this.onBench(x, y);
-    if (before && after) this.setView({ ...this.view, at: clampAt(this.view.at.clone().add(before.sub(after))) });
-    else this.setView(this.view);
+    const after = this.anchor(x, y);
+    if (!before || !after) { this.setView(this.view); return; }
+    const at = clampAt(this.view.at.clone().add(before.sub(after)));
+    at.y = clamp(at.y, Math.min(MANUAL.atYMin, this.view.at.y), Math.max(MANUAL.atYMax, this.view.at.y));
+    this.setView({ ...this.view, at });
   }
 
   /** The bench-plane point under canvas pixel (x, y), or null when the ray misses it (`renderer.js` `onPlane`). */
@@ -2620,6 +2626,21 @@ export class BenchEngine {
     if (Math.abs(ray.direction.y) < 0.001) return null;
     const t = -ray.origin.y / ray.direction.y;
     return t > 0 ? ray.at(t, new THREE.Vector3()) : null;
+  }
+
+  /**
+   * The point drags and the wheel keep under the pointer at (x, y): on the bench plane, as the source's; from a view
+   * near level (pitch under `LEVEL_PITCH`, 2026-10-16), where the bench runs off toward the horizon and a pixel spans
+   * metres of it, on the plane through the look-at point facing the camera, so the scene at that depth follows the
+   * pointer.
+   */
+  private anchor(x: number, y: number): THREE.Vector3 | null {
+    if (this.view.pitch >= LEVEL_PITCH) return this.onBench(x, y);
+    const w = this.canvas.clientWidth, h = this.canvas.clientHeight;
+    if (!w || !h) return null;
+    this.raycaster.setFromCamera(new THREE.Vector2((x / w) * 2 - 1, 1 - (y / h) * 2), this.camera);
+    const facing = new THREE.Plane().setFromNormalAndCoplanarPoint(this.camera.getWorldDirection(new THREE.Vector3()), this.view.at);
+    return this.raycaster.ray.intersectPlane(facing, new THREE.Vector3());
   }
 
   /** A manual move cancels any framing tween and suspends auto-framing (`framing.js:84`). */
@@ -2700,10 +2721,10 @@ export class BenchEngine {
   /**
    * Examine's Eye level (§5.8): the camera level with the liquid surface, looking straight at it,
    * the correct way to read a meniscus. The level comes from the runtime contents through the fill
-   * profile; the item does not move. A programmatic view, so it sits outside the manual limits
-   * (pitch 0 and a short distance) until the camera is next moved by hand.
+   * profile; the item does not move. Level and close, within the manual limits since 2026-10-16, so an orbit, a pan
+   * or the wheel adjusts it from where it is. `safe`, the free stage, puts the line where no panel covers it.
    */
-  eyeLevel(instanceId: string, levelMm: number, distanceM = 0.32, seeThrough: string[] = []): void {
+  eyeLevel(instanceId: string, levelMm: number, distanceM = 0.32, seeThrough: string[] = [], safe?: Rect[]): void {
     const view = this.items.get(instanceId);
     if (!view) return;
     const target = view.root.position.clone();
@@ -2729,7 +2750,19 @@ export class BenchEngine {
     const turns = [0, 35, -35, 70, -70, 110, -110, 180].map((deg) => current.clone().applyAxisAngle(UP, deg * DEG));
     const chosen = turns.find((dir) => !blocked(dir) && !fan(dir).some(blocked)) ?? turns.find((dir) => !blocked(dir)) ?? current;
     const yaw = this.view.yaw + Math.atan2(Math.sin(Math.atan2(chosen.x, chosen.z) - this.view.yaw), Math.cos(Math.atan2(chosen.x, chosen.z) - this.view.yaw));
-    this.tweenTo({ at: target, yaw, pitch: 0, distance: distanceM });
+    // The line at the middle of the largest free rectangle of the stage, not under a panel (you, 2026-10-16: the
+    // dropping dialog hid the cylinder): the camera moves in its own plane, so the eye stays level with the line.
+    const goal: OrbitView = { at: target, yaw, pitch: 0, distance: distanceM };
+    const rect = safe?.[0];
+    if (rect) {
+      const size = this.canvasSize();
+      const upp = (2 * effectiveDistance(goal, size.w / size.h) * Math.tan((FOV * Math.PI) / 360)) / size.h;
+      const right = new THREE.Vector3(Math.cos(yaw), 0, -Math.sin(yaw));
+      goal.at = target.clone()
+        .addScaledVector(right, -((rect.left + rect.right) / 2 - size.w / 2) * upp)
+        .addScaledVector(UP, ((rect.top + rect.bottom) / 2 - size.h / 2) * upp);
+    }
+    this.tweenTo(goal);
   }
 
   private frameBox(box: THREE.Box3, marginFactor: number, safe: Rect[] | undefined, steady = false): void {

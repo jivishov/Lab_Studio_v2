@@ -528,17 +528,20 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     if (!dropPose.current) dropPose.current = { ...engine.pose(), auto: autoViewRef.current };
     engine.holdOver(pipetteId, vesselId);
     setAutoView(false);
-    // Level with the line: the flask's calibration mark, or the pipette's line for the aliquot.
-    if (mark.bySource) {
-      const item = scene.bench.find((i) => i.instanceId === pipetteId);
-      const delivered = runtime.state.markDispenses?.[runtime.expectedAction?.id ?? ""]?.deliveredMl ?? 0;
-      const held = item?.contents.kind === "liquid" ? item.contents.volumeMl : 0;
-      if (item?.model?.fill) engine.eyeLevel(pipetteId, fillLevelMm(item.model.fill, Math.max(0, held + delivered - mark.goalMl)).levelMm, 0.16, [vesselId]);
-    } else {
-      const item = scene.bench.find((i) => i.instanceId === vesselId);
-      const level = item?.model?.calibration?.heightMm ?? (item?.model?.fill ? fillLevelMm(item.model.fill, mark.goalMl).levelMm : undefined);
-      if (level !== undefined) engine.eyeLevel(vesselId, level, 0.2, [pipetteId]);
-    }
+    // Level with the line: the flask's calibration mark, or the pipette's line for the aliquot. On the next frame, when
+    // the dialog is on the stage, so the line is put clear of it (you, 2026-10-16: the dialog hid the cylinder).
+    window.requestAnimationFrame(() => {
+      if (mark.bySource) {
+        const item = scene.bench.find((i) => i.instanceId === pipetteId);
+        const delivered = runtime.state.markDispenses?.[runtime.expectedAction?.id ?? ""]?.deliveredMl ?? 0;
+        const held = item?.contents.kind === "liquid" ? item.contents.volumeMl : 0;
+        if (item?.model?.fill) engine.eyeLevel(pipetteId, fillLevelMm(item.model.fill, Math.max(0, held + delivered - mark.goalMl)).levelMm, 0.16, [vesselId], freeStage());
+      } else {
+        const item = scene.bench.find((i) => i.instanceId === vesselId);
+        const level = item?.model?.calibration?.heightMm ?? (item?.model?.fill ? fillLevelMm(item.model.fill, mark.goalMl).levelMm : undefined);
+        if (level !== undefined) engine.eyeLevel(vesselId, level, 0.2, [pipetteId], freeStage());
+      }
+    });
   };
   const holdFromCard = () => {
     const mark = player.markStep;
@@ -787,7 +790,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     const readId = readingVesselId(runtime.expectedAction, runtime.state.measurements);
     const read = readId ? scene.bench.find((i) => i.instanceId === readId) : undefined;
     if (read?.model?.fill && read.contents.kind === "liquid") {
-      engine.eyeLevel(read.instanceId, fillLevelMm(read.model.fill, read.contents.volumeMl).levelMm, 0.2);
+      engine.eyeLevel(read.instanceId, fillLevelMm(read.model.fill, read.contents.volumeMl).levelMm, 0.2, [], engine.safeAreas);
       return;
     }
     const toolDef = player.toolTransfer?.toolDefinitionId;
@@ -1213,7 +1216,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
       {examinedItem ? (
         <ExamineCard item={examinedItem} holderLabel={examinedHolder} onClose={closeExamine}
           onEyeLevel={examinedItem.contents.kind === "liquid"
-            ? () => engine?.eyeLevel(examinedItem.instanceId, (examinedItem.contents as { levelMm: number }).levelMm)
+            ? () => engine?.eyeLevel(examinedItem.instanceId, (examinedItem.contents as { levelMm: number }).levelMm, undefined, [], freeStage())
             : undefined} />
       ) : null}
       {notebookOpen ? <NotebookSheet player={player} width={prefs.notebookWidth} onResize={(w) => updatePrefs({ notebookWidth: w })}

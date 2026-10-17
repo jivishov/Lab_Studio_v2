@@ -1,7 +1,8 @@
 import * as THREE from "three";
 import { describe, expect, it } from "vitest";
 import {
-  applyView, clampManual, DEFAULT_VIEW, eyeOf, fit, fitBest, fitBestSteady, fitSteady, frontYaw, MANUAL, orbitBy, panBy, PRESETS, safeRects, slideBy, zoomBy,
+  applyView, clampManual, DEFAULT_VIEW, eyeOf, fit, fitBest, fitBestSteady, fitSteady, FRAME_DISTANCE_MIN, frontYaw, LEVEL_PITCH, MANUAL, orbitBy, panBy,
+  PRESETS, safeRects, slideBy, zoomBy,
 } from "../bench/camera/benchCamera";
 import { ROOM_SCALE } from "../bench/look/room";
 
@@ -68,7 +69,7 @@ describe("the fixed Home at 1024 × 700, Home's fallback (the shelf in place of 
 
 describe("manual input (app.js:111-151)", () => {
   it("clamps pitch, distance and the look-at point, but not yaw", () => {
-    const view = clampManual({ at: new THREE.Vector3(9, 0.1, -9), yaw: 12, pitch: 0, distance: 99 });
+    const view = clampManual({ at: new THREE.Vector3(9, 0.1, -9), yaw: 12, pitch: -0.3, distance: 99 });
     expect(view.pitch).toBe(MANUAL.pitchMin);
     expect(view.distance).toBe(MANUAL.distanceMax);
     expect(view.at.x).toBe(MANUAL.atXMax);
@@ -129,7 +130,29 @@ describe("manual input (app.js:111-151)", () => {
     expect(panBy(eyeLevel, null, null, 0, size).distance).toBe(0.16); // a pan clamps the look-at point only
     expect(panBy(eyeLevel, null, null, 0, size).pitch).toBe(0);
     expect(zoomBy(eyeLevel, 0).pitch).toBe(0); // the wheel clamps distance only
-    expect(zoomBy(eyeLevel, 0).distance).toBe(MANUAL.distanceMin);
+    expect(zoomBy(eyeLevel, 0).distance).toBe(0.16); // within the range since 2026-10-16
+  });
+
+  it("adjusts a level view by hand without a jump (you, 2026-10-16: the eye perpendicular to the bench)", () => {
+    expect(MANUAL.pitchMin).toBe(0);
+    expect(MANUAL.distanceMin).toBeLessThanOrEqual(0.16);
+    const level = { at: new THREE.Vector3(0, 0.05, 0), yaw: 0, pitch: 0, distance: 0.16 };
+    // An orbit turns it and keeps it level, tilts it up from level and no further down.
+    expect(orbitBy(level, 10, 0)).toMatchObject({ pitch: 0, distance: 0.16 });
+    expect(orbitBy(level, 0, 10).pitch).toBeCloseTo(0.05, 9);
+    expect(orbitBy(level, 0, -10).pitch).toBe(0);
+    // The wheel goes out from it a notch at a time and back in to the range's end.
+    expect(zoomBy(level, 100).distance).toBeCloseTo(0.16 * Math.exp(0.12), 9);
+    expect(zoomBy(level, -100).distance).toBe(MANUAL.distanceMin);
+    // A view closer than the range is not thrown out by the wheel, only kept from coming closer.
+    const closer = { ...level, distance: 0.1 };
+    expect(zoomBy(closer, -100).distance).toBe(0.1);
+    expect(zoomBy(closer, 100).distance).toBeCloseTo(0.1 * Math.exp(0.12), 9);
+    // A pan raises the eye with the view, still level: what was at the look-at point is 40 px lower on the screen.
+    const raised = panBy(level, null, null, 40, size);
+    expect([raised.pitch, raised.distance, raised.at.x, raised.at.z]).toEqual([0, 0.16, 0, 0]);
+    expect(raised.at.y).toBeGreaterThan(level.at.y);
+    expect(project(raised, level.at).y).toBeCloseTo(size.h / 2 + 40, 6);
   });
 
   it("zooms by e^(deltaY · 0.0012)", () => {
@@ -162,7 +185,24 @@ describe("auto-framing (framing.js:29-50, app.js:83-97)", () => {
 
   it("keeps the distance within the limits", () => {
     const tiny = [new THREE.Vector3(0, 0, 0), new THREE.Vector3(0.001, 0.001, 0.001)];
-    expect(fit(tiny, DEFAULT_VIEW(), size, { left: 0, top: 0, right: 1280, bottom: 720 }).distance).toBeGreaterThanOrEqual(MANUAL.distanceMin);
+    expect(fit(tiny, DEFAULT_VIEW(), size, { left: 0, top: 0, right: 1280, bottom: 720 }).distance).toBeGreaterThanOrEqual(FRAME_DISTANCE_MIN);
+  });
+
+  it("frames from a level view by moving the camera up or down in its own plane (2026-10-16)", () => {
+    const safe = { left: 400, top: 60, right: 1240, bottom: 400 };
+    for (const pitch of [0, LEVEL_PITCH / 2]) {
+      const base = { ...DEFAULT_VIEW(), pitch };
+      // The source's fit stops within a pixel and 1 % of filling the rectangle; the steady fit inside it.
+      for (const [view, slack] of [[fit(box, base, size, safe), 4], [fitSteady(box, base, size, safe)!, 1]] as const) {
+        expect(view.pitch).toBe(pitch);
+        const s = box.map((p) => project(view, p));
+        const [x0, x1] = [Math.min(...s.map((q) => q.x)), Math.max(...s.map((q) => q.x))];
+        const [y0, y1] = [Math.min(...s.map((q) => q.y)), Math.max(...s.map((q) => q.y))];
+        expect(Math.abs((x0 + x1) / 2 - (safe.left + safe.right) / 2)).toBeLessThan(slack);
+        expect(Math.abs((y0 + y1) / 2 - (safe.top + safe.bottom) / 2)).toBeLessThan(slack);
+        expect(x0 >= safe.left - slack && x1 <= safe.right + slack && y0 >= safe.top - slack && y1 <= safe.bottom + slack).toBe(true);
+      }
+    }
   });
 
   it("splits the stage around a panel and keeps pieces of a useful size", () => {
@@ -194,7 +234,7 @@ describe("auto-framing (framing.js:29-50, app.js:83-97)", () => {
     expect(inside(steady)).toBe(true);
     expect(steady.pitch).toBe(0.45);
     // As close as it fits: 3 % closer, it does not.
-    expect(fitSteady(tall, base, size, safe, { min: MANUAL.distanceMin, max: steady.distance * 0.97 })).toBeUndefined();
+    expect(fitSteady(tall, base, size, safe, { min: FRAME_DISTANCE_MIN, max: steady.distance * 0.97 })).toBeUndefined();
   });
 
   it("frames Auto view with the steady fit, and with the source's where nothing fits (2026-10-12)", () => {
@@ -210,7 +250,7 @@ describe("auto-framing (framing.js:29-50, app.js:83-97)", () => {
     expect(rects.some((r) => b.left >= r.left - 1 && b.right <= r.right + 1 && b.top >= r.top - 1 && b.bottom <= r.bottom + 1)).toBe(true);
     expect([view.yaw, view.pitch]).toEqual([base.yaw, base.pitch]);
     // Held to 95 % of that distance, nothing fits: the source's fit, as before.
-    const limits = { min: MANUAL.distanceMin, max: view.distance * 0.95 };
+    const limits = { min: FRAME_DISTANCE_MIN, max: view.distance * 0.95 };
     expect(fitBestSteady(tall, base, size, rects, limits)).toEqual(fitBest(tall, base, size, rects, limits));
   });
 });

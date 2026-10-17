@@ -36,9 +36,14 @@ export const FAR = 182 * S;
 
 /** Limits for manual input only (`app.js:121-151`); presets, framing and Examine are not clamped. */
 export const MANUAL = {
-  pitchMin: 0.35,
+  /**
+   * Down to level (you, 2026-10-16: "I want to be able to adjust the POV when the observer is completely perpendicular
+   * to the bench"), the eye looking straight across the bench as Eye level does; the source's 0.35 rad before.
+   */
+  pitchMin: 0,
   pitchMax: 1.55,
-  distanceMin: 3.2 * S,
+  /** In as close as Eye level comes (0.16 m), so a meniscus can be zoomed to by hand (2026-10-16; the source's 3.2 units before). */
+  distanceMin: 0.15,
   /** Out to past the Home view, which takes in the shelf and the side station (2026-10-11; the source's 20 units). */
   distanceMax: 34 * S,
   /**
@@ -88,6 +93,14 @@ export const PRESETS = {
 /** Auto-framing's pitch for a step's working set (the source sets one per phase, mostly .85–.92). */
 export const FRAME_PITCH = 0.9;
 export const FRAME_MS = 650;
+/** The closest a framing comes: the source's manual minimum, kept for framing when the hand's went in (2026-10-16). */
+export const FRAME_DISTANCE_MIN = 3.2 * S;
+/**
+ * Under this pitch a view is near level (the source's lowest, 0.35 rad): the bench plane runs off toward the horizon,
+ * so a move along it hardly moves the view up or down, and a pixel near the horizon spans metres of it. There, drags,
+ * the wheel and framing move the camera in its own plane instead (2026-10-16).
+ */
+export const LEVEL_PITCH = 0.35;
 
 export const clamp = (x: number, a: number, b: number) => Math.max(a, Math.min(b, x));
 export const copyView = (view: OrbitView): OrbitView => ({ ...view, at: view.at.clone() });
@@ -136,7 +149,8 @@ export const orbitBy = (view: OrbitView, dx: number, dy: number): OrbitView =>
 /**
  * Right-drag, and one finger on empty bench: the view moves with the pointer. Sideways, the bench point under the
  * pointer stays under it (`app.js:126`, `panBy` at `:134-137`; `from` and `to` are the bench points under the pointer
- * before and after, at the same screen height). Up or down (you, 2026-10-13: "Allow user to the move the scene
+ * before and after, at the same screen height; near level, the points on the plane through the look-at point facing the
+ * camera, 2026-10-16). Up or down (you, 2026-10-13: "Allow user to the move the scene
  * up-down vertically with the right-mouse button held clicked"; it tilted the view before), the camera slides along
  * its own up direction, keeping its angle and distance, so the scene at the look-at point's depth follows the pointer
  * `dy` pixels. The look-at point stays between `MANUAL.atYMin` and `atYMax`; one already outside is not pulled in.
@@ -144,8 +158,7 @@ export const orbitBy = (view: OrbitView, dx: number, dy: number): OrbitView =>
 export const panBy = (view: OrbitView, from: THREE.Vector3 | null, to: THREE.Vector3 | null, dy: number, size: Size): OrbitView => {
   const at = view.at.clone();
   if (from && to) at.add(from.clone().sub(to));
-  const sp = Math.sin(view.pitch), cp = Math.cos(view.pitch);
-  const up = new THREE.Vector3(-sp * Math.sin(view.yaw), cp, -sp * Math.cos(view.yaw));
+  const up = upOf(view);
   let step = (dy * 2 * effectiveDistance(view, size.w / size.h) * Math.tan((FOV * Math.PI) / 360)) / Math.max(1, size.h);
   if (Math.abs(up.y) > 1e-6) {
     const y = clamp(at.y + step * up.y, Math.min(MANUAL.atYMin, at.y), Math.max(MANUAL.atYMax, at.y));
@@ -168,9 +181,33 @@ export const slideBy = (view: OrbitView, from: THREE.Vector3 | null, to: THREE.V
   return { ...view, at: clampAt(view.at.clone().add(step)) };
 };
 
-/** The wheel (`app.js:146-151`): zoom by e^(deltaY·k); `refit` then keeps the bench point under the pointer fixed. */
-export const zoomBy = (view: OrbitView, deltaY: number): OrbitView =>
-  ({ ...copyView(view), distance: clamp(view.distance * Math.exp(deltaY * MANUAL.zoomPerDelta), MANUAL.distanceMin, MANUAL.distanceMax) });
+/**
+ * The wheel (`app.js:146-151`): zoom by e^(deltaY·k); `refit` then keeps the bench point under the pointer fixed. A view
+ * already outside the range is not pulled into it (2026-10-16: Eye level's 0.16 m was thrown out to the old 0.3 m on
+ * the first notch); the wheel only stops it going further out of it.
+ */
+export const zoomBy = (view: OrbitView, deltaY: number): OrbitView => ({
+  ...copyView(view),
+  distance: clamp(view.distance * Math.exp(deltaY * MANUAL.zoomPerDelta),
+    Math.min(MANUAL.distanceMin, view.distance), Math.max(MANUAL.distanceMax, view.distance)),
+});
+
+/** The camera's up direction for `view` (no roll): a move along it moves the scene straight down the screen. */
+export const upOf = (view: OrbitView): THREE.Vector3 => {
+  const sp = Math.sin(view.pitch), cp = Math.cos(view.pitch);
+  return new THREE.Vector3(-sp * Math.sin(view.yaw), cp, -sp * Math.cos(view.yaw));
+};
+
+/**
+ * Framing's move of the look-at point for a centre `dy` pixels below where it should be, `upp` metres a pixel: along the
+ * bench toward the viewer (the source's, its step stretched by 1/sin pitch), or near level, where that hardly moves the
+ * view, down in the camera's own plane (2026-10-16).
+ */
+const lowerBy = (view: OrbitView, dy: number, upp: number): THREE.Vector3 => {
+  if (view.pitch < LEVEL_PITCH) return upOf(view).multiplyScalar(-dy * upp);
+  const away = new THREE.Vector3(-Math.sin(view.yaw), 0, -Math.cos(view.yaw));
+  return away.multiplyScalar(-dy * upp / Math.max(0.35, Math.sin(view.pitch)));
+};
 
 /** Choice 11: framing turns back to the front the short way, never unwinding whole turns made by hand. */
 export const frontYaw = (yaw: number): number => Math.round(yaw / (Math.PI * 2)) * Math.PI * 2;
@@ -195,7 +232,7 @@ const project = (view: OrbitView, size: Size, points: readonly THREE.Vector3[]) 
  * on the bench plane. `limits` bound the distance.
  */
 export const fit = (points: readonly THREE.Vector3[], base: OrbitView, size: Size, safe: Rect,
-  limits = { min: MANUAL.distanceMin, max: MANUAL.distanceMax }): OrbitView => {
+  limits = { min: FRAME_DISTANCE_MIN, max: MANUAL.distanceMax }): OrbitView => {
   const view = copyView(base);
   const n = points.length || 1;
   view.at.set(points.reduce((s, p) => s + p.x, 0) / n, 0, points.reduce((s, p) => s + p.z, 0) / n);
@@ -208,9 +245,7 @@ export const fit = (points: readonly THREE.Vector3[], base: OrbitView, size: Siz
     const upp = (2 * eff * Math.tan((FOV * Math.PI) / 360)) / size.h;
     const dx = (x0 + x1) / 2 - cx, dy = (y0 + y1) / 2 - cy;
     const right = new THREE.Vector3(Math.cos(view.yaw), 0, -Math.sin(view.yaw));
-    const away = new THREE.Vector3(-Math.sin(view.yaw), 0, -Math.cos(view.yaw));
-    const k = 1 / Math.max(0.35, Math.sin(view.pitch));
-    view.at.addScaledVector(right, dx * upp).addScaledVector(away, -dy * upp * k);
+    view.at.addScaledVector(right, dx * upp).add(lowerBy(view, dy, upp));
     view.distance = clamp(view.distance * clamp(scale, 0.6, 1.6), limits.min, limits.max);
     if (Math.abs(scale - 1) < 0.01 && Math.abs(dx) < 1 && Math.abs(dy) < 1) break;
   }
@@ -271,14 +306,11 @@ export const fitBest = (points: readonly THREE.Vector3[], base: OrbitView, size:
  * bisection.
  */
 export const fitSteady = (points: readonly THREE.Vector3[], base: OrbitView, size: Size, rect: Rect,
-  limits = { min: MANUAL.distanceMin, max: MANUAL.distanceMax }): OrbitView | undefined => {
+  limits = { min: FRAME_DISTANCE_MIN, max: MANUAL.distanceMax }): OrbitView | undefined => {
   const cx = (rect.left + rect.right) / 2, cy = (rect.top + rect.bottom) / 2;
   const n = points.length || 1;
   const start = new THREE.Vector3(points.reduce((s, p) => s + p.x, 0) / n, 0, points.reduce((s, p) => s + p.z, 0) / n);
   const right = new THREE.Vector3(Math.cos(base.yaw), 0, -Math.sin(base.yaw));
-  const away = new THREE.Vector3(-Math.sin(base.yaw), 0, -Math.cos(base.yaw));
-  // A step along the bench moves the view by its length times the pitch's sine (the source's 0.35 floor, as in `fit`).
-  const k = 1 / Math.max(0.35, Math.sin(base.pitch));
   const centred = (distance: number) => {
     const view: OrbitView = { ...copyView(base), at: start.clone(), distance };
     let b = project(view, size, points);
@@ -286,7 +318,7 @@ export const fitSteady = (points: readonly THREE.Vector3[], base: OrbitView, siz
       const dx = (b.x0 + b.x1) / 2 - cx, dy = (b.y0 + b.y1) / 2 - cy;
       if (Math.abs(dx) < 0.25 && Math.abs(dy) < 0.25) break;
       const upp = (2 * effectiveDistance(view, size.w / size.h) * Math.tan((FOV * Math.PI) / 360)) / size.h;
-      view.at.addScaledVector(right, dx * upp).addScaledVector(away, -dy * upp * k);
+      view.at.addScaledVector(right, dx * upp).add(lowerBy(view, dy, upp));
       b = project(view, size, points);
     }
     const fits = b.inFront && b.x0 >= rect.left - 0.5 && b.x1 <= rect.right + 0.5 && b.y0 >= rect.top - 0.5 && b.y1 <= rect.bottom + 0.5;
@@ -310,7 +342,7 @@ export const fitSteady = (points: readonly THREE.Vector3[], base: OrbitView, siz
  * the rectangle.
  */
 export const fitBestSteady = (points: readonly THREE.Vector3[], base: OrbitView, size: Size, rects: readonly Rect[],
-  limits = { min: MANUAL.distanceMin, max: MANUAL.distanceMax }): OrbitView | undefined => {
+  limits = { min: FRAME_DISTANCE_MIN, max: MANUAL.distanceMax }): OrbitView | undefined => {
   const real = (view: OrbitView | undefined): view is OrbitView => view !== undefined
     && [view.at.x, view.at.z, view.distance].every(Number.isFinite) && Math.abs(view.at.x) <= FRAME_REACH.x && Math.abs(view.at.z) <= FRAME_REACH.z;
   return rects.map((rect) => fitSteady(points, base, size, rect, limits)).filter(real).sort((a, b) => a.distance - b.distance)[0]
