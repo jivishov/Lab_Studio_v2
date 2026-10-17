@@ -7,7 +7,8 @@ import * as THREE from "three";
  * - the key and fill lights;
  * - reflections of its analytic room, env(r, roughness) · Fresnel (environment.ts), on top;
  * - rim darkening: the colour falls towards 60% at grazing angles, c · mix(1, 0.6, edge · 0.35),
- *   edge = (1 − n·v)^2.15. Its glass uses a gentler 0.62 at edge · 0.3 (`renderer.js:81`).
+ *   edge = (1 − n·v)^2.15. Its glass uses a gentler 0.62 at edge · 0.3 (`renderer.js:81`), which clear plastic keeps;
+ *   glassware has its own since 2026-10-16 (`GLASS`).
  *
  * three.js lights diffuse surfaces from the environment map as well as reflecting it, so each
  * standard material is patched to take only the map's reflections (its `iblIrradiance` term is
@@ -22,6 +23,16 @@ import * as THREE from "three";
  */
 export const REFLECTION = { glass: 0.62 } as const;
 export const RIM = { edgePower: 2.15, weight: 0.35, floor: 0.6, glassWeight: 0.3, glassFloor: 0.62 } as const;
+/**
+ * Glassware's own look (you, 2026-10-16: "Glassware on the shelves is not visible as on the bench"; answered "e:
+ * stronger"): against the window and the pale wall the source's glass let the background through untouched, so an empty
+ * vessel on the shelf all but vanished. Real glass passes about 86% through its four surfaces and darkens toward its
+ * sides, where light crosses the wall lengthwise and reflects more. So glass (materials.ts, `ROOM_GLASS`) passes `pass` of
+ * the light behind it, and its outgoing light falls to `edgeFloor` at the silhouette over a broad band,
+ * mix(1, edgeFloor, (1 − n·v)^edgePower · edgeWeight), about 40% at the edge and 70% at 60° from face-on. Other
+ * transmissive surfaces (clear and frosted plastic) keep the source's gentler glass rim above.
+ */
+export const GLASS = { pass: 0.8, edgePower: 1, edgeFloor: 0.35, edgeWeight: 0.9 } as const;
 
 const IRRADIANCE = "iblIrradiance += getIBLIrradiance( geometryNormal );";
 const SPECULAR_ONLY_MAPS = THREE.ShaderChunk.lights_fragment_maps.replace(IRRADIANCE, "");
@@ -32,7 +43,9 @@ const RIM_GLSL = /* glsl */ `
 	{
 		float roomRimNv = saturate( dot( normal, geometryViewDir ) );
 		float roomRimEdge = pow( 1.0 - roomRimNv, ${RIM.edgePower.toFixed(2)} );
-		#ifdef USE_TRANSMISSION
+		#if defined( ROOM_GLASS )
+			outgoingLight *= mix( 1.0, ${GLASS.edgeFloor.toFixed(2)}, pow( 1.0 - roomRimNv, ${GLASS.edgePower.toFixed(2)} ) * ${GLASS.edgeWeight.toFixed(2)} );
+		#elif defined( USE_TRANSMISSION )
 			outgoingLight *= mix( 1.0, ${RIM.glassFloor.toFixed(2)}, roomRimEdge * ${RIM.glassWeight.toFixed(2)} );
 		#else
 			outgoingLight *= mix( 1.0, ${RIM.floor.toFixed(2)}, roomRimEdge * ${RIM.weight.toFixed(2)} );

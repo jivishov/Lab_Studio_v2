@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import viewerMaterials from "../../equipment3d/viewerMaterials.json";
-import { REFLECTION } from "./roomLighting";
+import { GLASS, REFLECTION } from "./roomLighting";
 import type { BenchTextures } from "./textures";
 
 /**
@@ -64,7 +64,10 @@ const tune = (src: THREE.Material, T: BenchTextures, enclosureGlass: boolean, en
         thickness: thick ? 0.007 : 0.0022, attenuationDistance: thick ? 0.045 : 0.3, dispersion: thick ? 0.12 : 0.04,
         side: THREE.FrontSide, depthWrite: false,
       });
-      m.color.setRGB(1, 1, 1);
+      // Glassware's own look (roomLighting.ts `GLASS`; you, 2026-10-16): it passes a little less of the light behind
+      // it and darkens toward its sides, so an empty vessel holds its shape against the window and the pale wall.
+      m.color.setRGB(GLASS.pass, GLASS.pass, GLASS.pass);
+      m.defines = { ...m.defines, ROOM_GLASS: "" };
       m.attenuationColor = new THREE.Color(0.86, 0.95, 0.93);
       return reflect(m, REFLECTION.glass);
     }

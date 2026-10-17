@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { acceptedDropCallout } from "../bench/input/useBenchCarry";
 import type { AttachmentRelation } from "../../domain/types";
 import { tuneMaterials } from "../bench/look/materials";
+import { GLASS, roomLitMaterial } from "../bench/look/roomLighting";
 import type { BenchTextures } from "../bench/look/textures";
 import { heldOnSeat, readingSeatZone, seatPoint, SET_ON_CLEARANCE_M, SET_ON_PHASES, SET_ON_SECONDS, setOnPosition } from "../bench/scene/setOn";
 import { equipment3dEntry } from "../equipment3d/readiness";
@@ -99,6 +100,7 @@ describe("a vessel on the pan is seen through the draft shield", () => {
     expect(m.transparent).toBe(true);
     expect(m.opacity).toBeLessThan(0.2);
     expect(m.depthWrite).toBe(false);
+    expect(m.defines?.ROOM_GLASS).toBeUndefined();
     expect(pane.castShadow).toBe(false);
     // Picking sees through it to an item seated inside (BenchEngine.pick).
     expect(pane.userData.enclosureGlass).toBe(true);
@@ -111,6 +113,27 @@ describe("a vessel on the pan is seen through the draft shield", () => {
     expect(m.transmission).toBe(1);
     expect(m.transparent).toBe(false);
     expect(vessel.userData.enclosureGlass).toBeUndefined();
+  });
+
+  it("gives glassware its own look, so an empty vessel holds its shape against the window (you, 2026-10-16)", () => {
+    const vessel = glassPane();
+    tuneMaterials(vessel, textures, new Map());
+    const m = vessel.material as THREE.MeshPhysicalMaterial;
+    // It passes 80% of the light behind it and darkens toward its sides, to about 40% at the edge.
+    expect(GLASS).toEqual({ pass: 0.8, edgePower: 1, edgeFloor: 0.35, edgeWeight: 0.9 });
+    expect(m.color.r).toBeCloseTo(GLASS.pass, 6);
+    expect(m.color.g).toBeCloseTo(GLASS.pass, 6);
+    expect(m.color.b).toBeCloseTo(GLASS.pass, 6);
+    expect(m.defines?.ROOM_GLASS).toBe("");
+    expect(m.defines?.PHYSICAL).toBeDefined();
+    roomLitMaterial(m);
+    const shader = {
+      fragmentShader: ["#include <lights_fragment_maps>", "#include <opaque_fragment>"].join("\n"),
+      vertexShader: "", uniforms: {},
+    } as unknown as THREE.WebGLProgramParametersWithUniforms;
+    m.onBeforeCompile(shader, {} as THREE.WebGLRenderer);
+    expect(shader.fragmentShader).toContain("#if defined( ROOM_GLASS )");
+    expect(shader.fragmentShader).toContain("mix( 1.0, 0.35, pow( 1.0 - roomRimNv, 1.00 ) * 0.90 )");
   });
 });
 
