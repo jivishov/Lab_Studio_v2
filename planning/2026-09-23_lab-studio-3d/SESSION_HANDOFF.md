@@ -20,8 +20,9 @@ the Submit fix (`0fa32ee`), then the Pack 3a build (`5123159` to `fe817ec`, 2026
 the slide `fb11986`, the stable layout `da07078`, then the tile with two fixes found at its look, and their records),
 then the shelf in place of the tray (phases 1 and 2 and their review, 2026-10-11, `82be9f1` to `b857de6`), the HUD,
 the natural room, the two themes and Home fitted to the screen (2026-10-12), Auto view's steady fit and right-drag
-(2026-10-13), the shelf's phases 3 and 4 with their records (2026-10-16), and the lab room's phase 1 (`aa21b14` to
-`8c9cc20`, then its records commit, 2026-10-16); `git log -1` names the latest. Push only when the user asks.
+(2026-10-13), the shelf's phases 3 and 4 with their records (2026-10-16), the lab room's phase 1 (`aa21b14` to
+`8c9cc20`, then its records commit, 2026-10-16), and the level view adjusted by hand (`67e94a9`) and At the
+bench (`6d186a5`, then its records commit, 2026-10-16); `git log -1` names the latest. Push only when the user asks.
 
 **Pack 1, technique by technique:**
 
@@ -500,7 +501,9 @@ and template rules. `scripts/checkCycle04Foundations.mjs` can't run in this expo
   the build waits for the user's go-ahead, phase by phase. Phase 1 (the open room at today's 1400 mm working area)
   has its build prompt, `LAB_ROOM_BUILD_PROMPT.md`, checked against the code at `9a68edd`; it adds the camera's far
   clip (7.47 m, too short for the hall), which the proposal missed. Phase 1 was built on 2026-10-16
-  (`evidence/LAB_ROOM_EVIDENCE.md`); its frame-time note is still to be read in the visible pane.
+  (`evidence/LAB_ROOM_EVIDENCE.md`); its frame-time note is still to be read in the visible pane. Then the level
+  view adjusted by hand and At the bench, a working view in the camera menu (`DECISIONS.md`, two rows, 2026-10-16),
+  both waiting for the user's look.
 - **A runtime question (2026-10-11).** On every action `withResolvedAttachments` merges in a relation derived from
   a child's snap zone that names the first instance of the parent's definition, even when the child already holds
   its own. With two chambers the 2-propanol strip was also listed in the water chamber. 3D now keeps each child's
