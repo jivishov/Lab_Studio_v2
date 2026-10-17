@@ -783,16 +783,11 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
   }, [engine]);
   /** Home, the Home key and Reset view: fitted to the free stage (you, 2026-10-12). */
   const goHome = () => { setAutoView(false); engine?.resetView(freeStage(true)); };
-  const frame = useCallback(() => {
-    if (!engine || carryingRef.current) return;
-    engine.safeAreas = freeStage();
-    // A reading of a vessel's level is taken with the eye level with the liquid (stepRules.readingVesselId).
-    const readId = readingVesselId(runtime.expectedAction, runtime.state.measurements);
-    const read = readId ? scene.bench.find((i) => i.instanceId === readId) : undefined;
-    if (read?.model?.fill && read.contents.kind === "liquid") {
-      engine.eyeLevel(read.instanceId, fillLevelMm(read.model.fill, read.contents.volumeMl).levelMm, 0.2, [], engine.safeAreas);
-      return;
-    }
+  /**
+   * The step's items, as Auto view frames them: what it is done to and with, each with what it is seated in. None without
+   * guidance, so assessment is not pointed at them.
+   */
+  const stepItems = useCallback((): string[] => {
     const toolDef = player.toolTransfer?.toolDefinitionId;
     // A step's named instance alone, when it is on the bench; else every item of the kind. One not yet on the bench
     // is framed where it stands on the shelf, the first of its kind there (the shelf in place of the tray, 2026-10-11).
@@ -814,9 +809,22 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     for (const item of scene.bench) {
       if (working.has(item.instanceId) && item.placement.kind === "seated") working.add(item.placement.parentInstanceId);
     }
+    return [...working];
+  }, [flow.source.definitionId, flow.source.instanceId, flow.target.definitionId, flow.target.instanceId, player.benchOp, player.toolTransfer, scene, showGuidance]);
+  const frame = useCallback(() => {
+    if (!engine || carryingRef.current) return;
+    engine.safeAreas = freeStage();
+    // A reading of a vessel's level is taken with the eye level with the liquid (stepRules.readingVesselId).
+    const readId = readingVesselId(runtime.expectedAction, runtime.state.measurements);
+    const read = readId ? scene.bench.find((i) => i.instanceId === readId) : undefined;
+    if (read?.model?.fill && read.contents.kind === "liquid") {
+      engine.eyeLevel(read.instanceId, fillLevelMm(read.model.fill, read.contents.volumeMl).levelMm, 0.2, [], engine.safeAreas);
+      return;
+    }
+    const working = stepItems();
     // With the steady fit, as Auto view frames from Home's low angle, where the source's fit swings (2026-10-12).
-    engine.frameItems(working.size ? [...working] : "all", working.size ? 1.6 : 1.05, engine.safeAreas, true);
-  }, [engine, flow.source.definitionId, flow.source.instanceId, flow.target.definitionId, flow.target.instanceId, freeStage, player.benchOp, player.toolTransfer, runtime.expectedAction, runtime.state.measurements, scene, showGuidance]);
+    engine.frameItems(working.length ? working : "all", working.length ? 1.6 : 1.05, engine.safeAreas, true);
+  }, [engine, freeStage, runtime.expectedAction, runtime.state.measurements, scene, stepItems]);
   useEffect(() => {
     if (runtime.currentNode.id !== lastNode.current) {
       lastNode.current = runtime.currentNode.id;
@@ -1012,10 +1020,21 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     }
   };
   const menuItem = itemMenu ? scene.bench.find((i) => i.instanceId === itemMenu.id) : undefined;
-  const chooseView = (view: "auto" | "bench" | "selected" | "overhead") => {
+  /**
+   * "At the bench" (you, 2026-10-16): the step's items from where one works at the bench (camera/atBench.ts). At a
+   * reading, the vessel read; without guidance, the selected item, else everything on the bench.
+   */
+  const atBench = () => {
+    if (!engine) return;
+    const working = stepItems();
+    const readId = readingVesselId(runtime.expectedAction, runtime.state.measurements);
+    engine.atBench(working.length ? working : readId ? [readId] : selected ? [selected] : scene.bench.map((i) => i.instanceId), freeStage());
+  };
+  const chooseView = (view: "auto" | "at-bench" | "bench" | "selected" | "overhead") => {
     setViewsOpen(false);
     setAutoView(view === "auto");
     if (view === "auto") frame();
+    else if (view === "at-bench") atBench();
     else if (view === "bench") engine?.frameBench();
     else if (view === "selected" && selected) engine?.frameItems([selected], 1.4);
     else if (view === "overhead") engine?.overhead();
@@ -1238,6 +1257,7 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
         {viewsOpen ? (
           <div className="s3d-viewmenu" role="menu" aria-label="Camera views">
             <button type="button" role="menuitem" className={autoView ? "is-current" : undefined} onClick={() => chooseView("auto")}>Auto · follow the step</button>
+            <button type="button" role="menuitem" onClick={() => chooseView("at-bench")}>At the bench</button>
             <button type="button" role="menuitem" onClick={() => chooseView("bench")}>Whole bench</button>
             <button type="button" role="menuitem" disabled={!selected} onClick={() => chooseView("selected")}>Selected item</button>
             <button type="button" role="menuitem" onClick={() => chooseView("overhead")}>Overhead</button>

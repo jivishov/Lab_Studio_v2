@@ -10,6 +10,7 @@ import {
   applyView, clamp, clampAt, clampManual, copyView, DEFAULT_VIEW, easeInOutCubic, effectiveDistance, FAR, fitBest, fitBestSteady, FOV,
   LEVEL_PITCH, lerpView, MANUAL, NEAR, orbitBy, panBy, PRESETS, safeRects, slideBy, zoomBy, type OrbitView, type Rect,
 } from "./camera/benchCamera";
+import { AT_BENCH, atBenchView } from "./camera/atBench";
 import { homeView } from "./camera/home";
 import { makeComposer } from "./look/composer";
 import { ContactShadows } from "./look/contactShadows";
@@ -2680,6 +2681,21 @@ export class BenchEngine {
    * 2026-10-12): from Home's low pitch the source's fit swings.
    */
   frameItems(instanceIds: string[] | "all", marginFactor = 1.1, safe: Rect[] | undefined = this.safeAreas, steady = false): void {
+    this.frameBox(this.boundsOf(instanceIds), marginFactor, safe, steady);
+  }
+
+  /**
+   * "At the bench", a camera menu view (camera/atBench.ts; you, 2026-10-16): the view of one working at the bench, the
+   * eye about 0.5 m over the worktop above its front edge, looking at `instanceIds` (none: a box at the bench's middle),
+   * within the free stage `safe` (default `safeAreas`), with a 650 ms tween.
+   */
+  atBench(instanceIds: string[], safe: Rect[] | undefined = this.safeAreas): void {
+    const goal = atBenchView(this.boxPoints(this.boundsOf(instanceIds), AT_BENCH.margin), this.view.yaw, this.canvasSize(), safe);
+    if (goal) this.tweenTo(goal);
+  }
+
+  /** The bounds of a set of items, or of every item with the runtime bench (world metres); a box at the bench's middle for none. */
+  private boundsOf(instanceIds: string[] | "all"): THREE.Box3 {
     const box = new THREE.Box3();
     const views = instanceIds === "all" ? [...this.items.values()] : instanceIds.map((id) => this.items.get(id)).filter(Boolean) as ItemView[];
     // A shelf item whose model has not arrived yet (it loads after the bench is shown) is framed by its spot.
@@ -2694,7 +2710,7 @@ export class BenchEngine {
       box.expandByPoint(new THREE.Vector3(-w, 0, -d)).expandByPoint(new THREE.Vector3(w, 0, d));
     }
     if (box.isEmpty()) box.set(new THREE.Vector3(-0.5, 0, -0.3), new THREE.Vector3(0.5, 0.25, 0.3));
-    this.frameBox(box, marginFactor, safe, steady);
+    return box;
   }
 
   /** "Whole bench": the microarray lab's preset (`app.js:108`). */
@@ -2765,13 +2781,19 @@ export class BenchEngine {
     this.tweenTo(goal);
   }
 
-  private frameBox(box: THREE.Box3, marginFactor: number, safe: Rect[] | undefined, steady = false): void {
+  /** A box's corners, grown by `marginFactor` about its centre, none under the worktop. */
+  private boxPoints(box: THREE.Box3, marginFactor: number): THREE.Vector3[] {
     const centre = box.getCenter(new THREE.Vector3());
     const half = box.getSize(new THREE.Vector3()).multiplyScalar(marginFactor / 2);
     const points: THREE.Vector3[] = [];
     for (const sx of [-1, 1]) for (const sy of [-1, 1]) for (const sz of [-1, 1]) {
       points.push(new THREE.Vector3(centre.x + sx * half.x, Math.max(0, centre.y + sy * half.y), centre.z + sz * half.z));
     }
+    return points;
+  }
+
+  private frameBox(box: THREE.Box3, marginFactor: number, safe: Rect[] | undefined, steady = false): void {
+    const points = this.boxPoints(box, marginFactor);
     const size = this.canvasSize();
     const rects = safe?.length ? safe : safeRects(size, []);
     // The angle the learner is looking from is kept (decided 2026-10-05, replacing choice 11's turn

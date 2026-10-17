@@ -142,9 +142,15 @@ export const clampManual = (view: OrbitView): OrbitView => ({
 const clampPitch = (pitch: number) => clamp(pitch, MANUAL.pitchMin, MANUAL.pitchMax);
 export const clampAt = (at: THREE.Vector3) => new THREE.Vector3(clamp(at.x, MANUAL.atXMin, MANUAL.atXMax), at.y, clamp(at.z, -MANUAL.atZ, MANUAL.atZ));
 
-/** Shift/Alt + right-drag or middle-drag (`app.js:125`); up and down tilt (with right-drag before 2026-10-13). */
-export const orbitBy = (view: OrbitView, dx: number, dy: number): OrbitView =>
-  ({ ...copyView(view), yaw: view.yaw - dx * MANUAL.yawPerPx, pitch: clampPitch(view.pitch + dy * MANUAL.pitchPerPx) });
+/**
+ * Shift/Alt + right-drag or middle-drag (`app.js:125`); up and down tilt (with right-drag before 2026-10-13). A view
+ * already looking up, below level (At the bench at the shelf's upper tier, 2026-10-16), is not pulled up to level by the
+ * first move; it only stops it tilting further down, as the wheel does with distance.
+ */
+export const orbitBy = (view: OrbitView, dx: number, dy: number): OrbitView => ({
+  ...copyView(view), yaw: view.yaw - dx * MANUAL.yawPerPx,
+  pitch: clamp(view.pitch + dy * MANUAL.pitchPerPx, Math.min(MANUAL.pitchMin, view.pitch), MANUAL.pitchMax),
+});
 
 /**
  * Right-drag, and one finger on empty bench: the view moves with the pointer. Sideways, the bench point under the
@@ -303,13 +309,13 @@ export const fitBest = (points: readonly THREE.Vector3[], base: OrbitView, size:
  * overshoots and swings between too near and too far without settling: found with Home at pitch 0.45, where after its
  * 14 steps the points could lie under the step card or past the screen's edge. Here, at a given distance the look-at
  * point alone centres the points, a near-linear move that settles in a few steps, and the distance is found by
- * bisection.
+ * bisection. The look-at point starts at `from`, by default the points' centroid on the bench plane.
  */
 export const fitSteady = (points: readonly THREE.Vector3[], base: OrbitView, size: Size, rect: Rect,
-  limits = { min: FRAME_DISTANCE_MIN, max: MANUAL.distanceMax }): OrbitView | undefined => {
+  limits = { min: FRAME_DISTANCE_MIN, max: MANUAL.distanceMax }, from?: THREE.Vector3): OrbitView | undefined => {
   const cx = (rect.left + rect.right) / 2, cy = (rect.top + rect.bottom) / 2;
   const n = points.length || 1;
-  const start = new THREE.Vector3(points.reduce((s, p) => s + p.x, 0) / n, 0, points.reduce((s, p) => s + p.z, 0) / n);
+  const start = from?.clone() ?? new THREE.Vector3(points.reduce((s, p) => s + p.x, 0) / n, 0, points.reduce((s, p) => s + p.z, 0) / n);
   const right = new THREE.Vector3(Math.cos(base.yaw), 0, -Math.sin(base.yaw));
   const centred = (distance: number) => {
     const view: OrbitView = { ...copyView(base), at: start.clone(), distance };
