@@ -13,10 +13,12 @@ import {
 import { homeView } from "./camera/home";
 import { makeComposer } from "./look/composer";
 import { ContactShadows } from "./look/contactShadows";
+import { Cutaway } from "./look/cutaway";
 import { labEnvironment } from "./look/environment";
 import { applyRoomLighting } from "./look/roomLighting";
 import { buildRoom, roomBackground, type Room } from "./look/room";
 import { RoomReflections } from "./look/roomReflections";
+import { buildSpines, type Spines } from "./look/spines";
 import { disposeTextures, makeTextures, type BenchTextures } from "./look/textures";
 import { buildContents, buildTiltingLiquid, disposeObject, liquidOpacity3D, parseCssColour } from "./scene/contents";
 import { buildDisplayFace, type DisplayFace } from "./scene/displays";
@@ -175,6 +177,10 @@ export class BenchEngine {
   private readonly reflections: RoomReflections;
   /** The teaching-lab room and its lights (scenery, G-8). */
   private readonly room: Room;
+  /** Scenery in the camera's way fades out (the lab room, 2026-10-16; look/cutaway.ts). */
+  private readonly cutaway = new Cutaway();
+  private cutawaySeen = false;
+  private spines?: Spines;
   private readonly signals = new Signals();
   private readonly items = new Map<string, ItemView>();
   private readonly itemLayer = new THREE.Group();
@@ -279,8 +285,10 @@ export class BenchEngine {
     this.room = buildRoom({ textures: this.textures, shadowMapSize: q.shadowMap, onTextureChange: () => this.requestRender() });
     this.scene.add(this.room.group, this.room.lights);
     applyRoomLighting(this.room.group);
+    for (const [name, part] of Object.entries(this.room.cut)) if (part) this.cutaway.add(name as keyof Room["cut"], part);
     this.reflections = new RoomReflections(this.renderer, q.reflections);
-    const environment = this.reflections.capture(this.scene, new Set([this.room.group, this.room.lights]));
+    // The captures see the room whole, whatever the cutaway has faded.
+    const environment = this.cutaway.whole(() => this.reflections.capture(this.scene, new Set([this.room.group, this.room.lights])));
     this.scene.environment = environment;
     firstLight.dispose();
     this.models = new ModelLibrary(this.textures);
@@ -324,9 +332,18 @@ export class BenchEngine {
       shelf.name = `scenery:${SHELF.id}`;
       shelf.position.copy(toWorld(SHELF.centre.xMm, SHELF.centre.yMm));
       this.furniture.add(shelf);
-      // The room's reflections take the shelf in too (the same map, so every material keeps it).
+      // The island spines beyond our station: more of the shelf's sections, with the lattice rods over the neighbouring
+      // station (the lab room, 2026-10-16; look/spines.ts), each spine faded by the cutaway on its own.
+      const rodsEntry = equipment3dRegistry.entries.find((candidate) => candidate.scenery && candidate.definitionId === "spine-rods");
+      const [source, rods] = await Promise.all([this.models.instance(entry), rodsEntry ? this.models.instance(rodsEntry).catch(() => null) : null]);
+      if (this.disposed) return;
+      this.spines = buildSpines(source, rods);
+      this.furniture.add(this.spines.neighbour, this.spines.far);
+      this.cutaway.add("neighbourSpine", this.spines.neighbour);
+      this.cutaway.add("farIsland", this.spines.far);
+      // The room's reflections take the shelf and the spines in too (the same map, so every material keeps it).
       applyRoomLighting(this.furniture);
-      this.reflections.capture(this.scene, new Set([this.room.group, this.room.lights, this.furniture]));
+      this.cutaway.whole(() => this.reflections.capture(this.scene, new Set([this.room.group, this.room.lights, this.furniture])));
       this.shadowsDirty = true;
       this.requestRender();
     } catch {
@@ -362,6 +379,7 @@ export class BenchEngine {
     const dt = this.lastTime ? Math.min(0.1, (time - this.lastTime) / 1000) : 0;
     this.lastTime = time;
     let animating = this.signals.tick(dt, this.options.reducedMotion);
+    if (this.cutaway.tick(dt, this.options.reducedMotion)) animating = true;
     if (this.demo) animating = this.tickDemo(dt) || animating;
     if (this.pour) {
       if (this.pour.tick(dt)) animating = true;
@@ -2622,6 +2640,10 @@ export class BenchEngine {
   private updateCamera(): void {
     const w = this.canvas.clientWidth, h = this.canvas.clientHeight;
     applyView(this.camera, this.view, w > 0 && h > 0 ? w / h : this.camera.aspect || 1);
+    // Scenery between the eye and the bench fades out (at once for the first view and under reduced motion).
+    const changed = this.cutaway.update(this.camera.position, this.view.at, !this.cutawaySeen || this.options.reducedMotion);
+    this.cutawaySeen = true;
+    if (changed) this.requestRender();
   }
 
   private canvasSize(): { w: number; h: number } {
@@ -2782,6 +2804,7 @@ export class BenchEngine {
     this.models.dispose();
     disposeTextures(this.textures);
     this.reflections.dispose();
+    this.spines?.dispose();
     this.room.dispose();
     this.composer.dispose();
     this.renderer.dispose();
