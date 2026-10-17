@@ -20,8 +20,8 @@ the Submit fix (`0fa32ee`), then the Pack 3a build (`5123159` to `fe817ec`, 2026
 the slide `fb11986`, the stable layout `da07078`, then the tile with two fixes found at its look, and their records),
 then the shelf in place of the tray (phases 1 and 2 and their review, 2026-10-11, `82be9f1` to `b857de6`), the HUD,
 the natural room, the two themes and Home fitted to the screen (2026-10-12), Auto view's steady fit and right-drag
-(2026-10-13), and the shelf's phases 3 and 4 with their records (2026-10-16); `git log -1` names the latest. Push
-only when the user asks.
+(2026-10-13), the shelf's phases 3 and 4 with their records (2026-10-16), and the lab room's phase 1 (`aa21b14` to
+`8c9cc20`, then its records commit, 2026-10-16); `git log -1` names the latest. Push only when the user asks.
 
 **Pack 1, technique by technique:**
 
@@ -242,7 +242,30 @@ wait for confirmation (`DECISIONS.md`, the "built" row). G3 has still not run.
    Two questions from them wait for the user: what Auto view does at a step whose items are all on the shelf
    (recommended: go to Home), and whether Examine, the Selected view and picking from the Bench list take the
    steady fit too.
-14. **Next (only when the user asks):** Pack 3b (brass, in six techniques; the proposal's "Brass
+14. **Built 2026-10-16, waiting for the user's look: the lab room, phase 1** (`LAB_ROOM_BUILD_PROMPT.md`;
+   `evidence/LAB_ROOM_EVIDENCE.md`, with renders `renders/LR_*.jpg` and a fidelity review; `DECISIONS.md`, "The lab
+   room, phase 1 built"). 3D only, scenery only: no slot, shelf spot, the side station, `BENCH_MM` or Home moved.
+   - `aa21b14`: the spine's fittings in the `reagent-shelf` model (perforated grey uprights, sockets, a service bar
+     with valves and hoses, a gooseneck tap) and a new `spine-rods` scenery model.
+   - `481af48`: the hall (`look/hall.ts`, about 12 × 10 m, ceiling 3.0 m above the floor): our island deepened to a
+     far working side and run on to the left as an empty neighbouring station, cabinets on both sides, a column with
+     the bench sign, a far island, five windows along the back wall, the end wall's fire hose cabinet, bell, door,
+     tall cabinets and fume cupboard (the last two extrapolation), a stool, 600 mm porcelain tiles, the ceiling
+     grid, the shadow box re-fitted, daylight across the window run, the occlusion rewritten, and `FAR` 17.0 m.
+   - `f609a2a`: the cutaway (`look/cutaway.ts`: seven scenery groups fade over 200 ms through `alphaHash` while in a
+     sight line from the eye to the bench) and the spines placed (`look/spines.ts`), with `labRoom.test.ts`.
+   - `8c9cc20`: our own shelf section merged by material (Home draws 754 calls per frame, 771 before the hall), and
+     the probes' new options (`probes/README.md`; `count-draws.cjs`).
+
+   Checked at `8c9cc20`:
+   - tsc is clean;
+   - the 3D tests pass, 36 files and 392 tests;
+   - `content:check` is at its baseline of 22;
+   - the practice build check and the Pack 3 model validator pass.
+
+   Pending: the frame-time note in the visible browser pane (never SwiftShader), at the user's look. Phases 2 to 5
+   (the 1700 mm working area, the sight-line rule, Auto view's follow-ups, the records) each wait for the user.
+15. **Next (only when the user asks):** Pack 3b (brass, in six techniques; the proposal's "Brass
    Spectrophotometry"), with a build prompt written first if the user asks for one. Its 29 shelf items need a
    third tier or a second bay first. Also held: publishing Pack 3, the D8 experiments and everything since,
    pushing, and G3.
@@ -467,7 +490,7 @@ and template rules. `scripts/checkCycle04Foundations.mjs` can't run in this expo
   lower-tier items; what Auto view does at a step whose items are all on the shelf; and Pack 3b's shelf room. Of
   the G1 scripts in `probes/`, `place-from-tray.cjs` targets the removed tray panel; the Shelf list needs its own
   selectors.
-- **The lab room (2026-10-16, decided, not built).** `proposals/LAB_ROOM_LAYOUT.md`, revision 2 (after a fidelity
+- **The lab room (2026-10-16, decided; phase 1 built, waiting for the user's look, item 14).** `proposals/LAB_ROOM_LAYOUT.md`, revision 2 (after a fidelity
   review against the code and the user's photos): open the closed room into a teaching hall around a long,
   double-sided island with a centre spine, widen the 3D working area (`BENCH_MM`) to 1700 mm with the middle slot
   row staggered, keep real equipment sizes, cut away scenery in the camera's way, and keep rack spots out of tall
@@ -476,7 +499,8 @@ and template rules. `scripts/checkCycle04Foundations.mjs` can't run in this expo
   and Bench list picks). Every decision of both revisions was answered as recommended (`DECISIONS.md`, two rows);
   the build waits for the user's go-ahead, phase by phase. Phase 1 (the open room at today's 1400 mm working area)
   has its build prompt, `LAB_ROOM_BUILD_PROMPT.md`, checked against the code at `9a68edd`; it adds the camera's far
-  clip (7.47 m, too short for the hall), which the proposal missed.
+  clip (7.47 m, too short for the hall), which the proposal missed. Phase 1 was built on 2026-10-16
+  (`evidence/LAB_ROOM_EVIDENCE.md`); its frame-time note is still to be read in the visible pane.
 - **A runtime question (2026-10-11).** On every action `withResolvedAttachments` merges in a relation derived from
   a child's snap zone that names the first instance of the parent's definition, even when the child already holds
   its own. With two chambers the 2-propanol strip was also listed in the water chamber. 3D now keeps each child's
@@ -601,10 +625,22 @@ and template rules. `scripts/checkCycle04Foundations.mjs` can't run in this expo
   - In Heat and Reweigh the side station's four stand close: at Home the ring stand stands in front of balance A
     and the burner in front of balance B.
   - `probes/place-from-tray.cjs` is stale (it targets the tray panel).
+- **The lab room, phase 1 (2026-10-16)** (`evidence/LAB_ROOM_EVIDENCE.md`, "Known limits"):
+  - Yaw is still unbounded and the walls single-sided; a manual zoom-out can take the eye past the front wall.
+  - The oven still hides lower-tier items at Home (phase 3's sight-line rule).
+  - The tiers stay at 300 and 520 mm; the photos' are about 450 and 800 mm (decision 7).
+  - The tall cabinets and the fume cupboard are extrapolation, not in the photos.
+  - Under SwiftShader at 1920 × 1080 the camera's tweens take many seconds of wall time (dt is clamped to 0.1 s) and
+    the Light theme is slow to screenshot: use `look-room.cjs`'s `LOOK_SETTLE` and `LOOK_SHOT_TIMEOUT`, one run at a
+    time.
+  - The frame-time note is unread.
 - **Cleanup.** At the 2026-10-11 Pack 3a handoff the dev server was stopped and the temporary launch entry was
   removed. At the 2026-09-24 handoff the temporary launch entry was removed and the dev server
   stopped. At the 2026-10-03 handoff the entry in
   `C:\Users\EmilJivishov\Projects\virtual_lab\experiments\lab-studio\.claude\launch.json` was kept for the
   next thread, and no dev server was running. At the 2026-10-10 model-refinement handoff the entry was kept
   and the dev server stopped. At the 2026-10-16 shelf records the dev server was stopped and the temporary entry
-  removed. Remove the entry when the 3D work ends.
+  removed. For the lab room's phase 1 looks (2026-10-16) a second worktree, `tmp/lab-studio-3d-baseline`, served
+  `8c9cc20` on port 5184, apart from the camera work going on in this worktree; it and its server were removed after
+  the records commit. The 5182 server and the launch entry were left to the session working on the camera. Remove
+  the entry when the 3D work ends.
