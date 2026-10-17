@@ -1,0 +1,51 @@
+{
+  "schema": "lab-studio-3d/equipment-meta@1",
+  "definitionId": "spine-rods",
+  "model": "spine-rods.glb",
+  "thumbnail": "thumbs/spine-rods.png",
+  "registry": {
+    "footprintMm": {
+      "shape": "rect",
+      "width": 1040.0,
+      "depth": 180.0
+    },
+    "grip": {
+      "heightMm": 1180.0
+    },
+    "graduations": null,
+    "anchors": {},
+    "displays": [],
+    "states": {}
+  },
+  "build": {
+    "boundsMm": {
+      "min": [
+        -520.0,
+        -88.0,
+        520.0
+      ],
+      "max": [
+        520.0,
+        61.0,
+        1180.0
+      ]
+    },
+    "triangles": 3528,
+    "materials": [
+      "Black powder coat",
+      "Cast clamp chrome"
+    ],
+    "scenery": true
+  },
+  "provenance": {
+    "blender": "5.2.2",
+    "generator": "tools/blender/equipment/spine_rods.py",
+    "library": "tools/blender/labeq",
+    "sourceHash": "0a844f219c52432ccf8e074f9f25de2ce5de237c29808d4e57a9db5d2d821886",
+    "markingFont": {
+      "family": "Inter",
+      "file": "datafiles/fonts/Inter.woff2 (shipped with Blender)",
+      "licence": "SIL Open Font License 1.1 (Blender license/license.md, Fonts)"
+    }
+  }
+}

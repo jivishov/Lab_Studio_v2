@@ -1909,12 +1909,12 @@
       "states": {},
       "boundsMm": {
         "min": [
-          -600.0,
+          -667.0,
           -92.0,
           0.0
         ],
         "max": [
-          600.0,
+          623.9,
           90.0,
           580.0
         ]
@@ -1922,7 +1922,7 @@
       "provenance": {
         "blender": "5.2.2",
         "generator": "tools/blender/equipment/reagent_shelf.py",
-        "sourceHash": "4fe1dba928acc03ed6542446b5f359c13e37e99454bb13c4ee4ea04e873d8289"
+        "sourceHash": "74999bba4fa06b811724363e83e66ec40679ca188f4acd34ae129c3176cbc4db"
       },
       "scenery": true
     },
@@ -2433,6 +2433,41 @@
         "generator": "tools/blender/equipment/spectrophotometer.py",
         "sourceHash": "4ed8969d345a28bda2e063c455221af3326c73ca2fbec6dfeae8db27cafcb61a"
       }
+    },
+    {
+      "definitionId": "spine-rods",
+      "model": "spine-rods.glb",
+      "thumbnail": "thumbs/spine-rods.png",
+      "footprintMm": {
+        "shape": "rect",
+        "width": 1040.0,
+        "depth": 180.0
+      },
+      "grip": {
+        "heightMm": 1180.0
+      },
+      "graduations": null,
+      "anchors": {},
+      "displays": [],
+      "states": {},
+      "boundsMm": {
+        "min": [
+          -520.0,
+          -88.0,
+          520.0
+        ],
+        "max": [
+          520.0,
+          61.0,
+          1180.0
+        ]
+      },
+      "provenance": {
+        "blender": "5.2.2",
+        "generator": "tools/blender/equipment/spine_rods.py",
+        "sourceHash": "0a844f219c52432ccf8e074f9f25de2ce5de237c29808d4e57a9db5d2d821886"
+      },
+      "scenery": true
     },
     {
       "definitionId": "stirring-rod",

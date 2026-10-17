@@ -180,7 +180,19 @@ _FACTORIES = {
     # the reagent shelf's boards (decided 2026-10-11): a mid-light grey phenolic resin, so glass, white plastic and
     # dark items on it all read against it
     'Phenolic shelf board': lambda n: principled(n, **{'Base Color': (0.4, 0.41, 0.4, 1), 'Roughness': 0.35}),
+    # the lab room's spine (decided 2026-10-16, from the photos): perforated grey uprights, yellow-handled service
+    # valves with short blue hoses, and white socket outlets
+    'Grey powder coat': lambda n: _powder_grey(n),
+    'Valve handle yellow': lambda n: principled(n, **{'Base Color': (0.85, 0.6, 0.02, 1), 'Roughness': 0.4}),
+    'Blue PVC hose': lambda n: principled(n, **{'Base Color': (0.05, 0.22, 0.6, 1), 'Roughness': 0.45}),
+    'Socket plate white': lambda n: principled(n, **{'Base Color': (0.86, 0.86, 0.84, 1), 'Roughness': 0.38}),
 }
+
+
+def _powder_grey(name):
+    m = principled(name, **{'Base Color': (0.3, 0.31, 0.31, 1), 'Roughness': 0.55, 'Specular IOR Level': 0.4})
+    add_noise(m, 'Normal', scale=(2200, 2200, 2200), bump=0.1)
+    return m
 
 
 def _flame(name, colour, alpha):

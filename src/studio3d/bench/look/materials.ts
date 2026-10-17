@@ -92,7 +92,9 @@ const tune = (src: THREE.Material, T: BenchTextures, enclosureGlass: boolean, en
       const m = toPhysical(src);
       Object.assign(m, { metalness: 0, roughness: 1, roughnessMap: T.peelR, normalMap: T.peelN });
       m.normalScale = new THREE.Vector2(0.45, 0.45);
-      m.color.setRGB(0.014, 0.015, 0.017);
+      // The spine's perforated uprights (the lab room, 2026-10-16): mid-grey powder coat, as in the photos.
+      if (/grey powder/i.test(name)) m.color.setRGB(0.2, 0.21, 0.21);
+      else m.color.setRGB(0.014, 0.015, 0.017);
       return m;
     }
     case "rubber": {

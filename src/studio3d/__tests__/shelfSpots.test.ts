@@ -183,7 +183,11 @@ describe("the shelf's spots (option B, approved 2026-10-11)", () => {
     const shelf = equipment3dRegistry.entries.find((entry) => entry.definitionId === SHELF.id);
     expect(shelf?.scenery).toBe(true);
     const bounds = shelf!.boundsMm!;
-    expect(bounds.max[0] - bounds.min[0]).toBeCloseTo(SHELF.lengthMm, 0);
+    // Its boards are the shelf's length; the spine's sockets and tap (the lab room, 2026-10-16) stand past its ends,
+    // inside the 1300 mm section pitch (reagent_shelf.py), so the next section's fittings never meet them.
+    expect(shelf!.footprintMm).toMatchObject({ shape: "rect", width: SHELF.lengthMm });
+    expect(bounds.max[0] - bounds.min[0]).toBeGreaterThanOrEqual(SHELF.lengthMm);
+    expect(bounds.max[0] - bounds.min[0]).toBeLessThan(1300);
     // The board is the shelf's depth; the label rail stands 2 mm proud of its front edge.
     expect(Math.abs(bounds.max[1] - bounds.min[1] - SHELF.depthMm)).toBeLessThanOrEqual(3);
     expect(bounds.max[2]).toBeGreaterThanOrEqual(SHELF.tierTopsMm[1]);
