@@ -326,19 +326,17 @@ export class BenchEngine {
     const entry = equipment3dRegistry.entries.find((candidate) => candidate.scenery && candidate.definitionId === SHELF.id);
     if (!entry) return;
     try {
-      const shelf = await this.models.instance(entry);
-      if (this.disposed) return;
-      shelf.traverse((object) => { (object as THREE.Mesh).raycast = () => undefined; });
-      shelf.name = `scenery:${SHELF.id}`;
-      shelf.position.copy(toWorld(SHELF.centre.xMm, SHELF.centre.yMm));
-      this.furniture.add(shelf);
-      // The island spines beyond our station: more of the shelf's sections, with the lattice rods over the neighbouring
-      // station (the lab room, 2026-10-16; look/spines.ts), each spine faded by the cutaway on its own.
+      // Our section and the island spines beyond our station: more of the shelf's sections, with the lattice rods over
+      // the neighbouring station (the lab room, 2026-10-16; look/spines.ts). Each is merged by material (the shelf's
+      // fittings made it 50 meshes), and each spine is faded by the cutaway on its own.
       const rodsEntry = equipment3dRegistry.entries.find((candidate) => candidate.scenery && candidate.definitionId === "spine-rods");
       const [source, rods] = await Promise.all([this.models.instance(entry), rodsEntry ? this.models.instance(rodsEntry).catch(() => null) : null]);
       if (this.disposed) return;
       this.spines = buildSpines(source, rods);
-      this.furniture.add(this.spines.neighbour, this.spines.far);
+      const shelf = this.spines.own;
+      shelf.name = `scenery:${SHELF.id}`;
+      shelf.position.copy(toWorld(SHELF.centre.xMm, SHELF.centre.yMm));
+      this.furniture.add(shelf, this.spines.neighbour, this.spines.far);
       this.cutaway.add("neighbourSpine", this.spines.neighbour);
       this.cutaway.add("farIsland", this.spines.far);
       // The room's reflections take the shelf and the spines in too (the same map, so every material keeps it).

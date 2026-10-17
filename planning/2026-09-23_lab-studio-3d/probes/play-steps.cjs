@@ -1,5 +1,7 @@
 // Plays a 3D technique through its step card and screenshots chosen steps.
 // node play-steps.cjs <url> <outdir> [shotSteps comma list] [stopAfterStep]
+// Optional (the lab room, 2026-10-16): PLAY_VIEWPORT=1920x1080 (default 1024x700), PLAY_THEME=light|hud,
+// PLAY_QUALITY=low|balanced|high (default: the app's).
 const { chromium } = require("playwright");
 const fs = require("fs");
 const [url, out, shotList = "", stopAfter = "999"] = process.argv.slice(2);
@@ -16,7 +18,14 @@ const INPUTS = {
 (async () => {
   fs.mkdirSync(out, { recursive: true });
   const browser = await chromium.launch({ args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"] });
-  const page = await browser.newPage({ viewport: { width: 1024, height: 700 } });
+  const [width, height] = (process.env.PLAY_VIEWPORT ?? "1024x700").split("x").map(Number);
+  const page = await browser.newPage({ viewport: { width, height } });
+  await page.addInitScript(([t, q]) => {
+    try {
+      if (t) localStorage.setItem("lab-studio:3d:v1:theme", t);
+      if (q) localStorage.setItem("lab-studio:3d:v1:player-ui", JSON.stringify({ quality: q, beacon: true }));
+    } catch {}
+  }, [process.env.PLAY_THEME, process.env.PLAY_QUALITY]);
   const errors = [];
   page.on("pageerror", (e) => { errors.push(String(e)); console.log("PAGEERR", String(e).slice(0,300)); });
   page.on("console", (m) => { if (m.type() === "error") { errors.push(m.text()); console.log("CONSOLE", m.text().slice(0,300)); } });

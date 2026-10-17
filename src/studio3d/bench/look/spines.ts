@@ -13,6 +13,8 @@ import { FAR_SPINE_Z, SPINE, SPINE_Z } from "./hall";
  * cast no shadows.
  */
 export interface Spines {
+  /** Our own section, over our station: merged too, and casting shadows (it stands in the key's shadow box). */
+  own: THREE.Group;
   neighbour: THREE.Group;
   far: THREE.Group;
   dispose: () => void;
@@ -50,39 +52,51 @@ const ownMaterial = (source: THREE.Material) => {
   return m;
 };
 
+/**
+ * `placements` of loaded models merged by material into one group, with their own material clones: one draw call per
+ * material. `disposables` takes what it made.
+ */
+export const mergeByMaterial = (
+  name: string,
+  placements: Array<{ model: THREE.Object3D; at: THREE.Vector3 }>,
+  disposables: Array<{ dispose: () => void }>,
+  castShadow = false,
+): THREE.Group => {
+  const group = new THREE.Group();
+  group.name = name;
+  const byMaterial = new Map<THREE.Material, THREE.BufferGeometry[]>();
+  for (const { model, at } of placements) {
+    const place = new THREE.Matrix4().makeTranslation(at.x, at.y, at.z);
+    for (const part of partsOf(model)) {
+      const list = byMaterial.get(part.material) ?? [];
+      list.push(normalised(part.geometry, place.clone().multiply(part.matrix)));
+      byMaterial.set(part.material, list);
+    }
+  }
+  byMaterial.forEach((list, source) => {
+    const merged = mergeGeometries(list, false);
+    list.forEach((g) => g.dispose());
+    if (!merged) return;
+    const material = ownMaterial(source);
+    disposables.push(merged, material);
+    const mesh = new THREE.Mesh(merged, material);
+    mesh.name = `${name}: ${source.name || "material"}`;
+    mesh.castShadow = castShadow;
+    mesh.receiveShadow = true;
+    mesh.raycast = () => undefined; // scenery is never picked (G-8)
+    group.add(mesh);
+  });
+  return group;
+};
+
 export const buildSpines = (shelf: THREE.Object3D, rods: THREE.Object3D | null): Spines => {
   const disposables: Array<{ dispose: () => void }> = [];
-  const spine = (name: string, placements: Array<{ model: THREE.Object3D; at: THREE.Vector3 }>) => {
-    const group = new THREE.Group();
-    group.name = name;
-    const byMaterial = new Map<THREE.Material, THREE.BufferGeometry[]>();
-    for (const { model, at } of placements) {
-      const place = new THREE.Matrix4().makeTranslation(at.x, at.y, at.z);
-      for (const part of partsOf(model)) {
-        const list = byMaterial.get(part.material) ?? [];
-        list.push(normalised(part.geometry, place.clone().multiply(part.matrix)));
-        byMaterial.set(part.material, list);
-      }
-    }
-    byMaterial.forEach((list, source) => {
-      const merged = mergeGeometries(list, false);
-      list.forEach((g) => g.dispose());
-      if (!merged) return;
-      const material = ownMaterial(source);
-      disposables.push(merged, material);
-      const mesh = new THREE.Mesh(merged, material);
-      mesh.name = `${name}: ${source.name || "material"}`;
-      mesh.castShadow = false;
-      mesh.receiveShadow = true;
-      mesh.raycast = () => undefined; // scenery is never picked (G-8)
-      group.add(mesh);
-    });
-    return group;
-  };
+  const spine = (name: string, placements: Array<{ model: THREE.Object3D; at: THREE.Vector3 }>) => mergeByMaterial(name, placements, disposables);
   const neighbour = spine("scenery: neighbour spine", SPINE.neighbour.flatMap((x) => {
     const at = new THREE.Vector3(x, 0, SPINE_Z);
     return rods ? [{ model: shelf, at }, { model: rods, at }] : [{ model: shelf, at }];
   }));
+  const own = mergeByMaterial("scenery: reagent shelf", [{ model: shelf, at: new THREE.Vector3(0, 0, 0) }], disposables, true);
   const far = spine("scenery: far spine", SPINE.far.map((x) => ({ model: shelf, at: new THREE.Vector3(x, 0, FAR_SPINE_Z) })));
-  return { neighbour, far, dispose: () => disposables.forEach((d) => d.dispose()) };
+  return { own, neighbour, far, dispose: () => disposables.forEach((d) => d.dispose()) };
 };

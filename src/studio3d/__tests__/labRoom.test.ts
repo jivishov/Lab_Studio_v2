@@ -192,7 +192,7 @@ describe("disposal", () => {
   it("disposes every geometry, material and texture the room and the spines made", () => {
     const { room, spines } = build();
     const made = new Set<{ dispose: () => void }>();
-    for (const root of [room.group, spines.neighbour, spines.far]) root.traverse((o) => {
+    for (const root of [room.group, spines.own, spines.neighbour, spines.far]) root.traverse((o) => {
       const mesh = o as THREE.Mesh;
       if (!mesh.isMesh) return;
       made.add(mesh.geometry);
