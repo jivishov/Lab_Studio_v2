@@ -26,10 +26,13 @@ export interface Size { w: number; h: number }
 export interface Rect { left: number; top: number; right: number; bottom: number }
 
 const S = ROOM_SCALE;
-/** Vertical field of view, degrees, and the clip planes (`renderer.js:12`, `.04` and `80` units). */
+/**
+ * Vertical field of view, degrees, and the clip planes (`renderer.js:12`, `.04` and `80` units). The far plane reaches
+ * past the open hall's farthest corner from the farthest eye (the lab room, 2026-10-16: about 17 m).
+ */
 export const FOV = 42;
 export const NEAR = 0.04 * S;
-export const FAR = 80 * S;
+export const FAR = 182 * S;
 
 /** Limits for manual input only (`app.js:121-151`); presets, framing and Examine are not clamped. */
 export const MANUAL = {

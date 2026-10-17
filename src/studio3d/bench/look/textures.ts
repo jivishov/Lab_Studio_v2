@@ -126,7 +126,7 @@ export interface BenchTextures {
 }
 
 /** Real sizes of the room's texture tiles, metres. */
-export const TILE_M = Object.freeze({ worktop: 0.5, wall: 0.5, floorTile: 0.3, ceilingTile: 0.6, laminate: 0.6 });
+export const TILE_M = Object.freeze({ worktop: 0.5, wall: 0.5, floorTile: 0.6, ceilingTile: 0.6, laminate: 0.6 });
 
 export const makeTextures = (size: "full" | "reduced" = "full"): BenchTextures => {
   const k = size === "full" ? 1 : 0.5;
@@ -170,20 +170,19 @@ export const makeTextures = (size: "full" | "reduced" = "full"): BenchTextures =
   const mottle = fbm(wallN, [[2, 2, 0.5], [5, 5, 0.3], [13, 13, 0.2]], 81);
   const stipple = fbm(wallN, [[160, 160, 1], [330, 330, 0.5]], 83);
 
-  // Vinyl composition tiles, 300 mm, in the room's floor colour: a through-chip mottle stretched along each tile, laid
-  // quarter-turned, a slight shade difference from tile to tile, and fine seams (a texture of 2 Ã— 2 tiles).
+  // Porcelain floor tiles, 600 mm, warm pale grey and satin (the lab room, 2026-10-16; the photos' large pale glossy
+  // tiles): a faint cloudy body, a slight shade difference from tile to tile, and thin grout (a texture of 2 × 2 tiles).
   const floorN = n(1024), tilePx = floorN / 2;
-  const chipsAlong = fbm(floorN, [[40, 110, 0.6], [80, 200, 0.4]], 91);
-  const chipsAcross = fbm(floorN, [[110, 40, 0.6], [200, 80, 0.4]], 92);
+  const cloud = fbm(floorN, [[4, 4, 0.5], [11, 11, 0.3], [37, 37, 0.2]], 91);
   const grain = fbm(floorN, [[180, 180, 1]], 93);
-  const floorBase = lin(0xa59f93), chipLight = lin(0xb9b4a8), chipDark = lin(0x8f897e);
-  const seamPx = Math.max(1, Math.round(floorN / 1024));
-  const tileShade = [0.985, 1.02, 1.01, 0.975];
+  const floorBase = lin(0xd9d6cf), grout = lin(0xa9a49a);
+  const seamPx = Math.max(1, Math.round(floorN / 512));
+  const tileShade = [0.99, 1.015, 1.005, 0.985];
   const floorAt = (x: number, y: number) => {
     const tx = Math.floor(x / tilePx), ty = Math.floor(y / tilePx);
     const seam = x - tx * tilePx < seamPx || y - ty * tilePx < seamPx;
     const i = y * floorN + x;
-    return { seam, chip: ((tx + ty) % 2 ? chipsAcross : chipsAlong)[i], shade: tileShade[(ty % 2) * 2 + (tx % 2)], i };
+    return { seam, shade: tileShade[(ty % 2) * 2 + (tx % 2)], i };
   };
 
   // Acoustic ceiling tiles, 600 mm, in their T-bar grid: fine fissures in white, the grid a little greyer.
@@ -234,22 +233,19 @@ export const makeTextures = (size: "full" | "reduced" = "full"): BenchTextures =
     wallN: normalTex(stipple, wallN, 0.9, per(TILE_M.wall)),
     floorC: dataTexture(floorN, (d) => {
       for (let y = 0; y < floorN; y += 1) for (let x = 0; x < floorN; x += 1) {
-        const { seam, chip, shade, i } = floorAt(x, y);
-        const light = smooth(0.58, 0.7, chip), dark = 1 - smooth(0.3, 0.42, chip);
+        const { seam, shade, i } = floorAt(x, y);
         for (let c = 0; c < 3; c += 1) {
-          let v = floorBase[c] * shade * (0.97 + 0.06 * grain[i]);
-          v += (chipLight[c] - v) * light * 0.6;
-          v += (chipDark[c] - v) * dark * 0.5;
-          d[i * 4 + c] = toSrgb(Math.min(1, seam ? v * 0.72 : v));
+          const v = seam ? grout[c] : floorBase[c] * shade * (0.965 + 0.05 * cloud[i] + 0.015 * grain[i]);
+          d[i * 4 + c] = toSrgb(Math.min(1, v));
         }
         d[i * 4 + 3] = 255;
       }
     }, per(2 * TILE_M.floorTile), true),
-    // Waxed: satin, the seams duller.
+    // Satin glaze, roughness about 0.35, the grout matte.
     floorR: dataTexture(floorN, (d) => {
       for (let y = 0; y < floorN; y += 1) for (let x = 0; x < floorN; x += 1) {
         const { seam, i } = floorAt(x, y);
-        d[i * 4] = d[i * 4 + 1] = d[i * 4 + 2] = (seam ? 0.7 : 0.4 + 0.08 * grain[i] + 0.04 * chipsAlong[i]) * 255;
+        d[i * 4] = d[i * 4 + 1] = d[i * 4 + 2] = (seam ? 0.8 : 0.32 + 0.06 * grain[i]) * 255;
         d[i * 4 + 3] = 255;
       }
     }, per(2 * TILE_M.floorTile)),
