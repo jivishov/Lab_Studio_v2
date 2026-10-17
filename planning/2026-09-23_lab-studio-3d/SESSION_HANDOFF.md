@@ -474,7 +474,9 @@ and template rules. `scripts/checkCycle04Foundations.mjs` can't run in this expo
   items' sight lines. It folds in
   the shelf's open questions above (the oven; Auto view at shelf-only steps; steadier framing for Examine, Selected
   and Bench list picks). Every decision of both revisions was answered as recommended (`DECISIONS.md`, two rows);
-  the build waits for the user's go-ahead, phase by phase.
+  the build waits for the user's go-ahead, phase by phase. Phase 1 (the open room at today's 1400 mm working area)
+  has its build prompt, `LAB_ROOM_BUILD_PROMPT.md`, checked against the code at `9a68edd`; it adds the camera's far
+  clip (7.47 m, too short for the hall), which the proposal missed.
 - **A runtime question (2026-10-11).** On every action `withResolvedAttachments` merges in a relation derived from
   a child's snap zone that names the first instance of the parent's definition, even when the child already holds
   its own. With two chambers the 2-propanol strip was also listed in the water chamber. 3D now keeps each child's

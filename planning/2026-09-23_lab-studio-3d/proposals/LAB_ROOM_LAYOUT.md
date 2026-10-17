@@ -168,7 +168,7 @@ Checked against the code and against your seven photos. Each finding is folded i
    analytic model of "a box with the bench run against its back wall"; only GTAO (`composer.ts`, High and Balanced
    tiers) is screen-space. An island in the open breaks that model, so it is rewritten for a free-standing block
    (and the other blocks) in phase 1.
-6. **The key light's shadow box is fixed** at 2.7 × 1.9 m (`room.ts`), with a 1024² map by default. It is
+6. **The key light's shadow box is fixed** at 2.7 × 1.9 m (`room.ts`), with a 2048² map (1024² on the Low tier). It is
    re-fitted to our station and the side station. At 1700 mm that is about the same size, so shadows keep their
    sharpness. At 2000 mm the box grows by about 15 %, and shadows soften by as much.
 
@@ -266,7 +266,9 @@ and the column and end wall at the right.
 - the room's analytic occlusion, for free-standing blocks (finding 5);
 - the shadow box, re-fitted (finding 6);
 - the reflection cube, re-captured, its 12 m reach covering the hall;
-- the cutaway for scenery in the camera's way (decision 6).
+- the cutaway for scenery in the camera's way (decision 6);
+- the camera's far clip (`FAR`, 7.47 m), raised to about 17 m so the hall's back is not cut off (found in the build
+  prompt's review, 2026-10-16).
 
 The far scenery is merged, instanced where it repeats (cabinet doors, ceiling panels, uprights) and casts no shadows.
 One frame-time reading is taken at each look; that is a note, not the G2 performance gate, which stays closed.
