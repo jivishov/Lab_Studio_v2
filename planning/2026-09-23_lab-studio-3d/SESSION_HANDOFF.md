@@ -467,12 +467,14 @@ and template rules. `scripts/checkCycle04Foundations.mjs` can't run in this expo
   lower-tier items; what Auto view does at a step whose items are all on the shelf; and Pack 3b's shelf room. Of
   the G1 scripts in `probes/`, `place-from-tray.cjs` targets the removed tray panel; the Shelf list needs its own
   selectors.
-- **The lab room (2026-10-16, decided, not built).** `proposals/LAB_ROOM_LAYOUT.md`: open the closed room into a teaching lab
-  around a longer, double-sided island bench with a centre-spine rack (from the user's photos), widen the 3D working
-  area (`BENCH_MM`) with Home fitting what a run uses, and keep rack spots out of tall items' sight lines. It folds in
+- **The lab room (2026-10-16, decided, not built).** `proposals/LAB_ROOM_LAYOUT.md`, revision 2 (after a fidelity
+  review against the code and the user's photos): open the closed room into a teaching hall around a long,
+  double-sided island with a centre spine, widen the 3D working area (`BENCH_MM`) to 1700 mm with the middle slot
+  row staggered, keep real equipment sizes, cut away scenery in the camera's way, and keep rack spots out of tall
+  items' sight lines. It folds in
   the shelf's open questions above (the oven; Auto view at shelf-only steps; steadier framing for Examine, Selected
-  and Bench list picks). All four decisions were answered as recommended (`DECISIONS.md`); the build waits for the
-  user's go-ahead, phase by phase.
+  and Bench list picks). Every decision of both revisions was answered as recommended (`DECISIONS.md`, two rows);
+  the build waits for the user's go-ahead, phase by phase.
 - **A runtime question (2026-10-11).** On every action `withResolvedAttachments` merges in a relation derived from
   a child's snap zone that names the first instance of the parent's definition, even when the child already holds
   its own. With two chambers the 2-propanol strip was also listed in the water chamber. 3D now keeps each child's

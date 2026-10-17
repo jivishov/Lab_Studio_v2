@@ -1,6 +1,7 @@
 # Proposal: an open teaching lab around a longer island bench (3D only)
 
-Status: **revision 2, 2026-10-16, not built.**
+Status: **revision 2, decided 2026-10-16, not built.** Its decisions were answered as recommended: 2 "1700 mm,
+staggered", 5 "Keep real sizes", 6 "Cut away scenery in the way", 7 "Apply, keep tier heights".
 
 Revision 1 was decided the same day, all four decisions as recommended:
 1. "Island in open lab";
