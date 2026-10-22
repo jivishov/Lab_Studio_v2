@@ -281,11 +281,10 @@ export const ExamineCard = ({ item, holderLabel, onClose, onEyeLevel }: {
 
 const CONTROLS: Record<string, Array<[string, string]>> = {
   Mouse: [
-    ["Click an item", "Pick it up; it follows the pointer"],
-    ["Click a spot or a target while holding it", "Set it down there, or act on the target"],
-    ["Press on a seat, a vessel or a liquid, drag down and let go", "Seat it, pour, deliver or draw up; drag back up to stop"],
-    ["Click the flask at a swirl or invert step", "Swirl it, or turn it over and back once"],
-    ["Esc or right-click while holding it", "Put it back"],
+    ["Drag an item and let go on the bench", "Set it down there; it slides clear of anything in the way"],
+    ["Drag an item onto a seat, a vessel or a liquid and let go", "Seat it, pour, deliver or draw up"],
+    ["Click an item at a step that works it (a swirl, an oven door)", "Swirl, invert, stir or work it"],
+    ["Esc or right-click while dragging", "Put it back"],
     ["Double-click an item", "Examine it"],
     ["Drag on empty bench", "Slide the bench up, down or sideways"],
     ["Right-drag", "Move the view sideways, up or down"],

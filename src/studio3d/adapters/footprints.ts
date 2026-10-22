@@ -3,7 +3,7 @@ import { getSnapSourceAnchor, getVisualProfile } from "../../equipment/visualCat
 import { resolveBenchOverlap, type BenchBounds, type BenchOverlapResult } from "../../player/benchOverlap";
 import { equipment3dRegistry } from "../equipment3d/readiness";
 import type { Equipment3DEntry } from "../equipment3d/types";
-import { BENCH_MM, MM_PER_PX_DEPTH, MM_PER_PX_X } from "./benchCoordinates";
+import { BENCH_MM, MM_PER_PX_DEPTH, MM_PER_PX_X } from "./benchUnits";
 
 /**
  * 3D footprints -> the 2D bench bounds the shared overlap classifier works on (plan §4.1). Overlap
@@ -137,15 +137,17 @@ export const classifyOverlap = (
   );
 };
 
-/** The 2D rule for automatic placement: a spot is free below 5 % overlap (StudentPlayer). */
-export const FREE_OVERLAP_RATIO = 0.05;
+/**
+ * The clearance kept between two items set down on the 3D bench (decided 2026-10-22: "ensure that the objects do not
+ * overlap with each other"). 2D lets a spot count as free below 5 % overlap; at real sizes that let a balance's draft
+ * shield stand in the sink, so the 3D bench keeps footprints apart by this gap instead.
+ */
+export const SPACING_MM = 10;
 
-const overlapRatio = (a: FootprintMm, b: FootprintMm): number => {
-  const w = Math.max(0, Math.min(a.xMm + a.widthMm / 2, b.xMm + b.widthMm / 2) - Math.max(a.xMm - a.widthMm / 2, b.xMm - b.widthMm / 2));
-  const d = Math.max(0, Math.min(a.yMm + a.depthMm / 2, b.yMm + b.depthMm / 2) - Math.max(a.yMm - a.depthMm / 2, b.yMm - b.depthMm / 2));
-  const denominator = Math.min(a.widthMm * a.depthMm, b.widthMm * b.depthMm);
-  return denominator > 0 ? (w * d) / denominator : 0;
-};
+/** Whether two footprints come closer than `SPACING_MM` (overlap included). */
+export const footprintsClash = (a: FootprintMm, b: FootprintMm): boolean =>
+  Math.abs(a.xMm - b.xMm) < (a.widthMm + b.widthMm) / 2 + SPACING_MM
+  && Math.abs(a.yMm - b.yMm) < (a.depthMm + b.depthMm) / 2 + SPACING_MM;
 
 const clampToBench = (fp: FootprintMm): FootprintMm => {
   const halfW = BENCH_MM.width / 2 - BENCH_MM.edgeMargin - fp.widthMm / 2;
@@ -154,16 +156,25 @@ const clampToBench = (fp: FootprintMm): FootprintMm => {
 };
 
 /**
- * The nearest spot to `wanted` (clamped to the bench) where the footprint overlaps every other by
- * under 5 %, searched outward in rings (handoff §5.6, "no interpenetration"). Falls back to the
- * clamped wanted point when the bench is full.
+ * The nearest spot to `wanted` (clamped to the bench) where the footprint clears every other by
+ * `SPACING_MM`, searched outward in rings far enough to reach any corner of the bench (handoff §5.6, "no
+ * interpenetration"). Falls back to the clamped wanted point when the bench is full. `accepts`, when given, decides
+ * instead whether a candidate is free (a caller that stores the spot in runtime units checks it after converting).
  */
-export const nearestFreeSpot = (wanted: FootprintMm, others: readonly FootprintMm[], stepMm = 20, rings = 30): FootprintMm => {
-  const free = (fp: FootprintMm) => others.every((other) => overlapRatio(fp, other) < FREE_OVERLAP_RATIO);
+export const nearestFreeSpot = (
+  wanted: FootprintMm,
+  others: readonly FootprintMm[],
+  stepMm = 20,
+  rings = 80,
+  accepts?: (fp: FootprintMm) => boolean,
+): FootprintMm => {
+  const free = accepts ?? ((fp: FootprintMm) => others.every((other) => !footprintsClash(fp, other)));
   const start = clampToBench(wanted);
   if (free(start)) return start;
   for (let ring = 1; ring <= rings; ring += 1) {
     const r = ring * stepMm;
+    // A ring past every corner of the bench samples nothing new; the bench is full.
+    if (r > Math.hypot(BENCH_MM.width, BENCH_MM.depth)) break;
     const samples = Math.max(8, Math.round((2 * Math.PI * r) / stepMm));
     let best: FootprintMm | undefined;
     let bestDistance = Number.POSITIVE_INFINITY;

@@ -3,7 +3,7 @@ import type { ActionDefinition, ActionInteractionSpec, EquipmentInstance } from 
 import { getBenchSize } from "../../equipment/visualCatalog";
 import { resolveBenchOverlap } from "../../player/benchOverlap";
 import { snapPointAligningSourceAnchor } from "../../player/benchTargeting";
-import { classifyOverlap, footprintOf, nearestFreeSpot, snapClassification, snapZoneFootprint, FREE_OVERLAP_RATIO, SNAP_SOURCE_MM } from "../adapters/footprints";
+import { classifyOverlap, footprintOf, nearestFreeSpot, snapClassification, snapZoneFootprint, footprintsClash, SNAP_SOURCE_MM, SPACING_MM } from "../adapters/footprints";
 import {
   benchMoveRequest,
   intentTypeForInteraction,
@@ -257,14 +257,16 @@ describe("footprints", () => {
     expect(resolveBenchOverlap).toBeTypeOf("function");
   });
 
-  it("slides a set-down to the nearest spot under 5 % overlap", () => {
+  it("slides a set-down to the nearest spot clear of every footprint by the spacing (decided 2026-10-22)", () => {
     const occupied = [footprintOf(cylinder, 0, 0)];
     const wanted = footprintOf(bottle, 5, 0);
     const spot = nearestFreeSpot(wanted, occupied);
-    const w = Math.max(0, Math.min(spot.xMm + spot.widthMm / 2, 38) - Math.max(spot.xMm - spot.widthMm / 2, -38));
-    const d = Math.max(0, Math.min(spot.yMm + spot.depthMm / 2, 38) - Math.max(spot.yMm - spot.depthMm / 2, -38));
-    expect((w * d) / Math.min(spot.widthMm * spot.depthMm, 76 * 76)).toBeLessThan(FREE_OVERLAP_RATIO);
-    expect(Math.hypot(spot.xMm - 5, spot.yMm)).toBeGreaterThan(0);
+    expect(footprintsClash(spot, occupied[0])).toBe(false);
+    const gapX = Math.abs(spot.xMm) - (spot.widthMm + occupied[0].widthMm) / 2;
+    const gapY = Math.abs(spot.yMm) - (spot.depthMm + occupied[0].depthMm) / 2;
+    expect(Math.max(gapX, gapY)).toBeGreaterThanOrEqual(SPACING_MM);
+    // The nearest such spot: one search step past the spacing at most.
+    expect(Math.max(gapX, gapY)).toBeLessThan(SPACING_MM + 20);
   });
 
 });

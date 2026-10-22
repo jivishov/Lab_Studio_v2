@@ -2,13 +2,14 @@ import { act, fireEvent, renderHook, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { filtrationTechnique } from "../../domain/fixtures";
 import type { BenchEngine } from "../bench/BenchEngine";
-import { useBenchCarry } from "../bench/input/useBenchCarry";
+import { DRAG_START_PX, useBenchCarry } from "../bench/input/useBenchCarry";
 import { usePlayer3D } from "../player/usePlayer3D";
 
 /**
  * Taking an item off the shelf with the mouse, by touch and by hand (the shelf in place of the tray, approved 2026-10-11):
- * a press on a shelf item starts the tray's own carry, setting it down runs `dropFromTray`'s intent or move, and a
- * press back on the shelf puts it back on its spot with nothing changed. jsdom has no WebGL, so the engine is a fake
+ * a drag from a shelf item starts the tray's own carry (the mouse drags and drops, decided 2026-10-22), letting go on
+ * the bench runs `dropFromTray`'s intent or move, and letting go back over the shelf puts it back on its spot with
+ * nothing changed. jsdom has no WebGL, so the engine is a fake
  * that answers where the pointer is: over a shelf item, over the shelf, or over the bench.
  */
 
@@ -18,10 +19,10 @@ const fakeEngine = () => {
   canvas.releasePointerCapture = vi.fn();
   canvas.hasPointerCapture = () => false;
   document.body.appendChild(canvas);
-  const where = { shelfItem: undefined as string | undefined, overShelf: false };
+  const where = { shelfItem: undefined as string | undefined, benchItem: undefined as string | undefined, overShelf: false };
   const engine = {
     canvasElement: canvas,
-    pick: () => undefined,
+    pick: () => where.benchItem,
     pickControl: () => undefined,
     pickShelf: () => where.shelfItem,
     overShelf: () => where.overShelf,
@@ -61,28 +62,40 @@ const setUp = () => {
 describe("taking an item off the shelf", () => {
   afterEach(() => { document.body.innerHTML = ""; });
 
-  it("with the mouse: a press takes it, and the item itself follows the pointer onto the bench, where the next press sets it down", () => {
+  it("with the mouse: a drag takes it, the item itself follows the pointer onto the bench, and letting go sets it down", () => {
     const t = setUp();
     expect(t.location()).toBe("shelf");
     t.press(100, 80);
-    t.up(100, 80);
+    t.move(100 + DRAG_START_PX - 1, 80);
+    // Held, but it stays on its spot until the pointer moves away: it may still be a click.
+    expect(t.engine.previewCarry).not.toHaveBeenCalled();
+    t.move(300, 400);
     expect(t.hook.result.current.carry.carrying).toBe(true);
-    expect(t.hook.result.current.carry.clickCarrying).toBe(true);
     // The item drawn lifted toward the bench point under the pointer, not a thumbnail.
     expect(t.engine.previewCarry).toHaveBeenCalledWith(t.first.instanceId, 0, 120, expect.any(Number));
     t.where.shelfItem = undefined;
-    t.press(400, 420);
+    t.up(300, 400);
     expect(t.hook.result.current.carry.carrying).toBe(false);
     expect(t.location()).not.toBe("shelf");
   });
 
-  it("with the mouse: a press back on the shelf puts it back on its spot, and nothing changes", async () => {
+  it(`with the mouse: a click, or a press that moves under ${DRAG_START_PX} px, places it in its own slot`, () => {
+    const t = setUp();
+    t.press(100, 80);
+    t.move(100 + DRAG_START_PX - 1, 80);
+    t.up(100 + DRAG_START_PX - 1, 80);
+    expect(t.hook.result.current.carry.carrying).toBe(false);
+    expect(t.location()).not.toBe("shelf");
+  });
+
+  it("with the mouse: dragged back over the shelf and let go, it goes back on its spot, and nothing changes", async () => {
     const t = setUp();
     const before = t.hook.result.current.player.runtime.getState();
     t.press(100, 80);
-    t.up(100, 80);
+    t.move(300, 400);
     t.where.overShelf = true;
-    t.press(160, 90);
+    t.move(160, 90);
+    t.up(160, 90);
     expect(t.hook.result.current.carry.carrying).toBe(false);
     expect(t.location()).toBe("shelf");
     expect(t.hook.result.current.player.runtime.getState().equipmentInstances).toEqual(before.equipmentInstances);
@@ -92,13 +105,33 @@ describe("taking an item off the shelf", () => {
     await waitFor(() => expect(t.hook.result.current.player.announcement).toMatch(/^Put back on the shelf\. Nothing moved\./));
   });
 
-  it("with the mouse: Esc puts it back", () => {
+  it("with the mouse: Esc while dragging puts it back", () => {
     const t = setUp();
     t.press(100, 80);
-    t.up(100, 80);
+    t.move(300, 400);
     act(() => { fireEvent.keyDown(window, { key: "Escape" }); });
     expect(t.hook.result.current.carry.carrying).toBe(false);
     expect(t.location()).toBe("shelf");
+  });
+
+  it("with the mouse: a bench item dragged and let go moves there, clear of everything else", () => {
+    const t = setUp();
+    t.press(100, 80);
+    t.up(100, 80);
+    expect(t.location()).toBe("workbench");
+    const placed = () => t.hook.result.current.player.runtime.getState().equipmentInstances.find((i) => i.id === t.first.instanceId)!;
+    const from = { x: placed().x, y: placed().y };
+    t.where.shelfItem = undefined;
+    t.where.benchItem = t.first.instanceId;
+    t.press(400, 300);
+    t.move(400 + DRAG_START_PX - 1, 300);
+    expect(t.hook.result.current.carry.carrying).toBe(false);
+    t.move(450, 320);
+    expect(t.hook.result.current.carry.carrying).toBe(true);
+    t.up(450, 320);
+    expect(t.hook.result.current.carry.carrying).toBe(false);
+    expect(placed().location).toBe("workbench");
+    expect({ x: placed().x, y: placed().y }).not.toEqual(from);
   });
 
   it("by touch: press, drag onto the bench and lift sets it down; a tap places it in its own slot", () => {

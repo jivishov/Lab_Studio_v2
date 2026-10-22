@@ -1115,42 +1115,41 @@ export const Player3D = ({ definition, authoredDefinition, title, sourceTag, fal
     ? `Space: tap for a drop, hold to let it run.${markStep?.drawBack ? " Draw back takes up an overshoot." : ""} Enter: at the line. Esc puts the pipette down.`
     : squirtHeld && squirtCount ? `Squirt ${squirtCount.done} of ${squirtCount.total}: click the bench, press Space or squeeze to squirt again. Esc puts the bottle down.`
     : carry.keyCarrying ? "Arrows move it (Shift: further). [ ] step through targets. Enter sets it down; Esc cancels."
-    : carry.clickCarrying ? "Click where it goes, or press on the target, drag down and let go. Esc or a right click puts it back."
     : carry.gestureCarrying ? "Open your palm over the spot to set it down; over a target, pause until it locks, then lower your hand or turn your palm."
-    : carry.carrying ? "Release to set down. Esc cancels."
+    : carry.carrying ? "Let go where it goes, or over the target to act on it. Esc or a right click puts it back."
     : player.stepClock ? `${player.stepClock.label}: the clock runs the ${player.stepClock.minutes} minutes fast. The next step waits for it.`
-    : tool && flow.canConfirm ? "Pick up the spatula, press it into the source and drag down to scoop, then click the target; or use Source, Target and Confirm. Right-drag to look around."
-    : pipette?.toolDefinitionId === "capillary-spotter" && flow.canConfirm ? "Pick up the capillary, then press over the dye or the strip's baseline, drag down and let go; or use Source, Target and Confirm. Right-drag to look around."
-    : pipette && flow.canConfirm ? "Pick up the pipette, then press over the liquid or the cuvette, drag down and let go; or use Source, Target and Confirm. Right-drag to look around."
-    : markStep ? `Pick up the pipette and click the ${markVesselLabel} to hold it there, or use the step card. Right-drag to look around.`
+    : tool && flow.canConfirm ? "Drag the spatula through the source to scoop, then onto the target and let go; or use Source, Target and Confirm. Right-drag to look around."
+    : pipette?.toolDefinitionId === "capillary-spotter" && flow.canConfirm ? "Drag the capillary onto the dye and let go to fill it, then onto the strip's baseline to spot; or use Source, Target and Confirm. Right-drag to look around."
+    : pipette && flow.canConfirm ? "Drag the pipette onto the liquid and let go to draw it up, then onto the cuvette to deliver; or use Source, Target and Confirm. Right-drag to look around."
+    : markStep ? `Drag the pipette onto the ${markVesselLabel} and let go to hold it there, or use the step card. Right-drag to look around.`
     : invertVesselId ? `Click the stoppered ${invertVesselNoun} to invert it, or use Invert in the step card. Right-drag to look around.`
     : swirlVesselId ? "Click the flask to swirl it until the solid dissolves, or use Swirl in the step card. Right-drag to look around."
     : stirVesselId ? "Click the beaker to stir it with the rod, or use Stir in the step card. Right-drag to look around."
     : player.benchOp?.operation === "settle-precipitate" ? "Leave the beaker still: use Wait in the step card while the precipitate settles."
     : foldPaperId ? (scene.bench.find((i) => i.instanceId === foldPaperId)?.placement.kind === "bench"
       ? "Click the paper to fold it in half and in half again, or use Fold in the step card. Right-drag to look around."
-      : "Lift the paper off the balance onto the bench, then click it to fold it. Right-drag to look around.")
+      : "Drag the paper off the balance onto the bench, then click it to fold it. Right-drag to look around.")
     : player.benchOp?.operation === "set-oven-temperature" ? "Enter the setting in the step card, then turn the oven's SET dial (or use Set). Right-drag to look around."
     : player.benchOp?.operation === "open-oven-door" ? "Click the oven door to open it, or use Open the door. Right-drag to look around."
     : player.benchOp?.operation === "close-oven-door" ? "Click the oven door to close it, or use Close the door. Right-drag to look around."
     : player.benchOp?.operation === "dry-in-oven" ? "Click the oven door to close it and start the clock, or use Close and dry. Right-drag to look around."
-    : player.benchOp?.operation === "break-up-precipitate" ? "Pick up the metal scoop and click the watch glass to break up the solid, or use Break it up. Right-drag to look around."
+    : player.benchOp?.operation === "break-up-precipitate" ? "Drag the metal scoop onto the watch glass and let go to break up the solid, or use Break it up. Right-drag to look around."
     : player.benchOp?.operation === "cool-on-pad" ? "Leave it on the pad: use Wait while it cools. Right-drag to look around."
     : player.benchOp?.operation === "set-crucible-lid" ? "Click the crucible to set its lid askew, or use Set the lid askew. Right-drag to look around."
     : player.benchOp?.operation === "light-burner" ? "Click the burner: collar nearly closed, gas on, striker at the top of the barrel. Or use Light. Right-drag to look around."
     : player.benchOp?.operation === "set-flame" ? "Click the burner to open its air collar until the flame is blue, or use Open the air collar. Right-drag to look around."
     : player.benchOp?.operation === "heat-crucible" ? "Click the burner to heat for the set time, or use Heat. Right-drag to look around."
     : player.benchOp?.operation === "turn-off-burner" ? "Click the burner to turn the gas off, or use Turn off. Right-drag to look around."
-    : player.tongsStep ? "Pick up the crucible tongs, click the watch glass to grip it, then click where it goes. Right-drag to look around."
-    : chrom?.toolDefinitionId ? `Pick up the pencil and click the ${chrom.operation === "labelChamber" ? "chamber's tape" : "strip"} to ${
+    : player.tongsStep ? "Drag the crucible tongs across the watch glass to grip it, then to where it goes and let go. Right-drag to look around."
+    : chrom?.toolDefinitionId ? `Drag the pencil onto the ${chrom.operation === "labelChamber" ? "chamber's tape" : "strip"} to ${
       chrom.operation === "markBaseline" ? "draw the baseline" : chrom.operation === "markSolventFront" ? "mark the front" : "write the label"
     }, or use ${chrom.control}. Right-drag to look around.`
     : chrom?.operation === "closeChamber" ? "Click the chamber to lower the strip in and seat the lid, or use Lower it in. Right-drag to look around."
     : chrom?.operation === "openChamber" ? "Click the chamber to lift the lid with the strip, or use Lift the lid. Right-drag to look around."
     : chrom?.operation === "develop" ? "Leave the chamber closed: click it or use Leave it to develop, and the clock runs. Right-drag to look around."
     : chrom ? "Leave the strip flat: use Let it dry, and the clock runs. Right-drag to look around."
-    : player.benchOp?.operation === "precipitation-drop-test" ? "Pick up the dropping pipette and click the beaker to add one drop, or use Add a drop in the step card. Right-drag to look around."
-    : flow.canConfirm ? "Click an item to pick it up, then click where it goes; or use Source, Target and Confirm. Right-drag to look around."
+    : player.benchOp?.operation === "precipitation-drop-test" ? "Drag the dropping pipette onto the beaker and let go to add one drop, or use Add a drop in the step card. Right-drag to look around."
+    : flow.canConfirm ? "Drag an item where it goes and let go; or use Source, Target and Confirm. Right-drag to look around."
       : player.runtime.expectedAction?.parameters.balanceOperation === "zero" ? "Press TARE on the balance, or Tare in the step card. Right-drag to look around."
       : "Fill in the step card, then record. Right-drag to look around.";
 

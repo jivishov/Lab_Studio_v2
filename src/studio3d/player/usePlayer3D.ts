@@ -7,12 +7,12 @@ import { usePlayerRuntime } from "../../player/usePlayerRuntime";
 import type { RuntimeDefinition } from "../../runtime";
 import { resolveInteractionIntent, type InteractionInvalidFeedback, type RuntimeInteractionIntent } from "../../runtime/interactionIntents";
 import { fromBench, benchPositionWords, runtimeBenchPointsMm, toBench } from "../adapters/benchCoordinates";
-import { benchFootprintOf, footprintOf, nearestFreeSpot, type FootprintMm } from "../adapters/footprints";
+import { footprintOf, type FootprintMm } from "../adapters/footprints";
 import { readingShownFor } from "../adapters/instrumentDisplay";
 import { fillLevelMm, pourStagingScene, runtimeToScene, sceneContents, sceneryUnder, type SceneContents, type SceneDescription, type SceneStrip } from "../adapters/runtimeToScene";
 import { heldOnSeat, readingSeatZone } from "../bench/scene/setOn";
 import { benchMoveRequest, benchOpStepFor, chromStepFor, intentTypeForInteraction, markStepFor, mergeActionInput, pipetteStepFor, resolveTrayDrop, stepClockSeconds, tongsStepFor, toolTransferFor, type ReleaseOrigin } from "../adapters/sceneToIntent";
-import { stablePlacementPoint } from "../adapters/stableBench";
+import { nearestClearPoint, stablePlacementPoint } from "../adapters/stableBench";
 import { parkPointAfterInteraction } from "../adapters/twoDPlacement";
 import { equipment3dEntry } from "../equipment3d/readiness";
 import { stepFlow, type StepFlow, placedInstanceId } from "./stepRules";
@@ -495,31 +495,34 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
 
   /**
    * A free bench move (2D movePlacedEquipment): never an attempt; the set-down slides to the
-   * nearest spot under 5 % overlap (handoff §5.6). A move the runtime refuses (an item in a closed
+   * nearest spot clear of every footprint (handoff §5.6; no overlap at all, decided 2026-10-22). A move the runtime refuses (an item in a closed
    * chamber) shows the runtime's message.
    */
   const freeMove = useCallback((instanceId: string, xMm: number, yMm: number): void => {
     const before = runtime.getState();
     const instance = before.equipmentInstances.find((i) => i.id === instanceId);
     if (!instance) return;
-    const spot = nearestFreeSpot(benchFootprintOf(equipment3dEntry(instance.definitionId), xMm, yMm), occupiedFootprints(instanceId));
-    const next = runtime.performAction(benchMoveRequest(instanceId, fromBench(instance.definitionId, spot.xMm, spot.yMm), nextZIndex()));
+    const point = nearestClearPoint(instance.definitionId, { xMm, yMm }, occupiedFootprints(instanceId));
+    const next = runtime.performAction(benchMoveRequest(instanceId, point, nextZIndex()));
+    const spot = toBench(instance.definitionId, point);
     reportCommit(before, next, `${instance.label} moved to the ${benchPositionWords(spot.xMm, spot.yMm)}`);
   }, [nextZIndex, occupiedFootprints, reportCommit, runtime]);
 
   /**
    * After an accepted pour released at `releasePoint` (runtime units), the source is parked where
-   * the 2D workbench would park it (Workbench.parkAfterInteraction), sent as a plain move.
+   * the 2D workbench would park it (Workbench.parkAfterInteraction), then slid clear of every footprint (decided
+   * 2026-10-22), sent as a plain move.
    */
   const parkAfterPour = useCallback((sourceId: string, releasePoint: { x: number; y: number }) => {
     const state = runtime.getState();
     const source = state.equipmentInstances.find((i) => i.id === sourceId);
     if (!source || source.location !== "workbench") return;
-    const point = parkPointAfterInteraction(state, sourceId, releasePoint);
+    const parked = parkPointAfterInteraction(state, sourceId, releasePoint);
+    const point = nearestClearPoint(source.definitionId, toBench(source.definitionId, parked), occupiedFootprints(sourceId));
     const next = runtime.performAction(benchMoveRequest(sourceId, point, nextZIndex()));
     const at = toBench(source.definitionId, point);
     reportCommit(state, next, `${source.label} set down at the ${benchPositionWords(at.xMm, at.yMm)}`);
-  }, [nextZIndex, reportCommit, runtime]);
+  }, [nextZIndex, occupiedFootprints, reportCommit, runtime]);
 
   /**
    * A shelf item onto the bench (the runtime's `shelf`; the name is the tray's, decided 2026-10-11): the step's
@@ -533,8 +536,7 @@ export const usePlayer3D = (definition: RuntimeDefinition, initialMode: RuntimeS
     // The Shelf list's Enter has no point of its own: it starts from its slot, whose picture sizes are not the 3D
     // footprints, so it too takes the nearest free spot (a ring stand never stands in a balance).
     const start = at ?? toBench(definitionId, stablePlacementPoint(runtime.getState(), definitionId, instanceId));
-    const spot = nearestFreeSpot(benchFootprintOf(equipment3dEntry(definitionId), start.xMm, start.yMm), occupiedFootprints());
-    const point = fromBench(definitionId, spot.xMm, spot.yMm);
+    const point = nearestClearPoint(definitionId, start, occupiedFootprints());
     const actionDefinitionId = runtime.expectedAction?.parameters.equipmentDefinitionId;
     const resolution = resolveTrayDrop(interaction, nodeCompletedIn(runtime.getState(), runtime.currentNode.id),
       typeof actionDefinitionId === "string" ? actionDefinitionId : undefined, definitionId, point, nextZIndex(), origin, instanceId,

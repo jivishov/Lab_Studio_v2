@@ -1,6 +1,6 @@
 # Lab Studio 3D: session handoff
 
-Written 2026-09-24 and updated through 2026-10-16, so a fresh session can continue the Pack 1 build without
+Written 2026-09-24 and updated through 2026-10-22, so a fresh session can continue the Pack 1 build without
 the previous conversation; checked claim by claim against the repository. Read this first, then the
 governing documents it names.
 
@@ -271,6 +271,13 @@ wait for confirmation (`DECISIONS.md`, the "built" row). G3 has still not run.
 
    Pending: the user's look. Phases 2 to 5
    (the 1700 mm working area, the sight-line rule, Auto view's follow-ups, the records) each wait for the user.
+
+   Then, 2026-10-22, drag and drop and no overlap on the bench (`DECISIONS.md`, one row;
+   `evidence/DRAG_AND_SPACING_EVIDENCE.md`). The mouse drags and drops: a press under 4 px is a click, and letting go
+   acts. Footprints keep 10 mm apart: the layout plans each run's spots by the real 3D footprints, largest first, and
+   every set-down slides to the nearest clear spot. Checked: tsc clean, 37 files and 398 tests, `content:check` at 22,
+   the practice build check, and one headless look. Pending: the user's look. `npx vite build` fails on a Latin-1 byte
+   in `look/textures.ts`, committed earlier (`481af48`). It is a one-byte fix, left for the user to approve.
 15. **Next (only when the user asks):** Pack 3b (brass, in six techniques; the proposal's "Brass
    Spectrophotometry"), with a build prompt written first if the user asks for one. Its 29 shelf items need a
    third tier or a second bay first. Also held: publishing Pack 3, the D8 experiments and everything since,

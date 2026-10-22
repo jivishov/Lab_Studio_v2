@@ -1,80 +1,30 @@
 import type { RuntimeState } from "../../domain/types";
-import { getBenchSize } from "../../equipment/visualCatalog";
+import { toBench, USABLE_DEPTH_MM, USABLE_WIDTH_MM, type BenchPointMm, type RuntimeBenchPoint } from "./benchUnits";
 import { stableWorkbenchNodes } from "./stableBench";
 
 /**
- * The one conversion between runtime bench units and the 3D bench (plan §2.3, §4.1, §11).
- *
- * `EquipmentInstance.x`/`y` are 2D workbench pixels in a front-view picture: `x` is the left edge
- * of the item's art, and `y` its top edge, so `y` is height on screen, not depth. Runtime units
- * are never rewritten: the 3D view reads them through `toBench` and commits moves through
- * `fromBench`, so a state saved by either player loads unchanged in the other.
- *
- * The mapping, chosen once here:
- * - bench x is the centre of the item's 2D art, scaled so the 2D player's minimum logical width
- *   spans the usable bench width;
- * - bench depth is the item's 2D base line (y plus its art height, where the picture "stands"):
- *   a base line higher on screen is further back on the bench.
- * Bench millimetres use the registry's convention: x to the viewer's right, y away from the
- * viewer, origin at the bench centre.
+ * Runtime bench units and the 3D bench (plan §2.3, §4.1, §11). The conversion itself, `toBench` and `fromBench`,
+ * lives in benchUnits.ts and is re-exported here; this file adds where each bench item stands.
  */
-
-/** The 2D player's minimum logical workbench (src/player/workbenchViewTransform.ts). */
-export const RUNTIME_BENCH_PX = Object.freeze({ width: 760, height: 520 });
-
-/** The physical bench surface drawn in 3D, and the margin kept clear at its edges. */
-export const BENCH_MM = Object.freeze({ width: 1400, depth: 700, edgeMargin: 40 });
-
-const usableWidthMm = BENCH_MM.width - 2 * BENCH_MM.edgeMargin;
-const usableDepthMm = BENCH_MM.depth - 2 * BENCH_MM.edgeMargin;
-
-/** Millimetres of bench per runtime pixel, across and in depth. */
-export const MM_PER_PX_X = usableWidthMm / RUNTIME_BENCH_PX.width;
-export const MM_PER_PX_DEPTH = usableDepthMm / RUNTIME_BENCH_PX.height;
-
-export interface BenchPointMm {
-  xMm: number;
-  yMm: number;
-  /**
-   * Turn about the vertical axis, degrees. Always 0 from runtime state: `EquipmentInstance.rotation`
-   * is set by no runtime action and drawn by no 2D view, so neither player gives it a meaning
-   * (decision U6: turning stays in Examine). Seated items take their anchor's yaw instead.
-   */
-  yawDeg: number;
-}
-
-export interface RuntimeBenchPoint {
-  x: number;
-  y: number;
-}
-
-const round1 = (value: number): number => Math.round(value * 10) / 10;
-const clamp = (value: number, lo: number, hi: number): number => Math.min(hi, Math.max(lo, value));
-
-/** Runtime bench units -> bench millimetres for an item of `definitionId`. */
-export const toBench = (
-  definitionId: string,
-  point: { x?: number; y?: number },
-): BenchPointMm => {
-  const size = getBenchSize(definitionId);
-  const centreXPx = (point.x ?? 0) + size.width / 2;
-  const baseLinePx = (point.y ?? 0) + size.height;
-  const xMm = -usableWidthMm / 2 + centreXPx * MM_PER_PX_X;
-  const yMm = usableDepthMm / 2 - baseLinePx * MM_PER_PX_DEPTH;
-  return {
-    xMm: round1(clamp(xMm, -BENCH_MM.width / 2, BENCH_MM.width / 2)),
-    yMm: round1(clamp(yMm, -BENCH_MM.depth / 2, BENCH_MM.depth / 2)),
-    yawDeg: 0,
-  };
-};
+export {
+  BENCH_MM,
+  fromBench,
+  MM_PER_PX_DEPTH,
+  MM_PER_PX_X,
+  RUNTIME_BENCH_PX,
+  toBench,
+  type BenchPointMm,
+  type RuntimeBenchPoint,
+} from "./benchUnits";
 
 /**
  * Where each bench item stands, in runtime bench units. An item with coordinates of its own stands
  * there, as in 2D. The runtime moves some items onto the bench without coordinates (a pour's target
  * leaves the shelf with no `x` or `y`, as does a step's placement by Confirm); 2D stands each at the
  * default slot of its render order, so items shifted as others came and went. The 3D bench keeps
- * each such item in one slot for the whole run instead (stableBench.ts, decided 2026-10-11). The
- * runtime's units are untouched, so a saved state loads in either player (G-3).
+ * each such item in one spot for the whole run instead (stableBench.ts, decided 2026-10-11), clear of
+ * every other by its real footprint (decided 2026-10-22). The runtime's units are untouched, so a
+ * saved state loads in either player (G-3).
  */
 export const runtimeBenchPoints = (
   state: Pick<RuntimeState, "equipmentInstances" | "attachments">,
@@ -94,25 +44,9 @@ export const runtimeBenchPointsMm = (
   return points;
 };
 
-/**
- * Bench millimetres -> runtime bench units for a free move or placement of `definitionId`.
- * The point is clamped to the bench surface first (handoff §5.6: "the bench is bounded").
- */
-export const fromBench = (definitionId: string, xMm: number, yMm: number): RuntimeBenchPoint => {
-  const size = getBenchSize(definitionId);
-  const x = clamp(xMm, -usableWidthMm / 2, usableWidthMm / 2);
-  const y = clamp(yMm, -usableDepthMm / 2, usableDepthMm / 2);
-  const centreXPx = (x + usableWidthMm / 2) / MM_PER_PX_X;
-  const baseLinePx = (usableDepthMm / 2 - y) / MM_PER_PX_DEPTH;
-  return {
-    x: round1(Math.max(0, centreXPx - size.width / 2)),
-    y: round1(Math.max(0, baseLinePx - size.height)),
-  };
-};
-
 /** Bench millimetres -> a position in words, for the Bench list and announcements (§5.11). */
 export const benchPositionWords = (xMm: number, yMm: number): string => {
-  const depth = yMm > usableDepthMm / 6 ? "back" : yMm < -usableDepthMm / 6 ? "front" : "middle";
-  const side = xMm < -usableWidthMm / 6 ? "left" : xMm > usableWidthMm / 6 ? "right" : "centre";
+  const depth = yMm > USABLE_DEPTH_MM / 6 ? "back" : yMm < -USABLE_DEPTH_MM / 6 ? "front" : "middle";
+  const side = xMm < -USABLE_WIDTH_MM / 6 ? "left" : xMm > USABLE_WIDTH_MM / 6 ? "right" : "centre";
   return `${depth} ${side}`;
 };

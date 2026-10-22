@@ -176,7 +176,8 @@ Rules:
 - Guidance-like help (aim assist toward the step's next target) applies in guided mode only.
 - Panel buttons a hand may press opt in with `data-hand-press`.
 - Mouse and hand exclude each other: a mouse press or the wheel stops the camera, and mouse moves are ignored while it runs.
-- The mouse's strokes (press on a target, drag down) act when the button is let go at depth, never mid-drag (guardrail G-5).
+- The mouse drags and drops (decided 2026-10-22): a press under 4 px of movement is a click; a drag carries the item, and seating, pouring and drawing act only when the button is let go over the target, never mid-drag (guardrail G-5). Hand control keeps its strokes.
+- On the 3D bench no two items' footprints come within 10 mm (`footprints.ts` `SPACING_MM`); a set-down that would slides to the nearest clear spot, and the layout plans every item a clear spot (`stableBench.ts`).
 - Camera frames, landmarks and calibration are never stored; only the settings preference is.
 - Thresholds and timings follow the microarray source; a change to them is a reviewed change recorded in `DECISIONS.md`.
 

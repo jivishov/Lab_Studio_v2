@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 import type { AttachmentRelation, EquipmentInstance } from "../../domain/types";
 import { resolveWorkbenchScene } from "../../player/resolveWorkbenchScene";
-import { runtimeBenchPoints } from "../adapters/benchCoordinates";
+import { runtimeBenchPoints, runtimeBenchPointsMm } from "../adapters/benchCoordinates";
+import { benchFootprintOf, footprintsClash } from "../adapters/footprints";
+import { equipment3dEntry } from "../equipment3d/readiness";
 import { slotPoint, stablePlacementPoint, stableWorkbenchNodes } from "../adapters/stableBench";
 
 const empty = { kind: "empty" as const, label: "empty", solutes: [], contamination: [], wetState: "dry" as const, visualState: "empty" };
@@ -9,6 +11,18 @@ const item = (id: string, definitionId: string, location: "workbench" | "shelf" 
   ({ id, definitionId, label: id, location, x: at?.x, y: at?.y, contents: empty });
 const points = (instances: EquipmentInstance[], attachments: AttachmentRelation[] = []) =>
   runtimeBenchPoints({ equipmentInstances: instances, attachments });
+/** Every pair of bench items stands at least `SPACING_MM` apart by its real 3D footprint. */
+const expectApart = (instances: EquipmentInstance[]) => {
+  const byId = new Map(instances.map((instance) => [instance.id, instance]));
+  const fps = [...runtimeBenchPointsMm({ equipmentInstances: instances, attachments: [] })].map(([id, at]) =>
+    ({ id, fp: benchFootprintOf(equipment3dEntry(byId.get(id)!.definitionId), at.xMm, at.yMm) }));
+  const clashes = fps.flatMap((a, i) => fps.slice(i + 1).filter((b) => footprintsClash(a.fp, b.fp)).map((b) => `${a.id} × ${b.id}`));
+  expect(clashes).toEqual([]);
+};
+/** The hard-water lab's equipment in the runtime's order. */
+const hardWater = ["sample-bottle", "beaker-150ml", "beral-pipette", "graduated-cylinder-25ml", "beaker-250ml", "wash-bottle",
+  "beaker-150ml", "stirring-rod", "beral-pipette", "analytical-balance", "ring-stand", "funnel", "funnel-stand", "filter-paper", "erlenmeyer-flask-250ml",
+  "drying-oven", "heat-safe-pad", "lab-sink", "watch-glass", "crucible-tongs", "scoopula"];
 
 describe("the 3D bench's stable layout (decided 2026-10-11)", () => {
   it("keeps an unplaced item in its own slot as others arrive and leave, where 2D shifts it", () => {
@@ -38,12 +52,21 @@ describe("the 3D bench's stable layout (decided 2026-10-11)", () => {
     expect(points(instances).get("beaker-1")).toEqual(slotPoint(2));
   });
 
-  it("gives the 16th item onward the first free slot", () => {
+  it("gives the 16th item onward a spot of its own, clear of every planned spot", () => {
     const instances = Array.from({ length: 16 }, (_, index) => item(`beaker-${index}`, "beaker-250ml", index === 3 ? "shelf" : "workbench"));
     const at = points(instances);
     expect(at.get("beaker-14")).toEqual(slotPoint(14));
-    // Every slot is owned; the only free one belongs to the beaker on the shelf.
-    expect(at.get("beaker-15")).toEqual(slotPoint(3));
+    // Every slot is owned, so it stands between them, where it stays whichever beakers come and go.
+    expect(Array.from({ length: 15 }, (_, index) => slotPoint(index))).not.toContainEqual(at.get("beaker-15"));
+    expectApart(instances);
+    expect(points(instances.map((instance) => ({ ...instance, location: "workbench" as const }))).get("beaker-15")).toEqual(at.get("beaker-15"));
+  });
+
+  it("keeps the hard-water lab's balance, oven and sink clear of their neighbours (decided 2026-10-22)", () => {
+    const run = hardWater.map((definitionId, index) => item(`${definitionId}-${index}`, definitionId));
+    expectApart(run);
+    // Any part of the run on the bench at once, the planned spots still clear each other.
+    expectApart(run.map((instance, index) => (index % 3 === 0 ? { ...instance, location: "shelf" as const } : instance)));
   });
 
   it("moves a receiving child with its parent", () => {
