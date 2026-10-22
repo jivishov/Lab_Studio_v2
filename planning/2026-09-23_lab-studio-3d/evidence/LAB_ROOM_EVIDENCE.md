@@ -63,7 +63,14 @@ Draw calls in one whole frame at Home, counted with `probes/count-draws.cjs`: Wa
 
 - **Shadows:** still one shadow-casting light. The far scenery casts none.
 - **The cutaway:** a box test against nine segments when the camera moves. A faded-out group is not drawn.
-- **Frame time: pending.** It is to be read once in the app's browser pane at your look. The pane was hidden during this build, and SwiftShader's frame times mean nothing. It is a note, not the G2 gate, which stays closed.
+- **Frame time (read 2026-10-22, at `46cc944`):** Water hardness at Home, HUD theme, in the app's visible browser pane at 1091 × 862 CSS px, device pixel ratio 1, on an Intel Arc GPU (ANGLE, Direct3D 11), never SwiftShader. `requestAnimationFrame` intervals were sampled while the camera moved: six round trips, each a tween to Overhead and back to Home with **Home** (650 ms each), 900 ms sampled per tween. Any interval that overlapped a spell of the page being hidden was dropped, and none was.
+
+  | Tier | Intervals | Median | p95 | p99 | Max | Over 20 ms |
+  |---|---|---|---|---|---|---|
+  | High (the default) | 631 | **16.7 ms** | 16.8 ms | 33.3 ms | 33.7 ms | 18 (2.9 %) |
+  | Balanced | 636 | **16.7 ms** | 16.8 ms | 33.3 ms | 33.4 ms | 13 (2.0 %) |
+
+  The bench holds the display's 60 Hz while moving. The slow tail is a single missed vsync (about 33 ms), never two. The windows also cover a short still spell after each tween, which costs nothing. Two earlier runs were thrown out because the pane went hidden partway. It is a note, not the G2 gate, which stays closed.
 
 ## Checks (2026-10-16, at `8c9cc20`)
 
@@ -115,5 +122,5 @@ What was built, against revision 2 and the seven photos:
   - `LOOK_SHOT_TIMEOUT` sets a screenshot's timeout, and a failed screenshot is retried once.
 
   The 1920 shots were taken one at a time, each orbit in its own run.
-- **Frame time is unread,** as above.
+- **Frame time was read on one machine only** (an Intel Arc GPU, 1091 × 862, 2026-10-22): a 16.7 ms median while moving, with a tail of single missed frames. Not read on a tablet, at 1920 × 1080 or at a device pixel ratio of 2. That stays with G2.
 - **The 1700 mm working area, the stagger and the camera's reach** wait for phase 2.

@@ -264,7 +264,12 @@ wait for confirmation (`DECISIONS.md`, the "built" row). G3 has still not run.
    - `content:check` is at its baseline of 22;
    - the practice build check and the Pack 3 model validator pass.
 
-   Pending: the frame-time note in the visible browser pane (never SwiftShader), at the user's look. Phases 2 to 5
+   Frame time, read 2026-10-22 at `46cc944` in the visible browser pane (Intel Arc, 1091 × 862, DPR 1, HUD,
+   Water hardness at Home, during the Overhead ⇄ Home tweens): High and Balanced both give a 16.7 ms median, a
+   p99 of 33.3 ms and a max under 34 ms, so 60 Hz with only single missed frames (`evidence/LAB_ROOM_EVIDENCE.md`,
+   "Cost"). It is a note, not G2.
+
+   Pending: the user's look. Phases 2 to 5
    (the 1700 mm working area, the sight-line rule, Auto view's follow-ups, the records) each wait for the user.
 15. **Next (only when the user asks):** Pack 3b (brass, in six techniques; the proposal's "Brass
    Spectrophotometry"), with a build prompt written first if the user asks for one. Its 29 shelf items need a
@@ -637,7 +642,8 @@ and template rules. `scripts/checkCycle04Foundations.mjs` can't run in this expo
   - Under SwiftShader at 1920 × 1080 the camera's tweens take many seconds of wall time (dt is clamped to 0.1 s) and
     the Light theme is slow to screenshot: use `look-room.cjs`'s `LOOK_SETTLE` and `LOOK_SHOT_TIMEOUT`, one run at a
     time.
-  - The frame-time note is unread.
+  - The frame time was read on one machine only (Intel Arc, 1091 × 862, DPR 1; a 16.7 ms median while moving). A
+    tablet, 1920 × 1080 and DPR 2 are unread and stay with G2.
 - **Glassware's own look (2026-10-16)** (`DECISIONS.md`, "Glassware's own look"):
   - Bench glass with the new look has not been looked at; only the shelf view was.
   - The stirring rod on the shelf's top tier is still hard to see: it lies level behind the rail.
