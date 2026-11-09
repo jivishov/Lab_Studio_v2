@@ -60,6 +60,6 @@ object." You answered "Act on release (Recommended)" for the mouse's strokes and
 
 - The ring and funnel stands' 2D pictures are 468 px tall, so their bench depth maps to the front edge, as before;
   their bases may reach a little past the 40 mm edge margin.
-- `npx vite build` fails on `src/studio3d/bench/look/textures.ts`, which has a Latin-1 `×` (byte 0xD7) in a comment
-  since `481af48`. This change does not touch it, and the dev server serves the file. It is a one-byte fix, left for you
-  to approve.
+- Fixed 2026-11-09, with your approval (`4be8b4c`): `vite build` stopped on `src/studio3d/bench/look/textures.ts`,
+  which had a Latin-1 `×` (byte 0xD7) in a comment since `481af48`. The sign is now UTF-8, and `npm run build` passes
+  with and without `VITE_STUDIO_3D_V1`.
