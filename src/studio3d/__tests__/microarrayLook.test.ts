@@ -37,8 +37,9 @@ describe("transcribed microarray geometry", () => {
 });
 
 describe("room scale and colours", () => {
-  it("fits the microarray's 15-unit worktop to the runtime bench width", () => {
-    expect(15 * ROOM_SCALE).toBeCloseTo(BENCH_MM.width / 1000, 9);
+  it("fits the microarray's 15-unit worktop to the first 1400 mm bench (the working area since reaches farther left)", () => {
+    expect(15 * ROOM_SCALE).toBeCloseTo(1.4, 9);
+    expect(BENCH_MM.right - BENCH_MM.width).toBe(BENCH_MM.left);
     expect(ROOM_SCALE).toBeCloseTo(0.0933, 4);
   });
 

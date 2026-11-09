@@ -70,16 +70,18 @@ describe("Home fitted to the screen", () => {
     const withStation = homeView(spots, size, rects), without = homeView(tiers, size, rects);
     expect(inOneRect(withStation, size, homeMarks(spots), rects)).toBe(true);
     expect(inOneRect(without, size, homeMarks(tiers), rects)).toBe(true);
-    // Heat and Reweigh's four (the most it holds) take Home back, though still closer than the fixed Home.
+    // Heat and Reweigh's four (the most it holds) take Home back, within the wheel's reach. (Closer than the fixed
+    // Home until the working area reached 300 mm farther left, 2026-11-09.)
     expect(withStation.distance).toBeGreaterThan(without.distance * 1.1);
-    expect(withStation.distance).toBeLessThan(DEFAULT_VIEW().distance);
+    expect(withStation.distance).toBeLessThanOrEqual(MANUAL.distanceMax);
   });
 
   it("stays within the wheel's reach, and is the fixed Home where nothing fits beside the step card", () => {
     const size = { w: 1024, h: 700 }, rects = stage(size, 616);
     const view = homeView(chromatography, size, rects);
     expect(inOneRect(view, size, homeMarks(chromatography), rects)).toBe(true);
-    expect(view.distance).toBeLessThanOrEqual(DEFAULT_VIEW().distance * 1.01);
+    // The 1700 mm working area (2026-11-09) takes Home past the fixed Home here, within the wheel's reach (below).
+    expect(view.distance).toBeGreaterThan(DEFAULT_VIEW().distance);
     for (const [w, h, dock] of [[1907, 897, 795], [1280, 800, 716], [1024, 700, 616]]) {
       expect(homeView(chromatography, { w, h }, stage({ w, h }, dock)).distance).toBeLessThanOrEqual(MANUAL.distanceMax);
     }

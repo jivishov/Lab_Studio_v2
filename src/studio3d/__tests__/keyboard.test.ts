@@ -14,10 +14,13 @@ describe("keyboard carry rules (handoff §5.6)", () => {
   });
 
   it("keeps the carried point on the bench surface", () => {
-    const halfW = BENCH_MM.width / 2 - BENCH_MM.edgeMargin;
+    const right = BENCH_MM.right - BENCH_MM.edgeMargin, left = BENCH_MM.left + BENCH_MM.edgeMargin;
     const halfD = BENCH_MM.depth / 2 - BENCH_MM.edgeMargin;
-    expect(nudgePoint({ xMm: halfW, yMm: 0 }, "right", true).xMm).toBe(halfW);
-    expect(clampToBenchSurface({ xMm: -99_999, yMm: 99_999 })).toEqual({ xMm: -halfW, yMm: halfD });
+    expect(nudgePoint({ xMm: right, yMm: 0 }, "right", true).xMm).toBe(right);
+    expect(nudgePoint({ xMm: left, yMm: 0 }, "left", true).xMm).toBe(left);
+    // The working area reaches 300 mm farther left than right (2026-11-09).
+    expect(left).toBe(-960);
+    expect(clampToBenchSurface({ xMm: -99_999, yMm: 99_999 })).toEqual({ xMm: left, yMm: halfD });
   });
 
   it("steps through targets from the first or last, wrapping", () => {

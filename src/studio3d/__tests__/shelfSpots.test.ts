@@ -40,7 +40,7 @@ describe("the shelf's spots (option B, approved 2026-10-11)", () => {
       expect(spot.overflow).toBeUndefined();
       expect(spot.zMm).toBe(0);
       // The station is past the working area's right end.
-      expect(spot.point.xMm - spot.widthMm / 2).toBeGreaterThan(BENCH_MM.width / 2 - 100);
+      expect(spot.point.xMm - spot.widthMm / 2).toBeGreaterThan(BENCH_MM.right - 100);
     }
     // No two large items share bench: their x ranges or their y ranges are apart.
     const range = (s: ShelfSpot, model: string) => {

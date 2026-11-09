@@ -87,7 +87,7 @@ export const ROOM_LIGHTS = {
  * 1400 mm it is about the size it was). Scenery past it is lit and casts no shadows.
  */
 export const SHADOW_BOX = Object.freeze({
-  minX: -BENCH_MM.width / 2000 - 0.15,
+  minX: BENCH_MM.left / 1000 - 0.15,
   maxX: SIDE_STATION.xMaxMm / 1000 + 0.15,
   /** Half its height in the light's view, which looks down and a little back across the bench. */
   halfDepth: 0.93,

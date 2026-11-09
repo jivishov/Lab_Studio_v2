@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import type { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
-import { BENCH_MM } from "../adapters/benchCoordinates";
+import { BENCH_CENTRE_X_MM, BENCH_MM } from "../adapters/benchCoordinates";
 import { fillLevelMm, type SceneContents, type SceneDescription, type SceneItem, type SceneStrip, type SceneTrayItem } from "../adapters/runtimeToScene";
 import { SHELF, SIDE_STATION, type ShelfSpot } from "../adapters/shelfSpots";
 import { ModelLibrary } from "../equipment3d/loadModels";
@@ -296,6 +296,8 @@ export class BenchEngine {
     this.models.environment = environment;
     this.models.onProgress = (loaded, total, pending) => this.onLoadProgress?.(loaded, total, pending);
     this.contact = new ContactShadows({ width: BENCH_MM.width * MM, depth: BENCH_MM.depth * MM, resolution: q.contact, blur: 2.2, opacity: 0.72 });
+    // Under the working area, which is not centred on the world origin (it reaches farther left, 2026-11-09).
+    this.contact.group.position.x = BENCH_CENTRE_X_MM * MM;
     this.furniture.name = "bench furniture (scenery)";
     this.shelfLayer.name = "shelf items";
     this.scene.add(this.contact.group, this.furniture, this.shelfTags.group, this.itemLayer, this.shelfLayer, this.signals.group);
@@ -2706,8 +2708,8 @@ export class BenchEngine {
         .expandByPoint(toWorld(centre.xMm + widthMm / 2, centre.yMm + depthMm / 2, zMm + heightMm));
     });
     if (instanceIds === "all") {
-      const w = (BENCH_MM.width * MM) / 2, d = (BENCH_MM.depth * MM) / 2;
-      box.expandByPoint(new THREE.Vector3(-w, 0, -d)).expandByPoint(new THREE.Vector3(w, 0, d));
+      const d = (BENCH_MM.depth * MM) / 2;
+      box.expandByPoint(new THREE.Vector3(BENCH_MM.left * MM, 0, -d)).expandByPoint(new THREE.Vector3(BENCH_MM.right * MM, 0, d));
     }
     if (box.isEmpty()) box.set(new THREE.Vector3(-0.5, 0, -0.3), new THREE.Vector3(0.5, 0.25, 0.3));
     return box;

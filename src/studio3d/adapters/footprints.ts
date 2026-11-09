@@ -3,7 +3,7 @@ import { getSnapSourceAnchor, getVisualProfile } from "../../equipment/visualCat
 import { resolveBenchOverlap, type BenchBounds, type BenchOverlapResult } from "../../player/benchOverlap";
 import { equipment3dRegistry } from "../equipment3d/readiness";
 import type { Equipment3DEntry } from "../equipment3d/types";
-import { BENCH_MM, MM_PER_PX_DEPTH, MM_PER_PX_X } from "./benchUnits";
+import { ART_MM_PER_PX, BENCH_MM, MM_PER_PX_DEPTH, MM_PER_PX_X, USABLE_LEFT_MM } from "./benchUnits";
 
 /**
  * 3D footprints -> the 2D bench bounds the shared overlap classifier works on (plan §4.1). Overlap
@@ -38,9 +38,8 @@ export const benchFootprintOf = (entry: Equipment3DEntry | undefined, xMm: numbe
 
 /** A footprint as runtime-unit bounds; bench depth runs down the 2D y axis (front is larger y). */
 export const footprintBounds = (id: string, definitionId: string, fp: FootprintMm): BenchBounds => {
-  const usableW = BENCH_MM.width - 2 * BENCH_MM.edgeMargin;
   const usableD = BENCH_MM.depth - 2 * BENCH_MM.edgeMargin;
-  const left = (fp.xMm - fp.widthMm / 2 + usableW / 2) / MM_PER_PX_X;
+  const left = (fp.xMm - fp.widthMm / 2 - USABLE_LEFT_MM) / MM_PER_PX_X;
   const top = (usableD / 2 - (fp.yMm + fp.depthMm / 2)) / MM_PER_PX_DEPTH;
   return {
     id,
@@ -72,7 +71,7 @@ export interface SnapClassification {
 }
 
 /** The 2D anchor box is 4 runtime units wide. */
-export const SNAP_SOURCE_MM = 4 * MM_PER_PX_X;
+export const SNAP_SOURCE_MM = 4 * ART_MM_PER_PX;
 const DEFAULT_ZONE_MM = 40;
 
 /**
@@ -90,7 +89,7 @@ export const snapZoneFootprint = (
   const [ax, ay] = anchor.positionMm;
   const yaw = (at.yawDeg * Math.PI) / 180;
   const zone = getVisualProfile(definitionId)?.visualZones.find((candidate) => candidate.id === snapZoneId);
-  const side = zone ? zone.bounds.width * MM_PER_PX_X : DEFAULT_ZONE_MM;
+  const side = zone ? zone.bounds.width * ART_MM_PER_PX : DEFAULT_ZONE_MM;
   return {
     xMm: at.xMm + ax * Math.cos(yaw) - ay * Math.sin(yaw),
     yMm: at.yMm + ax * Math.sin(yaw) + ay * Math.cos(yaw),
@@ -150,9 +149,10 @@ export const footprintsClash = (a: FootprintMm, b: FootprintMm): boolean =>
   && Math.abs(a.yMm - b.yMm) < (a.depthMm + b.depthMm) / 2 + SPACING_MM;
 
 const clampToBench = (fp: FootprintMm): FootprintMm => {
-  const halfW = BENCH_MM.width / 2 - BENCH_MM.edgeMargin - fp.widthMm / 2;
+  const minX = BENCH_MM.left + BENCH_MM.edgeMargin + fp.widthMm / 2;
+  const maxX = BENCH_MM.right - BENCH_MM.edgeMargin - fp.widthMm / 2;
   const halfD = BENCH_MM.depth / 2 - BENCH_MM.edgeMargin - fp.depthMm / 2;
-  return { ...fp, xMm: Math.min(halfW, Math.max(-halfW, fp.xMm)), yMm: Math.min(halfD, Math.max(-halfD, fp.yMm)) };
+  return { ...fp, xMm: Math.min(maxX, Math.max(minX, fp.xMm)), yMm: Math.min(halfD, Math.max(-halfD, fp.yMm)) };
 };
 
 /**

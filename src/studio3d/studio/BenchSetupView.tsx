@@ -247,7 +247,7 @@ export const BenchSetupView = ({ studio, onToast, onInspectEquipment }: {
     if (!engine || readOnly) return;
     const point = engine.benchPointAt(event.clientX, event.clientY);
     if (!point) return;
-    const x = Math.max(-BENCH_MM.width / 2, Math.min(BENCH_MM.width / 2, point.xMm));
+    const x = Math.max(BENCH_MM.left, Math.min(BENCH_MM.right, point.xMm));
     const shelfId = event.dataTransfer.getData(INSTANCE_DRAG_TYPE);
     if (shelfId) {
       event.preventDefault();

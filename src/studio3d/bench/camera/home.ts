@@ -23,8 +23,8 @@ const box = (out: THREE.Vector3[], x0: number, y0: number, z0: number, x1: numbe
 /** The world points Home keeps in view, given the spots of the items now on the shelf or at the side station. */
 export const homeMarks = (spots: readonly ShelfSpot[]): THREE.Vector3[] => {
   const out: THREE.Vector3[] = [];
-  const w = BENCH_MM.width / 2, d = BENCH_MM.depth / 2;
-  box(out, -w, -d, 0, w, d, 0);
+  const d = BENCH_MM.depth / 2;
+  box(out, BENCH_MM.left, -d, 0, BENCH_MM.right, d, 0);
   const half = SHELF.lengthMm / 2, depth = SHELF.depthMm / 2;
   box(out, SHELF.centre.xMm - half, SHELF.centre.yMm - depth, 0, SHELF.centre.xMm + half, SHELF.centre.yMm + depth, SHELF.heightMm);
   for (const spot of spots) {

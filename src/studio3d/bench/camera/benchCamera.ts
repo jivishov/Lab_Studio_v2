@@ -45,12 +45,14 @@ export const MANUAL = {
   /** In as close as Eye level comes (0.16 m), so a meniscus can be zoomed to by hand (2026-10-16; the source's 3.2 units before). */
   distanceMin: 0.15,
   /** Out to past the Home view, which takes in the shelf and the side station (2026-10-11; the source's 20 units). */
-  distanceMax: 34 * S,
+  // 3.64 m since the working area reached farther left (2026-11-09), so Home fits it; 34 units before.
+  distanceMax: 39 * S,
   /**
    * Sideways: the source's 7 units to the left; to the right as far as the side station's far end (decided
    * 2026-10-11), so a slide can bring the large items to the middle of the view.
    */
-  atXMin: -7 * S,
+  // 300 mm farther left with the working area (2026-11-09).
+  atXMin: -7 * S - 0.3,
   atXMax: 14 * S,
   /**
    * Forward and back: the source's 4.5 units, doubled (decided 2026-10-11) so a left-drag can slide the bench well
@@ -82,6 +84,9 @@ const v = (x: number, y: number, z: number) => new THREE.Vector3(x * S, y * S, z
  * 1.8 m, so the bench is seen more as one standing at it sees it, and the window shows over the shelf.
  * Now Home's angle and its fallback (you, 2026-10-12): Home itself is fitted to the screen (home.ts), coming closer
  * from this angle wherever the screen has room.
+ * The fallback stayed put when the working area reached 300 mm farther left (2026-11-09): farther out takes its eye
+ * within 0.5 m of the hall's front wall on a portrait tablet, and a shift left loses the side station at 1024 × 700.
+ * So it may cut off the new left strip; a fitted Home takes it in, up to the wheel's reach.
  */
 export const DEFAULT_VIEW = (): OrbitView => ({ at: v(-3.2, 0, -2.4), yaw: 0, pitch: 0.45, distance: 32 * S });
 export const PRESETS = {

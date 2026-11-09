@@ -97,7 +97,8 @@ describe("the hall keeps clear of the bench", () => {
 
 describe("the working area does not move", () => {
   it("keeps BENCH_MM, the shelf, the side station and the default view", () => {
-    expect(BENCH_MM).toEqual({ width: 1400, depth: 700, edgeMargin: 40 });
+    // 300 mm farther left since 2026-11-09 ("move the objects farther to the left"); the right end stays.
+    expect(BENCH_MM).toEqual({ left: -1000, right: 700, width: 1700, depth: 700, edgeMargin: 40 });
     expect(SHELF).toMatchObject({ centre: { xMm: 0, yMm: 460 }, lengthMm: 1200, depthMm: 180, tierTopsMm: [300, 520], heightMm: 580 });
     expect(SIDE_STATION).toEqual({ xMinMm: 740, xMaxMm: 1300, yMinMm: -320, yMaxMm: 540 });
     const home = DEFAULT_VIEW();

@@ -279,6 +279,10 @@ wait for confirmation (`DECISIONS.md`, the "built" row). G3 has still not run.
    the practice build check, and one headless look. Pending: the user's look. On 2026-11-09 the user approved fixing
    the Latin-1 byte in `look/textures.ts` (from `481af48`) that stopped `vite build`. It is fixed (`4be8b4c`), and
    `npm run build` passes with and without `VITE_STUDIO_3D_V1`.
+   Then, 2026-11-09, a wider working area to the left (`DECISIONS.md`, one row): `BENCH_MM` runs from −1000 to 700 mm
+   (1700 mm, 300 mm farther left; the right end and side station stay). Home fits it, up to a 3.64 m reach. Checked:
+   tsc, 37 files and 398 tests, the practice build check. Pending: the user's look. The stagger and the rest of lab
+   room phase 2 are not built.
 15. **Next (only when the user asks):** Pack 3b (brass, in six techniques; the proposal's "Brass
    Spectrophotometry"), with a build prompt written first if the user asks for one. Its 29 shelf items need a
    third tier or a second bay first. Also held: publishing Pack 3, the D8 experiments and everything since,

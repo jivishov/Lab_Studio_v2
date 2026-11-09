@@ -22,9 +22,9 @@ export interface BenchPoint {
 
 /** Keep a carried point on the usable bench surface ("the bench is bounded"). */
 export const clampToBenchSurface = (point: BenchPoint): BenchPoint => {
-  const halfW = BENCH_MM.width / 2 - BENCH_MM.edgeMargin;
+  const minX = BENCH_MM.left + BENCH_MM.edgeMargin, maxX = BENCH_MM.right - BENCH_MM.edgeMargin;
   const halfD = BENCH_MM.depth / 2 - BENCH_MM.edgeMargin;
-  return { xMm: Math.min(halfW, Math.max(-halfW, point.xMm)), yMm: Math.min(halfD, Math.max(-halfD, point.yMm)) };
+  return { xMm: Math.min(maxX, Math.max(minX, point.xMm)), yMm: Math.min(halfD, Math.max(-halfD, point.yMm)) };
 };
 
 export const nudgePoint = (point: BenchPoint, direction: ArrowDirection, large: boolean): BenchPoint => {

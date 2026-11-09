@@ -137,7 +137,7 @@ export const BLOCKS: readonly Box[] = Object.freeze([
 
 /** What scenery must keep clear (tests): over the working area, the side station and the shelf's band. */
 export const KEEP_CLEAR: Readonly<Record<string, Box>> = Object.freeze({
-  workingArea: box([-BENCH_MM.width / 2 * mm, 0.001, -BENCH_MM.depth / 2 * mm], [BENCH_MM.width / 2 * mm, 1.5, BENCH_MM.depth / 2 * mm]),
+  workingArea: box([BENCH_MM.left * mm, 0.001, -BENCH_MM.depth / 2 * mm], [BENCH_MM.right * mm, 1.5, BENCH_MM.depth / 2 * mm]),
   sideStation: box([SIDE_STATION.xMinMm * mm, 0.001, -SIDE_STATION.yMaxMm * mm], [SIDE_STATION.xMaxMm * mm, 1.5, -SIDE_STATION.yMinMm * mm]),
   shelfBand: box([(SHELF.centre.xMm - SHELF.lengthMm / 2) * mm, 0.001, SPINE_BACK], [(SHELF.centre.xMm + SHELF.lengthMm / 2) * mm, 1.5, SPINE_FRONT]),
 });
@@ -146,6 +146,6 @@ export const FRONT_ZONE = box([HALL.left, FLOOR, ISLAND.front + 0.001], [HALL.ri
 
 /** On the working area and the shelf's top: where the cutaway's sight lines from the eye end (with the look-at point). */
 export const SIGHT_TARGETS: readonly (readonly [number, number, number])[] = Object.freeze([
-  ...[-1, 1].flatMap((sx) => [-1, 1].map((sz) => [sx * (BENCH_MM.width / 2) * mm, 0, sz * (BENCH_MM.depth / 2) * mm] as const)),
+  ...[BENCH_MM.left, BENCH_MM.right].flatMap((x) => [-1, 1].map((sz) => [x * mm, 0, sz * (BENCH_MM.depth / 2) * mm] as const)),
   ...[-1, 1].flatMap((sx) => [SPINE_FRONT, SPINE_BACK].map((z) => [(SHELF.centre.xMm + sx * SHELF.lengthMm / 2) * mm, SHELF.heightMm * mm, z] as const)),
 ]);

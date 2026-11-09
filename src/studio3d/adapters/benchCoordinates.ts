@@ -1,5 +1,5 @@
 import type { RuntimeState } from "../../domain/types";
-import { toBench, USABLE_DEPTH_MM, USABLE_WIDTH_MM, type BenchPointMm, type RuntimeBenchPoint } from "./benchUnits";
+import { BENCH_CENTRE_X_MM, toBench, USABLE_DEPTH_MM, USABLE_WIDTH_MM, type BenchPointMm, type RuntimeBenchPoint } from "./benchUnits";
 import { stableWorkbenchNodes } from "./stableBench";
 
 /**
@@ -7,6 +7,8 @@ import { stableWorkbenchNodes } from "./stableBench";
  * lives in benchUnits.ts and is re-exported here; this file adds where each bench item stands.
  */
 export {
+  ART_MM_PER_PX,
+  BENCH_CENTRE_X_MM,
   BENCH_MM,
   fromBench,
   MM_PER_PX_DEPTH,
@@ -15,6 +17,8 @@ export {
   toBench,
   type BenchPointMm,
   type RuntimeBenchPoint,
+  USABLE_LEFT_MM,
+  USABLE_RIGHT_MM,
 } from "./benchUnits";
 
 /**
@@ -47,6 +51,7 @@ export const runtimeBenchPointsMm = (
 /** Bench millimetres -> a position in words, for the Bench list and announcements (§5.11). */
 export const benchPositionWords = (xMm: number, yMm: number): string => {
   const depth = yMm > USABLE_DEPTH_MM / 6 ? "back" : yMm < -USABLE_DEPTH_MM / 6 ? "front" : "middle";
-  const side = xMm < -USABLE_WIDTH_MM / 6 ? "left" : xMm > USABLE_WIDTH_MM / 6 ? "right" : "centre";
+  const across = xMm - BENCH_CENTRE_X_MM;
+  const side = across < -USABLE_WIDTH_MM / 6 ? "left" : across > USABLE_WIDTH_MM / 6 ? "right" : "centre";
   return `${depth} ${side}`;
 };
