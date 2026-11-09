@@ -171,7 +171,7 @@ export const makeTextures = (size: "full" | "reduced" = "full"): BenchTextures =
   const stipple = fbm(wallN, [[160, 160, 1], [330, 330, 0.5]], 83);
 
   // Porcelain floor tiles, 600 mm, warm pale grey and satin (the lab room, 2026-10-16; the photos' large pale glossy
-  // tiles): a faint cloudy body, a slight shade difference from tile to tile, and thin grout (a texture of 2 × 2 tiles).
+  // tiles): a faint cloudy body, a slight shade difference from tile to tile, and thin grout (a texture of 2 Ã— 2 tiles).
   const floorN = n(1024), tilePx = floorN / 2;
   const cloud = fbm(floorN, [[4, 4, 0.5], [11, 11, 0.3], [37, 37, 0.2]], 91);
   const grain = fbm(floorN, [[180, 180, 1]], 93);
